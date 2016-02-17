@@ -91,18 +91,47 @@
 			});
 		},
 
-		renderField:function(name,data) {
+		renderField:function(fieldtype,data) {
 			var self = this;
 			var templates = this.templates;
 
+
 			if( data.datasetid != "")
 				data.options = self.formJSON.datasets[data.datasetid].options;
+			
 
-			var html = self.templates[name](data);
+			console.log(data.name);
+
+			self.setDefault( fieldtype,data );
+
+			var html = self.templates[fieldtype](data);
 			$(".field-container",self.settings.formEl).append(html);
 		},
 
-		renderData: function( ) {
+		setDefault:function(fieldtype,data) {
+			self = this;
+
+			switch( fieldtype ) {
+				case "textfield":
+				case "textarea":
+					data.defaultvalue = self.data[data.name];
+				 break;
+				case "checkbox":
+				case "dropdown":
+					var ds = self.formJSON.datasets[data.datasetid];
+					for(var i in ds.datarecords) {
+						if(ds.datarecords[i].id == self.data[data.name+'id'])
+							ds.datarecords[i].isselected = 1;
+						else
+							ds.datarecords[i].isselected = 0;
+
+					}
+				 break;
+			}
+
+		},
+
+		renderData: function() {
 			var self = this;
 
 			if(self.datasets.length == 0)
@@ -165,25 +194,25 @@
 
 		},
 		
-		getForm: function() {
+		getForm: function( contentid ) {
 			var self = this;
 			var formJSON = {};
 			var entityName = '';
 
-			console.log('get form');
+			console.log('getting form');
 
 			if(self.templateList.length) {
 				self.getTemplates();
 			}
 			else {
-				self.loadForm();
+				self.loadForm( contentid );
 			}
 		},
 		
-		loadForm: function() {
+		loadForm: function( contentid ) {
 
 			var self = this;
-			
+//			contentid = '43AE38B0-EEEB-F516-995C14E94B8F8E7A';
 
 			window.mura.get(
 					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
@@ -195,19 +224,32 @@
 					 	self.formJSON = formJSON;
 					 	self.responsemessage = data.data.responsemessage;
 
-					 	console.log(data);
 					 	console.log(self.formJSON);
+
 						for(var i in self.formJSON.datasets)
 							self.datasets.push(i);
 
 					 	self.entity = entityName;
-					window.mura.get(
-						window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/new/expand'
-						).then(function(data) {
-							self.data = data.data;
-							self.renderData();	
-						});
-					});
+
+					 	if(contentid == undefined) {
+					 		console.log('a');
+							window.mura.get(
+								window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/new/expand'
+							).then(function(data) {
+								self.data = data.data;
+								self.renderData();	
+							});					 		
+					 	}
+					 	else {
+					 		console.log('b');
+							window.mura.get(
+								window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/' + contentid + '/expand'
+							).then(function(data) {
+								self.data = data.data;
+								self.renderData();	
+							});					 		
+					 	}
+				});
 
 			console.log("done");
 			console.log(this.settings.objectid);

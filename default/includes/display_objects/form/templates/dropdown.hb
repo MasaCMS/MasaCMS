@@ -3,7 +3,7 @@
 		<div class="form-group-select">
 			<select class="form-control" type="text" name="{{name}}id" id="field-{{name}}">
 				{{#each options}}
-					<option data-isother="{{isother}}" id="field-{{id}}" value="{{id}}">{{label}}</option>
+					<option data-isother="{{isother}}" id="field-{{id}}" value="{{id}}" {{#if isselected}}selected='selected'{{/if}}>{{label}}</option>
 				{{/each}}
 			</select>
 		</div>
