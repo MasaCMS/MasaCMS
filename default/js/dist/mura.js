@@ -3406,16 +3406,16 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 
 	function extendClass (baseClass,subClass){
-		var placeholder=function(){
+		var muraObject=function(){
 			this.init.apply(this,arguments);
 		}
 
-		placeholder.prototype = Object.create(baseClass.prototype);
-		placeholder.prototype.constructor = placeholder;
+		muraObject.prototype = Object.create(baseClass.prototype);
+		muraObject.prototype.constructor = muraObject;
 
-		window.mura.extend(placeholder.prototype,subClass);
+		window.mura.extend(muraObject.prototype,subClass);
 
-		return placeholder;
+		return muraObject;
 	}
 
 	function getQueryStringParams(queryString) {
