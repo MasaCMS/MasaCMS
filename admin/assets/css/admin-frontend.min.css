@@ -467,6 +467,26 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   display: block;
   float: none;
 }
+.btn,
+.btn:hover {
+  font-size: 12px;
+  padding: 6px 12px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  background-image: none;
+  text-shadow: none;
+}
+.btn-primary,
+.btn-primary:hover {
+  color: #ffffff;
+  background-color: #4485f1;
+  border-color: #4882cc;
+  background-image: none !important;
+}
 /* apply to .mura parent class only */
 .mura {
   /* 
@@ -601,7 +621,8 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   color: #f5f5f5;
   /* cursor: pointer; */
 }
-.mura #configurator #sortableFields #displayListSort {
+.mura #configurator #sortableFields #displayListSort,
+.mura #configurator #sortableFields #availableListSort {
   width: 100%;
   float: none;
 }
@@ -653,6 +674,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   color: #ffffff;
   background-color: #4485f1;
   border-color: #4882cc;
+  background-image: none !important;
 }
 .mura body.configurator-wrapper #configuratorContainer .btn:not([class*="btn-"]) {
   -webkit-border-radius: 0;
@@ -673,6 +695,9 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 .mura body.configurator-wrapper #configuratorContainer .mura-layout-row {
   padding: 0;
   margin: 0;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group {
+  margin-bottom: 12px;
 }
 .mura body.configurator-wrapper #configuratorContainer label,
 .mura body.configurator-wrapper #configuratorContainer .control-label,
@@ -709,10 +734,12 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   color: #ffffff;
   background-color: #4485f1;
   border-color: #4882cc;
+  background-image: none !important;
 }
 .mura body.configurator-wrapper #configuratorContainer #sortableFields #displayListSort {
   padding: 0 !important;
   border: none !important;
+  margin-bottom: 12px !important;
 }
 .mura body.configurator-wrapper #configuratorContainer #sortableFields #displayListSort li:before {
   content: "\f0c9";
@@ -728,8 +755,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   border-radius: 0;
   box-shadow: none;
   font-size: 12px;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding: 8px 12px;
   color: #d8d8d8;
 }
 .mura h1,
