@@ -1,6 +1,11 @@
 /* for styling of iframe itself, see admin-frontend.less */
 body.modal-wrapper{	
 
+	font-family: "Source Sans Pro","Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif; 
+	
+	.mura-header{
+		padding-bottom: 12px;
+	}
 	#frontEndToolsModalClose{
 		float: right;
 		font-size: 22px;
@@ -19,4 +24,42 @@ body.modal-wrapper{
 	.mura-header h1{
 		margin-right: 24px;
 	}
+
+	/* hide h2 not used in front end modal*/
+	#configurator > div > h2{
+		display:none;
+	}
+
+	.nav-pills > li > a{
+	.btn;
+	.btn-default; 
+	margin: 4px 8px 12px 0;
+	}
+
+	.form-actions{
+	
+			.btn {
+				.btn-default;
+				font-size: 12px;
+				padding: 6px 12px;
+				-webkit-border-radius: 2px;
+				-moz-border-radius: 2px;
+				border-radius: 2px;
+				-webkit-box-shadow: none;
+				-moz-box-shadow: none;
+				box-shadow: none;	
+				text-shadow:none;
+		    color: #545454 !important;
+    		background-color: #F5F5F5 !important;
+    		border-color: #E9E9E9 !important;
+			}
+			.btn-primary {
+			  color: #ffffff;
+			  background-color: #4485f1;
+			  border-color: #4882cc;
+			  background-image:none !important;
+			}
+
+		}
+
 }
