@@ -28197,6 +28197,13 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura body.configurator-wrapper #configuratorContainer label > div + .btn:not([class*="btn-"]) {
   margin-top: 8px;
 }
+.mura body.configurator-wrapper #configuratorContainer label + .alert:not([class*="alert-"]) {
+  background-image: none;
+  text-shadow: none;
+  color: #A4A4A4;
+  background-color: #454545;
+  border-color: #A4A4A4;
+}
 .mura body.configurator-wrapper #configuratorContainer .mura-layout-row {
   padding: 0;
   margin: 0;
