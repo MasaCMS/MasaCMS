@@ -1,24 +1,49 @@
-@sidebar-x: 170;
 @mgr-grid-w-lg: 998px;
 @mgr-grid-w-md: 998px;
 @mgr-grid-w-sm: 799px;
 @mgr-grid-w-xs: 575px;
 
  #tabArchitectural #gridContainer .overflow-wrap{
- overflow-x: auto;
- overflow-y: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
  }  
 
+/* MAX WIDTH */
+/* MAX WIDTH */
+/* MAX WIDTH */
+@media (min-width: (@screen-lg-min+220)) {
+ #tabArchitectural #gridContainer .overflow-wrap{
+  overflow-x:visible;
+  overflow-y:visible;
+ } 
+  #tabArchitectural #gridContainer dl{
+    width: @mgr-grid-w-lg;
+  }  
+   #tabArchitectural #gridContainer dl dt:first-child{
+    width: 536px;
+   }
+}
+
+/* LESS THAN MAX WIDTH */
+/* LESS THAN MAX WIDTH */
+/* LESS THAN MAX WIDTH */
+@media (max-width: (@screen-lg-min+219)) {
+  /* hide some columns */
+  dd.objects, dd.display, dd.nav, dd.template{
+  display:none;
+  }
+}
+
 /* LG: FULL WIDTH */
 /* LG: FULL WIDTH */
 /* LG: FULL WIDTH */
 
-@media (min-width: (@screen-lg-min+60)) {
+@media (min-width: (@screen-lg-min+60)) and (max-width: (@screen-lg-min+219)) {
    #tabArchitectural #gridContainer dl{
     width: @mgr-grid-w-lg;
    }
    #tabArchitectural #gridContainer dl dt:first-child{
-    width: 536px;
+    width: 756px;
    }
 }
 
@@ -31,7 +56,7 @@
     width: @mgr-grid-w-md;
    }
   #tabArchitectural #gridContainer dl dt:first-child{
-    width: 536px;
+    width: 756px;
    }
 }
 
@@ -44,11 +69,7 @@
     width: @mgr-grid-w-sm;
    }
   #tabArchitectural #gridContainer dl dt:first-child{
-    width: 447px;
-  }
-  /* hide some columns */
-  dd.objects, dd.template{
-  display:none;
+    width: 547px;
   }
 }
 
@@ -62,10 +83,6 @@
    }
   #tabArchitectural #gridContainer dl dt:first-child{
     width: 323px;
-  }
-  /* hide some columns */
-  dd.objects, dd.template, dd.display, dd.nav{
-  display:none;
   }
   .mura-item-metadata{
     text-align: left !important;
