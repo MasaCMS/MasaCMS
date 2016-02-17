@@ -19,13 +19,19 @@
 <cfinclude template="js.cfm">
 <cfif rc.layoutmanager>
 	<cfoutput>
+		<cfif rc.sourceFrame  eq 'modal'>
+			<div class="mura-header">
+				<h1 id="configuratorHeader">Loading...</h1>
+			</div>
+			<div class="block block-constrain">
+				<div class="block block-bordered">
+				  <div class="block-content">
+		</cfif>
 	<div id="configuratorContainer">
 		<cfif rc.sourceFrame eq 'sidebar'>
-			<a class="btn btn-primary" onclick="frontEndProxy.post({cmd:'showobjects'});">
-		<i class="icon-circle-arrow-left"></i> Back</a>
+			<a class="btn btn-primary" onclick="frontEndProxy.post({cmd:'showobjects'});">Back</a>
+			<h1 id="configuratorHeader"></h1>
 		</cfif>
-
-		<h1 id="configuratorHeader"></h1>
 
 		<div class="clearfix">
 		    <div id="configurator"><div class="load-inline"></div></div>
@@ -44,6 +50,12 @@
 		</div>
 		</cfif>
 	</div>
+		<cfif rc.sourceFrame eq 'modal'>
+				</div> <!-- /.block-content -->
+			</div> <!-- /.block-bordered -->
+		</div> <!-- /.block-constrain -->
+		</cfif>
+
 	<cfinclude template="dsp_configuratorJS.cfm">
 	<script>
 		siteManager.configuratorMode='frontEnd';
