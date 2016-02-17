@@ -137,7 +137,7 @@
 
 						<cfset configuratorWidth=600>
 
-						<cfif $.siteConfig().hasDisplayObject(rc.object)>
+						<cfif not listFindNoCase('feed,relatedcontent,feed_slideshow,category_summary',rc.object) and $.siteConfig().hasDisplayObject(rc.object)>
 							var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
 
 							if(configurator!=''){
