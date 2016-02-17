@@ -1,4 +1,4 @@
-<!--- 
+<!---
     This file is part of Mura CMS.
 
     Mura CMS is free software: you can redistribute it and/or modify
@@ -13,17 +13,17 @@
     You should have received a copy of the GNU General Public License
     along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-    Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+    Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
     Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
     However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
     or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-    In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-    independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-    Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+    In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+    independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+    Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-    Your custom code 
+    Your custom code
 
     • Must not alter any default objects in the Mura CMS database and
     • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,21 +37,21 @@
      /index.cfm
      /MuraProxy.cfc
 
-    You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-    under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+    You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+    under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
     requires distribution of source code.
 
-    For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-    modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+    For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+    modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
     version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
 <!--- M7 new for nav current states based on action value --->
 <cfparam name="rc.action" default="">
-<!--- /end m7 new --->    
+<!--- /end m7 new --->
 <!--- M7 duplicated here from header.cfm --->
-<cfset rc.currentUser=rc.$.currentUser()> 
+<cfset rc.currentUser=rc.$.currentUser()>
 <cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
 <!--- /end m7  --->
 <!--- M7 moved from markup in old header.cfm --->
@@ -70,8 +70,8 @@
 
 </cfsilent>
 
-<cfoutput>        
-        
+<cfoutput>
+
 <nav id="sidebar">
     <!-- Sidebar Scroll Container -->
     <div id="sidebar-scroll">
@@ -95,12 +95,14 @@
                     </span>
  --->                </strong>
                 </div>
+                <!---
                 <button class="btn btn-link text-gray pull-right hidden-sm hidden-xs sidebar-icon-right" type="button">
                     <i class="mi-caret-right"></i>
                 </button>
                 <button class="btn btn-link text-gray pull-right hidden-sm hidden-xs sidebar-icon-left" type="button">
                     <i class="mi-caret-left"></i>
                 </button>
+                --->
             </div>
             <!-- END Side Header -->
 
@@ -113,7 +115,7 @@
                 <!--- main navigation menu --->
                 <ul class="nav-main">
 
-                    <!--- dashboard --->                                                        
+                    <!--- dashboard --->
                     <cfif session.showdashboard>
                         <li id="admin-nav-dashboard">
                             <a<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&amp;siteid=#session.siteid#&amp;span=#session.dashboardSpan#"><i class="mi-dashboard"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.dashboard")#</span></a>
@@ -131,11 +133,11 @@
                     </cfif>
 
                     <!--- users --->
-                    <cfif ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or (application.settingsManager.getSite(session.siteid).getextranet() and application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>                                                   
+                    <cfif ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or (application.settingsManager.getSite(session.siteid).getextranet() and application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>
                         <li id="admin-nav-users">
                             <a class="nav-submenu<cfif listFindNoCase('cUsers,cPrivateUsers,cPublicUsers',rc.originalcircuit) or (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> active</cfif>" data-toggle="nav-submenu" href="##"><i class="mi-users"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.users")#</span></a>
                             <ul>
-                                                                
+
                                     <!--- view groups --->
                                     <li>
                                         <a<cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.list' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cUsers.list&amp;siteid=#session.siteid#"><i class="mi-users"></i>#rc.$.rbKey("user.viewgroups")#</a>
@@ -166,7 +168,7 @@
 and
 /admin/?muraAction=cSettings.list#tabPlugins
  : 2015-12-15T11:20:07-07:00 --->
-                                                        
+
                             <a class="nav-submenu<cfif listFindNoCase('csettings,cextend,ctrash,cchain',rc.originalcircuit) and not listFindNoCase('list',rc.originalfuseaction) or (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>" data-toggle="nav-submenu" href="index.cfm"><i class="mi-wrench"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitesettings")#</span></a>
 
                             <ul>
@@ -183,35 +185,35 @@ and
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cChain'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cChain.list&amp;siteid=#session.siteid#"><i class="mi-check"></i>#rc.$.rbKey("layout.approvalchains")#</a>
                                 </li>
-                                <!--- class extensions ---> 
+                                <!--- class extensions --->
                                 <li>
                                     <a class="nav-submenu" data-toggle="nav-submenu" href="##"><i class="mi-wrench"></i>Class Extensions</a>
                                     <ul>
                                         <!--- class extension manager --->
                                         <li>
                                             <a<cfif rc.originalcircuit eq 'cExtend' and rc.originalfuseaction eq 'listSubTypes'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
-                                                <i class="mi-cog"></i> 
+                                                <i class="mi-cog"></i>
                                                 #rc.$.rbKey('layout.classextensionmanager')#
                                             </a>
-                                        </li>                                                                                
+                                        </li>
                                         <!--- add class extension --->
                                         <li>
                                             <a<cfif rc.originalcircuit eq 'cExtend' and rc.originalfuseaction eq 'editSubType'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',session.siteid)#">
-                                                <i class="mi-plus-circle"></i> 
+                                                <i class="mi-plus-circle"></i>
                                                 #rc.$.rbKey("layout.addclassextension")#
                                             </a>
                                         </li>
                                         <!--- import class extension --->
                                         <li>
                                             <a<cfif rc.originalcircuit eq 'cExtend' and rc.originalfuseaction eq 'importSubTypes'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
-                                                <i class="mi-sign-in"></i> 
+                                                <i class="mi-sign-in"></i>
                                                 #rc.$.rbKey('layout.importclassextensions')#
                                             </a>
                                         </li>
                                         <!--- export class extension --->
                                         <li>
                                             <a<cfif rc.originalcircuit eq 'cExtend' and rc.originalfuseaction eq 'exportSubType'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
-                                                <i class="mi-sign-out"></i> 
+                                                <i class="mi-sign-out"></i>
                                                 #rc.$.rbKey('layout.exportclassextensions')#
                                             </a>
                                         </li>
@@ -229,19 +231,19 @@ and
                                                         <cfelse>
                                                             #esapiEncode('html',rsExts.type)#
                                                         </cfif>
-                                                        /#esapiEncode('html',rsExts.subtype)#   
+                                                        /#esapiEncode('html',rsExts.subtype)#
                                                     </a>
                                                 </li>
                                             </cfloop>
                                         </cfif>
                                     </ul>
                                 </li>
-                                <!--- /class extensions --->   
+                                <!--- /class extensions --->
 
                                 <!--- create site bundle --->
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'selectBundleOptions'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
-                                        <i class="mi-gift"></i> 
+                                        <i class="mi-gift"></i>
                                         #rc.$.rbKey('layout.createsitebundle')#
                                     </a>
                                 </li>
@@ -249,7 +251,7 @@ and
                                 <!--- deploy site bundle --->
                                 <li>
                                     <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#session.siteid###tabBundles">
-                                        <i class="mi-download"></i> 
+                                        <i class="mi-download"></i>
                                         #rc.$.rbKey('layout.deploysitebundle')#
                                     </a>
                                 </li>
@@ -258,7 +260,7 @@ and
                                     <!--- trash bin --->
                                     <li>
                                         <a<cfif rc.originalcircuit eq 'cTrash'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
-                                            <i class="mi-trash"></i> 
+                                            <i class="mi-trash"></i>
                                             #rc.$.rbKey('layout.trashbin')#
                                         </a>
                                     </li>
@@ -267,18 +269,18 @@ and
                                     <cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                         <li>
                                             <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
-                                                <i class="mi-bolt"></i> 
+                                                <i class="mi-bolt"></i>
                                                 #rc.$.rbKey('layout.updatesite')#
                                             </a>
                                         </li>
                                     </cfif>
                                 </cfif>
- 
+
                                 <!--- export static html --->
                                 <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
                                     <li>
                                         <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'exportHtml'> class="active"</cfif> href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=csettings.exportHTML&amp;siteID=#rc.siteBean.getSiteID()#')});return false;">
-                                            <i class="mi-cog"></i> 
+                                            <i class="mi-cog"></i>
                                             #rc.$.rbKey('layout.exportstatichtml')#
                                         </a>
                                     </li>
@@ -286,15 +288,15 @@ and
 
                             </ul>
                         </li>
-                     </cfif>   
+                     </cfif>
                     <!--- settings --->
 <!--- TODO GoWest : active states for all settings links : 2015-12-15T11:35:55-07:00 --->
-                    <cfif listFind(session.mura.memberships,'S2')>  
+                    <cfif listFind(session.mura.memberships,'S2')>
                         <li id="admin-nav-global">
                             <a class="nav-submenu" data-toggle="nav-submenu" href="index.cfm"><i class="mi-cogs"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.settings")#</span></a>
 
                             <ul>
-                                <!--- global settings --->    
+                                <!--- global settings --->
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="mi-cogs"></i>#rc.$.rbKey("layout.globalsettings")#</a>
                                 </li>
@@ -324,7 +326,7 @@ and
                                     </li>
                                 </cfif>
                             </ul>
-                        </li>                                
+                        </li>
                     </cfif>
                     <!--- help --->
                     <li id="admin-nav-help">
@@ -340,7 +342,7 @@ and
                                 <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank"><i class="mi-bookmark"></i>#rc.$.rbKey("layout.editordocumentation")#</a>
                             </li>
                             <!--- component API --->
-                            <li>                                
+                            <li>
                                 <a id="navProg-API" href="http://www.getmura.com/component-api/6.1/" target="_blank"><i class="mi-bookmark"></i>Component API</a>
                             </li>
                             <!--- professional support --->
@@ -352,21 +354,21 @@ and
                                 <a id="navHelpForums" href="http://www.getmura.com/support/community-support/" target="_blank"><i class="mi-bullhorn"></i>#rc.$.rbKey("layout.supportforum")#</a>
                             </li>
                         </ul>
-                    </li> 
+                    </li>
                     <!--- version --->
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="index.cfm"><i class="mi-info-circle"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.version")#</span></a>
                         <ul class="version">
                             <li class="divider"></li>
-                            <!--- core version --->   
+                            <!--- core version --->
                             <li>
                                 <a href="##" <cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                     onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"
                                 <cfelse>class="no-link"</cfif> >
-                                 <span><strong>#rc.$.rbKey('version.core')#</strong> #application.autoUpdater.getCurrentCompleteVersion()#</span> 
+                                 <span><strong>#rc.$.rbKey('version.core')#</strong> #application.autoUpdater.getCurrentCompleteVersion()#</span>
                                <!---  <i class="mi-action mi-check" data-toggle="tooltip" data-placement="right" title="Core files are up to date"></i> --->
 <!---                                 <i class="mi-action mi-cloud-download" data-toggle="tooltip" data-placement="right" title="New version available (6.2.7890) Click to update"></i>
- --->                           
+ --->
                                  </a>
                              </li>
 
@@ -382,14 +384,14 @@ and
                                 <cfelse> class="no-link"</cfif> >
                                  <span><strong>#rc.$.rbKey('version.site')#</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</span>
 <!---                                 <i class="mi-action mi-cloud-download" data-toggle="tooltip" data-placement="right" title="New version available (6.2.7890) Click to update"></i>
- --->                           
+ --->
                                 </a>
                             </li>
                             <!--- update site --->
                             <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
-                                        <i class="mi-bolt"></i> 
+                                        <i class="mi-bolt"></i>
                                         #rc.$.rbKey('layout.updatesite')#
                                     </a>
                                 </li>
@@ -436,7 +438,7 @@ and
                             </cfif>
 
                         </ul>
-                    </li> 
+                    </li>
 <!--- TODO GoWest : remove temp link to template source : 2015-11-09T12:38:38-07:00 --->
                     <li class="nav-main-heading"><span class="sidebar-mini-hide">TEMP</span></li>
                     <li>
