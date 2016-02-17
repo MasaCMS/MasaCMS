@@ -183,6 +183,7 @@
 		loadForm: function() {
 
 			var self = this;
+			
 
 			window.mura.get(
 					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
