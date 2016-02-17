@@ -14652,6 +14652,10 @@ $.widget( "ui.tooltip", {
 			var title = $( this ).attr( "title" ) || "";
 			// Escape title, since we're going from an attribute to raw HTML
 			return $( "<a>" ).text( title ).html();
+			// TODO: GoWest allow html, temp hack here:
+			// return title;
+			
+
 		},
 		hide: true,
 		// Disabled elements have inconsistent behavior across browsers (#8661)

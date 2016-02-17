@@ -484,9 +484,6 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
  * -------------------------- */
   /* makes the font 33% larger relative to the icon container */
 }
-.mura body.configurator-wrapper {
-  background-color: #454545;
-}
 .mura .mura__layout-manager__controls {
   width: 300px;
   position: fixed;
@@ -509,23 +506,6 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   -moz-user-select: none;
   -khtml-user-drag: element;
   cursor: move;
-}
-.mura .mura__layout-manager__controls .btn {
-  font-size: 12px;
-  padding: 6px 12px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-.mura .mura__layout-manager__controls .btn-primary {
-  background-image: none;
-  text-shadow: none;
-  color: #ffffff;
-  background-color: #4485f1;
-  border-color: #4882cc;
 }
 .mura .mura__layout-manager__controls__scrollable {
   height: inherit;
@@ -640,6 +620,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   margin-top: 1em;
 }
 .mura body.configurator-wrapper {
+  background-color: #454545;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   text-transform: none;
@@ -653,22 +634,41 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   font-weight: normal;
   text-transform: none;
 }
+.mura body.configurator-wrapper #configuratorContainer #configuratorHeader i {
+  min-width: 30px;
+}
 .mura body.configurator-wrapper #configuratorContainer .btn {
   font-size: 12px;
-  padding: 5px 12px;
+  padding: 6px 12px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
-}
-.mura body.configurator-wrapper #configuratorContainer .btn-primary {
   background-image: none;
   text-shadow: none;
+}
+.mura body.configurator-wrapper #configuratorContainer .btn-primary {
   color: #ffffff;
   background-color: #4485f1;
   border-color: #4882cc;
+}
+.mura body.configurator-wrapper #configuratorContainer .btn:not([class*="btn-"]) {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background-image: none;
+  text-shadow: none;
+  color: #A4A4A4;
+  background-color: #454545;
+  border-color: #A4A4A4;
+  float: left;
+  margin: 4px 0;
+}
+.mura body.configurator-wrapper #configuratorContainer label + .btn:not([class*="btn-"]),
+.mura body.configurator-wrapper #configuratorContainer label > div + .btn:not([class*="btn-"]) {
+  margin-top: 8px;
 }
 .mura body.configurator-wrapper #configuratorContainer .mura-layout-row {
   padding: 0;
@@ -706,11 +706,31 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   padding: 0;
 }
 .mura body.configurator-wrapper #configuratorContainer .form-actions .btn {
-  background-image: none;
-  text-shadow: none;
   color: #ffffff;
   background-color: #4485f1;
   border-color: #4882cc;
+}
+.mura body.configurator-wrapper #configuratorContainer #sortableFields #displayListSort {
+  padding: 0 !important;
+  border: none !important;
+}
+.mura body.configurator-wrapper #configuratorContainer #sortableFields #displayListSort li:before {
+  content: "\f0c9";
+  font-family: FontAwesome, "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #737373;
+  float: right;
+}
+.mura body.configurator-wrapper #configuratorContainer #sortableFields #displayListSort li {
+  background-color: #565656;
+  text-shadow: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  color: #d8d8d8;
 }
 .mura h1,
 .mura h2,
@@ -4746,14 +4766,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   left: -10px;
   top: -10px;
   z-index: 50000;
-}
-.mura #carch.compact h1 {
-  font-size: 26px;
-  line-height: 1;
-  /* color: @grayDark; */
-  /* border-bottom: 1px solid @grayLight !important; */
-  margin-bottom: .75em;
-  padding-right: 28px;
 }
 .mura #frontEndToolsHandle {
   background: transparent !important;
