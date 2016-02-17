@@ -28258,6 +28258,17 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   padding: 8px 12px;
   color: #d8d8d8;
 }
+.mura body.configurator-wrapper #configuratorContainer ul.configurator-options {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.mura body.configurator-wrapper #configuratorContainer ul.configurator-options li {
+  list-style-type: none;
+}
+.mura body.configurator-wrapper #configuratorContainer ul.configurator-options li a {
+  color: #f3f3f3;
+}
 .mura body.modal-wrapper {
   font-family: "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   /* allow for (x) icon on modal */

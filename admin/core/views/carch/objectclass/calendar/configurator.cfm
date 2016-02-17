@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			data-objectid="#esapiEncode('html_attr',rc.contentid)#">
 			<div class="mura-layout-row">
 				<div class="mura-control-group">
-					<label class="mura-control-label">
+					<label>
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.format')#
 					</label>
 					<select id="formatselector" name="format" class="objectParam">
@@ -86,12 +86,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</select>
 				</div>
 				<div class="mura-control-group">
-					<label class="mura-control-label">
-						#application.rbFactory.getKeyValue(session.rb,'calendar.additionalcalendars')#
-						<button class="btn" id="editBtnRelatedContent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
-					</label>
+					<label>#application.rbFactory.getKeyValue(session.rb,'calendar.additionalcalendars')#</label>
+					<button class="btn" id="editBtnRelatedContent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
 					<cfif arrayLen(objectParams.items)>
-					<ul>
+					<ul class="configurator-options">
 					<cfloop array="#objectParams.items#" index="i">
 					 	<cfset item=rc.$.getBean('content').loadBy(contentid=i)>
 					 	<li><a href="#item.getURL()#" target="_top">#esapiEncode('html',item.getMenuTitle())#</a></li>
@@ -104,10 +102,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<div id="calendarformatoptions" style="display:none">
 					<div class="mura-control-group">
-						<label class="mura-control-label">
+						<label>
 							#application.rbFactory.getKeyValue(session.rb,'calendar.availableviews')#
 						</label>
-						<ul>
+						<ul class="configurator-options">
 						<cfloop list="month,basicWeek,basicDay,agendaWeek,agendaDay" index="i">
 						<li>
 							<input type="checkbox" class="objectParam" name="viewoptions" value="#i#" <cfif listFindNoCase(objectParams.viewoptions,i)> checked</cfif>/> #application.rbFactory.getKeyValue(session.rb,'calendar.#i#')#</li>
@@ -115,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</div>
 					<div class="mura-control-group">
-						<label class="mura-control-label">
+						<label>
 							#application.rbFactory.getKeyValue(session.rb,'calendar.defaultview')#
 						</label>
 						<select name="viewdefault" class="objectParam">
@@ -131,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="listformatoptions" style="display:none">
 					<div id="layoutcontainer"></div>
 					<div class="mura-control-group">
-				      	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
+				      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
 						<select name="nextn" data-displayobjectparam="nextn" class="objectParam">
 						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 							<option value="#r#" <cfif r eq content.getNextN()>selected</cfif>>#r#</option>
