@@ -47,26 +47,217 @@
 ;(function(window){
 
 	window.mura.UI=window.mura.Core.extend({
+
+		settings:{},
+		templates:{},
+		formJSON:{},
+		data:{},
+		currentPage: 0,
+		entity: {},
+		fields:{},
+		datasets: [],
+		smack: [1,2,3],
+		templateList: ['checkbox','dropdown','radio','textarea','textfield','form'],
+		formInit: false,
+
 		init:function(properties){
 			
-			console.log(properties);
-			
 			properties || {};
+			this.settings = properties;
+
+			console.log('init');
 		},
 
-		speak:function(properties) {
-			console.log("speak");
-			console.log(properties);
+		getTemplates() {
+
+			var self = this;
+
+			var temp = self.templateList.pop();
+
+			$.ajax({
+				url :  	'/' + window.mura.siteid + '/includes/display_objects/form/templates/' + temp + '.hb',
+				success : function( results ) {
+					self.templates[temp] = Handlebars.compile(results);
+					if(!self.templateList.length) {
+						self.loadForm();
+					}
+					else
+						self.getTemplates();
+				},
+				error : function( e ) {
+					console.log( e );
+				}
+			});
+		},
+
+		renderField:function(name,data) {
+			var self = this;
+			var templates = this.templates;
+			console.log('field');
+			console.log( data );
+			console.log( self.formJSON.datasets );
+
+			if( data.datasetid != "")
+				data.options = self.formJSON.datasets[data.datasetid].options;
+
+			var html = self.templates[name](data);
+			$(".field-container",self.settings.formEl).append(html);
+		},
+
+		renderData: function( ) {
+			var self = this;
+			console.log('renderData');
+			console.log(self.datasets.length);
+
+			if(self.datasets.length == 0)
+				self.renderForm();
+
+			var dataset = this.formJSON.datasets[self.datasets.pop()];
+
+			if(dataset.sourcetype != 'muraorm')
+				self.renderData();
+
+			dataset.options = [];
+
+			window.mura.getFeed( dataset.source )
+				.getQuery()
+				.then( function(collection) {
+					collection.each(function(item) {
+						var itemid = item.get('id');
+						dataset.datarecordorder.push( itemid );
+						dataset.datarecords[itemid] = item.getAll();
+						dataset.datarecords[itemid]['value'] = itemid;
+						dataset.datarecords[itemid]['datarecordid'] = itemid;
+						dataset.datarecords[itemid]['datasetid'] = dataset.datasetid;
+						dataset.datarecords[itemid]['isselected'] = 0;
+						dataset.options.push( dataset.datarecords[itemid] );
+					});	
+
+				})
+				.then(function() {
+					console.log(dataset);
+					self.renderData();
+				})
+				;
+		},
+
+		renderForm: function( ) {
+
+			var self = this;
+			console.log('render');
+			console.log( self.formJSON );
+
+			if(!self.formInit) {
+				self.initForm();
+			}
+
+			var fields = this.formJSON.form.pages[this.currentPage];
+			for(var i = 0;i < fields.length;i++) {
+
+				var field =  this.formJSON.form.fields[fields[i]];
+			
+				if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
+					self.renderField(field.fieldtype.fieldtype,field);
+/*
+					var source = $("#field-" + field.rendertype).html();
+					var template = Handlebars.compile(source);
+					var html = template(field);
+					$("#formContainer").append(html);
+*/
+				}
+			}
+
 		},
 		
 		getForm: function() {
+			var self = this;
+			var formJSON = {};
+			var entityName = '';
+
+			console.log('get form');
+
+			if(self.templateList.length) {
+				self.getTemplates();
+			}
+			else {
+				self.loadForm();
+			}
+		},
+		
+		loadForm: function() {
+
+			var self = this;
+
+			window.mura.get(
+					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
+					 + '?fields=body,title,filename'
+					).then(function(data) {
+					 	formJSON = JSON.parse( data.data.body );
+						entityName = data.data.filename.replace(/\W+/g, "");
+						self.entity = entityName;
+
+					 	self.formJSON = formJSON;
+					 	console.log(self.formJSON);
+						for(var i in self.formJSON.datasets)
+							self.datasets.push(i);
+
+					 	self.entity = entityName;
+					window.mura.get(
+						window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/new/expand'
+						).then(function(data) {
+							self.data = data.data;
+							self.renderData();	
+						});
+					});
+
+			console.log("done");
+			console.log(this.settings.objectid);
+
+
 			//RETURN CONTENT IN: <div class="mura-object-content"></div>
-		}
+		},
+
+		initForm: function() {
+			var self = this;
+
+			var html = self.templates['form'](self.settings);
+			$(self.settings.formEl).append(html);
+
+
+			$(".form-submit",self.settings.formEl).click( function() {
+				self.submitForm();
+			});
+
+			self.formInit=true;
+		},
+
+		submitForm: function() {
+			self = this;
+
+			$(".field-container :input").each( function() {
+				self.data[ $(this).attr('name') ] = $(this).val();
+			});
+
+			window.mura.getEntity(self.entity)
+				.set(
+					self.data
+				)
+				.save()
+				.then( console.log('saved!!!'));
 	
 
+
+		}
 	});
 	
-	
-	
+/*
+
+http://mura.m7/index.cfm/_api/json/v1/default/contactform/?firstname=*bob*
+http://mura.m7/index.cfm/_api/json/v1/default/contactform/?firstname=contains^bob
+
+
+
+
+*/
 
 })(window);
