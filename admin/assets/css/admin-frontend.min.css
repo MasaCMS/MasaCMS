@@ -758,6 +758,17 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   padding: 8px 12px;
   color: #d8d8d8;
 }
+.mura body.configurator-wrapper #configuratorContainer ul.configurator-options {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.mura body.configurator-wrapper #configuratorContainer ul.configurator-options li {
+  list-style-type: none;
+}
+.mura body.configurator-wrapper #configuratorContainer ul.configurator-options li a {
+  color: #f3f3f3;
+}
 .mura h1,
 .mura h2,
 .mura h3,
