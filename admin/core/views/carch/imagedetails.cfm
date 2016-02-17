@@ -118,8 +118,8 @@
 							<label class="mura-control-label">#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
 
 							<div id="#lcase(s)##f#btns" class="btn-group">
-									<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
-									<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
+									<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
+									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
 							<div class="mura-control">
@@ -140,8 +140,8 @@
 							<label class="mura-control-label">#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
 
 							<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
-									<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="mi-refresh"></i> Reset</button>
-									<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
+									<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="mi-refresh"></i> Reset</button>
+									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
 							<div class="mura-control">
@@ -159,8 +159,8 @@
 							<label class="mura-control-label">#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
 
 							<div id="#lcase(s)##f#btns" class="btn-group">
-								<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
-								<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
+								<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
+								<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
 							<div class="mura-control">
@@ -182,8 +182,8 @@
 									<label class="mura-control-label">#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
 
 									<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
-										<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="mi-refresh"></i> Reset</button>
-										<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
+										<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="mi-refresh"></i> Reset</button>
+										<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
 									</div>
 
 									<div class="mura-control">
@@ -213,8 +213,8 @@
 								<label class="mura-control-label">#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
 
 								<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
-									<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#" data-height="#customImage.getHeight()#"  data-width="#customImage.getWidth()#"><i class="mi-refresh"></i> Reset</button>
-									<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#"><i class="mi-crop"></i> Re-Crop</button>
+									<button type="button" class="btn btn-default btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#" data-height="#customImage.getHeight()#"  data-width="#customImage.getWidth()#"><i class="mi-refresh"></i> Reset</button>
+									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#"><i class="mi-crop"></i> Re-Crop</button>
 								</div>
 
 								<!---
