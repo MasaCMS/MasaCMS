@@ -237,6 +237,12 @@ body.configurator-wrapper{
 			  float: left;
 			  margin: 4px 0;
 		   }
+				
+				.btn:not([class*="btn-"]) + *{
+					clear: left;
+					margin-top: 8px;
+				} 
+		   
 		   label + .btn:not([class*="btn-"]),
 		   label > div + .btn:not([class*="btn-"]){
 		   	margin-top: 8px;
@@ -315,6 +321,7 @@ body.configurator-wrapper{
 			list-style-type:none;
 			padding-left:0;
 			margin: 0;
+			clear:both;
 
 				li{
 					list-style-type:none;
