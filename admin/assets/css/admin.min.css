@@ -28121,7 +28121,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   color: #f5f5f5;
   /* cursor: pointer; */
 }
-.mura #configurator #sortableFields #displayListSort {
+.mura #configurator #sortableFields #displayListSort,
+.mura #configurator #sortableFields #availableListSort {
   width: 100%;
   float: none;
 }
@@ -28173,6 +28174,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   color: #ffffff;
   background-color: #4485f1;
   border-color: #4882cc;
+  background-image: none !important;
 }
 .mura body.configurator-wrapper #configuratorContainer .btn:not([class*="btn-"]) {
   -webkit-border-radius: 0;
@@ -28193,6 +28195,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura body.configurator-wrapper #configuratorContainer .mura-layout-row {
   padding: 0;
   margin: 0;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group {
+  margin-bottom: 12px;
 }
 .mura body.configurator-wrapper #configuratorContainer label,
 .mura body.configurator-wrapper #configuratorContainer .control-label,
@@ -28229,10 +28234,12 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   color: #ffffff;
   background-color: #4485f1;
   border-color: #4882cc;
+  background-image: none !important;
 }
 .mura body.configurator-wrapper #configuratorContainer #sortableFields #displayListSort {
   padding: 0 !important;
   border: none !important;
+  margin-bottom: 12px !important;
 }
 .mura body.configurator-wrapper #configuratorContainer #sortableFields #displayListSort li:before {
   content: "\f0c9";
@@ -28248,12 +28255,16 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   border-radius: 0;
   box-shadow: none;
   font-size: 12px;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding: 8px 12px;
   color: #d8d8d8;
 }
 .mura body.modal-wrapper {
+  font-family: "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   /* allow for (x) icon on modal */
+  /* hide h2 not used in front end modal*/
+}
+.mura body.modal-wrapper .mura-header {
+  padding-bottom: 12px;
 }
 .mura body.modal-wrapper #frontEndToolsModalClose {
   float: right;
@@ -28269,6 +28280,578 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura body.modal-wrapper .mura-header h1 {
   margin-right: 24px;
+}
+.mura body.modal-wrapper #configurator > div > h2 {
+  display: none;
+}
+.mura body.modal-wrapper .nav-pills > li > a {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  line-height: 1.6;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 600;
+  border-radius: 2px;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  padding: 2px 12px;
+  font-size: 14px;
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+  color: #545454;
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+  margin: 4px 8px 12px 0;
+}
+.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a:active:focus,
+.mura body.modal-wrapper .nav-pills > li > a.active:focus,
+.mura body.modal-wrapper .nav-pills > li > a.focus,
+.mura body.modal-wrapper .nav-pills > li > a:active.focus,
+.mura body.modal-wrapper .nav-pills > li > a.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.mura body.modal-wrapper .nav-pills > li > a.disabled,
+.mura body.modal-wrapper .nav-pills > li > a[disabled],
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.mura body.modal-wrapper .nav-pills > li > a.disabled,
+fieldset[disabled] a.mura body.modal-wrapper .nav-pills > li > a {
+  pointer-events: none;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.mura body.modal-wrapper .nav-pills > li > a.btn-square {
+  border-radius: 0;
+}
+.mura body.modal-wrapper .nav-pills > li > a.btn-rounded {
+  border-radius: 20px;
+}
+.mura body.modal-wrapper .nav-pills > li > a.btn-minw {
+  min-width: 110px;
+}
+.mura body.modal-wrapper .nav-pills > li > a.btn-noborder {
+  border: none !important;
+}
+.mura body.modal-wrapper .nav-pills > li > a.btn-image {
+  position: relative;
+  padding-left: 40px;
+}
+.mura body.modal-wrapper .nav-pills > li > a.btn-image > img {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+}
+.mura body.modal-wrapper .nav-pills > li > a > i.pull-left {
+  margin-top: 3px;
+  margin-right: 5px;
+}
+.mura body.modal-wrapper .nav-pills > li > a > i.pull-right {
+  margin-top: 3px;
+  margin-left: 5px;
+}
+.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.focus {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.mura body.modal-wrapper .nav-pills > li > a:hover {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active:hover,
+.mura body.modal-wrapper .nav-pills > li > a.active:hover,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a:active:focus,
+.mura body.modal-wrapper .nav-pills > li > a.active:focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a:active.focus,
+.mura body.modal-wrapper .nav-pills > li > a.active.focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a.focus {
+  color: #333333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a {
+  background-image: none;
+}
+.mura body.modal-wrapper .nav-pills > li > a.disabled:hover,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:hover,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a.disabled:focus,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:focus,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.disabled.focus,
+.mura body.modal-wrapper .nav-pills > li > a[disabled].focus,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.focus {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.mura body.modal-wrapper .nav-pills > li > a .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.focus,
+.mura body.modal-wrapper .nav-pills > li > a:hover {
+  color: #333333;
+  background-color: #ebebeb;
+  border-color: #adadad;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a {
+  color: #333333;
+  background-color: #d1d1d1;
+  border-color: #949494;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active:hover,
+.mura body.modal-wrapper .nav-pills > li > a.active:hover,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a:active:focus,
+.mura body.modal-wrapper .nav-pills > li > a.active:focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a:active.focus,
+.mura body.modal-wrapper .nav-pills > li > a.active.focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a.focus {
+  color: #333333;
+  background-color: #d1d1d1;
+  border-color: #949494;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a {
+  background-image: none;
+}
+.mura body.modal-wrapper .nav-pills > li > a.disabled,
+.mura body.modal-wrapper .nav-pills > li > a[disabled],
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a,
+.mura body.modal-wrapper .nav-pills > li > a.disabled:hover,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:hover,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a.disabled:focus,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:focus,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.disabled.focus,
+.mura body.modal-wrapper .nav-pills > li > a[disabled].focus,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.focus,
+.mura body.modal-wrapper .nav-pills > li > a.disabled:active,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:active,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.disabled.active,
+.mura body.modal-wrapper .nav-pills > li > a[disabled].active,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.mura body.modal-wrapper .nav-pills > li > a .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.focus {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #a9a9a9;
+}
+.mura body.modal-wrapper .nav-pills > li > a:hover {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #cacaca;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #cacaca;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active:hover,
+.mura body.modal-wrapper .nav-pills > li > a.active:hover,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a:active:focus,
+.mura body.modal-wrapper .nav-pills > li > a.active:focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a:active.focus,
+.mura body.modal-wrapper .nav-pills > li > a.active.focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a.focus {
+  color: #545454;
+  background-color: #cacaca;
+  border-color: #a9a9a9;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a {
+  background-image: none;
+}
+.mura body.modal-wrapper .nav-pills > li > a.disabled:hover,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:hover,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a.disabled:focus,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:focus,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.disabled.focus,
+.mura body.modal-wrapper .nav-pills > li > a[disabled].focus,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.focus {
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura body.modal-wrapper .nav-pills > li > a .badge {
+  color: #f5f5f5;
+  background-color: #545454;
+}
+.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.focus,
+.mura body.modal-wrapper .nav-pills > li > a:hover {
+  color: #545454;
+  background-color: #e1e1e1;
+  border-color: #cacaca;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a {
+  color: #545454;
+  background-color: #c7c7c7;
+  border-color: #b1b1b1;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active:hover,
+.mura body.modal-wrapper .nav-pills > li > a.active:hover,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a:active:focus,
+.mura body.modal-wrapper .nav-pills > li > a.active:focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a:active.focus,
+.mura body.modal-wrapper .nav-pills > li > a.active.focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a.focus {
+  color: #545454;
+  background-color: #c7c7c7;
+  border-color: #b1b1b1;
+}
+.mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .nav-pills > li > a {
+  background-image: none;
+}
+.mura body.modal-wrapper .nav-pills > li > a.disabled,
+.mura body.modal-wrapper .nav-pills > li > a[disabled],
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a,
+.mura body.modal-wrapper .nav-pills > li > a.disabled:hover,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:hover,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:hover,
+.mura body.modal-wrapper .nav-pills > li > a.disabled:focus,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:focus,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:focus,
+.mura body.modal-wrapper .nav-pills > li > a.disabled.focus,
+.mura body.modal-wrapper .nav-pills > li > a[disabled].focus,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.focus,
+.mura body.modal-wrapper .nav-pills > li > a.disabled:active,
+.mura body.modal-wrapper .nav-pills > li > a[disabled]:active,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a:active,
+.mura body.modal-wrapper .nav-pills > li > a.disabled.active,
+.mura body.modal-wrapper .nav-pills > li > a[disabled].active,
+fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura body.modal-wrapper .nav-pills > li > a .badge {
+  color: #f5f5f5;
+  background-color: #545454;
+}
+.mura body.modal-wrapper .form-actions .btn {
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+  color: #545454;
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+  font-size: 12px;
+  padding: 6px 12px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  text-shadow: none;
+  color: #545454 !important;
+  background-color: #F5F5F5 !important;
+  border-color: #E9E9E9 !important;
+}
+.mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn.focus {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.mura body.modal-wrapper .form-actions .btn:hover {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.mura body.modal-wrapper .form-actions .btn:active:hover,
+.mura body.modal-wrapper .form-actions .btn.active:hover,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn:hover,
+.mura body.modal-wrapper .form-actions .btn:active:focus,
+.mura body.modal-wrapper .form-actions .btn.active:focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn:active.focus,
+.mura body.modal-wrapper .form-actions .btn.active.focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn.focus {
+  color: #333333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn {
+  background-image: none;
+}
+.mura body.modal-wrapper .form-actions .btn.disabled:hover,
+.mura body.modal-wrapper .form-actions .btn[disabled]:hover,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:hover,
+.mura body.modal-wrapper .form-actions .btn.disabled:focus,
+.mura body.modal-wrapper .form-actions .btn[disabled]:focus,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn.disabled.focus,
+.mura body.modal-wrapper .form-actions .btn[disabled].focus,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.focus {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.mura body.modal-wrapper .form-actions .btn .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn.focus,
+.mura body.modal-wrapper .form-actions .btn:hover {
+  color: #333333;
+  background-color: #ebebeb;
+  border-color: #adadad;
+}
+.mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn {
+  color: #333333;
+  background-color: #d1d1d1;
+  border-color: #949494;
+}
+.mura body.modal-wrapper .form-actions .btn:active:hover,
+.mura body.modal-wrapper .form-actions .btn.active:hover,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn:hover,
+.mura body.modal-wrapper .form-actions .btn:active:focus,
+.mura body.modal-wrapper .form-actions .btn.active:focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn:active.focus,
+.mura body.modal-wrapper .form-actions .btn.active.focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn.focus {
+  color: #333333;
+  background-color: #d1d1d1;
+  border-color: #949494;
+}
+.mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn {
+  background-image: none;
+}
+.mura body.modal-wrapper .form-actions .btn.disabled,
+.mura body.modal-wrapper .form-actions .btn[disabled],
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn,
+.mura body.modal-wrapper .form-actions .btn.disabled:hover,
+.mura body.modal-wrapper .form-actions .btn[disabled]:hover,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:hover,
+.mura body.modal-wrapper .form-actions .btn.disabled:focus,
+.mura body.modal-wrapper .form-actions .btn[disabled]:focus,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn.disabled.focus,
+.mura body.modal-wrapper .form-actions .btn[disabled].focus,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.focus,
+.mura body.modal-wrapper .form-actions .btn.disabled:active,
+.mura body.modal-wrapper .form-actions .btn[disabled]:active,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.disabled.active,
+.mura body.modal-wrapper .form-actions .btn[disabled].active,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.mura body.modal-wrapper .form-actions .btn .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn.focus {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #a9a9a9;
+}
+.mura body.modal-wrapper .form-actions .btn:hover {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #cacaca;
+}
+.mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #cacaca;
+}
+.mura body.modal-wrapper .form-actions .btn:active:hover,
+.mura body.modal-wrapper .form-actions .btn.active:hover,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn:hover,
+.mura body.modal-wrapper .form-actions .btn:active:focus,
+.mura body.modal-wrapper .form-actions .btn.active:focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn:active.focus,
+.mura body.modal-wrapper .form-actions .btn.active.focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn.focus {
+  color: #545454;
+  background-color: #cacaca;
+  border-color: #a9a9a9;
+}
+.mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn {
+  background-image: none;
+}
+.mura body.modal-wrapper .form-actions .btn.disabled:hover,
+.mura body.modal-wrapper .form-actions .btn[disabled]:hover,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:hover,
+.mura body.modal-wrapper .form-actions .btn.disabled:focus,
+.mura body.modal-wrapper .form-actions .btn[disabled]:focus,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn.disabled.focus,
+.mura body.modal-wrapper .form-actions .btn[disabled].focus,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.focus {
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura body.modal-wrapper .form-actions .btn .badge {
+  color: #f5f5f5;
+  background-color: #545454;
+}
+.mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn.focus,
+.mura body.modal-wrapper .form-actions .btn:hover {
+  color: #545454;
+  background-color: #e1e1e1;
+  border-color: #cacaca;
+}
+.mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn {
+  color: #545454;
+  background-color: #c7c7c7;
+  border-color: #b1b1b1;
+}
+.mura body.modal-wrapper .form-actions .btn:active:hover,
+.mura body.modal-wrapper .form-actions .btn.active:hover,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn:hover,
+.mura body.modal-wrapper .form-actions .btn:active:focus,
+.mura body.modal-wrapper .form-actions .btn.active:focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn:active.focus,
+.mura body.modal-wrapper .form-actions .btn.active.focus,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn.focus {
+  color: #545454;
+  background-color: #c7c7c7;
+  border-color: #b1b1b1;
+}
+.mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.active,
+.open > .dropdown-toggle.mura body.modal-wrapper .form-actions .btn {
+  background-image: none;
+}
+.mura body.modal-wrapper .form-actions .btn.disabled,
+.mura body.modal-wrapper .form-actions .btn[disabled],
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn,
+.mura body.modal-wrapper .form-actions .btn.disabled:hover,
+.mura body.modal-wrapper .form-actions .btn[disabled]:hover,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:hover,
+.mura body.modal-wrapper .form-actions .btn.disabled:focus,
+.mura body.modal-wrapper .form-actions .btn[disabled]:focus,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:focus,
+.mura body.modal-wrapper .form-actions .btn.disabled.focus,
+.mura body.modal-wrapper .form-actions .btn[disabled].focus,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.focus,
+.mura body.modal-wrapper .form-actions .btn.disabled:active,
+.mura body.modal-wrapper .form-actions .btn[disabled]:active,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn:active,
+.mura body.modal-wrapper .form-actions .btn.disabled.active,
+.mura body.modal-wrapper .form-actions .btn[disabled].active,
+fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura body.modal-wrapper .form-actions .btn .badge {
+  color: #f5f5f5;
+  background-color: #545454;
+}
+.mura body.modal-wrapper .form-actions .btn-primary {
+  color: #ffffff;
+  background-color: #4485f1;
+  border-color: #4882cc;
+  background-image: none !important;
 }
 .mura .add-content-ui ul {
   list-style: none;

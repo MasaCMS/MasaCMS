@@ -153,7 +153,8 @@ body.configurator-wrapper #mura-content{
 /* iframe
 ===================================== */
 
-#configurator #sortableFields #displayListSort {
+#configurator #sortableFields #displayListSort, 
+#configurator #sortableFields #availableListSort {
 	width: 100%;
 	float: none;
 }
@@ -220,6 +221,7 @@ body.configurator-wrapper{
 			  color: #ffffff;
 			  background-color: #4485f1;
 			  border-color: #4882cc;
+			  background-image:none !important;
 			}
 
 			// unclassed buttons default
@@ -243,6 +245,10 @@ body.configurator-wrapper{
 			.mura-layout-row{
 			  padding: 0;
 			  margin: 0;
+			}
+
+			.mura-control-group{
+				margin-bottom: 12px;
 			}
 
 			label,
@@ -277,12 +283,14 @@ body.configurator-wrapper{
 				padding:0;
 				.btn{
 					.btn-primary;
+					background-image:none !important;
 				}
 			}
 
 			#sortableFields #displayListSort{
 				padding: 0 !important; 
 				border: none !important;
+				margin-bottom: 12px !important;
 			}
 			#sortableFields #displayListSort li:before{
 			  content: "\f0c9";
@@ -299,8 +307,7 @@ body.configurator-wrapper{
 				border-radius: 0;
 				box-shadow:none;
 				font-size: 12px;
-				padding-top: 6px;
-				padding-bottom: 6px;
+				padding: 8px 12px;
 			  color: #d8d8d8;
 			}
 

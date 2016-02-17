@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</label>
 			</div>
 			<div id="altNameContainer" class="mura-control-group"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
 				<input class="objectParam" name="altName" data-displayobjectparam="altName" type="text" value="#esapiEncode('html_attr',feed.getAltName())#" maxlength="250">
 			</div>
 
@@ -133,18 +133,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 
 			<div class="mura-control-group">
-				<label class="control-label">
+				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
 				<input name="viewalllink" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
-				<label class="control-label">
+				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>
 				<input name="viewalllabel" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
 			</div>
 
 			<div class="mura-control-group">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
 					<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 					<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
@@ -152,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>All</option>
 				</select>
 			    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
-				<select name="nextN" data-displayobjectparam="nextN" class="objectParam span12">
+				<select name="nextN" data-displayobjectparam="nextN" class="objectParam">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 					<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
 					</cfloop>
@@ -161,27 +161,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 			<div class="mura-control-group" id="availableFields">
 				<label class="mura-control-label">
-					<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
+					<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
 				</label>
 				<div id="sortableFields">
 					<p class="dragMsg">
-						<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+						<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
 					</p>
 
 					<cfset displayList=feed.getDisplayList()>
 					<cfset availableList=feed.getAvailableDisplayList()>
+					<div class="half">
+						<ul id="availableListSort" class="displayListSortOptions">
+							<cfloop list="#availableList#" index="i">
+								<li class="ui-state-default">#trim(i)#</li>
+							</cfloop>
+						</ul>
+					</div>
+					<div class="half">
+						<ul id="displayListSort" class="displayListSortOptions">
+							<cfloop list="#displayList#" index="i">
+								<li class="ui-state-highlight">#trim(i)#</li>
+							</cfloop>
+						</ul>
+					</div>
 
-					<ul id="availableListSort" class="displayListSortOptions">
-						<cfloop list="#availableList#" index="i">
-							<li class="ui-state-default">#trim(i)#</li>
-						</cfloop>
-					</ul>
-
-					<ul id="displayListSort" class="displayListSortOptions">
-						<cfloop list="#displayList#" index="i">
-							<li class="ui-state-highlight">#trim(i)#</li>
-						</cfloop>
-					</ul>
 					<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
 				</div>
 			</div>
@@ -204,11 +207,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</label>
 			</div>
 			<div class="mura-control-group">
-				<label class="control-label">
+				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
 				<input name="viewalllink" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
-				<label class="control-label">
+				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>
 				<input name="viewalllabel" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">

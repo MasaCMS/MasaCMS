@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<input name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.contentBean.getImageWidth()#" />
 						      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
 						      	<input name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.contentBean.getImageHeight()#" />
-	</div>
+						</div>
 
 						<div class="mura-control-group" id="availableFields">
 					      	<label>
