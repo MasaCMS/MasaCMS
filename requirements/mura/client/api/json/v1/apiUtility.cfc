@@ -173,7 +173,7 @@ component extends="mura.cfobject" {
 		return {'items'=arguments._array};
 	}
 
-	function packageIteratorArray(iterator,itArray,method){
+	function packageIteratorArray(iterator,itArray,method,expanded=false){
 		var result={};
 
 		if(arguments.iterator.getRecordCount()){
