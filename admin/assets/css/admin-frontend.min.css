@@ -467,8 +467,8 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   display: block;
   float: none;
 }
-.btn,
-.btn:hover {
+.mura .btn,
+.mura .btn:hover {
   font-size: 12px;
   padding: 6px 12px;
   -webkit-border-radius: 2px;
@@ -480,8 +480,8 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   background-image: none;
   text-shadow: none;
 }
-.btn-primary,
-.btn-primary:hover {
+.mura .btn-primary,
+.mura .btn-primary:hover {
   color: #ffffff;
   background-color: #4485f1;
   border-color: #4882cc;
@@ -4831,13 +4831,8 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools {
   background: #333;
-  background-image: -webkit-linear-gradient(top, rgba(77, 77, 77, 0.85) 0%, rgba(26, 26, 26, 0.85) 100%);
-  background-image: -o-linear-gradient(top, rgba(77, 77, 77, 0.85) 0%, rgba(26, 26, 26, 0.85) 100%);
-  background-image: linear-gradient(to bottom, rgba(77, 77, 77, 0.85) 0%, rgba(26, 26, 26, 0.85) 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d94d4d4d', endColorstr='#d91a1a1a', GradientType=0);
   filter: none !important;
-  height: 32px !important;
+  height: 50px !important;
   position: fixed !important;
   left: 0px !important;
   top: 0px !important;
@@ -4847,15 +4842,14 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-weight: normal !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   overflow: visible !important;
-  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
+  padding-top: 8px;
 }
 .mura #frontEndTools > ul {
   min-height: 31px !important;
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
-  border-right: 1px solid rgba(48, 48, 48, 0.85) !important;
+  border-right: none !important;
   overflow: visible !important;
   float: left !important;
 }
@@ -4884,7 +4878,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-style: normal !important;
   font-size: 12px !important;
   background: none !important;
-  text-shadow: 0 -1px 0 #000000 !important;
   overflow: visible !important;
   box-sizing: border-box !important;
 }
@@ -4893,14 +4886,12 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-left: 1em !important;
 }
 .mura #frontEndTools > ul > li:last-child {
-  border-right: 1px solid rgba(84, 84, 84, 0.85) !important;
   padding-right: 1em !important;
 }
 .mura #frontEndTools > ul > li a {
   display: block !important;
   color: #cccccc !important;
-  background: #4D4D4D !important;
-  background: rgba(255, 255, 255, 0.13) !important;
+  background: #333 !important;
   font-size: 12px !important;
   height: 23px !important;
   line-height: 23px !important;
@@ -4909,15 +4900,13 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-weight: normal !important;
   font-style: normal !important;
   outline: 0 !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.9) !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
-  border-left: 1px solid rgba(0, 0, 0, 0.25) !important;
+  border-right: none !important;
+  border-left: none !important;
 }
 .mura #frontEndTools > ul > li a > i {
   color: #868686 !important;
   font-size: 16px !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.65) !important;
   position: relative !important;
   top: 1px !important;
   width: 1em !important;
@@ -4955,7 +4944,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > #tools-status > li {
   padding-right: 1em !important;
-  border-right: 1px solid rgba(84, 84, 84, 0.85) !important;
 }
 .mura #frontEndTools > #tools-status > li > a {
   border: 0 !important;
@@ -4991,7 +4979,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-style: normal !important;
   text-align: center !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) !important;
   position: relative !important;
   top: 0px !important;
   padding: 3px 4px 3px 3px !important;
@@ -5065,19 +5052,16 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff6699cc', endColorstr='#ff336699', GradientType=0) !important;
   -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) !important;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) !important;
-  text-shadow: 0 -1px 1px #264c73 !important;
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li#adminSave > a > i {
   color: #264c73 !important;
-  text-shadow: 0 -1px 1px #1a334d !important;
 }
 .mura #frontEndTools > ul > li#adminSave > a:hover {
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li#adminSave > a:hover > i {
   color: #264c73 !important;
-  text-shadow: 0 -1px 1px #1a334d !important;
 }
 .mura #frontEndTools > ul > li#adminSave > a .caret {
   border-top-color: #264c73 !important;
@@ -5086,7 +5070,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > ul > li a:hover,
 .mura #frontEndTools > ul > li > a:hover > i {
   color: #ffffff !important;
-  text-shadow: 0 -1px 0 #000000 !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu {
   -webkit-border-bottom-right-radius: 5px !important;
@@ -5200,7 +5183,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   top: -20px !important;
   left: -1px !important;
   font-weight: normal !important;
-  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2) !important;
   display: inline-block !important;
   *display: inline !important;
   /* IE7 inline-block hack */

@@ -196,9 +196,8 @@
 
 #frontEndTools {
 	background: #333;
-	#gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd);
 	filter: none !important;
-	height: 32px !important;
+	height: 50px !important;
 	position: fixed !important;
 	left: 0px !important;
 	top: 0px !important;
@@ -208,7 +207,7 @@
 	font-weight: normal !important;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 	overflow: visible !important;
-	.box-shadow(0 1px 5px rgba(0,0,0,.6)) !important;
+	padding-top: 8px;
 }
 
 #frontEndTools > ul {
@@ -216,7 +215,7 @@
 	list-style: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	border-right: 1px solid hsla(0,0,.19,.85) !important;
+	border-right: none !important;
 	overflow: visible !important;
 	float: left !important;
 	
@@ -251,7 +250,6 @@
 	font-style: normal !important;
 	font-size: 12px !important;
 	background: none !important;
-	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
 	overflow: visible !important;
 	box-sizing: border-box !important;
 	
@@ -261,15 +259,13 @@
 		}
 	
 	&:last-child {
-		border-right: 1px solid hsla(0,0,.33,.85) !important;
 		padding-right: 1em !important;
 		}
 	
 	a {
 	display: block !important;
 	color: @gray !important;
-	background: #4D4D4D !important;
-	background: rgba(255,255,255,.13) !important;
+	background: #333 !important;
 	font-size: 12px !important;
 	height: 23px !important;
 	line-height: 23px !important;
@@ -278,15 +274,13 @@
 	font-weight: normal !important;
 	font-style: normal !important;
 	outline: 0 !important;
-	text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-	border-right: 1px solid rgba(255,255,255,.05) !important;
-	border-left: 1px solid rgba(0,0,0,.25) !important;
+	border-right: none !important;
+	border-left: none !important;
 	
 		> i {
 		color: #868686 !important;
 		font-size: 16px !important;
-		text-shadow: 0 -1px 0 rgba(0,0,0,.65) !important;
 		position: relative !important;
 		top: 1px !important;
 		width: 1em !important;
@@ -324,7 +318,6 @@
 #frontEndTools > #tools-status > li {
 	
 	padding-right: 1em !important;
-	border-right: 1px solid hsla(0,0,.33,.85) !important;
 	
 	> a {
 		border: 0 !important;
@@ -375,7 +368,6 @@
 		font-style: normal !important;
 		text-align: center !important;
 		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-		text-shadow: 0 1px 0 rgba(255,255,255,.15) !important;
 		position: relative !important;
 		top: 0px !important;
 		padding: 3px 4px 3px 3px !important;
@@ -452,11 +444,9 @@
 		.border-radius(4px) !important;
 		#gradient .vertical(@blue,@blueDark) !important;
 		.box-shadow(0 0 6px rgba(0,0,0,.5)) !important;
-		text-shadow: 0 -1px 1px @blueDarker !important;
 		cursor: pointer !important;
 		
-		> i { color: @blueDarker !important;
-		text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; }
+		> i { color: @blueDarker !important; }
 		
 		&:hover {
 			
@@ -464,7 +454,6 @@
 			
 			> i {
 				color: @blueDarker !important;
-				text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important;
 				}
 			
 			}
@@ -480,7 +469,6 @@
 #frontEndTools > ul > li a:hover,
 #frontEndTools > ul > li > a:hover > i {
 	color: @white !important;
-	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
 	}
 	
 #frontEndTools > ul > li.dropdown .dropdown-menu {
@@ -596,7 +584,6 @@
 			top: -20px !important;
 			left: -1px !important;
 			font-weight: normal !important;
-			text-shadow: -1px -1px 0 rgba(0,0,0,.2) !important;
 			.inline-block() !important;
 			}
 	
