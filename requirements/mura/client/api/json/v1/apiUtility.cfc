@@ -44,7 +44,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory",
+			publicMethods="findOne,findMany,findAll,findProperties,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory",
 			entities={
 				'contentnav'={
 					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
@@ -540,6 +540,8 @@ component extends="mura.cfobject" {
 								method=httpRequestData.method;
 							}
 						}
+					} else if(listFind('new,properties,listviewdescriptor',pathInfo[3])){
+						params.id=pathInfo[3];
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
 						var filenamestart=3;
@@ -561,8 +563,6 @@ component extends="mura.cfobject" {
 								params.id=listAppend(params.id,pathInfo[i],'/');
 							}
 						}
-					}else if(listFind('new,properties',pathInfo[3])){
-						params.id=pathInfo[3];
 					} else{
 						parseparamsFromPath(pathInfo,params,3);
 					}
@@ -612,6 +612,9 @@ component extends="mura.cfobject" {
 						} else if(params.id=='properties') {
 								params.method='findProperties';
 								result=findProperties(argumentCollection=params);
+						} else if(params.id=='listviewdescriptor') {
+								params.method='findListViewDescriptor';
+								result=findListViewDescriptor(argumentCollection=params);
 						} else if(listLen(params.id) > 1){
 							params.ids=params.id;
 							params.method='findMany';
@@ -704,8 +707,27 @@ component extends="mura.cfobject" {
 		return 'v1';
 	}
 
-	function findProperties(entityname){
+	function findProperties(entityname,properties=''){
 		return getBean(arguments.entityname).getProperties();
+	};
+
+	function findListViewDescriptor(entityname){
+		var sample=getBean(arguments.entityname);
+		var listViewArray=listToArray(sample.getListView());
+		var returnArray=[];
+		var props=sample.getProperties();
+
+		if(arrayLen(listViewArray)){
+			for(var p in listViewArray){
+				arrayAppend(returnArray,props[p]);
+			}
+		} else {
+			for(var p in props){
+				arrayAppend(returnArray,props[p]);
+			}
+		}
+
+		return returnArray;
 	};
 
 	function getParamsWithOutMethod(params){

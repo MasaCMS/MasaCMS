@@ -420,6 +420,11 @@ component extends="mura.cfobject" output="false" {
 		return structKeyExists(application.objectMappings[variables.entityName],'table') && len(application.objectMappings[variables.entityName].table);
 	}
 
+	function getListView(){
+		param name="application.objectMappings.#variables.entityName#.listview" default="";
+		return application.objectMappings[variables.entityName].listview;
+	}
+
 	function getHasManyPropArray(){
 		param name='application.objectMappings.#variables.entityName#.hasMany' default=[];
 		return application.objectMappings[variables.entityName].hasMany;
@@ -493,6 +498,12 @@ component extends="mura.cfobject" output="false" {
 						application.objectMappings[variables.entityName].table=md.table;
 					} else {
 						application.objectMappings[variables.entityName].table='';
+					}
+
+					if(structKeyExists(md,'listview')){
+						application.objectMappings[variables.entityName].listview=md.listview;
+					} else {
+						application.objectMappings[variables.entityName].listview='';
 					}
 
 					if(structKeyExists(md,'discriminatorColumn')){
