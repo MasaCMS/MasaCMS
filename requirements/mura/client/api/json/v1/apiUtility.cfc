@@ -1971,6 +1971,7 @@ component extends="mura.cfobject" {
 			//links['memberships']="#baseurl#?method=findQuery&siteid=#entity.getSiteID()#&entityName=user&groupid=#entity.getUserID()#";
 		}
 		*/
+		links['all']="#baseurl#/#entity.getEntityName()#";
 
 		if(entity.getEntityName()=='content'){
 			links['self']="#baseurl#/content/#entity.getContentID()#";

@@ -167,6 +167,26 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	private function addObject(obj){
+		var p='';
+		var many=getHasManyPropArray();
+		var one=getHasOnePropArray();
+
+		for(var p in many){
+			if(p.cfc == obj.getEntityName()){
+				evaluate('arguments.obj.set#translatePropKey(p.loadkey)#(getValue("#translatePropKey(p.fkcolumn)#"))');
+				arrayAppend(variables.instance.addObjects,arguments.obj);
+				return this;
+			}
+		}
+
+		for(var p in one){
+			if(p.cfc == obj.getEntityName()){
+				evaluate('arguments.obj.set#translatePropKey(p.loadkey)#(getValue("#translatePropKey(p.fkcolumn)#"))');
+				arrayAppend(variables.instance.addObjects,arguments.obj);
+				return this;
+			}
+		}
+
 		evaluate('arguments.obj.set#getPrimaryKey()#(getValue("#getPrimaryKey()#"))');
 		arrayAppend(variables.instance.addObjects,arguments.obj);
 		return this;
