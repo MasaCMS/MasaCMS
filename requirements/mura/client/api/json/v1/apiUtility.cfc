@@ -227,7 +227,7 @@ component extends="mura.cfobject" {
 		};
 
 		if(result.pageIndex > 1){
-			result.links['first']='first'=arguments.baseURL & "&pageIndex=" & 1;
+			result.links['first']=arguments.baseURL & "&pageIndex=" & 1;
 			result.links['previous']=arguments.baseURL & "&pageIndex=" & prevIndex;
 		}
 
