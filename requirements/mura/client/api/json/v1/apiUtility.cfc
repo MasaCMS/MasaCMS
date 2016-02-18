@@ -44,7 +44,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findProperties,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory",
+			publicMethods="findOne,findMany,findAll,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory",
 			entities={
 				'contentnav'={
 					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
@@ -540,7 +540,7 @@ component extends="mura.cfobject" {
 								method=httpRequestData.method;
 							}
 						}
-					} else if(listFind('new,properties,listviewdescriptor',pathInfo[3])){
+					} else if(listFind('new,propertydescriptor,listviewdescriptor',pathInfo[3])){
 						params.id=pathInfo[3];
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
@@ -609,9 +609,9 @@ component extends="mura.cfobject" {
 						if(params.id=='new') {
 							params.method='findNew';
 							result=findNew(argumentCollection=params);
-						} else if(params.id=='properties') {
-								params.method='findProperties';
-								result=findProperties(argumentCollection=params);
+						} else if(params.id=='propertydescriptor') {
+								params.method='findPropertyDescriptor';
+								result=findPropertyDescriptor(argumentCollection=params);
 						} else if(params.id=='listviewdescriptor') {
 								params.method='findListViewDescriptor';
 								result=findListViewDescriptor(argumentCollection=params);
@@ -707,7 +707,7 @@ component extends="mura.cfobject" {
 		return 'v1';
 	}
 
-	function findProperties(entityname,properties=''){
+	function findPropertyDescriptor(entityname,properties=''){
 		return getBean(arguments.entityname).getProperties();
 	};
 
