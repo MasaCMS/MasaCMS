@@ -23724,6 +23724,7 @@ i {
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. 
 */
+  /* /#mura-templatebuilder */
   /* @group Previously template-from.css */
   /*.ui-icon-formfield-field { background-position: 0 0; }*/
   /*.ui-icon-formfield-hidden { background-position: -233px 0; }*/
@@ -25701,6 +25702,72 @@ text-shadow: 0 0 1px @blue;
 .mura #ccategory li {
   padding-left: 0;
 }
+.mura #mura-templatebuilder .ui-button-text {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 10px;
+}
+.mura #mura-templatebuilder ul {
+  margin: 0;
+  padding: 0;
+}
+.mura #mura-templatebuilder .tb-fieldIsEmpty {
+  border: 1px solid #ff0000 !important;
+}
+.mura #mura-templatebuilder #mura-tb-form-fields {
+  width: 20% !important;
+}
+.mura #mura-templatebuilder #mura-tb-fields-settings {
+  width: 73% !important;
+}
+.mura #mura-templatebuilder #mura-tb-form-pages {
+  width: 7%;
+  padding: 1%;
+  float: left;
+  background: #aaa;
+  height: 450px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.mura #mura-templatebuilder #mura-tb-form-pages .current {
+  background: #ccc;
+}
+.mura #mura-templatebuilder #mura-form-pages li,
+.mura #mura-templatebuilder #mura-form-addpage {
+  padding: 12px 4px 14px 18px;
+  margin: 2px 0;
+  background: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+  list-style: none;
+  list-style-type: none;
+}
+.mura #mura-templatebuilder #mura-form-addpage {
+  padding: 2px 4px 5px 15px;
+  font-size: 2em;
+  background: #eee;
+}
+.mura #mura-templatebuilder .button-trash {
+  display: block;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  width: 16px;
+  height: 16px;
+  float: right;
+  background-image: none !important;
+  border: 0 !important;
+  -webkit-box-shadow: 0 0 0,0 0 0 !important;
+  box-shadow: 0 0 0,0 0 0 !important;
+  text-shadow: 0 0 0 !important;
+}
+.mura #mura-templatebuilder .button-trash:before {
+  font-family: FontAwesome, "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  content: "\f057";
+}
+.mura #mura-templatebuilder #mura-form-pages .button-trash {
+  margin: -12px -4px 0 0;
+}
 .mura #editDates {
   padding: 1em;
   margin-top: 18px;
@@ -25801,6 +25868,7 @@ margin: 0;
   list-style: none;
   padding: 10px;
   margin-bottom: 0;
+  margin-top: 15px !important;
 }
 .mura #mura-tb-dataset ul.template-form {
   padding-bottom: 0;
@@ -25897,17 +25965,12 @@ font-size: 12px;
 .mura .ui-icon-formfield {
   background-image: url(../images/formbuilder/ui-icons-form-basic.png) !important;
   background-repeat: no-repeat;
-  width: 24px;
-  height: 20px;
+  width: 36px;
+  height: 32px;
   padding: 6px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-}
-.mura #mura-templatebuilder .ui-button-text {
-  height: 32px;
-  line-height: 32px;
-  padding: 0 10px;
 }
 .mura .ui-icon-formfield-section {
   background-image: none !important;
@@ -26021,8 +26084,8 @@ font-size: 12px;
 .mura .mura-tb-menu {
   border-bottom: 1px solid #a6a6a6;
   background: url('../images/formbuilder/ui-toolbar-bg.jpg') repeat-x;
-  padding: 4px;
-  height: 34px;
+  padding: 3px;
+  height: 42px;
 }
 .mura .mura-tb-menu ul.right,
 .mura .mura-tb-header ul.right {
@@ -26297,10 +26360,10 @@ font-size: 12px;
   -webkit-box-shadow: 0 0 0;
   box-shadow: 0 0 0;
 }
-.mura #mura-tb-form #mura-tb-fields #button-trash {
+.mura #mura-tb-form #mura-tb-fields li #button-trash {
   display: block;
   padding: 0;
-  margin: 0;
+  margin: -13px 0 0 0;
   border-radius: 0;
   width: 16px;
   height: 16px;
