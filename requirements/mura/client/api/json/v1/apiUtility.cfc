@@ -1531,16 +1531,28 @@ component extends="mura.cfobject" {
 		var baseURL=getEndPoint() & "/#entity.getEntityName()#/?";
 
 		if(arguments.expanded){
+			var started=false;
+
 			for(var p in arguments.params){
 				feed.addParam(column=p,criteria=arguments.params[p]);
-				baseURL=baseURL & '&' & p & '=' & arguments.params[p];
+
+				if(started){
+					baseURL=baseURL & '&';
+				}
+
+				baseURL=baseURL & p & '=' & arguments.params[p];
+				started=true;
+
 			}
 
 		} else {
 			var queryParams=[];
 
 			for(var i in listToArray(queryString,'&')){
-				ArrayAppend(queryParams, listFirst(i,'='));
+				var checkProp=listFirst(i,'=');
+				if(checkProp!='pageIndex'){
+					ArrayAppend(queryParams, checkProp);
+				}
 			}
 
 			var propName='';
