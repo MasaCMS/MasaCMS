@@ -44,7 +44,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory",
+			publicMethods="findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory",
 			entities={
 				'contentnav'={
 					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
@@ -561,7 +561,7 @@ component extends="mura.cfobject" {
 								params.id=listAppend(params.id,pathInfo[i],'/');
 							}
 						}
-					}else if(pathInfo[3]=='new'){
+					}else if(listFind('new,properties',pathInfo[3])){
 						params.id=pathInfo[3];
 					} else{
 						parseparamsFromPath(pathInfo,params,3);
@@ -605,11 +605,13 @@ component extends="mura.cfobject" {
 
 			switch(method){
 				case "GET":
-
 					if((isDefined('params.id') || (params.entityName=='content') && isDefined('params.contenthistid'))){
 						if(params.id=='new') {
 							params.method='findNew';
 							result=findNew(argumentCollection=params);
+						} else if(params.id=='properties') {
+								params.method='findProperties';
+								result=findProperties(argumentCollection=params);
 						} else if(listLen(params.id) > 1){
 							params.ids=params.id;
 							params.method='findMany';
@@ -701,6 +703,10 @@ component extends="mura.cfobject" {
 	function getApiVersion(){
 		return 'v1';
 	}
+
+	function findProperties(entityname){
+		return getBean(arguments.entityname).getProperties();
+	};
 
 	function getParamsWithOutMethod(params){
 		var temp={};
@@ -1280,7 +1286,7 @@ component extends="mura.cfobject" {
 
 	}
 
-	function findAll(siteid,entityName,params){
+	function findAll(siteid,entityName,params,expand=''){
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
@@ -1358,8 +1364,9 @@ component extends="mura.cfobject" {
 				itemStruct.url=item.getURL();
 			}
 
-			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			if(len(arguments.expand)){
+				expandEntity(entity=item,itemStruct=itemStruct,siteid=arguments.siteid,expand=arguments.expand);
+			}
 
 			arrayAppend(returnArray, itemStruct);
 		}
@@ -1437,8 +1444,9 @@ component extends="mura.cfobject" {
 				itemStruct.url=item.getURL();
 			}
 
-			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			if(len(arguments.expand)){
+				expandEntity(entity=item,itemStruct=itemStruct,siteid=arguments.siteid,expand=arguments.expand);
+			}
 
 			arrayAppend(returnArray, itemStruct );
 
@@ -1461,7 +1469,7 @@ component extends="mura.cfobject" {
 		return packageIteratorArray(iterator,finalArray,'findmany');
 	}
 
-	function findQuery(entityName,siteid,params,queryString=cgi.QUERY_STRING){
+	function findQuery(entityName,siteid,params,queryString=cgi.QUERY_STRING,expand=''){
 
 		param name="arguments.params" default=url;
 
@@ -1574,13 +1582,13 @@ component extends="mura.cfobject" {
 		} else {
 			var iterator=feed.getIterator();
 			setIteratorProps(iterator=iterator);
-			var returnArray=iteratorToArray(iterator=iterator);
+			var returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand);
 			return packageIteratorArray(iterator=iterator,itArray=returnArray,method='findQuery',baseURL=baseURL);
 		}
 
 	}
 
-	function iteratorToArray(iterator){
+	function iteratorToArray(iterator,siteid,expand=''){
 		var returnArray=[];
 		var itemStruct={};
 		var item='';
@@ -1617,8 +1625,9 @@ component extends="mura.cfobject" {
 				itemStruct.url=item.getURL();
 			}
 
-			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			if(len(arguments.expand)){
+				expandEntity(entity=item,itemStruct=itemStruct,siteid=arguments.siteid,expand=arguments.expand);
+			}
 
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -1761,6 +1770,10 @@ component extends="mura.cfobject" {
 	function findCrumbArray(entityName,id,siteid,iterator){
 
 		var $=getBean('$').init(arguments.siteid);
+
+		if(arguments.entityname == 'contentnav'){
+			arguments.entityname='content';
+		}
 		var entity=$.getBean(arguments.entityName);
 
 		if(!allowAccess(entity,$)){
@@ -1818,7 +1831,7 @@ component extends="mura.cfobject" {
 	}
 
 
-	function findVersionHistory(id,siteid){
+	function findVersionHistory(id,siteid,expand=''){
 
 		var $=getBean('$').init(arguments.siteid);
 		var entity=$.getBean('content');
@@ -1831,7 +1844,7 @@ component extends="mura.cfobject" {
 
 		var iterator=entity.loadBy(contentid=arguments.id).getVersionHistoryIterator();
 		setIteratorProps(iterator);
-		var returnArray=iteratorToArray(iterator=iterator);
+		var returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand);
 		return packageIteratorArray(iterator,returnArray,'findVersionHistory');
 	}
 
@@ -1990,7 +2003,7 @@ component extends="mura.cfobject" {
 		return links;
 	}
 
-	function findRelatedContent(id,siteid,params){
+	function findRelatedContent(id,siteid,params,arguments,expand=''){
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
@@ -2037,7 +2050,7 @@ component extends="mura.cfobject" {
 		var pk=entity.getPrimaryKey();
 
 		setIteratorProps(iterator,arguments.params);
-		var returnArray=iteratorToArray(iterator=iterator);
+		var returnArray=iteratorToArray(iterator=iterator,siteid=arguments.siteid,expand=arguments.expand);
 		return packageIteratorArray(iterator,returnArray,'findRelatedContent');
 	}
 

@@ -416,7 +416,6 @@ component extends="mura.cfobject" output="false" {
 		return application.objectMappings[variables.entityName].orderby;
 	}
 
-
 	function hasTable(){
 		return structKeyExists(application.objectMappings[variables.entityName],'table') && len(application.objectMappings[variables.entityName].table);
 	}
