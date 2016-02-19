@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Mura CMS. ?If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and   
+the preparation of a derivative work based on Mura CMS. Thus, the terms and
 conditions of the GNU General Public License version 2 (?GPL?) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 ?without this exception. ?You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+<cfinclude template="wizard.cfm"/><cfabort/>
 <!--- Give Mura 5 minutes for setup script to run to prevent it timing out when server configuration request timeout is too small --->
 <cfsetting requesttimeout="300">
 
@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <cfscript>
   muraInstallPath = GetDirectoryFromPath(GetCurrentTemplatePath());
   fileDelim = FindNoCase('Windows', Server.OS.Name) ? '\' : '/';
-</cfscript> 
+</cfscript>
 
 <cfif ListFindNoCase(muraInstallPath, 'mura', fileDelim)>
     <h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
@@ -144,7 +144,7 @@ to your own modified versions of Mura CMS.
   <!--- ************************ --->
   <!--- STEP 1 --->
   <!--- ************************ --->
-  
+
   <!--- check datasource --->
   <cfset errorType = "" />
   <cfset dbCreated = false />
@@ -163,10 +163,10 @@ to your own modified versions of Mura CMS.
       </cfquery>
       <!--- state that the db is already created --->
       <cfset dbCreated = true />
-    <cfelseif Form.production_datasource EQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND Form.auto_create>  
+    <cfelseif Form.production_datasource EQ "" AND IsDefined("Form.auto_create") AND IsBoolean(Form.auto_create) AND Form.auto_create>
       <!--- set this to create DB (bsoylu 6/6/2010)  --->
       <cfset errorType = "database" />
-    <cfelse>    
+    <cfelse>
       <!--- no datasource has been specified (bsoylu 6/6/2010)  --->
       <cfset errorType = "datasource" />
     </cfif>
@@ -189,7 +189,7 @@ to your own modified versions of Mura CMS.
         OR FindNoCase( "Login failed", msg )
         OR FindNoCase( "Access denied", msg )>
         <cfset errorType = "datasource" />
-      </cfif>   
+      </cfif>
       <!--- check to see if it's a broken pipe error --->
       <cfif FindNoCase( "broken pipe", msg )>
         <cfset errorType = "brokenpipe" />
@@ -257,7 +257,7 @@ to your own modified versions of Mura CMS.
               bProcessWithMessage = false;
             } else {
               // (bsoylu 6/7/2010) the default ds name is the App name, so we reset here
-              FORM.production_datasource = Form.production_databasename;       
+              FORM.production_datasource = Form.production_databasename;
             };
           </cfscript>
         </cfif>
@@ -289,11 +289,11 @@ to your own modified versions of Mura CMS.
               <cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
             </cfif>
             --->
-         
-          <cfdbinfo 
+
+          <cfdbinfo
                 name="rsCheck"
-                datasource="#FORM.production_datasource#" 
-                username="#FORM.production_dbusername#" 
+                datasource="#FORM.production_datasource#"
+                username="#FORM.production_dbusername#"
                 password="#FORM.production_dbpassword#"
                 type="version">
 
@@ -308,7 +308,7 @@ to your own modified versions of Mura CMS.
               <cfinclude template="db/#FORM.production_dbtype#.sql">
             </cfsavecontent>
           </cfif>
-          
+
           <!---
           <cfsavecontent variable="sql">
             <cfinclude template="db/#FORM.production_dbtype#.sql">
@@ -319,7 +319,7 @@ to your own modified versions of Mura CMS.
           <cftry>
             <cfswitch expression="#FORM.production_dbtype#">
               <cfcase value="mssql">
-                <!--- if we are working with a SQL db we go ahead and delimit with GO so we can loop over each sql even --->  
+                <!--- if we are working with a SQL db we go ahead and delimit with GO so we can loop over each sql even --->
                 <cfquery name="MSSQLversion" datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
                   SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
                 </cfquery>
@@ -338,7 +338,7 @@ to your own modified versions of Mura CMS.
                 </cfloop>
               </cfcase>
               <cfcase value="oracle">
-                <!--- if we are working with a ORACLE db we delimit with  --/  so we can loop over each sql even ---> 
+                <!--- if we are working with a ORACLE db we delimit with  --/  so we can loop over each sql even --->
                 <cfset sql = replace( sql, "--", "", "ALL") />
                 <cfset aSql = ListToArray(sql, '|')>
                 <!--- loop over items --->
@@ -346,7 +346,7 @@ to your own modified versions of Mura CMS.
                   <!--- we placed a small check here to skip empty rows --->
                   <cfif len( trim( aSql[x] ) )>
                     <cfset s=aSql[x]>
-                    <!--- <cfset s=replace(s,"/","","ALL")> --->  
+                    <!--- <cfset s=replace(s,"/","","ALL")> --->
                     <cfif not findNocase("/",aSql[x])>
                       <cfset s=replace(s,";","","ALL")>
                     <cfelse>
@@ -360,7 +360,7 @@ to your own modified versions of Mura CMS.
                 </cfloop>
               </cfcase>
               <cfcase value="mysql">
-              
+
                 <cfset aSql = ListToArray(sql, ';')>
                 <!--- loop over items --->
                 <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
@@ -443,7 +443,7 @@ to your own modified versions of Mura CMS.
       <cfset message = "<strong>Error:</strong> An unknown error has occurred." />
     </cfcase>
   </cfswitch>
-  
+
   <!--- if errorFile variable is present then let's append it to the message so the error file can be found --->
   <cfif isDefined( "errorFile" )>
     <cfset message = message & " <a href='#context#/config/setup/errors/#listLast( errorFile, '/')#'>Review the error log</a>." />
@@ -452,11 +452,11 @@ to your own modified versions of Mura CMS.
   <cfif NOT len( FORM.production_mailserverusername )>
     <cfset FORM.production_mailserverusername = FORM.production_adminemail />
   </cfif>
-  
+
   <!--- ************************ --->
   <!--- STEP 3 --->
   <!--- ************************ --->
-  
+
   <!--- save settings --->
   <cfif NOT len( errorType )>
     <cfloop list="#FORM.fieldnames#" index="ele">
@@ -471,20 +471,20 @@ to your own modified versions of Mura CMS.
       </cfif>
     </cfloop>
   </cfif>
-  
+
   <!--- ************************ --->
   <!--- STEP 6 --->
   <!--- ************************ --->
-  
+
   <!--- custom settings --->
-  
+
   <!--- usedefaultsmtpserver --->
   <cfif FORM.production_mailserverip IS NOT "" AND FORM.production_mailserverusername IS NOT "">
     <cfset usedefaultsmtpserver = 0 />
     <cfelse>
     <cfset usedefaultsmtpserver = 1 />
   </cfif>
-  
+
   <!--- update setting --->
   <cfset settingsIni.set( "production", "usedefaultsmtpserver", usedefaultsmtpserver ) />
   <!--- only update the database if there are no errors --->
@@ -504,11 +504,11 @@ to your own modified versions of Mura CMS.
         Contact = '#FORM.production_adminemail#'
     </cfquery>
   </cfif>
-  
+
   <!--- ************************ --->
   <!--- STEP 5 --->
   <!--- ************************ --->
-  
+
   <!--- clean ini since it removes cf tags --->
   <cfset cleanIni( settingsPath ) />
 </cfif>
@@ -541,9 +541,9 @@ to your own modified versions of Mura CMS.
   <cfargument name="str">
   <cfargument name="version">
   <cfif arguments.version eq 8>
-    
+
     <!--- mssql 2000 does not support nvarchar(max) or varbinary(max)--->
-    
+
     <cfset arguments.str=replaceNoCase(arguments.str,"[nvarchar] (max)","[ntext]","ALL")>
     <cfset arguments.str=replaceNoCase(arguments.str,"[varbinary] (max) null","[image] null","ALL")>
   </cfif>
@@ -639,19 +639,19 @@ to your own modified versions of Mura CMS.
     <div class="navbar-inner">
       <div class="container">
         <a class="brand" href="http://www.getmura.com" title="Mura CMS">Mura CMS</a>
-	      <div class="brand-credit">by Blue River</div>	
+	      <div class="brand-credit">by Blue River</div>
       </div>
     </div>
   </div>
 </header>
 <div class="main">
-  <div class="main-inner"> 
+  <div class="main-inner">
     <!---  <div class="container"> --->
     <h1>Mura Set Up</h1>
     <cfif len( trim( message ) )>
       <p class="alert alert-error">#message#</p>
     </cfif>
-    
+
     <!--- need to pass on form object to JS to avoid exception, also added try/catch in admin js (bsoylu 6/7/2010) --->
     <script>
       function processInstallFrm(frm){
@@ -665,21 +665,21 @@ to your own modified versions of Mura CMS.
 
     </script>
     <form id="frm" class="form-horizontal<cfif isDefined( "FORM.setupSubmitButton" ) AND errorType IS ""> install-complete<cfelse> setup-form</cfif>" name="frm" action="index.cfm" method="post" onsubmit="return processInstallFrm(this);" onclick="return validateForm(this);">
-   
+
       <cfif isDefined( "FORM.setupSubmitButton" ) AND errorType IS "">
         <cfset application.appAutoUpdated=true>
         <div id="installationComplete" class="alert alert-success">
           <p>Mura is now set up and ready to use.</p>
         </div>
-       
+
         <div class="alert alert-error">
           <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p></div>
-         
+
         <div id="finishSetUp" class="form-actions">
         	<input type="submit" class="btn" name="setupSubmitButtonComplete" value="Login to Mura" />
         </div>
- 
-      
+
+
       <cfelse>
       <h3>Required Settings</h3>
       <cfscript>
@@ -691,7 +691,7 @@ to your own modified versions of Mura CMS.
         if (server.ColdFusion.ProductName CONTAINS "ColdFusion") {
           theCFServer = "ColdFusion";
         } else {
-          theCFServer = "Lucee"; 
+          theCFServer = "Lucee";
         };
       </cfscript>
       <fieldset class="alert">
@@ -719,8 +719,8 @@ to your own modified versions of Mura CMS.
               No </label>
           </div>
         </div>
-        
-        <!--- changes below (bsoylu 6/7/2010)  ---> 
+
+        <!--- changes below (bsoylu 6/7/2010)  --->
         <span id="ac_dsn_span" >
           <div class="control-group">
             <label class="control-label"><a href="" rel="tooltip" title="The Data Source Name (DSN) created for Mura. This is usually done in the ColdFusion or Lucee administrator, or in the control panel of your host if you are installing Mura in a shared environment. Please note that if you are installing Mura in a shared environment, this will likely need to be changed to something other than "muradb" to make sure it is unique to the server.">Datasource (DSN) <i class="icon-question-sign"></i></a></label>
@@ -749,7 +749,7 @@ to your own modified versions of Mura CMS.
             <input type="text" name="production_dbusername" value="#FORM.production_dbusername#">
           </div>
         </div>
-      
+
           <div class="control-group">
             <label class="control-label"><a href="" rel="tooltip" title="Only required on shared hosting. This is the same Password supplied to your DSN to allow Mura to connect to your database.">Database Password <i class="icon-question-sign"></i></a></label>
             <div class="controls">
@@ -766,14 +766,14 @@ to your own modified versions of Mura CMS.
         </span>
         <input type="hidden" name="production_assetpath" value="#FORM.production_assetpath#">
         <input type="hidden" name="production_context" value="#FORM.production_context#">
-    
+
          <div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" title="This is the username of the Mura super user account that will be created">Super Admin Username <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="admin_username" value="#FORM.admin_username#">
           </div>
         </div>
-      
+
          <div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" title="This is the password of the Mura super user account that will be created">Super Admin Password <i class="icon-question-sign"></i></a></label>
           <div class="controls">
@@ -841,7 +841,7 @@ to your own modified versions of Mura CMS.
           </div>
         </div>
 --->
-        
+
         <!--- <cfdump var="#form.production_siteidinurls#"> --->
         <div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" title="SiteID's are shown as sub-directories for each site in your Mura install. When SiteIDs are not in URLs you must ensure that each site has it's own unique domain.">Use SiteIDs in URLs <i class="icon-question-sign"></i></a></label>
@@ -871,7 +871,7 @@ to your own modified versions of Mura CMS.
       </div>
       </cfif>
     </form>
-  
+
 </div>
 
 <cfif cgi.http_user_agent contains 'msie'>
@@ -880,9 +880,9 @@ to your own modified versions of Mura CMS.
 <![endif]-->
 </cfif>
 <!-- Le javascript
-================================================== --> 
-<!-- Placed at the end of the document so the pages load faster --> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap.min.js"></script> 
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="#context#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" language="javascript">
 dtLocale='';
 activetab=1;
