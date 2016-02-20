@@ -51,6 +51,7 @@
 			properties.entityname = properties.entityname || 'content';
 			properties.siteid = properties.siteid || window.mura.siteid;
 			this.set(properties);
+			//this.set('instanceid',mura.createUUID());
 		},
 
 		get:function(propertyName,defaultValue){
@@ -65,9 +66,9 @@
 							var returnObj = new window.mura.EntityCollection(self.properties[propertyName]);
 						} else {
 							if(window.mura.entities[self.properties[propertyName].entityname]){
-								var returnObj = new window.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
+								var returnObj = window.mura.datacache.set( self.properties[propertyName].id, new window.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]) );
 							} else {
-								var returnObj = new window.mura.Entity(self.properties[propertyName]);
+								var returnObj = window.mura.datacache.set( self.properties[propertyName].id, new window.mura.Entity(self.properties[propertyName]) );
 							}
 						}
 
@@ -89,9 +90,9 @@
 									var returnObj = new window.mura.EntityCollection(resp.data);
 								} else {
 									if(window.mura.entities[obj.entityname]){
-										var returnObj = new window.mura.entities[obj.entityname](obj);
+										var returnObj = window.mura.datacache.set( obj.id,new window.mura.entities[obj.entityname](obj) );
 									} else {
-										var returnObj = new window.mura.Entity(resp.data);
+										var returnObj = window.mura.datacache.set( obj.id,new window.mura.Entity(resp.data) );
 									}
 								}
 
@@ -171,6 +172,15 @@
 			propertyValue=propertyValue || this.get(propertyName);
 
 			var self=this;
+
+
+			if(propertyName =='id'){
+				var has = window.mura.datacache.get(propertyValue);
+
+				if(has){
+					return has;
+				}
+			}
 
 			return new Promise(function(resolve,reject){
 				params=window.mura.extend(
@@ -278,6 +288,7 @@
 
 											if(self.get('saveErrors') || window.mura.isEmptyObject(self.getErrors())){
 												if(typeof resolve == 'function'){
+													window.mura.datacache.set(self.get('id'), self);
 													resolve(self);
 												}
 											} else {
@@ -327,6 +338,7 @@
 								'csrf_token_expires':resp.data.csrf_token_expires
 							},
 							success:function(){
+								window.mura.datacache.purgeKey(self.get('id'));
 								if(typeof resolve == 'function'){
 									resolve(self);
 								}
@@ -341,6 +353,11 @@
 		getFeed:function(){
 			var siteid=get('siteid') || mura.siteid;
 			return new window.mura.Feed(this.get('entityName'));
+		},
+
+		purgeCache:function(){
+			window.mura.datacache.purgeKey(this.get('id'));
+			return this;
 		}
 
 	});

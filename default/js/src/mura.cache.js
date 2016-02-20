@@ -45,72 +45,53 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	window.mura.EntityCollection=window.mura.Entity.extend({
-		init:function(properties){
-			properties=properties || {};
-			this.set(properties);
+	window.mura.Cache=window.mura.Core.extend({
+		init:function(){
+			this.cache={};
+		},
+        getKey:function(keyName){
+            return md5(keyName);
+        },
 
-			var self=this;
+        get:function(keyName,keyValue){
+            var key=this.getKey(keyName);
 
-			if(Array.isArray(self.get('items'))){
-				self.set('items',self.get('items').map(function(obj){
-					if(window.mura.entities[obj.entityname]){
-						return window.mura.datacache.set(obj.id,new window.mura.entities[obj.entityname](obj));
-					} else {
-						return  window.mura.datacache.set(obj.id, new window.mura.Entity(obj));
-					}
-				}));
+			if(typeof this.core[key] != 'undefined'){
+				return this.core[key].keyValue;
+			} else if (typeof keyValue != 'undefined') {
+				this.set(keyName,keyValue,key);
+				return this.core[key].keyValue;
+			} else {
+				return;
 			}
-
-			return this;
 		},
 
-		item:function(idx){
-			return this.properties.items[idx];
+		set:function(keyName,keyValue,key){
+            key=key || this.getKey(keyName);
+		    this.cache[key]={name:keyName,value:keyValue};
+			return keyValue;
 		},
 
-		index:function(item){
-			return this.properties.items.indexOf(item);
+		has:function(keyName){
+			return typeof this.cache[getKey(keyName)] != 'undefined';
 		},
 
 		getAll:function(){
-			var self=this;
-
-			return mura.extend(
-				{},
-				self.properties,
-				{
-					items:self.map(function(obj){
-						return obj.getAll();
-					})
-				}
-			);
-
+			return this.cache;
 		},
 
-		each:function(fn){
-			this.properties.items.forEach( function(item,idx){
-				fn.call(item,item,idx);
-			});
+        purgeAll:function(){
+            this.cache={};
 			return this;
 		},
 
-		sort:function(fn){
-			this.properties.items.sort(fn);
-		},
-
-		filter:function(fn){
-			var collection=new window.mura.EntityCollection(this.properties);
-			return collection.set('items',collection.get('items').filter( function(item,idx){
-				return fn.call(item,item,idx);
-			}));
-		},
-
-		map:function(fn){
-			var collection=new window.mura.EntityCollection(this.properties);
-			return collection.set('items',collection.get('items').map( function(item,idx){
-				return fn.call(item,item,idx);
-			}));
+        purgeKey:function(keyName){
+            var key=getKey(keyName)
+            if( typeof this.cache[key] != 'undefined')
+            delete this.cache[key];
+			return this;
 		}
+
 	});
+
 })(window);
