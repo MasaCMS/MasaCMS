@@ -4339,7 +4339,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			return this;
 		},
 
-        purgeKey:function(keyName){
+        purge:function(keyName){
             var key=getKey(keyName)
             if( typeof this.cache[key] != 'undefined')
             delete this.cache[key];
@@ -5605,13 +5605,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		purgeCache:function(){
-			window.mura.datacache.purgeKey(this.get('id'));
+			window.mura.datacache.purge(this.get('id'));
 			return this;
 		},
 
 		cache:function(){
 			if(this.get('isnew')==0){
-				window.mura.datacache.cacheKey(this.get('id'),this);
+				window.mura.datacache.set(this.get('id'),this);
 			}
 			return this;
 		}

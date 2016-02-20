@@ -85,7 +85,7 @@
 			return this;
 		},
 
-        purgeKey:function(keyName){
+        purge:function(keyName){
             var key=getKey(keyName)
             if( typeof this.cache[key] != 'undefined')
             delete this.cache[key];
