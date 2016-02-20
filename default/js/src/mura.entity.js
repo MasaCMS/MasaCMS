@@ -51,7 +51,7 @@
 			properties.entityname = properties.entityname || 'content';
 			properties.siteid = properties.siteid || window.mura.siteid;
 			this.set(properties);
-			this.cache();
+			this.cachePut();
 		},
 
 		get:function(propertyName,defaultValue){
@@ -174,10 +174,10 @@
 			var self=this;
 
 			if(propertyName =='id'){
-				var has = window.mura.datacache.get(propertyValue);
+				var cachedValue = window.mura.datacache.get(propertyValue);
 
-				if(has){
-					this.set(has.getAll());
+				if(cachedValue){
+					this.set(cachedValue);
 					return new Promise(function(resolve,reject){
 						resolve(self);
 					});
@@ -290,7 +290,6 @@
 
 											if(self.get('saveErrors') || window.mura.isEmptyObject(self.getErrors())){
 												if(typeof resolve == 'function'){
-													window.mura.datacache.set(self.get('id'), self);
 													resolve(self);
 												}
 											} else {
@@ -357,12 +356,12 @@
 			return new window.mura.Feed(this.get('entityName'));
 		},
 
-		purgeCache:function(){
+		cachePurge:function(){
 			window.mura.datacache.purge(this.get('id'));
 			return this;
 		},
 
-		cache:function(){
+		cachePut:function(){
 			if(this.get('isnew')==0){
 				window.mura.datacache.set(this.get('id'),this);
 			}
