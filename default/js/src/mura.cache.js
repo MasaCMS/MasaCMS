@@ -50,7 +50,7 @@
 			this.cache={};
 		},
         getKey:function(keyName){
-            return window.mura.hash(keyName);
+            return window.mura.hashCode(keyName);
         },
 
         get:function(keyName,keyValue){

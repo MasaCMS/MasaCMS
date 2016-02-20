@@ -3470,7 +3470,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		return getQueryStringParams(window.location.search);
 	}
 
-	function hash(s){
+	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+	function hashCode(s){
 		var hash = 0, strlen = s.length, i, c;
 
 		if ( strlen === 0 ) {
@@ -4068,7 +4069,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			this.cache={};
 		},
         getKey:function(keyName){
-            return window.mura.hash(keyName);
+            return window.mura.hashCode(keyName);
         },
 
         get:function(keyName,keyValue){
