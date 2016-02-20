@@ -55,9 +55,9 @@
 			if(Array.isArray(self.get('items'))){
 				self.set('items',self.get('items').map(function(obj){
 					if(window.mura.entities[obj.entityname]){
-						return window.mura.datacache.set(obj.id,new window.mura.entities[obj.entityname](obj));
+						return new window.mura.entities[obj.entityname](obj);
 					} else {
-						return  window.mura.datacache.set(obj.id, new window.mura.Entity(obj));
+						return new window.mura.Entity(obj);
 					}
 				}));
 			}

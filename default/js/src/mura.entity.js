@@ -51,7 +51,7 @@
 			properties.entityname = properties.entityname || 'content';
 			properties.siteid = properties.siteid || window.mura.siteid;
 			this.set(properties);
-			//this.set('instanceid',mura.createUUID());
+			this.cache();
 		},
 
 		get:function(propertyName,defaultValue){
@@ -66,9 +66,9 @@
 							var returnObj = new window.mura.EntityCollection(self.properties[propertyName]);
 						} else {
 							if(window.mura.entities[self.properties[propertyName].entityname]){
-								var returnObj = window.mura.datacache.set( self.properties[propertyName].id, new window.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]) );
+								var returnObj = new window.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
 							} else {
-								var returnObj = window.mura.datacache.set( self.properties[propertyName].id, new window.mura.Entity(self.properties[propertyName]) );
+								var returnObj = new window.mura.Entity(self.properties[propertyName]);
 							}
 						}
 
@@ -90,9 +90,9 @@
 									var returnObj = new window.mura.EntityCollection(resp.data);
 								} else {
 									if(window.mura.entities[obj.entityname]){
-										var returnObj = window.mura.datacache.set( obj.id,new window.mura.entities[obj.entityname](obj) );
+										var returnObj = new window.mura.entities[obj.entityname](obj);
 									} else {
-										var returnObj = window.mura.datacache.set( obj.id,new window.mura.Entity(resp.data) );
+										var returnObj = new window.mura.Entity(resp.data);
 									}
 								}
 
@@ -173,12 +173,14 @@
 
 			var self=this;
 
-
 			if(propertyName =='id'){
 				var has = window.mura.datacache.get(propertyValue);
 
 				if(has){
-					return has;
+					this.set(has.getAll());
+					return new Promise(function(resolve,reject){
+						resolve(self);
+					});
 				}
 			}
 
@@ -338,7 +340,7 @@
 								'csrf_token_expires':resp.data.csrf_token_expires
 							},
 							success:function(){
-								window.mura.datacache.purgeKey(self.get('id'));
+								self.purgeCache();
 								if(typeof resolve == 'function'){
 									resolve(self);
 								}
@@ -357,6 +359,13 @@
 
 		purgeCache:function(){
 			window.mura.datacache.purgeKey(this.get('id'));
+			return this;
+		},
+
+		cache:function(){
+			if(this.get('isnew')==0){
+				window.mura.datacache.cacheKey(this.get('id'),this);
+			}
 			return this;
 		}
 
