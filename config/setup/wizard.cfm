@@ -59,7 +59,7 @@ fileDelim			= findNoCase('Windows', Server.OS.Name) ? '\' : '/';
 
 
 <!-----------------------------------------------------------------------
-	RenderSetup is set here to proce we got here for a legit reason:
+	RenderSetup is set here to prove we got here for a legit reason:
 	/config/appcfc/onRequestStart_include.cfm
 
 	If renderSetup is not found or is false then do not render.
@@ -99,6 +99,13 @@ theCFServer		= ((server.ColdFusion.ProductName CONTAINS "ColdFusion") ? 'ColdFus
 <cfparam name="FORM.production_dbpassword"			default="#settingsIni.get( "production", "dbpassword" )#" />
 <cfparam name="FORM.production_dbtablespace"		default="#settingsIni.get( "production", "dbtablespace" )#" />
 <cfparam name="FORM.production_adminemail"			default="#settingsIni.get( "production", "adminemail" )#" />
+<cfparam name="FORM.production_mailserverip"		default="#settingsIni.get( "production", "mailserverip" )#" />
+<cfparam name="FORM.production_mailserverpopport"	default="#settingsIni.get( "production", "mailserverpopport" )#" />
+<cfparam name="FORM.production_mailserverusername"	default="#settingsIni.get( "production", "mailserverusername" )#" />
+<cfparam name="FORM.production_mailserverpassword"	default="#settingsIni.get( "production", "mailserverpassword" )#" />
+<cfparam name="FORM.production_mailserversmtpport"	default="#settingsIni.get( "production", "mailserversmtpport" )#" />
+<cfparam name="FORM.production_mailservertls"		default="#settingsIni.get( "production", "mailservertls" )#" />
+<cfparam name="FORM.production_mailserverssl"		default="#settingsIni.get( "production", "mailserverssl" )#" />
 <cfparam name="FORM.production_siteidinurls"		default="#settingsIni.get( "production", "siteidinurls" )#" />
 <cfparam name="FORM.production_indexfileinurls"		default="#settingsIni.get( "production", "indexfileinurls" )#" />
 <cfparam name="FORM.production_cfpassword"			default="" />
@@ -107,6 +114,9 @@ theCFServer		= ((server.ColdFusion.ProductName CONTAINS "ColdFusion") ? 'ColdFus
 <cfparam name="FORM.auto_create"					default="" />
 <cfparam name="FORM.admin_username"					default="admin" />
 <cfparam name="FORM.admin_password"					default="admin" />
+<cfparam name="variables.setupProcessComplete"		default="false" />
+
+
 
 
 <cfset assetpath = settingsIni.get( "production", "assetpath" ) />
@@ -129,5 +139,10 @@ theCFServer		= ((server.ColdFusion.ProductName CONTAINS "ColdFusion") ? 'ColdFus
 
 
 <cfinclude template="_process.cfm" />
-<cfinclude template="_form.cfm" />
+<cfif variables.setupProcessComplete>
+	<cfset application.appAutoUpdated = true />
+	<cfinclude template="_done.cfm" />
+<cfelse>
+	<cfinclude template="_form.cfm" />
+</cfif>
 <cfinclude template="_udf.cfm" />

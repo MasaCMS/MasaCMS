@@ -373,4 +373,10 @@
 
   <!--- clean ini since it removes cf tags --->
   <cfset cleanIni( settingsPath ) />
+
+	<!--- ************************ --->
+	<!--- STEP 6 - Success?                   --->
+	<!--- ************************ --->
+	<cfset variables.setupProcessComplete = !len(trim(errorType)) />
+
 </cfif>

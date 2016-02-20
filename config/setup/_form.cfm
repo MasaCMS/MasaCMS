@@ -3,22 +3,26 @@
 
 <h1 class="page-heading">Welcome to Mura CMS<br/><small>You've made the right choice, let's get started.</small></h1>
 
+<cfif len( trim( message ) )>
+	<p class="alert alert-error">#message#</p>
+</cfif>
+
 <div class="js-wizard-simple block">
 
 	<ul class="nav nav-tabs nav-justified">
 		<li class="active">
-			<a href="##tab-database" data-toggle="tab">1. Database</a>
+			<a href="##tab-database" data-toggle="tab">Database</a>
 		</li>
 		<li>
-			<a href="##tab-admin" data-toggle="tab">2. Admin Account</a>
+			<a href="##tab-admin" data-toggle="tab">Admin Account</a>
 		</li>
 		<li>
-			<a href="##tab-options" data-toggle="tab">3. Options</a>
+			<a href="##tab-options" data-toggle="tab">Options</a>
 		</li>
 	</ul><!-- /.nav-tabs -->
 
 
-	<form class="form-horizontal" action="base_forms_wizard.html" method="post">
+	<form class="form-horizontal" action="index.cfm" method="post">
 
 		<!-- Progress Bar -->
 		<div class="block-content block-content-mini block-content-full border-b">
@@ -31,16 +35,20 @@
 		<!-- Tab Content -->
 		<div class="block-content tab-content">
 
-
 			<!--- TAB-DATABASE --->
-			<div class="tab-pane fade fade-up in push-30-t push-50 active" id="tab-database">
-				<div class="col-sm-10 col-sm-offset-2">
+			<div class="tab-pane fade fade-up in push-20-t push-50 active" id="tab-database">
+
+				<div class="col-sm-10 col-sm-offset-1">
+					<p>You're going to need a database to store all of your content. You can either use an existing database or Mura can create one for you. Tell us what you'd like to do below.</p>
+					<br/><br/>
+				</div>
+
+				<div class="col-sm-10 col-sm-offset-1">
 
 					<div class="mura-control-group">
 						<label>Database</label>
-						<select name="production_dbtype"
-								id="production_dbtype"
-								onChange="javascript:fHandleAutoCreateChange()">
+						<select name	="production_dbtype"
+								id		="production_dbtype" >
 							<option value="" <cfif !len(trim(FORM.production_dbtype))>selected</cfif>>-- Select your Database Type --</option>
 							<option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
 							<option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
@@ -58,11 +66,12 @@
 						</label>
 					</div>
 
-					<div class="mura-control-group database-create">
+					<div class="mura-control-group database-create-yes">
 						<label>#theCFServer# Password</label>
+						<p class="help-block">Required to create database.</p>
 						<input type="password" name="production_cfpassword" value="#FORM.production_cfpassword#" />
 					</div>
-					<div class="mura-control-group database-create">
+					<div class="mura-control-group database-create-yes">
 						<label>Database Server</label>
 						<input type="text" name="production_databaseserver" value="#FORM.production_databaseserver#" />
 					</div>
@@ -73,10 +82,15 @@
 					</div>
 					<div class="mura-control-group database-config">
 						<label>Database Username</label>
+						<p class="help-block database-create-no">Optional if already configured in #theCFServer# admin.</p>
+						<p class="help-block database-create-yes">Required to create database.</p>
 						<input type="text" name="production_dbusername" value="#FORM.production_dbusername#" />
+
 					</div>
 					<div class="mura-control-group database-config">
 						<label>Database Password</label>
+						<p class="help-block database-create-no">Optional if already configured in #theCFServer# admin.</p>
+						<p class="help-block database-create-yes">Required to create database.</p>
 						<input type="password" name="production_dbpassword" value="#FORM.production_dbpassword#" />
 					</div>
 
@@ -142,7 +156,7 @@
 				</div>
 				<div class="col-xs-6 text-right">
 					<button class="wizard-next btn btn-default" type="button">Next <i class="fa fa-arrow-right"></i></button>
-					<button class="wizard-finish btn btn-primary" type="submit"><i class="fa fa-check"></i> Submit</button>
+					<button class="wizard-finish btn btn-primary" name="setupSubmitButton" type="submit"><i class="fa fa-check"></i> Submit</button>
 				</div>
 			</div>
 		</div>
@@ -165,20 +179,19 @@ activepanel=0;
 jQuery(document).ready(function(){
 
 	// don't show DB options till a platform is selected
-	$(".database-config").toggle(<cfif len(trim(FORM.production_dbtype))>true</cfif>);
+	$(".database-config").toggle(#(len(trim(FORM.production_dbtype)) gt 0)#);
 	$('##production_dbtype').on('change',function(){
 		$(".database-config").toggle(this.value.length > 0);
 	});
 
 	// are we creating the db?
-	$(".database-create").toggle(<cfif val(FORM.auto_create)>true</cfif>);
+	$(".database-create-yes").toggle(#(val(FORM.auto_create) eq 1)#);
+	$(".database-create-no").toggle(#(val(FORM.auto_create) eq 0)#);
 	$('##auto_create').on('change',function(){
-		$(".database-create").toggle(this.checked);
+		$(".database-create-yes").toggle(this.checked);
+		$(".database-create-no").toggle(!this.checked);
 	});
 
-
-  $('form:not(.filter) :input:visible:first').focus();
-  setToolTips("##frm");
 });
 </script>
 </body>
