@@ -47,7 +47,7 @@
 ;(function(window){
 	window.mura.Entity=window.mura.Core.extend({
 		init:function(properties){
-			properties || {};
+			properties=properties || {};
 			properties.entityname = properties.entityname || 'content';
 			properties.siteid = properties.siteid || window.mura.siteid;
 			this.set(properties);
