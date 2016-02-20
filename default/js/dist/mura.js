@@ -3704,7 +3704,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			createCookie:createCookie,
 			readCookie:readCookie,
 			trim:trim,
-			hash:hash
+			hashCode:hashCode
 			}
 		),
 		//these are here for legacy support
