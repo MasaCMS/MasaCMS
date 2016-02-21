@@ -51,6 +51,21 @@
 			properties.entityname = properties.entityname || 'content';
 			properties.siteid = properties.siteid || window.mura.siteid;
 			this.set(properties);
+
+			if(typeof this.properties.isnew == 'undefined'){
+				this.properties.isnew=1;
+			}
+
+			if(this.properties.isnew){
+				this.set('isdirty',true);
+			} else {
+				this.set('isdirty',false);
+			}
+
+			if(typeof this.properties.isdeleted == 'undefined'){
+				this.properties.isdeleted=false;
+			}
+			
 			this.cachePut();
 		},
 
@@ -122,8 +137,10 @@
 
 			if(typeof propertyName == 'object'){
 				this.properties=window.mura.deepExtend(this.properties,propertyName);
-			} else {
+				this.set('isdirty',true);
+			} else if(typeof this.properties[propertyName] == 'undefined' || this.properties[propertyName] != propertyValue){
 				this.properties[propertyName]=propertyValue;
+				this.set('isdirty',true);
 			}
 
 			return this;
@@ -247,6 +264,14 @@
 		save:function(){
 			var self=this;
 
+			if(!this.get('isdirty')){
+				return new Promise(function(resolve,reject) {
+					if(typeof resolve == 'function'){
+						resolve(self);
+					}
+				});
+			}
+
 			if(!this.get('id')){
 				return new Promise(function(resolve,reject) {
 					var temp=window.mura.deepExtend({},self.getAll());
@@ -257,7 +282,9 @@
 						success:function(resp){
 							self.set(resp.data);
 							self.set(temp);
-							self.set('id',resp.data.id)
+							self.set('id',resp.data.id);
+							self.set('isdirty',true);
+							self.cachePut();
 							self.save().then(resolve,reject);
 						}
 					});
@@ -287,7 +314,7 @@
 									success:function(resp){
 										if(resp.data != 'undefined'){
 											self.set(resp.data)
-
+											self.set('isdirty',false);
 											if(self.get('saveErrors') || window.mura.isEmptyObject(self.getErrors())){
 												if(typeof resolve == 'function'){
 													resolve(self);
@@ -339,6 +366,7 @@
 								'csrf_token_expires':resp.data.csrf_token_expires
 							},
 							success:function(){
+								this.set('isdeleted',true);
 								self.purgeCache();
 								if(typeof resolve == 'function'){
 									resolve(self);
@@ -362,7 +390,7 @@
 		},
 
 		cachePut:function(){
-			if(this.get('isnew')==0){
+			if(!this.get('isnew')){
 				window.mura.datacache.set(this.get('id'),this);
 			}
 			return this;
