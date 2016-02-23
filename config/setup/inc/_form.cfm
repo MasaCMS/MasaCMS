@@ -117,6 +117,11 @@ to your own modified versions of Mura CMS.
 						<input type="text" name="production_databaseserver" value="#FORM.production_databaseserver#" />
 					</div>
 
+					<div class="mura-control-group database-create-oracle">
+						<label>Oracle Tablespace</label>
+						<input type="text" name="production_dbtablespace" value="#FORM.production_dbtablespace#" />
+					</div>
+
 					<div class="mura-control-group database-config">
 						<label>Datasource Name</label>
 						<input type="text" name="production_datasource" value="#FORM.production_datasource#" />
@@ -253,14 +258,17 @@ jQuery(document).ready(function(){
 	$(".database-config").toggle(#(len(trim(FORM.production_dbtype)) gt 0)#);
 	$('##production_dbtype').on('change',function(){
 		$(".database-config").toggle(this.value.length > 0);
+		$(".database-create-oracle").toggle($('##production_dbtype option:selected').val() == 'oracle' && $('##auto_create').is(':checked'));
 	});
 
 	// are we creating the db?
 	$(".database-create-yes").toggle(#(val(FORM.auto_create) eq 1)#);
 	$(".database-create-no").toggle(#(val(FORM.auto_create) eq 0)#);
+	$(".database-create-oracle").toggle(#(FORM.production_dbtype eq 'oracle' and val(FORM.auto_create) eq 1)#);
 	$('##auto_create').on('change',function(){
 		$(".database-create-yes").toggle(this.checked);
 		$(".database-create-no").toggle(!this.checked);
+		$(".database-create-oracle").toggle($('##production_dbtype option:selected').val() == 'oracle' && $('##auto_create').is(':checked'));
 	});
 
 	$('.build-url-example').on('change',function(){
