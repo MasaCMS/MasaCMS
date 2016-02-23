@@ -311,9 +311,11 @@
     <cfset message = message & " <a href='#context#/config/setup/errors/#listLast( errorFile, '/')#'>Review the error log</a>." />
   </cfif>
   <!--- if mail server username is not supplied then use the admin mail value --->
+  <!---
   <cfif NOT len( FORM.production_mailserverusername )>
-    <cfset FORM.production_mailserverusername = FORM.production_adminemail />
-  </cfif>
+      <cfset FORM.production_mailserverusername = FORM.production_adminemail />
+    </cfif> --->
+
 
   <!--- ************************ --->
   <!--- STEP 3 --->
@@ -341,11 +343,14 @@
   <!--- custom settings --->
 
   <!--- usedefaultsmtpserver --->
+ <!---
   <cfif FORM.production_mailserverip IS NOT "" AND FORM.production_mailserverusername IS NOT "">
-    <cfset usedefaultsmtpserver = 0 />
-    <cfelse>
-    <cfset usedefaultsmtpserver = 1 />
-  </cfif>
+     <cfset usedefaultsmtpserver = 0 />
+     <cfelse>
+     <cfset usedefaultsmtpserver = 1 />
+   </cfif> --->
+   <cfset usedefaultsmtpserver = 1 />
+
 
   <!--- update setting --->
   <cfset settingsIni.set( "production", "usedefaultsmtpserver", usedefaultsmtpserver ) />
@@ -355,14 +360,14 @@
     <!--- update the domain to be local to the domain the server is being installed on --->
     <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
       UPDATE tsettings
-      SET MailServerIP = '#FORM.production_mailserverip#',
-        MailServerUsername = '#FORM.production_mailserverusername#',
-        MailServerPassword = '#FORM.production_mailserverpassword#',
-        MailServerSMTPPort = '#FORM.production_mailserversmtpport#',
-        MailServerPOPPort = '#FORM.production_mailserverpopport#',
-        useDefaultSMTPServer = #usedefaultsmtpserver#,
-        MailServerTLS = '#FORM.production_mailservertls#',
-        MailServerSSL = '#FORM.production_mailserverssl#',
+      SET MailServerIP = '',
+        MailServerUsername = '',
+        MailServerPassword = '',
+        MailServerSMTPPort = '',
+        MailServerPOPPort = '',
+        useDefaultSMTPServer = 1,
+        MailServerTLS = '',
+        MailServerSSL = '',
         Contact = '#FORM.production_adminemail#'
     </cfquery>
   </cfif>
