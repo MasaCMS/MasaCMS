@@ -123,13 +123,11 @@
                     </cfif>
 
                     <!--- site manager --->
-                    <cfset isInSiteManager=listFindNoCase('carch,cfeed,ccategory',rc.originalcircuit) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))>
+                    <cfset isInSiteManager=listFindNoCase('carch,cfeed,ccategory,cchangesets,cfilemanager',rc.originalcircuit) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))>
                     <li id="admin-nav-manager"<cfif isInSiteManager> class="open"</cfif>>
                         <a data-toggle="nav-submenu" class="nav-submenu<cfif isInSiteManager> active"</cfif>"" href="./">
                             <i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitemanager")#</span>
                         </a>
-
-
 						<ul>
 							<li>
 							  <a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
@@ -282,7 +280,7 @@
 
                     <!--- users --->
                     <cfif ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or (application.settingsManager.getSite(session.siteid).getextranet() and application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>
-                        <li id="admin-nav-users">
+                        <li id="admin-nav-users"<cfif rc.originalcircuit eq 'cusers'> class="open"</cfif>>
                             <a class="nav-submenu<cfif listFindNoCase('cUsers,cPrivateUsers,cPublicUsers',rc.originalcircuit) or (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> active</cfif>" data-toggle="nav-submenu" href="##"><i class="mi-users"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.users")#</span></a>
                             <ul>
 
@@ -309,15 +307,15 @@
 
                     <!--- site config --->
                     <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-
-                        <li id="admin-nav-site-config">
+                        <cfset isSiteConfig=listFindNoCase('csettings,cextend,ctrash,cchain,cperm',rc.originalcircuit) >
+                        <li id="admin-nav-site-config"<cfif isSiteConfig> class="open"</cfif>>
 <!--- TODO GoWest : prevent active state when viewing plugin details, e.g.
 /admin/?muraAction=cSettings.editPlugin&moduleID=122506FE-7FFC-422E-A010DDC157B75853
 and
 /admin/?muraAction=cSettings.list#tabPlugins
  : 2015-12-15T11:20:07-07:00 --->
 
-                            <a class="nav-submenu<cfif listFindNoCase('csettings,cextend,ctrash,cchain',rc.originalcircuit) and not listFindNoCase('list',rc.originalfuseaction) or (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>" data-toggle="nav-submenu" href="index.cfm"><i class="mi-wrench"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitesettings")#</span></a>
+                            <a class="nav-submenu<cfif isSiteConfig> active</cfif>" data-toggle="nav-submenu" href="index.cfm"><i class="mi-wrench"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitesettings")#</span></a>
 
                             <ul>
                                 <!--- edit site --->
@@ -334,7 +332,7 @@ and
                                     <a<cfif rc.originalcircuit eq 'cChain'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cChain.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-check"></i>#rc.$.rbKey("layout.approvalchains")#</a>
                                 </li>
                                 <!--- class extensions --->
-                                <li>
+                                <li<cfif rc.originalcircuit eq 'cextend'> class="open"</cfif>>
                                     <a class="nav-submenu" data-toggle="nav-submenu" href="##"><i class="mi-wrench"></i>Class Extensions</a>
                                     <ul>
                                         <!--- class extension manager --->
