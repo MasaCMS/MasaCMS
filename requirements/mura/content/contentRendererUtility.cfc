@@ -733,18 +733,24 @@
 		<cfsavecontent variable="content"><cfoutput><ul class="#arguments.class#">
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 			<cfsilent>
+				<cfif not structKeyExists(arguments.crumbdata[i],'moduleid')>
+					<cfset arguments.crumbdata[i].moduleid="00000000000000000000000000000000000">
+				</cfif>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
 				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
 				<cfset isFileIcon= arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "mi">
 			</cfsilent>
 			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>>
 			<a <cfif arguments.ajax>
-				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
+				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','#arguments.crumbdata[I].moduleid#','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
-				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
+				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=#arguments.crumbdata[I].moduleid#&activeTab=0"
 			</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a></li>
 		</cfloop>
 		<cfsilent>
+			<cfif not structKeyExists(arguments.crumbdata[1],'moduleid')>
+				<cfset arguments.crumbdata[1].moduleid="00000000000000000000000000000000000">
+			</cfif>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
 				<cfset lastlocked="locked">
 			</cfif>
@@ -753,9 +759,9 @@
 		</cfsilent>
 		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>><strong>
 		<a <cfif arguments.ajax>
-			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1)});"
+			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','#arguments.crumbdata[1].moduleid#','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
-			href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
+			href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=#arguments.crumbdata[1].moduleid#&activeTab=0"
 		</cfif>>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a></strong></li>
 		</ul></cfoutput></cfsavecontent>
 
