@@ -673,29 +673,29 @@
 
 							  <div id="arch-mod" class="nav nav-pills pull-left">
 								  	<li>
-										<a <cfif rc.moduleid eq "00000000000000000000000000000000000">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});">
-											<i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#
+										<a data-toggle="popover" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.sitetree"))#" <cfif rc.moduleid eq "00000000000000000000000000000000000">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});">
+											<i class="mi-sitemap"></i> <!---#application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#--->
 										</a>
 									</li>
 
 									<cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
 									<li>
-										<a <cfif rc.moduleid eq "00000000000000000000000000000000003">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000003','00000000000000000000000000000000003','','','Component',1)});">
-										  	<i class="mi-align-justify"></i> #application.rbFactory.getKeyValue(session.rb,"layout.components")#
+										<a data-toggle="popover" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.components"))#" <cfif rc.moduleid eq "00000000000000000000000000000000003">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000003','00000000000000000000000000000000003','','','Component',1)});">
+										  	<i class="mi-align-justify"></i> <!---#application.rbFactory.getKeyValue(session.rb,"layout.components")#--->
 										</a>
 									</li>
 									</cfif>
 									<cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
 									<li>
-										<a <cfif rc.moduleid eq "00000000000000000000000000000000004">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000004','00000000000000000000000000000000004','','','Form',1)});">
-										  <i class="mi-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
+										<a data-toggle="popover" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.forms"))#" <cfif rc.moduleid eq "00000000000000000000000000000000004">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000004','00000000000000000000000000000000004','','','Form',1)});">
+										  <i class="mi-list-alt"></i> <!---#application.rbFactory.getKeyValue(session.rb,"layout.forms")#--->
 										</a>
 									</li>
 									</cfif>
 									<cfif application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
 									<li>
-										<a <cfif rc.moduleid eq "00000000000000000000000000000000099">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000099','00000000000000000000000000000000099','','','Variation',1)});">
-										 	<i class="mi-cloud"></i> #application.rbFactory.getKeyValue(session.rb,"layout.variations")#
+										<a data-toggle="popover" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.variations"))#" <cfif rc.moduleid eq "00000000000000000000000000000000099">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000099','00000000000000000000000000000000099','','','Variation',1)});">
+										 	<i class="mi-cloud"></i> <!---#application.rbFactory.getKeyValue(session.rb,"layout.variations")#--->
 										</a>
 									</li>
 									</cfif>
