@@ -40,7 +40,6 @@
 
 				<div class="col-sm-10 col-sm-offset-1">
 					<p>You're going to need a database to store all of your content. You can either use an existing database or Mura can create one for you. Tell us what you'd like to do below.</p>
-					<br/><br/>
 				</div>
 
 				<div class="col-sm-10 col-sm-offset-1">
@@ -100,8 +99,13 @@
 
 
 			<!-- TAB-ADMIN -->
-			<div class="tab-pane fade fade-up push-30-t push-50" id="tab-admin">
-				<div class="col-sm-10 col-sm-offset-2">
+			<div class="tab-pane fade fade-up push-20-t push-50" id="tab-admin">
+
+				<div class="col-sm-10 col-sm-offset-1">
+					<p>Each Mura installation has a "Super Admin" who wields supreme power over all sites within the database. Choose the security credentials for this user carefully.</p>
+				</div>
+
+				<div class="col-sm-10 col-sm-offset-1">
 
 					<div class="mura-control-group">
 						<label>Super Admin Username</label>
@@ -122,20 +126,29 @@
 			<!-- /TAB-ADMIN -->
 
 			<!-- TAB-OPTIONS -->
-			<div class="tab-pane fade fade-up push-30-t push-50" id="tab-options">
-				<div class="col-sm-10 col-sm-offset-2">
+			<div class="tab-pane fade fade-up push-20-t push-50" id="tab-options">
 
-					<div class="mura-control-group database-config" >
+				<div class="col-sm-10 col-sm-offset-1">
+					<p>Mura has a couple of options for cleaner URLs, what would you like URLs to look like?</p>
+					<strong>Example:</strong>
+					<p id="url_example"><#context#/[siteid]/index.cfm?</p>
+				</div>
+
+				<div class="col-sm-10 col-sm-offset-1">
+
+					<div class="mura-control-group" >
+
 						<label class="css-input switch switch-sm switch-primary">
-							<input type="checkbox" id="production_siteidinurls" name="production_siteidinurls" value="1"
+							<input type="checkbox" id="production_siteidinurls" name="production_siteidinurls" value="1" class="build-url-example"
 							<cfif val(form.production_siteidinurls)>checked</cfif>
 							><span></span> Use SiteIDs in URLs
 						</label>
+
 					</div>
 
-					<div class="mura-control-group database-config" >
+					<div class="mura-control-group" >
 						<label class="css-input switch switch-sm switch-primary">
-							<input type="checkbox" id="production_indexfileinurls" name="production_indexfileinurls" value="1"
+							<input type="checkbox" id="production_indexfileinurls" name="production_indexfileinurls" value="1" class="build-url-example"
 							<cfif val(form.production_indexfileinurls)>checked</cfif>
 							><span></span> Use "index.cfm" in URLS
 						</label>
@@ -167,7 +180,23 @@
 <!-- END Simple Classic Progress Wizard -->
 
 
+<!---
+siteidinurls=0
+indexfileinurls=1
+/index.cfm/test-subpage/sub-of-sub/
 
+siteidinurls=0
+indexfileinurls=0
+/test-subpage/sub-of-sub/
+
+siteidinurls=1
+indexfileinurls=0
+/default/test-subpage/sub-of-sub/
+
+siteidinurls=1
+indexfileinurls=1
+/default/index.cfm/test-subpage/sub-of-sub/
+ --->
 
 <script src="//cmsadmin.staging.gowesthosting.com/template/assets/js/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 <script src="//cmsadmin.staging.gowesthosting.com/template/assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
@@ -185,18 +214,30 @@ jQuery(document).ready(function(){
 	});
 
 	// are we creating the db?
-	$(".database-create-diabled").toggle(#(val(FORM.auto_create) eq 1)#);
-	$('##production_dbtype').on('change',function(){
-		$(".database-create-diabled").toggle(this.checked);
-	});
-
-	// are we creating the db?
 	$(".database-create-yes").toggle(#(val(FORM.auto_create) eq 1)#);
 	$(".database-create-no").toggle(#(val(FORM.auto_create) eq 0)#);
 	$('##auto_create').on('change',function(){
 		$(".database-create-yes").toggle(this.checked);
 		$(".database-create-no").toggle(!this.checked);
 	});
+
+	$('.build-url-example').on('change',function(){
+		var ret = 'http(s)://yourdomain.com#context#';
+
+		if ($("##production_siteidinurls").is(':checked')) {
+			ret = ret + '/[siteid]';
+		}
+
+		if ($("##production_indexfileinurls").is(':checked')) {
+			ret = ret + '/index.cfm';
+		}
+
+		ret = ret + '/full-path-to/page-location/';
+
+		$("##url_example").html(ret);
+	});
+
+	$('.build-url-example').change();
 
 });
 </script>
