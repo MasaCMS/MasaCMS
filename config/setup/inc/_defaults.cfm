@@ -50,14 +50,15 @@ fileDelim			= findNoCase('Windows', Server.OS.Name) ? '\' : '/';
 
 <!-----------------------------------------------------------------------
 	Prevent installation if under a directory called 'mura'
-	- first time time, using automatically derived path
+	- first time, using derived path information.
 ------------------------------------------------------------------------>
-<cfif listFindNoCase(muraInstallPath, 'mura', fileDelim)>
-	<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
-	<cfabort />
+<cfif listFindNoCase(muraInstallPath, 'mura', fileDelim) >
+	<cfset criticalError	= '<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot;</h1> <p>Please move or rename the install directory and try to install again.</p>' />
+	<cfinclude template="_wrapperStart.cfm" />
+	<cfinclude template="_error.cfm" />
+	<cfinclude template="_wrapperEnd.cfm" />
+	<cfabort/>
 </cfif>
-
-
 
 
 <!-----------------------------------------------------------------------
@@ -101,11 +102,13 @@ variables.setupProcessComplete	= false;
 	Prevent installation if under a directory called 'mura'
 	- second time, this time using settings.ini information
 ------------------------------------------------------------------------>
-<cfif listFindNoCase(context, 'mura', fileDelim)>
-	<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
-	<cfabort />
+<cfif listFindNoCase(context, 'mura', fileDelim) >
+	<cfset criticalError	= '<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot;</h1> <p>Please move or rename the install directory and try to install again.</p>' />
+	<cfinclude template="_wrapperStart.cfm" />
+	<cfinclude template="_error.cfm" />
+	<cfinclude template="_wrapperEnd.cfm" />
+	<cfabort/>
 </cfif>
-
 
 
 <!-----------------------------------------------------------------------

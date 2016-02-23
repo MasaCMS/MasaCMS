@@ -65,6 +65,17 @@ to your own modified versions of Mura CMS.
 
 
 <!-----------------------------------------------------------------------
+	There was some sort of compatability or critical error,
+	we cannot continue.
+------------------------------------------------------------------------>
+<cfif form.action eq 'criticalError'>
+	<cfinclude template="inc/_wrapperStart.cfm" />
+	<cfinclude template="inc/_error.cfm" />
+	<cfinclude template="inc/_wrapperEnd.cfm" />
+	<cfabort/>
+</cfif>
+
+<!-----------------------------------------------------------------------
 	If the setup form was submitted, go ahead and try to process it
 ------------------------------------------------------------------------>
 <cfif form.action eq 'doSetup'>
