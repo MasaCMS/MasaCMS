@@ -323,7 +323,7 @@
 
   <!--- save settings --->
   <cfif NOT len( errorType )>
-    <cfloop list="#FORM.fieldnames#" index="ele">
+    <cfloop list="#structKeyList(FORM)#" index="ele">
       <!--- check to see if we are in one of the proper profiles --->
       <cfif listFindNoCase( validSections, listGetAt( ele, 1, "_" ) )>
         <cfset section = listGetAt( ele, 1, "_" ) />

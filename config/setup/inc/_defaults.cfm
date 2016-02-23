@@ -114,7 +114,6 @@ variables.setupProcessComplete	= false;
 <!-----------------------------------------------------------------------
 	DEFAULTS
 ------------------------------------------------------------------------>
-<cfparam name="FORM.fieldnames" 					default="" />
 <cfparam name="FORM.action" 						default="showForm" />
 <!--- database tab --->
 <cfparam name="FORM.production_dbtype"				default="#settingsIni.get( "production", "dbtype" )#" />
@@ -130,7 +129,13 @@ variables.setupProcessComplete	= false;
 <cfparam name="FORM.admin_username"					default="admin" />
 <cfparam name="FORM.admin_password"					default="admin" />
 <!--- options tab --->
-<cfparam name="FORM.production_siteidinurls"		default="#settingsIni.get( "production", "siteidinurls" )#" />
-<cfparam name="FORM.production_indexfileinurls"		default="#settingsIni.get( "production", "indexfileinurls" )#" />
+<cfif form.action eq 'doSetup'>
+	<cfparam name="FORM.production_siteidinurls"	default="0" />
+	<cfparam name="FORM.production_indexfileinurls"	default="0" />
+<Cfelse>
+	<cfparam name="FORM.production_siteidinurls"	default="#settingsIni.get( "production", "siteidinurls" )#" />
+	<cfparam name="FORM.production_indexfileinurls"	default="#settingsIni.get( "production", "indexfileinurls" )#" />
+</cfif>
 <cfparam name="FORM.production_cfpassword"			default="" />
+<!--- <cfdump var="#form#" abort="true"> --->
 
