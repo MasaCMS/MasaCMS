@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 
 	/config/appcfc/onRequestStart_include.cfm
 ------------------------------------------------------------------------>
-<cfif NOT isDefined( "renderSetup" ) OR NOT renderSetup>
+<cfif !structKeyExists( request, 'renderMuraSetup' ) OR !request.renderMuraSetup >
 	<cfabort />
 </cfif>
 

@@ -112,7 +112,7 @@ If it has not, set application.appInitialized=false. --->
 	</cfif>
 
 	<cfif not application.setupComplete>
-		<cfset renderSetup = true />
+		<cfset request.renderMuraSetup = true />
 		<!--- go to the index.cfm page (setup) --->
 		<cfinclude template="/muraWRM/config/setup/index.cfm">
 		<cfabort>
