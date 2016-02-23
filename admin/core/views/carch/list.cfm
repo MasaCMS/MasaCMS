@@ -689,7 +689,7 @@
   								  <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
   								  <li>
   									  <a data-toggle="popover" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.forms"))#" <cfif rc.moduleid eq "00000000000000000000000000000000004">class="active"</cfif> href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000004','00000000000000000000000000000000004','','','Form',1)});">
-  										<i class="mi-list-alt"></i> <!---#application.rbFactory.getKeyValue(session.rb,"layout.forms")#--->
+  										<i class="mi-toggle-on"></i> <!---#application.rbFactory.getKeyValue(session.rb,"layout.forms")#--->
   									  </a>
   								  </li>
   								  </cfif>

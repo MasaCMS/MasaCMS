@@ -159,6 +159,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 				</cfif>
 			</cfloop>
+			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
+				<cfloop list="Folder" index="i">
+					<cfquery name="rsItemTypes" dbtype="query">
+						select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) = 'default'
+					</cfquery>
+					<cfif not rsItemTypes.recordcount or rsItemTypes.recordcount and (rsItemTypes.adminonly neq 1 or (
+						rc.$.currentUser().isAdminUser()
+						or rc.$.currentUser().isSuperUser()
+						))>
+						<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
+							<li class="new#i#">
+								<cfif len(rsItemTypes.description)>
+									<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a>
+								</cfif>
+								<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=#esapiEncode('url',rc.moduleid)#&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</span></a>
+							</li>
+						</cfif>
+					</cfif>
+					<cfif i eq 'Variation'>
+						<cfquery name="rsItemTypes" dbtype="query">
+						select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) != 'default'
+						<cfif not (
+								rc.$.currentUser().isAdminUser()
+								or rc.$.currentUser().isSuperUser()
+								)>
+								and adminonly !=1
+							</cfif>
+						</cfquery>
+						<cfloop query="rsItemTypes">
+							<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/#rsItemTypes.subType#')>
+								<cfset output = $.renderEvent('on#i##rsItemTypes.subType#NewContentMenuRender')>
+								<cfif len(output)>
+									#output#
+								<cfelse>
+									<li class="new#i#">
+										<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a></cfif>
+										<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=#esapiEncode('url',rc.moduleid)#&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype=rsItemTypes.subtype,siteid=rc.siteID)#"></i> <span> <!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#/ --->#rsItemTypes.subType#</span></a>
+									</li>
+								</cfif>
+							</cfif>
+						</cfloop>
+					</cfif>
+				</cfloop>
 		<cfelseif rc.ptype neq 'Gallery'>
 			<cfloop list="#typeList#" index="i">
 				<cfquery name="rsItemTypes" dbtype="query">
