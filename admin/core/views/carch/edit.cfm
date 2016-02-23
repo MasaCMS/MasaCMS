@@ -484,7 +484,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<!--- crumbdata --->
-	<cfif rc.compactDisplay neq "true" and rc.moduleid eq '00000000000000000000000000000000000'>
+	<cfif rc.compactDisplay neq "true">
 			#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</cfif>
 

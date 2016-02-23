@@ -50,7 +50,7 @@
 <cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 <cfinclude template="js.cfm">
 <cfswitch expression="#rc.moduleID#">
-	<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
+	<cfcase value="LEGACY">
 		<cfset rc.perm=application.permUtility.getPerm(rc.moduleid,rc.siteid)>
 
 		<cfparam name="rc.sortBy" default="menutitle">
@@ -427,7 +427,7 @@
 		<cfinclude template="draftpromptjs.cfm">
 	</cfcase>
 
-	<cfcase value="00000000000000000000000000000000000">
+	<cfcase value="00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000">
 		<cfsilent>
 			<cfset crumbdata=application.contentManager.getCrumbList(rc.topid,rc.siteid)>
 
@@ -670,6 +670,25 @@
 						  </div>
 						  <!-- /block header -->
 						  <div class="block-content">
+
+							<a class="btn btn-default" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});">
+								#application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#
+							</a>
+							<cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
+							<a class="btn btn-default"  onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000003','00000000000000000000000000000000003','','','Component',1)});">
+							  	#application.rbFactory.getKeyValue(session.rb,"layout.components")#
+							</a>
+							</cfif>
+							<cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
+							<a class="btn btn-default"  onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000004','00000000000000000000000000000000004','','','Form',1)});">
+							  #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
+							</a>
+							</cfif>
+							<cfif application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
+							<a class="btn btn-default"  onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000099','00000000000000000000000000000000099','','','Variation',1)});">
+							 	#application.rbFactory.getKeyValue(session.rb,"layout.variations")#
+							</a>
+							</cfif>
 						  	<!--- site manager architectural view container --->
 						<div id="gridContainer">
 

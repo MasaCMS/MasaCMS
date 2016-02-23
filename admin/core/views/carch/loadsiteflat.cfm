@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cftry>
 <cfscript>
 	//data=structNew();
-	
+
 	$=application.serviceFactory.getBean("MuraScope");
 	rsTypes=application.configBean.getClassExtensionManager().getSubTypes(siteid=session.siteid,activeOnly=true);
 
@@ -60,18 +60,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	if(filterSubtypes){
 		qs = new Query();
 	    qs.setDBType('query');
-	    qs.setAttributes(subtypes=rsTypes); 
+	    qs.setAttributes(subtypes=rsTypes);
 	    qs.setSQL('SELECT * FROM subtypes where adminOnly=1');
 	    rsAdminOnly = qs.execute(sql='SELECT * FROM subtypes where adminOnly=1').getResult();
 	    rsTypes = qs.execute(sql='SELECT * FROM subtypes where adminOnly !=1').getResult();
 	}
-  
+
 	if(!listFindNoCase('myexpires,expires',$.event('report')) && $.event('sortby') == 'expiration'){
 		$.event('sortby','lastupdate');
 	} else if(!listFindNoCase('mysubmissions,myapprovals',$.event('report')) && $.event('sortby') == 'duedate'){
 		$.event('sortby','lastupdate');
 	}
-	
+
 	session.flatViewArgs["#rc.siteID#"].moduleid=$.event("moduleid");
 	session.flatViewArgs["#rc.siteID#"].sortBy=$.event("sortby");
 	session.flatViewArgs["#rc.siteID#"].sortDirection=$.event("sortdirection");
@@ -95,14 +95,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			session.flatViewArgs["#rc.siteID#"]["#taggrouparray[g]#tags"]=$.event("#taggrouparray[g]#tags");
 		}
 	}
-	 
+
 	feed=$.getBean("feed");
-	//feed.setType('*');
+	feed.setType('*');
 	feed.setMaxItems(500);
 	feed.setNextN(10);
 	feed.setLiveOnly(0);
 	feed.setShowNavOnly(0);
-	
+
 	paramsStarted=false;
 	tagStarted=false;
 
@@ -135,51 +135,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	if(tagStarted){
 		feed.addParam(relationship=")");
 	}
-	
+
 	if(len($.event("type"))){
 		paramsStarted=true;
-		feed.addParam(field="tcontent.type",criteria=$.event("type"),condition="in");	
+		feed.addParam(field="tcontent.type",criteria=$.event("type"),condition="in");
 	}
-	
+
 	if(len($.event("subtype"))){
 		paramsStarted=true;
-		feed.addParam(field="tcontent.subtype",criteria=$.event("subtype"));	
+		feed.addParam(field="tcontent.subtype",criteria=$.event("subtype"));
 	}
-	
+
 	if(len($.event("categoryID"))){
 		paramsStarted=true;
-		feed.setCategoryID($.event("categoryID"));	
+		feed.setCategoryID($.event("categoryID"));
 	}
-	
+
 	if(!(listFindNoCase('myapprovals,mysubmissions',$.event("report")) && $.event("sortby") == 'duedate')){
 		feed.setSortBy($.event("sortBy"));
 	} else {
 		feed.setSortBy("lastupdate");
 		feed.setSortBy("desc");
 	}
-	
+
 	if(len($.event("sortDirection"))){
-		feed.setSortDirection($.event("sortDirection"));	
+		feed.setSortDirection($.event("sortDirection"));
 	}
-	
+
 	if($.event('report') eq "lockedfiles"){
 		paramsStarted=true;
-		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");	
-	
+		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");
+
 	} else if($.event('report') eq "mylockedcontent"){
 		paramsStarted=true;
 		feed.addParam(field="tcontentstats.lockid",condition="=",criteria=$.currentUser("userID"));
-	
+
 	} else if($.event('report') eq "expires"){
 		paramsStarted=true;
 		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
-		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));		
-	
+		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));
+
 	} else if($.event('report') eq "myexpires"){
 		paramsStarted=true;
 		subList=$.getBean("contentManager").getExpiringContent($.event("siteID"),$.currentUser("userID"));
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
-	
+
 	} else if($.event('report') eq "mydrafts"){
 		paramsStarted=true;
 		drafts=$.getBean("contentManager").getDraftList(siteid=$.event("siteID"), startdate=dateAdd('m',-3,now()));
@@ -202,8 +202,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		feed.setLiveOnly(0);
 
 	}
-	
-	if(len($.event("keywords"))){	
+
+	if(len($.event("keywords"))){
 		paramsStarted=true;
 		subList=$.getBean("contentManager").getPrivateSearch($.event("siteID"),$.event("keywords"));
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
@@ -226,7 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.addParam(relationship=")");
 		}
 	}
-	
+
 	iterator=feed.getIterator();
 
 /*
@@ -272,7 +272,7 @@ if(len($.siteConfig('customTagGroups'))){
 
 			<cfloop query="rs">
 				<cfquery name="rstemp" dbtype="query">
-					select max(lastupdate) as maxLastUpdate,max(displayStart) as maxDisplayStart,max(publishDate) as maxPublishDate from drafts 
+					select max(lastupdate) as maxLastUpdate,max(displayStart) as maxDisplayStart,max(publishDate) as maxPublishDate from drafts
 					where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contentid#">
 				</cfquery>
 
@@ -284,7 +284,7 @@ if(len($.siteConfig('customTagGroups'))){
 				<cfelseif isDate(rstemp.maxdisplayStart)>
 					<cfset querySetCell(rs, "duedate", rstemp.maxdisplayStart, rs.currentrow)>
 				</cfif>
-				
+
 			</cfloop>
 			<cfif $.event('sortby') eq 'lastupdate'>
 				<cfquery name="rs" dbtype="query">
@@ -295,28 +295,28 @@ if(len($.siteConfig('customTagGroups'))){
 					select * from rs order by duedate #feed.getSortDirection()#, lastupdate #feed.getSortDirection()#
 				</cfquery>
 			</cfif>
-			
+
 			<cfset iterator.setQuery(rs,feed.getNextN())>
 	<cfelseif listFindNoCase('mydrafts',$.event('report'))>
 		<cfset rs=iterator.getQuery()>
 
 		<cfloop query="rs">
 			<cfquery name="rstemp" dbtype="query">
-				select max(lastupdate) as mostrecent from drafts 
+				select max(lastupdate) as mostrecent from drafts
 				where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contentid#">
 			</cfquery>
-			
+
 			<cfset querySetCell(rs, "lastupdate", rstemp.mostrecent, rs.currentrow)>
-				
+
 		</cfloop>
 		<cfif $.event('sortby') eq 'lastupdate'>
 			<cfquery name="rs" dbtype="query">
 				select * from rs order by lastupdate #feed.getSortDirection()#
 			</cfquery>
 		</cfif>
-		
+
 		<cfset iterator.setQuery(rs,feed.getNextN())>
-	</cfif>	
+	</cfif>
 </cfif>
 
 <cfset iterator.setPage($.event('page'))>
@@ -336,7 +336,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset args=arrayNew(1)>
 		<cfset args[1]="#iterator.getFirstRecordOnPageIndex()#-#iterator.getLastRecordOnPageIndex()#">
 		<cfset args[2]=iterator.getRecordCount()>
-		
+
 		<div class="mura-results-wrapper">
 		<p class="search-showing">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#</p>
 		<cfif iterator.pageCount() gt 1>
@@ -345,12 +345,12 @@ if(len($.siteConfig('customTagGroups'))){
 				<cfloop from="#max($.event('page')-5,1)#" to="#min($.event('page')+5,iterator.pageCount())#" index="p">
 				<li<cfif $.event('page') eq p> class="active"</cfif>><a href="" data-page="#p#"<cfif $.event('page') eq p> class="active"</cfif>>#p#</a></li>
 				</cfloop>
-				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>	
+				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>
 			</ul>
 		</cfif>
 		</div>
-	</cfif>	
-</cfoutput>	
+	</cfif>
+</cfoutput>
 </cfsavecontent>
 
 <cfset hasCustomImage=structKeyExists(getMetaData($.getBean('fileManager').getValue('imageProcessor')),'getCustomImage')>
@@ -358,7 +358,7 @@ if(len($.siteConfig('customTagGroups'))){
 <cfoutput>
 <div id="main">
 <cfif not len($.event("report"))>
-<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</h2>	
+<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</h2>
 <cfelseif $.event('report') eq 'mylockedcontent'>
 	<cfif $.siteConfig('hasLockableNodes')>
 		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#</h2>
@@ -366,13 +366,13 @@ if(len($.siteConfig('customTagGroups'))){
 		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#</h2>
 	</cfif>
 <cfelse>
-<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")#</h2>	
+<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")#</h2>
 </cfif>
 
 	<div class="navSort">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:&nbsp;</h3>
 		<ul class="navTask nav nav-pills">
-			<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->	
+			<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->
 			<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
 			<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a></li>
 			<!---<li><a href="" data-sortby="releasedate"<cfif $.event("sortBy") eq "releasedate"> class="active"</cfif>>Release Date</a></li>--->
@@ -393,7 +393,7 @@ if(len($.siteConfig('customTagGroups'))){
 			<th></th>
 		  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
 			<!---<th nowrap class="actions">&nbsp;</th>--->
-		</tr> 
+		</tr>
 	 	<cfif iterator.hasNext()>
 		<cfloop condition="iterator.hasNext()">
 		<cfsilent>
@@ -403,7 +403,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 		<cfset isLocked=$.siteConfig('hasLockableNodes') and len(item.getLockID()) and item.getLockType() eq 'node'>
 		<cfset isLockedBySomeoneElse=isLocked and item.getLockID() neq session.mura.userid>
-		
+
 		<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all'>
 			<cfset newcontent=verdict>
 		<cfelseif verdict neq 'none'>
@@ -425,31 +425,31 @@ if(len($.siteConfig('customTagGroups'))){
 		<!---
 		<cfif $.event('report') eq "mydrafts">
 			<cfquery dbtype="query" name="rsHasPendingApprovals">
-				select * from sublist 
-				where 
+				select * from sublist
+				where
 				contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#item.getContentID()#">
 				and approvalStatus='Pending'
 			</cfquery>
 			<cfquery dbtype="query" name="rsHasDrafts">
-				select * from sublist 
-				where 
+				select * from sublist
+				where
 				contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#item.getContentID()#">
 				and approvalStatus != 'Pending'
 			</cfquery>
 		</cfif>
 		--->
 		</cfsilent>
-	
+
 		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#esapiEncode('html_attr',item.getModuleID())#" data-type="#item.getType()#" class="mura-node-data">
 			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"><i class="mi-plus-circle"></i></a></td>
 			<td class="var-width item">
-			
+
 			<div class="actions">
 				<ul class="siteSummary">
 					<cfif not listFindNoCase('none,read',verdict) or $.event('report') eq 'mydrafts'>
-					 
+
 					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" class="draftprompt" href="#editLink#"><i class="mi-pencil"></i></a></li>
-						
+
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="File">
 							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="mi-download"></i></a></li>
@@ -458,22 +458,22 @@ if(len($.siteConfig('customTagGroups'))){
 							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
 							</cfdefaultcase>
 						</cfswitch>
-						 
+
 						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-book"></i></a></li>
-					      
+
 					    <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="./?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-group"></i></a></li>
 					    <cfelse>
 							<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 						</cfif>
-					    
+
 					    <cfif deletable and not isLockedBySomeoneElse>
 					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="./?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#esapiEncode('url',item.getParentID())#&startrow=#esapiEncode('url',$.event('startrow'))##rc.$.renderCSRFTokens(context=item.getContentID() & 'deleteall',format='url')#"<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>
 							<i class="mi-times-circle"></i></a></li>
 					    <cfelseif rc.locking neq 'all'>
 					        <li class="delete disabled"><i class="mi-times-circle"></i></li>
 					    </cfif>
-					
+
 					<cfelse>
 					    <li class="edit disabled"><i class="mi-pencil"></i></li>
 						<li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
@@ -481,10 +481,10 @@ if(len($.siteConfig('customTagGroups'))){
 						<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 						<li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
 					</cfif>
-					
+
 				</ul>
-			</div> 
-			
+			</div>
+
 			<!---
 			<cfif listFindNoCase('mysubmissions,myapprovals',$.event('report')) and isDate(item.getDueDate())>
 				<p><i class="mi-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.due')#: #LSDateFormat(item.getDueDate(),session.dateKeyFormat)#</p>
@@ -492,9 +492,9 @@ if(len($.siteConfig('customTagGroups'))){
 			--->
 			<!---
 			<a href="##" data-toggle="tooltip" rel="tooltip" data-html="true" title="#esapiEncode('html_attr',$.dspZoomText(crumbData=crumbdata,ajax=true))#">
-				Crumblist as Tooltip</a> 
+				Crumblist as Tooltip</a>
 			--->
-			
+
 			<h2>
 				<cfif not listFindNoCase('none,read',verdict) or listFindNoCase('myapprovals,mysubmissions',$.event('report'))>
 					<a class="draftprompt" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" class="draftprompt"  href="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#esapiEncode('html',item.getMenuTitle())#
@@ -509,7 +509,7 @@ if(len($.siteConfig('customTagGroups'))){
 								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.draft')#
 							</cfif>
 							)
-						</cfif>	
+						</cfif>
 						--->
 						<cfif listFindNoCase('myapprovals,mysubmissions',$.event('report'))>
 							(<cfif item.getApprovalStatus() eq 'Pending'>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.pending')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.draft')#</cfif>)
@@ -531,7 +531,7 @@ if(len($.siteConfig('customTagGroups'))){
 						)
 					</cfif>
 					--->
-				</cfif>	
+				</cfif>
 			</h2>
 			<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
 			<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><cfif hasCustomImage><img src="#item.getImageURL(height=80,width=80)#" /><cfelse><img src="#item.getImageURL(size='small')#" /></cfif></a></div>
@@ -543,9 +543,9 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfelseif $.siteConfig('hasLockableNodes')>
 						<p class="locked-offline"><i class="mi-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodelockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#</p>
 					</cfif>
-					
+
 				</cfif>
-				
+
 				#$.dspZoom(crumbData=crumbdata,ajax=true,class="breadcrumb")#
 
 				<ul class="nodeMeta">
@@ -553,7 +553,7 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfset args[1]=LSDateformat(item.getLastUpdate(),session.dateKeyFormat)>
 					<cfset args[2]=LSTimeFormat(item.getLastUpdate())>
 					<cfset args[3]=item.getLastUpdateBy()></cfsilent>
-					<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>		
+					<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>
 					<cfif isDate(item.getCreated())>
 					<cfsilent><cfset args=arrayNew(1)>
 					<cfset args[1]=LSDateformat(item.getCreated(),session.dateKeyFormat)>
@@ -580,7 +580,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfelse>
 			<tr>
 				<td colspan="3">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</td>
-			</tr>	
+			</tr>
 		</cfif>
 	</table>
 
@@ -611,8 +611,8 @@ if(len($.siteConfig('customTagGroups'))){
 				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
 		</ul>
 	</div>
-	
-	
+
+
 	<div class="well">
 	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 	<div id="filters" class="module">
@@ -620,19 +620,19 @@ if(len($.siteConfig('customTagGroups'))){
 	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</label>
     <input class="text" id="contentKeywords" value="#esapiEncode('html_attr',session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" />
 	</div>
-  
+
 
     <cfif $.event("report") neq "lockedfiles">
 	<div class="module mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</label>
 		<select name="contentTypeFilter" id="contentTypeFilter">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
-			<cfloop list="#$.getBean('contentManager').getTreeLevelList()#" index="i">
+			<cfloop list="#listSort('#$.getBean('contentManager').getTreeLevelList()#,Form,Component','textNoCase')#" index="i">
 				<option value="#i#^Default"<cfif $.event('type') eq i and $.event('subtype') eq 'Default'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")#<!---  / Default ---></option>
 				<cfquery name="rsSubTypes" dbtype="query">
 					select * from rsTypes where type='#i#' and subtype!='Default'
 					<cfif not (
-						rc.$.currentUser().isAdminUser() 
+						rc.$.currentUser().isAdminUser()
 						or rc.$.currentUser().isSuperUser()
 						)>
 						and adminonly !=1
@@ -645,7 +645,7 @@ if(len($.siteConfig('customTagGroups'))){
 		</select>
 	</div>
 	</cfif>
-	
+
 
 	<div class="module mura-control-group" id="mura-filter-tags">
 		<cfif len($.siteConfig('customTagGroups'))>
@@ -681,7 +681,7 @@ if(len($.siteConfig('customTagGroups'))){
 		</div>
 		</cfloop>
 	</cfif>
-	
+
 	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 		<div class="module" id="mura-list-tree">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
@@ -689,7 +689,7 @@ if(len($.siteConfig('customTagGroups'))){
 		</div>
 	</cfif>
 
-	
+
 	<cfif session.flatViewArgs["#rc.siteID#"].filtered>
 		<button type="submit" class="btn" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
 		<button type="submit" class="btn" name="filterList" onclick="clearFlatviewFilter()"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#</button>
@@ -706,7 +706,7 @@ if(len($.siteConfig('customTagGroups'))){
 			initFlatViewArgs(),
 			{
 					report:'#esapiEncode('javascript',session.flatViewArgs["#rc.siteID#"].report)#',
-					sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#', 
+					sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#',
 					sortdirection:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortdirection)#',
 					tag:'',
 					type:'',
@@ -717,8 +717,8 @@ if(len($.siteConfig('customTagGroups'))){
 					filtered:false
 					<cfif len($.siteConfig('customTagGroups'))>
 					<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-					,#g#tags:''	
-					</cfloop>	
+					,#g#tags:''
+					</cfloop>
 					</cfif>
 
 					});
@@ -730,5 +730,3 @@ if(len($.siteConfig('customTagGroups'))){
 </cfoutput>
 <!---</cfsavecontent>
 <cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>--->
-
-

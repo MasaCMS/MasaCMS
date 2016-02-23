@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.rsTop.type eq 'File'>
   <cfset icon=application.classExtensionManager.getCustomIconClass(siteid=rc.rstop.siteid,type=rc.rstop.type,subtype=rc.rstop.subtype)>
-  
+
   <cfif not len(icon)>
     <cfset icon=lcase(rc.rsTop.fileExt)>
   </cfif>
@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset session.flatViewArgs["#rc.siteID#"].tab=0>
 
-<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>	
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 </cfsilent>
 
 <cfsavecontent variable="data.html">
@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
 
   <form novalidate="novalidate" class="viewUpdate clearfix" name="viewUpdate" method="post" action="./index.cfm?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteID)#&moduleid=#esapiEncode('url',rc.moduleID)#&topid=#esapiEncode('url',rc.topID)#">
-  
+
   <div class="btn-group" id="sm-modify-view">
     <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
       <i class="mi-eye"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#
@@ -134,11 +134,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <div class="dropdown-menu">
       	<!---  <h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h3> --->
       	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
-        <cfif rc.topid neq '00000000000000000000000000000000001' 
+        <cfif rc.topid neq '00000000000000000000000000000000001'
           	  and (
-          	  		perm eq 'Editor' 
-        				or 
-        			(perm eq 'Author' and application.configBean.getSortPermission() eq "author") 
+          	  		perm eq 'Editor'
+        				or
+        			(perm eq 'Author' and application.configBean.getSortPermission() eq "author")
         		  )>
             <input name="nextN" value="#session.mura.nextN#" type="text" class="input-small" size="2" maxlength="4" />
             #application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#
@@ -178,8 +178,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       })
     })
   </script>
-  
-  <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.sortBy eq 'orderno'>  
+
+  <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.sortBy eq 'orderno'>
     <div class="alert" id="sitemgr-reorder" style="display:none">
   	When you're done re-ordering, click "Update." <input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
   	</div>
@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <dt>
 
          <a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#');"><i class="mi-plus-circle"></i></a>
-        
+
           <cfif hasKids>
   	    	<span class="hasChildren open" onclick="siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteID)#','#esapiEncode('javascript',rc.topid)#','#esapiEncode('javascript',rc.moduleid)#','#esapiEncode('javascript',rc.sortby)#','#esapiEncode('javascript',rc.sortdirection)#','#esapiEncode('javascript',rc.rstop.type)#',1);"></span>
   		</cfif>
@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>
         </cfif>
       </cfsilent>
-  		
+
           <cfif not listFindNoCase('none,read',perm)>
             <a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
           <cfelse>
@@ -259,15 +259,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   					<span class="bullet" title="#rc.rstop.inheritObjects#">&bull;</span>
   			</cfif>
   			 <span>#rc.rstop.inheritObjects#</span>
-          	
+
          		<cfif perm eq 'editor' and request.hasLayoutObjectsTab></a></cfif>
         </dd>
-        
+
   	    <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
-  	    
+
   			 <cfif perm eq 'editor' and request.hasPublishingTab>
             <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
-  					
+
   			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
               	<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
               <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
@@ -282,11 +282,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   			<cfif perm eq 'editor'and request.hasPublishingTab></a></cfif>
   			<!--- <i class="mi-calendar"></i> --->
   		</dd>
-  		
+
          <dd class="template">
   	  		<cfif perm eq 'editor' and request.hasLayoutObjectsTab><a class="mura-quickEditItem<cfif len(rc.rstop.template) or len(rc.rstop.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
   			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
-  				  <i class="mi-list-alt" title="#rc.rstop.template#"></i><span>#rc.rstop.template#</span> 
+  				  <i class="mi-list-alt" title="#rc.rstop.template#"></i><span>#rc.rstop.template#</span>
   			<cfelse>
   				<span class="bullet" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#">&bull;</span>
              		<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
@@ -302,10 +302,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </dd>
         <cfelse>
           <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
-        
+
          <cfif perm eq 'editor' and request.hasPublishingTab>
             <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
-            
+
         <cfif rc.rstop.Display eq 1 and rc.rstop.approved >
                 <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
               <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
@@ -328,37 +328,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </cfif></dd>
         <dd class="actions">
         	<ul>
-            <cfif not listFindNoCase('none,read',perm)>
-              <cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
-              <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"><i class="mi-pencil"></i></a></li>
-            
-                <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="mi-globe"></i></a></li>
-               
-              <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#"><i class="mi-book"></i></a></li>
-              <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-                <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
-                <cfelse>
-                <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
-              </cfif>
-              <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-                <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
-              </cfif>
-            <cfelse>
-             <li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
-              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsTop.filename)#');"><i class="mi-globe"></i></a></li>
-                
-              <li class="version-history disabled"><a><i class="mi-book"></i></a></li>
-              <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
-              <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
-            </cfif>
-  		<cfset pluginEvent.setValue('type', rc.rstop.type)>
-          <cfset pluginEvent.setValue('filename', rc.rstop.filename)>
-          <cfset pluginEvent.setValue('contentid', rc.rstop.contentid)>
-          <cfset pluginEvent.setValue('contenthistid', rc.rstop.contenthistid)>
-  		#application.pluginManager.renderScripts("onContentList",rc.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#rc.rstop.type#List",rc.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#rc.rstop.type##rc.rstop.subtype#List",rc.siteid,pluginEvent)#
+            <cfif rc.rstop.type neq 'Module' and not listFindNoCase('none,read',perm)>
+              	<cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
+              	<li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"><i class="mi-pencil"></i></a></li>
+              	<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="mi-globe"></i></a></li>
+              	<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#"><i class="mi-book"></i></a></li>
+	              <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+	                	<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
+	                <cfelse>
+	                	<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+	              </cfif>
+	              <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
+	                <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+	              </cfif>
+            	<cfelse>
+             	<li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
+
+			 	<cfif rc.rstop.type eq 'Module'>
+				 	<li class="preview disabled"><i class="mi-globe"></i></li>
+			 	<cfelse>
+			  		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsTop.filename)#');"><i class="mi-globe"></i></a></li>
+		  		</cfif>
+	              <li class="version-history disabled"><a><i class="mi-book"></i></a></li>
+	              <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+	              <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+            	</cfif>
+  			<cfset pluginEvent.setValue('type', rc.rstop.type)>
+          	<cfset pluginEvent.setValue('filename', rc.rstop.filename)>
+          	<cfset pluginEvent.setValue('contentid', rc.rstop.contentid)>
+          	<cfset pluginEvent.setValue('contenthistid', rc.rstop.contenthistid)>
+  			#application.pluginManager.renderScripts("onContentList",rc.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#rc.rstop.type#List",rc.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#rc.rstop.type##rc.rstop.subtype#List",rc.siteid,pluginEvent)#
           </ul></dd>
         </dl>
-        
+
         <cfif hasKids>
           <cf_dsp_nest topid="#rc.topid#" parentid="#rc.topid#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#rc.rstop.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#rc.startrow#" sortBy="#rc.sortBy#" sortDirection="#rc.sortDirection#" pluginEvent="#pluginEvent#" muraScope="#rc.$#">
         </cfif>
@@ -376,4 +378,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset data.perm=perm>
 <cfset data.sortBy=rc.sortBy>
 <cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput><cfabort>
-

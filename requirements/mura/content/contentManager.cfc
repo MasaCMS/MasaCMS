@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
 				<cfset rs=variables.contentGateway.getNest(data.topid,data.siteid,data.sortBy,data.sortDirection,data.searchString) />
 			</cfcase>
-			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
+			<cfcase value="LEGACY">
 				<cfset feed=getBean('feed')>
 				<cfif data.moduleID eq "00000000000000000000000000000000003">
 					<cfset feed.setType('Component')>
