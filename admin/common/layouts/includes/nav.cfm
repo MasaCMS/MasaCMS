@@ -130,7 +130,7 @@
                         </a>
 						<ul>
 							<li>
-							  <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000000'> active</cfif>" data-moduleid="00000000000000000000000000000000000" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
+							  <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000000'> active</cfif>" data-moduleid="00000000000000000000000000000000000" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#&moduleid=00000000000000000000000000000000000">
 								<i class="mi-cog"></i>
 								#application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#
 							  </a>
@@ -259,7 +259,7 @@
                             </ul>
                         </li>
                     </cfif>
-                    
+
                     <!--- Plugins --->
                       <cfset rc.rsplugins=application.pluginManager.getSitePlugins(siteID=session.siteid, applyPermFilter=true) />
                       <cfif rc.rsplugins.recordcount or listFind(session.mura.memberships,'S2')>
