@@ -180,6 +180,9 @@
 		<cfcase value="Calendar">
 			<cfreturn "mi-calendar">
 		</cfcase>
+		<cfcase value="Component">
+			<cfreturn "mi-align-justify">
+		</cfcase>
 		<cfcase value="Gallery">
 			<cfreturn "mi-th">
 		</cfcase>
@@ -194,6 +197,9 @@
 		</cfcase>
 		<cfcase value="File">
 			<cfreturn "mi-file-text-o">
+		</cfcase>
+		<cfcase value="Form">
+			<cfreturn "mi-list-alt">
 		</cfcase>
 		<cfdefaultcase>
 			<cfreturn "mi-file">
