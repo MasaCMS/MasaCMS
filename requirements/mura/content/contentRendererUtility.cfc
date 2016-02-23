@@ -199,7 +199,7 @@
 			<cfreturn "mi-file-text-o">
 		</cfcase>
 		<cfcase value="Form">
-			<cfreturn "mi-list-alt">
+			<cfreturn "mi-toggle-on">
 		</cfcase>
 		<cfdefaultcase>
 			<cfreturn "mi-file">

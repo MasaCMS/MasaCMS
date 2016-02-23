@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset returnVar = "mi-th">
 			</cfcase>
 			<cfcase value="form">
-				<cfset returnVar = "mi-list-alt">
+				<cfset returnVar = "mi-toggle-on">
 			</cfcase>
 			<cfcase value="component">
 				<cfset returnVar = "mi-align-justify">
