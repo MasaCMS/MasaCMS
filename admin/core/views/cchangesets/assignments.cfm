@@ -82,7 +82,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <cfif not rc.changeset.getPublished()>
       <p><i class="mi-link"></i> <a title="Change Set Name" href="##" onclick="return preview('#esapiEncode('javascript',rc.previewLink)#','');">#esapiEncode('html',rc.previewLink)#</a></p>
-      <br/>
       </cfif>
 
       <form class="form-inline separate" novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">

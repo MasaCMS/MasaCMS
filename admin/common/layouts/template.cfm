@@ -1,4 +1,4 @@
-<!--- 
+<!---
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -13,17 +13,17 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,12 +37,12 @@
 	 /index.cfm
 	 /MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
@@ -69,7 +69,7 @@
   <head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 		<cfsilent>
 			<cfparam name="cookie.ADMINSIDEBAR" default="off">
@@ -92,13 +92,7 @@
 				<cfswitch expression="#rc.originalcircuit#">
 					<cfcase value="cArch">
 					<cfswitch expression="#rc.moduleID#">
-					<cfcase value="00000000000000000000000000000000003">
-						<cfset moduleTitle="Components Manager"/>
-					</cfcase>
-					<cfcase value="00000000000000000000000000000000004">
-						<cfset moduleTitle="Forms Manager"/>
-					</cfcase>
-					<cfcase value="00000000000000000000000000000000000">
+					<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
 						<cfset moduleTitle="Site Manager"/>
 					</cfcase>
 					<cfdefaultcase>
@@ -110,7 +104,7 @@
 					    <cfset moduleTitle="Import Content">
 						<cfelse>
 							<cfset moduleTitle="Drafts">
-						</cfif>	
+						</cfif>
 					</cfdefaultcase>
 					</cfswitch>
 					</cfcase>
@@ -167,8 +161,8 @@
 					</cfdefaultcase>
 				</cfswitch>
 			</cfif>
-			<cfheader name="cache-control" value="no-cache, no-store, must-revalidate"> 
-			<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 
+			<cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
+			<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
 		</cfsilent>
 
 		<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
@@ -180,7 +174,7 @@
 		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
 
 <!--- TODO GoWest : PNGs / icons : 2015-12-02T13:59:23-07:00 --->
-        
+
       <link rel="icon" type="image/png" href="assets/img/favicons/favicon-16x16.png" sizes="16x16">
       <link rel="icon" type="image/png" href="assets/img/favicons/favicon-32x32.png" sizes="32x32">
       <link rel="icon" type="image/png" href="assets/img/favicons/favicon-96x96.png" sizes="96x96">
@@ -202,7 +196,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
 <!--- TODO GoWest : fontlibary.org URL not responding from staging server, use google fonts instead? : 2015-12-14T11:18:14-07:00 --->
 <!---     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/source-sans-pro" type="text/css"/> --->
- 
+
 		<!-- Admin CSS -->
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
@@ -217,15 +211,15 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 <!--- TODO GoWest : keep chart.min.js? : 2016-01-29T16:52:21-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	
+
 		<!-- Mura Admin JS -->
 <!--- TODO GoWest : minify js : 2016-02-12T14:55:58-07:00 --->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
-	
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
 			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
@@ -247,7 +241,7 @@
 
 		<!-- JSON -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
-	
+
 	<!-- Mura Vars -->
 	<script type="text/javascript">
 	var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
@@ -261,7 +255,7 @@
 	var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
 	var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 	</script>
-	
+
 	#session.dateKey#
 	#rc.ajax#
 
@@ -271,7 +265,7 @@
 		    	top.location.replace(self.location)
 			}
 		</script>
-	</cfif>  
+	</cfif>
 	<cfif structKeyExists(rc,'$')>
 		 #rc.$.renderEvent('onAdminHTMLHeadRender')#
 	</cfif>
@@ -328,9 +322,9 @@
 			           </div>
 		           	</cfif>
      			</cfif>
-     			
+
 <!--- TODO GoWest : move this script elsewhere? : 2015-12-17T15:57:17-07:00 --->
-     			     			
+
 	           	<script>
 	           		$(document).ready(function(){
 	           			// persist sidebar selection
@@ -369,7 +363,7 @@
 	           	</script>
          	</cfif>
          	<div class="mura-layout-row">
-         		<cfif request.action neq "core:cDashboard.main" 
+         		<cfif request.action neq "core:cDashboard.main"
          			and request.action neq "core:cLogin.main">
          			<div id="mura-content">
          		</cfif>
@@ -385,7 +379,7 @@
       </main>
 
 <!--- TODO GoWest : use this? : 2015-12-15T10:12:08-07:00 --->
-    
+
 <!---
     <script type="text/javascript">
 		stripe('stripe');
@@ -394,13 +388,13 @@
 		<script type="text/javascript">
 			window.setTimeout('CountDown()',100);
 		</script>
-	</cfif>	
+	</cfif>
 --->
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 
 <!--- TODO GoWest : this include : 2015-12-15T13:23:46-07:00 --->
-		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (rc.moduleid eq '00000000000000000000000000000000000' or rc.moduleid eq '')>
+		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (listFind(',00000000000000000000000000000000099,00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleid) or rc.moduleid eq '')>
 			<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
 		</cfif>
 		<cfinclude template="includes/dialog.cfm">
@@ -408,7 +402,7 @@
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
 
-    </div><!-- /.page-container -->		
+    </div><!-- /.page-container -->
 
 	</body>
 </html></cfprocessingdirective>

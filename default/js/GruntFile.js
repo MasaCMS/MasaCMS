@@ -8,15 +8,17 @@ module.exports = function(grunt) {
         dist: {
           src: [
           'external/polyfill.js',
-          //'external/handlebars.runtime.js',
+         // 'external/handlebars-v3.0.3.js',
           'src/mura.js',
           'src/mura.loader.js',
           'src/mura.core.js',
+          'src/mura.cache.js',
           'src/mura.domselection.js',
           'src/mura.entity.js',
           'src/mura.entitycollection.js',
           'src/mura.feed.js',
-          'src/mura.templates.js'
+          'src/mura.templates.js',
+          'src/mura.init.js'
           ],
           dest: 'dist/mura.js',
         },

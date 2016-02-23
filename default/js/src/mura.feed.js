@@ -169,15 +169,7 @@
 					url:window.mura.apiEndpoint + self.queryString,
 					success:function(resp){
 
-						if('items' in resp.data){
-							var returnObj = new window.mura.EntityCollection(resp.data);
-						} else {
-							if(window.mura.entities[self.entityname]){
-								var returnObj = new window.mura.entities[self.entityname](obj);
-							} else {
-								var returnObj = new window.mura.Entity(resp.data);
-							}
-						}
+						var returnObj = new window.mura.EntityCollection(resp.data);
 
 						if(typeof resolve == 'function'){
 							resolve(returnObj);

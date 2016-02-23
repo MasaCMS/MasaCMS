@@ -346,7 +346,7 @@ var siteManager = {
 		}
 	},
 
-	openNewContentMenu: function(contentid, siteid, topid, parentid, type) {
+	openNewContentMenu: function(contentid, siteid, topid, parentid, type, moduleid) {
 
 		$("#newContentMenuContainer").remove();
 		$("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><div class="load-inline"></div></div></div>');
@@ -367,7 +367,7 @@ buttons: {
 			open: function() {
 				$("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
 				var url = './';
-				var pars = 'muraAction=cArch.loadnewcontentmenu&siteid=' + siteid + '&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type + '&cacheid=' + Math.random();
+				var pars = 'muraAction=cArch.loadnewcontentmenu&siteid=' + siteid + '&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +  '&moduleid=' + moduleid  + '&cacheid=' + Math.random();
 				$('#newContentMenuContainer .load-inline').spin(spinnerArgs2);
 				$.get(url + "?" + pars, function(data) {
 					$('#newContentMenuContainer .load-inline').spin(false);
@@ -387,7 +387,7 @@ buttons: {
 		return false;
 	},
 
-	showMenu: function(id, newcontent, obj, contentid, topid, parentid, siteid, type) {
+	showMenu: function(id, newcontent, obj, contentid, topid, parentid, siteid, type, moduleid) {
 		var navperm = newcontent.toLowerCase();
 
 		if(window.innerHeight) {
@@ -444,7 +444,7 @@ buttons: {
 		if(navperm == 'author' || navperm == 'editor') {
 
 			document.getElementById('newContentLink').onclick = function() {
-				siteManager.openNewContentMenu(contentid, siteid, topid, parentid, type);
+				siteManager.openNewContentMenu(contentid, siteid, topid, parentid, type, moduleid);
 				return false;
 			};
 

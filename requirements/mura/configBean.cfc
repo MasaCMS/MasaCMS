@@ -1771,7 +1771,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir'>
-				<cfif listFindNoCase('handlers,eventhandlers',rs.name)>
+				<cfif listFindNoCase('handlers,eventhandlers,event_handlers',rs.name)>
 					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
 				<cfelseif rs.name neq 'archived'>
 					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>

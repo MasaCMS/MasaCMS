@@ -64,7 +64,7 @@
 			ol,ul {
 				list-style: none;
 				padding: 0;
-      	margin: 0 0 @baseLineHeight / 2 0 !important;				
+      	margin: 0 0 @baseLineHeight / 2 0 !important;
 			}
 
 			li {
@@ -78,7 +78,7 @@
 			li:hover {
 				cursor: move;
 			}
-			
+
 			&.no-manual-sort li:hover {
 				cursor: default;
 			}
@@ -224,6 +224,24 @@
 
 				&.icon-mura-calendar:before {
 					content: "\f073";
+					font-size: 16px;
+					top: 2px;
+					}
+
+				&.icon-mura-component:before {
+					content: "\f039";
+					font-size: 16px;
+					top: 2px;
+					}
+
+				&.icon-mura-form:before {
+					content: "\f022";
+					font-size: 16px;
+					top: 2px;
+					}
+
+				&.icon-mura-variation:before {
+					content: "\f0c2";
 					font-size: 16px;
 					top: 2px;
 					}
@@ -1335,7 +1353,7 @@
 		color: @iconColor;
 		margin-top: 2px;
 		}
-	
+
 .add:hover i {
 		color: @grayDarker;
 		}
@@ -1510,12 +1528,12 @@ h3 + table {
 	width: auto;
 }
 
-#userActivityData, 
+#userActivityData,
 #popularContent{
 	.make-row();
 	margin-left: 0;
 	margin-right: 0;
-} 
+}
 #userActivity table,
 #popularContent table {
 	.make-xs-column(12);

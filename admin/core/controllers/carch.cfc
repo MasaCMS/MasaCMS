@@ -86,8 +86,9 @@
 		<cfif not isDefined("arguments.rc.topid")>
 			<cfparam name="session.topID" default="00000000000000000000000000000000001">
 			<cfset arguments.rc.topid=session.topID>
+			<cfset arguments.rc.moduleid=rc.$.getBean('content').loadBy(contentid=session.topid).getModuleID()>
 		<cfelseif (left(arguments.rc.topID,10) neq "0000000000" or arguments.rc.topID eq "00000000000000000000000000000000001")
-			and not listFindNoCase("Form,Component,Variation", arguments.rc.type) and rc.moduleid neq "00000000000000000000000000000000099">
+			and not listFindNoCase("Variation", arguments.rc.type) and rc.moduleid neq "00000000000000000000000000000000099">
 			<cfset session.topID=arguments.rc.topid>
 		</cfif>
 	</cfif>
@@ -148,7 +149,7 @@
 	<cfargument name="rc">
 
 	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
-	<cfif arguments.rc.moduleid neq '00000000000000000000000000000000000'>
+	<cfif not listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid )>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
 	</cfif>
 
@@ -159,7 +160,7 @@
 
 	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
 
-	<cfif arguments.rc.moduleid neq '00000000000000000000000000000000000'>
+	<cfif not listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid)>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
 	</cfif>
 
@@ -200,7 +201,7 @@
 
 			<cfset local.args.displayStart=arguments.rc.displayStart>
 			<cfset local.args.displayInterval=arguments.rc.displayInterval>
-			
+
 		<cfelseif arguments.rc.attribute eq "template">
 			<cfset local.args.template=arguments.rc.template>
 			<cfset local.args.childTemplate=arguments.rc.childTemplate>

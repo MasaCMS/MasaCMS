@@ -118,13 +118,13 @@
                     <!--- dashboard --->
                     <cfif session.showdashboard>
                         <li id="admin-nav-dashboard">
-                            <a<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&amp;siteid=#session.siteid#&amp;span=#session.dashboardSpan#"><i class="mi-dashboard"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.dashboard")#</span></a>
+                            <a<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&amp;siteid=#esapiEncode('url',session.siteid)#&amp;span=#session.dashboardSpan#"><i class="mi-dashboard"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.dashboard")#</span></a>
                         </li>
                     </cfif>
 
                     <!--- site manager --->
                     <li id="admin-nav-manager">
-                        <a<cfif rc.originalcircuit eq 'cArch' and not listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',rc.moduleID) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000000"><i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitemanager")#</span></a>
+                        <a<cfif rc.originalcircuit eq 'cArch' and not listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',rc.moduleID) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitemanager")#</span></a>
                     </li>
 
                     <!--- modules --->
@@ -140,11 +140,11 @@
 
                                     <!--- view groups --->
                                     <li>
-                                        <a<cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.list' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cUsers.list&amp;siteid=#session.siteid#"><i class="mi-users"></i>#rc.$.rbKey("user.viewgroups")#</a>
+                                        <a<cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.list' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cUsers.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-users"></i>#rc.$.rbKey("user.viewgroups")#</a>
                                     </li>
                                     <!--- view users --->
                                     <li>
-                                        <a<cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.listusers' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cUsers.listUsers&amp;siteid=#session.siteid#"><i class="mi-user"></i>#rc.$.rbKey("user.viewusers")#</a>
+                                        <a<cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.listusers' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cUsers.listUsers&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-user"></i>#rc.$.rbKey("user.viewusers")#</a>
                                     </li>
                                     <li class="divider"></li>
                                     <!--- add group --->
@@ -175,15 +175,15 @@ and
                                 <!--- edit site --->
 <!--- TODO GoWest : prevent active state when using 'add new site' - rc.siteid defaults to 'default' rather than '' : 2015-12-18T11:58:19-07:00 --->
                                 <li>
-                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'editSite' and rc.action neq 'updateFiles'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#session.siteid#"><i class="mi-edit"></i>#rc.$.rbKey("layout.editcurrentsite")#</a>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'editSite' and rc.action neq 'updateFiles'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i>#rc.$.rbKey("layout.editcurrentsite")#</a>
                                 </li>
                                 <!--- permissions --->
                                 <li>
-                                    <a<cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000000&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000000"><i class="mi-users"></i>Permissions</a>
+                                    <a<cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000000&amp;siteid=#esapiEncode('url',session.siteid)#&amp;moduleid=00000000000000000000000000000000000"><i class="mi-users"></i>Permissions</a>
                                 </li>
                                 <!--- approval chains --->
                                 <li>
-                                    <a<cfif rc.originalcircuit eq 'cChain'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cChain.list&amp;siteid=#session.siteid#"><i class="mi-check"></i>#rc.$.rbKey("layout.approvalchains")#</a>
+                                    <a<cfif rc.originalcircuit eq 'cChain'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cChain.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-check"></i>#rc.$.rbKey("layout.approvalchains")#</a>
                                 </li>
                                 <!--- class extensions --->
                                 <li>
@@ -250,7 +250,7 @@ and
 <!--- TODO GoWest : create active link here, is a tab of 'edit site' : 2015-12-18T11:29:28-07:00 --->
                                 <!--- deploy site bundle --->
                                 <li>
-                                    <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#session.siteid###tabBundles">
+                                    <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)###tabBundles">
                                         <i class="mi-download"></i>
                                         #rc.$.rbKey('layout.deploysitebundle')#
                                     </a>

@@ -1949,6 +1949,21 @@
 		return getQueryStringParams(window.location.search);
 	}
 
+	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+	function hashCode(s){
+		var hash = 0, strlen = s.length, i, c;
+
+		if ( strlen === 0 ) {
+			return hash;
+		}
+		for ( i = 0; i < strlen; i++ ) {
+			c = s.charCodeAt( i );
+			hash = ((hash<<5)-hash)+c;
+			hash = hash & hash; // Convert to 32bit integer
+		}
+		return hash;
+	}
+
 	function init(config){
 		if(!config.context){
 			config.context='';
@@ -2167,7 +2182,8 @@
 			parseString:parseString,
 			createCookie:createCookie,
 			readCookie:readCookie,
-			trim:trim
+			trim:trim,
+			hashCode:hashCode
 			}
 		),
 		//these are here for legacy support

@@ -355,7 +355,7 @@
 		append:function(el) {
 			this.each(function(){
 				if(typeof el == 'string'){
-					this.insertAdjacentHTML('beforeend', htmlString);
+					this.insertAdjacentHTML('beforeend', el);
 				} else {
 					this.appendChild(el);
 				}

@@ -82,7 +82,7 @@
 	          <i class="mi-ellipsis-v"></i>
 	      </button>
 	  </li>
-	  
+
 	  <li class="hidden-md hidden-lg">
 	      <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
 	      <button class="btn btn-default" data-toggle="layout" data-action="sidebar_toggle" type="button">
@@ -476,7 +476,7 @@
 								<!--- Dashboard --->
 									<cfif session.showdashboard>
 										<li<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif>>
-											<a href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&amp;siteid=#session.siteid#&amp;span=#session.dashboardSpan#">
+											<a href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&amp;siteid=#esapiEncode('url',session.siteid)#&amp;span=#session.dashboardSpan#">
 												<i class="mi-dashboard"></i>
 												<span>#rc.$.rbKey("layout.dashboard")#</span>
 											</a>
@@ -485,8 +485,8 @@
 								<!--- /Dashboard --->
 
 								<!--- Site Manager --->
-									<li <cfif rc.originalcircuit eq 'cArch' and not listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',rc.moduleID) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> class="active"</cfif>>
-										<a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000000">
+									<li <cfif rc.originalcircuit eq 'cArch' and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> class="active"</cfif>>
+										<a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
 											<i class="mi-list-alt"></i>
 											<span>#rc.$.rbKey("layout.sitemanager")#</span>
 										</a>
@@ -580,7 +580,7 @@
 
 												<!--- Permissions --->
 												<li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>>
-													<a href="#application.configBean.getContext()#/admin/?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000000&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000000">
+													<a href="#application.configBean.getContext()#/admin/?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000000&amp;siteid=#esapiEncode('url',session.siteid)#&amp;moduleid=00000000000000000000000000000000000">
 														<i class="mi-group"></i>
 														#rc.$.rbKey("layout.permissions")#
 													</a>

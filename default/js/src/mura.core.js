@@ -56,7 +56,7 @@
 
 	Core.extend=function(properties){
 		var self=this;
-		return mura.extend(mura.extendClass(self,properties),{extend:self.extend});
+		return window.mura.extend(window.mura.extendClass(self,properties),{extend:self.extend});
 	};
 
 	window.mura.Core=Core;
