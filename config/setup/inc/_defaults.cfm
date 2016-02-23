@@ -41,7 +41,6 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-
 <cfscript>
 muraInstallPath		= getDirectoryFromPath(getCurrentTemplatePath());
 fileDelim			= findNoCase('Windows', Server.OS.Name) ? '\' : '/';
