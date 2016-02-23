@@ -88,46 +88,8 @@ theCFServer		= ((server.ColdFusion.ProductName CONTAINS "ColdFusion") ? 'ColdFus
 </cfscript>
 
 
-
-<!-----------------------------------------------------------------------
-	DEFAULTS
------------------------------------------------------------------------->
-<cfparam name="FORM.fieldnames" 					default="" />
-<cfparam name="FORM.production_dbtype"				default="#settingsIni.get( "production", "dbtype" )#" />
-<cfparam name="FORM.production_datasource"			default="#settingsIni.get( "production", "datasource" )#" />
-<cfparam name="FORM.production_dbusername"			default="#settingsIni.get( "production", "dbusername" )#" />
-<cfparam name="FORM.production_dbpassword"			default="#settingsIni.get( "production", "dbpassword" )#" />
-<cfparam name="FORM.production_dbtablespace"		default="#settingsIni.get( "production", "dbtablespace" )#" />
-<cfparam name="FORM.production_adminemail"			default="#settingsIni.get( "production", "adminemail" )#" />
-<cfparam name="FORM.production_mailserverip"		default="#settingsIni.get( "production", "mailserverip" )#" />
-<cfparam name="FORM.production_mailserverpopport"	default="#settingsIni.get( "production", "mailserverpopport" )#" />
-<cfparam name="FORM.production_mailserverusername"	default="#settingsIni.get( "production", "mailserverusername" )#" />
-<cfparam name="FORM.production_mailserverpassword"	default="#settingsIni.get( "production", "mailserverpassword" )#" />
-<cfparam name="FORM.production_mailserversmtpport"	default="#settingsIni.get( "production", "mailserversmtpport" )#" />
-<cfparam name="FORM.production_mailservertls"		default="#settingsIni.get( "production", "mailservertls" )#" />
-<cfparam name="FORM.production_mailserverssl"		default="#settingsIni.get( "production", "mailserverssl" )#" />
-<cfparam name="FORM.production_siteidinurls"		default="#settingsIni.get( "production", "siteidinurls" )#" />
-<cfparam name="FORM.production_indexfileinurls"		default="#settingsIni.get( "production", "indexfileinurls" )#" />
-<cfparam name="FORM.production_cfpassword"			default="" />
-<cfparam name="FORM.production_databaseserver"		default="localhost" />
-<cfparam name="FORM.production_databasename"		default="#application.applicationName#" />
-<cfparam name="FORM.auto_create"					default="" />
-<cfparam name="FORM.admin_username"					default="admin" />
-<cfparam name="FORM.admin_password"					default="admin" />
-<cfparam name="variables.setupProcessComplete"		default="false" />
-
-
-
-
-<cfset assetpath = settingsIni.get( "production", "assetpath" ) />
-<cfif len( webRoot ) AND left( trim( assetpath ), len( webRoot ) ) IS NOT webRoot>
-  <cfset assetpath = "#webRoot##assetpath#" />
-</cfif>
-<cfparam name="FORM.production_assetpath" default="#assetpath#" />
-<cfset context = settingsIni.get( "production", "context" ) />
-<cfif len( webRoot ) AND left( trim( context ), len( webRoot ) ) IS NOT webRoot>
-  <cfset context = "#webRoot##context#" />
-</cfif>
+<!--- mainly cfparams --->
+<cfinclude template="inc/_defaults.cfm" />
 
 
 <cfif listFindNoCase(context, 'mura', fileDelim)>
