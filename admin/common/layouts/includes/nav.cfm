@@ -130,7 +130,7 @@
                         </a>
 						<ul>
 							<li>
-							  <a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
+							  <a class="site-manager-mod<cfif rc.moduleid eq '00000000000000000000000000000000000'> active</cfif>" data-moduleid="00000000000000000000000000000000000" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
 								<i class="mi-cog"></i>
 								#application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#
 							  </a>
@@ -138,7 +138,7 @@
 				            <!--- Components--->
 				              <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
 				                <li>
-				                  <a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000003&amp;parentid=00000000000000000000000000000000003&amp;moduleid=00000000000000000000000000000000003">
+				                  <a class="site-manager-mod<cfif rc.moduleid eq '00000000000000000000000000000000003'> active</cfif>" data-moduleid="00000000000000000000000000000000003" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000003&amp;parentid=00000000000000000000000000000000003&amp;moduleid=00000000000000000000000000000000003">
 				                    <i class="mi-cog"></i>
 				                    #application.rbFactory.getKeyValue(session.rb,"layout.components")#
 				                  </a>
@@ -149,7 +149,7 @@
 					             <!--- Forms--->
 					               <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
 					                 <li>
-					                   <a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000004&amp;parentid=00000000000000000000000000000000004&amp;moduleid=00000000000000000000000000000000004">
+					                   <a class="site-manager-mod<cfif rc.moduleid eq '00000000000000000000000000000000004'> active</cfif>" data-moduleid="00000000000000000000000000000000004" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000004&amp;parentid=00000000000000000000000000000000004&amp;moduleid=00000000000000000000000000000000004">
 					                     <i class="mi-cog"></i>
 					                     #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
 					                   </a>
@@ -160,7 +160,7 @@
 					            <!--- Variations--->
 					              <cfif application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
 					                <li>
-					                  <a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000099&amp;parentid=00000000000000000000000000000000099&amp;moduleid=00000000000000000000000000000000099">
+					                  <a class="site-manager-mod<cfif rc.moduleid eq '00000000000000000000000000000000099'> active</cfif>" data-moduleid="00000000000000000000000000000000099" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000099&amp;parentid=00000000000000000000000000000000099&amp;moduleid=00000000000000000000000000000000099">
 					                    <i class="mi-cog"></i>
 					                    #application.rbFactory.getKeyValue(session.rb,"layout.variations")#
 					                  </a>
