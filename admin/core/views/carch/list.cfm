@@ -809,6 +809,7 @@
 							siteManager.loadSiteFlat(flatViewArgs);
 							flatViewLoaded = true;
 						}
+						$(".nav-main .site-manager-mod").removeClass('active');
 					}
 				}
 
