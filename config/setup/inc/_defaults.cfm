@@ -41,19 +41,21 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-<!-----------------------------------------------------------------------
-	Prevent installation if under a directory called 'mura'
------------------------------------------------------------------------->
+
 <cfscript>
 muraInstallPath		= getDirectoryFromPath(getCurrentTemplatePath());
 fileDelim			= findNoCase('Windows', Server.OS.Name) ? '\' : '/';
 </cfscript>
 
+
+<!-----------------------------------------------------------------------
+	Prevent installation if under a directory called 'mura'
+	- first time time, using automatically derived path
+------------------------------------------------------------------------>
 <cfif listFindNoCase(muraInstallPath, 'mura', fileDelim)>
 	<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
 	<cfabort />
 </cfif>
-
 
 
 
@@ -92,6 +94,19 @@ theCFServer		= ((server.ColdFusion.ProductName CONTAINS "ColdFusion") ? 'ColdFus
 // at this point we assume the installation it's setup yet and we need to show the form
 variables.setupProcessComplete	= false;
 </cfscript>
+
+
+
+<!-----------------------------------------------------------------------
+	Prevent installation if under a directory called 'mura'
+	- second time, this time using settings.ini information
+------------------------------------------------------------------------>
+<cfif listFindNoCase(context, 'mura', fileDelim)>
+	<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
+	<cfabort />
+</cfif>
+
+
 
 <!-----------------------------------------------------------------------
 	DEFAULTS
