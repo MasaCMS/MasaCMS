@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,58 +40,10 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 ?without this exception. ?You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<cfoutput>
 
-<!--- Give Mura 5 minutes for setup script to run to prevent it timing out when server configuration request timeout is too small --->
-<cfsetting requesttimeout="300">
+<div class="alert alert-error">
+	#criticalError#
+</div>
 
-<!-----------------------------------------------------------------------
-  RenderSetup is checked here to prove we got here for a legitimate
-  reason and we aren't accessing these files directly (and illegally).
-  If renderSetup is not found or is false then do not render.
-
-
-  /config/appcfc/onRequestStart_include.cfm
------------------------------------------------------------------------->
-<cfif !structKeyExists( request, 'renderMuraSetup' ) OR !request.renderMuraSetup >
-  <cfabort />
-</cfif>
-
-
-<!-----------------------------------------------------------------------
-  - Read values from existing settings.ini.cfm file.
-  - Param some form values.
------------------------------------------------------------------------->
-<cfinclude template="inc/_defaults.cfm" />
-
-
-<!-----------------------------------------------------------------------
-  If the setup form was submitted, go ahead and try to process it
------------------------------------------------------------------------->
-<cfif form.action eq 'doSetup'>
-  <cfinclude template="inc/_udf.cfm" />
-  <cfinclude template="inc/_process.cfm" />
-
-</cfif>
-
-<!-----------------------------------------------------------------------
-  If we were able to proicess the setup form
-  - Tell mura to refresh on next hit
-  - Show a happy congrats screen
------------------------------------------------------------------------->
-<cfif variables.setupProcessComplete>
-  <cfset application.appAutoUpdated = true />
-  <cfinclude template="inc/_wrapperStart.cfm" />
-  <cfinclude template="inc/_done.cfm" />
-  <cfinclude template="inc/_wrapperEnd.cfm" />
-  <cfabort/>
-</cfif>
-
-
-<!-----------------------------------------------------------------------
-  if we made it this far, they aren't setup and need to
-  see the setup form.
------------------------------------------------------------------------->
-<cfinclude template="inc/_wrapperStart.cfm" />
-<cfinclude template="inc/_form.cfm" />
-<cfinclude template="inc/_wrapperEnd.cfm" />
-
+</cfoutput>
