@@ -815,7 +815,11 @@
 
 
 				jQuery(document).ready(function(){
-					initSiteManagerTabContent(#rc.activeTab#);
+					<cfif isdefined('url.moduleid')>
+						initSiteManagerTabContent(0);
+					<cfelse>
+						initSiteManagerTabContent(#rc.activeTab#);
+					</cfif>
 				});
 			</script>
 		</cfoutput>
