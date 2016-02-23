@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,19 +36,19 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="js.cfm">
 <cfsilent>
-<cfset rc.items=rc.contentBean.getVersionHistoryIterator()> 
+<cfset rc.items=rc.contentBean.getVersionHistoryIterator()>
 <cfset crumbdata=application.contentManager.getCrumbList(rc.contentid,rc.siteid)>
-<cfset rc.perm=application.permUtility.getnodeperm(crumbdata)> 
+<cfset rc.perm=application.permUtility.getnodeperm(crumbdata)>
 <cfset nodeLevelList="Page,Folder,Calendar,Gallery,Link,File"/>
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
 <cfset hasChangesetAccess=application.permUtility.getModulePerm("00000000000000000000000000000000014","#session.siteid#")>
@@ -79,9 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div><!-- /.label-group -->
 	</div><!-- /.mura-item-metadata -->
 
-	<cfif rc.compactDisplay neq 'true' and rc.moduleid eq '00000000000000000000000000000000000'>
-		#$.dspZoom(crumbdata=crumbdata,class="breadcrumb")#
-	</cfif>
+	#$.dspZoom(crumbdata=crumbdata,class="breadcrumb")#
 
 </div> <!-- /.items-push.mura-header -->
 
@@ -95,25 +93,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<thead>
 			<tr>
 			<cfif application.configBean.getJavaEnabled()>
-			<th colspan="2"><a class="btn " id="viewDiff"><i class="mi-code-fork"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.compare')#</a></th> 	
+			<th colspan="2"><a class="btn " id="viewDiff"><i class="mi-code-fork"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.compare')#</a></th>
 			</cfif>
 			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 			<cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#</th></cfif>
 			<th class="notes">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>
-			<cfif hasChangesets><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</th></cfif> 
+			<cfif hasChangesets><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</th></cfif>
 			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
 			<!---
 			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.display')#</th>
-			<cfif rc.contentBean.getType() neq "file"><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.objects')#</th></cfif> 
-			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.feature')#</th> 
-			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.nav')#</th> 
+			<cfif rc.contentBean.getType() neq "file"><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.objects')#</th></cfif>
+			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.feature')#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.nav')#</th>
 			--->
-			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.update')#</th> 
+			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.update')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.time')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.authoreditor')#</th>
 			<th nowrap class="actions">&nbsp;</th>
 			</cfoutput>
-			</tr> 
+			</tr>
 			</thead>
 			<tbody>
 			<cfloop condition="rc.items.hasNext()">
@@ -137,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset versionStatus=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')>
 			</cfif>
-			</cfsilent> 
+			</cfsilent>
 			<tr data-contenthistid="#rc.item.getContentHistID()#" data-siteid="#rc.item.getSiteID()#">
 			<cfif application.configBean.getJavaEnabled()>
 			<td>
@@ -175,13 +173,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#esapiEncode('html',rc.item.getchangesetName())#
 					</cfif>
 				</td>
-			</cfif> 
-			<td class="status">#versionStatus#</td> 
+			</cfif>
+			<td class="status">#versionStatus#</td>
 			<!---
-			<td class="display<cfif rc.item.getDisplay() eq 2> scheduled</cfif>"> 
-				<cfif rc.item.getDisplay() and (rc.item.getDisplay() eq 1 and rc.item.getapproved())>	
+			<td class="display<cfif rc.item.getDisplay() eq 2> scheduled</cfif>">
+				<cfif rc.item.getDisplay() and (rc.item.getDisplay() eq 1 and rc.item.getapproved())>
 			 		<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
-			 	<cfelseif(rc.item.getDisplay() eq 2 and rc.item.getapproved() and rc.item.getapproved())>#LSDateFormat(rc.item.getdisplaystart(),"short")# - #LSDateFormat(rc.item.getdisplaystop(),"short")#	
+			 	<cfelseif(rc.item.getDisplay() eq 2 and rc.item.getapproved() and rc.item.getapproved())>#LSDateFormat(rc.item.getdisplaystart(),"short")# - #LSDateFormat(rc.item.getdisplaystop(),"short")#
 			  <cfelse>
 			    <i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</span>
 			  </cfif>
@@ -199,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.#lcase(rc.item.getinheritobjects())#')#</span></td>
 			</cfif>
 
-			<td class="feature<cfif rc.item.getisfeature() eq 2>> scheduled</cfif>"> 
+			<td class="feature<cfif rc.item.getisfeature() eq 2>> scheduled</cfif>">
 				<cfif rc.item.getisfeature() eq 1>
 						<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 					<cfelseif rc.item.getisfeature() eq 2>
@@ -218,9 +216,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(rc.item.getisnav())#')#</span>
 			 </td>
 			 --->
-			<td class="last-updated">#LSDateFormat(rc.item.getlastupdate(),session.dateKeyFormat)#</td> 
+			<td class="last-updated">#LSDateFormat(rc.item.getlastupdate(),session.dateKeyFormat)#</td>
 			<td class="time">#LSTimeFormat(rc.item.getlastupdate(),"short")#</td>
-			<td class="user">#esapiEncode('html',rc.item.getlastUpdateBy())#</td> 
+			<td class="user">#esapiEncode('html',rc.item.getlastUpdateBy())#</td>
 			<td class="actions">
 
 				<ul>
@@ -267,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- /Delete --->
 
 			</ul></td></tr></cfoutput>
-			</cfloop> 
+			</cfloop>
 			</tbody></table>
 			<script type="text/javascript">
 
@@ -280,7 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							function(){
 								frontEndProxy.post({cmd:'setWidth',width:'standard'});
 							}
-						);	
+						);
 					} else {
 						frontEndProxy.post({cmd:'setWidth',width:'standard'});
 					}
@@ -317,7 +315,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  	,
 					  dataType: "json"
 					});
-					
+
 				})
 
 				$('.audit-trail').on('mouseout',function(){
@@ -335,7 +333,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			});
 			</script>
 			<cfif $.siteConfig('hasLockableNodes')>
-			<cfinclude template="draftpromptjs.cfm">	
+			<cfinclude template="draftpromptjs.cfm">
 
 
 
@@ -345,4 +343,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 </cfif>
-
