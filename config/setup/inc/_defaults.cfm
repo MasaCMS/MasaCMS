@@ -112,6 +112,7 @@ variables.setupProcessComplete	= false;
 	DEFAULTS
 ------------------------------------------------------------------------>
 <cfparam name="FORM.fieldnames" 					default="" />
+<cfparam name="FORM.action" 						default="showForm" />
 <!--- database tab --->
 <cfparam name="FORM.production_dbtype"				default="#settingsIni.get( "production", "dbtype" )#" />
 <cfparam name="FORM.production_datasource"			default="#settingsIni.get( "production", "datasource" )#" />

@@ -1,5 +1,3 @@
-<cfinclude template="_wrapperStart.cfm" />
-
 <cfoutput>
 <div id="installationComplete" class="alert alert-success">
 	<p>Mura is now set up and ready to use.</p>
@@ -11,9 +9,4 @@
 
 
 <a href="#context#/admin/?appreload&applydbupdates" class="btn btn-primary pull-right">Login to Mura</a>
-
 </cfoutput>
-
-<cfinclude template="_wrapperEnd.cfm" />
-</body>
-</html>

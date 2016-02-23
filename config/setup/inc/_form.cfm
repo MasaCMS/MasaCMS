@@ -1,6 +1,4 @@
-<cfinclude template="_wrapperStart.cfm" />
 <cfoutput>
-
 <h1 class="page-heading">Welcome to Mura CMS<br/><small>You've made the right choice, let's get started.</small></h1>
 
 <cfif len( trim( message ) )>
@@ -23,6 +21,7 @@
 
 
 	<form class="form-horizontal" action="index.cfm" method="post">
+		<input type="hidden" name="action" value="doSetup" />
 
 		<!-- Progress Bar -->
 		<div class="block-content block-content-mini block-content-full border-b">
@@ -31,6 +30,7 @@
 			</div>
 		</div>
 		<!-- /Progress Bar -->
+
 
 		<!-- Tab Content -->
 		<div class="block-content tab-content">
@@ -167,7 +167,7 @@
 <!-- END Simple Classic Progress Wizard -->
 
 
-<cfinclude template="_wrapperEnd.cfm" />
+
 
 <script src="//cmsadmin.staging.gowesthosting.com/template/assets/js/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 <script src="//cmsadmin.staging.gowesthosting.com/template/assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
@@ -185,6 +185,12 @@ jQuery(document).ready(function(){
 	});
 
 	// are we creating the db?
+	$(".database-create-diabled").toggle(#(val(FORM.auto_create) eq 1)#);
+	$('##production_dbtype').on('change',function(){
+		$(".database-create-diabled").toggle(this.checked);
+	});
+
+	// are we creating the db?
 	$(".database-create-yes").toggle(#(val(FORM.auto_create) eq 1)#);
 	$(".database-create-no").toggle(#(val(FORM.auto_create) eq 0)#);
 	$('##auto_create').on('change',function(){
@@ -194,6 +200,4 @@ jQuery(document).ready(function(){
 
 });
 </script>
-</body>
-</html>
 </cfoutput>

@@ -58,22 +58,43 @@ to your own modified versions of Mura CMS.
 
 
 <!-----------------------------------------------------------------------
-	1) Read values from existing settings.ini.cfm file.
-	2) Param some form values.
+	- Read values from existing settings.ini.cfm file.
+	- Param some form values.
 ------------------------------------------------------------------------>
 <cfinclude template="inc/_defaults.cfm" />
 
 
+<!-----------------------------------------------------------------------
+	If the setup form was submitted, go ahead and try to process it
+------------------------------------------------------------------------>
+<cfif form.action eq 'doSetup'>
+	<cfinclude template="inc/_process.cfm" />
+</cfif>
 
-
-
-
-
-<cfinclude template="_process.cfm" />
+<!-----------------------------------------------------------------------
+	If we were able to proicess the setup form
+	- Tell mura to refresh on next hit
+	- Show a happy congrats screen
+------------------------------------------------------------------------>
 <cfif variables.setupProcessComplete>
 	<cfset application.appAutoUpdated = true />
-	<cfinclude template="_done.cfm" />
-<cfelse>
-	<cfinclude template="_form.cfm" />
+	<cfinclude template="inc/_wrapperStart.cfm" />
+	<cfinclude template="inc/_done.cfm" />
+	<cfinclude template="inc/_wrapperEnd.cfm" />
+	<cfabort/>
 </cfif>
-<cfinclude template="_udf.cfm" />
+
+
+<!-----------------------------------------------------------------------
+	if we made it this far, they aren't setup and need to
+	see the setup form.
+------------------------------------------------------------------------>
+<cfinclude template="inc/_wrapperStart.cfm" />
+<cfinclude template="inc/_form.cfm" />
+<cfinclude template="inc/_wrapperEnd.cfm" />
+
+
+<!-----------------------------------------------------------------------
+	Some common UDFs required by the setup process
+------------------------------------------------------------------------>
+<cfinclude template="inc/_udf.cfm" />

@@ -10,4 +10,6 @@
 <script type="text/javascript" src="#context#/admin/assets/js/ie6notice.js"></script>
 <![endif]-->
 </cfif>
+</body>
+</html>
 </cfoutput>
