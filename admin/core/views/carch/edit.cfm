@@ -509,7 +509,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
-		<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
+		<cfif rc.moduleid eq '00000000000000000000000000000000000' and listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<cfinclude template="form/dsp_tab_seo.cfm">
 			</cfif>
@@ -518,13 +518,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
-		<cfif not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
+		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
 			<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
 		</cfif>
 
 		<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
+			<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects'))>
 				<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 					<cfinclude template="form/dsp_tab_layoutobjects.cfm">
 				</cfif>
@@ -537,7 +537,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
 			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
+			<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content'))>
 				<cfinclude template="form/dsp_tab_related_content.cfm">
 			<cfelse>
 				<input type="hidden" name="ommitRelatedContentTab" value="true">
@@ -552,7 +552,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
 			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
+			<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content'))>
 				<cfinclude template="form/dsp_tab_related_content.cfm">
 			<cfelse>
 				<input type="hidden" name="ommitRelatedContentTab" value="true">
