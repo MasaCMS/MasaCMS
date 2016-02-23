@@ -92,13 +92,7 @@
 				<cfswitch expression="#rc.originalcircuit#">
 					<cfcase value="cArch">
 					<cfswitch expression="#rc.moduleID#">
-					<cfcase value="00000000000000000000000000000000003">
-						<cfset moduleTitle="Components Manager"/>
-					</cfcase>
-					<cfcase value="00000000000000000000000000000000004">
-						<cfset moduleTitle="Forms Manager"/>
-					</cfcase>
-					<cfcase value="00000000000000000000000000000000000">
+					<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
 						<cfset moduleTitle="Site Manager"/>
 					</cfcase>
 					<cfdefaultcase>
