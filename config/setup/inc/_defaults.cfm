@@ -8,6 +8,9 @@
 <cfparam name="FORM.production_dbusername"			default="#settingsIni.get( "production", "dbusername" )#" />
 <cfparam name="FORM.production_dbpassword"			default="#settingsIni.get( "production", "dbpassword" )#" />
 <cfparam name="FORM.production_dbtablespace"		default="#settingsIni.get( "production", "dbtablespace" )#" />
+<cfparam name="FORM.production_databaseserver"		default="localhost" />
+<cfparam name="FORM.production_databasename"		default="#application.applicationName#" />
+<cfparam name="FORM.auto_create"					default="0" />
 <!--- admin account tab --->
 <cfparam name="FORM.production_adminemail"			default="#settingsIni.get( "production", "adminemail" )#" />
 <cfparam name="FORM.admin_username"					default="admin" />
@@ -16,9 +19,7 @@
 <cfparam name="FORM.production_siteidinurls"		default="#settingsIni.get( "production", "siteidinurls" )#" />
 <cfparam name="FORM.production_indexfileinurls"		default="#settingsIni.get( "production", "indexfileinurls" )#" />
 <cfparam name="FORM.production_cfpassword"			default="" />
-<cfparam name="FORM.production_databaseserver"		default="localhost" />
-<cfparam name="FORM.production_databasename"		default="#application.applicationName#" />
-<cfparam name="FORM.auto_create"					default="" />
+
 
 <cfparam name="variables.setupProcessComplete"		default="false" />
 <cfparam name="FORM.production_context" default="#context#" />

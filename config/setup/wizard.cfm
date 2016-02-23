@@ -45,47 +45,16 @@ to your own modified versions of Mura CMS.
 <cfsetting requesttimeout="300">
 
 <!-----------------------------------------------------------------------
-	Prevent installation if under a directory called 'mura'
------------------------------------------------------------------------->
-<cfscript>
-muraInstallPath		= getDirectoryFromPath(getCurrentTemplatePath());
-fileDelim			= findNoCase('Windows', Server.OS.Name) ? '\' : '/';
-</cfscript>
-
-<cfif listFindNoCase(muraInstallPath, 'mura', fileDelim)>
-	<h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
-	<cfabort />
-</cfif>
-
-
-<!-----------------------------------------------------------------------
-	RenderSetup is set here to prove we got here for a legit reason:
-	/config/appcfc/onRequestStart_include.cfm
-
+	RenderSetup is checked here to prove we got here for a legitimate
+	reason and we aren't accessing these files directly (and illegally).
 	If renderSetup is not found or is false then do not render.
+
+
+	/config/appcfc/onRequestStart_include.cfm
 ------------------------------------------------------------------------>
 <cfif NOT isDefined( "renderSetup" ) OR NOT renderSetup>
 	<cfabort />
 </cfif>
-
-
-<!-----------------------------------------------------------------------
-	Pull some basic settings we need to get Mura setup
------------------------------------------------------------------------->
-<cfscript>
-// default message container
-message			= "";
-// grab current settings
-settingsPath	= variables.baseDir & "/config/settings.ini.cfm";
-settingsini		= createobject("component","mura.IniFile").init(settingsPath);
-// get  and cleanup current web root
-currentFile		= getFileFromPath( getBaseTemplatePath() );
-webRoot			= replaceNoCase( CGI.script_name, currentFile, "" );
-webRoot			= replaceNoCase( webRoot, "default/", "" ); // take out setup folder from webroot
-webRoot			= mid( webRoot, 1, len( webRoot )-1 ); // remove trailing slash
-// determine server type
-theCFServer		= ((server.ColdFusion.ProductName CONTAINS "ColdFusion") ? 'ColdFusion': 'Lucee');
-</cfscript>
 
 
 <!--- mainly cfparams --->
@@ -97,7 +66,7 @@ theCFServer		= ((server.ColdFusion.ProductName CONTAINS "ColdFusion") ? 'ColdFus
 	<cfabort />
 </cfif>
 
-<cfparam name="FORM.production_context" default="#context#" />
+
 
 
 <cfinclude template="_process.cfm" />
