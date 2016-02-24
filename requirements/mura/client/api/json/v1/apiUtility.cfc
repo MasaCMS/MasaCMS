@@ -291,7 +291,7 @@ component extends="mura.cfobject" {
 
 			request.returnFormat='JSON';
 
-			if (!isDefined('params.method') && arrayLen(pathInfo) && isDefined('#pathInfo[1]#')){
+			if (!isDefined('params.method') && arrayLen(pathInfo) && isValid('variableName',pathInfo[1]) && isDefined('#pathInfo[1]#')){
 				params.method=pathInfo[1];
 			}
 
