@@ -671,7 +671,8 @@
 						  </div>
 						  <!-- /block header -->
 						  <div class="block-content">
-							  <ul id="arch-mod" class="nav nav-pills pull-left">
+							  <!---
+							  <ul id="arch-mod" class="navTask nav nav-pills pull-left">
 
   								  <li>
   									  <a data-moduleid="00000000000000000000000000000000000" data-toggle="popover" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.sitetree"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000000"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});">
@@ -713,6 +714,7 @@
 										});
 									});
 								</script>
+								--->
 						  		<!--- site manager architectural view container --->
 						<div id="gridContainer">
 
