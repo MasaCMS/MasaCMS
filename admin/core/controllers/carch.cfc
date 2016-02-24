@@ -84,11 +84,13 @@
 		<cfparam name="arguments.rc.parentid" default=""/>
 
 		<cfif not isDefined("arguments.rc.topid")>
-			<cfparam name="session.topID" default="00000000000000000000000000000000001">
-			<cfset arguments.rc.topid=session.topID>
-			<cfset arguments.rc.moduleid=rc.$.getBean('content').loadBy(contentid=session.topid).getModuleID()>
-		<cfelseif (left(arguments.rc.topID,10) neq "0000000000" or arguments.rc.topID eq "00000000000000000000000000000000001")
-			and not listFindNoCase("Variation", arguments.rc.type) and rc.moduleid neq "00000000000000000000000000000000099">
+			<cfif rc.moduleid eq '00000000000000000000000000000000000'>
+				<cfset session.topid="00000000000000000000000000000000001">
+			<cfelse>
+				<cfset session.topid=rc.moduleid>
+			</cfif>
+			<cfset arguments.rc.topid=session.topid>
+		<cfelse>
 			<cfset session.topID=arguments.rc.topid>
 		</cfif>
 	</cfif>
