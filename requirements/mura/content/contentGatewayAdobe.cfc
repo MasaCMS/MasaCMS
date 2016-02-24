@@ -1427,7 +1427,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  AND (tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
 					  AND (tcontent.type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>)
 
-	Order By title desc
+	Order By title asc
 	</cfquery>
 
 	<cfreturn rsComponentType />
