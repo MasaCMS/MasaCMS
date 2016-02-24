@@ -1,1 +1,1 @@
-<displayobject name="Form" contenttypes="*" iconclass="mi-toggle-on"/>
+﻿<displayobject name="Form" contenttypes="*"/>
