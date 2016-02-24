@@ -260,7 +260,7 @@
 					$tools=$tools+'<a class="mura-device-tablet-landscape" title="Tablet Landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="mi-tablet mi-rotate-270"></i></a>';
 					$tools=$tools+'<a class="mura-device-phone" title="Phone" data-height="480" data-width="320" data-mobileformat="true"><i class="mi-mobile-phone"></i></a>';
 					$tools=$tools+'<a class="mura-device-phone-landscape" title="Phone Landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="mi-mobile-phone mi-rotate-270"></i></a>';
-					$tools=$tools+'<a id="preview-close" title="Close" href="##" onclick="closeFrontEndToolsModal();"><i class="mi-remove-sign"></i></a>';
+					$tools=$tools+'<a id="preview-close" title="Close" href="##" onclick="closeFrontEndToolsModal();"><i class="mi-times-circle"></i></a>';
 					$tools=$tools+'</div>';
 
 			} else {
