@@ -131,7 +131,7 @@
 						<ul>
 							<li>
 							  <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000000'> active</cfif>" data-moduleid="00000000000000000000000000000000000" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#&moduleid=00000000000000000000000000000000000">
-								<i class="mi-cog"></i>
+								<i class="mi-sitemap"></i>
 								#application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#
 							  </a>
 							</li>
@@ -139,7 +139,7 @@
 				              <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
 				                <li>
 				                  <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000003'> active</cfif>" data-moduleid="00000000000000000000000000000000003" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000003&amp;parentid=00000000000000000000000000000000003&amp;moduleid=00000000000000000000000000000000003">
-				                    <i class="mi-cog"></i>
+				                    <i class="mi-align-justify"></i>
 				                    #application.rbFactory.getKeyValue(session.rb,"layout.components")#
 				                  </a>
 				                </li>
@@ -150,7 +150,7 @@
 					               <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
 					                 <li>
 					                   <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000004'> active</cfif>" data-moduleid="00000000000000000000000000000000004" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000004&amp;parentid=00000000000000000000000000000000004&amp;moduleid=00000000000000000000000000000000004">
-					                     <i class="mi-cog"></i>
+					                     <i class="mi-toggle-on"></i>
 					                     #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
 					                   </a>
 					                 </li>
@@ -161,7 +161,7 @@
 					              <cfif application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
 					                <li>
 					                  <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000099'> active</cfif>" data-moduleid="00000000000000000000000000000000099" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000099&amp;parentid=00000000000000000000000000000000099&amp;moduleid=00000000000000000000000000000000099">
-					                    <i class="mi-cog"></i>
+					                    <i class="mi-cloud"></i>
 					                    #application.rbFactory.getKeyValue(session.rb,"layout.variations")#
 					                  </a>
 					                </li>
@@ -173,7 +173,7 @@
 					              and application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014",session.siteid)>
 					              <li>
 					                <a<cfif rc.originalcircuit eq 'cChangesets' > class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cChangesets.list&amp;siteid=#session.siteid#">
-					                  <i class="mi-cog"></i>
+					                  <i class="mi-files-o"></i>
 					                    #application.rbFactory.getKeyValue(session.rb,"layout.changesets")#
 					                  </a>
 					                </li>
@@ -195,7 +195,7 @@
 					            <cfif application.permUtility.getModulePerm("00000000000000000000000000000000010",session.siteid)>
 					              <li>
 					                <a<cfif  rc.originalcircuit eq 'cCategory'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cCategory.list&amp;siteid=#session.siteid#">
-					                  <i class="mi-cog"></i>
+					                  <i class="mi-table"></i>
 					                  #application.rbFactory.getKeyValue(session.rb,"layout.categories")#
 					                </a>
 					              </li>
@@ -206,7 +206,7 @@
 					            <cfif application.settingsManager.getSite(session.siteid).getHasFeedManager() and application.permUtility.getModulePerm("00000000000000000000000000000000011",session.siteid)>
 					              <li>
 					                <a<cfif  rc.originalcircuit eq 'cFeed' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000011')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cFeed.list&amp;siteid=#session.siteid#">
-					                  <i class="mi-cog"></i>
+					                  <i class="mi-th-list"></i>
 					                  #application.rbFactory.getKeyValue(session.rb,"layout.contentcollections")#
 					                </a>
 					              </li>
