@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var fieldTypeBean		= createObject('component','fieldtypeBean').init(fieldTypeID=arguments.fieldTypeID,fieldtype=typeName,displayType=displayName) />
 
 		<cfswitch expression="#fieldTypeBean.getFieldType()#">
-			<cfcase value="dropdown,checkbox,radio" >
+			<cfcase value="dropdown,checkbox,radio,multientity" >
 				<cfset fieldTypeBean.setIsData( 1 ) />
 			</cfcase>	
 			<cfcase value="textarea,htmleditor" >

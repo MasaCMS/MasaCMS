@@ -56,8 +56,7 @@
 		entity: {},
 		fields:{},
 		datasets: [],
-		smack: [1,2,3],
-		templateList: ['checkbox','dropdown','radio','textarea','textfield','form'],
+		templateList: ['checkbox','dropdown','radio','textarea','textfield','form','paging'],
 		formInit: false,
 		responsemessage: "",
 
@@ -65,11 +64,10 @@
 			
 			properties || {};
 			this.settings = properties;
-
-			console.log('init');
+			console.log(this.settings);
 		},
 
-		getTemplates() {
+		getTemplates( ) {
 
 			var self = this;
 
@@ -98,7 +96,6 @@
 
 			if( data.datasetid != "")
 				data.options = self.formJSON.datasets[data.datasetid].options;
-			
 
 			console.log(data.name);
 
@@ -133,6 +130,8 @@
 
 		renderData: function() {
 			var self = this;
+
+			console.log(self.formJSON);
 
 			if(self.datasets.length == 0)
 				self.renderForm();
@@ -169,50 +168,97 @@
 		renderForm: function( ) {
 
 			var self = this;
-			console.log('render');
-			console.log( self.formJSON );
+
+			$(".field-container",self.settings.formEl).empty();
+
 
 			if(!self.formInit) {
 				self.initForm();
 			}
 
-			var fields = this.formJSON.form.pages[this.currentPage];
+			var fields = this.formJSON.form.pages[self.currentPage];
 			for(var i = 0;i < fields.length;i++) {
 
 				var field =  this.formJSON.form.fields[fields[i]];
 			
 				if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
 					self.renderField(field.fieldtype.fieldtype,field);
-/*
-					var source = $("#field-" + field.rendertype).html();
-					var template = Handlebars.compile(source);
-					var html = template(field);
-					$("#formContainer").append(html);
-*/
 				}
 			}
 
+			self.renderPaging();
+
 		},
+
+		renderPaging: function() {
+			self = this;
+
+			$(".paging-container",self.settings.formEl).empty();
+
+			if(self.formJSON.form.pages.length == 1) {
+				$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage+1,label:"Submit",class:'form-submit'}));
+			}
+			else {
+				console.log('paging');
+
+				if(self.currentPage == 0) {
+					console.log('yes!');
+					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:'form-nav'}));
+				} else {
+					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage-1,label:"Back",class:'form-nav'}));
+
+					if(self.currentPage+1 < self.formJSON.form.pages.length) {
+						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage+1,label:"Next",class:'form-nav'}));
+					}
+					else {
+						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage+1,label:"Submit",class:'form-submit'}));
+					}		
+				}
+			}
+			$(".form-submit",self.settings.formEl).click( function() {
+				self.submitForm();
+			});
+			$(".form-nav",self.settings.formEl).click( function() {
+				$(".field-container :input").each( function() {
+					self.data[ $(this).attr('name') ] = $(this).val();
+				});
+				self.currentPage = $(this).attr('data-page');
+				self.renderForm();
+			});
+
+
+		},
+
 		
-		getForm: function( contentid ) {
+		getForm: function( entityid,callback,ref ) {
 			var self = this;
 			var formJSON = {};
 			var entityName = '';
 
-			console.log('getting form');
+
+			if(entityid != undefined)
+				self.entityid = entityid;
+
+			if(callback != undefined)
+				self.callback = callback;
+
+			if(ref != undefined)
+				self.ref = ref;
+
+			console.log('getting form: ' + entityid);
 
 			if(self.templateList.length) {
-				self.getTemplates();
+				self.getTemplates( entityid );
 			}
 			else {
-				self.loadForm( contentid );
+				self.loadForm();
 			}
 		},
 		
-		loadForm: function( contentid ) {
+		loadForm: function(  ) {
 
 			var self = this;
-//			contentid = '43AE38B0-EEEB-F516-995C14E94B8F8E7A';
+//			entityid = '43AE38B0-EEEB-F516-995C14E94B8F8E7A';
 
 			window.mura.get(
 					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
@@ -224,15 +270,12 @@
 					 	self.formJSON = formJSON;
 					 	self.responsemessage = data.data.responsemessage;
 
-					 	console.log(self.formJSON);
-
 						for(var i in self.formJSON.datasets)
 							self.datasets.push(i);
 
 					 	self.entity = entityName;
 
-					 	if(contentid == undefined) {
-					 		console.log('a');
+					 	if(self.entityid == undefined) {
 							window.mura.get(
 								window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/new/expand'
 							).then(function(data) {
@@ -241,9 +284,8 @@
 							});					 		
 					 	}
 					 	else {
-					 		console.log('b');
 							window.mura.get(
-								window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/' + contentid + '/expand'
+								window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '/expand'
 							).then(function(data) {
 								self.data = data.data;
 								self.renderData();	
@@ -251,11 +293,6 @@
 					 	}
 				});
 
-			console.log("done");
-			console.log(this.settings.objectid);
-
-
-			//RETURN CONTENT IN: <div class="mura-object-content"></div>
 		},
 
 		initForm: function() {
@@ -263,11 +300,6 @@
 
 			var html = self.templates['form'](self.settings);
 			$(self.settings.formEl).append(html);
-
-
-			$(".form-submit",self.settings.formEl).click( function() {
-				self.submitForm();
-			});
 
 			self.formInit=true;
 		},
@@ -285,13 +317,14 @@
 				)
 				.save()
 				.then( function() {
+					if(self.callback != undefined) {					
+						self.callback( self.ref );
+						return;
+					}
 					console.log('done and saved');
 					console.log(self.responsemessage);
 					$(self.settings.formEl).html( self.responsemessage );
 				});
-	
-
-
 		}
 	});
 	

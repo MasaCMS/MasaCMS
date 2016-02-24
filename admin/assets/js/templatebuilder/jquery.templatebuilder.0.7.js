@@ -664,10 +664,28 @@
 			_currentDataset = dataset;
 
 			jQuery('.mura-tb-dsi').hide();
+
+
+			if(fieldData.fieldtype.fieldtype != 'multientity') {
+				jQuery('#mura-tb-grp-sourcetype').hide();				
+				_currentDataset.sourcetype = 'muraorm';
+			}
+
+			console.log(_currentDataset.sourcetype);
 			
 			switch( _currentDataset.sourcetype ) {
+				case "multientity": {
+					jQuery('.mura-tb-grp-entered').hide();						
+				}
 				case "entered": {
 					jQuery('.mura-tb-grp-entered').show();						
+				}
+				break;
+				case "multientity": {
+					jQuery('.mura-tb-grp-source').show();						
+					jQuery('.mura-tb-grp-sourcetype').hide();
+					jQuery('#button-grid-grid').hide();	
+
 				}
 				break;
 				case "dsp":
@@ -683,6 +701,16 @@
 				break;
 				default: {
 					jQuery('.mura-tb-grp-entered').show();						
+					if(_currentDataset.sourcetype.length == 0) {
+						jQuery('#button-grid-grid',$_dataset).unbind();
+						jQuery('#button-grid-grid',$_dataset).hide();	
+					}
+					else {
+						jQuery('#button-grid-grid',$_dataset).show();
+						jQuery('#button-grid-grid',$_dataset).click(function() {
+							doDataset();
+						});
+					}
 				}
 				break;
 			}
@@ -694,16 +722,6 @@
 				jQuery('.mura-tb-grp-sorted').hide();
 			}
 
-			if(_currentDataset.sourcetype.length == 0) {
-				jQuery('#button-grid-grid',$_dataset).unbind();
-				jQuery('#button-grid-grid',$_dataset).hide();	
-			}
-			else {
-				jQuery('#button-grid-grid',$_dataset).show();
-				jQuery('#button-grid-grid',$_dataset).click(function() {
-					doDataset();
-				});
-			}
 
 			jQuery('#mura-tb-dataset-sourcetype').val( _currentDataset.sourcetype );
 			jQuery('#mura-tb-dataset-issorted').val( _currentDataset.issorted );
@@ -724,6 +742,8 @@
 			$_dataset.hide();
 			$_dataset.html(_templates['dataset-form']);
 
+
+
 			jQuery('#mura-tb-dataset-sourcetype').change( function() {
 				jQuery('.mura-tb-dsi').hide();
 				
@@ -743,6 +763,7 @@
 				}
 				else if( _currentDataset.sourcetype == "muraorm") {
 					jQuery('.mura-tb-grp-entered').hide();
+					jQuery('.mura-tb-grp-source').show();						
 					jQuery('#button-grid-grid',$_dataset).hide();	
 				}
 				else {
@@ -762,6 +783,14 @@
 					jQuery('.mura-tb-grp-sorted').hide();
 				}
 			});
+			if(fieldData.fieldtype.fieldtype == 'multientity') {
+				jQuery('#mura-tb-grp-sourcetype').hide();				
+				jQuery('.mura-tb-grp-entered').hide();
+				jQuery('.mura-tb-grp-source').hide();						
+console.log("asdfw");
+				_currentDataset.sourcetype = 'muraorm';
+
+			}
 
 			jQuery('#mura-tb-save-dataset').click( function() {
 				
@@ -772,7 +801,10 @@
 				_currentDataset.sortdirection = jQuery('#mura-tb-dataset-sortdirection').val();
 				_currentDataset.source = jQuery('#mura-tb-dataset-source').val();
 				
-				if(_currentDataset.sourcetype != 'entered' && _currentDataset.sourcetype != 'muraorm' && !_currentDataset.source.length ) {
+				if(_currentDataset.sourcetype != 'entered'
+						&& _currentDataset.sourcetype != 'muraorm'
+						&& _currentDataset.sourcetype != 'multientity'
+						&& !_currentDataset.source.length ) {
 					doDisplayDialog( 'message-dataset-sourcerequired' );
 					return;
 				}

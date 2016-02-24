@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="mura-tb-dataset" class="mura-tb-form">
 			
 					<ul class="template-form">
-						<li>
+						<li class="mura-tb-grp-sourcetype">
 							<label for="dataset">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype')#</label>
 							<select class="select" name="sourcetype" id="mura-tb-dataset-sourcetype">
 								<option value="entered">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.entered')#</option>
@@ -100,10 +100,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</li>
 					</ul>
 					<div class="btn-wrap">
-								<input type="button" class="btn" name="save-dataset" id="mura-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
-							</div>
+						<input type="button" class="btn" name="save-dataset" id="mura-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
+					</div>
 				</div>
-				</div>
+			</div>
 							
 		</div>
 </cfoutput>
