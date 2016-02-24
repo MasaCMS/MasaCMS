@@ -2,8 +2,7 @@
 <div class="field-container">
 
 </div>
-<div class="button-container">
-	<button type="button" class='form-submit'>Submit</button>
+<div class="paging-container">
 </div>
 	<input type="hidden" name="formid" class="{{objectid}}" value="1025">
 </form>

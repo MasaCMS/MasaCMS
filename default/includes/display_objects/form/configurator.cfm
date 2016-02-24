@@ -52,8 +52,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</option>
 				<cfloop query="rc.rsForms">
 					<cfset title=rc.rsForms.menutitle>
-					<option <cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#'}">
-						#esapiEncode('html',title)#
+					<option <cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#',view:'form'}">
+						#esapiEncode('html',title)# (Form)
+					</option>
+					<option <cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#',view:'list'}">
+						#esapiEncode('html',title)# (List)
 					</option>
 				</cfloop>
 			</select>
@@ -62,6 +65,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 	</div>
 </div>
+
+<div class="mura-layout-row">
+	<div class="mura-control-group">
+		<label class="mura-control-label">Fields</label>
+		<input name="listview" value="" id="form-viewlist">
+	</div>
+</div>
+
 <cfif hasModulePerm>
 <script>
 	$(function(){

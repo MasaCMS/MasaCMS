@@ -9,7 +9,14 @@ mura.templates['form']=function(context) {
 	$(context.targetEl).html( mura.templates.content(context) );
 //	$(context.formEl).html("Hello I am here!");
 
-	item.getForm();
+	console.log('ui settings');
+	console.log(item.settings);
+
+	if( item.settings.view == 'list')
+		item.getList();
+	else
+		item.getForm();
+
 }
 
 mura.templates['datamanager']=function(context) {

@@ -56,7 +56,9 @@
 		entity: {},
 		fields:{},
 		datasets: [],
-		templateList: ['checkbox','dropdown','radio','textarea','textfield','form','paging'],
+		sortfield: '',
+		sortdir: '',
+		templateList: ['checkbox','dropdown','radio','textarea','textfield','form','paging','list','table'],
 		formInit: false,
 		responsemessage: "",
 
@@ -64,26 +66,32 @@
 			
 			properties || {};
 			this.settings = properties;
+			console.log('settings');
 			console.log(this.settings);
 		},
 
-		getTemplates( ) {
+		getTemplates:function() {
 
 			var self = this;
 
 			var temp = self.templateList.pop();
+		
 
 			$.ajax({
 				url :  	'/' + window.mura.siteid + '/includes/display_objects/form/templates/' + temp + '.hb',
 				success : function( results ) {
 					self.templates[temp] = Handlebars.compile(results);
 					if(!self.templateList.length) {
-						self.loadForm();
+						if( self.settings.view == 'list')
+							self.loadList();
+						else
+							self.loadForm();
 					}
 					else
 						self.getTemplates();
 				},
 				error : function( e ) {
+					console.log('error');
 					console.log( e );
 				}
 			});
@@ -96,8 +104,6 @@
 
 			if( data.datasetid != "")
 				data.options = self.formJSON.datasets[data.datasetid].options;
-
-			console.log(data.name);
 
 			self.setDefault( fieldtype,data );
 
@@ -128,10 +134,8 @@
 
 		},
 
-		renderData: function() {
+		renderData:function() {
 			var self = this;
-
-			console.log(self.formJSON);
 
 			if(self.datasets.length == 0)
 				self.renderForm();
@@ -159,7 +163,6 @@
 
 				})
 				.then(function() {
-					console.log(dataset);
 					self.renderData();
 				})
 				;
@@ -170,7 +173,6 @@
 			var self = this;
 
 			$(".field-container",self.settings.formEl).empty();
-
 
 			if(!self.formInit) {
 				self.initForm();
@@ -190,20 +192,17 @@
 
 		},
 
-		renderPaging: function() {
+		renderPaging:function() {
 			self = this;
 
 			$(".paging-container",self.settings.formEl).empty();
 
 			if(self.formJSON.form.pages.length == 1) {
-				$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage+1,label:"Submit",class:'form-submit'}));
+				$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage+1,label:"Submit",class:"form-submit"}));
 			}
 			else {
-				console.log('paging');
-
 				if(self.currentPage == 0) {
-					console.log('yes!');
-					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:'form-nav'}));
+					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:"form-nav"}));
 				} else {
 					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage-1,label:"Back",class:'form-nav'}));
 
@@ -222,19 +221,15 @@
 				$(".field-container :input").each( function() {
 					self.data[ $(this).attr('name') ] = $(this).val();
 				});
-				self.currentPage = $(this).attr('data-page');
+				self.currentPage = parseInt($(this).attr('data-page'));
 				self.renderForm();
 			});
-
-
 		},
-
 		
 		getForm: function( entityid,callback,ref ) {
 			var self = this;
 			var formJSON = {};
 			var entityName = '';
-
 
 			if(entityid != undefined)
 				self.entityid = entityid;
@@ -245,8 +240,6 @@
 			if(ref != undefined)
 				self.ref = ref;
 
-			console.log('getting form: ' + entityid);
-
 			if(self.templateList.length) {
 				self.getTemplates( entityid );
 			}
@@ -255,10 +248,8 @@
 			}
 		},
 		
-		loadForm: function(  ) {
-
+		loadForm: function() {
 			var self = this;
-//			entityid = '43AE38B0-EEEB-F516-995C14E94B8F8E7A';
 
 			window.mura.get(
 					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
@@ -277,17 +268,17 @@
 
 					 	if(self.entityid == undefined) {
 							window.mura.get(
-								window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/new/expand'
-							).then(function(data) {
-								self.data = data.data;
+								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new/expand'
+							).then(function(resp) {
+								self.data = resp.data;
 								self.renderData();	
 							});					 		
 					 	}
 					 	else {
 							window.mura.get(
-								window.mura.apiEndpoint + '/' + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '/expand'
-							).then(function(data) {
-								self.data = data.data;
+								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '/expand'
+							).then(function(resp) {
+								self.data = resp.data;
 								self.renderData();	
 							});					 		
 					 	}
@@ -311,6 +302,8 @@
 				self.data[ $(this).attr('name') ] = $(this).val();
 			});
 
+			delete self.data.isNew;
+
 			window.mura.getEntity(self.entity)
 				.set(
 					self.data
@@ -325,7 +318,120 @@
 					console.log(self.responsemessage);
 					$(self.settings.formEl).html( self.responsemessage );
 				});
+		},
+
+// lists
+		getList: function() {
+			var self = this;
+
+			var entityName = '';
+
+			if(self.templateList.length) {
+				self.getTemplates();
+			}
+			else {
+				self.loadList();
+			}
+		},
+		
+		
+		loadList: function() {
+			self = this;
+
+			window.mura.get(
+				window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
+				 + '?fields=body,title,filename,responsemessage'
+				).then(function(data) {
+				 	formJSON = JSON.parse( data.data.body );
+					entityName = data.data.filename.replace(/\W+/g, "");
+					self.entity = entityName;
+				 	self.formJSON = formJSON;
+
+					self.getTableData();
+			});
+		},
+
+		getTableData: function( navlink ) {
+			var self=this;
+			
+			console.log('ent');
+			console.log(self.entity);
+
+			window.mura.get(
+				window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/listviewdescriptor'
+			).then(function(resp) {
+				self.columns = resp.data;
+				console.log(self.columns);
+				if( navlink == undefined) {
+					navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?itemsperpage=3&sort=' + self.sortdir + self.sortfield;					
+					var fields = [];
+					for(var i = 0;i < self.columns.length;i++) {
+						fields.push(self.columns[i].column);
+					}
+					navlink = navlink + "&fields=" + fields.join(",");
+				}
+
+				window.mura.get(
+					navlink
+				).then(function(resp) {
+					self.data = resp.data;
+					self.location = self.data.links.self;
+					var tableData = {rows:self.data,columns:self.columns};
+					self.renderTable( tableData );
+				});
+
+			});
+		},
+
+		renderTable: function( tableData ) {
+			self = this;
+
+			console.log('render table');
+			console.log($(self.settings.formEl));
+			
+			console.log(tableData);
+
+			Handlebars.registerHelper('eachColRow',function(row, columns, options) {
+				var ret = "";
+				for(var i = 0;i < columns.length;i++) {
+					ret = ret + options.fn(row[columns[i].column]);
+				}
+				return ret;
+			});
+
+
+			var html = self.templates['table'](tableData);
+			console.log('html');
+
+			$(self.settings.formEl).html( html );
+
+			$(".data-edit").click( function() {
+				self.renderCRUD( $(this).attr('data-value'),$(this).attr('data-pos'));
+			});
+			$(".data-nav").click( function() {
+				self.getTableData( $(this).attr('data-value') );
+			});
+			
+
+			$(".data-sort").click( function() {
+				
+				var sortfield = $(this).attr('data-value');
+				
+				if(sortfield == self.sortfield && self.sortdir == '')
+					self.sortdir = '-';
+				else
+					self.sortdir = '';
+				
+				self.sortfield = $(this).attr('data-value');
+				self.getTableData();
+
+			});
 		}
+
+
+
+
+
 	});
 	
 /*
