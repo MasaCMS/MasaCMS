@@ -131,7 +131,7 @@
 						<ul>
                             <!--- Site Tree --->
                             <li>
-                            <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch'> active</cfif>" " href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
+                            <a class="<cfif rc.originalcircuit eq 'carch'>active</cfif>" " href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
                             <i class="mi-sitemap"></i>
                             #application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#
                             </a>
