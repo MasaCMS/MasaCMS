@@ -131,14 +131,14 @@
 						<ul>
                             <!--- Site Tree --->
                             <li>
-                            <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000000'> active</cfif>" data-moduleid="00000000000000000000000000000000000" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#&moduleid=00000000000000000000000000000000000">
+                            <a class="<cfif rc.originalcircuit eq 'carch'>active</cfif>" " href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
                             <i class="mi-sitemap"></i>
-                            #application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#
+                            #application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#
                             </a>
                             </li>
                             <!--- /Site Tree --->
 
-                            <!--- Components--->
+                            <!--- Components
                             <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
                             <li>
                               <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000003'> active</cfif>" data-moduleid="00000000000000000000000000000000003" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000003&amp;parentid=00000000000000000000000000000000003&amp;moduleid=00000000000000000000000000000000003">
@@ -147,9 +147,9 @@
                               </a>
                             </li>
                             </cfif>
-                            <!---/Components --->
+                            /Components --->
 
-                            <!--- Forms--->
+                            <!--- Forms
                             <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
                             <li>
                             <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000004'> active</cfif>" data-moduleid="00000000000000000000000000000000004" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000004&amp;parentid=00000000000000000000000000000000004&amp;moduleid=00000000000000000000000000000000004">
@@ -158,9 +158,9 @@
                             </a>
                             </li>
                             </cfif>
-                            <!---/Forms --->
+                            /Forms --->
 
-                            <!--- Variations--->
+                            <!--- Variations
                             <cfif application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
                             <li>
                               <a class="site-manager-mod<cfif rc.originalcircuit eq 'carch' and rc.moduleid eq '00000000000000000000000000000000099'> active</cfif>" data-moduleid="00000000000000000000000000000000099" href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000099&amp;parentid=00000000000000000000000000000000099&amp;moduleid=00000000000000000000000000000000099">
@@ -169,7 +169,7 @@
                               </a>
                             </li>
                             </cfif>
-                            <!---/Variations --->
+                            /Variations --->
 
                             <!--- Change Sets --->
                             <cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))

@@ -83,11 +83,15 @@
 		<cfparam name="arguments.rc.responseChart" default="0"/>
 		<cfparam name="arguments.rc.parentid" default=""/>
 
+		<cfif not len(arguments.rc.moduleid)>
+				<cfset arguments.rc.moduleid='00000000000000000000000000000000000'>
+		</cfif>
+
 		<cfif not isDefined("arguments.rc.topid")>
-			<cfif rc.moduleid eq '00000000000000000000000000000000000'>
+			<cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
 				<cfset session.topid="00000000000000000000000000000000001">
 			<cfelse>
-				<cfset session.topid=rc.moduleid>
+				<cfset session.topid=arguments.rc.moduleid>
 			</cfif>
 			<cfset arguments.rc.topid=session.topid>
 		<cfelse>
