@@ -37,39 +37,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
 	<cfset content.setType('Form')>
 	<cfset rc.rsForms = application.contentManager.getComponentType(rc.siteid, 'Form')/>
+
+<!---	
+	<cfif isJSON( content.getValue('body') )>
+		<cfset isFormbuilder = true />
+		<cfset formJSON = serializeJSON( content.getValue('body') ) />
+	</cfif>
+--->	
+
 	<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000004',rc.siteid)>
+
+	<cfparam name="objectParams.view" default="">
+
 </cfsilent>
 <cf_objectconfigurator>
 <cfoutput>
 <div class="mura-layout-row">
 	<div class="mura-control-group">
 		<label class="mura-control-label">Select Form</label>
-			<input type="hidden" name="render" value="client" class="objectParam" /?>
-			<input type="hidden" name="async" value="false" class="objectParam" /?>
-			<select id="availableObjectSelector">
-				<option value="{object:'form',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform'))#',objectid:'unconfigured'}">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform')#
-				</option>
-				<cfloop query="rc.rsForms">
-					<cfset title=rc.rsForms.menutitle>
-					<option <cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#',view:'form'}">
-						#esapiEncode('html',title)# (Form)
-					</option>
-					<option <cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#',view:'list'}">
-						#esapiEncode('html',title)# (List)
-					</option>
-				</cfloop>
-			</select>
-			<cfif hasModulePerm>
-				<button class="btn span12" id="editBtn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
-			</cfif>
-	</div>
-</div>
+		<input type="hidden" name="render" value="client" class="objectParam" />
+		<input type="hidden" name="async" value="false" class="objectParam" />
 
-<div class="mura-layout-row">
-	<div class="mura-control-group">
-		<label class="mura-control-label">Fields</label>
-		<input name="listview" value="" id="form-viewlist">
+		<select id="availableObjectSelector">
+			<option
+				data-value='unconfigured'
+				value="{object:'form',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform'))#',objectid:'unconfigured'}">
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform')#
+			</option>
+			<cfloop query="rc.rsForms">
+				<cfset title=rc.rsForms.menutitle>
+				<option
+					<cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form'>selected </cfif>
+					title="#esapiEncode('html_attr',title)#"
+					value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#'}">
+					#esapiEncode('html',title)#
+				</option>
+			</cfloop>
+		</select>
+		<cfif hasModulePerm>
+			<button class="btn span12" id="editBtn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
+		</cfif>
+	</div>
+	<div id="viewTypeSelector" class="mura-control-group source-container" style="display:none">
+		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtype')#</label>
+			<select id="viewTypeSelector" class="objectParam" name="view">
+			<option <cfif objectParams.view eq 'form'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeform')#"
+				value="form">
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeform')#
+			</option>
+			<option <cfif objectParams.view eq 'view'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
+				value="list">
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#
+			<option <cfif objectParams.view eq 'view'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
+				value="edit">
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#
+			</option>
 	</div>
 </div>
 
@@ -83,8 +105,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 		$('##editBtn').html('Edit');
 		 	} else {
 		 		$('##editBtn').html('Create New');
-		 	}
+		 	}		
+		
+			if( selector.prop('selectedIndex') > 0 )	
+				$("##viewTypeSelector").show();
+			else
+				$("##viewTypeSelector").hide();
+
 		}
+
 		$('##availableObjectSelector').change(setEditOption);
 		setEditOption();
 		$('##editBtn').click(function(){
@@ -94,6 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}
 				);
 		})
+
 	});
 </script>
 </cfif>

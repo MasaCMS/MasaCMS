@@ -16,7 +16,11 @@
 				{{#eachColRow this ../columns}}
 					<td>{{this}}</td>
 				{{/eachColRow}}
-				<!---<td><button type="button" class="data-view" data-value="{{id}}" data-pos="{{@index}}">View</td>--->
+				<td>
+				{{#eachColButton this}}
+				<button type="button" class="{{type}}" data-value="{{id}}" data-pos="{{@index}}">{{label}}</button>
+				{{/eachColButton}}
+				</td>
 			</tr>
 		{{/each}}
 		</tbody>

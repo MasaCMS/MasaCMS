@@ -52,13 +52,15 @@
 		templates:{},
 		formJSON:{},
 		data:{},
-		currentPage: 0,
+		columns:[],
+		currentpage: 0,
 		entity: {},
 		fields:{},
 		datasets: [],
 		sortfield: '',
 		sortdir: '',
-		templateList: ['checkbox','dropdown','radio','textarea','textfield','form','paging','list','table'],
+		properties: {},
+		templateList: ['checkbox','dropdown','radio','textarea','textfield','form','paging','list','table','view'],
 		formInit: false,
 		responsemessage: "",
 
@@ -82,10 +84,10 @@
 				success : function( results ) {
 					self.templates[temp] = Handlebars.compile(results);
 					if(!self.templateList.length) {
-						if( self.settings.view == 'list')
-							self.loadList();
-						else
+						if( self.settings.view == 'form')
 							self.loadForm();
+						else
+							self.loadList();
 					}
 					else
 						self.getTemplates();
@@ -169,7 +171,6 @@
 		},
 
 		renderForm: function( ) {
-
 			var self = this;
 
 			$(".field-container",self.settings.formEl).empty();
@@ -178,7 +179,7 @@
 				self.initForm();
 			}
 
-			var fields = this.formJSON.form.pages[self.currentPage];
+			var fields = this.formJSON.form.pages[self.currentpage];
 			for(var i = 0;i < fields.length;i++) {
 
 				var field =  this.formJSON.form.fields[fields[i]];
@@ -198,19 +199,19 @@
 			$(".paging-container",self.settings.formEl).empty();
 
 			if(self.formJSON.form.pages.length == 1) {
-				$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage+1,label:"Submit",class:"form-submit"}));
+				$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
 			}
 			else {
-				if(self.currentPage == 0) {
+				if(self.currentpage == 0) {
 					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:"form-nav"}));
 				} else {
-					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage-1,label:"Back",class:'form-nav'}));
+					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
 
-					if(self.currentPage+1 < self.formJSON.form.pages.length) {
-						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage+1,label:"Next",class:'form-nav'}));
+					if(self.currentpage+1 < self.formJSON.form.pages.length) {
+						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
 					}
 					else {
-						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentPage+1,label:"Submit",class:'form-submit'}));
+						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit'}));
 					}		
 				}
 			}
@@ -221,24 +222,21 @@
 				$(".field-container :input").each( function() {
 					self.data[ $(this).attr('name') ] = $(this).val();
 				});
-				self.currentPage = parseInt($(this).attr('data-page'));
+				self.currentpage = parseInt($(this).attr('data-page'));
 				self.renderForm();
 			});
 		},
 		
-		getForm: function( entityid,callback,ref ) {
+		getForm: function( entityid,backlink ) {
 			var self = this;
 			var formJSON = {};
 			var entityName = '';
-
+			
 			if(entityid != undefined)
 				self.entityid = entityid;
 
-			if(callback != undefined)
-				self.callback = callback;
-
-			if(ref != undefined)
-				self.ref = ref;
+			if(backlink != undefined)
+				self.backlink = backlink;
 
 			if(self.templateList.length) {
 				self.getTemplates( entityid );
@@ -268,7 +266,7 @@
 
 					 	if(self.entityid == undefined) {
 							window.mura.get(
-								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new/expand'
+								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new?expand=all'
 							).then(function(resp) {
 								self.data = resp.data;
 								self.renderData();	
@@ -276,7 +274,7 @@
 					 	}
 					 	else {
 							window.mura.get(
-								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '/expand'
+								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '?expand=all'
 							).then(function(resp) {
 								self.data = resp.data;
 								self.renderData();	
@@ -288,10 +286,11 @@
 
 		initForm: function() {
 			var self = this;
-
+			$(self.settings.formEl).empty();
 			var html = self.templates['form'](self.settings);
 			$(self.settings.formEl).append(html);
 
+			self.currentpage = 0;
 			self.formInit=true;
 		},
 
@@ -310,12 +309,10 @@
 				)
 				.save()
 				.then( function() {
-					if(self.callback != undefined) {					
-						self.callback( self.ref );
+					if(self.backlink != undefined) {
+						self.getTableData( self.location );
 						return;
 					}
-					console.log('done and saved');
-					console.log(self.responsemessage);
 					$(self.settings.formEl).html( self.responsemessage );
 				});
 		},
@@ -353,43 +350,44 @@
 
 		getTableData: function( navlink ) {
 			var self=this;
-			
-			console.log('ent');
-			console.log(self.entity);
 
 			window.mura.get(
 				window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/listviewdescriptor'
 			).then(function(resp) {
-				self.columns = resp.data;
-				console.log(self.columns);
-				if( navlink == undefined) {
-					navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?itemsperpage=3&sort=' + self.sortdir + self.sortfield;					
-					var fields = [];
-					for(var i = 0;i < self.columns.length;i++) {
-						fields.push(self.columns[i].column);
-					}
-					navlink = navlink + "&fields=" + fields.join(",");
-				}
-
+					self.columns = resp.data;
 				window.mura.get(
-					navlink
+					window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/propertydescriptor/'
 				).then(function(resp) {
-					self.data = resp.data;
-					self.location = self.data.links.self;
-					var tableData = {rows:self.data,columns:self.columns};
-					self.renderTable( tableData );
-				});
+					self.properties = self.cleanProps(resp.data);
 
+					if( navlink == undefined) {
+						navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?itemsperpage=3&sort=' + self.sortdir + self.sortfield;					
+						var fields = [];
+						for(var i = 0;i < self.columns.length;i++) {
+							fields.push(self.columns[i].column);
+						}
+						navlink = navlink + "&fields=" + fields.join(",");
+					}
+	
+					window.mura.get(
+						navlink
+					).then(function(resp) {
+						self.data = resp.data;
+						self.location = self.data.links.self;
+
+						console.log( self.data);
+
+						var tableData = {rows:self.data,columns:self.columns};
+						self.renderTable( tableData );
+					});
+	
+				});
 			});
+
 		},
 
 		renderTable: function( tableData ) {
 			self = this;
-
-			console.log('render table');
-			console.log($(self.settings.formEl));
-			
-			console.log(tableData);
 
 			Handlebars.registerHelper('eachColRow',function(row, columns, options) {
 				var ret = "";
@@ -399,19 +397,40 @@
 				return ret;
 			});
 
+			Handlebars.registerHelper('eachColButton',function(row, options) {
+				var ret = "";
+				
+				row.label='View';
+				row.type='data-view';
+
+				// only do view if there are more properties than columns				
+				if( Object.keys(self.properties).length > self.columns.length) {
+					ret = ret + options.fn(row);
+				}
+
+				if( self.settings.view == 'edit') {
+					row.label='Edit';
+					row.type='data-edit';
+
+					ret = ret + options.fn(row);
+				}
+
+				return ret;
+			});
+
 
 			var html = self.templates['table'](tableData);
-			console.log('html');
-
 			$(self.settings.formEl).html( html );
 
-			$(".data-edit").click( function() {
+			$(".data-edit",self.settings.formEl).click( function() {
 				self.renderCRUD( $(this).attr('data-value'),$(this).attr('data-pos'));
 			});
-			$(".data-nav").click( function() {
+			$(".data-view",self.settings.formEl).click( function() {
+				self.loadOverview($(this).attr('data-value'),$(this).attr('data-pos'));
+			});
+			$(".data-nav",self.settings.formEl).click( function() {
 				self.getTableData( $(this).attr('data-value') );
 			});
-			
 
 			$(".data-sort").click( function() {
 				
@@ -426,9 +445,100 @@
 				self.getTableData();
 
 			});
+		},
+
+
+		loadOverview: function(itemid,pos) {
+			var self = this;
+
+			console.log(arguments);
+
+			window.mura.get(
+				window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + itemid + '?expand=all'
+				).then(function(resp) {
+					self.item = resp.data;
+					console.log(self.item);
+					
+					self.renderOverview();	
+			});					 		
+		},
+
+		renderOverview: function() {
+			self = this;
+			
+			$(self.settings.formEl).empty();
+
+			Handlebars.registerHelper('eachProp',function(data, options) {
+				var ret = "";
+				var obj = {};
+
+				console.log(self.properties);
+				console.log(data);
+				
+				for(var i in self.properties) {
+					obj.displayName = self.properties[i].displayName;
+					console.log( self.properties[i].fieldtype );
+					console.log('- ' + self.properties[i].column);
+					if( self.properties[i].fieldtype == "one-to-one" ) {
+						obj.displayValue = data[ self.properties[i].cfc ].val;
+					}
+					else
+						obj.displayValue = data[ self.properties[i].column ];
+					
+					ret = ret + options.fn(obj);
+				}
+				return ret;
+			});
+
+			var html = self.templates['view'](self.item);
+			$(self.settings.formEl).append(html);
+
+			$(".nav-back",self.settings.formEl).click( function() {
+				self.getTableData( self.location );
+			});
+
+
+		},
+
+		renderCRUD: function( itemid,pos ) {
+			self = this;
+			
+			self.formInit = 0;
+			self.initForm();
+	
+			self.getForm(itemid,self.data.links.self);
+		},
+		
+		cleanProps: function( props ) {
+			var propsOrdered = {};
+			var propsRet = {};
+			var ct = 100000;
+			
+			delete props.isNew;
+			delete props.errors;
+			delete props.saveErrors;
+			delete props.instance;
+			delete props.instanceid;
+			delete props.frommuracache;
+			delete props[self.entity + "id"];
+
+			for(var i in props) {
+				if( props[i].orderno != undefined) {
+					propsOrdered[props[i].orderno] = props[i];		
+				}
+				else {
+					propsOrdered[ct++] = props[i];
+				}
+			}
+
+			Object.keys(propsOrdered)
+				.sort()
+					.forEach(function(v, i) {
+					propsRet[v] = propsOrdered[v];
+			});
+
+			return propsRet;
 		}
-
-
 
 
 

@@ -12,10 +12,10 @@ mura.templates['form']=function(context) {
 	console.log('ui settings');
 	console.log(item.settings);
 
-	if( item.settings.view == 'list')
-		item.getList();
-	else
+	if( item.settings.view == 'form')
 		item.getForm();
+	else
+		item.getList();
 
 }
 
