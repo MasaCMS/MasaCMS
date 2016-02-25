@@ -1156,6 +1156,8 @@ function alertDialog(message,okAction,title,width) {
 		dialogConfig.width=width;
 	}
 
+	console.log(dialogConfig);
+
 	$("#alertDialog").attr('title',title);
 	$("#alertDialogMessage").html(message);
 	$("#alertDialog").dialog(dialogConfig);
@@ -1299,7 +1301,9 @@ function getDialogPosition() {
 	}
 	*/
 	//["top",20]
-	return "center";
+//	return "center";
+// jquery-ui update uses an object for positioning
+	return { my: "center", at: "center", of: window };
 }
 
 function openPreviewDialog(previewURL) {
