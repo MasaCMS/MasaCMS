@@ -724,7 +724,7 @@
 								</script>
 
 						  		<!--- site manager architectural view container --->
-						<div id="gridContainer">
+						<div id="gridContainer" class="<cfif rc.moduleid eq '00000000000000000000000000000000000'>site-tree</cfif>">
 
 						</div>
 					</div>
