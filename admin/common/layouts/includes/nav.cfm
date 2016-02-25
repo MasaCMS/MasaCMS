@@ -123,7 +123,7 @@
                     </cfif>
 
                     <!--- site manager --->
-                    <cfset isInSiteManager=listFindNoCase('carch,cfeed,ccategory,cchangesets,cfilemanager',rc.originalcircuit) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))>
+                    <cfset isInSiteManager=listFindNoCase('carch,cfeed,ccategory,cchangesets,cfilemanager,ccomments,cmailinglist,cemail,cadvertising',rc.originalcircuit) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))>
                     <li id="admin-nav-manager"<cfif isInSiteManager> class="open"</cfif>>
                         <a data-toggle="nav-submenu" class="nav-submenu<cfif isInSiteManager> active"</cfif>"" href="./">
                             <i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitemanager")#</span>
@@ -224,17 +224,41 @@
                             </a>
                             </li>
                             <!--- /File Manager --->
+
+                            <!--- Advertising, this is not only available in certain legacy situations --->
+                              <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid)>
+                                <li>
+                                  <a<cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cAdvertising.listAdvertisers&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000006">
+                                    <i class="mi-cog"></i>
+                                    #application.rbFactory.getKeyValue(session.rb,"layout.advertising")#
+                                  </a>
+                                </li>
+                              </cfif>
+                            <!--- /Advertising --->
+
+                            <!--- Email Broadcaster --->
+                              <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005",session.siteid)>
+                                <li>
+                                  <a<cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000005')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cEmail.list&amp;siteid=#session.siteid#">
+                                    <i class="mi-cog"></i>
+                                    #application.rbFactory.getKeyValue(session.rb,"layout.emailbroadcaster")#
+                                  </a>
+                                </li>
+                              </cfif>
+                            <!--- /Email Broadcaster --->
+
+                            <!--- Mailing Lists --->
+                              <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009",session.siteid)>
+                                <li>
+                                  <a<cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000009')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cMailingList.list&amp;siteid=#session.siteid#">
+                                    <i class="mi-cog"></i>
+                                    #application.rbFactory.getKeyValue(session.rb,"layout.mailinglists")#
+                                  </a>
+                                </li>
+                              </cfif>
+                            <!--- /Mailing Lists --->
 						  </ul>
                     </li>
-
-                    <!--- modules --->
-                    <cfif (
-                            (application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid))
-                            or (application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005",session.siteid))
-                            or (application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009",session.siteid))
-                        ) and not listfindNoCase(hidelist,rc.originalcircuit)>
-                        <cfinclude template="dsp_module_menu.cfm" />
-                    </cfif>
 
                     <!--- users --->
                     <cfif ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or (application.settingsManager.getSite(session.siteid).getextranet() and application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>
@@ -310,7 +334,7 @@
 
                     <!--- site config --->
                     <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-                        <cfset isSiteConfig=listFindNoCase('csettings,cextend,ctrash,cchain,cperm',rc.originalcircuit) >
+                        <cfset isSiteConfig=listFindNoCase('csettings,cextend,ctrash,cchain,cperm',rc.originalcircuit) and request.action neq "core:csettings.list">
                         <li id="admin-nav-site-config"<cfif isSiteConfig> class="open"</cfif>>
 <!--- TODO GoWest : prevent active state when viewing plugin details, e.g.
 /admin/?muraAction=cSettings.editPlugin&moduleID=122506FE-7FFC-422E-A010DDC157B75853
@@ -442,12 +466,12 @@ and
 <!--- TODO GoWest : active states for all settings links : 2015-12-15T11:35:55-07:00 --->
                     <cfif listFind(session.mura.memberships,'S2')>
                         <li id="admin-nav-global">
-                            <a class="nav-submenu" data-toggle="nav-submenu" href="index.cfm"><i class="mi-cogs"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.settings")#</span></a>
+                            <a class="nav-submenu" data-toggle="nav-submenu" href="index.cfm"><i class="mi-cogs"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.globalconfig")#</span></a>
 
                             <ul>
                                 <!--- global settings --->
                                 <li>
-                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="mi-cogs"></i>#rc.$.rbKey("layout.globalsettings")#</a>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="mi-cogs"></i>#rc.$.rbKey("layout.globalsettings-sites")#</a>
                                 </li>
                                 <!--- global plugins --->
 <!--- TODO GoWest : active state for plugins tab view : 2015-12-18T11:59:17-07:00 --->
