@@ -33655,6 +33655,9 @@ div.tagsinput span.tag {
 body {
   font-family: "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+ul {
+  padding-left: 0;
+}
 .header-search form {
   margin-bottom: 0;
   margin-top: 7px;
