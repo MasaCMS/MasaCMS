@@ -1156,8 +1156,6 @@ function alertDialog(message,okAction,title,width) {
 		dialogConfig.width=width;
 	}
 
-	console.log(dialogConfig);
-
 	$("#alertDialog").attr('title',title);
 	$("#alertDialogMessage").html(message);
 	$("#alertDialog").dialog(dialogConfig);
