@@ -478,9 +478,9 @@
 					}
 				}
 
-				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"moduleid")){
+				//if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"moduleid")){
 					session.flatViewArgs["#session.siteid#"].moduleid=rc.moduleid;
-				}
+				//}
 
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"sortby")){
 					session.flatViewArgs["#session.siteid#"].sortby="lastupdate";
@@ -527,9 +527,9 @@
 					session.flatViewArgs["#session.siteid#"].subtype=rc.subtype;
 				}
 
-				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"report")){
+				//if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"report")){
 					session.flatViewArgs["#session.siteid#"].report="";
-				}
+				//}
 
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"keywords")){
 					session.flatViewArgs["#session.siteid#"].keywords="";
@@ -626,7 +626,15 @@
 
 		 	<div class="mura-header">
 
-			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h1>
+			<cfif rc.moduleid eq '00000000000000000000000000000000004'>
+				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h1>
+			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
+				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.variationsmanager')#</h1>
+			<cfelseif rc.moduleid eq '00000000000000000000000000000000003'>
+				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1>
+			<cfelse>
+				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.sitetree')#</h1>
+			</cfif>
 
 <!--- M7 removed - are we keeping this search?
 
@@ -671,7 +679,8 @@
 						  </div>
 						  <!-- /block header -->
 						  <div class="block-content">
-							  <ul id="arch-mod" class="nav nav-pills pull-left">
+							 
+							  <ul id="arch-mod" class="navTask nav nav-pills pull-left">
 
   								  <li>
   									  <a data-moduleid="00000000000000000000000000000000000" data-toggle="popover" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.sitetree"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000000"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});">
@@ -713,6 +722,7 @@
 										});
 									});
 								</script>
+
 						  		<!--- site manager architectural view container --->
 						<div id="gridContainer">
 
@@ -757,7 +767,8 @@
 				function initFlatViewArgs(){
 					return {
 						siteid:'#esapiEncode('javascript',session.siteID)#',
-						moduleid:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].moduleid)#',
+						moduleid:'#esapiEncode('javascript',$.event("moduleid"))#',
+						topid:'#esapiEncode('javascript',session.topid)#',
 						sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#',
 						sortdirection:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortdirection)#',
 						page:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].page)#',
@@ -809,7 +820,6 @@
 							siteManager.loadSiteFlat(flatViewArgs);
 							flatViewLoaded = true;
 						}
-						$(".nav-main .site-manager-mod").removeClass('active');
 					}
 				}
 
