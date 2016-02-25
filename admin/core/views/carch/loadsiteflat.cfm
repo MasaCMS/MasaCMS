@@ -98,6 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	feed=$.getBean("feed");
 
+	/*
 	if(session.flatViewArgs["#rc.siteID#"].moduleid == '00000000000000000000000000000000099'){
 		feed.setType('Variation');
 	} else if(session.flatViewArgs["#rc.siteID#"].moduleid == '00000000000000000000000000000000004'){
@@ -105,7 +106,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	} else if(session.flatViewArgs["#rc.siteID#"].moduleid == '00000000000000000000000000000000003'){
 		feed.setType('Component');
 	}
+	*/
 
+	feed.setType('*');
 	feed.setshowExcludeSearch(1);
 	feed.setMaxItems(500);
 	feed.setNextN(10);
@@ -606,31 +609,28 @@ if(len($.siteConfig('customTagGroups'))){
 
 <div class="sidebar">
 	<!---<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h2>--->
-	<cfif $.event('moduleid') eq  '00000000000000000000000000000000000'>
-		<div class="well">
-			<ul id="navReports" class="nav nav-list">
-				<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
-				<cfset draftCount=$.getBean('contentManager').getMyDraftsCount(siteid=session.siteid, startdate=dateAdd('m',-3,now()))>
-				<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mydrafts")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-				<cfset draftCount=$.getBean('contentManager').getMySubmissionsCount(session.siteid)>
-				<li><a href="" data-report="mysubmissions"<cfif $.event("report") eq "mysubmissions"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mysubmissions")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-				<cfset draftCount=$.getBean('contentManager').getMyApprovalsCount(session.siteid)>
-				<li><a href="" data-report="myapprovals"<cfif $.event("report") eq "myapprovals"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myapprovals")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-				<cfset draftCount=$.getBean('contentManager').getMyExpiresCount(session.siteid)>
-				<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myexpires")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-				<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#<!---<span class="badge badge-success">13</span>---></a></li>
-				<cfset draftCount=$.getBean('contentManager').getmylockedcontentCount(session.siteid)>
-				<li><a href="" data-report="mylockedcontent"<cfif $.event("report") eq "mylockedcontent"> class="active"</cfif>>
-					<cfif $.siteConfig('hasLockableNodes')>
-						#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#
-					<cfelse>
-						#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#
-					</cfif>
-					<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-			</ul>
-		</div>
-	</cfif>
-
+	<div class="well">
+		<ul id="navReports" class="nav nav-list">
+			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
+			<cfset draftCount=$.getBean('contentManager').getMyDraftsCount(siteid=session.siteid, startdate=dateAdd('m',-3,now()))>
+			<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mydrafts")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<cfset draftCount=$.getBean('contentManager').getMySubmissionsCount(session.siteid)>
+			<li><a href="" data-report="mysubmissions"<cfif $.event("report") eq "mysubmissions"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mysubmissions")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<cfset draftCount=$.getBean('contentManager').getMyApprovalsCount(session.siteid)>
+			<li><a href="" data-report="myapprovals"<cfif $.event("report") eq "myapprovals"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myapprovals")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<cfset draftCount=$.getBean('contentManager').getMyExpiresCount(session.siteid)>
+			<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myexpires")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#<!---<span class="badge badge-success">13</span>---></a></li>
+			<cfset draftCount=$.getBean('contentManager').getmylockedcontentCount(session.siteid)>
+			<li><a href="" data-report="mylockedcontent"<cfif $.event("report") eq "mylockedcontent"> class="active"</cfif>>
+				<cfif $.siteConfig('hasLockableNodes')>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#
+				<cfelse>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#
+				</cfif>
+				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+		</ul>
+	</div>
 
 	<div class="well">
 	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
