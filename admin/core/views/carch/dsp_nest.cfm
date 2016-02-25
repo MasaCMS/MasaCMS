@@ -166,7 +166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset atitle="<img class='image-preview' src='#$.getURLForImage(fileid=rsnest.fileid,size='small',siteid=rsnest.siteid,fileext=rsnest.fileExt)#'>">
 		<cfelse>
 			<cfset atooltip=false>
-			<cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>
+			<cfset atitle=''>
 		</cfif>
 	</cfsilent>
 
