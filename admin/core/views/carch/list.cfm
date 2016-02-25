@@ -679,7 +679,7 @@
 						  </div>
 						  <!-- /block header -->
 						  <div class="block-content">
-							  <!---
+							 
 							  <ul id="arch-mod" class="navTask nav nav-pills pull-left">
 
   								  <li>
@@ -722,7 +722,7 @@
 										});
 									});
 								</script>
-								--->
+
 						  		<!--- site manager architectural view container --->
 						<div id="gridContainer">
 
