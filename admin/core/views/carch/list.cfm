@@ -626,6 +626,7 @@
 
 		 	<div class="mura-header">
 
+			<!---
 			<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h1>
 			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
@@ -635,6 +636,8 @@
 			<cfelse>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.sitetree')#</h1>
 			</cfif>
+			--->
+			<h1>#application.rbFactory.getKeyValue(session.rb,'layout.contentmanager')#</h1>
 
 <!--- M7 removed - are we keeping this search?
 
