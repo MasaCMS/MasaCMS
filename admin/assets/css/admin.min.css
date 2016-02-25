@@ -24821,9 +24821,9 @@ i {
   top: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.9);
-  -webkit-border-radius: 12px;
-  -moz-border-radius: 12px;
-  border-radius: 12px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   display: none;
   white-space: nowrap;
   line-height: 1;
