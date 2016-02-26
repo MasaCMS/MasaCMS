@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset objectParams.mapclass="mura-site-map">
 	</cfif>
 </cfsilent>
-<cf_objectconfigurator params="#params#">
+<cf_objectconfigurator params="#objectParams#">
 <cfoutput>
 <div id="availableObjectParams"
 	data-object="site_map"
