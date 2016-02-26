@@ -102,8 +102,8 @@
 
 				<cfif rc.nextn.numberofpages gt 1>
 					<!--- Pagination --->
-						<div class="pagination pull-right">
-							<ul>
+						<div class="pull-right">
+							<ul class="pagination">
 
 								<!--- Previous Link --->
 									<cfscript>

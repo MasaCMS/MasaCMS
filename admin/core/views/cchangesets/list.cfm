@@ -111,8 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<p class="search-showing">
 				#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
 			</p>
-			<div class="pagination">
-			<ul class="moreResults">
+			<ul class="pagination moreResults">
 			<cfif rc.changesets.getPageIndex() gt 1>
 			<li>
 				<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#-1')#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
@@ -132,9 +131,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#+1')#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.next')#</a>
 				</li>
 			</cfif>
-			</ul>
-					</div> <!-- /.pagination -->
-				</div> <!-- /.mura-results-wrapper -->
+			</ul> <!-- /.pagination -->
+		</div> <!-- /.mura-results-wrapper -->
 	</cfif>
 	</div> <!-- /##main -->	
 

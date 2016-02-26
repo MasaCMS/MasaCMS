@@ -98,8 +98,8 @@
 				
 				<!--- PAGINATION --->
 				<cfif rc.itComments.pageCount() gt 1>
-					<div class="pagination pull-right">
-						<ul>
+					<div class="pull-right">
+						<ul class="pagination">
 							<!--- PREVIOUS --->
 							<cfscript>
 								if ( rc.pageno eq 1 ) {
@@ -334,8 +334,8 @@
 				
 				<!--- PAGINATION --->
 				<cfif rc.itComments.pageCount() gt 1>
-					<div class="pagination pull-right">
-						<ul>
+					<div class="pull-right">
+						<ul class="pagination">
 							<!--- PREVIOUS --->
 							<cfscript>
 								if ( rc.pageno eq 1 ) {
