@@ -8,7 +8,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 <cfset renderer=$.getContentRenderer()>
 CKEDITOR.editorConfig = function( config )
 {
-	
+
 	<cfoutput>
 	<!---
 	var LITE = {
@@ -20,7 +20,7 @@ CKEDITOR.editorConfig = function( config )
 			TRACKING : "lite:tracking",
 			CHANGE: "lite:change"
 		},
-		
+
 		Commands : {
 			TOGGLE_TRACKING : "lite_ToggleTracking",
 			TOGGLE_SHOW : "lite_ToggleShow",
@@ -42,7 +42,7 @@ CKEDITOR.editorConfig = function( config )
 	CKEditorBasePath='#application.configBean.getContext()#/requirements';
 	CKFinderBasePath='#application.configBean.getContext()#/requirements';
 	</cfoutput>
-	
+
 	<cfoutput>
 	<cfif renderer.getheadline() eq "h1">
 		// Mura page title set to h1
@@ -85,6 +85,9 @@ CKEDITOR.editorConfig = function( config )
 	config.pasteFromWordRemoveFontStyles = true;
 	config.pasteFromWordRemoveStyles = true;
 
+	config.toolbarStartupExpanded=false;
+	config.toolbarCanCollapse = true;
+	config.startupShowBorders = false;
 	// Hide title attriute
 	config.title = false;
 
@@ -146,7 +149,7 @@ CKEDITOR.editorConfig = function( config )
 		config.toolbar_Basic = [
 			{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
 		];
-		
+
 		config.toolbar_FormBuilder = [
 			{name: 'group1', items: ['Source']},
 			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
@@ -174,14 +177,14 @@ CKEDITOR.editorConfig = function( config )
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
 	</cfif>
-	
+
 	//config.ProtectedTags = 'i';
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
-	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g ); 
+	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g );
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';
-	
+
 	config.entities_additional = "";
 
 	// Code Mirror Plugin - http://ckeditor.com/addon/codemirror
@@ -219,7 +222,7 @@ CKEDITOR.editorConfig = function( config )
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css') )>
 			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css');
 		</cfif>
-	
+
 	<!--- templates --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js.cfm') )>
 			config.templates='default';
@@ -228,14 +231,14 @@ CKEDITOR.editorConfig = function( config )
 			config.templates='default';
 			config.templates_files= ['#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js'];
 		</cfif>
-	
+
 	<!--- styleSet --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
 			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js.cfm';
 		<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
 			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js';
 		</cfif>
-	
+
 	<!--- customConfig --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
 			config.customConfig='#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
@@ -272,7 +275,7 @@ CKEDITOR.on('instanceReady', function(ev){
 					, breakBeforeClose: false
 					, breakAfterClose: true
 				}
-			);	
+			);
 		};
 	};
 });
