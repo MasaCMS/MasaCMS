@@ -133,16 +133,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </a>
     <div class="dropdown-menu">
       	<!---  <h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h3> --->
-      	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
+        <div>
+      	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#:&nbsp;</label>
         <cfif rc.topid neq '00000000000000000000000000000000001'
           	  and (
           	  		perm eq 'Editor'
         				or
         			(perm eq 'Author' and application.configBean.getSortPermission() eq "author")
         		  )>
-            <input name="nextN" value="#session.mura.nextN#" type="text" class="input-small" size="2" maxlength="4" />
-            #application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#
-            <input type="hidden" name="saveSort" value="true">
+            <input name="nextN" value="#session.mura.nextN#" type="text" class="text" size="6" maxlength="4" />
+        </div>
+        <div>    
+            <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#:&nbsp;</label>
               <select name="sortBy"  onchange="siteManager.setAsSorted();">
                 <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
                 <option value="releaseDate" <cfif rc.sortBy eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
@@ -160,11 +162,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
                 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
               </select>
+              <input type="hidden" name="saveSort" value="true">
           <cfelse>
-            <input name="nextN" value="#esapiEncode('html_attr',session.mura.nextN)#" type="text" class="text span4" size="2" maxlength="4" />
+            <input name="nextN" value="#esapiEncode('html_attr',session.mura.nextN)#" type="text" class="text" size="6" maxlength="4" />
           </cfif>
+          </div>
           <!---<dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>>--->
+         <div class="center"> 
           <input type="button" class="btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
+         </div> 
         <input type="hidden" name="startrow" value="#esapiEncode('html_attr',rc.startrow)#">
         <input type="hidden" name="orderperm" value="#perm#">
         <input type="hidden" id="sorted" name="sorted" value="false">

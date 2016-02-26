@@ -24188,15 +24188,30 @@ i {
 .mura #sm-modify-view .dropdown-menu form label,
 .mura #filter-view .dropdown-menu form label {
   display: block;
-  margin-bottom: .25em;
+  margin-bottom: 0;
 }
 .mura #sm-modify-view .dropdown-menu input.text,
 .mura #filter-view .dropdown-menu input.text {
-  margin: 0 0 0 2px;
+  margin: 0 0 8px 2px;
 }
 .mura #sm-modify-view .dropdown-menu select,
 .mura #filter-view .dropdown-menu select {
   margin-bottom: 0;
+  margin-top: 8px;
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.mura #sm-modify-view .dropdown-menu label + select,
+.mura #filter-view .dropdown-menu label + select {
+  margin-top: 4px;
+}
+.mura #sm-modify-view .dropdown-menu .btn,
+.mura #filter-view .dropdown-menu .btn {
+  margin-top: 12px;
 }
 .mura #sitemgr-reorder {
   margin-top: 1em;
@@ -33939,6 +33954,9 @@ div.cke_editable {
 }
 .block-constrain > .content {
   padding: 15px 30px !important;
+}
+.center {
+  text-align: center;
 }
 .clear-both {
   clear: both;

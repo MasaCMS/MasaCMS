@@ -12,7 +12,8 @@
 	margin: 0 0 @baseLineHeight 0;
 }
 
-#sm-modify-view .dropdown-menu, #filter-view .dropdown-menu {
+#sm-modify-view .dropdown-menu, 
+#filter-view .dropdown-menu {
 
 	padding: 10px;
 
@@ -21,16 +22,25 @@
 
 		label {
 			display: block;
-			margin-bottom: .25em;
+			margin-bottom: 0;
 			}
 		}
 
 	input.text {
-		margin: 0 0 0 2px;
+		margin: 0 0 8px 2px;
 		}
 
 	select {
 		margin-bottom: 0;
+		margin-top: 8px;
+		.make-xs-column(12);
+	}
+	label + select {
+		margin-top: 4px;
+	}
+	
+	.btn {
+		margin-top: 12px;
 	}
 
 }
