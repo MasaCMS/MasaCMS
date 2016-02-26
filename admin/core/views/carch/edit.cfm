@@ -426,11 +426,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 
+	<!--- secondary menu --->
+	<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>
+		<cfinclude template="dsp_secondary_menu.cfm">
+	</cfif>
+
 		<!--- metadata labels --->
 	<cfif rc.compactDisplay neq "true">
 	<div class="mura-item-metadata">
 		<div class="label-group">
 			<cfif not rc.contentBean.getIsNew()>
+
+
+
 				<cfif listFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
 					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
 					<cfif rsRating.recordcount>
@@ -473,11 +481,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<span class="label">
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#esapiEncode('html',rc.type)#</strong>
 			</span>
-
-			<!--- secondary menu --->
-			<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>
-				<cfinclude template="dsp_secondary_menu.cfm">
-			</cfif>
 		</div><!-- /.label-group -->
 	</div><!-- /.mura-item-metadata -->
 

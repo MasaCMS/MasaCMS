@@ -24169,7 +24169,7 @@ i {
   box-sizing: border-box;
 }
 .mura #carch h1 + .btn-group {
-  clear: both;
+  /* clear: both; */
 }
 .mura #carch .tab-content {
   overflow: visible;
@@ -29126,18 +29126,16 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
 }
 .mura-header ul.breadcrumb {
   position: relative;
+  float: left;
+  width: 100%;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
 }
-@media (min-width: 768px) {
-  .mura-header ul.breadcrumb {
-    float: left;
-    width: 50%;
-  }
-}
 .mura-item-metadata {
   position: relative;
+  float: left;
+  width: 100%;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
@@ -29145,12 +29143,6 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
   margin-right: 0;
   padding-left: 0;
   padding-right: 0;
-}
-@media (min-width: 768px) {
-  .mura-item-metadata {
-    float: left;
-    width: 58.33333333%;
-  }
 }
 main > .content > :first-child {
   margin-left: -15px;
@@ -30912,6 +30904,19 @@ fieldset[disabled] .btn:not([class*="btn-"]).active {
 }
 .form-actions > .btn {
   margin-right: 15px;
+}
+#nav-module-specific {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: right;
+}
+@media (min-width: 768px) {
+  #nav-module-specific {
+    float: left;
+    width: 58.33333333%;
+  }
 }
 #nav-module-specific .btn {
   display: inline;
@@ -33824,6 +33829,8 @@ header .btn-image span.button-image {
   padding: 0;
   margin: 10px 0;
   clear: both;
+  background-color: #FFF;
+  padding: 6px;
 }
 #carch #mura-content ul.breadcrumb > :first-child,
 #carch #mura-content ol.breadcrumb > :first-child {
@@ -33938,7 +33945,7 @@ div.cke_editable {
   vertical-align: baseline;
 }
 .mura-item-metadata {
-  text-align: right;
+  text-align: left;
   line-height: 2.5em;
 }
 .drop-right {
@@ -33980,15 +33987,16 @@ a.no-link {
 .mura-item-metadata .metadata-horizontal li:hover {
   float: none !important;
   color: #777;
-  background-color: #f1f1f1;
-  border: 1px solid #e9e9e9;
+  background-color: transparent;
+  border: none;
   font-size: 84%;
   font-size: 92%;
   line-height: 1;
   font-weight: normal;
-  margin-left: 8px;
+  margin-right: 8px;
   margin-bottom: 10px;
   min-height: 2.3em;
+  padding: 0;
   padding-top: .5em;
 }
 .mura-item-metadata .metadata-horizontal li,
