@@ -341,8 +341,7 @@
 <!--- TODO GoWest : add tabdrop to compact : 2016-02-25T20:16:40-07:00 --->
 
 	           			// tab drop
-	           			$('.mura-tabs').tabdrop({text: '... more'});
-//	           			$('.mura-tabs').tabdrop({text: '<i class="mi-ellipsis-h"></i>'});
+           			$('.mura-tabs').tabdrop({text: '<i class="mi-ellipsis-h"></i>'});
 
 		           		// dismiss alerts
 	           			$('.alert-dismiss').click(
