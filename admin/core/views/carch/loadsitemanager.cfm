@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
   <div class="btn-group" id="sm-modify-view">
     <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
-      <i class="mi-eye"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#
+      #application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#
       <span class="caret"></span>
     </a>
     <div class="dropdown-menu">
