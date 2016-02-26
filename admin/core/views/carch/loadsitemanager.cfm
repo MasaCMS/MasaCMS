@@ -198,20 +198,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <dl class="mura-grid-hdr">
         <dt>
         		<span class="add"></span>
-        		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a>
+        		<!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#<!--- </a> --->
         </dt>
         <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-          <dd class="objects"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#</a></dd>
-          <dd class="display"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</a></dd>
-          <dd class="template"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#</a></dd>
+          <dd class="objects"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#<!--- </a> ---></dd>
+          <dd class="display"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#<!--- </a> ---></dd>
+          <dd class="template"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#<!--- </a> ---></dd>
         </cfif>
         <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000'>
-          <dd class="nav"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#</a></dd>
+          <dd class="nav"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#<!--- </a> ---></dd>
         <cfelse>
-           <dd class="display"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</a></dd>
+           <dd class="display"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#<!--- </a> ---></dd>
 
         </cfif>
-        <dd class="updated"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</a></dd>
+        <dd class="updated"><!--- <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#"> --->#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#<!--- </a> ---></dd>
         <dd class="actions">&nbsp;</dd>
       </dl>
       <ul id="mura-nodes"<cfif arrayLen(crumbdata) gt 1 and crumbdata[2].type eq 'Gallery'> class="gallery"</cfif>>

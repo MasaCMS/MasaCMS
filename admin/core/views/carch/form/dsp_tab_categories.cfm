@@ -77,9 +77,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
 						</dt>
 						<dd class="categoryassignmentwrapper">
-							<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##">
-										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')# <i class="mi-question-circle"></i>
-							</a>
+							<!--- <a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##"> --->
+										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#<!---  <i class="mi-question-circle"></i>
+							</a> --->
 						</dd>
 					</dl><!--- /.mura-grid-hdr --->
 						<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contentBean.getContentHistID()) />
