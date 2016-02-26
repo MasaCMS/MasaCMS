@@ -23763,6 +23763,14 @@ i {
 ===================================== */
   /* compact view / configurators */
   /* for styling of iframe itself, see admin-frontend.less */
+  /*!
+ * Tab drop for Bootstrap
+ *
+ * Copyright 2012 Stefan Petre
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
 }
 .mura .mura-grid .actions ul,
 .mura .mura-table-grid .actions ul {
@@ -29058,6 +29066,10 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
 }
 .mura .add-content-ui li:nth-child(3n) {
   margin-right: 0;
+}
+.mura .nav-tabs,
+.mura .nav-pills {
+  position: relative;
 }
 /* BS3 CLASS MAPPING */
 #mura-content {

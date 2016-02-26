@@ -339,6 +339,9 @@
 		           		// persist open nav items
 	           			$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
 
+	           			// tab drop
+	           			$('.mura-tabs').tabdrop({text: '<i class="mi-ellipsis-h"></i>'});
+
 		           		// dismiss alerts
 	           			$('.alert-dismiss').click(
 	           				function(){
@@ -392,6 +395,8 @@
 --->
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
+
+		<script src="#application.configBean.getContext()#/admin/assets/js/bootstrap-tabdrop.js"></script>
 
 <!--- TODO GoWest : this include : 2015-12-15T13:23:46-07:00 --->
 		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (listFind(',00000000000000000000000000000000099,00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleid) or rc.moduleid eq '')>
