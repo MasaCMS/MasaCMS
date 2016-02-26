@@ -27818,7 +27818,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura #carch #tabCategorization .mura-grid {
   margin: 0;
-  width: 100%;
+  width: 673px;
 }
 .mura #carch #tabCategorization .mura-grid li {
   float: none;
@@ -33607,6 +33607,7 @@ a.list-group-item:focus {
 }
 .block > .nav-tabs li.tabdrop a.dropdown-toggle {
   padding-top: 8px;
+  cursor: pointer;
 }
 .block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
 .block > .nav-tabs li.tabdrop .dropdown-menu a:hover,
