@@ -62,7 +62,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<a class="btn" onclick="history.go(-1);"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
 			</a>
 		</cfif>
-
 	</cfif>
 
 	<cfswitch expression="#rc.moduleid#">

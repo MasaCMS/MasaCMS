@@ -23678,6 +23678,17 @@ i {
   /* @end */
   /* @group Quick Edit */
   /* @end */
+  /*!
+ * Tab drop for Bootstrap
+ *
+ * Copyright 2012 Stefan Petre
+ * Improvements by Jenna Schabdach
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ */
+  /* adjust as needed so the tab text displays */
+  /* hide any icons found in tabs not on first line */
   /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -23763,17 +23774,6 @@ i {
 ===================================== */
   /* compact view / configurators */
   /* for styling of iframe itself, see admin-frontend.less */
-  /*!
- * Tab drop for Bootstrap
- *
- * Copyright 2012 Stefan Petre
- * Improvements by Jenna Schabdach
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- */
-  /* adjust as needed so the tab text displays */
-  /* hide any icons found in tabs not on first line */
 }
 .mura .mura-grid .actions ul,
 .mura .mura-table-grid .actions ul {
@@ -25744,6 +25744,16 @@ text-shadow: 0 0 1px @blue;
 .mura #ccategory li {
   padding-left: 0;
 }
+.mura .nav-tabs,
+.mura .nav-pills {
+  position: relative;
+}
+.mura .tabdrop {
+  width: 120px;
+}
+.mura .nav-tabs li li i {
+  visibility: hidden;
+}
 .mura #mura-templatebuilder .ui-button-text {
   height: 32px;
   line-height: 32px;
@@ -27166,10 +27176,15 @@ font-size: 12px;
 .mura #carch #mura-content #sitemgr-reorder {
   clear: both;
 }
-.mura #sm-modify-view .btn-group,
-.mura #sm-modify-view .btn-group .dropdown-menu {
+.mura #sm-modify-view .btn-group {
   float: right !important;
   float: right;
+}
+.mura #sm-modify-view .dropdown-menu {
+  float: right !important;
+  float: right;
+  left: auto;
+  right: 0;
 }
 .mura #gridContainer .btn-group,
 .mura #tabArchitectural .btn-group,
@@ -27188,9 +27203,6 @@ font-size: 12px;
 .mura #carch #mura-content #tabArchitectural ul.breadcrumb,
 .mura #carch #mura-content #gridContainer ul.breadcrumb {
   float: left;
-}
-.mura #carch #mura-content #gridContainer ul.breadcrumb > :first-child {
-  margin-left: 0;
 }
 .mura #carch #mura-content #flatViewContainer .thumbnail {
   float: left !important;
@@ -29069,16 +29081,6 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
 }
 .mura .add-content-ui li:nth-child(3n) {
   margin-right: 0;
-}
-.mura .nav-tabs,
-.mura .nav-pills {
-  position: relative;
-}
-.mura .tabdrop {
-  width: 120px;
-}
-.mura .nav-tabs li li i {
-  visibility: hidden;
 }
 /* BS3 CLASS MAPPING */
 #mura-content {
@@ -33830,12 +33832,15 @@ header .btn-image span.button-image {
   padding: 0;
   margin: 10px 0;
   clear: both;
+}
+#carch #mura-content .mura-header ul.breadcrumb,
+#carch #mura-content .mura-header ol.breadcrumb {
   background-color: #FFF;
   padding: 6px;
 }
 #carch #mura-content ul.breadcrumb > :first-child,
 #carch #mura-content ol.breadcrumb > :first-child {
-  margin-left: 17px;
+  margin-left: 8px;
 }
 .nav-main li a {
   text-decoration: none;
