@@ -27176,10 +27176,15 @@ font-size: 12px;
 .mura #carch #mura-content #sitemgr-reorder {
   clear: both;
 }
-.mura #sm-modify-view .btn-group,
-.mura #sm-modify-view .btn-group .dropdown-menu {
+.mura #sm-modify-view .btn-group {
   float: right !important;
   float: right;
+}
+.mura #sm-modify-view .dropdown-menu {
+  float: right !important;
+  float: right;
+  left: auto;
+  right: 0;
 }
 .mura #gridContainer .btn-group,
 .mura #tabArchitectural .btn-group,
