@@ -23767,10 +23767,13 @@ i {
  * Tab drop for Bootstrap
  *
  * Copyright 2012 Stefan Petre
+ * Improvements by Jenna Schabdach
  * Licensed under the Apache License v2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  */
+  /* adjust as needed so the tab text displays */
+  /* hide any icons found in tabs not on first line */
 }
 .mura .mura-grid .actions ul,
 .mura .mura-table-grid .actions ul {
@@ -29071,6 +29074,12 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
 .mura .nav-pills {
   position: relative;
 }
+.mura .tabdrop {
+  width: 120px;
+}
+.mura .nav-tabs li li i {
+  visibility: hidden;
+}
 /* BS3 CLASS MAPPING */
 #mura-content {
   position: relative;
@@ -33565,12 +33574,13 @@ a.list-group-item:focus {
 .switch-primary input:checked + span {
   background-color: #ff3405;
 }
+/* tabs */
 .block > .nav-tabs.nav-tabs-alt {
   padding-right: 15px;
   border-bottom: none !important;
 }
 .nav-tabs li a,
-.block .mura-tabs > li > a,
+.block .mura-tabs > li:not(.tabdrop) > a,
 .mura-tabs > li > a {
   margin-right: 25px !important;
   margin-left: 0;
@@ -33579,21 +33589,41 @@ a.list-group-item:focus {
   padding-left: 0px;
   padding-right: 0px;
 }
+/* tabdrop menu */
+.block > .nav-tabs li.tabdrop .dropdown-menu a {
+  margin-left: 12px !important;
+  margin-right: 12px !important;
+  font-weight: 600;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
+.block > .nav-tabs li.tabdrop .dropdown-menu a:hover,
 .block > .nav-tabs > li > a:hover {
   color: #ff3405;
 }
 #mura-content .block ul.nav-tabs-alt {
   margin-right: 30px;
 }
-.block > .nav-tabs.nav-tabs-alt > li > a:hover {
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
+.block > .nav-tabs li.tabdrop .dropdown-menu a:hover,
+.block > .nav-tabs.nav-tabs-alt > li:not(.tabdrop) > a:hover,
+.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a,
+.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a:hover,
+.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a:focus {
   -webkit-box-shadow: 0 2px #ff3405;
   box-shadow: 0 2px #ff3405;
+  background-color: transparent;
 }
-.block > .nav-tabs.nav-tabs-alt > li.active > a,
-.block > .nav-tabs.nav-tabs-alt > li.active > a:hover,
-.block > .nav-tabs.nav-tabs-alt > li.active > a:focus {
-  -webkit-box-shadow: 0 2px #ff3405;
-  box-shadow: 0 2px #ff3405;
+.mura-tabs .open > a,
+.mura-tabs .open > a:hover,
+.mura-tabs .open > a:focus {
+  border: none !important;
+}
+.block > .nav-tabs.nav-tabs-alt > li.tabdrop > a:hover,
+.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a,
+.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a:hover,
+.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a:focus {
+  -webkit-box-shadow: 0 0 #fff;
+  box-shadow: 0 0 #fff;
 }
 .irs-bar,
 .irs-bar-edge,

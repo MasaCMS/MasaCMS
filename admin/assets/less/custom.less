@@ -358,12 +358,14 @@ a.list-group-item:hover,a.list-group-item:focus {
 .css-radio-primary input:checked+span:after,.switch-primary input:checked+span {
   background-color: #ff3405;
 }
+
+/* tabs */
 .block > .nav-tabs.nav-tabs-alt {
   padding-right: 15px;
   border-bottom: none !important;
 }
 .nav-tabs li a,
-.block .mura-tabs > li > a,
+.block .mura-tabs > li:not(.tabdrop) > a,
 .mura-tabs > li > a{
   margin-right: 25px !important;
   margin-left: 0;
@@ -372,24 +374,44 @@ a.list-group-item:hover,a.list-group-item:focus {
   padding-left: 0px;
   padding-right: 0px;
 }
-.block>.nav-tabs>li>a:hover {
+/* tabdrop menu */
+.block>.nav-tabs li.tabdrop .dropdown-menu a{
+  margin-left: 12px !important;
+  margin-right: 12px !important;
+  font-weight: 600;
+}
+.block>.nav-tabs li.tabdrop .dropdown-menu li.active a,
+.block>.nav-tabs li.tabdrop .dropdown-menu a:hover,
+.block>.nav-tabs > li > a:hover {
   color: #ff3405;
 }
 #mura-content .block ul.nav-tabs-alt{
   margin-right: 30px;
 }
 
-.block>.nav-tabs.nav-tabs-alt>li>a:hover {
+.block>.nav-tabs li.tabdrop .dropdown-menu li.active a,
+.block>.nav-tabs li.tabdrop .dropdown-menu a:hover,
+.block > .nav-tabs.nav-tabs-alt > li:not(.tabdrop) > a:hover,
+.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a,
+.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a:hover,
+.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a:focus {
   -webkit-box-shadow: 0 2px #ff3405;
   box-shadow: 0 2px #ff3405;
+  background-color: transparent;
 }
 
-.block>.nav-tabs.nav-tabs-alt>li.active>a,
-.block>.nav-tabs.nav-tabs-alt>li.active>a:hover,
-.block>.nav-tabs.nav-tabs-alt>li.active>a:focus {
-  -webkit-box-shadow: 0 2px #ff3405;
-  box-shadow: 0 2px #ff3405;
+.mura-tabs .open > a, .mura-tabs .open > a:hover, .mura-tabs .open > a:focus {
+  border: none !important;
 }
+
+.block > .nav-tabs.nav-tabs-alt > li.tabdrop > a:hover,
+.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a,
+.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a:hover,
+.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a:focus {
+  -webkit-box-shadow: 0 0 #fff;
+  box-shadow: 0 0 #fff;
+}
+
 
 .irs-bar,.irs-bar-edge,.irs-from,.irs-to,.irs-single,.irs-grid-pol {
   background: #ff3405;
