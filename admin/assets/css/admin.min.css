@@ -33595,6 +33595,9 @@ a.list-group-item:focus {
   margin-right: 12px !important;
   font-weight: 600;
 }
+.block > .nav-tabs li.tabdrop a.dropdown-toggle {
+  padding-top: 8px;
+}
 .block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
 .block > .nav-tabs li.tabdrop .dropdown-menu a:hover,
 .block > .nav-tabs > li > a:hover {

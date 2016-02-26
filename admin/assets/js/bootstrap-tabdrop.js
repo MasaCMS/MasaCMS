@@ -133,7 +133,7 @@
 					
 					if (self.dropdown.find('.active').length == 1) {
 						self.dropdown.addClass('active');
-						setDropdownText(self.dropdown.find('.active > a').html());
+						// setDropdownText(self.dropdown.find('.active > a').html());
 					} else {
 						self.dropdown.removeClass('active');
 						setDropdownDefaultText(collection);
