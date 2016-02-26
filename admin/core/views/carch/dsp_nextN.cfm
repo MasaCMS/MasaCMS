@@ -69,8 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<p class="search-showing">
 			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
 		</p>
-			<div class="pagination">
-			 <ul>
+			 <ul class="pagination">
 			  <cfif nextN.currentpagenumber gt 1>
 			  	<li>
 			  	<a href="" onclick="return siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.topid)#','00000000000000000000000000000000000','','','#esapiEncode('javascript',rc.ptype)#',#nextN.previous#);">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a> 
@@ -91,7 +90,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	</li>
 			 </cfif>
 			</ul>
-			</div>
 		</div>
 </cfoutput>
 </cfsavecontent>

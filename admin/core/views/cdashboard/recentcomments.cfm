@@ -97,8 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <cfif comments.recordCount() and comments.pageCount() gt 1>
-	<div class="pagination">
-	<ul>
+	<ul class="pagination">
 		<cfif comments.getPageIndex() gt 1> 
 			<a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#esapiEncode('url',rc.siteid)#"><li>&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></li>
 			</cfif>
@@ -114,7 +113,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li><a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></li>
 		</cfif>
 	</ul>
-	</div>
 </cfif>	
 </cfoutput>
 

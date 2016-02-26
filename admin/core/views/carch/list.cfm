@@ -268,8 +268,7 @@
 							<p class="clearfix search-showing">
 								#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
 							</p>
-							<div class="pagination">
-								<ul>
+								<ul class="pagination">
 									<cfif rc.nextN.currentpagenumber gt 1>
 
 										<li>
@@ -296,7 +295,6 @@
 							</li>
 						</cfif>
 						</ul>
-						</div>
 					</div>
 				</cfoutput>
 

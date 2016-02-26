@@ -112,25 +112,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</table>
 
 			<cfif rc.trashIterator.pageCount() gt 1>
-			<div class="pagination">
-	<ul>
-		<cfif rc.pageNum gt 1>
-						<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="mi-caret-left"></i>Previous</a></li>
-		</cfif>
-		<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
-		
-			<cfif rc.pageNum eq i>
-				<li class="active"><a href="##">#i#</a></li>
-			<cfelse>
-				<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#">#i#</a></li>
-			</cfif>
-		
-		</cfloop>
-		<cfif rc.pageNum lt rc.trashIterator.pageCount()>
-						<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next<i class="mi-caret-right"></i></a></li>
-		</cfif>
-	</ul>
-			</div>
+				<ul class="pagination">
+					<cfif rc.pageNum gt 1>
+									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="mi-caret-left"></i>Previous</a></li>
+					</cfif>
+					<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
+					
+						<cfif rc.pageNum eq i>
+							<li class="active"><a href="##">#i#</a></li>
+						<cfelse>
+							<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#i#">#i#</a></li>
+						</cfif>
+					
+					</cfloop>
+					<cfif rc.pageNum lt rc.trashIterator.pageCount()>
+									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next<i class="mi-caret-right"></i></a></li>
+					</cfif>
+				</ul>
 			</cfif>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->

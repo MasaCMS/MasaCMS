@@ -154,31 +154,29 @@ siteManager.copySiteID = '#session.copySiteID#';
 		<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
 		<cfset args[2]=rc.nextn.totalrecords>
 		<div class="mura-results-wrapper">
-		<p class="clearfix search-showing">
-			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
-		</p>
-		<div class="pagination">
-		<ul>
-		<cfif rc.nextN.currentpagenumber gt 1>
-			<li>
-				<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a>
-			</li>
-		</cfif>
-		<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i">
-			<cfif rc.nextn.currentpagenumber eq i>
-				<li class="active"><a href="##">#i#</a></li>
-			<cfelse>
-				<li><a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a></li>
+			<p class="clearfix search-showing">
+				#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+			</p>
+			<ul class="pagination">
+			<cfif rc.nextN.currentpagenumber gt 1>
+				<li>
+					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a>
+				</li>
 			</cfif>
-		</cfloop>
-		<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-			<li>
-				<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a>
-			</li>
-		</cfif>
-		</cfoutput>
-		</ul>
-		</div>
+			<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i">
+				<cfif rc.nextn.currentpagenumber eq i>
+					<li class="active"><a href="##">#i#</a></li>
+				<cfelse>
+					<li><a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a></li>
+				</cfif>
+			</cfloop>
+			<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
+				<li>
+					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a>
+				</li>
+			</cfif>
+			</cfoutput>
+			</ul>
 		</div>
 	</cfif>
 </table>
