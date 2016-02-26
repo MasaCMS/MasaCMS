@@ -125,13 +125,13 @@
                     <!--- site manager --->
                     <cfset isInSiteManager=listFindNoCase('carch,cfeed,ccategory,cchangesets,cfilemanager,ccomments,cmailinglist,cemail,cadvertising',rc.originalcircuit) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))>
                     <li id="admin-nav-manager"<cfif isInSiteManager> class="open"</cfif>>
-                        <a data-toggle="nav-submenu" class="nav-submenu<cfif isInSiteManager> active"</cfif>"" href="./">
+                        <a data-toggle="nav-submenu" class="nav-submenu" href="./">
                             <i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitemanager")#</span>
                         </a>
 						<ul>
                             <!--- Site Tree --->
                             <li>
-                            <a class="<cfif rc.originalcircuit eq 'carch'>active</cfif>" " href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
+                            <a<cfif rc.originalcircuit eq 'carch'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
                             <i class="mi-sitemap"></i>
                             #application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#
                             </a>
