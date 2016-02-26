@@ -721,13 +721,17 @@
 											$('a[data-moduleid=' + $(this).data('moduleid') +']').removeClass('active');
 											$("##arch-mod  a.active").removeClass('active');
 											$('a[data-moduleid=' + $(this).data('moduleid') +']').addClass('active');
-
+											if($(this).data('moduleid')=='00000000000000000000000000000000000'){
+												$('##gridContainer').addClass('site-tree');
+											} else {
+												$('##gridContainer').removeClass('site-tree');
+											}
 										});
 									});
 								</script>
 
 						  		<!--- site manager architectural view container --->
-						<div id="gridContainer" class="<cfif rc.moduleid eq '00000000000000000000000000000000000'>site-tree</cfif>">
+						<div id="gridContainer"<cfif rc.moduleid eq "00000000000000000000000000000000000"> class="site-tree"</cfif>>
 
 						</div>
 					</div>
