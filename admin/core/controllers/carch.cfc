@@ -248,7 +248,7 @@
 
    	<cfset arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid)/>
 
-   	<cfif arguments.rc.contentid neq '' and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1 and not len(arguments.rc.instanceid)>
+   	<cfif arguments.rc.type neq 'Variation' and arguments.rc.contentid neq ''  and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1 and not len(arguments.rc.instanceid)>
 		<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type",path="./")>
    	</cfif>
 
