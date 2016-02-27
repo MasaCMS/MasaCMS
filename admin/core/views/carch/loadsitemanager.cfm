@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         		  )>
             <input name="nextN" value="#session.mura.nextN#" type="text" class="text" size="6" maxlength="4" />
         </div>
-        <div>    
+        <div>
             <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#:&nbsp;</label>
               <select name="sortBy"  onchange="siteManager.setAsSorted();">
                 <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
@@ -168,9 +168,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </cfif>
           </div>
           <!---<dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>>--->
-         <div class="center"> 
+         <div class="center">
           <input type="button" class="btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
-         </div> 
+         </div>
         <input type="hidden" name="startrow" value="#esapiEncode('html_attr',rc.startrow)#">
         <input type="hidden" name="orderperm" value="#perm#">
         <input type="hidden" id="sorted" name="sorted" value="false">
@@ -335,19 +335,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <dd class="actions">
         	<ul>
             <cfif rc.rstop.type neq 'Module' and not listFindNoCase('none,read',perm)>
-              	<cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
-              	<li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"><i class="mi-pencil"></i></a></li>
-              	<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="mi-globe"></i></a></li>
-              	<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#"><i class="mi-book"></i></a></li>
-	              <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-	                	<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
-	                <cfelse>
-	                	<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
-	              </cfif>
-	              <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-	                <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
-	              </cfif>
-            	<cfelse>
+	            <cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
+	            <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"><i class="mi-pencil"></i></a></li>
+	            <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="mi-globe"></i></a></li>
+	            <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#"><i class="mi-book"></i></a></li>
+	            <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+	            	<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
+	        	<cfelse>
+	                <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+	            </cfif>
+	            <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
+	            	<li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+	            </cfif>
+            <cfelse>
              	<li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
 
 			 	<cfif rc.rstop.type eq 'Module'>
@@ -355,10 +355,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	<cfelse>
 			  		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsTop.filename)#');"><i class="mi-globe"></i></a></li>
 		  		</cfif>
-	              <li class="version-history disabled"><a><i class="mi-book"></i></a></li>
-	              <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
-	              <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
-            	</cfif>
+	            <li class="version-history disabled"><a><i class="mi-book"></i></a></li>
+			  	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+		  			<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
+		  		<cfelse>
+		  			<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+		  		</cfif>
+	            <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+            </cfif>
   			<cfset pluginEvent.setValue('type', rc.rstop.type)>
           	<cfset pluginEvent.setValue('filename', rc.rstop.filename)>
           	<cfset pluginEvent.setValue('contentid', rc.rstop.contentid)>
