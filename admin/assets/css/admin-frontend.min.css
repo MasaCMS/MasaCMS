@@ -1,33 +1,33 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -35,20 +35,20 @@
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 .badge {
   padding-left: 7px;
   padding-right: 7px;
-  border: 0 solid #ffffff;
+  border: 0 solid #fff;
   background-color: #b3b3b3;
-  color: #ffffff;
+  color: #fff;
 }
 .label-important,
 .badge-important {
@@ -119,7 +119,7 @@
   margin-top: 70px;
 }
 .btn-alt {
-  color: #ffffff;
+  color: #fff;
   padding: 3% 3% 5%;
   background-image: -webkit-linear-gradient(top, #414141 0%, #323232 100%);
   background-image: -o-linear-gradient(top, #414141 0%, #323232 100%);
@@ -344,6 +344,7 @@
 .editableObjectHide ul.editableObjectControl {
   display: none !important;
 }
+/* .cke_editable, .cke_editable * { border: 0 !important; padding: inherit !important;} */
 body.mura-sidebar-state__hidden--left {
   padding-left: 0;
 }
@@ -500,6 +501,25 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   /* iframe
 ===================================== */
   /* compact view / configurators */
+  /*
+i {			
+		&.icon-twitter,
+		&.icon-twitter-sign {
+			color: #00aced !important;
+			}
+			
+		&.icon-facebook,
+		&.icon-facebook-sign {
+			color: #3b5998 !important;
+			}
+		
+		&.icon-linkedin,
+		&.icon-linkedin-sign {
+			color: #007bb6 !important;
+			}
+				
+		}
+*/
   /* FONT PATH
  * -------------------------- */
   /* makes the font 33% larger relative to the icon container */
@@ -1138,6 +1158,230 @@ a.mura .bg-danger:focus {
   font-style: normal;
   line-height: 1.42857143;
 }
+.mura .mura-grid .actions ul,
+.mura .mura-table-grid .actions ul {
+  margin: 0 auto;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+}
+.mura .mura-grid .actions li,
+.mura .mura-table-grid .actions li {
+  list-style: none;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  float: none;
+  padding: 0;
+  margin-right: 2px;
+  clear: none !important;
+  line-height: 16px;
+}
+.mura .mura-grid .actions li.edit,
+.mura .mura-table-grid .actions li.edit {
+  margin-right: 1px;
+}
+.mura .mura-grid .actions li.download i,
+.mura .mura-table-grid .actions li.download i {
+  font-size: 16px;
+  top: 1px;
+}
+.mura .mura-grid .actions li.delete,
+.mura .mura-table-grid .actions li.delete {
+  margin-left: 1px;
+}
+.mura .mura-grid .actions li.permissions + .delete,
+.mura .mura-table-grid .actions li.permissions + .delete {
+  margin-left: 0;
+}
+.mura .mura-grid .actions li.permissions,
+.mura .mura-table-grid .actions li.permissions {
+  margin: 0 3px;
+}
+.mura .mura-grid .actions li.version-history + .permissions,
+.mura .mura-table-grid .actions li.version-history + .permissions {
+  margin-left: 2px;
+}
+.mura .mura-grid .actions li.download,
+.mura .mura-table-grid .actions li.download {
+  margin: 0 2px 0 0;
+}
+.mura .mura-grid .actions li.rss,
+.mura .mura-table-grid .actions li.rss {
+  margin: 0 4px 0 3px;
+}
+.mura .mura-grid .actions li:last-child,
+.mura .mura-table-grid .actions li:last-child {
+  padding-right: 0 !important;
+}
+.mura .mura-grid .actions li a,
+.mura .mura-table-grid .actions li a {
+  display: inherit;
+  line-height: inherit;
+}
+.mura .mura-grid .actions li a:hover,
+.mura .mura-table-grid .actions li a:hover {
+  text-decoration: none;
+}
+.mura .mura-grid .actions li i,
+.mura .mura-table-grid .actions li i {
+  font-size: 14px;
+  height: 16px;
+  width: auto !important;
+  color: #949494;
+  position: relative;
+  /* text-shadow: 0 1px 0 rgba(255,255,255,1.0); */
+}
+.mura .mura-grid .actions li i:hover,
+.mura .mura-table-grid .actions li i:hover {
+  color: #000000;
+}
+.mura .mura-grid .actions li.disabled i,
+.mura .mura-table-grid .actions li.disabled i {
+  color: #ccc;
+}
+.mura .mura-grid .actions li .template i,
+.mura .mura-table-grid .actions li .template i {
+  font-size: 24px;
+}
+.mura .actions li.edit + li.delete {
+  margin-left: 2px;
+}
+.mura .actions li.edit + li.view-report {
+  margin-left: 3px;
+}
+.mura .actions li.rss + li.import {
+  margin-left: -2px;
+}
+.mura .navZoom li,
+.mura .navZoom.alt li {
+  margin: 0;
+  padding: 2px 0 !important;
+}
+.mura .navZoom li:before,
+.mura .navZoom.alt li:before {
+  font-family: FontAwesome !important;
+  font-size: 18px;
+  position: relative;
+  top: 2px;
+  color: #949494;
+}
+.mura .navZoom li.file,
+.mura .navZoom.alt li.file {
+  padding-left: 30px !important;
+  position: relative;
+}
+.mura .navZoom li.file:before,
+.mura .navZoom.alt li.file:before {
+  position: absolute;
+  top: 1px;
+  left: 0px;
+  content: attr(data-filetype);
+  font-family: 'SilkscreenNormal' !important;
+  font-size: 8px;
+  line-height: 1;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  color: #fff;
+  background: #949494;
+  padding: 4px 4px 3px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  overflow: hidden;
+  text-shadow: none !important;
+}
+.mura .navZoom li.file.gif,
+.mura .navZoom.alt li.file.gif,
+.mura .navZoom li.file.png,
+.mura .navZoom.alt li.file.png,
+.mura .navZoom li.file.jpg,
+.mura .navZoom.alt li.file.jpg,
+.mura .navZoom li.file.jpeg,
+.mura .navZoom.alt li.file.jpeg {
+  padding-left: 0 !important;
+}
+.mura .navZoom li.file.gif:before,
+.mura .navZoom.alt li.file.gif:before,
+.mura .navZoom li.file.png:before,
+.mura .navZoom.alt li.file.png:before,
+.mura .navZoom li.file.jpg:before,
+.mura .navZoom.alt li.file.jpg:before,
+.mura .navZoom li.file.jpeg:before,
+.mura .navZoom.alt li.file.jpeg:before {
+  position: relative;
+  left: 0;
+  color: #949494 !important;
+}
+.mura .navZoom li.link:before,
+.mura .navZoom.alt li.link:before {
+  content: '\f0c1';
+}
+.mura .navZoom li.folder:before,
+.mura .navZoom.alt li.folder:before {
+  content: '\f114';
+}
+.mura .navZoom li.gallery:before,
+.mura .navZoom.alt li.gallery:before {
+  content: '\f00a';
+}
+.mura .navZoom li.calendar:before,
+.mura .navZoom.alt li.calendar:before {
+  content: '\f073';
+  font-size: 18px;
+  top: 1px;
+}
+.mura .navZoom li.jpg:before,
+.mura .navZoom.alt li.jpg:before,
+.mura .navZoom li.jpeg:before,
+.mura .navZoom.alt li.jpeg:before,
+.mura .navZoom li.png:before,
+.mura .navZoom.alt li.png:before,
+.mura .navZoom li.gif:before,
+.mura .navZoom.alt li.gif:before {
+  font-family: 'FontAwesome' !important;
+  background: transparent;
+  padding: 0;
+  color: #666666;
+  content: "\f03e" !important;
+  font-size: 19px;
+  top: 3px;
+}
+.mura .navZoom li.page:before,
+.mura .navZoom.alt li.page:before {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  content: "\f016";
+  font-size: 18px;
+}
+.mura .navZoom li.gallery + .file.jpg:before,
+.mura .navZoom.alt li.gallery + .file.jpg:before,
+.mura .navZoom li.gallery + .file.jpeg:before,
+.mura .navZoom.alt li.gallery + .file.jpeg:before,
+.mura .navZoom li.gallery + .file.png:before,
+.mura .navZoom.alt li.gallery + .file.png:before,
+.mura .navZoom li.gallery + .file.gif:before,
+.mura .navZoom.alt li.gallery + .file.gif:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  position: relative;
+  content: "\f03e";
+  font-size: 19px;
+  top: 3px;
+  background: transparent;
+  padding: 0 !important;
+  color: #949494;
+}
 .mura fieldset {
   padding: 0;
   margin: 0;
@@ -1195,7 +1439,7 @@ a.mura .bg-danger:focus {
   padding-top: 7px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .form-control {
   display: block;
@@ -1204,10 +1448,10 @@ a.mura .bg-danger:focus {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #cccccc;
-  background-color: #ffffff;
+  color: #ccc;
+  background-color: #fff;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1222,14 +1466,14 @@ a.mura .bg-danger:focus {
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 .mura .form-control::-moz-placeholder {
-  color: #999999;
+  color: #999;
   opacity: 1;
 }
 .mura .form-control:-ms-input-placeholder {
-  color: #999999;
+  color: #999;
 }
 .mura .form-control::-webkit-input-placeholder {
-  color: #999999;
+  color: #999;
 }
 .mura .form-control::-ms-expand {
   border: 0;
@@ -1682,8 +1926,8 @@ select[multiple].mura .input-lg {
   list-style: none;
   font-size: 14px;
   text-align: left;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
+  background-color: #fff;
+  border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -1718,7 +1962,7 @@ select[multiple].mura .input-lg {
 .mura .dropdown-menu > .active > a,
 .mura .dropdown-menu > .active > a:hover,
 .mura .dropdown-menu > .active > a:focus {
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
   outline: 0;
   background-color: #337ab7;
@@ -1838,7 +2082,7 @@ select[multiple].mura .input-lg {
   max-width: none;
 }
 .mura .nav-tabs {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
 }
 .mura .nav-tabs > li {
   float: left;
@@ -1851,14 +2095,14 @@ select[multiple].mura .input-lg {
   border-radius: 4px 4px 0 0;
 }
 .mura .nav-tabs > li > a:hover {
-  border-color: #eeeeee #eeeeee #dddddd;
+  border-color: #eeeeee #eeeeee #ddd;
 }
 .mura .nav-tabs > li.active > a,
 .mura .nav-tabs > li.active > a:hover,
 .mura .nav-tabs > li.active > a:focus {
-  color: #cccccc;
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
+  color: #ccc;
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-bottom-color: transparent;
   cursor: default;
 }
@@ -1893,17 +2137,17 @@ select[multiple].mura .input-lg {
 .mura .nav-tabs.nav-justified > .active > a,
 .mura .nav-tabs.nav-justified > .active > a:hover,
 .mura .nav-tabs.nav-justified > .active > a:focus {
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
 }
 @media (min-width: 768px) {
   .mura .nav-tabs.nav-justified > li > a {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #ddd;
     border-radius: 4px 4px 0 0;
   }
   .mura .nav-tabs.nav-justified > .active > a,
   .mura .nav-tabs.nav-justified > .active > a:hover,
   .mura .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #ffffff;
+    border-bottom-color: #fff;
   }
 }
 .mura .nav-pills > li {
@@ -1918,7 +2162,7 @@ select[multiple].mura .input-lg {
 .mura .nav-pills > li.active > a,
 .mura .nav-pills > li.active > a:hover,
 .mura .nav-pills > li.active > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #337ab7;
 }
 .mura .nav-stacked > li {
@@ -1961,17 +2205,17 @@ select[multiple].mura .input-lg {
 .mura .nav-tabs-justified > .active > a,
 .mura .nav-tabs-justified > .active > a:hover,
 .mura .nav-tabs-justified > .active > a:focus {
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
 }
 @media (min-width: 768px) {
   .mura .nav-tabs-justified > li > a {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #ddd;
     border-radius: 4px 4px 0 0;
   }
   .mura .nav-tabs-justified > .active > a,
   .mura .nav-tabs-justified > .active > a:hover,
   .mura .nav-tabs-justified > .active > a:focus {
-    border-bottom-color: #ffffff;
+    border-bottom-color: #fff;
   }
 }
 .mura .tab-content > .tab-pane {
@@ -2332,7 +2576,7 @@ select[multiple].mura .input-lg {
   border-color: #e7e7e7;
 }
 .mura .navbar-default .navbar-brand {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .navbar-brand:hover,
 .mura .navbar-default .navbar-brand:focus {
@@ -2340,37 +2584,37 @@ select[multiple].mura .input-lg {
   background-color: transparent;
 }
 .mura .navbar-default .navbar-text {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .navbar-nav > li > a {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .navbar-nav > li > a:hover,
 .mura .navbar-default .navbar-nav > li > a:focus {
-  color: #333333;
+  color: #333;
   background-color: transparent;
 }
 .mura .navbar-default .navbar-nav > .active > a,
 .mura .navbar-default .navbar-nav > .active > a:hover,
 .mura .navbar-default .navbar-nav > .active > a:focus {
-  color: #555555;
+  color: #555;
   background-color: #e7e7e7;
 }
 .mura .navbar-default .navbar-nav > .disabled > a,
 .mura .navbar-default .navbar-nav > .disabled > a:hover,
 .mura .navbar-default .navbar-nav > .disabled > a:focus {
-  color: #cccccc;
+  color: #ccc;
   background-color: transparent;
 }
 .mura .navbar-default .navbar-toggle {
-  border-color: #dddddd;
+  border-color: #ddd;
 }
 .mura .navbar-default .navbar-toggle:hover,
 .mura .navbar-default .navbar-toggle:focus {
-  background-color: #dddddd;
+  background-color: #ddd;
 }
 .mura .navbar-default .navbar-toggle .icon-bar {
-  background-color: #888888;
+  background-color: #888;
 }
 .mura .navbar-default .navbar-collapse,
 .mura .navbar-default .navbar-form {
@@ -2380,51 +2624,51 @@ select[multiple].mura .input-lg {
 .mura .navbar-default .navbar-nav > .open > a:hover,
 .mura .navbar-default .navbar-nav > .open > a:focus {
   background-color: #e7e7e7;
-  color: #555555;
+  color: #555;
 }
 @media (max-width: 767px) {
   .mura .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-    color: #777777;
+    color: #777;
   }
   .mura .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #333333;
+    color: #333;
     background-color: transparent;
   }
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
-    color: #555555;
+    color: #555;
     background-color: #e7e7e7;
   }
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {
-    color: #cccccc;
+    color: #ccc;
     background-color: transparent;
   }
 }
 .mura .navbar-default .navbar-link {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .navbar-link:hover {
-  color: #333333;
+  color: #333;
 }
 .mura .navbar-default .btn-link {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .btn-link:hover,
 .mura .navbar-default .btn-link:focus {
-  color: #333333;
+  color: #333;
 }
 .mura .navbar-default .btn-link[disabled]:hover,
 fieldset[disabled] .mura .navbar-default .btn-link:hover,
 .mura .navbar-default .btn-link[disabled]:focus,
 fieldset[disabled] .mura .navbar-default .btn-link:focus {
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .navbar-inverse {
-  background-color: #222222;
+  background-color: #222;
   border-color: #080808;
 }
 .mura .navbar-inverse .navbar-brand {
@@ -2432,7 +2676,7 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
 }
 .mura .navbar-inverse .navbar-brand:hover,
 .mura .navbar-inverse .navbar-brand:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: transparent;
 }
 .mura .navbar-inverse .navbar-text {
@@ -2443,30 +2687,30 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
 }
 .mura .navbar-inverse .navbar-nav > li > a:hover,
 .mura .navbar-inverse .navbar-nav > li > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: transparent;
 }
 .mura .navbar-inverse .navbar-nav > .active > a,
 .mura .navbar-inverse .navbar-nav > .active > a:hover,
 .mura .navbar-inverse .navbar-nav > .active > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #080808;
 }
 .mura .navbar-inverse .navbar-nav > .disabled > a,
 .mura .navbar-inverse .navbar-nav > .disabled > a:hover,
 .mura .navbar-inverse .navbar-nav > .disabled > a:focus {
-  color: #444444;
+  color: #444;
   background-color: transparent;
 }
 .mura .navbar-inverse .navbar-toggle {
-  border-color: #333333;
+  border-color: #333;
 }
 .mura .navbar-inverse .navbar-toggle:hover,
 .mura .navbar-inverse .navbar-toggle:focus {
-  background-color: #333333;
+  background-color: #333;
 }
 .mura .navbar-inverse .navbar-toggle .icon-bar {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .mura .navbar-inverse .navbar-collapse,
 .mura .navbar-inverse .navbar-form {
@@ -2476,7 +2720,7 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
 .mura .navbar-inverse .navbar-nav > .open > a:hover,
 .mura .navbar-inverse .navbar-nav > .open > a:focus {
   background-color: #080808;
-  color: #ffffff;
+  color: #fff;
 }
 @media (max-width: 767px) {
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
@@ -2490,19 +2734,19 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
   }
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #ffffff;
+    color: #fff;
     background-color: transparent;
   }
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
-    color: #ffffff;
+    color: #fff;
     background-color: #080808;
   }
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {
-    color: #444444;
+    color: #444;
     background-color: transparent;
   }
 }
@@ -2510,20 +2754,20 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
   color: #9d9d9d;
 }
 .mura .navbar-inverse .navbar-link:hover {
-  color: #ffffff;
+  color: #fff;
 }
 .mura .navbar-inverse .btn-link {
   color: #9d9d9d;
 }
 .mura .navbar-inverse .btn-link:hover,
 .mura .navbar-inverse .btn-link:focus {
-  color: #ffffff;
+  color: #fff;
 }
 .mura .navbar-inverse .btn-link[disabled]:hover,
 fieldset[disabled] .mura .navbar-inverse .btn-link:hover,
 .mura .navbar-inverse .btn-link[disabled]:focus,
 fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
-  color: #444444;
+  color: #444;
 }
 .mura .clearfix:before,
 .mura .clearfix:after,
@@ -4596,7 +4840,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   text-align: center;
 }
 .mura .add-content-ui li a {
-  color: #ffffff;
+  color: #fff;
   padding: 3% 3% 5%;
   background-image: -webkit-linear-gradient(top, #414141 0%, #323232 100%);
   background-image: -o-linear-gradient(top, #414141 0%, #323232 100%);
@@ -4621,7 +4865,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   display: block;
   padding: 0;
   margin: 0 auto;
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .add-content-ui li a:hover {
   text-decoration: none;
@@ -4632,10 +4876,10 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff272727', endColorstr='#ff181818', GradientType=0);
 }
 .mura .add-content-ui li a:hover i {
-  color: #ffffff;
+  color: #fff;
 }
 .mura .add-content-ui li a:hover span {
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .add-content-ui li a[rel="tooltip"] {
   position: absolute;
@@ -4898,7 +5142,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li a {
   display: block !important;
-  color: #cccccc !important;
+  color: #ccc !important;
   background: #4D4D4D !important;
   background: rgba(255, 255, 255, 0.13) !important;
   font-size: 12px !important;
@@ -4965,7 +5209,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   border-radius: 3px !important;
 }
 .mura #frontEndTools > #tools-status.status-locked i:before {
-  color: #b90e0e !important;
+  color: #B90e0e !important;
 }
 .mura #frontEndTools > ul#tools-version > li#adminEditPage {
   padding-right: 0 !important;
@@ -5050,7 +5294,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > ul > li#adminSave > a {
   position: relative !important;
   display: block !important;
-  color: #ffffff !important;
+  color: #fff !important;
   font-size: 11px !important;
   padding: 1px 8px 1px 6px !important;
   line-height: 24px !important;
@@ -5085,7 +5329,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li a:hover,
 .mura #frontEndTools > ul > li > a:hover > i {
-  color: #ffffff !important;
+  color: #fff !important;
   text-shadow: 0 -1px 0 #000000 !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu {
@@ -5118,7 +5362,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu a {
   font-size: 12px !important;
-  color: #ffffff !important;
+  color: #fff !important;
   padding: 5px 10px !important;
   line-height: 1.1 !important;
   float: none !important;
@@ -5132,7 +5376,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li > a:hover {
   background: #000000 !important;
-  color: #ffffff !important;
+  color: #fff !important;
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu i {

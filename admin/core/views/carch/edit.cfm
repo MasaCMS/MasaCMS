@@ -59,6 +59,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.parentID=rc.contentBean.getParentID()>
 </cfif>
 
+<cfif isDefined('rc.remoteid') and len(rc.remoteid)>
+	<cfset rc.contentBean.setRemoteID(rc.remoteid)>
+</cfif>
+
 <cfset rc.parentBean=$.getBean('content').loadBy(contentid=rc.parentID)>
 <cfset subtypefilter=rc.parentBean.getClassExtension().getAvailableSubTypes()>
 <cfif rc.contentBean.getIsNew()>

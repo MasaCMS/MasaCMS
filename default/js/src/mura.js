@@ -1961,7 +1961,7 @@
 			hash = ((hash<<5)-hash)+c;
 			hash = hash & hash; // Convert to 32bit integer
 		}
-		return hash;
+		return (hash >>> 0);;
 	}
 
 	function init(config){

@@ -833,13 +833,11 @@
 							}
 					});
 
-					/*
-					mura('body').find('a:not(.mura),button:not(.mura)').on('click',function(event){
+					mura(mura.editableSelector).find('a:not(.mura),button:not(.mura)').on('click',function(event){
 						if(editingVariations){
 							event.preventDefault();
 						}
 					});
-					*/
 				}
 
 				var exitVariations=function(){
