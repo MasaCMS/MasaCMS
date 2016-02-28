@@ -3482,7 +3482,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			hash = ((hash<<5)-hash)+c;
 			hash = hash & hash; // Convert to 32bit integer
 		}
-		return (hash >>> 0);;
+		return (hash >>> 0);
 	}
 
 	function init(config){
