@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						     <input type="text" class="datepicker text" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 						</div>		
 						
-						<div class="module well mura-filter-tags">
+						<div class="module mura-control-group mura-filter-tags">
 							<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
 
 							<div id="tags" class="tagSelector">
