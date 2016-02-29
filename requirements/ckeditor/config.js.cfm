@@ -85,7 +85,7 @@ CKEDITOR.editorConfig = function( config )
 	config.pasteFromWordRemoveFontStyles = true;
 	config.pasteFromWordRemoveStyles = true;
 
-	config.toolbarStartupExpanded=false;
+	config.toolbarStartupExpanded=true;
 	config.toolbarCanCollapse = true;
 	config.startupShowBorders = false;
 	// Hide title attriute
