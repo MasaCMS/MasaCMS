@@ -61,7 +61,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
-
 	<ul class="metadata-horizontal">
 		<li><strong>Name:</strong> #esapiEncode('html',rc.pluginXML.plugin.name.xmlText)#</li>
 		<li><strong>Category:</strong> #esapiEncode('html',rc.pluginXML.plugin.category.xmlText)#</li>

@@ -52,9 +52,6 @@
 <div class="mura-header">
 	<h1>#rbKey('user.usersearchresults')#</h1>
 
-	<div class="mura-item-metadata">
-		<div class="label-group">
-
 	<!--- Buttons --->
 		<div id="nav-module-specific" class="btn-group">
 
@@ -84,7 +81,8 @@
 
 		</div>
 	<!--- /Buttons --->
-		</div><!-- /.label-group -->
+
+	<div class="mura-item-metadata">
 
 	<!--- User Search --->
 	<cfinclude template="inc/dsp_search_form.cfm" />

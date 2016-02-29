@@ -114,19 +114,14 @@
 <div class="mura-header">
 	<h1>#rbKey("user.advancedusersearch")#</h1>
 
-	<div class="mura-item-metadata">
-		<div class="label-group">
+	<!--- Basic Search Button --->
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
+			<i class="mi-search"></i> 
+			#rbKey('user.basicsearch')#
+		</a>
+	</div>
 
-			<!--- Basic Search Button --->
-			<div id="nav-module-specific" class="btn-group">
-				<a class="btn" href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
-					<i class="mi-search"></i> 
-					#rbKey('user.basicsearch')#
-				</a>
-			</div>
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 
 

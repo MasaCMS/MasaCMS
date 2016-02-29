@@ -106,17 +106,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<cfoutput>
 		<h1><cfif rc.membersOnly>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.membersessions")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.allsessions")#</cfif>
-	<span>
-	(<cfif rc.spanType eq 'n'>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),rc.span)#<cfelse>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),rc.span)#</cfif>)
-</span></h1>
+		<span>
+		(<cfif rc.spanType eq 'n'>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),rc.span)#<cfelse>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),rc.span)#</cfif>)
+		</span>
+		</h1>
 
-	<div class="mura-item-metadata">
-		<div class="label-group">
+	<cfinclude template="dsp_secondary_menu.cfm">
 
-			<cfinclude template="dsp_secondary_menu.cfm">
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 
 <div class="block block-constrain">

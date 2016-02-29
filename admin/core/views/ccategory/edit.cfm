@@ -49,11 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
   <div class="mura-header">
   <h1><cfif rc.categoryID neq ''>#application.rbFactory.getKeyValue(session.rb,'categorymanager.editcontentcategory')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addcontentcategory')#</cfif></h1>
-  <div class="mura-item-metadata">
-    <div class="label-group">
-      <cfinclude template="dsp_secondary_menu.cfm">
-    </div><!-- /.label-group -->
-  </div><!-- /.mura-item-metadata -->
+  <cfinclude template="dsp_secondary_menu.cfm">
 </div> <!-- /.items-push.mura-header -->
 
 <div class="block block-constrain">

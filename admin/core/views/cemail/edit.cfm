@@ -52,58 +52,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="mura-header">
   <h1>#application.rbFactory.getKeyValue(session.rb,'email.createeditemail')#</h1>
+ <cfinclude template="dsp_secondary_menu.cfm">
 
   <div class="mura-item-metadata">
     <div class="label-group">
   
-  <cfif rc.emailid neq "">
-    <ul class="metadata-horizontal">
-      <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#:</strong> #LSDateFormat(rc.emailBean.getCreatedDate(),session.dateKeyFormat)#</li>
-      <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.createdby')#:</strong> #rc.emailBean.getlastupdateby()#</li>
-      <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.status')#:</strong>
-        <cfif rc.emailBean.getstatus()>
-          #application.rbFactory.getKeyValue(session.rb,'email.sent')#
-          <cfelse>
-          #application.rbFactory.getKeyValue(session.rb,'email.queued')#
-        </cfif>
-      </li>
-      <cfif rc.emailBean.getstatus()>
-        <cfset clicks=application.emailManager.getStat(rc.emailid,'returnClick')/>
-        <cfset opens=application.emailManager.getStat(rc.emailid,'emailOpen')/>
-        <cfset sent=application.emailManager.getStat(rc.emailid,'sent')/>
-        <cfset bounces=application.emailManager.getStat(rc.emailid,'bounce')/>
-        <cfset uniqueClicks=application.emailManager.getStat(rc.emailid,'returnUnique')/>
-        <cfset totalClicks=application.emailManager.getStat(rc.emailid,'returnAll')/>
-        <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.sent')#:</strong> #sent#</li>
-        <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.opens')#:</strong> #opens# (
-          <cfif sent gt 0>
-#evaluate(round((opens/sent)*100))#%
-            <cfelse>
-            0%
+      <cfif rc.emailid neq "">
+        <ul class="metadata-horizontal">
+          <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#:</strong> #LSDateFormat(rc.emailBean.getCreatedDate(),session.dateKeyFormat)#</li>
+          <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.createdby')#:</strong> #rc.emailBean.getlastupdateby()#</li>
+          <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.status')#:</strong>
+            <cfif rc.emailBean.getstatus()>
+              #application.rbFactory.getKeyValue(session.rb,'email.sent')#
+              <cfelse>
+              #application.rbFactory.getKeyValue(session.rb,'email.queued')#
+            </cfif>
+          </li>
+          <cfif rc.emailBean.getstatus()>
+            <cfset clicks=application.emailManager.getStat(rc.emailid,'returnClick')/>
+            <cfset opens=application.emailManager.getStat(rc.emailid,'emailOpen')/>
+            <cfset sent=application.emailManager.getStat(rc.emailid,'sent')/>
+            <cfset bounces=application.emailManager.getStat(rc.emailid,'bounce')/>
+            <cfset uniqueClicks=application.emailManager.getStat(rc.emailid,'returnUnique')/>
+            <cfset totalClicks=application.emailManager.getStat(rc.emailid,'returnAll')/>
+            <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.sent')#:</strong> #sent#</li>
+            <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.opens')#:</strong> #opens# (
+              <cfif sent gt 0>
+    #evaluate(round((opens/sent)*100))#%
+                <cfelse>
+                0%
+              </cfif>
+              )</li>
+            <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (
+              <cfif sent gt 0>
+    #evaluate(round((clicks/sent)*100))#%
+                <cfelse>
+                0%
+              </cfif>
+              )</li>
+            <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks# </li>
+            <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks# </li>
+            <li><a href="./?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>Bounces:</strong></a> #bounces# (
+              <cfif sent gt 0>
+    #evaluate(round((bounces/sent)*100))#%
+                <cfelse>
+                0%
+              </cfif>
+              )</li>
           </cfif>
-          )</li>
-        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (
-          <cfif sent gt 0>
-#evaluate(round((clicks/sent)*100))#%
-            <cfelse>
-            0%
-          </cfif>
-          )</li>
-        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks# </li>
-        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks# </li>
-        <li><a href="./?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>Bounces:</strong></a> #bounces# (
-          <cfif sent gt 0>
-#evaluate(round((bounces/sent)*100))#%
-            <cfelse>
-            0%
-          </cfif>
-          )</li>
+        </ul>
       </cfif>
-    </ul>
-  </cfif>
-
-
- <cfinclude template="dsp_secondary_menu.cfm">
 
     </div><!-- /.label-group -->
   </div><!-- /.mura-item-metadata -->

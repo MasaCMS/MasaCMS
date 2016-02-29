@@ -29,19 +29,11 @@
 	<h1>Select Image</h1>
 
 	<!---
-	<div class="mura-item-metadata">
-		<div class="label-group">
-
-			<!-- optional - the view might use dsp_secondary_menu.cfm instead -->
-			<div id="nav-module-specific" class="btn-toolbar">
-				<div class="btn-group">
-					<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
-				</div>
+		<div id="nav-module-specific" class="btn-toolbar">
+			<div class="btn-group">
+				<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
 			</div>
-			<!-- /optional nav-module-specific -->
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
+		</div><!-- /.nav-module-specific -->
 	--->
 </div> <!-- /.mura-header -->
 

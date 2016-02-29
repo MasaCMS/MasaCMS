@@ -69,15 +69,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</h1>
 
-	<div class="mura-item-metadata">
-		<div class="label-group">
-
-			<cfif rc.compactDisplay neq 'true'>
-				<cfinclude template="dsp_secondary_menu.cfm">
-			</cfif>
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
+	<cfif rc.compactDisplay neq 'true'>
+		<cfinclude template="dsp_secondary_menu.cfm">
+	</cfif>
 
 	#$.dspZoom(crumbdata=crumbdata,class="breadcrumb")#
 

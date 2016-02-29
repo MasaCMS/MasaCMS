@@ -69,10 +69,6 @@ select * from rsSubTypes where subType <> 'Default'
 
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h1>
-	<div class="mura-item-metadata">
-		<div class="label-group">
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.mura-header -->
 
 

@@ -47,13 +47,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Folder^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Gallery^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Form^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata,Site^tsettings^baseID^tclassextenddata,Base^tcontent^contentHistID^tclassextenddata"/>
 <cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
-
+<cfoutput>	
 <div class="mura-header">
 	<h1><cfif len(rc.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h1>
-	<div class="mura-item-metadata">
-		<div class="label-group">
-
-			<cfoutput>
    <div id="nav-module-specific" class="btn-group">
    <cfif not subType.getIsNew()>
       <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
@@ -66,11 +62,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> Back to Class Extension Overview</a>
 			</cfif>
-			</div>
+	</div>
 
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 
 <div class="block block-constrain">
@@ -224,8 +217,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<script>
 			extendManager.setBaseInfo(jQuery('##typeSelector').val());
 			</script>
-			</cfoutput>
 
 			</div> <!-- /.block-content -->
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.block-constrain -->
+</cfoutput>

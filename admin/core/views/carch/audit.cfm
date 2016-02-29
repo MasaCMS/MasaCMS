@@ -71,13 +71,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.audittrail')#</h1>
 
+	<cfif rc.compactDisplay neq 'true'>
+		<cfinclude template="dsp_secondary_menu.cfm">
+	</cfif>
+
 	<div class="mura-item-metadata">
 		<div class="label-group">
-
-
-			<cfif rc.compactDisplay neq 'true'>
-				<cfinclude template="dsp_secondary_menu.cfm">
-			</cfif>
 
 			<cfinclude template="dsp_status.cfm">
 

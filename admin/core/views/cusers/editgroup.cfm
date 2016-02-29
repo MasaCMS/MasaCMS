@@ -100,37 +100,27 @@
 </cfif>
 
 <!--- Header --->
-	<cfoutput>
-
-<div class="mura-header">
-		<h1>#rbKey('user.groupform')#</h1>
-
-	<div class="mura-item-metadata">
-		<div class="label-group">
-			
-		<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
-					<i class="mi-arrow-circle-left"></i> 
-				#rbKey('sitemanager.back')#
-			</a>
-
-			<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
-					<i class="mi-eye"></i>
-				#rbKey('user.viewallgroups')#
-			</a>
-
-			<cfif !rc.userBean.getIsNew()>
-				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
-						<i class="mi-group"></i>
-					#rbKey('user.viewgroupsusers')#
+<cfoutput>
+	<div class="mura-header">
+			<h1>#rbKey('user.groupform')#</h1>
+			<div id="nav-module-specific" class="btn-group">
+				<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
+						<i class="mi-arrow-circle-left"></i> 
+					#rbKey('sitemanager.back')#
 				</a>
-			</cfif>
-		</div>
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->		
-	</cfoutput>
+				<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
+						<i class="mi-eye"></i>
+					#rbKey('user.viewallgroups')#
+				</a>
+				<cfif !rc.userBean.getIsNew()>
+					<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
+							<i class="mi-group"></i>
+						#rbKey('user.viewgroupsusers')#
+					</a>
+				</cfif>
+			</div>
+	</div> <!-- /.mura-header -->		
+</cfoutput>
 
 <!--- Edit Form --->
 	<cfoutput>

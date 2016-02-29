@@ -172,16 +172,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<h1><cfif len(rc.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h1>
 	</cfif>
-	<div class="mura-item-metadata">
-		<div class="label-group">
 
-		<cfif rc.compactDisplay neq "true">
+	<cfif rc.compactDisplay neq "true">
 		<cfinclude template="dsp_secondary_menu.cfm">
-		</cfif>
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
+	</cfif>
+</div> <!-- /.mura-header -->
 
 
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
@@ -888,10 +883,6 @@ jQuery(document).ready(function(){
 			<h1>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h1>
 		</cfif>
 
-
-	<div class="mura-item-metadata">
-		<div class="label-group">
-
 		<cfif rc.compactDisplay eq "true">
 			<!---
 			<div id="nav-module-specific" class="btn-group">
@@ -902,9 +893,7 @@ jQuery(document).ready(function(){
 			<cfinclude template="dsp_secondary_menu.cfm">
 		</cfif>
 
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
   <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
