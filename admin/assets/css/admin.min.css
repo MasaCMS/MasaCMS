@@ -23008,10 +23008,10 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
   clear: both;
   margin-top: 9px;
 }
-#mura-filter-tags .tagSelector > .tag {
+.mura-filter-tags .tagSelector > .tag {
   margin: 0 .25em .25em 0;
 }
-#mura-filter-tags .tagSelector input[type="text"] {
+.mura-filter-tags .tagSelector input[type="text"] {
   float: none;
   margin: .25em 0 0 0;
   -moz-box-sizing: border-box;

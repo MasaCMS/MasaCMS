@@ -316,7 +316,7 @@
 					 <input type="text" name="searchString" id="searchString" value="#esapiEncode('html_attr',rc.searchString)#" class="text" size="20">
 					</div>
 
-					<div class="module well" id="mura-filter-tags">
+					<div class="module well mura-filter-tags">
 						<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
 
 						<div id="tags" class="tagSelector">
@@ -332,7 +332,7 @@
 
 					<cfif len($.siteConfig('customTagGroups'))>
 						<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-							<div class="module well" id="mura-filter-tags">
+							<div class="module well mura-filter-tags">
 								<h3>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
 								<div id="#g#tags" class="tagSelector">
 									<cfloop list="#$.event('#g#tags')#" index="i">

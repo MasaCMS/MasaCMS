@@ -666,7 +666,7 @@ if(len($.siteConfig('customTagGroups'))){
 	</cfif>
 
 
-	<div class="module mura-control-group" id="mura-filter-tags">
+	<div class="module mura-control-group mura-filter-tags">
 		<cfif len($.siteConfig('customTagGroups'))>
    		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.defaulttags")#</label>
    		<cfelse>
@@ -686,7 +686,7 @@ if(len($.siteConfig('customTagGroups'))){
 
 	<cfif len($.siteConfig('customTagGroups'))>
 		<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-			<div class="module" id="mura-filter-tags">
+			<div class="module mura-filter-tags">
 				<h3>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
 				<div id="#g#tags" class="tagSelector">
 				<cfloop list="#$.event('#g#tags')#" index="i">
