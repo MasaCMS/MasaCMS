@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<cfset icon=application.classExtensionManager.getCustomIconClass(siteid=rc.rstop.siteid,type=rc.rstop.type,subtype=rc.rstop.subtype)>
   <cfif not len(icon)>
-    <cfset icon='icon-mura-' & rc.rstop.type>
+    <cfset icon='icon-mura-' & lcase(rc.rstop.type)>
   </cfif>
 	<cfif r>
 		<cfset icon="#icon# locked">
