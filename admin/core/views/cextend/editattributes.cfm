@@ -53,31 +53,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="mura-header">
   <h1>Manage Extended Attribute Set</h1>
-  <div class="mura-item-metadata">
-    <div class="label-group">
-      <div id="nav-module-specific" class="btn-group">
-	<div class="btn-group">
-      <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-               <i class="mi-arrow-circle-left"></i> Back <span class="caret"></span>
-       </a>
-       <ul class="dropdown-menu">
-          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#">&hellip;to Class Extensions</a></li>
-          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#">&hellip;to Class Extension Overview</a></li>
-       </ul>
-       </div>
-       <div class="btn-group">
-       <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-               <i class="mi-pencil"></i> Edit <span class="caret"></span>
-       </a>
-       <ul class="dropdown-menu">
-          <li><a href="./?muraAction=cExtend.editSubType&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#">Class Extension</a></li>
-          <li><a href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&extendSetID=#esapiEncode('url',rc.extendSetID)#&siteid=#esapiEncode('url',rc.siteid)#">Attribute Set</a></li>
-       </ul>
-       </div>
-      </div>
+    <div id="nav-module-specific" class="btn-group">
+     <div class="btn-group">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+             <i class="mi-arrow-circle-left"></i> Back <span class="caret"></span>
+     </a>
+     <ul class="dropdown-menu">
+        <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#">&hellip;to Class Extensions</a></li>
+        <li><a href="./?muraAction=cExtend.listSets&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#">&hellip;to Class Extension Overview</a></li>
+     </ul>
+     </div>
+     <div class="btn-group">
+     <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+             <i class="mi-pencil"></i> Edit <span class="caret"></span>
+     </a>
+     <ul class="dropdown-menu">
+        <li><a href="./?muraAction=cExtend.editSubType&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#">Class Extension</a></li>
+        <li><a href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&extendSetID=#esapiEncode('url',rc.extendSetID)#&siteid=#esapiEncode('url',rc.siteid)#">Attribute Set</a></li>
+     </ul>
+     </div>
+    </div>
 
-    </div><!-- /.label-group -->
-  </div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 
 <div class="block block-constrain">

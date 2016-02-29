@@ -64,26 +64,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </cfif>
 	</cfsilent>   
 	
-	<cfoutput>	
 	<div class="mura-header">
+		<cfoutput>	
 			<h1>#application.rbFactory.getKeyValue(session.rb,"email.emailmanager")#</h1>
 		</cfoutput>
-
-	<div class="mura-item-metadata">
-		<div class="label-group">
-	  <cfoutput>
-	  <ul class="metadata-horizontal"><li>#application.rbFactory.getKeyValue(session.rb,"email.emailssent")#: <strong>#emailsSent# (#LSDateFormat(startDate,session.dateKeyFormat)# - #LSDateFormat(stopDate, session.dateKeyFormat)#)</strong></li>
-	  <li>#application.rbFactory.getKeyValue(session.rb,"email.emailsalloted")#: <strong>#emailLimitText#</strong></li>
-	  <li>#application.rbFactory.getKeyValue(session.rb,"email.emailsremaining")#: <strong>#emailsRemainingText#</strong></li></ul>
-	  </cfoutput>
-	  <!---<div id="bounces" class="divide">
-	  <h2>Bounces</h2>
-	  <a href="./?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
-	  </div>--->
 	  <cfinclude template="dsp_secondary_menu.cfm">
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.mura-header -->
+
+		<div class="mura-item-metadata">
+			<div class="label-group">
+		  <cfoutput>
+		  <ul class="metadata-horizontal"><li>#application.rbFactory.getKeyValue(session.rb,"email.emailssent")#: <strong>#emailsSent# (#LSDateFormat(startDate,session.dateKeyFormat)# - #LSDateFormat(stopDate, session.dateKeyFormat)#)</strong></li>
+		  <li>#application.rbFactory.getKeyValue(session.rb,"email.emailsalloted")#: <strong>#emailLimitText#</strong></li>
+		  <li>#application.rbFactory.getKeyValue(session.rb,"email.emailsremaining")#: <strong>#emailsRemainingText#</strong></li></ul>
+		  </cfoutput>
+		  <!---<div id="bounces" class="divide">
+		  <h2>Bounces</h2>
+		  <a href="./?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
+		  </div>--->
+			</div><!-- /.label-group -->
+		</div><!-- /.mura-item-metadata -->
+	</div> <!-- /.mura-header -->
 
   <cfoutput>
 <div class="block block-constrain">

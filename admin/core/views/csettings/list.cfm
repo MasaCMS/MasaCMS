@@ -50,36 +50,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.siteAutoDeploySelect" default="false">
 <div class="mura-header">
 	<h1>Global Settings</h1>
-	<div class="mura-item-metadata">
-		<div class="label-group">
 
-			<div id="nav-module-specific" class="btn-toolbar">
-	<cfif rc.action neq 'updateCore'>
-		<cfif application.configBean.getAllowAutoUpdates()>
+	<div id="nav-module-specific" class="btn-toolbar">
+		<cfif rc.action neq 'updateCore'>
+			<cfif application.configBean.getAllowAutoUpdates()>
+				<div class="btn-group">
+					<cfoutput>
+								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-bolt"></i> Update Core Files to Latest Version</a>
+					</cfoutput>
+					<cfif rc.siteUpdateSelect neq "true">
+									<a class="btn" href="./?muraAction=cSettings.list&siteUpdateSelect=true"><i class="mi-bolt"></i> Multi-Site Version Update</a>
+					</cfif>
+				</div>
+			</cfif>
 			<div class="btn-group">
-				<cfoutput>
-							<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-bolt"></i> Update Core Files to Latest Version</a>
-				</cfoutput>
-				<cfif rc.siteUpdateSelect neq "true">
-								<a class="btn" href="./?muraAction=cSettings.list&siteUpdateSelect=true"><i class="mi-bolt"></i> Multi-Site Version Update</a>
+				<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
+								<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=site"><i class="mi-list-alt"></i> View Site List by Site Name</a>
+				</cfif>
+				<cfif rc.siteSortBy neq "orderno">
+								<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=orderno"><i class="mi-list-alt"></i> View Site List by Bind Order</a>
+				</cfif>
+				<cfelse>
+							<a class="btn" href="./?muraAction=cSettings.list"><i class="mi-list-alt"></i> View Site List</a>
 				</cfif>
 			</div>
-		</cfif>
-		<div class="btn-group">
-			<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
-							<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=site"><i class="mi-list-alt"></i> View Site List by Site Name</a>
-			</cfif>
-			<cfif rc.siteSortBy neq "orderno">
-							<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=orderno"><i class="mi-list-alt"></i> View Site List by Bind Order</a>
-			</cfif>
-			<cfelse>
-						<a class="btn" href="./?muraAction=cSettings.list"><i class="mi-list-alt"></i> View Site List</a>
-			</cfif>
 		</div>
-			</div>
  
- 		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 <!--- site updates messaging --->
 <cfif StructKeyExists(rc, 'sitesUpdated') and IsSimpleValue(rc.sitesUpdated) and len(trim(rc.sitesUpdated))>

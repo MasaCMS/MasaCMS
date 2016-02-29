@@ -86,20 +86,13 @@
 <cfoutput>
 
 <div class="mura-header">
-		<h1>#rbKey('user.usermaintenanceform')#</h1>
-		
-	<div class="mura-item-metadata">
-		<div class="label-group">
-		
-		<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
-					<i class="mi-arrow-circle-left"></i> #esapiEncode('html',rbKey('sitemanager.back'))#
-			</a>
-		</div>
-		
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
+	<h1>#rbKey('user.usermaintenanceform')#</h1>
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
+				<i class="mi-arrow-circle-left"></i> #esapiEncode('html',rbKey('sitemanager.back'))#
+		</a>
+	</div>
+</div> <!-- /.mura-header -->
 
 	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
 

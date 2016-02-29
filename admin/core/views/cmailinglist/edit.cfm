@@ -49,11 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h1>
-	<div class="mura-item-metadata">
-		<div class="label-group">
-			<cfinclude template="dsp_secondary_menu.cfm">
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
+	<cfinclude template="dsp_secondary_menu.cfm">
 </div> <!-- /.mura-header -->
 
 <form <cfif rc.mlid eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" action="./?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">

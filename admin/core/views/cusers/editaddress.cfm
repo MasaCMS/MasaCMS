@@ -55,17 +55,10 @@
 
 <div class="mura-header">
 	<h1>#rbKey('user.memberaddressform')#</h1>
-
-	<div class="mura-item-metadata">
-		<div class="label-group">
-
-			<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',rbKey('sitemanager.back'))#</a>
-			</div>
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
+	<div id="nav-module-specific" class="btn-group">
+	<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',rbKey('sitemanager.back'))#</a>
+	</div>
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
 	<div class="block block-bordered">
