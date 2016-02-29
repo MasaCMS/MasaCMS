@@ -365,23 +365,25 @@ h1:not([class]){
 
 // secondary nav 
 
-// style a.btn like label
 #nav-module-specific{
   .make-sm-column(7);
   text-align:right;
+  padding-left: 0;
+  padding-right: 0;
+  
+  // style a.btn like label
+  .btn{
+    .label;
+  }
+  .label{
+    .btn;
+  }
+  .metadata-horizontal li{
+     .btn;
+     .label;
+  }
 }
 
-#nav-module-specific .btn{
-  .label;
-}
-
-#nav-module-specific .label{
-  .btn;
-}
-.mura-item-metadata .metadata-horizontal li{
-   .btn;
-   .label;
-}
 // default to label-default
 .label:not([class*="label-"]){
   .label-default;
