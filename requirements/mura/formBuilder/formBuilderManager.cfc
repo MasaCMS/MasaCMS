@@ -331,4 +331,364 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn renderedForm />
 	</cffunction>
 
+	<cfscript>
+
+
+
+	function generateFormObject($,event) {
+		
+		var content = arguments.event.getValue('contentBean');
+		var objectname = rereplacenocase( content.getValue('filename'),"-([a-z])","\U\1","all" );
+		var siteid = $.event('siteid');
+		objectname = rereplacenocase( objectname,"[^[:alnum:]]","","all" );
+
+		var formStruct = deserializeJSON( arguments.event.getValue('contentBean').getValue('body'));
+
+		if( !structKeyExists(formStruct.form.formattributes,'muraormentities') || formStruct.form.formattributes.muraormentities neq 1 )
+			return;
+
+		var field = "";
+		
+		if(!directoryExists(#expandPath("/" & siteid)# & "/includes/model")) {
+			directoryCreate(#expandPath("/" & siteid)# & "/includes/model");
+		}
+
+		if(!directoryExists(#expandPath("/" & siteid)# & "/includes/model/beans")) {
+			directoryCreate(#expandPath("/" & siteid)# & "/includes/model/beans");
+		}
+
+		if(!directoryExists(#expandPath("/" & siteid)# & "/includes/model/archive")) {
+			directoryCreate(#expandPath("/" & siteid)# & "/includes/model/archive");
+		}
+			
+
+		var exists = fileExists( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc" );
+
+		var param = "";
+		var fieldcount = 0;
+		
+		var fieldorder = [];
+		var listview = "";
+
+		for(var i = 1;i <= ArrayLen(formStruct.form.pages);i++) {
+			fieldorder.addAll(formStruct.form.pages[i]);
+		}
+
+		var fieldlist = formStruct.form.fields;
+
+		// start CFC				
+		var con = 'component contentid="#content.getContentID()#" extends="mura.bean.beanORM" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" rendertype="form" access="public"';
+
+		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
+			field = fieldlist[ fieldorder[i] ];
+			if(field.fieldtype.fieldtype == 'textfield' and listLen(listview) < 5)
+				listview = listAppend(listview,field.name);
+		}
+
+		if(listLen(listview) > 0) {
+			con = con & ' listview="#listview#" ';
+		}
+
+		con = con & '{#chr(13)##chr(13)#';
+		con = con & '	property name="#lcase(objectname)#id" fieldtype="id";#chr(13)##chr(13)#';
+
+		var datasets = formStruct.datasets;
+
+		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
+			field = fieldlist[ fieldorder[i] ];
+
+			if( field.fieldtype.fieldtype != "section") {
+				fieldcount++;
+				param = '	property name="#field.name#"';
+				param = param & ' displayname="#field.label#"';
+				param = param & ' orderno="#fieldcount#"';
+	
+				param = param & '#getDataType(field,datasets,objectname)#';
+	
+				con = con & "#param#;#chr(13)#";
+			}			
+		}
+
+		con = con & "#chr(13)##chr(13)#";
+		
+		// close CFC				
+		con = con & "#chr(13)#}";
+		
+		if( exists ) {
+			fileMove( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc","#expandPath("/" & siteid)#/includes/model/archive/#getTickCount()##lcase(objectname)#.cfc" );
+		}
+	
+		fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc",con );
+
+		if(structKeyExists(application.objectMappings,objectname))
+		try {
+			StructDelete(application.objectMappings,objectname);
+		}
+		catch(any e) {
+
+		}
+
+		$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(objectname)#",siteid );
+		$.getBean(objectname).checkSchema();
+		
+	}
+
+	function getDataType( fieldData,datasets,objectname ) {
+		var str = "";
+		var fieldtype = fieldData.fieldtype.fieldtype; 
+		var dataset = {sourcetype='manual'};
+		var cfcBridgeName = "";
+		
+		if(StructKeyExists( arguments.datasets,arguments.fieldData.datasetid )) {
+			dataset = arguments.datasets[arguments.fieldData.datasetid];
+			cfcBridgeName = lcase("#arguments.objectname##dataset.source#");
+		}
+				
+		switch(fieldtype) {
+			case "nested":
+				if( dataset.sourcetype == 'muraorm' ) {
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
+					createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,false,false);
+				}
+				else {
+					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+				}
+			break;
+			case "dropdown":
+				if( dataset.sourcetype == 'muraorm' ) {
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
+					createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,false,true);
+				}
+				else {
+					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+				}
+			break;
+			case "radio":
+				if( dataset.sourcetype == 'muraorm' ) {
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
+					createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,false,true);
+				}
+				else {
+					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+				}
+			break;
+			case "checkbox":
+				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="#fieldtype#" source="#lcase(dataset.source)#"';
+				createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,true,true);
+			break;
+			case "multiselect":
+				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="dropdown" source="#lcase(dataset.source)#"';
+				createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,true,true);
+			break;
+			case "textfield":
+				str = ' datatype="varchar" length="250" rendertype="#fieldtype#" list=true';
+			break;
+			case "hidden":
+				str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+			break;
+			case "file":
+				str = ' datatype="varchar" length="35" fieldtype="index" rendertype="#fieldtype#"';
+			break;
+			case "textarea":
+				str = ' datatype="text" rendertype="#fieldtype#"';
+			break;
+		}
+
+		return str;		
+	}
+
+	function createFieldOptionCFC( fieldData,parentObject,cfcBridgeName,dataset,createJoinentity=false,createDataentity=false ) {
+		var objectname = fieldData.name;
+		var exists = fileExists( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(arguments.cfcBridgeName)#.cfc" );
+		var param = "";
+		
+		objectname = rereplacenocase( objectname,"[^[:alnum:]]","","all" );
+
+		if( !exists && arguments.createJoinEntity ) {
+			// start relationship CFC				
+			var con = 'component extends="mura.bean.beanORM" table="fb_#lcase(arguments.cfcBridgeName)#" entityName="#lcase(arguments.cfcBridgeName)#" displayName="#arguments.cfcBridgeName#" access="public" type="join" {#chr(13)##chr(13)#';
+	
+			var con = con & '	property name="#lcase(arguments.cfcBridgeName)#id" fieldtype="id";#chr(13)##chr(13)#';
+			var con = con & '	property name="#lcase(arguments.parentobject)#id" fieldtype="one-to-one" cfc="#arguments.parentobject#";#chr(13)#';
+			var con = con & '	property name="#lcase(dataset.source)#id" fieldtype="one-to-one" cfc="#objectname#";#chr(13)#';
+	
+			con = con & "#chr(13)##chr(13)#";
+			
+			// close relationship CFC				
+			con = con & "#chr(13)#}";
+			
+			fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(dataset.source)#.cfc",con );
+			if( structKeyExists(application.objectMappings,dataset.source))
+			try {
+				StructDelete(application.objectMappings,dataset.source);
+			}
+			catch(any e) {}
+
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
+			$.getBean(objectname).checkSchema();
+
+			var bean = $.getBean(cfcBridgeName);
+			bean.checkSchema();
+		}
+		
+		if(arguments.createDataentity == false)
+			return;
+
+		exists = fileExists( expandPath("/" & siteid) & "/includes/model/beans/#lcase(dataset.source)#.cfc" );
+		
+		// data beans are never recreated
+		if(exists || arguments.dataset.sourcetype != "muraorm")
+			return;
+
+		// start data CFC				
+		var con = 'component extends="mura.formbuilder.fieldOptionBean" table="fb_#lcase(dataset.source)#" entityName="#lcase(dataset.source)#" displayName="#dataset.source#" access="public" {#chr(13)##chr(13)#';
+
+		var con = con & '	property name="#lcase(dataset.source)#id" fieldtype="id";#chr(13)##chr(13)#';
+
+		con = con & "#chr(13)##chr(13)#";
+		
+		// close data CFC				
+		con = con & "#chr(13)#}";
+
+		fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(dataset.source)#.cfc",con );
+
+		if(structKeyExists(application.objectMappings,dataset.source))
+		try {
+			StructDelete(application.objectMappings,dataset.source);
+		}
+		catch(any e) {}
+
+		$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
+		$.getBean(objectname).checkSchema();
+
+	}
+
+	function getFormFromObject( siteid,formName,nested=false) {
+			
+		return getFormProperties( argumentCollection=arguments );
+	}
+
+	function getModuleBeans( siteid ) {
+		var $=getBean('$').init(arguments.siteid);
+		var dirList = directoryList( #expandPath("/" & siteid)# & "/includes/model/beans",false,'query' );
+		var beanArray = [];
+
+		for(var i = 1; i <= dirList.recordCount;i++) {
+			var name = replaceNoCase( dirList.name[i],".cfc","");
+			arrayAppend(beanArray,{name=name});
+
+		}
+
+		return beanArray;
+	}
+
+
+	function getFormProperties( siteid,formName,nested=false,debug=false ) {
+
+		var $=getBean('$').init(arguments.siteid);
+		var formObj = $.getBean( arguments.formname );
+		var util = $.getBean('fb2Utility');
+		var props = formObj.getProperties();
+		var formProps = {};
+		var formArray = [];
+		var formFields = [];
+		var val = 100000;
+		var x = "";
+		
+		for(var i in props) {
+			if( !listFindNoCase("errors,fromMuraCache,instanceID,isnew,saveErrors,site",i) ) {
+				formProps[i] = getFieldProperties( props[i] );
+				
+				if( formProps[i].rendertype == "form" ) {
+					formProps[i]['nested'] = getFieldProperties( arguments.siteid,formProps[i].cfc,true );
+				}
+				
+				if(!structKeyExists(formProps[i],"orderno"))
+					formProps[i]['orderno'] = val++;
+
+				if(structKeyExists(formProps[i],"cfc")) {
+					var dataBean = $.getBean(i);
+					
+					if(dataBean.getProperty('source') != "") {
+						var dataBean = $.getBean(dataBean.getProperty('source'));
+					}
+
+					var options = dataBean
+						.getFeed()
+						.addParam(field='siteid',relationship='equals',criteria='#arguments.siteid#')
+						.getIterator();
+									
+					formProps[i]['options'] = util.queryToArray( options.getQuery(),dataBean.getPrimaryKey() );
+				}
+			}
+		}
+
+		formArray = structSort(formProps,"numeric","asc","orderno" );
+
+		for( var i = 1;i <= ArrayLen(formArray);i++ ) {
+			ArrayAppend(formFields,formProps[formArray[i]]);
+		}
+
+		if(arguments.debug) {
+			writeDump(formFields);
+			abort;
+		}
+
+
+		return formFields;
+	}
+
+	function getFieldProperties( prop ) {
+
+		var fieldProp = {};
+				
+		for(var x in arguments.prop ) {
+			fieldProp["#lcase(x)#"] = arguments.prop[x];
+		}
+
+		if( !structKeyExists(fieldProp,"rendertype")) {
+			fieldProp['rendertype'] = getRenderType( fieldProp );
+		}
+		
+		return fieldProp;
+	}
+	
+	
+	function getRenderType( formProp ) {
+		var retType = "";
+
+		if( structKeyExists(formProp,"cfc") ) {
+			retType = "dropdown";
+		}
+		
+		return retType;
+		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</cfscript>
+
 </cfcomponent>

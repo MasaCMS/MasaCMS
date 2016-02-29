@@ -77,7 +77,6 @@
 			var self = this;
 
 			var temp = self.templateList.pop();
-		
 
 			$.ajax({
 				url :  	'/' + window.mura.siteid + '/includes/display_objects/form/templates/' + temp + '.hb',
@@ -477,8 +476,6 @@
 				
 				for(var i in self.properties) {
 					obj.displayName = self.properties[i].displayName;
-					console.log( self.properties[i].fieldtype );
-					console.log('- ' + self.properties[i].column);
 					if( self.properties[i].fieldtype == "one-to-one" ) {
 						obj.displayValue = data[ self.properties[i].cfc ].val;
 					}

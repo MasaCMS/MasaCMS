@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfset variables.editLink = variables.editLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.editLink = variables.editLink & "&amp;contentid=" & request.contentBean.getContentID()>
-			<cfif variabes.$.content('type') eq 'Variation'>
+			<cfif $.content('type') eq 'Variation'>
 				<cfset variables.editLink = variables.editLink & "&amp;topid=00000000000000000000000000000000099">
 			<cfelse>
 				<cfset variables.editLink = variables.editLink & "&amp;topid=00000000000000000000000000000000001">
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.historyLink = variables.adminBase & "/?muraAction=cArch.hist">
 			<cfset variables.historyLink = variables.historyLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;contentid=" & request.contentBean.getContentID()>
-			<cfif variabes.$.content('type') eq 'Variation'>
+			<cfif $.content('type') eq 'Variation'>
 				<cfset variables.historyLink = variables.editLink & "&amp;topid=00000000000000000000000000000000099">
 			<cfelse>
 				<cfset variables.historyLink = variables.editLink & "&amp;topid=00000000000000000000000000000000001">

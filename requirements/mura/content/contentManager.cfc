@@ -1677,6 +1677,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>
 				</cfif>
 
+				<cfif newBean.getType() eq 'Form'>
+					<cfset getBean('formBuilderManager').generateFormObject(pluginEvent.getValue('MuraScope'),pluginEvent) />			
+				</cfif>
+
 				<!--- For backwards compatibility --->
 				<cfif newBean.getType() eq 'Folder'>
 					<cfset variables.pluginManager.announceEvent("onAfterPortalSave",pluginEvent)>
