@@ -11,11 +11,9 @@
   <cfelse>
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains.editapprovalchain")#</h1>
   </cfif>
-  <div class="mura-item-metadata">
-    <div class="label-group">
-      <cfinclude template="dsp_secondary_menu.cfm">
-    </div><!-- /.label-group -->
-  </div><!-- /.mura-item-metadata -->
+
+  <cfinclude template="dsp_secondary_menu.cfm">
+
 </div> <!-- /.items-push.mura-header -->
 
 
