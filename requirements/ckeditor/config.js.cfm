@@ -87,7 +87,7 @@ CKEDITOR.editorConfig = function( config )
 
 	config.toolbarStartupExpanded=false;
 	config.toolbarCanCollapse = true;
-	config.startupShowBorders = false;
+	config.startupShowBorders = true;
 	// Hide title attriute
 	config.title = false;
 
