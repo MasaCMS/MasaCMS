@@ -55,13 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 <h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topviewedcontent")#</h1>
 
-	<div class="mura-item-metadata">
-		<div class="label-group">
-			
-			<cfinclude template="dsp_secondary_menu.cfm">
+	<cfinclude template="dsp_secondary_menu.cfm">
 
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 
 <div class="block block-constrain">

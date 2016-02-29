@@ -48,14 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
   <h1><cfif rc.changesetID neq ''>#application.rbFactory.getKeyValue(session.rb,'changesets.editchangeset')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</cfif></h1>
 
-  <div class="mura-item-metadata">
-    <div class="label-group">
-      
-      <cfset csrfTokens= #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="url")#>
-      <cfinclude template="dsp_secondary_menu.cfm">
+  <cfset csrfTokens= #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="url")#>
+  <cfinclude template="dsp_secondary_menu.cfm">
 
-    </div><!-- /.label-group -->
-  </div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 
 <div class="block block-constrain">
