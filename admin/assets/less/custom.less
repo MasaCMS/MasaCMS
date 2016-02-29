@@ -275,10 +275,10 @@ a.list-group-item:hover,a.list-group-item:focus {
   border-bottom-color: #ff3405;
 }
 /* table striping */
-.mura .mura-table-grid > tbody > tr:nth-of-type(odd) {
+.mura .mura-table-grid:not(.no-stripe) > tbody > tr:nth-of-type(odd) {
     background-color: #F6FAFE;
 }
-.mura .mura-table-grid > tbody > tr:hover {
+.mura .mura-table-grid:not(.no-stripe) > tbody > tr:hover {
     background-color: #eaf4fd;
 }
 
@@ -582,19 +582,19 @@ header .btn-image span.button-image{
 #mura-search-submit{
   cursor: pointer;
 }
-#carch #mura-content ul.breadcrumb, 
-#carch #mura-content ol.breadcrumb {
+#mura-content ul.breadcrumb, 
+#mura-content ol.breadcrumb {
     padding: 0;
     margin: 10px 0;
     clear:both;
 }
-#carch #mura-content .mura-header ul.breadcrumb, 
-#carch #mura-content .mura-header ol.breadcrumb {
+#mura-content .mura-header ul.breadcrumb, 
+#mura-content .mura-header ol.breadcrumb {
     background-color: #FFF;
     padding: 6px;
 }
-#carch #mura-content ul.breadcrumb > :first-child,
-#carch #mura-content ol.breadcrumb > :first-child{
+#mura-content ul.breadcrumb > :first-child,
+#mura-content ol.breadcrumb > :first-child{
   margin-left: 8px;
 }
 .nav-main li a{
@@ -767,6 +767,14 @@ a.no-link{
   margin-bottom: 10px;
   min-height: 2.3em;
   padding-top: .5em;
+  background-color: #FFF;
+  border: 1px solid #FFF;
+}
+.mura-header #nav-module-specific .btn:visted,
+.mura-header #nav-module-specific .btn:hover,
+.mura-header #nav-module-specific .btn:active{
+  background-color:#F5F5F5;
+  border: 1px solid #EEE;
 }
 .mura-header .label,
 .mura-item-metadata .metadata-horizontal li,
