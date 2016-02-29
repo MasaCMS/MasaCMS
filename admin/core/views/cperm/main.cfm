@@ -61,16 +61,28 @@
   <cfset adminGroup=rc.$.getBean('group').loadBy(groupname='Admin',isPublic=0)>
 </cfif>
 <cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
-<div id="nav-module-specific" class="btn-group">
-  <a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-circle-arrow-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
-</div>
-<cfif rc.moduleid eq '00000000000000000000000000000000000'>#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb alt")#</cfif>
-<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),rc.rscontent.title)#</p>
+
+<div class="mura-header">
+  <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
+  <div id="nav-module-specific" class="btn-group">
+    <a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+  </div>
+
+  <cfif rc.moduleid eq '00000000000000000000000000000000000'>#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#</cfif>
+
+</div> <!-- /.mura-header -->
+
+
+<div class="block block-constrain">
+  <div class="block block-bordered">
+    <div class="block-content">
+
 
   <form novalidate="novalidate" method="post" name="form1" action="./?muraAction=cPerm.update&contentid=#esapiEncode('url',rc.contentid)#&parentid=#esapiEncode('url',rc.parentid)#">
     <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
-    <table class="mura-table-grid">
+<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),rc.rscontent.title)#</p>
+
+    <table class="mura-table-grid<cfif rc.rslist.recordcount lt 2> no-stripe</cfif>">
       <tr>
         <cfif chains.hasNext()>
           <th>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchainexempt')#</th>
@@ -124,7 +136,7 @@
     <cfset rc.rslist=rc.groups.publicGroups />
     <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>
     <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')# #application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
-    <table class="mura-table-grid">
+    <table class="mura-table-grid<cfif rc.rslist.recordcount lt 2> no-stripe</cfif>">
       <tr>
       <cfif chains.hasNext()><th>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchainexempt')#</th></cfif>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
@@ -159,7 +171,12 @@
   <h2>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchain')#</h2>
   <div class="control-group">
         <label class="control-label">
-           <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.approvalchain"))#">#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')# <i class="icon-question-sign"></i></a>
+
+  <span data-toggle="popover" 
+    title="" 
+    data-placement="right" 
+    data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.approvalchain"))#" 
+    data-original-title="#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')#">#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')# <i class="mi-question-circle"></i></span>
         </label>
         <div class="controls">
             <select name="chainID" class="dropdown">
@@ -181,9 +198,14 @@
       <input type="hidden" name="topid" value="#esapiEncode('html_attr',rc.topid)#">
       <input type="hidden" name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#">
        #rc.$.renderCSRFTokens(context=rc.contentid,format="form")#
-    </form></td>
+  </td>
   </tr>
 </table>
+</form>
+
+    </div> <!-- /.block-content -->
+  </div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
 
 <script>
   $(function(){
