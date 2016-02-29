@@ -88,18 +88,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-header">
 		<h1>#rc.$.rbKey('sitemanager.content.importcontent')#</h1>
 
-		<div class="mura-item-metadata">
-			<div class="label-group">
-
-			<div id="nav-module-specific" class="btn-group">
-				<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url',rc.moduleid)#">
-					<i class="mi-arrow-circle-left"></i>
-					#rc.$.rbKey('sitemanager.backtositemanager')#
-				</a>
-			</div>
-
-			</div><!-- /.label-group -->
-		</div><!-- /.mura-item-metadata -->
+		<div id="nav-module-specific" class="btn-group">
+			<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url',rc.moduleid)#">
+				<i class="mi-arrow-circle-left"></i>
+				#rc.$.rbKey('sitemanager.backtositemanager')#
+			</a>
+		</div>
+		
 		#rc.$.dspZoom(crumbdata=rc.$.getBean('content').loadBy(contentid=rc.contentid).getCrumbArray(),class="breadcrumb")#
 	</div> <!-- /.items-push.mura-header -->
 

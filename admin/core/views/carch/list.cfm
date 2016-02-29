@@ -88,11 +88,9 @@
 			<cfelse>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1>
 			</cfif>
-				<div class="mura-item-metadata">
-					<div class="label-group">
+
 			<cfinclude template="dsp_secondary_menu.cfm">
-					</div><!-- /.label-group -->
-				</div><!-- /.mura-item-metadata -->
+
 			</div> <!-- /.items-push.mura-header -->
 		</cfoutput>
 

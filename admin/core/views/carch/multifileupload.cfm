@@ -84,14 +84,8 @@ jQuery(document).ready(function(){
     <h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileupload")#</h1>
 
     <cfif rc.compactDisplay neq "true">
-        <div class="mura-item-metadata">
-    		<div class="label-group">
 
-                <cfinclude template="dsp_secondary_menu.cfm">
-
-    		</div><!-- /.label-group -->
-    	</div><!-- /.mura-item-metadata -->
-
+        <cfinclude template="dsp_secondary_menu.cfm">
 
         #$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
     </cfif>
