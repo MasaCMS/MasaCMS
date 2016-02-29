@@ -80,7 +80,7 @@ var feedManager = {
 			return false;
 		}
 		var deleteIcon = document.createElement("I");
-		deleteIcon.setAttribute("class", "mi-remove-circle");
+		deleteIcon.setAttribute("class", "mi-times-circle");
 
 		deleteLink.appendChild(deleteIcon);
 
