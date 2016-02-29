@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="btn" href="./?muraAction=cExtend.listSets&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> Back to Extension Overview</a>
 	</div>
 
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
 		<div class="block block-bordered">

@@ -88,7 +88,7 @@
 	<cfinclude template="inc/dsp_search_form.cfm" />
 
 	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
 

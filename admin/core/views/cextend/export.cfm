@@ -110,7 +110,7 @@
 		</a>
 	</div>
 
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
 		<div class="block block-bordered">

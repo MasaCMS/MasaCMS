@@ -91,7 +91,7 @@
 
 			<cfinclude template="dsp_secondary_menu.cfm">
 
-			</div> <!-- /.items-push.mura-header -->
+			</div> <!-- /.mura-header -->
 		</cfoutput>
 
 			<div class="block block-constrain">
@@ -312,13 +312,13 @@
 					  <input type="hidden" name="muraAction" value="cArch.list" />
 
 					<div id="filters" class="module well">
-					<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h3>
+					<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</label>
 					 <input type="text" name="searchString" id="searchString" value="#esapiEncode('html_attr',rc.searchString)#" class="text" size="20">
 					</div>
 
-					<div class="module well" id="mura-filter-tags">
-						<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
-
+					<div class="module mura-control-group mura-filter-tags">
+						<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
+						<input type="text" name="tags">
 						<div id="tags" class="tagSelector">
 							<cfloop list="#$.event('tags')#" index="i">
 								<span class="tag">
@@ -326,14 +326,14 @@
 								<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 								</span>
 							</cfloop>
-							<input type="text" name="tags">
 						</div>
 					</div>
 
 					<cfif len($.siteConfig('customTagGroups'))>
 						<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-							<div class="module well" id="mura-filter-tags">
-								<h3>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
+							<div class="module mura-control-group mura-filter-tags">
+								<label>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
+								<input type="text" name="#g#tags">
 								<div id="#g#tags" class="tagSelector">
 									<cfloop list="#$.event('#g#tags')#" index="i">
 										<span class="tag">
@@ -341,7 +341,6 @@
 										<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 										</span>
 									</cfloop>
-									<input type="text" name="#g#tags">
 								</div>
 							</div>
 						</cfloop>
@@ -349,7 +348,7 @@
 
 					<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 						<div class="module well" id="mura-list-tree">
-							<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
+							<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
 							<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 						</div>
 					</cfif>

@@ -665,8 +665,7 @@ if(len($.siteConfig('customTagGroups'))){
 	</div>
 	</cfif>
 
-
-	<div class="module mura-control-group" id="mura-filter-tags">
+	<div class="module mura-control-group mura-filter-tags">
 		<cfif len($.siteConfig('customTagGroups'))>
    		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.defaulttags")#</label>
    		<cfelse>
@@ -686,8 +685,9 @@ if(len($.siteConfig('customTagGroups'))){
 
 	<cfif len($.siteConfig('customTagGroups'))>
 		<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-			<div class="module" id="mura-filter-tags">
-				<h3>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
+			<div class="module mura-control-group mura-filter-tags">
+				<label>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
+				<input type="text" name="#g#tags">
 				<div id="#g#tags" class="tagSelector">
 				<cfloop list="#$.event('#g#tags')#" index="i">
 					<span class="tag">
@@ -695,7 +695,6 @@ if(len($.siteConfig('customTagGroups'))){
 					<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 					</span>
 				</cfloop>
-				<input type="text" name="#g#tags">
 			</div>
 		</div>
 		</cfloop>
@@ -703,7 +702,7 @@ if(len($.siteConfig('customTagGroups'))){
 
 	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 		<div class="module" id="mura-list-tree">
-		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
+		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
 		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 		</div>
 	</cfif>

@@ -14,7 +14,7 @@
 
   <cfinclude template="dsp_secondary_menu.cfm">
 
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 
 <div class="block block-constrain">

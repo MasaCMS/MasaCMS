@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		
 		#rc.$.dspZoom(crumbdata=rc.$.getBean('content').loadBy(contentid=rc.contentid).getCrumbArray(),class="breadcrumb")#
-	</div> <!-- /.items-push.mura-header -->
+	</div> <!-- /.mura-header -->
 
 	<form novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);" enctype="multipart/form-data">
 		<div class="block block-constrain">

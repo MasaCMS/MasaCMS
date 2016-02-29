@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <div class="mura-header">
   <h1><cfif rc.categoryID neq ''>#application.rbFactory.getKeyValue(session.rb,'categorymanager.editcontentcategory')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addcontentcategory')#</cfif></h1>
   <cfinclude template="dsp_secondary_menu.cfm">
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
     <div class="block block-bordered">

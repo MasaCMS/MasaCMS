@@ -95,6 +95,6 @@
 	<div class="mura-item-metadata">
 		<cfinclude template="dsp_search_form.cfm" />
 	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 </cfoutput>
