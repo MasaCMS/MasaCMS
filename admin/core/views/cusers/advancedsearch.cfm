@@ -122,7 +122,7 @@
 		</a>
 	</div>
 
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 
 <div class="block block-constrain">

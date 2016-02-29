@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 	</div>
 
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
 		<div class="block block-bordered">

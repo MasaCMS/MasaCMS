@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
   <h1>Change Set Content List</h1>
   <cfinclude template="dsp_secondary_menu.cfm">
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
     <div class="block block-bordered">

@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	#$.dspZoom(crumbdata=crumbdata,class="breadcrumb")#
 
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
 	<div class="block block-bordered">

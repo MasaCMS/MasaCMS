@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div>
  
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 <!--- site updates messaging --->
 <cfif StructKeyExists(rc, 'sitesUpdated') and IsSimpleValue(rc.sitesUpdated) and len(trim(rc.sitesUpdated))>
 	<cfoutput>#rc.sitesUpdated#</cfoutput>

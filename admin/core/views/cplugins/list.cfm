@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"plugin.siteplugins")#</h1>
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 
 

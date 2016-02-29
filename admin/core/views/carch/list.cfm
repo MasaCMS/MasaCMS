@@ -91,7 +91,7 @@
 
 			<cfinclude template="dsp_secondary_menu.cfm">
 
-			</div> <!-- /.items-push.mura-header -->
+			</div> <!-- /.mura-header -->
 		</cfoutput>
 
 			<div class="block block-constrain">

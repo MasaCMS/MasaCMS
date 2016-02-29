@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfinclude template="dsp_secondary_menu.cfm">
 
-</div> <!-- /.items-push.mura-header -->
+</div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
 		<div class="block block-bordered">
