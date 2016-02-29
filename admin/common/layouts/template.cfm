@@ -328,7 +328,7 @@
 	           	<script>
 	           		$(document).ready(function(){
 	           			// persist sidebar selection
-		           		$('*[data-action=sidebar_mini_toggle').click(function(){
+		           		$('*[data-action=sidebar_mini_toggle]').click(function(){
 		           			if($('##page-container').hasClass('sidebar-mini')){
 			           			createCookie('ADMINSIDEBAR','off',5);
 		           			} else {
