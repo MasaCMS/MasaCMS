@@ -28213,6 +28213,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura body.configurator-wrapper #mura-content {
   padding-left: 0;
   padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 .mura .mura-sidebar__objects-list__object-group-heading {
   font-size: 12px;
@@ -28444,6 +28446,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura body.modal-wrapper #mura-content {
   padding: 15px !important;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .mura body.modal-wrapper .block-bordered {
   border: none;
