@@ -665,7 +665,7 @@ if(len($.siteConfig('customTagGroups'))){
 	</div>
 	</cfif>
 
-	<div class="module mura-control-group mura-filter-tags">
+	<div id="tags" class="module mura-control-group mura-filter-tags tagSelector">
 		<cfif len($.siteConfig('customTagGroups'))>
    		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.defaulttags")#</label>
    		<cfelse>
@@ -673,29 +673,25 @@ if(len($.siteConfig('customTagGroups'))){
    		</cfif>
 
 		<input type="text" name="tags">
-		<div id="tags" class="tagSelector">
-			<cfloop list="#$.event('tags')#" index="i">
-				<span class="tag">
-				#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-				<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
-				</span>
-			</cfloop>
-		</div>
+		<cfloop list="#$.event('tags')#" index="i">
+			<span class="tag">
+			#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+			<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+			</span>
+		</cfloop>	
 	</div>
 
 	<cfif len($.siteConfig('customTagGroups'))>
 		<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-			<div class="module mura-control-group mura-filter-tags">
+			<div id="#g#tags" class="module mura-control-group mura-filter-tags tagSelector">
 				<label>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
-				<input type="text" name="#g#tags">
-				<div id="#g#tags" class="tagSelector">
+				<input type="text" name="#g#tags">	
 				<cfloop list="#$.event('#g#tags')#" index="i">
 					<span class="tag">
 					#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
 					<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 					</span>
 				</cfloop>
-				</div>
 			</div>
 		</cfloop>
 	</cfif>

@@ -10,6 +10,7 @@
 		return this.each(function() {
 				var selector = $(this),
 					input = $('input[type=text]', this);
+				
 				selector.click(function() { input.focus(); })
 					.delegate('.tag a', 'click', function() {
 						$(this).parent().remove();
