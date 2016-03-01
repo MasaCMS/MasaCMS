@@ -83,8 +83,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div><!-- /.label-group -->
 	</div><!-- /.mura-item-metadata -->
 
+	<cfif rc.compactDisplay neq 'true'>
 	#$.dspZoom(crumbdata=crumbdata,class="breadcrumb")#
-
+	</cfif>
 </div> <!-- /.mura-header -->
 
 <div class="block block-constrain">

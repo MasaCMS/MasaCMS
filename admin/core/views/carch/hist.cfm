@@ -73,8 +73,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="dsp_secondary_menu.cfm">
 	</cfif>
 
+	<cfif rc.compactDisplay neq 'true'>
 	#$.dspZoom(crumbdata=crumbdata,class="breadcrumb")#
-
+	</cfif>
 </div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
