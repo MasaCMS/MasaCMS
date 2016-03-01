@@ -46,7 +46,7 @@
 								.text(ui.item.toString() + ' ')
 								.append('<a><i class="mi-times-circle"></i></a>')
 								.append($('<input type="hidden"/>').attr('name', name).val(ui.item.id))
-								.insertBefore(input);
+								.insertAfter(input);
 
 								input.val('');
 
