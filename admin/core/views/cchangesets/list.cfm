@@ -152,18 +152,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						     <input type="text" class="datepicker text" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 						</div>		
 						
-						<div class="module mura-control-group mura-filter-tags">
+						<div id="tags" class="module mura-control-group mura-filter-tags tagSelector">
 							<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
-
-							<div id="tags" class="tagSelector">
-								<cfloop list="#$.event('tags')#" index="i">
-									<span class="tag">
-									#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-									<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
-									</span>
-								</cfloop>
-								<input type="text" class="text" name="tags">
-							</div>
+							<input type="text" class="text" name="tags">
+							<cfloop list="#$.event('tags')#" index="i">
+								<span class="tag">
+								#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+								<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+								</span>
+							</cfloop>
 						</div>
 
 						<cfif application.categoryManager.getCategoryCount(rc.siteid)>
