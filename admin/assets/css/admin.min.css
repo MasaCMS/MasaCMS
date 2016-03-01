@@ -34640,10 +34640,12 @@ label #selectFilter {
 #contentSearch .form-control {
   height: 28px;
 }
-.controls ul li,
-.metadata li {
+.controls ul li {
   list-style-type: none;
   margin-left: -39px;
+}
+.metadata li {
+  list-style-type: none;
 }
 .control-label a[rel="tooltip"] {
   cursor: default;
