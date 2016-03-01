@@ -33435,6 +33435,13 @@ fieldset[disabled] .btn-primary.active {
 .label-primary[href]:focus {
   background-color: #ff3838;
 }
+.badge {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  opacity: .8;
+  font-weight: normal;
+}
 .badge-primary {
   background-color: #ff3405;
 }
