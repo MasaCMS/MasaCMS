@@ -759,7 +759,8 @@ a.no-link{
 .mura-header #nav-module-specific .btn-group{
   float: none;
 }
-.mura-header #nav-module-specific .btn{
+.mura-header #nav-module-specific .btn,
+.sidebar-buttons .btn{
   .btn-default;
   float:none !important;
   font-size: 92%;
@@ -772,9 +773,16 @@ a.no-link{
   background-color: #FFF;
   border: 1px solid #FFF;
 }
+.sidebar-buttons .btn{
+  padding-top: 2px;
+  border: 1px solid #EEE;
+}
 .mura-header #nav-module-specific .btn:visted,
 .mura-header #nav-module-specific .btn:hover,
-.mura-header #nav-module-specific .btn:active{
+.mura-header #nav-module-specific .btn:active,
+.sidebar-buttons .btn:visted,
+.sidebar-buttons .btn:hover,
+.sidebar-buttons .btn:active{
   background-color:#F5F5F5;
   border: 1px solid #EEE;
 }
@@ -847,14 +855,15 @@ a.no-link{
 .sidebar .well h2{
   padding-bottom: 0;
 }
-.sidebar .well .btn{
+.sidebar-buttons{
+  text-align: center;
+}
+.sidebar-buttons .btn{
   padding-left: 4px;
   padding-right: 4px;
-  margin-top: 12px;
+  margin: 24px 4px 8px;
 }
-.sidebar .well .btn + .btn{
-  margin-left: 8px;
-}
+
 .alert, p.alert, .content p.alert{
   padding-top: 8px;
   margin-bottom: 12px !important;
