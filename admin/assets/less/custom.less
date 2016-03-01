@@ -210,18 +210,25 @@ a.bg-primary-lighter:hover,a.bg-primary-lighter:focus {
   line-height: 10px;
 }
 .search-showing{
-  text-align: right;
-  padding-top: 12px;
+  padding: 4px 0 0 0;
+  margin: 0 0;
+  float: left;
+  max-width: 280px;
 }
 ul.pagination,
 .mura #main-container #tabArchitectural ul.pagination,
 .pagination{
-  margin: 8px 0;
+  margin: 0 0;
 }
 .mura #main-container #tabArchitectural ul.pagination{
   .pull-right;
 }
-
+.pagination > li{
+  margin-bottom: 0;
+}
+.pagination > li > a, .pagination > li > span{
+  padding: 2px 10px;
+}
 .pagination>li>a:hover,.pagination>li>span:hover,.pagination>li>a:focus,.pagination>li>span:focus {
   color: #ff3405;
   -webkit-box-shadow: 0 2px #ff3405;
@@ -851,6 +858,7 @@ a.no-link{
 .block-content > .container{
   padding-left: 0;
   padding-right: 0;
+  width: auto !important;
 }
 .tab-content{
   padding-left: 0px;
@@ -951,7 +959,6 @@ ul.dropdown-menu{
 .dropdown-menu.next-n{
   min-width: 142px;
 }
-
 .sidebar {
   h3{
     font-size: 15px; 

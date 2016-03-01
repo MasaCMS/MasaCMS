@@ -89,8 +89,6 @@
 							#rbKey('user.recordsperpage')#
 							<span class="caret"></span>
 						</a>
-
-<!--- TODO GoWest : markup for dropdown and pagination here : 2016-01-26T13:53:40-07:00 --->
 						<cfset local.arrPages = [5,10,25,50,100,250,500,1000] />
 						<ul class="dropdown-menu next-n pull-right">
 							<cfloop array="#local.arrPages#" index="local.pagecount">
@@ -101,53 +99,48 @@
 					</div>
 
 				<cfif rc.nextn.numberofpages gt 1>
-					<!--- Pagination --->
-						<div class="pull-right">
-							<ul class="pagination">
+				<!--- Pagination --->
+					<ul class="pagination pull-right">
 
-								<!--- Previous Link --->
-									<cfscript>
-										if ( rc.it.getPageIndex() == 1 ) {
-											local.prevClass = 'disabled';
-											local.prevNo = '';
-										} else {
-											local.prevClass = 'pageNo';
-											local.prevNo = rc.it.getPageIndex() - 1;
-										}
-									</cfscript>
-									<li class="#local.prevClass#">
-										<a hre="##" data-pageno="#local.prevNo#" class="#local.prevClass#">&laquo;</a>
-									</li>
+						<!--- Previous Link --->
+							<cfscript>
+								if ( rc.it.getPageIndex() == 1 ) {
+									local.prevClass = 'hidden';
+									local.prevNo = '';
+								} else {
+									local.prevClass = 'pageNo';
+									local.prevNo = rc.it.getPageIndex() - 1;
+								}
+							</cfscript>
+							<li class="#local.prevClass#">
+								<a href="##" data-pageno="#local.prevNo#" class="#local.prevClass#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
+							</li>
+							
+						<!--- Page Number Links --->
+							<cfloop from="#rc.nextn.firstpage#" to="#rc.nextn.lastpage#" index="local.pagenumber">
+								<li<cfif val(rc.it.getPageIndex()) eq local.pagenumber> class="active"</cfif>>
+									<cfset lClass = "pageNo">
+									<a href="##" data-pageno="#local.pagenumber#" class="#lClass#">
+										#local.pagenumber#
+									</a>
+								</li>
+							</cfloop>
 
-								<!--- Page Number Links --->
-									<cfloop from="#rc.nextn.firstpage#" to="#rc.nextn.lastpage#" index="local.pagenumber">
-										<li<cfif rc.it.getPageIndex() eq local.pagenumber> class="disabled"</cfif>>
-											<cfset lClass = "pageNo">
-											<cfif Val(rc.it.getPageIndex()) eq local.pagenumber>
-												<cfset lClass &= ' active' />
-											</cfif>
-											<a href="##" data-pageno="#local.pagenumber#" class="#lClass#">
-												#local.pagenumber#
-											</a>
-										</li>
-									</cfloop>
+						<!--- Next Link --->
+							<cfscript>
+								if ( rc.it.getPageIndex() == rc.nextn.numberofpages ) {
+									rc.nextClass = 'hidden';
+									rc.prevNo = '';
+								} else {
+									rc.nextClass = 'pageNo';
+									rc.prevNo = rc.it.getPageIndex() + 1;
+								}
+							</cfscript>
+							<li class="#rc.nextClass#">
+								<a href="##" data-pageno="#rc.prevNo#" class="#rc.nextClass#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+							</li>
 
-								<!--- Next Link --->
-									<cfscript>
-										if ( rc.it.getPageIndex() == rc.nextn.numberofpages ) {
-											rc.nextClass = 'disabled';
-											rc.prevNo = '';
-										} else {
-											rc.nextClass = 'pageNo';
-											rc.prevNo = rc.it.getPageIndex() + 1;
-										}
-									</cfscript>
-									<li class="#rc.nextClass#">
-										<a href="##" data-pageno="#rc.prevNo#" class="#rc.nextClass#">&raquo;</a>
-									</li>
-
-							</ul>
-						</div>
+					</ul>
 				</cfif>
 			</div>
 		</div>

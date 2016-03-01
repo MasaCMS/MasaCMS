@@ -24230,6 +24230,7 @@ i {
   background: #f9f9f9;
   font-size: 12px;
   position: relative;
+  margin-bottom: 16px;
   /* Use this to highlight node on hover */
   /*.date {
 				width: 90px;
@@ -33480,17 +33481,26 @@ fieldset[disabled] .btn-primary.active {
   line-height: 10px;
 }
 .search-showing {
-  text-align: right;
-  padding-top: 12px;
+  padding: 4px 0 0 0;
+  margin: 0 0;
+  float: left;
+  max-width: 280px;
 }
 ul.pagination,
 .mura #main-container #tabArchitectural ul.pagination,
 .pagination {
-  margin: 8px 0;
+  margin: 0 0;
 }
 .mura #main-container #tabArchitectural ul.pagination {
   float: right !important;
   float: right;
+}
+.pagination > li {
+  margin-bottom: 0;
+}
+.pagination > li > a,
+.pagination > li > span {
+  padding: 2px 10px;
 }
 .pagination > li > a:hover,
 .pagination > li > span:hover,
@@ -34473,6 +34483,7 @@ fieldset[disabled] .sidebar-buttons .btn.active {
 .block-content > .container {
   padding-left: 0;
   padding-right: 0;
+  width: auto !important;
 }
 .tab-content {
   padding-left: 0px;
