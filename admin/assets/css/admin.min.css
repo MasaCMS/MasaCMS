@@ -28213,6 +28213,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura body.configurator-wrapper #mura-content {
   padding-left: 0;
   padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 .mura .mura-sidebar__objects-list__object-group-heading {
   font-size: 12px;
@@ -28444,6 +28446,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura body.modal-wrapper #mura-content {
   padding: 15px !important;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .mura body.modal-wrapper .block-bordered {
   border: none;
@@ -34710,6 +34714,115 @@ label #selectFilter {
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 7px;
+}
+/* jquery-ui overrides */
+/* jquery-ui overrides */
+/* jquery-ui overrides */
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  line-height: 1.6;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 600;
+  border-radius: 2px;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  padding: 2px 12px;
+  font-size: 14px;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text:focus,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text:active:focus,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.active:focus,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.focus,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text:active.focus,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text:hover,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text:focus,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text:active,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.disabled,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text[disabled],
+fieldset[disabled] .ui-dialog-buttonset .ui-button-text-only .ui-button-text {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.ui-dialog-buttonset .ui-button-text-only .ui-button-text.disabled,
+fieldset[disabled] a.ui-dialog-buttonset .ui-button-text-only .ui-button-text {
+  pointer-events: none;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text:active,
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.btn-square {
+  border-radius: 0;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.btn-rounded {
+  border-radius: 20px;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.btn-minw {
+  min-width: 110px;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.btn-noborder {
+  border: none !important;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.btn-image {
+  position: relative;
+  padding-left: 40px;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text.btn-image > img {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text > i.pull-left {
+  margin-top: 3px;
+  margin-right: 5px;
+}
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text > i.pull-right {
+  margin-top: 3px;
+  margin-left: 5px;
+}
+.mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
+  background-color: #FFF;
+}
+.mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover {
+  background-color: #FFF;
 }
 #tabArchitectural #gridContainer .overflow-wrap {
   overflow-x: auto;
