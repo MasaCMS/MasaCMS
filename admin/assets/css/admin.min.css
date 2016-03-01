@@ -34466,6 +34466,17 @@ ul.dropdown-menu {
 .form-horizontal .controls {
   float: right;
 }
+label .form-inline,
+label #contentSearch.form-inline {
+  display: inline-block;
+  margin: 0 12px 0 0;
+}
+label #selectFilter {
+  margin-left: 12px;
+}
+#contentSearch .form-control {
+  height: 28px;
+}
 .controls ul li,
 .metadata li {
   list-style-type: none;
