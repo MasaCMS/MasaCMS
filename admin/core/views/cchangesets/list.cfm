@@ -152,8 +152,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						     <input type="text" class="datepicker text" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 						</div>		
 						
+<<<<<<< HEAD
 						<div class="module mura-control-group mura-filter-tags">
 							<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
+=======
+						<div class="module well mura-control-group mura-filter-tags">
+							<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
+>>>>>>> 41518ad22724f62b9628cdf1383665f904c6f664
 
 							<div id="tags" class="tagSelector">
 								<cfloop list="#$.event('tags')#" index="i">

@@ -27,7 +27,7 @@
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.image')#
 						</label>
 						<div class="mura-control">
-							<img src="#fileMetaData.getUrlForImage('medium')#"/>
+							<img src="#fileMetaData.getUrlForImage(size='medium',useProtocol=false)#"/>
 						</div>
 					</div>
 					</cfif>
