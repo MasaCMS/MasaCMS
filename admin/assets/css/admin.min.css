@@ -29132,7 +29132,7 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
 @media (min-width: 768px) {
   .mura-header h1 {
     float: left;
-    width: 41.66666667%;
+    width: 31.25%;
   }
 }
 .mura-item-title {
@@ -30442,6 +30442,7 @@ h1:not([class]) {
   color: #545454;
   font-size: 28px;
   font-weight: 400;
+  font-size: 24px;
 }
 h1:not([class]) small {
   margin-top: 5px;
@@ -30940,7 +30941,7 @@ fieldset[disabled] .btn:not([class*="btn-"]).active {
 @media (min-width: 768px) {
   #nav-module-specific {
     float: left;
-    width: 58.33333333%;
+    width: 68.75%;
   }
 }
 #nav-module-specific .btn {
