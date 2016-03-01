@@ -122,7 +122,7 @@
 
 							<div class="mura-control">
 								<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
-								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
+								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s),useProtocol=false)#?cacheID=#createUUID()#"/>
 							</div>
 						</div>
 					</cfloop>
@@ -163,7 +163,7 @@
 
 							<div class="mura-control">
 								<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
-								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
+								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s),useProtocol=false)#?cacheID=#createUUID()#"/>
 							</div>
 						</div>
 					<cfelse>
@@ -224,7 +224,7 @@
 									--->
 								<div class="mura-control">
 									<img id="#lcase(esapiEncode('html_attr',rc.imagesize))##f#"
-									src="#$.getURLForImage(fileID=f,size='custom',height=customImage.getHeight(),width=customImage.getWidth())#?cacheID=#createUUID()#"
+									src="#$.getURLForImage(fileID=f,size='custom',height=customImage.getHeight(),width=customImage.getWidth(),useProtocol=false)#?cacheID=#createUUID()#"
 									<cfif isNumeric(customImage.getWidth())> width="#customImage.getWidth()#"</cfif>
 									<cfif isNumeric(customImage.getHeight())> width="#customImage.getHeight()#"</cfif>
 									>

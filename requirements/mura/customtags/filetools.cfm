@@ -58,7 +58,7 @@
 	</cfif>
 	<cfif fileMetaData.hasImageFileExt()>
 		</div>
-		<img id="assocImage" src="#request.context.$.getURLForImage(fileid=attributes.bean.getvalue(attributes.property),size=attributes.size,siteid=attributes.bean.getSiteId())#?cacheID=#createUUID()#" />
+		<img id="assocImage" src="#request.context.$.getURLForImage(fileid=attributes.bean.getvalue(attributes.property),size=attributes.size,siteid=attributes.bean.getSiteId(),useProtocol=false)#?cacheID=#createUUID()#" />
 	</cfif>
 
 	<cfif not (attributes.bean.getType() eq 'File' and attributes.property eq 'fileid')>

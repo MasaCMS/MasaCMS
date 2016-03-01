@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfsilent>
         <cfif  perm neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(rc.rsTop.assocfilename,"."))>
           <cfset atooltip=true>
-          <cfset atitle="<img class='image-preview' src='#$.getURLForImage(fileid=rc.rsTop.fileid,size='small',siteid=rc.rsTop.siteid,fileext=rc.rsTop.fileExt)#'>">
+          <cfset atitle="<img class='image-preview' src='#$.getURLForImage(fileid=rc.rsTop.fileid,size='small',siteid=rc.rsTop.siteid,fileext=rc.rsTop.fileExt,useProtocol=false)#'>">
         <cfelse>
           <cfset atooltip=false>
           <cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>
