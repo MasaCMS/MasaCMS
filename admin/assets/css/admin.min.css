@@ -33858,6 +33858,7 @@ header .btn-image span.button-image {
 #mura-search-submit {
   cursor: pointer;
 }
+#main-container #tabArchitectural ul.breadcrumb,
 #mura-content ul.breadcrumb,
 #mura-content ol.breadcrumb {
   padding: 0;
