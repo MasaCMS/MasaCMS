@@ -92,7 +92,7 @@
 
 <!--- TODO GoWest : markup for dropdown and pagination here : 2016-01-26T13:53:40-07:00 --->
 						<cfset local.arrPages = [5,10,25,50,100,250,500,1000] />
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu next-n pull-right">
 							<cfloop array="#local.arrPages#" index="local.pagecount">
 								<li <cfif rc.recordsperpage eq local.pagecount> class="active"</cfif>><a href="##" class="nextN" data-nextn="#local.pagecount#">#local.pagecount#</a></li>
 							</cfloop>
