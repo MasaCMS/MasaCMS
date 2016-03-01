@@ -96,7 +96,7 @@
 				<div class="block-content">
 				  	
 	<!--- Filters --->
-		<div class="well btn-group">
+		<div class="mura-control-group">
 
 			<!--- View All / Unassigned Only --->
 				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassignedlink#')#" onclick="actionModal();">
