@@ -26856,7 +26856,10 @@ font-size: 12px;
 }
 .mura #mura-list-tree > ul li > input[type="checkbox"] {
   float: left;
-  margin: 3px 5px 7px 0;
+  margin: 3px 5px 7px 7px;
+}
+.mura #mura-list-tree > ul li ul li > input[type="checkbox"] {
+  margin-left: 0;
 }
 .mura .mura-rc-quickoption {
   border: none;
@@ -34452,6 +34455,9 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   display: block;
   padding: 5px 0px 1px;
 }
+.block-content + .block-content {
+  margin-top: 30px;
+}
 .tab-content {
   padding-left: 0px;
   padding-right: 0px;
@@ -34641,10 +34647,7 @@ label #selectFilter {
 #contentSearch .form-control {
   height: 28px;
 }
-.controls ul li {
-  list-style-type: none;
-  margin-left: -39px;
-}
+.controls ul li,
 .metadata li {
   list-style-type: none;
 }
