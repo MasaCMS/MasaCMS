@@ -34738,6 +34738,9 @@ label #selectFilter {
   dd.template {
     display: none;
   }
+  #tabArchitectural #gridContainer dl dt:first-child .tooltip {
+    display: none !important;
+  }
 }
 /* LG: FULL WIDTH */
 /* LG: FULL WIDTH */
