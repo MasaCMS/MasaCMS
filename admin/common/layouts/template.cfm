@@ -366,17 +366,13 @@
 	           		});
 	           	</script>
          	</cfif>
-         	<div class="mura-layout-row">
-         		<cfif request.action neq "core:cDashboard.main"
-         			and request.action neq "core:cLogin.main">
+         		<cfif request.action neq "core:cLogin.main">
          			<div id="mura-content">
          		</cfif>
          		</cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true">
-         		<cfif request.action neq "core:cDashboard.main"
-         			and request.action neq "core:cLogin.main">
+         		<cfif request.action neq "core:cLogin.main">
          			</div> <!-- /##mura-content -->
          		</cfif>
-         	</div> <!-- /.mura-layout-row -->
 
       </div>  <!-- /.content -->
 
