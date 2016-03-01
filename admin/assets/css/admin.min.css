@@ -25504,7 +25504,7 @@ text-shadow: 0 0 1px @blue;
   margin-top: 12px;
 }
 .mura #newContentMenu {
-  width: 130px;
+  width: 150px;
   position: absolute;
   z-index: 20;
   padding: 0;
@@ -26856,7 +26856,10 @@ font-size: 12px;
 }
 .mura #mura-list-tree > ul li > input[type="checkbox"] {
   float: left;
-  margin: 3px 5px 7px 0;
+  margin: 3px 5px 7px 7px;
+}
+.mura #mura-list-tree > ul li ul li > input[type="checkbox"] {
+  margin-left: 0;
 }
 .mura .mura-rc-quickoption {
   border: none;
@@ -27151,7 +27154,7 @@ font-size: 12px;
   width: 731px;
   padding: 9px;
   margin-bottom: 18px;
-  left: -360px;
+  /* left: -360px; */
   height: 404px;
   overflow-x: scroll;
 }
@@ -29132,7 +29135,7 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
 @media (min-width: 768px) {
   .mura-header h1 {
     float: left;
-    width: 41.66666667%;
+    width: 31.25%;
   }
 }
 .mura-item-title {
@@ -30442,6 +30445,7 @@ h1:not([class]) {
   color: #545454;
   font-size: 28px;
   font-weight: 400;
+  font-size: 24px;
 }
 h1:not([class]) small {
   margin-top: 5px;
@@ -30940,7 +30944,7 @@ fieldset[disabled] .btn:not([class*="btn-"]).active {
 @media (min-width: 768px) {
   #nav-module-specific {
     float: left;
-    width: 58.33333333%;
+    width: 68.75%;
   }
 }
 #nav-module-specific .btn {
@@ -34451,6 +34455,9 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   display: block;
   padding: 5px 0px 1px;
 }
+.block-content + .block-content {
+  margin-top: 30px;
+}
 .tab-content {
   padding-left: 0px;
   padding-right: 0px;
@@ -34643,7 +34650,6 @@ label #selectFilter {
 .controls ul li,
 .metadata li {
   list-style-type: none;
-  margin-left: -39px;
 }
 .control-label a[rel="tooltip"] {
   cursor: default;
