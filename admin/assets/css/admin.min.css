@@ -33644,6 +33644,10 @@ a.list-group-item:focus {
   padding-left: 0px;
   padding-right: 0px;
 }
+/* user tabs, escape overflow:hidden */
+#cusers .block-content.tab-content {
+  overflow: visible;
+}
 /* tabdrop menu */
 .block > .nav-tabs li.tabdrop .dropdown-menu {
   padding-bottom: 15px;
@@ -34466,6 +34470,10 @@ fieldset[disabled] .sidebar-buttons .btn.active {
 .block-content + .block-content {
   margin-top: 30px;
 }
+.block-content > .container {
+  padding-left: 0;
+  padding-right: 0;
+}
 .tab-content {
   padding-left: 0px;
   padding-right: 0px;
@@ -34598,6 +34606,9 @@ ul.dropdown-menu {
 }
 .mura-header .btn-group ul.dropdown-menu {
   margin: -3px 0 0 11px;
+}
+.dropdown-menu.next-n {
+  min-width: 142px;
 }
 .sidebar h3 {
   font-size: 15px;
