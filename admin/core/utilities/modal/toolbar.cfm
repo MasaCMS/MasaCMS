@@ -172,9 +172,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.historyLink = variables.historyLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;contentid=" & request.contentBean.getContentID()>
 			<cfif variables.$.content('type') eq 'Variation'>
-				<cfset variables.historyLink = variables.editLink & "&amp;topid=00000000000000000000000000000000099">
+				<cfset variables.historyLink = variables.historyLink & "&amp;topid=00000000000000000000000000000000099">
 			<cfelse>
-				<cfset variables.historyLink = variables.editLink & "&amp;topid=00000000000000000000000000000000001">
+				<cfset variables.historyLink = variables.historyLink & "&amp;topid=00000000000000000000000000000000001">
 			</cfif>
 			<cfset variables.historyLink = variables.historyLink & "&amp;type=" & request.contentBean.getType()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;parentid=" & request.contentBean.getParentID()>
