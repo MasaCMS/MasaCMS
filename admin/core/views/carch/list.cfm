@@ -830,7 +830,7 @@
 
 
 				jQuery(document).ready(function(){
-					<cfif isdefined('url.moduleid')>
+					<cfif isdefined('url.moduleid') and not isdefined('url.activetab')>
 						initSiteManagerTabContent(0);
 					<cfelse>
 						initSiteManagerTabContent(#rc.activeTab#);
