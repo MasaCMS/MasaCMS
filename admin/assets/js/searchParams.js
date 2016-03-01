@@ -57,7 +57,7 @@ var $searchParams={
 	addSearchParam: function(){
 
 		var num =$('#searchParams > .mura-control').length;
-		var str= '<div class="mura-control">' + $('#searchParams > .mura-control').html() + '</div>';
+		var str= '<div class="mura-control justify">' + $('#searchParams > .mura-control').html() + '</div>';
 		$('#searchParams').append(str);
 		var newParam = $('#searchParams > .mura-control:last');
 		var newParamSelects = $('#searchParams > .mura-control:last > select');
