@@ -1465,15 +1465,16 @@ buttons: {
 				}
 			});
 
+
 			if(customtaggroups.length){
 				for(var g=0;g < customtaggroups.length; g++){
-
+					
 					if(window[customtaggroups[g]]){
 						$('#' + customtaggroups[g] + 'tags').tagSelector(window[customtaggroups[g]], customtaggroups[g] + 'tags');
 					}else{
 						$.ajax({url:'?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=' + customtaggroups[g],
 								context:{taggroup:customtaggroups[g]},
-								dataType: 'test',
+								dataType: 'text',
 								success:function(data){
 									window[this.taggroup]=eval('(' + data + ')');
 									$('#' + this.taggroup + 'tags').tagSelector(window[this.taggroup], this.taggroup + 'tags');

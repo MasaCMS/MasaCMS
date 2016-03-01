@@ -17,7 +17,7 @@
 
 				input.keydown(function(e) {
 
-						if (e.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active){
+						if (e.keyCode === $.ui.keyCode.TAB && $(this).autocomplete( "instance").menu.active){
 							e.preventDefault();
 						}
 
@@ -28,9 +28,9 @@
 							if(input.val() != ''){
 								var tag = $('<span class="tag"/>')
 									.text(input.val() + ' ')
-									.append('<a><i class="mi-remove-circle"></i></a>')
+									.append('<a><i class="mi-times-circle"></i></a>')
 									.append($('<input type="hidden"/>').attr('name', name).val(input.val()))
-									.insertBefore(input);
+									.insertAfter(input);
 							}
 
 							input.val('');
@@ -44,7 +44,7 @@
 							//<span class=tag>@jcarrascal <a>Ã—</a><input type=hidden name=tag value=1/></span>
 							var tag = $('<span class="tag"/>')
 								.text(ui.item.toString() + ' ')
-								.append('<a><i class="mi-remove-circle"></i></a>')
+								.append('<a><i class="mi-times-circle"></i></a>')
 								.append($('<input type="hidden"/>').attr('name', name).val(ui.item.id))
 								.insertBefore(input);
 
@@ -54,14 +54,13 @@
 						}
 					});
 
-				input.data('ui-autocomplete')._renderItem = function(ul, item) {
+				input.autocomplete( "instance" )._renderItem = function(ul, item) {
 						return $('<li/>')
-							.data('item.autocomplete', item)
 							.append($('<a/>').text(item.toString()))
 							.appendTo(ul);
 					};
 
-				input.data('ui-autocomplete')._resizeMenu = function(ul, item) {
+				input.autocomplete( "instance" )._resizeMenu = function(ul, item) {
 						var ul = this.menu.element;
 						ul.outerWidth(Math.max(
 							ul.width('').outerWidth(),

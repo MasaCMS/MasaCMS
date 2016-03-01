@@ -695,8 +695,8 @@ if(len($.siteConfig('customTagGroups'))){
 					<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 					</span>
 				</cfloop>
+				</div>
 			</div>
-		</div>
 		</cfloop>
 	</cfif>
 
