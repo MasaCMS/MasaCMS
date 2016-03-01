@@ -27154,7 +27154,7 @@ font-size: 12px;
   width: 731px;
   padding: 9px;
   margin-bottom: 18px;
-  left: -360px;
+  /* left: -360px; */
   height: 404px;
   overflow-x: scroll;
 }
