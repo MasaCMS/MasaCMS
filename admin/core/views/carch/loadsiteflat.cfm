@@ -703,13 +703,14 @@ if(len($.siteConfig('customTagGroups'))){
 		</div>
 	</cfif>
 
-
-	<cfif session.flatViewArgs["#rc.siteID#"].filtered>
-		<button type="submit" class="btn" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
-		<button type="submit" class="btn" name="filterList" onclick="clearFlatviewFilter()"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#</button>
-	<cfelse>
-		<button type="submit" class="btn sidebar-submit" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
-	</cfif>
+	<div class="sidebar-buttons">
+		<cfif session.flatViewArgs["#rc.siteID#"].filtered>
+			<button type="submit" class="btn" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
+			<button type="submit" class="btn" name="filterList" onclick="clearFlatviewFilter()"><i class="mi-times-circle"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#</button>
+		<cfelse>
+			<button type="submit" class="btn sidebar-submit" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
+		</cfif>
+	</div><!-- /.sidebar-buttons -->
 </div>
 </div>
 </div>

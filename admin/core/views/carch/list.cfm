@@ -300,7 +300,7 @@
 		</div>
 
 		<cfoutput>
-			<div class="sidebar span3">
+			<div class="sidebar">
 				<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 				<form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
 					  <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#" />
@@ -353,10 +353,13 @@
 						</div>
 					</cfif>
 
-					<input type="submit" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#"/>
-					<cfif len($.event('categoryID') & $.event('tags') & $.event('searchString'))>
-					<input type="button" class="btn" name="removeFilter" id="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
-					</cfif>
+					<div class="sidebar-buttons">
+						<input type="submit" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#"/>
+						<cfif len($.event('categoryID') & $.event('tags') & $.event('searchString'))>
+						<input type="button" class="btn" name="removeFilter" id="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
+						</cfif>
+					</div><!-- /.sidebar-buttons -->	
+						
 				 </form>
 
 				 <script>

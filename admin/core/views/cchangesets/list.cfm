@@ -133,24 +133,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div> <!-- /##main -->	
 
 					<div class="sidebar">
-						<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
+						<div class="well">
+
 					<form novalidate="novalidate" name="searchFrm" class="form-inline" onsubmit="return validate(this);">
 						
-						<div class="module well">
-							<h3>#application.rbFactory.getKeyValue(session.rb,"params.keywords")#</h3>
+							<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
+						<div class="mura-control-group">
+							<label>#application.rbFactory.getKeyValue(session.rb,"params.keywords")#</label>
 						  	<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text"  maxlength="50" />
 						</div>
 
-						<div class="module well">
-							<h3>#application.rbFactory.getKeyValue(session.rb,"params.from")#</h3>
+						<div class="mura-control-group">
+							<label>#application.rbFactory.getKeyValue(session.rb,"params.from")#</label>
 							<input type="text" class="datepicker text" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-						     <br/><br/>
-						     <h3>#application.rbFactory.getKeyValue(session.rb,"params.to")#</h3>
+						</div>
+						<div class="mura-control-group">
+						     <label>#application.rbFactory.getKeyValue(session.rb,"params.to")#</label>
 						     <input type="text" class="datepicker text" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 						</div>		
 						
 						<div class="module mura-control-group mura-filter-tags">
-							<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
+							<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
 
 							<div id="tags" class="tagSelector">
 								<cfloop list="#$.event('tags')#" index="i">
@@ -164,16 +167,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</div>
 
 						<cfif application.categoryManager.getCategoryCount(rc.siteid)>
-						<div class="module well" id="mura-list-tree">
-							<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
+						<div class="mura-control-group" id="mura-list-tree">
+							<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
 						     <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" categoryid="#rc.categoryid#">
 						</div>
 						</cfif>
-					
-						<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" />
-						<cfif len($.event('categoryID') & $.event('tags') & $.event('keywords') & $.event('startdate') & $.event('stopdate'))>
-					  	<input type="button" class="btn" name="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick="location.href='./?siteID=#esapiEncode('url',$.event('siteid'))#&muraAction=cChangesets.list'"/>
+						<div class="sidebar-buttons">
+							<button type="submit" class="btn" onclick="submitForm(document.forms.searchFrm);"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")# </button>
+							<cfif len($.event('categoryID') & $.event('tags') & $.event('keywords') & $.event('startdate') & $.event('stopdate'))>
+						  	<button type="submit" class="btn" name="removeFilter" onclick="location.href='./?siteID=#esapiEncode('url',$.event('siteid'))#&muraAction=cChangesets.list'"><i class="mi-times-circle"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")# </button>
 					  	</cfif>
+						</div><!-- /.sidebar-buttons -->
 						<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
 						<input type="hidden" name="muraAction" value="cChangesets.list">
 
@@ -191,6 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					</script>
 					</form>
+				</div> <!-- /.well -->
 				</div> <!-- /.sidebar -->
 
 			<div class="clearfix"></div>
