@@ -63,35 +63,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
 
 			<div class="fieldset">
-				<div class="control-group">
-				<div class="span2">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
-				</label>
-				      <div class="controls">
-						<input type="text" class="datepicker span12" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-				     </div>
-				 </div>
-				
-				<div class="span2">
-					<label class="control-label">
+				<div class="mura-control-group">
+					<label class="label-inline">#application.rbFactory.getKeyValue(session.rb,"params.from")#
+						<input type="text" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
 						#application.rbFactory.getKeyValue(session.rb,"params.to")#
-					</label>
-				      <div class="controls">
-						<input type="text" class="datepicker span12" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
-				     </div>
-				 </div>
-				
-				<div class="span2">
-					<label class="control-label">
+						<input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 						#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
+		      	<select name="limit">
+							<cfloop list="10,20,30,40,50,75,100" index="i">
+							<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
+							</cfloop>
+						</select>
 					</label>
-				      <div class="controls"><select name="limit" class="span6">
-						<cfloop list="10,20,30,40,50,75,100" index="i">
-						<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
-						</cfloop>
-					</select>
-				    </div>
-				</div>
 				</div>
 			</div>
 			<div class="form-actions">

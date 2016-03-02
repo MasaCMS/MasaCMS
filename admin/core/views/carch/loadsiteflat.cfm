@@ -391,7 +391,7 @@ if(len($.siteConfig('customTagGroups'))){
 
 	<div class="navSort">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:&nbsp;</h3>
-		<ul class="navTask nav nav-pills">
+		<ul class="nav nav-pills">
 			<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->
 			<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
 			<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a></li>

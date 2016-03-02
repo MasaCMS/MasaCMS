@@ -64,24 +64,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <div class="block-content">
 
 			<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
-			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
+			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
 				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,"params.from")#</label>
+					<label class="label-inline">
+						#application.rbFactory.getKeyValue(session.rb,"params.from")#
 						<input type="text" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-				</div>
-				
-				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,"params.to")#</label>
+						#application.rbFactory.getKeyValue(session.rb,"params.to")#
 						<input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
-				</div>
-				 
-				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#</label>
-				      	<select name="limit">
+					#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
+	      	<select name="limit">
 						<cfloop list="10,20,30,40,50,75,100" index="i">
 						<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
 						</cfloop>
 						</select>
+					</label>
 				</div>
 			<div class="form-actions">
 				<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
