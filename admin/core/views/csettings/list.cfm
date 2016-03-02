@@ -267,47 +267,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<h2>Install Plugin</h2>
 		<cfif application.configBean.getJavaEnabled()>
+		<div class="mura-control-group">
 		<div class="mura-file-selector">
 			<div class="btn-group" data-toggle="buttons-radio">
-			  <button type="button" class="btn active" data-toggle="button" name="installType" value="Upload" id="apptypefile"><i class="mi-upload"></i> Via Upload</button>
-			  <button type="button" class="btn" name="installType" value="URL" id="apptypeurl"><i class="mi-download-alt"></i> Via URL</button>
+			  <button type="button" class="btn btn-default active" data-toggle="button" name="installType" value="Upload" id="apptypefile">Via Upload</button>
+			  <button type="button" class="btn btn-default" name="installType" value="URL" id="apptypeurl">Via URL</button>
 			</div>
 	
 			<div id="appzip" class="fileTypeOption">
 				<form novalidate="novalidate" name="frmNewPlugin" action="./?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 					<div class="mura-control-group">
-						<label>Select File to Upload</label>
 							<input name="newPlugin" type="file" data-required="true" message="Please select a plugin file.">
-							<div class="mura-control justify">
+						<div class="mura-control justify">
 								<button type="submit" value="Deploy" class="btn" /><i class="mi-bolt"></i> Deploy</button>
-							</div>
+								<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>
 						</div>
-					<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>
+					</div>
 				</form>
 			</div>
 			<div id="appurl" class="fileTypeOption" style="display:none;">
 				<form name="frmNewPluginFROMURL" action="./?muraAction=cSettings.deployPlugin" method="post" onsubmit="return validateForm(this);">
 					<div class="mura-control-group">
-						<label>Enter URL</label>
-							<input type="text" name="newPlugin"  class="input-xxlarge" type="url" data-required="true" placeholder="http://www.domain.com/plugin.zip"
-					message="Please enter the url for your plugin file"
-					value="">
+							<input type="text" name="newPlugin"  class="span6" type="url" data-required="true" placeholder="http://www.domain.com/plugin.zip" message="Please enter the url for your plugin file" value="">
+						<div class="mura-control justify">
+							<button type="submit" class="btn" /><i class="mi-bolt"></i> Deploy</button>
+							<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>
+						</div>
 					</div>
-					<button type="submit" class="btn" /><i class="mi-bolt"></i> Deploy</button>
-					<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>
 				</form>
 				</div>
+			</div>
 		</div>
 		<script>
 			$(function(){
 				$("#apptypefile").click(
 					function(){
+							$(this).addClass("active").removeClass("focus").siblings().removeClass("active").removeClass("focus");
 							$("#appurl").hide()
 							$("#appzip").show()
 					}
 				);
 				$("#apptypeurl").click(
 					function(){
+							$(this).addClass("active").removeClass("focus").siblings().removeClass("active").removeClass("focus");
 							$("#appurl").show()
 							$("#appzip").hide()
 					}
