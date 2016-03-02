@@ -33942,6 +33942,24 @@ ul {
   margin-bottom: 0;
   margin-top: 7px;
 }
+form.mura-search {
+  display: block;
+  width: 100%;
+  background-color: #FFF;
+  padding: 0 12px;
+}
+form.mura-search button,
+form.mura-search .btn,
+form.mura-search input[type=text] {
+  height: 22px;
+  font-size: 13px;
+}
+form.mura-search .btn {
+  padding: 0 12px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
 .header-search .input-group .form-control {
   position: relative;
   z-index: 2;
@@ -33998,6 +34016,10 @@ ul {
 .block-constrain .form-actions {
   padding: 8px 0 0;
   margin-bottom: 0;
+}
+.block-constrain form + .mura-tabs,
+.block-constrain .form-actions + .mura-tabs {
+  margin-top: 30px;
 }
 .btn,
 .btn-group .btn {

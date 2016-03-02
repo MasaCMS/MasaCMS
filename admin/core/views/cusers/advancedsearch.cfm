@@ -238,7 +238,6 @@
 		</div>
 	<!--- /Form Buttons --->
 </form>
-<script type="text/javascript">$searchParams.setSearchButtons();</script>
 <!--- /Search Form --->
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
@@ -295,18 +294,11 @@
 
 				</div> <!-- /.block-content -->
 			</div> <!-- /.block-bordered -->
-    </cfif>
-  
+    </cfif>  
   <!--- /Tab Nav --->
-
 
 </div> <!-- /.block-constrain -->
 
-
-
-
-
-
-
+<script type="text/javascript">$searchParams.setSearchButtons();</script>
 
 </cfoutput>
