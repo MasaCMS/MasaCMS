@@ -29,7 +29,12 @@
 			<div class="date-range-selector">
 				<label>Comment Date Range</label>
 				<div class="mura-control justify">
-					<div class="input-prepend"><span class="add-on"><i class="mi-calendar"></i></span><input type="text" name="startDate" id="startDate" class="datepicker span10 mura-custom-datepicker" placeholder="Start Date" value="#esapiEncode('html_attr',$.event('startDate'))#" /></div>&nbsp;&ndash;&nbsp;<div class="input-prepend"><span class="add-on"><i class="mi-calendar"></i></span><input type="text" name="endDate" id="endDate" class="datepicker span10 mura-custom-datepicker" placeholder="End Date" value="#esapiEncode('html_attr',$.event('endDate'))#" /></div>
+					<label class="label-inline">
+						#application.rbFactory.getKeyValue(session.rb,"params.from")# 
+						<input type="text" name="startDate" id="startDate" class="datepicker mura-custom-datepicker" placeholder="Start Date" value="#esapiEncode('html_attr',$.event('startDate'))#" />
+						#application.rbFactory.getKeyValue(session.rb,"params.to")# 
+						<input type="text" name="endDate" id="endDate" class="datepicker mura-custom-datepicker" placeholder="End Date" value="#esapiEncode('html_attr',$.event('endDate'))#" />
+					</label>
 				</div>
 			</div>
 			<!--- <div class="span4">
