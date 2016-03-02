@@ -34635,10 +34635,12 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   line-height: 1;
   font-weight: normal;
   margin-right: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 3px;
   min-height: 2.3em;
   padding: 0;
   padding-top: .5em;
+  list-style: none;
+  display: inline-block;
 }
 .mura-item-metadata .metadata-horizontal li,
 .mura-item-metadata .metadata-horizontal li:hover {
@@ -35130,7 +35132,6 @@ fieldset[disabled] a.ui-dialog-buttonset .ui-button-text-only .ui-button-text {
   }
   .mura-item-metadata {
     text-align: left !important;
-    margin-left: -8px;
   }
   .mura-header #nav-module-specific {
     text-align: left;
