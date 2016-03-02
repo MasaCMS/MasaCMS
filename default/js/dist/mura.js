@@ -3000,7 +3000,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	function resetAsyncObject(el){
 		var self=mura(el);
 
-		self.removeClass('active');
+		self.removeClass('mura-active');
 		self.removeAttr('data-perm');
 
 		if(self.data('object')=='container'){
@@ -3009,7 +3009,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			self.find('.mura-object').each(function(){
 				var self=mura(this);
-				self.removeClass('active');
+				self.removeClass('mura-active');
 				self.removeAttr('data-perm');
 				self.removeAttr('data-inited');
 			});
@@ -3154,7 +3154,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 				obj
-				.addClass('active')
+				.addClass('mura-active')
 				.hover(
 					function(e){
 						//e.stopPropagation();
@@ -3174,7 +3174,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 						obj
-							.addClass('active')
+							.addClass('mura-active')
 							.hover(
 								function(e){
 									//e.stopPropagation();
@@ -3198,7 +3198,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 								muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 								obj
-									.addClass('active')
+									.addClass('mura-active')
 									.hover(
 										function(e){
 											//e.stopPropagation();

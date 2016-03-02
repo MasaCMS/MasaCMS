@@ -1479,7 +1479,7 @@
 	function resetAsyncObject(el){
 		var self=mura(el);
 
-		self.removeClass('active');
+		self.removeClass('mura-active');
 		self.removeAttr('data-perm');
 
 		if(self.data('object')=='container'){
@@ -1488,7 +1488,7 @@
 
 			self.find('.mura-object').each(function(){
 				var self=mura(this);
-				self.removeClass('active');
+				self.removeClass('mura-active');
 				self.removeAttr('data-perm');
 				self.removeAttr('data-inited');
 			});
@@ -1633,7 +1633,7 @@
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 				obj
-				.addClass('active')
+				.addClass('mura-active')
 				.hover(
 					function(e){
 						//e.stopPropagation();
@@ -1653,7 +1653,7 @@
 						muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 						obj
-							.addClass('active')
+							.addClass('mura-active')
 							.hover(
 								function(e){
 									//e.stopPropagation();
@@ -1677,7 +1677,7 @@
 								muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 								obj
-									.addClass('active')
+									.addClass('mura-active')
 									.hover(
 										function(e){
 											//e.stopPropagation();
