@@ -1064,6 +1064,9 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 	    		$elm.find(".mura-file-existing").html('<div class="load-inline"></div>')
 	    		$elm.find('.load-inline').spin(spinnerArgs2);
 	    	}
+	    	if($(this).hasClass('btn')){
+		    	$(this).addClass("active").siblings().removeClass("active");
+	    	}
 	    }
 
 	    var setTab=function(tab){

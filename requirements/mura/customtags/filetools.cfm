@@ -19,7 +19,7 @@
 </cfscript>
 </cfsilent>
 <cfif not fileMetaData.getIsNew()>
-<div class="controls rule-dotted-top">
+<div class="mura-control justify">
 <cfoutput>
 	<cfif
 		(
