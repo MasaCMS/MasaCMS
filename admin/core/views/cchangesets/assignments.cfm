@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets">
 		</cfsilent>
         <tr>
-          <td class="title var-width"><a href="#editlink#">#esapiEncode('html',rc.rsList.title)#</a></td>
+          <td class="title var-width">#$.dspZoom(crumbdata)#</td>
           <td>
             <cfif len(rc.rslist.approvalStatus)>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#rc.rslist.approvalStatus#')#
@@ -212,7 +212,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets">
     </cfsilent>
         <tr>
-          <td class="title var-width"><a href="#editlink#">#esapiEncode('html',rc.rsList.title)#</a></td>
+          <td class="title var-width">#$.dspZoom(crumbdata)#</td>
            <td>
             <cfif len(rc.rslist.approvalStatus)>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#rc.rslist.approvalStatus#')#
