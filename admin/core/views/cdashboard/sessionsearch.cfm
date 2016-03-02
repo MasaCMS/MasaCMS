@@ -137,19 +137,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="block block-bordered">
 		  <div class="block-content">
 
-				<form novalidate="novalidate"  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory fieldset-wrap">
+				<form novalidate="novalidate"  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory">
 				<input type="hidden" name="startSearch" value="true"/>
 				<div id="date-range" class="mura-control-group">
-					<label>
+					<label class="label-inline">
 						#application.rbFactory.getKeyValue(session.rb,"params.from")#
-					</label>
 				    <input type="text" class="datepicker" name="startDate" value="#LSDateFormat(session.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
 						<input type="hidden" name="muraAction" value="cDashboard.sessionSearch" />
 				    <input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" />
-					<label>
 						#application.rbFactory.getKeyValue(session.rb,"params.to")#
-					</label>
 	        		<input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(session.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+					</label>
 				</div>
 
 				<div class="mura-control-group" id="searchParams">
@@ -158,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</label>
 					<!--- TODO GoWest : this markup : 2016-01-29T17:35:32-07:00 --->
 					<cfif rc.newSearch or (session.paramCircuit neq 'cDashboard' or not session.paramCount)>
-						<div class="mura-control justify form-inline">
+						<div class="mura-control justify">
 							<select name="paramRelationship1" style="display:none;" class="span2">
 								<option value="and">#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
 								<option value="or">#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
