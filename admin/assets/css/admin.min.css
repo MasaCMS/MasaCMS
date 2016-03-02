@@ -33606,8 +33606,10 @@ fieldset[disabled] .btn-primary.active {
 }
 .nav-pills > li > a {
   border: 1px solid #eee;
-  margin-left: 8px;
   background-color: #fff;
+}
+.nav-pills > li > a + a {
+  margin-left: 8px;
 }
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
@@ -33624,6 +33626,9 @@ fieldset[disabled] .btn-primary.active {
 .nav-pills > li > a {
   padding: 4px 8px;
   margin-top: -6px;
+}
+.mura .nav-pills + .mura-table-grid {
+  margin-top: 12px;
 }
 .sidebar .nav-list li,
 .sidebar .nav-list li a {
