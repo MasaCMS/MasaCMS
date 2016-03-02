@@ -516,6 +516,37 @@ div.tagsinput span.tag {
   margin-bottom: 0;
   margin-top: 7px;
 }
+.mura-search{
+  display: block;
+  background-color: #FFF;
+  padding: 0 7px;
+
+  button,
+  .btn,
+  select,
+  input[type=text],
+  .mura-control-group button,
+  .mura-control-group .btn,
+  .mura-control-group select,
+  .mura-control-group input[type=text]{
+    height: 22px !important;
+    font-size: 13px !important;
+  }
+  input[type=text]{
+    padding-left: 8px;
+  }
+  .btn{
+    padding: 0 12px;
+    .border-radius(2px);
+  }
+  select,
+  .mura-control-group select{
+    padding: 0 !important;
+    max-width: 167px;
+  }
+
+}
+
 .header-search .input-group .form-control {
   position: relative;
   z-index: 2;
@@ -569,6 +600,10 @@ div.tagsinput span.tag {
 .block-constrain .form-actions{
   padding: 8px 0 0;
   margin-bottom: 0;
+}
+.block-constrain form + .mura-tabs,
+.block-constrain .form-actions + .mura-tabs{
+  margin-top: 30px;
 }
 .btn,
 .btn-group .btn {
@@ -865,10 +900,12 @@ a.no-link{
   line-height: 1;
   font-weight: normal;
   margin-right: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 3px;
   min-height: 2.3em;
   padding: 0;
   padding-top: .5em;
+  list-style: none;
+  display: inline-block;
 }
 
 .mura-item-metadata .metadata-horizontal li,
@@ -1050,6 +1087,8 @@ ul.dropdown-menu{
   input.text, { width: 95%; }
 
 }
+
+
 
 /* legacy forms */
 .form-horizontal .control-label{

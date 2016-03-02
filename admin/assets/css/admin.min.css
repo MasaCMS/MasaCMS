@@ -7455,8 +7455,8 @@ button.close {
 .mura-layout-row:after,
 .mura-header:before,
 .mura-header:after,
-main > .content > :first-child:before,
-main > .content > :first-child:after,
+main > .content > :first-child:not(.alert):before,
+main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:before,
 #mura-content > form .form-group:after,
 .mura-control-group:before,
@@ -7495,7 +7495,7 @@ main > .content > :first-child:after,
 #mura-content:after,
 .mura-layout-row:after,
 .mura-header:after,
-main > .content > :first-child:after,
+main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
 .mura-tabs:after,
@@ -7547,8 +7547,8 @@ main > .content > :first-child:after,
 .mura-layout-row:after,
 .mura-header:before,
 .mura-header:after,
-main > .content > :first-child:before,
-main > .content > :first-child:after,
+main > .content > :first-child:not(.alert):before,
+main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:before,
 #mura-content > form .form-group:after,
 .mura-control-group:before,
@@ -7587,7 +7587,7 @@ main > .content > :first-child:after,
 #mura-content:after,
 .mura-layout-row:after,
 .mura-header:after,
-main > .content > :first-child:after,
+main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
 .mura-tabs:after,
@@ -29175,7 +29175,7 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
   padding-left: 0;
   padding-right: 0;
 }
-main > .content > :first-child {
+main > .content > :first-child:not(.alert) {
   margin-left: -15px;
   margin-right: -15px;
 }
@@ -33942,6 +33942,36 @@ ul {
   margin-bottom: 0;
   margin-top: 7px;
 }
+.mura-search {
+  display: block;
+  background-color: #FFF;
+  padding: 0 7px;
+}
+.mura-search button,
+.mura-search .btn,
+.mura-search select,
+.mura-search input[type=text],
+.mura-search .mura-control-group button,
+.mura-search .mura-control-group .btn,
+.mura-search .mura-control-group select,
+.mura-search .mura-control-group input[type=text] {
+  height: 22px !important;
+  font-size: 13px !important;
+}
+.mura-search input[type=text] {
+  padding-left: 8px;
+}
+.mura-search .btn {
+  padding: 0 12px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+.mura-search select,
+.mura-search .mura-control-group select {
+  padding: 0 !important;
+  max-width: 167px;
+}
 .header-search .input-group .form-control {
   position: relative;
   z-index: 2;
@@ -33998,6 +34028,10 @@ ul {
 .block-constrain .form-actions {
   padding: 8px 0 0;
   margin-bottom: 0;
+}
+.block-constrain form + .mura-tabs,
+.block-constrain .form-actions + .mura-tabs {
+  margin-top: 30px;
 }
 .btn,
 .btn-group .btn {
@@ -34635,10 +34669,12 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   line-height: 1;
   font-weight: normal;
   margin-right: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 3px;
   min-height: 2.3em;
   padding: 0;
   padding-top: .5em;
+  list-style: none;
+  display: inline-block;
 }
 .mura-item-metadata .metadata-horizontal li,
 .mura-item-metadata .metadata-horizontal li:hover {
@@ -35130,7 +35166,6 @@ fieldset[disabled] a.ui-dialog-buttonset .ui-button-text-only .ui-button-text {
   }
   .mura-item-metadata {
     text-align: left !important;
-    margin-left: -8px;
   }
   .mura-header #nav-module-specific {
     text-align: left;

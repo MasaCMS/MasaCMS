@@ -58,6 +58,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<h1>Plugin Settings</h1>
 
+	<cfif rsPlugin.recordcount and rsPlugin.deployed and application.configBean.getJavaEnabled()>
+		<div id="nav-module-specific" class="btn-group"> 
+			<a class="btn" href="./?muraAction=cSettings.updatePluginVersion&moduleid=#esapiEncode('url',rc.moduleid)#">Update Plugin Version</a>
+			<a class="btn" href="./index.cfm?muraAction=cSettings.createBundle&moduleid=#esapiEncode('url',rc.moduleid)#&siteID=&BundleName=#esapiEncode('url',application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a>
+		</div>
+	</cfif>
+
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
@@ -71,12 +78,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><strong>Package:</strong> <cfif len(package)>#esapiEncode('html',package)#<cfelse>N/A</cfif></li>
 	</ul>
 
-	<cfif rsPlugin.recordcount and rsPlugin.deployed and application.configBean.getJavaEnabled()>
-		<div id="nav-module-specific" class="btn-group"> 
-			<a class="btn" href="./?muraAction=cSettings.updatePluginVersion&moduleid=#esapiEncode('url',rc.moduleid)#">Update Plugin Version</a>
-			<a class="btn" href="./index.cfm?muraAction=cSettings.createBundle&moduleid=#esapiEncode('url',rc.moduleid)#&siteID=&BundleName=#esapiEncode('url',application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a>
-		</div>
-	</cfif>
 
 		</div><!-- /.label-group -->
 	</div><!-- /.mura-item-metadata -->

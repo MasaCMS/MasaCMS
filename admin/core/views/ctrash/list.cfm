@@ -55,27 +55,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
 	</div>
 
+	<div class="mura-item-metadata">
+		<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+			<div class="mura-search">
+			<input id="search" name="keywords" type="text" class="text" value="#esapiEncode('html_attr',rc.keywords)#" placeholder="Search Trash Bin">
+			<button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
+			</div>
+
+			<!---
+			<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" align="absmiddle" />
+			<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
+			--->
+			<input type="hidden" name="muraAction" value="cTrash.list">
+			<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
+		</form>
+	</div>
+
 </div> <!-- /.mura-header -->
 
 <div class="block block-constrain">
 		<div class="block block-bordered">
 		  <div class="block-content">
-
-<!--- TODO GoWest : style search form : 2016-01-25T12:07:56-07:00 --->
-
-			<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-   <div class="input-append">
-	   <input id="search" name="keywords" type="text" class="text" value="#esapiEncode('html_attr',rc.keywords)#">
-				    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
-	</div>
-    
-    <!---
-			<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" align="absmiddle" />
-    <input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
-			--->
-    <input type="hidden" name="muraAction" value="cTrash.list">
-    <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
- </form>
 
  			<table class="mura-table-grid"> 
 			<tr>

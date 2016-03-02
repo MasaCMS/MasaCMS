@@ -1314,8 +1314,7 @@ to your own modified versions of Mura CMS.
 		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
 	</cfif>
-	</div>	<!--- /.block-content.tab-content --->
-	</div>	<!--- /.block --->
+
 	</cfoutput>
 
 	<!--- TODO GoWest : test plugin-generated tabs layout & markup : 2016-01-20T16:52:02-07:00 --->
@@ -1323,39 +1322,47 @@ to your own modified versions of Mura CMS.
 	<cfoutput query="rsPluginScripts" group="pluginID">
 		<!---<cfset tabLabelList=tabLabelList & ",'#esapiEncode('javascript',rsPluginScripts.name)#'"/>--->
 		<cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
-		<div id="#tabID#" class="tab-pane"> <cfoutput>
-			<div class="block block-bordered">
-				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">#rsPluginScripts.name#</h3>
-			  </div>
-			  <!-- /block header -->
-			  <div class="block-content">
-				<cfset rsPluginScript=application.pluginManager.getScripts("onSiteEdit",rc.siteID,rsPluginScripts.moduleID)>
-				<cfif rsPluginScript.recordcount>
-#application.pluginManager.renderScripts("onSiteEdit",rc.siteid,pluginEvent,rsPluginScript)#
-				</cfif>
+		<div id="#tabID#" class="tab-pane"> 
+			<cfoutput>
+				<div class="block block-bordered">
+					<!-- block header -->
+				  <div class="block-header bg-gray-lighter">
+				    <ul class="block-options">
+				        <li>Something here?</li>
+				        <li>
+				            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+				        </li>
+				        <li>
+				            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+				        </li>
+				    </ul>
+				    <h3 class="block-title">#rsPluginScripts.name#</h3>
+				  </div><!-- /block header -->
+				  <div class="block-content">
+						<cfset rsPluginScript=application.pluginManager.getScripts("onSiteEdit",rc.siteID,rsPluginScripts.moduleID)>
+						<cfif rsPluginScript.recordcount>
+							#application.pluginManager.renderScripts("onSiteEdit",rc.siteid,pluginEvent,rsPluginScript)#
+						</cfif>
+					</div> <!--- /.block-content --->
+				</div> <!--- /.block --->
 			</cfoutput>
-			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->
-	</div> <!--- /.tab-pane --->
-	</cfoutput> <cfoutput>
+		</div> <!--- /.tab-pane --->
+	</cfoutput> <!--- /rsPluginScripts --->
+
+
 		<div class="load-inline tab-preloader"></div>
 		<script>$('.tab-preloader').spin(spinnerArgs2);</script>
-		 #actionButtons#
-		<input type="hidden" name="action" value="update">
-		#rc.$.renderCSRFTokens(context=rc.siteID,format="form")#
-		</form>
-	</cfoutput>
+		<cfoutput>
+			 #actionButtons#
+			<input type="hidden" name="action" value="update">
+			#rc.$.renderCSRFTokens(context=rc.siteID,format="form")#
+		</cfoutput>
+
+	</div>	<!--- /.block-content.tab-content --->
+	</div>	<!--- /.block-constrain --->
+
+</form>
+
 <cfelseif rc.$.validateCSRFTokens(context=rc.siteid & 'updatesite')>
 	<cftry>
 		<cfset updated=application.autoUpdater.update(rc.siteid)>
