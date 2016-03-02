@@ -382,7 +382,7 @@
 				displayObject.setAttribute('data-async',true);
 				displayObject.setAttribute('data-perm','author');
 				displayObject.setAttribute('data-instanceid',mura.createUUID());
-				displayObject.setAttribute('class','mura-async-object mura-object active');
+				displayObject.setAttribute('class','mura-async-object mura-object mura-active');
 
 				if(object.objectid){
 					displayObject.setAttribute('data-objectid',object.objectid);

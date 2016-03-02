@@ -114,7 +114,7 @@
 
 
 				mura.resetAsyncObject(item.node);
-				item.addClass('active');
+				item.addClass('mura-active');
 				mura.processAsyncObject(item.node).then(function(){
 					closeFrontEndToolsModal();
 					if(parameters.reinit){
@@ -130,7 +130,7 @@
 				}
 
 				mura.resetAsyncObject(item.node);
-				item.addClass('active');
+				item.addClass('mura-active');
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 				muraInlineEditor.isDirty=true;
@@ -255,7 +255,7 @@
 
 				var $tools='<div id="mura-preview-device-selector">';
 					$tools=$tools+'<p>Preview Mode</p>';
-					$tools=$tools+'<a class="mura-device-standard active" title="Desktop" data-height="600" data-width="1075" data-mobileformat="false"><i class="mi-desktop"></i></a>';
+					$tools=$tools+'<a class="mura-device-standard mura-active" title="Desktop" data-height="600" data-width="1075" data-mobileformat="false"><i class="mi-desktop"></i></a>';
 					$tools=$tools+'<a class="mura-device-tablet" title="Tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="mi-tablet"></i></a>';
 					$tools=$tools+'<a class="mura-device-tablet-landscape" title="Tablet Landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="mi-tablet mi-rotate-270"></i></a>';
 					$tools=$tools+'<a class="mura-device-phone" title="Phone" data-height="480" data-width="320" data-mobileformat="true"><i class="mi-mobile-phone"></i></a>';
@@ -293,8 +293,8 @@
 				   	frontEndModalHeight=data.height;
 
 				   	utility('##frontEndToolsModaliframe').attr('src',src + '&mobileFormat=' + data.mobileformat);
-				    utility('##mura-preview-device-selector a').removeClass('active');
-				    utility(this).addClass('active');
+				    utility('##mura-preview-device-selector a').removeClass('mura-active');
+				    utility(this).addClass('mura-active');
 
 				    resizeFrontEndToolsModal(data.height);
 				    return false;
@@ -396,7 +396,7 @@
 			utility(".editableObject").addClass('editableObjectHide');
 
 			if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
-				utility(".mura-editable").addClass('inactive');
+				utility(".mura-editable").addClass('mura-inactive');
 			}
 
 		} else {
@@ -410,7 +410,7 @@
 			utility(".editableObject").removeClass('editableObjectHide');
 
 			if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
-				utility(".mura-editable").removeClass('inactive');
+				utility(".mura-editable").removeClass('mura-inactive');
 			}
 		}
 
@@ -522,7 +522,7 @@
 			muraInlineEditor.inited=true;
 			utility('##adminSave').show();
 			utility('##adminStatus').hide();
-			utility('.mura-editable').removeClass('inactive');
+			utility('.mura-editable').removeClass('mura-inactive');
 			window.mura.editing=true;
 
 			utility('##mura-deactivate-editors').click(function(){
@@ -539,7 +539,7 @@
 						selector:item.selector()
 					});
 
-					item.addClass('active');
+					item.addClass('mura-active');
 
 				});
 
@@ -890,7 +890,7 @@
 
 					var objectParams;
 
-					item.addClass("active");
+					item.addClass("mura-active");
 
 					if(mura.type =='Variation'){
 						objectParams=item.data();
@@ -943,7 +943,7 @@
 
 				mura('.mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
 					var item=mura(this);
-					item.addClass("active");
+					item.addClass("mura-active");
 					item.prepend(window.mura.layoutmanagertoolbar);
 					item.find(".frontEndToolsModal").on(
 						'click',
@@ -1072,13 +1072,13 @@
 						}
 
 						attribute.attr('contenteditable','false');
-						attribute.addClass('active');
+						attribute.addClass('mura-active');
 						attribute.data('manualedit',false);
 						mura.processMarkup(this);
 
 						attribute.find('.mura-object').each(function(){
 							mura.initDraggableObject(this);
-							mura(this).addClass('active')
+							mura(this).addClass('mura-active')
 						});
 
 						attribute.find('h1, h2, h3, h4, p, div, img, table, form, article').each(function(){

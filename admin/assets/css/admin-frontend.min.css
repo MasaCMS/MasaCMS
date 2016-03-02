@@ -46,9 +46,9 @@
 .badge {
   padding-left: 7px;
   padding-right: 7px;
-  border: 0 solid #ffffff;
+  border: 0 solid #fff;
   background-color: #b3b3b3;
-  color: #ffffff;
+  color: #fff;
 }
 .label-important,
 .badge-important {
@@ -119,7 +119,7 @@
   margin-top: 70px;
 }
 .btn-alt {
-  color: #ffffff;
+  color: #fff;
   padding: 3% 3% 5%;
   background-image: -webkit-linear-gradient(top, #414141 0%, #323232 100%);
   background-image: -o-linear-gradient(top, #414141 0%, #323232 100%);
@@ -344,6 +344,7 @@
 .editableObjectHide ul.editableObjectControl {
   display: none !important;
 }
+/* .cke_editable, .cke_editable * { border: 0 !important; padding: inherit !important;} */
 body.mura-sidebar-state__hidden--left {
   padding-left: 0;
 }
@@ -410,25 +411,25 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 .mura-region-inherited + .mura-region-local.mura-editable-attribute {
   margin-top: 15px;
 }
-.mura-object.active {
+.mura-object.mura-active {
   box-shadow: inset 0 0 0 1px #eee;
 }
-.mura-region-inherited .mura-object.active {
+.mura-region-inherited .mura-object.mura-active {
   box-shadow: none;
 }
-.mura-object.active.mura-active-target,
-.mura-async-object.active.mura-active-target[data-object="folder"],
-.mura-async-object.active.mura-active-target[data-object="calendar"],
-.mura-async-object.active.mura-active-target[data-object="gallery"] {
+.mura-object.mura-active.mura-active-target,
+.mura-async-object.mura-active.mura-active-target[data-object="folder"],
+.mura-async-object.mura-active.mura-active-target[data-object="calendar"],
+.mura-async-object.mura-active.mura-active-target[data-object="gallery"] {
   box-shadow: inset 0 0 0 2px #999;
 }
-.mura-object.active .mura-object.active:not('.mura-drop-target') {
+.mura-object.mura-active .mura-object.mura-active:not('.mura-drop-target') {
   border: 2px solid transparent;
 }
-.mura-object.active.mura-object-selected,
-.mura-async-object.active[data-object="folder"].mura-object-selected,
-.mura-async-object.active[data-object="calendar"].mura-object-selected,
-.mura-async-object.active[data-object="gallery"].mura-object-selected {
+.mura-object.mura-active.mura-object-selected,
+.mura-async-object.mura-active[data-object="folder"].mura-object-selected,
+.mura-async-object.mura-active[data-object="calendar"].mura-object-selected,
+.mura-async-object.mura-active[data-object="gallery"].mura-object-selected {
   box-shadow: inset 0 0 0 2px #ff3800;
 }
 .mura-drop-target.mura-append {
@@ -446,8 +447,8 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   z-index: 1;
   opacity: 0;
 }
-.mura-object.active.mura-active-target > .frontEndToolsModal.mura,
-.mura-object.active.mura-object-selected > .frontEndToolsModal.mura {
+.mura-object.mura-active.mura-active-target > .frontEndToolsModal.mura,
+.mura-object.mura-active.mura-object-selected > .frontEndToolsModal.mura {
   opacity: 1;
 }
 /* button colors - reproducing bootstrap */
@@ -3263,7 +3264,7 @@ a.mura .bg-danger:focus {
 }
 .mura .mura-grid .actions li.disabled i,
 .mura .mura-table-grid .actions li.disabled i {
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .mura-grid .actions li .template i,
 .mura .mura-table-grid .actions li .template i {
@@ -3309,7 +3310,7 @@ a.mura .bg-danger:focus {
   *display: inline;
   /* IE7 inline-block hack */
   *zoom: 1;
-  color: #ffffff;
+  color: #fff;
   background: #949494;
   padding: 4px 4px 3px;
   -webkit-border-radius: 2px;
@@ -3462,7 +3463,7 @@ a.mura .bg-danger:focus {
   padding-top: 7px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .form-control {
   display: block;
@@ -3471,10 +3472,10 @@ a.mura .bg-danger:focus {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #cccccc;
-  background-color: #ffffff;
+  color: #ccc;
+  background-color: #fff;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -3489,14 +3490,14 @@ a.mura .bg-danger:focus {
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 .mura .form-control::-moz-placeholder {
-  color: #999999;
+  color: #999;
   opacity: 1;
 }
 .mura .form-control:-ms-input-placeholder {
-  color: #999999;
+  color: #999;
 }
 .mura .form-control::-webkit-input-placeholder {
-  color: #999999;
+  color: #999;
 }
 .mura .form-control::-ms-expand {
   border: 0;
@@ -3949,8 +3950,8 @@ select[multiple].mura .input-lg {
   list-style: none;
   font-size: 14px;
   text-align: left;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
+  background-color: #fff;
+  border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -3985,7 +3986,7 @@ select[multiple].mura .input-lg {
 .mura .dropdown-menu > .active > a,
 .mura .dropdown-menu > .active > a:hover,
 .mura .dropdown-menu > .active > a:focus {
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
   outline: 0;
   background-color: #337ab7;
@@ -4105,7 +4106,7 @@ select[multiple].mura .input-lg {
   max-width: none;
 }
 .mura .nav-tabs {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
 }
 .mura .nav-tabs > li {
   float: left;
@@ -4118,14 +4119,14 @@ select[multiple].mura .input-lg {
   border-radius: 4px 4px 0 0;
 }
 .mura .nav-tabs > li > a:hover {
-  border-color: #eeeeee #eeeeee #dddddd;
+  border-color: #eeeeee #eeeeee #ddd;
 }
 .mura .nav-tabs > li.active > a,
 .mura .nav-tabs > li.active > a:hover,
 .mura .nav-tabs > li.active > a:focus {
-  color: #cccccc;
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
+  color: #ccc;
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-bottom-color: transparent;
   cursor: default;
 }
@@ -4160,17 +4161,17 @@ select[multiple].mura .input-lg {
 .mura .nav-tabs.nav-justified > .active > a,
 .mura .nav-tabs.nav-justified > .active > a:hover,
 .mura .nav-tabs.nav-justified > .active > a:focus {
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
 }
 @media (min-width: 768px) {
   .mura .nav-tabs.nav-justified > li > a {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #ddd;
     border-radius: 4px 4px 0 0;
   }
   .mura .nav-tabs.nav-justified > .active > a,
   .mura .nav-tabs.nav-justified > .active > a:hover,
   .mura .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #ffffff;
+    border-bottom-color: #fff;
   }
 }
 .mura .nav-pills > li {
@@ -4185,7 +4186,7 @@ select[multiple].mura .input-lg {
 .mura .nav-pills > li.active > a,
 .mura .nav-pills > li.active > a:hover,
 .mura .nav-pills > li.active > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #337ab7;
 }
 .mura .nav-stacked > li {
@@ -4228,17 +4229,17 @@ select[multiple].mura .input-lg {
 .mura .nav-tabs-justified > .active > a,
 .mura .nav-tabs-justified > .active > a:hover,
 .mura .nav-tabs-justified > .active > a:focus {
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
 }
 @media (min-width: 768px) {
   .mura .nav-tabs-justified > li > a {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #ddd;
     border-radius: 4px 4px 0 0;
   }
   .mura .nav-tabs-justified > .active > a,
   .mura .nav-tabs-justified > .active > a:hover,
   .mura .nav-tabs-justified > .active > a:focus {
-    border-bottom-color: #ffffff;
+    border-bottom-color: #fff;
   }
 }
 .mura .tab-content > .tab-pane {
@@ -4599,7 +4600,7 @@ select[multiple].mura .input-lg {
   border-color: #e7e7e7;
 }
 .mura .navbar-default .navbar-brand {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .navbar-brand:hover,
 .mura .navbar-default .navbar-brand:focus {
@@ -4607,37 +4608,37 @@ select[multiple].mura .input-lg {
   background-color: transparent;
 }
 .mura .navbar-default .navbar-text {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .navbar-nav > li > a {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .navbar-nav > li > a:hover,
 .mura .navbar-default .navbar-nav > li > a:focus {
-  color: #333333;
+  color: #333;
   background-color: transparent;
 }
 .mura .navbar-default .navbar-nav > .active > a,
 .mura .navbar-default .navbar-nav > .active > a:hover,
 .mura .navbar-default .navbar-nav > .active > a:focus {
-  color: #555555;
+  color: #555;
   background-color: #e7e7e7;
 }
 .mura .navbar-default .navbar-nav > .disabled > a,
 .mura .navbar-default .navbar-nav > .disabled > a:hover,
 .mura .navbar-default .navbar-nav > .disabled > a:focus {
-  color: #cccccc;
+  color: #ccc;
   background-color: transparent;
 }
 .mura .navbar-default .navbar-toggle {
-  border-color: #dddddd;
+  border-color: #ddd;
 }
 .mura .navbar-default .navbar-toggle:hover,
 .mura .navbar-default .navbar-toggle:focus {
-  background-color: #dddddd;
+  background-color: #ddd;
 }
 .mura .navbar-default .navbar-toggle .icon-bar {
-  background-color: #888888;
+  background-color: #888;
 }
 .mura .navbar-default .navbar-collapse,
 .mura .navbar-default .navbar-form {
@@ -4647,51 +4648,51 @@ select[multiple].mura .input-lg {
 .mura .navbar-default .navbar-nav > .open > a:hover,
 .mura .navbar-default .navbar-nav > .open > a:focus {
   background-color: #e7e7e7;
-  color: #555555;
+  color: #555;
 }
 @media (max-width: 767px) {
   .mura .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-    color: #777777;
+    color: #777;
   }
   .mura .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #333333;
+    color: #333;
     background-color: transparent;
   }
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
-    color: #555555;
+    color: #555;
     background-color: #e7e7e7;
   }
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover,
   .mura .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {
-    color: #cccccc;
+    color: #ccc;
     background-color: transparent;
   }
 }
 .mura .navbar-default .navbar-link {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .navbar-link:hover {
-  color: #333333;
+  color: #333;
 }
 .mura .navbar-default .btn-link {
-  color: #777777;
+  color: #777;
 }
 .mura .navbar-default .btn-link:hover,
 .mura .navbar-default .btn-link:focus {
-  color: #333333;
+  color: #333;
 }
 .mura .navbar-default .btn-link[disabled]:hover,
 fieldset[disabled] .mura .navbar-default .btn-link:hover,
 .mura .navbar-default .btn-link[disabled]:focus,
 fieldset[disabled] .mura .navbar-default .btn-link:focus {
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .navbar-inverse {
-  background-color: #222222;
+  background-color: #222;
   border-color: #080808;
 }
 .mura .navbar-inverse .navbar-brand {
@@ -4699,7 +4700,7 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
 }
 .mura .navbar-inverse .navbar-brand:hover,
 .mura .navbar-inverse .navbar-brand:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: transparent;
 }
 .mura .navbar-inverse .navbar-text {
@@ -4710,30 +4711,30 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
 }
 .mura .navbar-inverse .navbar-nav > li > a:hover,
 .mura .navbar-inverse .navbar-nav > li > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: transparent;
 }
 .mura .navbar-inverse .navbar-nav > .active > a,
 .mura .navbar-inverse .navbar-nav > .active > a:hover,
 .mura .navbar-inverse .navbar-nav > .active > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #080808;
 }
 .mura .navbar-inverse .navbar-nav > .disabled > a,
 .mura .navbar-inverse .navbar-nav > .disabled > a:hover,
 .mura .navbar-inverse .navbar-nav > .disabled > a:focus {
-  color: #444444;
+  color: #444;
   background-color: transparent;
 }
 .mura .navbar-inverse .navbar-toggle {
-  border-color: #333333;
+  border-color: #333;
 }
 .mura .navbar-inverse .navbar-toggle:hover,
 .mura .navbar-inverse .navbar-toggle:focus {
-  background-color: #333333;
+  background-color: #333;
 }
 .mura .navbar-inverse .navbar-toggle .icon-bar {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .mura .navbar-inverse .navbar-collapse,
 .mura .navbar-inverse .navbar-form {
@@ -4743,7 +4744,7 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
 .mura .navbar-inverse .navbar-nav > .open > a:hover,
 .mura .navbar-inverse .navbar-nav > .open > a:focus {
   background-color: #080808;
-  color: #ffffff;
+  color: #fff;
 }
 @media (max-width: 767px) {
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
@@ -4757,19 +4758,19 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
   }
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #ffffff;
+    color: #fff;
     background-color: transparent;
   }
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
-    color: #ffffff;
+    color: #fff;
     background-color: #080808;
   }
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,
   .mura .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {
-    color: #444444;
+    color: #444;
     background-color: transparent;
   }
 }
@@ -4777,20 +4778,20 @@ fieldset[disabled] .mura .navbar-default .btn-link:focus {
   color: #9d9d9d;
 }
 .mura .navbar-inverse .navbar-link:hover {
-  color: #ffffff;
+  color: #fff;
 }
 .mura .navbar-inverse .btn-link {
   color: #9d9d9d;
 }
 .mura .navbar-inverse .btn-link:hover,
 .mura .navbar-inverse .btn-link:focus {
-  color: #ffffff;
+  color: #fff;
 }
 .mura .navbar-inverse .btn-link[disabled]:hover,
 fieldset[disabled] .mura .navbar-inverse .btn-link:hover,
 .mura .navbar-inverse .btn-link[disabled]:focus,
 fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
-  color: #444444;
+  color: #444;
 }
 .mura .clearfix:before,
 .mura .clearfix:after,
@@ -6863,7 +6864,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   text-align: center;
 }
 .mura .add-content-ui li a {
-  color: #ffffff;
+  color: #fff;
   padding: 3% 3% 5%;
   background-image: -webkit-linear-gradient(top, #414141 0%, #323232 100%);
   background-image: -o-linear-gradient(top, #414141 0%, #323232 100%);
@@ -6888,7 +6889,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   display: block;
   padding: 0;
   margin: 0 auto;
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .add-content-ui li a:hover {
   text-decoration: none;
@@ -6899,10 +6900,10 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff272727', endColorstr='#ff181818', GradientType=0);
 }
 .mura .add-content-ui li a:hover i {
-  color: #ffffff;
+  color: #fff;
 }
 .mura .add-content-ui li a:hover span {
-  color: #cccccc;
+  color: #ccc;
 }
 .mura .add-content-ui li a[rel="tooltip"] {
   position: absolute;
@@ -7165,7 +7166,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li a {
   display: block !important;
-  color: #cccccc !important;
+  color: #ccc !important;
   background: #4D4D4D !important;
   background: rgba(255, 255, 255, 0.13) !important;
   font-size: 12px !important;
@@ -7232,7 +7233,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   border-radius: 3px !important;
 }
 .mura #frontEndTools > #tools-status.status-locked i:before {
-  color: #b90e0e !important;
+  color: #B90e0e !important;
 }
 .mura #frontEndTools > ul#tools-version > li#adminEditPage {
   padding-right: 0 !important;
@@ -7317,7 +7318,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > ul > li#adminSave > a {
   position: relative !important;
   display: block !important;
-  color: #ffffff !important;
+  color: #fff !important;
   font-size: 11px !important;
   padding: 1px 8px 1px 6px !important;
   line-height: 24px !important;
@@ -7352,7 +7353,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li a:hover,
 .mura #frontEndTools > ul > li > a:hover > i {
-  color: #ffffff !important;
+  color: #fff !important;
   text-shadow: 0 -1px 0 #000000 !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu {
@@ -7385,7 +7386,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu a {
   font-size: 12px !important;
-  color: #ffffff !important;
+  color: #fff !important;
   padding: 5px 10px !important;
   line-height: 1.1 !important;
   float: none !important;
@@ -7399,7 +7400,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li > a:hover {
   background: #000000 !important;
-  color: #ffffff !important;
+  color: #fff !important;
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu i {
@@ -7441,7 +7442,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   outline: 1px dotted #ccc !important;
 }
 .mura-editable .mura-editable-attribute:hover,
-.mura-editable .mura-editable-attribute:active,
+.mura-editable .mura-editable-attribute:mura-active,
 .mura-editable .mura-editable-attribute:focus {
   outline: 1px dotted red !important;
 }
@@ -7473,25 +7474,25 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   /* IE7 inline-block hack */
   *zoom: 1 !important;
 }
-.mura-editable.inactive,
-.mura-editable.inactive:hover {
+.mura-editable.mura-inactive,
+.mura-editable.mura-inactive:hover {
   outline: 0 !important;
   min-height: 0 !important;
 }
-.mura-editable.inactive .mura-editable-label,
-.mura-editable.inactive:hover .mura-editable-label {
+.mura-editable.mura-inactive .mura-editable-label,
+.mura-editable.mura-inactive:hover .mura-editable-label {
   display: none !important;
 }
-.mura-editable.inactive .mura-editable-attribute,
-.mura-editable.inactive:hover .mura-editable-attribute {
+.mura-editable.mura-inactive .mura-editable-attribute,
+.mura-editable.mura-inactive:hover .mura-editable-attribute {
   outline: 0 !important;
 }
-.mura-editable.inactive .mura-editable-attribute:hover,
-.mura-editable.inactive:hover .mura-editable-attribute:hover,
-.mura-editable.inactive .mura-editable-attribute:active,
-.mura-editable.inactive:hover .mura-editable-attribute:active,
-.mura-editable.inactive .mura-editable-attribute:focus,
-.mura-editable.inactive:hover .mura-editable-attribute:focus {
+.mura-editable.mura-inactive .mura-editable-attribute:hover,
+.mura-editable.mura-inactive:hover .mura-editable-attribute:hover,
+.mura-editable.mura-inactive .mura-editable-attribute:mura-active,
+.mura-editable.mura-inactive:hover .mura-editable-attribute:mura-active,
+.mura-editable.mura-inactive .mura-editable-attribute:focus,
+.mura-editable.mura-inactive:hover .mura-editable-attribute:focus {
   outline: 0 !important;
 }
 #draft-prompt table {

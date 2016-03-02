@@ -206,7 +206,6 @@ component extends="mura.cfobject" output="false" {
 				returnFormat=arguments.args.returnFormat
 			};
 
-
 		/*
 		This should only happen with loading many-to-one relationships when local
 		fkcolumn (many) value is empty.
@@ -260,6 +259,60 @@ component extends="mura.cfobject" output="false" {
 		}
 	}
 
+	/*
+	var relationship='';
+	var collection={};
+	var idlist='';
+	var item='';
+	var obj='';
+	var loadArgs={};
+
+	if(arrayLen(getHasManyPropArray())){
+		for(relationship in getHasManyPropArray()){
+			if(isdefined('variables.instance.#relationship.name#')){
+				if(isJson(variables.instance.[relationship.name])){
+					variables.instance.[relationship.name]=deserializeJSON(variables.instance.[relationship.name]);
+				}
+
+				collection=variables.instance.[relationship.name];
+
+				if(isdefined('collection.items')
+					isArray(collection.items)
+					&& strucKeyExists(collection,'cascade')
+					&& listFindNoCase('replace,merge',collection.cascade)
+				){
+					for(item in collections.items){
+						if(isValid('component',item)){
+							item.save();
+							idlist=listAppend(idlist,item.id);
+						} else {
+							obj=getBean(relationship.cfc);
+							obj.setSiteID(getValue('siteid'));
+
+							if(isDefined('item.id')){
+								loadArgs={
+									'#obj.getPrimaryKey()#'=item.id;
+								};
+							} else {
+								loadArgs={
+									'#obj.getPrimaryKey()#'=item[obj.getPrimaryKey()];
+								};
+							}
+
+							obj.loadBy(argumentCollection=loadArgs);
+							obj.set(item);
+							obj.save();
+							idlist=listAppend(idlist,item.id);
+						}
+					}
+
+
+
+				}
+			}
+		}
+	}
+	*/
 	function set(property,propertyValue){
 
 		if(!isDefined('arguments.data') ){
@@ -282,6 +335,8 @@ component extends="mura.cfobject" output="false" {
 			for(prop in arguments.data){
 				if ( IsSimpleValue(prop) && !isNull(arguments.data[prop]) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
 					setValue(prop,arguments.data['#prop#']);
+				} else if(!isNull(arguments.data[prop]) && arguments.data[prop].fieldtype=='one-to-many'){
+					//setValue(prop,arguments.data['#prop#']);
 				}
 			}
 		}

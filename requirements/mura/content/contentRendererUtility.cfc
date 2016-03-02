@@ -123,17 +123,17 @@
 						cssClass='mura-region-local ';
 						dataString=dataString & ' data-loose="true" data-perm="true" data-inited="false"';
 
-						cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+						cssClass=cssClass & "mura-inactive mura-editable-attribute#inline#";
 
-						return '<div class="mura-region mura-editable inactive#inline#">
+						return '<div class="mura-region mura-editable mura-inactive#inline#">
 							<label class="mura-editable-label">#ucase(arguments.label)#</label>
 							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
 					} else {
 
-						cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+						cssClass=cssClass & "mura-inactive mura-editable-attribute#inline#";
 
-						return '<div class="mura-editable inactive#inline#">
+						return '<div class="mura-editable mura-inactive#inline#">
 							<label class="mura-editable-label">#ucase(arguments.label)#</label>
 							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
@@ -143,7 +143,7 @@
 				} else {
 					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
 
-					return '<div class="mura-editable inactive#inline#">
+					return '<div class="mura-editable mura-inactive#inline#">
 						<label class="mura-editable-label">#ucase(arguments.label)#</label>
 						<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 						</div>';
@@ -1380,7 +1380,7 @@
 			<cfset theRegion.header='<div class="mura-region">'>
 			<cfset theRegion.footer='</div>'>
 
-			<cfset theRegion.local.header='<div class="mura-editable inactive"><div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#"><label class="mura-editable-label">DISPLAY REGION : #regionLabel#</label>'>
+			<cfset theRegion.local.header='<div class="mura-editable mura-inactive"><div class="mura-region-local mura-inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#"><label class="mura-editable-label">DISPLAY REGION : #regionLabel#</label>'>
 			<cfset theRegion.local.footer='</div></div>'>
 
 			<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>

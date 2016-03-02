@@ -27,7 +27,7 @@ body.mura-sidebar-state__pushed--left {
 body.mura-sidebar-state__pushed--right {
 	padding-right: 300px;
 }
-	
+
 //transition the sidebar
 
 body.mura-sidebar-state__hidden--left .mura__layout-manager__controls {
@@ -87,32 +87,32 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 }
 
 //a region that CAN be interacted with
-.mura-object.active {
+.mura-object.mura-active {
 	box-shadow: inset 0 0 0 1px #eee;
 }
 
-.mura-region-inherited .mura-object.active {
+.mura-region-inherited .mura-object.mura-active {
 	box-shadow: none;
 }
 
 
 //a region that IS being interacted with
-.mura-object.active.mura-active-target, 
-.mura-async-object.active.mura-active-target[data-object="folder"],
-.mura-async-object.active.mura-active-target[data-object="calendar"],
-.mura-async-object.active.mura-active-target[data-object="gallery"] {
+.mura-object.mura-active.mura-active-target,
+.mura-async-object.mura-active.mura-active-target[data-object="folder"],
+.mura-async-object.mura-active.mura-active-target[data-object="calendar"],
+.mura-async-object.mura-active.mura-active-target[data-object="gallery"] {
 	box-shadow: inset 0 0 0 2px #999;
 }
 
-.mura-object.active .mura-object.active:not('.mura-drop-target') {
+.mura-object.mura-active .mura-object.mura-active:not('.mura-drop-target') {
 	border: 2px solid transparent;
 }
 
 //a region that IS being currently selected
-.mura-object.active.mura-object-selected,
-.mura-async-object.active[data-object="folder"].mura-object-selected,
-.mura-async-object.active[data-object="calendar"].mura-object-selected,
-.mura-async-object.active[data-object="gallery"].mura-object-selected {
+.mura-object.mura-active.mura-object-selected,
+.mura-async-object.mura-active[data-object="folder"].mura-object-selected,
+.mura-async-object.mura-active[data-object="calendar"].mura-object-selected,
+.mura-async-object.mura-active[data-object="gallery"].mura-object-selected {
 	box-shadow: inset 0 0 0 2px #ff3800;
 }
 
@@ -130,12 +130,12 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 ===================================== */
 .frontEndToolsModal.mura {
 	position: relative;
-	z-index:1;	
+	z-index:1;
 	opacity: 0;
 }
 
-.mura-object.active.mura-active-target > .frontEndToolsModal.mura, 
-.mura-object.active.mura-object-selected > .frontEndToolsModal.mura {
+.mura-object.mura-active.mura-active-target > .frontEndToolsModal.mura,
+.mura-object.mura-active.mura-object-selected > .frontEndToolsModal.mura {
 	opacity: 1;
 }
 
@@ -171,7 +171,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 	border-radius: 2px;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
-	box-shadow: none;	
+	box-shadow: none;
 	background-image:none;
 	text-shadow:none;
 }
