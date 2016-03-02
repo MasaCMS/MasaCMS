@@ -46,8 +46,8 @@
   version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-  <form class="form-inline mura-search" novalidate="novalidate" action="" method="get" name="form1" id="siteSearch">
-    <div class="input-append">
+  <form class="form-inline" novalidate="novalidate" action="" method="get" name="form1" id="siteSearch">
+    <div class="mura-search">
       <input id="search" name="search" type="text" value="#esapiEncode('html', rc.$.event('search'))#" placeholder="#rbKey('user.searchforusers')#" />
       <button type="button" class="btn" onclick="submitForm(document.forms.form1);">
         <i class="mi-search"></i>

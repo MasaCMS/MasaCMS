@@ -33942,23 +33942,35 @@ ul {
   margin-bottom: 0;
   margin-top: 7px;
 }
-form.mura-search {
+.mura-search {
   display: block;
-  width: 100%;
   background-color: #FFF;
-  padding: 0 12px;
+  padding: 0 7px;
 }
-form.mura-search button,
-form.mura-search .btn,
-form.mura-search input[type=text] {
-  height: 22px;
-  font-size: 13px;
+.mura-search button,
+.mura-search .btn,
+.mura-search select,
+.mura-search input[type=text],
+.mura-search .mura-control-group button,
+.mura-search .mura-control-group .btn,
+.mura-search .mura-control-group select,
+.mura-search .mura-control-group input[type=text] {
+  height: 22px !important;
+  font-size: 13px !important;
 }
-form.mura-search .btn {
+.mura-search input[type=text] {
+  padding-left: 8px;
+}
+.mura-search .btn {
   padding: 0 12px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+}
+.mura-search select,
+.mura-search .mura-control-group select {
+  padding: 0 !important;
+  max-width: 167px;
 }
 .header-search .input-group .form-control {
   position: relative;

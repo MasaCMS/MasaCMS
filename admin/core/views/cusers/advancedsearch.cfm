@@ -127,42 +127,44 @@
 
 <div class="block block-constrain">
 <!--- Search Form --->
-<form class="fieldset-wrap" novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
+<form class="mura-search" novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
 
 		<!--- Search Params --->
 			<div class="mura-control-group" id="searchParams">
-				<label>#rbKey("user.searchcriteria")#</label>
-				<cfif rc.newSearch or (session.paramCircuit neq 'cUsers' or not session.paramCount)>
-					<select name="paramRelationship1" style="display:none;" class="span2">
-						<option value="and">#rbKey("params.and")#</option>
-						<option value="or">#rbKey("params.or")#</option>
-					</select>
+					<label>#rbKey("user.searchcriteria")#</label>
+					<div class="mura-control justify">
+					<cfif rc.newSearch or (session.paramCircuit neq 'cUsers' or not session.paramCount)>
+						<select name="paramRelationship1" style="display:none;" class="span2">
+							<option value="and">#rbKey("params.and")#</option>
+							<option value="or">#rbKey("params.or")#</option>
+						</select>
 
-					<input type="hidden" name="param" value="1" />
+						<input type="hidden" name="param" value="1" />
 
-					<select name="paramField1" class="span2">
-						<option value="">#rbKey("params.selectfield")#</option>
-						<cfloop from="1" to="#arrayLen(options)#" index="i">
-							<option value="#options[i][1]#">#options[i][2]#</option>
-						</cfloop>
-					</select>
-						
-					<select name="paramCondition1" class="span2">
-						<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-							<option value="#criterias[i][1]#">#criterias[i][2]#</option>
-						</cfloop>
-					</select>
-			
-					<input type="text" name="paramCriteria1" class="span4">
+						<select name="paramField1" class="span2">
+							<option value="">#rbKey("params.selectfield")#</option>
+							<cfloop from="1" to="#arrayLen(options)#" index="i">
+								<option value="#options[i][1]#">#options[i][2]#</option>
+							</cfloop>
+						</select>
+							
+						<select name="paramCondition1" class="span2">
+							<cfloop from="1" to="#arrayLen(criterias)#" index="i">
+								<option value="#criterias[i][1]#">#criterias[i][2]#</option>
+							</cfloop>
+						</select>
+				
+						<input type="text" name="paramCriteria1" class="span4">
 
-					<!--- remove --->
-					<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#rbKey("params.removecriteria")#">
-						<i class="mi-times-circle"></i>
-					</a>
-					<!--- add --->
-					<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey("params.addcriteria")#">
-						<i class="mi-plus-circle"></i>
-					</a>
+						<!--- remove --->
+						<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#rbKey("params.removecriteria")#">
+							<i class="mi-minus-circle"></i>
+						</a>
+						<!--- add --->
+						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey("params.addcriteria")#">
+							<i class="mi-plus-circle"></i>
+						</a>
+					</div>
 				<cfelse>
 					<cfloop from="1" to="#session.paramCount#" index="p">
 						<select name="paramRelationship#p#" class="span2">

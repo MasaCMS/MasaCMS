@@ -516,23 +516,35 @@ div.tagsinput span.tag {
   margin-bottom: 0;
   margin-top: 7px;
 }
-form.mura-search{
+.mura-search{
   display: block;
-  width: 100%;
   background-color: #FFF;
-  padding: 0 12px;
+  padding: 0 7px;
 
   button,
   .btn,
-  input[type=text]{
-    height: 22px;
-    font-size: 13px;
+  select,
+  input[type=text],
+  .mura-control-group button,
+  .mura-control-group .btn,
+  .mura-control-group select,
+  .mura-control-group input[type=text]{
+    height: 22px !important;
+    font-size: 13px !important;
   }
-  
+  input[type=text]{
+    padding-left: 8px;
+  }
   .btn{
     padding: 0 12px;
     .border-radius(2px);
   }
+  select,
+  .mura-control-group select{
+    padding: 0 !important;
+    max-width: 167px;
+  }
+
 }
 
 .header-search .input-group .form-control {
