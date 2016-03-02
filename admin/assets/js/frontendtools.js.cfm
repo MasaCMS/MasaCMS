@@ -255,7 +255,7 @@
 
 				var $tools='<div id="mura-preview-device-selector">';
 					$tools=$tools+'<p>Preview Mode</p>';
-					$tools=$tools+'<a class="mura-device-standard mura-active" title="Desktop" data-height="600" data-width="1075" data-mobileformat="false"><i class="mi-desktop"></i></a>';
+					$tools=$tools+'<a class="mura-device-standard active" title="Desktop" data-height="600" data-width="1075" data-mobileformat="false"><i class="mi-desktop"></i></a>';
 					$tools=$tools+'<a class="mura-device-tablet" title="Tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="mi-tablet"></i></a>';
 					$tools=$tools+'<a class="mura-device-tablet-landscape" title="Tablet Landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="mi-tablet mi-rotate-270"></i></a>';
 					$tools=$tools+'<a class="mura-device-phone" title="Phone" data-height="480" data-width="320" data-mobileformat="true"><i class="mi-mobile-phone"></i></a>';
