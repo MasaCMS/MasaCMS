@@ -33604,13 +33604,20 @@ fieldset[disabled] .btn-primary.active {
 .progress-bar-primary {
   background-color: #ff3405;
 }
+.nav-pills > li > a {
+  border: 1px solid #eee;
+  margin-left: 8px;
+  background-color: #fff;
+}
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus,
 .nav-pills > li > a.active,
 .nav-pills > li > a:hover,
 .nav-pills > li > a:focus {
-  background-color: #eee;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  color: #ff3405;
 }
 .nav-pills > li.active > a > .badge {
   color: #ff3405;
@@ -34098,9 +34105,14 @@ header .btn-image span.button-image {
   font-size: 15px;
   margin-bottom: 15px;
 }
+.content .navSort {
+  margin-bottom: 15px;
+  font-size: .92em;
+}
 .content .navSort h3 {
-  width: 64px;
+  width: 52px;
   float: left;
+  font-size: 13px;
 }
 .content form + h3 {
   margin-top: 30px;
@@ -34807,6 +34819,14 @@ ul.dropdown-menu {
 .sidebar .module ul.nav li > a,
 .sidebar .well ul.nav li > a {
   margin: 0 -9px;
+}
+.sidebar .module ul.nav li > a:not(.active),
+.sidebar .well ul.nav li > a:not(.active) {
+  color: #646464;
+}
+.sidebar .module ul.nav li > a:not(.active) > .badge,
+.sidebar .well ul.nav li > a:not(.active) > .badge {
+  background-color: #B3B3B3;
 }
 .sidebar select {
   width: 100%;
