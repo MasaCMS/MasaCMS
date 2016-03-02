@@ -302,14 +302,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			$(function(){
 				$("#apptypefile").click(
 					function(){
-							$(this).addClass("active").siblings().removeClass("active");
+							$(this).addClass("active").removeClass("focus").siblings().removeClass("active").removeClass("focus");
 							$("#appurl").hide()
 							$("#appzip").show()
 					}
 				);
 				$("#apptypeurl").click(
 					function(){
-							$(this).addClass("active").siblings().removeClass("active");
+							$(this).addClass("active").removeClass("focus").siblings().removeClass("active").removeClass("focus");
 							$("#appurl").show()
 							$("#appzip").hide()
 					}
