@@ -25773,7 +25773,7 @@ text-shadow: 0 0 1px @blue;
   position: relative;
 }
 .mura .tabdrop {
-  width: 120px;
+  width: 10px;
 }
 .mura .nav-tabs li li i {
   visibility: hidden;
@@ -27041,8 +27041,8 @@ font-size: 12px;
 .mura #cextend h2 {
   line-height: 26px;
 }
-.mura #cextend h2 i {
-  font-size: 26px;
+.mura #cextend #newFrmclose {
+  margin-left: -2px;
 }
 .mura #cextend #editFrm1container form {
   margin-top: 36px;
@@ -33631,7 +33631,8 @@ fieldset[disabled] .btn-primary.active {
   padding: 4px 8px;
   margin-top: -6px;
 }
-.mura .nav-pills + .mura-table-grid {
+.mura .nav-pills + .mura-table-grid,
+.mura .nav-pills + div.attr-add {
   margin-top: 12px;
 }
 .sidebar .nav-list li,
@@ -33835,6 +33836,7 @@ a.list-group-item:focus {
 .block > .nav-tabs li.tabdrop .dropdown-menu a:hover,
 .block > .nav-tabs > li > a:hover {
   color: #ff3405;
+  background-color: #FFF !important;
 }
 .tabdrop .dropdown-menu > .active > a,
 .tabdrop .dropdown-menu > .active > a:hover,
@@ -33861,6 +33863,7 @@ a.list-group-item:focus {
 .mura-tabs .open > a:hover,
 .mura-tabs .open > a:focus {
   border: none !important;
+  background-color: #FFF !important;
 }
 .block > .nav-tabs.nav-tabs-alt > li.tabdrop > a:hover,
 .block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a,
@@ -34160,6 +34163,10 @@ header .btn-image span.button-image {
 .content h3 {
   font-size: 15px;
   margin-bottom: 15px;
+}
+.content h2 i,
+.content h3 i {
+  margin-right: 6px;
 }
 .content .navSort {
   margin-bottom: 15px;
@@ -34759,6 +34766,11 @@ p.alert,
   margin-bottom: 12px !important;
   box-shadow: none !important;
   border: 1px solid #E7E7E7 !important;
+}
+div + .alert,
+div + p.alert,
+.content div + p.alert {
+  margin-top: 12px;
 }
 .alert-success {
   background-color: #e0f5e9;

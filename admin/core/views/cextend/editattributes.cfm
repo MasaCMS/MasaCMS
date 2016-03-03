@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="block block-constrain">
     <div class="block block-bordered">
       <div class="block-content">      
-      <h2><i class="#subtype.getIconClass(includeDefault=true)# mi-lg"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</h2>
+      <h2><i class="#subtype.getIconClass(includeDefault=true)#"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</h2>
 
       <h3><strong>Attributes Set:</strong> #extendSet.getName()#</h3>
 
