@@ -259,60 +259,6 @@ component extends="mura.cfobject" output="false" {
 		}
 	}
 
-	/*
-	var relationship='';
-	var collection={};
-	var idlist='';
-	var item='';
-	var obj='';
-	var loadArgs={};
-
-	if(arrayLen(getHasManyPropArray())){
-		for(relationship in getHasManyPropArray()){
-			if(isdefined('variables.instance.#relationship.name#')){
-				if(isJson(variables.instance.[relationship.name])){
-					variables.instance.[relationship.name]=deserializeJSON(variables.instance.[relationship.name]);
-				}
-
-				collection=variables.instance.[relationship.name];
-
-				if(isdefined('collection.items')
-					isArray(collection.items)
-					&& strucKeyExists(collection,'cascade')
-					&& listFindNoCase('replace,merge',collection.cascade)
-				){
-					for(item in collections.items){
-						if(isValid('component',item)){
-							item.save();
-							idlist=listAppend(idlist,item.id);
-						} else {
-							obj=getBean(relationship.cfc);
-							obj.setSiteID(getValue('siteid'));
-
-							if(isDefined('item.id')){
-								loadArgs={
-									'#obj.getPrimaryKey()#'=item.id;
-								};
-							} else {
-								loadArgs={
-									'#obj.getPrimaryKey()#'=item[obj.getPrimaryKey()];
-								};
-							}
-
-							obj.loadBy(argumentCollection=loadArgs);
-							obj.set(item);
-							obj.save();
-							idlist=listAppend(idlist,item.id);
-						}
-					}
-
-
-
-				}
-			}
-		}
-	}
-	*/
 	function set(property,propertyValue){
 
 		if(!isDefined('arguments.data') ){
@@ -329,6 +275,10 @@ component extends="mura.cfobject" output="false" {
 		var collection='';
 		var item='';
 		var propStruct={};
+		var loadArgs={};
+		var obj='';
+		var idList='';
+		var hasMany='';
 
 		if(isQuery(arguments.data) and arguments.data.recordcount){
 			for(var i=1;i<=listLen(arguments.data.columnlist);i++){
@@ -337,28 +287,65 @@ component extends="mura.cfobject" output="false" {
 			}
 			variables.instance.isNew=0;
 		} else if(isStruct(arguments.data)){
+			//set basic values
 			for(prop in arguments.data){
 				if ( IsSimpleValue(prop) && !isNull(arguments.data[prop]) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
-					if(isValid('variableName',prop)
-						&& isdefined('properties.#prop#.fieldtype')
-						&& properties[prop].fieldtype=='one-to-many'
-					){
-						propStruct=properties[prop];
-						collection=arguments.data['#prop#'];
+					setValue(prop,arguments.data['#prop#']);
+				}
+			}
 
-						if(isJSON(collection)){
-							collection=deserializeJSON(collection);
-						}
+			//look for relationships
+			for(prop in arguments.data){
 
-						if(isdefined('collection.cascade') && listFindNoCase('replace,merge',collection.cascade)){
+				if(isValid('variableName',prop)
+					&& isdefined('properties.#prop#.fieldtype')
+					&& properties[prop].fieldtype=='one-to-many'
+				){
+					propStruct=properties[prop];
+					collection=arguments.data['#prop#'];
 
-
-
-						}
-
-					} else {
-						setValue(prop,arguments.data['#prop#']);
+					if(isJSON(collection)){
+						collection=deserializeJSON(collection);
 					}
+
+					if(isdefined('collection.items')
+						&& isArray(collection.items)
+						&& isdefined('collection.cascade')
+						&& listFindNoCase('replace,merge',collection.cascade)){
+
+						idlist='';
+
+						for(item in collections.items){
+							obj=getBean(propStruct.cfc);
+							obj.setSiteID(getValue('siteid'));
+
+							if(isDefined('item.id')){
+								loadArgs={'#obj.getPrimaryKey()#'=item.id};
+							} else {
+								loadArgs={'#obj.getPrimaryKey()#'=item[obj.getPrimaryKey()]};
+							}
+
+							obj.loadBy(argumentCollection=loadArgs).set(item);
+							addObject(item);
+							idlist=listAppend(idlist,item.id);
+
+						}
+
+						if(collection.cascade=='replace'){
+							hasMany=evaluate('this.get#prop#Iterator');
+
+							if(hasMany.hasNext()){
+								obj=hasMany.next();
+								if(!listFindNoCase(idlist,obj.get(obj.getPrimaryKey()))){
+									removeObject(obj);
+								}
+
+							}
+
+						}
+
+					}
+
 				}
 			}
 		}
