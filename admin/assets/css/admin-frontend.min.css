@@ -7112,25 +7112,23 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   overflow: visible !important;
   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
-  padding-top: 8px;
 }
 .mura #frontEndTools > ul {
   min-height: 31px !important;
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
-  /* border-right: 1px solid hsla(0,0,.19,.85) !important; */
-  border: none;
+  border-right: 1px solid rgba(48, 48, 48, 0.85) !important;
   overflow: visible !important;
   float: left !important;
 }
 .mura #frontEndTools > ul:first-child {
   margin: 0 0 0 37px !important;
-  border-left: none;
+  border-left: 0;
 }
 .mura #frontEndTools > ul:last-child {
   float: right !important;
-  border-right: none !important;
+  border-right: 0 !important;
 }
 .mura #frontEndTools > ul li#adminSiteManager,
 .mura #frontEndTools > ul > li#adminSiteManager404 {
@@ -7158,15 +7156,14 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-left: 1em !important;
 }
 .mura #frontEndTools > ul > li:last-child {
-  border-right: none !important;
+  border-right: 1px solid rgba(84, 84, 84, 0.85) !important;
   padding-right: 1em !important;
 }
 .mura #frontEndTools > ul > li a {
   display: block !important;
   color: #cccccc !important;
   background: #4D4D4D !important;
-  /* background: rgba(255,255,255,.13) !important; */
-  background: transparent !important;
+  background: rgba(255, 255, 255, 0.13) !important;
   font-size: 12px !important;
   height: 28px !important;
   line-height: 23px !important;
@@ -7224,7 +7221,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > #tools-status > li {
   padding-right: 1em !important;
-  border-right: none !important;
+  border-right: 1px solid rgba(84, 84, 84, 0.85) !important;
 }
 .mura #frontEndTools > #tools-status > li > a {
   border: 0 !important;
@@ -7292,8 +7289,8 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > #tools-user > li a {
   background: transparent !important;
   font-size: 13px !important;
-  line-height: 38px !important;
   border: 0 !important;
+  line-height: 38px !important;
   padding: 0 !important;
   color: #999999 !important;
 }
@@ -7379,7 +7376,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   margin-top: 0 !important;
   margin-left: 11px !important;
   cursor: pointer !important;
-  top: 32px;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li {
   display: block !important;
