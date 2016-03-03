@@ -328,8 +328,8 @@ component extends="mura.cfobject" output="false" {
 								}
 
 								obj.loadBy(argumentCollection=loadArgs).set(item);
-								addObject(item);
-								idlist=listAppend(idlist,item.id);
+								addObject(obj);
+								idlist=listAppend(idlist,obj.get(obj.getPrimaryKey()));
 
 							}
 
