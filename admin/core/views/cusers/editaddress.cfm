@@ -133,7 +133,6 @@
 			<cfoutput><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
 				<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 				<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-				<div class="fieldset">
 					<h2>#extendSetBean.getName()#</h2>
 				<cfsilent>
 				<cfset attributesArray=extendSetBean.getAttributes() />
@@ -144,23 +143,19 @@
 					<div class="mura-control-group">
 			      <label>
 					<cfif len(attributeBean.getHint())>
-					<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <i class="mi-question-circle"></i></a>
+					<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html',attributeBean.gethint())#" data-original-title="#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <i class="mi-question-circle"></i></span>
 					<cfelse>
 					#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
 					</cfif>
 					<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
 					</label>
-			     
-					
 					<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
 					<cfif attributeBean.getType() IS "Hidden">
 						<cfset attributeBean.setType( "TextBox" ) />
 					</cfif>	
-					
-					 <div>#attributeBean.renderAttribute(attributeValue)#</div>
+						#attributeBean.renderAttribute(attributeValue)#
 					</div>
 				</cfloop>
-				</div>
 			</cfoutput>
 			</cfloop>
 
