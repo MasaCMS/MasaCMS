@@ -2574,7 +2574,7 @@ i {
   overflow: auto;
 }
 .mura .mura__layout-manager__controls__objects {
-  padding: 50px 0 50px 0;
+  padding: 30px 0 50px 0;
 }
 .mura *[class^="mi-"],
 .mura *[class*=" mi-"] {
@@ -7100,7 +7100,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   background: #333;
   /* #gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd); */
   filter: none !important;
-  height: 50px !important;
+  height: 32px !important;
   position: fixed !important;
   left: 0px !important;
   top: 0px !important;
@@ -7118,12 +7118,12 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
-  border-right: 1px solid rgba(48, 48, 48, 0.85) !important;
+  /* border-right: 1px solid hsla(0,0,.19,.85) !important; */
   overflow: visible !important;
   float: left !important;
 }
 .mura #frontEndTools > ul:first-child {
-  margin: 0 0 0 37px !important;
+  margin-left: 37px !important;
   border-left: 0;
 }
 .mura #frontEndTools > ul:last-child {
@@ -7138,7 +7138,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   color: rgba(255, 255, 255, 0.85) !important;
   float: left !important;
   line-height: 22px !important;
-  height: 50px !important;
+  height: 32px !important;
   margin: 0 !important;
   padding: 4px 0 !important;
   list-style: none !important;
@@ -7147,7 +7147,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-style: normal !important;
   font-size: 12px !important;
   background: none !important;
-  text-shadow: 0 -1px 0 #000000 !important;
+  /* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
   overflow: visible !important;
   box-sizing: border-box !important;
 }
@@ -7156,7 +7156,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-left: 1em !important;
 }
 .mura #frontEndTools > ul > li:last-child {
-  border-right: 1px solid rgba(84, 84, 84, 0.85) !important;
+  /* border-right: 1px solid hsla(0,0,.33,.85) !important; */
   padding-right: 1em !important;
 }
 .mura #frontEndTools > ul > li a {
@@ -7165,25 +7165,25 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   background: #4D4D4D !important;
   background: rgba(255, 255, 255, 0.13) !important;
   font-size: 12px !important;
-  height: 28px !important;
+  height: 24px !important;
   line-height: 23px !important;
-  padding: 4px 8px !important;
+  padding: 2px 6px 1px !important;
   text-decoration: none !important;
   font-weight: normal !important;
   font-style: normal !important;
   outline: 0 !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.9) !important;
+  /* text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important; */
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
   border-left: 1px solid rgba(0, 0, 0, 0.25) !important;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 2px !important;
+  -moz-border-radius: 2px !important;
+  border-radius: 2px !important;
 }
 .mura #frontEndTools > ul > li a > i {
   color: #868686 !important;
   font-size: 16px !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.65) !important;
+  /* text-shadow: 0 -1px 0 rgba(0,0,0,.65) !important; */
   position: relative !important;
   top: 1px !important;
   width: 1em !important;
@@ -7191,9 +7191,12 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-bottom: 0 !important;
   overflow: visible !important;
 }
-.mura #frontEndTools > ul > li a > i.icon-mobile-phone {
-  font-size: 21px !important;
-  top: 0 !important;
+.mura #frontEndTools > ul > li a > i.mi-tablet {
+  font-size: 17px !important;
+  padding-left: 3px;
+}
+.mura #frontEndTools > ul > li a > i.mi-plus {
+  padding-left: 3px;
 }
 .mura #frontEndTools > ul > li .caret {
   border-top-color: rgba(255, 255, 255, 0.25) !important;
@@ -7202,33 +7205,33 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   margin-top: 9px !important;
 }
 .mura #frontEndTools > ul > li:first-child a {
-  -webkit-border-top-left-radius: 3px;
-  -moz-border-radius-topleft: 3px;
-  border-top-left-radius: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  border-bottom-left-radius: 3px;
+  -webkit-border-top-left-radius: 2px;
+  -moz-border-radius-topleft: 2px;
+  border-top-left-radius: 2px;
+  -webkit-border-bottom-left-radius: 2px;
+  -moz-border-radius-bottomleft: 2px;
+  border-bottom-left-radius: 2px;
   border-left: 0 !important;
 }
 .mura #frontEndTools > ul > li:last-child a {
-  -webkit-border-top-right-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  border-top-right-radius: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  border-bottom-right-radius: 3px;
+  -webkit-border-top-right-radius: 2px;
+  -moz-border-radius-topright: 2px;
+  border-top-right-radius: 2px;
+  -webkit-border-bottom-right-radius: 2px;
+  -moz-border-radius-bottomright: 2px;
+  border-bottom-right-radius: 2px;
   border-right: 0 !important;
 }
 .mura #frontEndTools > #tools-status > li {
   padding-right: 1em !important;
-  border-right: 1px solid rgba(84, 84, 84, 0.85) !important;
+  /*	border-right: 1px solid hsla(0,0,.33,.85) !important; */
 }
 .mura #frontEndTools > #tools-status > li > a {
   border: 0 !important;
 }
 .mura #frontEndTools > #tools-status > li#adminStatus > a {
   padding-right: 6px !important;
-  border-radius: 3px !important;
+  border-radius: 2px !important;
 }
 .mura #frontEndTools > #tools-status.status-locked i:before {
   color: #b90e0e !important;
@@ -7257,22 +7260,31 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-style: normal !important;
   text-align: center !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  /* text-shadow: 0 1px 0 rgba(255,255,255,.15) !important; */
   position: relative !important;
   top: 0px !important;
   padding: 3px 4px 3px 3px !important;
   line-height: .8 !important;
   overflow: visible !important;
-  -webkit-border-radius: 18px;
-  -moz-border-radius: 18px;
-  border-radius: 18px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   margin-right: 4px;
 }
+.mura #frontEndTools > #adminDashboard,
 .mura #frontEndTools > #adminSiteManager {
   border-right: 0 !important;
 }
+.mura #frontEndTools > #adminDashboard > li,
 .mura #frontEndTools > #adminSiteManager > li {
   border: 0 !important;
+}
+.mura #frontEndTools > #adminDashboard > li > a i,
+.mura #frontEndTools > #adminSiteManager > li > a i {
+  margin-right: 4px;
+}
+.mura #frontEndTools > #tools-status > li > a i {
+  margin-right: 2px;
 }
 .mura #frontEndTools > #tools-user {
   border: 0 !important;
@@ -7282,23 +7294,26 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   margin-right: 16px !important;
   padding: 0 !important;
   border: 0 !important;
-  font-size: 13px !important;
-  line-height: 38px !important;
+  font-size: 11px !important;
+  line-height: 33px !important;
   color: #999999 !important;
 }
 .mura #frontEndTools > #tools-user > li a {
   background: transparent !important;
-  font-size: 13px !important;
+  font-size: 11px !important;
   border: 0 !important;
-  line-height: 38px !important;
+  line-height: 33px !important;
   padding: 0 !important;
   color: #999999 !important;
 }
 .mura #frontEndTools > #tools-user > li i {
-  font-size: 14px !important;
+  font-size: 13px !important;
   top: 1px !important;
   margin-right: 1px !important;
   color: #666666 !important;
+}
+.mura #frontEndTools > #tools-user > li#adminLogOut i {
+  font-size: 15px !important;
 }
 .mura #frontEndTools > ul > li#adminSave {
   position: relative;
@@ -7306,7 +7321,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   float: left !important;
   line-height: 30px !important;
   margin-left: 14px !important;
-  padding: 3px 11px 0 0 !important;
   list-style: none !important;
   font-weight: normal !important;
   font-style: normal !important;
@@ -7318,32 +7332,27 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   display: block !important;
   color: #ffffff !important;
   font-size: 11px !important;
-  padding: 4px 8px !important;
+  padding: 0 12px 2px !important;
   line-height: 24px !important;
-  height: 28px !important;
+  height: 24px !important;
   -webkit-border-radius: 2px !important;
   -moz-border-radius: 2px !important;
   border-radius: 2px !important;
-  background-image: -webkit-linear-gradient(top, #6699cc 0%, #336699 100%) !important;
-  background-image: -o-linear-gradient(top, #6699cc 0%, #336699 100%) !important;
-  background-image: linear-gradient(to bottom, #6699cc 0%, #336699 100%) !important;
-  background-repeat: repeat-x !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff6699cc', endColorstr='#ff336699', GradientType=0) !important;
-  -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) !important;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) !important;
-  text-shadow: 0 -1px 1px #264c73 !important;
   cursor: pointer !important;
+  background-color: #4485f1 !important;
+  border-color: #4882cc;
+  background-image: none !important;
 }
 .mura #frontEndTools > ul > li#adminSave > a > i {
   color: #264c73 !important;
-  text-shadow: 0 -1px 1px #1a334d !important;
+  /* text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; */
 }
 .mura #frontEndTools > ul > li#adminSave > a:hover {
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li#adminSave > a:hover > i {
   color: #264c73 !important;
-  text-shadow: 0 -1px 1px #1a334d !important;
+  /* text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; */
 }
 .mura #frontEndTools > ul > li#adminSave > a .caret {
   border-top-color: #264c73 !important;
@@ -7352,15 +7361,16 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > ul > li a:hover,
 .mura #frontEndTools > ul > li > a:hover > i {
   color: #ffffff !important;
-  text-shadow: 0 -1px 0 #000000 !important;
+  /* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu {
-  -webkit-border-bottom-right-radius: 5px !important;
-  -moz-border-radius-bottomright: 5px !important;
-  border-bottom-right-radius: 5px !important;
-  -webkit-border-bottom-left-radius: 5px !important;
-  -moz-border-radius-bottomleft: 5px !important;
-  border-bottom-left-radius: 5px !important;
+  top: 32px;
+  -webkit-border-bottom-right-radius: 2px !important;
+  -moz-border-radius-bottomright: 2px !important;
+  border-bottom-right-radius: 2px !important;
+  -webkit-border-bottom-left-radius: 2px !important;
+  -moz-border-radius-bottomleft: 2px !important;
+  border-bottom-left-radius: 2px !important;
   -webkit-border-top-right-radius: 0 !important;
   -moz-border-radius-topright: 0 !important;
   border-top-right-radius: 0 !important;
@@ -7368,7 +7378,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   -moz-border-radius-topleft: 0 !important;
   border-top-left-radius: 0 !important;
   border: 0 !important;
-  background-color: #000 !important;
+  background: rgba(255, 255, 255, 0.13) !important;
   background: rgba(46, 46, 46, 0.97) !important;
   -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
@@ -7376,6 +7386,8 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   margin-top: 0 !important;
   margin-left: 11px !important;
   cursor: pointer !important;
+  padding-top: 0;
+  padding-bottom: 2px;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li {
   display: block !important;
@@ -7384,7 +7396,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu a {
   font-size: 12px !important;
-  color: #ffffff !important;
+  color: #CCC !important;
   padding: 5px 10px !important;
   line-height: 1.1 !important;
   float: none !important;
@@ -7397,7 +7409,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   border-radius: 0;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li > a:hover {
-  background: #000000 !important;
+  /* background: @grayDarker !important; */
   color: #ffffff !important;
   cursor: pointer !important;
 }
@@ -7410,7 +7422,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   text-align: center !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li > a:hover i {
-  color: #6699cc !important;
+  color: #ffffff !important;
 }
 .mura #frontEndTools > ul li.dropdown-submenu > .dropdown-menu {
   margin-left: 0 !important;
@@ -7466,7 +7478,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   top: -20px !important;
   left: -1px !important;
   font-weight: normal !important;
-  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  /* text-shadow: -1px -1px 0 rgba(0,0,0,.2) !important; */
   display: inline-block !important;
   *display: inline !important;
   /* IE7 inline-block hack */
