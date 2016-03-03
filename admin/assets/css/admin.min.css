@@ -28180,7 +28180,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   overflow: auto;
 }
 .mura .mura__layout-manager__controls__objects {
-  padding: 50px 0 50px 0;
+  padding: 30px 0 50px 0;
 }
 .mura *[class^="mi-"],
 .mura *[class*=" mi-"] {

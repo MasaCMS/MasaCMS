@@ -265,8 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<!---<cfset edittype=($.content('type') eq 'Variation')?'var':'inline'>--->
 							<cfset edittype='inline'>
 							<li id="adminSave" class="dropdown" style="display:none">
-								<a href="" class="dropdown-toggle btn btn-primary" onclick="return false;">
-									<i class="mi-check-circle"></i> Save</a>
+								<a href="" class="dropdown-toggle btn btn-primary" onclick="return false;">Save</a>
 								<ul class="dropdown-menu">
 									<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')>
 										<li>
