@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		</cfif>
 	</cfif>
-<div class="well">
+<div>
 </cfif>
 <div id="status-modal" class="mura-list-grid">
 	<dl>
