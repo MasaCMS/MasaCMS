@@ -382,11 +382,11 @@ a.list-group-item:hover,a.list-group-item:focus {
 }
 
 .header-navbar-transparent.header-navbar-fixed.header-navbar-scroll #header-navbar {
-  background-color: #555;
+  background-color: #3B3B3B;
 }
 
 #page-container,#sidebar {
-  background-color: #333;
+  background-color: #454545;
 }
 
 #main-container {
@@ -611,7 +611,7 @@ div.tagsinput span.tag {
  } 
 .header-search form{
   margin-bottom: 0;
-  margin-top: 7px;
+  margin-top: 3px;
 }
 .mura-search{
   display: block;
@@ -674,10 +674,53 @@ div.tagsinput span.tag {
   padding: 10px 4px 1px;
 }  
 #header-navbar{
-  min-height: 48px;
+  min-height: 32px;
+  height: 32px;
   padding-bottom: 0;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #333;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
+  
+  &.content-mini{
+    padding-top: 4px;
+  }
+
+  .mi-ellipsis-v{
+  font-size: 14px;
+  }
+
+  .btn, 
+  ul li .btn.btn-default{
+    color: #cccccc !important;
+    background: #4D4D4D !important;
+    background: rgba(255, 255, 255, 0.13) !important;
+    min-height: 24px !important;
+    height: 24px !important;
+    font-size: 12px !important;
+    line-height: 23px !important;
+    text-decoration: none !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    outline: 0 !important;
+    .border-radius(2px);
+    border: none !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    
+    a{ 
+    color: #ccc !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    }
+
+    &:hover a{
+      color:@white !important;
+    }
+
+    .button-image{
+     top: 2px !important;
+    }
+  }
+
 }
 #header-navbar .nav-header{
   padding-bottom: 0;
@@ -779,6 +822,14 @@ header .btn-image span.button-image{
 #mura-content ol.breadcrumb > :first-child{
   margin-left: 8px;
 }
+.nav-main a{
+  color: rgba(255, 255, 255, 0.8);
+}
+.nav-main a:hover{
+  color: @white;
+  background:none;
+}
+
 .nav-main li a{
   text-decoration: none;
   span{
@@ -788,6 +839,7 @@ header .btn-image span.button-image{
 }
 .nav-main ul{
   padding-left: 32px;
+  background-color: #3B3B3B;
 }
 .nav-main ul.version{
   padding-left: 20px;
