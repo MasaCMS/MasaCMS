@@ -34020,7 +34020,7 @@ ul {
 #header-navbar .dropdown-menu > .active > a:focus,
 #header-navbar .dropdown-menu > li > a:hover,
 #header-navbar .dropdown-menu > li > a:focus {
-  color: #6699cc;
+  color: #545454;
   text-decoration: none;
   outline: 0;
   background-color: #fff;
