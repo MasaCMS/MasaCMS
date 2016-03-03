@@ -360,7 +360,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-book"></i></a></li>
 							<cfif $.content('type') neq 'Variation'>
-							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="mi-mobile"></i></a>
+							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="mi-tablet"></i></a>
 							</li>
 							</cfif>
 							<!---</cfif>--->
