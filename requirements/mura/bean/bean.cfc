@@ -299,23 +299,58 @@ component extends="mura.cfobject" output="false" {
 
 				if(isValid('variableName',prop)
 					&& isdefined('properties.#prop#.fieldtype')
-					&& properties[prop].fieldtype=='one-to-many'
+					&& listFindNoCase('one-to-many,many-to-many,one-to-one',properties[prop].fieldtype)
 				){
 					propStruct=properties[prop];
-					collection=arguments.data['#prop#'];
 
-					if(isJSON(collection)){
-						collection=deserializeJSON(collection);
-					}
+					if(listFindNoCase('one-to-many,many-to-many',properties[prop].fieldtype)){
+						collection=arguments.data['#prop#'];
 
-					if(isdefined('collection.items')
-						&& isArray(collection.items)
-						&& isdefined('collection.cascade')
-						&& listFindNoCase('replace,merge',collection.cascade)){
+						if(isJSON(collection)){
+							collection=deserializeJSON(collection);
+						}
 
-						idlist='';
+						if(isdefined('collection.items')
+							&& isArray(collection.items)
+							&& isdefined('collection.cascade')
+							&& listFindNoCase('replace,merge',collection.cascade)){
 
-						for(item in collections.items){
+							idlist='';
+
+							for(item in collections.items){
+								obj=getBean(propStruct.cfc);
+								obj.setSiteID(getValue('siteid'));
+
+								if(isDefined('item.id')){
+									loadArgs={'#obj.getPrimaryKey()#'=item.id};
+								} else {
+									loadArgs={'#obj.getPrimaryKey()#'=item[obj.getPrimaryKey()]};
+								}
+
+								obj.loadBy(argumentCollection=loadArgs).set(item);
+								addObject(item);
+								idlist=listAppend(idlist,item.id);
+
+							}
+
+							if(collection.cascade=='replace'){
+								hasMany=evaluate('this.get#prop#Iterator');
+
+								if(hasMany.hasNext()){
+									obj=hasMany.next();
+									if(!listFindNoCase(idlist,obj.get(obj.getPrimaryKey()))){
+										removeObject(obj);
+									}
+
+								}
+
+							}
+						}
+
+					} else {
+						item=arguments.data['#prop#'];
+
+						if(isDefined('item.casade') && listFindNoCase('merge,replace,true',item.casade)){
 							obj=getBean(propStruct.cfc);
 							obj.setSiteID(getValue('siteid'));
 
@@ -327,23 +362,8 @@ component extends="mura.cfobject" output="false" {
 
 							obj.loadBy(argumentCollection=loadArgs).set(item);
 							addObject(item);
-							idlist=listAppend(idlist,item.id);
 
 						}
-
-						if(collection.cascade=='replace'){
-							hasMany=evaluate('this.get#prop#Iterator');
-
-							if(hasMany.hasNext()){
-								obj=hasMany.next();
-								if(!listFindNoCase(idlist,obj.get(obj.getPrimaryKey()))){
-									removeObject(obj);
-								}
-
-							}
-
-						}
-
 					}
 
 				}
