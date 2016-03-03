@@ -293,8 +293,8 @@
 				   	frontEndModalHeight=data.height;
 
 				   	utility('##frontEndToolsModaliframe').attr('src',src + '&mobileFormat=' + data.mobileformat);
-				    utility('##mura-preview-device-selector a').removeClass('mura-active');
-				    utility(this).addClass('mura-active');
+				    utility('##mura-preview-device-selector a').removeClass('active');
+				    utility(this).addClass('active');
 
 				    resizeFrontEndToolsModal(data.height);
 				    return false;
