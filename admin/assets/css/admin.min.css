@@ -25773,7 +25773,7 @@ text-shadow: 0 0 1px @blue;
   position: relative;
 }
 .mura .tabdrop {
-  width: 120px;
+  width: 10px;
 }
 .mura .nav-tabs li li i {
   visibility: hidden;
@@ -27041,8 +27041,8 @@ font-size: 12px;
 .mura #cextend h2 {
   line-height: 26px;
 }
-.mura #cextend h2 i {
-  font-size: 26px;
+.mura #cextend #newFrmclose {
+  margin-left: -2px;
 }
 .mura #cextend #editFrm1container form {
   margin-top: 36px;
@@ -31080,6 +31080,10 @@ fieldset[disabled] .btn:not([class*="btn-"]).active {
 .form-actions > .btn {
   margin-right: 15px;
 }
+.form-actions .btn {
+  background-color: #DDDEDD;
+  border-color: #BCBCBC;
+}
 #nav-module-specific {
   position: relative;
   min-height: 1px;
@@ -33627,7 +33631,8 @@ fieldset[disabled] .btn-primary.active {
   padding: 4px 8px;
   margin-top: -6px;
 }
-.mura .nav-pills + .mura-table-grid {
+.mura .nav-pills + .mura-table-grid,
+.mura .nav-pills + div.attr-add {
   margin-top: 12px;
 }
 .sidebar .nav-list li,
@@ -33831,6 +33836,7 @@ a.list-group-item:focus {
 .block > .nav-tabs li.tabdrop .dropdown-menu a:hover,
 .block > .nav-tabs > li > a:hover {
   color: #ff3405;
+  background-color: #FFF !important;
 }
 .tabdrop .dropdown-menu > .active > a,
 .tabdrop .dropdown-menu > .active > a:hover,
@@ -33857,6 +33863,7 @@ a.list-group-item:focus {
 .mura-tabs .open > a:hover,
 .mura-tabs .open > a:focus {
   border: none !important;
+  background-color: #FFF !important;
 }
 .block > .nav-tabs.nav-tabs-alt > li.tabdrop > a:hover,
 .block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a,
@@ -34157,6 +34164,10 @@ header .btn-image span.button-image {
   font-size: 15px;
   margin-bottom: 15px;
 }
+.content h2 i,
+.content h3 i {
+  margin-right: 6px;
+}
 .content .navSort {
   margin-bottom: 15px;
   font-size: .92em;
@@ -34293,7 +34304,7 @@ a.no-link {
   min-height: 2.3em;
   padding-top: .5em;
   background-color: #FFF;
-  border: 1px solid #FFF;
+  border: 1px solid #e9e9e9;
 }
 .mura-header #nav-module-specific .btn:focus,
 .sidebar-buttons .btn:focus,
@@ -34654,14 +34665,15 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   padding-top: 2px;
   border: 1px solid #EEE;
 }
-.mura-header #nav-module-specific .btn:visted,
+.mura-header #nav-module-specific .btn:visited,
 .mura-header #nav-module-specific .btn:hover,
 .mura-header #nav-module-specific .btn:active,
 .sidebar-buttons .btn:visted,
 .sidebar-buttons .btn:hover,
 .sidebar-buttons .btn:active {
-  background-color: #F5F5F5;
-  border: 1px solid #EEE;
+  color: #545454;
+  background-color: #f5f5f5 !important;
+  border-color: #e9e9e9 !important;
 }
 .mura-header .label,
 .mura-item-metadata .metadata-horizontal li,
@@ -34755,6 +34767,11 @@ p.alert,
   box-shadow: none !important;
   border: 1px solid #E7E7E7 !important;
 }
+div + .alert,
+div + p.alert,
+.content div + p.alert {
+  margin-top: 12px;
+}
 .alert-success {
   background-color: #e0f5e9;
   color: #34a263;
@@ -34816,7 +34833,7 @@ p.alert,
 a.close,
 a.close:focus,
 a.close:hover {
-  color: #545454;
+  color: #949494;
 }
 #mura-content form .alert {
   clear: left;
@@ -35086,10 +35103,21 @@ fieldset[disabled] a.ui-dialog-buttonset .ui-button-text-only .ui-button-text {
   margin-left: 5px;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
-  background-color: #FFF;
+  background-color: #DDDEDD;
+  border-color: #BCBCBC !important;
+  padding: 0 6px;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover {
   background-color: #FFF;
+}
+.mura .ui-dialog .ui-dialog-titlebar-close,
+.mura .ui-dialog .ui-dialog-titlebar-close:focus,
+.mura .ui-dialog .ui-dialog-titlebar-close:hover {
+  color: #949494;
+  opacity: 1;
+}
+.mura .ui-dialog .ui-dialog-titlebar-close:before {
+  font-size: 18px;
 }
 #tabArchitectural #gridContainer .overflow-wrap {
   overflow-x: auto;
