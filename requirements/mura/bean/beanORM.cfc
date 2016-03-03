@@ -833,7 +833,7 @@ component extends="mura.bean.bean" versioned=false {
 				}
 
 				for(prop in getProperties()){
-					if(isValid('uuid',item.getValue(prop))){
+					if(isSimpleValue(item.getValue(prop)) && isValid('uuid',item.getValue(prop)) ){
 						item.setValue(prop,arguments.keyFactory.get(item.getValue(prop)));
 					}
 
