@@ -34833,7 +34833,7 @@ div + p.alert,
 a.close,
 a.close:focus,
 a.close:hover {
-  color: #545454;
+  color: #949494;
 }
 #mura-content form .alert {
   clear: left;
@@ -35113,7 +35113,7 @@ fieldset[disabled] a.ui-dialog-buttonset .ui-button-text-only .ui-button-text {
 .mura .ui-dialog .ui-dialog-titlebar-close,
 .mura .ui-dialog .ui-dialog-titlebar-close:focus,
 .mura .ui-dialog .ui-dialog-titlebar-close:hover {
-  color: #545454;
+  color: #949494;
   opacity: 1;
 }
 .mura .ui-dialog .ui-dialog-titlebar-close:before {
