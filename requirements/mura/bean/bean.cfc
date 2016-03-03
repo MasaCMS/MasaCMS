@@ -325,6 +325,11 @@ component extends="mura.cfobject" output="false" {
 		}
 
 		var prop='';
+		var properties=getProperties();
+		var collection='';
+		var item='';
+		var propStruct={};
+
 		if(isQuery(arguments.data) and arguments.data.recordcount){
 			for(var i=1;i<=listLen(arguments.data.columnlist);i++){
 				prop=listgetAt(arguments.data.columnlist,i);
@@ -334,9 +339,26 @@ component extends="mura.cfobject" output="false" {
 		} else if(isStruct(arguments.data)){
 			for(prop in arguments.data){
 				if ( IsSimpleValue(prop) && !isNull(arguments.data[prop]) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
-					setValue(prop,arguments.data['#prop#']);
-				} else if(!isNull(arguments.data[prop]) && arguments.data[prop].fieldtype=='one-to-many'){
-					//setValue(prop,arguments.data['#prop#']);
+					if(isValid('variableName',prop)
+						&& isdefined('properties.#prop#.fieldtype')
+						&& properties[prop].fieldtype=='one-to-many'
+					){
+						propStruct=properties[prop];
+						collection=arguments.data['#prop#'];
+
+						if(isJSON(collection)){
+							collection=deserializeJSON(collection);
+						}
+
+						if(isdefined('collection.cascade') && listFindNoCase('replace,merge',collection.cascade)){
+
+
+
+						}
+
+					} else {
+						setValue(prop,arguments.data['#prop#']);
+					}
 				}
 			}
 		}
