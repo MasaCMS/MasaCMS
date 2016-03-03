@@ -29028,6 +29028,193 @@ fieldset[disabled] .mura body.modal-wrapper .form-actions .btn.active {
   border-color: #4882cc;
   background-image: none !important;
 }
+.mura .mura-list-grid {
+  vertical-align: top;
+}
+.mura .mura-list-grid dl {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  background: #cccccc;
+  width: 46%;
+  min-height: 100px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 9px 2%;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  vertical-align: top;
+}
+.mura .mura-list-grid dl:nth-child(even) {
+  margin-right: 0;
+}
+.mura .mura-list-grid dl:nth-child(5) {
+  width: 97%;
+}
+.mura .mura-list-grid dl.created-on p {
+  padding: 6px 0 0;
+  line-height: 18px;
+}
+.mura .mura-list-grid dl.ac-comments > dl > dd > p {
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+}
+.mura .mura-list-grid dl.ac-comments > dl > dd > p + em {
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 0;
+  font-weight: normal;
+}
+.mura .mura-list-grid dl dt {
+  background: #404040;
+  margin: 0;
+  color: #f7f7f7;
+  line-height: 1;
+  padding: 8px 1em;
+  text-transform: uppercase;
+  font-size: 12px;
+  text-align: left;
+  font-weight: normal;
+  -webkit-border-top-right-radius: 2px;
+  -moz-border-radius-topright: 2px;
+  border-top-right-radius: 2px;
+  -webkit-border-top-left-radius: 2px;
+  -moz-border-radius-topleft: 2px;
+  border-top-left-radius: 2px;
+}
+.mura .mura-list-grid dl dd {
+  padding: 1em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+  color: #404040;
+  text-align: left;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: bold;
+}
+.mura .mura-list-grid dl dd i {
+  font-size: 45px;
+  float: left;
+  margin: 0 12px 0 0;
+  vertical-align: middle;
+}
+.mura .mura-list-grid dl dd i.icon-calendar,
+.mura .mura-list-grid dl dd i.icon-list {
+  font-size: 42px;
+}
+.mura .mura-list-grid dl dd p {
+  padding: 14px 0;
+  line-height: 1;
+  margin: 0;
+}
+.mura .mura-list-grid dl dd label + p {
+  font-size: 12px;
+  padding: 10px 0;
+}
+.mura .mura-list-grid dl dd textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 9px;
+}
+.mura .mura-list-grid dl.approval-status em {
+  font-size: 12px;
+  font-weight: normal;
+  margin: 0 0 -6px;
+}
+.mura .mura-list-grid dl.approval-status em + p {
+  padding: 0;
+  margin-top: -3px;
+}
+.mura .mura-list-grid dl.approval-action-form .radio.inline {
+  padding-top: 0;
+}
+.mura .mura-list-grid dl.approval-action-form .btn {
+  float: right;
+  margin-bottom: 18px;
+}
+.mura #status-modal.mura-list-grid .status-locked i {
+  color: #b90e0e;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments,
+.mura #status-modal.mura-list-grid .approval-action-form {
+  float: none;
+  width: 97%;
+  min-height: 0;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd {
+  padding: 9px 1em;
+  margin: 9px 0;
+  border-top: 1px solid #e6e6e6;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd:first-of-type {
+  margin-top: 0;
+  border: 0;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd > strong {
+  background: #404040;
+  padding: 4px 8px;
+  margin: 9px 0 0 0;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: normal;
+  color: #ffffff;
+  text-shadow: none;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd > strong > i {
+  font-size: 14px;
+  margin-right: .2em;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd > strong.approved {
+  background: green;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd > strong.rejected {
+  background: red;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd > strong.canceled {
+  background: #999999;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd > em {
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd > i {
+  font-size: 20px;
+  line-height: 36px;
+}
+.mura #status-modal.mura-list-grid .approval-chain-comments > dd > p {
+  line-height: 1.4;
+  font-size: 12px;
+  font-weight: normal;
+  padding: 9px 0 0;
+  margin-bottom: 0;
+}
+.mura #status-modal.mura-list-grid .approval-action-form {
+  margin-bottom: 9px;
+}
+.mura #status-modal.mura-list-grid .approval-action-form .btn {
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: normal;
+}
 .mura .add-content-ui ul {
   list-style: none;
   margin: 0 0 -8px;

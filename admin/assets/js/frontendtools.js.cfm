@@ -304,7 +304,7 @@
 				resizeFrontEndToolsModal(frontEndModalHeight);
 			} else{
 				frontEndModalHeight=0;
-				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+50) + "px")
+				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+70) + "px")
 				resizeFrontEndToolsModal(0);
 			}
 		} else {

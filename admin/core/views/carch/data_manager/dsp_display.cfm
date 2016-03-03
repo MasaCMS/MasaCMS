@@ -45,6 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
+<!--- TODO GoWest : THIS MARKUP carch.datamanager edit display --->
+
 <cfsilent>
 <cfset detailList = Left(rc.contentBean.getResponseDisplayFields(), 1) neq '~' ? ListFirst(rc.contentBean.getResponseDisplayFields(), '~') : ''>
 <cfset summaryList = Right(rc.contentBean.getResponseDisplayFields(), 1) neq '~' ? ListLast(rc.contentBean.getResponseDisplayFields(), '~') : ''>

@@ -51,8 +51,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <form novalidate="novalidate" name="form1" action="index.cfm" method="post">
 
-
-
 <cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
 
 <div class="control-group">
