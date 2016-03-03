@@ -212,7 +212,7 @@
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 	overflow: visible !important;
 	.box-shadow(0 1px 5px rgba(0,0,0,.6)) !important;
-	padding-top: 8px;
+
 }
 
 #frontEndTools > ul {
@@ -220,19 +220,19 @@
 	list-style: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	/* border-right: 1px solid hsla(0,0,.19,.85) !important; */
-	border:none;
+	border-right: 1px solid hsla(0,0,.19,.85) !important;
+
 	overflow: visible !important;
 	float: left !important;
 
 	&:first-child {
 		margin: 0 0 0 37px !important;
-		border-left: none;
+		border-left: 0;
 	}
 
 	&:last-child {
 		float: right !important;
-		border-right: none !important;
+		border-right: 0 !important;
 	}
 }
 
@@ -266,7 +266,7 @@
 		}
 
 	&:last-child {
-		border-right: none !important;
+		border-right: 1px solid hsla(0,0,.33,.85) !important;
 		padding-right: 1em !important;
 		}
 
@@ -274,8 +274,8 @@
 	display: block !important;
 	color: @gray !important;
 	background: #4D4D4D !important;
-	/* background: rgba(255,255,255,.13) !important; */
-	background: transparent !important;
+	background: rgba(255,255,255,.13) !important;
+
 	font-size: 12px !important;
 	height: 28px !important;
 	line-height: 23px !important;
@@ -310,6 +310,10 @@
 
 	}
 
+
+
+
+
 	.caret {
 			border-top-color: rgba(255,255,255,.25) !important;
 			margin-left: 3px !important;
@@ -331,7 +335,7 @@
 #frontEndTools > #tools-status > li {
 
 	padding-right: 1em !important;
-	border-right: none !important;
+	border-right: 1px solid hsla(0,0,.33,.85) !important;
 
 	> a {
 		border: 0 !important;
@@ -420,8 +424,9 @@
 	a {
 		background: transparent !important;
 		font-size: 13px !important;
-		line-height: 38px !important;
+
 		border: 0 !important;
+		line-height: 38px !important;
 		padding: 0 !important;
 		color: lighten(@grayDark,20%) !important;
 		}
@@ -496,13 +501,13 @@
 		.border-top-radius(0) !important;
 		border: 0 !important;
 		background-color: #000 !important;
-		background: hsla(0,0%,18%,.97) !important;
-		.box-shadow(0 4px 6px rgba(0,0,0,.50)) !important;
-		text-align: left !important;
-		margin-top: 0 !important;
-		margin-left: 11px !important;
+    	background: hsla(0,0%,18%,.97) !important;
+    	.box-shadow(0 4px 6px rgba(0,0,0,.50)) !important;
+    	text-align: left !important;
+    	margin-top: 0 !important;
+    	margin-left: 11px !important;
 		cursor: pointer !important;
-		top: 32px;	
+
 
 		li {
 			display: block !important;
@@ -671,3 +676,4 @@
 
 //Commented out in ckeditor.js
 //.cke_editable form { border: 1px dotted red; padding: 2px; }
+ 
