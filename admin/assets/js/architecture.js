@@ -1468,7 +1468,7 @@ buttons: {
 
 			if(customtaggroups.length){
 				for(var g=0;g < customtaggroups.length; g++){
-					
+
 					if(window[customtaggroups[g]]){
 						$('#' + customtaggroups[g] + 'tags').tagSelector(window[customtaggroups[g]], customtaggroups[g] + 'tags');
 					}else{
@@ -1943,11 +1943,12 @@ buttons: {
 		function(event) {
 			event.preventDefault();
 
-			$(this).data('clicked',!$(this).data('clicked'));
+			//$(this).data('clicked',!$(this).data('clicked'));
 
+			/*
 		    if ($(this).data('clicked'))
 		        {
-
+				*/
 				var node = $(this).parents("li:first");
 				var cattrim = node.attr("data-cattrim");
 
@@ -2010,9 +2011,11 @@ buttons: {
 				  dataType: 'text'
 				});
 
+			/*
 			} else {
 				siteManager.closeQuickEdit();
 			}
+			*/
 		});
 	},
 
@@ -2034,7 +2037,6 @@ buttons: {
 			siteid: siteid
 		};
 
-		//alert(JSON.stringify(categoryAssignment));
 		$("#mura-quickEditor").html('<img class="loader" src="assets/images/ajax-loader-alt.gif" />');
 
 		$.ajax({
