@@ -1893,24 +1893,44 @@
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams(),customBodyRender=true)}>
+			<cfset var params=$.content().getObjectParams()>
+			<cfif not isdefined('params.objectname')>
+				<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+				<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+			</cfif>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,customBodyRender=true)}>
 		</cfif>
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams(),customBodyRender=true)}>
+		<cfset var params=$.content().getObjectParams()>
+		<cfif not isdefined('params.objectname')>
+			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+		</cfif>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,customBodyRender=true)}>
 		</cfif>
 
 		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams(),customBodyRender=true)}>
+		<cfset var params=$.content().getObjectParams()>
+		<cfif not isdefined('params.objectname')>
+			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+		</cfif>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,customBodyRender=true)}>
 		</cfif>
 
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey) and arguments.$.siteConfig().getDisplayObject(displayObjectKey).custom>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams(),customBodyRender=true)}>
+		<cfset var params=$.content().getObjectParams()>
+		<cfif not isdefined('params.objectname')>
+			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+		</cfif>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,customBodyRender=true)}>
 		</cfif>
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
