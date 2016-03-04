@@ -282,7 +282,7 @@
 		//params=params || {};
 
 		params=mura.deepExtend({},params);
-		
+
 		if(!('type' in params)){
 			params.type='GET';
 		}
@@ -316,7 +316,7 @@
 		}
 
 		for(var p in params){
-			if(typeof p == 'object'){
+			if(typeof params[p] == 'object'){
 				params[p]=JSON.stringify(params[p]);
 			}
 		}
