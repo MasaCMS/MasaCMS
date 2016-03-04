@@ -34218,7 +34218,7 @@ ul {
 }
 #header-navbar .btn,
 #header-navbar ul li .btn.btn-default {
-  color: #8F8F8F !important;
+  color: #545454 !important;
   background: #4D4D4D !important;
   background: rgba(230, 230, 230, 0.8) !important;
   min-height: 32px !important;
@@ -34244,12 +34244,17 @@ ul {
 #header-navbar ul li .btn.btn-default:hover a {
   color: #333 !important;
 }
-#header-navbar .btn .button-image,
-#header-navbar ul li .btn.btn-default .button-image {
-  top: 2px !important;
-}
 #header-navbar .nav-header {
   padding-bottom: 0;
+}
+#header-navbar .dropdown-menu.mura-user-tools {
+  min-width: 133px;
+  width: 133px;
+}
+#header-navbar #site-selector-list.dropdown-menu {
+  width: auto;
+  min-width: auto;
+  padding-right: 12px;
 }
 #header-navbar .dropdown-menu > .active > a,
 #header-navbar .dropdown-menu > .active > a:hover,
@@ -34469,6 +34474,9 @@ div.cke_editable {
 #select-site-btn i,
 #site-selector-list li a i {
   margin-right: 3px;
+}
+#header-navbar .btn .button-image + .caret {
+  margin-left: 8px;
 }
 .block-constrain > * {
   max-width: 1140px;
