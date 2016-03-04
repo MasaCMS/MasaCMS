@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif rc.type eq 'Component'>
 		<div class="mura-control-group">
-	      	<label class="mura-control-label">
+	      	<label>
 	      		<cfoutput>
 						<span data-toggle="popover" title="" data-placement="right"
 				  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#"
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- Use site useSSL sitewide setting instead --->
 	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and not rc.$.siteConfig('useSSL')>
 		<div class="mura-control-group">
-		    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
+		    <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 	      	<label for="forceSSL" class="checkbox">
 	      	<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox">
 								<span data-toggle="popover" title="" data-placement="right"
@@ -155,25 +155,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</h2>
      <!--- <div id="editRemote"> --->
 		<div class="mura-control-group">
- 	 	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
+ 	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
  	 	<input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255">
 	     	 	</div>
 
 		<div class="mura-control-group">
- 	 	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
+ 	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
   		<input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255">
    		</div>
 
 
 		<div class="mura-control-group">
-     	 	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
+     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
       		<input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255">
      	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#</label>
       		<input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255">
 		 </div>
 
     	<div class="mura-control-group">
-     	 	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
+     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
       		<input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255">
     	</div>
 	</cfif>

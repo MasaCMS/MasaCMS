@@ -55,7 +55,7 @@
 
 <cfoutput>
 <div class="mura-control-group">
-	<label class="mura-control-label">
+	<label>
 		<span data-toggle="popover" title="" data-placement="right"
 	  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent"))#"
 	  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.display"))#">
@@ -73,14 +73,14 @@
 <div id="editDates"  <cfif rc.contentBean.getdisplay() NEQ 2>style="display: none;"</cfif>>
 	<div class="mura-control-group">
 		<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
-		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 		<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">
 		<span id="displayIntervalToLabel">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</span>
 		<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
 	</div>
 	<cfif len(rc.$.globalConfig('tzRegex'))>
 	<div id="mura-tz-container mura-control-group" style="display:none">
-		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
 		<cfset tz=CreateObject("java", "java.util.TimeZone")>
 		<cfset defaultTZ=tz.getDefault().getID()>
 		<cfset timezones=tz.getAvailableIDs()>
@@ -131,7 +131,7 @@
 	</div><!-- /mura-repeat-options -->
 
 	<div class="mura-daysofweek mura-control-group" style="display:none">
-		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ondow')#</label>
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ondow')#</label>
 		<cfset daysofweekshortlabels=application.rbFactory.getKeyValue(session.rb,'calendar.weekdayAbrev')>
 		<input class="mura-repeat-option" id="dow1" name="displayIntervalDays" type="checkbox" value="1"<cfif listFind(displayInterval.daysofweek,1)> checked</cfif>/> #listGetAt(daysofweekshortlabels,1)#
 		<input class="mura-repeat-option" id="dow2" name="displayIntervalDays" type="checkbox" value="2"<cfif listFind(displayInterval.daysofweek,2)> checked</cfif>/> #listGetAt(daysofweekshortlabels,2)#
@@ -142,7 +142,7 @@
 		<input class="mura-repeat-option" id="dow7" name="displayIntervalDays" type="checkbox" value="7"<cfif listFind(displayInterval.daysofweek,7)> checked</cfif>/> #listGetAt(daysofweekshortlabels,7)#
 	</div>
 	<div class="mura-repeat-options mura-control-group" style="display:none">
-		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends')#</label>
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends')#</label>
 		<select id="displayIntervalEnd" name="displayIntervalEnd" class="span2 mura-repeat-option">
 			<option value="never" <cfif displayInterval.end eq 'never'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.never')#</option>
 			<option value="after"<cfif displayInterval.end eq 'after'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.after')#</option>
@@ -168,7 +168,7 @@
 	</div>
 
 	<div class="mura-control-group" id="mura-detectspan-container"<cfif displayInterval.detectconflicts> style="display:none;"</cfif>>
-		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.for')#</label>
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.for')#</label>
 		<select id="mura-detectspan" class="mura-repeat-option">
 			<cfloop from="1" to="12" index="m">
 				<option value="#m#"<cfif m eq displayInterval.detectspan> selected</cfif>>
