@@ -1232,6 +1232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="configuratorInit" default="">
 	<cfargument name="configuratorJS" default="">
 	<cfargument name="contenttypes" default="">
+	<cfargument name="omitcontenttypes" default="">
 	<cfargument name="condition" default="true">
     <cfargument name="legacyObjectFile" default="">
 	<cfargument name="custom" default="true">

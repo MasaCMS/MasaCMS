@@ -13,7 +13,12 @@
 	<cfparam name="rc.objectname" default="">
 
 	<cfif not len(rc.objectname) and len(rc.object) gt 1>
-		<cfset rc.objectname=ucase(left(rc.object,1)) & right(rc.object,len(rc.object)-1)>
+		<cfif rc.$.siteConfig().hasDisplayObject(rc.object)>
+			<cfset objectDef=rc.$.siteConfig().getDisplayObject(rc.object)>
+			<cfset rc.objectname=objectDef.name>
+		<cfelse>
+			<cfset rc.objectname=ucase(left(rc.object,1)) & right(rc.object,len(rc.object)-1)>
+		</cfif>
 	</cfif>
 </cfsilent>
 <cfinclude template="js.cfm">

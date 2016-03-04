@@ -22,9 +22,13 @@
 						<cfset objectKeys=listSort(structKeylist(displayObjects),'textNoCase')>
 						<cfloop list="#objectKeys#" index="key">
 							<cfif (displayobjects['#key#'].contenttypes eq '*'
-							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type'))
-							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type') & '/' & $.content('subtype'))
-							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('subtype'))
+								or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type'))
+								or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type') & '/' & $.content('subtype'))
+								or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('subtype'))
+							) and not (
+								 listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('type'))
+								or listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('type') & '/' & $.content('subtype'))
+								or listFindNoCase(displayobjects['#key#'].omitcontenttypes,$.content('subtype'))
 							)
 							and evaluate(displayobjects['#key#'].condition)>
 								#contentRendererUtility.renderObjectClassOption(
