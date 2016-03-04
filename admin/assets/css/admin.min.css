@@ -28446,9 +28446,10 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura body.modal-wrapper #frontEndToolsModalClose {
   float: right;
-  font-size: 22px;
-  color: #454545;
+  font-size: 18px;
+  color: #545454;
   line-height: 1em;
+  margin-top: 2px;
 }
 .mura body.modal-wrapper #mura-content {
   padding: 15px !important;
