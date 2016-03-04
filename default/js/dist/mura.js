@@ -1802,6 +1802,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		//params=params || {};
 
+		params=mura.deepExtend({},params);
+		
 		if(!('type' in params)){
 			params.type='GET';
 		}
@@ -1832,6 +1834,12 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		if(!('headers' in params)){
 			params.headers={};
+		}
+
+		for(var p in params){
+			if(typeof p == 'object'){
+				params[p]=JSON.stringify(params[p]);
+			}
 		}
 
 		var request = new XMLHttpRequest();
