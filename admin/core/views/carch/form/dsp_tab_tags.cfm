@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfoutput>
    		<div id="tags" class="mura-control justify tagSelector">
 			<div class="mura-control-group">
-			   	<label class="mura-control-label">
+			   	<label>
 			   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
 			   	</label>
 				<input type="text" name="tags">
@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset g=trim(g)>
 		<div id="#g#tags" class="mura-control justify tagSelector">
 			<div class="mura-control-group">
-			   	<label class="mura-control-label">
+			   	<label>
 			   		#g# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#
 			   	</label>
 				<input type="text" name="#g#tags">

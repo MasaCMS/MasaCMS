@@ -180,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>
 		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
 		<div id="bodyContainer" class="body-container mura-control-group" style="display:none;">
-		<label class="mura-control-label">
+		<label>
       		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
       	</label>
 		<cfif rsPluginEditor.recordcount>
@@ -294,7 +294,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfelseif rc.type eq 'Link'>
 		<div class="mura-control-group">
-		     <label class="mura-control-label">
+		     <label>
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.url")#
 	      	</label>
      	 	<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
@@ -322,7 +322,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rc.type eq 'Component'>
 		<div class="mura-control-group">
-		    <label class="mura-control-label">
+		    <label>
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.componentassign')#
 	      	</label>
 			<label for="m1" class="checkbox inline">
@@ -349,19 +349,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rc.type eq 'Form'>
 		<div class="mura-control-group body-container" style="display:none">
-			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
+			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 			<label for="rc" class="checkbox">
       			<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
       		</label>
 		</div>
 		<div class="mura-control-group body-container" style="display:none">
-			<label class="mura-control-label">
+			<label>
 			 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 			</label>
 			<textarea name="responseMessage" rows="6" class="span12">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
 		</div>
 		<div class="mura-control-group">
-			<label class="mura-control-label">
+			<label>
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 			</label>
 			<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#" class="span12">

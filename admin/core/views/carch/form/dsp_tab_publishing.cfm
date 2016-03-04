@@ -28,7 +28,7 @@
 
   	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 		<div class="mura-control-group">
-	      <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
+	      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
 	      <input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255" class="span12">
 	    </div> <!--- /end mura-control-group --->
 
@@ -93,7 +93,7 @@
 		</div> <!--- /end mura-control-group --->
 
 		<div class="mura-control-group">
-		    <label class="mura-control-label">
+		    <label>
 		    	<span data-toggle="popover" title="" data-placement="right"
 			    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#"
 			    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.releasedate"))#"
@@ -112,7 +112,7 @@
 		</cfif>
 		<cfif (rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form' and rc.type neq 'Variation') >
 			<div class="mura-control-group">
-	      		<label class="mura-control-label">
+	      		<label>
 		  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 		  			<span id="mover1" class="text">
 		  				<cfif arrayLen(rc.crumbData)>
@@ -163,7 +163,7 @@
 
 	<cfif listFind("Page,Folder,Calendar,Gallery,Link,File,Link",rc.type)>
 		<div class="mura-control-group">
-			<label class="mura-control-label">
+			<label>
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#
 	      	</label>
 	     	<cf_datetimeselector name="expires" datetime="#rc.contentBean.getExpires()#" defaulthour="23" defaultminute="59">
@@ -180,7 +180,7 @@
 	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
 		<div class="mura-control-group">
 
-			 <label class="mura-control-label">
+			 <label>
 			     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
 			</label>
 	    	<select name="isFeature" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
@@ -199,7 +199,7 @@
 	</cfif>
 
 	<div class="mura-control-group">
-		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreviewlabel')#</label>
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreviewlabel')#</label>
    		<label for="dspnotify" class="checkbox">
       		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contentid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
 			<span data-toggle="popover" title="" data-placement="right"
@@ -213,7 +213,7 @@
 	</div> <!--- /end mura-control-group --->
 
 	<div class="mura-control-group">
-		<label class="mura-control-label">
+		<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <!--- <a href="" id="editNoteLink" onclick="toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a> --->
 		</label>
 			<!--- M7 removed since show/hide behavior is commented out... remove both? --->
