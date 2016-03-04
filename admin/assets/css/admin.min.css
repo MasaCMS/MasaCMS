@@ -28237,6 +28237,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura .mura-sidebar__object-group-items {
   padding: 0;
   background-color: #454545;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
   border-radius: 2px;
 }
 .mura .mura-sidebar__object-group-items select,
@@ -28329,9 +28331,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   background-image: none !important;
 }
 .mura body.configurator-wrapper #configuratorContainer .btn:not([class*="btn-"]) {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   background-image: none;
   text-shadow: none;
   color: #A4A4A4;
@@ -28444,9 +28446,10 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura body.modal-wrapper #frontEndToolsModalClose {
   float: right;
-  font-size: 22px;
-  color: #454545;
+  font-size: 18px;
+  color: #545454;
   line-height: 1em;
+  margin-top: 2px;
 }
 .mura body.modal-wrapper #mura-content {
   padding: 15px !important;

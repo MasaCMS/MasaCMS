@@ -2628,6 +2628,8 @@ i {
 .mura .mura-sidebar__object-group-items {
   padding: 0;
   background-color: #454545;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
   border-radius: 2px;
 }
 .mura .mura-sidebar__object-group-items select,
@@ -2720,9 +2722,9 @@ i {
   background-image: none !important;
 }
 .mura body.configurator-wrapper #configuratorContainer .btn:not([class*="btn-"]) {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   background-image: none;
   text-shadow: none;
   color: #A4A4A4;
