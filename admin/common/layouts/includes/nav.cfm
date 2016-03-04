@@ -125,7 +125,7 @@
                     <!--- site manager --->
                     <cfset isInSiteManager=listFindNoCase('carch,cfeed,ccategory,cchangesets,cfilemanager,ccomments,cmailinglist,cemail,cadvertising',rc.originalcircuit) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))>
                     <li id="admin-nav-manager"<cfif isInSiteManager> class="open"</cfif>>
-                        <a data-toggle="nav-submenu" class="nav-submenu" href="./">
+                        <a data-toggle="nav-submenu" class="nav-submenu" href="#application.configBean.getContext()#/admin/">
                             <i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitemanager")#</span>
                         </a>
 						<ul>
@@ -218,7 +218,7 @@
 
                             <!--- File Manager --->
                             <li>
-                            <a<cfif rc.originalcircuit eq 'cFilemanager'> class="active"</cfif> href="./?muraAction=cFilemanager.default&amp;siteid=#session.siteid#">
+                            <a<cfif rc.originalcircuit eq 'cFilemanager'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cFilemanager.default&amp;siteid=#session.siteid#">
                               <i class="mi-cog"></i>
                               #application.rbFactory.getKeyValue(session.rb,"layout.filemanager")#
                             </a>
@@ -342,7 +342,7 @@ and
 /admin/?muraAction=cSettings.list#tabPlugins
  : 2015-12-15T11:20:07-07:00 --->
 
-                            <a class="nav-submenu<cfif isSiteConfig> active</cfif>" data-toggle="nav-submenu" href="index.cfm"><i class="mi-wrench"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitesettings")#</span></a>
+                            <a class="nav-submenu<cfif isSiteConfig> active</cfif>" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/"><i class="mi-wrench"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitesettings")#</span></a>
 
                             <ul>
                                 <!--- edit site --->
@@ -466,7 +466,7 @@ and
 <!--- TODO GoWest : active states for all settings links : 2015-12-15T11:35:55-07:00 --->
                     <cfif listFind(session.mura.memberships,'S2')>
                         <li id="admin-nav-global">
-                            <a class="nav-submenu" data-toggle="nav-submenu" href="index.cfm"><i class="mi-cogs"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.globalconfig")#</span></a>
+                            <a class="nav-submenu" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/"><i class="mi-cogs"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.globalconfig")#</span></a>
 
                             <ul>
                                 <!--- global settings --->
@@ -503,7 +503,7 @@ and
                     </cfif>
                     <!--- help --->
                     <li id="admin-nav-help">
-                        <a class="nav-submenu" data-toggle="nav-submenu" href="index.cfm"><i class="mi-question-circle"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.help")#</span></a>
+                        <a class="nav-submenu" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/"><i class="mi-question-circle"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.help")#</span></a>
 
                         <ul>
                             <!--- docs --->
@@ -530,7 +530,7 @@ and
                     </li>
                     <!--- version --->
                     <li>
-                        <a class="nav-submenu" data-toggle="nav-submenu" href="index.cfm"><i class="mi-info-circle"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.version")#</span></a>
+                        <a class="nav-submenu" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/"><i class="mi-info-circle"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.version")#</span></a>
                         <ul class="version">
                             <li class="divider"></li>
                             <!--- core version --->
