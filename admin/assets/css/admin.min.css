@@ -34328,6 +34328,10 @@ header .btn-image span.button-image {
   width: 30px;
   font-size: 18px;
 }
+.mura form .mura-control-group > * + .help-block {
+  clear: both;
+  padding: 2px 12px 2px 0;
+}
 #mura-search-submit {
   cursor: pointer;
 }
