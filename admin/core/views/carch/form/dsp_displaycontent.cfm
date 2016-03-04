@@ -47,7 +47,7 @@
 --->
 <cfset rc.ptype=rc.contentBean.getParent().getType()>
 
-<cfif rc.contentBean.getIsNew() and rc.ptype eq 'Calendar'>
+<cfif rc.contentBean.getIsNew() and rc.parentBean.getType() eq 'Calendar'>
 	<cfset rc.contentBean.setDisplay(2)>
 </cfif>
 
@@ -143,7 +143,7 @@
 	</div>
 	<div class="mura-repeat-options mura-control-group" style="display:none">
 		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends')#</label>
-		<select id="displayIntervalEnd" name="displayIntervalEnd" class="span2 mura-repeat-option">
+		<select id="displayIntervalEnd" name="displayIntervalEnd" class="span3 mura-repeat-option">
 			<option value="never" <cfif displayInterval.end eq 'never'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.never')#</option>
 			<option value="after"<cfif displayInterval.end eq 'after'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.after')#</option>
 			<option value="on"<cfif displayInterval.end eq 'on'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.on')#</option>
@@ -381,6 +381,7 @@
 			if($('##displayIntervalRepeats').is(':checked')){
 				$('.mura-repeat-options').show();
 				setDaysOfWeekDefault();
+				/*
 				$('##mura-datepicker-displayStop').hide();
 
 				$('##mura-datepicker-displayStart')
@@ -389,18 +390,21 @@
 				$('##mura-datepicker-displayStop')
 					.removeClass('span2')
 					.addClass('span3');
-
+				*/
 			} else {
 				$('.mura-repeat-options').hide();
-				$('##mura-datepicker-displayStop').show();
+				//$('##mura-datepicker-displayStop').show();
 				$('##displayIntervalType').val('daily');
 
+				/*
 				$('##mura-datepicker-displayStart')
 					.removeClass('span3')
 					.addClass('span2');
+
 				$('##mura-datepicker-displayStop')
 					.removeClass('span3')
 					.addClass('span2');
+				*/
 
 				if($('##displayIntervalEndOn').val()){
 					$('##displayIntervalEnd').val('on');
@@ -424,6 +428,9 @@
 			}
 
 		}
+
+		$('##mura-datepicker-displayStop').hide();
+		//$('##displayIntervalToLabel').hide();
 
 		$('.mura-repeat-option').on('change',updateDisplayInterval);
 		$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
