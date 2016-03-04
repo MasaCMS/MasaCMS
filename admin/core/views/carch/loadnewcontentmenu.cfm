@@ -83,12 +83,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					or rc.$.currentUser().isSuperUser()
 					))>
 					<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
-						<li class="new#i#">
-							<cfif len(rsItemTypes.description)>
-								<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a>
+						<cfif i neq 'Form'>
+							<li class="new#i#">
+								<cfif len(rsItemTypes.description)>
+									<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a>
+								</cfif>
+								<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=#esapiEncode('url',rc.moduleid)#&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</span></a>
+							</li>
+						<cfelse>
+							<li class="new#i#">
+								<cfif len(rsItemTypes.description)>
+									<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a>
+								</cfif>
+								<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=#esapiEncode('url',rc.moduleid)#&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#&formType=builder" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addform")#</span></a>
+							</li>
+							<cfif application.configBean.getValue('allowSimpleHTMLForms')>
+							<li class="new#i#simple">
+								<cfif len(rsItemTypes.description)>
+									<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a>
+								</cfif>
+								<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=#esapiEncode('url',rc.moduleid)#&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#&formType=editor" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addformsimple")#</span></a>
+							</li>
 							</cfif>
-							<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=#esapiEncode('url',rc.moduleid)#&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</span></a>
-						</li>
+						</cfif>
 					</cfif>
 				</cfif>
 				<cfif i eq 'Form'>
