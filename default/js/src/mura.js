@@ -281,8 +281,6 @@
 
 		//params=params || {};
 
-		params=mura.deepExtend({},params);
-
 		if(!('type' in params)){
 			params.type='GET';
 		}
@@ -299,6 +297,14 @@
 			params.data={};
 		}
 
+		params.data=mura.deepExtend({},params.data);
+
+		for(var p in params.data){
+			if(typeof params.data[p] == 'object'){
+				params.data[p]=JSON.stringify(params.data[p]);
+			}
+		}
+
 		if(!('xhrFields' in params)){
 			params.xhrFields={ withCredentials: true };
 		}
@@ -313,16 +319,6 @@
 
 		if(!('headers' in params)){
 			params.headers={};
-		}
-
-		for(var p in params){
-			if(typeof params[p] == 'object'){
-				console.log(p);
-				console.log(typeof params[p]);
-				console.log(params[p]);
-
-				params[p]=JSON.stringify(params[p]);
-			}
 		}
 
 		var request = new XMLHttpRequest();

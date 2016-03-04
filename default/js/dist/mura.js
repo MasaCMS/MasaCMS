@@ -1802,8 +1802,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		//params=params || {};
 
-		params=mura.deepExtend({},params);
-
 		if(!('type' in params)){
 			params.type='GET';
 		}
@@ -1820,6 +1818,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			params.data={};
 		}
 
+		params.data=mura.deepExtend({},params.data);
+
+		for(var p in params.data){
+			if(typeof params.data[p] == 'object'){
+				params.data[p]=JSON.stringify(params.data[p]);
+			}
+		}
+
 		if(!('xhrFields' in params)){
 			params.xhrFields={ withCredentials: true };
 		}
@@ -1834,16 +1840,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		if(!('headers' in params)){
 			params.headers={};
-		}
-
-		for(var p in params){
-			if(typeof params[p] == 'object'){
-				console.log(p);
-				console.log(typeof params[p]);
-				console.log(params[p]);
-
-				params[p]=JSON.stringify(params[p]);
-			}
 		}
 
 		var request = new XMLHttpRequest();
