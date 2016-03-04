@@ -1838,6 +1838,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		for(var p in params){
 			if(typeof params[p] == 'object'){
+				console.log(p);
+				console.log(typeof params[p]);
+				console.log(params[p]);
+
 				params[p]=JSON.stringify(params[p]);
 			}
 		}
