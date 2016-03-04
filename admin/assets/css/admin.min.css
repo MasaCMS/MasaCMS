@@ -34223,22 +34223,21 @@ ul {
   background: rgba(230, 230, 230, 0.8) !important;
   min-height: 32px !important;
   height: 32px !important;
-  font-size: 12px !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
   line-height: 32px !important;
   text-decoration: none !important;
-  font-weight: normal !important;
-  font-style: normal !important;
   outline: 0 !important;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   border: none !important;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  padding-top: 0;
 }
 #header-navbar .btn a,
 #header-navbar ul li .btn.btn-default a {
   color: #333 !important;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 #header-navbar .btn:hover a,
 #header-navbar ul li .btn.btn-default:hover a {
