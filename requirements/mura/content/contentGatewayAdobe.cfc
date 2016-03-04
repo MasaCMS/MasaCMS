@@ -1227,7 +1227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
 		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
 		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,
-		tfiles.filename as AssocFilename,tcontent.displayInterval, tcontent.fileid, tcontentfilemetadata.altText as fileAltText
+		tfiles.filename as AssocFilename,tcontent.displayInterval, tcontent.fileid, tcontentfilemetadata.altText as fileAltText,tcontent.remoteurl
 
 		FROM tcontent
 
@@ -1284,7 +1284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif isExtendedSort>
 				,qExtendedSort.extendedSort
 			</cfif>
-			,tcontent.fileid, tcontentfilemetadata.altText
+			,tcontent.fileid, tcontentfilemetadata.altText,tcontent.remoteurl
 		</cfif>
 		order by
 		<cfswitch expression="#arguments.sortBy#">
@@ -1393,7 +1393,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isFeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop,tcontent.template,tcontent.childTemplate,
-		tfiles.filename AS assocFilename,tfiles.fileid, tcontent.siteid,tcontentstats.lockid,tcontentstats.locktype
+		tfiles.filename AS assocFilename,tfiles.fileid, tcontent.siteid,tcontentstats.lockid,tcontentstats.locktype,tcontent.remoteurl
 		FROM tcontent
 		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID
 								and tcontent.siteID=tcontentstats.siteID
