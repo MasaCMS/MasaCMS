@@ -1636,7 +1636,7 @@
 		}
 
 		if(mura.layoutmanager && mura.editing){
-			if(obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
+			if(obj.hasClass('mura-body-object') || obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
 				obj.prepend(layoutmanagertoolbar);
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
 

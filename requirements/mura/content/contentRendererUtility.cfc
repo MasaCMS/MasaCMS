@@ -902,8 +902,13 @@
 		<cfargument name="isConfigurator">
 		<cfargument name="objectname">
 		<cfargument name="renderer">
+		<cfargument name="customBodyRender" default="false">
 
 		<cfset var openingDiv='<div class="mura-object'>
+
+		<cfif arguments.customBodyRender>
+			<cfset openingDiv=openingDiv & ' mura-body-object'>
+		</cfif>
 
 		<cfif not isDefined('arguments.objectParams.objectname')>
 			<cfset arguments.objectParams.objectname=ucase(left(arguments.object,1)) & right(arguments.object,len(arguments.object)-1)>
@@ -965,6 +970,7 @@
 		<cfargument name="showEditableObjects">
 		<cfargument name="layoutmanager">
 		<cfargument name="objectname">
+		<cfargument name="customBodyRender" required="true" default="false">
 
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
@@ -1156,7 +1162,8 @@
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
 									objectname=arguments.objectname,
-									renderer=arguments.renderer)>
+									renderer=arguments.renderer,
+									customBodyRender=arguments.customBodyRender)>
 						</cfif>
 					</cfif>
 					<cfreturn theObject>
@@ -1193,7 +1200,7 @@
 						<cfreturn trim(theDisplay1)>
 					</cfif>
 				<cfelse>
-					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator}>
+					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,customBodyRender=arguments.customBodyRender}>
 
 					<cfif objectargs.object neq 'plugin'>
 						<cfset objectargs.cacheKey=cacheKeyObjectId>
@@ -1886,24 +1893,24 @@
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams())}>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams(),customBodyRender=true)}>
 		</cfif>
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams())}>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams(),customBodyRender=true)}>
 		</cfif>
 
 		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams())}>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams(),customBodyRender=true)}>
 		</cfif>
 
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey) and arguments.$.siteConfig().getDisplayObject(displayObjectKey).custom>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams())}>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams(),customBodyRender=true)}>
 		</cfif>
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 

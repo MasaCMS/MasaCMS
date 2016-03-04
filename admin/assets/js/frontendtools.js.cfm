@@ -950,7 +950,7 @@
 
 				mura(".mura-object").each(initObject);
 
-				mura('.mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
+				mura('.mura-body-object, .mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
 					var item=mura(this);
 					item.addClass("mura-active");
 					item.prepend(window.mura.layoutmanagertoolbar);
@@ -1267,7 +1267,7 @@
 							}
 						);
 
-						utility('.mura-object[data-object="folder"], .mura-object[data-object="gallery"], .mura-object[data-object="calendar"]').each(function(){
+						utility('.mura-body-object, .mura-object[data-object="folder"], .mura-object[data-object="gallery"], .mura-object[data-object="calendar"]').each(function(){
 							var item=utility(this);
 
 							if(item.data('displaylist')){
