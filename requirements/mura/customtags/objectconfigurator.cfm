@@ -25,12 +25,13 @@
 		<cfparam name="attributes.params.cssclass" default="">
 		<cfparam name="attributes.params.label" default="">
 		<cfparam name="attributes.params.object" default="">
+		<cfparam name="attributes.params.isbodyobject" default="false">
 	</cfsilent>
 
-	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
+	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 	<cfoutput>
-	
-			
+
+
 	<div id="availableObjectContainer"<cfif not attributes.configurable> style="display:none"</cfif>>
 	</cfoutput>
 	</cfif>
@@ -41,7 +42,7 @@
 
 	</div>
 	<cfoutput>
-			<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
+			<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object) and not (IsBoolean(attributes.params.isbodyobject) and attributes.params.isbodyobject)>
 			<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
 					<select name="alignment">
@@ -98,7 +99,7 @@
 	</div>
 	<script>
 		$(function(){
-		
+
 			var inited=false;
 
 			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
@@ -121,7 +122,7 @@
 	  			}
 
 	  			var width=$('select[name="width"]');
-	  			
+
 	  			if(width.val()){
 	  				if(classInput.val() ){
 	  					classInput.val(classInput.val() + ' ' + width.val());
@@ -136,7 +137,7 @@
 
 	  			if(alignment.val()=='mura-left'){
 		  			var offset=$('select[name="offset"]');
-		  				
+
 		  			if(offset.val()){
 		  				if(classInput.val() ){
 		  					classInput.val(classInput.val() + ' ' + offset.val());
@@ -147,12 +148,12 @@
 		  				if(inited && typeof updateDraft == 'function'){
 		  					updateDraft();
 		  				}
-		  				
+
 		  			}
 		  		}
 
 		  		var cssclassInput=$('input[name="cssclass"]');
-		  		
+
 		  		if(cssclassInput.val()){
 	  				if(classInput.val() ){
 	  					classInput.val(classInput.val() + ' ' + cssclassInput.val());
@@ -162,7 +163,7 @@
 		  		}
 			}
 
-			
+
 			setPlacementVisibility();
 
 			$('#globalSettingsBtn').click(function(){

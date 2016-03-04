@@ -67,7 +67,12 @@
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
-				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
+				var item=mura('[data-instanceid="' + parameters["instanceid"] + '"]');
+				var data=item.data();
+
+				if(item.hasClass('mura-body-object')){
+					data.isbodyobject=true;
+				}
 
 				if(parameters["targetFrame"]=='sidebar' && document.getElementById('mura-sidebar-editor').style.display=='none'){
 					mura('##mura-sidebar-configurator').show();
