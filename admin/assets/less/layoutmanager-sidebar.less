@@ -101,15 +101,13 @@ body.configurator-wrapper #mura-content{
 .mura-sidebar__objects-list__object-group-items {
 	padding: 0;
 	background:none;
-	-webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	border-radius: 0;
+	.border-radius(0);
 }
 
 .mura-sidebar__object-group-items {
 	padding: 0;
 	background-color: #454545;
-	border-radius: 2px;
+	.border-radius(2px);
 }
 
 .mura-sidebar__object-group-items select,
@@ -210,9 +208,7 @@ body.configurator-wrapper{
 			.btn {
 				font-size: 12px;
 				padding: 6px 12px;
-				-webkit-border-radius: 2px;
-				-moz-border-radius: 2px;
-				border-radius: 2px;
+				.border-radius(2px);
 				-webkit-box-shadow: none;
 				-moz-box-shadow: none;
 				box-shadow: none;	
@@ -228,9 +224,7 @@ body.configurator-wrapper{
 
 			// unclassed buttons default
 			.btn:not([class*="btn-"]){
-				-webkit-border-radius: 0;
-				-moz-border-radius: 0;
-				border-radius: 0;
+				.border-radius(2px);
 				background-image:none;
 				text-shadow:none;
 			  color: #A4A4A4;
@@ -319,10 +313,8 @@ body.configurator-wrapper{
 			#sortableFields #displayListSort li{
 				background-color: #565656;
 				text-shadow:none;
-				-webkit-border-radius: 0;
-				-moz-border-radius: 0;
-				border-radius: 0;
-				box-shadow:none;
+				.border-radius(0);
+					box-shadow:none;
 				font-size: 12px;
 				padding: 8px 12px;
 			  color: #d8d8d8;
