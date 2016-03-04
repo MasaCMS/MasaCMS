@@ -136,8 +136,8 @@ to your own modified versions of Mura CMS.
 							<div class="mura-control-group">
 								<label>Site ID</label>
 								<cfif rc.siteid eq ''>
+								<p class="help-block">Warning: No spaces, punctuation, dots or file delimiters allowed.</p>
 										<input name="siteid" type="text" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true" onchange="removePunctuation(this);">
-								<p class="help-block alert">Warning: No spaces, punctuation, dots or file delimiters allowed.</p>
 								<cfelse>
 										<input  id="disabledInput" type="text" placeholder="#rc.siteBean.getsiteid()#" disabled>
 								<input name="siteid" type="hidden" value="#rc.siteBean.getsiteid()#">
