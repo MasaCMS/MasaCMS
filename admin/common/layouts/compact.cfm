@@ -128,6 +128,9 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
+    <!-- Web fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
+
 		<!-- Mura Admin JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
@@ -166,6 +169,9 @@
 			var frontEndProxy;
 			jQuery(document).ready(function(){
 
+ 			// tab drop
+ 			$('.mura-tabs').tabdrop({text: '<i class="mi-ellipsis-h"></i>'});
+
 				if (top.location != self.location) {
 
 					function getHeight(){
@@ -190,6 +196,8 @@
 										});
 					});
 				};
+
+
 			});
 		</script>
 		#rc.ajax#
@@ -216,6 +224,8 @@
 		</div> <!-- /mura-content -->
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
+
+		<script src="#application.configBean.getContext()#/admin/assets/js/bootstrap-tabdrop.js"></script>
 
 	</body>
 </html></cfprocessingdirective>

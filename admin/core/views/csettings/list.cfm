@@ -270,8 +270,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-control-group">
 		<div class="mura-file-selector">
 			<div class="btn-group" data-toggle="buttons-radio">
-			  <button type="button" class="btn btn-default active" data-toggle="button" name="installType" value="Upload" id="apptypefile">Via Upload</button>
-			  <button type="button" class="btn btn-default" name="installType" value="URL" id="apptypeurl">Via URL</button>
+			  <button type="button" class="btn btn-default active" data-toggle="button" name="installType" value="Upload" id="apptypefile"><i class="mi-upload"></i> Via Upload</button>
+			  <button type="button" class="btn btn-default" name="installType" value="URL" id="apptypeurl"><i class="mi-globe"></i> Via URL</button>
 			</div>
 	
 			<div id="appzip" class="fileTypeOption">
