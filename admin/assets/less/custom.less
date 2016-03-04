@@ -807,7 +807,7 @@ header .btn-image span.button-image{
     width: 30px;
     font-size: 18px;
 }
-.mura form .mura-control-group > * + .help-block{
+.mura form .mura-control-group > * + .help-block:not(.alert){
   clear: both;
   padding: 2px 12px 2px 0;
 }
@@ -1291,6 +1291,11 @@ ul.dropdown-menu{
 
 }
 
+#plugin-license textarea{
+  min-height: 528px;
+  margin-bottom: 24px;
+}
+
 /* legacy forms */
 .form-horizontal .control-label{
   padding-right: 15px;
@@ -1306,6 +1311,16 @@ label #contentSearch.form-inline{
   margin: 0 12px 0 0;
 }
 
+.mura-control-group label.time{
+  width: 40px;
+  padding: 8px 0 0 20px !important;
+  float: left; 
+}
+.mura-control-group label.time-repeat{
+  width: 65px;
+  padding: 8px 0 0 14px !important;
+  float: left; 
+ } 
 label #selectFilter{
   margin-left: 12px;
 }
@@ -1372,6 +1387,8 @@ label #selectFilter{
 .mura-control-group label.radio{
   padding-left: 15px;
 }
+#mura-content form label.checkbox.inline,
+.mura-control-group label.checkbox.inline,
 #mura-content form label.radio.inline,
 .mura-control-group label.radio.inline{
   width:auto; 
