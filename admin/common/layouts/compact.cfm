@@ -166,6 +166,9 @@
 			var frontEndProxy;
 			jQuery(document).ready(function(){
 
+ 			// tab drop
+ 			$('.mura-tabs').tabdrop({text: '<i class="mi-ellipsis-h"></i>'});
+
 				if (top.location != self.location) {
 
 					function getHeight(){
@@ -190,6 +193,8 @@
 										});
 					});
 				};
+
+
 			});
 		</script>
 		#rc.ajax#
@@ -216,6 +221,8 @@
 		</div> <!-- /mura-content -->
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
+
+		<script src="#application.configBean.getContext()#/admin/assets/js/bootstrap-tabdrop.js"></script>
 
 	</body>
 </html></cfprocessingdirective>
