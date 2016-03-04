@@ -270,7 +270,8 @@
 		 #rc.$.renderEvent('onAdminHTMLHeadRender')#
 	</cfif>
   </head>
-  <body id="#rc.originalcircuit#" class="header-navbar-fixed<cfif rc.originalcircuit eq "cDashboard"> no-constrain</cfif>">
+  <!--- use class no-constrain to remove fixed-width on inner containers --->
+  <body id="#rc.originalcircuit#" class="header-navbar-fixed<!--- no-constrain--->">
 
     <!-- Page Container -->
     <div id="page-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">

@@ -961,10 +961,17 @@ div.cke_editable{
   max-width: 1140px;
   margin: 0 25px;
 }
+/* no-constrain fluid inner contents */
+.no-constrain .block-constrain > *{
+  max-width: none;
+}
+
 .block-constrain > .content{
   padding: 15px 30px !important;
 }
-
+.no-constrain .block-constrain .block .block-content{
+  overflow: auto;
+}
 
 #select-site-btn i,
 #site-selector-list li a i{
