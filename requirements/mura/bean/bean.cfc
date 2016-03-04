@@ -301,9 +301,10 @@ component extends="mura.cfobject" output="false" {
 					&& isdefined('properties.#prop#.fieldtype')
 					&& listFindNoCase('one-to-many,many-to-many,one-to-one',properties[prop].fieldtype)
 				){
+					
 					propStruct=properties[prop];
 
-					if(listFindNoCase('one-to-many,many-to-many',properties[prop].fieldtype)){
+					if(listFindNoCase('one-to-many,many-to-many',properties[prop].fieldtype)) {
 						collection=arguments.data['#prop#'];
 
 						if(isJSON(collection)){
@@ -317,7 +318,7 @@ component extends="mura.cfobject" output="false" {
 
 							idlist='';
 
-							for(item in collections.items){
+							for(item in collection.items){
 								obj=getBean(propStruct.cfc);
 								obj.setSiteID(getValue('siteid'));
 
@@ -334,16 +335,15 @@ component extends="mura.cfobject" output="false" {
 							}
 
 							if(collection.cascade=='replace'){
-								hasMany=evaluate('this.get#prop#Iterator');
-
-								if(hasMany.hasNext()){
+								hasMany=evaluate('this.get#prop#Iterator()');
+								
+								
+								while(hasMany.hasNext()){
 									obj=hasMany.next();
 									if(!listFindNoCase(idlist,obj.get(obj.getPrimaryKey()))){
 										removeObject(obj);
 									}
-
 								}
-
 							}
 						}
 

@@ -1818,6 +1818,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			params.data={};
 		}
 
+		params.data=mura.deepExtend({},params.data);
+
+		for(var p in params.data){
+			if(typeof params.data[p] == 'object'){
+				params.data[p]=JSON.stringify(params.data[p]);
+			}
+		}
+
 		if(!('xhrFields' in params)){
 			params.xhrFields={ withCredentials: true };
 		}
