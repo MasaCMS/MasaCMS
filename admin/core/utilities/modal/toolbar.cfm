@@ -184,7 +184,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset variables.adminLink = variables.adminBase & "/?muraAction=cArch.list">
 			<cfset variables.adminLink = variables.adminLink & "&amp;siteid=" & request.contentBean.getSiteID()>
-			<cfset variables.adminLink = variables.adminLink & "&amp;topid=" & request.contentBean.getContentID()>
+			<cfif $.content('type') eq 'Variation' and not len($.content('lastUpdate'))>
+				<cfset variables.adminLink = variables.adminLink & "&amp;topid=" & request.contentBean.getModuleID()>
+			<cfelse>
+				<cfset variables.adminLink = variables.adminLink & "&amp;topid=" & request.contentBean.getContentID()>
+			</cfif>
+			
 			<cfset variables.adminLink = variables.adminLink & "&amp;ptype=" & request.contentBean.getType()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;parentid=" & request.contentBean.getParentID()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>

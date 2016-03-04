@@ -54,7 +54,7 @@
 
 			function onSizeChange(){
 
-				if($('select[name="size"]').val().toLowerCase()=='custom'){
+				if($('select[name="size"]').val() && $('select[name="size"]').val().toLowerCase()=='custom'){
 					$('##imageoptionscontainer').show();
 				} else {
 					$('##imageoptionscontainer').hide();

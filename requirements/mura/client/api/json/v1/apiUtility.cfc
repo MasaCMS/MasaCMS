@@ -1162,6 +1162,7 @@ component extends="mura.cfobject" {
 						content.setType('Variation');
 						content.setIsNew(1);
 						content.setRemoteID(id);
+						content.setModuleID('00000000000000000000000000000000099');
 						content.setSiteID(arguments.siteid);
 						request.contentBean=content;
 					}

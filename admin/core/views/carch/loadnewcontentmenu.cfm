@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfloop>
 			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
-				<cfloop list="Folder" index="i">
+				<cfloop list="Folder,File" index="i">
 					<cfquery name="rsItemTypes" dbtype="query">
 						select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) = 'default'
 					</cfquery>
@@ -202,6 +202,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfloop>
 					</cfif>
 				</cfloop>
+				<cfif application.configBean.getValue(property='allowmultiupload',defaultValue=true) and not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
+					<li class="newGalleryItemMulti">
+						<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="mi-question-circle"></i></a>--->
+						<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=File&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
+					</li>
+				</cfif>
 		<cfelseif rc.ptype neq 'Gallery'>
 			<cfloop list="#typeList#" index="i">
 				<cfquery name="rsItemTypes" dbtype="query">
