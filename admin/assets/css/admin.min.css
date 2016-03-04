@@ -34218,7 +34218,7 @@ ul {
 }
 #header-navbar .btn,
 #header-navbar ul li .btn.btn-default {
-  color: #333 !important;
+  color: #8F8F8F !important;
   background: #4D4D4D !important;
   background: rgba(230, 230, 230, 0.8) !important;
   min-height: 32px !important;
@@ -34465,6 +34465,10 @@ div.cke_editable {
 }
 .header-navbar-fixed #header-navbar {
   min-width: 520px;
+}
+#select-site-btn i,
+#site-selector-list li a i {
+  margin-right: 3px;
 }
 .block-constrain > * {
   max-width: 1140px;

@@ -94,7 +94,7 @@
     <li id="site-selector">
       <div class="btn-group">
        <button type="button" class="btn btn-default">
-       		<a id="select-site-btn" href="#rc.$.siteConfig().getWebPath(complete=1)#<cfif application.configBean.getSiteIDInURLS()>/#session.siteid#/</cfif>" target="_blank">#esapiEncode('html', application.settingsManager.getSite(session.siteid).getSite())#</a>
+       		<a id="select-site-btn" href="#rc.$.siteConfig().getWebPath(complete=1)#<cfif application.configBean.getSiteIDInURLS()>/#session.siteid#/</cfif>" target="_blank"><i class="mi-globe"></i> #esapiEncode('html', application.settingsManager.getSite(session.siteid).getSite())#</a>
        </button>
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="caret"></span>
