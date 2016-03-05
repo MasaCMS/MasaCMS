@@ -1378,7 +1378,7 @@
 
 		<cfset request.muraRegionID=arguments.columnID>
 
-		<cfif perm>
+		<cfif perm and arguments.renderer.getShowToolbar() and arguments.renderer.showInlineEditor>
 			<cfif listLen($.siteConfig('columnnames'),'^') gte arguments.columnid>
 				<cfset var regionLabel=UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))>
 			<cfelse>
