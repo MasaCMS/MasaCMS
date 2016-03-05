@@ -120,7 +120,11 @@
 							originParams=parameters["params"];
 						}
 
-						console.log(parameters)
+						//console.log(parameters)
+						
+						if(parameters.params.isbodyobject){
+							$(".form-actions").hide();
+						}
 
 						configOptions={
 							'object':'#esapiEncode('javascript',rc.object)#',
