@@ -198,6 +198,7 @@
 	</cfif>
 
 	<div class="mura-control-group">
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreviewlabel')#</label>
    		<label for="dspnotify" class="checkbox">
       		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contentid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
 			<span data-toggle="popover" title="" data-placement="right"
