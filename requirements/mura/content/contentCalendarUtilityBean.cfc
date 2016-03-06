@@ -10,17 +10,10 @@ component extends='mura.cfobject' {
       .asString('id')
       .asString('url')
       .asBoolean('allDay')
-      .asString('title');
+      .asString('title')
+      .asUTCDate('start')
+      .asUTCDate('end');
 
-    if(getBean('configBean').getValue(property='layoutmanager',defaultValue=false)){
-      serializer
-        .asDate('start')
-        .asDate('end');
-    } else {
-       serializer
-        .asUTCDate('start')
-        .asUTCDate('end');
-    }
 
 
     var qoq = new Query();
