@@ -886,7 +886,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 			<cfelseif arguments.size neq 'custom'>
-				<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
+				<cfset returnURL = getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
+ 				<cfif len(returnURL)>
+ 					<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & returnURL>
+ 				</cfif>
 			<cfelse>
 				<cfif not len(arguments.width)>
 					<cfset arguments.width="auto">
