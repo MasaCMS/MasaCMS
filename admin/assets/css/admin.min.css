@@ -28462,6 +28462,46 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura body.modal-wrapper .mura-header h1 {
   margin-right: 24px;
 }
+.mura body.modal-wrapper #nav-module-specific {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: left;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 8px;
+}
+@media (min-width: 768px) {
+  .mura body.modal-wrapper #nav-module-specific {
+    float: left;
+    width: 100%;
+  }
+}
+.mura body.modal-wrapper #nav-module-specific .btn {
+  float: none !important;
+  font-size: 92%;
+  line-height: 1;
+  font-weight: normal;
+  margin-left: 0;
+  margin-right: 8px;
+  margin-bottom: 0;
+  min-height: 2.3em;
+  padding-top: .5em;
+  background-color: #FFF;
+  border: 1px solid #e9e9e9;
+}
+.mura body.modal-wrapper #nav-module-specific .btn .badge {
+  border: 0 solid #ffffff;
+  background-color: #b3b3b3;
+  color: #ffffff;
+  opacity: .8;
+}
+.mura body.modal-wrapper #nav-module-specific ul.dropdown-menu {
+  margin: 0;
+}
 .mura body.modal-wrapper #configurator > div > h2 {
   display: none;
 }
@@ -35595,8 +35635,8 @@ p.alert,
   box-shadow: none !important;
   border: 1px solid #E7E7E7 !important;
 }
-div + .alert,
-div + p.alert,
+div:not(.mura-header) + .alert,
+div:not(.mura-header) + p.alert,
 .content div + p.alert {
   margin-top: 12px;
 }
