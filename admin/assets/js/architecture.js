@@ -3001,8 +3001,8 @@ buttons: {
 		$("#contentDiffContainer").dialog({
 			resizable: false,
 			modal: true,
-			width: 750,
-			title: 'Code & Attribute Diff',
+			width: 990,
+			title: 'Version History Comparison: Code & Attribute Diff',
 			position: getDialogPosition(),
 
 			open: function() {

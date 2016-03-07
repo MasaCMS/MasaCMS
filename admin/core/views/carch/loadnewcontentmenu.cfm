@@ -55,13 +55,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset $=request.event.getValue("MuraScope")>
 <cfoutput>
-<cfif isDefined('rc.frontEndProxyLoc')>
-<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.selectcontenttype")#</h1>
-<script>
-	$(document).ready(function(){setToolTips('.add-content-ui');});
-</script>
-</cfif>
 <div class="mura">
+	<cfif isDefined('rc.frontEndProxyLoc')>
+	<div class="mura-header">
+	<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.selectcontenttype")#</h1>
+	</div>
+	<script>
+		$(document).ready(function(){setToolTips('.add-content-ui');});
+	</script>
+	</cfif>
 	<!---
 	<p class="alert">
 		#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.newcontentlocation"),'<strong>"' & parentBean.getMenuTitle() & '"</strong>')#
