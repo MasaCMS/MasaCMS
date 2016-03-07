@@ -1180,8 +1180,8 @@ p.alert,
   box-shadow: none !important;
   border: 1px solid #E7E7E7 !important;
 }
-div + .alert, 
-div + p.alert, 
+div:not(.mura-header) + .alert, 
+div:not(.mura-header) + p.alert, 
 .content div + p.alert{
   margin-top: 12px;
 }
