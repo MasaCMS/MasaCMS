@@ -1726,7 +1726,9 @@
 		});
 
 		each(self.getElementsByTagName('FORM'),function(el,i){
-			el.onsubmit=function(){return validateFormAjax(this);};
+			if(!el.onsubmit){
+				el.onsubmit=function(){return validateFormAjax(this);};
+			}
 		});
 
 		if(obj.data('nextnid')){
