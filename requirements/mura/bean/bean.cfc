@@ -843,11 +843,11 @@ component extends="mura.cfobject" output="false" {
 
 							if(structKeyExists(props[prop], "format")){
 								if(structKeyExists(props[prop], "message")){
-									rule={format=props[prop].message};
+									rule={message=props[prop].message};
 								} else {
 									rule={};
 								}
-								structAppend(rule,{required=props[prop].required});
+								structAppend(rule,{format=props[prop].format});
 								arrayAppend(rules,rule);
 							}
 
