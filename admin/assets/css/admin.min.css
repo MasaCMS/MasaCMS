@@ -26936,6 +26936,9 @@ font-size: 12px;
   position: absolute;
   left: 165px;
 }
+.mura .modal-wrapper #mura-rc-quickedit {
+  left: 88px;
+}
 .mura .rcSortable {
   min-height: 27px;
 }
@@ -35012,6 +35015,7 @@ header .btn-image span.button-image {
   font-size: 15px;
   margin-bottom: 15px;
 }
+.mura h3,
 .content h3 {
   font-size: 15px;
   margin-bottom: 15px;
