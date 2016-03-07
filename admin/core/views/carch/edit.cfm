@@ -672,18 +672,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsavecontent>
 	<!--- /tabcontent --->
 
-<!--- M7 form start moved here --->
+	<cfoutput>
+		<cfif rc.contentBean.exists() and rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
+			<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+		</cfif>
+
+		<cfif not structIsEmpty(rc.contentBean.getErrors())>
+			<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
+		</cfif>
+	</cfoutput>
+
 	<form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 
 	<!--- start output --->
 	<cfoutput>
-	<cfif rc.contentBean.exists() and rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
-		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
-	</cfif>
-
-	<cfif not structIsEmpty(rc.contentBean.getErrors())>
-		<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
-	</cfif>
 
 	<cfif not rc.contentBean.getIsNew()>
 
