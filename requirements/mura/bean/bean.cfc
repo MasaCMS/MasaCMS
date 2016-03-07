@@ -301,7 +301,7 @@ component extends="mura.cfobject" output="false" {
 					&& isdefined('properties.#prop#.fieldtype')
 					&& listFindNoCase('one-to-many,many-to-many,one-to-one',properties[prop].fieldtype)
 				){
-					
+
 					propStruct=properties[prop];
 
 					if(listFindNoCase('one-to-many,many-to-many',properties[prop].fieldtype)) {
@@ -336,8 +336,8 @@ component extends="mura.cfobject" output="false" {
 
 							if(collection.cascade=='replace'){
 								hasMany=evaluate('this.get#prop#Iterator()');
-								
-								
+
+
 								while(hasMany.hasNext()){
 									obj=hasMany.next();
 									if(!listFindNoCase(idlist,obj.get(obj.getPrimaryKey()))){
@@ -961,11 +961,11 @@ component extends="mura.cfobject" output="false" {
 
 							if(structKeyExists(props[prop], "format")){
 								if(structKeyExists(props[prop], "message")){
-									rule={format=props[prop].message};
+									rule={message=props[prop].message};
 								} else {
 									rule={};
 								}
-								structAppend(rule,{required=props[prop].required});
+								structAppend(rule,{format=props[prop].format});
 								arrayAppend(rules,rule);
 							}
 
