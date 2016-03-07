@@ -29,7 +29,7 @@
   	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 		<div class="mura-control-group">
 	      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
-	      <input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255" class="span12">
+	      <input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255">
 	    </div> <!--- /end mura-control-group --->
 
 		<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
@@ -167,14 +167,14 @@
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#
 	      	</label>
 	     	<cf_datetimeselector name="expires" datetime="#rc.contentBean.getExpires()#" defaulthour="23" defaultminute="59">
-			<div class="mura-control" id="expires-notify">
+			<div class="mura-control justify" id="expires-notify">
 				<label for="dspexpiresnotify" class="checkbox">
 					<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contenthistid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#
 				</label>
 			</div>
-			<div class="mura-control" id="selectExpiresNotify" style="display: none;"></div>
 		</div> <!--- /end mura-control-group --->
+		<div class="mura-control-group" id="selectExpiresNotify" style="display: none;"></div>
 	</cfif>
 
 	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
@@ -182,17 +182,22 @@
 			 <label>
 			     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
 			</label>
-	    	<select name="isFeature" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
+	    	<select name="isFeature" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
 				<option value="0"  <cfif  rc.contentBean.getisfeature() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
 				<option value="1"  <cfif  rc.contentBean.getisfeature() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 				<option value="2"  <cfif rc.contentBean.getisfeature() EQ 2> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#</option>
 			</select>
-			<div class="mura-control" id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
-				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
-				<cf_datetimeselector name="featureStart" datespanclass="span2" datetime="#rc.contentBean.getFeatureStart()#">
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
-				<cf_datetimeselector name="featureStop" datespanclass="span2" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
+		</div>
+		<div id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
+			<div class="mura-control-group">	
+				<label class="date-span">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')#</label>
+					<cf_datetimeselector name="featureStart" datespanclass="time" datetime="#rc.contentBean.getFeatureStart()#">
+			</div>
+			<div class="mura-control-group">
+					<label class="date-span">
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
+					</label>
+					<cf_datetimeselector name="featureStop" datespanclass="time" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
 			</div>
 		</div>
 	</cfif>
@@ -207,7 +212,7 @@
 	      		 <i class="mi-question-circle"></i>
 			 </span>
       	</label>
-		<div id="selectNotify" class="mura-control" style="display: none;"></div>
+		<div id="selectNotify" class="mura-control justify" style="display: none;"></div>
 	</div> <!--- /end mura-control-group --->
 
 	<div class="mura-control-group">
@@ -216,7 +221,7 @@
 		</label>
 			<!--- M7 removed since show/hide behavior is commented out... remove both? --->
 			<!--- <div class="controls" id="editNote"> --->
-		<textarea name="notes" rows="8" class="span12" id="abstract"></textarea>
+		<textarea name="notes" rows="8" id="abstract"></textarea>
 			<!--- </div> --->
 			<!--- /end m7 removed --->
 	</div> <!--- /end mura-control-group --->

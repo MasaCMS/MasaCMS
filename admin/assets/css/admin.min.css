@@ -30186,6 +30186,7 @@ input[type="email"].mura-control-group > label + * + select:not([class*="time"])
     width: 100%;
   }
 }
+.mura-control-group > label + textarea[rows],
 select[multiple],
 select[size],
 .mura-control-group > label + select[multiple],
@@ -35753,6 +35754,11 @@ label .form-inline,
 label #contentSearch.form-inline {
   display: inline-block;
   margin: 0 12px 0 0;
+}
+.mura-control-group label.date-span {
+  width: 60px;
+  padding: 8px 0 0 0 !important;
+  float: left;
 }
 .mura-control-group label.time {
   width: 40px;
