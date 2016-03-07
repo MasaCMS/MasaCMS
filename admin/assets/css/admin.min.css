@@ -26865,9 +26865,11 @@ font-size: 12px;
 .mura #mura-list-tree > ul li ul li > input[type="checkbox"] {
   margin-left: 0;
 }
-.mura .mura-rc-quickoption {
+.mura .mura-rc-quickoption,
+.mura .mura-rc-quickoption:hover {
   border: none;
   background: none;
+  background-color: transparent !important;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -26875,17 +26877,18 @@ font-size: 12px;
   box-shadow: none;
   padding: 5px 0;
   float: left;
-  width: 1em;
+  width: 2em;
   margin-right: 5px;
 }
-.mura .mura-rc-quickoption i {
+.mura .mura-rc-quickoption i,
+.mura .mura-rc-quickoption:hover i {
   font-size: 1em;
 }
 .mura #mura-rc-quickedit {
   width: 190px;
   color: #cccccc;
   position: absolute;
-  left: -190px;
+  left: 335px;
   z-index: 20;
   padding: 10px;
   background: rgba(0, 0, 0, 0.9);
@@ -26928,6 +26931,10 @@ font-size: 12px;
 }
 .mura #mura-rc-quickedit li:first-child {
   border-top: 0;
+}
+.mura .sidebar-mini #mura-rc-quickedit {
+  position: absolute;
+  left: 165px;
 }
 .mura .rcSortable {
   min-height: 27px;
