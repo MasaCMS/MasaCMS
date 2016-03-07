@@ -258,6 +258,18 @@ Display Objects
 		default={tag="dd"}
 	}>
 
+<cfset this.contentGridStyleMap={
+		'1 Column'='mura-grid-one',
+		'2 Column'='mura-grid-two',
+		'3 Column'='mura-grid-three',
+		'4 Column'='mura-grid-four',
+		'5 Column'='mura-grid-five',
+		'6 Column'='mura-grid-six',
+		'7 Column'='mura-grid-seven',
+		'8 Column'='mura-grid-eight',
+		'9 Column'='mura-grid-nine'
+	}>
+
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListItemImageLinkClass="thumbnail">
 

@@ -48,12 +48,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset renderer=$.getContentRenderer()>
 <cfset gridStyles=(isdefined('renderer.contentGridStyleMap')) ? renderer.contentGridStyleMap : ''>
 <cfif isStruct(gridStyles)>
-<cfset gridStyles=listSort(structKeyList(gridStyles),'TextNoCase')>
+<cfset gridStylesList=listSort(structKeyList(gridStyles),'TextNoCase')>
+<cfset gridStyle=feed.getGridStyle()>
+<cfif not len(gridStyle)>
+    <cfset gridStyle='mura-grid-two'>
+</cfif>
 <div class="mura-control-group">
   	<label>#application.rbFactory.getKeyValue(session.rb,'collections.gridstyle')#</label>
 	<select name="gridstyle" data-displayobjectparam="gridstyle" class="objectParam">
-		<cfloop list="#gridStyles#" index="style">
-			<option value="#style#"<cfif feed.getGridStyle() eq style> selected</cfif>>#style#</option>
+		<cfloop list="#gridStylesList#" index="style">
+			<option value="#gridStyles['#style#']#"<cfif gridStyle eq gridStyles['#style#']> selected</cfif>>#style#</option>
 		</cfloop>
 	</select>
 </div>

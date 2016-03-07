@@ -1,12 +1,12 @@
 <cfif arguments.iterator.hasNext()>
 <cfoutput>
-<div class="mura-collection layout-d">	
+<div class="mura-collection mura-grid-custom">	
 	<cfif iterator.hasNext()>
 	<cfsilent>
 		<cfset item=arguments.iterator.next()>
 	</cfsilent>
 	<div class="mura-collection-item">
-		
+
 		<div class="mura-collection-item__holder">
 			<cfif listFindNoCase(arguments.objectParams.displaylist,'Image')>
 			<div class="mura-item-content">
@@ -16,20 +16,20 @@
 			</div>
 			</cfif>
 			#variables.$.dspObject_include(
-				theFile='collection/includes/dsp_meta_list.cfm', 
-				item=item, 
+				theFile='collection/includes/dsp_meta_list.cfm',
+				item=item,
 				fields=arguments.objectParams.displaylist
 			)#
-		
+
 		</div>
-	</div>	
-	</cfif>		
+	</div>
+	</cfif>
 	<cfloop condition="iterator.hasNext()">
 	<cfsilent>
-		<cfset item=arguments.iterator.next()>		
+		<cfset item=arguments.iterator.next()>
 	</cfsilent>
 	<div class="mura-collection-item">
-		
+
 		<div class="mura-collection-item__holder">
 			<cfif listFindNoCase(arguments.objectParams.displaylist,'Image')>
 			<div class="mura-item-content">
@@ -40,19 +40,19 @@
 			</cfif>
 
 			#variables.$.dspObject_include(
-				theFile='collection/includes/dsp_meta_list.cfm', 
-				item=item, 
+				theFile='collection/includes/dsp_meta_list.cfm',
+				item=item,
 				fields=arguments.objectParams.displaylist
 			)#
-		
+
 		</div>
 	</div>
-	</cfloop>	
+	</cfloop>
 </div>
 
 #variables.$.dspObject_include(
-	theFile='collection/includes/dsp_pagination.cfm', 
-	iterator=iterator, 
+	theFile='collection/includes/dsp_pagination.cfm',
+	iterator=iterator,
 	nextN=iterator.getNextN(),
 	source=arguments.objectParams.source
 )#
