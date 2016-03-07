@@ -1,1 +1,1 @@
-<button class="{{class}}" type="button" data-page="{{page}}">{{label}}</button>
+<button class="{{class}}" type="button" data-page="{{page}}">{{label}}</button> 

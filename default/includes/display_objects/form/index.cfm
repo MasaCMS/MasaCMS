@@ -33,5 +33,51 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset objectParams.render = "client" />
-<cfset objectParams.async = "false"/>
+
+<!--- 
+<cfif isJSON( local.formBean.getBody())>
+	<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
+	
+	<cftry>
+		<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>
+			<cfset isNewForm = true />
+		</cfif>
+	<cfcatch>
+		<cfdump var="#cfcatch#">
+		<cfabort>
+	</cfcatch>
+	</cftry>
+</cfif>
+
+ --->
+
+<cfparam name="arguments._p" default="1" >
+
+<cfif len(arguments.objectid)>
+	<cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
+	 
+	<cfif isJSON( local.formBean.getBody())>
+		<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
+
+		<cftry>
+			<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>
+				<cfset objectParams.render = "client" />
+				<cfset objectParams.async = "true"/>
+			<cfelse>
+				<cfset objectParams.render = "server" />
+				<cfset arguments.pageIndex = 1 />
+				<cfinclude template="../datacollection/index.cfm" />
+			</cfif>
+		<cfcatch>
+			<cfdump var="#cfcatch#">
+			<cfabort>
+		</cfcatch>
+		</cftry>
+	<cfelse>
+		<cfset objectParams.render = "server" />
+		<cfinclude template="../datacollection/index.cfm" />
+	</cfif>
+<cfelse>
+	<cfset objectParams.render = "server" />
+	<cfset objectParams.async = "true"/>
+</cfif>

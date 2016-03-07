@@ -1,5 +1,5 @@
 	<div class="form-group" id="field-{{name}}-container">
-		<label class="control-label" for="{{name}}">{{displayName}}</label>	
+		<label class="control-label" for="{{name}}">{{label}}</label>	
 		<div class="form-group-select">
 			<select class="form-control" type="text" name="{{name}}id" id="field-{{name}}">
 				{{#each options}}

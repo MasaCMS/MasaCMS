@@ -338,9 +338,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function generateFormObject($,event) {
 		
 		var content = arguments.event.getValue('contentBean');
-		var objectname = rereplacenocase( content.getValue('filename'),"-([a-z])","\U\1","all" );
 		var siteid = $.event('siteid');
-		objectname = rereplacenocase( objectname,"[^[:alnum:]]","","all" );
+//		var objectname = rereplacenocase( content.getValue('filename'),"-([a-z])","\U\1","all" );
+		var objectname = rereplacenocase( content.getValue('filename'),"[^[:alnum:]]","","all" );
 
 		var formStruct = deserializeJSON( arguments.event.getValue('contentBean').getValue('body'));
 
@@ -357,8 +357,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			directoryCreate(#expandPath("/" & siteid)# & "/includes/model/beans");
 		}
 
-		if(!directoryExists(#expandPath("/" & siteid)# & "/includes/model/archive")) {
-			directoryCreate(#expandPath("/" & siteid)# & "/includes/model/archive");
+		if(!directoryExists(#expandPath("/" & siteid)# & "/includes/archive")) {
+			directoryCreate(#expandPath("/" & siteid)# & "/includes/archive");
 		}
 			
 
@@ -390,7 +390,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		con = con & '{#chr(13)##chr(13)#';
-		con = con & '	property name="#lcase(objectname)#id" fieldtype="id";#chr(13)##chr(13)#';
+		con = con & '	property name="#lcase(objectname)#id" fieldtype="id";#chr(13)#';
+		var con = con & '	property name="created" displayName="created" rendertype="none" datatype="timestamp" fieldtype="none";#chr(13)#';
+		var con = con & '	property name="lastupdate" displayName="Last Update" rendertype="none" datatype="date" fieldtype="none";#chr(13)##chr(13)#';
+
 
 		var datasets = formStruct.datasets;
 
@@ -403,7 +406,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				param = param & ' displayname="#field.label#"';
 				param = param & ' orderno="#fieldcount#"';
 	
-				param = param & '#getDataType(field,datasets,objectname)#';
+				param = param & '#getDataType($,field,datasets,objectname)#';
 	
 				con = con & "#param#;#chr(13)#";
 			}			
@@ -415,7 +418,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		con = con & "#chr(13)#}";
 		
 		if( exists ) {
-			fileMove( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc","#expandPath("/" & siteid)#/includes/model/archive/#getTickCount()##lcase(objectname)#.cfc" );
+			fileMove( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc","#expandPath("/" & siteid)#/includes/archive/#getTickCount()##lcase(objectname)#.cfc" );
 		}
 	
 		fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc",con );
@@ -433,7 +436,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	}
 
-	function getDataType( fieldData,datasets,objectname ) {
+	function getDataType( $,fieldData,datasets,objectname ) {
 		var str = "";
 		var fieldtype = fieldData.fieldtype.fieldtype; 
 		var dataset = {sourcetype='manual'};
@@ -448,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			case "nested":
 				if( dataset.sourcetype == 'muraorm' ) {
 					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
-					createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,false,false);
+					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,false);
 				}
 				else {
 					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
@@ -457,7 +460,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			case "dropdown":
 				if( dataset.sourcetype == 'muraorm' ) {
 					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
-					createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,false,true);
+					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,true);
 				}
 				else {
 					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
@@ -466,19 +469,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			case "radio":
 				if( dataset.sourcetype == 'muraorm' ) {
 					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
-					createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,false,true);
+					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,true);
 				}
 				else {
 					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
 				}
 			break;
 			case "checkbox":
-				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="#fieldtype#" source="#lcase(dataset.source)#"';
-				createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,true,true);
+				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="#fieldtype#" source="#lcase(dataset.source)#" loadkey="#lcase(objectname)#id"';
+				createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,true,true);
 			break;
 			case "multiselect":
-				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="dropdown" source="#lcase(dataset.source)#"';
-				createFieldOptionCFC(fieldData,objectname,cfcBridgeName,dataset,true,true);
+				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="dropdown" source="#lcase(dataset.source)#" loadkey="#lcase(objectname)#id"';
+				createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,true,true);
 			break;
 			case "textfield":
 				str = ' datatype="varchar" length="250" rendertype="#fieldtype#" list=true';
@@ -497,7 +500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		return str;		
 	}
 
-	function createFieldOptionCFC( fieldData,parentObject,cfcBridgeName,dataset,createJoinentity=false,createDataentity=false ) {
+	function createFieldOptionCFC( $,fieldData,parentObject,cfcBridgeName,dataset,createJoinentity=false,createDataentity=false ) {
 		var objectname = fieldData.name;
 		var exists = fileExists( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(arguments.cfcBridgeName)#.cfc" );
 		var param = "";
@@ -509,36 +512,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var con = 'component extends="mura.bean.beanORM" table="fb_#lcase(arguments.cfcBridgeName)#" entityName="#lcase(arguments.cfcBridgeName)#" displayName="#arguments.cfcBridgeName#" access="public" type="join" {#chr(13)##chr(13)#';
 	
 			var con = con & '	property name="#lcase(arguments.cfcBridgeName)#id" fieldtype="id";#chr(13)##chr(13)#';
-			var con = con & '	property name="#lcase(arguments.parentobject)#id" fieldtype="one-to-one" cfc="#arguments.parentobject#";#chr(13)#';
-			var con = con & '	property name="#lcase(dataset.source)#id" fieldtype="one-to-one" cfc="#objectname#";#chr(13)#';
+			
+			var con = con & '	property name="#lcase(arguments.parentobject)#" fieldtype="many-to-one" cfc="#arguments.parentobject#" fkcolumn="#lcase(arguments.parentobject)#id";#chr(13)#';
+			var con = con & '	property name="#lcase(dataset.source)#" fieldtype="one-to-one" cfc="#dataset.source#" fkcolumn="#lcase(dataset.source)#id";#chr(13)#';
 	
 			con = con & "#chr(13)##chr(13)#";
 			
 			// close relationship CFC				
 			con = con & "#chr(13)#}";
-			
-			fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(dataset.source)#.cfc",con );
+		
+					
+			fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(cfcBridgeName)#.cfc",con );
+
 			if( structKeyExists(application.objectMappings,dataset.source))
 			try {
 				StructDelete(application.objectMappings,dataset.source);
 			}
 			catch(any e) {}
-
-			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
-			$.getBean(objectname).checkSchema();
-
-			var bean = $.getBean(cfcBridgeName);
-			bean.checkSchema();
 		}
-		
-		if(arguments.createDataentity == false)
+				
+		if(arguments.createDataentity == false) {
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(cfcBridgeName)#",siteid );
+			$.getBean(cfcBridgeName).checkSchema();
 			return;
+		}
 
 		exists = fileExists( expandPath("/" & siteid) & "/includes/model/beans/#lcase(dataset.source)#.cfc" );
 		
 		// data beans are never recreated
-		if(exists || arguments.dataset.sourcetype != "muraorm")
+		if(exists) {
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
+			$.getBean(dataset.source).checkSchema();
 			return;
+		}				
+		else if(arguments.dataset.sourcetype != "muraorm") {
+			return;
+		}
 
 		// start data CFC				
 		var con = 'component extends="mura.formbuilder.fieldOptionBean" table="fb_#lcase(dataset.source)#" entityName="#lcase(dataset.source)#" displayName="#dataset.source#" access="public" {#chr(13)##chr(13)#';
@@ -558,8 +567,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 		catch(any e) {}
 
-		$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
-		$.getBean(objectname).checkSchema();
+		if(arguments.createDataentity == false) {
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
+			$.getBean(dataset.source).checkSchema();
+		}
+
+		if( arguments.createJoinEntity ) {
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(cfcBridgeName)#",siteid );
+			$.getBean(cfcBridgeName).checkSchema();
+
+		}
 
 	}
 

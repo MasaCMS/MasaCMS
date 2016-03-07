@@ -55,9 +55,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-layout-row">
 	<div class="mura-control-group">
 		<label class="mura-control-label">Select Form</label>
+<!---
 		<input type="hidden" name="render" value="client" class="objectParam" />
 		<input type="hidden" name="async" value="false" class="objectParam" />
-
+--->
 		<select id="availableObjectSelector">
 			<option
 				data-value='unconfigured'
@@ -75,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</select>
 		<cfif hasModulePerm>
-			<button class="btn span12" id="editBtn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
+			<button class="btn" id="editBtn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
 		</cfif>
 	</div>
 	<div id="viewTypeSelector" class="mura-control-group source-container" style="display:none">
@@ -88,9 +89,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<option <cfif objectParams.view eq 'view'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
 				value="list">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#
-			<option <cfif objectParams.view eq 'view'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
+			<option <cfif objectParams.view eq 'edit'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
 				value="edit">
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeedit')#
 			</option>
 	</div>
 </div>

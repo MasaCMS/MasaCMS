@@ -1,13 +1,13 @@
-
 	<div class="form-group" id="field-{{name}}-container">
 		<div class="form-group-radio">
-			<label class="control-label">
+			<label>
 			{{displayName}}
 			</label>
-			{{#each options}}
+			{{#eachCheck options selected}}
 				<label class="control-label">	
-				<input class="form-control" type="checkbox" name="{{../name}}" id="field-{{id}}" value="{{id}}" {{#if isselected}}checked='checked'{{/if}}/>
+				<input class="form-control" source="{{../source}}" type="checkbox" name="{{../name}}" id="field-{{id}}" value="{{id}}" id="{{../name}}-{{id}}" {{#if isselected}}checked='checked'{{/if}}/>
 				{{label}}</label>
-			{{/each}}
+			{{/eachCheck}}
+			</label>
 		</div>
 	</div>

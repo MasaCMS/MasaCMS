@@ -56,11 +56,12 @@
 		currentpage: 0,
 		entity: {},
 		fields:{},
+		filters: {},
 		datasets: [],
 		sortfield: '',
 		sortdir: '',
 		properties: {},
-		templateList: ['checkbox','dropdown','radio','textarea','textfield','form','paging','list','table','view'],
+		templateList: ['checkbox','dropdown','radio','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
 
@@ -68,8 +69,9 @@
 			
 			properties || {};
 			this.settings = properties;
-			console.log('settings');
-			console.log(this.settings);
+
+			this.registerHelpers();
+
 		},
 
 		getTemplates:function() {
@@ -78,23 +80,18 @@
 
 			var temp = self.templateList.pop();
 
-			$.ajax({
-				url :  	'/' + window.mura.siteid + '/includes/display_objects/form/templates/' + temp + '.hb',
-				success : function( results ) {
-					self.templates[temp] = Handlebars.compile(results);
-					if(!self.templateList.length) {
-						if( self.settings.view == 'form')
-							self.loadForm();
-						else
-							self.loadList();
-					}
+			window.mura.get(
+					window.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb'
+				).then(function(data) {
+				self.templates[temp] = Handlebars.compile(data);
+				if(!self.templateList.length) {
+					if( self.settings.view == 'form')
+						self.loadForm();
 					else
-						self.getTemplates();
-				},
-				error : function( e ) {
-					console.log('error');
-					console.log( e );
+						self.loadList();
 				}
+				else
+					self.getTemplates();
 			});
 		},
 
@@ -102,14 +99,26 @@
 			var self = this;
 			var templates = this.templates;
 
-
 			if( data.datasetid != "")
 				data.options = self.formJSON.datasets[data.datasetid].options;
 
 			self.setDefault( fieldtype,data );
 
+			if(fieldtype == "checkbox") {
+				data.selected = [];
+
+				if( self.data[data.name] && self.data[data.name].items ) {
+					for(var i=0;i<self.data[data.name].items.length;i++) {
+						data.selected.push(self.data[data.name].items[i].key);
+					}
+				}
+
+				data.selected = data.selected.join(",");
+			}
+			
 			var html = self.templates[fieldtype](data);
 			$(".field-container",self.settings.formEl).append(html);
+						
 		},
 
 		setDefault:function(fieldtype,data) {
@@ -177,16 +186,16 @@
 			if(!self.formInit) {
 				self.initForm();
 			}
-
+			
 			var fields = this.formJSON.form.pages[self.currentpage];
 			for(var i = 0;i < fields.length;i++) {
 
 				var field =  this.formJSON.form.fields[fields[i]];
-			
 				if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
 					self.renderField(field.fieldtype.fieldtype,field);
 				}
 			}
+
 
 			self.renderPaging();
 
@@ -194,8 +203,9 @@
 
 		renderPaging:function() {
 			self = this;
-
+			
 			$(".paging-container",self.settings.formEl).empty();
+						
 
 			if(self.formJSON.form.pages.length == 1) {
 				$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
@@ -210,20 +220,76 @@
 						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
 					}
 					else {
-						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit'}));
+						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
 					}		
 				}
+				
+				if(self.backlink != undefined && self.backlink.length)
+					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
+
 			}
+
+
 			$(".form-submit",self.settings.formEl).click( function() {
 				self.submitForm();
 			});
-			$(".form-nav",self.settings.formEl).click( function() {
-				$(".field-container :input").each( function() {
-					self.data[ $(this).attr('name') ] = $(this).val();
-				});
-				self.currentpage = parseInt($(this).attr('data-page'));
-				self.renderForm();
+			$(".form-cancel",self.settings.formEl).click( function() {
+				self.getTableData( self.backlink );
 			});
+			
+			$(".form-nav",self.settings.formEl).click( function() {
+				// need to build checkbox vals
+				var multi = {};
+				var item = {};
+				var valid = [];
+						
+//						multi.cascade = "replace";
+
+				
+				$(".field-container :input").each( function() {
+
+					if( $(this).is(':checkbox')) {
+						if ( multi[$(this).attr('name')] == undefined )
+							multi[$(this).attr('name')] = [];
+						
+						if( $(this).is(':checked') ) {
+							item = {};
+							item['id'] = window.mura.createUUID();
+							item[ self.entity + 'id'] = self.data.id; 
+							item[ $(this).attr('source') + 'id'] = $(this).val(); 
+							item[ 'key' ] = $(this).val(); 
+	
+							multi[$(this).attr('name')].push(item);
+							
+						}
+					}
+					else {
+						self.data[ $(this).attr('name') ] = $(this).val();
+						valid[ $(this).attr('name') ] = self.data[name];
+					}
+				});
+				
+				for(var i in multi) {
+					self.data[ i ].cascade = "replace";
+					self.data[ i ].items = multi[ i ];
+					valid[ $(this).attr('name') ] = self.data[i];
+				}
+				
+				self.currentpage = parseInt($(this).attr('data-page'));
+
+				// per page validation
+				if( self.validate(self.entity,valid) ) {
+					self.renderForm();
+				}
+				else {
+					console.log('oops!');
+				}
+				
+			});
+		},
+		
+		validate: function( entity,fields ) {
+			return true;
 		},
 		
 		getForm: function( entityid,backlink ) {
@@ -233,9 +299,13 @@
 			
 			if(entityid != undefined)
 				self.entityid = entityid;
+			else
+				delete self.entityid;
 
 			if(backlink != undefined)
 				self.backlink = backlink;
+			else
+				delete self.backlink;
 
 			if(self.templateList.length) {
 				self.getTemplates( entityid );
@@ -245,7 +315,7 @@
 			}
 		},
 		
-		loadForm: function() {
+		loadForm: function( data ) {
 			var self = this;
 
 			window.mura.get(
@@ -257,12 +327,16 @@
 						self.entity = entityName;
 					 	self.formJSON = formJSON;
 					 	self.responsemessage = data.data.responsemessage;
+							
+						if (formJSON.form.formattributes.muraormentities != 1) {
+							return;
+						}
 
 						for(var i in self.formJSON.datasets)
 							self.datasets.push(i);
 
 					 	self.entity = entityName;
-
+						
 					 	if(self.entityid == undefined) {
 							window.mura.get(
 								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new?expand=all'
@@ -277,10 +351,10 @@
 							).then(function(resp) {
 								self.data = resp.data;
 								self.renderData();	
-							});					 		
-					 	}
-				});
-
+							});
+						}
+					 }
+				);
 		},
 
 		initForm: function() {
@@ -297,17 +371,37 @@
 			self = this;
 
 			$(".field-container :input").each( function() {
-				self.data[ $(this).attr('name') ] = $(this).val();
+
+				// need to build checkbox vals
+				var multi = {};
+				
+				$(".field-container :input").each( function() {
+					
+					if( $(this).is(':checkbox') && $(this).is(':checked') ) {
+						if ( multi[$(this).attr('name')] == undefined )
+							multi[$(this).attr('name')] = {};
+
+						multi[$(this).attr('name')].push($(this).val());
+					}
+					else {
+						self.data[ $(this).attr('name') ] = $(this).val();
+					}
+				});
+				
+				for(var i in multi) {
+					self.data[ i ] = multi[ i ].join(",");
+				}
 			});
 
 			delete self.data.isNew;
-
+			
 			window.mura.getEntity(self.entity)
 				.set(
 					self.data
 				)
 				.save()
 				.then( function() {
+
 					if(self.backlink != undefined) {
 						self.getTableData( self.location );
 						return;
@@ -330,6 +424,46 @@
 			}
 		},
 		
+		filterResults: function() {
+			self = this;
+			var before = "";
+			var after = "";
+			
+			self.filters.filterby = $("#results-filterby",self.settings.formEl).val();
+			self.filters.filterkey = $("#results-keywords",self.settings.formEl).val();
+
+			if( $("#date1",self.settings.formEl).length ) {
+				if($("#date1",self.settings.formEl).val().length) {
+					self.filters.from = $("#date1",self.settings.formEl).val() + " " + $("#hour1",self.settings.formEl).val() + ":00:00";
+					self.filters.fromhour = $("#hour1",self.settings.formEl).val();
+					self.filters.fromdate = $("#date1",self.settings.formEl).val();
+				}
+				else {
+					self.filters.from = "";
+					self.filters.fromhour = 0;
+					self.filters.fromdate = "";
+				}
+	
+				if($("#date2",self.settings.formEl).val().length) {
+					self.filters.to = $("#date2",self.settings.formEl).val() + " " + $("#hour2",self.settings.formEl).val() + ":00:00";
+					self.filters.tohour = $("#hour2",self.settings.formEl).val();
+					self.filters.todate = $("#date2",self.settings.formEl).val();
+				}
+				else {
+					self.filters.to = "";
+					self.filters.tohour = 0;
+					self.filters.todate = "";
+				}
+			}
+
+			self.getTableData();
+		},
+
+		downloadResults: function() {
+			self.filterResults();
+				
+		},
+
 		
 		loadList: function() {
 			self = this;
@@ -360,23 +494,32 @@
 					self.properties = self.cleanProps(resp.data);
 
 					if( navlink == undefined) {
-						navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?itemsperpage=3&sort=' + self.sortdir + self.sortfield;					
+						navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?sort=' + self.sortdir + self.sortfield;					
 						var fields = [];
 						for(var i = 0;i < self.columns.length;i++) {
 							fields.push(self.columns[i].column);
 						}
 						navlink = navlink + "&fields=" + fields.join(",");
+
+						if (self.filters.filterkey && self.filters.filterkey != '') {
+							navlink = navlink + "&" + self.filters.filterby + "=contains^" + self.filters.filterkey;
+						}
+
+						if (self.filters.from && self.filters.from != '') {
+							navlink = navlink + "&created[1]=gte^" + self.filters.from;
+						}
+						if (self.filters.to && self.filters.to != '') {
+							navlink = navlink + "&created[2]=lte^" + self.filters.to;
+						}
 					}
-	
+					
 					window.mura.get(
 						navlink
 					).then(function(resp) {
 						self.data = resp.data;
 						self.location = self.data.links.self;
 
-						console.log( self.data);
-
-						var tableData = {rows:self.data,columns:self.columns};
+						var tableData = {rows:self.data,columns:self.columns,properties:self.properties,filters:self.filters};
 						self.renderTable( tableData );
 					});
 	
@@ -388,38 +531,27 @@
 		renderTable: function( tableData ) {
 			self = this;
 
-			Handlebars.registerHelper('eachColRow',function(row, columns, options) {
-				var ret = "";
-				for(var i = 0;i < columns.length;i++) {
-					ret = ret + options.fn(row[columns[i].column]);
-				}
-				return ret;
-			});
-
-			Handlebars.registerHelper('eachColButton',function(row, options) {
-				var ret = "";
-				
-				row.label='View';
-				row.type='data-view';
-
-				// only do view if there are more properties than columns				
-				if( Object.keys(self.properties).length > self.columns.length) {
-					ret = ret + options.fn(row);
-				}
-
-				if( self.settings.view == 'edit') {
-					row.label='Edit';
-					row.type='data-edit';
-
-					ret = ret + options.fn(row);
-				}
-
-				return ret;
-			});
-
-
 			var html = self.templates['table'](tableData);
 			$(self.settings.formEl).html( html );
+
+			if (self.settings.view == 'list') {
+				$("#date-filters",self.settings.formEl).empty();
+				$("#btn-results-download",self.settings.formEl).remove();
+			}
+			else {
+				if (self.settings.render == undefined) {
+					$(".datepicker", self.settings.formEl).datepicker();
+				}
+
+				$("#btn-results-download",self.settings.formEl).click( function() {
+					self.downloadResults();
+				});
+			}
+
+			$("#btn-results-search",self.settings.formEl).click( function() {
+				self.filterResults();
+			});
+
 
 			$(".data-edit",self.settings.formEl).click( function() {
 				self.renderCRUD( $(this).attr('data-value'),$(this).attr('data-pos'));
@@ -450,13 +582,10 @@
 		loadOverview: function(itemid,pos) {
 			var self = this;
 
-			console.log(arguments);
-
 			window.mura.get(
 				window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + itemid + '?expand=all'
 				).then(function(resp) {
 					self.item = resp.data;
-					console.log(self.item);
 					
 					self.renderOverview();	
 			});					 		
@@ -466,26 +595,6 @@
 			self = this;
 			
 			$(self.settings.formEl).empty();
-
-			Handlebars.registerHelper('eachProp',function(data, options) {
-				var ret = "";
-				var obj = {};
-
-				console.log(self.properties);
-				console.log(data);
-				
-				for(var i in self.properties) {
-					obj.displayName = self.properties[i].displayName;
-					if( self.properties[i].fieldtype == "one-to-one" ) {
-						obj.displayValue = data[ self.properties[i].cfc ].val;
-					}
-					else
-						obj.displayValue = data[ self.properties[i].column ];
-					
-					ret = ret + options.fn(obj);
-				}
-				return ret;
-			});
 
 			var html = self.templates['view'](self.item);
 			$(self.settings.formEl).append(html);
@@ -512,6 +621,8 @@
 			var ct = 100000;
 			
 			delete props.isNew;
+			delete props.created;
+			delete props.lastUpdate;
 			delete props.errors;
 			delete props.saveErrors;
 			delete props.instance;
@@ -535,7 +646,120 @@
 			});
 
 			return propsRet;
+		},
+		
+		registerHelpers: function() {
+
+			Handlebars.registerHelper('eachColRow',function(row, columns, options) {
+				var ret = "";
+				for(var i = 0;i < columns.length;i++) {
+					ret = ret + options.fn(row[columns[i].column]);
+				}
+				return ret;
+			});
+
+			Handlebars.registerHelper('eachProp',function(data, options) {
+				var ret = "";
+				var obj = {};
+
+				for(var i in self.properties) {
+					obj.displayName = self.properties[i].displayName;
+					if( self.properties[i].fieldtype == "one-to-one" ) {
+						obj.displayValue = data[ self.properties[i].cfc ].val;
+					}
+					else
+						obj.displayValue = data[ self.properties[i].column ];
+					
+					ret = ret + options.fn(obj);
+				}
+				return ret;
+			});
+
+			Handlebars.registerHelper('eachKey',function(properties, by, options) {
+				var ret = "";
+				var item = "";
+				for(var i in properties) {
+					item = properties[i];
+					
+					if(item.column == by)			
+						item.selected = "Selected";
+					
+					if(item.rendertype == 'textfield')
+						ret = ret + options.fn(item);
+				}
+
+				return ret;
+			});
+
+			Handlebars.registerHelper('eachHour',function(hour, options) {
+				var ret = "";
+				var h = 0;	
+				var val = "";
+				
+				for(var i = 0;i < 24;i++) {
+
+					if(i == 0 ) {
+						val = {label:"12 AM",num:i};
+					}
+					else if(i <12 ) {
+						h = i;
+						val = {label:h + " AM",num:i};
+					}
+					else if(i == 12 ) {
+						h = i;
+						val = {label:h + " PM",num:i};
+					}
+					else {
+						h = i-12;
+						val = {label:h + " PM",num:i};
+					}
+
+					if(hour == i)
+						val.selected = "selected";
+
+					ret = ret + options.fn(val);
+				}
+				return ret;
+			});
+
+			Handlebars.registerHelper('eachColButton',function(row, options) {
+				var ret = "";
+				
+				row.label='View';
+				row.type='data-view';
+
+				// only do view if there are more properties than columns				
+				if( Object.keys(self.properties).length > self.columns.length) {
+					ret = ret + options.fn(row);
+				}
+
+				if( self.settings.view == 'edit') {
+					row.label='Edit';
+					row.type='data-edit';
+
+					ret = ret + options.fn(row);
+				}
+
+				return ret;
+			});
+
+			Handlebars.registerHelper('eachCheck',function(checks, selected, options) {
+				var ret = "";
+				
+				for(var i = 0;i < checks.length;i++) {
+					if( selected.indexOf( checks[i].id ) > -1 )
+						checks[i].isselected = 1;
+					else
+					 	checks[i].isselected = 0;
+		
+					ret = ret + options.fn(checks[i]);
+				}
+				return ret;
+			});
+
+
 		}
+
 
 
 
