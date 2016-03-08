@@ -1521,16 +1521,28 @@ label #selectFilter{
 #mura-login{
   .make-row();
 
+  #pw-link,
   .page-heading{
     .make-xs-column(10);
     .make-sm-column(4);
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 12px;
-    color: #FFF;
     float:none !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+  .page-heading{
+    color: #FFF;
+  }
+
+  #pw-link{
+
+    margin-top: 12px;
+
+    a{
+      color: #FFF !important;
+    }
   }
 
   .mura-control-group > label + input,
@@ -1564,6 +1576,7 @@ label #selectFilter{
   .form-actions{
   padding: 8px 0;
   }
+
 
 }
 /* /login */

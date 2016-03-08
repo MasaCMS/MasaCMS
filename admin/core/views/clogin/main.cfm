@@ -196,7 +196,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div><!-- /block-content -->
 			</div><!-- /block -->
 			
-			<div class="block">
+			<div id="pw-link">
+				<label><a href="##">#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</a></label>
+			</div>
+			<div class="block" id="pw-forgot" style="display:none;">
 	  	  <div class="block-content">
 			
 						<cfif not isBoolean(application.configBean.getValue('showadminloginhelp')) or application.configBean.getValue('showadminloginhelp')>
@@ -240,9 +243,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div><!-- /mura-login -->
 </cfoutput>
 
-<cfif rc.compactDisplay eq "true">
 <script type="text/javascript">
 jQuery(document).ready(function(){
+<cfif rc.compactDisplay eq "true">
 	if (top.location != self.location) {
 		if(jQuery("#ProxyIFrame").length){
 			jQuery("#ProxyIFrame").load(
@@ -254,6 +257,12 @@ jQuery(document).ready(function(){
 			frontEndProxy.post({cmd:'setWidth',width:400});
 		}
 	}
+</cfif>
+	
+	jQuery('#pw-link a').click(function(){
+		jQuery('#pw-link').remove();
+		jQuery('#pw-forgot').show();
+	});
+
 });
 </script>
-</cfif>
