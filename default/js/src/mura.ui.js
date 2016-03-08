@@ -68,14 +68,14 @@
 		responsemessage: "",
 
 		init:function(properties){
-			
+
 			properties || {};
 
 			this.settings = properties;
 
 			if(this.settings.mode == undefined)
 				this.settings.mode = 'form';
-			
+
 			this.registerHelpers();
 		},
 
@@ -102,7 +102,7 @@
 
 		renderField:function(fieldtype,data) {
 			var self = this;
-			var templates = this.templates;
+			var templates = self.templates;
 			var template = fieldtype;
 			
 			if( data.datasetid != "" && self.isormform)
@@ -236,7 +236,7 @@
 			if(self.datasets.length == 0)
 				self.renderForm();
 
-			var dataset = this.formJSON.datasets[self.datasets.pop()];
+			var dataset = self.formJSON.datasets[self.datasets.pop()];
 
 			if(dataset.sourcetype != 'muraorm')
 				self.renderData();
@@ -274,10 +274,10 @@
 				self.initForm();
 			}
 			
-			var fields = this.formJSON.form.pages[self.currentpage];
+			var fields = self.formJSON.form.pages[self.currentpage];
 			
 			for(var i = 0;i < fields.length;i++) {
-				var field =  this.formJSON.form.fields[fields[i]];
+				var field =  self.formJSON.form.fields[fields[i]];
 				if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
 					self.renderField(field.fieldtype.fieldtype,field);
 				}
@@ -613,7 +613,7 @@
 		},
 
 		getTableData: function( navlink ) {
-			var self=this;
+			var self = this;
 
 			window.mura.get(
 				window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/listviewdescriptor'
@@ -733,8 +733,6 @@
 			$(".nav-back",self.settings.formEl).click( function() {
 				self.getTableData( self.location );
 			});
-
-
 		},
 
 		renderCRUD: function( itemid,pos ) {
