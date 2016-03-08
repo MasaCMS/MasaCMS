@@ -86,13 +86,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				value="form">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeform')#
 			</option>
-			<option <cfif objectParams.view eq 'view'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
+			<option id="viewTypeSelector-formtypeview" <cfif objectParams.view eq 'view'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
 				value="list">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#
-			<option <cfif objectParams.view eq 'edit'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
+			<option id="viewTypeSelector-formtypeedit" <cfif objectParams.view eq 'edit'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeedit')#"
 				value="edit">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeedit')#
 			</option>
+			</select>
+			
 	</div>
 </div>
 

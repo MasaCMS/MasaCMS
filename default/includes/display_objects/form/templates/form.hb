@@ -1,4 +1,7 @@
-<form id="" novalidate="novalidate">
+<form id="" novalidate="novalidate" enctype='multipart/form-data'>
+<div class="error-container-{{objectid}}">
+
+</div>
 <div class="field-container-{{objectid}}">
 
 </div>

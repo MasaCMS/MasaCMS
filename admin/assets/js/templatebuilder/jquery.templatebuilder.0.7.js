@@ -44,13 +44,14 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 (function( jQuery ){
-	var _formData		= {ismuraorm:1};
+	var _formData		= {ismuraorm:0};
 	var _currentPage	= 0;
 	var _buildList		= [];
 	var _dataSets		= {};
 	var _formStatus		= {};
 	var _selected		= "";
 	var _nameEnabled	= false;
+	var _isMuraORM		= false;
 	
 	var _ckeditor		= "";
 
@@ -124,13 +125,19 @@
 			doActivateMenu();
 
 			doRenderForm( data );
-			
-			
-			console.log(data);
-			
+						
 			if ( _formData.formattributes && _formData.formattributes['name-unrestricted'] == 1) {
 				_nameEnabled = true;
 			}
+			if ( _formData.formattributes && _formData.formattributes['muraormentities'] == 1) {
+				_isMuraORM = true;
+				jQuery("#button-nested").hide();
+			}
+			else {
+				_isMuraORM = false;
+				jQuery("#button-nested").show();
+			}
+			
 		}
 
 		function doRenderForm( response ) {
@@ -397,6 +404,17 @@
 				}
 				else {
 					_nameEnabled = false;
+				}
+			});
+
+			jQuery("#tb-muraormentities").change(function() {
+				if( jQuery("#tb-muraormentities").is(":checked") ) {
+					_isMuraORM = true;
+					jQuery("#button-nested").hide();
+				}
+				else {
+					_isMuraORM = false;
+					jQuery("#button-nested").show();
 				}
 			});
 		}
@@ -677,10 +695,17 @@
 
 			jQuery('.mura-tb-dsi').hide();
 
+			if (!_isMuraORM) {
+				jQuery("#dataset-source-muraorm").hide();
+			}
+			else {
+
+				jQuery("#dataset-source-muraorm").show();
+			}
 
 			if(fieldData.fieldtype.fieldtype != 'multientity') {
 				jQuery('#mura-tb-grp-sourcetype').hide();				
-				_currentDataset.sourcetype = 'muraorm';
+//				_currentDataset.sourcetype = 'muraorm';
 			}
 
 			console.log(_currentDataset.sourcetype);
