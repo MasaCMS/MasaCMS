@@ -13,22 +13,22 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes 
-	the preparation of a derivative work based on Mura CMS. Thus, the terms 
-	and conditions of the GNU General Public License version 2 ("GPL") cover 
+	Linking Mura CMS statically or dynamically with other modules constitutes
+	the preparation of a derivative work based on Mura CMS. Thus, the terms
+	and conditions of the GNU General Public License version 2 ("GPL") cover
 	the entire combined work.
 
-	However, as a special exception, the copyright holders of Mura CMS grant 
-	you permission to combine Mura CMS with programs or libraries that are 
+	However, as a special exception, the copyright holders of Mura CMS grant
+	you permission to combine Mura CMS with programs or libraries that are
 	released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS 
-	grant you permission to combine Mura CMS with independent software modules 
-	(plugins, themes and bundles), and to distribute these plugins, themes and 
-	bundles without Mura CMS under the license of your choice, provided that 
-	you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS
+	grant you permission to combine Mura CMS with independent software modules
+	(plugins, themes and bundles), and to distribute these plugins, themes and
+	bundles without Mura CMS under the license of your choice, provided that
+	you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -42,16 +42,16 @@
 		/index.cfm
 		/MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
-	meets the above guidelines as a combined work under the terms of GPL for 
-	Mura CMS, provided that you include the source code of that other code when 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that
+	meets the above guidelines as a combined work under the terms of GPL for
+	Mura CMS, provided that you include the source code of that other code when
 	and as the GNU GPL requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not 
-	obligated to grant this special exception for your modified version; it is 
-	your choice whether to do so, or to make such modified version available 
-	under the GNU General Public License version 2 without this exception.  You 
-	may, if you choose, apply this exception to your own modified versions of 
+	For clarity, if you create a modified version of Mura CMS, you are not
+	obligated to grant this special exception for your modified version; it is
+	your choice whether to do so, or to make such modified version available
+	under the GNU General Public License version 2 without this exception.  You
+	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
 --->
 <cfset local = {} />
@@ -73,7 +73,7 @@
 
 <cfif arguments.isNested>
 	<cfset local.nestedForm		= $.getBean('content').loadBy( contentID=arguments.formid,siteid=session.siteid ) />
-	<cfset arguments.formJSON	= local.nestedForm.getBody() /> 
+	<cfset arguments.formJSON	= local.nestedForm.getBody() />
 	<cfset local.frm			= variables.fbManager.renderFormJSON( arguments.formJSON ) />
 	<cfset local.prefix			= arguments.prefix />
 <cfelse>
@@ -114,15 +114,15 @@
 
 $(function() {
 	self = this;
-<cfoutput>	
+<cfoutput>
 	currentpage = #pageIndex#;
 	pagecount = #local.pageCount#;
 </cfoutput>
-		
+
 	if(mura.formdata == undefined) {
 		mura.formdata = {};
 	}
-	
+
 <cfoutput>
 	if(mura.formdata['#arguments.formID#'] == undefined) {
 		mura.formdata['#arguments.formID#'] = {};
@@ -133,15 +133,15 @@ $(function() {
 
 	mura("#btn-next").click( function() {
 		leChangePage( <cfoutput>'#local.frmID#','#arguments.formID#'</cfoutput>,currentpage+1 );
-	});	
+	});
 
 	mura("#btn-back").click( function() {
 		leChangePage( <cfoutput>'#local.frmID#','#arguments.formID#'</cfoutput>,currentpage-1 );
-	});	
+	});
 
 	mura("#btn-submit").click( function() {
 		processFields(<cfoutput>'#local.frmID#','#arguments.formID#'</cfoutput>);
-	});	
+	});
 
 });
 
@@ -149,9 +149,9 @@ $(function() {
 		var multi = {};
 		var formdata = mura.formdata[formid];
 		var forminputs = {};
-		
+
 		$("#"+formDiv+" :input").each( function() {
-						
+
 			if( $(this).is(':checkbox') ) {
 				if ( multi[$(this).attr('name')] == undefined  || forminputs[$(this).attr('name')] == undefined ) {
 					multi[$(this).attr('name')] = [];
@@ -173,7 +173,7 @@ $(function() {
 			}
 
 		});
-		
+
 		for(var i in multi) {
 			console.log('go');
 			console.log(multi[i]);
@@ -181,7 +181,7 @@ $(function() {
 		}
 
 		mura.formdata[formid] = formdata;
-		
+
 		mura( "[data-objectid='" + formid +  "']" ).attr('data-pageIndex',pageIndex);
 		mura.processObject( mura( "[data-objectid='" + formid +  "']" ) );
 	}
@@ -189,7 +189,7 @@ $(function() {
 	function leRenderPaging(formDiv,formid,pageIndex) {
 		self = this;
 		var formdata = mura.formdata[formid];
-			
+
 		mura("#" + formDiv + " #btn-next").hide();
 		mura("#" + formDiv + " #btn-back").hide();
 		mura("#" + formDiv + " #btn-submit").hide();
@@ -203,22 +203,22 @@ $(function() {
 			if(self.pagecount == 1) {
 				mura("#" + formDiv + " #btn-next").show();
 			} else {
-				
+
 				if (pageIndex > 1) {
 					mura("#" + formDiv + " #btn-back").show();
 				}
-				
+
 				if(pageIndex < self.pagecount) {
 					mura("#" + formDiv + " #btn-next").show();
 				}
 				else {
 					mura("#" + formDiv + " #btn-submit").show();
-				}		
+				}
 			}
 		}
-		
+
 		$("#"+formDiv+" :input").each( function() {
-			
+
 			if( formdata[ $(this).attr('name') ] != undefined) {
 				if ($(this).is(':checkbox') && formdata[$(this).attr('name')].indexOf($(this).val()) > -1) {
 					$(this).prop('checked', 'checked');
@@ -226,7 +226,7 @@ $(function() {
 				else if ( $(this).is(':radio') && $(this).val() == formdata[$(this).attr('name')]) {
 					$(this).prop('checked', 'checked');
 				}
-				else {
+				else if (!$(this).is(':checkbox') && !$(this).is(':radio')){
 					$(this).val(formdata[$(this).attr('name')]);
 				}
 			}
@@ -234,7 +234,7 @@ $(function() {
 	}
 
 	function processFields(formDiv,formid) {
-					
+
 		var formdata = mura.formdata[formid];
 		console.log('go');
 
@@ -265,7 +265,7 @@ $(function() {
 			dataset=local.dataset,
 			prefix=local.prefix,
 			objectparams=objectparams
-			)#			
+			)#
 		<cfelseif local.field.fieldtype.fieldtype neq "section">
 			<div class="mura-form-#local.field.fieldtype.fieldtype#<cfif local.field.isrequired> req</cfif> #this.formBuilderFieldWrapperClass#<cfif structKeyExists(local.field,'wrappercssclass')> #local.field.wrappercssclass#</cfif>">
 			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#local.field.fieldtype.fieldtype#.cfm',
@@ -273,7 +273,7 @@ $(function() {
 				dataset=local.dataset,
 				prefix=local.prefix,
 			objectparams=objectparams
-				)#			
+				)#
 			</div>
 		<cfelseif local.field.fieldtype.fieldtype eq "section">
 			<!---<cfif iiX neq 1>
@@ -293,7 +293,7 @@ $(function() {
 			prefix=local.prefix,
 			objectparams=objectparams
 			)#
-		</cfif>		
+		</cfif>
 		<!---#$.dspObject_Include('formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm')#--->
 	<cfelse>
 		<!---<cfthrow data-message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
@@ -307,8 +307,8 @@ $(function() {
 <cfset local.frmFieldContents = frmFieldContents />
 <cfoutput>
 <cfif not arguments.isNested>
-	
-	
+
+
 <form id="#local.frmID#" onsubmit="return false;" class="<cfif structKeyExists(local.attributes,"class") and len(local.attributes.class)>#local.attributes.class# </cfif>mura-form-builder" method="post"<cfif local.isMultipart>enctype="multipart/form-data"</cfif>>
 </cfif>
 	#local.frmFieldContents#
@@ -325,4 +325,3 @@ $(function() {
 
 </cfif>
 </cfoutput>
-
