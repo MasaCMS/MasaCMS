@@ -7463,14 +7463,16 @@ main > .content > :first-child:not(.alert):after,
 .mura-control-group:after,
 .mura-tabs:before,
 .mura-tabs:after,
-#mura-login:before,
-#mura-login:after,
 .container-fluid:before,
 .container-fluid:after,
 .row-fluid:before,
 .row-fluid:after,
 .tab-pane .fieldset .control-group:before,
-.tab-pane .fieldset .control-group:after {
+.tab-pane .fieldset .control-group:after,
+#csetup #main-container:before,
+#csetup #main-container:after,
+#mura-login:before,
+#mura-login:after {
   content: " ";
   display: table;
 }
@@ -7499,10 +7501,11 @@ main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
 .mura-tabs:after,
-#mura-login:after,
 .container-fluid:after,
 .row-fluid:after,
-.tab-pane .fieldset .control-group:after {
+.tab-pane .fieldset .control-group:after,
+#csetup #main-container:after,
+#mura-login:after {
   clear: both;
 }
 .clearfix:before,
@@ -7555,14 +7558,16 @@ main > .content > :first-child:not(.alert):after,
 .mura-control-group:after,
 .mura-tabs:before,
 .mura-tabs:after,
-#mura-login:before,
-#mura-login:after,
 .container-fluid:before,
 .container-fluid:after,
 .row-fluid:before,
 .row-fluid:after,
 .tab-pane .fieldset .control-group:before,
-.tab-pane .fieldset .control-group:after {
+.tab-pane .fieldset .control-group:after,
+#csetup #main-container:before,
+#csetup #main-container:after,
+#mura-login:before,
+#mura-login:after {
   content: " ";
   display: table;
 }
@@ -7591,10 +7596,11 @@ main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
 .mura-tabs:after,
-#mura-login:after,
 .container-fluid:after,
 .row-fluid:after,
-.tab-pane .fieldset .control-group:after {
+.tab-pane .fieldset .control-group:after,
+#csetup #main-container:after,
+#mura-login:after {
   clear: both;
 }
 .center-block {
@@ -31780,59 +31786,6 @@ input[type="email"]#searchParams select {
     width: 100%;
   }
 }
-#mura-login {
-  margin-left: -15px;
-  margin-right: -15px;
-}
-#mura-login .mura-control-group > label + input,
-#mura-login .mura-control-group > label + select {
-  position: relative;
-  float: left;
-  width: 100%;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-#mura-login > .block {
-  float: left;
-  width: 83.33333333%;
-  position: relative;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin: 0 auto;
-  padding: 0;
-  float: none !important;
-}
-@media (min-width: 768px) {
-  #mura-login > .block {
-    float: left;
-    width: 33.33333333%;
-  }
-}
-#mura-login > .block + .block {
-  margin-top: 15px;
-}
-#mura-login .block-header {
-  color: #fff;
-  background-color: #5c90d2;
-  background-color: #ff3405;
-}
-a#mura-login .block-header:hover,
-a#mura-login .block-header:focus {
-  background-color: #3675c5;
-}
-a#mura-login .block-header:hover,
-a#mura-login .block-header:focus {
-  background-color: #3675c5;
-}
-#mura-login .block-header h3 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  text-transform: uppercase;
-  line-height: 1.2;
-}
 /* TEMPLATE MAPPING */
 /* LEGACY MURA / BS2 CLASS MAPPING */
 h1:not([class]) {
@@ -35391,6 +35344,9 @@ header .btn-image span.button-image {
   clear: both;
   padding: 2px 12px 2px 0;
 }
+.help-block + .mura-control-group {
+  margin-top: 8px;
+}
 #mura-search-submit {
   cursor: pointer;
 }
@@ -36360,6 +36316,153 @@ label #selectFilter {
   margin-bottom: 0;
   padding-top: 7px;
 }
+/* setup */
+#csetup #page-container {
+  background-color: #333;
+}
+#csetup #main-container {
+  margin-left: -15px;
+  margin-right: -15px;
+  background-color: transparent !important;
+}
+#csetup #main-container .alert {
+  background-color: #DEDEDE !important;
+  border-color: #BCBCBC !important;
+}
+#csetup #main-container .wizard-progress {
+  padding: 0 8px;
+}
+#csetup #main-container .progress {
+  background-color: #FFF;
+}
+#csetup #main-container .progress-bar-danger {
+  background-color: #ff3405;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+#csetup #main-container .nav-tabs li a {
+  background-color: #FFF;
+}
+#csetup #main-container .tab-content {
+  padding: 0 30px;
+  min-height: 280px;
+}
+#csetup #main-container .page-heading {
+  margin-left: 0;
+  margin-right: 0;
+  color: #FFF;
+}
+#csetup #main-container .nav-tabs li a {
+  margin-right: 0 !important;
+}
+#csetup #main-container .nav-tabs li.active a {
+  color: #ff3405;
+}
+#csetup #main-container .mura-control-group {
+  margin-bottom: 12px;
+}
+#csetup #main-container label.switch label {
+  margin-left: 8px;
+}
+#csetup #main-container .mura-control-group > label + input[type=text],
+#csetup #main-container .mura-control-group > label + * + input[type=text],
+#csetup #main-container .mura-control-group > label + input[type=password],
+#csetup #main-container .mura-control-group > label + * + input[type=password],
+#csetup #main-container .mura-control-group > label + select,
+#csetup #main-container .mura-control-group > label + * + select {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#csetup #main-container .form-actions .btn {
+  min-width: 92px;
+  background-color: #DEDEDE;
+}
+#csetup #main-container .form-actions .btn.wizard-next > i {
+  margin-left: 8px;
+}
+#csetup #main-container .form-actions .btn.wizard-finish,
+#csetup #main-container .form-actions .btn.wizard-finish:hover {
+  background-color: #ff3405;
+  color: #fff;
+  border: 1px solid #ff3405;
+}
+#mura-setup {
+  float: left;
+  width: 83.33333333%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
+  float: none !important;
+}
+@media (min-width: 768px) {
+  #mura-setup {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+/* /setup */
+/* login */
+#mura-login {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+#mura-login .mura-control-group > label + input,
+#mura-login .mura-control-group > label + select {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#mura-login > .block {
+  float: left;
+  width: 83.33333333%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
+  padding: 0;
+  float: none !important;
+}
+@media (min-width: 768px) {
+  #mura-login > .block {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+#mura-login > .block + .block {
+  margin-top: 15px;
+}
+#mura-login .block-header {
+  color: #fff;
+  background-color: #5c90d2;
+  background-color: #ff3405;
+}
+a#mura-login .block-header:hover,
+a#mura-login .block-header:focus {
+  background-color: #3675c5;
+}
+a#mura-login .block-header:hover,
+a#mura-login .block-header:focus {
+  background-color: #3675c5;
+}
+#mura-login .block-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+/* /login */
 /* jquery-ui overrides */
 /* jquery-ui overrides */
 /* jquery-ui overrides */

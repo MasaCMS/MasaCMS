@@ -811,6 +811,9 @@ header .btn-image span.button-image{
   clear: both;
   padding: 2px 12px 2px 0;
 }
+.help-block + .mura-control-group{
+  margin-top: 8px;
+}
 #mura-search-submit{
   cursor: pointer;
 }
@@ -1427,6 +1430,126 @@ label #selectFilter{
   margin-bottom: 0;
   padding-top: 7px;
 }
+
+
+/* setup */
+#csetup #page-container{
+  background-color: #333;
+}
+#csetup #main-container{
+  .make-row();
+  background-color: transparent !important;
+
+  .alert{
+      background-color: #DEDEDE !important;
+      border-color: #BCBCBC !important;
+  }
+  .wizard-progress{
+    padding: 0 8px;
+  }
+  .progress{
+    background-color: #FFF;
+  }
+  .progress-bar-danger{
+    background-color: #ff3405;
+    .border-radius(2px);
+  }
+  .nav-tabs li a{
+    background-color: #FFF;
+  }
+  .tab-content{
+    padding: 0 30px;
+    min-height: 280px;
+  }
+  .page-heading{
+    margin-left: 0;
+    margin-right: 0;
+    color: #FFF;
+  }
+  .nav-tabs li a{
+    margin-right: 0 !important;
+  }
+  .nav-tabs li.active a{
+    color: #ff3405;
+  }
+  .mura-control-group{
+    margin-bottom: 12px;
+  }
+
+  label.switch label{
+    margin-left: 8px;
+  }
+
+  .mura-control-group > label + input[type=text],
+  .mura-control-group > label + * + input[type=text],
+  .mura-control-group > label + input[type=password],
+  .mura-control-group > label + * + input[type=password],
+  .mura-control-group > label + select,
+  .mura-control-group > label + * + select {
+    .make-xs-column(12);
+   } 
+
+   .form-actions .btn{
+    min-width: 92px;
+    background-color: #DEDEDE;
+    
+    &.wizard-next > i{
+      margin-left: 8px;
+    }
+
+    &.wizard-finish,
+    &.wizard-finish:hover{
+      background-color:#ff3405;
+      color: #fff;
+      border: 1px solid #ff3405;
+    }
+   }
+
+
+}
+
+#mura-setup{
+  .make-xs-column(10);
+  .make-sm-column(4);
+  margin: 0 auto;
+  float: none !important;
+}
+/* /setup */
+
+/* login */
+.block-themed{};
+#mura-login{
+  .make-row();
+   
+  .mura-control-group > label + input,
+
+  .mura-control-group > label + select{
+    .make-xs-column(12); 
+  }
+
+  > .block{
+    .make-xs-column(10);
+    .make-sm-column(4);
+    margin: 0 auto;
+    padding: 0;
+    float: none !important;
+  } 
+
+  > .block + .block{
+    margin-top: 15px;
+  }
+  .block-header{
+    .bg-primary;
+    h3{
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+  }
+}
+/* /login */
 
 /* jquery-ui overrides */
 /* jquery-ui overrides */

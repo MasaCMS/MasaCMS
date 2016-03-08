@@ -41,17 +41,18 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-					</div><!--- /col-6 --->
-				</div><!--- /row --->
-			</div><!--- /content --->
-		</main><!--- /main-container --->
-	</div><!--- /page-container --->
+				</div> <!-- /.content -->
+			</main>
 
-<cfif cgi.http_user_agent contains 'msie'>
-<!--[if IE 6]>
-<script type="text/javascript" src="#context#/admin/assets/js/ie6notice.js"></script>
-<![endif]-->
-</cfif>
-</body>
+			<div id="alertDialog" title="Alert" class="alert alert-notice hide">
+				<span id="alertDialogMessage"></span>
+			</div>
+		</div><!-- /.page-container -->
+	<cfif cgi.http_user_agent contains 'msie'>
+	<!--[if IE 6]>
+	<script type="text/javascript" src="#context#/admin/assets/js/ie6notice.js"></script>
+	<![endif]-->
+	</cfif>
+	</body>
 </html>
 </cfoutput>
