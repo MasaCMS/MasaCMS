@@ -121,7 +121,7 @@
 				console.log('bef');
 				console.log( self.formJSON );
 				
-				var inner = new window.mura.UI( context );
+				var item = new window.mura.UI( context );
 				var holder = $('<div id="nested-'+data.formid+'"></div>');
 				
 				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(holder);
