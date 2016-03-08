@@ -18,9 +18,9 @@ mura.templates['form']=function(context) {
 			
 		 	formJSON = JSON.parse( data.data.body );
 
-			if (formJSON.form.formattributes.muraormentities != 1)
-				console.log("uitemplate: error");
-			else
+//			if (formJSON.form.formattributes.muraormentities != 1)
+//				console.log("uitemplate: error");
+//			else
 				item.getForm();
 		});	
 	}
