@@ -450,7 +450,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		switch(fieldtype) {
 			case "nested":
 				if( dataset.sourcetype == 'muraorm' ) {
-					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(fieldData.name)#id"';
 					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,false);
 				}
 				else {
@@ -459,7 +459,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			break;
 			case "dropdown":
 				if( dataset.sourcetype == 'muraorm' ) {
-					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(fieldData.name)#id"';
 					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,true);
 				}
 				else {
@@ -468,7 +468,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			break;
 			case "radio":
 				if( dataset.sourcetype == 'muraorm' ) {
-					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(dataset.source)#id"';
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(fieldData.name)#id"';
 					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,true);
 				}
 				else {

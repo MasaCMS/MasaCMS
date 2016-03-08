@@ -3,9 +3,9 @@
 			<label class="control-label">
 			{{displayName}}
 			</label>
-			{{#each options}}
+			{{#each dataset.options}}
 				<label class="control-label" for="{{label}}">	
-				<input class="form-control" type="radio" name="{{../name}}id" id="field-{{id}}" value="{{id}}" />
+				<input class="form-control" type="radio" name="{{../name}}id" id="field-{{id}}" value="{{id}}" {{#if isselected}}checked='checked'{{/if}}/>
 				{{label}}</label>
 			{{/each}}
 		</div>

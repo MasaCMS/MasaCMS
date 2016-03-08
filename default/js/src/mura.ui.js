@@ -62,6 +62,7 @@
 		sortfield: '',
 		sortdir: '',
 		properties: {},
+		rendered: {},
 		templateList: ['checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
@@ -70,10 +71,10 @@
 			
 			properties || {};
 
-			if(properties.mode == 'undefined')
-				properties.mode = 'form';
-
 			this.settings = properties;
+
+			if(this.settings.mode == undefined)
+				this.settings.mode = 'form';
 			
 			this.registerHelpers();
 		},
@@ -104,7 +105,6 @@
 			var templates = this.templates;
 			var template = fieldtype;
 			
-
 			if( data.datasetid != "" && self.isormform)
 				data.options = self.formJSON.datasets[data.datasetid].options;
 			else if(data.datasetid != "") {
@@ -118,26 +118,23 @@
 				context.objectid = data.formid;
 				context.paging = 'single';
 				context.mode = 'nested';
-				console.log('bef');
-				console.log( self.formJSON );
+				context.master = this;
 				
-				var item = new window.mura.UI( context );
+				var nestedForm = new mura.UI( context );
 				var holder = $('<div id="nested-'+data.formid+'"></div>');
 				
 				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(holder);
 									
 				context.formEl = holder;
-				item.getForm();
-
-				console.log('aft');
-				console.log( self.formJSON );
+				nestedForm.getForm();
 
 				var html = self.templates[template](data);
 				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
 			}
 			else {
-				
 				if(fieldtype == "checkbox") {
+					
+					
 					if(self.ormform) {
 						data.selected = [];
 		
@@ -163,13 +160,12 @@
 						template = template + "_static";
 					}
 				}
+				
 				var html = self.templates[template](data);
+
 				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
 			}
 
-			console.log('pag');
-			console.log( self.formJSON );
-			console.log( self );
 		},
 
 		setDefault:function(fieldtype,data) {
@@ -178,57 +174,60 @@
 			switch( fieldtype ) {
 				case "textfield":
 				case "textarea":
-					data.defaultvalue = self.data[data.name];
+					data.value = self.data[data.name];
 				 break;
 				case "checkbox":
 					var ds = self.formJSON.datasets[data.datasetid];
-					
 					for(var i in ds.datarecords) {
-						if(self.ormform && ds.datarecords[i].id == self.data[data.name+'id']) {
-							ds.datarecords[i].isselected = 1;
-							data.selected = self.data[data.name+'id'];
-						}
-						else if(self.data[data.name] && self.data[data.name].indexOf( ds.datarecords[i].value ) > -1) {
-							data.selected = self.data[data.name];
-							ds.datarecords[i].isselected = 1;
-							ds.datarecords[i].selected = 1;
+						if (self.ormform) {
+							if (ds.datarecords[i].id == self.data[data.name + 'id']) {
+								ds.datarecords[i].isselected = 1;
+								data.selected = self.data[data.name + 'id'];
+							}
+							else {
+								ds.datarecords[i].selected = 0;
+								ds.datarecords[i].isselected = 0;
+							}
 						}
 						else {
-							ds.datarecords[i].selected = 0;
-							ds.datarecords[i].isselected = 0;
+							if (self.data[data.name] && ds.datarecords[i].value && self.data[data.name].indexOf(ds.datarecords[i].value) > -1) {
+								data.selected = self.data[data.name];
+								ds.datarecords[i].isselected = 1;
+								ds.datarecords[i].selected = 1;
+							}
+							else {
+								ds.datarecords[i].selected = 0;
+								ds.datarecords[i].isselected = 0;
+							}
 						}
 					}
+				break;
+				case "radio":
 				case "dropdown":
 					var ds = self.formJSON.datasets[data.datasetid];
 					for(var i in ds.datarecords) {
-						if(self.ormform && ds.datarecords[i].id == self.data[data.name+'id']) {
-							ds.datarecords[i].isselected = 1;
-							data.selected = self.data[data.name+'id'];
+						if(self.ormform) {
+							if(ds.datarecords[i].id == self.data[data.name+'id']) {
+								ds.datarecords[i].isselected = 1;
+								data.selected = self.data[data.name+'id'];
+							}
+							else {
+								ds.datarecords[i].selected = 0;
+								ds.datarecords[i].isselected = 0;
+							}
 						}
-						else if(ds.datarecords[i].value == self.data[data.name]) {
-							ds.datarecords[i].isselected = 1;
-							data.selected = self.data[data.name];
+						else {
+							 if(ds.datarecords[i].value == self.data[data.name]) {
+								ds.datarecords[i].isselected = 1;
+								data.selected = self.data[data.name];
+							}
+							else {
+								ds.datarecords[i].isselected = 0;
+							}
 						}
-						else
-							ds.datarecords[i].isselected = 0;
-					}
-				case "radio":
-					var ds = self.formJSON.datasets[data.datasetid];
-					for(var i in ds.datarecords) {
-						if(self.ormform && ds.datarecords[i].id == self.data[data.name+'id']) {
-							ds.datarecords[i].isselected = 1;
-							data.selected = self.data[data.name+'id'];
-						}
-						else if(ds.datarecords[i].value == self.data[data.name]) {
-							ds.datarecords[i].isselected = 1;
-							data.selected = self.data[data.name];
-						}
-						else
-							ds.datarecords[i].isselected = 0;
 					}
 				 break;
 			}
-
 		},
 
 		renderData:function() {
@@ -261,12 +260,13 @@
 				})
 				.then(function() {
 					self.renderData();
-				})
-				;
+				});
 		},
 
 		renderForm: function( ) {
 			var self = this;
+			
+			console.log(self.formJSON);
 			
 			$(".field-container-" + self.settings.objectid,self.settings.formEl).empty();
 
@@ -283,36 +283,36 @@
 				}
 			}
 
-			self.renderPaging();
+			if (self.settings.mode == 'form') {
+				self.renderPaging();
+			}
 
 		},
 
 		renderPaging:function() {
 			self = this;
-			
-			$(".paging-container",self.settings.formEl).empty();
+									
+			$(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
 						
-
 			if(self.formJSON.form.pages.length == 1) {
-				$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
+				$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
 			}
 			else {
 				if(self.currentpage == 0) {
-					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:"form-nav"}));
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:"form-nav"}));
 				} else {
-					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
 
 					if(self.currentpage+1 < self.formJSON.form.pages.length) {
-						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
+						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
 					}
 					else {
-						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
+						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
 					}		
 				}
 				
 				if(self.backlink != undefined && self.backlink.length)
-					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
-
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
 			}
 
 
@@ -326,8 +326,15 @@
 			$(".form-nav",self.settings.formEl).click( function() {
 				// need to build checkbox vals
 				
-				console.log(self);
 				console.log(self.data);
+				
+				if(self.settings.master) {
+					console.log( 'nav' );
+					console.log(self);
+					console.log(self.settings.master);
+					console.log(self.settings);
+					console.log(self.settings.master.settings);
+				}
 						
 				var valid = self.setDataValues();
 				
@@ -340,7 +347,6 @@
 				else {
 					console.log('oops!');
 				}
-				
 			});
 		},
 		
@@ -350,7 +356,7 @@
 			var item = {};
 			var valid = [];
 				
-			$(".field-container :input").each( function() {
+			$(".field-container-" + self.settings.objectid + " :input").each( function() {
 
 				if( $(this).is(':checkbox')) {
 					if ( multi[$(this).attr('name')] == undefined )
@@ -894,15 +900,5 @@
 
 
 	});
-	
-/*
-
-http://mura.m7/index.cfm/_api/json/v1/default/contactform/?firstname=*bob*
-http://mura.m7/index.cfm/_api/json/v1/default/contactform/?firstname=contains^bob
-
-
-
-
-*/
 
 })(window);
