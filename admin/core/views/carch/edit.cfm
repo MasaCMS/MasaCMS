@@ -59,12 +59,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.parentID=rc.contentBean.getParentID()>
 </cfif>
 
-<cfif rc.contentBean.getIsNew() and isDefined('rc.remoteid') and len(rc.remoteid)>
-	<cfset rc.contentBean.setRemoteID(rc.remoteid)>
-</cfif>
 
-<cfif rc.contentBean.getIsNew() and isDefined('rc.title') and len(rc.title)>
-	<cfset rc.contentBean.setTitle(rc.title)>
+
+<cfif rc.contentBean.getIsNew()>
+	<cfif isDefined('rc.title') and len(rc.title)>
+		<cfset rc.contentBean.setTitle(rc.title)>
+	</cfif>
+
+	<cfif isDefined('rc.remoteid') and len(rc.remoteid)>
+		<cfset rc.contentBean.setRemoteID(rc.remoteid)>
+	</cfif>
+
+	<cfif isDefined('rc.type') and len(rc.type)>
+		<cfset rc.contentBean.setType(rc.type)>
+	</cfif>
+
+	<cfif isDefined('rc.subtype') and len(rc.subtype)>
+		<cfset rc.contentBean.setSubType(rc.subtype)>
+	</cfif>
+
 </cfif>
 
 <cfset rc.parentBean=$.getBean('content').loadBy(contentid=rc.parentID)>
