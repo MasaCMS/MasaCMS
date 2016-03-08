@@ -52,24 +52,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <div id="mura-login">
+		<cfif rc.$.event('status') eq 'challenge' and isdefined('session.mfa')>
+			<cfif rc.compactDisplay eq 'true'>
+				<h1 class="page-heading">#application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')#</h1>
+			<cfelse>
+				<h1 class="page-heading">#application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')#</h1>
+			</cfif>
+		<cfelse>
+			<cfif rc.compactDisplay eq 'true'>
+				<h1 class="page-heading">#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h1>
+			<cfelse>
+				<h1 class="page-heading">#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h1>
+			</cfif>
+		</cfif>
 	<div class="block">
-	    <div class="block-header">
-				<cfif rc.$.event('status') eq 'challenge' and isdefined('session.mfa')>
-					<cfif rc.compactDisplay eq 'true'>
-						<h3>#application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')#</h3>
-					</cfif>
-					<cfif rc.compactDisplay neq 'true'>
-						<h3>#application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')#</h3>
-					</cfif>
-				<cfelse>
-					<cfif rc.compactDisplay eq 'true'>
-						<h3>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h3>
-					</cfif>
-					<cfif rc.compactDisplay neq 'true'>
-						<h3>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h3>
-					</cfif>
-				</cfif>
-	    </div><!-- /block-header -->
+<!--- 	    <div class="block-header">
+	    </div><!-- /block-header --> --->
 	    <div class="block-content">
 				<cfif not (rc.$.event('status') eq 'challenge' and isdefined('session.mfa'))>	
 					<cfif rc.status eq 'denied'>
@@ -205,20 +203,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 							<div class="mura-control-group">
 								<label>#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</label>
-									<p class="help-block">
+										<cfsavecontent variable="pwresponse">
 										<cfif rc.status eq 'sendLogin'>
 										  <cfset msg=application.userManager.sendLoginByEmail('#rc.email#','','#esapiEncode("url","#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
-										<cfif left(msg,2) eq "No">
-
-										#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),rc.email))#
-										<cfelseif left(msg,4) eq "Your">
-										#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),rc.email))#
-										<cfelse>	#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.invalidemail"),rc.email))#
-										</cfif>
-										<cfelse>
-										#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#
-										</cfif>
-									</p>
+												<cfif left(msg,2) eq "No">
+												#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),rc.email))#
+												<cfelseif left(msg,4) eq "Your">
+												#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),rc.email))#
+												<cfelse>	#esapiEncode('html',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.invalidemail"),rc.email))#
+												</cfif>
+											<cfelse>
+											#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#
+											</cfif>
+								</cfsavecontent> 									
+									<div class="alert<cfif left(msg,2) eq 'No'> alert-error</cfif> clear-both">#pwresponse#</div>
 									<div class="mura-control-group">
 										<label>Email Address</label>
 										<input id="email" name="email" type="text">

@@ -1520,13 +1520,25 @@ label #selectFilter{
 .block-themed{};
 #mura-login{
   .make-row();
-   
-  .mura-control-group > label + input,
 
+  .page-heading{
+    .make-xs-column(10);
+    .make-sm-column(4);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 12px;
+    color: #FFF;
+    float:none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .mura-control-group > label + input,
   .mura-control-group > label + select{
     .make-xs-column(12); 
   }
 
+  > .login-header,
   > .block{
     .make-xs-column(10);
     .make-sm-column(4);
@@ -1548,6 +1560,11 @@ label #selectFilter{
       line-height: 1.2;
     }
   }
+
+  .form-actions{
+  padding: 8px 0;
+  }
+
 }
 /* /login */
 
