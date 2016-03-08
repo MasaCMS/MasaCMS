@@ -34,23 +34,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<!--- 
-<cfif isJSON( local.formBean.getBody())>
-	<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
-	
-	<cftry>
-		<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>
-			<cfset isNewForm = true />
-		</cfif>
-	<cfcatch>
-		<cfdump var="#cfcatch#">
-		<cfabort>
-	</cfcatch>
-	</cftry>
-</cfif>
-
- --->
-
 <cfparam name="arguments._p" default="1" >
 
 <cfif len(arguments.objectid)>
@@ -60,14 +43,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
 
 		<cftry>
-			<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>
+			<!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
 				<cfset objectParams.render = "client" />
 				<cfset objectParams.async = "true"/>
+<!---
 			<cfelse>
 				<cfset objectParams.render = "server" />
-				<cfset arguments.pageIndex = 1 />
 				<cfinclude template="../datacollection/index.cfm" />
 			</cfif>
+--->
 		<cfcatch>
 			<cfdump var="#cfcatch#">
 			<cfabort>

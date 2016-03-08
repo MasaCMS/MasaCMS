@@ -50,6 +50,7 @@
 
 		settings:{},
 		templates:{},
+		ormform: false,
 		formJSON:{},
 		data:{},
 		columns:[],
@@ -61,17 +62,21 @@
 		sortfield: '',
 		sortdir: '',
 		properties: {},
-		templateList: ['checkbox','dropdown','radio','textarea','textfield','form','paging','list','table','view','hidden','section'],
+		rendered: {},
+		templateList: ['checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
 
 		init:function(properties){
 			
 			properties || {};
+
 			this.settings = properties;
 
+			if(this.settings.mode == undefined)
+				this.settings.mode = 'form';
+			
 			this.registerHelpers();
-
 		},
 
 		getTemplates:function() {
@@ -98,27 +103,69 @@
 		renderField:function(fieldtype,data) {
 			var self = this;
 			var templates = this.templates;
-
-			if( data.datasetid != "")
+			var template = fieldtype;
+			
+			if( data.datasetid != "" && self.isormform)
 				data.options = self.formJSON.datasets[data.datasetid].options;
+			else if(data.datasetid != "") {
+				data.dataset = self.formJSON.datasets[data.datasetid];
+			}
 
 			self.setDefault( fieldtype,data );
 
-			if(fieldtype == "checkbox") {
-				data.selected = [];
+			if (fieldtype == "nested") {
+				var context = {};
+				context.objectid = data.formid;
+				context.paging = 'single';
+				context.mode = 'nested';
+				context.master = this;
+				
+				var nestedForm = new mura.UI( context );
+				var holder = $('<div id="nested-'+data.formid+'"></div>');
+				
+				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(holder);
+									
+				context.formEl = holder;
+				nestedForm.getForm();
 
-				if( self.data[data.name] && self.data[data.name].items ) {
-					for(var i=0;i<self.data[data.name].items.length;i++) {
-						data.selected.push(self.data[data.name].items[i].key);
+				var html = self.templates[template](data);
+				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
+			}
+			else {
+				if(fieldtype == "checkbox") {
+					
+					
+					if(self.ormform) {
+						data.selected = [];
+		
+						if( self.data[data.name] && self.data[data.name].items ) {
+							for(var i=0;i<self.data[data.name].items.length;i++) {
+								data.selected.push(self.data[data.name].items[i].key);
+							}
+						}
+		
+						data.selected = data.selected.join(",");
+					}
+					else {
+						template = template + "_static";
 					}
 				}
+				else if(fieldtype == "dropdown") {
+					if(!self.ormform) {
+						template = template + "_static";
+					}
+				}
+				else if(fieldtype == "radio") {
+					if(!self.ormform) {
+						template = template + "_static";
+					}
+				}
+				
+				var html = self.templates[template](data);
 
-				data.selected = data.selected.join(",");
+				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
 			}
-			
-			var html = self.templates[fieldtype](data);
-			$(".field-container",self.settings.formEl).append(html);
-						
+
 		},
 
 		setDefault:function(fieldtype,data) {
@@ -127,21 +174,60 @@
 			switch( fieldtype ) {
 				case "textfield":
 				case "textarea":
-					data.defaultvalue = self.data[data.name];
+					data.value = self.data[data.name];
 				 break;
 				case "checkbox":
+					var ds = self.formJSON.datasets[data.datasetid];
+					for(var i in ds.datarecords) {
+						if (self.ormform) {
+							if (ds.datarecords[i].id == self.data[data.name + 'id']) {
+								ds.datarecords[i].isselected = 1;
+								data.selected = self.data[data.name + 'id'];
+							}
+							else {
+								ds.datarecords[i].selected = 0;
+								ds.datarecords[i].isselected = 0;
+							}
+						}
+						else {
+							if (self.data[data.name] && ds.datarecords[i].value && self.data[data.name].indexOf(ds.datarecords[i].value) > -1) {
+								data.selected = self.data[data.name];
+								ds.datarecords[i].isselected = 1;
+								ds.datarecords[i].selected = 1;
+							}
+							else {
+								ds.datarecords[i].selected = 0;
+								ds.datarecords[i].isselected = 0;
+							}
+						}
+					}
+				break;
+				case "radio":
 				case "dropdown":
 					var ds = self.formJSON.datasets[data.datasetid];
 					for(var i in ds.datarecords) {
-						if(ds.datarecords[i].id == self.data[data.name+'id'])
-							ds.datarecords[i].isselected = 1;
-						else
-							ds.datarecords[i].isselected = 0;
-
+						if(self.ormform) {
+							if(ds.datarecords[i].id == self.data[data.name+'id']) {
+								ds.datarecords[i].isselected = 1;
+								data.selected = self.data[data.name+'id'];
+							}
+							else {
+								ds.datarecords[i].selected = 0;
+								ds.datarecords[i].isselected = 0;
+							}
+						}
+						else {
+							 if(ds.datarecords[i].value == self.data[data.name]) {
+								ds.datarecords[i].isselected = 1;
+								data.selected = self.data[data.name];
+							}
+							else {
+								ds.datarecords[i].isselected = 0;
+							}
+						}
 					}
 				 break;
 			}
-
 		},
 
 		renderData:function() {
@@ -174,59 +260,59 @@
 				})
 				.then(function() {
 					self.renderData();
-				})
-				;
+				});
 		},
 
 		renderForm: function( ) {
 			var self = this;
-
-			$(".field-container",self.settings.formEl).empty();
+			
+			console.log(self.formJSON);
+			
+			$(".field-container-" + self.settings.objectid,self.settings.formEl).empty();
 
 			if(!self.formInit) {
 				self.initForm();
 			}
 			
 			var fields = this.formJSON.form.pages[self.currentpage];
+			
 			for(var i = 0;i < fields.length;i++) {
-
 				var field =  this.formJSON.form.fields[fields[i]];
 				if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
 					self.renderField(field.fieldtype.fieldtype,field);
 				}
 			}
 
-
-			self.renderPaging();
+			if (self.settings.mode == 'form') {
+				self.renderPaging();
+			}
 
 		},
 
 		renderPaging:function() {
 			self = this;
-			
-			$(".paging-container",self.settings.formEl).empty();
+									
+			$(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
 						
-
 			if(self.formJSON.form.pages.length == 1) {
-				$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
+				$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
 			}
 			else {
 				if(self.currentpage == 0) {
-					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:"form-nav"}));
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:"form-nav"}));
 				} else {
-					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
 
 					if(self.currentpage+1 < self.formJSON.form.pages.length) {
-						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
+						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
 					}
 					else {
-						$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
+						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
 					}		
 				}
 				
 				if(self.backlink != undefined && self.backlink.length)
-					$(".paging-container",self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
-
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
 			}
 
 
@@ -239,41 +325,18 @@
 			
 			$(".form-nav",self.settings.formEl).click( function() {
 				// need to build checkbox vals
-				var multi = {};
-				var item = {};
-				var valid = [];
-						
-//						multi.cascade = "replace";
-
 				
-				$(".field-container :input").each( function() {
-
-					if( $(this).is(':checkbox')) {
-						if ( multi[$(this).attr('name')] == undefined )
-							multi[$(this).attr('name')] = [];
-						
-						if( $(this).is(':checked') ) {
-							item = {};
-							item['id'] = window.mura.createUUID();
-							item[ self.entity + 'id'] = self.data.id; 
-							item[ $(this).attr('source') + 'id'] = $(this).val(); 
-							item[ 'key' ] = $(this).val(); 
-	
-							multi[$(this).attr('name')].push(item);
-							
-						}
-					}
-					else {
-						self.data[ $(this).attr('name') ] = $(this).val();
-						valid[ $(this).attr('name') ] = self.data[name];
-					}
-				});
+				console.log(self.data);
 				
-				for(var i in multi) {
-					self.data[ i ].cascade = "replace";
-					self.data[ i ].items = multi[ i ];
-					valid[ $(this).attr('name') ] = self.data[i];
+				if(self.settings.master) {
+					console.log( 'nav' );
+					console.log(self);
+					console.log(self.settings.master);
+					console.log(self.settings);
+					console.log(self.settings.master.settings);
 				}
+						
+				var valid = self.setDataValues();
 				
 				self.currentpage = parseInt($(this).attr('data-page'));
 
@@ -284,8 +347,62 @@
 				else {
 					console.log('oops!');
 				}
-				
 			});
+		},
+		
+		setDataValues: function() {
+			self = this;
+			var multi = {};
+			var item = {};
+			var valid = [];
+				
+			$(".field-container-" + self.settings.objectid + " :input").each( function() {
+
+				if( $(this).is(':checkbox')) {
+					if ( multi[$(this).attr('name')] == undefined )
+						multi[$(this).attr('name')] = [];
+					
+					if( $(this).is(':checked') ) {
+						if (self.ormform) {
+							item = {};
+							item['id'] = window.mura.createUUID();
+							item[self.entity + 'id'] = self.data.id;
+							item[$(this).attr('source') + 'id'] = $(this).val();
+							item['key'] = $(this).val();
+							
+							multi[$(this).attr('name')].push(item);
+						}
+						else {
+							multi[$(this).attr('name')].push($(this).val());
+						}
+					}
+				}
+				else if( $(this).is(':radio')) {
+					if( $(this).is(':checked') ) {
+						self.data[ $(this).attr('name') ] = $(this).val();
+						valid[ $(this).attr('name') ] = self.data[name];
+					}
+				}
+				else {
+					self.data[ $(this).attr('name') ] = $(this).val();
+					valid[ $(this).attr('name') ] = self.data[name];
+				}
+			});
+			
+			for(var i in multi) {
+				if(self.ormform) {
+					self.data[ i ].cascade = "replace";
+					self.data[ i ].items = multi[ i ];
+					valid[ $(this).attr('name') ] = self.data[i];
+				}
+				else {
+					self.data[ i ] = multi[i].join(",");
+					valid[ $(this).attr('name') ] = multi[i].join(",");
+				} 
+			}
+			
+			return valid;
+			
 		},
 		
 		validate: function( entity,fields ) {
@@ -328,30 +445,35 @@
 					 	self.formJSON = formJSON;
 					 	self.responsemessage = data.data.responsemessage;
 							
-						if (formJSON.form.formattributes.muraormentities != 1) {
-							return;
+						if (formJSON.form.formattributes.muraormentities == 1) {
+							self.ormform = true;
 						}
 
 						for(var i in self.formJSON.datasets)
 							self.datasets.push(i);
 
-					 	self.entity = entityName;
-						
-					 	if(self.entityid == undefined) {
-							window.mura.get(
-								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new?expand=all'
-							).then(function(resp) {
-								self.data = resp.data;
-								self.renderData();	
-							});					 		
-					 	}
-					 	else {
-							window.mura.get(
-								window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '?expand=all'
-							).then(function(resp) {
-								self.data = resp.data;
-								self.renderData();	
-							});
+						if(self.ormform) {
+						 	self.entity = entityName;
+							
+						 	if(self.entityid == undefined) {
+								window.mura.get(
+									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new?expand=all'
+								).then(function(resp) {
+									self.data = resp.data;
+									self.renderData();	
+								});					 		
+						 	}
+						 	else {
+								window.mura.get(
+									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '?expand=all'
+								).then(function(resp) {
+									self.data = resp.data;
+									self.renderData();	
+								});
+							}
+						}
+						else {
+							self.renderData();	
 						}
 					 }
 				);
@@ -360,7 +482,14 @@
 		initForm: function() {
 			var self = this;
 			$(self.settings.formEl).empty();
-			var html = self.templates['form'](self.settings);
+
+			if(self.settings.mode != undefined && self.settings.mode == 'nested') {
+				var html = self.templates['nested'](self.settings);
+			}
+			else {
+				var html = self.templates['form'](self.settings);
+			}
+
 			$(self.settings.formEl).append(html);
 
 			self.currentpage = 0;
@@ -370,32 +499,12 @@
 		submitForm: function() {
 			self = this;
 
-			$(".field-container :input").each( function() {
-
-				// need to build checkbox vals
-				var multi = {};
-				
-				$(".field-container :input").each( function() {
-					
-					if( $(this).is(':checkbox') && $(this).is(':checked') ) {
-						if ( multi[$(this).attr('name')] == undefined )
-							multi[$(this).attr('name')] = {};
-
-						multi[$(this).attr('name')].push($(this).val());
-					}
-					else {
-						self.data[ $(this).attr('name') ] = $(this).val();
-					}
-				});
-				
-				for(var i in multi) {
-					self.data[ i ] = multi[ i ].join(",");
-				}
-			});
+			var valid = self.setDataValues();
 
 			delete self.data.isNew;
 			
-			window.mura.getEntity(self.entity)
+			if(self.ormform) {
+				window.mura.getEntity(self.entity)
 				.set(
 					self.data
 				)
@@ -408,6 +517,26 @@
 					}
 					$(self.settings.formEl).html( self.responsemessage );
 				});
+			}
+			else {
+
+				var data = jQuery.extend(true, {}, self.data);
+				
+				data['objectparams'] = self.settings;
+
+				var postconfig={
+					url: window.mura.apiEndpoint + '?method=processAsyncObject',
+					type: 'POST',
+					data: data,
+					success: function() {
+						$(self.settings.formEl).html( self.responsemessage );
+					}
+				}
+
+				mura.ajax(postconfig);
+
+			}
+			
 		},
 
 // lists
@@ -756,23 +885,20 @@
 				}
 				return ret;
 			});
+			Handlebars.registerHelper('eachStatic',function(dataset, options) {
+				var ret = "";
 
-
+				for(var i = 0;i < dataset.datarecordorder.length;i++) {
+					ret = ret + options.fn(dataset.datarecords[dataset.datarecordorder[i]]);
+				}
+				return ret;
+			});
 		}
 
 
 
 
+
 	});
-	
-/*
-
-http://mura.m7/index.cfm/_api/json/v1/default/contactform/?firstname=*bob*
-http://mura.m7/index.cfm/_api/json/v1/default/contactform/?firstname=contains^bob
-
-
-
-
-*/
 
 })(window);
