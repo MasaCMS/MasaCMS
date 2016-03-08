@@ -283,14 +283,13 @@
 				var $tools='';
 			}
 
-
-			utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
-			'<div id="frontEndToolsModalBody">' + $tools +
-			'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
-			'</div>' +
-			'</div>');
-
 			if(ispreview){
+				utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+				'<div id="frontEndToolsModalBody">' + $tools +
+				'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
+				'</div>' +
+				'</div>');
+
 				utility('##mura-preview-device-selector a').on('click', function () {
 					var data=utility(this).data();
 
@@ -308,6 +307,21 @@
 				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+80) + "px")
 				resizeFrontEndToolsModal(frontEndModalHeight);
 			} else{
+
+				if(mura.type=='Variation' && mura.remoteid){
+					src+='&remoteid=' + encodeURIComponent(mura.remoteid);
+				}
+
+				if(mura.type=='Variation' && mura.title){
+					src+='&title=' + encodeURIComponent(mura.title);
+				}
+
+				utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+				'<div id="frontEndToolsModalBody">' + $tools +
+				'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
+				'</div>' +
+				'</div>');
+
 				frontEndModalHeight=0;
 				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+70) + "px")
 				resizeFrontEndToolsModal(0);
