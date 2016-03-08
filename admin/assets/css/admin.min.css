@@ -25260,8 +25260,38 @@ i {
   font-size: 11px;
   text-align: left;
 }
+.mura .mura-quickEdit select.time {
+  width: 43px !important;
+  padding: 2px 1px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.mura .mura-quickEdit select.time + select.time {
+  margin-left: 5px !important;
+}
+.mura .mura-quickEdit label.time {
+  width: 20px;
+  padding: 8px 0 0 8px !important;
+}
+.mura .mura-quickEdit label.time-repeat {
+  width: 54px;
+  padding: 8px 0 0 9px !important;
+}
 .mura .mura-quickEdit.large {
   width: 475px;
+}
+.mura .mura-quickEdit.large select.time {
+  width: 42px !important;
+  padding: 2px 1px !important;
+  margin-left: 5px !important;
+}
+.mura .mura-quickEdit.large label.time {
+  width: 20px;
+  padding: 8px 0 0 8px !important;
+}
+.mura .mura-quickEdit.large label.time-repeat {
+  width: 54px;
+  padding: 8px 0 0 9px !important;
 }
 .mura .mura-quickEdit .mura-control-group {
   margin-bottom: 5px;
@@ -25301,10 +25331,11 @@ i {
 .mura .mura-quickEdit .cancel i {
   font-size: 16px;
   color: #cccccc;
-  text-shadow: 0 -1px 0 #000000;
+  text-shadow: none;
 }
-.mura .mura-quickEdit .cancel i:hover {
-  color: #666666;
+.mura .mura-quickEdit .cancel i:hover i {
+  color: #cccccc;
+  text-shadow: none;
 }
 .mura .mura-quickEdit img.loader {
   position: absolute;
@@ -25331,19 +25362,6 @@ i {
   -webkit-border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   border-radius: 0 !important;
-}
-.mura .mura-quickEdit select.time {
-  width: 42px !important;
-  padding: 2px 1px !important;
-  margin-left: 5px !important;
-}
-.mura .mura-quickEdit label.time {
-  width: 20px;
-  padding: 8px 0 0 8px !important;
-}
-.mura .mura-quickEdit label.time-repeat {
-  width: 54px;
-  padding: 8px 0 0 9px !important;
 }
 .mura .mura-quickEdit label.checkbox.inline,
 .mura .mura-quickEdit .mura-control-group label.checkbox.inline {
@@ -36340,6 +36358,11 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
 }
 .mura .ui-dialog .ui-dialog-titlebar-close:before {
   font-size: 18px;
+}
+#ui-datepicker-div {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close,
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close:focus,

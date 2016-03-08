@@ -1190,8 +1190,46 @@
 		font-size: @qeFontSize;
 		text-align: left;
 
+			select.time {
+				width: 43px !important;
+				padding: 2px 1px !important;
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+
+				+ select.time{
+				margin-left: 5px !important;
+				}
+			}
+
+			label.time{
+				width: 20px;
+		    padding: 8px 0 0 8px !important;
+			}
+
+			label.time-repeat{
+				width: 54px;
+	    	padding: 8px 0 0 9px !important;
+			}
+
 		&.large{
 		 	width: 475px;
+
+			select.time {
+				width: 42px !important;
+				padding: 2px 1px !important;
+				margin-left: 5px !important;
+			}
+
+			label.time{
+				width: 20px;
+		    padding: 8px 0 0 8px !important;
+			}
+
+			label.time-repeat{
+				width: 54px;
+	    	padding: 8px 0 0 9px !important;
+			}
+
 		}
 
 		.mura-control-group{
@@ -1234,14 +1272,19 @@
 			right: 4px;
 			cursor: pointer;
 
-			i {
-				font-size: 16px;
-				color: @gray;
-				text-shadow: 0 -1px 0 #000;
+				i {
+					font-size: 16px;
+					color: @gray;
+					text-shadow: none;
 
-				&:hover {
-					color: @grayDark;
-					}
+				&:hover{
+					i{
+						color: @gray;			
+						text-shadow: none;
+						}
+
+				}	
+
 
 				}
 			}
@@ -1274,21 +1317,6 @@
 			.border-radius(0) !important;
 			}
 
-		select.time {
-			width: 42px !important;
-			padding: 2px 1px !important;
-			margin-left: 5px !important;
-		}
-
-		label.time{
-			width: 20px;
-	    padding: 8px 0 0 8px !important;
-		}
-
-		label.time-repeat{
-			width: 54px;
-    	padding: 8px 0 0 9px !important;
-		}
 		
 		label.checkbox.inline, 
 		.mura-control-group label.checkbox.inline{
