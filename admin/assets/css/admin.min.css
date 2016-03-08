@@ -36341,6 +36341,11 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
 .mura .ui-dialog .ui-dialog-titlebar-close:before {
   font-size: 18px;
 }
+#ui-datepicker-div {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close,
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close:focus,
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close:hover {
