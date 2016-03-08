@@ -1174,14 +1174,14 @@
 
 	.mura-quickEdit {
 		background-color: #272727;
-		opacity: .95;
+		opacity: 1;
 		position: absolute;
 		bottom: 34px;
 		left: 50%;
 		margin-left: -92px;
 		width: 160px;
 		min-height: 70px;
-		z-index: 10;
+		z-index: 2;
 		display: block;
 		.border-radius(2px);
 		padding: 8px 10px;
@@ -1190,11 +1190,39 @@
 		font-size: @qeFontSize;
 		text-align: left;
 
-		h1 {
+		&.large{
+		 	width: 475px;
+		}
+
+		.mura-control-group{
+		margin-bottom: 5px;
+
+ 			input[type="checkbox"]{
+ 				margin-top: 0;
+ 			}
+
+			.mura-control-inline{
+				margin-top: 5px; 
+
+				> input{
+					float: left;
+			    width: 8.25%;
+			    height: 22px;
+			    .border-radius(0);
+			    padding: 0 3px;
+				}
+			}
+
+		}
+
+
+		h1,
+		label,
+		.label {
 		color: #fff !important;
 		font-size: 11px !important;
 		text-align: left;
-		margin: 0 0 .75em 0;
+		margin: 0 0 8px 0;
 		font-weight: normal;
 		padding-right: 20px;
 		line-height: 1;
@@ -1229,18 +1257,53 @@
 			}
 
 		input.datepicker {
-			width: 151px;
+			width: 141px;
 			}
 
+		.mura-interval-end input[type=text]
+		.mura-interval-end input[type=text].datepicker,
+		input.datepicker,
 		select {
 			margin-bottom: .75em;
-			width: 141px;
+			width: 141px !important;
 			font-size: @qeFontSize;
-			padding: 2px 2px;
-			height: auto;
+			padding: 2px 2px !important;
+			height: 24px !important;
 			line-height: 1;
 			outline: 0;
+			.border-radius(0) !important;
 			}
+
+		select.time {
+			width: 42px !important;
+			padding: 2px 1px !important;
+			margin-left: 5px !important;
+		}
+
+		label.time{
+			width: 20px;
+	    padding: 8px 0 0 8px !important;
+		}
+
+		label.time-repeat{
+			width: 54px;
+    	padding: 8px 0 0 9px !important;
+		}
+		
+		label.checkbox.inline, 
+		.mura-control-group label.checkbox.inline{
+				padding-left: 19px !important;
+				margin-bottom: 8px !important;
+		}
+		
+		#displayIntervalEnd,
+		#displayIntervalEndAfter{
+			width: 15% !important;
+			margin-left: 0;
+			margin-right: 4px;
+			height: 24px !important;
+			.border-radius(0) !important; 
+		}
 
 		.form-actions {
 			text-align: center;
@@ -1250,10 +1313,12 @@
 			}
 
 		.btn {
-			cursor: pointer;
+			.btn-default;
+			.btn-sm;
+			.border-radius(0);
 			margin: 0 auto;
-			padding: 1px 12px;
-			font-size: @qeFontSize;
+			padding: 3px 6px;
+			border: 1px solid #A1A1A1 !important;
 			}
 
 		li {

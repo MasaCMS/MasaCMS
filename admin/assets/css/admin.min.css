@@ -25242,14 +25242,14 @@ i {
 }
 .mura .mura-quickEdit {
   background-color: #272727;
-  opacity: .95;
+  opacity: 1;
   position: absolute;
   bottom: 34px;
   left: 50%;
   margin-left: -92px;
   width: 160px;
   min-height: 70px;
-  z-index: 10;
+  z-index: 2;
   display: block;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -25260,11 +25260,34 @@ i {
   font-size: 11px;
   text-align: left;
 }
-.mura .mura-quickEdit h1 {
+.mura .mura-quickEdit.large {
+  width: 475px;
+}
+.mura .mura-quickEdit .mura-control-group {
+  margin-bottom: 5px;
+}
+.mura .mura-quickEdit .mura-control-group input[type="checkbox"] {
+  margin-top: 0;
+}
+.mura .mura-quickEdit .mura-control-group .mura-control-inline {
+  margin-top: 5px;
+}
+.mura .mura-quickEdit .mura-control-group .mura-control-inline > input {
+  float: left;
+  width: 8.25%;
+  height: 22px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  padding: 0 3px;
+}
+.mura .mura-quickEdit h1,
+.mura .mura-quickEdit label,
+.mura .mura-quickEdit .label {
   color: #fff !important;
   font-size: 11px !important;
   text-align: left;
-  margin: 0 0 .75em 0;
+  margin: 0 0 8px 0;
   font-weight: normal;
   padding-right: 20px;
   line-height: 1;
@@ -25293,16 +25316,49 @@ i {
   height: 24px !important;
 }
 .mura .mura-quickEdit input.datepicker {
-  width: 151px;
+  width: 141px;
 }
+.mura .mura-quickEdit .mura-interval-end input[type=text] .mura-interval-end input[type=text].datepicker,
+.mura .mura-quickEdit input.datepicker,
 .mura .mura-quickEdit select {
   margin-bottom: .75em;
-  width: 141px;
+  width: 141px !important;
   font-size: 11px;
-  padding: 2px 2px;
-  height: auto;
+  padding: 2px 2px !important;
+  height: 24px !important;
   line-height: 1;
   outline: 0;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+.mura .mura-quickEdit select.time {
+  width: 42px !important;
+  padding: 2px 1px !important;
+  margin-left: 5px !important;
+}
+.mura .mura-quickEdit label.time {
+  width: 20px;
+  padding: 8px 0 0 8px !important;
+}
+.mura .mura-quickEdit label.time-repeat {
+  width: 54px;
+  padding: 8px 0 0 9px !important;
+}
+.mura .mura-quickEdit label.checkbox.inline,
+.mura .mura-quickEdit .mura-control-group label.checkbox.inline {
+  padding-left: 19px !important;
+  margin-bottom: 8px !important;
+}
+.mura .mura-quickEdit #displayIntervalEnd,
+.mura .mura-quickEdit #displayIntervalEndAfter {
+  width: 15% !important;
+  margin-left: 0;
+  margin-right: 4px;
+  height: 24px !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 .mura .mura-quickEdit .form-actions {
   text-align: center;
@@ -25311,10 +25367,240 @@ i {
   border: 0;
 }
 .mura .mura-quickEdit .btn {
-  cursor: pointer;
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+  color: #545454;
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
   margin: 0 auto;
-  padding: 1px 12px;
-  font-size: 11px;
+  padding: 3px 6px;
+  border: 1px solid #A1A1A1 !important;
+}
+.mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn.focus {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.mura .mura-quickEdit .btn:hover {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.active,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.mura .mura-quickEdit .btn:active:hover,
+.mura .mura-quickEdit .btn.active:hover,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn:hover,
+.mura .mura-quickEdit .btn:active:focus,
+.mura .mura-quickEdit .btn.active:focus,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn:active.focus,
+.mura .mura-quickEdit .btn.active.focus,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn.focus {
+  color: #333333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.active,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn {
+  background-image: none;
+}
+.mura .mura-quickEdit .btn.disabled:hover,
+.mura .mura-quickEdit .btn[disabled]:hover,
+fieldset[disabled] .mura .mura-quickEdit .btn:hover,
+.mura .mura-quickEdit .btn.disabled:focus,
+.mura .mura-quickEdit .btn[disabled]:focus,
+fieldset[disabled] .mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn.disabled.focus,
+.mura .mura-quickEdit .btn[disabled].focus,
+fieldset[disabled] .mura .mura-quickEdit .btn.focus {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.mura .mura-quickEdit .btn .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn.focus,
+.mura .mura-quickEdit .btn:hover {
+  color: #333333;
+  background-color: #ebebeb;
+  border-color: #adadad;
+}
+.mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.active,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn {
+  color: #333333;
+  background-color: #d1d1d1;
+  border-color: #949494;
+}
+.mura .mura-quickEdit .btn:active:hover,
+.mura .mura-quickEdit .btn.active:hover,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn:hover,
+.mura .mura-quickEdit .btn:active:focus,
+.mura .mura-quickEdit .btn.active:focus,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn:active.focus,
+.mura .mura-quickEdit .btn.active.focus,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn.focus {
+  color: #333333;
+  background-color: #d1d1d1;
+  border-color: #949494;
+}
+.mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.active,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn {
+  background-image: none;
+}
+.mura .mura-quickEdit .btn.disabled,
+.mura .mura-quickEdit .btn[disabled],
+fieldset[disabled] .mura .mura-quickEdit .btn,
+.mura .mura-quickEdit .btn.disabled:hover,
+.mura .mura-quickEdit .btn[disabled]:hover,
+fieldset[disabled] .mura .mura-quickEdit .btn:hover,
+.mura .mura-quickEdit .btn.disabled:focus,
+.mura .mura-quickEdit .btn[disabled]:focus,
+fieldset[disabled] .mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn.disabled.focus,
+.mura .mura-quickEdit .btn[disabled].focus,
+fieldset[disabled] .mura .mura-quickEdit .btn.focus,
+.mura .mura-quickEdit .btn.disabled:active,
+.mura .mura-quickEdit .btn[disabled]:active,
+fieldset[disabled] .mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.disabled.active,
+.mura .mura-quickEdit .btn[disabled].active,
+fieldset[disabled] .mura .mura-quickEdit .btn.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.mura .mura-quickEdit .btn .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn.focus {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #a9a9a9;
+}
+.mura .mura-quickEdit .btn:hover {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #cacaca;
+}
+.mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.active,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #cacaca;
+}
+.mura .mura-quickEdit .btn:active:hover,
+.mura .mura-quickEdit .btn.active:hover,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn:hover,
+.mura .mura-quickEdit .btn:active:focus,
+.mura .mura-quickEdit .btn.active:focus,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn:active.focus,
+.mura .mura-quickEdit .btn.active.focus,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn.focus {
+  color: #545454;
+  background-color: #cacaca;
+  border-color: #a9a9a9;
+}
+.mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.active,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn {
+  background-image: none;
+}
+.mura .mura-quickEdit .btn.disabled:hover,
+.mura .mura-quickEdit .btn[disabled]:hover,
+fieldset[disabled] .mura .mura-quickEdit .btn:hover,
+.mura .mura-quickEdit .btn.disabled:focus,
+.mura .mura-quickEdit .btn[disabled]:focus,
+fieldset[disabled] .mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn.disabled.focus,
+.mura .mura-quickEdit .btn[disabled].focus,
+fieldset[disabled] .mura .mura-quickEdit .btn.focus {
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura .mura-quickEdit .btn .badge {
+  color: #f5f5f5;
+  background-color: #545454;
+}
+.mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn.focus,
+.mura .mura-quickEdit .btn:hover {
+  color: #545454;
+  background-color: #e1e1e1;
+  border-color: #cacaca;
+}
+.mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.active,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn {
+  color: #545454;
+  background-color: #c7c7c7;
+  border-color: #b1b1b1;
+}
+.mura .mura-quickEdit .btn:active:hover,
+.mura .mura-quickEdit .btn.active:hover,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn:hover,
+.mura .mura-quickEdit .btn:active:focus,
+.mura .mura-quickEdit .btn.active:focus,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn:active.focus,
+.mura .mura-quickEdit .btn.active.focus,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn.focus {
+  color: #545454;
+  background-color: #c7c7c7;
+  border-color: #b1b1b1;
+}
+.mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.active,
+.open > .dropdown-toggle.mura .mura-quickEdit .btn {
+  background-image: none;
+}
+.mura .mura-quickEdit .btn.disabled,
+.mura .mura-quickEdit .btn[disabled],
+fieldset[disabled] .mura .mura-quickEdit .btn,
+.mura .mura-quickEdit .btn.disabled:hover,
+.mura .mura-quickEdit .btn[disabled]:hover,
+fieldset[disabled] .mura .mura-quickEdit .btn:hover,
+.mura .mura-quickEdit .btn.disabled:focus,
+.mura .mura-quickEdit .btn[disabled]:focus,
+fieldset[disabled] .mura .mura-quickEdit .btn:focus,
+.mura .mura-quickEdit .btn.disabled.focus,
+.mura .mura-quickEdit .btn[disabled].focus,
+fieldset[disabled] .mura .mura-quickEdit .btn.focus,
+.mura .mura-quickEdit .btn.disabled:active,
+.mura .mura-quickEdit .btn[disabled]:active,
+fieldset[disabled] .mura .mura-quickEdit .btn:active,
+.mura .mura-quickEdit .btn.disabled.active,
+.mura .mura-quickEdit .btn[disabled].active,
+fieldset[disabled] .mura .mura-quickEdit .btn.active {
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura .mura-quickEdit .btn .badge {
+  color: #f5f5f5;
+  background-color: #545454;
 }
 .mura .mura-quickEdit li {
   text-align: left;
@@ -25845,20 +26131,6 @@ text-shadow: 0 0 1px @blue;
 }
 .mura #mura-templatebuilder #mura-form-pages .button-trash {
   margin: -12px -4px 0 0;
-}
-.mura #editDates {
-  padding: 1em;
-  margin-top: 18px;
-  background: #f7f7f7;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-}
-.mura #editDates .controls {
-  margin-bottom: .5em;
-}
-.mura #editDates + div {
-  margin-top: 24px;
 }
 .mura .mura-tb-form {
   /*float: right;
@@ -35858,6 +36130,19 @@ label #selectFilter {
 }
 .mura-control-group .mura-control.justify {
   padding: 8px 0px;
+}
+.mura-control-group .mura-control.highlight,
+.mura-control.highlight {
+  padding: 1em;
+  margin-top: 18px;
+  background: #f7f7f7;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+.mura-control-group .mura-control.highlight + div,
+.mura-control.highlight + div {
+  margin-top: 24px;
 }
 #mura-content > form .mura-control-group input.radio,
 #mura-content > form .mura-control-group input[type="radio"],

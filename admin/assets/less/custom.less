@@ -1266,6 +1266,7 @@ ul.dropdown-menu{
     background-color: #F9F9F9;
     border: 1px solid #F5F5F5;  
   }
+
   .module,
   .well {
     ul.nav { 
@@ -1357,6 +1358,18 @@ label #selectFilter{
 .mura-control-group .mura-control.justify{
   padding: 8px 0px;
 }
+
+.mura-control-group .mura-control.highlight,
+.mura-control.highlight{
+  padding: 1em;
+  margin-top: @baseLineHeight;
+  background: @grayLighter;
+  .border-radius(4px);
+  + div{ 
+    margin-top: 24px;
+  }
+}
+
 #mura-content > form .mura-control-group input.radio,
 #mura-content > form .mura-control-group input[type="radio"],
 #mura-content > form .mura-control-group input.checkbox,

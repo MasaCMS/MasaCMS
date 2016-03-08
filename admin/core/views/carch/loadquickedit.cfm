@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</option>
 			</select>
 		</div>
-		<div id="editDates"  <cfif content.getdisplay() NEQ 2>style="display: none;"</cfif>>
+		<div id="editDates" <cfif content.getdisplay() NEQ 2>style="display: none;"</cfif>>
 			<cfset displayInterval=content.getDisplayInterval(deserialize=true)>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
