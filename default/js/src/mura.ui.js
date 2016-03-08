@@ -233,6 +233,8 @@
 		renderData:function() {
 			var self = this;
 
+			console.log('on');
+
 			if(self.datasets.length == 0)
 				self.renderForm();
 
@@ -440,12 +442,20 @@
 					 + '?fields=body,title,filename,responsemessage'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
+
+						// old forms
+							if(!formJSON.form.pages) {
+								formJSON.form.pages = [];
+								formJSON.form.pages[0] = formJSON.form.fieldorder;
+								formJSON.form.fieldorder = [];
+							}
+
 						entityName = data.data.filename.replace(/\W+/g, "");
 						self.entity = entityName;
 					 	self.formJSON = formJSON;
 					 	self.responsemessage = data.data.responsemessage;
 							
-						if (formJSON.form.formattributes.muraormentities == 1) {
+						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
 							self.ormform = true;
 						}
 
@@ -509,7 +519,9 @@
 					self.data
 				)
 				.save()
-				.then( function() {
+				.then( function( entity ) {
+					
+					//if(entity.hasErrors())
 
 					if(self.backlink != undefined) {
 						self.getTableData( self.location );

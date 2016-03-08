@@ -125,6 +125,9 @@
 
 			doRenderForm( data );
 			
+			
+			console.log(data);
+			
 			if ( _formData.formattributes && _formData.formattributes['name-unrestricted'] == 1) {
 				_nameEnabled = true;
 			}
@@ -136,13 +139,22 @@
 			_formData = response.form;
 			_currentPage = 0;
 
+			if (!_formData.pages) {
+				_formData.pages = [];
+			}
+
+			if(!_formData.pages.length)  {
+				_formData.pages.push([]);
+			}
+		
 			if(_formData.fieldorder.length > 0) {
-				_formData.pages[0] = formData.fieldorder;
+				_formData.pages[0] = _formData.fieldorder;
+				_formData.fieldorder = [];	
 			}
-			else if(!_formData.pages || _formData.pages.length < 1) {
-				_formData.pages = [[]];
-			}
-				
+			
+			console.log('form');
+			console.log(_formData);
+
 			_dataSets = response.datasets;
 			_formStatus.fields			= {};
 			buildPages( _currentPage );			
