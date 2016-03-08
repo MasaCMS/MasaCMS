@@ -63,7 +63,7 @@
 		sortdir: '',
 		properties: {},
 		rendered: {},
-		templateList: ['checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
+		templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
 
@@ -233,8 +233,6 @@
 		renderData:function() {
 			var self = this;
 
-			console.log('on');
-
 			if(self.datasets.length == 0)
 				self.renderForm();
 
@@ -293,6 +291,7 @@
 
 		renderPaging:function() {
 			var self = this;
+			$(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
 									
 			$(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
 						
@@ -444,11 +443,11 @@
 					 	formJSON = JSON.parse( data.data.body );
 
 						// old forms
-							if(!formJSON.form.pages) {
-								formJSON.form.pages = [];
-								formJSON.form.pages[0] = formJSON.form.fieldorder;
-								formJSON.form.fieldorder = [];
-							}
+						if(!formJSON.form.pages) {
+							formJSON.form.pages = [];
+							formJSON.form.pages[0] = formJSON.form.fieldorder;
+							formJSON.form.fieldorder = [];
+						}
 
 						entityName = data.data.filename.replace(/\W+/g, "");
 						self.entity = entityName;
@@ -508,7 +507,6 @@
 
 		submitForm: function() {
 			var self = this;
-
 			var valid = self.setDataValues();
 
 			delete self.data.isNew;
@@ -519,15 +517,24 @@
 					self.data
 				)
 				.save()
-				.then( function( entity ) {
+				.then( 
+					function( entity ) {
 					
-					//if(entity.hasErrors())
-
-					if(self.backlink != undefined) {
-						self.getTableData( self.location );
-						return;
+					console.log(entity);
+					
+					if(entity.hasErrors()) {
+						$(self.settings.formEl).html( html );
+						var html = self.templates['error'](entity.errors);
+						$(".error-container-" + self.settings.objectid,self.settings.formEl).append(html);
 					}
-					$(self.settings.formEl).html( self.responsemessage );
+					else {
+						if(self.backlink != undefined) {
+							self.getTableData( self.location );
+							return;
+						}
+						$(self.settings.formEl).html( self.responsemessage );
+					}
+
 				});
 			}
 			else {
@@ -620,6 +627,14 @@
 					self.entity = entityName;
 				 	self.formJSON = formJSON;
 
+					if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
+						self.ormform = true;
+					}
+					else {
+						$(self.settings.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
+						return;
+					}
+					
 					self.getTableData();
 			});
 		},
@@ -635,7 +650,6 @@
 					window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/propertydescriptor/'
 				).then(function(resp) {
 					self.properties = self.cleanProps(resp.data);
-
 					if( navlink == undefined) {
 						navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?sort=' + self.sortdir + self.sortfield;					
 						var fields = [];
@@ -790,6 +804,7 @@
 		},
 		
 		registerHelpers: function() {
+			var self = this;
 
 			Handlebars.registerHelper('eachColRow',function(row, columns, options) {
 				var ret = "";

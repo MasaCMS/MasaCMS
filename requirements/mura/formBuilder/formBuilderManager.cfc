@@ -400,7 +400,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
 			field = fieldlist[ fieldorder[i] ];
 
-			if( field.fieldtype.fieldtype != "section") {
+			if( field.fieldtype.fieldtype != "section" && field.fieldtype.fieldtype != "textblock") {
 				fieldcount++;
 				param = '	property name="#field.name#"';
 				param = param & ' displayname="#field.label#"';

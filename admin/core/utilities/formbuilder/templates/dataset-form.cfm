@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<option value="entered">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.entered')#</option>
 								<option value="dsp">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.dsp')#</option>
 								<option value="object">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.object')#</option>
-								<option value="muraorm">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.muraorm')#</option>
+								<option value="muraorm" id="dataset-source-muraorm">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.muraorm')#</option>
 								<option value="remote">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.remote')#</option>
 							</select>
 						</li>
