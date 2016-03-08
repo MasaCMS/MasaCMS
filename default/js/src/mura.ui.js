@@ -68,14 +68,14 @@
 		responsemessage: "",
 
 		init:function(properties){
-			
+
 			properties || {};
 
 			this.settings = properties;
 
 			if(this.settings.mode == undefined)
 				this.settings.mode = 'form';
-			
+
 			this.registerHelpers();
 		},
 
@@ -102,7 +102,7 @@
 
 		renderField:function(fieldtype,data) {
 			var self = this;
-			var templates = this.templates;
+			var templates = self.templates;
 			var template = fieldtype;
 			
 			if( data.datasetid != "" && self.isormform)
@@ -169,7 +169,7 @@
 		},
 
 		setDefault:function(fieldtype,data) {
-			self = this;
+			var self = this;
 
 			switch( fieldtype ) {
 				case "textfield":
@@ -233,10 +233,12 @@
 		renderData:function() {
 			var self = this;
 
+			console.log('on');
+
 			if(self.datasets.length == 0)
 				self.renderForm();
 
-			var dataset = this.formJSON.datasets[self.datasets.pop()];
+			var dataset = self.formJSON.datasets[self.datasets.pop()];
 
 			if(dataset.sourcetype != 'muraorm')
 				self.renderData();
@@ -274,10 +276,10 @@
 				self.initForm();
 			}
 			
-			var fields = this.formJSON.form.pages[self.currentpage];
+			var fields = self.formJSON.form.pages[self.currentpage];
 			
 			for(var i = 0;i < fields.length;i++) {
-				var field =  this.formJSON.form.fields[fields[i]];
+				var field =  self.formJSON.form.fields[fields[i]];
 				if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
 					self.renderField(field.fieldtype.fieldtype,field);
 				}
@@ -290,7 +292,7 @@
 		},
 
 		renderPaging:function() {
-			self = this;
+			var self = this;
 									
 			$(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
 						
@@ -351,7 +353,7 @@
 		},
 		
 		setDataValues: function() {
-			self = this;
+			var self = this;
 			var multi = {};
 			var item = {};
 			var valid = [];
@@ -440,12 +442,20 @@
 					 + '?fields=body,title,filename,responsemessage'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
+
+						// old forms
+							if(!formJSON.form.pages) {
+								formJSON.form.pages = [];
+								formJSON.form.pages[0] = formJSON.form.fieldorder;
+								formJSON.form.fieldorder = [];
+							}
+
 						entityName = data.data.filename.replace(/\W+/g, "");
 						self.entity = entityName;
 					 	self.formJSON = formJSON;
 					 	self.responsemessage = data.data.responsemessage;
 							
-						if (formJSON.form.formattributes.muraormentities == 1) {
+						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
 							self.ormform = true;
 						}
 
@@ -497,7 +507,7 @@
 		},
 
 		submitForm: function() {
-			self = this;
+			var self = this;
 
 			var valid = self.setDataValues();
 
@@ -509,7 +519,9 @@
 					self.data
 				)
 				.save()
-				.then( function() {
+				.then( function( entity ) {
+					
+					//if(entity.hasErrors())
 
 					if(self.backlink != undefined) {
 						self.getTableData( self.location );
@@ -554,7 +566,7 @@
 		},
 		
 		filterResults: function() {
-			self = this;
+			var self = this;
 			var before = "";
 			var after = "";
 			
@@ -589,13 +601,15 @@
 		},
 
 		downloadResults: function() {
+			var self = this;
+
 			self.filterResults();
 				
 		},
 
 		
 		loadList: function() {
-			self = this;
+			var self = this;
 
 			window.mura.get(
 				window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
@@ -611,7 +625,7 @@
 		},
 
 		getTableData: function( navlink ) {
-			var self=this;
+			var self = this;
 
 			window.mura.get(
 				window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/listviewdescriptor'
@@ -658,7 +672,7 @@
 		},
 
 		renderTable: function( tableData ) {
-			self = this;
+			var self = this;
 
 			var html = self.templates['table'](tableData);
 			$(self.settings.formEl).html( html );
@@ -721,7 +735,7 @@
 		},
 
 		renderOverview: function() {
-			self = this;
+			var self = this;
 			
 			$(self.settings.formEl).empty();
 
@@ -731,12 +745,10 @@
 			$(".nav-back",self.settings.formEl).click( function() {
 				self.getTableData( self.location );
 			});
-
-
 		},
 
 		renderCRUD: function( itemid,pos ) {
-			self = this;
+			var self = this;
 			
 			self.formInit = 0;
 			self.initForm();
