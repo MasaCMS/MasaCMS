@@ -25260,8 +25260,38 @@ i {
   font-size: 11px;
   text-align: left;
 }
+.mura .mura-quickEdit select.time {
+  width: 43px !important;
+  padding: 2px 1px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.mura .mura-quickEdit select.time + select.time {
+  margin-left: 5px !important;
+}
+.mura .mura-quickEdit label.time {
+  width: 20px;
+  padding: 8px 0 0 8px !important;
+}
+.mura .mura-quickEdit label.time-repeat {
+  width: 54px;
+  padding: 8px 0 0 9px !important;
+}
 .mura .mura-quickEdit.large {
   width: 475px;
+}
+.mura .mura-quickEdit.large select.time {
+  width: 42px !important;
+  padding: 2px 1px !important;
+  margin-left: 5px !important;
+}
+.mura .mura-quickEdit.large label.time {
+  width: 20px;
+  padding: 8px 0 0 8px !important;
+}
+.mura .mura-quickEdit.large label.time-repeat {
+  width: 54px;
+  padding: 8px 0 0 9px !important;
 }
 .mura .mura-quickEdit .mura-control-group {
   margin-bottom: 5px;
@@ -25332,19 +25362,6 @@ i {
   -webkit-border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   border-radius: 0 !important;
-}
-.mura .mura-quickEdit select.time {
-  width: 42px !important;
-  padding: 2px 1px !important;
-  margin-left: 5px !important;
-}
-.mura .mura-quickEdit label.time {
-  width: 20px;
-  padding: 8px 0 0 8px !important;
-}
-.mura .mura-quickEdit label.time-repeat {
-  width: 54px;
-  padding: 8px 0 0 9px !important;
 }
 .mura .mura-quickEdit label.checkbox.inline,
 .mura .mura-quickEdit .mura-control-group label.checkbox.inline {
