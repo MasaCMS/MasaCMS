@@ -23767,6 +23767,8 @@ i {
   /* /related content tab */
   /* dashboard */
   /* /dashboard */
+  /* associated files */
+  /* /associated files */
   /* code diff */
   /* 
 	DEV NOTE
@@ -28455,6 +28457,149 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura #cdashboard #contentSecondary .well li span {
   color: #b3b3b3;
+}
+.mura .selectAssocImageResults {
+  max-height: 450px;
+  margin-bottom: 18px;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane {
+  max-height: 350px;
+  overflow-y: scroll;
+  padding: 1em;
+  background-color: #f7f7f7;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul {
+  list-style: none;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li {
+  border: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background: #fff;
+  padding: .5em;
+  margin: 0 .5em .5em 0;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:before,
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  content: " ";
+  display: table;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  clear: both;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:before,
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  content: " ";
+  display: table;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  clear: both;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:before,
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  content: " ";
+  display: table;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  clear: both;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:before,
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  content: " ";
+  display: table;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  clear: both;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li {
+  text-align: left;
+  line-height: 28px;
+  margin: 0 0 .2em 0;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li.no-results {
+  padding: 15px;
+  margin-bottom: 22px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding-bottom: 10px;
+  border-radius: 2px;
+  border: none;
+  padding-top: 8px;
+  margin-bottom: 12px !important;
+  box-shadow: none !important;
+  border: 1px solid #E7E7E7 !important;
+  display: block;
+  text-align: left;
+  line-height: 1em;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li.no-results h4 {
+  margin-top: 0;
+  color: inherit;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li.no-results .alert-link {
+  font-weight: bold;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li.no-results > p,
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li.no-results > ul {
+  margin-bottom: 0;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li.no-results > p + p {
+  margin-top: 5px;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li.no-results p {
+  margin-bottom: 5px !important;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li input[type="radio"] {
+  margin: 10px 8px 0 0 !important;
+  float: left;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li i {
+  vertical-align: middle;
+  margin: 0 .2em;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  text-align: center;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results {
+  padding: 15px;
+  margin-bottom: 22px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding-bottom: 10px;
+  border-radius: 2px;
+  border: none;
+  padding-top: 8px;
+  margin-bottom: 12px !important;
+  box-shadow: none !important;
+  border: 1px solid #E7E7E7 !important;
+  display: block;
+  text-align: left;
+  line-height: 1em;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results h4 {
+  margin-top: 0;
+  color: inherit;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results .alert-link {
+  font-weight: bold;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results > p,
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results > ul {
+  margin-bottom: 0;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results > p + p {
+  margin-top: 5px;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results p {
+  margin-bottom: 5px !important;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li input[type=radio] {
+  margin-top: 8px !important;
 }
 .mura #contentDiffContainer > h3 {
   margin: 9px 0 !important;

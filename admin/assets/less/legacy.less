@@ -510,6 +510,83 @@
 }
 /* /dashboard */
 
+/* associated files */
+
+.selectAssocImageResults {
+  
+  max-height: 450px;
+  margin-bottom: @baseLineHeight;
+  
+  > .tab-content {
+    
+    > .tab-pane {
+      max-height: 350px;
+      overflow-y: scroll;
+      padding: 1em;
+      background-color: #f7f7f7;
+      
+      > ul { 
+        list-style: none;
+
+        > li {
+          border: none;
+          .border-radius(2px);
+          background: #fff;
+          padding: .5em;
+          margin: 0 .5em .5em 0;
+          .clearfix();
+          
+          }
+        
+        }
+        
+      &.mura-assoc-files > ul > li {
+            text-align: left;
+            line-height: 28px;
+            margin: 0 0 .2em 0;
+            //.border-radius(0);
+
+            &.no-results {
+              .alert;
+              display: block;
+              text-align: left;
+              line-height: 1em;
+              }
+
+            input[type="radio"] {
+              margin: 10px 8px 0 0 !important;
+              float: left;
+
+              }
+            
+            i {
+              vertical-align: middle;
+              margin: 0 .2em;
+              }
+            } 
+      
+      &.mura-assoc-images > ul > li {
+            .inline-block();
+            text-align: center;     
+          
+            &.no-results {
+              .alert;
+              display: block;
+              text-align: left;
+              line-height: 1em;
+              }
+
+             input[type=radio]{
+              margin-top: 8px !important; 
+             } 
+            }
+      
+      }
+    }
+  }
+
+/* /associated files */
+
 /* code diff */
 
 #contentDiffContainer {
