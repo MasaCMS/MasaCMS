@@ -169,7 +169,7 @@
 		},
 
 		setDefault:function(fieldtype,data) {
-			self = this;
+			var self = this;
 
 			switch( fieldtype ) {
 				case "textfield":
@@ -290,7 +290,7 @@
 		},
 
 		renderPaging:function() {
-			self = this;
+			var self = this;
 									
 			$(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
 						
@@ -351,7 +351,7 @@
 		},
 		
 		setDataValues: function() {
-			self = this;
+			var self = this;
 			var multi = {};
 			var item = {};
 			var valid = [];
@@ -497,7 +497,7 @@
 		},
 
 		submitForm: function() {
-			self = this;
+			var self = this;
 
 			var valid = self.setDataValues();
 
@@ -554,7 +554,7 @@
 		},
 		
 		filterResults: function() {
-			self = this;
+			var self = this;
 			var before = "";
 			var after = "";
 			
@@ -589,13 +589,15 @@
 		},
 
 		downloadResults: function() {
+			var self = this;
+
 			self.filterResults();
 				
 		},
 
 		
 		loadList: function() {
-			self = this;
+			var self = this;
 
 			window.mura.get(
 				window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
@@ -658,7 +660,7 @@
 		},
 
 		renderTable: function( tableData ) {
-			self = this;
+			var self = this;
 
 			var html = self.templates['table'](tableData);
 			$(self.settings.formEl).html( html );
@@ -721,7 +723,7 @@
 		},
 
 		renderOverview: function() {
-			self = this;
+			var self = this;
 			
 			$(self.settings.formEl).empty();
 
@@ -736,7 +738,7 @@
 		},
 
 		renderCRUD: function( itemid,pos ) {
-			self = this;
+			var self = this;
 			
 			self.formInit = 0;
 			self.initForm();
