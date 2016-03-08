@@ -36413,6 +36413,37 @@ label #selectFilter {
   margin-left: -15px;
   margin-right: -15px;
 }
+#mura-login #pw-link,
+#mura-login .page-heading {
+  float: left;
+  width: 83.33333333%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 12px;
+  float: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+@media (min-width: 768px) {
+  #mura-login #pw-link,
+  #mura-login .page-heading {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+#mura-login .page-heading {
+  color: #FFF;
+}
+#mura-login #pw-link {
+  margin-top: 12px;
+}
+#mura-login #pw-link a {
+  color: #FFF !important;
+}
 #mura-login .mura-control-group > label + input,
 #mura-login .mura-control-group > label + select {
   position: relative;
@@ -36422,6 +36453,7 @@ label #selectFilter {
   padding-left: 15px;
   padding-right: 15px;
 }
+#mura-login > .login-header,
 #mura-login > .block {
   float: left;
   width: 83.33333333%;
@@ -36434,6 +36466,7 @@ label #selectFilter {
   float: none !important;
 }
 @media (min-width: 768px) {
+  #mura-login > .login-header,
   #mura-login > .block {
     float: left;
     width: 33.33333333%;
@@ -36461,6 +36494,9 @@ a#mura-login .block-header:focus {
   font-weight: 600;
   text-transform: uppercase;
   line-height: 1.2;
+}
+#mura-login .form-actions {
+  padding: 8px 0;
 }
 /* /login */
 /* jquery-ui overrides */
