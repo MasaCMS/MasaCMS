@@ -95,6 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfset verdict=application.permUtility.getPerm(rsnest.contentid, attributes.siteid)>
+<cfset skip=false>
 
 <cfif verdict neq 'deny'>
 	<cfif verdict eq 'none'>
@@ -103,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelseif not variables.restricted>
 	<cfset verdict = "none">
 <cfelse>
-	<cfcontinue>
+	<cfset skip=true>
 </cfif>
 
 <cfif attributes.locking neq 'all'>
@@ -146,6 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset isFileIcon=rsnest.type eq 'File' and listFirst(icon,"-") neq "icon">
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
+<cfif not skip>
 <!--- Start LI for content Item --->
 <li data-siteid="#esapiEncode('html_attr',rsnest.siteid)#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#esapiEncode('html_attr',rsnest.sortby)#" data-sortdirection="#esapiEncode('html_attr',rsnest.sortdirection)#" data-moduleid="#esapiEncode('html_attr',rsnest.moduleid)#" data-type="#esapiEncode('html_attr',rsnest.type)#" class="#esapiEncode('html_attr',lcase(rsnest.type))# mura-node-data<cfif variables.restricted> restricted</cfif>" data-csrf="#attributes.muraScope.renderCSRFTOkens(context=rsnest.contentid & 'quickedit',format='url')#">
 <cfif variables.restricted><div class="marker"></div></cfif>
@@ -344,6 +346,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    </cfif>
    <!--- Close LI for contentID--->
    </li>
+   </cfif>
    </cfoutput>
    <!--- Close UL --->
    </ul>

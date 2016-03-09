@@ -414,7 +414,7 @@ if(len($.siteConfig('customTagGroups'))){
 		  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
 			<!---<th nowrap class="actions">&nbsp;</th>--->
 		</tr>
-		<cfset start=false>
+		<cfset started=false>
 	 	<cfif iterator.hasNext()>
 		<cfloop condition="iterator.hasNext()">
 		<cfsilent>
