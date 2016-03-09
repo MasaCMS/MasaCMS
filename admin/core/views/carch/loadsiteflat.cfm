@@ -424,7 +424,9 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset isLocked=$.siteConfig('hasLockableNodes') and len(item.getLockID()) and item.getLockType() eq 'node'>
 		<cfset isLockedBySomeoneElse=isLocked and item.getLockID() neq session.mura.userid>
 
-		<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all'>
+		<cfif verdict eq 'deny'>
+			<cfcontinue>
+		<cfelseif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all'>
 			<cfset newcontent=verdict>
 		<cfelseif verdict neq 'none'>
 	  		<cfset newcontent='read'>
@@ -678,14 +680,14 @@ if(len($.siteConfig('customTagGroups'))){
 			#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
 			<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 			</span>
-		</cfloop>	
+		</cfloop>
 	</div>
 
 	<cfif len($.siteConfig('customTagGroups'))>
 		<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
 			<div id="#g#tags" class="module mura-control-group mura-filter-tags tagSelector">
 				<label>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
-				<input type="text" name="#g#tags">	
+				<input type="text" name="#g#tags">
 				<cfloop list="#$.event('#g#tags')#" index="i">
 					<span class="tag">
 					#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>

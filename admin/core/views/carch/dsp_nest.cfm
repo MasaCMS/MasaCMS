@@ -95,7 +95,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset verdict=attributes.perm>
 	</cfif>
 <cfelse>
-	<cfset verdict = "none">
+	<cfcontinue>
+	<!---<cfset verdict = "none">--->
 </cfif>
 
 <cfif attributes.locking neq 'all'>

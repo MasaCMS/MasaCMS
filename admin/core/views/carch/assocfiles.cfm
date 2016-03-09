@@ -98,6 +98,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset crumbdata=application.contentManager.getCrumbList(rsimages.contentid, rc.siteid)/>
 					       		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 					       		<cfset hasImage=listFindNoCase("png,gif,jpg,jpeg",rsimages.fileExt)>
+								<cfif verdict eq 'deny'>
+									<cfcontinue>
+								</cfif>
 							</cfsilent>
 							<cfif verdict neq 'none'>
 								<cfset filtered['#rsimages.fileid#']=true>
@@ -132,6 +135,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset crumbdata=application.contentManager.getCrumbList(rsfiles.contentid, rc.siteid)/>
 					       		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 					       		<cfset hasImage=listFindNoCase("png,gif,jpg,jpeg",rsfiles.fileExt)>
+								<cfif verdict eq 'deny'>
+									<cfcontinue>
+								</cfif>
 							</cfsilent>
 							<cfif verdict neq 'none'>
 								<cfset filtered['#rsfiles.fileid#']=true>

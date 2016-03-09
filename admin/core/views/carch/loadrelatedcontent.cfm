@@ -269,6 +269,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="mura-control-group mura-related-internal">
 		<cfif rc.rslist.recordcount>
+			<cfsilent>
+				<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rslist.siteid)/>
+				<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+				<cfif verdict eq 'deny'>
+					<cfcontinue>
+				</cfif>
+			</cfsilent>
 			<div id="draggableContainmentInternal" class="list-table search-results">
 				<div class="list-table-content-set">
 					<cfoutput><cfif len( contentPoolSiteIDs )>#$.getBean('settingsManager').getSite($.event('siteId')).getSite()#:</cfif>
@@ -297,6 +304,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset rc.rslist=getRelatedFeed($,siteId).getQuery()>
 
 				<cfif rc.rslist.recordcount>
+					<cfsilent>
+						<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rslist.siteid)/>
+						<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+						<cfif verdict eq 'deny'>
+							<cfcontinue>
+						</cfif>
+					</cfsilent>
 					<div id="draggableContainmentInternal" class="list-table search-results">
 						<div class="list-table-content-set">
 							<cfoutput>#$.getBean('settingsManager').getSite(siteId).getSite()#:
