@@ -88,15 +88,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset isOpenSection=listFind(session.openSectionList,rsnest.contentid)>
 
+<cfif (attributes.restricted or rsnest.restricted)>
+	<cfset variables.restricted=1>
+<cfelse>
+	<cfset variables.restricted=0>
+</cfif>
+
 <cfset verdict=application.permUtility.getPerm(rsnest.contentid, attributes.siteid)>
 
 <cfif verdict neq 'deny'>
 	<cfif verdict eq 'none'>
 		<cfset verdict=attributes.perm>
 	</cfif>
+<cfelseif not variables.restricted>
+	<cfset verdict = "none">
 <cfelse>
 	<cfcontinue>
-	<!---<cfset verdict = "none">--->
 </cfif>
 
 <cfif attributes.locking neq 'all'>
@@ -114,13 +121,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset neworder= ((attributes.parentid neq '00000000000000000000000000000000001' and attributes.locking neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and attributes.locking eq 'none')) and attributes.perm eq 'editor'>
 
 <cfset deletable=(((attributes.parentid neq '00000000000000000000000000000000001' and attributes.locking neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and attributes.locking eq 'none')) and (verdict eq 'editor'))  and rsnest.IsLocked neq 1>
-
-
-<cfif (attributes.restricted or rsnest.restricted)>
-<cfset variables.restricted=1>
-<cfelse>
-<cfset variables.restricted=0>
-</cfif>
 
 <cfif rsnest.type eq 'File'>
 	<cfset icon=application.classExtensionManager.getCustomIconClass(siteid=rsnest.siteid,type=rsnest.type,subtype=rsnest.subtype)>

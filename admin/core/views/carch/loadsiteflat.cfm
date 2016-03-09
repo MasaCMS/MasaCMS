@@ -414,6 +414,7 @@ if(len($.siteConfig('customTagGroups'))){
 		  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
 			<!---<th nowrap class="actions">&nbsp;</th>--->
 		</tr>
+		<cfset start=false>
 	 	<cfif iterator.hasNext()>
 		<cfloop condition="iterator.hasNext()">
 		<cfsilent>
@@ -434,6 +435,7 @@ if(len($.siteConfig('customTagGroups'))){
 	  		<cfset newcontent='none'>
 		</cfif>
 
+		<cfset start=true>
 		<cfif item.getContentID() eq '00000000000000000000000000000000001'>
 			<cfset topID=item.getContentID()>
 		<cfelse>
@@ -599,7 +601,8 @@ if(len($.siteConfig('customTagGroups'))){
 				</ul>
 			</tr>
 		</cfloop>
-		<cfelse>
+		</cfif>
+		<cfif started>
 			<tr>
 				<td colspan="3">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</td>
 			</tr>

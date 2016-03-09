@@ -268,14 +268,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 
 	<div class="mura-control-group mura-related-internal">
+		<cfset started=false>
 		<cfif rc.rslist.recordcount>
-			<cfsilent>
-				<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rslist.siteid)/>
-				<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-				<cfif verdict eq 'deny'>
-					<cfcontinue>
-				</cfif>
-			</cfsilent>
 			<div id="draggableContainmentInternal" class="list-table search-results">
 				<div class="list-table-content-set">
 					<cfoutput><cfif len( contentPoolSiteIDs )>#$.getBean('settingsManager').getSite($.event('siteId')).getSite()#:</cfif>
@@ -283,7 +277,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 				<ul class="rcDraggable list-table-items">
 					<cfoutput query="rc.rslist" startrow="1" maxrows="100">
-						<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
+						<cfsilent>
+							<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rslist.siteid)/>
+							<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+							<cfif verdict eq 'none'>
+								<cfcontinue>
+							<cfelse>
+								<cfset started=true>
+							</cfif>
+						</cfsilent>
 						<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
 							<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
 								<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="mi-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
@@ -292,7 +294,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfoutput>
 				</ul>
 			</div>
-		<cfelse>
+		</cfif>
+		<cfif not started>
 			<cfoutput>
 				<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</p>
 			</cfoutput>
@@ -302,15 +305,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop list="#contentPoolSiteIDs#" index="siteId">
 			<cfif siteId neq $.event('siteid') and len($.event("keywords"))>
 				<cfset rc.rslist=getRelatedFeed($,siteId).getQuery()>
-
+				<cfset started=false>
 				<cfif rc.rslist.recordcount>
-					<cfsilent>
-						<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rslist.siteid)/>
-						<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-						<cfif verdict eq 'deny'>
-							<cfcontinue>
-						</cfif>
-					</cfsilent>
 					<div id="draggableContainmentInternal" class="list-table search-results">
 						<div class="list-table-content-set">
 							<cfoutput>#$.getBean('settingsManager').getSite(siteId).getSite()#:
@@ -318,7 +314,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</div>
 						<ul class="rcDraggable list-table-items">
 							<cfoutput query="rc.rslist" startrow="1" maxrows="100">
-								<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, siteId)/>
+								<cfsilent>
+									<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rslist.siteid)/>
+									<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+									<cfif verdict eq 'none'>
+										<cfcontinue>
+									<cfelse>
+										<cfset started=true>
+									</cfif>
+								</cfsilent>
 								<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
 									<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
 										<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="mi-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
@@ -327,7 +331,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfoutput>
 						</ul>
 					</div>
-				<cfelse>
+				</cfif>
+				<cfif started>
 					<cfoutput>
 						<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</p>
 					</cfoutput>
