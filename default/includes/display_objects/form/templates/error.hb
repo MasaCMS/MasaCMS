@@ -1,5 +1,3 @@
-<div class="form-group" id="field-error-container">
-{{#each error}}
-	<div class="alert alert-error">{{message}}</div>
+{{#each this}}
+	<div class="alert alert-danger" data-field="{{field}}">{{label}}: {{message}}</div>
 {{/each}}
-</div>

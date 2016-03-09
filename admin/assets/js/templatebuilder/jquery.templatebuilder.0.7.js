@@ -132,9 +132,11 @@
 			if ( _formData.formattributes && _formData.formattributes['muraormentities'] == 1) {
 				_isMuraORM = true;
 				jQuery("#button-nested").hide();
+				jQuery("#button-file").hide();
 			}
 			else {
 				_isMuraORM = false;
+				jQuery("#button-file").show();
 				jQuery("#button-nested").show();
 			}
 			
@@ -410,10 +412,12 @@
 			jQuery("#tb-muraormentities").change(function() {
 				if( jQuery("#tb-muraormentities").is(":checked") ) {
 					_isMuraORM = true;
+					jQuery("#button-file").hide();
 					jQuery("#button-nested").hide();
 				}
 				else {
 					_isMuraORM = false;
+					jQuery("#button-file").show();
 					jQuery("#button-nested").show();
 				}
 			});

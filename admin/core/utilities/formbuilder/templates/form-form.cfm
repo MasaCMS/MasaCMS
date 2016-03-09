@@ -68,11 +68,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</li>
 				<li>
 					<label for="muraormentities">#mmRBF.getKeyValue(session.rb,'formbuilder.form.muraormentities')#</label>
-					<input id="tb-muraormentities" class="text tb-class" type="checkbox" name="muraormentities" value="1" data-label="true">
+					<input id="tb-muraormentities" class="text tb-class" type="checkbox" name="muraormentities" value="1" data-label="true"> **
 				</li>
 				<li>
 					<div>
-					#mmRBF.getKeyValue(session.rb,'formbuilder.form.nameunrestrictedtip')#
+					*#mmRBF.getKeyValue(session.rb,'formbuilder.form.nameunrestrictedtip')#
+					</div>
+					<div>
+					**#mmRBF.getKeyValue(session.rb,'formbuilder.form.muraormentitiestip')#
 					</div>
 				</li>
 

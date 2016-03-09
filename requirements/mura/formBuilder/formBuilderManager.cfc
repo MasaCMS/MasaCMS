@@ -349,20 +349,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		var field = "";
 		
-		if(!directoryExists(#expandPath("/" & siteid)# & "/includes/model")) {
-			directoryCreate(#expandPath("/" & siteid)# & "/includes/model");
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/model");
+		}
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model/core")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/model/core");
+		}
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model/core/formbuilder")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/model/core/formbuilder");
+		}
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model/beans")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/model/beans");
+		}
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/archive")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/archive");
 		}
 
-		if(!directoryExists(#expandPath("/" & siteid)# & "/includes/model/beans")) {
-			directoryCreate(#expandPath("/" & siteid)# & "/includes/model/beans");
-		}
-
-		if(!directoryExists(#expandPath("/" & siteid)# & "/includes/archive")) {
-			directoryCreate(#expandPath("/" & siteid)# & "/includes/archive");
-		}
-			
-
-		var exists = fileExists( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc" );
+		var exists = fileExists( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc" );
 
 		var param = "";
 		var fieldcount = 0;
@@ -377,7 +380,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var fieldlist = formStruct.form.fields;
 
 		// start CFC				
-		var con = 'component contentid="#content.getContentID()#" extends="mura.bean.beanORM" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" rendertype="form" access="public"';
+		var con = 'component contentid="#content.getContentID()#" extends="mura.formbuilder.entityBean" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#Entity" displayName="#objectname#Entity" rendertype="form" access="public"';
 
 		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
 			field = fieldlist[ fieldorder[i] ];
@@ -389,11 +392,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			con = con & ' listview="#listview#" ';
 		}
 
-		con = con & '{#chr(13)##chr(13)#';
+		con = con & '{#chr(13)##chr(13)#// ** Not update safe! Edit extending bean in /model/beans **#chr(13)##chr(13)#';
 		con = con & '	property name="#lcase(objectname)#id" fieldtype="id";#chr(13)#';
-		var con = con & '	property name="created" displayName="created" rendertype="none" datatype="timestamp" fieldtype="none";#chr(13)#';
-		var con = con & '	property name="lastupdate" displayName="Last Update" rendertype="none" datatype="date" fieldtype="none";#chr(13)##chr(13)#';
-
 
 		var datasets = formStruct.datasets;
 
@@ -406,6 +406,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				param = param & ' displayname="#field.label#"';
 				param = param & ' orderno="#fieldcount#"';
 	
+				if(structKeyExists(field,'isrequired') && field.isrequired == true)
+					param = param & ' required="true"';
+
+				if(structKeyExists(field,'validatetype') && len(field.validatetype) > 0) {
+					param = param & ' validate="#field.validatetype#"';
+
+					if(field.validatetype == 'regex' && structKeyExists(field,'validateregex') && len(field.validateregex) > 0)
+						param = param & ' validateparams="#field.validateregex#"';
+				}
+
+				if(structKeyExists(field,'size') && isNumeric(field.size) && field.size > 0) {
+					param = param & ' length="#field.size#"';
+				}
+				else if(field.fieldtype.fieldtype == "textfield" || field.fieldtype.fieldtype == "hidden") {
+					param = param & ' length="250"';
+				}
+
 				param = param & '#getDataType($,field,datasets,objectname)#';
 	
 				con = con & "#param#;#chr(13)#";
@@ -416,13 +433,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		// close CFC				
 		con = con & "#chr(13)#}";
-		
-		if( exists ) {
-			fileMove( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc","#expandPath("/" & siteid)#/includes/archive/#getTickCount()##lcase(objectname)#.cfc" );
-		}
-	
-		fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc",con );
 
+		fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/core/formbuilder/#lcase(objectname)#Entity.cfc",con );
+	
+		if( !exists ) {
+		// start update safe CFC				
+			var con = 'component contentid="#content.getContentID()#" extends="#siteid#.includes.model.core.formbuilder.#lcase(objectname)#Entity" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" rendertype="form" access="public"';
+			con = con & '{#chr(13)##chr(13)#// ** update safe ** #chr(13)##chr(13)#}';
+			
+			fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc",con );
+		}
+		
 		if(structKeyExists(application.objectMappings,objectname))
 		try {
 			StructDelete(application.objectMappings,objectname);
@@ -484,10 +505,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,true,true);
 			break;
 			case "textfield":
-				str = ' datatype="varchar" length="250" rendertype="#fieldtype#" list=true';
+				str = ' datatype="varchar" rendertype="#fieldtype#" list=true';
 			break;
 			case "hidden":
-				str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+				str = ' datatype="varchar" rendertype="#fieldtype#"';
 			break;
 			case "file":
 				str = ' datatype="varchar" length="35" fieldtype="index" rendertype="#fieldtype#"';
@@ -502,7 +523,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	function createFieldOptionCFC( $,fieldData,parentObject,cfcBridgeName,dataset,createJoinentity=false,createDataentity=false ) {
 		var objectname = fieldData.name;
-		var exists = fileExists( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(arguments.cfcBridgeName)#.cfc" );
+		var exists = fileExists( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(arguments.cfcBridgeName)#.cfc" );
 		var param = "";
 		
 		objectname = rereplacenocase( objectname,"[^[:alnum:]]","","all" );
@@ -522,7 +543,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			con = con & "#chr(13)#}";
 		
 					
-			fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(cfcBridgeName)#.cfc",con );
+			fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(cfcBridgeName)#.cfc",con );
 
 			if( structKeyExists(application.objectMappings,dataset.source))
 			try {
@@ -537,7 +558,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return;
 		}
 
-		exists = fileExists( expandPath("/" & siteid) & "/includes/model/beans/#lcase(dataset.source)#.cfc" );
+		exists = fileExists( expandPath("/muraWRM/" & siteid) & "/includes/model/beans/#lcase(dataset.source)#.cfc" );
 		
 		// data beans are never recreated
 		if(exists) {
@@ -559,7 +580,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		// close data CFC				
 		con = con & "#chr(13)#}";
 
-		fileWrite( "#expandPath("/" & siteid)#/includes/model/beans/#lcase(dataset.source)#.cfc",con );
+		fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(dataset.source)#.cfc",con );
 
 		if(structKeyExists(application.objectMappings,dataset.source))
 		try {
@@ -587,7 +608,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	function getModuleBeans( siteid ) {
 		var $=getBean('$').init(arguments.siteid);
-		var dirList = directoryList( #expandPath("/" & siteid)# & "/includes/model/beans",false,'query' );
+		var dirList = directoryList( #expandPath("/muraWRM/" & siteid)# & "/includes/model/beans",false,'query' );
 		var beanArray = [];
 
 		for(var i = 1; i <= dirList.recordCount;i++) {
