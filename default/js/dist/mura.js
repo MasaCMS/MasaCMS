@@ -9940,7 +9940,7 @@ mura.templates['embed']=function(context){
 		sortdir: '',
 		properties: {},
 		rendered: {},
-		templateList: ['checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
+		templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
 
@@ -10110,8 +10110,6 @@ mura.templates['embed']=function(context){
 		renderData:function() {
 			var self = this;
 
-			console.log('on');
-
 			if(self.datasets.length == 0)
 				self.renderForm();
 
@@ -10170,6 +10168,7 @@ mura.templates['embed']=function(context){
 
 		renderPaging:function() {
 			var self = this;
+			$(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
 									
 			$(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
 						
@@ -10321,15 +10320,16 @@ mura.templates['embed']=function(context){
 					 	formJSON = JSON.parse( data.data.body );
 
 						// old forms
-							if(!formJSON.form.pages) {
-								formJSON.form.pages = [];
-								formJSON.form.pages[0] = formJSON.form.fieldorder;
-								formJSON.form.fieldorder = [];
-							}
+						if(!formJSON.form.pages) {
+							formJSON.form.pages = [];
+							formJSON.form.pages[0] = formJSON.form.fieldorder;
+							formJSON.form.fieldorder = [];
+						}
 
 						entityName = data.data.filename.replace(/\W+/g, "");
 						self.entity = entityName;
 					 	self.formJSON = formJSON;
+					 	self.fields = formJSON.form.fields;
 					 	self.responsemessage = data.data.responsemessage;
 							
 						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
@@ -10384,9 +10384,11 @@ mura.templates['embed']=function(context){
 		},
 
 		submitForm: function() {
-			var self = this;
 
+			var self = this;
 			var valid = self.setDataValues();
+
+			$(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
 
 			delete self.data.isNew;
 			
@@ -10396,19 +10398,22 @@ mura.templates['embed']=function(context){
 					self.data
 				)
 				.save()
-				.then( function( entity ) {
-					
-					//if(entity.hasErrors())
-
-					if(self.backlink != undefined) {
-						self.getTableData( self.location );
-						return;
+				.then( 
+					function( entity ) {
+						console.log('a!');
+						if(self.backlink != undefined) {
+							self.getTableData( self.location );
+							return;
+						}
+						$(self.settings.formEl).html( self.responsemessage );
+					},
+					function( entity ) {
+						console.log('b :(');
+						self.showErrors( entity.properties.errors );
 					}
-					$(self.settings.formEl).html( self.responsemessage );
-				});
+				);
 			}
 			else {
-
 				var data = jQuery.extend(true, {}, self.data);
 				
 				data['objectparams'] = self.settings;
@@ -10427,6 +10432,42 @@ mura.templates['embed']=function(context){
 			}
 			
 		},
+		
+		showErrors: function( errors ) {
+			var self = this;
+//
+			
+			console.log(errors);
+			
+			var errorData = {};
+			
+			for(var i in self.fields) {
+				var field = self.fields[i];
+			
+				if( errors[ field.name ] ) {
+					var error = {};
+					error.message = field.validatemessage && field.validatemessage.length ? field.validatemessage : errors[field.name];
+					error.field = field.name;
+					error.label = field.label;
+					errorData[field.name] = error;
+				}
+			
+			}
+			var html = self.templates['error'](errorData);
+			console.log(html);		
+			$(".error-container-" + self.settings.objectid,self.settings.formEl).append(html);
+
+
+
+
+
+
+
+
+
+
+		},
+		
 
 // lists
 		getList: function() {
@@ -10497,6 +10538,14 @@ mura.templates['embed']=function(context){
 					self.entity = entityName;
 				 	self.formJSON = formJSON;
 
+					if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
+						self.ormform = true;
+					}
+					else {
+						$(self.settings.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
+						return;
+					}
+					
 					self.getTableData();
 			});
 		},
@@ -10512,7 +10561,6 @@ mura.templates['embed']=function(context){
 					window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/propertydescriptor/'
 				).then(function(resp) {
 					self.properties = self.cleanProps(resp.data);
-
 					if( navlink == undefined) {
 						navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?sort=' + self.sortdir + self.sortfield;					
 						var fields = [];
@@ -10667,6 +10715,7 @@ mura.templates['embed']=function(context){
 		},
 		
 		registerHelpers: function() {
+			var self = this;
 
 			Handlebars.registerHelper('eachColRow',function(row, columns, options) {
 				var ret = "";
