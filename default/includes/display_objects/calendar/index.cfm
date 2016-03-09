@@ -121,10 +121,6 @@
 		<cfset objectParams.sourcetype='calendar'>
 		#variables.dspObject(object='collection',objectid=variables.$.content('contentid'),params=objectParams)#
 	<cfelse>
-		<cfset this.calendarcolors=[
-			{background='##3a87ad',text='white'},
-			{background='blue',text='white'}
-		]>
 
 		<div class="mura-calendar-wrapper">
 			<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">

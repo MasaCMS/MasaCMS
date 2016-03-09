@@ -172,6 +172,12 @@ Display Objects
 <!--- calendar/dspList.cfm --->
 <cfset this.calendarListWrapperClass="svCalendar">
 
+<!--- calendar/index.cfm --->
+<cfset this.calendarcolors=[
+		{background='##3a87ad',text='white'},
+		{background='blue',text='white'}
+	]>
+
 <!--- Comments/index.cfm --->
 <cfset this.commentsWrapperClass="">
 <cfset this.commentSortContainerClass="">
