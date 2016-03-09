@@ -90,6 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
 		<!---  End layout based configuration --->
 
+		<!---
 		<cfif objectParams.object eq 'collection'>
 			<div class="mura-control-group">
 				<label class="mura-control-label">
@@ -104,6 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input name="viewalllabel" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
 			</div>
 		</cfif>
+		--->
 		<cfif objectParams.object eq 'collection'>
 			<div class="mura-control-group">
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
