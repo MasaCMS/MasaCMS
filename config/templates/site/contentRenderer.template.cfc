@@ -71,6 +71,8 @@
 	--->
 
 	<cfscript>
+		this.layoutmanager=true;
+		
 		//this.navOffSet=0;
 		//this.navDepthLimit=1000;
 		//this.navParentIdx=2;
