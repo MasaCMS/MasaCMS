@@ -527,7 +527,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not arguments.countOnly>
 		<cfif len(variables.instance.orderby)>
-			order by #REReplace(variables.instance.orderby,"[^0-9A-Za-z\._,\- ]","","all")#
+			order by #caseInsensitiveOrderBy(REReplace(variables.instance.orderby,"[^0-9A-Za-z\._,\- ]","","all"))#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif lcase(listLast(variables.instance.orderby, " ")) eq "asc">
 					NULLS FIRST
@@ -536,7 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		<cfelseif len(variables.instance.sortBy)>
-			order by #variables.instance.table#.#REReplace(variables.instance.sortby,"[^0-9A-Za-z\._\- ]","","all")#  #variables.instance.sortDirection#
+			order by #caseInsensitiveOrderBy(variables.instance.table & "." & .#REReplace(variables.instance.sortby,"[^0-9A-Za-z\._\- ]","","all"))#  #variables.instance.sortDirection#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif variables.instance.sortDirection eq "asc">
 					NULLS FIRST
@@ -807,6 +807,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="caseInsensitiveOrderBy" access="private" returntype="string" output="false">
+	<cfargument name="orderBy" required="true">
+	<cfset var orderByList = "">
+	<cfset var orderByValue = "">
+	<cfset var table = "">
+	<cfset var column = "">
+
+	<cfloop list="#arguments.orderBy#" index="orderByValue">
+		<cfset table = variables.instance.entityName>
+		<cfset column = listfirst(orderByValue, " ")>
+		<cfif listlen(column, ".") eq 2>
+			<cfset table = listfirst(column, ".")>
+			<cfset column = listrest(column, ".")>
+		</cfif>
+		<cfif structkeyexists(application.objectMappings, table) and structkeyexists(application.objectMappings[table]["columns"], column) and listfindnocase("char,varchar", application.objectMappings[table]["columns"][column]["dataType"])>
+			<cfset orderByList = listappend(orderByList, "lower(" & column & ") " & listrest(orderByValue, " ")) />
+		<cfelse>
+			<cfset orderByList = listappend(orderByList, orderByValue) />
+		</cfif>
+	</cfloop>
+	<cfreturn orderByList />
 </cffunction>
 
 <!---
