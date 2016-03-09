@@ -812,7 +812,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var dbUtility=getBean("dbUtility") />
 	<cfset var i ="" />
 	<cfset var MSSQLversion=0 />
-	<cfset var MSSQLlob="[nvarchar](max) NULL" />
+	<cfset var MSSQLlob="[nvarchar](max)" />
 
 	<cfif variables.instance.dbtype eq 'MSSQL'>
 
@@ -824,24 +824,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcatch></cfcatch>
 		</cftry>
 
-		<cfif not MSSQLversion>
-			<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-				EXEC sp_MSgetversion
-			</cfquery>
+		<cftry>
+			<cfif not MSSQLversion>
+				<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					EXEC sp_MSgetversion
+				</cfquery>
 
-			<cftry>
-				<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-				<cfcatch>
-					<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-				</cfcatch>
-			</cftry>
-		</cfif>
+				<cftry>
+					<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+					<cfcatch>
+						<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
+					</cfcatch>
+				</cftry>
+			</cfif>
 
-		<cfif MSSQLversion neq 8>
+			<cfif MSSQLversion neq 8>
+				<cfset MSSQLlob="[nvarchar](max)">
+			<cfelse>
+				<cfset MSSQLlob="[ntext]">
+			</cfif>
+		<cfcatch>
 			<cfset MSSQLlob="[nvarchar](max)">
-		<cfelse>
-			<cfset MSSQLlob="[ntext]">
-		</cfif>
+		</cfcatch>
+		</cftry>
 	</cfif>
 
 	<cfdirectory action="list" directory="#getDirectoryFromPath(getCurrentTemplatePath())#dbUpdates" name="rsUpdates" filter="*.cfm" sort="name asc">

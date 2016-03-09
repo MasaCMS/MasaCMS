@@ -708,24 +708,29 @@
 						<cfcatch></cfcatch>
 					</cftry>
 
-					<cfif not MSSQLversion>
-						<cfquery name="MSSQLversion">
-							EXEC sp_MSgetversion
-						</cfquery>
+					<cftry>
+						<cfif not MSSQLversion>
+							<cfquery name="MSSQLversion">
+								EXEC sp_MSgetversion
+							</cfquery>
 
-						<cftry>
-							<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-							<cfcatch>
-								<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-							</cfcatch>
-						</cftry>
-					</cfif>
+							<cftry>
+								<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+								<cfcatch>
+									<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
+								</cfcatch>
+							</cftry>
+						</cfif>
 
-					<cfif MSSQLversion neq 8>
-						<cfreturn "[nvarchar](max)">
-					<cfelse>
-						<cfreturn "[ntext]">
-					</cfif>
+						<cfif MSSQLversion neq 8>
+							<cfreturn "[nvarchar](max)">
+						<cfelse>
+							<cfreturn "[ntext]">
+						</cfif>
+						<cfcatch>
+							<cfreturn "[nvarchar](max)">
+						</cfcatch>
+					</cftry>
 				</cfcase>
 				<cfcase value="float,numeric">
 					<cfreturn "float">
