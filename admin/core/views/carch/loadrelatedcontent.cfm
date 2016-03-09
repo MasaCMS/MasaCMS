@@ -278,19 +278,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<ul class="rcDraggable list-table-items">
 					<cfoutput query="rc.rslist" startrow="1" maxrows="100">
 						<cfsilent>
-							<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rslist.siteid)/>
+							<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.rslist.siteid)/>
 							<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-							<cfif verdict eq 'none'>
-								<cfcontinue>
-							<cfelse>
+							<cfif verdict neq 'none'>
 								<cfset started=true>
 							</cfif>
 						</cfsilent>
+						<cfif verdict neq 'none'>
 						<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
 							<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
 								<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="mi-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
 							</li>
-						<!---</cfif>--->
+						</cfif>
 					</cfoutput>
 				</ul>
 			</div>
@@ -315,19 +314,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<ul class="rcDraggable list-table-items">
 							<cfoutput query="rc.rslist" startrow="1" maxrows="100">
 								<cfsilent>
-									<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rslist.siteid)/>
+									<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.rslist.siteid)/>
 									<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-									<cfif verdict eq 'none'>
-										<cfcontinue>
-									<cfelse>
+									<cfif verdict neq 'none'>
 										<cfset started=true>
 									</cfif>
 								</cfsilent>
+								<cfif verdict neq 'none'>
 								<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
 									<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
 										<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="mi-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
 									</li>
-								<!---</cfif>--->
+								</cfif>
 							</cfoutput>
 						</ul>
 					</div>
