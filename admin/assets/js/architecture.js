@@ -950,6 +950,7 @@ buttons: {
 				if (ui.item.find('a.delete').length == 0) {
 					ui.item.append('<a class="delete"></a>');
 				}
+				ui.item.attr('style','');
 				siteManager.bindDelete();
 				siteManager.bindMouse();
 				siteManager.setDirtyRelatedContent();

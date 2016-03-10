@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	.attr('data-content-type','Link/Default')
 			 	.attr('class','item')
 			 	.append(
-			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="mi-plus-circle"></i></button><ul class="breadcrumb"/><li class="link">' + $('##mura-related-title').val() + '</li></ul></li>')
+			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="mi-plus-circle"></i></button><ul class="navZoom"><li class="mi-link "> ' + $('##mura-related-title').val() + '</li></ul>')
 			 	)
 			 );
 
