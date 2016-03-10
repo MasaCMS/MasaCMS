@@ -2139,11 +2139,15 @@ component extends="mura.cfobject" {
 		data=deserializeJSON(urlDecode(arguments.data));
 		validations=deserializeJSON(urlDecode(arguments.validations));
 
+		param name="data.fields" default="";
+
 		if(structIsEmpty(validations) && isDefined('data.entityname') && isDefined('data.siteid')){
 			var bean=getBean(data.entityname);
 			var args={'#bean.getPrimaryKey()#'=data[bean.getPrimaryKey()]
 			};
-			return bean.loadBy(argumentCollection=args).validate().getErrors();
+
+
+			return bean.loadBy(argumentCollection=args).validate(data.fields).getErrors();
 
 		}
 
@@ -2154,7 +2158,7 @@ component extends="mura.cfobject" {
 			structAppend(errors,new mura.bean.bean()
 				.set(data)
 				.setValidations(validations)
-				.validate()
+				.validate(data.fields)
 				.getErrors()
 			);
 		}
@@ -2164,7 +2168,7 @@ component extends="mura.cfobject" {
 				getBean(data.bean)
 				.loadBy(data.loadby=arguments.data[arguments.data.loadby],siteid=arguments.data.siteid)
 				.set(arguments.data)
-				.validate()
+				.validate(data.fields)
 				.getErrors()
 			);
 		}

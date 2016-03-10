@@ -19,7 +19,6 @@ module.exports = function(grunt) {
           'src/mura.feed.js',
           'src/mura.templates.js',
           'src/mura.ui.js',
-          'src/mura.uitemplates.js',
           'src/mura.init.js'
           ],
           dest: 'dist/mura.js',

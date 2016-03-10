@@ -65,7 +65,7 @@
 			if(typeof this.properties.isdeleted == 'undefined'){
 				this.properties.isdeleted=false;
 			}
-			
+
 			this.cachePut();
 		},
 
@@ -225,9 +225,13 @@
 			});
 		},
 
-		validate:function(){
+		validate:function(fields){
+			fields=fields || '';
 
 			var self=this;
+			var data=mura.deepExtend({},self.getAll());
+
+			data.fields=fields;
 
 			return new Promise(function(resolve,reject) {
 
@@ -235,7 +239,7 @@
 					type: 'post',
 					url: window.mura.apiEndpoint + '?method=validate',
 					data: {
-							data: window.mura.escape(JSON.stringify(self.getAll())),
+							data: window.mura.escape(data),
 							validations: '{}',
 							version: 4
 						},

@@ -441,7 +441,7 @@ component extends="mura.cfobject" output="false" {
 		return valueExists(argumentCollection=arguments);
 	}
 
-	function validate(){
+	function validate(fields=''){
 		var errorCheck={};
 		var checknum=1;
 		var checkfound=false;
@@ -450,36 +450,51 @@ component extends="mura.cfobject" output="false" {
 		var properties=getProperties();
 		var propVal='';
 
-		variables.instance.errors=getBean('beanValidator').validate(this);
+		var errors=getBean('beanValidator').validate(this);
+
+		if(len(arguments.fields)){
+			variables.instance.errors={};
+			for(var e in ListToArray(arguments.fields)){
+				if(structkeyExists(errors,e)){
+					variables.instance.errors[e]=errors[e];
+				}
+			}
+		} else {
+			variables.instance.errors=errors;
+		}
 
 		//writeDump(var=properties,abort=true);
 
 		if(getBean('configBean').getValue(property='stricthtml',defaultValue=false)){
 			var stricthtmlexclude=getBean('configBean').getValue(property='stricthtmlexclude',defaultValue='');
 			for(p in properties){
-				prop=properties[p];
-				param name="prop.html" default=false;
-				if(!prop.html){
-					propVal=getValue(prop.column);
-					if(isSimpleValue(propVal) && !(len(stricthtmlexclude) && listFind(stricthtmlexclude,prop.column)) && reFindNoCase("<[\/]?[^>]*>",propVal)){
-						variables.instance.errors['#prop.name#encoding']="The field '#prop.name#' contains invalid characters.";
+				if(!len(arguments.fields) || listFindNoCase(arguments.fields,p)){
+					prop=properties[p];
+					param name="prop.html" default=false;
+					if(!prop.html){
+						propVal=getValue(prop.column);
+						if(isSimpleValue(propVal) && !(len(stricthtmlexclude) && listFind(stricthtmlexclude,prop.column)) && reFindNoCase("<[\/]?[^>]*>",propVal)){
+							variables.instance.errors['#prop.name#encoding']="The field '#prop.name#' contains invalid characters.";
+						}
 					}
 				}
 			}
 		}
 
-		if(arrayLen(variables.instance.addObjects)){
-			for(var obj in variables.instance.addObjects){
-				errorCheck=obj.validate().getErrors();
-				if(!structIsEmpty(errorCheck)){
-					do{
-						if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
-							variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
-							checkfound=true;
-						}
-					} while (!checkfound);
-				}
+		if(!len(arguments.fields)){
+			if(arrayLen(variables.instance.addObjects)){
+				for(var obj in variables.instance.addObjects){
+					errorCheck=obj.validate().getErrors();
+					if(!structIsEmpty(errorCheck)){
+						do{
+							if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
+								variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
+								checkfound=true;
+							}
+						} while (!checkfound);
+					}
 
+				}
 			}
 		}
 
