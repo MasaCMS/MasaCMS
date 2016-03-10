@@ -34961,6 +34961,7 @@ a.list-group-item:focus {
 #main-container {
   background-color: #f5f5f5;
   padding-top: 45px;
+  padding-bottom: 45px;
 }
 #clogin #main-container {
   background: none;
@@ -36315,6 +36316,18 @@ label #selectFilter {
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 7px;
+}
+.mura-footer {
+  overflow-x: hidden;
+  background-color: #f9f9f9;
+  margin: -45px auto 0;
+  padding: 13px 30px 13px;
+  max-width: 100%;
+  font-size: 12px;
+}
+.mura-footer .credits {
+  margin-left: 25px;
+  font-weight: 600;
 }
 /* setup */
 #csetup #page-container {

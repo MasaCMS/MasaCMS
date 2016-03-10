@@ -378,6 +378,7 @@
 
       </main>
 
+
 <!--- TODO GoWest : use this? : 2015-12-15T10:12:08-07:00 --->
 
 <!---
@@ -403,6 +404,12 @@
 		<cfif structKeyExists(rc,'$')>
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
+
+			<footer class="mura-footer content-mini content-mini-full font-s12 bg-gray-lighter clearfix">
+				<div class="credits">
+					&copy; #year(now())# Blue River Interactive Group. Licensed under GNU General Public License, Version 2.0, with exceptions
+				</div>
+      </footer>
 
     </div><!-- /.page-container -->
 
