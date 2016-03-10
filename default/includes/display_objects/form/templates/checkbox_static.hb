@@ -1,5 +1,5 @@
 	<div class="form-group" id="field-{{name}}-container">
-		<div class="form-group-radio">
+		<div class="form-group-checkbox">
 			<label>
 			{{displayName}}
 			</label>
