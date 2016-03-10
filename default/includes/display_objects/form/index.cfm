@@ -34,7 +34,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfparam name="arguments._p" default="1" >
+<cfparam name="objectparams._p" default="1" >
 
 
 <cfif len(arguments.objectid)>
@@ -49,15 +49,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset objectParams.async = "true"/>
 				<cfparam name="objectParams.view" default="form"/>
 
-                <cfif isdefined('objectparams.saveform')>
+                <cfif len($.event('saveform'))>
                     <cfset objectParams.errors=$.getBean('dataCollectionBean')
                       .set($.event().getAllValues())
                       .save().getErrors()>
-				<cfelseif isdefined('objectparams.validateform')>
+				<cfelseif len($.event('validateform'))>
 					<cfparam name="objectarams.fields" default="">
 					<cfset objectParams.errors=$.getBean('dataCollectionBean')
                       .set($.event().getAllValues())
-                      .validate(objectarams.fields).getErrors()>
+                      .validate($,objectarams.fields).getErrors()>
                  </cfif>
 		<cfcatch>
 			<cfdump var="#cfcatch#">

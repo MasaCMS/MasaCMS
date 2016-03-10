@@ -324,6 +324,8 @@
 			$(".form-nav",self.settings.formEl).click( function() {
 				// need to build checkbox vals
 
+				var fields='';
+
 				console.log(self.data);
 
 				if(self.settings.master) {
@@ -339,14 +341,13 @@
 				self.currentpage = parseInt($(this).attr('data-page'));
 
 				// per page validation
-				if( self.validate(self.entity,valid) ) {
+				//if( self.validate(self.entity,valid) ) {
 					if(self.ormform) {
 						window.mura.getEntity(self.entity)
 						.set(
 							self.data
 						)
-						//.validate(fieldlist;)
-						.validate()
+						.validate(fields)
 						.then(
 							function( entity ) {
 								if(entity.hasErrors()){
@@ -361,25 +362,26 @@
 		                data.validateform=true;
 						data.formid=data.objectid;
 						data.siteid=data.siteid || mura.siteid;
-						//data.fields=fieldlist;
+						data.fields=fields;
 
 		                window.mura.post(
 	                        window.mura.apiEndpoint + '?method=processAsyncObject',
 	                        data)
 	                        .then(function(resp){
-	                            if(typeof resp.errors == 'object' && !mura.isEmptyObject(resp.errors )){
-	                                self.showErrors( resp.errors );
+	                            if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
+	                                self.showErrors( resp.data.errors );
 	                            } else {
 	                                self.renderForm();
 	                            }
 	                        });
 					}
 
-
+				/*
 				}
 				else {
 					console.log('oops!');
 				}
+				*/
 			});
 		},
 
@@ -542,7 +544,6 @@
 
 			var self = this;
 			var valid = self.setDataValues();
-
 			$(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
 
 			delete self.data.isNew;
@@ -578,8 +579,8 @@
                         window.mura.apiEndpoint + '?method=processAsyncObject',
                         data)
                         .then(function(resp){
-                            if(typeof resp.errors == 'object' && !mura.isEmptyObject(resp.errors )){
-                                self.showErrors( resp.errors );
+                            if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
+								self.showErrors( resp.data.errors );
                             } else {
                                 $(self.settings.formEl).html( self.responsemessage );
                             }
@@ -591,12 +592,12 @@
 
 		showErrors: function( errors ) {
 			var self = this;
-//
 
 			console.log(errors);
 
 			var errorData = {};
 
+			/*
 			for(var i in self.fields) {
 				var field = self.fields[i];
 
@@ -609,9 +610,29 @@
 				}
 
 			}
+			*/
+
+			for(var e in errors) {
+				if( typeof self.fields[e] != 'undefined' ) {
+					var field = self.fields[e]
+					var error = {};
+					error.message = field.validatemessage && field.validatemessage.length ? field.validatemessage : errors[field.name];
+					error.field = field.name;
+					error.label = field.label;
+					errorData[e] = error;
+				} else {
+					var error = {};
+					error.message = errors[e];
+					error.field = '';
+					error.label = '';
+					errorData[e] = error;
+				}
+			}
+
 			var html = self.templates['error'](errorData);
-			console.log(html);
-			$(".error-container-" + self.settings.objectid,self.settings.formEl).append(html);
+			console.log(errorData);
+
+			$(".error-container-" + self.settings.objectid,self.settings.formEl).html(html);
 		},
 
 
