@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfparam name="objectParams.view" default="form"/>
 
                 <cfif len($.event('saveform'))>
+					<cfset $.event('fields','')>
                     <cfset objectParams.errors=$.getBean('dataCollectionBean')
                       .set($.event().getAllValues())
                       .save().getErrors()>
@@ -57,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfparam name="objectarams.fields" default="">
 					<cfset objectParams.errors=$.getBean('dataCollectionBean')
                       .set($.event().getAllValues())
-                      .validate($,objectarams.fields).getErrors()>
+                      .validate($,$.event('fields')).getErrors()>
                  </cfif>
 		<cfcatch>
 			<cfdump var="#cfcatch#">
