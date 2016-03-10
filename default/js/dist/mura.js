@@ -10001,7 +10001,7 @@ mura.templates['form']=function(context) {
 			window.mura.get(
 					window.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb'
 				).then(function(data) {
-				self.templates[temp] = Handlebars.compile(data);
+				self.templates[temp] = window.mura.Handlebars.compile(data);
 				if(!self.templateList.length) {
 					if( self.settings.view == 'form')
 						self.loadForm();
@@ -10812,7 +10812,7 @@ mura.templates['form']=function(context) {
 		registerHelpers: function() {
 			var self = this;
 
-			Handlebars.registerHelper('eachColRow',function(row, columns, options) {
+			window.mura.Handlebars.registerHelper('eachColRow',function(row, columns, options) {
 				var ret = "";
 				for(var i = 0;i < columns.length;i++) {
 					ret = ret + options.fn(row[columns[i].column]);
@@ -10820,7 +10820,7 @@ mura.templates['form']=function(context) {
 				return ret;
 			});
 
-			Handlebars.registerHelper('eachProp',function(data, options) {
+			window.mura.Handlebars.registerHelper('eachProp',function(data, options) {
 				var ret = "";
 				var obj = {};
 
@@ -10837,7 +10837,7 @@ mura.templates['form']=function(context) {
 				return ret;
 			});
 
-			Handlebars.registerHelper('eachKey',function(properties, by, options) {
+			window.mura.Handlebars.registerHelper('eachKey',function(properties, by, options) {
 				var ret = "";
 				var item = "";
 				for(var i in properties) {
@@ -10853,7 +10853,7 @@ mura.templates['form']=function(context) {
 				return ret;
 			});
 
-			Handlebars.registerHelper('eachHour',function(hour, options) {
+			window.mura.Handlebars.registerHelper('eachHour',function(hour, options) {
 				var ret = "";
 				var h = 0;
 				var val = "";
@@ -10884,7 +10884,7 @@ mura.templates['form']=function(context) {
 				return ret;
 			});
 
-			Handlebars.registerHelper('eachColButton',function(row, options) {
+			window.mura.Handlebars.registerHelper('eachColButton',function(row, options) {
 				var ret = "";
 
 				row.label='View';
@@ -10905,7 +10905,7 @@ mura.templates['form']=function(context) {
 				return ret;
 			});
 
-			Handlebars.registerHelper('eachCheck',function(checks, selected, options) {
+			window.mura.Handlebars.registerHelper('eachCheck',function(checks, selected, options) {
 				var ret = "";
 
 				for(var i = 0;i < checks.length;i++) {
@@ -10918,7 +10918,7 @@ mura.templates['form']=function(context) {
 				}
 				return ret;
 			});
-			Handlebars.registerHelper('eachStatic',function(dataset, options) {
+			window.mura.Handlebars.registerHelper('eachStatic',function(dataset, options) {
 				var ret = "";
 
 				for(var i = 0;i < dataset.datarecordorder.length;i++) {
@@ -10982,4 +10982,6 @@ mura.templates['form']=function(context) {
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 ;(function(window){
     window.mura.datacache=new window.mura.Cache();
+    window.mura.Handlebars=Handlebars.create();
+    Handlebars.noConflict();
 })(window);
