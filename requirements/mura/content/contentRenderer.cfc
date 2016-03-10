@@ -1579,7 +1579,7 @@ Display Objects
 		<cfelse>
 		<cfoutput>#$.dspObject('login')#</cfoutput>
 		</cfif>
-	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and $.event('r').loggedIn>
+	<cfelseif not $.event('isOnDisplay')>
 		<cfset $.noIndex()>
 		<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",$)>
 		<cfheader statuscode="404" statustext="Content Not Found" />
