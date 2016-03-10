@@ -54,6 +54,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                     <cfset objectParams.errors=$.getBean('dataCollectionBean')
                       .set($.event().getAllValues())
                       .save().getErrors()>
+
+					  <cfif structIsEmpty(objectParams.errors)>
+						  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
+					  </cfif>
 				<cfelseif len($.event('validateform'))>
 					<cfparam name="objectparams.fields" default="">
 					<cfset objectParams.errors=$.getBean('dataCollectionBean')

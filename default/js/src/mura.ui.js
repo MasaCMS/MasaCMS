@@ -597,7 +597,7 @@
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
 								self.showErrors( resp.data.errors );
                             } else {
-                                $(self.settings.formEl).html( self.responsemessage );
+                                $(self.settings.formEl).html( resp.data.responsemessage );
                             }
                         });
 
