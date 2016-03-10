@@ -55,10 +55,12 @@ a.text-primary-light:hover,a.text-primary-light:active,a.text-primary-light:focu
   opacity: .75;
 }
 
-h1{
+h1,
+h1:not([class]) {
   font-weight: 600;
   font-size: 34px;
   letter-spacing: -1px;
+  white-space: nowrap;
 }
 
 .text-primary-lighter {
@@ -970,6 +972,7 @@ div.cke_editable{
 .mura-header{
  /* min-width: 1140px; */
  min-width: 550px;
+ padding-bottom: 10px;
 }
 .header-navbar-fixed #header-navbar{
   min-width: 520px;
@@ -1068,7 +1071,8 @@ a.no-link{
   line-height: 1;
   font-weight: normal;
   margin-left: 8px;
-  margin-bottom: 10px;
+  margin-top: 4px;
+  margin-bottom: 8px;
   min-height: 2.3em;
   padding-top: .5em;
   background-color: #FFF;
