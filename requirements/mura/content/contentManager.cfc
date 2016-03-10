@@ -1677,7 +1677,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>
 				</cfif>
 
-				<cfif newBean.getType() eq 'Form'>
+				<cfif newBean.getType() eq 'Form' and isJSON(newBean.getBody())>
 					<cfset getBean('formBuilderManager').generateFormObject(pluginEvent.getValue('MuraScope'),pluginEvent) />			
 				</cfif>
 
