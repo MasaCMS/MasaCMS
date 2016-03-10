@@ -2397,7 +2397,8 @@ component extends="mura.cfobject" {
 						objectid=$.event('objectid'),
 						siteid=arguments.siteid,
 						assignmentPerm=$.event('perm'),
-						cacheKey=CGI.QUERY_STRING
+						cacheKey=CGI.QUERY_STRING,
+						returnFormat='struct'
 					};
 
 				if(len($.event('objectparams')) && !isJson($.event('objectparams'))){
@@ -2426,14 +2427,11 @@ component extends="mura.cfobject" {
 
 				if(isdefined('request.muraJSONRedirectURL')){
 					result={redirect=request.muraJSONRedirectURL};
-				} else if(isSimpleValue(result)){
-					if($.useLayoutManager()){
-						args.params.content=result;
-						result={html=trim('#$.dspObject_include(theFile='object/meta.cfm',params=args.params)##$.dspObject_include(theFile='object/content.cfm',params=args.params)#')};
-					} else {
-						result={html=result};
+				} else {
+					if($.useLayoutManager() && isdefined('result.html') && result.render=='server'){
+						args.params.content=result.html;
+						result={render='server',async=true,html=trim('#$.dspObject_include(theFile='object/meta.cfm',params=args.params)##$.dspObject_include(theFile='object/content.cfm',params=args.params)#')};
 					}
-
 				}
 		}
 

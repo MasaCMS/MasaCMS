@@ -971,6 +971,7 @@
 		<cfargument name="layoutmanager">
 		<cfargument name="objectname">
 		<cfargument name="customBodyRender" required="true" default="false">
+		<cfargument name="returnFormat" required="true" default="html">
 
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
@@ -1163,7 +1164,8 @@
 									isConfigurator=editableControl.isConfigurator,
 									objectname=arguments.objectname,
 									renderer=arguments.renderer,
-									customBodyRender=arguments.customBodyRender)>
+									customBodyRender=arguments.customBodyRender,
+									returnformat=arguments.returnformat)>
 						</cfif>
 					</cfif>
 					<cfreturn theObject>
@@ -1200,7 +1202,7 @@
 						<cfreturn trim(theDisplay1)>
 					</cfif>
 				<cfelse>
-					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,customBodyRender=arguments.customBodyRender}>
+					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,customBodyRender=arguments.customBodyRender,returnformat=arguments.returnformat}>
 
 					<cfif objectargs.object neq 'plugin'>
 						<cfset objectargs.cacheKey=cacheKeyObjectId>

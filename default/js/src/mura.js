@@ -1580,7 +1580,7 @@
 		if(response){
 			if(typeof response == 'string'){
 				obj.html(trim(response));
-			} else if (typeof response.html =='string' && obj.data('render') != 'client'){
+			} else if (typeof response.html =='string' && response.render!='client'){
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){

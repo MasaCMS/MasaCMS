@@ -1242,6 +1242,7 @@ Display Objects
 	<cfargument name="isConfigurator" required="true" default="false">
 	<cfargument name="objectname" required="true" default="">
 	<cfargument name="customBodyRender" required="true" default="false">
+	<cfargument name="returnformat" required="true" default="html">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
@@ -1250,7 +1251,7 @@ Display Objects
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.customBodyRender)>
+			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.customBodyRender,arguments.returnformat)>
 			<cfif isSimpleValue(result)>
 				<cfoutput>#result#</cfoutput>
 			<cfelse>
@@ -1265,7 +1266,7 @@ Display Objects
 			<cfreturn result>
 		</cfif>
 	<cfelse>
-		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.customBodyRender) />
+		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.customBodyRender,arguments.returnformat) />
 
 		<cfif isSimpleValue(result)>
 			<cfreturn trim(result)>
@@ -1295,6 +1296,7 @@ Display Objects
 	<cfargument name="isConfigurator" required="true" default="false">
 	<cfargument name="objectname" required="true" default="">
 	<cfargument name="customBodyRender" required="true" default="false">
+	<cfargument name="returnFormat" required="true" default="html">
 
 	<cfset var fileDelim = "/" />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
@@ -1373,6 +1375,9 @@ Display Objects
 		</cfif>'
 	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>
+	<cfelseif arguments.returnFormat eq 'struct'>
+		<cfset objectparams.html=theContent>
+		<cfreturn objectparams>
 	<cfelse>
 		<cfreturn trim(theContent) />
 	</cfif>
@@ -1970,6 +1975,7 @@ Display Objects
 	<cfargument name="allowEditable" type="boolean" default="#this.showEditableObjects#">
 	<cfargument name="cacheKey" type="string" required="false" default="">
 	<cfargument name="objectname" default="">
+	<cfargument name="returnFormat" required="true" default="html">
 	<cfset arguments.renderer=this>
 	<cfset arguments.showEditableObjects=this.showEditableObjects>
 	<cfset arguments.layoutmanager=this.layoutmanager>
