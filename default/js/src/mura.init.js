@@ -45,4 +45,6 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 ;(function(window){
     window.mura.datacache=new window.mura.Cache();
+    window.mura.Handlebars=Handlebars.create();
+    Handlebars.noConflict();
 })(window);
