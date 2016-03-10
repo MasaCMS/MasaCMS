@@ -10010,8 +10010,6 @@ mura.templates['embed']=function(context){
 			}
 			else {
 				if(fieldtype == "checkbox") {
-					
-					
 					if(self.ormform) {
 						data.selected = [];
 		
@@ -10192,7 +10190,6 @@ mura.templates['embed']=function(context){
 				if(self.backlink != undefined && self.backlink.length)
 					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
 			}
-
 
 			$(".form-submit",self.settings.formEl).click( function() {
 				self.submitForm();
@@ -10456,16 +10453,6 @@ mura.templates['embed']=function(context){
 			var html = self.templates['error'](errorData);
 			console.log(html);		
 			$(".error-container-" + self.settings.objectid,self.settings.formEl).append(html);
-
-
-
-
-
-
-
-
-
-
 		},
 		
 
