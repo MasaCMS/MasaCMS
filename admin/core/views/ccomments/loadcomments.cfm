@@ -12,9 +12,9 @@
 				<input type="text" name="keywords" value="#esapiEncode('html_attr',$.event('keywords'))#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
 				<button type="submit" name="btnSearch" id="btnSearch" class="btn"><i class="mi-search"></i></button>
 			</div>
-		</div>	
+		</div>
 	</div>
-	
+
 	<div id="advancedSearch">
 		<div class="mura-control-group">
 				<label>Comment Status</label>
@@ -30,16 +30,16 @@
 				<label>Comment Date Range</label>
 				<div class="mura-control justify">
 					<label class="label-inline">
-						#application.rbFactory.getKeyValue(session.rb,"params.from")# 
+						#application.rbFactory.getKeyValue(session.rb,"params.from")#
 						<input type="text" name="startDate" id="startDate" class="datepicker mura-custom-datepicker" placeholder="Start Date" value="#esapiEncode('html_attr',$.event('startDate'))#" />
-						#application.rbFactory.getKeyValue(session.rb,"params.to")# 
+						#application.rbFactory.getKeyValue(session.rb,"params.to")#
 						<input type="text" name="endDate" id="endDate" class="datepicker mura-custom-datepicker" placeholder="End Date" value="#esapiEncode('html_attr',$.event('endDate'))#" />
 					</label>
 				</div>
 			</div>
 			<!--- <div class="span4">
 				<label>ContentID</label>
-		
+
 				<div class="controls">
 					<input type="text" name="contentID" id="inputcontentID" value="#$.event('contentID')#"/>
 				</div>
@@ -63,7 +63,7 @@
 <cfoutput>
 	<div class="mura-control-group">
 		<!--- BODY --->
-		
+
 		<cfif rc.itComments.hasNext()>
 			<!--- FORM --->
 			<form name="frmUpdate" id="frmUpdate">
@@ -100,7 +100,7 @@
 								</ul>
 							</div>
 						</div>
-				
+
 				<!--- PAGINATION --->
 				<cfif rc.itComments.pageCount() gt 1>
 					<div class="pull-right">
@@ -187,46 +187,50 @@
 
 							<!--- MODAL WINDOW --->
 							<div id="comment-#local.item.getCommentID()#" data-contentid="#local.item.getContentID()#" data-commentid="#local.item.getCommentID()#" class="modal comment-modal hide fade">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="mi-times-circle"></i></button>
-									
-									<p>
-										<!--- <strong>#esapiEncode('html',local.item.getName())#</strong> <em>#rbKey('comments.commentedon')#:</em><br /> --->
-										<cfif local.content.getIsNew()>
-											<h1><i class="mi-external-link"></i> Content Missing</h1>
-										<cfelse>
-											<h1><a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="mi-external-link"></i> #esapiEncode('html',local.content.getMenuTitle())#</a></h1>
-										</cfif>
-										
-									<!---
-<br />
-										<i class="mi-calendar"></i>&nbsp;&nbsp;#DateFormat(local.item.getEntered(), 'yyyy.mm.dd')#&nbsp;&nbsp;&nbsp;&nbsp;<i class="mi-clock-o"></i> #TimeFormat(local.item.getEntered(), 'hh:mm:ss tt')#
---->
-									</p>
-								</div>
-								<div class="modal-body">
-									<!--- loadcommentspage.cfm --->
-								</div>
-								<div class="modal-footer">
-									<div class="pull-right">
-										<!--- <a href="##" class="btn  btn-primary" data-dismiss="modal"><i class="mi-undo"></i> #rbKey('comments.cancel')#</a> --->
-										<cfif local.item.getIsDeleted()>
-											<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="undelete"><i class="mi-trash"></i> Undelete</a>
-										<cfelse>
-											<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="delete"><i class="mi-trash"></i> #rbKey('comments.delete')#</a>
-											<cfif local.item.getIsSpam()>
-												<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unspam"><i class="mi-flag"></i> Unspam</a>
-											<cfelse>
-												<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="spam"><i class="mi-flag"></i> Spam</a>
-												<cfif local.item.getIsApproved()>
-													<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unapprove"><i class="mi-ban"></i> #rbKey('comments.unapprove')#</a>
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header block-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="mi-times-circle"></i></button>
+
+											<p>
+												<!--- <strong>#esapiEncode('html',local.item.getName())#</strong> <em>#rbKey('comments.commentedon')#:</em><br /> --->
+												<cfif local.content.getIsNew()>
+													<h1><i class="mi-external-link"></i> Content Missing</h1>
 												<cfelse>
-													<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="mi-check"></i> #rbKey('comments.approve')#</a>
+													<h1><a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="mi-external-link"></i> #esapiEncode('html',local.content.getMenuTitle())#</a></h1>
 												</cfif>
-											</cfif>
-										</cfif>
-									</div>
-								</div>
+
+											<!---
+		<br />
+												<i class="mi-calendar"></i>&nbsp;&nbsp;#DateFormat(local.item.getEntered(), 'yyyy.mm.dd')#&nbsp;&nbsp;&nbsp;&nbsp;<i class="mi-clock-o"></i> #TimeFormat(local.item.getEntered(), 'hh:mm:ss tt')#
+		--->
+											</p>
+										</div>
+										<div class="modal-body block-content">
+											<!--- loadcommentspage.cfm --->
+										</div>
+										<div class="modal-footer">
+											<div class="pull-right">
+												<!--- <a href="##" class="btn  btn-primary" data-dismiss="modal"><i class="mi-undo"></i> #rbKey('comments.cancel')#</a> --->
+												<cfif local.item.getIsDeleted()>
+													<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="undelete"><i class="mi-trash"></i> Undelete</a>
+												<cfelse>
+													<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="delete"><i class="mi-trash"></i> #rbKey('comments.delete')#</a>
+													<cfif local.item.getIsSpam()>
+														<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unspam"><i class="mi-flag"></i> Unspam</a>
+													<cfelse>
+														<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="spam"><i class="mi-flag"></i> Spam</a>
+														<cfif local.item.getIsApproved()>
+															<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unapprove"><i class="mi-ban"></i> #rbKey('comments.unapprove')#</a>
+														<cfelse>
+															<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="mi-check"></i> #rbKey('comments.approve')#</a>
+														</cfif>
+													</cfif>
+												</cfif>
+											</div>
+										</div>
+									</div>	<!--- /@END MODAL-CONTENT --->
+								</div>	<!--- /@END MODAL-DIALG --->
 							</div>
 							<!--- /@END MODAL --->
 
@@ -242,7 +246,7 @@
 										#DateFormat(local.item.getEntered(), 'yy/mm/dd')#
 									</a>
 								</td>
-								
+
 								<!--- TIME --->
 								<td>
 									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #esapiEncode('html',local.content.getMenuTitle())#">
@@ -256,9 +260,9 @@
 										#esapiEncode('html',local.item.getName())#
 									</a>
 								</td>
-								
+
 								<!--- COMMENT --->
-								
+
 								<td class="var-width">
 									<cfscript>
 										theCount = 210;
@@ -336,7 +340,7 @@
 									<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
 								</ul>
 							</div>
-				
+
 				<!--- PAGINATION --->
 				<cfif rc.itComments.pageCount() gt 1>
 					<div class="pull-right">
@@ -383,7 +387,7 @@
 					</div>
 				</cfif>
 			</div>
-			<!--- /@END RECORDS PER PAGE --->		
+			<!--- /@END RECORDS PER PAGE --->
 		<cfelse>
 			<div class="mura-layout-row">
 				<div class="span12">
