@@ -225,51 +225,54 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		}
 
 		super.validate(fields=arguments.fields);
+	
+		if(!len(arguments.fields)){
 
-		setValue('acceptData',structIsEmpty(getErrors()));
+			setValue('acceptData',structIsEmpty(getErrors()));
 
-		if( isDefined('session.mura.requestcount') && !(session.mura.requestcount > 1) ){
-			setValue('acceptError','Spam');
-			setValue('acceptData','0');
-			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
-		}
-
-		if(getFormBean().getResponseChart()){
-
-			 if(not isdefined('cookie.poll')){
-				cookie.poll=getValue('formID');
-			} else if( isdefined('cookie.poll') and listfind(cookie.poll,getValue('formID')) ){
-				setValue('acceptError','Duplicate');
-				variables.instance.errors.duplicate=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("poll.onlyonevote");
+			if( isDefined('session.mura.requestcount') && !(session.mura.requestcount > 1) ){
+				setValue('acceptError','Spam');
 				setValue('acceptData','0');
-			} else if( isdefined('cookie.poll') and not listfind(cookie.poll,getValue('formID')) ){
-				var templist=cookie.poll;
-				if( listlen(templist) eq 6){
-					templist=listdeleteat(templist,1);
+				variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
+			}
+
+
+			if(getFormBean().getResponseChart()){
+
+				 if(not isdefined('cookie.poll')){
+					cookie.poll=getValue('formID');
+				} else if( isdefined('cookie.poll') and listfind(cookie.poll,getValue('formID')) ){
+					setValue('acceptError','Duplicate');
+					variables.instance.errors.duplicate=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("poll.onlyonevote");
+					setValue('acceptData','0');
+				} else if( isdefined('cookie.poll') and not listfind(cookie.poll,getValue('formID')) ){
+					var templist=cookie.poll;
+					if( listlen(templist) eq 6){
+						templist=listdeleteat(templist,1);
+					}
+					templist=listappend(templist,getValue('formID'));
+					cookie.poll="#templist#";
 				}
-				templist=listappend(templist,getValue('formID'));
-				cookie.poll="#templist#";
+			}
+
+			if(!(!len(getValue('hKey')) or getValue('hKey') eq hash(getValue('uKey'))) ){
+				setValue('acceptError','Captcha');
+				setValue('acceptData','0');
+				variables.instance.errors.SecurityCode=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.error");
+			}
+
+			var useReCAPTCHA = Len($.siteConfig('reCAPTCHASiteKey')) && Len($.siteConfig('reCAPTCHASecret'));
+
+			if ( useReCAPTCHA && !getBean('utility').reCAPTCHA(arguments.$.event()) ) {
+				setValue('acceptError', 'reCAPTCHA');
+				setValue('acceptData', '0');
+				variables.instance.errors.reCAPTCHA = arguments.$.rbKey('recaptcha.error');
+			} else if ( !useReCAPTCHA && !getBean('utility').cfformprotect(arguments.$.event()) ){
+				setValue('acceptError', 'Spam');
+				setValue('acceptData', '0');
+				variables.instance.errors.Spam = arguments.$.rbKey('captcha.spam');
 			}
 		}
-
-		if(!(!len(getValue('hKey')) or getValue('hKey') eq hash(getValue('uKey'))) ){
-			setValue('acceptError','Captcha');
-			setValue('acceptData','0');
-			variables.instance.errors.SecurityCode=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.error");
-		}
-
-		var useReCAPTCHA = Len($.siteConfig('reCAPTCHASiteKey')) && Len($.siteConfig('reCAPTCHASecret'));
-
-		if ( useReCAPTCHA && !getBean('utility').reCAPTCHA(arguments.$.event()) ) {
-			setValue('acceptError', 'reCAPTCHA');
-			setValue('acceptData', '0');
-			variables.instance.errors.reCAPTCHA = arguments.$.rbKey('recaptcha.error');
-		} else if ( !useReCAPTCHA && !getBean('utility').cfformprotect(arguments.$.event()) ){
-			setValue('acceptError', 'Spam');
-			setValue('acceptData', '0');
-			variables.instance.errors.Spam = arguments.$.rbKey('captcha.spam');
-		}
-
 		if(len(variables.formpropertylist)){
 			var fieldnames='';
 

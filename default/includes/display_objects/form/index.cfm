@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                       .set($.event().getAllValues())
                       .save().getErrors()>
 				<cfelseif len($.event('validateform'))>
-					<cfparam name="objectarams.fields" default="">
+					<cfparam name="objectparams.fields" default="">
 					<cfset objectParams.errors=$.getBean('dataCollectionBean')
                       .set($.event().getAllValues())
                       .validate($,$.event('fields')).getErrors()>

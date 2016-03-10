@@ -100,6 +100,19 @@
 			});
 		},
 
+		getPageFieldList:function(page){
+				var fields = self.formJSON.form.pages[page];
+
+				var result=[];
+
+
+				for(var f in fields){
+					result.push(self.formJSON.form.fields[fields[f]].name);
+				}
+
+				return result.join(',');
+		},
+
 		renderField:function(fieldtype,data) {
 			var self = this;
 			var templates = self.templates;
@@ -324,7 +337,7 @@
 			$(".form-nav",self.settings.formEl).click( function() {
 				// need to build checkbox vals
 
-				var fields='';
+
 
 				console.log(self.data);
 
@@ -339,6 +352,8 @@
 				var valid = self.setDataValues();
 
 				self.currentpage = parseInt($(this).attr('data-page'));
+
+				var fields=self.getPageFieldList(self.currentpage);
 
 				// per page validation
 				//if( self.validate(self.entity,valid) ) {
