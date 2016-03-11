@@ -18,11 +18,7 @@ mura.render['form']=function(context) {
 			this.data = data;
 
 		 	formJSON = JSON.parse( data.data.body );
-
-//			if (formJSON.form.formattributes.muraormentities != 1)
-//				console.log("uitemplate: error");
-//			else
-				item.getForm();
+			item.getForm();
 		});
 	}
 	else {
