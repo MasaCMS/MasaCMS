@@ -158,7 +158,7 @@
 						for (var i in ds.datarecords) {
 							if(ds.datarecords[i].selected && ds.datarecords[i].selected == 1)
 								field.selected.push(i);
-						}							
+						}
 
 						field.selected = field.selected.join(",");
 					}
@@ -193,16 +193,16 @@
 					field.value = self.data[field.name];
 				 break;
 				case "checkbox":
-				
+
 					var ds = self.formJSON.datasets[field.datasetid];
-					
+
 					for(var i in ds.datarecords) {
 						if (self.ormform) {
 							var sourceid = ds.source + "id";
-							
+
 							ds.datarecords[i].selected = 0;
 							ds.datarecords[i].isselected = 0;
-							
+
 							if(self.data[field.name].items && self.data[field.name].items.length) {
 								for(var x = 0;x < self.data[field.name].items.length;x++) {
 									if (ds.datarecords[i].id == self.data[field.name].items[x][sourceid]) {
@@ -363,7 +363,7 @@
 				//if( self.validate(self.entity,valid) ) {
 
 				self.setDataValues();
-											
+
 				if(self.ormform) {
 					window.mura.getEntity(self.entity)
 					.set(
@@ -522,7 +522,7 @@
 						for(var i in self.formJSON.datasets){
 							self.datasets.push(i);
 						}
-						
+
 						if(self.ormform) {
 						 	self.entity = entityName;
 
@@ -597,8 +597,8 @@
 			}
 			else {
 				console.log('b!');
-				var data=mura.deepExtend({}, self.data, self.settings);
-                data.saveform=true;
+				var data=mura.deepExtend({},self.settings,self.data);
+				data.saveform=true;
 				data.formid=data.objectid;
 				data.siteid=data.siteid || mura.siteid;
 
@@ -855,7 +855,7 @@
 
 		renderOverview: function() {
 			var self = this;
-			
+
 			console.log('ia');
 			console.log(self.item);
 
