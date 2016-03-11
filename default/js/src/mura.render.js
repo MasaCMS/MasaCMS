@@ -16,8 +16,7 @@ mura.render['form']=function(context) {
 			 + '?fields=body'
 		).then(function(data) {
 			this.data = data;
-
-		 	formJSON = JSON.parse( data.data.body );
+//		 	formJSON = JSON.parse( data.data.body );
 			item.getForm();
 		});
 	}

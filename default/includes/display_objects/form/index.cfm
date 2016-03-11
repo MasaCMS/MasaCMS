@@ -36,7 +36,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfparam name="objectparams._p" default="1" >
 
-
 <cfif len(arguments.objectid)>
 	<cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
 
@@ -49,13 +48,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset objectParams.async = "true"/>
 				<cfparam name="objectParams.view" default="form"/>
 
+
+
                 <cfif len($.event('saveform'))>
 					<cfset $.event('fields','')>
-                    <cfset objectParams.errors=$.getBean('dataCollectionBean')
-                      .set($.event().getAllValues())
-                      .save().getErrors()>
 
-					  <cfif structIsEmpty(objectParams.errors)>
+					  <cfif structKeyExists(objectParams,"errors") and structCount(objectParams.errors)>
+					  <cfelse>
 						  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
 					  </cfif>
 				<cfelseif len($.event('validateform'))>

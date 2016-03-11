@@ -62,6 +62,7 @@
 		sortdir: '',
 		properties: {},
 		rendered: {},
+		renderqueue: 0,
 		//templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
@@ -90,10 +91,12 @@
 					).then(function(data) {
 					window.mura.templates[temp] = window.mura.Handlebars.compile(data);
 					if(!window.mura.templateList.length) {
-						if( self.settings.view == 'form')
+						if (self.settings.view == 'form') {
 							self.loadForm();
-						else
+						}
+						else {
 							self.loadList();
+						}
 					}
 					else
 						self.getTemplates();
@@ -254,7 +257,6 @@
 			var self = this;
 
 			if(self.datasets.length == 0){
-				self.renderForm();
 				return;
 			}
 
@@ -265,6 +267,7 @@
 			}
 
 			dataset.options = [];
+			self.renderqueue++;
 
 			window.mura.getFeed( dataset.source )
 				.getQuery()
@@ -282,12 +285,18 @@
 
 				})
 				.then(function() {
+					self.renderqueue--;
 					self.renderData();
+					if (self.renderqueue == 0) {
+						self.renderForm();
+					}
 				});
 		},
 
 		renderForm: function( ) {
 			var self = this;
+
+			console.log("render form");
 
 			$(".field-container-" + self.settings.objectid,self.settings.formEl).empty();
 
@@ -357,9 +366,7 @@
 				console.log('valid');
 				console.log(valid);
 				
-				self.renderForm();
-
-				return;
+//				self.renderForm();
 												
 				if(self.ormform) {
 					console.log('a');
@@ -383,7 +390,7 @@
 	                data.validateform=true;
 					data.formid=data.objectid;
 					data.siteid=data.siteid || mura.siteid;
-					data.fields=fields;
+					data.fields=valid;
 
 	                window.mura.post(
                         window.mura.apiEndpoint + '?method=processAsyncObject',
@@ -491,6 +498,10 @@
 		loadForm: function( data ) {
 			var self = this;
 
+						console.log('a');
+						console.log(self.formJSON);
+
+
 			window.mura.get(
 					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
 					 + '?fields=body,title,filename,responsemessage'
@@ -517,7 +528,7 @@
 						for(var i in self.formJSON.datasets){
 							self.datasets.push(i);
 						}
-
+						
 						if(self.ormform) {
 						 	self.entity = entityName;
 
@@ -571,6 +582,7 @@
 			delete self.data.isNew;
 
 			if(self.ormform) {
+				console.log('a!');
 				window.mura.getEntity(self.entity)
 				.set(
 					self.data
@@ -590,6 +602,7 @@
 				);
 			}
 			else {
+				console.log('b!');
 				var data=mura.deepExtend({}, self.data, self.settings);
                 data.saveform=true;
 				data.formid=data.objectid;
@@ -602,6 +615,7 @@
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
 								self.showErrors( resp.data.errors );
                             } else {
+				console.log('cc!');
                                 $(self.settings.formEl).html( resp.data.responsemessage );
                             }
                         });

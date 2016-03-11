@@ -9887,8 +9887,7 @@ mura.render['form']=function(context) {
 			 + '?fields=body'
 		).then(function(data) {
 			this.data = data;
-
-		 	formJSON = JSON.parse( data.data.body );
+//		 	formJSON = JSON.parse( data.data.body );
 			item.getForm();
 		});
 	}
@@ -9985,6 +9984,7 @@ mura.templates['embed']=function(context){
 		sortdir: '',
 		properties: {},
 		rendered: {},
+		renderqueue: 0,
 		//templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
@@ -10013,10 +10013,12 @@ mura.templates['embed']=function(context){
 					).then(function(data) {
 					window.mura.templates[temp] = window.mura.Handlebars.compile(data);
 					if(!window.mura.templateList.length) {
-						if( self.settings.view == 'form')
+						if (self.settings.view == 'form') {
 							self.loadForm();
-						else
+						}
+						else {
 							self.loadList();
+						}
 					}
 					else
 						self.getTemplates();
@@ -10177,7 +10179,6 @@ mura.templates['embed']=function(context){
 			var self = this;
 
 			if(self.datasets.length == 0){
-				self.renderForm();
 				return;
 			}
 
@@ -10188,6 +10189,7 @@ mura.templates['embed']=function(context){
 			}
 
 			dataset.options = [];
+			self.renderqueue++;
 
 			window.mura.getFeed( dataset.source )
 				.getQuery()
@@ -10205,12 +10207,18 @@ mura.templates['embed']=function(context){
 
 				})
 				.then(function() {
+					self.renderqueue--;
 					self.renderData();
+					if (self.renderqueue == 0) {
+						self.renderForm();
+					}
 				});
 		},
 
 		renderForm: function( ) {
 			var self = this;
+
+			console.log("render form");
 
 			$(".field-container-" + self.settings.objectid,self.settings.formEl).empty();
 
@@ -10280,9 +10288,7 @@ mura.templates['embed']=function(context){
 				console.log('valid');
 				console.log(valid);
 				
-				self.renderForm();
-
-				return;
+//				self.renderForm();
 												
 				if(self.ormform) {
 					console.log('a');
@@ -10306,7 +10312,7 @@ mura.templates['embed']=function(context){
 	                data.validateform=true;
 					data.formid=data.objectid;
 					data.siteid=data.siteid || mura.siteid;
-					data.fields=fields;
+					data.fields=valid;
 
 	                window.mura.post(
                         window.mura.apiEndpoint + '?method=processAsyncObject',
@@ -10414,6 +10420,10 @@ mura.templates['embed']=function(context){
 		loadForm: function( data ) {
 			var self = this;
 
+						console.log('a');
+						console.log(self.formJSON);
+
+
 			window.mura.get(
 					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
 					 + '?fields=body,title,filename,responsemessage'
@@ -10440,7 +10450,7 @@ mura.templates['embed']=function(context){
 						for(var i in self.formJSON.datasets){
 							self.datasets.push(i);
 						}
-
+						
 						if(self.ormform) {
 						 	self.entity = entityName;
 
@@ -10494,6 +10504,7 @@ mura.templates['embed']=function(context){
 			delete self.data.isNew;
 
 			if(self.ormform) {
+				console.log('a!');
 				window.mura.getEntity(self.entity)
 				.set(
 					self.data
@@ -10513,6 +10524,7 @@ mura.templates['embed']=function(context){
 				);
 			}
 			else {
+				console.log('b!');
 				var data=mura.deepExtend({}, self.data, self.settings);
                 data.saveform=true;
 				data.formid=data.objectid;
@@ -10525,6 +10537,7 @@ mura.templates['embed']=function(context){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
 								self.showErrors( resp.data.errors );
                             } else {
+				console.log('cc!');
                                 $(self.settings.formEl).html( resp.data.responsemessage );
                             }
                         });

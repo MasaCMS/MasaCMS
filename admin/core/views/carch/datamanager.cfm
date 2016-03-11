@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.formJSON = deserializeJSON( rc.contentBean.getBody() )>
 	
 	<cftry>
-		<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>
+		<cfif structKeyExists(local.formJSON.form,"muraormentities") and structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>
 			<cfset isNewForm = true />
 		</cfif>
 	<cfcatch>
@@ -98,7 +98,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfif isNewForm>
-
 	<cfset objectname = rereplacenocase( rc.contentBean.getValue('filename'),"[^[:alnum:]]","","all" ) />
 	
 	<cfinclude template="dsp_secondary_menu.cfm">
@@ -107,8 +106,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ul></cfoutput>
 
 	<cfinclude template="data_manager/dsp_ormform.cfm">
-
-
 <cfelse>
 	<cfoutput>
 	
