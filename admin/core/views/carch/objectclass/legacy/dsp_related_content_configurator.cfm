@@ -47,10 +47,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
 <cfset feed=$.getBean("feed").loadBy(name=createUUID())>
-
 <cfset rc.contentBean = $.getBean('content').loadBy(contentID=rc.contentID, siteID=rc.siteID)>
 <cfset subtype = application.classExtensionManager.getSubTypeByName(rc.contentBean.getType(), rc.contentBean.getSubType(), rc.contentBean.getSiteID())>
 <cfset relatedContentSets = subtype.getRelatedContentSets()>
+<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
 
 <cfif isDefined("form.params") and isJSON(form.params)>
 	<cfset feed.set(deserializeJSON(form.params))>
@@ -79,52 +79,50 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 --->
 	<div class="mura-layout-row">
-			<cfif rc.classid eq "related_content">
-				<div class="mura-control-group">
-					<label class="control-label">
-						Related Content Set
-					</label>
-					<div class="controls">
-						<select name="relatedContentSetName" class="objectParam">
-							<option value=""<cfif feed.getRelatedContentSetName() eq ""> selected</cfif>>All</option>
-							<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
-								<cfset rcsBean = relatedContentSets[s]/>
-								<option value="#rcsBean.getName()#"<cfif feed.getRelatedContentSetName() eq rcsBean.getName()> selected</cfif>>#rcsBean.getName()#</option>
-							</cfloop>
-						</select>
-					</div>
-				</div>
-			</cfif>
-
+		<cfif rc.classid eq "related_content">
 			<div class="mura-control-group">
-		      	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-				<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
-					<cfloop list="Small,Medium,Large" index="i">
-						<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
-					</cfloop>
-
-					<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
-
-					<cfloop condition="imageSizes.hasNext()">
-						<cfset image=imageSizes.next()>
-						<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
-					</cfloop>
-						<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
-				</select>
-
-
-				<div id="feedCustomImageOptions"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
-					<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
-				      </label>
-					<input class="objectParam" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
-				    <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-				    <input class="objectParam" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
-				</div>
+				<label>
+					Related Content Set
+				</label>
+					<select name="relatedContentSetName" class="objectParam">
+						<option value=""<cfif feed.getRelatedContentSetName() eq ""> selected</cfif>>All</option>
+						<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
+							<cfset rcsBean = relatedContentSets[s]/>
+							<option value="#rcsBean.getName()#"<cfif feed.getRelatedContentSetName() eq rcsBean.getName()> selected</cfif>>#rcsBean.getName()#</option>
+						</cfloop>
+					</select>
 			</div>
+		</cfif>
+
+		<div class="mura-control-group">
+    	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+			<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+				<cfloop list="Small,Medium,Large" index="i">
+					<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
+				</cfloop>
+				<cfloop condition="imageSizes.hasNext()">
+					<cfset image=imageSizes.next()>
+					<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
+				</cfloop>
+					<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
+			</select>
+		</div>	
+
+		<div id="feedCustomImageOptions"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
+			<div class="mura-control-group half">		
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
+			      </label>
+				<input class="objectParam" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+			</div>	
+			<div class="mura-control-group half">		
+			    <label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+			    <input class="objectParam" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+			</div>	
+		</div>
 
 		<cfif rc.classid neq "related_content">
 			<div class="mura-control-group">
-				<label class="control-label">
+				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#
 				</label>
 				<select name="sortBy" class="objectParam">
@@ -146,7 +144,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 				--->
 				</select>
-				<label class="mura-control-label">
+			</div>
+
+			<div class="mura-control-group">
+				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#
 				</label>
 				<select name="sortDirection" class="span12 objectParam">
@@ -157,29 +158,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<div class="mura-control-group" id="availableFields">
-			<label class="mura-control-label">
+			<label>
 				Available Fields</span> <span>Selected Fields</span>
 			</label>
 			<div class="sortableFields">
-				<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
+				<p class="dragMsg">
+					<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
+				</p>
 
 				<cfset displayList=feed.getDisplayList()>
 				<cfset availableList=feed.getAvailableDisplayList()>
 
-				<ul id="availableListSort" class="displayListSortOptions">
-					<cfloop list="#availableList#" index="i">
-					<li class="ui-state-default">#trim(i)#</li>
-					</cfloop>
-				</ul>
+					<div class="half">
+						<ul id="availableListSort" class="displayListSortOptions">
+							<cfloop list="#availableList#" index="i">
+								<li class="ui-state-default">#trim(i)#</li>
+							</cfloop>
+						</ul>
+					</div>
+					<div class="half">
+						<ul id="displayListSort" class="displayListSortOptions">
+							<cfloop list="#displayList#" index="i">
+								<li class="ui-state-highlight">#trim(i)#</li>
+							</cfloop>
+						</ul>
+					</div>
 
-				<ul id="displayListSort" class="displayListSortOptions">
-					<cfloop list="#displayList#" index="i">
-					<li class="ui-state-highlight">#trim(i)#</li>
-					</cfloop>
-				</ul>
 				<input type="hidden" id="displayList" class="objectParam " value="#displayList#" name="displayList"/>
 			</div>
 		</div>
 
-</div>
+	</div> <!-- /.mura-layout-row -->
+</div> <!-- /availableObjectParams -->
 </cfoutput>

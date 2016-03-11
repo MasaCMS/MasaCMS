@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif feed.getType() eq "local">
 		<div class="mura-layout-row">
 			<div class="mura-control-group">
-		      	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+		      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
 				<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 					<cfloop list="Small,Medium,Large" index="i">
 						<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
@@ -101,16 +101,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 						<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
 				</select>
-				<span id="feedCustomImageOptions" class=""<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
-					<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+			</div>
+
+			<div id="feedCustomImageOptions" class=""<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
+				<div class="mura-control-group half">			
+					<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
 					<input class="objectParam" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
-					<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+				</div>
+				<div class="mura-control-group half">			
+					<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
 					<input class="objectParam" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
-			     </span>
+				</div>
 			</div>
 
 			<div class="mura-control-group">
-				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
 				<label class="radio inline">
 				<input name="displayName" data-displayobjectparam="displayName" type="radio" value="1" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>
 					#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
@@ -126,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 
 			<div class="mura-control-group">
-				<label class="mura-control-label">
+				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
 				</label>
 				<input name="cssclass" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getCssClass())#" maxlength="255">
@@ -151,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 					<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>All</option>
 				</select>
-			    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
+			    <label>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
 				<select name="nextN" data-displayobjectparam="nextN" class="objectParam">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 					<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
@@ -160,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 			</div>
 			<div class="mura-control-group" id="availableFields">
-				<label class="mura-control-label">
+				<label>
 					<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
 				</label>
 				<div id="sortableFields">
@@ -189,12 +194,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 		</div>
-	</div>
 	<cfelse>
-	<div class="mura-layout-row">
+		<div class="mura-layout-row">
 			<div class="mura-control-group">
 			<cfset displaySummaries=yesNoFormat(feed.getValue("displaySummaries"))>
-				<label class="mura-control-label">
+				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.displaysummaries')#
 				</label>
 				<label class="radio inline">
@@ -217,9 +221,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input name="viewalllabel" class="objectParam" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
 			</div>
 		</div>
-	</div>
 	</cfif>
-</div>
+</div> <!-- /availableObjectParams -->
 </cfoutput>
 </cfsavecontent>
 <cfset data.type=feed.getType()>
