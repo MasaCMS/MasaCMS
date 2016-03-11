@@ -23,7 +23,7 @@ mura.templates['embed']=function(context){
  	return context.source;
 }
 
-mura.templates['form']=function(context) {
+mura.templates['forminit']=function(context) {
 	var item = new window.mura.UI( context );
 	var ident = "mura-form-" + context.objectid;
 	var data = {};

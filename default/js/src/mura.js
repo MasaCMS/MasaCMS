@@ -1590,6 +1590,10 @@
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
+					if(typeof mura.templates[template + 'init'] == 'function'){
+						template=template + 'init';
+					}
+
 					if(typeof mura.templates[template] == 'function'){
 
 						var context=deepExtend(obj.data(),response);
@@ -1597,6 +1601,14 @@
 
 						if(typeof context.async != 'undefined'){
 							obj.data('async',context.async);
+						}
+
+						if(typeof context.render != 'undefined'){
+							obj.data('render',context.render);
+						}
+
+						if(typeof context.rendertemplate != 'undefined'){
+							obj.data('rendertemplate',context.rendertemplate);
 						}
 
 						context.html=mura.templates[template](context);

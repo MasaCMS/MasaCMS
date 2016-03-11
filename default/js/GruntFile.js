@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         },
         dist: {
           src: [
-          'external/polyfill.js',
+          //'external/polyfill.js',
           'external/handlebars-v3.0.3.js',
           'src/mura.js',
           'src/mura.loader.js',

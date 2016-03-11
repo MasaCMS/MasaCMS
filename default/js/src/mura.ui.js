@@ -62,7 +62,7 @@
 		sortdir: '',
 		properties: {},
 		rendered: {},
-		templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
+		//templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
 
@@ -82,21 +82,23 @@
 
 			var self = this;
 
-			var temp = self.templateList.pop();
+			if(window.mura.templateList.length){
+				var temp = window.mura.templateList.pop();
 
-			window.mura.get(
-					window.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb'
-				).then(function(data) {
-				window.mura.templates[temp] = window.mura.Handlebars.compile(data);
-				if(!self.templateList.length) {
-					if( self.settings.view == 'form')
-						self.loadForm();
+				window.mura.get(
+						window.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb'
+					).then(function(data) {
+					window.mura.templates[temp] = window.mura.Handlebars.compile(data);
+					if(!window.mura.templateList.length) {
+						if( self.settings.view == 'form')
+							self.loadForm();
+						else
+							self.loadList();
+					}
 					else
-						self.loadList();
-				}
-				else
-					self.getTemplates();
-			});
+						self.getTemplates();
+				});
+			}
 		},
 
 		getPageFieldList:function(page){
@@ -243,13 +245,15 @@
 		renderData:function() {
 			var self = this;
 
-			if(self.datasets.length == 0)
+			if(self.datasets.length == 0){
 				self.renderForm();
+			}
 
 			var dataset = self.formJSON.datasets[self.datasets.pop()];
 
-			if(dataset.sourcetype != 'muraorm')
+			if(dataset.sourcetype && dataset.sourcetype != 'muraorm'){
 				self.renderData();
+			}
 
 			dataset.options = [];
 
@@ -473,7 +477,7 @@
 			else
 				delete self.backlink;
 
-			if(self.templateList.length) {
+			if(window.mura.templateList.length) {
 				self.getTemplates( entityid );
 			}
 			else {
@@ -507,8 +511,9 @@
 							self.ormform = true;
 						}
 
-						for(var i in self.formJSON.datasets)
+						for(var i in self.formJSON.datasets){
 							self.datasets.push(i);
+						}
 
 						if(self.ormform) {
 						 	self.entity = entityName;
@@ -656,7 +661,7 @@
 
 			var entityName = '';
 
-			if(self.templateList.length) {
+			if(window.mura.templateList.length) {
 				self.getTemplates();
 			}
 			else {
