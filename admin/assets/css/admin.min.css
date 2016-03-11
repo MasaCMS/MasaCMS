@@ -34622,8 +34622,8 @@ button.text-primary-light:focus {
   color: #ff8f8f;
   opacity: .75;
 }
-h1,
-h1:not([class]) {
+.mura-header h1,
+.mura-header h1:not([class]) {
   font-weight: 600;
   font-size: 34px;
   letter-spacing: -1px;
