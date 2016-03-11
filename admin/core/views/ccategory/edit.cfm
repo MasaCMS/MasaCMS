@@ -189,11 +189,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <div class="form-actions">
   <cfif rc.categoryID eq ''>
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
+    <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
     <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
   <cfelse> 
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> 
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
+    <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
     <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
   </cfif>
   <input type="hidden" name="action" value="">

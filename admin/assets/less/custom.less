@@ -822,12 +822,32 @@ header .btn-image span.button-image{
     font-size: 18px;
 }
 
-.form-actions .btn{
-  min-width: 60px;
-  border: 0;
-  padding: 4px 10px;
-  font-size: 15px;
-  background-color: #DEDEDE;  
+// .form-actions
+.form-actions {
+  padding: (@baseLineHeight - 15) 0 @baseLineHeight;
+  margin-top: @baseLineHeight;
+  margin-bottom: @baseLineHeight;
+  background-color: @formActionsBackground;
+  border-top: none;
+  .clearfix(); // Adding clearfix to allow for .pull-right button containers
+
+  > .btn{
+    margin-right: 15px;
+    background-color: #DDDEDD;
+    border-color: #BCBCBC;
+    min-width: 60px;
+    border: 0;
+    padding: 4px 10px;
+    font-size: 15px;
+    background-color: #DEDEDE;  
+
+    &.mura-primary{
+      background-color: #69c;
+      color:#FFF;
+    }
+
+  }
+
 }
 
 .mura form .mura-control-group > * + .help-block:not(.alert){

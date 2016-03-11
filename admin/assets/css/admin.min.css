@@ -29973,6 +29973,21 @@ main > .content > :first-child:not(.alert) {
     font-size: 12px;
   }
 }
+.form-actions {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  float: none !important;
+}
+@media (min-width: 768px) {
+  .form-actions {
+    float: left;
+    width: 75%;
+  }
+}
 .mura-control-group {
   margin-bottom: 15px;
   margin-bottom: 20px;
@@ -32235,52 +32250,6 @@ fieldset[disabled] .btn:not([class*="btn-"]).active {
 }
 .form-horizontal .controls {
   width: 75%;
-}
-.form-actions {
-  padding: 3px 0 18px;
-  margin-top: 18px;
-  margin-bottom: 18px;
-  background-color: transparent;
-  border-top: none;
-}
-.form-actions:before,
-.form-actions:after {
-  content: " ";
-  display: table;
-}
-.form-actions:after {
-  clear: both;
-}
-.form-actions:before,
-.form-actions:after {
-  content: " ";
-  display: table;
-}
-.form-actions:after {
-  clear: both;
-}
-.form-actions:before,
-.form-actions:after {
-  content: " ";
-  display: table;
-}
-.form-actions:after {
-  clear: both;
-}
-.form-actions:before,
-.form-actions:after {
-  content: " ";
-  display: table;
-}
-.form-actions:after {
-  clear: both;
-}
-.form-actions > .btn {
-  margin-right: 15px;
-}
-.form-actions .btn {
-  background-color: #DDDEDD;
-  border-color: #BCBCBC;
 }
 #nav-module-specific {
   position: relative;
@@ -35352,12 +35321,58 @@ header .btn-image span.button-image {
   width: 30px;
   font-size: 18px;
 }
-.form-actions .btn {
+.form-actions {
+  padding: 3px 0 18px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  background-color: transparent;
+  border-top: none;
+}
+.form-actions:before,
+.form-actions:after {
+  content: " ";
+  display: table;
+}
+.form-actions:after {
+  clear: both;
+}
+.form-actions:before,
+.form-actions:after {
+  content: " ";
+  display: table;
+}
+.form-actions:after {
+  clear: both;
+}
+.form-actions:before,
+.form-actions:after {
+  content: " ";
+  display: table;
+}
+.form-actions:after {
+  clear: both;
+}
+.form-actions:before,
+.form-actions:after {
+  content: " ";
+  display: table;
+}
+.form-actions:after {
+  clear: both;
+}
+.form-actions > .btn {
+  margin-right: 15px;
+  background-color: #DDDEDD;
+  border-color: #BCBCBC;
   min-width: 60px;
   border: 0;
   padding: 4px 10px;
   font-size: 15px;
   background-color: #DEDEDE;
+}
+.form-actions > .btn.mura-primary {
+  background-color: #69c;
+  color: #FFF;
 }
 .mura form .mura-control-group > * + .help-block:not(.alert) {
   clear: both;

@@ -69,6 +69,13 @@ main > .content > :first-child:not(.alert){
 #mura-content > form{
   .form-horizontal;
 }
+
+.form-actions{
+  .make-sm-column(9);
+  .make-xs-column(12);
+  float: none !important;
+}
+
 .mura-control-group{
   .form-group;
   .make-row();
@@ -205,7 +212,6 @@ select.time{
   height: 24px;
 }
 
-
 // form alerts
 #mura-content > form .alert:not([class*="alert-"]){
   .alert-info;
@@ -328,26 +334,7 @@ h1:not([class]){
 	.col-xs-9;
 }
 
-
-// .form-actions (bs3 deprecated)
-.form-actions {
-  padding: (@baseLineHeight - 15) 0 @baseLineHeight;
-  margin-top: @baseLineHeight;
-  margin-bottom: @baseLineHeight;
-  background-color: @formActionsBackground;
-  border-top: none;
-  .clearfix(); // Adding clearfix to allow for .pull-right button containers
-  > .btn{
-  margin-right: 15px;
-  }
-}
-.form-actions .btn{
-    background-color: #DDDEDD;
-    border-color: #BCBCBC;
-}
-
 // secondary nav 
-
 #nav-module-specific{
   .make-sm-column(8.25);
   text-align:right;
