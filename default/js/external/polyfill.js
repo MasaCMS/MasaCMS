@@ -228,9 +228,9 @@
     },
     createDragImage: function() {
       this.dragImage = this.el.cloneNode(true);
-      
+
       duplicateStyle(this.el, this.dragImage);
-      
+
       this.dragImage.style.opacity = "0.5";
       this.dragImage.style.position = "absolute";
       this.dragImage.style.left = "0px";
@@ -696,6 +696,7 @@
       try {
         return callback(detail);
       } catch(e) {
+        console.error(e);
         lib$es6$promise$$internal$$TRY_CATCH_ERROR.error = e;
         return lib$es6$promise$$internal$$TRY_CATCH_ERROR;
       }
@@ -1339,56 +1340,56 @@
 
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
- 
+
 // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
 // refactored by Yannick Albert
- 
+
 // MIT license
 (function(window) {
     var equestAnimationFrame = 'equestAnimationFrame',
         requestAnimationFrame = 'r' + equestAnimationFrame,
-        
+
         ancelAnimationFrame = 'ancelAnimationFrame',
         cancelAnimationFrame = 'c' + ancelAnimationFrame,
-        
+
         expectedTime = 0,
         vendors = ['moz', 'ms', 'o', 'webkit'],
         vendor;
-    
+
     while(!window[requestAnimationFrame] && (vendor = vendors.pop())) {
         window[requestAnimationFrame] = window[vendor + 'R' + equestAnimationFrame];
         window[cancelAnimationFrame] = window[vendor + 'C' + ancelAnimationFrame] || window[vendor + 'CancelR' + equestAnimationFrame];
     }
-    
+
     if(!window[requestAnimationFrame]) {
         window[requestAnimationFrame] = function(callback) {
             var currentTime = new Date().getTime(),
                 adjustedDelay = 16 - (currentTime - expectedTime),
                 delay = adjustedDelay > 0 ? adjustedDelay : 0;
-            
+
             expectedTime = currentTime + delay;
-            
+
             return setTimeout(function() {
                 callback(expectedTime);
             }, delay);
         };
-        
+
         window[cancelAnimationFrame] = clearTimeout;
     }
 }(this));
 
 //https://gist.github.com/jonathantneal/3062955
 this.Element && function(ElementPrototype) {
-  ElementPrototype.matchesSelector = ElementPrototype.matchesSelector || 
+  ElementPrototype.matchesSelector = ElementPrototype.matchesSelector ||
   ElementPrototype.mozMatchesSelector ||
   ElementPrototype.msMatchesSelector ||
   ElementPrototype.oMatchesSelector ||
   ElementPrototype.webkitMatchesSelector ||
   function (selector) {
     var node = this, nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
- 
+
     while (nodes[++i] && nodes[i] != node);
- 
+
     return !!nodes[i];
   }
 }(Element.prototype);
@@ -1518,4 +1519,3 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
   window.addEventListener("load", ready);
 })();
-

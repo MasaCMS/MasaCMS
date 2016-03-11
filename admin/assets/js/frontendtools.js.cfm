@@ -924,7 +924,7 @@
 						objectParams=item.data();
 
 						if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
-							item.html(window.mura.layoutmanagertoolbar + item.html());
+							item.prepend(window.mura.layoutmanagertoolbar );
 
 							item.find(".frontEndToolsModal").on(
 								'click',
@@ -940,13 +940,13 @@
 							item.find('.mura-object').each(initObject);
 						}
 					} else {
-						var region=item.closest(".mura-region-local");
+						var region=item.closest('.mura-region-local');
 
 						if(region && region.length ){
 							if(region.data('perm')){
 								objectParams=item.data();
 								if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
-									item.html(window.mura.layoutmanagertoolbar + item.html());
+									item.prepend(window.mura.layoutmanagertoolbar);
 
 									item.find(".frontEndToolsModal").on(
 										'click',
