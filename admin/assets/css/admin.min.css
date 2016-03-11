@@ -28690,6 +28690,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   color: #f3f3f3;
   line-height: 1.2;
 }
+.mura .mura-sidebar__objects-list__object-group-heading + .mura-sidebar__object-group-items {
+  margin-top: 12px;
+}
 .mura .mura-sidebar__object-group-items,
 .mura .mura-sidebar__objects-list__object-group-items {
   padding: 0;
@@ -28730,6 +28733,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   font-weight: bold;
   border: none;
   border-collapse: collapse;
+}
+.mura select + .mura-sidebar__objects-list__object-item {
+  margin-top: 12px;
 }
 .mura .mura-sidebar__objects-list__object-item + .mura-sidebar__objects-list__object-item {
   border: none;
@@ -28836,6 +28842,11 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   font-weight: normal;
   color: #f3f3f3;
   line-height: 1.2;
+}
+.mura body.configurator-wrapper #configuratorContainer label + .mura-sidebar__object-group-items,
+.mura body.configurator-wrapper #configuratorContainer .control-label + .mura-sidebar__object-group-items,
+.mura body.configurator-wrapper #configuratorContainer .mura-control-label + .mura-sidebar__object-group-items {
+  margin-top: 12px;
 }
 .mura body.configurator-wrapper #configuratorContainer select,
 .mura body.configurator-wrapper #configuratorContainer select:focus,
