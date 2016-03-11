@@ -17,6 +17,7 @@ module.exports = function(grunt) {
           'src/mura.entity.js',
           'src/mura.entitycollection.js',
           'src/mura.feed.js',
+          'src/mura.render.js',
           'src/mura.templates.js',
           'src/mura.ui.js',
           'src/mura.init.js'
