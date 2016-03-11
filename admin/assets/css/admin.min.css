@@ -35369,10 +35369,12 @@ header .btn-image span.button-image {
   padding: 4px 10px;
   font-size: 15px;
   background-color: #DEDEDE;
-}
-.form-actions > .btn.mura-primary {
-  background-color: #69c;
-  color: #FFF;
+  /*
+    &.mura-primary{
+      background-color: #69c;
+      color:#FFF;
+    }
+*/
 }
 .mura form .mura-control-group > * + .help-block:not(.alert) {
   clear: both;
