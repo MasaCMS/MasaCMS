@@ -9962,7 +9962,6 @@ mura.templates['form']=function(context) {
 	window.mura.UI=window.mura.Core.extend({
 
 		settings:{},
-		templates:{},
 		ormform: false,
 		formJSON:{},
 		data:{},
@@ -10001,7 +10000,7 @@ mura.templates['form']=function(context) {
 			window.mura.get(
 					window.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb'
 				).then(function(data) {
-				self.templates[temp] = window.mura.Handlebars.compile(data);
+				window.mura.templates[temp] = window.mura.Handlebars.compile(data);
 				if(!self.templateList.length) {
 					if( self.settings.view == 'form')
 						self.loadForm();
@@ -10028,7 +10027,7 @@ mura.templates['form']=function(context) {
 
 		renderField:function(fieldtype,data) {
 			var self = this;
-			var templates = self.templates;
+			var templates = window.mura.templates;
 			var template = fieldtype;
 
 			if( data.datasetid != "" && self.isormform)
@@ -10054,7 +10053,7 @@ mura.templates['form']=function(context) {
 				context.formEl = holder;
 				nestedForm.getForm();
 
-				var html = self.templates[template](data);
+				var html = window.mura.templates[template](data);
 				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
 			}
 			else {
@@ -10085,7 +10084,7 @@ mura.templates['form']=function(context) {
 					}
 				}
 
-				var html = self.templates[template](data);
+				var html = window.mura.templates[template](data);
 
 				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
 			}
@@ -10220,24 +10219,24 @@ mura.templates['form']=function(context) {
 			$(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
 
 			if(self.formJSON.form.pages.length == 1) {
-				$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
+				$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
 			}
 			else {
 				if(self.currentpage == 0) {
-					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:1,label:"Next",class:"form-nav"}));
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:1,label:"Next",class:"form-nav"}));
 				} else {
-					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
 
 					if(self.currentpage+1 < self.formJSON.form.pages.length) {
-						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
+						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
 					}
 					else {
-						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
+						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
 					}
 				}
 
 				if(self.backlink != undefined && self.backlink.length)
-					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(self.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
+					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
 			}
 
 			$(".form-submit",self.settings.formEl).click( function() {
@@ -10456,10 +10455,10 @@ mura.templates['form']=function(context) {
 			$(self.settings.formEl).empty();
 
 			if(self.settings.mode != undefined && self.settings.mode == 'nested') {
-				var html = self.templates['nested'](self.settings);
+				var html = window.mura.templates['nested'](self.settings);
 			}
 			else {
-				var html = self.templates['form'](self.settings);
+				var html = window.mura.templates['form'](self.settings);
 			}
 
 			$(self.settings.formEl).append(html);
@@ -10557,7 +10556,7 @@ mura.templates['form']=function(context) {
 				}
 			}
 
-			var html = self.templates['error'](errorData);
+			var html = window.mura.templates['error'](errorData);
 			console.log(errorData);
 
 			$(".error-container-" + self.settings.objectid,self.settings.formEl).html(html);
@@ -10694,7 +10693,7 @@ mura.templates['form']=function(context) {
 		renderTable: function( tableData ) {
 			var self = this;
 
-			var html = self.templates['table'](tableData);
+			var html = window.mura.templates['table'](tableData);
 			$(self.settings.formEl).html( html );
 
 			if (self.settings.view == 'list') {
@@ -10759,7 +10758,7 @@ mura.templates['form']=function(context) {
 
 			$(self.settings.formEl).empty();
 
-			var html = self.templates['view'](self.item);
+			var html = window.mura.templates['view'](self.item);
 			$(self.settings.formEl).append(html);
 
 			$(".nav-back",self.settings.formEl).click( function() {
