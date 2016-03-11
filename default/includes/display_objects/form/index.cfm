@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					<cfset objectParams.errors=$.getBean('dataCollectionBean')
 	                      .set($.event().getAllValues())
-	                      .save().getErrors()>
+	                      .submit($).getErrors()>
 
 					<cfif not structCount(objectParams.errors)>
 						  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
