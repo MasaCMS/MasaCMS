@@ -127,7 +127,6 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			var formDef=deserializeJSON(content.getBody());
 
 			if(structKeyExists(formDef.form,'pages') && isArray( formDef.form.pages )) {
-				
 				for(var i = 1; i <= ArrayLen(formDef.form.pages);i++) {
 					fieldorder.addAll( formDef.form.pages[i] );
 				}

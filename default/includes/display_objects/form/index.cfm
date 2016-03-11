@@ -48,15 +48,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset objectParams.async = "true"/>
 				<cfparam name="objectParams.view" default="form"/>
 
-
-
                 <cfif len($.event('saveform'))>
 					<cfset $.event('fields','')>
 
-					  <cfif structKeyExists(objectParams,"errors") and structCount(objectParams.errors)>
-					  <cfelse>
+					<cfset objectParams.errors=$.getBean('dataCollectionBean')
+	                      .set($.event().getAllValues())
+	                      .save().getErrors()>
+
+					<cfif not structCount(objectParams.errors)>
 						  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
-					  </cfif>
+					</cfif>
 				<cfelseif len($.event('validateform'))>
 					<cfparam name="objectparams.fields" default="">
 					<cfset objectParams.errors=$.getBean('dataCollectionBean')
