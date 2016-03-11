@@ -231,6 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	public boolean function validate_required(required any object, required string propertyIdentifier, boolean constraintValue=true) {
 
+
 		if(constraintValue){
 			var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
 			if(!isNull(propertyValue) && (isObject(propertyValue) || (isArray(propertyValue) && arrayLen(propertyValue)) || (isStruct(propertyValue) && structCount(propertyValue)) || (isSimpleValue(propertyValue) && len(propertyValue)) || isNumeric(propertyValue) )) {
