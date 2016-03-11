@@ -46,5 +46,6 @@
 ;(function(window){
     window.mura.datacache=new window.mura.Cache();
     window.mura.Handlebars=Handlebars.create();
+    window.mura.templateList=['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'];
     Handlebars.noConflict();
 })(window);

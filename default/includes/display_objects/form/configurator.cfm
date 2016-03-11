@@ -38,12 +38,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset content.setType('Form')>
 	<cfset rc.rsForms = application.contentManager.getComponentType(rc.siteid, 'Form')/>
 
-<!---	
+<!---
 	<cfif isJSON( content.getValue('body') )>
 		<cfset isFormbuilder = true />
 		<cfset formJSON = serializeJSON( content.getValue('body') ) />
 	</cfif>
---->	
+--->
 
 	<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000004',rc.siteid)>
 
@@ -55,10 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-layout-row">
 	<div class="mura-control-group">
 		<label class="mura-control-label">Select Form</label>
-<!---
-		<input type="hidden" name="render" value="client" class="objectParam" />
-		<input type="hidden" name="async" value="false" class="objectParam" />
---->
+
 		<select id="availableObjectSelector">
 			<option
 				data-value='unconfigured'
@@ -94,7 +91,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeedit')#
 			</option>
 			</select>
-			
+
+			<input type="hidden" name="render" value="server" class="objectParam" />
+			<input type="hidden" name="async" value="true" class="objectParam" />
 	</div>
 </div>
 
@@ -108,9 +107,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 		$('##editBtn').html('Edit');
 		 	} else {
 		 		$('##editBtn').html('Create New');
-		 	}		
-		
-			if( selector.prop('selectedIndex') > 0 )	
+		 	}
+
+			if( selector.prop('selectedIndex') > 0 )
 				$("##viewTypeSelector").show();
 			else
 				$("##viewTypeSelector").hide();

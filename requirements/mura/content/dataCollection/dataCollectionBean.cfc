@@ -95,7 +95,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 		} else if(!structKeyExists(arguments.data,'fieldnames')) {
 			arguments.data.fieldnames='';
-			for(local.i in arguments.data){
+			for(local.i in arguments.data) {
 				arguments.data.fieldnames=listAppend(arguments.data.fieldnames,local.i);
 			}
 		}
@@ -121,45 +121,54 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		var message='';
 		var fields='';
 		var nestedform = '';
-
+		var fieldorder = ArrayNew(1);
+		
 		if(isJSON(arguments.content.getBody())){
 			var formDef=deserializeJSON(content.getBody());
 
-			if(isdefined('formDef.form.fieldOrder') && isdefined('formDef.form.fieldOrder')){
-				for(i=1;i lte arrayLen(formDef.form.fieldOrder);i=i+1){
+			if(structKeyExists(formDef.form,'pages') && isArray( formDef.form.pages )) {
+				
+				for(var i = 1; i <= ArrayLen(formDef.form.pages);i++) {
+					fieldorder.addAll( formDef.form.pages[i] );
+				}
+			}
+			else if(structKeyExists(formDef.form,'fieldOrder') && isArray(formDef.form.fieldOrder)) {
+				fieldorder = formDef.form.fieldOrder;
+			}
 
-					prop=formDef.form.fields[formDef.form.fieldOrder[i]];
-					rules=[];
+			for(i=1;i lte arrayLen(fieldorder);i=i+1){
 
-					if( prop.fieldtype.fieldtype eq 'nested' ) {
-						nestedform = getBean('content').loadBy( contentID=prop.formid,siteid=getValue('siteID') );
-						structAppend(validations, getValidations( nestedform,prop.name & "_" ) );
+				prop=formDef.form.fields[fieldorder[i]];
+				rules=[];
+
+				if( prop.fieldtype.fieldtype eq 'nested' ) {
+					nestedform = getBean('content').loadBy( contentID=prop.formid,siteid=getValue('siteID') );
+					structAppend(validations, getValidations( nestedform,prop.name & "_" ) );
+				}
+				else {
+					if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
+						message=prop.validateMessage;
+					} else {
+						message='';
 					}
-					else {
-						if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
-							message=prop.validateMessage;
-						} else {
-							message='';
-						}
 
-						if(structkeyExists(prop,'validateRegex') && len(prop.validateRegex)){
-							arrayAppend(rules,{'regex'=prop.validateRegex,message=message});
-						}
-
-						if(structkeyExists(prop,'isrequired') &&  prop.isrequired){
-							arrayAppend(rules,{required=true,message=message});
-						}
-
-						if(structkeyExists(prop,'validateType') && len(prop.validateType)){
-							arrayAppend(rules,{dataType=prop.validateType,message=message});
-						}
-
-						if(arrayLen(rules)){
-							validations.properties[prop.name]=rules;
-						}
-						variables.formproperties[prop.name]=prop;
-						variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & prop.name);
+					if(structkeyExists(prop,'validateRegex') && len(prop.validateRegex)){
+						arrayAppend(rules,{'regex'=prop.validateRegex,message=message});
 					}
+
+					if(structkeyExists(prop,'isrequired') &&  prop.isrequired){
+						arrayAppend(rules,{required=true,message=message});
+					}
+
+					if(structkeyExists(prop,'validateType') && len(prop.validateType)){
+						arrayAppend(rules,{dataType=prop.validateType,message=message});
+					}
+
+					if(arrayLen(rules)){
+						validations.properties[prop.name]=rules;
+					}
+					variables.formproperties[prop.name]=prop;
+					variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & prop.name);
 				}
 			}
 		}
