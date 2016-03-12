@@ -785,6 +785,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<!--- for variations --->
+<cffunction name="getInitJS" output="false">
+	<cfreturn variables.instance.responseMessage>
+</cffunction>
+
+<cffunction name="setInitJS" output="false">
+	<cfargument name="initjs">
+	<cfset variables.instance.responseMessage=arguments.initjs>
+	<cfreturn this>
+</cffunction>
+<!--- --->
+
 <cffunction name="getDisplayStart" output="false">
 	<cfargument name="timezone" default="">
 

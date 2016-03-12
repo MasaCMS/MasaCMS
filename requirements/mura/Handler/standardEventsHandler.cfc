@@ -878,6 +878,11 @@
 			structDelete(result,'extenddata');
 			structDelete(result,'extendAutoComplete');
 
+			if($.content('type')=='Variation'){
+				result.initjs=$.content('responseMessage');
+				structDelete(result,'responsemessage');
+			}
+
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data=result}));
 
 		} catch (any e){

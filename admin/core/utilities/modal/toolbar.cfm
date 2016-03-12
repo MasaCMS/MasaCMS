@@ -189,7 +189,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset variables.adminLink = variables.adminLink & "&amp;topid=" & request.contentBean.getContentID()>
 			</cfif>
-			
+
 			<cfset variables.adminLink = variables.adminLink & "&amp;ptype=" & request.contentBean.getType()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;parentid=" & request.contentBean.getParentID()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
@@ -337,7 +337,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
 										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#><i class="mi-pencil"></i>
-											<cfif useLayoutManager()>
+											<cfif $.content('type') eq 'Variation'>
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-metadata')#
+											<cfelseif useLayoutManager()>
 												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
 											<cfelse>
 												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
@@ -346,7 +348,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfif this.showInlineEditor>
 									<li id="adminQuickEdit">
 										<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
-										<cfif useLayoutManager()>
+										<cfif $.content('type') eq 'Variation'>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
+										<cfelseif useLayoutManager()>
 											<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
 											<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
 											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#

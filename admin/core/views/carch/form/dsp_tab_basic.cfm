@@ -108,14 +108,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</cfcase>
 		<cfdefaultcase>
-
-				<div class="mura-control-group">
-		      		<label>
-	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
-	      		</label>
-		     		 	<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.getTitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#"<cfif rc.contentBean.getIsLocked()> disabled="disabled"</cfif>>
-	     		 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
-	     		</div>
+			<div class="mura-control-group">
+	      		<label>
+      				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
+      			</label>
+	     		<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.getTitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#"<cfif rc.contentBean.getIsLocked()> disabled="disabled"</cfif>>
+     		 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
+     		</div>
 		</cfdefaultcase>
 	</cfswitch>
 
@@ -175,6 +174,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			showSummaryEditor();
 			</cfif>
 		</script>
+	</cfif>
+
+	<cfif rc.contentBean.getType() eq 'Variation'>
+		<div class="mura-control-group">
+			<label>
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.editableregiontargeting')#
+			</label>
+			<textarea name="initjs" id="initjs" rows="20">#esapiEncode('html',rc.contentBean.getInitJS())#</textarea>
+		</div>
 	</cfif>
 
 	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>
