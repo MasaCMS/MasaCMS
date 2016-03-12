@@ -8,7 +8,7 @@ mura.render['form']=function(context) {
 
 	context.html = "<div id='"+ident+"'></div>";
 
-	$(context.targetEl).html( mura.templates.content(context) );
+	mura(context.targetEl).html( mura.templates.content(context) );
 
 	if (item.settings.view == 'form') {
 		window.mura.get(

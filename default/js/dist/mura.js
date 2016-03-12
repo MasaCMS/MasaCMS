@@ -9026,7 +9026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				return this;
 
 			} else {
-				if(this.selection[0].hasOwnProperty('value')){
+				if(this.selection[0].hasOwnProperty('value') || typeof this.selection[0].value != 'undefined'){
 					return this.selection[0].value;
 				} else {
 					return '';
@@ -9879,7 +9879,7 @@ mura.render['form']=function(context) {
 
 	context.html = "<div id='"+ident+"'></div>";
 
-	$(context.targetEl).html( mura.templates.content(context) );
+	mura(context.targetEl).html( mura.templates.content(context) );
 
 	if (item.settings.view == 'form') {
 		window.mura.get(
@@ -10059,15 +10059,15 @@ mura.templates['embed']=function(context){
 				context.master = this;
 
 				var nestedForm = new mura.UI( context );
-				var holder = $('<div id="nested-'+field.formid+'"></div>');
+				var holder = mura('<div id="nested-'+field.formid+'"></div>');
 
-				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(holder);
+				mura(".field-container-" + self.settings.objectid,self.settings.formEl).append(holder);
 
 				context.formEl = holder;
 				nestedForm.getForm();
 
 				var html = window.mura.templates[template](field);
-				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
+				mura(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
 			}
 			else {
 				if(fieldtype == "checkbox") {
@@ -10100,7 +10100,7 @@ mura.templates['embed']=function(context){
 
 				var html = window.mura.templates[template](field);
 
-				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
+				mura(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
 			}
 
 		},
@@ -10219,7 +10219,7 @@ mura.templates['embed']=function(context){
 
 			console.log("render form");
 
-			$(".field-container-" + self.settings.objectid,self.settings.formEl).empty();
+			mura(".field-container-" + self.settings.objectid,self.settings.formEl).empty();
 
 			if(!self.formInit) {
 				self.initForm();
@@ -10235,7 +10235,7 @@ mura.templates['embed']=function(context){
 			}
 
 			if(self.ishuman && self.currentpage==(self.formJSON.form.pages.length-1)){
-				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(self.ishuman);
+				mura(".field-container-" + self.settings.objectid,self.settings.formEl).append(self.ishuman);
 			}
 
 			if (self.settings.mode == 'form') {
@@ -10248,43 +10248,41 @@ mura.templates['embed']=function(context){
 
 		renderPaging:function() {
 			var self = this;
-			$(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
+			mura(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
 
-			$(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
+			mura(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
 
 			if(self.formJSON.form.pages.length == 1) {
-				$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
+				mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
 			}
 			else {
 				if(self.currentpage == 0) {
-					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:1,label:"Next",class:"form-nav"}));
+					mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:1,label:"Next",class:"form-nav"}));
 				} else {
-					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
+					mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
 
 					if(self.currentpage+1 < self.formJSON.form.pages.length) {
-						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
+						mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
 					}
 					else {
-						$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
+						mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
 					}
 				}
 
 				if(self.backlink != undefined && self.backlink.length)
-					$(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
+					mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
 			}
 
-			$(".form-submit",self.settings.formEl).click( function() {
+			mura(".form-submit",self.settings.formEl).click( function() {
 				self.submitForm();
 			});
-			$(".form-cancel",self.settings.formEl).click( function() {
+			mura(".form-cancel",self.settings.formEl).click( function() {
 				self.getTableData( self.backlink );
 			});
 
-			$(".form-nav",self.settings.formEl).click( function() {
-				// need to build checkbox vals
-				$(this).unbind();
+			var formNavHandler=function() {
 
-				self.currentpage = parseInt($(this).attr('data-page'));
+				self.currentpage = parseInt(mura(this).data('page'));
 
 				// per page validation
 				//if( self.validate(self.entity,valid) ) {
@@ -10331,7 +10329,9 @@ mura.templates['embed']=function(context){
 					console.log('oops!');
 				}
 				*/
-			});
+			};
+
+			mura(".form-nav",self.settings.formEl).off('click',formNavHandler).on('click',formNavHandler);
 		},
 
 		setDataValues: function() {
@@ -10340,36 +10340,36 @@ mura.templates['embed']=function(context){
 			var item = {};
 			var valid = [];
 
-			$(".field-container-" + self.settings.objectid + " :input").each( function() {
+			mura(".field-container-" + self.settings.objectid + " input, .field-container-" + self.settings.objectid + " select, .field-container-" + self.settings.objectid + " textarea").each( function() {
 
-				if( $(this).is(':checkbox')) {
-					if ( multi[$(this).attr('name')] == undefined )
-						multi[$(this).attr('name')] = [];
+				if( mura(this).is('[type="checkbox"]')) {
+					if ( multi[mura(this).attr('name')] == undefined )
+						multi[mura(this).attr('name')] = [];
 
-					if( $(this).is(':checked') ) {
+					if( this.checked ) {
 						if (self.ormform) {
 							item = {};
 							item['id'] = window.mura.createUUID();
 							item[self.entity + 'id'] = self.data.id;
-							item[$(this).attr('source') + 'id'] = $(this).val();
-							item['key'] = $(this).val();
+							item[mura(this).attr('source') + 'id'] = mura(this).val();
+							item['key'] = mura(this).val();
 
-							multi[$(this).attr('name')].push(item);
+							multi[mura(this).attr('name')].push(item);
 						}
 						else {
-							multi[$(this).attr('name')].push($(this).val());
+							multi[mura(this).attr('name')].push(mura(this).val());
 						}
 					}
 				}
-				else if( $(this).is(':radio')) {
-					if( $(this).is(':checked') ) {
-						self.data[ $(this).attr('name') ] = $(this).val();
-						valid[ $(this).attr('name') ] = self.data[name];
+				else if( mura(this).is('[type="radio"]')) {
+					if( this.checked ) {
+						self.data[ mura(this).attr('name') ] = mura(this).val();
+						valid[ mura(this).attr('name') ] = self.data[name];
 					}
 				}
 				else {
-					self.data[ $(this).attr('name') ] = $(this).val();
-					valid[ $(this).attr('name') ] = self.data[name];
+					self.data[ mura(this).attr('name') ] = mura(this).val();
+					valid[ mura(this).attr('name') ] = self.data[mura(this).attr('name')];
 				}
 			});
 
@@ -10480,7 +10480,7 @@ mura.templates['embed']=function(context){
 
 		initForm: function() {
 			var self = this;
-			$(self.settings.formEl).empty();
+			mura(self.settings.formEl).empty();
 
 			if(self.settings.mode != undefined && self.settings.mode == 'nested') {
 				var html = window.mura.templates['nested'](self.settings);
@@ -10489,7 +10489,7 @@ mura.templates['embed']=function(context){
 				var html = window.mura.templates['form'](self.settings);
 			}
 
-			$(self.settings.formEl).append(html);
+			mura(self.settings.formEl).append(html);
 
 			self.currentpage = 0;
 			self.formInit=true;
@@ -10499,7 +10499,7 @@ mura.templates['embed']=function(context){
 
 			var self = this;
 			var valid = self.setDataValues();
-			$(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
+			mura(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
 
 			delete self.data.isNew;
 
@@ -10516,7 +10516,7 @@ mura.templates['embed']=function(context){
 							self.getTableData( self.location );
 							return;
 						}
-						$(self.settings.formEl).html( self.responsemessage );
+						mura(self.settings.formEl).html( self.responsemessage );
 					},
 					function( entity ) {
 						self.showErrors( entity.properties.errors );
@@ -10537,7 +10537,7 @@ mura.templates['embed']=function(context){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
 								self.showErrors( resp.data.errors );
                             } else {
-                                $(self.settings.formEl).html( resp.data.responsemessage );
+                                mura(self.settings.formEl).html( resp.data.responsemessage );
                             }
                         });
 
@@ -10587,7 +10587,7 @@ mura.templates['embed']=function(context){
 			var html = window.mura.templates['error'](errorData);
 			console.log(errorData);
 
-			$(".error-container-" + self.settings.objectid,self.settings.formEl).html(html);
+			mura(".error-container-" + self.settings.objectid,self.settings.formEl).html(html);
 		},
 
 
@@ -10610,14 +10610,14 @@ mura.templates['embed']=function(context){
 			var before = "";
 			var after = "";
 
-			self.filters.filterby = $("#results-filterby",self.settings.formEl).val();
-			self.filters.filterkey = $("#results-keywords",self.settings.formEl).val();
+			self.filters.filterby = mura("#results-filterby",self.settings.formEl).val();
+			self.filters.filterkey = mura("#results-keywords",self.settings.formEl).val();
 
-			if( $("#date1",self.settings.formEl).length ) {
-				if($("#date1",self.settings.formEl).val().length) {
-					self.filters.from = $("#date1",self.settings.formEl).val() + " " + $("#hour1",self.settings.formEl).val() + ":00:00";
-					self.filters.fromhour = $("#hour1",self.settings.formEl).val();
-					self.filters.fromdate = $("#date1",self.settings.formEl).val();
+			if( mura("#date1",self.settings.formEl).length ) {
+				if(mura("#date1",self.settings.formEl).val().length) {
+					self.filters.from = mura("#date1",self.settings.formEl).val() + " " + mura("#hour1",self.settings.formEl).val() + ":00:00";
+					self.filters.fromhour = mura("#hour1",self.settings.formEl).val();
+					self.filters.fromdate = mura("#date1",self.settings.formEl).val();
 				}
 				else {
 					self.filters.from = "";
@@ -10625,10 +10625,10 @@ mura.templates['embed']=function(context){
 					self.filters.fromdate = "";
 				}
 
-				if($("#date2",self.settings.formEl).val().length) {
-					self.filters.to = $("#date2",self.settings.formEl).val() + " " + $("#hour2",self.settings.formEl).val() + ":00:00";
-					self.filters.tohour = $("#hour2",self.settings.formEl).val();
-					self.filters.todate = $("#date2",self.settings.formEl).val();
+				if(mura("#date2",self.settings.formEl).val().length) {
+					self.filters.to = mura("#date2",self.settings.formEl).val() + " " + mura("#hour2",self.settings.formEl).val() + ":00:00";
+					self.filters.tohour = mura("#hour2",self.settings.formEl).val();
+					self.filters.todate = mura("#date2",self.settings.formEl).val();
 				}
 				else {
 					self.filters.to = "";
@@ -10664,7 +10664,7 @@ mura.templates['embed']=function(context){
 						self.ormform = true;
 					}
 					else {
-						$(self.settings.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
+						mura(self.settings.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
 						return;
 					}
 
@@ -10722,47 +10722,47 @@ mura.templates['embed']=function(context){
 			var self = this;
 
 			var html = window.mura.templates['table'](tableData);
-			$(self.settings.formEl).html( html );
+			mura(self.settings.formEl).html( html );
 
 			if (self.settings.view == 'list') {
-				$("#date-filters",self.settings.formEl).empty();
-				$("#btn-results-download",self.settings.formEl).remove();
+				mura("#date-filters",self.settings.formEl).empty();
+				mura("#btn-results-download",self.settings.formEl).remove();
 			}
 			else {
 				if (self.settings.render == undefined) {
-					$(".datepicker", self.settings.formEl).datepicker();
+					mura(".datepicker", self.settings.formEl).datepicker();
 				}
 
-				$("#btn-results-download",self.settings.formEl).click( function() {
+				mura("#btn-results-download",self.settings.formEl).click( function() {
 					self.downloadResults();
 				});
 			}
 
-			$("#btn-results-search",self.settings.formEl).click( function() {
+			mura("#btn-results-search",self.settings.formEl).click( function() {
 				self.filterResults();
 			});
 
 
-			$(".data-edit",self.settings.formEl).click( function() {
-				self.renderCRUD( $(this).attr('data-value'),$(this).attr('data-pos'));
+			mura(".data-edit",self.settings.formEl).click( function() {
+				self.renderCRUD( mura(this).attr('data-value'),mura(this).attr('data-pos'));
 			});
-			$(".data-view",self.settings.formEl).click( function() {
-				self.loadOverview($(this).attr('data-value'),$(this).attr('data-pos'));
+			mura(".data-view",self.settings.formEl).click( function() {
+				self.loadOverview(mura(this).attr('data-value'),mura(this).attr('data-pos'));
 			});
-			$(".data-nav",self.settings.formEl).click( function() {
-				self.getTableData( $(this).attr('data-value') );
+			mura(".data-nav",self.settings.formEl).click( function() {
+				self.getTableData( mura(this).attr('data-value') );
 			});
 
-			$(".data-sort").click( function() {
+			mura(".data-sort").click( function() {
 
-				var sortfield = $(this).attr('data-value');
+				var sortfield = mura(this).attr('data-value');
 
 				if(sortfield == self.sortfield && self.sortdir == '')
 					self.sortdir = '-';
 				else
 					self.sortdir = '';
 
-				self.sortfield = $(this).attr('data-value');
+				self.sortfield = mura(this).attr('data-value');
 				self.getTableData();
 
 			});
@@ -10787,12 +10787,12 @@ mura.templates['embed']=function(context){
 			console.log('ia');
 			console.log(self.item);
 
-			$(self.settings.formEl).empty();
+			mura(self.settings.formEl).empty();
 
 			var html = window.mura.templates['view'](self.item);
-			$(self.settings.formEl).append(html);
+			mura(self.settings.formEl).append(html);
 
-			$(".nav-back",self.settings.formEl).click( function() {
+			mura(".nav-back",self.settings.formEl).click( function() {
 				self.getTableData( self.location );
 			});
 		},
