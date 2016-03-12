@@ -28690,6 +28690,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   color: #f3f3f3;
   line-height: 1.2;
 }
+.mura .mura-sidebar__objects-list__object-group-heading + .mura-sidebar__object-group-items {
+  margin-top: 12px;
+}
 .mura .mura-sidebar__object-group-items,
 .mura .mura-sidebar__objects-list__object-group-items {
   padding: 0;
@@ -28730,6 +28733,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   font-weight: bold;
   border: none;
   border-collapse: collapse;
+}
+.mura select + .mura-sidebar__objects-list__object-item {
+  margin-top: 12px;
 }
 .mura .mura-sidebar__objects-list__object-item + .mura-sidebar__objects-list__object-item {
   border: none;
@@ -28836,6 +28842,11 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   font-weight: normal;
   color: #f3f3f3;
   line-height: 1.2;
+}
+.mura body.configurator-wrapper #configuratorContainer label + .mura-sidebar__object-group-items,
+.mura body.configurator-wrapper #configuratorContainer .control-label + .mura-sidebar__object-group-items,
+.mura body.configurator-wrapper #configuratorContainer .mura-control-label + .mura-sidebar__object-group-items {
+  margin-top: 12px;
 }
 .mura body.configurator-wrapper #configuratorContainer select,
 .mura body.configurator-wrapper #configuratorContainer select:focus,
@@ -32228,6 +32239,330 @@ fieldset[disabled] .btn:not([class*="btn-"]).active {
   font-size: 18px;
   line-height: 1.3333333;
   border-radius: 6px;
+}
+.mura-button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  line-height: 1.6;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 600;
+  border-radius: 2px;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  padding: 2px 12px;
+  font-size: 14px;
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+  color: #545454;
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura-button:focus,
+.mura-button:active:focus,
+.mura-button.active:focus,
+.mura-button.focus,
+.mura-button:active.focus,
+.mura-button.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.mura-button:hover,
+.mura-button:focus,
+.mura-button.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.mura-button:active,
+.mura-button.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.mura-button.disabled,
+.mura-button[disabled],
+fieldset[disabled] .mura-button {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.mura-button.disabled,
+fieldset[disabled] a.mura-button {
+  pointer-events: none;
+}
+.mura-button:active,
+.mura-button.active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.mura-button.btn-square {
+  border-radius: 0;
+}
+.mura-button.btn-rounded {
+  border-radius: 20px;
+}
+.mura-button.btn-minw {
+  min-width: 110px;
+}
+.mura-button.btn-noborder {
+  border: none !important;
+}
+.mura-button.btn-image {
+  position: relative;
+  padding-left: 40px;
+}
+.mura-button.btn-image > img {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+}
+.mura-button > i.pull-left {
+  margin-top: 3px;
+  margin-right: 5px;
+}
+.mura-button > i.pull-right {
+  margin-top: 3px;
+  margin-left: 5px;
+}
+.mura-button:focus,
+.mura-button.focus {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.mura-button:hover {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.mura-button:active,
+.mura-button.active,
+.open > .dropdown-toggle.mura-button {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.mura-button:active:hover,
+.mura-button.active:hover,
+.open > .dropdown-toggle.mura-button:hover,
+.mura-button:active:focus,
+.mura-button.active:focus,
+.open > .dropdown-toggle.mura-button:focus,
+.mura-button:active.focus,
+.mura-button.active.focus,
+.open > .dropdown-toggle.mura-button.focus {
+  color: #333333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.mura-button:active,
+.mura-button.active,
+.open > .dropdown-toggle.mura-button {
+  background-image: none;
+}
+.mura-button.disabled:hover,
+.mura-button[disabled]:hover,
+fieldset[disabled] .mura-button:hover,
+.mura-button.disabled:focus,
+.mura-button[disabled]:focus,
+fieldset[disabled] .mura-button:focus,
+.mura-button.disabled.focus,
+.mura-button[disabled].focus,
+fieldset[disabled] .mura-button.focus {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.mura-button .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.mura-button:focus,
+.mura-button.focus,
+.mura-button:hover {
+  color: #333333;
+  background-color: #ebebeb;
+  border-color: #adadad;
+}
+.mura-button:active,
+.mura-button.active,
+.open > .dropdown-toggle.mura-button {
+  color: #333333;
+  background-color: #d1d1d1;
+  border-color: #949494;
+}
+.mura-button:active:hover,
+.mura-button.active:hover,
+.open > .dropdown-toggle.mura-button:hover,
+.mura-button:active:focus,
+.mura-button.active:focus,
+.open > .dropdown-toggle.mura-button:focus,
+.mura-button:active.focus,
+.mura-button.active.focus,
+.open > .dropdown-toggle.mura-button.focus {
+  color: #333333;
+  background-color: #d1d1d1;
+  border-color: #949494;
+}
+.mura-button:active,
+.mura-button.active,
+.open > .dropdown-toggle.mura-button {
+  background-image: none;
+}
+.mura-button.disabled,
+.mura-button[disabled],
+fieldset[disabled] .mura-button,
+.mura-button.disabled:hover,
+.mura-button[disabled]:hover,
+fieldset[disabled] .mura-button:hover,
+.mura-button.disabled:focus,
+.mura-button[disabled]:focus,
+fieldset[disabled] .mura-button:focus,
+.mura-button.disabled.focus,
+.mura-button[disabled].focus,
+fieldset[disabled] .mura-button.focus,
+.mura-button.disabled:active,
+.mura-button[disabled]:active,
+fieldset[disabled] .mura-button:active,
+.mura-button.disabled.active,
+.mura-button[disabled].active,
+fieldset[disabled] .mura-button.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.mura-button .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.mura-button:focus,
+.mura-button.focus {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #a9a9a9;
+}
+.mura-button:hover {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #cacaca;
+}
+.mura-button:active,
+.mura-button.active,
+.open > .dropdown-toggle.mura-button {
+  color: #545454;
+  background-color: #dcdcdc;
+  border-color: #cacaca;
+}
+.mura-button:active:hover,
+.mura-button.active:hover,
+.open > .dropdown-toggle.mura-button:hover,
+.mura-button:active:focus,
+.mura-button.active:focus,
+.open > .dropdown-toggle.mura-button:focus,
+.mura-button:active.focus,
+.mura-button.active.focus,
+.open > .dropdown-toggle.mura-button.focus {
+  color: #545454;
+  background-color: #cacaca;
+  border-color: #a9a9a9;
+}
+.mura-button:active,
+.mura-button.active,
+.open > .dropdown-toggle.mura-button {
+  background-image: none;
+}
+.mura-button.disabled:hover,
+.mura-button[disabled]:hover,
+fieldset[disabled] .mura-button:hover,
+.mura-button.disabled:focus,
+.mura-button[disabled]:focus,
+fieldset[disabled] .mura-button:focus,
+.mura-button.disabled.focus,
+.mura-button[disabled].focus,
+fieldset[disabled] .mura-button.focus {
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura-button .badge {
+  color: #f5f5f5;
+  background-color: #545454;
+}
+.mura-button:focus,
+.mura-button.focus,
+.mura-button:hover {
+  color: #545454;
+  background-color: #e1e1e1;
+  border-color: #cacaca;
+}
+.mura-button:active,
+.mura-button.active,
+.open > .dropdown-toggle.mura-button {
+  color: #545454;
+  background-color: #c7c7c7;
+  border-color: #b1b1b1;
+}
+.mura-button:active:hover,
+.mura-button.active:hover,
+.open > .dropdown-toggle.mura-button:hover,
+.mura-button:active:focus,
+.mura-button.active:focus,
+.open > .dropdown-toggle.mura-button:focus,
+.mura-button:active.focus,
+.mura-button.active.focus,
+.open > .dropdown-toggle.mura-button.focus {
+  color: #545454;
+  background-color: #c7c7c7;
+  border-color: #b1b1b1;
+}
+.mura-button:active,
+.mura-button.active,
+.open > .dropdown-toggle.mura-button {
+  background-image: none;
+}
+.mura-button.disabled,
+.mura-button[disabled],
+fieldset[disabled] .mura-button,
+.mura-button.disabled:hover,
+.mura-button[disabled]:hover,
+fieldset[disabled] .mura-button:hover,
+.mura-button.disabled:focus,
+.mura-button[disabled]:focus,
+fieldset[disabled] .mura-button:focus,
+.mura-button.disabled.focus,
+.mura-button[disabled].focus,
+fieldset[disabled] .mura-button.focus,
+.mura-button.disabled:active,
+.mura-button[disabled]:active,
+fieldset[disabled] .mura-button:active,
+.mura-button.disabled.active,
+.mura-button[disabled].active,
+fieldset[disabled] .mura-button.active {
+  background-color: #f5f5f5;
+  border-color: #e9e9e9;
+}
+.mura-button .badge {
+  color: #f5f5f5;
+  background-color: #545454;
 }
 .tab-pane .fieldset .control-group {
   margin-bottom: 15px;
@@ -36081,6 +36416,9 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   padding-left: 4px;
   padding-right: 4px;
   margin: 24px 4px 8px;
+}
+.mura-hook {
+  float: right;
 }
 .alert,
 p.alert,
