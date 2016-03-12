@@ -265,31 +265,37 @@
 				self.renderData();
 			}
 
-			dataset.options = [];
-			self.renderqueue++;
+			if(dataset.sourcetype=='muraorm'){
+				dataset.options = [];
+				self.renderqueue++;
 
-			window.mura.getFeed( dataset.source )
-				.getQuery()
-				.then( function(collection) {
-					collection.each(function(item) {
-						var itemid = item.get('id');
-						dataset.datarecordorder.push( itemid );
-						dataset.datarecords[itemid] = item.getAll();
-						dataset.datarecords[itemid]['value'] = itemid;
-						dataset.datarecords[itemid]['datarecordid'] = itemid;
-						dataset.datarecords[itemid]['datasetid'] = dataset.datasetid;
-						dataset.datarecords[itemid]['isselected'] = 0;
-						dataset.options.push( dataset.datarecords[itemid] );
+				window.mura.getFeed( dataset.source )
+					.getQuery()
+					.then( function(collection) {
+						collection.each(function(item) {
+							var itemid = item.get('id');
+							dataset.datarecordorder.push( itemid );
+							dataset.datarecords[itemid] = item.getAll();
+							dataset.datarecords[itemid]['value'] = itemid;
+							dataset.datarecords[itemid]['datarecordid'] = itemid;
+							dataset.datarecords[itemid]['datasetid'] = dataset.datasetid;
+							dataset.datarecords[itemid]['isselected'] = 0;
+							dataset.options.push( dataset.datarecords[itemid] );
+						});
+
+					})
+					.then(function() {
+						self.renderqueue--;
+						self.renderData();
+						if (self.renderqueue == 0) {
+							self.renderForm();
+						}
 					});
-
-				})
-				.then(function() {
-					self.renderqueue--;
-					self.renderData();
-					if (self.renderqueue == 0) {
-						self.renderForm();
-					}
-				});
+			} else {
+				if (self.renderqueue == 0) {
+					self.renderForm();
+				}
+			}
 		},
 
 		renderForm: function( ) {
