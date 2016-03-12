@@ -104,13 +104,10 @@
 			}
 		},
 
-		getPageFieldList:function(page){
-				page=page||0;
-
+		getPageFieldList:function(){
+				var page=this.currentpage;
 				var fields = self.formJSON.form.pages[page];
-
 				var result=[];
-
 
 				for(var f in fields){
 					result.push(self.formJSON.form.fields[fields[f]].name);
@@ -315,9 +312,15 @@
 				}
 			}
 
+			if(self.currentpage==(self.formJSON.form.pages.length-1)){
+				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(self.ishuman);
+			}
+
 			if (self.settings.mode == 'form') {
 				self.renderPaging();
 			}
+
+			mura.processMarkup(".field-container-" + self.settings.objectid,self.settings.formEl);
 
 		},
 
@@ -500,7 +503,7 @@
 
 			window.mura.get(
 					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
-					 + '?fields=body,title,filename,responsemessage'
+					 + '?fields=body,title,filename,responsemessage&ishuman=true'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
 
@@ -516,6 +519,7 @@
 					 	self.formJSON = formJSON;
 					 	self.fields = formJSON.form.fields;
 					 	self.responsemessage = data.data.responsemessage;
+						self.ishuman=data.data.ishuman;
 
 						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
 							self.ormform = true;
@@ -530,7 +534,7 @@
 
 						 	if(self.entityid == undefined) {
 								window.mura.get(
-									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new?expand=all'
+									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new?expand=all&ishuman=true'
 								).then(function(resp) {
 									self.data = resp.data;
 									self.renderData();
@@ -538,7 +542,7 @@
 						 	}
 						 	else {
 								window.mura.get(
-									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '?expand=all'
+									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
 								).then(function(resp) {
 									self.data = resp.data;
 									self.renderData();

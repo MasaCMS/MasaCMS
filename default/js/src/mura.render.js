@@ -13,7 +13,7 @@ mura.render['form']=function(context) {
 	if (item.settings.view == 'form') {
 		window.mura.get(
 			window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + context.objectid
-			 + '?fields=body'
+			 + '?fields=body&ishuman=true'
 		).then(function(data) {
 			this.data = data;
 //		 	formJSON = JSON.parse( data.data.body );

@@ -1227,6 +1227,10 @@ component extends="mura.cfobject" {
 			expandEntity(entity=entity,itemStruct=returnstruct,siteid=arguments.siteid,expand=arguments.expand);
 		}
 
+		if(isDefined('url.ishuman')){
+			returnstruct.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
+		}
+
 		return returnStruct;
 	}
 
@@ -1259,6 +1263,10 @@ component extends="mura.cfobject" {
 
 		if(len(arguments.expand)){
 			expandEntity(entity=entity,itemStruct=returnstruct,siteid=arguments.siteid,expand=arguments.expand);
+		}
+
+		if(isDefined('url.ishuman')){
+			returnstruct.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
 		}
 
 		return returnStruct;
