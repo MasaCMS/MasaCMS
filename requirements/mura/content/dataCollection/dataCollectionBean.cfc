@@ -122,12 +122,11 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		var fields='';
 		var nestedform = '';
 		var fieldorder = ArrayNew(1);
-		
+
 		if(isJSON(arguments.content.getBody())){
 			var formDef=deserializeJSON(content.getBody());
 
 			if(structKeyExists(formDef.form,'pages') && isArray( formDef.form.pages )) {
-				
 				for(var i = 1; i <= ArrayLen(formDef.form.pages);i++) {
 					fieldorder.addAll( formDef.form.pages[i] );
 				}
@@ -234,7 +233,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		}
 
 		super.validate(fields=arguments.fields);
-	
+
 		if(!len(arguments.fields)){
 
 			setValue('acceptData',structIsEmpty(getErrors()));
@@ -282,6 +281,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 				variables.instance.errors.Spam = arguments.$.rbKey('captcha.spam');
 			}
 		}
+
 		if(len(variables.formpropertylist)){
 			var fieldnames='';
 
