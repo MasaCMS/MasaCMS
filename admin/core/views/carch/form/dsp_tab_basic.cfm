@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label>
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.editableregiontargeting')#
 			</label>
-			<textarea name="initjs" id="initjs" rows="20">#esapiEncode('html',rc.contentBean.getInitJS())#</textarea>
+			<textarea name="initjs" id="initjs" rows="10">#esapiEncode('html',rc.contentBean.getInitJS())#</textarea>
 		</div>
 	</cfif>
 
