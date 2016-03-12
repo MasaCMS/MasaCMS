@@ -105,6 +105,8 @@
 		},
 
 		getPageFieldList:function(page){
+				page=page||0;
+
 				var fields = self.formJSON.form.pages[page];
 
 				var result=[];
