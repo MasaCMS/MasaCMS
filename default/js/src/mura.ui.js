@@ -312,7 +312,7 @@
 				}
 			}
 
-			if(self.currentpage==(self.formJSON.form.pages.length-1)){
+			if(self.ishuman && self.currentpage==(self.formJSON.form.pages.length-1)){
 				$(".field-container-" + self.settings.objectid,self.settings.formEl).append(self.ishuman);
 			}
 
