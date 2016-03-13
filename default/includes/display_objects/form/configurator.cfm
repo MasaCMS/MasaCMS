@@ -129,5 +129,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	});
 </script>
 </cfif>
+
+<!--- Include global config object options --->
+<cfinclude template="#$.siteConfig().lookupDisplayObjectFilePath('object/configurator.cfm')#">
 </cfoutput>
 </cf_objectconfigurator>
