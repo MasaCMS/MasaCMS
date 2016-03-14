@@ -109,10 +109,14 @@
 		<cfset nextn.firstPage= 1 />
 	</cfif>
 
-	<cfset nextN.lastPage =nextn.firstPage + (2 * arguments.pageBuffer) + 1/>
+	<cfset nextN.lastPage =nextn.firstPage + (2 * arguments.pageBuffer)/>
 
 	<cfif nextn.NumberOfPages lt nextN.lastPage>
 		<cfset nextN.lastPage=nextn.NumberOfPages />
+	</cfif>
+
+	<cfif (nextn.lastPage - nextn.firstPage) lt (2 * arguments.pageBuffer)>
+		<cfset nextn.firstPage = max(1, nextn.lastPage - (2 * arguments.pageBuffer)) />
 	</cfif>
 
 	<cfset nextn.next=nextn.CurrentPageNumber+1 />
