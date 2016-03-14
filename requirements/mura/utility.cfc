@@ -119,7 +119,7 @@
  		<cfset nextn.firstPage = max(1, nextn.lastPage - (2 * arguments.pageBuffer)) />
  	</cfif>
 
-	<cfset nextn.next=(nextn.next*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
+	<cfset nextn.next = ((nextn.CurrentPageNumber+1)*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
 
 	<cfset nextn.previous=nextn.CurrentPageNumber-1 />
 
