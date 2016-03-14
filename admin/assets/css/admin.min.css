@@ -36809,15 +36809,15 @@ label #selectFilter {
   margin: auto;
 }
 .mura-focus-block .focus-block-header {
-  background-color: #000;
-  height: 21px;
+  background-color: #252525 ;
+  height: 54px;
 }
 .mura-focus-block .focus-block-header img.mura-logo {
   width: 38px;
   max-width: 38px;
   height: 40px;
   max-height: 40px;
-  margin-left: 18px;
+  margin-left: 30px;
 }
 .mura-focus-block .block-content {
   padding: 30px 30px 10px 30px;
