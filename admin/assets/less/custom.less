@@ -406,9 +406,6 @@ a.list-group-item:hover,a.list-group-item:focus {
 #clogin #main-container{
   background: none;
 }
-#clogin .block-content{
-    padding: 20px 20px 1px;
-}
 .nav-main-header {
   background-color: #333;
 }
@@ -445,7 +442,7 @@ a.list-group-item:hover,a.list-group-item:focus {
 
 .css-radio-primary input:checked+span:after,
 .switch-primary input:checked+span {
-  background-color: #ff3405;
+  background-color: #5B5B5B;
 }
 
 /* tabs */
@@ -1551,7 +1548,6 @@ label #selectFilter{
   label.switch label{
     margin-left: 8px;
   }
-
   .mura-control-group > label + input[type=text],
   .mura-control-group > label + * + input[type=text],
   .mura-control-group > label + input[type=password],
@@ -1589,14 +1585,59 @@ label #selectFilter{
 /* /setup */
 
 /* login */
-.block-themed{};
-#mura-login{
-  .make-row();
+.mura-focus-block{
+    
+   width: 360px;
+   margin: auto; 
 
+  .focus-block-header{
+    background-color: #000;
+    height: 21px;
+      
+      img.mura-logo{
+        width: 38px;
+        max-width: 38px;
+        height: 40px;
+        max-height: 40px;
+        margin-left: 18px;
+     }
+  }
+
+  .block-content{
+    padding: 30px 30px 10px 30px;
+  }
+
+  .mura-focus-actions button,
+  .mura-focus-actions button:hover,
+  .mura-focus-actions button:focus,
+  .mura-focus-actions .btn,
+  .mura-focus-actions .btn:hover,
+  .mura-focus-actions .btn:focus{
+    .border-radius(1px);
+    .btn;
+    .btn-block;
+    background-color: #ff3405;
+    color: #fff !important;
+    height: 35px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+}
+
+#mura-login{
+
+  #remember-me{
+    margin-top: 7px !important;
+  }
+
+  #pw-response{
+    margin-bottom: 30px !important;
+  }
+
+  #login-link,
   #pw-link,
   .page-heading{
-    .make-xs-column(10);
-    .make-sm-column(4);
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 12px;
@@ -1604,28 +1645,27 @@ label #selectFilter{
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-  .page-heading{
-    color: #FFF;
-  }
-
-  #pw-link{
-
-    margin-top: 12px;
-
-    a{
-      color: #FFF !important;
+    .page-heading{
+      color: #FFF;
     }
-  }
 
-  .mura-control-group > label + input,
-  .mura-control-group > label + select{
-    .make-xs-column(12); 
-  }
+    #login-link,
+    #pw-link{
+      text-align: center;
+      margin-top: 12px;
+
+      a{
+        color: #7a818f !important;
+      }
+    }
+
+    .mura-control-group > label + input,
+    .mura-control-group > label + select{
+      .make-xs-column(12); 
+    }
 
   > .login-header,
   > .block{
-    .make-xs-column(10);
-    .make-sm-column(4);
     margin: 0 auto;
     padding: 0;
     float: none !important;
