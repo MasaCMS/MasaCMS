@@ -1623,7 +1623,7 @@
 				utility.ajax(
 					{
 						type: 'post',
-						url: mura.apiEndpoint + 'validate/',
+						url: mura.apiEndpoint + '/validate/',
 						data: {
 								data: JSON.stringify(utility.extend(muraInlineEditor.data,data)),
 								validations: JSON.stringify(validations)
