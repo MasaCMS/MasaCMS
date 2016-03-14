@@ -36765,6 +36765,10 @@ label #selectFilter {
   padding-left: 15px;
   padding-right: 15px;
 }
+#csetup #main-container .form-actions {
+  width: 100% !important;
+  padding-bottom: 20px;
+}
 #csetup #main-container .form-actions .btn {
   min-width: 92px;
   background-color: #DEDEDE;
@@ -36777,6 +36781,10 @@ label #selectFilter {
   background-color: #ff3405;
   color: #fff;
   border: 1px solid #ff3405;
+}
+#csetup #main-container .form-actions .btn + .btn {
+  margin-right: 0 !important;
+  margin-left: 15px !important;
 }
 #mura-setup {
   float: left;

@@ -1557,7 +1557,11 @@ label #selectFilter{
     .make-xs-column(12);
    } 
 
-   .form-actions .btn{
+ .form-actions{
+    width: 100% !important;
+    padding-bottom: 20px;
+ }
+ .form-actions .btn{
     min-width: 92px;
     background-color: #DEDEDE;
     
@@ -1571,6 +1575,12 @@ label #selectFilter{
       color: #fff;
       border: 1px solid #ff3405;
     }
+
+    + .btn{
+      margin-right: 0 !important;
+      margin-left: 15px !important;
+    }
+
    }
 
 
