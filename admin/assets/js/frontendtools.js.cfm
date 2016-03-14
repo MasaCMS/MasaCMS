@@ -580,11 +580,26 @@
 				}
 
 				var undoVariations=function(){
+
 					if(mura.variations.length){
-						var last=mura.variations.length-1;
-						mura(mura.variations[last].selector).html(mura.variations[last].original);
-						mura.variations.pop();
+						var current=mura('.mura-var-current');
+
+						if(current.length){
+							for(var i=(mura.variations.length-1);i>=0;i--){
+								var target=mura(mura.variations[i].selector);
+								if( current.attr('id')==target.attr('id') ){
+									target.html(mura.variations[i].original);
+									i=-1;
+								}
+							}
+						} else {
+							var last=mura.variations.length-1;
+							mura(mura.variations[last].selector).html(mura.variations[last].original);
+							mura.variations.pop();
+						}
+
 					}
+
 					displayVariations();
 				}
 
