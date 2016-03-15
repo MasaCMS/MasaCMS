@@ -41,6 +41,9 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+							</div><!-- /block-content -->
+						</div><!-- /.mura-focus-block -->
+					</div> <!-- /.mura-setup -->
 				</div> <!-- /.content -->
 			</main>
 

@@ -41,14 +41,17 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div id="installationComplete" class="alert alert-success">
+<div id="installationComplete" class="alert">
 	<p>Mura is now set up and ready to use.</p>
 </div>
 
-<div class="alert alert-error">
+<!--- <div class="alert alert-error">
 	<p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
 </div>
+ --->
 
+<div class="mura-focus-actions">
+	<a href="#context#/admin/?appreload&applydbupdates" class="btn">Log In to Mura</a>
+</div>
 
-<a href="#context#/admin/?appreload&applydbupdates" class="btn btn-primary pull-right">Login to Mura</a>
 </cfoutput>
