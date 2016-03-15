@@ -110,8 +110,11 @@
 				var result=[];
 
 				for(var f in fields){
+					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
+				
+				console.log(result);
 
 				return result.join(',');
 		},
@@ -366,7 +369,6 @@
 
 			var formNavHandler=function() {
 
-				self.currentpage = parseInt(mura(this).data('page'));
 
 				// per page validation
 				//if( self.validate(self.entity,valid) ) {
@@ -384,6 +386,7 @@
 							if(entity.hasErrors()){
 								self.showErrors( entity.properties.errors );
 							} else {
+								self.currentpage = parseInt(mura(this).data('page'));
 								self.renderForm();
 							}
 						}
@@ -402,6 +405,7 @@
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
                                 self.showErrors( resp.data.errors );
                             } else {
+								self.currentpage = parseInt(mura(this).data('page'));
                                 self.renderForm();
                             }
                         });

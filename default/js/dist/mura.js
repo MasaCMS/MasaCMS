@@ -10032,8 +10032,11 @@ mura.templates['embed']=function(context){
 				var result=[];
 
 				for(var f in fields){
+					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
+				
+				console.log(result);
 
 				return result.join(',');
 		},
@@ -10288,7 +10291,6 @@ mura.templates['embed']=function(context){
 
 			var formNavHandler=function() {
 
-				self.currentpage = parseInt(mura(this).data('page'));
 
 				// per page validation
 				//if( self.validate(self.entity,valid) ) {
@@ -10306,6 +10308,7 @@ mura.templates['embed']=function(context){
 							if(entity.hasErrors()){
 								self.showErrors( entity.properties.errors );
 							} else {
+								self.currentpage = parseInt(mura(this).data('page'));
 								self.renderForm();
 							}
 						}
@@ -10324,6 +10327,7 @@ mura.templates['embed']=function(context){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
                                 self.showErrors( resp.data.errors );
                             } else {
+								self.currentpage = parseInt(mura(this).data('page'));
                                 self.renderForm();
                             }
                         });
