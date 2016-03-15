@@ -7401,32 +7401,26 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding: 0 !important;
   border: 0 !important;
   font-size: 11px !important;
-  line-height: 33px !important;
+  line-height: 32px !important;
   color: #999999 !important;
 }
 .mura #frontEndTools > #tools-user > li a {
   background: transparent !important;
   font-size: 11px !important;
   border: 0 !important;
-  line-height: 33px !important;
+  line-height: 32px !important;
   padding: 0 !important;
-  color: #999999 !important;
 }
 .mura #frontEndTools > #tools-user > li i {
-  font-size: 13px !important;
+  font-size: 12px !important;
   top: 1px !important;
-  margin-right: 1px !important;
-  color: #666666 !important;
-}
-.mura #frontEndTools > #tools-user > li#adminLogOut i {
-  font-size: 15px !important;
+  margin-right: 5px !important;
 }
 .mura #frontEndTools > ul > li#adminSave {
   position: relative;
   color: #fff !important;
   float: left !important;
   line-height: 30px !important;
-  margin-left: 14px !important;
   list-style: none !important;
   font-weight: normal !important;
   font-style: normal !important;
@@ -7439,19 +7433,10 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   color: #ffffff !important;
   font-size: 11px !important;
   padding: 0 12px 2px !important;
-  line-height: 24px !important;
-  height: 24px !important;
-  -webkit-border-radius: 2px !important;
-  -moz-border-radius: 2px !important;
-  border-radius: 2px !important;
   cursor: pointer !important;
   background-color: #4485f1 !important;
   border-color: #4882cc;
   background-image: none !important;
-}
-.mura #frontEndTools > ul > li#adminSave > a > i {
-  color: #264c73 !important;
-  /* text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; */
 }
 .mura #frontEndTools > ul > li#adminSave > a:hover {
   cursor: pointer !important;
