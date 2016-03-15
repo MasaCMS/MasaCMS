@@ -114,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	feed.setNextN(10);
 	feed.setLiveOnly(0);
 	feed.setShowNavOnly(0);
+	feed.setIncludeHomePage(1);
 
 	paramsStarted=false;
 	tagStarted=false;
