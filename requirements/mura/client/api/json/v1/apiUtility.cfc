@@ -1228,6 +1228,7 @@ component extends="mura.cfobject" {
 		}
 
 		if(isDefined('url.ishuman')){
+			request.cffpJS=true;
 			returnstruct.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
 		}
 
@@ -1266,6 +1267,7 @@ component extends="mura.cfobject" {
 		}
 
 		if(isDefined('url.ishuman')){
+			request.cffpJS=true;
 			returnstruct.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
 		}
 
