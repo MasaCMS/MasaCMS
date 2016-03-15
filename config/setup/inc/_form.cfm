@@ -51,13 +51,13 @@ to your own modified versions of Mura CMS.
 
 	<ul class="nav nav-tabs nav-justified">
 		<li class="active">
-			<a href="##tab-database" data-toggle="tab">Database</a>
+			<a href="##tab-database" data-toggle="tab">1. Database</a>
 		</li>
 		<li>
-			<a href="##tab-admin" data-toggle="tab">Admin Account</a>
+			<a href="##tab-admin" data-toggle="tab">2. Admin Account</a>
 		</li>
 		<li>
-			<a href="##tab-options" data-toggle="tab">Options</a>
+			<a href="##tab-options" data-toggle="tab">3. Options</a>
 		</li>
 	</ul><!-- /.nav-tabs -->
 
@@ -97,7 +97,7 @@ to your own modified versions of Mura CMS.
 							<cfif len(trim(form.auto_create)) and val(form.auto_create)>checked</cfif>
 							><span></span> <label class="database-create-no">Use an existing database</label><label class="database-create-yes">Create a new database</label>
 						</label>
-						<p class="help-block">Use a database that already exists, or create a new one.</p> 
+						<p class="help-block">Use an existing database, or create a new one.</p> 
 					</div>
 
 					<div class="mura-control-group database-create-yes">
@@ -168,20 +168,20 @@ to your own modified versions of Mura CMS.
 			<!-- TAB-OPTIONS -->
 			<div class="tab-pane" id="tab-options">
 
-					<p class="alert alert-warning"><strong>Step 3:</strong> select whether "index.cfm" and the Site ID should appear in Mura's navigation links</p>
+					<p class="alert alert-warning"><strong>Step 3:</strong> select whether "index.cfm" and the Site ID should appear in Mura's navigation links (see example below)</p>
 
 					<div class="mura-control-group" >
 
 						<label class="css-input switch switch-sm switch-primary">
 							<input type="checkbox" id="production_siteidinurls" name="production_siteidinurls" value="1" class="build-url-example"
 							<cfif val(form.production_siteidinurls)>checked</cfif>
-							><span></span> <label>Use SiteID in URLs</label>
+							><span></span> <label class="option-siteid-yes">Use SiteID in URLs</label><label class="option-siteid-no">Do not use SiteID in URLs</label>
 						</label>
 
 						<label class="css-input switch switch-sm switch-primary">
 							<input type="checkbox" id="production_indexfileinurls" name="production_indexfileinurls" value="1" class="build-url-example"
 							<cfif val(form.production_indexfileinurls)>checked</cfif>
-							><span></span> <label>Use "index.cfm" in URLS</label>
+							><span></span> <label class="option-indexfile-yes">Use "index.cfm" in URLs</label><label class="option-indexfile-no">Do not use "index.cfm" in URLs</label>
 						</label>
 					</div>
 
@@ -193,11 +193,13 @@ to your own modified versions of Mura CMS.
 		</div>
 		<!-- END Steps Content -->
 
-		<div class="form-actions center">
+		<div class="mura-focus-actions center">
+
 					<button class="wizard-prev btn" type="button"><i class="mi mi-arrow-left"></i> Back</button>
 					<button class="wizard-next btn" type="button">Next <i class="mi mi-arrow-right"></i></button>
 					<button class="wizard-finish btn" name="setupSubmitButton" type="submit"><i class="mi mi-check"></i> Submit</button>
 		</div>
+		<div class="clear-both"></div>
 
 	</form><!-- END Form -->
 </div>
@@ -212,14 +214,14 @@ activetab=1;
 activepanel=0;
 jQuery(document).ready(function(){
 
-	// don't show DB options till a platform is selected
+	// show DB options on db type select
 	$(".database-config").toggle(#(len(trim(FORM.production_dbtype)) gt 0)#);
 	$('##production_dbtype').on('change',function(){
 		$(".database-config").toggle(this.value.length > 0);
 		$(".database-create-oracle").toggle($('##production_dbtype option:selected').val() == 'oracle' && $('##auto_create').is(':checked'));
 	});
 
-	// are we creating the db?
+	// existing database y/n
 	$(".database-create-yes").toggle(#(val(FORM.auto_create) eq 1)#);
 	$(".database-create-no").toggle(#(val(FORM.auto_create) eq 0)#);
 	$(".database-create-oracle").toggle(#(FORM.production_dbtype eq 'oracle' and val(FORM.auto_create) eq 1)#);
@@ -229,22 +231,33 @@ jQuery(document).ready(function(){
 		$(".database-create-oracle").toggle($('##production_dbtype option:selected').val() == 'oracle' && $('##auto_create').is(':checked'));
 	});
 
+	// siteid and index in urls
+  $(".option-siteid-yes").toggle(#(val(FORM.production_siteidinurls) eq 1)#);
+  $(".option-siteid-no").toggle(#(val(FORM.production_siteidinurls) eq 0)#);
+	$("##production_siteidinurls").on('change',function(){
+		$(".option-siteid-yes").toggle(this.checked);
+		$(".option-siteid-no").toggle(!this.checked);
+	});
+  $(".option-indexfile-yes").toggle(#(val(FORM.production_indexfileinurls) eq 1)#);
+  $(".option-indexfile-no").toggle(#(val(FORM.production_indexfileinurls) eq 0)#);
+	$("##production_indexfileinurls").on('change',function(){
+		$(".option-indexfile-yes").toggle(this.checked);
+		$(".option-indexfile-no").toggle(!this.checked);
+	});
+
+	// example URL
 	$('.build-url-example').on('change',function(){
 		var ret = 'domain.com#context#';
-
 		if ($("##production_siteidinurls").is(':checked')) {
 			ret = ret + '/[siteid]';
 		}
-
 		if ($("##production_indexfileinurls").is(':checked')) {
 			ret = ret + '/index.cfm';
 		}
-
 		ret = ret + '/full-path-to/page-location/';
-
 		$("##url_example").html(ret);
 	});
-
+	// show example URL on page load
 	$('.build-url-example').change();
 
 });
