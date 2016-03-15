@@ -344,7 +344,6 @@
 .editableObjectHide ul.editableObjectControl {
   display: none !important;
 }
-/* .cke_editable, .cke_editable * { border: 0 !important; padding: inherit !important;} */
 body.mura-sidebar-state__hidden--left {
   padding-left: 0;
 }
