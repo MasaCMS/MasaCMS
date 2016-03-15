@@ -7225,13 +7225,12 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   min-height: 31px !important;
   list-style: none !important;
   margin: 0 !important;
-  padding: 0 !important;
-  /* border-right: 1px solid hsla(0,0,.19,.85) !important; */
+  padding: 0 12px 0 0 !important;
   overflow: visible !important;
   float: left !important;
 }
 .mura #frontEndTools > ul:first-child {
-  margin-left: 37px !important;
+  margin-left: 53px !important;
   border-left: 0;
 }
 .mura #frontEndTools > ul:last-child {
@@ -7261,11 +7260,10 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li:first-child {
   border-left: 0 !important;
-  padding-left: 1em !important;
+  padding-left: 0 !important;
 }
 .mura #frontEndTools > ul > li:last-child {
   /* border-right: 1px solid hsla(0,0,.33,.85) !important; */
-  padding-right: 1em !important;
 }
 .mura #frontEndTools > ul > li a {
   display: block !important;
@@ -7279,7 +7277,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-weight: normal !important;
   font-style: normal !important;
   outline: 0 !important;
-  /* text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important; */
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   border: 0 !important;
   -webkit-border-radius: 0 !important;
@@ -7288,8 +7285,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li a > i {
   color: rgba(255, 255, 255, 0.7) !important;
-  font-size: 14px !important;
-  /* text-shadow: 0 -1px 0 rgba(0,0,0,.65) !important; */
+  font-size: 13px !important;
   position: relative !important;
   top: 1px !important;
   width: 1em !important;
@@ -7297,18 +7293,16 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-bottom: 0 !important;
   overflow: visible !important;
 }
-.mura #frontEndTools > ul > li a > i.mi-tablet {
-  font-size: 17px !important;
-  padding-left: 3px;
-}
-.mura #frontEndTools > ul > li a > i.mi-plus {
-  padding-left: 3px;
+.mura #frontEndTools > ul > li a > i.mi-mobile {
+  font-size: 16px !important;
+  padding-left: 0px !important;
+  top: 2px !important;
 }
 .mura #frontEndTools > ul > li .caret {
   border-top-color: rgba(255, 255, 255, 0.25) !important;
-  margin-left: 3px !important;
-  margin-right: 3px !important;
-  margin-top: 9px !important;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+  margin-top: 3px !important;
 }
 .mura #frontEndTools > ul > li:first-child a {
   -webkit-border-top-left-radius: 0;
@@ -7329,7 +7323,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   border-right: 0 !important;
 }
 .mura #frontEndTools > #tools-status > li {
-  padding-right: 1em !important;
+  padding-right: 6px !important;
   /*	border-right: 1px solid hsla(0,0,.33,.85) !important; */
 }
 .mura #frontEndTools > #tools-status > li > a {
@@ -7346,14 +7340,14 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-right: 0 !important;
 }
 .mura #frontEndTools > ul#tools-version > li#adminEditPage .caret {
-  margin-left: 2px !important;
+  margin-left: 0 !important;
   margin-right: 0 !important;
 }
 .mura #frontEndTools > ul#tools-changesets {
   float: left !important;
 }
 .mura #frontEndTools > ul#tools-changesets li {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .mura #frontEndTools > ul#tools-changesets > li#cs-title > a {
   padding-right: 4px !important;
@@ -7366,16 +7360,17 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-style: normal !important;
   text-align: center !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  /* text-shadow: 0 1px 0 rgba(255,255,255,.15) !important; */
   position: relative !important;
-  top: 0px !important;
   padding: 3px 4px 3px 3px !important;
   line-height: .8 !important;
   overflow: visible !important;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  margin-right: 4px;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+  margin-right: 4px !important;
+}
+.mura #frontEndTools > ul#tools-changesets > li#cs-title > a > i.list-alt {
+  top: 2px !important;
 }
 .mura #frontEndTools > #adminDashboard,
 .mura #frontEndTools > #adminSiteManager {
@@ -7385,12 +7380,17 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > #adminSiteManager > li {
   border: 0 !important;
 }
-.mura #frontEndTools > #adminDashboard > li > a i,
-.mura #frontEndTools > #adminSiteManager > li > a i {
-  margin-right: 4px;
+.mura #frontEndTools > #adminDashboard > li > a > i,
+.mura #frontEndTools > #adminSiteManager > li > a > i {
+  margin-right: 4px !important;
+  font-size: 11px !important;
+}
+.mura #frontEndTools > #adminDashboard > li > a > i.mi-dashboard,
+.mura #frontEndTools > #adminSiteManager > li > a > i.mi-dashboard {
+  top: -1px !important;
 }
 .mura #frontEndTools > #tools-status > li > a i {
-  margin-right: 2px;
+  margin-right: 2px !important;
 }
 .mura #frontEndTools > #tools-user {
   border: 0 !important;

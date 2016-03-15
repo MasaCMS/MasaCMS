@@ -219,13 +219,12 @@
 	min-height: 31px !important;
 	list-style: none !important;
 	margin: 0 !important;
-	padding: 0 !important;
-	/* border-right: 1px solid hsla(0,0,.19,.85) !important; */
+	padding: 0 12px 0 0 !important;
 	overflow: visible !important;
 	float: left !important;
 
 	&:first-child {
-		margin-left: 37px !important;
+		margin-left: 53px !important;
 		border-left: 0;
 	}
 
@@ -261,19 +260,18 @@
 
 	&:first-child {
 		border-left: 0 !important;
-		padding-left: 1em !important;
+		padding-left: 0 !important;
 		}
 
 	&:last-child {
 		/* border-right: 1px solid hsla(0,0,.33,.85) !important; */
-		padding-right: 1em !important;
+// 		padding-right: 16px !important;
 		}
 
 	a {
 	display: block !important;
 	color: @white !important;
 	background: transparent !important;
-
 	font-size: 11px !important;
 	height: 32px !important;
 	line-height: 32px !important;
@@ -282,43 +280,37 @@
 	font-weight: normal !important;
 	font-style: normal !important;
 	outline: 0 !important;
-	/* text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important; */
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 	border: 0 !important;
 	.border-radius(0) !important;
 
 		> i {
 		color: rgba(255,255,255,.7) !important;
-		font-size: 14px !important;
-		/* text-shadow: 0 -1px 0 rgba(0,0,0,.65) !important; */
+		font-size: 13px !important;
 		position: relative !important;
 		top: 1px !important;
 		width: 1em !important;
 		padding-top: 0 !important;
 		padding-bottom: 0 !important;
-		//line-height: .8 !important;
 		overflow: visible !important;
 
-			&.mi-tablet {
-				font-size: 17px !important;
-				padding-left: 3px
-			}
+			&.mi-mobile {
+				font-size: 16px !important;
+				padding-left: 0px !important;
+				top: 2px !important;
+				}
 			&.mi-plus {
-				padding-left: 3px
-			}
+				//padding-left: 3px
+				}
 		}
 
 	}
 
-
-
-
-
 	.caret {
 			border-top-color: rgba(255,255,255,.25) !important;
-			margin-left: 3px !important;
-			margin-right: 3px !important;
-			margin-top: 9px !important;
+			margin-left: 5px !important;
+			margin-right: 5px !important;
+			margin-top: 3px !important;
 		}
 
 	&:first-child a {
@@ -334,7 +326,7 @@
 
 #frontEndTools > #tools-status > li {
 
-	padding-right: 1em !important;
+ 	padding-right: 6px !important;
 /*	border-right: 1px solid hsla(0,0,.33,.85) !important; */
 
 	> a {
@@ -359,7 +351,7 @@
 			padding-right: 0 !important;
 
 			.caret {
-				margin-left: 2px !important;
+				margin-left: 0 !important;
 				margin-right: 0 !important;
 			}
 		}
@@ -372,7 +364,7 @@
 		float: left !important;
 
 		li {
-			cursor: pointer;
+			cursor: pointer !important;
 			}
 
 		> li#cs-title > a {
@@ -386,14 +378,18 @@
 		font-style: normal !important;
 		text-align: center !important;
 		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-		/* text-shadow: 0 1px 0 rgba(255,255,255,.15) !important; */
 		position: relative !important;
-		top: 0px !important;
+		//top: 0px !important;
 		padding: 3px 4px 3px 3px !important;
 		line-height: .8 !important;
 		overflow: visible !important;
-		.border-radius(2px);
-		margin-right: 4px;
+		.border-radius(0) !important;
+		margin-right: 4px !important;
+		
+			&.list-alt {
+				top: 2px !important;
+			}
+		
 		}
 	}
 }
@@ -406,15 +402,21 @@
 	> li {
 		border: 0 !important;
 
-			> a  i {
-			margin-right: 4px;
+			> a > i {
+				margin-right: 4px !important;
+				font-size: 11px !important;
+			
+				&.mi-dashboard {
+					top: -1px !important;
+				}
+				
 			}
 
 		}
 	}
 
-#frontEndTools > #tools-status > li > a i{
-	margin-right: 2px;
+#frontEndTools > #tools-status > li > a i {
+	margin-right: 2px !important;
 }
 
 #frontEndTools > #tools-user {
