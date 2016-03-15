@@ -1228,6 +1228,7 @@ component extends="mura.cfobject" {
 		}
 
 		if(isDefined('url.ishuman')){
+			request.cffpJS=true;
 			returnstruct.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
 		}
 
@@ -1266,6 +1267,7 @@ component extends="mura.cfobject" {
 		}
 
 		if(isDefined('url.ishuman')){
+			request.cffpJS=true;
 			returnstruct.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
 		}
 
@@ -2144,39 +2146,39 @@ component extends="mura.cfobject" {
 
 	function validate(data='{}',validations='{}') {
 
-		data=deserializeJSON(urlDecode(arguments.data));
-		validations=deserializeJSON(urlDecode(arguments.validations));
+		arguments.data=deserializeJSON(urlDecode(arguments.data));
+		arguments.validations=deserializeJSON(urlDecode(arguments.validations));
 
 		param name="data.fields" default="";
 
-		if(structIsEmpty(validations) && isDefined('data.entityname') && isDefined('data.siteid')){
-			var bean=getBean(data.entityname);
-			var args={'#bean.getPrimaryKey()#'=data[bean.getPrimaryKey()]
+		if(structIsEmpty(arguments.validations) && isDefined('data.entityname') && isDefined('data.siteid')){
+			var bean=getBean(arguments.data.entityname);
+			var args={'#bean.getPrimaryKey()#'=arguments.data[bean.getPrimaryKey()]
 			};
 
 
-			return bean.loadBy(argumentCollection=args).validate(data.fields).getErrors();
+			return bean.loadBy(argumentCollection=args).set(arguments.data).validate(arguments.data.fields).getErrors();
 
 		}
 
 		errors={};
 
-		if(!structIsEmpty(validations)){
+		if(!structIsEmpty(arguments.validations)){
 
 			structAppend(errors,new mura.bean.bean()
 				.set(data)
-				.setValidations(validations)
-				.validate(data.fields)
+				.setValidations(arguments.validations)
+				.validate(arguments.data.fields)
 				.getErrors()
 			);
 		}
 
 		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby')){
 			structAppend(errors,
-				getBean(data.bean)
-				.loadBy(data.loadby=arguments.data[arguments.data.loadby],siteid=arguments.data.siteid)
+				getBean(arguments.data.bean)
+				.loadBy(arguments.data.loadby=arguments.data[arguments.data.loadby],siteid=arguments.data.siteid)
 				.set(arguments.data)
-				.validate(data.fields)
+				.validate(arguments.data.fields)
 				.getErrors()
 			);
 		}

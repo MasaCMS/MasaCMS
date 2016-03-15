@@ -2544,6 +2544,7 @@ i {
   /* FONT PATH
  * -------------------------- */
   /* makes the font 33% larger relative to the icon container */
+  /*** fa new version icons (missing)***/
 }
 .mura .mura__layout-manager__controls {
   width: 300px;
@@ -6827,6 +6828,100 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura .mi-fonticons:before {
   content: "\f280";
 }
+.mura .mi-check-o:before,
+.mura .mi-check-circle-o:before {
+  content: "\f05d";
+}
+.mura .mi-check-minus:before {
+  content: "\f147";
+}
+.mura .mi-circle-blank:before {
+  content: "\f10c";
+}
+.mura .mi-collapse:before {
+  content: "\f147";
+}
+.mura .mi-collapse-o:before {
+  content: "\f0d8";
+}
+.mura .mi-collapse-top:before {
+  content: "\f151";
+}
+.mura .mi-download-o:before {
+  content: "\f0ab";
+}
+.mura .mi-edit-circle:before {
+  content: "\f14b";
+}
+.mura .mi-ellipsis-horizontal:before {
+  content: "\f141";
+}
+.mura .mi-ellipsis-vertical:before {
+  content: "\f142";
+}
+.mura .mi-expand-o:before {
+  content: "\f196";
+}
+.mura .mi-external-link-circle:before {
+  content: "\f14c";
+}
+.mura .mi-eye-close:before {
+  content: "\f070";
+}
+.mura .mi-eye-open:before {
+  content: "\f06e";
+}
+.mura .mi-facetime-video:before {
+  content: "\f03d";
+}
+.mura .mi-folder-close-o:before {
+  content: "\f114";
+}
+.mura .mi-folder-close:before {
+  content: "\f07b";
+}
+.mura .mi-food:before {
+  content: "\f0f5";
+}
+.mura .mi-frown:before {
+  content: "\f119";
+}
+.mura .mi-hdd:before {
+  content: "\f0a0";
+}
+.mura .mi-keyboard:before {
+  content: "\f11c";
+}
+.mura .mi-lemon:before {
+  content: "\f094";
+}
+.mura .mi-lightbulb:before {
+  content: "\f0eb";
+}
+.mura .mi-meh:before {
+  content: "\f11a";
+}
+.mura .mi-microphone-off:before {
+  content: "\f131";
+}
+.mura .mi-minus-circle-o:before {
+  content: "\f056";
+}
+.mura .mi-moon:before {
+  content: "\f186";
+}
+.mura .mi-move:before {
+  content: "\f047";
+}
+.mura .mi-off:before {
+  content: "\f011";
+}
+.mura .mi-ok:before {
+  content: "\f00c";
+}
+.mura .mi-ok-circle:before {
+  content: "\f05d";
+}
 @font-face {
   font-family: 'SilkscreenNormal';
   src: url('../fonts/silkscreen/font/slkscr-webfont.eot');
@@ -7129,13 +7224,12 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   min-height: 31px !important;
   list-style: none !important;
   margin: 0 !important;
-  padding: 0 !important;
-  /* border-right: 1px solid hsla(0,0,.19,.85) !important; */
+  padding: 0 12px 0 0 !important;
   overflow: visible !important;
   float: left !important;
 }
 .mura #frontEndTools > ul:first-child {
-  margin-left: 37px !important;
+  margin-left: 53px !important;
   border-left: 0;
 }
 .mura #frontEndTools > ul:last-child {
@@ -7147,12 +7241,12 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   border-right: 0 !important;
 }
 .mura #frontEndTools > ul > li {
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
   float: left !important;
-  line-height: 22px !important;
+  line-height: 32px !important;
   height: 32px !important;
   margin: 0 !important;
-  padding: 4px 0 !important;
+  padding: 0 !important;
   list-style: none !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   font-weight: normal !important;
@@ -7165,37 +7259,32 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura #frontEndTools > ul > li:first-child {
   border-left: 0 !important;
-  padding-left: 1em !important;
+  padding-left: 0 !important;
 }
 .mura #frontEndTools > ul > li:last-child {
   /* border-right: 1px solid hsla(0,0,.33,.85) !important; */
-  padding-right: 1em !important;
 }
 .mura #frontEndTools > ul > li a {
   display: block !important;
-  color: #cccccc !important;
-  background: #4D4D4D !important;
-  background: rgba(255, 255, 255, 0.13) !important;
-  font-size: 12px !important;
-  height: 24px !important;
-  line-height: 23px !important;
-  padding: 2px 6px 1px !important;
+  color: #ffffff !important;
+  background: transparent !important;
+  font-size: 11px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 10px !important;
   text-decoration: none !important;
   font-weight: normal !important;
   font-style: normal !important;
   outline: 0 !important;
-  /* text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important; */
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
-  border-left: 1px solid rgba(0, 0, 0, 0.25) !important;
-  -webkit-border-radius: 2px !important;
-  -moz-border-radius: 2px !important;
-  border-radius: 2px !important;
+  border: 0 !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 .mura #frontEndTools > ul > li a > i {
-  color: #868686 !important;
-  font-size: 16px !important;
-  /* text-shadow: 0 -1px 0 rgba(0,0,0,.65) !important; */
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 13px !important;
   position: relative !important;
   top: 1px !important;
   width: 1em !important;
@@ -7203,47 +7292,45 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-bottom: 0 !important;
   overflow: visible !important;
 }
-.mura #frontEndTools > ul > li a > i.mi-tablet {
-  font-size: 17px !important;
-  padding-left: 3px;
-}
-.mura #frontEndTools > ul > li a > i.mi-plus {
-  padding-left: 3px;
+.mura #frontEndTools > ul > li a > i.mi-mobile {
+  font-size: 16px !important;
+  padding-left: 0px !important;
+  top: 2px !important;
 }
 .mura #frontEndTools > ul > li .caret {
   border-top-color: rgba(255, 255, 255, 0.25) !important;
-  margin-left: 3px !important;
-  margin-right: 3px !important;
-  margin-top: 9px !important;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+  margin-top: 3px !important;
 }
 .mura #frontEndTools > ul > li:first-child a {
-  -webkit-border-top-left-radius: 2px;
-  -moz-border-radius-topleft: 2px;
-  border-top-left-radius: 2px;
-  -webkit-border-bottom-left-radius: 2px;
-  -moz-border-radius-bottomleft: 2px;
-  border-bottom-left-radius: 2px;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-radius-topleft: 0;
+  border-top-left-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  border-bottom-left-radius: 0;
   border-left: 0 !important;
 }
 .mura #frontEndTools > ul > li:last-child a {
-  -webkit-border-top-right-radius: 2px;
-  -moz-border-radius-topright: 2px;
-  border-top-right-radius: 2px;
-  -webkit-border-bottom-right-radius: 2px;
-  -moz-border-radius-bottomright: 2px;
-  border-bottom-right-radius: 2px;
+  -webkit-border-top-right-radius: 0;
+  -moz-border-radius-topright: 0;
+  border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -moz-border-radius-bottomright: 0;
+  border-bottom-right-radius: 0;
   border-right: 0 !important;
 }
 .mura #frontEndTools > #tools-status > li {
-  padding-right: 1em !important;
+  padding-right: 6px !important;
   /*	border-right: 1px solid hsla(0,0,.33,.85) !important; */
 }
 .mura #frontEndTools > #tools-status > li > a {
   border: 0 !important;
 }
 .mura #frontEndTools > #tools-status > li#adminStatus > a {
-  padding-right: 6px !important;
-  border-radius: 2px !important;
+  background-color: #4285F4 !important;
+  border-radius: 0 !important;
 }
 .mura #frontEndTools > #tools-status.status-locked i:before {
   color: #b90e0e !important;
@@ -7252,14 +7339,14 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-right: 0 !important;
 }
 .mura #frontEndTools > ul#tools-version > li#adminEditPage .caret {
-  margin-left: 2px !important;
+  margin-left: 0 !important;
   margin-right: 0 !important;
 }
 .mura #frontEndTools > ul#tools-changesets {
   float: left !important;
 }
 .mura #frontEndTools > ul#tools-changesets li {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .mura #frontEndTools > ul#tools-changesets > li#cs-title > a {
   padding-right: 4px !important;
@@ -7272,16 +7359,17 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-style: normal !important;
   text-align: center !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  /* text-shadow: 0 1px 0 rgba(255,255,255,.15) !important; */
   position: relative !important;
-  top: 0px !important;
   padding: 3px 4px 3px 3px !important;
   line-height: .8 !important;
   overflow: visible !important;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  margin-right: 4px;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+  margin-right: 4px !important;
+}
+.mura #frontEndTools > ul#tools-changesets > li#cs-title > a > i.list-alt {
+  top: 2px !important;
 }
 .mura #frontEndTools > #adminDashboard,
 .mura #frontEndTools > #adminSiteManager {
@@ -7291,12 +7379,17 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > #adminSiteManager > li {
   border: 0 !important;
 }
-.mura #frontEndTools > #adminDashboard > li > a i,
-.mura #frontEndTools > #adminSiteManager > li > a i {
-  margin-right: 4px;
+.mura #frontEndTools > #adminDashboard > li > a > i,
+.mura #frontEndTools > #adminSiteManager > li > a > i {
+  margin-right: 4px !important;
+  font-size: 11px !important;
+}
+.mura #frontEndTools > #adminDashboard > li > a > i.mi-dashboard,
+.mura #frontEndTools > #adminSiteManager > li > a > i.mi-dashboard {
+  top: -1px !important;
 }
 .mura #frontEndTools > #tools-status > li > a i {
-  margin-right: 2px;
+  margin-right: 2px !important;
 }
 .mura #frontEndTools > #tools-user {
   border: 0 !important;
@@ -7307,32 +7400,26 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding: 0 !important;
   border: 0 !important;
   font-size: 11px !important;
-  line-height: 33px !important;
+  line-height: 32px !important;
   color: #999999 !important;
 }
 .mura #frontEndTools > #tools-user > li a {
   background: transparent !important;
   font-size: 11px !important;
   border: 0 !important;
-  line-height: 33px !important;
+  line-height: 32px !important;
   padding: 0 !important;
-  color: #999999 !important;
 }
 .mura #frontEndTools > #tools-user > li i {
-  font-size: 13px !important;
+  font-size: 12px !important;
   top: 1px !important;
-  margin-right: 1px !important;
-  color: #666666 !important;
-}
-.mura #frontEndTools > #tools-user > li#adminLogOut i {
-  font-size: 15px !important;
+  margin-right: 5px !important;
 }
 .mura #frontEndTools > ul > li#adminSave {
   position: relative;
   color: #fff !important;
   float: left !important;
   line-height: 30px !important;
-  margin-left: 14px !important;
   list-style: none !important;
   font-weight: normal !important;
   font-style: normal !important;
@@ -7345,19 +7432,10 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   color: #ffffff !important;
   font-size: 11px !important;
   padding: 0 12px 2px !important;
-  line-height: 24px !important;
-  height: 24px !important;
-  -webkit-border-radius: 2px !important;
-  -moz-border-radius: 2px !important;
-  border-radius: 2px !important;
   cursor: pointer !important;
   background-color: #4485f1 !important;
   border-color: #4882cc;
   background-image: none !important;
-}
-.mura #frontEndTools > ul > li#adminSave > a > i {
-  color: #264c73 !important;
-  /* text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; */
 }
 .mura #frontEndTools > ul > li#adminSave > a:hover {
   cursor: pointer !important;
@@ -7407,10 +7485,9 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu a {
-  font-size: 12px !important;
   color: #CCC !important;
   padding: 5px 10px !important;
-  line-height: 1.1 !important;
+  line-height: 1.2 !important;
   float: none !important;
   display: block !important;
   height: auto !important;
@@ -7426,9 +7503,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu i {
-  color: #666666 !important;
   top: 2px !important;
-  font-size: 16px !important;
   margin-right: 2px !important;
   display: inline-block !important;
   text-align: center !important;

@@ -191,7 +191,7 @@
 												</cfif>
 												<li class="version-history">
 													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#">
-																		<i class="mi-book"></i>
+																		<i class="mi-history"></i>
 													</a>
 												</li>
 												<cfif rc.moduleid eq '00000000000000000000000000000000004'>
@@ -215,7 +215,7 @@
 													</a>
 												</li>
 												<li class="version-history disabled">
-																	<i class="mi-book"></i>
+																	<i class="mi-history"></i>
 												</li>
 												<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 													<li class="manage-dataOff disabled">

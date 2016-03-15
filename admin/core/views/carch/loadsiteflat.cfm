@@ -483,7 +483,7 @@ if(len($.siteConfig('customTagGroups'))){
 							</cfdefaultcase>
 						</cfswitch>
 
-						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-book"></i></a></li>
+						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-history"></i></a></li>
 
 					    <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="./?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-group"></i></a></li>
@@ -501,7 +501,7 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfelse>
 					    <li class="edit disabled"><i class="mi-pencil"></i></li>
 						<li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
-						<li class="version-history disabled"><a><i class="mi-book"></i></a></li>
+						<li class="version-history disabled"><a><i class="mi-history"></i></a></li>
 						<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 						<li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
 					</cfif>

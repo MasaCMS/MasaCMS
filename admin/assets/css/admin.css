@@ -1,10 +1,10 @@
-@import "../css/jquery/default/jquery.ui.base.css";
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+@import "../css/jquery/default/jquery.ui.base.css";
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -7470,7 +7470,9 @@ main > .content > :first-child:not(.alert):after,
 .tab-pane .fieldset .control-group:before,
 .tab-pane .fieldset .control-group:after,
 #csetup #main-container:before,
-#csetup #main-container:after {
+#csetup #main-container:after,
+#mura-login:before,
+#mura-login:after {
   content: " ";
   display: table;
 }
@@ -7502,7 +7504,8 @@ main > .content > :first-child:not(.alert):after,
 .container-fluid:after,
 .row-fluid:after,
 .tab-pane .fieldset .control-group:after,
-#csetup #main-container:after {
+#csetup #main-container:after,
+#mura-login:after {
   clear: both;
 }
 .clearfix:before,
@@ -7562,7 +7565,9 @@ main > .content > :first-child:not(.alert):after,
 .tab-pane .fieldset .control-group:before,
 .tab-pane .fieldset .control-group:after,
 #csetup #main-container:before,
-#csetup #main-container:after {
+#csetup #main-container:after,
+#mura-login:before,
+#mura-login:after {
   content: " ";
   display: table;
 }
@@ -7594,7 +7599,8 @@ main > .content > :first-child:not(.alert):after,
 .container-fluid:after,
 .row-fluid:after,
 .tab-pane .fieldset .control-group:after,
-#csetup #main-container:after {
+#csetup #main-container:after,
+#mura-login:after {
   clear: both;
 }
 .center-block {
@@ -23770,6 +23776,7 @@ i {
   /* associated files */
   /* /associated files */
   /* code diff */
+  /* code diff */
   /*
 	DEV NOTE
 	ie10 does not allow use of 'inherit' on calculated parent
@@ -34885,101 +34892,6 @@ a#nav-module-specific .metadata-horizontal li:focus {
 .mi-fonticons:before {
   content: "\f280";
 }
-/*** fa new version icons (missing)***/
-.mi-check-o:before,
-.mi-check-circle-o:before {
-  content: "\f05d";
-}
-.mi-check-minus:before {
-  content: "\f147";
-}
-.mi-circle-blank:before {
-  content: "\f10c";
-}
-.mi-collapse:before {
-  content: "\f147";
-}
-.mi-collapse-o:before {
-  content: "\f0d8";
-}
-.mi-collapse-top:before {
-  content: "\f151";
-}
-.mi-download-o:before {
-  content: "\f0ab";
-}
-.mi-edit-circle:before {
-  content: "\f14b";
-}
-.mi-ellipsis-horizontal:before {
-  content: "\f141";
-}
-.mi-ellipsis-vertical:before {
-  content: "\f142";
-}
-.mi-expand-o:before {
-  content: "\f196";
-}
-.mi-external-link-circle:before {
-  content: "\f14c";
-}
-.mi-eye-close:before {
-  content: "\f070";
-}
-.mi-eye-open:before {
-  content: "\f06e";
-}
-.mi-facetime-video:before {
-  content: "\f03d";
-}
-.mi-folder-close-o:before {
-  content: "\f114";
-}
-.mi-folder-close:before {
-  content: "\f07b";
-}
-.mi-food:before {
-  content: "\f0f5";
-}
-.mi-frown:before {
-  content: "\f119";
-}
-.mi-hdd:before {
-  content: "\f0a0";
-}
-.mi-keyboard:before {
-  content: "\f11c";
-}
-.mi-lemon:before {
-  content: "\f094";
-}
-.mi-lightbulb:before {
-  content: "\f0eb";
-}
-.mi-meh:before {
-  content: "\f11a";
-}
-.mi-microphone-off:before {
-  content: "\f131";
-}
-.mi-minus-circle-o:before {
-  content: "\f056";
-}
-.mi-moon:before {
-  content: "\f186";
-}
-.mi-move:before {
-  content: "\f047";
-}
-.mi-off:before {
-  content: "\f011";
-}
-.mi-ok:before {
-  content: "\f00c";
-}
-.mi-ok-circle:before {
-  content: "\f05d";
-}
 /* minified color scheme, expanded and altered */
 body {
   background-color: #f5f5f5;
@@ -35364,6 +35276,9 @@ a.list-group-item:focus {
 #clogin #main-container {
   background: none;
 }
+#clogin .block-content {
+  padding: 20px 20px 1px;
+}
 .nav-main-header {
   background-color: #333;
 }
@@ -35393,7 +35308,7 @@ a.list-group-item:focus {
 }
 .css-radio-primary input:checked + span:after,
 .switch-primary input:checked + span {
-  background-color: #5B5B5B;
+  background-color: #ff3405;
 }
 /* tabs */
 .block > .nav-tabs.nav-tabs-alt {
@@ -36860,10 +36775,6 @@ label #selectFilter {
   padding-left: 15px;
   padding-right: 15px;
 }
-#csetup #main-container .form-actions {
-  width: 100% !important;
-  padding-bottom: 20px;
-}
 #csetup #main-container .form-actions .btn {
   min-width: 92px;
   background-color: #DEDEDE;
@@ -36876,10 +36787,6 @@ label #selectFilter {
   background-color: #ff3405;
   color: #fff;
   border: 1px solid #ff3405;
-}
-#csetup #main-container .form-actions .btn + .btn {
-  margin-right: 0 !important;
-  margin-left: 15px !important;
 }
 #mura-setup {
   float: left;
@@ -36899,278 +36806,18 @@ label #selectFilter {
 }
 /* /setup */
 /* login */
-.mura-focus-block {
-  width: 360px;
-  margin: auto;
+#mura-login {
+  margin-left: -15px;
+  margin-right: -15px;
 }
-.mura-focus-block .focus-block-header {
-  background-color: #252525 ;
-  height: 54px;
-}
-.mura-focus-block .focus-block-header img.mura-logo {
-  width: 38px;
-  max-width: 38px;
-  height: 40px;
-  max-height: 40px;
-  margin-left: 30px;
-}
-.mura-focus-block .block-content {
-  padding: 30px 30px 10px 30px;
-}
-.mura-focus-block .mura-focus-actions button,
-.mura-focus-block .mura-focus-actions button:hover,
-.mura-focus-block .mura-focus-actions button:focus,
-.mura-focus-block .mura-focus-actions .btn,
-.mura-focus-block .mura-focus-actions .btn:hover,
-.mura-focus-block .mura-focus-actions .btn:focus {
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 6px 12px;
-  line-height: 1.6;
-  border-radius: 4px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-weight: 600;
-  border-radius: 2px;
-  -o-transition: all 0.15s ease-out;
-  -webkit-transition: all 0.15s ease-out;
-  transition: all 0.15s ease-out;
-  padding: 2px 12px;
-  font-size: 14px;
-  display: block;
-  width: 100%;
-  background-color: #ff3405;
-  color: #fff !important;
-  height: 35px;
-  margin-left: 0;
-  margin-right: 0;
-}
-.mura-focus-block .mura-focus-actions button:focus,
-.mura-focus-block .mura-focus-actions button:hover:focus,
-.mura-focus-block .mura-focus-actions button:focus:focus,
-.mura-focus-block .mura-focus-actions .btn:focus,
-.mura-focus-block .mura-focus-actions .btn:hover:focus,
-.mura-focus-block .mura-focus-actions .btn:focus:focus,
-.mura-focus-block .mura-focus-actions button:active:focus,
-.mura-focus-block .mura-focus-actions button:hover:active:focus,
-.mura-focus-block .mura-focus-actions button:focus:active:focus,
-.mura-focus-block .mura-focus-actions .btn:active:focus,
-.mura-focus-block .mura-focus-actions .btn:hover:active:focus,
-.mura-focus-block .mura-focus-actions .btn:focus:active:focus,
-.mura-focus-block .mura-focus-actions button.active:focus,
-.mura-focus-block .mura-focus-actions button:hover.active:focus,
-.mura-focus-block .mura-focus-actions button:focus.active:focus,
-.mura-focus-block .mura-focus-actions .btn.active:focus,
-.mura-focus-block .mura-focus-actions .btn:hover.active:focus,
-.mura-focus-block .mura-focus-actions .btn:focus.active:focus,
-.mura-focus-block .mura-focus-actions button.focus,
-.mura-focus-block .mura-focus-actions button:hover.focus,
-.mura-focus-block .mura-focus-actions button:focus.focus,
-.mura-focus-block .mura-focus-actions .btn.focus,
-.mura-focus-block .mura-focus-actions .btn:hover.focus,
-.mura-focus-block .mura-focus-actions .btn:focus.focus,
-.mura-focus-block .mura-focus-actions button:active.focus,
-.mura-focus-block .mura-focus-actions button:hover:active.focus,
-.mura-focus-block .mura-focus-actions button:focus:active.focus,
-.mura-focus-block .mura-focus-actions .btn:active.focus,
-.mura-focus-block .mura-focus-actions .btn:hover:active.focus,
-.mura-focus-block .mura-focus-actions .btn:focus:active.focus,
-.mura-focus-block .mura-focus-actions button.active.focus,
-.mura-focus-block .mura-focus-actions button:hover.active.focus,
-.mura-focus-block .mura-focus-actions button:focus.active.focus,
-.mura-focus-block .mura-focus-actions .btn.active.focus,
-.mura-focus-block .mura-focus-actions .btn:hover.active.focus,
-.mura-focus-block .mura-focus-actions .btn:focus.active.focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-.mura-focus-block .mura-focus-actions button:hover,
-.mura-focus-block .mura-focus-actions button:hover:hover,
-.mura-focus-block .mura-focus-actions button:focus:hover,
-.mura-focus-block .mura-focus-actions .btn:hover,
-.mura-focus-block .mura-focus-actions .btn:hover:hover,
-.mura-focus-block .mura-focus-actions .btn:focus:hover,
-.mura-focus-block .mura-focus-actions button:focus,
-.mura-focus-block .mura-focus-actions button:hover:focus,
-.mura-focus-block .mura-focus-actions button:focus:focus,
-.mura-focus-block .mura-focus-actions .btn:focus,
-.mura-focus-block .mura-focus-actions .btn:hover:focus,
-.mura-focus-block .mura-focus-actions .btn:focus:focus,
-.mura-focus-block .mura-focus-actions button.focus,
-.mura-focus-block .mura-focus-actions button:hover.focus,
-.mura-focus-block .mura-focus-actions button:focus.focus,
-.mura-focus-block .mura-focus-actions .btn.focus,
-.mura-focus-block .mura-focus-actions .btn:hover.focus,
-.mura-focus-block .mura-focus-actions .btn:focus.focus {
-  color: #333333;
-  text-decoration: none;
-}
-.mura-focus-block .mura-focus-actions button:active,
-.mura-focus-block .mura-focus-actions button:hover:active,
-.mura-focus-block .mura-focus-actions button:focus:active,
-.mura-focus-block .mura-focus-actions .btn:active,
-.mura-focus-block .mura-focus-actions .btn:hover:active,
-.mura-focus-block .mura-focus-actions .btn:focus:active,
-.mura-focus-block .mura-focus-actions button.active,
-.mura-focus-block .mura-focus-actions button:hover.active,
-.mura-focus-block .mura-focus-actions button:focus.active,
-.mura-focus-block .mura-focus-actions .btn.active,
-.mura-focus-block .mura-focus-actions .btn:hover.active,
-.mura-focus-block .mura-focus-actions .btn:focus.active {
-  outline: 0;
-  background-image: none;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-.mura-focus-block .mura-focus-actions button.disabled,
-.mura-focus-block .mura-focus-actions button:hover.disabled,
-.mura-focus-block .mura-focus-actions button:focus.disabled,
-.mura-focus-block .mura-focus-actions .btn.disabled,
-.mura-focus-block .mura-focus-actions .btn:hover.disabled,
-.mura-focus-block .mura-focus-actions .btn:focus.disabled,
-.mura-focus-block .mura-focus-actions button[disabled],
-.mura-focus-block .mura-focus-actions button:hover[disabled],
-.mura-focus-block .mura-focus-actions button:focus[disabled],
-.mura-focus-block .mura-focus-actions .btn[disabled],
-.mura-focus-block .mura-focus-actions .btn:hover[disabled],
-.mura-focus-block .mura-focus-actions .btn:focus[disabled],
-fieldset[disabled] .mura-focus-block .mura-focus-actions button,
-fieldset[disabled] .mura-focus-block .mura-focus-actions button:hover,
-fieldset[disabled] .mura-focus-block .mura-focus-actions button:focus,
-fieldset[disabled] .mura-focus-block .mura-focus-actions .btn,
-fieldset[disabled] .mura-focus-block .mura-focus-actions .btn:hover,
-fieldset[disabled] .mura-focus-block .mura-focus-actions .btn:focus {
-  cursor: not-allowed;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-a.mura-focus-block .mura-focus-actions button.disabled,
-a.mura-focus-block .mura-focus-actions button:hover.disabled,
-a.mura-focus-block .mura-focus-actions button:focus.disabled,
-a.mura-focus-block .mura-focus-actions .btn.disabled,
-a.mura-focus-block .mura-focus-actions .btn:hover.disabled,
-a.mura-focus-block .mura-focus-actions .btn:focus.disabled,
-fieldset[disabled] a.mura-focus-block .mura-focus-actions button,
-fieldset[disabled] a.mura-focus-block .mura-focus-actions button:hover,
-fieldset[disabled] a.mura-focus-block .mura-focus-actions button:focus,
-fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn,
-fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:hover,
-fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
-  pointer-events: none;
-}
-.mura-focus-block .mura-focus-actions button:active,
-.mura-focus-block .mura-focus-actions button:hover:active,
-.mura-focus-block .mura-focus-actions button:focus:active,
-.mura-focus-block .mura-focus-actions .btn:active,
-.mura-focus-block .mura-focus-actions .btn:hover:active,
-.mura-focus-block .mura-focus-actions .btn:focus:active,
-.mura-focus-block .mura-focus-actions button.active,
-.mura-focus-block .mura-focus-actions button:hover.active,
-.mura-focus-block .mura-focus-actions button:focus.active,
-.mura-focus-block .mura-focus-actions .btn.active,
-.mura-focus-block .mura-focus-actions .btn:hover.active,
-.mura-focus-block .mura-focus-actions .btn:focus.active {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.mura-focus-block .mura-focus-actions button.btn-square,
-.mura-focus-block .mura-focus-actions button:hover.btn-square,
-.mura-focus-block .mura-focus-actions button:focus.btn-square,
-.mura-focus-block .mura-focus-actions .btn.btn-square,
-.mura-focus-block .mura-focus-actions .btn:hover.btn-square,
-.mura-focus-block .mura-focus-actions .btn:focus.btn-square {
-  border-radius: 0;
-}
-.mura-focus-block .mura-focus-actions button.btn-rounded,
-.mura-focus-block .mura-focus-actions button:hover.btn-rounded,
-.mura-focus-block .mura-focus-actions button:focus.btn-rounded,
-.mura-focus-block .mura-focus-actions .btn.btn-rounded,
-.mura-focus-block .mura-focus-actions .btn:hover.btn-rounded,
-.mura-focus-block .mura-focus-actions .btn:focus.btn-rounded {
-  border-radius: 20px;
-}
-.mura-focus-block .mura-focus-actions button.btn-minw,
-.mura-focus-block .mura-focus-actions button:hover.btn-minw,
-.mura-focus-block .mura-focus-actions button:focus.btn-minw,
-.mura-focus-block .mura-focus-actions .btn.btn-minw,
-.mura-focus-block .mura-focus-actions .btn:hover.btn-minw,
-.mura-focus-block .mura-focus-actions .btn:focus.btn-minw {
-  min-width: 110px;
-}
-.mura-focus-block .mura-focus-actions button.btn-noborder,
-.mura-focus-block .mura-focus-actions button:hover.btn-noborder,
-.mura-focus-block .mura-focus-actions button:focus.btn-noborder,
-.mura-focus-block .mura-focus-actions .btn.btn-noborder,
-.mura-focus-block .mura-focus-actions .btn:hover.btn-noborder,
-.mura-focus-block .mura-focus-actions .btn:focus.btn-noborder {
-  border: none !important;
-}
-.mura-focus-block .mura-focus-actions button.btn-image,
-.mura-focus-block .mura-focus-actions button:hover.btn-image,
-.mura-focus-block .mura-focus-actions button:focus.btn-image,
-.mura-focus-block .mura-focus-actions .btn.btn-image,
-.mura-focus-block .mura-focus-actions .btn:hover.btn-image,
-.mura-focus-block .mura-focus-actions .btn:focus.btn-image {
-  position: relative;
-  padding-left: 40px;
-}
-.mura-focus-block .mura-focus-actions button.btn-image > img,
-.mura-focus-block .mura-focus-actions button:hover.btn-image > img,
-.mura-focus-block .mura-focus-actions button:focus.btn-image > img,
-.mura-focus-block .mura-focus-actions .btn.btn-image > img,
-.mura-focus-block .mura-focus-actions .btn:hover.btn-image > img,
-.mura-focus-block .mura-focus-actions .btn:focus.btn-image > img {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  display: block;
-  width: 26px;
-  height: 26px;
-  border-radius: 3px;
-}
-.mura-focus-block .mura-focus-actions button > i.pull-left,
-.mura-focus-block .mura-focus-actions button:hover > i.pull-left,
-.mura-focus-block .mura-focus-actions button:focus > i.pull-left,
-.mura-focus-block .mura-focus-actions .btn > i.pull-left,
-.mura-focus-block .mura-focus-actions .btn:hover > i.pull-left,
-.mura-focus-block .mura-focus-actions .btn:focus > i.pull-left {
-  margin-top: 3px;
-  margin-right: 5px;
-}
-.mura-focus-block .mura-focus-actions button > i.pull-right,
-.mura-focus-block .mura-focus-actions button:hover > i.pull-right,
-.mura-focus-block .mura-focus-actions button:focus > i.pull-right,
-.mura-focus-block .mura-focus-actions .btn > i.pull-right,
-.mura-focus-block .mura-focus-actions .btn:hover > i.pull-right,
-.mura-focus-block .mura-focus-actions .btn:focus > i.pull-right {
-  margin-top: 3px;
-  margin-left: 5px;
-}
-#mura-login #remember-me {
-  margin-top: 7px !important;
-}
-#mura-login #pw-response {
-  margin-bottom: 30px !important;
-}
-#mura-login #login-link,
 #mura-login #pw-link,
 #mura-login .page-heading {
+  float: left;
+  width: 83.33333333%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 12px;
@@ -37178,17 +36825,21 @@ fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+@media (min-width: 768px) {
+  #mura-login #pw-link,
+  #mura-login .page-heading {
+    float: left;
+    width: 33.33333333%;
+  }
+}
 #mura-login .page-heading {
   color: #FFF;
 }
-#mura-login #login-link,
 #mura-login #pw-link {
-  text-align: center;
   margin-top: 12px;
 }
-#mura-login #login-link a,
 #mura-login #pw-link a {
-  color: #7a818f !important;
+  color: #FFF !important;
 }
 #mura-login .mura-control-group > label + input,
 #mura-login .mura-control-group > label + select {
@@ -37201,9 +36852,22 @@ fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
 }
 #mura-login > .login-header,
 #mura-login > .block {
+  float: left;
+  width: 83.33333333%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
   margin: 0 auto;
   padding: 0;
   float: none !important;
+}
+@media (min-width: 768px) {
+  #mura-login > .login-header,
+  #mura-login > .block {
+    float: left;
+    width: 33.33333333%;
+  }
 }
 #mura-login > .block + .block {
   margin-top: 15px;

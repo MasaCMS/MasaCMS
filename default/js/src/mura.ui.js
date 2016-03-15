@@ -110,8 +110,11 @@
 				var result=[];
 
 				for(var f in fields){
+					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
+				
+				console.log(result);
 
 				return result.join(',');
 		},
@@ -366,12 +369,13 @@
 
 			var formNavHandler=function() {
 
-				self.currentpage = parseInt(mura(this).data('page'));
 
 				// per page validation
 				//if( self.validate(self.entity,valid) ) {
 
 				self.setDataValues();
+
+				self.currentpage = parseInt(mura(this).data('page'));
 
 				if(self.ormform) {
 					window.mura.getEntity(self.entity)
