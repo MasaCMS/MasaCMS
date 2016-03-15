@@ -81,7 +81,14 @@ to your own modified versions of Mura CMS.
 	<!-- Page Container -->
 	<div id="page-container" class=" sidebar-o side-overlay-hover side-scroll header-navbar-fixed">
 		<!-- Main Container -->
-		<main id="main-container" class="">
+		<main id="main-container">
 			<!-- Page Content -->
-			<div class="content" id="mura-setup">
+			<div class="content">
+				<div id="mura-setup">
+					<div class="block mura-focus-block" id="mura-login-panel">
+					  <div class="focus-block-header">
+					  	<img src="/admin/assets/images/mura-logo@2x.png" class="mura-logo">
+					  </div><!-- /focus-block-header -->
+		  	    <div class="block-content">
+
 </cfoutput>
