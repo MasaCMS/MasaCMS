@@ -7486,10 +7486,9 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu a {
-  font-size: 12px !important;
   color: #CCC !important;
   padding: 5px 10px !important;
-  line-height: 1.1 !important;
+  line-height: 1.2 !important;
   float: none !important;
   display: block !important;
   height: auto !important;
@@ -7505,9 +7504,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu i {
-  color: #666666 !important;
   top: 2px !important;
-  font-size: 16px !important;
   margin-right: 2px !important;
   display: inline-block !important;
   text-align: center !important;
