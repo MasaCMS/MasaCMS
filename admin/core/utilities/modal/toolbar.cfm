@@ -259,7 +259,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 							<cfelse>
 								<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
-									<i class="mi-book status-archived"></i>
+									<i class="mi-history status-archived"></i>
 									<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
 									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#
 								</a>
@@ -330,19 +330,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<!---
 							<cfif $.content('type') eq 'Variation'>
 							<li id="adminEditPage" class="dropdown"><a onclick="return muraInlineEditor.init();"><i class="mi-pencil"></i></a></li>
-							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-book"></i></a></li>
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
 							<cfelse>
 							--->
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="mi-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
-										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#><i class="mi-pencil"></i>
+										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
 											<cfif $.content('type') eq 'Variation'>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-metadata')#
+												<i class="mi-info"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-metadata')#
 											<cfelseif useLayoutManager()>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
+												<i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
 											<cfelse>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
+												 <i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											</cfif></a>
 									</li>
 									<cfif this.showInlineEditor and not ($.content('type') eq 'Variation' and not len($.content('responsemessage')))>

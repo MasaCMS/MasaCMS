@@ -62,7 +62,7 @@
 							</cfif>
 						</cfcase>
 						</cfswitch>
-									 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#esapiEncode('url',item.getType())#&parentid=#item.getParentID()#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getModuleID()#"><i class="mi-book"></i></a></li>
+									 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#esapiEncode('url',item.getType())#&parentid=#item.getParentID()#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getModuleID()#"><i class="mi-history"></i></a></li>
 		            </ul>
 		          </td>
 		        </tr>

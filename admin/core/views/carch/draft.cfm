@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #$.dspZoom(itemcrumbdata)#</cfdefaultcase>
 </cfswitch></td>
 			<td>#rc.rslist.module#</td> 
-          <td class="actions"><ul class="drafts"><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#"><i class="mi-book"></i></a></li></ul></td>
+          <td class="actions"><ul class="drafts"><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#"><i class="mi-history"></i></a></li></ul></td>
         </tr>
 		<cfset listed=1>
 	  </cfif>

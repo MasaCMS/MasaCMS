@@ -508,15 +508,15 @@ and
                         <ul>
                             <!--- docs --->
                             <li>
-                                <a id="navCSS-API" href="http://docs.getmura.com/v6/" target="_blank"><i class="mi-bookmark"></i>#rc.$.rbKey("layout.developers")#</a>
+                                <a id="navCSS-API" href="http://docs.getmura.com/v6/" target="_blank"><i class="mi-historymark"></i>#rc.$.rbKey("layout.developers")#</a>
                             </li>
                             <!--- editor docs --->
                             <li>
-                                <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank"><i class="mi-bookmark"></i>#rc.$.rbKey("layout.editordocumentation")#</a>
+                                <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank"><i class="mi-historymark"></i>#rc.$.rbKey("layout.editordocumentation")#</a>
                             </li>
                             <!--- component API --->
                             <li>
-                                <a id="navProg-API" href="http://www.getmura.com/component-api/6.1/" target="_blank"><i class="mi-bookmark"></i>Component API</a>
+                                <a id="navProg-API" href="http://www.getmura.com/component-api/6.1/" target="_blank"><i class="mi-historymark"></i>Component API</a>
                             </li>
                             <!--- professional support --->
                             <li>

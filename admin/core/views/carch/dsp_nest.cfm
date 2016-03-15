@@ -279,7 +279,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <li class="preview disabled"><a><i class="mi-globe"></i></a></li>
 	   </cfdefaultcase>
 	   </cfswitch>
-	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-book"></i></a></li>
+	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-history"></i></a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-group"></i></a></li>
         <cfelse>
@@ -306,7 +306,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li class="preview disabled"><a><i class="mi-globe"></i></a></li>
 		</cfdefaultcase>
 		</cfswitch>
-		<li class="version-history disabled"><a><i class="mi-book"></i></a></li>
+		<li class="version-history disabled"><a><i class="mi-history"></i></a></li>
 		<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 		<li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
       </cfif>

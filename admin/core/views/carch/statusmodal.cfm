@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</p>
 				</cfif>
 			<cfelse>
-				<i class="mi-book"></i>
+				<i class="mi-history"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</p>
 			</cfif>
 		</dd>
