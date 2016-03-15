@@ -403,9 +403,7 @@ a.list-group-item:hover,a.list-group-item:focus {
   padding-top: 45px;
   padding-bottom: 45px;
 }
-#clogin #main-container{
-  background: none;
-}
+
 .nav-main-header {
   background-color: #333;
 }
@@ -1501,13 +1499,56 @@ label #selectFilter{
   font-weight: 600;
 }
 
-/* setup */
-#csetup #page-container{
-  background-color: #333;
+/* login and setup */
+
+
+.mura-focus-block{
+    
+   width: 360px;
+   margin: auto; 
+
+  .focus-block-header{
+     background-color: #252525 ;
+      height: 54px;
+      
+      img.mura-logo{
+        width: 38px;
+        max-width: 38px;
+        height: 40px;
+        max-height: 40px;
+        margin-left: 30px;
+     }
+  }
+
+  .block-content{
+    padding: 30px 30px 10px 30px;
+  }
+
+  .mura-focus-actions button,
+  .mura-focus-actions button:hover,
+  .mura-focus-actions button:focus,
+  .mura-focus-actions .btn,
+  .mura-focus-actions .btn:hover,
+  .mura-focus-actions .btn:focus{
+    .border-radius(1px);
+    .btn;
+    .btn-block;
+    background-color: #ff3405;
+    color: #fff !important;
+    height: 35px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
 }
+
+#clogin #main-container,
 #csetup #main-container{
-  .make-row();
-  background-color: transparent !important;
+  background: none;
+}
+
+
+#csetup #main-container{
 
   .alert{
       background-color: #DEDEDE !important;
@@ -1592,48 +1633,8 @@ label #selectFilter{
   margin: 0 auto;
   float: none !important;
 }
-/* /setup */
 
-/* login */
-.mura-focus-block{
-    
-   width: 360px;
-   margin: auto; 
 
-  .focus-block-header{
-     background-color: #252525 ;
-      height: 54px;
-      
-      img.mura-logo{
-        width: 38px;
-        max-width: 38px;
-        height: 40px;
-        max-height: 40px;
-        margin-left: 30px;
-     }
-  }
-
-  .block-content{
-    padding: 30px 30px 10px 30px;
-  }
-
-  .mura-focus-actions button,
-  .mura-focus-actions button:hover,
-  .mura-focus-actions button:focus,
-  .mura-focus-actions .btn,
-  .mura-focus-actions .btn:hover,
-  .mura-focus-actions .btn:focus{
-    .border-radius(1px);
-    .btn;
-    .btn-block;
-    background-color: #ff3405;
-    color: #fff !important;
-    height: 35px;
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-}
 
 #mura-login{
 
@@ -1701,7 +1702,7 @@ label #selectFilter{
 
 
 }
-/* /login */
+/* /login and setup */
 
 /* jquery-ui overrides */
 /* jquery-ui overrides */

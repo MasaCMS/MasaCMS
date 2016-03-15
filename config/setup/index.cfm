@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <!-----------------------------------------------------------------------
-  If we were able to proicess the setup form
+  If we were able to process the setup form
   - Tell mura to refresh on next hit
   - Show a happy congrats screen
 ------------------------------------------------------------------------>
