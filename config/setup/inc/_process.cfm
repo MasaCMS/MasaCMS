@@ -183,18 +183,10 @@ to your own modified versions of Mura CMS.
         </cfif>
 
         <cfif bProcessWithMessage>
-          <!--- check if we need to process even though there is a message (bsoylu 6/7/2010)  --->
           <!--- try to create the database --->
           <!--- <cftry> --->
-            <!--- get selected DB type --->
-            <!---
-            <cfif server.coldfusion.productname eq "BlueDragon">
-              <cffile action="read" file="#ExpandPath('.')#/config/setup/db/#FORM.production_dbtype#.sql" variable="sql" />
-            <cfelse>
-              <cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
-            </cfif>
-            --->
 
+          <!--- get selected DB type --->
           <cfdbinfo
                 name="rsCheck"
                 datasource="#FORM.production_datasource#"
@@ -204,19 +196,19 @@ to your own modified versions of Mura CMS.
 
           <cfif rsCheck.database_productname eq 'H2'>
             <cfsavecontent variable="sql">
-              <cfinclude template="db/h2.sql">
+              <cfinclude template="../db/h2.sql">
             </cfsavecontent>
           <cfelse>
             <cfparam name="form.production_mysqlengine" default="InnoDB">
             <cfset storageEngine="ENGINE=#form.production_mysqlengine# DEFAULT CHARSET=utf8">
             <cfsavecontent variable="sql">
-              <cfinclude template="db/#FORM.production_dbtype#.sql">
+              <cfinclude template="../db/#FORM.production_dbtype#.sql">
             </cfsavecontent>
           </cfif>
 
           <!---
           <cfsavecontent variable="sql">
-            <cfinclude template="db/#FORM.production_dbtype#.sql">
+            <cfinclude template="../db/#FORM.production_dbtype#.sql">
           </cfsavecontent>
           --->
           <!--- we adjust the sql to work with a certain parser for later use to help build out an array --->

@@ -344,7 +344,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		var formStruct = deserializeJSON( arguments.event.getValue('contentBean').getValue('body'));
 
-		if( !structKeyExists(formStruct.form.formattributes,'muraormentities') || formStruct.form.formattributes.muraormentities neq 1 )
+		if( !structKeyExists(formStruct.form,'formattributes') || !structKeyExists(formStruct.form.formattributes,'muraormentities') || formStruct.form.formattributes.muraormentities neq 1 )
 			return;
 
 		var field = "";
