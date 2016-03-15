@@ -10226,7 +10226,7 @@ mura.templates['embed']=function(context){
 		renderForm: function( ) {
 			var self = this;
 
-			console.log("render form");
+			console.log("render form: " + self.currentpage);
 
 			mura(".field-container-" + self.settings.objectid,self.settings.formEl).empty();
 
@@ -10289,15 +10289,11 @@ mura.templates['embed']=function(context){
 				self.getTableData( self.backlink );
 			});
 
+
 			var formNavHandler=function() {
-
-
-				// per page validation
-				//if( self.validate(self.entity,valid) ) {
-
 				self.setDataValues();
-
-				self.currentpage = parseInt(mura(this).data('page'));
+				
+				var button = this;
 
 				if(self.ormform) {
 					window.mura.getEntity(self.entity)
@@ -10310,6 +10306,7 @@ mura.templates['embed']=function(context){
 							if(entity.hasErrors()){
 								self.showErrors( entity.properties.errors );
 							} else {
+								self.currentpage = mura(button).data('page');
 								self.renderForm();
 							}
 						}
@@ -10328,6 +10325,7 @@ mura.templates['embed']=function(context){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
                                 self.showErrors( resp.data.errors );
                             } else {
+								self.currentpage = mura(button).data('page');
                                 self.renderForm();
                             }
                         });

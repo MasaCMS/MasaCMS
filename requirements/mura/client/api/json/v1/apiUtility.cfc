@@ -2149,13 +2149,16 @@ component extends="mura.cfobject" {
 		arguments.data=deserializeJSON(urlDecode(arguments.data));
 		arguments.validations=deserializeJSON(urlDecode(arguments.validations));
 
+		if(!isStruct(arguments.data)){
+			return {invalid='Invalid validation request'};
+		}
+
 		param name="data.fields" default="";
 
 		if(structIsEmpty(arguments.validations) && isDefined('data.entityname') && isDefined('data.siteid')){
 			var bean=getBean(arguments.data.entityname);
 			var args={'#bean.getPrimaryKey()#'=arguments.data[bean.getPrimaryKey()]
 			};
-
 
 			return bean.loadBy(argumentCollection=args).set(arguments.data).validate(arguments.data.fields).getErrors();
 
