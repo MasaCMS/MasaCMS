@@ -37131,15 +37131,15 @@ fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
   float: none;
   height: 20px;
 }
-#csetup #main-container .mura-focus-actions .btn,
-#csetup #main-container .mura-focus-actions .btn:hover,
-#csetup #main-container .mura-focus-actions .btn:focus {
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete),
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):hover,
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):focus {
   width: 45%;
   float: left;
 }
-#csetup #main-container .mura-focus-actions .btn + .btn,
-#csetup #main-container .mura-focus-actions .btn:hover + .btn,
-#csetup #main-container .mura-focus-actions .btn:focus + .btn {
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete) + .btn,
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):hover + .btn,
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):focus + .btn {
   margin-left: 26px;
 }
 #mura-login #remember-me {
