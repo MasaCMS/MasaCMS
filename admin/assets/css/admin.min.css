@@ -31257,6 +31257,8 @@ fieldset[disabled] a.mura-control-inline > button {
 }
 .mura-control-group > .checkbox-group,
 .mura-control-group > .radio-group {
+  float: left;
+  width: 100%;
   position: relative;
   min-height: 1px;
   padding-left: 15px;
@@ -35425,6 +35427,9 @@ a.list-group-item:focus {
 .block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
   color: #ff3405;
   background-color: transparent;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
+  background-color: #FFF !important;
 }
 #mura-content .block ul.nav-tabs-alt {
   margin-right: 30px;
