@@ -244,7 +244,7 @@
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>
-								<ul class="mura-tabs nav-tabs nav-tabs-alt">
+								<ul class="mura-tabs nav-tabs">
 									<!--- Site Members Tab --->
 										<li<cfif rc.ispublic eq 1> class="active"</cfif>>
 											<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=1')#" onclick="actionModal();">

@@ -134,7 +134,7 @@
 	</cfoutput>
 
 		<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
-				<ul class="mura-tabs nav-tabs nav-tabs-alt initActiveTab">
+				<ul class="mura-tabs nav-tabs initActiveTab">
 					<cfoutput>
 						<li class="active">
 							<a href="##tabBasic" onclick="return false;"><span>#esapiEncode('html',rbKey('user.basic'))#</span></a>

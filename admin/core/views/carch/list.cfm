@@ -656,7 +656,7 @@
 		</div> <!--- /.mura-header --->
 
 			<div class="block block-constrain">
-				<ul id="viewTabs" class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
+				<ul id="viewTabs" class="mura-tabs nav-tabs" data-toggle="tabs">
 					<li><a href="##tabArchitectural" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
 					<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
 				</ul>

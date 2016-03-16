@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset started=false>
 	<div class="block block-constrain">
-	<ul class="mura-tabs nav-tabs nav-tabs-alt initActiveTab" data-toggle="tabs">
+	<ul class="mura-tabs nav-tabs initActiveTab" data-toggle="tabs">
 		<li class="active"><a href="##tab#ucase('Application')#" onclick="return false;"><span>Application</span></a></li>
 		<li><a href="##tab#ucase('Utility')#" onclick="return false;"><span>Utility</span></a></li>
 		<cfloop collection="#rc.plugingroups#" item="local.category" >

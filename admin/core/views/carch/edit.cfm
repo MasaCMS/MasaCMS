@@ -740,7 +740,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="block block-constrain">
 
 	<!-- tabs -->
-		<ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
+		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
 			<cfset currentTab=listGetAt(tabList,t)>
 			<li<cfif listFindNoCase("tabExtendedAttributes,tabListDisplayOptions",currentTab)> class="hide"<cfelseif t eq 1> class="active"</cfif>  id="#currentTab#LI"><a href="###currentTab#"><span>#listGetAt(tabLabelList,t)#</span></a></li>

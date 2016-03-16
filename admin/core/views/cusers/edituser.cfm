@@ -772,7 +772,7 @@
 		</cfsavecontent>
 
 		<cfoutput>
-			<ul class="mura-tabs nav-tabs nav-tabs-alt initActiveTab" data-toggle="tabs">
+			<ul class="mura-tabs nav-tabs initActiveTab" data-toggle="tabs">
 					<cfloop from="1" to="#listlen(tabList)#" index="t">
 					<li<cfif listGetAt(tabList,t) eq 'tabExtendedattributes'> id="tabExtendedattributesLI" class="hide"<cfelseif t eq 1> class="active"</cfif>>
 							<a href="###listGetAt(tabList,t)#" onclick="return false;">
