@@ -36737,13 +36737,13 @@ label #selectFilter {
   margin-top: 24px;
 }
 #mura-content > form .mura-control-group input.radio,
-#mura-content > form .mura-control-group input[type="radio"],
+#mura-content > form .mura-control-group input[type=radio],
 #mura-content > form .mura-control-group input.checkbox,
-#mura-content > form .mura-control-group input[type="checkbox"],
+#mura-content > form .mura-control-group input[type=checkbox],
 .mura-control-group input.radio,
-.mura-control-group input[type="radio"],
+.mura-control-group input[type=radio],
 .mura-control-group input.checkbox,
-.mura-control-group input[type="checkbox"] {
+.mura-control-group input[type=checkbox] {
   min-height: auto;
   margin-top: 4px;
   border: none;
@@ -36754,11 +36754,11 @@ label #selectFilter {
 }
 .mura-control-group input.radio:focus,
 .mura-control-group input.checkbox:focus,
-.mura-control-group input[type="radio"]:focus,
-.mura-control-group input[type="checkbox"]:focus {
+.mura-control-group input[type=radio]:focus,
+.mura-control-group input[type=checkbox]:focus {
   outline: 0;
 }
-.mura-control-group input[type="file"] {
+.mura-control-group input[type=file] {
   padding: 2px 2px 4px 0;
 }
 #mura-content form label.checkbox,
