@@ -111,10 +111,6 @@
 		margin: 0;
 		max-height: 300px;
 		overflow: auto;
-
-		.navZoom {
-			width: 95% !important;			
-			}
 	
 		/* each 'row' of the pseudo table - similar to tr */
 		li.item {
@@ -180,6 +176,18 @@
 		
 	}
 }
+
+.ui-draggable .navZoom,
+.ui-draggable-dragging .navZoom,
+.list-table-items .navZoom {
+	width: 95% !important;
+}
+.ui-draggable .navZoom,
+.ui-draggable-dragging .navZoom{
+	min-width: 468px;
+	background:none !important;		
+}
+
 
 div[id^="rcGroup-"] .list-table-items li.item {
 	

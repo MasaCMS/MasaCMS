@@ -27246,9 +27246,6 @@ font-size: 12px;
   /* the nested list within each item */
   /* inline list of nested items */
 }
-.mura .list-table .list-table-items .navZoom {
-  width: 95% !important;
-}
 .mura .list-table .list-table-items li.item {
   position: relative;
   display: block;
@@ -27291,6 +27288,16 @@ font-size: 12px;
 }
 .mura .list-table .content-type i:hover {
   color: #000000;
+}
+.mura .ui-draggable .navZoom,
+.mura .ui-draggable-dragging .navZoom,
+.mura .list-table-items .navZoom {
+  width: 95% !important;
+}
+.mura .ui-draggable .navZoom,
+.mura .ui-draggable-dragging .navZoom {
+  min-width: 468px;
+  background: none !important;
 }
 .mura div[id^="rcGroup-"] .list-table-items li.item .delete {
   z-index: 1;
@@ -31257,6 +31264,8 @@ fieldset[disabled] a.mura-control-inline > button {
 }
 .mura-control-group > .checkbox-group,
 .mura-control-group > .radio-group {
+  float: left;
+  width: 100%;
   position: relative;
   min-height: 1px;
   padding-left: 15px;
@@ -32890,6 +32899,22 @@ a#nav-module-specific .metadata-horizontal li:focus {
 }
 .mura-table-grid > tbody > tr:nth-of-type(odd) {
   background-color: #f9f9f9;
+}
+#custom-images-container {
+  float: left;
+  width: 100%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-left: 0;
+  padding-right: 0;
+}
+@media (min-width: 768px) {
+  #custom-images-container {
+    float: left;
+    width: 60%;
+  }
 }
 /* FONT PATH
  * -------------------------- */
@@ -35369,6 +35394,8 @@ a.list-group-item:focus {
 .block-constrain > .nav-tabs {
   margin: -10px 0 0;
   background-color: #e4e4e4;
+  max-height: 48px;
+  overflow-y: hidden;
 }
 .block > .nav-tabs > li a {
   text-transform: uppercase;
@@ -35425,6 +35452,9 @@ a.list-group-item:focus {
 .block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
   color: #ff3405;
   background-color: transparent;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
+  background-color: #FFF !important;
 }
 #mura-content .block ul.nav-tabs-alt {
   margin-right: 30px;
@@ -35637,8 +35667,7 @@ ul {
   width: 100%;
 }
 #header-navbar #site-selector-list.dropdown-menu {
-  width: 100%;
-  min-width: auto;
+  min-width: 100%;
   padding-right: 12px;
 }
 #header-navbar .dropdown-menu > .active > a,
@@ -36022,7 +36051,7 @@ a.no-link {
   margin-top: 4px;
   margin-bottom: 8px;
   min-height: 2.3em;
-  padding-top: .5em;
+  padding-top: 9px;
   background-color: #FFF;
   border: 1px solid #e9e9e9;
 }
@@ -37224,6 +37253,13 @@ a#mura-login .block-header:focus {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+}
+.mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+  float: none;
+  text-align: center;
+}
+.mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
+  float: none;
 }
 .mura .ui-dialog-buttonset .ui-button-text-only .ui-button-text {
   display: inline-block;
