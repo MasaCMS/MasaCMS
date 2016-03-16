@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
  <cfset tablist=listAppend(tablist,'tabTags')>
       <cfset tablabellist=listAppend(tablabellist,'Tags')>
-      <ul class="mura-tabs nav-tabs initActiveTab" data-toggle="tabs">
+      <ul class="mura-tabs nav-tabs" data-toggle="tabs">
     <cfloop from="1" to="#listlen(tabList)#" index="t">
          <li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
     </cfloop>
