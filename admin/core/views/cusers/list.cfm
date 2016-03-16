@@ -54,7 +54,7 @@
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
 		<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
 
-				<ul id="viewTabs" class="mura-tabs nav-tabs nav-tabs-alt">
+				<ul id="viewTabs" class="mura-tabs nav-tabs">
 
 					<!--- Member/Public Groups --->
 						<li<cfif rc.ispublic eq 1> class="active"</cfif>>

@@ -170,7 +170,7 @@
 			jQuery(document).ready(function(){
 
  			// tab drop
- 			$('.mura-tabs').tabdrop({text: '<i class="mi-ellipsis-h"></i>'});
+ 			$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 
 				if (top.location != self.location) {
 

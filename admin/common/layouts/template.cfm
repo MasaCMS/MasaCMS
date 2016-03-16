@@ -329,7 +329,7 @@
 	           			$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
 
 	           			// tab drop
-           			$('.mura-tabs').tabdrop({text: '<i class="mi-ellipsis-h"></i>'});
+           			$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 
 		           		// dismiss alerts
 	           			$('.alert-dismiss').click(
