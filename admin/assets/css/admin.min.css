@@ -35417,7 +35417,6 @@ a.list-group-item:focus {
   background-color: #e4e4e4;
   border: none;
   margin-top: 0;
-  padding-bottom: 15px;
 }
 .tabdrop .dropdown-menu > .active > a,
 .tabdrop .dropdown-menu > .active > a:hover,
