@@ -85,7 +85,7 @@ select siteID from tsettings where siteid not in(
 			,1
 			,NULL
 			,'Remote Variations'
-			,NULL
+			,'Remote Variations'
 			,NULL
 			,NULL
 			,NULL

@@ -1500,8 +1500,6 @@ label #selectFilter{
 }
 
 /* login and setup */
-
-
 .mura-focus-block{
     
    width: 360px;
@@ -1547,15 +1545,24 @@ label #selectFilter{
   background: none;
 }
 
-
 #csetup #main-container{
 
   .alert{
-      background-color: #DEDEDE !important;
-      border-color: #BCBCBC !important;
+      line-height: 1.3em;
+
+      &:not(.alert-error){
+       background-color: #DEDEDE !important;
+       border-color: #BCBCBC !important;
+      }
+
   }
+
+  .page-heading + .alert{
+    margin-top: 15px;
+  }
+
   .wizard-progress{
-    padding: 0 8px;
+    padding: 0;
   }
   .progress{
     background-color: #FFF;
@@ -1564,17 +1571,27 @@ label #selectFilter{
     background-color: #ff3405;
     .border-radius(2px);
   }
+  .nav-tabs{
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 0;
+    width: 110%;
+  }
+  .block > .nav-tabs > li{
+    display: table-cell !important;
+    width: 1% !important;
+  }
   .nav-tabs li a{
     background-color: #FFF;
   }
   .tab-content{
-    padding: 0 30px;
+    padding: 0 0;
     min-height: 280px;
   }
   .page-heading{
     margin-left: 0;
     margin-right: 0;
-    color: #FFF;
+    margin-top: -15px;
   }
   .nav-tabs li a{
     margin-right: 0 !important;
@@ -1598,43 +1615,23 @@ label #selectFilter{
     .make-xs-column(12);
    } 
 
- .form-actions{
-    width: 100% !important;
-    padding-bottom: 20px;
- }
- .form-actions .btn{
-    min-width: 92px;
-    background-color: #DEDEDE;
+  .mura-focus-actions{
+    margin: 30px 0 25px 0;
+    float: none;
+    height: 20px;
+  }
+
+  .mura-focus-actions .btn:not(.mura-setup-complete),
+  .mura-focus-actions .btn:not(.mura-setup-complete):hover,
+  .mura-focus-actions .btn:not(.mura-setup-complete):focus{
+    width: 45%;
+    float: left;
     
-    &.wizard-next > i{
-      margin-left: 8px;
-    }
-
-    &.wizard-finish,
-    &.wizard-finish:hover{
-      background-color:#ff3405;
-      color: #fff;
-      border: 1px solid #ff3405;
-    }
-
     + .btn{
-      margin-right: 0 !important;
-      margin-left: 15px !important;
+        margin-left: 26px;
+      }
     }
-
-   }
-
-
 }
-
-#mura-setup{
-  .make-xs-column(10);
-  .make-sm-column(4);
-  margin: 0 auto;
-  float: none !important;
-}
-
-
 
 #mura-login{
 

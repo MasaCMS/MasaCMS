@@ -36808,7 +36808,6 @@ label #selectFilter {
 .mura-focus-block .block-content {
   padding: 30px 30px 10px 30px;
 }
-
 .mura-focus-block .mura-focus-actions button,
 .mura-focus-block .mura-focus-actions button:hover,
 .mura-focus-block .mura-focus-actions button:focus,
@@ -37059,8 +37058,17 @@ fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
   background: none;
 }
 #csetup #main-container .alert {
+  line-height: 1.3em;
+}
+#csetup #main-container .alert:not(.alert-error) {
   background-color: #DEDEDE !important;
   border-color: #BCBCBC !important;
+}
+#csetup #main-container .page-heading + .alert {
+  margin-top: 15px;
+}
+#csetup #main-container .wizard-progress {
+  padding: 0;
 }
 #csetup #main-container .progress {
   background-color: #FFF;
@@ -37071,16 +37079,27 @@ fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
   -moz-border-radius: 2px;
   border-radius: 2px;
 }
+#csetup #main-container .nav-tabs {
+  margin-left: -15px;
+  margin-right: -15px;
+  padding: 0;
+  width: 110%;
+}
+#csetup #main-container .block > .nav-tabs > li {
+  display: table-cell !important;
+  width: 1% !important;
+}
 #csetup #main-container .nav-tabs li a {
   background-color: #FFF;
 }
 #csetup #main-container .tab-content {
-  padding: 0;
+  padding: 0 0;
   min-height: 280px;
 }
 #csetup #main-container .page-heading {
   margin-left: 0;
   margin-right: 0;
+  margin-top: -15px;
 }
 #csetup #main-container .nav-tabs li a {
   margin-right: 0 !important;
@@ -37107,42 +37126,21 @@ fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
   padding-left: 15px;
   padding-right: 15px;
 }
-#csetup #main-container .form-actions {
-  width: 100% !important;
-  padding-bottom: 20px;
+#csetup #main-container .mura-focus-actions {
+  margin: 30px 0 25px 0;
+  float: none;
+  height: 20px;
 }
-#csetup #main-container .form-actions .btn {
-  min-width: 92px;
-  background-color: #DEDEDE;
-}
-#csetup #main-container .form-actions .btn.wizard-next > i {
-  margin-left: 8px;
-}
-#csetup #main-container .form-actions .btn.wizard-finish,
-#csetup #main-container .form-actions .btn.wizard-finish:hover {
-  background-color: #ff3405;
-  color: #fff;
-  border: 1px solid #ff3405;
-}
-#csetup #main-container .form-actions .btn + .btn {
-  margin-right: 0 !important;
-  margin-left: 15px !important;
-}
-#mura-setup {
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete),
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):hover,
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):focus {
+  width: 45%;
   float: left;
-  width: 83.33333333%;
-  position: relative;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin: 0 auto;
-  float: none !important;
 }
-@media (min-width: 768px) {
-  #mura-setup {
-    float: left;
-    width: 33.33333333%;
-  }
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete) + .btn,
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):hover + .btn,
+#csetup #main-container .mura-focus-actions .btn:not(.mura-setup-complete):focus + .btn {
+  margin-left: 26px;
 }
 #mura-login #remember-me {
   margin-top: 7px !important;

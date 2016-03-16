@@ -267,7 +267,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-pencil"></i></a></li>
 	   <cfswitch expression="#rsnest.type#">
 	   <cfcase value="Page,Folder,Calendar,Gallery">
-	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#'));"><i class="mi-globe"></i></a></li>
+	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 	   </cfcase>
 	   <cfcase value="File,Link">
 	   <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,"")#index.cfm?LinkServID=#rsnest.contentid#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
@@ -294,7 +294,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
 		<cfswitch expression="#rsnest.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#'));"><i class="mi-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,"")#index.cfm?LinkServID=#rsnest.contentid#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>

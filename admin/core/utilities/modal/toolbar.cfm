@@ -345,7 +345,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												 <i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											</cfif></a>
 									</li>
-									<cfif this.showInlineEditor and not ($.content('type') eq 'Variation' and not len($.content('responsemessage')))>
+									<cfif this.showInlineEditor>
 									<li id="adminQuickEdit">
 										<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
 										<cfif $.content('type') eq 'Variation'>

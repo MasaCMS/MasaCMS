@@ -41,6 +41,7 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+<h1 class="page-heading">Mura CMS Setup</h1>
 <div id="installationComplete" class="alert">
 	<p>Mura is now set up and ready to use.</p>
 </div>
@@ -51,7 +52,7 @@ to your own modified versions of Mura CMS.
  --->
 
 <div class="mura-focus-actions">
-	<a href="#context#/admin/?appreload&applydbupdates" class="btn">Log In to Mura</a>
+	<a href="#context#/admin/?appreload&applydbupdates" class="btn mura-setup-complete">Log In to Mura</a>
 </div>
 
 </cfoutput>
