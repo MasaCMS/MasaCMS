@@ -34978,9 +34978,9 @@ a#nav-module-specific .metadata-horizontal li:focus {
 .mi-ok-circle:before {
   content: "\f05d";
 }
-/* minified color scheme, expanded and altered */
 body {
   background-color: #f5f5f5;
+  font-family: "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 a {
   color: #ff3405;
@@ -35390,7 +35390,15 @@ a.list-group-item:focus {
 .switch-primary input:checked + span {
   background-color: #5B5B5B;
 }
-/* tabs */
+.block > .nav-tabs > li.tabdrop > a:hover,
+.block > .nav-tabs > li.tabdrop > a:focus,
+.block > .nav-tabs > li.active.tabdrop > a,
+.block > .nav-tabs > li.active.tabdrop > a:hover,
+.block > .nav-tabs > li.active.tabdrop > a:focus {
+  -webkit-box-shadow: 0 0 #fff;
+  box-shadow: 0 0 #fff;
+  background-color: transparent;
+}
 .block-constrain > .nav-tabs {
   margin: -10px 0 0;
   background-color: #e4e4e4;
@@ -35409,72 +35417,6 @@ a.list-group-item:focus {
 }
 .block > .nav-tabs > li > a:hover {
   color: #ff3405;
-}
-/* user tabs, escape overflow:hidden */
-#cusers .block-content.tab-content {
-  overflow: visible;
-}
-/* tabdrop menu */
-.mura .nav-tabs,
-.mura .nav-pills {
-  position: relative;
-}
-/* adjust as needed so the tab text displays */
-.mura .tabdrop {
-  width: 45px;
-}
-/* hide any icons found in tabs not on first line */
-.mura .nav-tabs li li i {
-  visibility: hidden;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu {
-  background-color: #e4e4e4;
-  border: none;
-  margin-top: 0;
-}
-.tabdrop .dropdown-menu > .active > a,
-.tabdrop .dropdown-menu > .active > a:hover,
-.tabdrop .dropdown-menu > .active > a:focus {
-  background-color: transparent;
-  color: #ff3405;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu a {
-  padding-left: 12px !important;
-  padding-right: 12px !important;
-  color: #646464;
-  font-weight: 600;
-}
-.block > .nav-tabs li.tabdrop a.dropdown-toggle {
-  cursor: pointer;
-  background-color: transparent;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
-.block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
-  color: #ff3405;
-  background-color: transparent;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
-  background-color: #FFF !important;
-}
-#mura-content .block ul.nav-tabs-alt {
-  margin-right: 30px;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu a span {
-  padding-bottom: 9px;
-}
-.mura-tabs .open > a,
-.mura-tabs .open > a:hover,
-.mura-tabs .open > a:focus {
-  border: none !important;
-}
-.block > .nav-tabs > li.tabdrop > a:hover,
-.block > .nav-tabs > li.tabdrop > a:focus,
-.block > .nav-tabs > li.active.tabdrop > a,
-.block > .nav-tabs > li.active.tabdrop > a:hover,
-.block > .nav-tabs > li.active.tabdrop > a:focus {
-  -webkit-box-shadow: 0 0 #fff;
-  box-shadow: 0 0 #fff;
-  background-color: transparent;
 }
 .irs-bar,
 .irs-bar-edge,
@@ -35545,11 +35487,59 @@ div.tagsinput span.tag {
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
   background-color: #ff3405;
 }
-/* custom overrides */
-/* custom overrides */
-/* custom overrides */
-body {
-  font-family: "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* user tabs, escape overflow:hidden */
+#cusers .block-content.tab-content {
+  overflow: visible;
+}
+/* tabdrop menu */
+.mura .nav-tabs,
+.mura .nav-pills {
+  position: relative;
+}
+/* adjust as needed so the tab text displays */
+.mura .tabdrop {
+  width: 45px;
+}
+/* hide any icons found in tabs not on first line */
+.mura .nav-tabs li li i {
+  visibility: hidden;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu {
+  background-color: #e4e4e4;
+  border: none;
+  margin-top: 0;
+}
+.tabdrop .dropdown-menu > .active > a,
+.tabdrop .dropdown-menu > .active > a:hover,
+.tabdrop .dropdown-menu > .active > a:focus {
+  background-color: transparent;
+  color: #ff3405;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu a {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  color: #646464;
+  font-weight: 600;
+}
+.block > .nav-tabs li.tabdrop a.dropdown-toggle {
+  cursor: pointer;
+  background-color: transparent;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
+.block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
+  color: #ff3405;
+  background-color: transparent;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
+  background-color: #FFF !important;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu a span {
+  padding-bottom: 9px;
+}
+.mura-tabs .open > a,
+.mura-tabs .open > a:hover,
+.mura-tabs .open > a:focus {
+  border: none !important;
 }
 ul {
   padding-left: 0;
