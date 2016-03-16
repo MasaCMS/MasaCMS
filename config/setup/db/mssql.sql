@@ -58,7 +58,7 @@ CREATE TABLE [dbo].[tcontent] (
 	[keyPoints] [nvarchar] (max) NULL ,
 	[searchExclude] [tinyint] NULL ,
 	[path] [nvarchar] (max) NULL ,
-	[tags] [nvarchar] (max) NULL 
+	[tags] [nvarchar] (max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -80,7 +80,7 @@ CREATE TABLE [dbo].[tcontentassignments] (
 	[contentID] [char] (35) NOT NULL ,
 	[contentHistID] [char] (35) NOT NULL ,
 	[siteID] [nvarchar] (50) NOT NULL ,
-	[userID] [char] (35) NOT NULL 
+	[userID] [char] (35) NOT NULL
 ) ON [PRIMARY]
 GO
 
@@ -111,7 +111,7 @@ CREATE TABLE [dbo].[tcontentcategoryassign] (
 	[orderno] [int] NULL ,
 	[siteID] [nvarchar] (25) NULL ,
 	[featureStart] [datetime] NULL ,
-	[featureStop] [datetime] NULL 
+	[featureStop] [datetime] NULL
 ) ON [PRIMARY]
 GO
 
@@ -126,7 +126,7 @@ CREATE TABLE [dbo].[tcontentcomments] (
 	[email] [nvarchar] (100) NULL ,
 	[siteid] [nvarchar] (25) NULL ,
 	[ip] [nvarchar] (50) NULL ,
-	[isApproved] [tinyint] NULL 
+	[isApproved] [tinyint] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -138,7 +138,7 @@ CREATE TABLE [dbo].[tcontenteventreminders] (
 	[RemindHour] [int] NULL ,
 	[RemindMinute] [int] NULL ,
 	[RemindInterval] [int] NULL ,
-	[isSent] [int] NULL 
+	[isSent] [int] NULL
 ) ON [PRIMARY]
 GO
 
@@ -150,14 +150,14 @@ CREATE TABLE [dbo].[tcontentfeedadvancedparams] (
 	[field] [nvarchar] (100) NULL ,
 	[condition] [nvarchar] (50) NULL ,
 	[criteria] [nvarchar] (200) NULL ,
-	[dataType] [nvarchar] (50) NULL 
+	[dataType] [nvarchar] (50) NULL
 ) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[tcontentfeeditems] (
 	[feedID] [char] (35) NOT NULL ,
 	[itemID] [char] (35) NOT NULL ,
-	[type] [varchar] (50) NULL 
+	[type] [varchar] (50) NULL
 ) ON [PRIMARY]
 GO
 
@@ -187,7 +187,7 @@ CREATE TABLE [dbo].[tcontentfeeds] (
 	[nextN] [int] NULL ,
 	[displayName] [tinyint] NULL,
 	[displayRatings] [tinyint] NULL,
-	[displayComments] [tinyint] NULL 
+	[displayComments] [tinyint] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -199,7 +199,7 @@ CREATE TABLE [dbo].[tcontentobjects] (
 	[Name] [nvarchar] (255) NULL ,
 	[OrderNo] [int] NULL ,
 	[SiteID] [nvarchar] (25) NULL ,
-	[ColumnID] [int] NOT NULL 
+	[ColumnID] [int] NOT NULL
 ) ON [PRIMARY]
 GO
 
@@ -207,7 +207,7 @@ CREATE TABLE [dbo].[tcontentdisplaytitleapprovals] (
 	[contentid] [char] (35) NOT NULL ,
 	[isApproved] [tinyint] NULL ,
 	[email] [nvarchar] (150) NULL ,
-	[siteid] [nvarchar] (25) NULL 
+	[siteid] [nvarchar] (25) NULL
 ) ON [PRIMARY]
 GO
 
@@ -216,7 +216,7 @@ CREATE TABLE [dbo].[tcontentratings] (
 	[userID] [char] (35) NOT NULL ,
 	[siteID] [char] (25) NOT NULL ,
 	[rate] [int] NULL ,
-	[entered] [datetime] NULL 
+	[entered] [datetime] NULL
 ) ON [PRIMARY]
 GO
 
@@ -224,7 +224,7 @@ CREATE TABLE [dbo].[tcontentrelated] (
 	[contentHistID] [char] (35) NOT NULL ,
 	[relatedID] [char] (35) NOT NULL ,
 	[contentID] [char] (35) NOT NULL ,
-	[siteID] [varchar] (25) NOT NULL 
+	[siteID] [varchar] (25) NOT NULL
 ) ON [PRIMARY]
 GO
 
@@ -232,7 +232,7 @@ CREATE TABLE [dbo].[temailreturnstats] (
 	[emailID] [char] (35) NULL ,
 	[email] [nvarchar] (100) NULL ,
 	[url] [nvarchar] (1500) NULL ,
-	[created] [datetime] NULL 
+	[created] [datetime] NULL
 ) ON [PRIMARY]
 GO
 
@@ -243,7 +243,7 @@ CREATE TABLE [dbo].[temailstats] (
 	[returnClick] [int] NOT NULL ,
 	[bounce] [int] NOT NULL ,
 	[sent] [int] NOT NULL ,
-	[Created] [datetime] NULL 
+	[Created] [datetime] NULL
 ) ON [PRIMARY]
 GO
 
@@ -263,7 +263,7 @@ CREATE TABLE [dbo].[temails] (
 	[ReplyTo] [nvarchar] (50) NULL ,
 	[format] [nvarchar] (50) NULL ,
 	[fromLabel] [nvarchar] (50) NULL ,
-	[isDeleted] [bit] NOT NULL 
+	[isDeleted] [bit] NOT NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -280,7 +280,7 @@ CREATE TABLE [dbo].[tfiles] (
 	[contentType] [nvarchar] (100) NULL ,
 	[contentSubType] [nvarchar] (200) NULL ,
 	[fileExt] [nvarchar] (50) NULL,
-	[created] [datetime] NULL 
+	[created] [datetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -290,7 +290,7 @@ CREATE TABLE [dbo].[tformresponsepackets] (
 	[SiteID] [nvarchar] (25) NULL ,
 	[FieldList] [nvarchar] (max) NULL ,
 	[Data] [nvarchar] (max) NULL ,
-	[Entered] [datetime] NULL 
+	[Entered] [datetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -299,13 +299,13 @@ CREATE TABLE [dbo].[tformresponsequestions] (
 	[formID] [char] (35) NULL ,
 	[formField] [nvarchar] (50) NULL ,
 	[formValue] [nvarchar] (max) NULL ,
-	[pollValue] [nvarchar] (255) NULL 
+	[pollValue] [nvarchar] (255) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[tglobals] (
-	[appreload] [datetime] NULL, 
-	[loadlist] [nvarchar] (500) NULL 
+	[appreload] [datetime] NULL,
+	[loadlist] [nvarchar] (500) NULL
 ) ON [PRIMARY]
 GO
 
@@ -316,7 +316,7 @@ CREATE TABLE [dbo].[tmailinglist] (
 	[Description] [nvarchar] (max) NULL ,
 	[LastUpdate] [datetime] NULL ,
 	[isPurge] [int] NULL ,
-	[isPublic] [int] NULL 
+	[isPublic] [int] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -327,7 +327,7 @@ CREATE TABLE [dbo].[tmailinglistmembers] (
 	[fname] [nvarchar] (50) NULL ,
 	[lname] [nvarchar] (50) NULL ,
 	[company] [nvarchar] (50) NULL ,
-	[isVerified] [bit] NOT NULL 
+	[isVerified] [bit] NOT NULL
 ) ON [PRIMARY]
 GO
 
@@ -335,14 +335,14 @@ CREATE TABLE [dbo].[tpermissions] (
 	[ContentID] [char] (35) NULL ,
 	[GroupID] [char] (35) NULL ,
 	[SiteID] [nvarchar] (25) NULL ,
-	[Type] [nvarchar] (50) NULL 
+	[Type] [nvarchar] (50) NULL
 ) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[tredirects] (
 	[redirectID] [char] (35) NOT NULL ,
 	[URL] [nvarchar] (2000) NULL ,
-	[created] [datetime] NULL 
+	[created] [datetime] NULL
 ) ON [PRIMARY]
 GO
 
@@ -439,7 +439,7 @@ CREATE TABLE [dbo].[tsystemobjects] (
 	[Object] [nvarchar] (50) NULL ,
 	[SiteID] [nvarchar] (25) NULL ,
 	[Name] [nvarchar] (50) NULL ,
-	[OrderNo] [int] NULL 
+	[OrderNo] [int] NULL
 ) ON [PRIMARY]
 GO
 
@@ -503,7 +503,7 @@ CREATE TABLE [dbo].[tusers] (
 	[IMService] [nvarchar] (50) NULL ,
 	[created] [datetime] NULL,
 	[remoteID] [nvarchar] (35) NULL,
-	[tags] [nvarchar] (max) NULL 
+	[tags] [nvarchar] (max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -517,19 +517,19 @@ CREATE TABLE [dbo].[tusersfavorites] (
 	[dateCreated] [datetime] NOT NULL ,
 	[columnNumber] [int] NULL ,
 	[rowNumber] [int] NULL ,
-	[maxRSSItems] [int] NULL 
+	[maxRSSItems] [int] NULL
 ) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[tusersinterests] (
 	[userID] [char] (35) NOT NULL ,
-	[categoryID] [char] (35) NOT NULL 
+	[categoryID] [char] (35) NOT NULL
 ) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[tusersmemb] (
 	[UserID] [char] (35) NOT NULL ,
-	[GroupID] [char] (35) NOT NULL 
+	[GroupID] [char] (35) NOT NULL
 ) ON [PRIMARY]
 GO
 
@@ -537,7 +537,7 @@ CREATE TABLE [dbo].[tcontentpublicsubmissionapprovals] (
 	[contentid] [char] (35) NOT NULL ,
 	[isApproved] [tinyint] NULL ,
 	[email] [nvarchar] (150) NULL ,
-	[siteid] [varchar] (25) NULL 
+	[siteid] [varchar] (25) NULL
 ) ON [PRIMARY]
 GO
 
@@ -546,7 +546,7 @@ CREATE TABLE [dbo].[tcontenttags] (
 	[contentHistID] [char] (35) NOT NULL ,
 	[contentID] [char] (35) NOT NULL ,
 	[siteID] [char] (25) NOT NULL ,
-	[tag] [nvarchar] (100) NOT NULL 
+	[tag] [nvarchar] (100) NOT NULL
 ) ON [PRIMARY]
 GO
 
@@ -555,7 +555,7 @@ CREATE TABLE [dbo].[tclassextenddatauseractivity] (
 	[baseID] [char] (35) NOT NULL ,
 	[attributeID] [int] NOT NULL ,
 	[siteID] [nvarchar] (25) NULL ,
-	[attributeValue] [nvarchar] (max) NULL 
+	[attributeValue] [nvarchar] (max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -564,7 +564,7 @@ CREATE TABLE [dbo].[tclassextenddata] (
 	[baseID] [char] (35) NOT NULL ,
 	[attributeID] [int] NOT NULL ,
 	[siteID] [nvarchar] (25) NULL ,
-	[attributeValue] [nvarchar] (max) NULL 
+	[attributeValue] [nvarchar] (max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -580,7 +580,7 @@ CREATE TABLE [dbo].[tclassextend] (
 	[notes] [nvarchar] (max) NULL ,
 	[lastUpdate] [datetime] NULL ,
 	[dateCreated] [datetime] NULL ,
-	[lastUpdateBy] [nvarchar] (100) NULL 
+	[lastUpdateBy] [nvarchar] (100) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -600,7 +600,7 @@ CREATE TABLE [dbo].[tclassextendattributes] (
 	[message] [nvarchar] (300) NULL ,
 	[defaultValue] [nvarchar] (100) NULL ,
 	[optionList] [nvarchar] (max) NULL ,
-	[optionLabelList] [nvarchar] (max) NULL 
+	[optionLabelList] [nvarchar] (max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -611,7 +611,7 @@ CREATE TABLE [dbo].[tclassextendsets] (
 	[siteID] [nvarchar] (25) NULL ,
 	[name] [nvarchar] (50) NULL ,
 	[orderno] [int] NULL ,
-	[isActive] [tinyint] NULL 
+	[isActive] [tinyint] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -619,18 +619,18 @@ CREATE TABLE [dbo].[tuserstags] (
 	[tagID] [int] IDENTITY (1, 1) NOT NULL ,
 	[userID] [char] (35) NULL ,
 	[siteid] [varchar] (25) NULL ,
-	[tag] [varchar] (100) NULL 
+	[tag] [varchar] (100) NULL
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontent] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontent_ID] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontent] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontent_ID] PRIMARY KEY  CLUSTERED
 	(
 		[tcontent_ID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentstats] WITH NOCHECK ADD 
+ALTER TABLE [dbo].[tcontentstats] WITH NOCHECK ADD
 	CONSTRAINT [DF__views] DEFAULT (0) FOR [views],
 	CONSTRAINT [DF__rating] DEFAULT (0) FOR [rating],
 	CONSTRAINT [DF__totalVotes] DEFAULT (0) FOR [totalVotes],
@@ -639,242 +639,242 @@ ALTER TABLE [dbo].[tcontentstats] WITH NOCHECK ADD
 	CONSTRAINT [DF__comments] DEFAULT (0) FOR [comments]
 GO
 
-ALTER TABLE [dbo].[tcontentstats] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentstats] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentstats] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentstats] PRIMARY KEY  CLUSTERED
 	(
 		[contentID],
 		[siteID]
 	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentassignments] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentassignments] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentassignments] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentassignments] PRIMARY KEY  CLUSTERED
 	(
 		[contentID],
 		[contentHistID],
 		[siteID],
 		[userID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentcategories] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentcategories] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentcategories] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentcategories] PRIMARY KEY  CLUSTERED
 	(
 		[categoryID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentcategoryassign] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentcategoryassign] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentcategoryassign] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentcategoryassign] PRIMARY KEY  CLUSTERED
 	(
 		[contentHistID],
 		[categoryID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentcomments] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentcomments] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentcomments] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentcomments] PRIMARY KEY  CLUSTERED
 	(
 		[commentid]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentfeedadvancedparams] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentFeedAdvanceParams] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentfeedadvancedparams] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentFeedAdvanceParams] PRIMARY KEY  CLUSTERED
 	(
 		[paramID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentfeeds] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentfeeds] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentfeeds] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentfeeds] PRIMARY KEY  CLUSTERED
 	(
 		[feedID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentobjects] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentobjects] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentobjects] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentobjects] PRIMARY KEY  CLUSTERED
 	(
 		[ContentHistID],
 		[ObjectID],
 		[Object],
 		[ColumnID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentratings] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentratings] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentratings] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentratings] PRIMARY KEY  CLUSTERED
 	(
 		[contentID],
 		[userID],
 		[siteID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontentrelated] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentrelated] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontentrelated] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentrelated] PRIMARY KEY  CLUSTERED
 	(
 		[contentHistID],
 		[relatedID],
 		[contentID],
 		[siteID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[temails] WITH NOCHECK ADD 
-	CONSTRAINT [PK_temails] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[temails] WITH NOCHECK ADD
+	CONSTRAINT [PK_temails] PRIMARY KEY  CLUSTERED
 	(
 		[EmailID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tfiles] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tfiles] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tfiles] WITH NOCHECK ADD
+	CONSTRAINT [PK_tfiles] PRIMARY KEY  CLUSTERED
 	(
 		[fileID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tformresponsepackets] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tformresponsepackets] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tformresponsepackets] WITH NOCHECK ADD
+	CONSTRAINT [PK_tformresponsepackets] PRIMARY KEY  CLUSTERED
 	(
 		[ResponseID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tredirects] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tredirects] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tredirects] WITH NOCHECK ADD
+	CONSTRAINT [PK_tredirects] PRIMARY KEY  CLUSTERED
 	(
 		[redirectID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tsessiontracking] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tsessiontracking] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tsessiontracking] WITH NOCHECK ADD
+	CONSTRAINT [PK_tsessiontracking] PRIMARY KEY  CLUSTERED
 	(
 		[trackingID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tuseraddresses] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tuseraddresses] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tuseraddresses] WITH NOCHECK ADD
+	CONSTRAINT [PK_tuseraddresses] PRIMARY KEY  CLUSTERED
 	(
 		[addressID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tusersfavorites] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tusersfavorites] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tusersfavorites] WITH NOCHECK ADD
+	CONSTRAINT [PK_tusersfavorites] PRIMARY KEY  CLUSTERED
 	(
 		[favoriteID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tusersinterests] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tusersinterests] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tusersinterests] WITH NOCHECK ADD
+	CONSTRAINT [PK_tusersinterests] PRIMARY KEY  CLUSTERED
 	(
 		[userID],
 		[categoryID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tusersmemb] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tusersmemb] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tusersmemb] WITH NOCHECK ADD
+	CONSTRAINT [PK_tusersmemb] PRIMARY KEY  CLUSTERED
 	(
 		[UserID],
 		[GroupID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tcontent] WITH NOCHECK ADD 
+ALTER TABLE [dbo].[tcontent] WITH NOCHECK ADD
 	CONSTRAINT [DF_tcontent_Active] DEFAULT (0) FOR [Active],
 	CONSTRAINT [DF_tcontent_forceSSL] DEFAULT (0) FOR [forceSSL]
 GO
 
-ALTER TABLE [dbo].[tcontentcomments] WITH NOCHECK ADD 
+ALTER TABLE [dbo].[tcontentcomments] WITH NOCHECK ADD
 	CONSTRAINT [DF_tcontentcomments_isApproved] DEFAULT (0) FOR [isApproved]
 GO
 
-ALTER TABLE [dbo].[tcontentratings] WITH NOCHECK ADD 
+ALTER TABLE [dbo].[tcontentratings] WITH NOCHECK ADD
 	CONSTRAINT [DF_tcontentratings_entered] DEFAULT (getdate()) FOR [entered]
 GO
 
-ALTER TABLE [dbo].[temailstats] WITH NOCHECK ADD 
+ALTER TABLE [dbo].[temailstats] WITH NOCHECK ADD
 	CONSTRAINT [DF_temailstats_emailOpen] DEFAULT (0) FOR [emailOpen],
 	CONSTRAINT [DF_temailstats_returnClick] DEFAULT (0) FOR [returnClick],
 	CONSTRAINT [DF_temailstats_bounce] DEFAULT (0) FOR [bounce],
 	CONSTRAINT [DF_temailstats_sent] DEFAULT (0) FOR [sent]
 GO
 
-ALTER TABLE [dbo].[temails] WITH NOCHECK ADD 
+ALTER TABLE [dbo].[temails] WITH NOCHECK ADD
 	CONSTRAINT [DF_temails_NumberSent] DEFAULT (0) FOR [NumberSent],
 	CONSTRAINT [DF_temails_isDeleted] DEFAULT (0) FOR [isDeleted]
 GO
 
-ALTER TABLE [dbo].[tusers] WITH NOCHECK ADD 
+ALTER TABLE [dbo].[tusers] WITH NOCHECK ADD
 	CONSTRAINT [DF_tusers_created] DEFAULT (getdate()) FOR [created]
 GO
 
-ALTER TABLE [dbo].[tusersfavorites] WITH NOCHECK ADD 
+ALTER TABLE [dbo].[tusersfavorites] WITH NOCHECK ADD
 	CONSTRAINT [DF_tusersfavorites_dateCreated] DEFAULT (getdate()) FOR [dateCreated]
 GO
 
-ALTER TABLE [dbo].[tclassextenddatauseractivity] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tclassextenddatauseractivity] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tclassextenddatauseractivity] WITH NOCHECK ADD
+	CONSTRAINT [PK_tclassextenddatauseractivity] PRIMARY KEY  CLUSTERED
 	(
 		[dataID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tclassextenddata] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tclassextenddata] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tclassextenddata] WITH NOCHECK ADD
+	CONSTRAINT [PK_tclassextenddata] PRIMARY KEY  CLUSTERED
 	(
 		[dataID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tclassextend] WITH NOCHECK ADD 
-	CONSTRAINT [PK_TClassSubTypes] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tclassextend] WITH NOCHECK ADD
+	CONSTRAINT [PK_TClassSubTypes] PRIMARY KEY  CLUSTERED
 	(
 		[subTypeID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tclassextendattributes] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tclassextendattributes] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tclassextendattributes] WITH NOCHECK ADD
+	CONSTRAINT [PK_tclassextendattributes] PRIMARY KEY  CLUSTERED
 	(
 		[attributeID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tclassextendsets] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tclassextendsets] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tclassextendsets] WITH NOCHECK ADD
+	CONSTRAINT [PK_tclassextendsets] PRIMARY KEY  CLUSTERED
 	(
 		[extendSetID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
 
-ALTER TABLE [dbo].[tcontenttags] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontenttags] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tcontenttags] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontenttags] PRIMARY KEY  CLUSTERED
 	(
 		[tagID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tuserstags] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tuserstags] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tuserstags] WITH NOCHECK ADD
+	CONSTRAINT [PK_tuserstags] PRIMARY KEY  CLUSTERED
 	(
 		[tagID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tusers] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tusers] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[tusers] WITH NOCHECK ADD
+	CONSTRAINT [PK_tusers] PRIMARY KEY  CLUSTERED
 	(
 		[userID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 GO
 
  CREATE  INDEX [IX_tcontent] ON [dbo].[tcontent]([ContentID]) ON [PRIMARY]
@@ -986,9 +986,9 @@ GO
  CREATE  INDEX [IX_tclassextendsets_1] ON [dbo].[tclassextendsets]([subTypeID]) ON [PRIMARY]
 GO
 
-SET QUOTED_IDENTIFIER OFF 
+SET QUOTED_IDENTIFIER OFF
 GO
-SET ANSI_NULLS ON 
+SET ANSI_NULLS ON
 GO
 
 
@@ -1018,8 +1018,8 @@ GO
 INSERT INTO [dbo].[tsettings] ([SiteID],[Site],[MaxNestLevel],[PageLimit],[Locking],[Domain],[exportLocation],[FileDir],[Contact],[MailserverIP],[MailServerUsername],[MailServerPassword],[EmailBroadcaster],[Extranet],[ExtranetPublicReg],[ExtranetPublicRegNotify],[ExtranetSSL],[Cache],[ViewDepth],[NextN],[DataCollection],[columnCount],[columnNames],[primaryColumn],[publicSubmission],[AdManager],[archiveDate],[contactName],[contactAddress],[contactCity],[contactState],[contactZip],[contactEmail],[contactPhone],[privateUserPoolID],[publicUserPoolID],[advertiserUserPoolID],[orderNo],[emailBroadcasterLimit],[feedManager],[displayPoolID],[galleryMainScaleBy],[galleryMainScale],[gallerySmallScaleBy],[gallerySmallScale],[galleryMediumScaleBy],[galleryMediumScale],[sendLoginScript],[mailingListConfirmScript],[publicSubmissionApprovalScript],[reminderScript],[loginURL],[editProfileURL],[CommentApprovalDefault],[deploy],[lastDeployment],[useDefaultSMTPServer]) VALUES ('default','Default',NULL,1000,'none','localhost',NULL,NULL,'info@getmura.com','mail.server.com','username@server.com','password',0,1,0,null,0,0,1,20,1,3,'Left Column^Main Content^Right Column',2,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default','default','default',1,0,1,'default','y',500,'s',100,'y',250,NULL,NULL,NULL,NULL,'?display=login','?display=editProfile',1,0,NULL,0);
 GO
 
-INSERT INTO [dbo].[tcontent] ([SiteID],[ModuleID],[ParentID],[ContentID],[ContentHistID],[RemoteID],[RemoteURL],[RemotePubDate],[RemoteSourceURL],[RemoteSource],[Credits],[FileID],[Template],[Type],[subType],[Active],[OrderNo],[Title],[MenuTitle],[Summary],[Filename],[MetaDesc],[MetaKeyWords],[Body],[lastUpdate],[lastUpdateBy],[lastUpdateByID],[DisplayStart],[DisplayStop],[Display],[Approved],[IsNav],[Restricted],[RestrictGroups],[Target],[TargetParams],[responseChart],[responseMessage],[responseSendTo],[responseDisplayFields],[moduleAssign],[displayTitle],[Notes],[inheritObjects],[isFeature],[ReleaseDate],[IsLocked],[nextN],[sortBy],[sortDirection],[featureStart],[featureStop],[forceSSL],[audience],[keyPoints],[searchExclude],[path]) VALUES ('default','00000000000000000000000000000000003','00000000000000000000000000000000END','00000000000000000000000000000000003','6300ED4A-1320-5CC3-F9D6A2D279E386D0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Components',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,null);
-INSERT INTO [dbo].[tcontent] ([SiteID],[ModuleID],[ParentID],[ContentID],[ContentHistID],[RemoteID],[RemoteURL],[RemotePubDate],[RemoteSourceURL],[RemoteSource],[Credits],[FileID],[Template],[Type],[subType],[Active],[OrderNo],[Title],[MenuTitle],[Summary],[Filename],[MetaDesc],[MetaKeyWords],[Body],[lastUpdate],[lastUpdateBy],[lastUpdateByID],[DisplayStart],[DisplayStop],[Display],[Approved],[IsNav],[Restricted],[RestrictGroups],[Target],[TargetParams],[responseChart],[responseMessage],[responseSendTo],[responseDisplayFields],[moduleAssign],[displayTitle],[Notes],[inheritObjects],[isFeature],[ReleaseDate],[IsLocked],[nextN],[sortBy],[sortDirection],[featureStart],[featureStop],[forceSSL],[audience],[keyPoints],[searchExclude],[path]) VALUES ('default','00000000000000000000000000000000004','00000000000000000000000000000000END','00000000000000000000000000000000004','6300ED59-1320-5CC3-F9706221E0EFF7A2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Forms',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,null);
+INSERT INTO [dbo].[tcontent] ([SiteID],[ModuleID],[ParentID],[ContentID],[ContentHistID],[RemoteID],[RemoteURL],[RemotePubDate],[RemoteSourceURL],[RemoteSource],[Credits],[FileID],[Template],[Type],[subType],[Active],[OrderNo],[Title],[MenuTitle],[Summary],[Filename],[MetaDesc],[MetaKeyWords],[Body],[lastUpdate],[lastUpdateBy],[lastUpdateByID],[DisplayStart],[DisplayStop],[Display],[Approved],[IsNav],[Restricted],[RestrictGroups],[Target],[TargetParams],[responseChart],[responseMessage],[responseSendTo],[responseDisplayFields],[moduleAssign],[displayTitle],[Notes],[inheritObjects],[isFeature],[ReleaseDate],[IsLocked],[nextN],[sortBy],[sortDirection],[featureStart],[featureStop],[forceSSL],[audience],[keyPoints],[searchExclude],[path]) VALUES ('default','00000000000000000000000000000000003','00000000000000000000000000000000END','00000000000000000000000000000000003','6300ED4A-1320-5CC3-F9D6A2D279E386D0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Components','Components',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,null);
+INSERT INTO [dbo].[tcontent] ([SiteID],[ModuleID],[ParentID],[ContentID],[ContentHistID],[RemoteID],[RemoteURL],[RemotePubDate],[RemoteSourceURL],[RemoteSource],[Credits],[FileID],[Template],[Type],[subType],[Active],[OrderNo],[Title],[MenuTitle],[Summary],[Filename],[MetaDesc],[MetaKeyWords],[Body],[lastUpdate],[lastUpdateBy],[lastUpdateByID],[DisplayStart],[DisplayStop],[Display],[Approved],[IsNav],[Restricted],[RestrictGroups],[Target],[TargetParams],[responseChart],[responseMessage],[responseSendTo],[responseDisplayFields],[moduleAssign],[displayTitle],[Notes],[inheritObjects],[isFeature],[ReleaseDate],[IsLocked],[nextN],[sortBy],[sortDirection],[featureStart],[featureStop],[forceSSL],[audience],[keyPoints],[searchExclude],[path]) VALUES ('default','00000000000000000000000000000000004','00000000000000000000000000000000END','00000000000000000000000000000000004','6300ED59-1320-5CC3-F9706221E0EFF7A2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Forms','Forms',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,null);
 INSERT INTO [dbo].[tcontent] ([SiteID],[ModuleID],[ParentID],[ContentID],[ContentHistID],[RemoteID],[RemoteURL],[RemotePubDate],[RemoteSourceURL],[RemoteSource],[Credits],[FileID],[Template],[Type],[subType],[Active],[OrderNo],[Title],[MenuTitle],[Summary],[Filename],[MetaDesc],[MetaKeyWords],[Body],[lastUpdate],[lastUpdateBy],[lastUpdateByID],[DisplayStart],[DisplayStop],[Display],[Approved],[IsNav],[Restricted],[RestrictGroups],[Target],[TargetParams],[responseChart],[responseMessage],[responseSendTo],[responseDisplayFields],[moduleAssign],[displayTitle],[Notes],[inheritObjects],[isFeature],[ReleaseDate],[IsLocked],[nextN],[sortBy],[sortDirection],[featureStart],[featureStop],[forceSSL],[audience],[keyPoints],[searchExclude],[path]) VALUES ('default','00000000000000000000000000000000000','00000000000000000000000000000000END','00000000000000000000000000000000001','6300ED69-1320-5CC3-F922E3012E2C6BAE',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default.cfm','Page','Default',1,1,'Home','Home',NULL,NULL,NULL,NULL,NULL,getDate(),'System',NULL,NULL,NULL,1,1,1,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL,'Cascade',0,NULL,0,10,'orderno','asc',NULL,NULL,0,NULL,NULL,0,'''00000000000000000000000000000000001''');
 INSERT INTO [dbo].[tcontent] ([SiteID],[ModuleID],[ParentID],[ContentID],[ContentHistID],[RemoteID],[RemoteURL],[RemotePubDate],[RemoteSourceURL],[RemoteSource],[Credits],[FileID],[Template],[Type],[subType],[Active],[OrderNo],[Title],[MenuTitle],[Summary],[Filename],[MetaDesc],[MetaKeyWords],[Body],[lastUpdate],[lastUpdateBy],[lastUpdateByID],[DisplayStart],[DisplayStop],[Display],[Approved],[IsNav],[Restricted],[RestrictGroups],[Target],[TargetParams],[responseChart],[responseMessage],[responseSendTo],[responseDisplayFields],[moduleAssign],[displayTitle],[Notes],[inheritObjects],[isFeature],[ReleaseDate],[IsLocked],[nextN],[sortBy],[sortDirection],[featureStart],[featureStop],[forceSSL],[audience],[keyPoints],[searchExclude],[path]) VALUES ('default','00000000000000000000000000000000006','00000000000000000000000000000000END','00000000000000000000000000000000006','6300ED79-1320-5CC3-F92E6325C26664B6',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Advertising',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,null);
 INSERT INTO [dbo].[tcontent] ([SiteID],[ModuleID],[ParentID],[ContentID],[ContentHistID],[RemoteID],[RemoteURL],[RemotePubDate],[RemoteSourceURL],[RemoteSource],[Credits],[FileID],[Template],[Type],[subType],[Active],[OrderNo],[Title],[MenuTitle],[Summary],[Filename],[MetaDesc],[MetaKeyWords],[Body],[lastUpdate],[lastUpdateBy],[lastUpdateByID],[DisplayStart],[DisplayStop],[Display],[Approved],[IsNav],[Restricted],[RestrictGroups],[Target],[TargetParams],[responseChart],[responseMessage],[responseSendTo],[responseDisplayFields],[moduleAssign],[displayTitle],[Notes],[inheritObjects],[isFeature],[ReleaseDate],[IsLocked],[nextN],[sortBy],[sortDirection],[featureStart],[featureStop],[forceSSL],[audience],[keyPoints],[searchExclude],[path]) VALUES ('default','00000000000000000000000000000000000','00000000000000000000000000000000END','00000000000000000000000000000000000','6300ED88-1320-5CC3-F9E241684D21FEC9',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Site Manager',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,null);
@@ -1032,13 +1032,12 @@ INSERT INTO [dbo].[tcontent] ([SiteID],[ModuleID],[ParentID],[ContentID],[Conten
 GO
 
 <cfoutput>
-INSERT INTO [dbo].[tmailinglist] ([MLID],[SiteID],[Name],[Description],[LastUpdate],[isPurge],[isPublic] ) 
+INSERT INTO [dbo].[tmailinglist] ([MLID],[SiteID],[Name],[Description],[LastUpdate],[isPurge],[isPublic] )
 VALUES ('#createUUID()#','default','Please Remove Me from All Lists','',getDate(),1,1)
 GO
 </cfoutput>
 
-SET QUOTED_IDENTIFIER OFF 
+SET QUOTED_IDENTIFIER OFF
 GO
-SET ANSI_NULLS ON 
+SET ANSI_NULLS ON
 GO
-

@@ -114,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	feed.setNextN(10);
 	feed.setLiveOnly(0);
 	feed.setShowNavOnly(0);
+	feed.setIncludeHomePage(1);
 
 	paramsStarted=false;
 	tagStarted=false;
@@ -435,7 +436,7 @@ if(len($.siteConfig('customTagGroups'))){
 	  		<cfset newcontent='none'>
 		</cfif>
 
-		<cfset start=true>
+		<cfset started=true>
 		<cfif item.getContentID() eq '00000000000000000000000000000000001'>
 			<cfset topID=item.getContentID()>
 		<cfelse>
@@ -602,7 +603,7 @@ if(len($.siteConfig('customTagGroups'))){
 			</tr>
 		</cfloop>
 		</cfif>
-		<cfif started>
+		<cfif not started>
 			<tr>
 				<td colspan="3">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</td>
 			</tr>
@@ -644,7 +645,6 @@ if(len($.siteConfig('customTagGroups'))){
 	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</label>
     <input class="text" id="contentKeywords" value="#esapiEncode('html_attr',session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" />
 	</div>
-
 
     <cfif $.event("report") neq "lockedfiles">
 	<div class="module mura-control-group">

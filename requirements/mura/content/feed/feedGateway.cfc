@@ -641,7 +641,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND tcontent.searchExclude = 0
 				</cfif>
 
-				AND tcontent.contentid <> '00000000000000000000000000000000001'
+				<cfif not arguments.feedBean.getIncludeHomePage()>
+					AND tcontent.contentid <> '00000000000000000000000000000000001'
+				</cfif>
+
 				AND tcontent.type <>'Module'
 
 				<!--- rsParams --->
