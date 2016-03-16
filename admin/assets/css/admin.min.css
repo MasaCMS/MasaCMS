@@ -37499,6 +37499,15 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
     margin-right: 8px;
   }
 }
+/* MAX WIDTH, LARGE & MEDIUM */
+/* MAX WIDTH, LARGE & MEDIUM */
+/* MAX WIDTH, LARGE & MEDIUM */
+@media (min-width: 992px) {
+  #nav-module-specific .btn-group .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+}
 /* MEDIUM, EXTRA SMALL & SMALL */
 /* MEDIUM, EXTRA SMALL & SMALL */
 /* MEDIUM, EXTRA SMALL & SMALL */
@@ -37516,5 +37525,9 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
   #mura-content #main + .sidebar {
     padding-left: 0 !important;
     clear: both;
+  }
+  #nav-module-specific .btn-group .dropdown-menu {
+    right: auto;
+    left: -10px;
   }
 }
