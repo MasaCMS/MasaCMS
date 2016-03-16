@@ -264,6 +264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("changesetCategoryAssignment","changesetCategoryAssignmentBean");
 		variables.serviceFactory.addAlias("changesetTagAssignment","changesetTagAssignmentBean");
 		variables.serviceFactory.addAlias("userDevice","userDeviceBean");
+		variables.serviceFactory.addAlias("variationTargeting","contentVariationTargetingBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
@@ -318,6 +319,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.getBean('contentFilenameArchive');
 			variables.serviceFactory.getBean('commenter');
 			variables.serviceFactory.getBean('userDevice');
+			variables.serviceFactory.getBean('variationTargeting');
 		</cfscript>
 	</cfif>
 

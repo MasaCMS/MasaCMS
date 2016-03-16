@@ -176,15 +176,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
 	</cfif>
 
+	<!---
 	<cfif rc.contentBean.getType() eq 'Variation'>
 		<div class="mura-control-group">
 			<label>
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.editableregiontargeting')#
 			</label>
-			<textarea name="initjs" id="initjs" rows="10">#esapiEncode('html',rc.contentBean.getInitJS())#</textarea>
+			<textarea name="initjs" id="initjs" rows="10">#esapiEncode('html',rc.contentBean.getVariationTargeting().getInitJS())#</textarea>
 		</div>
 	</cfif>
-
+	--->
+	
 	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>
 		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
 		<div id="bodyContainer" class="body-container mura-control-group" style="display:none;">

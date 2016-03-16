@@ -316,6 +316,10 @@
 					src+='&title=' + encodeURIComponent(mura.title);
 				}
 
+				if(mura.type=='Variation' && mura.remoteurl){
+					src+='&remoteurl=' + encodeURIComponent(mura.remoteurl);
+				}
+
 				utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
 				'<div id="frontEndToolsModalBody">' + $tools +
 				'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +

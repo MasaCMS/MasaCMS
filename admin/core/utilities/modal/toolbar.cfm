@@ -167,6 +167,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.newLink = variables.newLink & "&amp;ptype=" & request.contentBean.getType()>
 			<cfset variables.newLink = variables.newLink & "&amp;compactDisplay=true">
 
+			<cfif $.content('type') eq 'Variation'>
+				<cfset variables.initJSLink = variables.adminBase & "/?muraAction=cArch.variationtargeting">
+				<cfset variables.initJSLink = variables.initJSLink & "&amp;contentid=" & request.contentBean.getContentID()>
+				<cfset variables.initJSLink = variables.initJSLink & "&amp;topid=00000000000000000000000000000000099">
+				<cfset variables.initJSLink = variables.initJSLink & "&amp;siteid=" & request.contentBean.getSiteID()>
+				<cfset variables.initJSLink = variables.initJSLink & "&amp;moduleid=" & "00000000000000000000000000000000099">
+				<cfset variables.initJSLink = variables.initJSLink & "&amp;compactDisplay=true">
+			</cfif>
+
 
 			<cfset variables.historyLink = variables.adminBase & "/?muraAction=cArch.hist">
 			<cfset variables.historyLink = variables.historyLink & "&amp;siteid=" & request.contentBean.getSiteID()>
@@ -346,19 +355,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</cfif></a>
 									</li>
 									<cfif this.showInlineEditor>
-									<li id="adminQuickEdit">
-										<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
-										<cfif $.content('type') eq 'Variation'>
-											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
-										<cfelseif useLayoutManager()>
-											<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
-											<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
-											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
-											</cfif>
-										<cfelse>
-											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
-										</cfif></a>
-									</li>
+										<li id="adminQuickEdit">
+											<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
+											<cfif $.content('type') eq 'Variation'>
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
+											<cfelseif useLayoutManager()>
+												<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
+												<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
+												</cfif>
+											<cfelse>
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
+											</cfif></a>
+										</li>
+										<cfif request.r.perm eq 'editor' and $.content('type') eq 'Variation'>
+											<li id="adminVariationTargeting"><a id="mura-edit-var-initjs" href="#variables.initJSLink#" #variables.targethook#><i class="mi-code"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-variationtargeting')#</a></li>
+										</cfif>
 									</cfif>
 								</ul>
 							</li>
@@ -374,9 +386,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<!---</cfif>--->
 							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 								<cfif request.contentBean.getType() eq 'Variation'>
-									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-times-circle"></i></a></li>
+									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i></a></li>
 								<cfelse>
-									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-times-circle"></i></a></li>
+									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i></a></li>
 								</cfif>
 
 							</cfif>

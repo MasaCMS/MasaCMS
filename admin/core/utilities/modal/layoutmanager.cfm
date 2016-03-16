@@ -122,7 +122,11 @@
 </div>
 <script>
 mura.ready(function(){
-
+	<cfif $.content('type') eq 'Variation'>
+	if(!mura('.mxp-editable').length){
+		mura('##adminQuickEdit').remove();
+	}
+	</cfif>
 	mura('body').addClass('mura-sidebar-state__hidden--right');
 	mura('##mura-sidebar-container').show();
 	mura('##mura-objects-legacy-btn').click(function(e){
