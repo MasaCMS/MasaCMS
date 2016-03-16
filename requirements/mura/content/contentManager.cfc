@@ -947,6 +947,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var addObjects=[]>
 		<cfset var removeObjects=[]>
 		<cfset var errors={}>
+		<cfset var initjs="">
 
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -1081,6 +1082,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif newBean.getHTMLTitle() eq ''>
 				<cfset newBean.setHTMLTitle(newBean.getTitle())>
+			</cfif>
+
+			<cfif newBean.getType() eq 'Validate'>
+				<cfset initjs=newBean.getInitJS()>
 			</cfif>
 
 			<cfset newBean.validate()>
@@ -1678,13 +1683,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif newBean.getType() eq 'Form' and isJSON(newBean.getBody())>
-					<cfset getBean('formBuilderManager').generateFormObject(pluginEvent.getValue('MuraScope'),pluginEvent) />			
+					<cfset getBean('formBuilderManager').generateFormObject(pluginEvent.getValue('MuraScope'),pluginEvent) />
 				</cfif>
 
 				<!--- For backwards compatibility --->
 				<cfif newBean.getType() eq 'Folder'>
 					<cfset variables.pluginManager.announceEvent("onAfterPortalSave",pluginEvent)>
 					<cfset variables.pluginManager.announceEvent("onAfterPortal#newBean.getSubType()#Save",pluginEvent)>
+				</cfif>
+				<!--- --->
+
+				<!--- Save remoteVariation init js --->
+				<cfif len(initJS)>
+					<cfset newBean.getVariationTargeting().setInitJS(initJS).save()>
 				</cfif>
 				<!--- --->
 
