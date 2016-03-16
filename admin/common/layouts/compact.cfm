@@ -171,6 +171,9 @@
 
  			// tab drop
  			$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+				$('.tabdrop .dropdown-toggle').on('click',function(){  
+					$(this).parents('.nav-tabs').css('overflow-y','visible');  
+				});
 
 				if (top.location != self.location) {
 

@@ -815,42 +815,38 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Image Galleries</h3>
 			</div>
-			  <!-- /block header -->
-			  <div class="block-content">
-				<div class="mura-control-group">
-					<label>Small (Thumbnail) Image</label>
-							<label>Height</label>
-							<input name="smallImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageHeight())#" />
-					</div>
+		  <!-- /block header -->
 
-				<div class="mura-control-group">
-							<label>Width</label>
-							<input name="smallImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageWidth())#" />
+		  <div class="block-content">
+			<div class="mura-control-group">
+				<label>Small (Thumbnail) Image</label>
+				<div class="mura-control-inline">
+					<label>Height</label>
+					<input name="smallImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageHeight())#" />
+					<label>Width</label>
+					<input name="smallImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageWidth())#" />
+				</div>
 			</div>
 
-				<div class="mura-control-group">
-					<label>Medium Image</label>
-							<label>Height</label>
-							<input name="mediumImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageHeight())#" />
-					</div>
-
-				<div class="mura-control-group">
-							<label>Width</label>
-					<input name="mediumImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageWidth())#" />
+			<div class="mura-control-group">
+				<label>Medium Image</label>
+				<div class="mura-control-inline">
+					<label>Height</label>
+					<input name="mediumImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageHeight())#" />
+					<label>Width</label>
+					<input name="mediumImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.	getMediumImageWidth())#" />
+				</div>
 			</div>
 
-				<div class="mura-control-group">
-					<label>Large Image</label>
-							<label>Height</label>
-							<input name="largeImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageHeight())#" />
-					</div>
-
-				<div class="mura-control-group">
-							<label>Width</label>
-							<input name="largeImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageWidth())#" />
+			<div class="mura-control-group">
+				<label>Large Image</label>
+				<div class="mura-control-inline">
+					<label>Height</label>
+					<input name="largeImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageHeight())#" />
+					<label>Width</label>
+					<input name="largeImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageWidth())#" />
+				</div>
 			</div>
-
-		<!--- TODO GoWest : custom images UI & markup : 2016-01-20T17:05:43-07:00 --->
 
 				<cfif len(rc.siteBean.getSiteID())>
 				<script>
@@ -858,6 +854,8 @@ to your own modified versions of Mura CMS.
 
 					jQuery("##custom-image-dialog").remove();
 					jQuery("body").append('<div id="custom-image-dialog" rel="tooltip" title="Loading..." style="display:none"><div id="newContentMenu"><div class="load-inline"></div></div></div>');
+
+					var editTitle = "Add Custom Image Size";
 
 					var dialogoptions= {
 							Save: function() {
@@ -874,6 +872,7 @@ to your own modified versions of Mura CMS.
 								deleteCustomImageSize();
 								jQuery( this ).dialog( "close" );
 							};
+							var editTitle = "Edit Custom Image Size";
 						}
 
 					jQuery("##custom-image-dialog").dialog({
@@ -889,7 +888,7 @@ to your own modified versions of Mura CMS.
 							var pars = 'muraAction=cSettings.loadcustomimage&siteid=' + siteid +'&sizeid=' + sizeid  +'&cacheid=' + Math.random();
 							jQuery.get(url + "?" + pars,
 									function(data) {
-									jQuery("##custom-image-dialog").closest(".ui-dialog").find(".ui-dialog-title").html('Edit Custom Image Size');
+									jQuery("##custom-image-dialog").closest(".ui-dialog").find(".ui-dialog-title").html(editTitle);
 									jQuery('##custom-image-dialog').html(data);
 									$("##custom-image-dialog").dialog("option", "position", "center");
 									}
@@ -961,8 +960,12 @@ to your own modified versions of Mura CMS.
 			</script>
 			<div class="mura-control-group">
 				<label>Custom Images</label>
-				<ul class="nav nav-pills"><li><a href="##" onclick="return openCustomImageSize('','#esapiEncode('javascript',rc.siteBean.getSiteID())#')"><i class="mi-plus-circle"></i> Add Custom Image Size</a></li></ul>
-				<div id="custom-images-container"></div>
+				<div class="mura-control justify">
+					<a href="##" onclick="return openCustomImageSize('','#esapiEncode('javascript',rc.siteBean.getSiteID())#')" class="btn"><i class="mi-plus-circle"></i> Add Custom Image Size</a>
+				</div>
+				<div class="mura-control justify">
+					<div id="custom-images-container"></div>
+				</div>
 			</div>
 			</cfif>
 

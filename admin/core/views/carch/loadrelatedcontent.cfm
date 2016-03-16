@@ -145,35 +145,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="rcAdvancedSearch" style="display:none;">
 			<div class="mura-control-group">
 				<cfif rc.relatedcontentsetid neq 'calendar'>
-					<div class="mura-control justify">
-						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.contenttype')#</label>
-						<select name="searchTypeSelector" id="searchTypeSelector">
-							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.all')#</option>
-							<cfloop list="#baseTypeList#" index="t">
-								<cfsilent>
-									<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default') and adminonly!=1</cfquery>
-								</cfsilent>
-								<option value="#t#^Default"<cfif rc.searchTypeSelector eq "#t#^Default"> selected="selected"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-								<cfif rsst.recordcount>
-									<cfloop query="rsst">
-										<option value="#t#^#rsst.subtype#"<cfif rc.searchTypeSelector eq "#t#^#rsst.subtype#"> selected="selected"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
-									</cfloop>
-								</cfif>
-							</cfloop>
-						</select>
-					</div>
+					
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.contenttype')#</label>
+					<select name="searchTypeSelector" id="searchTypeSelector">
+						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.all')#</option>
+						<cfloop list="#baseTypeList#" index="t">
+							<cfsilent>
+								<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default') and adminonly!=1</cfquery>
+							</cfsilent>
+							<option value="#t#^Default"<cfif rc.searchTypeSelector eq "#t#^Default"> selected="selected"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
+							<cfif rsst.recordcount>
+								<cfloop query="rsst">
+									<option value="#t#^#rsst.subtype#"<cfif rc.searchTypeSelector eq "#t#^#rsst.subtype#"> selected="selected"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
+								</cfloop>
+							</cfif>
+						</cfloop>
+					</select>
+
 				</cfif>
-				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
-						<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" /> &ndash; <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
-					</div>
-				</div>
-			<div class="mura-control-group">
-				<div class="mura-control justify">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availablecategories')#</label>
-					<div id="mura-list-tree">
-						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.rcCategoryID#" nestLevel="0" useID="0" elementName="rcCategoryID">
-					</div>
+			</div>	
+		<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
+			<div class="mura-control-inline">
+				<label>#application.rbFactory.getKeyValue(session.rb,"params.from")#</label>
+				<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" /> 
+				<label>#application.rbFactory.getKeyValue(session.rb,"params.to")#</label>
+				 <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
+			</div>
+		</div>
+		</div>
+		<div class="mura-control-group">
+			<div class="mura-control justify">
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availablecategories')#</label>
+				<div id="mura-list-tree">
+					<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.rcCategoryID#" nestLevel="0" useID="0" elementName="rcCategoryID">
 				</div>
 			</div>
 		</div>
