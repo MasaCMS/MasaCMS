@@ -27246,9 +27246,6 @@ font-size: 12px;
   /* the nested list within each item */
   /* inline list of nested items */
 }
-.mura .list-table .list-table-items .navZoom {
-  width: 95% !important;
-}
 .mura .list-table .list-table-items li.item {
   position: relative;
   display: block;
@@ -27291,6 +27288,16 @@ font-size: 12px;
 }
 .mura .list-table .content-type i:hover {
   color: #000000;
+}
+.mura .ui-draggable .navZoom,
+.mura .ui-draggable-dragging .navZoom,
+.mura .list-table-items .navZoom {
+  width: 95% !important;
+}
+.mura .ui-draggable .navZoom,
+.mura .ui-draggable-dragging .navZoom {
+  min-width: 468px;
+  background: none !important;
 }
 .mura div[id^="rcGroup-"] .list-table-items li.item .delete {
   z-index: 1;
@@ -37248,8 +37255,8 @@ a#mura-login .block-header:focus {
   border-radius: 2px;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
-  text-align: center;
   float: none;
+  text-align: center;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
   float: none;
