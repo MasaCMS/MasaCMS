@@ -815,39 +815,37 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Image Galleries</h3>
 			</div>
-			  <!-- /block header -->
-			  <div class="block-content">
-				<div class="mura-control-group">
-					<label>Small (Thumbnail) Image</label>
-							<label>Height</label>
-							<input name="smallImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageHeight())#" />
-					</div>
+		  <!-- /block header -->
 
-				<div class="mura-control-group">
-							<label>Width</label>
-							<input name="smallImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageWidth())#" />
+		  <div class="block-content">
+			<div class="mura-control-group">
+				<label>Small (Thumbnail) Image</label>
+				<div class="mura-control-inline">
+					<label>Height</label>
+					<input name="smallImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageHeight())#" />
+					<label>Width</label>
+					<input name="smallImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageWidth())#" />
+				</div>
 			</div>
 
-				<div class="mura-control-group">
-					<label>Medium Image</label>
-							<label>Height</label>
-							<input name="mediumImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageHeight())#" />
-					</div>
-
-				<div class="mura-control-group">
-							<label>Width</label>
-					<input name="mediumImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageWidth())#" />
+			<div class="mura-control-group">
+				<label>Medium Image</label>
+				<div class="mura-control-inline">
+					<label>Height</label>
+					<input name="mediumImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageHeight())#" />
+					<label>Width</label>
+					<input name="mediumImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.	getMediumImageWidth())#" />
+				</div>
 			</div>
 
-				<div class="mura-control-group">
-					<label>Large Image</label>
-							<label>Height</label>
-							<input name="largeImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageHeight())#" />
-					</div>
-
-				<div class="mura-control-group">
-							<label>Width</label>
-							<input name="largeImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageWidth())#" />
+			<div class="mura-control-group">
+				<label>Large Image</label>
+				<div class="mura-control-inline">
+					<label>Height</label>
+					<input name="largeImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageHeight())#" />
+					<label>Width</label>
+					<input name="largeImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageWidth())#" />
+				</div>
 			</div>
 
 		<!--- TODO GoWest : custom images UI & markup : 2016-01-20T17:05:43-07:00 --->
