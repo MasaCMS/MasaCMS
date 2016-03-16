@@ -33223,6 +33223,7 @@ a#nav-module-specific .metadata-horizontal li:focus {
 }
 .mi-photo:before,
 .mi-image:before,
+.mi-picture:before,
 .mi-picture-o:before {
   content: "\f03e";
 }
@@ -36597,6 +36598,12 @@ a.close:hover {
   clear: both !important;
   float: none;
   display: block;
+}
+#image-details img {
+  border-top: 25px solid #fff;
+  border-right: 25px solid #fff;
+  border-bottom: 25px solid #fff;
+  margin-top: -25px;
 }
 ul.dropdown-menu {
   margin: 2px 0 0;
