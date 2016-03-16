@@ -23676,17 +23676,6 @@ i {
   /* @end */
   /* @group Quick Edit */
   /* @end */
-  /*!
- * Tab drop for Bootstrap
- *
- * Copyright 2012 Stefan Petre
- * Improvements by Jenna Schabdach
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- */
-  /* adjust as needed so the tab text displays */
-  /* hide any icons found in tabs not on first line */
   /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -26069,16 +26058,6 @@ text-shadow: 0 0 1px @blue;
 }
 .mura #ccategory li {
   padding-left: 0;
-}
-.mura .nav-tabs,
-.mura .nav-pills {
-  position: relative;
-}
-.mura .tabdrop {
-  width: 10px;
-}
-.mura .nav-tabs li li i {
-  visibility: hidden;
 }
 .mura #mura-templatebuilder .ui-button-text {
   height: 32px;
@@ -35387,48 +35366,64 @@ a.list-group-item:focus {
   background-color: #5B5B5B;
 }
 /* tabs */
-.block > .nav-tabs.nav-tabs-alt {
-  padding-right: 15px;
-  border-bottom: none !important;
+.block-constrain > .nav-tabs {
+  margin: -10px 0 0;
+  background-color: #e4e4e4;
 }
-.nav-tabs li a,
-.block .mura-tabs > li:not(.tabdrop) > a,
-.mura-tabs > li > a {
-  margin-right: 25px !important;
-  margin-left: 0;
-  padding-bottom: 8px;
-  padding-top: 8px;
-  padding-left: 0px;
-  padding-right: 0px;
+.block > .nav-tabs > li a {
+  text-transform: uppercase;
+}
+.block > .nav-tabs > li.active > a,
+.block > .nav-tabs > li.active > a:hover,
+.block > .nav-tabs > li.active > a:focus {
+  color: #ff3405;
+  background-color: #fff;
+  border-color: transparent;
+}
+.block > .nav-tabs > li > a:hover {
+  color: #ff3405;
 }
 /* user tabs, escape overflow:hidden */
 #cusers .block-content.tab-content {
   overflow: visible;
 }
 /* tabdrop menu */
+.mura .nav-tabs,
+.mura .nav-pills {
+  position: relative;
+}
+/* adjust as needed so the tab text displays */
+.mura .tabdrop {
+  width: 45px;
+}
+/* hide any icons found in tabs not on first line */
+.mura .nav-tabs li li i {
+  visibility: hidden;
+}
 .block > .nav-tabs li.tabdrop .dropdown-menu {
-  padding-bottom: 15px;
-  right: 106px;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu a {
-  margin-left: 12px !important;
-  margin-right: 12px !important;
-  color: #646464;
-  font-weight: 600;
-}
-.block > .nav-tabs li.tabdrop a.dropdown-toggle {
-  padding-top: 8px;
-  cursor: pointer;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
-.block > .nav-tabs li.tabdrop .dropdown-menu a:hover,
-.block > .nav-tabs > li > a:hover {
-  color: #ff3405;
-  background-color: #FFF !important;
+  background-color: #e4e4e4;
+  border: none;
+  margin-top: 0;
 }
 .tabdrop .dropdown-menu > .active > a,
 .tabdrop .dropdown-menu > .active > a:hover,
 .tabdrop .dropdown-menu > .active > a:focus {
+  background-color: transparent;
+  color: #ff3405;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu a {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  color: #646464;
+  font-weight: 600;
+}
+.block > .nav-tabs li.tabdrop a.dropdown-toggle {
+  cursor: pointer;
+  background-color: transparent;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
+.block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
+  color: #ff3405;
   background-color: transparent;
 }
 #mura-content .block ul.nav-tabs-alt {
@@ -35437,28 +35432,19 @@ a.list-group-item:focus {
 .block > .nav-tabs li.tabdrop .dropdown-menu a span {
   padding-bottom: 9px;
 }
-.block > .nav-tabs li.tabdrop .dropdown-menu li.active a span,
-.block > .nav-tabs li.tabdrop .dropdown-menu a:hover span,
-.block > .nav-tabs.nav-tabs-alt > li:not(.tabdrop) > a:hover,
-.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a,
-.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a:hover,
-.block > .nav-tabs.nav-tabs-alt > li.active:not(.tabdrop) > a:focus {
-  -webkit-box-shadow: 0 2px #ff3405;
-  box-shadow: 0 2px #ff3405;
-  background-color: transparent;
-}
 .mura-tabs .open > a,
 .mura-tabs .open > a:hover,
 .mura-tabs .open > a:focus {
   border: none !important;
-  background-color: #FFF !important;
 }
-.block > .nav-tabs.nav-tabs-alt > li.tabdrop > a:hover,
-.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a,
-.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a:hover,
-.block > .nav-tabs.nav-tabs-alt > li.active.tabdrop > a:focus {
+.block > .nav-tabs > li.tabdrop > a:hover,
+.block > .nav-tabs > li.tabdrop > a:focus,
+.block > .nav-tabs > li.active.tabdrop > a,
+.block > .nav-tabs > li.active.tabdrop > a:hover,
+.block > .nav-tabs > li.active.tabdrop > a:focus {
   -webkit-box-shadow: 0 0 #fff;
   box-shadow: 0 0 #fff;
+  background-color: transparent;
 }
 .irs-bar,
 .irs-bar-edge,
@@ -35802,7 +35788,7 @@ header .btn-image span.button-image {
 #mura-content ul.breadcrumb,
 #mura-content ol.breadcrumb {
   padding: 0;
-  margin: 10px 0;
+  margin: 10px 0 0 0;
   clear: both;
 }
 #mura-content .mura-table-grid ul.breadcrumb {
@@ -36459,7 +36445,6 @@ fieldset[disabled] .sidebar-buttons .btn.active {
 .tab-content {
   padding-left: 0px;
   padding-right: 0px;
-  padding-top: 15px;
 }
 .tab-pane .block-content {
   padding-top: 15px;
@@ -36469,6 +36454,7 @@ fieldset[disabled] .sidebar-buttons .btn.active {
 .tab-pane .block-header {
   padding: 8px 15px;
   border-color: #fff;
+  display: none;
 }
 .tab-pane .block-header h3 {
   margin-bottom: 0;

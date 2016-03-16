@@ -54,7 +54,7 @@
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>
-				<ul id="viewTabs" class="mura-tabs nav-tabs nav-tabs-alt">
+				<ul id="viewTabs" class="mura-tabs nav-tabs">
           <!--- Site Members Tab --->
           <li<cfif rc.ispublic eq 1> class="active"</cfif>>
             <a href="#buildURL(action='cusers.listusers', querystring='siteid=#rc.siteid#&ispublic=1&unassigned=#rc.unassigned#')#" onclick="actionModal();">

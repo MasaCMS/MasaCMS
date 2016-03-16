@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
 	
 	<div class="block block-constrain">
-		<ul class="mura-tabs nav-tabs nav-tabs-alt initActiveTab" data-toggle="tabs">
+		<ul class="mura-tabs nav-tabs initActiveTab" data-toggle="tabs">
 			<li class="active"><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
 			<li><a href="#tabPlugins" onclick="return false;"><span>Plugins</span></a></li>
 		</ul>

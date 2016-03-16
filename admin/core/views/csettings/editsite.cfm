@@ -109,7 +109,7 @@ to your own modified versions of Mura CMS.
 			<cfset tabList=listAppend(tabList,"tab" & $.createCSSID(rsPluginScripts.name))>
 		</cfoutput> </cfoutput> <cfoutput>
 		<div class="block block-constrain">
-		<ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
+		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
 				<cfloop from="1" to="#listlen(tabList)#" index="t">
 				<li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 			</cfloop>

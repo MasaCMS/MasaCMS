@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="block block-constrain">
 
-  <ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
+  <ul class="mura-tabs nav-tabs" data-toggle="tabs">
       <li class="active"><a href="##emailContent" onClick="return false;"><span>Email</span></a></li>
       <li><a href="##emailGroupsLists" onClick="return false;"><span>Recipients</span></a></li>
   </ul>

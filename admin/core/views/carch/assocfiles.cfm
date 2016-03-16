@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- TODO GoWest : these tabs - test w/ multiple images returned by search : 2016-02-02T20:45:21-07:00 --->
 
 	<div class="selectAssocImageResults block" id="selectAssocImageResults-#esapiEncode('html',rc.property)#">
-		<ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
+		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
 			<li><a href="##mura-assoc-images-#esapiEncode('html',rc.property)#" data-toggle="tab" onclick="return false;"><i class="mi-picture-o"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
 			<cfif rc.type eq 'file'><li><a href="##mura-assoc-files-#esapiEncode('html',rc.property)#" data-toggle="tab" onclick="return false;"><i class="mi-file-text-o"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.otherfiles')#</a></li></cfif>
 		</ul>
