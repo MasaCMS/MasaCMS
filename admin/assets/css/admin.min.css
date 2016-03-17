@@ -36815,10 +36815,10 @@ label #selectFilter {
   max-width: 38px;
   height: 40px;
   max-height: 40px;
-  margin-left: 30px;
+  margin-left: 20px;
 }
 .mura-focus-block .block-content {
-  padding: 30px 30px 10px 30px;
+  padding: 30px 20px 10px;
 }
 .mura-focus-block .mura-focus-actions button,
 .mura-focus-block .mura-focus-actions button:hover,
