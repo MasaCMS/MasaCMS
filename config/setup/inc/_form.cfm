@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 			<a href="##tab-database" data-toggle="tab">1. Database</a>
 		</li>
 		<li>
-			<a href="##tab-admin" data-toggle="tab">2. Admin Account</a>
+			<a href="##tab-admin" data-toggle="tab">2. Admin</a>
 		</li>
 		<li>
 			<a href="##tab-options" data-toggle="tab">3. Options</a>
