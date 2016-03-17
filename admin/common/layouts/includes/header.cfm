@@ -143,8 +143,8 @@
       <!--- admin user tools --->
       <li>
           <div class="btn-group">
-              <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">
-                  <span class="button-image"><i class="mi-user"></i></span> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#<span class="caret"></span>
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">
+                  <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#<span class="caret"></span>
               </button>
 
               <ul class="pull-right dropdown-menu dropdown-menu-right mura-user-tools">
