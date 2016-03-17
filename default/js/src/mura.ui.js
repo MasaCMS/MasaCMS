@@ -96,13 +96,12 @@
 							if(!window.mura.templateList.length) {
 								if (self.settings.view == 'form') {
 									self.loadForm();
-								}
-								else {
+								} else {
 									self.loadList();
 								}
-							}
-							else
+							} else {
 								self.getTemplates();
+							}
 						}
 					}
 				);
@@ -264,6 +263,9 @@
 			var self = this;
 
 			if(self.datasets.length == 0){
+				if (self.renderqueue == 0) {
+					self.renderForm();
+				}
 				return;
 			}
 
