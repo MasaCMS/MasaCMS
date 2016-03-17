@@ -34984,7 +34984,7 @@ body {
   font-family: "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 a {
-  color: #ff3405;
+  color: #6498cb;
 }
 a.link-effect:before {
   background-color: #ff1f1f;
@@ -34994,10 +34994,10 @@ a:focus {
   color: #ff1f1f;
 }
 a:active {
-  color: #ff3405;
+  color: #6498cb;
 }
 .text-primary {
-  color: #ff3405;
+  color: #6498cb;
 }
 a.text-primary:hover,
 a.text-primary:active,
@@ -35005,7 +35005,7 @@ a.text-primary:focus,
 button.text-primary:hover,
 button.text-primary:active,
 button.text-primary:focus {
-  color: #ff3405;
+  color: #6498cb;
   opacity: .75;
 }
 .text-primary-dark {
@@ -36028,7 +36028,7 @@ a.no-link {
   margin-top: 4px;
   margin-bottom: 8px;
   min-height: 2.3em;
-  padding-top: 9px;
+  padding-top: 8px;
   background-color: #FFF;
   border: 1px solid #e9e9e9;
 }
