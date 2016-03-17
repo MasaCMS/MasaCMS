@@ -196,12 +196,12 @@
 
 												<li>
 													<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip" title="#rbKey('user.delete')#">
-																	<i class="mi-times-circle"></i>
+																	<i class="mi-trash"></i>
 													</a>
 												</li>
 											<cfelse>
 												<li class="disabled">
-																<i class="mi-times-circle"></i>
+																<i class="mi-trash"></i>
 												</li>
 											</cfif>
 

@@ -231,12 +231,12 @@
 											<cfif (((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1) and not isLockedBySomeoneElse>
 												<li class="delete">
 													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&parentid=#esapiEncode('url',rc.parentid)##rc.$.renderCSRFTokens(context=rc.rstop.contentid & 'deleteall',format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)">
-																		<i class="mi-times-circle"></i>
+																		<i class="mi-trash"></i>
 													</a>
 												</li>
 											<cfelseif rc.locking neq 'all'>
 												<li class="delete disabled">
-																	<i class="mi-times-circle"></i>
+																	<i class="mi-trash"></i>
 												</li>
 											</cfif>
 										</ul>

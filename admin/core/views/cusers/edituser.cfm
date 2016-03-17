@@ -414,13 +414,13 @@
 																</a>
 															</li>
 															<cfif rsAddresses.isPrimary neq 1>
-																<li class="mi-times-circle">
+																<li class="mi-trash">
 																	<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deleteaddressconfirm'))#',this.href);">
-																		<i class="mi-times-circle"></i>
+																		<i class="mi-trash"></i>
 																	</a>
 																</li>
 															<cfelse>
-																<li class="mi-times-circle"></li>
+																<li class="mi-trash"></li>
 															</cfif>
 														</ul>
 													</td>

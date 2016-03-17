@@ -286,9 +286,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 		</cfif>
         <cfif deletable and not isLockedBySomeoneElse>
-          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&parentid=#esapiEncode('url',attributes.parentid)#&startrow=#esapiEncode('url',attributes.startrow)##attributes.muraScope.renderCSRFTokens(context=rsnest.contentid & 'deleteall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="mi-times-circle"></i></a></li>
+          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&parentid=#esapiEncode('url',attributes.parentid)#&startrow=#esapiEncode('url',attributes.startrow)##attributes.muraScope.renderCSRFTokens(context=rsnest.contentid & 'deleteall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="mi-trash"></i></a></li>
           <cfelseif attributes.locking neq 'all'>
-          <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+          <li class="delete disabled"><a><i class="mi-trash"></i></a></li>
         </cfif>
         <cfelse>
         <li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
@@ -308,7 +308,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch>
 		<li class="version-history disabled"><a><i class="mi-history"></i></a></li>
 		<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
-		<li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+		<li class="delete disabled"><a><i class="mi-trash"></i></a></li>
       </cfif>
 		<cfif  ListFindNoCase("Page,Folder,Calendar,Link,File,Gallery",rsnest.type)>
 		#application.pluginManager.renderScripts("onContentList",attributes.siteid,attributes.pluginEvent)#
