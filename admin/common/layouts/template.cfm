@@ -204,6 +204,9 @@
 <!--- TODO GoWest : keep chart.min.js? : 2016-01-29T16:52:21-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
+		<!-- Mura js --->
+		<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+
 		<!-- Mura Admin JS -->
 <!--- TODO GoWest : minify js : 2016-02-12T14:55:58-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -329,10 +332,10 @@
 	           			$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
 
 	           			// tab drop
-           			$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
-								$('.tabdrop .dropdown-toggle').on('click',function(){  
-									$(this).parents('.nav-tabs').css('overflow-y','visible');  
-								});
+           				$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+						$('.tabdrop .dropdown-toggle').on('click',function(){
+							$(this).parents('.nav-tabs').css('overflow-y','visible');
+						});
 
 		           		// dismiss alerts
 	           			$('.alert-dismiss').click(
@@ -355,6 +358,11 @@
 	           				}
 	           			);
 	           		});
+
+					mura.init({
+						context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
+						siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
+					});
 	           	</script>
          	</cfif>
          		<cfif request.action neq "core:cLogin.main">
