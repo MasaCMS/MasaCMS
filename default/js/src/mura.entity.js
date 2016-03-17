@@ -282,7 +282,7 @@
 
 					window.mura.ajax({
 						type:'get',
-						url:window.mura.apiEndpoint + self.get('siteid') + '/' + self.get('entityname') + '/new' ,
+						url:window.mura.apiEndpoint + self.get('entityname') + '/new' ,
 						success:function(resp){
 							self.set(resp.data);
 							self.set(temp);

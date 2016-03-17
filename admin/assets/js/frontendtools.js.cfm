@@ -1917,14 +1917,16 @@
 			var anchors=el.querySelectorAll('a');
 
 			for(var i=0;i<anchors.length;i++){
-				try{
-					if (typeof(anchors[i].onclick) != 'function'
-						&& typeof(anchors[i].getAttribute('href')) == 'string'
-						&& anchors[i].getAttribute('href').indexOf('#') == -1
-						&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
-			   			anchors[i].onclick = handleEditCheck;
-					}
-				} catch(err){}
+				if(!mura(anchors[i]).closest('.mura').length){
+					try{
+						if (typeof(anchors[i].onclick) != 'function'
+							&& typeof(anchors[i].getAttribute('href')) == 'string'
+							&& anchors[i].getAttribute('href').indexOf('#') == -1
+							&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
+				   			anchors[i].onclick = handleEditCheck;
+						}
+					} catch(err){}
+				}
 			}
 		},
 		isDirty:false
