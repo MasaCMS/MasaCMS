@@ -96,7 +96,7 @@
 
 		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
 
-<!--- TODO GoWest : PNGs / icons : 2015-12-02T13:59:23-07:00 --->
+	<!--- TODO GoWest : PNGs / icons : 2015-12-02T13:59:23-07:00 --->
 
       <link rel="icon" type="image/png" href="assets/img/favicons/favicon-16x16.png" sizes="16x16">
       <link rel="icon" type="image/png" href="assets/img/favicons/favicon-32x32.png" sizes="32x32">
@@ -114,21 +114,24 @@
       <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicons/apple-touch-icon-152x152.png">
       <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
 
-<!--- TODO GoWest :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
-		 <!-- Spinner JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
+	<!--- TODO GoWest :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
+	<!-- Spinner JS -->
+	<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
-			<!--- TODO GoWest : include full theme core js in compact view? : 2016-01-29T16:49:50-07:00 --->
-	    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-   		<script src="#application.configBean.getContext()#/admin/assets/js/oneui.min.js"></script>
+	<!--- TODO GoWest : include full theme core js in compact view? : 2016-01-29T16:49:50-07:00 --->
+    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+	<script src="#application.configBean.getContext()#/admin/assets/js/oneui.min.js"></script>
 
-<!--- TODO GoWest : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<!--- TODO GoWest : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
+	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
+	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-    <!-- Web fonts -->
+	<!-- Mura js --->
+	<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+
+	<!-- Web fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
 
 		<!-- Mura Admin JS -->
@@ -171,8 +174,8 @@
 
  			// tab drop
  			$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
-				$('.tabdrop .dropdown-toggle').on('click',function(){  
-					$(this).parents('.nav-tabs').css('overflow-y','visible');  
+				$('.tabdrop .dropdown-toggle').on('click',function(){
+					$(this).parents('.nav-tabs').css('overflow-y','visible');
 				});
 
 				if (top.location != self.location) {
@@ -201,6 +204,11 @@
 				};
 
 
+			});
+
+			mura.init({
+				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
+				siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
 			});
 		</script>
 		#rc.ajax#
