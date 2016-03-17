@@ -5168,6 +5168,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 }
 .mura .mi-photo:before,
 .mura .mi-image:before,
+.mura .mi-picture:before,
 .mura .mi-picture-o:before {
   content: "\f03e";
 }

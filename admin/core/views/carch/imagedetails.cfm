@@ -96,7 +96,6 @@
 						<label class="mura-control-label">
 							#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.adjustimage'))#
 						</label>
-						<div class="mura-control">
 							<select id="image-actions#f#">
 								<option value="">Please Select</option>
 								<option value="90"> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 90&deg;</option>
@@ -107,8 +106,9 @@
 								<option value="diagonal"> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Diagonal</option>
 								<option value="antidiagonal"> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Anti-Diagonal</option>
 							</select>
-
-							<input type="button" onclick="flipImage('#esapiEncode('javascript',f)#');" class="btn" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
+							<div class="mura-control justify">
+								<input type="button" onclick="flipImage('#esapiEncode('javascript',f)#');" class="btn" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
+							</div>
 						</div>
 
 					<cfloop list="Small,Medium,Large" index="s">
@@ -120,7 +120,7 @@
 									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
-							<div class="mura-control">
+							<div class="mura-control justify">
 								<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
 								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s),useProtocol=false)#?cacheID=#createUUID()#"/>
 							</div>
@@ -142,7 +142,7 @@
 									<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
-							<div class="mura-control">
+							<div class="mura-control justify">
 								<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
 								<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
 							</div>
@@ -161,7 +161,7 @@
 								<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
 
-							<div class="mura-control">
+							<div class="mura-control justify">
 								<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
 								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s),useProtocol=false)#?cacheID=#createUUID()#"/>
 							</div>
@@ -184,7 +184,7 @@
 										<button type="button" class="btn btn-default btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
 									</div>
 
-									<div class="mura-control">
+									<div class="mura-control justify">
 										<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
 										<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
 									</div>
@@ -222,7 +222,7 @@
 								<!---<div id="cropper">
 									<div class="jc-dialog">
 									--->
-								<div class="mura-control">
+								<div class="mura-control justify">
 									<img id="#lcase(esapiEncode('html_attr',rc.imagesize))##f#"
 									src="#$.getURLForImage(fileID=f,size='custom',height=customImage.getHeight(),width=customImage.getWidth(),useProtocol=false)#?cacheID=#createUUID()#"
 									<cfif isNumeric(customImage.getWidth())> width="#customImage.getWidth()#"</cfif>

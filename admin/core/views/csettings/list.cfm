@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
 	
 	<div class="block block-constrain">
-		<ul class="mura-tabs nav-tabs initActiveTab" data-toggle="tabs">
+		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
 			<li class="active"><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
 			<li><a href="#tabPlugins" onclick="return false;"><span>Plugins</span></a></li>
 		</ul>
@@ -214,9 +214,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 								</cfif>
 								<cfif rc.rsSites.siteid neq 'default'>
-									<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid##rc.$.renderCSRFTokens(context=rc.rssites.siteid,format='url')#')});return false;"><i class="mi-times-circle"></i></a></li>
+									<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid##rc.$.renderCSRFTokens(context=rc.rssites.siteid,format='url')#')});return false;"><i class="mi-trash"></i></a></li>
 									<cfelse>
-									<li class="delete disabled"><i class="mi-times-circle"></i></li>
+									<li class="delete disabled"><i class="mi-trash"></i></li>
 								</cfif>
 								<!---<li class="export"><a title="Export" href="./?muraAction=cArch.exportHtmlSite&siteid=#rc.rsSites.siteid#" onclick="return confirm('Export the #esapiEncode("javascript","'#rc.rsSites.site#'")# Site?')">Export</a></li>--->
 							</ul></td>
@@ -349,7 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<td>#rc.rsPlugins.pluginID#</td>
 						<td class="actions"><ul>
 								<li class="edit"><a title="Edit" href="./?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#"><i class="mi-pencil"></i></a></li>
-								<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('Delete #esapiEncode("javascript","'#Ucase(rc.rsPlugins.name)#'")#?',function(){actionModal('./?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID##rc.$.renderCSRFTokens(context=rc.rsplugins.moduleid,format='url')#')});return false;"><i class="mi-times-circle"></i></a></li>
+								<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('Delete #esapiEncode("javascript","'#Ucase(rc.rsPlugins.name)#'")#?',function(){actionModal('./?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID##rc.$.renderCSRFTokens(context=rc.rsplugins.moduleid,format='url')#')});return false;"><i class="mi-trash"></i></a></li>
 							</ul></td>
 					</tr>
 					</cfoutput>

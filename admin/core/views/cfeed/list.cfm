@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#</span>
 	</td>
-				<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local"><i class="mi-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#" href="#endpoint#/?feedID=#rc.rslocal.feedid#" target="_blank"><i class="mi-rss"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rslocal.feedid,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)"><i class="mi-times-circle"></i></a></li></ul></td>
+				<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local"><i class="mi-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#" href="#endpoint#/?feedID=#rc.rslocal.feedid#" target="_blank"><i class="mi-rss"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rslocal.feedid,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)"><i class="mi-trash"></i></a></li></ul></td>
 	</tr></cfloop>
 	<cfelse>
 	<tr>
@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 				<li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" href="./?muraAction=cFeed.import1&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download-alt"></i></a></li>
 	
-				<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsremote.feedid,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#',this.href)"><i class="mi-times-circle"></i></a></li></ul></td>
+				<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsremote.feedid,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#',this.href)"><i class="mi-trash"></i></a></li></ul></td>
 	</tr></cfloop>
 	<cfelse>
 	<tr>

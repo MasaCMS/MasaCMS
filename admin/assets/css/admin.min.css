@@ -28444,7 +28444,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura .selectAssocImageResults > .tab-content > .tab-pane {
   max-height: 350px;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 1em;
   background-color: #f7f7f7;
 }
@@ -33223,6 +33223,7 @@ a#nav-module-specific .metadata-horizontal li:focus {
 }
 .mi-photo:before,
 .mi-image:before,
+.mi-picture:before,
 .mi-picture-o:before {
   content: "\f03e";
 }
@@ -34978,9 +34979,9 @@ a#nav-module-specific .metadata-horizontal li:focus {
 .mi-ok-circle:before {
   content: "\f05d";
 }
-/* minified color scheme, expanded and altered */
 body {
   background-color: #f5f5f5;
+  font-family: "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 a {
   color: #ff3405;
@@ -35390,7 +35391,15 @@ a.list-group-item:focus {
 .switch-primary input:checked + span {
   background-color: #5B5B5B;
 }
-/* tabs */
+.block > .nav-tabs > li.tabdrop > a:hover,
+.block > .nav-tabs > li.tabdrop > a:focus,
+.block > .nav-tabs > li.active.tabdrop > a,
+.block > .nav-tabs > li.active.tabdrop > a:hover,
+.block > .nav-tabs > li.active.tabdrop > a:focus {
+  -webkit-box-shadow: 0 0 #fff;
+  box-shadow: 0 0 #fff;
+  background-color: transparent;
+}
 .block-constrain > .nav-tabs {
   margin: -10px 0 0;
   background-color: #e4e4e4;
@@ -35409,72 +35418,6 @@ a.list-group-item:focus {
 }
 .block > .nav-tabs > li > a:hover {
   color: #ff3405;
-}
-/* user tabs, escape overflow:hidden */
-#cusers .block-content.tab-content {
-  overflow: visible;
-}
-/* tabdrop menu */
-.mura .nav-tabs,
-.mura .nav-pills {
-  position: relative;
-}
-/* adjust as needed so the tab text displays */
-.mura .tabdrop {
-  width: 45px;
-}
-/* hide any icons found in tabs not on first line */
-.mura .nav-tabs li li i {
-  visibility: hidden;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu {
-  background-color: #e4e4e4;
-  border: none;
-  margin-top: 0;
-}
-.tabdrop .dropdown-menu > .active > a,
-.tabdrop .dropdown-menu > .active > a:hover,
-.tabdrop .dropdown-menu > .active > a:focus {
-  background-color: transparent;
-  color: #ff3405;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu a {
-  padding-left: 12px !important;
-  padding-right: 12px !important;
-  color: #646464;
-  font-weight: 600;
-}
-.block > .nav-tabs li.tabdrop a.dropdown-toggle {
-  cursor: pointer;
-  background-color: transparent;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
-.block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
-  color: #ff3405;
-  background-color: transparent;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
-  background-color: #FFF !important;
-}
-#mura-content .block ul.nav-tabs-alt {
-  margin-right: 30px;
-}
-.block > .nav-tabs li.tabdrop .dropdown-menu a span {
-  padding-bottom: 9px;
-}
-.mura-tabs .open > a,
-.mura-tabs .open > a:hover,
-.mura-tabs .open > a:focus {
-  border: none !important;
-}
-.block > .nav-tabs > li.tabdrop > a:hover,
-.block > .nav-tabs > li.tabdrop > a:focus,
-.block > .nav-tabs > li.active.tabdrop > a,
-.block > .nav-tabs > li.active.tabdrop > a:hover,
-.block > .nav-tabs > li.active.tabdrop > a:focus {
-  -webkit-box-shadow: 0 0 #fff;
-  box-shadow: 0 0 #fff;
-  background-color: transparent;
 }
 .irs-bar,
 .irs-bar-edge,
@@ -35545,11 +35488,59 @@ div.tagsinput span.tag {
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
   background-color: #ff3405;
 }
-/* custom overrides */
-/* custom overrides */
-/* custom overrides */
-body {
-  font-family: "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* user tabs, escape overflow:hidden */
+#cusers .block-content.tab-content {
+  overflow: visible;
+}
+/* tabdrop menu */
+.mura .nav-tabs,
+.mura .nav-pills {
+  position: relative;
+}
+/* adjust as needed so the tab text displays */
+.mura .tabdrop {
+  width: 45px;
+}
+/* hide any icons found in tabs not on first line */
+.mura .nav-tabs li li i {
+  visibility: hidden;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu {
+  background-color: #e4e4e4;
+  border: none;
+  margin-top: 0;
+}
+.tabdrop .dropdown-menu > .active > a,
+.tabdrop .dropdown-menu > .active > a:hover,
+.tabdrop .dropdown-menu > .active > a:focus {
+  background-color: transparent;
+  color: #ff3405;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu a {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  color: #646464;
+  font-weight: 600;
+}
+.block > .nav-tabs li.tabdrop a.dropdown-toggle {
+  cursor: pointer;
+  background-color: transparent;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
+.block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
+  color: #ff3405;
+  background-color: transparent;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
+  background-color: #FFF !important;
+}
+.block > .nav-tabs li.tabdrop .dropdown-menu a span {
+  padding-bottom: 9px;
+}
+.mura-tabs .open > a,
+.mura-tabs .open > a:hover,
+.mura-tabs .open > a:focus {
+  border: none !important;
 }
 ul {
   padding-left: 0;
@@ -35735,17 +35726,6 @@ header .btn {
 }
 header .btn i {
   margin-right: 0;
-}
-header .btn.btn-image {
-  padding-left: 30px;
-}
-header .btn-image span.button-image {
-  position: absolute;
-  top: 0;
-  left: 3px;
-  display: block;
-  width: 30px;
-  font-size: 18px;
 }
 .form-actions {
   padding: 3px 0 18px;
@@ -35967,7 +35947,7 @@ div.cke_editable {
 .no-constrain .block-constrain .block .block-content {
   overflow: auto;
 }
-#select-site-btn i,
+ul.nav-header .btn i,
 #site-selector-list li a i {
   margin-right: 1px;
 }
@@ -35976,9 +35956,6 @@ div.cke_editable {
 }
 #header-navbar .btn#site-selector-trigger .caret {
   margin-right: 4px;
-}
-#header-navbar .btn .button-image + .caret {
-  margin-left: 8px;
 }
 .btn .caret {
   margin-left: 4px;
@@ -36608,6 +36585,12 @@ a.close:hover {
   float: none;
   display: block;
 }
+#image-details img {
+  border-top: 25px solid #fff;
+  border-right: 25px solid #fff;
+  border-bottom: 25px solid #fff;
+  margin-top: -25px;
+}
 ul.dropdown-menu {
   margin: 2px 0 0;
 }
@@ -36740,13 +36723,13 @@ label #selectFilter {
   margin-top: 24px;
 }
 #mura-content > form .mura-control-group input.radio,
-#mura-content > form .mura-control-group input[type="radio"],
+#mura-content > form .mura-control-group input[type=radio],
 #mura-content > form .mura-control-group input.checkbox,
-#mura-content > form .mura-control-group input[type="checkbox"],
+#mura-content > form .mura-control-group input[type=checkbox],
 .mura-control-group input.radio,
-.mura-control-group input[type="radio"],
+.mura-control-group input[type=radio],
 .mura-control-group input.checkbox,
-.mura-control-group input[type="checkbox"] {
+.mura-control-group input[type=checkbox] {
   min-height: auto;
   margin-top: 4px;
   border: none;
@@ -36757,11 +36740,11 @@ label #selectFilter {
 }
 .mura-control-group input.radio:focus,
 .mura-control-group input.checkbox:focus,
-.mura-control-group input[type="radio"]:focus,
-.mura-control-group input[type="checkbox"]:focus {
+.mura-control-group input[type=radio]:focus,
+.mura-control-group input[type=checkbox]:focus {
   outline: 0;
 }
-.mura-control-group input[type="file"] {
+.mura-control-group input[type=file] {
   padding: 2px 2px 4px 0;
 }
 #mura-content form label.checkbox,
@@ -36818,10 +36801,10 @@ label #selectFilter {
   max-width: 38px;
   height: 40px;
   max-height: 40px;
-  margin-left: 30px;
+  margin-left: 20px;
 }
 .mura-focus-block .block-content {
-  padding: 30px 30px 10px 30px;
+  padding: 30px 20px 10px;
 }
 .mura-focus-block .mura-focus-actions button,
 .mura-focus-block .mura-focus-actions button:hover,
@@ -37499,6 +37482,15 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
     margin-right: 8px;
   }
 }
+/* MAX WIDTH, LARGE & MEDIUM */
+/* MAX WIDTH, LARGE & MEDIUM */
+/* MAX WIDTH, LARGE & MEDIUM */
+@media (min-width: 992px) {
+  #nav-module-specific .btn-group .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+}
 /* MEDIUM, EXTRA SMALL & SMALL */
 /* MEDIUM, EXTRA SMALL & SMALL */
 /* MEDIUM, EXTRA SMALL & SMALL */
@@ -37516,5 +37508,9 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
   #mura-content #main + .sidebar {
     padding-left: 0 !important;
     clear: both;
+  }
+  #nav-module-specific .btn-group .dropdown-menu {
+    right: auto;
+    left: -10px;
   }
 }

@@ -494,9 +494,9 @@ if(len($.siteConfig('customTagGroups'))){
 
 					    <cfif deletable and not isLockedBySomeoneElse>
 					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="./?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#esapiEncode('url',item.getParentID())#&startrow=#esapiEncode('url',$.event('startrow'))##rc.$.renderCSRFTokens(context=item.getContentID() & 'deleteall',format='url')#"<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>
-							<i class="mi-times-circle"></i></a></li>
+							<i class="mi-trash"></i></a></li>
 					    <cfelseif rc.locking neq 'all'>
-					        <li class="delete disabled"><i class="mi-times-circle"></i></li>
+					        <li class="delete disabled"><i class="mi-trash"></i></li>
 					    </cfif>
 
 					<cfelse>
@@ -504,7 +504,7 @@ if(len($.siteConfig('customTagGroups'))){
 						<li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
 						<li class="version-history disabled"><a><i class="mi-history"></i></a></li>
 						<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
-						<li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+						<li class="delete disabled"><a><i class="mi-trash"></i></a></li>
 					</cfif>
 
 				</ul>

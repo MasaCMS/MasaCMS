@@ -33,6 +33,13 @@ module.exports = function(grunt) {
         }
       }
     },
+    copy: {
+      main: {
+        files:[
+             {expand: true, flatten: true,src: ['dist/**'], dest: '../../admin/assets/js', filter: 'isFile'},
+        ],
+      },
+    },
     /*
     handlebars: {
         all: {
@@ -50,8 +57,8 @@ module.exports = function(grunt) {
   //grunt.loadNpmTasks('grunt-handlebars-compiler');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
-
-  grunt.registerTask('default',['concat','uglify']);
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.registerTask('default',['concat','uglify','copy']);
 
 
 };

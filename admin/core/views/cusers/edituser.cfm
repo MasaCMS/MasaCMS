@@ -414,13 +414,13 @@
 																</a>
 															</li>
 															<cfif rsAddresses.isPrimary neq 1>
-																<li class="mi-times-circle">
+																<li class="mi-trash">
 																	<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deleteaddressconfirm'))#',this.href);">
-																		<i class="mi-times-circle"></i>
+																		<i class="mi-trash"></i>
 																	</a>
 																</li>
 															<cfelse>
-																<li class="mi-times-circle"></li>
+																<li class="mi-trash"></li>
 															</cfif>
 														</ul>
 													</td>
@@ -772,7 +772,7 @@
 		</cfsavecontent>
 
 		<cfoutput>
-			<ul class="mura-tabs nav-tabs initActiveTab" data-toggle="tabs">
+			<ul class="mura-tabs nav-tabs" data-toggle="tabs">
 					<cfloop from="1" to="#listlen(tabList)#" index="t">
 					<li<cfif listGetAt(tabList,t) eq 'tabExtendedattributes'> id="tabExtendedattributesLI" class="hide"<cfelseif t eq 1> class="active"</cfif>>
 							<a href="###listGetAt(tabList,t)#" onclick="return false;">

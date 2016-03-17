@@ -66,10 +66,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset filtered=structNew()>
 </cfsilent>
 <cfoutput>
-<!--- TODO GoWest : this markup : 2016-02-02T20:44:53-07:00 --->
+
 <div class="mura-control-group">
-<!--- TODO GoWest : remove this disabled markup? : 2016-02-02T20:43:05-07:00 --->
-	<!--- <label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.searchforassocfile'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforassoc#rc.filetype#')# <i class="mi-question-circle"></i></a></label> --->
 		<div class="input-append">
 			<input class="filesearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforexistingfiles'))#" /><button type="button" class="btn"><i class="mi-search"></i></button>
 		</div>
@@ -78,7 +76,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif len(rc.keywords)>
 	<cfoutput>
-<!--- TODO GoWest : these tabs - test w/ multiple images returned by search : 2016-02-02T20:45:21-07:00 --->
 
 	<div class="selectAssocImageResults block" id="selectAssocImageResults-#esapiEncode('html',rc.property)#">
 		<ul class="mura-tabs nav-tabs" data-toggle="tabs">

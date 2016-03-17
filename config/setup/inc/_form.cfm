@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 			<a href="##tab-database" data-toggle="tab">1. Database</a>
 		</li>
 		<li>
-			<a href="##tab-admin" data-toggle="tab">2. Admin Account</a>
+			<a href="##tab-admin" data-toggle="tab">2. Admin</a>
 		</li>
 		<li>
 			<a href="##tab-options" data-toggle="tab">3. Options</a>
@@ -97,7 +97,6 @@ to your own modified versions of Mura CMS.
 							<cfif len(trim(form.auto_create)) and val(form.auto_create)>checked</cfif>
 							><span></span> <label class="database-create-no">Use an existing database</label><label class="database-create-yes">Create a new database</label>
 						</label>
-						<p class="help-block">Use an existing database, or create a new one.</p> 
 					</div>
 
 					<div class="mura-control-group database-create-yes">
@@ -254,7 +253,7 @@ jQuery(document).ready(function(){
 		if ($("##production_indexfileinurls").is(':checked')) {
 			ret = ret + '/index.cfm';
 		}
-		ret = ret + '/full-path-to/page-location/';
+		ret = ret + '/folder/page/';
 		$("##url_example").html(ret);
 	});
 	// show example URL on page load
