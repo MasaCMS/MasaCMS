@@ -1998,7 +1998,7 @@
 		}
 
 		if(!config.apiEndpoint){
-			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/';
+			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/' + config.siteid + '/';
 		}
 
 		if(!config.pluginspath){

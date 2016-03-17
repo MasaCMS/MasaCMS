@@ -113,7 +113,7 @@
 					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
-				
+
 				console.log(result);
 
 				return result.join(',');
@@ -370,7 +370,7 @@
 
 			var formNavHandler=function() {
 				self.setDataValues();
-				
+
 				var button = this;
 
 				if(self.ormform) {
@@ -510,7 +510,7 @@
 
 
 			window.mura.get(
-					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
+					window.mura.apiEndpoint + '/content/' + self.settings.objectid
 					 + '?fields=body,title,filename,responsemessage&ishuman=true'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
@@ -542,7 +542,7 @@
 
 						 	if(self.entityid == undefined) {
 								window.mura.get(
-									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new?expand=all&ishuman=true'
+									window.mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
 								).then(function(resp) {
 									self.data = resp.data;
 									self.renderData();
@@ -550,7 +550,7 @@
 						 	}
 						 	else {
 								window.mura.get(
-									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
+									window.mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
 								).then(function(resp) {
 									self.data = resp.data;
 									self.renderData();
@@ -738,7 +738,7 @@
 			var self = this;
 
 			window.mura.get(
-				window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
+				window.mura.apiEndpoint + '/content/' + self.settings.objectid
 				 + '?fields=body,title,filename,responsemessage'
 				).then(function(data) {
 				 	formJSON = JSON.parse( data.data.body );
@@ -762,15 +762,15 @@
 			var self = this;
 
 			window.mura.get(
-				window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/listviewdescriptor'
+				window.mura.apiEndpoint  + self.entity + '/listviewdescriptor'
 			).then(function(resp) {
 					self.columns = resp.data;
 				window.mura.get(
-					window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/propertydescriptor/'
+					window.mura.apiEndpoint + self.entity + '/propertydescriptor/'
 				).then(function(resp) {
 					self.properties = self.cleanProps(resp.data);
 					if( navlink == undefined) {
-						navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?sort=' + self.sortdir + self.sortfield;
+						navlink = window.mura.apiEndpoint + self.entity + '?sort=' + self.sortdir + self.sortfield;
 						var fields = [];
 						for(var i = 0;i < self.columns.length;i++) {
 							fields.push(self.columns[i].column);
@@ -859,7 +859,7 @@
 			var self = this;
 
 			window.mura.get(
-				window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + itemid + '?expand=all'
+				window.mura.apiEndpoint + entityName + '/' + itemid + '?expand=all'
 				).then(function(resp) {
 					self.item = resp.data;
 

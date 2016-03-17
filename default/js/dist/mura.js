@@ -7649,7 +7649,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		if(!config.apiEndpoint){
-			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/';
+			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/' + config.siteid + '/';
 		}
 
 		if(!config.pluginspath){
@@ -9448,7 +9448,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					window.mura.ajax({
 						type:'get',
-						url:window.mura.apiEndpoint + self.get('siteid') + '/' + self.get('entityname') + '/new' ,
+						url:window.mura.apiEndpoint + self.get('entityname') + '/new' ,
 						success:function(resp){
 							self.set(resp.data);
 							self.set(temp);
@@ -9883,7 +9883,7 @@ mura.render['form']=function(context) {
 
 	if (item.settings.view == 'form') {
 		window.mura.get(
-			window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + context.objectid
+			window.mura.apiEndpoint + '/content/' + context.objectid
 			 + '?fields=body&ishuman=true'
 		).then(function(data) {
 			this.data = data;
@@ -10035,7 +10035,7 @@ mura.templates['embed']=function(context){
 					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
-				
+
 				console.log(result);
 
 				return result.join(',');
@@ -10292,7 +10292,7 @@ mura.templates['embed']=function(context){
 
 			var formNavHandler=function() {
 				self.setDataValues();
-				
+
 				var button = this;
 
 				if(self.ormform) {
@@ -10432,7 +10432,7 @@ mura.templates['embed']=function(context){
 
 
 			window.mura.get(
-					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
+					window.mura.apiEndpoint + '/content/' + self.settings.objectid
 					 + '?fields=body,title,filename,responsemessage&ishuman=true'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
@@ -10464,7 +10464,7 @@ mura.templates['embed']=function(context){
 
 						 	if(self.entityid == undefined) {
 								window.mura.get(
-									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/new?expand=all&ishuman=true'
+									window.mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
 								).then(function(resp) {
 									self.data = resp.data;
 									self.renderData();
@@ -10472,7 +10472,7 @@ mura.templates['embed']=function(context){
 						 	}
 						 	else {
 								window.mura.get(
-									window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
+									window.mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
 								).then(function(resp) {
 									self.data = resp.data;
 									self.renderData();
@@ -10660,7 +10660,7 @@ mura.templates['embed']=function(context){
 			var self = this;
 
 			window.mura.get(
-				window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
+				window.mura.apiEndpoint + '/content/' + self.settings.objectid
 				 + '?fields=body,title,filename,responsemessage'
 				).then(function(data) {
 				 	formJSON = JSON.parse( data.data.body );
@@ -10684,15 +10684,15 @@ mura.templates['embed']=function(context){
 			var self = this;
 
 			window.mura.get(
-				window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/listviewdescriptor'
+				window.mura.apiEndpoint  + self.entity + '/listviewdescriptor'
 			).then(function(resp) {
 					self.columns = resp.data;
 				window.mura.get(
-					window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '/propertydescriptor/'
+					window.mura.apiEndpoint + self.entity + '/propertydescriptor/'
 				).then(function(resp) {
 					self.properties = self.cleanProps(resp.data);
 					if( navlink == undefined) {
-						navlink = window.mura.apiEndpoint + window.mura.siteid + '/' + self.entity + '?sort=' + self.sortdir + self.sortfield;
+						navlink = window.mura.apiEndpoint + self.entity + '?sort=' + self.sortdir + self.sortfield;
 						var fields = [];
 						for(var i = 0;i < self.columns.length;i++) {
 							fields.push(self.columns[i].column);
@@ -10781,7 +10781,7 @@ mura.templates['embed']=function(context){
 			var self = this;
 
 			window.mura.get(
-				window.mura.apiEndpoint + window.mura.siteid + '/'+ entityName + '/' + itemid + '?expand=all'
+				window.mura.apiEndpoint + entityName + '/' + itemid + '?expand=all'
 				).then(function(resp) {
 					self.item = resp.data;
 
