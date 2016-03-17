@@ -795,7 +795,7 @@
 							var editor=CKEDITOR.inline(
 								document.getElementById( mura.currentId ),
 								{
-									toolbar: 'htmlEditor',
+									toolbar: 'QuickEdit',
 									width: "75%",
 									customConfig: 'config.js.cfm',
 									on: {
@@ -803,7 +803,7 @@
 												e.editor.updateElement();
 												variation.original=e.editor.getData();
 											},
-											'blur': function(){ /*onBlur()*/}
+											//'blur': function(){ onBlur()}
 										}
 								}
 							);
@@ -811,6 +811,7 @@
 						}
 
 					} catch(err){
+						console.log(err);
 
 					}
 
@@ -1686,11 +1687,13 @@
 			var instance = utility(editorInstance).ckeditorGet();
 			instance.resetDirty();
 			var totalInstances = CKEDITOR.instances;
+			<cfif url.contenttype neq 'Variation'>
 			CKFinder.setupCKEditor(
 			instance, {
 				basePath: '#application.configBean.getContext()#/requirements/ckfinder/',
 				rememberLastFolder: true
 			});
+			</cfif>
 		},
 		<cfset csrfTokens=$.generateCSRFTokens(context=node.getContentHistID() & 'add')>
 		data:{

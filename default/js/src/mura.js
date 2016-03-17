@@ -333,7 +333,7 @@
 			    request =new XDomainRequest();
 			}
 
-			request.withCredentials=true;
+			request.withCredentials=params.xhrFields.withCredentials;
 		}
 
 		request.onload = function() {
@@ -1994,7 +1994,7 @@
 		}
 
 		if(!config.assetpath){
-			config.assetpath=config.context;
+			config.assetpath=config.context + "/" + config.siteid;
 		}
 
 		if(!config.apiEndpoint){
