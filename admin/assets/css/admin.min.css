@@ -35812,6 +35812,18 @@ header .btn i {
 #mura-content ol.breadcrumb > :first-child {
   margin-left: 8px;
 }
+.mura-header ul.breadcrumb li a,
+.mura-header ul.breadcrumb li a:link,
+.mura-header ul.breadcrumb li a:visited,
+.mura-header ul.breadcrumb li a:hover,
+.mura-header ul.breadcrumb li a:active,
+#gridContainer ul.breadcrumb li a,
+#gridContainer ul.breadcrumb li a:link,
+#gridContainer ul.breadcrumb li a:visited,
+#gridContainer ul.breadcrumb li a:hover,
+#gridContainer ul.breadcrumb li a:active {
+  color: #ff3405;
+}
 .nav-main a {
   color: rgba(255, 255, 255, 0.8);
 }
