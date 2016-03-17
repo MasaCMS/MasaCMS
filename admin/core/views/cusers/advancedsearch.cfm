@@ -197,7 +197,7 @@
 						
 						<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
 						<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" title="#rbKey('params.removecriteria')#">
-							<i class="mi-times-circle"></i>
+							<i class="mi-minus-circle"></i>
 						</a>
 						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey('params.addcriteria')#">
 							<i class="mi-plus-circle"></i>

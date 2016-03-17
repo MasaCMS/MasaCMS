@@ -358,7 +358,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 			 </cfif>
 			 <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-			   <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+			   <li class="delete disabled"><a><i class="mi-trash"></i></a></li>
 			 </cfif>
 		   <cfelse>
 			 <li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
@@ -383,7 +383,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfelse>
 		   <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 		 </cfif>
-			 <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+			 <li class="delete disabled"><a><i class="mi-trash"></i></a></li>
 		   </cfif>
 	   <cfset pluginEvent.setValue('type', rc.rstop.type)>
 		   <cfset pluginEvent.setValue('filename', rc.rstop.filename)>

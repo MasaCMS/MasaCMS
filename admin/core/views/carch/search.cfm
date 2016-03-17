@@ -119,9 +119,9 @@ siteManager.copySiteID = '#session.copySiteID#';
 		</cfif>
         <cfif deletable>
           <li class="delete"><a title="Delete" href="./?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&parentid=#esapiEncode('url',rc.parentid)#&startrow=#rc.startrow#"
-			<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File",rc.rsList.type)><i class="mi-times-circle"></i></a></li>
+			<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File",rc.rsList.type)><i class="mi-trash"></i></a></li>
           <cfelseif rc.locking neq 'all'>
-          <li class="delete disabled">Delete</li>
+          <li class="delete disabled">Delete<i class="mi-trash"></i></li>
         </cfif>
         <cfelse>
         <li class="edit disabled">&nbsp;</li>

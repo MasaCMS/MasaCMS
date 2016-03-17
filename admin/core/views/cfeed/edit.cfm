@@ -301,7 +301,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<tr id="c#rc.rslist.contentID#">
 											<td class="var-width">#$.dspZoomNoLinks(item.getCrumbArray())#</td>
 											<td>#rc.rslist.type#</td>
-											<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="mi-times-circle"></i></a></li></ul></td>
+											<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="mi-trash"></i></a></li></ul></td>
 										</tr>
 									</cfif>
 								</cfloop>
