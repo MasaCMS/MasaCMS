@@ -63,7 +63,7 @@
 
 			<!---
 			<cfelse>
-				<div id="nav-module-specific" class="btn-toolbar">
+				<div class="nav-module-specific btn-toolbar">
 					<div class="btn-group">
 						<a href="javascript:frontEndProxy.post({cmd:'close'});" class="btn"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 					</div>

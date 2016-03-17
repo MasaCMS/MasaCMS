@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 <cfset rc.originalcircuit=listFirst(listLast(request.action,":"),".")>
-<div id="nav-module-specific" class="btn-group">
+<div class="nav-module-specific btn-group">
 	<cfif rc.compactDisplay eq 'true' and not rc.$.useLayoutManager()>
 		<a class="btn" onclick="history.go(-1);"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
 	</cfif>

@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<h1>Global Settings</h1>
 
-	<div id="nav-module-specific" class="btn-toolbar">
+	<div class="nav-module-specific btn-toolbar">
 		<cfif rc.action neq 'updateCore'>
 			<cfif application.configBean.getAllowAutoUpdates()>
 				<div class="btn-group">

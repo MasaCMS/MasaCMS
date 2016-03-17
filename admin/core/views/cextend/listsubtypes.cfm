@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.classextensionmanager')#</h1>
 
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',rc.siteid)#">
 					<i class="mi-plus-circle"></i> 
 			#rc.$.rbKey('sitemanager.extension.addclassextension')#

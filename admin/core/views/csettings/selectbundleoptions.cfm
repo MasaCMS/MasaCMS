@@ -89,7 +89,7 @@ function checkAll (form) {
 
 <div class="mura-header">
   <h1>Create Site Bundle</h1>
-  <div id="nav-module-specific" class="btn-group">
+  <div class="nav-module-specific btn-group">
       <a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
   </div>
  </div> <!--- /.mura-header --->

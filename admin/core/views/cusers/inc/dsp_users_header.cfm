@@ -51,7 +51,7 @@
 <div class="mura-header">
 	<h1>#rbKey('user.groupsandusers')#</h1>
 <!--- Buttons --->
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 
 		<!--- Add User --->
 			<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#" onclick="actionModal();">

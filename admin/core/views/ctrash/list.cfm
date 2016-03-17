@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<h1>Trash Bin</h1>
 
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 	<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
 	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
 	</div>

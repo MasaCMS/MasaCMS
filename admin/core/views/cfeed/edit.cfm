@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not isObjectInstance>
 	<!---
 	<cfif rc.compactDisplay eq "true">
-		<div id="nav-module-specific" class="btn-group">
+		<div class="nav-module-specific btn-group">
 		<cfif rc.$.useLayoutManager()>
 			<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});">
 				<i class="mi-arrow-circle-left"></i>
@@ -885,7 +885,7 @@ jQuery(document).ready(function(){
 
 		<cfif rc.compactDisplay eq "true">
 			<!---
-			<div id="nav-module-specific" class="btn-group">
+			<div class="nav-module-specific btn-group">
 				<a class="btn" onclick="history.go(-1);"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
 			</div>
 		--->

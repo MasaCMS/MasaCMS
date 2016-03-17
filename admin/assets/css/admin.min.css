@@ -28910,7 +28910,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura body.modal-wrapper .mura-header h1 {
   margin-right: 24px;
 }
-.mura body.modal-wrapper #nav-module-specific {
+.mura body.modal-wrapper .nav-module-specific {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
@@ -28923,12 +28923,12 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   margin-top: 8px;
 }
 @media (min-width: 768px) {
-  .mura body.modal-wrapper #nav-module-specific {
+  .mura body.modal-wrapper .nav-module-specific {
     float: left;
     width: 100%;
   }
 }
-.mura body.modal-wrapper #nav-module-specific .btn {
+.mura body.modal-wrapper .nav-module-specific .btn {
   float: none !important;
   font-size: 92%;
   line-height: 1;
@@ -28941,13 +28941,13 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   background-color: #FFF;
   border: 1px solid #e9e9e9;
 }
-.mura body.modal-wrapper #nav-module-specific .btn .badge {
+.mura body.modal-wrapper .nav-module-specific .btn .badge {
   border: 0 solid #ffffff;
   background-color: #b3b3b3;
   color: #ffffff;
   opacity: .8;
 }
-.mura body.modal-wrapper #nav-module-specific ul.dropdown-menu {
+.mura body.modal-wrapper .nav-module-specific ul.dropdown-menu {
   margin: 0;
 }
 .mura body.modal-wrapper #configurator > div > h2 {
@@ -32561,7 +32561,7 @@ fieldset[disabled] .mura-button.active {
 .form-horizontal .controls {
   width: 75%;
 }
-#nav-module-specific {
+.nav-module-specific {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
@@ -32571,12 +32571,12 @@ fieldset[disabled] .mura-button.active {
   padding-right: 0;
 }
 @media (min-width: 768px) {
-  #nav-module-specific {
+  .nav-module-specific {
     float: left;
     width: 68.75%;
   }
 }
-#nav-module-specific .btn {
+.nav-module-specific .btn {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -32602,64 +32602,64 @@ fieldset[disabled] .mura-button.active {
   padding: 2px 12px;
   font-size: 14px;
 }
-#nav-module-specific .btn:focus,
-#nav-module-specific .btn:active:focus,
-#nav-module-specific .btn.active:focus,
-#nav-module-specific .btn.focus,
-#nav-module-specific .btn:active.focus,
-#nav-module-specific .btn.active.focus {
+.nav-module-specific .btn:focus,
+.nav-module-specific .btn:active:focus,
+.nav-module-specific .btn.active:focus,
+.nav-module-specific .btn.focus,
+.nav-module-specific .btn:active.focus,
+.nav-module-specific .btn.active.focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
-#nav-module-specific .btn:hover,
-#nav-module-specific .btn:focus,
-#nav-module-specific .btn.focus {
+.nav-module-specific .btn:hover,
+.nav-module-specific .btn:focus,
+.nav-module-specific .btn.focus {
   color: #333333;
   text-decoration: none;
 }
-#nav-module-specific .btn:active,
-#nav-module-specific .btn.active {
+.nav-module-specific .btn:active,
+.nav-module-specific .btn.active {
   outline: 0;
   background-image: none;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
-#nav-module-specific .btn.disabled,
-#nav-module-specific .btn[disabled],
-fieldset[disabled] #nav-module-specific .btn {
+.nav-module-specific .btn.disabled,
+.nav-module-specific .btn[disabled],
+fieldset[disabled] .nav-module-specific .btn {
   cursor: not-allowed;
   opacity: 0.65;
   filter: alpha(opacity=65);
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-a#nav-module-specific .btn.disabled,
-fieldset[disabled] a#nav-module-specific .btn {
+a.nav-module-specific .btn.disabled,
+fieldset[disabled] a.nav-module-specific .btn {
   pointer-events: none;
 }
-#nav-module-specific .btn:active,
-#nav-module-specific .btn.active {
+.nav-module-specific .btn:active,
+.nav-module-specific .btn.active {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-#nav-module-specific .btn.btn-square {
+.nav-module-specific .btn.btn-square {
   border-radius: 0;
 }
-#nav-module-specific .btn.btn-rounded {
+.nav-module-specific .btn.btn-rounded {
   border-radius: 20px;
 }
-#nav-module-specific .btn.btn-minw {
+.nav-module-specific .btn.btn-minw {
   min-width: 110px;
 }
-#nav-module-specific .btn.btn-noborder {
+.nav-module-specific .btn.btn-noborder {
   border: none !important;
 }
-#nav-module-specific .btn.btn-image {
+.nav-module-specific .btn.btn-image {
   position: relative;
   padding-left: 40px;
 }
-#nav-module-specific .btn.btn-image > img {
+.nav-module-specific .btn.btn-image > img {
   position: absolute;
   top: 3px;
   left: 3px;
@@ -32668,15 +32668,15 @@ fieldset[disabled] a#nav-module-specific .btn {
   height: 26px;
   border-radius: 3px;
 }
-#nav-module-specific .btn > i.pull-left {
+.nav-module-specific .btn > i.pull-left {
   margin-top: 3px;
   margin-right: 5px;
 }
-#nav-module-specific .btn > i.pull-right {
+.nav-module-specific .btn > i.pull-right {
   margin-top: 3px;
   margin-left: 5px;
 }
-#nav-module-specific .label {
+.nav-module-specific .label {
   display: inline;
   padding: .2em .6em .3em;
   font-size: 75%;
@@ -32688,50 +32688,50 @@ fieldset[disabled] a#nav-module-specific .btn {
   vertical-align: baseline;
   border-radius: .25em;
 }
-a#nav-module-specific .label:hover,
-a#nav-module-specific .label:focus {
+a.nav-module-specific .label:hover,
+a.nav-module-specific .label:focus {
   color: #ffffff;
   text-decoration: none;
   cursor: pointer;
 }
-#nav-module-specific .label:empty {
+.nav-module-specific .label:empty {
   display: none;
 }
-.btn #nav-module-specific .label {
+.btn .nav-module-specific .label {
   position: relative;
   top: -1px;
 }
-#nav-module-specific .label-important {
+.nav-module-specific .label-important {
   background-color: #ff3a00;
 }
-#nav-module-specific .label-important[href] {
+.nav-module-specific .label-important[href] {
   background-color: #cc2e00;
 }
-#nav-module-specific .label-warning {
+.nav-module-specific .label-warning {
   background-color: #ffc40d;
 }
-#nav-module-specific .label-warning[href] {
+.nav-module-specific .label-warning[href] {
   background-color: #d9a400;
 }
-#nav-module-specific .label-success {
+.nav-module-specific .label-success {
   background-color: #587231;
 }
-#nav-module-specific .label-success[href] {
+.nav-module-specific .label-success[href] {
   background-color: #3c4f22;
 }
-#nav-module-specific .label-info {
+.nav-module-specific .label-info {
   background-color: #4e7696;
 }
-#nav-module-specific .label-info[href] {
+.nav-module-specific .label-info[href] {
   background-color: #3d5c74;
 }
-#nav-module-specific .label-inverse {
+.nav-module-specific .label-inverse {
   background-color: #666666;
 }
-#nav-module-specific .label-inverse[href] {
+.nav-module-specific .label-inverse[href] {
   background-color: #4d4d4d;
 }
-#nav-module-specific .metadata-horizontal li {
+.nav-module-specific .metadata-horizontal li {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -32765,64 +32765,64 @@ a#nav-module-specific .label:focus {
   vertical-align: baseline;
   border-radius: .25em;
 }
-#nav-module-specific .metadata-horizontal li:focus,
-#nav-module-specific .metadata-horizontal li:active:focus,
-#nav-module-specific .metadata-horizontal li.active:focus,
-#nav-module-specific .metadata-horizontal li.focus,
-#nav-module-specific .metadata-horizontal li:active.focus,
-#nav-module-specific .metadata-horizontal li.active.focus {
+.nav-module-specific .metadata-horizontal li:focus,
+.nav-module-specific .metadata-horizontal li:active:focus,
+.nav-module-specific .metadata-horizontal li.active:focus,
+.nav-module-specific .metadata-horizontal li.focus,
+.nav-module-specific .metadata-horizontal li:active.focus,
+.nav-module-specific .metadata-horizontal li.active.focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
-#nav-module-specific .metadata-horizontal li:hover,
-#nav-module-specific .metadata-horizontal li:focus,
-#nav-module-specific .metadata-horizontal li.focus {
+.nav-module-specific .metadata-horizontal li:hover,
+.nav-module-specific .metadata-horizontal li:focus,
+.nav-module-specific .metadata-horizontal li.focus {
   color: #333333;
   text-decoration: none;
 }
-#nav-module-specific .metadata-horizontal li:active,
-#nav-module-specific .metadata-horizontal li.active {
+.nav-module-specific .metadata-horizontal li:active,
+.nav-module-specific .metadata-horizontal li.active {
   outline: 0;
   background-image: none;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
-#nav-module-specific .metadata-horizontal li.disabled,
-#nav-module-specific .metadata-horizontal li[disabled],
-fieldset[disabled] #nav-module-specific .metadata-horizontal li {
+.nav-module-specific .metadata-horizontal li.disabled,
+.nav-module-specific .metadata-horizontal li[disabled],
+fieldset[disabled] .nav-module-specific .metadata-horizontal li {
   cursor: not-allowed;
   opacity: 0.65;
   filter: alpha(opacity=65);
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-a#nav-module-specific .metadata-horizontal li.disabled,
-fieldset[disabled] a#nav-module-specific .metadata-horizontal li {
+a.nav-module-specific .metadata-horizontal li.disabled,
+fieldset[disabled] a.nav-module-specific .metadata-horizontal li {
   pointer-events: none;
 }
-#nav-module-specific .metadata-horizontal li:active,
-#nav-module-specific .metadata-horizontal li.active {
+.nav-module-specific .metadata-horizontal li:active,
+.nav-module-specific .metadata-horizontal li.active {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-#nav-module-specific .metadata-horizontal li.btn-square {
+.nav-module-specific .metadata-horizontal li.btn-square {
   border-radius: 0;
 }
-#nav-module-specific .metadata-horizontal li.btn-rounded {
+.nav-module-specific .metadata-horizontal li.btn-rounded {
   border-radius: 20px;
 }
-#nav-module-specific .metadata-horizontal li.btn-minw {
+.nav-module-specific .metadata-horizontal li.btn-minw {
   min-width: 110px;
 }
-#nav-module-specific .metadata-horizontal li.btn-noborder {
+.nav-module-specific .metadata-horizontal li.btn-noborder {
   border: none !important;
 }
-#nav-module-specific .metadata-horizontal li.btn-image {
+.nav-module-specific .metadata-horizontal li.btn-image {
   position: relative;
   padding-left: 40px;
 }
-#nav-module-specific .metadata-horizontal li.btn-image > img {
+.nav-module-specific .metadata-horizontal li.btn-image > img {
   position: absolute;
   top: 3px;
   left: 3px;
@@ -32831,55 +32831,55 @@ fieldset[disabled] a#nav-module-specific .metadata-horizontal li {
   height: 26px;
   border-radius: 3px;
 }
-#nav-module-specific .metadata-horizontal li > i.pull-left {
+.nav-module-specific .metadata-horizontal li > i.pull-left {
   margin-top: 3px;
   margin-right: 5px;
 }
-#nav-module-specific .metadata-horizontal li > i.pull-right {
+.nav-module-specific .metadata-horizontal li > i.pull-right {
   margin-top: 3px;
   margin-left: 5px;
 }
-a#nav-module-specific .metadata-horizontal li:hover,
-a#nav-module-specific .metadata-horizontal li:focus {
+a.nav-module-specific .metadata-horizontal li:hover,
+a.nav-module-specific .metadata-horizontal li:focus {
   color: #ffffff;
   text-decoration: none;
   cursor: pointer;
 }
-#nav-module-specific .metadata-horizontal li:empty {
+.nav-module-specific .metadata-horizontal li:empty {
   display: none;
 }
-.btn #nav-module-specific .metadata-horizontal li {
+.btn .nav-module-specific .metadata-horizontal li {
   position: relative;
   top: -1px;
 }
-#nav-module-specific .metadata-horizontal li-important {
+.nav-module-specific .metadata-horizontal li-important {
   background-color: #ff3a00;
 }
-#nav-module-specific .metadata-horizontal li-important[href] {
+.nav-module-specific .metadata-horizontal li-important[href] {
   background-color: #cc2e00;
 }
-#nav-module-specific .metadata-horizontal li-warning {
+.nav-module-specific .metadata-horizontal li-warning {
   background-color: #ffc40d;
 }
-#nav-module-specific .metadata-horizontal li-warning[href] {
+.nav-module-specific .metadata-horizontal li-warning[href] {
   background-color: #d9a400;
 }
-#nav-module-specific .metadata-horizontal li-success {
+.nav-module-specific .metadata-horizontal li-success {
   background-color: #587231;
 }
-#nav-module-specific .metadata-horizontal li-success[href] {
+.nav-module-specific .metadata-horizontal li-success[href] {
   background-color: #3c4f22;
 }
-#nav-module-specific .metadata-horizontal li-info {
+.nav-module-specific .metadata-horizontal li-info {
   background-color: #4e7696;
 }
-#nav-module-specific .metadata-horizontal li-info[href] {
+.nav-module-specific .metadata-horizontal li-info[href] {
   background-color: #3d5c74;
 }
-#nav-module-specific .metadata-horizontal li-inverse {
+.nav-module-specific .metadata-horizontal li-inverse {
   background-color: #666666;
 }
-#nav-module-specific .metadata-horizontal li-inverse[href] {
+.nav-module-specific .metadata-horizontal li-inverse[href] {
   background-color: #4d4d4d;
 }
 .label:not([class*="label-"]) {
@@ -35177,7 +35177,7 @@ fieldset[disabled] .btn-primary.active {
   color: #ff3405;
   background-color: #fff;
 }
-#nav-module-specific * > .badge {
+.nav-module-specific * > .badge {
   background-color: #c0c0c0;
   margin-left: 8px;
 }
@@ -36021,10 +36021,10 @@ a.no-link {
   margin-bottom: 10px !important;
 }
 /* module specific buttons and labels */
-.mura-header #nav-module-specific .btn-group {
+.mura-header .nav-module-specific .btn-group {
   float: none;
 }
-.mura-header #nav-module-specific .btn,
+.mura-header .nav-module-specific .btn,
 .sidebar-buttons .btn {
   color: #333333;
   background-color: #ffffff;
@@ -36044,355 +36044,355 @@ a.no-link {
   background-color: #FFF;
   border: 1px solid #e9e9e9;
 }
-.mura-header #nav-module-specific .btn:focus,
+.mura-header .nav-module-specific .btn:focus,
 .sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn.focus,
+.mura-header .nav-module-specific .btn.focus,
 .sidebar-buttons .btn.focus {
   color: #333333;
   background-color: #e6e6e6;
   border-color: #8c8c8c;
 }
-.mura-header #nav-module-specific .btn:hover,
+.mura-header .nav-module-specific .btn:hover,
 .sidebar-buttons .btn:hover {
   color: #333333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.active,
+.mura-header .nav-module-specific .btn.active,
 .sidebar-buttons .btn.active,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn,
 .open > .dropdown-toggle.sidebar-buttons .btn {
   color: #333333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
-.mura-header #nav-module-specific .btn:active:hover,
+.mura-header .nav-module-specific .btn:active:hover,
 .sidebar-buttons .btn:active:hover,
-.mura-header #nav-module-specific .btn.active:hover,
+.mura-header .nav-module-specific .btn.active:hover,
 .sidebar-buttons .btn.active:hover,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn:hover,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn:hover,
 .open > .dropdown-toggle.sidebar-buttons .btn:hover,
-.mura-header #nav-module-specific .btn:active:focus,
+.mura-header .nav-module-specific .btn:active:focus,
 .sidebar-buttons .btn:active:focus,
-.mura-header #nav-module-specific .btn.active:focus,
+.mura-header .nav-module-specific .btn.active:focus,
 .sidebar-buttons .btn.active:focus,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn:focus,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn:focus,
 .open > .dropdown-toggle.sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn:active.focus,
+.mura-header .nav-module-specific .btn:active.focus,
 .sidebar-buttons .btn:active.focus,
-.mura-header #nav-module-specific .btn.active.focus,
+.mura-header .nav-module-specific .btn.active.focus,
 .sidebar-buttons .btn.active.focus,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn.focus,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn.focus,
 .open > .dropdown-toggle.sidebar-buttons .btn.focus {
   color: #333333;
   background-color: #d4d4d4;
   border-color: #8c8c8c;
 }
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.active,
+.mura-header .nav-module-specific .btn.active,
 .sidebar-buttons .btn.active,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn,
 .open > .dropdown-toggle.sidebar-buttons .btn {
   background-image: none;
 }
-.mura-header #nav-module-specific .btn.disabled:hover,
+.mura-header .nav-module-specific .btn.disabled:hover,
 .sidebar-buttons .btn.disabled:hover,
-.mura-header #nav-module-specific .btn[disabled]:hover,
+.mura-header .nav-module-specific .btn[disabled]:hover,
 .sidebar-buttons .btn[disabled]:hover,
-fieldset[disabled] .mura-header #nav-module-specific .btn:hover,
+fieldset[disabled] .mura-header .nav-module-specific .btn:hover,
 fieldset[disabled] .sidebar-buttons .btn:hover,
-.mura-header #nav-module-specific .btn.disabled:focus,
+.mura-header .nav-module-specific .btn.disabled:focus,
 .sidebar-buttons .btn.disabled:focus,
-.mura-header #nav-module-specific .btn[disabled]:focus,
+.mura-header .nav-module-specific .btn[disabled]:focus,
 .sidebar-buttons .btn[disabled]:focus,
-fieldset[disabled] .mura-header #nav-module-specific .btn:focus,
+fieldset[disabled] .mura-header .nav-module-specific .btn:focus,
 fieldset[disabled] .sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn.disabled.focus,
+.mura-header .nav-module-specific .btn.disabled.focus,
 .sidebar-buttons .btn.disabled.focus,
-.mura-header #nav-module-specific .btn[disabled].focus,
+.mura-header .nav-module-specific .btn[disabled].focus,
 .sidebar-buttons .btn[disabled].focus,
-fieldset[disabled] .mura-header #nav-module-specific .btn.focus,
+fieldset[disabled] .mura-header .nav-module-specific .btn.focus,
 fieldset[disabled] .sidebar-buttons .btn.focus {
   background-color: #ffffff;
   border-color: #cccccc;
 }
-.mura-header #nav-module-specific .btn .badge,
+.mura-header .nav-module-specific .btn .badge,
 .sidebar-buttons .btn .badge {
   color: #ffffff;
   background-color: #333333;
 }
-.mura-header #nav-module-specific .btn:focus,
+.mura-header .nav-module-specific .btn:focus,
 .sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn.focus,
+.mura-header .nav-module-specific .btn.focus,
 .sidebar-buttons .btn.focus,
-.mura-header #nav-module-specific .btn:hover,
+.mura-header .nav-module-specific .btn:hover,
 .sidebar-buttons .btn:hover {
   color: #333333;
   background-color: #ebebeb;
   border-color: #adadad;
 }
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.active,
+.mura-header .nav-module-specific .btn.active,
 .sidebar-buttons .btn.active,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn,
 .open > .dropdown-toggle.sidebar-buttons .btn {
   color: #333333;
   background-color: #d1d1d1;
   border-color: #949494;
 }
-.mura-header #nav-module-specific .btn:active:hover,
+.mura-header .nav-module-specific .btn:active:hover,
 .sidebar-buttons .btn:active:hover,
-.mura-header #nav-module-specific .btn.active:hover,
+.mura-header .nav-module-specific .btn.active:hover,
 .sidebar-buttons .btn.active:hover,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn:hover,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn:hover,
 .open > .dropdown-toggle.sidebar-buttons .btn:hover,
-.mura-header #nav-module-specific .btn:active:focus,
+.mura-header .nav-module-specific .btn:active:focus,
 .sidebar-buttons .btn:active:focus,
-.mura-header #nav-module-specific .btn.active:focus,
+.mura-header .nav-module-specific .btn.active:focus,
 .sidebar-buttons .btn.active:focus,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn:focus,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn:focus,
 .open > .dropdown-toggle.sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn:active.focus,
+.mura-header .nav-module-specific .btn:active.focus,
 .sidebar-buttons .btn:active.focus,
-.mura-header #nav-module-specific .btn.active.focus,
+.mura-header .nav-module-specific .btn.active.focus,
 .sidebar-buttons .btn.active.focus,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn.focus,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn.focus,
 .open > .dropdown-toggle.sidebar-buttons .btn.focus {
   color: #333333;
   background-color: #d1d1d1;
   border-color: #949494;
 }
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.active,
+.mura-header .nav-module-specific .btn.active,
 .sidebar-buttons .btn.active,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn,
 .open > .dropdown-toggle.sidebar-buttons .btn {
   background-image: none;
 }
-.mura-header #nav-module-specific .btn.disabled,
+.mura-header .nav-module-specific .btn.disabled,
 .sidebar-buttons .btn.disabled,
-.mura-header #nav-module-specific .btn[disabled],
+.mura-header .nav-module-specific .btn[disabled],
 .sidebar-buttons .btn[disabled],
-fieldset[disabled] .mura-header #nav-module-specific .btn,
+fieldset[disabled] .mura-header .nav-module-specific .btn,
 fieldset[disabled] .sidebar-buttons .btn,
-.mura-header #nav-module-specific .btn.disabled:hover,
+.mura-header .nav-module-specific .btn.disabled:hover,
 .sidebar-buttons .btn.disabled:hover,
-.mura-header #nav-module-specific .btn[disabled]:hover,
+.mura-header .nav-module-specific .btn[disabled]:hover,
 .sidebar-buttons .btn[disabled]:hover,
-fieldset[disabled] .mura-header #nav-module-specific .btn:hover,
+fieldset[disabled] .mura-header .nav-module-specific .btn:hover,
 fieldset[disabled] .sidebar-buttons .btn:hover,
-.mura-header #nav-module-specific .btn.disabled:focus,
+.mura-header .nav-module-specific .btn.disabled:focus,
 .sidebar-buttons .btn.disabled:focus,
-.mura-header #nav-module-specific .btn[disabled]:focus,
+.mura-header .nav-module-specific .btn[disabled]:focus,
 .sidebar-buttons .btn[disabled]:focus,
-fieldset[disabled] .mura-header #nav-module-specific .btn:focus,
+fieldset[disabled] .mura-header .nav-module-specific .btn:focus,
 fieldset[disabled] .sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn.disabled.focus,
+.mura-header .nav-module-specific .btn.disabled.focus,
 .sidebar-buttons .btn.disabled.focus,
-.mura-header #nav-module-specific .btn[disabled].focus,
+.mura-header .nav-module-specific .btn[disabled].focus,
 .sidebar-buttons .btn[disabled].focus,
-fieldset[disabled] .mura-header #nav-module-specific .btn.focus,
+fieldset[disabled] .mura-header .nav-module-specific .btn.focus,
 fieldset[disabled] .sidebar-buttons .btn.focus,
-.mura-header #nav-module-specific .btn.disabled:active,
+.mura-header .nav-module-specific .btn.disabled:active,
 .sidebar-buttons .btn.disabled:active,
-.mura-header #nav-module-specific .btn[disabled]:active,
+.mura-header .nav-module-specific .btn[disabled]:active,
 .sidebar-buttons .btn[disabled]:active,
-fieldset[disabled] .mura-header #nav-module-specific .btn:active,
+fieldset[disabled] .mura-header .nav-module-specific .btn:active,
 fieldset[disabled] .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.disabled.active,
+.mura-header .nav-module-specific .btn.disabled.active,
 .sidebar-buttons .btn.disabled.active,
-.mura-header #nav-module-specific .btn[disabled].active,
+.mura-header .nav-module-specific .btn[disabled].active,
 .sidebar-buttons .btn[disabled].active,
-fieldset[disabled] .mura-header #nav-module-specific .btn.active,
+fieldset[disabled] .mura-header .nav-module-specific .btn.active,
 fieldset[disabled] .sidebar-buttons .btn.active {
   background-color: #ffffff;
   border-color: #cccccc;
 }
-.mura-header #nav-module-specific .btn .badge,
+.mura-header .nav-module-specific .btn .badge,
 .sidebar-buttons .btn .badge {
   color: #ffffff;
   background-color: #333333;
 }
-.mura-header #nav-module-specific .btn:focus,
+.mura-header .nav-module-specific .btn:focus,
 .sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn.focus,
+.mura-header .nav-module-specific .btn.focus,
 .sidebar-buttons .btn.focus {
   color: #545454;
   background-color: #dcdcdc;
   border-color: #a9a9a9;
 }
-.mura-header #nav-module-specific .btn:hover,
+.mura-header .nav-module-specific .btn:hover,
 .sidebar-buttons .btn:hover {
   color: #545454;
   background-color: #dcdcdc;
   border-color: #cacaca;
 }
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.active,
+.mura-header .nav-module-specific .btn.active,
 .sidebar-buttons .btn.active,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn,
 .open > .dropdown-toggle.sidebar-buttons .btn {
   color: #545454;
   background-color: #dcdcdc;
   border-color: #cacaca;
 }
-.mura-header #nav-module-specific .btn:active:hover,
+.mura-header .nav-module-specific .btn:active:hover,
 .sidebar-buttons .btn:active:hover,
-.mura-header #nav-module-specific .btn.active:hover,
+.mura-header .nav-module-specific .btn.active:hover,
 .sidebar-buttons .btn.active:hover,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn:hover,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn:hover,
 .open > .dropdown-toggle.sidebar-buttons .btn:hover,
-.mura-header #nav-module-specific .btn:active:focus,
+.mura-header .nav-module-specific .btn:active:focus,
 .sidebar-buttons .btn:active:focus,
-.mura-header #nav-module-specific .btn.active:focus,
+.mura-header .nav-module-specific .btn.active:focus,
 .sidebar-buttons .btn.active:focus,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn:focus,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn:focus,
 .open > .dropdown-toggle.sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn:active.focus,
+.mura-header .nav-module-specific .btn:active.focus,
 .sidebar-buttons .btn:active.focus,
-.mura-header #nav-module-specific .btn.active.focus,
+.mura-header .nav-module-specific .btn.active.focus,
 .sidebar-buttons .btn.active.focus,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn.focus,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn.focus,
 .open > .dropdown-toggle.sidebar-buttons .btn.focus {
   color: #545454;
   background-color: #cacaca;
   border-color: #a9a9a9;
 }
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.active,
+.mura-header .nav-module-specific .btn.active,
 .sidebar-buttons .btn.active,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn,
 .open > .dropdown-toggle.sidebar-buttons .btn {
   background-image: none;
 }
-.mura-header #nav-module-specific .btn.disabled:hover,
+.mura-header .nav-module-specific .btn.disabled:hover,
 .sidebar-buttons .btn.disabled:hover,
-.mura-header #nav-module-specific .btn[disabled]:hover,
+.mura-header .nav-module-specific .btn[disabled]:hover,
 .sidebar-buttons .btn[disabled]:hover,
-fieldset[disabled] .mura-header #nav-module-specific .btn:hover,
+fieldset[disabled] .mura-header .nav-module-specific .btn:hover,
 fieldset[disabled] .sidebar-buttons .btn:hover,
-.mura-header #nav-module-specific .btn.disabled:focus,
+.mura-header .nav-module-specific .btn.disabled:focus,
 .sidebar-buttons .btn.disabled:focus,
-.mura-header #nav-module-specific .btn[disabled]:focus,
+.mura-header .nav-module-specific .btn[disabled]:focus,
 .sidebar-buttons .btn[disabled]:focus,
-fieldset[disabled] .mura-header #nav-module-specific .btn:focus,
+fieldset[disabled] .mura-header .nav-module-specific .btn:focus,
 fieldset[disabled] .sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn.disabled.focus,
+.mura-header .nav-module-specific .btn.disabled.focus,
 .sidebar-buttons .btn.disabled.focus,
-.mura-header #nav-module-specific .btn[disabled].focus,
+.mura-header .nav-module-specific .btn[disabled].focus,
 .sidebar-buttons .btn[disabled].focus,
-fieldset[disabled] .mura-header #nav-module-specific .btn.focus,
+fieldset[disabled] .mura-header .nav-module-specific .btn.focus,
 fieldset[disabled] .sidebar-buttons .btn.focus {
   background-color: #f5f5f5;
   border-color: #e9e9e9;
 }
-.mura-header #nav-module-specific .btn .badge,
+.mura-header .nav-module-specific .btn .badge,
 .sidebar-buttons .btn .badge {
   color: #f5f5f5;
   background-color: #545454;
 }
-.mura-header #nav-module-specific .btn:focus,
+.mura-header .nav-module-specific .btn:focus,
 .sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn.focus,
+.mura-header .nav-module-specific .btn.focus,
 .sidebar-buttons .btn.focus,
-.mura-header #nav-module-specific .btn:hover,
+.mura-header .nav-module-specific .btn:hover,
 .sidebar-buttons .btn:hover {
   color: #545454;
   background-color: #e1e1e1;
   border-color: #cacaca;
 }
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.active,
+.mura-header .nav-module-specific .btn.active,
 .sidebar-buttons .btn.active,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn,
 .open > .dropdown-toggle.sidebar-buttons .btn {
   color: #545454;
   background-color: #c7c7c7;
   border-color: #b1b1b1;
 }
-.mura-header #nav-module-specific .btn:active:hover,
+.mura-header .nav-module-specific .btn:active:hover,
 .sidebar-buttons .btn:active:hover,
-.mura-header #nav-module-specific .btn.active:hover,
+.mura-header .nav-module-specific .btn.active:hover,
 .sidebar-buttons .btn.active:hover,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn:hover,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn:hover,
 .open > .dropdown-toggle.sidebar-buttons .btn:hover,
-.mura-header #nav-module-specific .btn:active:focus,
+.mura-header .nav-module-specific .btn:active:focus,
 .sidebar-buttons .btn:active:focus,
-.mura-header #nav-module-specific .btn.active:focus,
+.mura-header .nav-module-specific .btn.active:focus,
 .sidebar-buttons .btn.active:focus,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn:focus,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn:focus,
 .open > .dropdown-toggle.sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn:active.focus,
+.mura-header .nav-module-specific .btn:active.focus,
 .sidebar-buttons .btn:active.focus,
-.mura-header #nav-module-specific .btn.active.focus,
+.mura-header .nav-module-specific .btn.active.focus,
 .sidebar-buttons .btn.active.focus,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn.focus,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn.focus,
 .open > .dropdown-toggle.sidebar-buttons .btn.focus {
   color: #545454;
   background-color: #c7c7c7;
   border-color: #b1b1b1;
 }
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.active,
+.mura-header .nav-module-specific .btn.active,
 .sidebar-buttons .btn.active,
-.open > .dropdown-toggle.mura-header #nav-module-specific .btn,
+.open > .dropdown-toggle.mura-header .nav-module-specific .btn,
 .open > .dropdown-toggle.sidebar-buttons .btn {
   background-image: none;
 }
-.mura-header #nav-module-specific .btn.disabled,
+.mura-header .nav-module-specific .btn.disabled,
 .sidebar-buttons .btn.disabled,
-.mura-header #nav-module-specific .btn[disabled],
+.mura-header .nav-module-specific .btn[disabled],
 .sidebar-buttons .btn[disabled],
-fieldset[disabled] .mura-header #nav-module-specific .btn,
+fieldset[disabled] .mura-header .nav-module-specific .btn,
 fieldset[disabled] .sidebar-buttons .btn,
-.mura-header #nav-module-specific .btn.disabled:hover,
+.mura-header .nav-module-specific .btn.disabled:hover,
 .sidebar-buttons .btn.disabled:hover,
-.mura-header #nav-module-specific .btn[disabled]:hover,
+.mura-header .nav-module-specific .btn[disabled]:hover,
 .sidebar-buttons .btn[disabled]:hover,
-fieldset[disabled] .mura-header #nav-module-specific .btn:hover,
+fieldset[disabled] .mura-header .nav-module-specific .btn:hover,
 fieldset[disabled] .sidebar-buttons .btn:hover,
-.mura-header #nav-module-specific .btn.disabled:focus,
+.mura-header .nav-module-specific .btn.disabled:focus,
 .sidebar-buttons .btn.disabled:focus,
-.mura-header #nav-module-specific .btn[disabled]:focus,
+.mura-header .nav-module-specific .btn[disabled]:focus,
 .sidebar-buttons .btn[disabled]:focus,
-fieldset[disabled] .mura-header #nav-module-specific .btn:focus,
+fieldset[disabled] .mura-header .nav-module-specific .btn:focus,
 fieldset[disabled] .sidebar-buttons .btn:focus,
-.mura-header #nav-module-specific .btn.disabled.focus,
+.mura-header .nav-module-specific .btn.disabled.focus,
 .sidebar-buttons .btn.disabled.focus,
-.mura-header #nav-module-specific .btn[disabled].focus,
+.mura-header .nav-module-specific .btn[disabled].focus,
 .sidebar-buttons .btn[disabled].focus,
-fieldset[disabled] .mura-header #nav-module-specific .btn.focus,
+fieldset[disabled] .mura-header .nav-module-specific .btn.focus,
 fieldset[disabled] .sidebar-buttons .btn.focus,
-.mura-header #nav-module-specific .btn.disabled:active,
+.mura-header .nav-module-specific .btn.disabled:active,
 .sidebar-buttons .btn.disabled:active,
-.mura-header #nav-module-specific .btn[disabled]:active,
+.mura-header .nav-module-specific .btn[disabled]:active,
 .sidebar-buttons .btn[disabled]:active,
-fieldset[disabled] .mura-header #nav-module-specific .btn:active,
+fieldset[disabled] .mura-header .nav-module-specific .btn:active,
 fieldset[disabled] .sidebar-buttons .btn:active,
-.mura-header #nav-module-specific .btn.disabled.active,
+.mura-header .nav-module-specific .btn.disabled.active,
 .sidebar-buttons .btn.disabled.active,
-.mura-header #nav-module-specific .btn[disabled].active,
+.mura-header .nav-module-specific .btn[disabled].active,
 .sidebar-buttons .btn[disabled].active,
-fieldset[disabled] .mura-header #nav-module-specific .btn.active,
+fieldset[disabled] .mura-header .nav-module-specific .btn.active,
 fieldset[disabled] .sidebar-buttons .btn.active {
   background-color: #f5f5f5;
   border-color: #e9e9e9;
 }
-.mura-header #nav-module-specific .btn .badge,
+.mura-header .nav-module-specific .btn .badge,
 .sidebar-buttons .btn .badge {
   color: #f5f5f5;
   background-color: #545454;
 }
-.mura-header #nav-module-specific .btn .badge,
+.mura-header .nav-module-specific .btn .badge,
 .sidebar-buttons .btn .badge {
   border: 0 solid #ffffff;
   background-color: #b3b3b3;
@@ -36403,9 +36403,9 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   padding-top: 2px;
   border: 1px solid #EEE;
 }
-.mura-header #nav-module-specific .btn:visited,
-.mura-header #nav-module-specific .btn:hover,
-.mura-header #nav-module-specific .btn:active,
+.mura-header .nav-module-specific .btn:visited,
+.mura-header .nav-module-specific .btn:hover,
+.mura-header .nav-module-specific .btn:active,
 .sidebar-buttons .btn:visted,
 .sidebar-buttons .btn:hover,
 .sidebar-buttons .btn:active {
@@ -37485,11 +37485,11 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
   .mura-item-metadata {
     text-align: left !important;
   }
-  .mura-header #nav-module-specific {
+  .mura-header .nav-module-specific {
     text-align: left;
     padding-top: 12px;
   }
-  .mura-header #nav-module-specific .btn {
+  .mura-header .nav-module-specific .btn {
     margin-left: 0;
     margin-right: 8px;
   }
@@ -37498,7 +37498,7 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
 /* MAX WIDTH, LARGE & MEDIUM */
 /* MAX WIDTH, LARGE & MEDIUM */
 @media (min-width: 992px) {
-  #nav-module-specific .btn-group .dropdown-menu {
+  .nav-module-specific .btn-group .dropdown-menu {
     right: 0;
     left: auto;
   }
@@ -37521,7 +37521,7 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
     padding-left: 0 !important;
     clear: both;
   }
-  #nav-module-specific .btn-group .dropdown-menu {
+  .nav-module-specific .btn-group .dropdown-menu {
     right: auto;
     left: -10px;
   }
