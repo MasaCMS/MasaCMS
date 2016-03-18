@@ -625,14 +625,17 @@ to your own modified versions of Mura CMS.
 						</cfif>
 					<div class="mura-control-group">
 							<label>Comments Manager</label>
-									<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>
-									<label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> checked</cfif>>On</label>
-								</div>
-					<div class="mura-control-group">
-							<label>JSON API</label>
-									<label class="radio inline"><input type="radio" name="JSONAPI" value="0" <cfif rc.siteBean.getJSONAPI() neq 1> checked</cfif>>Off</label>
-									<label class="radio inline"><input type="radio" name="JSONAPI" value="1" <cfif rc.siteBean.getJSONAPI() eq 1> checked</cfif>>On</label>
+							<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>
+							<label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> checked</cfif>>On</label>
 					</div>
+				
+					<cfif not rc.siteBean.getContentRenderer().useLayoutManager()>
+						<div class="mura-control-group">
+								<label>JSON API</label>
+										<label class="radio inline"><input type="radio" name="JSONAPI" value="0" <cfif rc.siteBean.getJSONAPI() neq 1> checked</cfif>>Off</label>
+										<label class="radio inline"><input type="radio" name="JSONAPI" value="1" <cfif rc.siteBean.getJSONAPI() eq 1> checked</cfif>>On</label>
+						</div>
+					</cfif>
 
 					<cfif application.configBean.getEmailBroadcaster()>
 					<div class="mura-control-group">

@@ -267,6 +267,7 @@ component extends="mura.cfobject" {
 			var pathInfo=listToArray(arguments.path,'/');
 			var httpRequestData=getHTTPRequestData();
 			var method='GET';
+			var apiEnabled=getBean('settingsManager').getSite(variables.siteid).getJSONApi() || getBean('settingsManager').getSite(variables.siteid).getContentRenderer().useLayoutManager();
 
 			structAppend(params,url);
 			structAppend(params,form);
@@ -305,8 +306,8 @@ component extends="mura.cfobject" {
 					throw(type="invalidMethodCall");
 				}
 
-				if(!(listFindNoCase('validate,processAsyncObject,generateCSRFTokens',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
-					throw(type='authorization');
+				if(!(listFindNoCase('validate,processAsyncObject,generateCSRFTokens',params.method) || apiEnabled)){
+					throw(type='disabled');
 				}
 
 				if(arrayLen(pathInfo) > 1){
@@ -331,9 +332,6 @@ component extends="mura.cfobject" {
 				params.method="undefined";
 			}
 
-			if(!getBean('settingsManager').getSite(variables.siteid).getJSONApi()){
-				throw(type='disabled');
-			}
 
 			if(arrayLen(pathInfo)){
 				params.siteid=pathInfo[1];
@@ -347,8 +345,8 @@ component extends="mura.cfobject" {
 						throw(type="invalidMethodCall");
 					}
 
-					if(!(listFindNoCase('validate,processAsyncObject',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
-						throw(type='authorization');
+					if(!(listFindNoCase('validate,processAsyncObject',params.method) || apiEnabled)){
+						throw(type='disabled');
 					}
 
 					if(arrayLen(pathInfo) > 2){
