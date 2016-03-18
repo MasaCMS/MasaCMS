@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<div class="mura-control-group">
 				<label>Plugin Name (Alias)</label>
-				<input name="pluginalias" class="span12" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></div>
+				<input name="pluginalias" class="span12" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/>
 			</div>
 		    
 			<div class="mura-control-group">
