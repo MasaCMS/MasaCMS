@@ -13,6 +13,9 @@
 .ui-widget-content {
 	border-color: @grayLight;
 }
+.ui-dialog .ui-widget-content{ 
+	border: none !important; 
+}
 
 // Autocomplete widget
 .ui-autocomplete-loading { background-image: url('jquery/images/ui-anim_basic_16x16.gif'); }
@@ -72,6 +75,7 @@
 	padding: 0;
 	border: 0;
 	margin: @baseLineHeight/2 0 0 0;
+	.box-shadow(none);
 	
 	button {
 		.btn;
@@ -439,7 +443,7 @@
 	clear: both;
 	
 	&.alert-notice {
-		background: #f9f9f9;
+		background: #fff;
 		margin-bottom: 0;
 		}
 	}
