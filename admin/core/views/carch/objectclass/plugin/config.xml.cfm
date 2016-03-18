@@ -1,1 +1,1 @@
-<displayobject name="Plugin" contenttypes="*" iconclass="mi-puzzle-piece"/>
+<displayobject name="Plugin" contenttypes="*" omitcontenttypes="Variation" iconclass="mi-puzzle-piece"/>
