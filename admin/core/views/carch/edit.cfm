@@ -382,7 +382,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="mi-eye"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif assignChangesets>
-			<button type="button" class="btn<cfif not currentChangeset.getIsNew()> btn-danger</cfif>" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;">
+			<button type="button" class="btn" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;">
 				<cfif requiresApproval>
 					<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangesetandsendforapproval"))#
 				<cfelse>

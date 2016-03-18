@@ -708,6 +708,10 @@ a.no-link{
   display:none;
 }
 
+.tab-pane .block.block-bordered{
+  border: none;
+}
+
 .tab-pane .block-header h3{
   margin-bottom: 0;
   font-size: 16px;
@@ -974,8 +978,10 @@ label #selectFilter{
   outline: 0;
 }
 
-#searchParams .mura-control{
+#searchParams .mura-control,
+#searchParams div.ember-view > div{
   min-height: 38px;
+  clear: both;
 }
 
 .mura-control-group input.radio:focus,
@@ -1268,6 +1274,10 @@ label #selectFilter{
   padding: 0 6px;
 }
 
+#cropper .jc-dialog .btn{
+  margin: 20px 10px 10px;
+}
+
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover{
   background-color:#FFF;
 }
@@ -1285,6 +1295,7 @@ label #selectFilter{
 
 #ui-datepicker-div{
   .border-radius(0) !important;
+  z-index: 555 !important;
 }
 
 .mura .modal-wrapper{

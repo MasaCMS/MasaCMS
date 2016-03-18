@@ -1304,7 +1304,7 @@ function getDialogPosition() {
 	//["top",20]
 //	return "center";
 // jquery-ui update uses an object for positioning
-	return { my: "center", at: "center", of: window };
+	return { my: "center", at: "center", of: window, collision: "fit" };
 }
 
 function openPreviewDialog(previewURL) {

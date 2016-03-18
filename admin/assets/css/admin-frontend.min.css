@@ -7203,6 +7203,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   box-shadow: none !important;
   padding: 0 !important;
   margin: 0 !important;
+  width: auto !important;
 }
 .mura #frontEndTools {
   background: #333;
