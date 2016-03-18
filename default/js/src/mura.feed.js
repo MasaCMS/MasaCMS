@@ -47,7 +47,7 @@
 ;(function(window){
 	window.mura.Feed=window.mura.Core.extend({
 		init:function(siteid,entityname){
-            this.queryString=siteid + '/' + entityname + '/?';
+            this.queryString= entityname + '/?';
 			this.propIndex=0;
 			this.entityname=entityname;
             return this;
@@ -163,6 +163,7 @@
         },
         getQuery:function(){
             var self=this;
+
             return new Promise(function(resolve,reject) {
 				window.mura.ajax({
 					type:'get',
