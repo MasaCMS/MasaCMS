@@ -193,7 +193,7 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
     <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-   <script src="#application.configBean.getContext()#/admin/assets/js/oneui.min.js"></script>
+   <script src="#application.configBean.getContext()#/admin/assets/js/oneui.js"></script>
 
 <!--- TODO GoWest : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
@@ -404,7 +404,7 @@
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
 
-			<footer class="mura-footer clearfix">
+			<footer class="mura-footer footer navbar-fixed-bottom clearfix">
 				<div class="credits">
 					&copy; #year(now())# Blue River Interactive Group. Licensed under <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank">GNU General Public License Version 2.0 with exceptions</a>
 				</div>
@@ -415,3 +415,4 @@
 	</body>
 </html></cfprocessingdirective>
 </cfoutput>
+
