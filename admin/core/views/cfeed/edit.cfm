@@ -483,7 +483,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="mura-control-group" id="searchParams">
 		    <label>#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#</label>
 			<cfif not rsParams.recordcount>
-				<div class="mura-control justify form-inline">
+				<div class="mura-control justify">
 					<select name="paramRelationship1" style="display:none;" >
 						<option value="and">#application.rbFactory.getKeyValue(session.rb,'params.and')#</option>
 						<option value="or">#application.rbFactory.getKeyValue(session.rb,'params.or')#</option>
@@ -506,7 +506,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			<cfelse>
 				<cfloop query="rsParams">
-					<div class="mura-control justify form-inline">
+					<div class="mura-control justify">
 						<select name="paramRelationship#rsParams.currentRow#">
 							<option value="and" <cfif rsParams.criteria eq '' or rsParams.relationship eq "and">selected</cfif> >And</option>
 							<option value="or" <cfif rsParams.criteria neq '' and rsParams.relationship eq "or">selected</cfif> >Or</option>

@@ -34997,14 +34997,14 @@ a {
   color: #6498cb;
 }
 a.link-effect:before {
-  background-color: #ff1f1f;
+  background-color: #3973ac;
 }
-a:hover,
+a:hover {
+  color: #3973ac;
+}
+a:active,
 a:focus {
-  color: #ff1f1f;
-}
-a:active {
-  color: #6498cb;
+  color: #6498cb !important;
 }
 .text-primary {
   color: #6498cb;
@@ -36760,8 +36760,10 @@ label #selectFilter {
   border: none;
   outline: 0;
 }
-#searchParams .mura-control {
+#searchParams .mura-control,
+#searchParams div.ember-view > div {
   min-height: 38px;
+  clear: both;
 }
 .mura-control-group input.radio:focus,
 .mura-control-group input.checkbox:focus,
