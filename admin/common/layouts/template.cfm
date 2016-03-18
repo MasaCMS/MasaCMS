@@ -406,7 +406,7 @@
 
 			<footer class="mura-footer clearfix">
 				<div class="credits">
-					&copy; #year(now())# Blue River Interactive Group. Licensed under GNU General Public License, Version 2.0, with exceptions
+					&copy; #year(now())# Blue River Interactive Group. Licensed under <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank">GNU General Public License Version 2.0 with exceptions</a>
 				</div>
       </footer>
 
