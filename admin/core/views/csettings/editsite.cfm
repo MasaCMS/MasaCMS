@@ -834,7 +834,7 @@ to your own modified versions of Mura CMS.
 					<label>Height</label>
 					<input name="mediumImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageHeight())#" />
 					<label>Width</label>
-					<input name="mediumImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.	getMediumImageWidth())#" />
+					<input name="mediumImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageWidth())#" />
 				</div>
 			</div>
 
@@ -1325,7 +1325,7 @@ to your own modified versions of Mura CMS.
 	<cfoutput query="rsPluginScripts" group="pluginID">
 		<!---<cfset tabLabelList=tabLabelList & ",'#esapiEncode('javascript',rsPluginScripts.name)#'"/>--->
 		<cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
-		<div id="#tabID#" class="tab-pane"> 
+		<div id="#tabID#" class="tab-pane">
 			<cfoutput>
 				<div class="block block-bordered">
 					<!-- block header -->
