@@ -350,6 +350,25 @@ component extends="mura.bean.bean" versioned=false {
 			var sql='';
 			var qs=getQueryService();
 
+			// Set lastupdate columns if defined
+			if (structkeyexists(props, "lastupdate") && listFindNoCase('datetime,timestamp',props.lastupdate.datatype)) {
+				variables.instance.lastupdate = now();
+			}
+			if (structkeyexists(props, "lastupdateby")) {
+				if(isDefined("session.mura") and session.mura.isLoggedIn){
+					variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50);
+				} else {
+					variables.instance.LastUpdateBy='';
+				}
+			}
+			if (structkeyexists(props, "lastupdatebyid")) {
+				if(isDefined("session.mura") and session.mura.isLoggedIn){
+					variables.instance.LastUpdateById = session.mura.userID;
+				} else {
+					variables.instance.LastUpdateById='';
+				}
+			}
+
 			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
 
 			if(qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
