@@ -31153,8 +31153,11 @@ input[type="email"].mura-control-inline > select {
 .input-group-lg .mura-control-inline > select {
   font-size: 14px;
 }
+.mura-control-inline > input + select,
+.mura-control-inline > select + input,
+.mura-control-inline > select + label,
 .mura-control-inline > input + label {
-  margin-left: 8px;
+  margin-left: 8px !important;
 }
 .mura-control-inline > button {
   display: inline-block;
@@ -31256,6 +31259,13 @@ fieldset[disabled] a.mura-control-inline > button {
 .mura-control-inline > button > i.pull-right {
   margin-top: 3px;
   margin-left: 5px;
+}
+.mura-control-inline > i {
+  display: block;
+  float: left;
+  width: 24px;
+  padding-top: 13px;
+  margin-left: 8px;
 }
 .label-inline input,
 .label-inline select {
