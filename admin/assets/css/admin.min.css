@@ -36484,6 +36484,9 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   border-color: #fff;
   display: none;
 }
+.tab-pane .block.block-bordered {
+  border: none;
+}
 .tab-pane .block-header h3 {
   margin-bottom: 0;
   font-size: 16px;
@@ -37387,6 +37390,7 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
   -webkit-border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   border-radius: 0 !important;
+  z-index: 999 !important;
 }
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close,
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close:focus,
