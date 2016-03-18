@@ -1,5 +1,5 @@
 <cfsilent>
-    <cfset rc.contentBean=rc.$.getBean('content').loadBy(contentid=rc.contentid)>
+    <cfset rc.contentBean=rc.$.getBean('content').loadBy(remoteid=rc.remoteid)>
     <cfset rc.contentBean.set(rc)>
 </cfsilent>
 <cfif isDefined('rc.saveTargeting')>
