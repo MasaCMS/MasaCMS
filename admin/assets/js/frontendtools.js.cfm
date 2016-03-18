@@ -1344,7 +1344,7 @@
 
 							count=1;
 
-							if(muraInlineEditor.commitEdit){
+							if(muraInlineEditor.commitEdit && mura.currentId){
 								muraInlineEditor.commitEdit(mura('##' + mura.currentId));
 							}
 
