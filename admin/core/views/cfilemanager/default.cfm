@@ -60,7 +60,7 @@
 	<cfelseif session.resourceType eq "root">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</h1>
 	</cfif>
-			<div id="nav-module-specific" class="btn-group">
+			<div class="nav-module-specific btn-group">
 			  <a class="btn<cfif session.resourceType eq 'assets'> active</cfif>" href="#application.configBean.getContext()#/admin/?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a>
   <cfif listFind(session.mura.memberships,'S2')>
 	  <cfif application.configBean.getValue('fmShowSiteFiles') neq 0>

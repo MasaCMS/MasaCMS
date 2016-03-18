@@ -115,7 +115,7 @@
 	<h1>#rbKey("user.advancedusersearch")#</h1>
 
 	<!--- Basic Search Button --->
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 		<a class="btn" href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 			<i class="mi-search"></i> 
 			#rbKey('user.basicsearch')#

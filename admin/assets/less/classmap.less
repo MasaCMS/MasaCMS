@@ -142,6 +142,7 @@ select[size],
 
 // inline groups
 .mura-control-inline{
+  
   > label {
   float:left;
   padding-right: 8px;
@@ -155,12 +156,24 @@ select[size],
   .make-sm-column(3);
   .form-control;
   }
+
+  > input + select,
+  > select + input,
+  > select + label,
   > input + label{
-  margin-left: 8px;
+  margin-left: 8px !important;
   }
+
   > button {
   .btn;
   height: 36px;
+  }
+  > i{
+    display: block;
+    float: left;
+    width: 24px;
+    padding-top: 13px;
+    margin-left: 8px;
   }
 }
 
@@ -341,7 +354,7 @@ h1:not([class]){
 }
 
 // secondary nav 
-#nav-module-specific{
+.nav-module-specific{
   .make-sm-column(8.25);
   text-align:right;
   padding-left: 0;

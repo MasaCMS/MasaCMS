@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 	<cfswitch expression="#rc.originalfuseaction#">
 		<cfcase value="list">
 			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#" href="./?muraAction=cFeed.edit&feedID=&siteid=#esapiEncode('url',rc.siteid)#&type=Local"><i class="mi-plus-circle"></i> #application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#</a>

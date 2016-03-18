@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-header">
 	<h1><cfif len(rc.extendSetID)>Edit<cfelse>Add</cfif> Attribute Set</h1>
 
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
   <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
        <i class="mi-arrow-circle-left"></i> Back <span class="caret"></span>
    </a>

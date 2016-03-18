@@ -562,8 +562,14 @@
 
 #frontEndTools > ul li.dropdown-submenu {
 
+  position:relative;
+
 	> .dropdown-menu {
 		margin-left: 0 !important;
+    top:0 !important;
+    left:100%;
+    margin-top:-6px;
+    margin-left:-1px;
 	}
 
 	a {
@@ -580,13 +586,16 @@
 }
 
 #frontEndTools > ul > li#adminSave .dropdown-menu,
-#frontEndTools > ul > li#adminPreview .dropdown-menu
- {
+#frontEndTools > ul > li#adminPreview .dropdown-menu{
 	margin-left: 0 !important;
 }
 
-} // End .mura
+.dropdown-submenu:hover > .dropdown-menu,
+#frontEndTools .dropdown-submenu:hover > .dropdown-menu{
+    display:block;
+}
 
+} // End .mura
 
 .mura-editable {
 

@@ -7513,8 +7513,15 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li > a:hover i {
   color: #ffffff !important;
 }
+.mura #frontEndTools > ul li.dropdown-submenu {
+  position: relative;
+}
 .mura #frontEndTools > ul li.dropdown-submenu > .dropdown-menu {
   margin-left: 0 !important;
+  top: 0 !important;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
 }
 .mura #frontEndTools > ul li.dropdown-submenu a {
   max-width: 180px !important;
@@ -7531,6 +7538,10 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > ul > li#adminSave .dropdown-menu,
 .mura #frontEndTools > ul > li#adminPreview .dropdown-menu {
   margin-left: 0 !important;
+}
+.mura .dropdown-submenu:hover > .dropdown-menu,
+.mura #frontEndTools .dropdown-submenu:hover > .dropdown-menu {
+  display: block;
 }
 .mura-editable {
   position: relative !important;

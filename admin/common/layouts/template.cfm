@@ -404,7 +404,7 @@
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
 
-			<footer class="mura-footer content-mini content-mini-full font-s12 bg-gray-lighter clearfix">
+			<footer class="mura-footer clearfix">
 				<div class="credits">
 					&copy; #year(now())# Blue River Interactive Group. Licensed under GNU General Public License, Version 2.0, with exceptions
 				</div>

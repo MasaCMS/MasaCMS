@@ -13,7 +13,7 @@
 		<h1>Select Content</h1>
 	</cfif>
 	<!---
-			<div id="nav-module-specific" class="btn-toolbar">
+			<div class="nav-module-specific btn-toolbar">
 				<div class="btn-group">
 					<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
 				</div>

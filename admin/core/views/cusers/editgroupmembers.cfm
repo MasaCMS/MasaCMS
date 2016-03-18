@@ -49,7 +49,7 @@
 <div class="mura-header">
 	<h1>#rbKey('user.groupform')#</h1>
 	<!--- Buttons --->
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 		<!--- Back --->
 		<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
 					<i class="mi-arrow-circle-left"></i> 

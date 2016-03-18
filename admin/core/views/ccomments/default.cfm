@@ -76,7 +76,7 @@
 		<h1>#rbKey('comments.commentsmanager')#</h1>
 
 		<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-			<div id="nav-module-specific" class="btn-group">
+			<div class="nav-module-specific btn-group">
 					<cfif rc.$.globalConfig('purgecomments') and rc.$.currentUser().isSuperUser()>
 								<a id="purge-comments" class="btn btn-default" data-alertmessage="#application.rbFactory.getKeyValue(session.rb,'comments.message.confirm.purge')#"><i class="mi-trash-o"></i> #application.rbFactory.getKeyValue(session.rb,'comments.purgedeletedcomments')#</a>
 					</cfif>
