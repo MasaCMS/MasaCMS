@@ -37374,6 +37374,9 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
   border-color: #BCBCBC !important;
   padding: 0 6px;
 }
+#cropper .jc-dialog .btn {
+  margin: 20px 10px 10px;
+}
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover {
   background-color: #FFF;
 }
@@ -37390,7 +37393,7 @@ fieldset[disabled] a.mura .ui-dialog-buttonset .ui-button-text-only .ui-button-t
   -webkit-border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   border-radius: 0 !important;
-  z-index: 999 !important;
+  z-index: 555 !important;
 }
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close,
 .mura .modal-wrapper .ui-dialog .ui-dialog-titlebar-close:focus,
