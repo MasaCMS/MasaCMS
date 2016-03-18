@@ -86,21 +86,25 @@
 			if(window.mura.templateList.length){
 				var temp = window.mura.templateList.pop();
 
-				window.mura.get(
-						window.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb'
-					).then(function(data) {
-					window.mura.templates[temp] = window.mura.Handlebars.compile(data);
-					if(!window.mura.templateList.length) {
-						if (self.settings.view == 'form') {
-							self.loadForm();
-						}
-						else {
-							self.loadList();
+				window.mura.ajax(
+					{
+						url:window.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb',
+						type:'get',
+						xhrFields:{ withCredentials: false },
+						success:function(data) {
+							window.mura.templates[temp] = window.mura.Handlebars.compile(data);
+							if(!window.mura.templateList.length) {
+								if (self.settings.view == 'form') {
+									self.loadForm();
+								} else {
+									self.loadList();
+								}
+							} else {
+								self.getTemplates();
+							}
 						}
 					}
-					else
-						self.getTemplates();
-				});
+				);
 			}
 		},
 
@@ -259,6 +263,9 @@
 			var self = this;
 
 			if(self.datasets.length == 0){
+				if (self.renderqueue == 0) {
+					self.renderForm();
+				}
 				return;
 			}
 
