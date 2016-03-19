@@ -22533,6 +22533,9 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text {
 .ui-widget-content {
   border-color: #e6e6e6;
 }
+.ui-dialog .ui-widget-content {
+  border: none !important;
+}
 .ui-autocomplete-loading {
   background-image: url('jquery/images/ui-anim_basic_16x16.gif');
 }
@@ -22587,6 +22590,8 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text {
   padding: 0;
   border: 0;
   margin: 9px 0 0 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 .ui-dialog .ui-dialog-buttonpane button {
   display: inline-block;
@@ -23223,7 +23228,7 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
   clear: both;
 }
 .mura .ui-dialog .ui-dialog-content.alert-notice {
-  background: #f9f9f9;
+  background: #fff;
   margin-bottom: 0;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
@@ -35002,9 +35007,11 @@ a.link-effect:before {
 a:hover {
   color: #3973ac;
 }
-a:active,
-a:focus {
+a:active {
   color: #6498cb !important;
+}
+a:focus {
+  color: #6498cb;
 }
 .text-primary {
   color: #6498cb;
@@ -35538,7 +35545,7 @@ div.tagsinput span.tag {
 }
 .block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
 .block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
-  color: #ff3405;
+  color: #ff3405 !important;
   background-color: transparent;
 }
 .block > .nav-tabs li.tabdrop .dropdown-menu li.active a {
@@ -36805,14 +36812,16 @@ label #selectFilter {
 .mura-footer {
   overflow-x: hidden;
   background-color: #f9f9f9;
-  margin: -45px auto 0;
   padding: 13px 30px 13px;
   max-width: 100%;
   font-size: 12px;
 }
 .mura-footer .credits {
-  margin-left: 25px;
+  margin-left: 248px;
   font-weight: 600;
+}
+.sidebar-mini .mura-footer .credits {
+  margin-left: 83px;
 }
 /* login and setup */
 .mura-focus-block {

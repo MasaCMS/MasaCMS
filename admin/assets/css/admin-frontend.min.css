@@ -7293,6 +7293,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   overflow: visible !important;
+  margin-top: 9px;
 }
 .mura #frontEndTools > ul > li a > i.mi-mobile {
   font-size: 16px !important;

@@ -60,8 +60,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rsPlugin.recordcount and rsPlugin.deployed and application.configBean.getJavaEnabled()>
 		<div class="nav-module-specific btn-group"> 
-			<a class="btn" href="./?muraAction=cSettings.updatePluginVersion&moduleid=#esapiEncode('url',rc.moduleid)#">Update Plugin Version</a>
-			<a class="btn" href="./index.cfm?muraAction=cSettings.createBundle&moduleid=#esapiEncode('url',rc.moduleid)#&siteID=&BundleName=#esapiEncode('url',application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a>
+			<a class="btn" href="./?muraAction=cSettings.updatePluginVersion&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="mi-gears"></i> Update Plugin Version</a>
+			<a class="btn" href="./index.cfm?muraAction=cSettings.createBundle&moduleid=#esapiEncode('url',rc.moduleid)#&siteID=&BundleName=#esapiEncode('url',application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#"><i class="mi-download"></i> Create and Download Plugin Bundle</a>
 		</div>
 	</cfif>
 
@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<div class="mura-control-group">
 				<label>Plugin Name (Alias)</label>
-				<input name="pluginalias" class="span12" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></div>
+				<input name="pluginalias" class="span12" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/>
 			</div>
 		    
 			<div class="mura-control-group">
