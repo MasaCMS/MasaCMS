@@ -83,7 +83,14 @@
 
 			var self = this;
 
-			if(window.mura.templateList.length){
+			if (self.settings.view == 'form') {
+				self.loadForm();
+			} else {
+				self.loadList();
+			}
+
+			/*
+			if(window.mura.templatesLoaded.length){
 				var temp = window.mura.templateList.pop();
 
 				window.mura.ajax(
@@ -105,7 +112,9 @@
 						}
 					}
 				);
+
 			}
+			*/
 		},
 
 		getPageFieldList:function(){
@@ -491,22 +500,26 @@
 			var formJSON = {};
 			var entityName = '';
 
-			if(entityid != undefined)
+			if(entityid != undefined){
 				self.entityid = entityid;
-			else
+			} else {
 				delete self.entityid;
+			}
 
-			if(backlink != undefined)
+			if(backlink != undefined){
 				self.backlink = backlink;
-			else
+			} else {
 				delete self.backlink;
+			}
 
+			/*
 			if(window.mura.templateList.length) {
 				self.getTemplates( entityid );
 			}
 			else {
+			*/
 				self.loadForm();
-			}
+			//}
 		},
 
 		loadForm: function( data ) {
@@ -690,12 +703,14 @@
 
 			var entityName = '';
 
+			/*
 			if(window.mura.templateList.length) {
 				self.getTemplates();
 			}
 			else {
+			*/
 				self.loadList();
-			}
+			//}
 		},
 
 		filterResults: function() {
