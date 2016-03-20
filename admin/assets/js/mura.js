@@ -4411,6 +4411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if(mura.layoutmanager && mura.editing){
 			if(obj.hasClass('mura-body-object') || obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
+				obj.children('.frontEndToolsModal').remove();
 				obj.prepend(layoutmanagertoolbar);
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
 
@@ -4431,6 +4432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				if(mura.type == 'Variation'){
 					var objectData=obj.data();
 					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+						obj.children('.frontEndToolsModal').remove();
 						obj.prepend(layoutmanagertoolbar);
 						muraInlineEditor.setAnchorSaveChecks(obj.node);
 
@@ -4455,6 +4457,7 @@ return /******/ (function(modules) { // webpackBootstrap
 							var objectData=obj.data();
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+								obj.children('.frontEndToolsModal').remove();
 								obj.prepend(layoutmanagertoolbar);
 								muraInlineEditor.setAnchorSaveChecks(obj.node);
 
