@@ -6995,6 +6995,8 @@ mura.render['form']=function(context) {
 	mura(context.targetEl).html( mura.templates.content(context) );
 
 	if (item.settings.view == 'form') {
+
+		/*
 		window.mura.get(
 			window.mura.apiEndpoint + '/content/' + context.objectid
 			 + '?fields=body&ishuman=true'
@@ -7003,13 +7005,16 @@ mura.render['form']=function(context) {
 //		 	formJSON = JSON.parse( data.data.body );
 			item.getForm();
 		});
+		*/
+
+		item.getForm();
 	}
 	else {
 		item.getList();
 	}
 
 }
-;mura.templates={};
+;mura.templates=mura.templates || {};
 mura.templates['meta']=function(context){
 
 	if(context.label){

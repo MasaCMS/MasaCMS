@@ -1,7 +1,7 @@
 this["mura"] = this["mura"] || {};
 this["mura"]["templates"] = this["mura"]["templates"] || {};
 
-this["mura"]["templates"]["checkbox"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
+this["mura"]["templates"]["checkbox"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {}, alias4=helpers.helperMissing, alias5="function";
 
   return "				<label class=\"control-label\">	\r\n				<input class=\"form-control\" source=\""
@@ -35,7 +35,7 @@ this["mura"]["templates"]["checkbox"] = Handlebars.template({"1":function(contai
     + "			</label>\r\n		</div>\r\n	</div>\r\n";
 },"useData":true,"useDepths":true});
 
-this["mura"]["templates"]["checkbox_static"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
+this["mura"]["templates"]["checkbox_static"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {}, alias4=helpers.helperMissing, alias5="function";
 
   return "				<label class=\"control-label\">	\r\n				<input class=\"form-control\" type=\"checkbox\" name=\""
@@ -66,7 +66,7 @@ this["mura"]["templates"]["checkbox_static"] = Handlebars.template({"1":function
     + "			</label>\r\n		</div>\r\n	</div>\r\n";
 },"useData":true,"useDepths":true});
 
-this["mura"]["templates"]["dropdown"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["dropdown"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "					<option data-isother=\""
@@ -100,7 +100,7 @@ this["mura"]["templates"]["dropdown"] = Handlebars.template({"1":function(contai
     + "			</select>\n		</div>\n	</div>\n\n";
 },"useData":true});
 
-this["mura"]["templates"]["dropdown_static"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["dropdown_static"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "					<option data-isother=\""
@@ -134,7 +134,7 @@ this["mura"]["templates"]["dropdown_static"] = Handlebars.template({"1":function
     + "			</select>\n		</div>\n	</div>\n\n";
 },"useData":true});
 
-this["mura"]["templates"]["error"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["error"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "	<div class=\"alert alert-danger\" data-field=\""
@@ -154,7 +154,7 @@ this["mura"]["templates"]["error"] = Handlebars.template({"1":function(container
   return ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},depth0,{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 },"useData":true});
 
-this["mura"]["templates"]["file"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["file"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "\r\n	<div class=\"form-group\" id=\"field-"
@@ -170,7 +170,7 @@ this["mura"]["templates"]["file"] = Handlebars.template({"compiler":[7,">= 4.0.0
     + "\" />			\r\n	</div>\r\n";
 },"useData":true});
 
-this["mura"]["templates"]["form"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["form"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<form id=\"frm"
@@ -186,7 +186,7 @@ this["mura"]["templates"]["form"] = Handlebars.template({"compiler":[7,">= 4.0.0
     + "\" value=\"1025\">\n</form>\n";
 },"useData":true});
 
-this["mura"]["templates"]["hidden"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["hidden"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<input class=\"form-control\" type=\"hidden\" name=\""
@@ -198,7 +198,7 @@ this["mura"]["templates"]["hidden"] = Handlebars.template({"compiler":[7,">= 4.0
     + "\" />			\n";
 },"useData":true});
 
-this["mura"]["templates"]["list"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["list"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "					<option value=\""
@@ -214,7 +214,7 @@ this["mura"]["templates"]["list"] = Handlebars.template({"1":function(container,
     + "			</select>\n		</div>\n	</div>\n	<div class=\"form-group\">\n		<button type=\"button\" id=\"select-bean\">Go</button>\n	</div>\n</form>";
 },"useData":true});
 
-this["mura"]["templates"]["nested"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["nested"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper;
 
   return "<div class=\"field-container-"
@@ -222,7 +222,7 @@ this["mura"]["templates"]["nested"] = Handlebars.template({"compiler":[7,">= 4.0
     + "\">\r\n\r\n</div>\r\n";
 },"useData":true});
 
-this["mura"]["templates"]["paging"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["paging"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<button class=\""
@@ -234,7 +234,7 @@ this["mura"]["templates"]["paging"] = Handlebars.template({"compiler":[7,">= 4.0
     + "</button> ";
 },"useData":true});
 
-this["mura"]["templates"]["radio"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
+this["mura"]["templates"]["radio"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "				<label class=\"control-label\" for=\""
@@ -264,7 +264,7 @@ this["mura"]["templates"]["radio"] = Handlebars.template({"1":function(container
     + "			</label>\n		</div>\n	</div>";
 },"useData":true,"useDepths":true});
 
-this["mura"]["templates"]["radio_static"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
+this["mura"]["templates"]["radio_static"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "				<label class=\"control-label\" for=\""
@@ -294,7 +294,7 @@ this["mura"]["templates"]["radio_static"] = Handlebars.template({"1":function(co
     + "			</label>\n		</div>\n	</div>";
 },"useData":true,"useDepths":true});
 
-this["mura"]["templates"]["section"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["section"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<div class=\"form-group\" id=\"field-"
@@ -304,7 +304,7 @@ this["mura"]["templates"]["section"] = Handlebars.template({"compiler":[7,">= 4.
     + "\r\n<hr noshade />\r\n</div>";
 },"useData":true});
 
-this["mura"]["templates"]["table"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["table"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<option value=\""
@@ -413,7 +413,7 @@ this["mura"]["templates"]["table"] = Handlebars.template({"1":function(container
     + "			</td>\n		</tfoot>\n	</table>\n</div>";
 },"useData":true,"useDepths":true});
 
-this["mura"]["templates"]["textarea"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["textarea"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "		<div class=\"form-group\"  id=\"field-"
@@ -431,7 +431,7 @@ this["mura"]["templates"]["textarea"] = Handlebars.template({"compiler":[7,">= 4
     + "</textarea>	\r\n	</div>\r\n";
 },"useData":true});
 
-this["mura"]["templates"]["textblock"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["textblock"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<div class=\"form-group\" id=\"field-"
@@ -443,7 +443,7 @@ this["mura"]["templates"]["textblock"] = Handlebars.template({"compiler":[7,">= 
     + "\r\n</div>";
 },"useData":true});
 
-this["mura"]["templates"]["textfield"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["textfield"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "\r\n	<div class=\"form-group\" id=\"field-"
@@ -461,7 +461,7 @@ this["mura"]["templates"]["textfield"] = Handlebars.template({"compiler":[7,">= 
     + "\" />			\r\n	</div>\r\n";
 },"useData":true});
 
-this["mura"]["templates"]["view"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+this["mura"]["templates"]["view"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "	<li>\n		<strong>"

@@ -20,7 +20,7 @@ module.exports = function(grunt) {
       replace: {
         prevent_templates_example: {
                 src: ['src/templates/compiled.js'],
-                dest: 'dist/mura.templates.js',
+                dest: 'src/templates/compiled.js',
                 options: {
                   processTemplates: false
                 },
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
           'src/mura.templates.js',
           'src/mura.ui.js',
           'src/mura.init.js',
-          'dist/mura.templates.js'
+          'src/templates/compiled.js'
           ],
           dest: 'dist/mura.js',
         },
@@ -60,7 +60,6 @@ module.exports = function(grunt) {
     uglify: {
       my_target: {
         files: {
-          'global.min.js': ['global.js'],
           'dist/mura.min.js': ['dist/mura.js']
         }
       }
@@ -68,7 +67,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files:[
-             {expand: true, flatten: true,src: ['dist/**'], dest: '../../admin/assets/js', filter: 'isFile'},
+             {expand: true, flatten: true,src: ['dist/**'], dest: '../../admin/assets/js'}
         ],
       },
     }
