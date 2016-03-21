@@ -128,6 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsData=application.dataCollectionManager.getData(rc)/>
 </cfsilent>
 <cfif rsData.recordcount>
+<div class="mura-grid-container">
 <table class="mura-table-grid">
 <thead>
 <tr>
@@ -166,6 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </tbody>
 </table>
+</div><!-- /.mura-grid-container -->
 
 </cfif>
 </cfif>

@@ -24933,6 +24933,11 @@ i {
   margin: 0 auto;
   white-space: nowrap !important;
 }
+.mura #manage-data .mura-grid-container {
+  overflow-x: scroll;
+  width: 100%;
+  margin-top: 24px;
+}
 .mura #manage-data th,
 .mura #manage-data td {
   text-align: left;
