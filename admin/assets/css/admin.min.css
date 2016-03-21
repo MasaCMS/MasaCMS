@@ -29986,6 +29986,10 @@ main > .content > :first-child:not(.alert) {
 .form-bordered .mura-control-group.form-actions {
   border-bottom: none;
 }
+.mura-control-group[class*="col-"] {
+  padding-left: 0;
+  padding-right: 0;
+}
 .mura-control-group > label {
   position: relative;
   float: left;

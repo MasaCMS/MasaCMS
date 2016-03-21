@@ -7484,9 +7484,10 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-bottom: 2px;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li {
+  cursor: pointer !important;
   display: block !important;
   margin-bottom: 0 !important;
-  cursor: pointer !important;
+  padding: 0;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu a {
   color: #CCC !important;
