@@ -24095,11 +24095,7 @@ i {
 }
 .mura .mura-table-grid th,
 .mura .mura-table-grid thead th {
-  background-image: -webkit-linear-gradient(top, #fffefe 0%, #f5f5f5 100%);
-  background-image: -o-linear-gradient(top, #fffefe 0%, #f5f5f5 100%);
-  background-image: linear-gradient(to bottom, #fffefe 0%, #f5f5f5 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffffefe', endColorstr='#fff5f5f5', GradientType=0);
+  background-color: #f9f9f9;
   color: #000000;
   text-transform: none;
   font-weight: bold;
