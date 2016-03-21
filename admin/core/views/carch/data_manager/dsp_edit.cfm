@@ -53,9 +53,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
 
-<div class="control-group">
-  <label class="control-label">Date/Time Entered</label>
-  <div class="controls">#rsdata.entered#</div>
+<div class="mura-control-group">
+  <label>Date/Time Entered</label>
+  <div class="mura-control">#rsdata.entered#</div>
 </div>
 
 <cfloop list="#rc.fieldnames#" index="f">
@@ -68,15 +68,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif findNoCase('attachment',f) and isValid("UUID",fvalue)>
 		<input type="hidden" name="#esapiEncode('html_attr',f)#" value="#fvalue#">
 	<cfelse>
-		<div class="control-group">
-  			<label class="control-label">#esapiEncode('html',f)#</label>
-  			<div class="controls">
-  				<cfif len(fValue) gt 100>
-  					<textarea name="#esapiEncode('html_attr',f)#">#esapiEncode('html',fvalue)#</textarea>
-  				<cfelse>
-  					<input type="text" name="#esapiEncode('html_attr',f)#" value="#esapiEncode('html_attr',fvalue)#">
+		<div class="mura-control-group">
+  			<label>#esapiEncode('html',f)#</label>
+				<cfif len(fValue) gt 100>
+					<textarea class="mura-constrain" name="#esapiEncode('html_attr',f)#">#esapiEncode('html',fvalue)#</textarea>
+				<cfelse>
+					<input class="mura-constrain" type="text" name="#esapiEncode('html_attr',f)#" value="#esapiEncode('html_attr',fvalue)#">
   			</cfif>
-  		    </div>
  		 </div>
 	</cfif>
 </cfloop>

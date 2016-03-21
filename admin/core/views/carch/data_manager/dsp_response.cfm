@@ -87,13 +87,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
   <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</label>
-  <select name="sortBy" class="constrain">
+  <select name="sortBy" class="mura-constrain">
 <option value="Entered" <cfif "Entered" eq rc.sortBy>selected</cfif>>Entered</option>
 <cfloop list="#rc.fieldnames#" index="f">
 <option value="#esapiEncode('html_attr',f)#" <cfif f eq rc.sortBy>selected</cfif>>#esapiEncode('html',f)#</option>
 </cfloop>
 </select>
-<select name="sortDirection" class="constrain">
+<select name="sortDirection" class="mura-constrain">
 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ascending')#</option>
 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
 </select>
@@ -101,12 +101,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</label>
-		<select name="filterBy" class="constrain">
+		<select name="filterBy" class="mura-constrain">
 			<cfloop list="#rc.fieldnames#" index="f">
 			<option value="#esapiEncode('html_attr',f)#" <cfif f eq session.filterBy>selected</cfif>>#esapiEncode('html',f)#</option>
 			</cfloop>
 		</select>
-		<input type="text" name="keywords" class="constrain" value="#esapiEncode('html_attr',session.datakeywords)#">
+		<input type="text" name="keywords" class="mura-constrain" value="#esapiEncode('html_attr',session.datakeywords)#">
 	</div>
 
 <input type="hidden" name="muraAction" value="cArch.datamanager" />
