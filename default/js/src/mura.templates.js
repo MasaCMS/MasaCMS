@@ -1,4 +1,4 @@
-mura.templates={};
+mura.templates=mura.templates || {};
 mura.templates['meta']=function(context){
 
 	if(context.label){

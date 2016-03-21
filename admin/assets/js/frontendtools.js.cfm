@@ -944,6 +944,7 @@
 						objectParams=item.data();
 
 						if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
+							item.children('.frontEndToolsModal').remove();
 							item.prepend(window.mura.layoutmanagertoolbar );
 
 							item.find(".frontEndToolsModal").on(
@@ -966,6 +967,7 @@
 							if(region.data('perm')){
 								objectParams=item.data();
 								if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
+									item.children('.frontEndToolsModal').remove();
 									item.prepend(window.mura.layoutmanagertoolbar);
 
 									item.find(".frontEndToolsModal").on(
@@ -992,6 +994,7 @@
 				mura('.mura-body-object, .mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
 					var item=mura(this);
 					item.addClass("mura-active");
+					item.children('.frontEndToolsModal').remove();
 					item.prepend(window.mura.layoutmanagertoolbar);
 					item.find(".frontEndToolsModal").on(
 						'click',
