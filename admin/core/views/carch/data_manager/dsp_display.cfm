@@ -119,7 +119,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
 </div>
   
 <div class="mura-control-group">
-  <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#:</label>
+  <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</label>
   <select name="sortBy" class="dropdown mura-constrain">
       <cfloop list="#rc.fieldnames#" index="f">
         <option value="#esapiEncode('html_attr',f)#" <cfif f eq rc.contentBean.getSortBy()>selected</cfif>>#esapiEncode('html',f)#</option>
