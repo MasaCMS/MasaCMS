@@ -26106,7 +26106,7 @@ text-shadow: 0 0 1px @blue;
   margin: 2px 0;
   background: #fff;
   color: #646464;
-  border: 1px solid #333;
+  border: none;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
