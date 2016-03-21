@@ -30609,6 +30609,29 @@ input[type="email"].mura-control-group > label + * + textarea.mura-constrain {
     width: 21.66666667%;
   }
 }
+.mura-control-group > label + input[type=text].mura-constrain.mura-numeric,
+.mura-control-group > label + * + input[type=text].mura-constrain.mura-numeric,
+.mura-control-group > label + select.mura-constrain.mura-numeric,
+.mura-control-group > label + * + select.mura-constrain.mura-numeric,
+.mura-control-group > label + textarea.mura-constrain.mura-numeric,
+.mura-control-group > label + * + textarea.mura-constrain.mura-numeric {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  min-width: 80px !important;
+}
+@media (min-width: 768px) {
+  .mura-control-group > label + input[type=text].mura-constrain.mura-numeric,
+  .mura-control-group > label + * + input[type=text].mura-constrain.mura-numeric,
+  .mura-control-group > label + select.mura-constrain.mura-numeric,
+  .mura-control-group > label + * + select.mura-constrain.mura-numeric,
+  .mura-control-group > label + textarea.mura-constrain.mura-numeric,
+  .mura-control-group > label + * + textarea.mura-constrain.mura-numeric {
+    float: left;
+    width: 8.33333333%;
+  }
+}
 .mura-control-group .mura-constrain + .mura-constrain {
   margin-left: 8px;
 }
