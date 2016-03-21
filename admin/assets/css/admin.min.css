@@ -37059,6 +37059,10 @@ fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
   margin-top: 3px;
   margin-left: 5px;
 }
+body#clogin,
+body#csetup {
+  background-color: #333;
+}
 #clogin #main-container,
 #csetup #main-container {
   background: none;
