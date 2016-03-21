@@ -185,6 +185,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</select>
 			</div>
 
+			<cfset rsAssigned=application.pluginManager.getAssignedSites(rc.moduleID)>
+			<div class="mura-control-group">
+				<label>Site Assignment</label>
+				<div class="mura-control-group">
+					<cfloop query="rc.rsSites">
+						<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #esapiEncode('html',rc.rsSites.site)#</label>
+					</cfloop>
+				</div>
+			</div>
+			
 			<cfif settingsLen>
 				<cfloop from="1" to="#settingsLen#" index="i">
 					<cfsilent>
@@ -291,16 +301,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</div>
 			</cfif>
-
-			<cfset rsAssigned=application.pluginManager.getAssignedSites(rc.moduleID)>
-			<div class="mura-control-group">
-				<label>Site Assignment</label>
-				<div class="mura-control-group">
-					<cfloop query="rc.rsSites">
-						<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #esapiEncode('html',rc.rsSites.site)#</label>
-					</cfloop>
-				</div>
-			</div>
 
 			<cfif hasLicense>
 				</span>
