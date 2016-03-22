@@ -27631,10 +27631,11 @@ font-size: 12px;
   clear: both;
 }
 .mura #availableRegions .btn-group-vertical .btn {
-  border-radius: 0;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
+  border-radius: 0;
   padding: 4px 13px 4px 10px;
+  margin: 0 2px;
 }
 .mura #configuratorContainer h2 {
   margin-top: -18px;
@@ -35398,13 +35399,16 @@ a.list-group-item:focus {
 }
 .block > .nav-tabs > li.active > a,
 .block > .nav-tabs > li.active > a:hover,
+.block > .nav-tabs > li.active > a:active,
 .block > .nav-tabs > li.active > a:focus {
-  color: #ff3405;
+  color: #ff3405 !important;
   background-color: #fff;
   border-color: transparent;
 }
-.block > .nav-tabs > li > a:hover {
-  color: #ff3405;
+.block > .nav-tabs > li > a:hover,
+.block > .nav-tabs > li > a:active,
+.block > .nav-tabs > li > a:focus {
+  color: #ff3405 !important;
 }
 .irs-bar,
 .irs-bar-edge,

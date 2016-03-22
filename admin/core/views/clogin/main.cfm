@@ -45,12 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<!--- TODO GoWest : change Login to Log In in rb keys : 2016-02-09T12:22:05-07:00 --->
-
-
 <cfset isBlocked=false/>
 <cfparam name="msg" default="">
-
 
 <cfoutput>
 

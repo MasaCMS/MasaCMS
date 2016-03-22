@@ -1086,8 +1086,6 @@ to your own modified versions of Mura CMS.
 		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
 
-		<!--- TODO GoWest : test site ext. attr display : 2016-01-20T16:50:18-07:00 --->
-
 		<!--- Extended Attributes --->
 		<cfif arrayLen(extendSets)>
 				<div id="tabExtendedAttributes" class="tab-pane">
@@ -1322,9 +1320,6 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 	</cfoutput>
-
-	<!--- TODO GoWest : test plugin-generated tabs layout & markup : 2016-01-20T16:52:02-07:00 --->
-
 	<cfoutput query="rsPluginScripts" group="pluginID">
 		<!---<cfset tabLabelList=tabLabelList & ",'#esapiEncode('javascript',rsPluginScripts.name)#'"/>--->
 		<cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
