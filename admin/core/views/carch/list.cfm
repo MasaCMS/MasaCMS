@@ -421,7 +421,6 @@
 				</div> <!-- /.block-bordered -->
 			</div> <!-- /.block-constrain -->
 
-<!--- TODO GoWest : should draftpromptjs be inside markup wrapper? : 2016-01-23T09:08:10-07:00 --->
 		<cfinclude template="draftpromptjs.cfm">
 	</cfcase>
 

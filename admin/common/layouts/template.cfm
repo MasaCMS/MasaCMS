@@ -182,33 +182,30 @@
     <!-- Stylesheets -->
     <!-- Web fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
-<!--- TODO GoWest : fontlibary.org URL not responding from staging server, use google fonts instead? : 2015-12-14T11:18:14-07:00 --->
-<!---     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/source-sans-pro" type="text/css"/> --->
 
 		<!-- Admin CSS -->
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
-<!--- TODO GoWest :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
+<!--- TODO :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
 		<!-- Spinner JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
     <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
    <script src="#application.configBean.getContext()#/admin/assets/js/oneui.js"></script>
 
-<!--- TODO GoWest : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
+<!--- TODO : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-<!--- TODO GoWest : keep chart.min.js? : 2016-01-29T16:52:21-07:00 --->
+<!--- TODO : keep chart.min.js? : 2016-01-29T16:52:21-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- Mura js --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- Mura Admin JS -->
-<!--- TODO GoWest : minify js : 2016-02-12T14:55:58-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<cfif cgi.http_user_agent contains 'msie'>
@@ -315,55 +312,53 @@
 		           	</cfif>
      			</cfif>
 
-<!--- TODO GoWest : move this script elsewhere? : 2015-12-17T15:57:17-07:00 --->
+						<script>
+							$(document).ready(function(){
+								// persist sidebar selection
+								$('*[data-action=sidebar_mini_toggle]').click(function(){
+									if($('##page-container').hasClass('sidebar-mini')){
+						 			createCookie('ADMINSIDEBAR','off',5);
+									} else {
+						 			createCookie('ADMINSIDEBAR','on',5);
+									}
+								});
 
-	           	<script>
-	           		$(document).ready(function(){
-	           			// persist sidebar selection
-		           		$('*[data-action=sidebar_mini_toggle]').click(function(){
-		           			if($('##page-container').hasClass('sidebar-mini')){
-			           			createCookie('ADMINSIDEBAR','off',5);
-		           			} else {
-			           			createCookie('ADMINSIDEBAR','on',5);
-		           			}
-		           		});
+								// persist open nav items
+								$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
 
-		           		// persist open nav items
-	           			$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
+								// tab drop
+								$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+								$('.tabdrop .dropdown-toggle').on('click',function(){
+								$(this).parents('.nav-tabs').css('overflow-y','visible');
+								});
 
-	           			// tab drop
-           				$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
-						$('.tabdrop .dropdown-toggle').on('click',function(){
-							$(this).parents('.nav-tabs').css('overflow-y','visible');
-						});
+								// dismiss alerts
+								$('.alert-dismiss').click(
+									function(){
+										var _alert=this;
+										$.ajax(
+											{
+												url:'./',
+												data:{
+													siteid:'#esapiEncode('javascript',session.siteid)#',
+													alertid:$(_alert).attr('data-alertid'),
+													muraaction:'cdashboard.dismissAlert'
+												},
+												success: function(){
+													$(_alert).parent('.alert').fadeOut();
+													//$('##system-notice').html(data);
+												}
+											}
+										);
+									}
+								);
+							});
 
-		           		// dismiss alerts
-	           			$('.alert-dismiss').click(
-	           				function(){
-	           					var _alert=this;
-	           					$.ajax(
-	           						{
-		           						url:'./',
-		           						data:{
-		           							siteid:'#esapiEncode('javascript',session.siteid)#',
-		           							alertid:$(_alert).attr('data-alertid'),
-		           							muraaction:'cdashboard.dismissAlert'
-		           						},
-		           						success: function(){
-		           							$(_alert).parent('.alert').fadeOut();
-		           							//$('##system-notice').html(data);
-	           							}
-	           						}
-	           					);
-	           				}
-	           			);
-	           		});
-
-					mura.init({
+						mura.init({
 						context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
 						siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
-					});
-	           	</script>
+						});
+						</script>
          	</cfif>
          		<cfif request.action neq "core:cLogin.main">
          			<div id="mura-content">
@@ -377,25 +372,10 @@
 
       </main>
 
-
-<!--- TODO GoWest : use this? : 2015-12-15T10:12:08-07:00 --->
-
-<!---
-    <script type="text/javascript">
-		stripe('stripe');
-	</script>
-	<cfif rc.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
-		<script type="text/javascript">
-			window.setTimeout('CountDown()',100);
-		</script>
-	</cfif>
---->
-
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/bootstrap-tabdrop.js"></script>
 
-<!--- TODO GoWest : this include : 2015-12-15T13:23:46-07:00 --->
 		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (listFind(',00000000000000000000000000000000099,00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleid) or rc.moduleid eq '')>
 			<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
 		</cfif>
