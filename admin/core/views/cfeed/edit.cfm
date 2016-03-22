@@ -899,24 +899,25 @@ jQuery(document).ready(function(){
   <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
 </cfif>
 
+<cfif rc.compactDisplay eq "true">
+	<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+</cfif>
+
+<span id="msg">
+#application.pluginManager.renderEvent("onFeedEditMessageRender", event)#
+</span>
+
 <form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 
 <div class="block block-constrain">
 	<cfif rc.feedID neq ''>
-	<ul class="navTask nav nav-pills">
-	<cfif rc.compactDisplay eq "true">
-		<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
+		<ul class="navTask nav nav-pills">
+		<cfif rc.compactDisplay eq "true">
+			<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
+		</cfif>
+		<!--- <li><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a></li> --->
+		</ul>
 	</cfif>
-	<!--- <li><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a></li> --->
-	</ul></cfif>
-
-	<cfif rc.compactDisplay eq "true">
-	<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
-	</cfif>
-
-	<span id="msg">
-	#application.pluginManager.renderEvent("onFeedEditMessageRender", event)#
-	</span>
 
 <cfsavecontent variable='tabContent'>
 <div id="tabBasic" class="tab-pane active">
