@@ -623,37 +623,8 @@
 			</script>
 
 		 	<div class="mura-header">
-
-			<!---
-			<cfif rc.moduleid eq '00000000000000000000000000000000004'>
-				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h1>
-			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
-				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.variationsmanager')#</h1>
-			<cfelseif rc.moduleid eq '00000000000000000000000000000000003'>
-				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1>
-			<cfelse>
-				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.sitetree')#</h1>
-			</cfif>
-			--->
-			<h1>#application.rbFactory.getKeyValue(session.rb,'layout.contentmanager')#</h1>
-
-<!--- M7 removed - are we keeping this search?
-
-			<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-				<div class="input-append">
-					<input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" class="text" />
-					<button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);">
-						<i class="mi-search"></i>
-					</button>
-				</div>
-				<input type="hidden" name="muraAction" value="cArch.list">
-				<input type="hidden" name="activetab" value="1">
-				<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
-				<input type="hidden" name="moduleid" value="#rc.moduleid#">
-			</form>
-/end m7 removed --->
-
-		</div> <!--- /.mura-header --->
+				<h1>#application.rbFactory.getKeyValue(session.rb,'layout.contentmanager')#</h1>
+			</div> <!--- /.mura-header --->
 
 			<div class="block block-constrain">
 				<ul id="viewTabs" class="mura-tabs nav-tabs" data-toggle="tabs">

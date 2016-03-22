@@ -60,7 +60,6 @@
 	</cfif>
 	<cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
 	<cfset rc.currentUser=rc.$.currentUser()>
-	<!--- M7 thesitelist init moved here --->
 	<cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
   <cfparam name="session.showdashboard" default="true">
 	<cfif session.showdashboard>

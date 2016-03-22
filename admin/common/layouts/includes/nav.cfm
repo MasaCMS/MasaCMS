@@ -47,14 +47,9 @@
 --->
 
 <cfsilent>
-<!--- M7 new for nav current states based on action value --->
 <cfparam name="rc.action" default="">
-<!--- /end m7 new --->
-<!--- M7 duplicated here from header.cfm --->
 <cfset rc.currentUser=rc.$.currentUser()>
 <cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
-<!--- /end m7  --->
-<!--- M7 moved from markup in old header.cfm --->
 <cfparam name="rc.userid" default="">
 <cfset hidelist="cLogin">
 <cfset rsExts=application.classExtensionManager.getSubTypes(siteID=session.siteid,activeOnly=false) />
@@ -66,7 +61,6 @@
 <cfelse>
     <cfset exp="">
 </cfif>
-<!--- /end m7 moved --->
 
 </cfsilent>
 

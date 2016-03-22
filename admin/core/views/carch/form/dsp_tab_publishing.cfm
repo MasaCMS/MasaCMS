@@ -217,13 +217,9 @@
 
 	<div class="mura-control-group">
 		<label>
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <!--- <a href="" id="editNoteLink" onclick="toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a> --->
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# 
 		</label>
-			<!--- M7 removed since show/hide behavior is commented out... remove both? --->
-			<!--- <div class="controls" id="editNote"> --->
 		<textarea name="notes" rows="8" id="abstract"></textarea>
-			<!--- </div> --->
-			<!--- /end m7 removed --->
 	</div> <!--- /end mura-control-group --->
 
    <span id="extendset-container-publishing" class="extendset-container"></span>

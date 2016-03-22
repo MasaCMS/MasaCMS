@@ -52,9 +52,6 @@
   <cfelse>
     <cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
   </cfif>
-
-<!--- M7 edit: alter markup for new theme --->
-
   <cfoutput>
     <li id="admin-nav-modules">
       <a class="nav-submenu <cfif not listFindNoCase('carch,cchain,cusers,csettings,cdashboard,ceditprofile,nmessage,ctrash,clogin,cextend,cfilemanager,cfeed,ccategory,cchangesets,cplugins',rc.originalcircuit) and not (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>" data-toggle="nav-submenu" href="./">
@@ -103,12 +100,7 @@
           </cfif>
         <!--- /Custom Site Secondary Menu --->
 
-
       </ul>
     </li>
   </cfoutput>
-
-<!--- /end m7 edit --->
-
-
 </cfif>
