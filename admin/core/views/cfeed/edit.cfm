@@ -552,10 +552,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
-				<cfif isObjectInstance><h2>#esapiEncode('html',rc.feedBean.getName())#</h2></cfif>
-					<div class="mura-control-group">
-		      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-						<select name="#displaNamePrefix#imageSize" data-displayobjectparam="imageSize" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+		<cfif isObjectInstance><h2>#esapiEncode('html',rc.feedBean.getName())#</h2></cfif>
+			<div class="mura-control-group">
+      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+				<select name="#displaNamePrefix#imageSize" data-displayobjectparam="imageSize" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 					<cfloop list="Small,Medium,Large" index="i">
 						<option value="#lcase(i)#"<cfif i eq rc.feedBean.getImageSize()> selected</cfif>>#I#</option>
 					</cfloop>
@@ -566,17 +566,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset image=imageSizes.next()>
 						<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.feedBean.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
 					</cfloop>
-						<option value="custom"<cfif "custom" eq rc.feedBean.getImageSize()> selected</cfif>>Custom</option>
+					<option value="custom"<cfif "custom" eq rc.feedBean.getImageSize()> selected</cfif>>Custom</option>
 				</select>
- <!--- TODO GoWest : styling on custom image w/h selectors : 2016-01-26T07:45:20-07:00 --->
-						<div id="feedCustomImageOptions" class="mura-control"<cfif rc.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-				      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
-		      </label>
-							<input name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.feedBean.getImageWidth()#" />
-				      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-			      	<input name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.feedBean.getImageHeight()#" />
 		</div>
-	</div>
+
+		<div id="feedCustomImageOptions" class="mura-control-group"<cfif rc.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
+			<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+				<input class="mura-constrain numeric" name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.feedBean.getImageWidth()#" />
+			</div>
+		
+			<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+				<input class="mura-constrain numeric" name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.feedBean.getImageHeight()#" />
+			</div>
+		</div>
 
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
