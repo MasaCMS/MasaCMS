@@ -35680,6 +35680,11 @@ ul {
 .btn-group .btn {
   font-size: 14px;
 }
+.mura-control-group .mura-button-set .btn,
+.mura-control-group .mura-button-set .btn + .btn {
+  margin-left: 0;
+  margin-right: 0;
+}
 .mura-control-group .btn + .btn {
   margin-left: 7px;
 }
