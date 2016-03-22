@@ -1,7 +1,7 @@
 <cfoutput>
 <!---
 <cfif not currentChangeset.getIsNew()>
-<p class="alert alert-notice">fff#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
+<p class="alert alert-notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
 </cfif>
 --->
 <script>

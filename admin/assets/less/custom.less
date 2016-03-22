@@ -229,6 +229,37 @@
   font-size: 14px;
 }
 
+/* input sets */
+.mura-search .mura-input-set .btn,
+.mura-search .mura-input-set input,
+.mura-search .mura-input-set input + .btn,
+.mura-search .mura-input-set .btn + input,
+.mura-control-group .mura-input-set .btn + .btn,
+.mura-control-group .mura-input-set .btn,
+.mura-control-group .mura-input-set input,
+.mura-control-group .mura-input-set input + .btn,
+.mura-control-group .mura-input-set .btn + input,
+.mura-control-group .mura-input-set .btn + .btn{
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.mura-input-set .btn:not(:last-child),
+.mura-input-set input:not(:last-child){
+  .border-right-radius(0px);
+ }
+.mura-input-set .btn:not(:first-child),
+.mura-input-set input:not(:first-child){
+  .border-left-radius(0px);
+ }
+  
+.mura-search .mura-input-set input + .btn{
+  margin-left: -4px;
+  .border-left-radius(0px);
+}
+
+
+/* standard button spacing */
 .mura-control-group .btn + .btn{
   margin-left: 7px;
 }
@@ -438,6 +469,14 @@ header .btn i{
 .content form + .mura-table-grid,
 .mura #cdashboard form + table{
   margin-top: 30px;
+}
+
+.mura-control-table tr + tr td.nested{
+  padding-top: 16px;
+}
+
+.mura-control-table td.nested .btn-sm{
+  margin: 4px 4px 0 4px;
 }
 
 .popover-content{
@@ -1082,6 +1121,10 @@ label #selectFilter{
     margin-right: 0;
   }
 }
+body#clogin, 
+body#csetup{
+  background-color:#333;
+}
 #clogin #main-container,
 #csetup #main-container{
   background: none;
@@ -1256,6 +1299,12 @@ label #selectFilter{
 .mura .modal-wrapper .ui-dialog-content{
   background-color: #fff;
   .border-radius(2px);
+}
+
+.mura #changesetContainer{
+  background-color: #fff;
+  padding: 0;
+  .border-radius(0);
 }
 
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{

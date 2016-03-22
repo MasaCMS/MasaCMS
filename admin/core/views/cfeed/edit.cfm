@@ -552,12 +552,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
-
-				<cfif isObjectInstance><h2>#esapiEncode('html',rc.feedBean.getName())#</h2></cfif>
-
-					<div class="mura-control-group">
-		      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-						<select name="#displaNamePrefix#imageSize" data-displayobjectparam="imageSize" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+		<cfif isObjectInstance><h2>#esapiEncode('html',rc.feedBean.getName())#</h2></cfif>
+			<div class="mura-control-group">
+      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+				<select name="#displaNamePrefix#imageSize" data-displayobjectparam="imageSize" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 					<cfloop list="Small,Medium,Large" index="i">
 						<option value="#lcase(i)#"<cfif i eq rc.feedBean.getImageSize()> selected</cfif>>#I#</option>
 					</cfloop>
@@ -568,42 +566,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset image=imageSizes.next()>
 						<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.feedBean.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
 					</cfloop>
-						<option value="custom"<cfif "custom" eq rc.feedBean.getImageSize()> selected</cfif>>Custom</option>
+					<option value="custom"<cfif "custom" eq rc.feedBean.getImageSize()> selected</cfif>>Custom</option>
 				</select>
- <!--- TODO GoWest : styling on custom image w/h selectors : 2016-01-26T07:45:20-07:00 --->
-						<div id="feedCustomImageOptions" class="mura-control"<cfif rc.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-				      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
-		      </label>
-							<input name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.feedBean.getImageWidth()#" />
-				      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-			      	<input name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.feedBean.getImageHeight()#" />
 		</div>
-	</div>
 
-				<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
+		<div id="feedCustomImageOptions" class="mura-control-group"<cfif rc.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
+			<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+				<input class="mura-constrain numeric" name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.feedBean.getImageWidth()#" />
+			</div>
+		
+			<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+				<input class="mura-constrain numeric" name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.feedBean.getImageHeight()#" />
+			</div>
+		</div>
+
+	<div class="mura-control-group">
+		<label>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
 		<label class="radio inline">
-		<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif rc.feedBean.getDisplayName()>checked</cfif>>
+			<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif rc.feedBean.getDisplayName()>checked</cfif>>
 			#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
 		</label>
 		<label class="radio inline">
-		<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not rc.feedBean.getDisplayName()>checked</cfif>>
-		#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+			<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not rc.feedBean.getDisplayName()>checked</cfif>>
+			#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 		</label>
-
- <!--- TODO GoWest : styling on alternate display name : 2016-01-26T07:45:20-07:00 --->
-					<div class="mura-control" id="altNameContainer" <cfif NOT rc.feedBean.getDisplayName()> style="display:none;"</cfif>>
-			      <label>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-						<input name="#displaNamePrefix#altName" data-displayobjectparam="altName" type="text" value="#esapiEncode('html_attr',rc.feedBean.getAltName())#" maxlength="250">
-		  </div>
 	</div>
 
-				<div class="mura-control-group">
-						<label>
+	<div class="mura-control-group" id="altNameContainer" <cfif NOT rc.feedBean.getDisplayName()> style="display:none;"</cfif>>
+    <label>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
+		<input name="#displaNamePrefix#altName" data-displayobjectparam="altName" type="text" value="#esapiEncode('html_attr',rc.feedBean.getAltName())#" maxlength="250">
+  </div>
+
+	<div class="mura-control-group">
+		<label>
 			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
 		</label>
-						<input name="cssclass"  data-displayobjectparam="cssclass" type="text" value="#esapiEncode('html_attr',rc.feedBean.getCssclass())#" maxlength="255">
-		</div>
+		<input name="cssclass"  data-displayobjectparam="cssclass" type="text" value="#esapiEncode('html_attr',rc.feedBean.getCssclass())#" maxlength="255">
+	</div>
 
 				<div class="mura-control-group">
 					<label>
@@ -899,24 +900,25 @@ jQuery(document).ready(function(){
   <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
 </cfif>
 
+<cfif rc.compactDisplay eq "true">
+	<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+</cfif>
+
+<span id="msg">
+#application.pluginManager.renderEvent("onFeedEditMessageRender", event)#
+</span>
+
 <form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 
 <div class="block block-constrain">
 	<cfif rc.feedID neq ''>
-	<ul class="navTask nav nav-pills">
-	<cfif rc.compactDisplay eq "true">
-		<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
+		<ul class="navTask nav nav-pills">
+		<cfif rc.compactDisplay eq "true">
+			<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
+		</cfif>
+		<!--- <li><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a></li> --->
+		</ul>
 	</cfif>
-	<!--- <li><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a></li> --->
-	</ul></cfif>
-
-	<cfif rc.compactDisplay eq "true">
-	<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
-	</cfif>
-
-	<span id="msg">
-	#application.pluginManager.renderEvent("onFeedEditMessageRender", event)#
-	</span>
 
 <cfsavecontent variable='tabContent'>
 <div id="tabBasic" class="tab-pane active">

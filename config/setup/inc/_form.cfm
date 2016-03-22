@@ -204,9 +204,10 @@ to your own modified versions of Mura CMS.
 </div>
 <!-- END Simple Classic Progress Wizard -->
 
-<script src="//cmsadmin.staging.gowesthosting.com/template/assets/js/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-<script src="//cmsadmin.staging.gowesthosting.com/template/assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
-<script src="//cmsadmin.staging.gowesthosting.com/template/assets/js/pages/base_forms_wizard.js"></script>
+<script src="#context#/config/setup/js/jquery.bootstrap.wizard.min.js"></script>
+<script src="#context#/config/setup/js/jquery.validate.min.js"></script>
+<script src="#context#/config/setup/js/base_forms_wizard.js"></script>
+
 <script type="text/javascript" language="javascript">
 dtLocale='';
 activetab=1;

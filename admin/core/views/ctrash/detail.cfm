@@ -75,89 +75,85 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul>
 
 			<cfif not listFindNoCase("Page,Folder,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
-	<div class="clearfix form-actions">
-		<input type="button" class="btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
-		<cfif len(rc.trashItem.getDeleteID())>
-		<input type="button" class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore All Items in Delete Transaction" />
-		</cfif>
-	</div>
+				<div class="clearfix form-actions">
+					<input type="button" class="btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
+					<cfif len(rc.trashItem.getDeleteID())>
+					<input type="button" class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore All Items in Delete Transaction" />
+					</cfif>
+				</div>
 			<cfelse>
 	<cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.trashItem.getParentID(),siteID=rc.trashItem.getSiteID())>
 
-				<div class="mura-control-group">
-					<label>
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
-<!--- TODO GoWest : style new parent search: 2016-01-25T12:15:59-07:00 --->
-			<span id="mover1" class="text"> 
-			<cfif parentBean.getIsNew()>NA<cfelse>#esapiEncode('html',parentBean.getMenuTitle())#</cfif>
+		<div class="mura-control-group">
+			<label>
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
+				<span id="mover1" class="text"> 
+					<cfif parentBean.getIsNew()>NA<cfelse>#esapiEncode('html',parentBean.getMenuTitle())#</cfif>
+					<button id="selectParent" name="selectParent" class="btn">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
+					</button>		
+				</span>
+			</label>
+			<div class="mura-control justify" id="mover2" style="display:none">
+				<input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.trashItem.getParentID())#">
+			</div>
+		</div>
 
-			<button id="selectParent" name="selectParent" class="btn">
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
-			</button>		
-		</span>
-		</label>
-					<div class="mura-control justify" id="mover2" style="display:none">
-						<input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.trashItem.getParentID())#">
-					</div>
-	</div>
+		<div class="clearfix form-actions">
+		<input type="button" class="btn" onclick="restoreItem();" value="Restore Item" />
+		<cfif len(rc.trashItem.getDeleteID())>
+		<input type="button" class="btn" onclick="restoreAll();" value="Restore All Items in Delete Transaction" />
+		</cfif>
+		</div>
 
-	</div>
+		<script>
+		function restoreItem(){
+			var parentid="";
 
-	<div class="clearfix form-actions">
-	<input type="button" class="btn" onclick="restoreItem();" value="Restore Item" />
-	<cfif len(rc.trashItem.getDeleteID())>
-	<input type="button" class="btn" onclick="restoreAll();" value="Restore All Items in Delete Transaction" />
-	</cfif>
-	</div>
-
-	<script>
-	function restoreItem(){
-		var parentid="";
-
-		if(typeof(jQuery('##parentid').val()) != 'undefined' ){
-			parentid=jQuery('##parentid').val();
-		}else{
-			parentid=jQuery('input:radio[name=parentid]:checked').val();		
+			if(typeof(jQuery('##parentid').val()) != 'undefined' ){
+				parentid=jQuery('##parentid').val();
+			}else{
+				parentid=jQuery('input:radio[name=parentid]:checked').val();		
+			}
+			
+			if(parentid.length==35){
+				confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&parentid=" + parentid);
+			}else{
+				alertDialog('Please select a valid content parent.');
+			}
 		}
-		
-		if(parentid.length==35){
-			confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&parentid=" + parentid);
-		}else{
-			alertDialog('Please select a valid content parent.');
-		}
-	}
 
-	function restoreAll(){
-		var parentid="";
+		function restoreAll(){
+			var parentid="";
 
-		if(typeof(jQuery('##parentid').val()) != 'undefined' ){
-			parentid=jQuery('##parentid').val();
-		}else{
-			parentid=jQuery('input:radio[name=parentid]:checked').val();
+			if(typeof(jQuery('##parentid').val()) != 'undefined' ){
+				parentid=jQuery('##parentid').val();
+			}else{
+				parentid=jQuery('input:radio[name=parentid]:checked').val();
+			}
+			
+			if(parentid.length==35){
+				confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&parentid=" + parentid);
+			}else{
+				alertDialog('Please select a valid content parent.');
+			}
 		}
-		
-		if(parentid.length==35){
-			confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&parentid=" + parentid);
-		}else{
-			alertDialog('Please select a valid content parent.');
-		}
-	}
 
-	jQuery(document).ready(function(){
-		$('##selectParent').click(function(e){
-			e.preventDefault();
-			siteManager.loadSiteParents(
-				'#esapiEncode('javascript',rc.trashItem.getSiteID())#'
-				,'#esapiEncode('javascript',rc.trashItem.getParentID())#'
-				,'#esapiEncode('javascript',rc.trashItem.getParentID())#'
-				,''
-				,1
-			);
-			return false;
+		jQuery(document).ready(function(){
+			$('##selectParent').click(function(e){
+				e.preventDefault();
+				siteManager.loadSiteParents(
+					'#esapiEncode('javascript',rc.trashItem.getSiteID())#'
+					,'#esapiEncode('javascript',rc.trashItem.getParentID())#'
+					,'#esapiEncode('javascript',rc.trashItem.getParentID())#'
+					,''
+					,1
+				);
+				return false;
+			});
 		});
-	});
-					
-	</script>
+						
+		</script>
 			</cfif>
 
 		</div> <!-- /.block-content -->

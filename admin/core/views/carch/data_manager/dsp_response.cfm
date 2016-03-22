@@ -68,32 +68,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rsDataInfo.CountEntered>
 <cfparam name="rc.columns" default="fixed" />
 <cfoutput>
-<form novalidate="novalidate" action="index.cfm" method="get" name="download" onsubmit="return validate(this);" class="fieldset-wrap">
+<form novalidate="novalidate" action="index.cfm" method="get" name="download" onsubmit="return validate(this);">
 
 	<div class="mura-control-group">
   	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.from')#</label>
   	<input type="text" class="datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#">
-  	<select name="hour1" ><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.firstentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
-    <select name="minute1"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.firstentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop></select>
+  	<select name="hour1" class="time"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.firstentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
+    <select name="minute1" class="time"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.firstentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop></select>
 	</div>
 
 	<div class="mura-control-group">
   	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.to')#</label>
   	<input type="text" class="datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#">
-  	<select name="hour2"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.Lastentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
-    <select name="minute2" ><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.lastentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop>
+  	<select name="hour2" class="time"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.Lastentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
+    <select name="minute2" class="time" ><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.lastentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop>
    </select>
 	</div>
 
 <div class="mura-control-group">
   <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</label>
-  <select name="sortBy">
+  <select name="sortBy" class="mura-constrain">
 <option value="Entered" <cfif "Entered" eq rc.sortBy>selected</cfif>>Entered</option>
 <cfloop list="#rc.fieldnames#" index="f">
 <option value="#esapiEncode('html_attr',f)#" <cfif f eq rc.sortBy>selected</cfif>>#esapiEncode('html',f)#</option>
 </cfloop>
 </select>
-<select name="sortDirection">
+<select name="sortDirection" class="mura-constrain">
 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ascending')#</option>
 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
 </select>
@@ -101,12 +101,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</label>
-		<select name="filterBy">
+		<select name="filterBy" class="mura-constrain">
 			<cfloop list="#rc.fieldnames#" index="f">
 			<option value="#esapiEncode('html_attr',f)#" <cfif f eq session.filterBy>selected</cfif>>#esapiEncode('html',f)#</option>
 			</cfloop>
 		</select>
-		<input type="text" name="keywords" value="#esapiEncode('html_attr',session.datakeywords)#">
+		<input type="text" name="keywords" class="mura-constrain" value="#esapiEncode('html_attr',session.datakeywords)#">
 	</div>
 
 <input type="hidden" name="muraAction" value="cArch.datamanager" />
@@ -128,6 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsData=application.dataCollectionManager.getData(rc)/>
 </cfsilent>
 <cfif rsData.recordcount>
+<div class="mura-grid-container">
 <table class="mura-table-grid">
 <thead>
 <tr>
@@ -166,6 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </tbody>
 </table>
+</div><!-- /.mura-grid-container -->
 
 </cfif>
 </cfif>

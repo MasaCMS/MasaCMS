@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<div class="mura-control justify SubTypeIconSelect"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
 							<label>Icon</label>
 				<div class="btn-toolbar">
-	              <div class="btn-group">
+	              <div class="btn-group mura-input-set">
 	              	<cfset currentIcon=subtype.getIconClass(includeDefault=true)>
 	              	<cfset defaultIcon=subtype.getDefaultIconClass()>
 				                <button class="btn" type="button"><i id="iconcurrent" class="#currentIcon# mi-lg"></i></button>

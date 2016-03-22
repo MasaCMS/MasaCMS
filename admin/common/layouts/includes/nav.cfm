@@ -47,14 +47,9 @@
 --->
 
 <cfsilent>
-<!--- M7 new for nav current states based on action value --->
 <cfparam name="rc.action" default="">
-<!--- /end m7 new --->
-<!--- M7 duplicated here from header.cfm --->
 <cfset rc.currentUser=rc.$.currentUser()>
 <cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
-<!--- /end m7  --->
-<!--- M7 moved from markup in old header.cfm --->
 <cfparam name="rc.userid" default="">
 <cfset hidelist="cLogin">
 <cfset rsExts=application.classExtensionManager.getSubTypes(siteID=session.siteid,activeOnly=false) />
@@ -66,7 +61,6 @@
 <cfelse>
     <cfset exp="">
 </cfif>
-<!--- /end m7 moved --->
 
 </cfsilent>
 
@@ -319,7 +313,6 @@
                                 <li class="divider"></li>
                               </cfif>
                               <li>
-            <!--- TODO GoWest : set active state only when adding plugin (tabPlugins), not for tab 1 : 2015-12-15T11:24:15-07:00 --->
                                 <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins">
                                   <i class="mi-plus-circle"></i>
                                   #application.rbFactory.getKeyValue(session.rb,"layout.addplugin")#
@@ -336,17 +329,11 @@
                     <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
                         <cfset isSiteConfig=listFindNoCase('csettings,cextend,ctrash,cchain,cperm',rc.originalcircuit) and request.action neq "core:csettings.list">
                         <li id="admin-nav-site-config"<cfif isSiteConfig> class="open"</cfif>>
-<!--- TODO GoWest : prevent active state when viewing plugin details, e.g.
-/admin/?muraAction=cSettings.editPlugin&moduleID=122506FE-7FFC-422E-A010DDC157B75853
-and
-/admin/?muraAction=cSettings.list#tabPlugins
- : 2015-12-15T11:20:07-07:00 --->
 
                             <a class="nav-submenu<cfif isSiteConfig> active</cfif>" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/"><i class="mi-wrench"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitesettings")#</span></a>
 
                             <ul>
                                 <!--- edit site --->
-<!--- TODO GoWest : prevent active state when using 'add new site' - rc.siteid defaults to 'default' rather than '' : 2015-12-18T11:58:19-07:00 --->
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'editSite' and rc.action neq 'updateFiles'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i>#rc.$.rbKey("layout.editcurrentsite")#</a>
                                 </li>
@@ -420,7 +407,6 @@ and
                                         #rc.$.rbKey('layout.createsitebundle')#
                                     </a>
                                 </li>
-<!--- TODO GoWest : create active link here, is a tab of 'edit site' : 2015-12-18T11:29:28-07:00 --->
                                 <!--- deploy site bundle --->
                                 <li>
                                     <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)###tabBundles">
@@ -463,7 +449,6 @@ and
                         </li>
                      </cfif>
                     <!--- settings --->
-<!--- TODO GoWest : active states for all settings links : 2015-12-15T11:35:55-07:00 --->
                     <cfif listFind(session.mura.memberships,'S2')>
                         <li id="admin-nav-global">
                             <a class="nav-submenu" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/"><i class="mi-cogs"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.globalconfig")#</span></a>
@@ -474,13 +459,10 @@ and
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="mi-cogs"></i>#rc.$.rbKey("layout.globalsettings-sites")#</a>
                                 </li>
                                 <!--- global plugins --->
-<!--- TODO GoWest : active state for plugins tab view : 2015-12-18T11:59:17-07:00 --->
-<!--- TODO GoWest : show correct tab when clicked and already on global settings view : 2015-12-15T11:34:23-07:00 --->
                                 <li>
                                     <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins"><i class="mi-puzzle-piece"></i>#rc.$.rbKey("layout.globalsettings-plugins")#</a>
                                 </li>
                                 <!--- add site --->
-<!--- TODO GoWest : active state for 'add site' - rc.siteid defaults to 'default' rather than '' : 2015-12-18T11:58:19-07:00 --->
                                 <li>
                                     <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid="><i class="mi-plus-circle"></i>#rc.$.rbKey("layout.addsite")#</a>
                                 </li>

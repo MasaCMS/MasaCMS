@@ -154,7 +154,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label>
 						#application.rbFactory.getKeyValue(session.rb,"params.where")#
 					</label>
-					<!--- TODO GoWest : this markup : 2016-01-29T17:35:32-07:00 --->
 					<cfif rc.newSearch or (session.paramCircuit neq 'cDashboard' or not session.paramCount)>
 						<div class="mura-control justify">
 							<select name="paramRelationship1" style="display:none;" class="span2">
@@ -186,12 +185,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 							</select>
 
-							<!--- TODO GoWest : tooltip : 2016-01-29T17:34:40-07:00 --->
 							<input type="text" name="paramCriteria1" class="span4">
 							<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="mi-minus-circle"></i></a>
 							<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="mi-plus-circle"></i></a>
 						</div>
-						<!--- TODO GoWest : this markup : 2016-01-29T17:35:32-07:00 --->
 					<cfelse>
 
 						<cfloop from="1" to="#session.paramCount#" index="p">

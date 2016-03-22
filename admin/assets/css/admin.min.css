@@ -24095,12 +24095,8 @@ i {
 }
 .mura .mura-table-grid th,
 .mura .mura-table-grid thead th {
-  background-image: -webkit-linear-gradient(top, #fffefe 0%, #f5f5f5 100%);
-  background-image: -o-linear-gradient(top, #fffefe 0%, #f5f5f5 100%);
-  background-image: linear-gradient(to bottom, #fffefe 0%, #f5f5f5 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffffefe', endColorstr='#fff5f5f5', GradientType=0);
-  color: #000000;
+  background-color: #f9f9f9;
+  color: #646464;
   text-transform: none;
   font-weight: bold;
   white-space: nowrap;
@@ -24936,6 +24932,11 @@ i {
 .mura .actions ul {
   margin: 0 auto;
   white-space: nowrap !important;
+}
+.mura #manage-data .mura-grid-container {
+  overflow-x: scroll;
+  width: 100%;
+  margin-top: 24px;
 }
 .mura #manage-data th,
 .mura #manage-data td {
@@ -26090,29 +26091,40 @@ text-shadow: 0 0 1px @blue;
   height: 450px;
   overflow-y: auto;
   overflow-x: hidden;
+  color: #fff;
+  text-align: center;
 }
 .mura #mura-templatebuilder #mura-tb-form-pages .current {
   background: #ccc;
 }
+.mura #mura-templatebuilder #mura-tb-form-pages .current:not(#page-1) {
+  padding-left: 16px;
+}
 .mura #mura-templatebuilder #mura-form-pages li,
 .mura #mura-templatebuilder #mura-form-addpage {
-  padding: 12px 4px 14px 18px;
+  padding: 12px 4px 14px 5px;
   margin: 2px 0;
   background: #fff;
-  border: 1px solid #333;
-  border-radius: 4px;
+  color: #646464;
+  border: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   list-style: none;
   list-style-type: none;
+  cursor: pointer;
 }
 .mura #mura-templatebuilder #mura-form-addpage {
-  padding: 2px 4px 5px 15px;
+  padding: 2px 4px 5px 5px;
   font-size: 2em;
-  background: #eee;
+  background: #fff;
 }
 .mura #mura-templatebuilder .button-trash {
   display: block;
   padding: 0;
   margin: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
   border-radius: 0;
   width: 16px;
   height: 16px;
@@ -26219,7 +26231,6 @@ margin: 0;
   list-style: none;
   padding: 10px;
   margin-bottom: 0;
-  margin-top: 15px !important;
 }
 .mura #mura-tb-dataset ul.template-form {
   padding-bottom: 0;
@@ -26230,12 +26241,13 @@ margin: 0;
   overflow: hidden;
 }
 .mura #mura-tb-fields-settings {
+  background-color: #e4e4e4;
   float: right;
-  width: 66%;
-  padding: 2%;
   height: 450px;
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 2%;
+  width: 66%;
 }
 .mura .template-form > li {
   line-height: 1;
@@ -26307,11 +26319,6 @@ font-size: 12px;
 }
 .mura #mura-tb-fields .ui-button {
   border: 1px solid #c2c2c2;
-  background-image: -webkit-linear-gradient(top, #ffffff 0%, #cdcdcd 100%);
-  background-image: -o-linear-gradient(top, #ffffff 0%, #cdcdcd 100%);
-  background-image: linear-gradient(to bottom, #ffffff 0%, #cdcdcd 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffcdcdcd', GradientType=0);
 }
 .mura .ui-icon-formfield {
   background-image: url(../images/formbuilder/ui-icons-form-basic.png) !important;
@@ -26319,9 +26326,9 @@ font-size: 12px;
   width: 36px;
   height: 32px;
   padding: 6px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .mura .ui-icon-formfield-section {
   background-image: none !important;
@@ -26357,18 +26364,18 @@ font-size: 12px;
 .mura #mura-formbuilder {
   border: 1px solid #e6efe2;
   padding: 5px;
-  border-radius: 8px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .mura #mura-formbuilder-masthead {
   border: 1px solid #e6efe2;
   background-color: #eef4ec;
   padding: 5px;
   height: 25px;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .mura #mura-formbuilder-form {
   margin: 5px 0;
@@ -26381,9 +26388,9 @@ font-size: 12px;
   background-color: #eef4ec;
   padding: 5px;
   height: 30px;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   overflow-y: scroll;
 }
 .mura #mura-formbuilder-field-list {
@@ -26395,9 +26402,9 @@ font-size: 12px;
   margin: 5px 0;
   padding: 5px;
   min-height: 40px;
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .mura #mura-formbuilder-field {
   float: right;
@@ -26407,9 +26414,9 @@ font-size: 12px;
   background-color: #fafafa;
   padding: 5px;
   height: 30px;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .mura #mura-formdata {
   display: none;
@@ -26418,23 +26425,20 @@ font-size: 12px;
   /*height: 500px;*/
   border: 1px solid #c2c2c2;
   background-color: #f9f9f9;
-  -webkit-border-top-left-radius: 5px;
-  -webkit-border-top-right-radius: 5px;
-  -moz-border-radius-topleft: 5px;
-  -moz-border-radius-topright: 5px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .mura #mura-tb {
   border: 1px solid #c2c2c2;
   padding: 5px;
-  border-radius: 8px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .mura .mura-tb-menu {
   border-bottom: 1px solid #a6a6a6;
-  background: url('../images/formbuilder/ui-toolbar-bg.jpg') repeat-x;
+  /*		background: url('../images/formbuilder/ui-toolbar-bg.jpg') repeat-x; */
   padding: 3px;
   height: 42px;
 }
@@ -26456,9 +26460,10 @@ font-size: 12px;
   height: 28px;
   padding: 2px 3px;
   margin-left: 4px;
+  margin-top: 3px;
   border-left: 1px dotted #aaa;
 }
-.mura .ui-button {
+.mura .mura-tb-menu .ui-button {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
@@ -26466,9 +26471,12 @@ font-size: 12px;
   padding: 0;
   border: 1px solid #dcdcdc;
   background-color: #eee;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+  background-image: none !important;
+  color: #646464;
+  text-shadow: none;
 }
 .mura .ui-button.noframe {
   border: 0;
@@ -26507,8 +26515,6 @@ font-size: 12px;
 .mura #mura-tb-form .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
   border: 0 solid #ccc !important;
   background: #ccc;
-  -webkit-box-shadow: 0 0 0, 0 0 0;
-  box-shadow: 0 0 0, 0 0 0;
   -webkit-border-bottom-right-radius: 0;
   -moz-border-radius-bottomright: 0;
   border-bottom-right-radius: 0;
@@ -26564,7 +26570,7 @@ font-size: 12px;
 }
 .mura #mura-tb-form {
   /*border-top: 1px solid #d1d1d1;*/
-  background: url('../images/formbuilder/bg-shadows.png') repeat-y 206px 0;
+  /* background: url('../images/formbuilder/bg-shadows.png') repeat-y 206px 0; */
   background-color: #d7d7d6;
   clear: both;
 }
@@ -26591,46 +26597,33 @@ font-size: 12px;
   padding: 9px 0 9px 38px;
   background-repeat: no-repeat;
   background-position: 0px center;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   cursor: move;
   line-height: 1;
 }
 .mura #mura-tb-fields li {
+  background-color: #eee;
   position: relative;
-  color: #333;
+  color: #646464;
   padding: 4px 6px;
   border: 1px solid #dedede;
   margin-bottom: .5em;
-  background-image: -webkit-linear-gradient(top, #f7f7f7 0%, #dbdad8 100%);
-  background-image: -o-linear-gradient(top, #f7f7f7 0%, #dbdad8 100%);
-  background-image: linear-gradient(to bottom, #f7f7f7 0%, #dbdad8 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff7f7f7', endColorstr='#ffdbdad8', GradientType=0);
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-box-shadow: 1px 1px 3px rgba(000,000,000,0),inset 0px 0px 2px rgba(255,255,255,.5);
-  box-shadow: 1px 1px 3px rgba(000,000,000,0),inset 0px 0px 2px rgba(255,255,255,.5);
-  text-shadow: 1px 1px 0px #ffffff;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 0 0;
+  box-shadow: 0 0 0;
 }
 .mura #mura-tb-fields li li {
   -webkit-box-shadow: 0 0 0, 0 0 0;
   box-shadow: 0 0 0, 0 0 0;
 }
 .mura #mura-tb-fields .selected {
-  color: #eee;
+  color: #646464;
   font-weight: bold;
   border: 1px solid #dedede;
-  background-image: -webkit-linear-gradient(top, #777777 0%, #999999 100%);
-  background-image: -o-linear-gradient(top, #777777 0%, #999999 100%);
-  background-image: linear-gradient(to bottom, #777777 0%, #999999 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff777777', endColorstr='#ff999999', GradientType=0);
-  -webkit-box-shadow: 1px 1px 2px rgba(000,000,000,0),inset 1px 1px 2px rgba(000,000,000,0.4);
-  box-shadow: 1px 1px 2px rgba(000,000,000,0),inset 1px 1px 2px rgba(000,000,000,0.4);
-  text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.4);
 }
 .mura #mura-tb-form #mura-tb-fields li.selected .field {
   padding-right: 18px;
@@ -26668,12 +26661,12 @@ font-size: 12px;
   margin: 0 0 5px 0;
   padding: 5px;
   border: 0;
-  border-radius: 0;
-  -moz-border-radius: 0;
   -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
-  text-shadow: none !important;
+  text-shadow: 0 0 0 !important;
   font-size: 16px;
   color: #666;
   font-weight: bold;
@@ -26714,14 +26707,14 @@ font-size: 12px;
 .mura #mura-tb-form #mura-tb-fields li #button-trash {
   display: block;
   padding: 0;
-  margin: -13px 0 0 0;
+  margin: -8px 0 0 0;
   border-radius: 0;
   width: 16px;
   height: 16px;
   background: transparent url('../images/formbuilder/data-delete.png') no-repeat center center !important;
   border: 0 !important;
-  -webkit-box-shadow: 0 0 0,0 0 0 !important;
-  box-shadow: 0 0 0,0 0 0 !important;
+  -webkit-box-shadow: 0 0 0 !important;
+  box-shadow: 0 0 0 !important;
   text-shadow: 0 0 0 !important;
 }
 .mura #mura-tb-grid-table-header {
@@ -26820,9 +26813,9 @@ font-size: 12px;
   background: #999999 url('../images/formbuilder/data-add.png') no-repeat 5px center;
   color: #fff;
   font-size: 11px;
-  -webkit-border-radius: 12px;
-  -moz-border-radius: 12px;
-  border-radius: 12px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   text-shadow: 0 0 0 !important;
 }
 .mura #mura-tb-grid .mura-tb-grid-display {
@@ -27638,10 +27631,11 @@ font-size: 12px;
   clear: both;
 }
 .mura #availableRegions .btn-group-vertical .btn {
-  border-radius: 0;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
+  border-radius: 0;
   padding: 4px 13px 4px 10px;
+  margin: 0 2px;
 }
 .mura #configuratorContainer h2 {
   margin-top: -18px;
@@ -29993,6 +29987,10 @@ main > .content > :first-child:not(.alert) {
 .form-bordered .mura-control-group.form-actions {
   border-bottom: none;
 }
+.mura-control-group[class*="col-"] {
+  padding-left: 0;
+  padding-right: 0;
+}
 .mura-control-group > label {
   position: relative;
   float: left;
@@ -30005,16 +30003,16 @@ main > .content > :first-child:not(.alert) {
   padding-left: 0px;
   padding-right: 0px;
 }
-.mura-control-group > label + textarea,
-.mura-control-group > label + * + textarea,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+.mura-control-group > label + textarea:not([class*="mura-constrain"]),
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 .mura-control-group > label + input[type=password],
 .mura-control-group > label + * + input[type=password],
 .mura-control-group > label + input[type=file],
 .mura-control-group > label + * + input[type=file],
-.mura-control-group > label + select:not([class*="time"]),
-.mura-control-group > label + * + select:not([class*="time"]) {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]) {
   display: block;
   width: 100%;
   height: 36px;
@@ -30045,622 +30043,595 @@ main > .content > :first-child:not(.alert) {
   padding-left: 15px;
   padding-right: 15px;
 }
-.mura-control-group > label + textarea:focus,
-.mura-control-group > label + * + textarea:focus,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):focus,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):focus,
+.mura-control-group > label + textarea:not([class*="mura-constrain"]):focus,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]):focus,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):focus,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):focus,
 .mura-control-group > label + input[type=password]:focus,
 .mura-control-group > label + * + input[type=password]:focus,
 .mura-control-group > label + input[type=file]:focus,
 .mura-control-group > label + * + input[type=file]:focus,
-.mura-control-group > label + select:not([class*="time"]):focus,
-.mura-control-group > label + * + select:not([class*="time"]):focus {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]):focus,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]):focus {
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
-.mura-control-group > label + textarea::-moz-placeholder,
-.mura-control-group > label + * + textarea::-moz-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-moz-placeholder,
 .mura-control-group > label + input[type=password]::-moz-placeholder,
 .mura-control-group > label + * + input[type=password]::-moz-placeholder,
 .mura-control-group > label + input[type=file]::-moz-placeholder,
 .mura-control-group > label + * + input[type=file]::-moz-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-moz-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-moz-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])::-moz-placeholder {
   color: #999999;
   opacity: 1;
 }
-.mura-control-group > label + textarea:-ms-input-placeholder,
-.mura-control-group > label + * + textarea:-ms-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):-ms-input-placeholder,
 .mura-control-group > label + input[type=password]:-ms-input-placeholder,
 .mura-control-group > label + * + input[type=password]:-ms-input-placeholder,
 .mura-control-group > label + input[type=file]:-ms-input-placeholder,
 .mura-control-group > label + * + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + select:not([class*="time"]):-ms-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"]):-ms-input-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]):-ms-input-placeholder {
   color: #999999;
 }
-.mura-control-group > label + textarea::-webkit-input-placeholder,
-.mura-control-group > label + * + textarea::-webkit-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
 .mura-control-group > label + input[type=password]::-webkit-input-placeholder,
 .mura-control-group > label + * + input[type=password]::-webkit-input-placeholder,
 .mura-control-group > label + input[type=file]::-webkit-input-placeholder,
 .mura-control-group > label + * + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-webkit-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-webkit-input-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])::-webkit-input-placeholder {
   color: #999999;
 }
-.mura-control-group > label + textarea::-ms-expand,
-.mura-control-group > label + * + textarea::-ms-expand,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-ms-expand,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-ms-expand,
+.mura-control-group > label + textarea:not([class*="mura-constrain"])::-ms-expand,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])::-ms-expand,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-ms-expand,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-ms-expand,
 .mura-control-group > label + input[type=password]::-ms-expand,
 .mura-control-group > label + * + input[type=password]::-ms-expand,
 .mura-control-group > label + input[type=file]::-ms-expand,
 .mura-control-group > label + * + input[type=file]::-ms-expand,
-.mura-control-group > label + select:not([class*="time"])::-ms-expand,
-.mura-control-group > label + * + select:not([class*="time"])::-ms-expand {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])::-ms-expand,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])::-ms-expand {
   border: 0;
   background-color: transparent;
 }
-.mura-control-group > label + textarea[disabled],
-.mura-control-group > label + * + textarea[disabled],
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])[disabled],
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])[disabled],
+.mura-control-group > label + textarea:not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])[disabled],
 .mura-control-group > label + input[type=password][disabled],
 .mura-control-group > label + * + input[type=password][disabled],
 .mura-control-group > label + input[type=file][disabled],
 .mura-control-group > label + * + input[type=file][disabled],
-.mura-control-group > label + select:not([class*="time"])[disabled],
-.mura-control-group > label + * + select:not([class*="time"])[disabled],
-.mura-control-group > label + textarea[readonly],
-.mura-control-group > label + * + textarea[readonly],
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])[readonly],
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])[readonly],
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + textarea:not([class*="mura-constrain"])[readonly],
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])[readonly],
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])[readonly],
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])[readonly],
 .mura-control-group > label + input[type=password][readonly],
 .mura-control-group > label + * + input[type=password][readonly],
 .mura-control-group > label + input[type=file][readonly],
 .mura-control-group > label + * + input[type=file][readonly],
-.mura-control-group > label + select:not([class*="time"])[readonly],
-.mura-control-group > label + * + select:not([class*="time"])[readonly],
-fieldset[disabled] .mura-control-group > label + textarea,
-fieldset[disabled] .mura-control-group > label + * + textarea,
-fieldset[disabled] .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-fieldset[disabled] .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])[readonly],
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])[readonly],
+fieldset[disabled] .mura-control-group > label + textarea:not([class*="mura-constrain"]),
+fieldset[disabled] .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+fieldset[disabled] .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+fieldset[disabled] .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 fieldset[disabled] .mura-control-group > label + input[type=password],
 fieldset[disabled] .mura-control-group > label + * + input[type=password],
 fieldset[disabled] .mura-control-group > label + input[type=file],
 fieldset[disabled] .mura-control-group > label + * + input[type=file],
-fieldset[disabled] .mura-control-group > label + select:not([class*="time"]),
-fieldset[disabled] .mura-control-group > label + * + select:not([class*="time"]) {
+fieldset[disabled] .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+fieldset[disabled] .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]) {
   background-color: #f9f9f9;
   opacity: 1;
 }
-.mura-control-group > label + textarea[disabled],
-.mura-control-group > label + * + textarea[disabled],
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])[disabled],
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])[disabled],
+.mura-control-group > label + textarea:not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])[disabled],
 .mura-control-group > label + input[type=password][disabled],
 .mura-control-group > label + * + input[type=password][disabled],
 .mura-control-group > label + input[type=file][disabled],
 .mura-control-group > label + * + input[type=file][disabled],
-.mura-control-group > label + select:not([class*="time"])[disabled],
-.mura-control-group > label + * + select:not([class*="time"])[disabled],
-fieldset[disabled] .mura-control-group > label + textarea,
-fieldset[disabled] .mura-control-group > label + * + textarea,
-fieldset[disabled] .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-fieldset[disabled] .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])[disabled],
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])[disabled],
+fieldset[disabled] .mura-control-group > label + textarea:not([class*="mura-constrain"]),
+fieldset[disabled] .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+fieldset[disabled] .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+fieldset[disabled] .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 fieldset[disabled] .mura-control-group > label + input[type=password],
 fieldset[disabled] .mura-control-group > label + * + input[type=password],
 fieldset[disabled] .mura-control-group > label + input[type=file],
 fieldset[disabled] .mura-control-group > label + * + input[type=file],
-fieldset[disabled] .mura-control-group > label + select:not([class*="time"]),
-fieldset[disabled] .mura-control-group > label + * + select:not([class*="time"]) {
+fieldset[disabled] .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+fieldset[disabled] .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]) {
   cursor: not-allowed;
 }
-textarea.mura-control-group > label + textarea,
-textarea.mura-control-group > label + * + textarea,
-textarea.mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-textarea.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+textarea.mura-control-group > label + textarea:not([class*="mura-constrain"]),
+textarea.mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+textarea.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+textarea.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 textarea.mura-control-group > label + input[type=password],
 textarea.mura-control-group > label + * + input[type=password],
 textarea.mura-control-group > label + input[type=file],
 textarea.mura-control-group > label + * + input[type=file],
-textarea.mura-control-group > label + select:not([class*="time"]),
-textarea.mura-control-group > label + * + select:not([class*="time"]) {
+textarea.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+textarea.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]) {
   height: auto;
 }
-.mura-control-group > label + textarea::-moz-placeholder,
-.mura-control-group > label + * + textarea::-moz-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-moz-placeholder,
 .mura-control-group > label + input[type=password]::-moz-placeholder,
 .mura-control-group > label + * + input[type=password]::-moz-placeholder,
 .mura-control-group > label + input[type=file]::-moz-placeholder,
 .mura-control-group > label + * + input[type=file]::-moz-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-moz-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-moz-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])::-moz-placeholder {
   color: #aaaaaa;
   opacity: 1;
 }
-.mura-control-group > label + textarea:-ms-input-placeholder,
-.mura-control-group > label + * + textarea:-ms-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):-ms-input-placeholder,
 .mura-control-group > label + input[type=password]:-ms-input-placeholder,
 .mura-control-group > label + * + input[type=password]:-ms-input-placeholder,
 .mura-control-group > label + input[type=file]:-ms-input-placeholder,
 .mura-control-group > label + * + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + select:not([class*="time"]):-ms-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"]):-ms-input-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]):-ms-input-placeholder {
   color: #aaaaaa;
 }
-.mura-control-group > label + textarea::-webkit-input-placeholder,
-.mura-control-group > label + * + textarea::-webkit-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
 .mura-control-group > label + input[type=password]::-webkit-input-placeholder,
 .mura-control-group > label + * + input[type=password]::-webkit-input-placeholder,
 .mura-control-group > label + input[type=file]::-webkit-input-placeholder,
 .mura-control-group > label + * + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-webkit-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-webkit-input-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])::-webkit-input-placeholder {
   color: #aaaaaa;
 }
-.mura-control-group > label + textarea::-moz-placeholder,
-.mura-control-group > label + * + textarea::-moz-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-moz-placeholder,
 .mura-control-group > label + input[type=password]::-moz-placeholder,
 .mura-control-group > label + * + input[type=password]::-moz-placeholder,
 .mura-control-group > label + input[type=file]::-moz-placeholder,
 .mura-control-group > label + * + input[type=file]::-moz-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-moz-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-moz-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])::-moz-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])::-moz-placeholder {
   color: #aaaaaa;
 }
-.mura-control-group > label + textarea:-ms-input-placeholder,
-.mura-control-group > label + * + textarea:-ms-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):-ms-input-placeholder,
 .mura-control-group > label + input[type=password]:-ms-input-placeholder,
 .mura-control-group > label + * + input[type=password]:-ms-input-placeholder,
 .mura-control-group > label + input[type=file]:-ms-input-placeholder,
 .mura-control-group > label + * + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + select:not([class*="time"]):-ms-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"]):-ms-input-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]):-ms-input-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]):-ms-input-placeholder {
   color: #aaaaaa;
 }
-.mura-control-group > label + textarea::-webkit-input-placeholder,
-.mura-control-group > label + * + textarea::-webkit-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
+.mura-control-group > label + textarea:not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
 .mura-control-group > label + input[type=password]::-webkit-input-placeholder,
 .mura-control-group > label + * + input[type=password]::-webkit-input-placeholder,
 .mura-control-group > label + input[type=file]::-webkit-input-placeholder,
 .mura-control-group > label + * + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-webkit-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-webkit-input-placeholder {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"])::-webkit-input-placeholder,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"])::-webkit-input-placeholder {
   color: #aaaaaa;
 }
-.mura-control-group > label + textarea:focus,
-.mura-control-group > label + * + textarea:focus,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):focus,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):focus,
+.mura-control-group > label + textarea:not([class*="mura-constrain"]):focus,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]):focus,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):focus,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]):focus,
 .mura-control-group > label + input[type=password]:focus,
 .mura-control-group > label + * + input[type=password]:focus,
 .mura-control-group > label + input[type=file]:focus,
 .mura-control-group > label + * + input[type=file]:focus,
-.mura-control-group > label + select:not([class*="time"]):focus,
-.mura-control-group > label + * + select:not([class*="time"]):focus {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]):focus,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]):focus {
   border-color: #cccccc;
   background-color: #fcfcfc;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-textarea.mura-control-group > label + textarea,
-textarea.mura-control-group > label + * + textarea,
-textarea.mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-textarea.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+textarea.mura-control-group > label + textarea:not([class*="mura-constrain"]),
+textarea.mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+textarea.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+textarea.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 textarea.mura-control-group > label + input[type=password],
 textarea.mura-control-group > label + * + input[type=password],
 textarea.mura-control-group > label + input[type=file],
 textarea.mura-control-group > label + * + input[type=file],
-textarea.mura-control-group > label + select:not([class*="time"]),
-textarea.mura-control-group > label + * + select:not([class*="time"]) {
+textarea.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+textarea.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]) {
   max-width: 100%;
 }
-input[type="text"].mura-control-group > label + textarea,
-input[type="text"].mura-control-group > label + * + textarea,
-input[type="text"].mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-input[type="text"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+input[type="text"].mura-control-group > label + textarea:not([class*="mura-constrain"]),
+input[type="text"].mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+input[type="text"].mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+input[type="text"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 input[type="text"].mura-control-group > label + input[type=password],
 input[type="text"].mura-control-group > label + * + input[type=password],
 input[type="text"].mura-control-group > label + input[type=file],
 input[type="text"].mura-control-group > label + * + input[type=file],
-input[type="text"].mura-control-group > label + select:not([class*="time"]),
-input[type="text"].mura-control-group > label + * + select:not([class*="time"]),
-input[type="password"].mura-control-group > label + textarea,
-input[type="password"].mura-control-group > label + * + textarea,
-input[type="password"].mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-input[type="password"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+input[type="text"].mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+input[type="text"].mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]),
+input[type="password"].mura-control-group > label + textarea:not([class*="mura-constrain"]),
+input[type="password"].mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+input[type="password"].mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+input[type="password"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 input[type="password"].mura-control-group > label + input[type=password],
 input[type="password"].mura-control-group > label + * + input[type=password],
 input[type="password"].mura-control-group > label + input[type=file],
 input[type="password"].mura-control-group > label + * + input[type=file],
-input[type="password"].mura-control-group > label + select:not([class*="time"]),
-input[type="password"].mura-control-group > label + * + select:not([class*="time"]),
-input[type="email"].mura-control-group > label + textarea,
-input[type="email"].mura-control-group > label + * + textarea,
-input[type="email"].mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-input[type="email"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+input[type="password"].mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+input[type="password"].mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]),
+input[type="email"].mura-control-group > label + textarea:not([class*="mura-constrain"]),
+input[type="email"].mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+input[type="email"].mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+input[type="email"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 input[type="email"].mura-control-group > label + input[type=password],
 input[type="email"].mura-control-group > label + * + input[type=password],
 input[type="email"].mura-control-group > label + input[type=file],
 input[type="email"].mura-control-group > label + * + input[type=file],
-input[type="email"].mura-control-group > label + select:not([class*="time"]),
-input[type="email"].mura-control-group > label + * + select:not([class*="time"]) {
+input[type="email"].mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+input[type="email"].mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]) {
   -webkit-appearance: none;
 }
-.mura-control-group > label + textarea.input-sm,
-.mura-control-group > label + * + textarea.input-sm,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]).input-sm,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]).input-sm,
+.mura-control-group > label + textarea:not([class*="mura-constrain"]).input-sm,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]).input-sm,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]).input-sm,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]).input-sm,
 .mura-control-group > label + input[type=password].input-sm,
 .mura-control-group > label + * + input[type=password].input-sm,
 .mura-control-group > label + input[type=file].input-sm,
 .mura-control-group > label + * + input[type=file].input-sm,
-.mura-control-group > label + select:not([class*="time"]).input-sm,
-.mura-control-group > label + * + select:not([class*="time"]).input-sm {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]).input-sm,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]).input-sm {
   border-radius: 3px;
 }
-.mura-control-group > label + textarea.input-lg,
-.mura-control-group > label + * + textarea.input-lg,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]).input-lg,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]).input-lg,
+.mura-control-group > label + textarea:not([class*="mura-constrain"]).input-lg,
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]).input-lg,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]).input-lg,
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]).input-lg,
 .mura-control-group > label + input[type=password].input-lg,
 .mura-control-group > label + * + input[type=password].input-lg,
 .mura-control-group > label + input[type=file].input-lg,
 .mura-control-group > label + * + input[type=file].input-lg,
-.mura-control-group > label + select:not([class*="time"]).input-lg,
-.mura-control-group > label + * + select:not([class*="time"]).input-lg {
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]).input-lg,
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]).input-lg {
   font-size: 14px;
   border-radius: 3px;
 }
-.input-group-lg .mura-control-group > label + textarea,
-.input-group-lg .mura-control-group > label + * + textarea,
-.input-group-lg .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-.input-group-lg .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+.input-group-lg .mura-control-group > label + textarea:not([class*="mura-constrain"]),
+.input-group-lg .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+.input-group-lg .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+.input-group-lg .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
 .input-group-lg .mura-control-group > label + input[type=password],
 .input-group-lg .mura-control-group > label + * + input[type=password],
 .input-group-lg .mura-control-group > label + input[type=file],
 .input-group-lg .mura-control-group > label + * + input[type=file],
-.input-group-lg .mura-control-group > label + select:not([class*="time"]),
-.input-group-lg .mura-control-group > label + * + select:not([class*="time"]) {
-  font-size: 14px;
-}
-.mura-control-group > label + textarea:focus,
-.mura-control-group > label + * + textarea:focus,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):focus,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):focus,
-.mura-control-group > label + input[type=password]:focus,
-.mura-control-group > label + * + input[type=password]:focus,
-.mura-control-group > label + input[type=file]:focus,
-.mura-control-group > label + * + input[type=file]:focus,
-.mura-control-group > label + select:not([class*="time"]):focus,
-.mura-control-group > label + * + select:not([class*="time"]):focus {
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
-}
-.mura-control-group > label + textarea::-moz-placeholder,
-.mura-control-group > label + * + textarea::-moz-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + input[type=password]::-moz-placeholder,
-.mura-control-group > label + * + input[type=password]::-moz-placeholder,
-.mura-control-group > label + input[type=file]::-moz-placeholder,
-.mura-control-group > label + * + input[type=file]::-moz-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-moz-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-moz-placeholder {
-  color: #999999;
-  opacity: 1;
-}
-.mura-control-group > label + textarea:-ms-input-placeholder,
-.mura-control-group > label + * + textarea:-ms-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + input[type=password]:-ms-input-placeholder,
-.mura-control-group > label + * + input[type=password]:-ms-input-placeholder,
-.mura-control-group > label + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + * + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + select:not([class*="time"]):-ms-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"]):-ms-input-placeholder {
-  color: #999999;
-}
-.mura-control-group > label + textarea::-webkit-input-placeholder,
-.mura-control-group > label + * + textarea::-webkit-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + input[type=password]::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=password]::-webkit-input-placeholder,
-.mura-control-group > label + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-webkit-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-webkit-input-placeholder {
-  color: #999999;
-}
-.mura-control-group > label + textarea::-ms-expand,
-.mura-control-group > label + * + textarea::-ms-expand,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-ms-expand,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-ms-expand,
-.mura-control-group > label + input[type=password]::-ms-expand,
-.mura-control-group > label + * + input[type=password]::-ms-expand,
-.mura-control-group > label + input[type=file]::-ms-expand,
-.mura-control-group > label + * + input[type=file]::-ms-expand,
-.mura-control-group > label + select:not([class*="time"])::-ms-expand,
-.mura-control-group > label + * + select:not([class*="time"])::-ms-expand {
-  border: 0;
-  background-color: transparent;
-}
-.mura-control-group > label + textarea[disabled],
-.mura-control-group > label + * + textarea[disabled],
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])[disabled],
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])[disabled],
-.mura-control-group > label + input[type=password][disabled],
-.mura-control-group > label + * + input[type=password][disabled],
-.mura-control-group > label + input[type=file][disabled],
-.mura-control-group > label + * + input[type=file][disabled],
-.mura-control-group > label + select:not([class*="time"])[disabled],
-.mura-control-group > label + * + select:not([class*="time"])[disabled],
-.mura-control-group > label + textarea[readonly],
-.mura-control-group > label + * + textarea[readonly],
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])[readonly],
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])[readonly],
-.mura-control-group > label + input[type=password][readonly],
-.mura-control-group > label + * + input[type=password][readonly],
-.mura-control-group > label + input[type=file][readonly],
-.mura-control-group > label + * + input[type=file][readonly],
-.mura-control-group > label + select:not([class*="time"])[readonly],
-.mura-control-group > label + * + select:not([class*="time"])[readonly],
-fieldset[disabled] .mura-control-group > label + textarea,
-fieldset[disabled] .mura-control-group > label + * + textarea,
-fieldset[disabled] .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-fieldset[disabled] .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-fieldset[disabled] .mura-control-group > label + input[type=password],
-fieldset[disabled] .mura-control-group > label + * + input[type=password],
-fieldset[disabled] .mura-control-group > label + input[type=file],
-fieldset[disabled] .mura-control-group > label + * + input[type=file],
-fieldset[disabled] .mura-control-group > label + select:not([class*="time"]),
-fieldset[disabled] .mura-control-group > label + * + select:not([class*="time"]) {
-  background-color: #f9f9f9;
-  opacity: 1;
-}
-.mura-control-group > label + textarea[disabled],
-.mura-control-group > label + * + textarea[disabled],
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])[disabled],
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])[disabled],
-.mura-control-group > label + input[type=password][disabled],
-.mura-control-group > label + * + input[type=password][disabled],
-.mura-control-group > label + input[type=file][disabled],
-.mura-control-group > label + * + input[type=file][disabled],
-.mura-control-group > label + select:not([class*="time"])[disabled],
-.mura-control-group > label + * + select:not([class*="time"])[disabled],
-fieldset[disabled] .mura-control-group > label + textarea,
-fieldset[disabled] .mura-control-group > label + * + textarea,
-fieldset[disabled] .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-fieldset[disabled] .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-fieldset[disabled] .mura-control-group > label + input[type=password],
-fieldset[disabled] .mura-control-group > label + * + input[type=password],
-fieldset[disabled] .mura-control-group > label + input[type=file],
-fieldset[disabled] .mura-control-group > label + * + input[type=file],
-fieldset[disabled] .mura-control-group > label + select:not([class*="time"]),
-fieldset[disabled] .mura-control-group > label + * + select:not([class*="time"]) {
-  cursor: not-allowed;
-}
-textarea.mura-control-group > label + textarea,
-textarea.mura-control-group > label + * + textarea,
-textarea.mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-textarea.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-textarea.mura-control-group > label + input[type=password],
-textarea.mura-control-group > label + * + input[type=password],
-textarea.mura-control-group > label + input[type=file],
-textarea.mura-control-group > label + * + input[type=file],
-textarea.mura-control-group > label + select:not([class*="time"]),
-textarea.mura-control-group > label + * + select:not([class*="time"]) {
-  height: auto;
-}
-.mura-control-group > label + textarea::-moz-placeholder,
-.mura-control-group > label + * + textarea::-moz-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + input[type=password]::-moz-placeholder,
-.mura-control-group > label + * + input[type=password]::-moz-placeholder,
-.mura-control-group > label + input[type=file]::-moz-placeholder,
-.mura-control-group > label + * + input[type=file]::-moz-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-moz-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-moz-placeholder {
-  color: #aaaaaa;
-  opacity: 1;
-}
-.mura-control-group > label + textarea:-ms-input-placeholder,
-.mura-control-group > label + * + textarea:-ms-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + input[type=password]:-ms-input-placeholder,
-.mura-control-group > label + * + input[type=password]:-ms-input-placeholder,
-.mura-control-group > label + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + * + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + select:not([class*="time"]):-ms-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"]):-ms-input-placeholder {
-  color: #aaaaaa;
-}
-.mura-control-group > label + textarea::-webkit-input-placeholder,
-.mura-control-group > label + * + textarea::-webkit-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + input[type=password]::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=password]::-webkit-input-placeholder,
-.mura-control-group > label + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-webkit-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-webkit-input-placeholder {
-  color: #aaaaaa;
-}
-.mura-control-group > label + textarea::-moz-placeholder,
-.mura-control-group > label + * + textarea::-moz-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-moz-placeholder,
-.mura-control-group > label + input[type=password]::-moz-placeholder,
-.mura-control-group > label + * + input[type=password]::-moz-placeholder,
-.mura-control-group > label + input[type=file]::-moz-placeholder,
-.mura-control-group > label + * + input[type=file]::-moz-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-moz-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-moz-placeholder {
-  color: #aaaaaa;
-}
-.mura-control-group > label + textarea:-ms-input-placeholder,
-.mura-control-group > label + * + textarea:-ms-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):-ms-input-placeholder,
-.mura-control-group > label + input[type=password]:-ms-input-placeholder,
-.mura-control-group > label + * + input[type=password]:-ms-input-placeholder,
-.mura-control-group > label + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + * + input[type=file]:-ms-input-placeholder,
-.mura-control-group > label + select:not([class*="time"]):-ms-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"]):-ms-input-placeholder {
-  color: #aaaaaa;
-}
-.mura-control-group > label + textarea::-webkit-input-placeholder,
-.mura-control-group > label + * + textarea::-webkit-input-placeholder,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"])::-webkit-input-placeholder,
-.mura-control-group > label + input[type=password]::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=password]::-webkit-input-placeholder,
-.mura-control-group > label + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + * + input[type=file]::-webkit-input-placeholder,
-.mura-control-group > label + select:not([class*="time"])::-webkit-input-placeholder,
-.mura-control-group > label + * + select:not([class*="time"])::-webkit-input-placeholder {
-  color: #aaaaaa;
-}
-.mura-control-group > label + textarea:focus,
-.mura-control-group > label + * + textarea:focus,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]):focus,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):focus,
-.mura-control-group > label + input[type=password]:focus,
-.mura-control-group > label + * + input[type=password]:focus,
-.mura-control-group > label + input[type=file]:focus,
-.mura-control-group > label + * + input[type=file]:focus,
-.mura-control-group > label + select:not([class*="time"]):focus,
-.mura-control-group > label + * + select:not([class*="time"]):focus {
-  border-color: #cccccc;
-  background-color: #fcfcfc;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-textarea.mura-control-group > label + textarea,
-textarea.mura-control-group > label + * + textarea,
-textarea.mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-textarea.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-textarea.mura-control-group > label + input[type=password],
-textarea.mura-control-group > label + * + input[type=password],
-textarea.mura-control-group > label + input[type=file],
-textarea.mura-control-group > label + * + input[type=file],
-textarea.mura-control-group > label + select:not([class*="time"]),
-textarea.mura-control-group > label + * + select:not([class*="time"]) {
-  max-width: 100%;
-}
-input[type="text"].mura-control-group > label + textarea,
-input[type="text"].mura-control-group > label + * + textarea,
-input[type="text"].mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-input[type="text"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-input[type="text"].mura-control-group > label + input[type=password],
-input[type="text"].mura-control-group > label + * + input[type=password],
-input[type="text"].mura-control-group > label + input[type=file],
-input[type="text"].mura-control-group > label + * + input[type=file],
-input[type="text"].mura-control-group > label + select:not([class*="time"]),
-input[type="text"].mura-control-group > label + * + select:not([class*="time"]),
-input[type="password"].mura-control-group > label + textarea,
-input[type="password"].mura-control-group > label + * + textarea,
-input[type="password"].mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-input[type="password"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-input[type="password"].mura-control-group > label + input[type=password],
-input[type="password"].mura-control-group > label + * + input[type=password],
-input[type="password"].mura-control-group > label + input[type=file],
-input[type="password"].mura-control-group > label + * + input[type=file],
-input[type="password"].mura-control-group > label + select:not([class*="time"]),
-input[type="password"].mura-control-group > label + * + select:not([class*="time"]),
-input[type="email"].mura-control-group > label + textarea,
-input[type="email"].mura-control-group > label + * + textarea,
-input[type="email"].mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-input[type="email"].mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-input[type="email"].mura-control-group > label + input[type=password],
-input[type="email"].mura-control-group > label + * + input[type=password],
-input[type="email"].mura-control-group > label + input[type=file],
-input[type="email"].mura-control-group > label + * + input[type=file],
-input[type="email"].mura-control-group > label + select:not([class*="time"]),
-input[type="email"].mura-control-group > label + * + select:not([class*="time"]) {
-  -webkit-appearance: none;
-}
-.mura-control-group > label + textarea.input-sm,
-.mura-control-group > label + * + textarea.input-sm,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]).input-sm,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]).input-sm,
-.mura-control-group > label + input[type=password].input-sm,
-.mura-control-group > label + * + input[type=password].input-sm,
-.mura-control-group > label + input[type=file].input-sm,
-.mura-control-group > label + * + input[type=file].input-sm,
-.mura-control-group > label + select:not([class*="time"]).input-sm,
-.mura-control-group > label + * + select:not([class*="time"]).input-sm {
-  border-radius: 3px;
-}
-.mura-control-group > label + textarea.input-lg,
-.mura-control-group > label + * + textarea.input-lg,
-.mura-control-group > label + input[type=text]:not([class*="datepicker"]).input-lg,
-.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]).input-lg,
-.mura-control-group > label + input[type=password].input-lg,
-.mura-control-group > label + * + input[type=password].input-lg,
-.mura-control-group > label + input[type=file].input-lg,
-.mura-control-group > label + * + input[type=file].input-lg,
-.mura-control-group > label + select:not([class*="time"]).input-lg,
-.mura-control-group > label + * + select:not([class*="time"]).input-lg {
-  font-size: 14px;
-  border-radius: 3px;
-}
-.input-group-lg .mura-control-group > label + textarea,
-.input-group-lg .mura-control-group > label + * + textarea,
-.input-group-lg .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-.input-group-lg .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-.input-group-lg .mura-control-group > label + input[type=password],
-.input-group-lg .mura-control-group > label + * + input[type=password],
-.input-group-lg .mura-control-group > label + input[type=file],
-.input-group-lg .mura-control-group > label + * + input[type=file],
-.input-group-lg .mura-control-group > label + select:not([class*="time"]),
-.input-group-lg .mura-control-group > label + * + select:not([class*="time"]) {
+.input-group-lg .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+.input-group-lg .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]) {
   font-size: 14px;
 }
 @media (min-width: 768px) {
-  .mura-control-group > label + textarea,
-  .mura-control-group > label + * + textarea,
-  .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-  .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+  .mura-control-group > label + textarea:not([class*="mura-constrain"]),
+  .mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+  .mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+  .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
   .mura-control-group > label + input[type=password],
   .mura-control-group > label + * + input[type=password],
   .mura-control-group > label + input[type=file],
   .mura-control-group > label + * + input[type=file],
-  .mura-control-group > label + select:not([class*="time"]),
-  .mura-control-group > label + * + select:not([class*="time"]) {
+  .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+  .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]) {
     float: left;
     width: 75%;
   }
+}
+.mura-control-group > label + input[type=text].mura-constrain,
+.mura-control-group > label + * + input[type=text].mura-constrain,
+.mura-control-group > label + select.mura-constrain,
+.mura-control-group > label + * + select.mura-constrain,
+.mura-control-group > label + textarea.mura-constrain,
+.mura-control-group > label + * + textarea.mura-constrain {
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cccccc;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  color: #aaa;
+  color: #646464;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.mura-control-group > label + input[type=text].mura-constrain:focus,
+.mura-control-group > label + * + input[type=text].mura-constrain:focus,
+.mura-control-group > label + select.mura-constrain:focus,
+.mura-control-group > label + * + select.mura-constrain:focus,
+.mura-control-group > label + textarea.mura-constrain:focus,
+.mura-control-group > label + * + textarea.mura-constrain:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.mura-control-group > label + input[type=text].mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain::-moz-placeholder,
+.mura-control-group > label + select.mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + select.mura-constrain::-moz-placeholder,
+.mura-control-group > label + textarea.mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain::-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+.mura-control-group > label + input[type=text].mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + select.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + select.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + textarea.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain:-ms-input-placeholder {
+  color: #999999;
+}
+.mura-control-group > label + input[type=text].mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + select.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + select.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + textarea.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain::-webkit-input-placeholder {
+  color: #999999;
+}
+.mura-control-group > label + input[type=text].mura-constrain::-ms-expand,
+.mura-control-group > label + * + input[type=text].mura-constrain::-ms-expand,
+.mura-control-group > label + select.mura-constrain::-ms-expand,
+.mura-control-group > label + * + select.mura-constrain::-ms-expand,
+.mura-control-group > label + textarea.mura-constrain::-ms-expand,
+.mura-control-group > label + * + textarea.mura-constrain::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.mura-control-group > label + input[type=text].mura-constrain[disabled],
+.mura-control-group > label + * + input[type=text].mura-constrain[disabled],
+.mura-control-group > label + select.mura-constrain[disabled],
+.mura-control-group > label + * + select.mura-constrain[disabled],
+.mura-control-group > label + textarea.mura-constrain[disabled],
+.mura-control-group > label + * + textarea.mura-constrain[disabled],
+.mura-control-group > label + input[type=text].mura-constrain[readonly],
+.mura-control-group > label + * + input[type=text].mura-constrain[readonly],
+.mura-control-group > label + select.mura-constrain[readonly],
+.mura-control-group > label + * + select.mura-constrain[readonly],
+.mura-control-group > label + textarea.mura-constrain[readonly],
+.mura-control-group > label + * + textarea.mura-constrain[readonly],
+fieldset[disabled] .mura-control-group > label + input[type=text].mura-constrain,
+fieldset[disabled] .mura-control-group > label + * + input[type=text].mura-constrain,
+fieldset[disabled] .mura-control-group > label + select.mura-constrain,
+fieldset[disabled] .mura-control-group > label + * + select.mura-constrain,
+fieldset[disabled] .mura-control-group > label + textarea.mura-constrain,
+fieldset[disabled] .mura-control-group > label + * + textarea.mura-constrain {
+  background-color: #f9f9f9;
+  opacity: 1;
+}
+.mura-control-group > label + input[type=text].mura-constrain[disabled],
+.mura-control-group > label + * + input[type=text].mura-constrain[disabled],
+.mura-control-group > label + select.mura-constrain[disabled],
+.mura-control-group > label + * + select.mura-constrain[disabled],
+.mura-control-group > label + textarea.mura-constrain[disabled],
+.mura-control-group > label + * + textarea.mura-constrain[disabled],
+fieldset[disabled] .mura-control-group > label + input[type=text].mura-constrain,
+fieldset[disabled] .mura-control-group > label + * + input[type=text].mura-constrain,
+fieldset[disabled] .mura-control-group > label + select.mura-constrain,
+fieldset[disabled] .mura-control-group > label + * + select.mura-constrain,
+fieldset[disabled] .mura-control-group > label + textarea.mura-constrain,
+fieldset[disabled] .mura-control-group > label + * + textarea.mura-constrain {
+  cursor: not-allowed;
+}
+textarea.mura-control-group > label + input[type=text].mura-constrain,
+textarea.mura-control-group > label + * + input[type=text].mura-constrain,
+textarea.mura-control-group > label + select.mura-constrain,
+textarea.mura-control-group > label + * + select.mura-constrain,
+textarea.mura-control-group > label + textarea.mura-constrain,
+textarea.mura-control-group > label + * + textarea.mura-constrain {
+  height: auto;
+}
+.mura-control-group > label + input[type=text].mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain::-moz-placeholder,
+.mura-control-group > label + select.mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + select.mura-constrain::-moz-placeholder,
+.mura-control-group > label + textarea.mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain::-moz-placeholder {
+  color: #aaaaaa;
+  opacity: 1;
+}
+.mura-control-group > label + input[type=text].mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + select.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + select.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + textarea.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain:-ms-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + input[type=text].mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + select.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + select.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + textarea.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain::-webkit-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + input[type=text].mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain::-moz-placeholder,
+.mura-control-group > label + select.mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + select.mura-constrain::-moz-placeholder,
+.mura-control-group > label + textarea.mura-constrain::-moz-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain::-moz-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + input[type=text].mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + select.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + select.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + textarea.mura-constrain:-ms-input-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain:-ms-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + input[type=text].mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + input[type=text].mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + select.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + select.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + textarea.mura-constrain::-webkit-input-placeholder,
+.mura-control-group > label + * + textarea.mura-constrain::-webkit-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + input[type=text].mura-constrain:focus,
+.mura-control-group > label + * + input[type=text].mura-constrain:focus,
+.mura-control-group > label + select.mura-constrain:focus,
+.mura-control-group > label + * + select.mura-constrain:focus,
+.mura-control-group > label + textarea.mura-constrain:focus,
+.mura-control-group > label + * + textarea.mura-constrain:focus {
+  border-color: #cccccc;
+  background-color: #fcfcfc;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+textarea.mura-control-group > label + input[type=text].mura-constrain,
+textarea.mura-control-group > label + * + input[type=text].mura-constrain,
+textarea.mura-control-group > label + select.mura-constrain,
+textarea.mura-control-group > label + * + select.mura-constrain,
+textarea.mura-control-group > label + textarea.mura-constrain,
+textarea.mura-control-group > label + * + textarea.mura-constrain {
+  max-width: 100%;
+}
+input[type="text"].mura-control-group > label + input[type=text].mura-constrain,
+input[type="text"].mura-control-group > label + * + input[type=text].mura-constrain,
+input[type="text"].mura-control-group > label + select.mura-constrain,
+input[type="text"].mura-control-group > label + * + select.mura-constrain,
+input[type="text"].mura-control-group > label + textarea.mura-constrain,
+input[type="text"].mura-control-group > label + * + textarea.mura-constrain,
+input[type="password"].mura-control-group > label + input[type=text].mura-constrain,
+input[type="password"].mura-control-group > label + * + input[type=text].mura-constrain,
+input[type="password"].mura-control-group > label + select.mura-constrain,
+input[type="password"].mura-control-group > label + * + select.mura-constrain,
+input[type="password"].mura-control-group > label + textarea.mura-constrain,
+input[type="password"].mura-control-group > label + * + textarea.mura-constrain,
+input[type="email"].mura-control-group > label + input[type=text].mura-constrain,
+input[type="email"].mura-control-group > label + * + input[type=text].mura-constrain,
+input[type="email"].mura-control-group > label + select.mura-constrain,
+input[type="email"].mura-control-group > label + * + select.mura-constrain,
+input[type="email"].mura-control-group > label + textarea.mura-constrain,
+input[type="email"].mura-control-group > label + * + textarea.mura-constrain {
+  -webkit-appearance: none;
+}
+.mura-control-group > label + input[type=text].mura-constrain.input-sm,
+.mura-control-group > label + * + input[type=text].mura-constrain.input-sm,
+.mura-control-group > label + select.mura-constrain.input-sm,
+.mura-control-group > label + * + select.mura-constrain.input-sm,
+.mura-control-group > label + textarea.mura-constrain.input-sm,
+.mura-control-group > label + * + textarea.mura-constrain.input-sm {
+  border-radius: 3px;
+}
+.mura-control-group > label + input[type=text].mura-constrain.input-lg,
+.mura-control-group > label + * + input[type=text].mura-constrain.input-lg,
+.mura-control-group > label + select.mura-constrain.input-lg,
+.mura-control-group > label + * + select.mura-constrain.input-lg,
+.mura-control-group > label + textarea.mura-constrain.input-lg,
+.mura-control-group > label + * + textarea.mura-constrain.input-lg {
+  font-size: 14px;
+  border-radius: 3px;
+}
+.input-group-lg .mura-control-group > label + input[type=text].mura-constrain,
+.input-group-lg .mura-control-group > label + * + input[type=text].mura-constrain,
+.input-group-lg .mura-control-group > label + select.mura-constrain,
+.input-group-lg .mura-control-group > label + * + select.mura-constrain,
+.input-group-lg .mura-control-group > label + textarea.mura-constrain,
+.input-group-lg .mura-control-group > label + * + textarea.mura-constrain {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .mura-control-group > label + input[type=text].mura-constrain,
+  .mura-control-group > label + * + input[type=text].mura-constrain,
+  .mura-control-group > label + select.mura-constrain,
+  .mura-control-group > label + * + select.mura-constrain,
+  .mura-control-group > label + textarea.mura-constrain,
+  .mura-control-group > label + * + textarea.mura-constrain {
+    float: left;
+    width: 21.66666667%;
+  }
+}
+.mura-control-group > label + input[type=text].mura-constrain.mura-numeric,
+.mura-control-group > label + * + input[type=text].mura-constrain.mura-numeric,
+.mura-control-group > label + select.mura-constrain.mura-numeric,
+.mura-control-group > label + * + select.mura-constrain.mura-numeric,
+.mura-control-group > label + textarea.mura-constrain.mura-numeric,
+.mura-control-group > label + * + textarea.mura-constrain.mura-numeric {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  min-width: 80px !important;
+}
+@media (min-width: 768px) {
+  .mura-control-group > label + input[type=text].mura-constrain.mura-numeric,
+  .mura-control-group > label + * + input[type=text].mura-constrain.mura-numeric,
+  .mura-control-group > label + select.mura-constrain.mura-numeric,
+  .mura-control-group > label + * + select.mura-constrain.mura-numeric,
+  .mura-control-group > label + textarea.mura-constrain.mura-numeric,
+  .mura-control-group > label + * + textarea.mura-constrain.mura-numeric {
+    float: left;
+    width: 8.33333333%;
+  }
+}
+.mura-control-group .mura-constrain + .mura-constrain {
+  margin-left: 8px;
 }
 .sidebar .mura-control-group > label + textarea,
 .sidebar .mura-control-group > label + * + textarea,
@@ -35428,13 +35399,16 @@ a.list-group-item:focus {
 }
 .block > .nav-tabs > li.active > a,
 .block > .nav-tabs > li.active > a:hover,
+.block > .nav-tabs > li.active > a:active,
 .block > .nav-tabs > li.active > a:focus {
-  color: #ff3405;
+  color: #ff3405 !important;
   background-color: #fff;
   border-color: transparent;
 }
-.block > .nav-tabs > li > a:hover {
-  color: #ff3405;
+.block > .nav-tabs > li > a:hover,
+.block > .nav-tabs > li > a:active,
+.block > .nav-tabs > li > a:focus {
+  color: #ff3405 !important;
 }
 .irs-bar,
 .irs-bar-edge,
@@ -35706,6 +35680,48 @@ ul {
 .btn-group .btn {
   font-size: 14px;
 }
+/* input sets */
+.mura-search .mura-input-set .btn,
+.mura-search .mura-input-set input,
+.mura-search .mura-input-set input + .btn,
+.mura-search .mura-input-set .btn + input,
+.mura-control-group .mura-input-set .btn + .btn,
+.mura-control-group .mura-input-set .btn,
+.mura-control-group .mura-input-set input,
+.mura-control-group .mura-input-set input + .btn,
+.mura-control-group .mura-input-set .btn + input,
+.mura-control-group .mura-input-set .btn + .btn {
+  margin-left: 0;
+  margin-right: 0;
+}
+.mura-input-set .btn:not(:last-child),
+.mura-input-set input:not(:last-child) {
+  -webkit-border-top-right-radius: 0px;
+  -moz-border-radius-topright: 0px;
+  border-top-right-radius: 0px;
+  -webkit-border-bottom-right-radius: 0px;
+  -moz-border-radius-bottomright: 0px;
+  border-bottom-right-radius: 0px;
+}
+.mura-input-set .btn:not(:first-child),
+.mura-input-set input:not(:first-child) {
+  -webkit-border-top-left-radius: 0px;
+  -moz-border-radius-topleft: 0px;
+  border-top-left-radius: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  border-bottom-left-radius: 0px;
+}
+.mura-search .mura-input-set input + .btn {
+  margin-left: -4px;
+  -webkit-border-top-left-radius: 0px;
+  -moz-border-radius-topleft: 0px;
+  border-top-left-radius: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  border-bottom-left-radius: 0px;
+}
+/* standard button spacing */
 .mura-control-group .btn + .btn {
   margin-left: 7px;
 }
@@ -35915,6 +35931,12 @@ header .btn i {
 .content form + .mura-table-grid,
 .mura #cdashboard form + table {
   margin-top: 30px;
+}
+.mura-control-table tr + tr td.nested {
+  padding-top: 16px;
+}
+.mura-control-table td.nested .btn-sm {
+  margin: 4px 4px 0 4px;
 }
 .popover-content {
   font-size: 12px;
@@ -37087,6 +37109,10 @@ fieldset[disabled] a.mura-focus-block .mura-focus-actions .btn:focus {
   margin-top: 3px;
   margin-left: 5px;
 }
+body#clogin,
+body#csetup {
+  background-color: #333;
+}
 #clogin #main-container,
 #csetup #main-container {
   background: none;
@@ -37272,6 +37298,13 @@ a#mura-login .block-header:focus {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+}
+.mura #changesetContainer {
+  background-color: #fff;
+  padding: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
   float: none;
