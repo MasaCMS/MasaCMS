@@ -92,8 +92,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.unsubscribe')#
 			</label>
 		</div>
-		<div class="form-actions">
-		<input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
+		<div class="mura-actions">
+			<div class="form-actions">
+				<input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
+			</div>
 		</div>
 		<input type=hidden name="mlid" value="#esapiEncode('html_attr',rc.mlid)#">
 		<input type=hidden name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">

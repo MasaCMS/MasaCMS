@@ -28,9 +28,10 @@
 			<div id="selectedRelatedContent" class="control-group">
 			</div>
 			<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />
-
-			<div class="form-actions">
-				<button class="btn" id="updateBtn">Update</button>
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button class="btn mura-primary" id="updateBtn">Update</button>
+				</div>
 			</div>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->

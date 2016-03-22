@@ -227,8 +227,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<button type="button" class="btn" onclick="document.form1.submit();"><i class="mi-check"></i> Update Bind Order</button>
 				</cfif>
 				<cfif  rc.siteUpdateSelect eq "true">
-					<div class="form-actions">
-					<button type="button" class="btn" id="btnUpdateSites"><i class="mi-bolt"></i> Update Selected Sites to Latest Version</button>
+					<div class="mura-actions">
+						<div class="form-actions">
+						<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-bolt"></i> Update Selected Sites to Latest Version</button>
+						</div>
 					</div>
 					<div class="load-inline" style="display: none;"></div>
 				</cfif>

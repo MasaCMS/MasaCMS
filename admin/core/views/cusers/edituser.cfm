@@ -783,18 +783,20 @@
 				</ul>
 
 				<div class="tab-content block-content">
-						#tabContent#
-						<div class="load-inline tab-preloader"></div>
-						<script>$('.tab-preloader').spin(spinnerArgs2);</script>
+					#tabContent#
+					<div class="load-inline tab-preloader"></div>
+					<script>$('.tab-preloader').spin(spinnerArgs2);</script>
+					<div class="mura-actions">
 						<div class="form-actions">
 							<cfif rc.userid eq ''>
-								<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
+								<input type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
 							<cfelse>
 								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteuserconfirm'))#');" value="#rbKey('user.delete')#" /> 
-								<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
+								<input type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
 							</cfif>
 						</div>
-			
+					</div>
+		
 			<input type="hidden" name="type" value="2"><!--- 2=user, 1=group --->
 			<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
 			<input type="hidden" name="action" value="#tempAction#">

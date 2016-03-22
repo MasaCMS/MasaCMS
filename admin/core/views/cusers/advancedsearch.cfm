@@ -219,26 +219,28 @@
 		<!--- /Active --->
 
 	<!--- Form Buttons --->
-		<div class="form-actions">
-			<input type="hidden" name="muraAction" value="cUsers.advancedSearch">
-			<input type="hidden" name="siteid" value="#esapiEncode('html', rc.siteid)#">
-			<input type="hidden" name="ispublic" value="#esapiEncode('html', rc.ispublic)#">
-			
-			<!--- Search Button --->
-				<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearch';submitForm(document.forms.form2);">
-					<i class="mi-search"></i> 
-					#rbKey("user.search")#
-				</button>
-			
-			<!--- Download Button --->
-				<cfif rc.it.getRecordcount()>
-					<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);$('##action-modal').remove();">
-						<i class="mi-download"></i> 
-						#rbKey("user.download")#
+		<div class="mura-actions">
+			<div class="form-actions">
+				<input type="hidden" name="muraAction" value="cUsers.advancedSearch">
+				<input type="hidden" name="siteid" value="#esapiEncode('html', rc.siteid)#">
+				<input type="hidden" name="ispublic" value="#esapiEncode('html', rc.ispublic)#">
+				
+				<!--- Search Button --->
+					<button type="button" class="btn mura-primary" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearch';submitForm(document.forms.form2);">
+						<i class="mi-search"></i> 
+						#rbKey("user.search")#
 					</button>
-				</cfif>
+				
+				<!--- Download Button --->
+					<cfif rc.it.getRecordcount()>
+						<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);$('##action-modal').remove();">
+							<i class="mi-download"></i> 
+							#rbKey("user.download")#
+						</button>
+					</cfif>
+			</div>
 		</div>
-	<!--- /Form Buttons --->
+
 </form>
 <!--- /Search Form --->
 

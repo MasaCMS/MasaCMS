@@ -50,9 +50,10 @@
 					<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
 				</div>
 			</div>
-
-			<div class="form-actions">
-				<button class="btn" id="updateBtn">Update</button>
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button class="btn" id="updateBtn">Update</button>
+				</div>
 			</div>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->

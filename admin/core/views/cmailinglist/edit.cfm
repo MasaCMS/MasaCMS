@@ -174,19 +174,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</div>
 	
-	<div class="form-actions">			
-		<cfif rc.mlid eq ''>
-			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#" />
-			<input type=hidden name="mlid" value="#createuuid()#">
-		<cfelse>
-			<cfif not rc.listBean.getispurge()>
-				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" />
-			</cfif> 
-			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#" />
-			<input type=hidden name="mlid" value="#rc.listBean.getmlid()#">
-		</cfif>
-		<input type="hidden" name="action" value="">
-	</div> <!-- /.form-actions -->
+	<div class="mura-actions">
+		<div class="form-actions">			
+			<cfif rc.mlid eq ''>
+				<input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#" />
+				<input type=hidden name="mlid" value="#createuuid()#">
+			<cfelse>
+				<cfif not rc.listBean.getispurge()>
+					<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" />
+				</cfif> 
+				<input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#" />
+				<input type=hidden name="mlid" value="#rc.listBean.getmlid()#">
+			</cfif>
+			<input type="hidden" name="action" value="">
+		</div> 
+	</div> 
 
 
 	</div> <!-- /.block-constrain -->

@@ -105,16 +105,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 
 			</div>
-			<div class="form-actions">
-			<cfif not len(rc.relatedContentSetID)>
-	<cfset rc.relatedContentSetID=createUUID()>
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
-	<input type=hidden name="relatedContentSetID" value="#rc.relatedContentSetID#">
-			<cfelse>
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','Delete Related Content Set?');" value="Delete" />
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
-	<input type=hidden name="relatedContentSetID" value="#esapiEncode('html_attr',rcsBean.getRelatedContentSetID())#">
-			</cfif>
+			<div class="mura-actions">
+				<div class="form-actions">
+					<cfif not len(rc.relatedContentSetID)>
+						<cfset rc.relatedContentSetID=createUUID()>
+						<input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');" value="Add" />
+						<input type=hidden name="relatedContentSetID" value="#rc.relatedContentSetID#">
+					<cfelse>
+						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','Delete Related Content Set?');" value="Delete" />
+						<input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');" value="Update" />
+						<input type=hidden name="relatedContentSetID" value="#esapiEncode('html_attr',rcsBean.getRelatedContentSetID())#">
+					</cfif>
+				</div>
 			</div>
 
 			<input type="hidden" name="action" value="">

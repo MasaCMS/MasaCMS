@@ -121,18 +121,20 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
 <div class="mura-control-group">
   <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</label>
   <select name="sortBy" class="dropdown mura-constrain">
-      <cfloop list="#rc.fieldnames#" index="f">
-        <option value="#esapiEncode('html_attr',f)#" <cfif f eq rc.contentBean.getSortBy()>selected</cfif>>#esapiEncode('html',f)#</option>
-      </cfloop>
-    </select>
-    <select name="sortDirection" class="dropdown mura-constrain">
-      <option value="asc" <cfif rc.contentBean.getSortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ascending')#</option>
-      <option value="desc" <cfif rc.contentBean.getSortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
-    </select>
-  </div>
+    <cfloop list="#rc.fieldnames#" index="f">
+      <option value="#esapiEncode('html_attr',f)#" <cfif f eq rc.contentBean.getSortBy()>selected</cfif>>#esapiEncode('html',f)#</option>
+    </cfloop>
+  </select>
+  <select name="sortDirection" class="dropdown mura-constrain">
+    <option value="asc" <cfif rc.contentBean.getSortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ascending')#</option>
+    <option value="desc" <cfif rc.contentBean.getSortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
+  </select>
+</div>
 
-<div class="form-actions">
-  <input type="button" class="btn btn-sm" class="btn mura-primary" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
+<div class="mura-actions">
+  <div class="form-actions">
+    <input type="button" class="btn btn-sm" class="btn mura-primary" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
+  </div>
 </div>
 
 <input type="hidden" value="setDisplay" name="action">

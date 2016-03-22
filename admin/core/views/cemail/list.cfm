@@ -163,9 +163,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
-			<div class="form-actions">			  
-			<button type="button" class="btn" onclick="submitForm(document.forms.form1);"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
-			</div>
+
+	<div class="mura-actions">
+		<div class="form-actions">			  
+		<button type="button" class="btn" onclick="submitForm(document.forms.form1);"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
+		</div>
+	</div>
+
 </form>
 
 

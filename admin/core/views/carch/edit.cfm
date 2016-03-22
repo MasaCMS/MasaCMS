@@ -310,108 +310,111 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfsavecontent variable="actionButtons">
 	<cfoutput>
-	<div class="form-actions">
+	<div class="mura-actions">
+		<div class="form-actions">
 
-		 <button type="button" class="btn" onclick="return saveDraftPrompt();"><i class="mi-edit"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
-		 <script>
+			 <button type="button" class="btn" onclick="return saveDraftPrompt();"><i class="mi-edit"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
+			 <script>
 
-				saveDraftPrompt=function(){
-					confirmDialog(
-						'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
-						function(){
-							if(siteManager.ckContent(draftremovalnotice,true)){
-								document.contentForm.approved.value=0;
-								document.contentForm.preview.value=0;
+					saveDraftPrompt=function(){
+						confirmDialog(
+							'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
+							function(){
+								if(siteManager.ckContent(draftremovalnotice,true)){
+									document.contentForm.approved.value=0;
+									document.contentForm.preview.value=0;
+									document.contentForm.murakeepediting.value=true;
+									submitForm(document.contentForm,'add');
+								}
+							},
+							function(){
+								if(siteManager.ckContent(draftremovalnotice,true)){
+									document.contentForm.approved.value=0;
+									document.contentForm.preview.value=0;
+									document.contentForm.murakeepediting.value=false;
+									submitForm(document.contentForm,'add');
+								}
+							}
+
+						);
+					}
+
+	 				var shifted=false;
+	 				var lockedbysomeonelse=false;
+
+	 				checkForSave=function(e) {
+					  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+					    	e.preventDefault();
+						   	if(!lockedbysomeonelse){
+						   		if(e.altKey){
+									document.contentForm.approved.value=1;
+								} else {
+									document.contentForm.approved.value=0;
+								}
+
+								if(e.shiftKey){
+									document.contentForm.preview.value=1;
+								} else {
+									document.contentForm.preview.value=0;
+								}
+
+								<cfif rc.compactDisplay neq 'true'>
 								document.contentForm.murakeepediting.value=true;
-								submitForm(document.contentForm,'add');
+								</cfif>
+
+							    if(siteManager.ckContent(draftremovalnotice,true)){
+									submitForm(document.contentForm,'add');
+								} else {
+									document.contentForm.approved.value=0;
+									document.contentForm.murakeepediting.value=false;
+									document.contentForm.preview.value=0;
+									document.contentForm.approved.value=0;
+								}
+
 							}
-						},
-						function(){
-							if(siteManager.ckContent(draftremovalnotice,true)){
-								document.contentForm.approved.value=0;
-								document.contentForm.preview.value=0;
-								document.contentForm.murakeepediting.value=false;
-								submitForm(document.contentForm,'add');
-							}
-						}
-
-					);
-				}
-
- 				var shifted=false;
- 				var lockedbysomeonelse=false;
-
- 				checkForSave=function(e) {
-				  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-				    	e.preventDefault();
-					   	if(!lockedbysomeonelse){
-					   		if(e.altKey){
-								document.contentForm.approved.value=1;
-							} else {
-								document.contentForm.approved.value=0;
-							}
-
-							if(e.shiftKey){
-								document.contentForm.preview.value=1;
-							} else {
-								document.contentForm.preview.value=0;
-							}
-
-							<cfif rc.compactDisplay neq 'true'>
-							document.contentForm.murakeepediting.value=true;
-							</cfif>
-
-						    if(siteManager.ckContent(draftremovalnotice,true)){
-								submitForm(document.contentForm,'add');
-							} else {
-								document.contentForm.approved.value=0;
-								document.contentForm.murakeepediting.value=false;
-								document.contentForm.preview.value=0;
-								document.contentForm.approved.value=0;
-							}
-
 						}
 					}
-				}
 
-				//try{
-					window.top.document.addEventListener("keydown", checkForSave , false);
-				//} catch (e){};
-		</script>
-		<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
-		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="mi-eye"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
-		</cfif>
-		<cfif assignChangesets>
-			<button type="button" class="btn" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;">
-				<cfif requiresApproval>
-					<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangesetandsendforapproval"))#
-				<cfelse>
-					<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#
-				</cfif>
-			</button>
+					//try{
+						window.top.document.addEventListener("keydown", checkForSave , false);
+					//} catch (e){};
+			</script>
+			<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
+			<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="mi-eye"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
+			</cfif>
+			<cfif assignChangesets>
+				<button type="button" class="btn" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;">
+					<cfif requiresApproval>
+						<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangesetandsendforapproval"))#
+					<cfelse>
+						<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#
+					</cfif>
+				</button>
 
-			<!---
-			<cfif not currentChangeset.getIsNew()>
-				<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.removePreviousChangeset.value='true';document.contentForm.changesetID.value='#rc.contentBean.getChangesetID()#';if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
-				<cfif requiresApproval>
-					<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangesetandsendforapproval"))#
-				<cfelse>
-					<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangeset"))#
+				<!---
+				<cfif not currentChangeset.getIsNew()>
+					<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.removePreviousChangeset.value='true';document.contentForm.changesetID.value='#rc.contentBean.getChangesetID()#';if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
+					<cfif requiresApproval>
+						<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangesetandsendforapproval"))#
+					<cfelse>
+						<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangeset"))#
+					</cfif>
+					</button>
 				</cfif>
+				--->
+			</cfif>
+			<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
+				<button type="button" class="btn mura-primary" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
+					<cfif requiresApproval>
+						<i class="mi-share-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
+					<cfelse>
+						<i class="mi-check"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#
+					</cfif>
 				</button>
 			</cfif>
-			--->
-		</cfif>
-		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
-			<button type="button" class="btn mura-primary" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
-				<cfif requiresApproval>
-					<i class="mi-share-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
-				<cfelse>
-					<i class="mi-check"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#
-				</cfif>
-			</button>
-		</cfif>
-		</div> <!-- /.form-actions -->
+			</div>
+		</div> 
+
 	</cfoutput>
 	</cfsavecontent>
 </cfsilent>
