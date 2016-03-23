@@ -73,9 +73,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-item-metadata">
 			<div class="label-group">
 		  <cfoutput>
-		  <ul class="metadata-horizontal"><li>#application.rbFactory.getKeyValue(session.rb,"email.emailssent")#: <strong>#emailsSent# (#LSDateFormat(startDate,session.dateKeyFormat)# - #LSDateFormat(stopDate, session.dateKeyFormat)#)</strong></li>
-		  <li>#application.rbFactory.getKeyValue(session.rb,"email.emailsalloted")#: <strong>#emailLimitText#</strong></li>
-		  <li>#application.rbFactory.getKeyValue(session.rb,"email.emailsremaining")#: <strong>#emailsRemainingText#</strong></li></ul>
+		  <div class="metadata-horizontal"><span class="label">#application.rbFactory.getKeyValue(session.rb,"email.emailssent")#: <strong>#emailsSent# (#LSDateFormat(startDate,session.dateKeyFormat)# - #LSDateFormat(stopDate, session.dateKeyFormat)#)</strong></span>
+		  <span class="label">#application.rbFactory.getKeyValue(session.rb,"email.emailsalloted")#: <strong>#emailLimitText#</strong></span>
+		  <span class="label">#application.rbFactory.getKeyValue(session.rb,"email.emailsremaining")#: <strong>#emailsRemainingText#</strong></span></div>
 		  </cfoutput>
 		  <!---<div id="bounces" class="divide">
 		  <h2>Bounces</h2>
