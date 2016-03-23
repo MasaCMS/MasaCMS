@@ -326,6 +326,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="custom" default="true">
 	<cfset var settingsManager=getBean('settingsManager')>
     <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
+
+	<cfif listFind('/,\',left(arguments.dir,1) )>
+		<cfset arguments.dir='/' & getPackage() & arguments.dir>
+	<cfelse>
+		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
+	</cfif>
+
     <cfloop query="rsSites">
     <cfset settingsManager.getSite(rs.siteid).registerDisplayObjectDir(argumentCollection=arguments)>
     </cfloop>
