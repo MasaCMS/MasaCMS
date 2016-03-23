@@ -189,11 +189,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <div class="mura-actions">
       <div class="form-actions">
         <cfif rc.categoryID eq ''>
-          <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
+          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#</button>
           <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
         <cfelse> 
-          <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> 
-          <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
+          <button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#</button>
+          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#</button>
           <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
         </cfif>
         <input type="hidden" name="action" value="">

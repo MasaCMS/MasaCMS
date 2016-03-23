@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<div class="mura-actions">
 			<div class="form-actions">
-				<input id="frmSubmit" type="button" class="btn mura-primary" value="#rc.$.rbKey('sitemanager.extension.import')#" />
+				<button id="frmSubmit" class="btn mura-primary"><i class="mi-sign-in"></i>#rc.$.rbKey('sitemanager.extension.import')#</button>
 			</div>
 		</div>
 

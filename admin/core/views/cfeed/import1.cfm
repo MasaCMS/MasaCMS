@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.formatsupported>
 	<div class="mura-actions">
 		<div class="form-actions">
-		<cfoutput><input type="button" class="btn mura-primary" onclick="feedManager.confirmImport();" value="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" /></cfoutput>
+		<cfoutput><button class="btn mura-primary" onclick="feedManager.confirmImport();"><i class="mi-sign-in"></i>#application.rbFactory.getKeyValue(session.rb,'collections.import')#</button></cfoutput>
 		</div>
 	</div>
 	<input type="hidden" name="action" value="import" />

@@ -111,7 +111,7 @@
 
 		<div class="mura-actions">		
 			<div class="form-actions">
-				<input id="btnSubmit" type="button" class="btn mura-primary" value="#rc.$.rbKey('sitemanager.extension.export')#" />
+				<button id="btnSubmit" class="btn mura-primary"><i class="mi-sign-out"></i>#rc.$.rbKey('sitemanager.extension.export')#</button>
 			</div>
 		</div>
 

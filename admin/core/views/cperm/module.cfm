@@ -109,7 +109,7 @@
 
       <div class="mura-actions">
         <div class="form-actions no-offset">
-        <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
+        <button class="btn mura-primary" onclick="submitForm(document.forms.form1);"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'permissions.update')#</button>
         </div>
       </div>
 

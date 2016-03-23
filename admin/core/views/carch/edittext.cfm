@@ -16,7 +16,7 @@
 			</div>
 			<div class="mura-actions">
 				<div class="form-actions">
-					<button class="btn mura-primary" id="updateBtn">Update</button>
+					<button class="btn mura-primary" id="updateBtn"><i class="mi-check-circle"></i>Update</button>
 				</div>
 			</div>
 		</div> <!-- /.block-content -->

@@ -77,9 +77,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not listFindNoCase("Page,Folder,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
 			<div class="mura-actions">
 					<div class="clearfix form-actions">
-						<input type="button" class="btn mura-primary" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
+						<button class="btn mura-primary" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore Item</button>
 						<cfif len(rc.trashItem.getDeleteID())>
-						<input type="button" class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore All Items in Delete Transaction" />
+						<button class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore All Items in Delete Transaction</button>
 						</cfif>
 					</div>
 				</div>
@@ -102,9 +102,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<div class="mura-actions">
 			<div class="clearfix form-actions">
-			<input type="button" class="btn mura-primary" onclick="restoreItem();" value="Restore Item" />
+			<button class="btn mura-primary" onclick="restoreItem();"><i class="mi-cogs"></i>Restore Item</button>
 			<cfif len(rc.trashItem.getDeleteID())>
-			<input type="button" class="btn" onclick="restoreAll();" value="Restore All Items in Delete Transaction" />
+			<button class="btn" onclick="restoreAll();"><i class="mi-cogs"></i>Restore All Items in Delete Transaction</button>
 			</cfif>
 			</div>
 		</div>

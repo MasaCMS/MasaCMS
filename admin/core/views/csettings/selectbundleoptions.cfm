@@ -173,7 +173,7 @@ function checkAll (form) {
   
       <div class="mura-actions">
         <div class="clearfix form-actions">
-        <input type="button" class="btn mura-primary" onClick="return submitBundle();" value="Create Bundle">
+        <button class="btn mura-primary" onClick="return submitBundle();"><i class="mi-check-circle"></i>Create Bundle</button>
         </div>
       </div>
   

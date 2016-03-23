@@ -35964,6 +35964,109 @@ header .btn i {
 .mura-control-table td.nested .btn-sm {
   margin: 4px 4px 0 4px;
 }
+.mura-control-table td.nested select[size] {
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cccccc;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  color: #aaa;
+  color: #646464;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+.mura-control-table td.nested select[size]:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.mura-control-table td.nested select[size]::-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+.mura-control-table td.nested select[size]:-ms-input-placeholder {
+  color: #999999;
+}
+.mura-control-table td.nested select[size]::-webkit-input-placeholder {
+  color: #999999;
+}
+.mura-control-table td.nested select[size]::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.mura-control-table td.nested select[size][disabled],
+.mura-control-table td.nested select[size][readonly],
+fieldset[disabled] .mura-control-table td.nested select[size] {
+  background-color: #f9f9f9;
+  opacity: 1;
+}
+.mura-control-table td.nested select[size][disabled],
+fieldset[disabled] .mura-control-table td.nested select[size] {
+  cursor: not-allowed;
+}
+textarea.mura-control-table td.nested select[size] {
+  height: auto;
+}
+.mura-control-table td.nested select[size]::-moz-placeholder {
+  color: #aaaaaa;
+  opacity: 1;
+}
+.mura-control-table td.nested select[size]:-ms-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-table td.nested select[size]::-webkit-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-table td.nested select[size]::-moz-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-table td.nested select[size]:-ms-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-table td.nested select[size]::-webkit-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-table td.nested select[size]:focus {
+  border-color: #cccccc;
+  background-color: #fcfcfc;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+textarea.mura-control-table td.nested select[size] {
+  max-width: 100%;
+}
+input[type="text"].mura-control-table td.nested select[size],
+input[type="password"].mura-control-table td.nested select[size],
+input[type="email"].mura-control-table td.nested select[size] {
+  -webkit-appearance: none;
+}
+.mura-control-table td.nested select[size].input-sm {
+  border-radius: 3px;
+}
+.mura-control-table td.nested select[size].input-lg {
+  font-size: 14px;
+  border-radius: 3px;
+}
+.input-group-lg .mura-control-table td.nested select[size] {
+  font-size: 14px;
+}
 .popover-content {
   font-size: 12px;
   padding-top: 4px;
@@ -36106,8 +36209,8 @@ a.no-link {
   margin-bottom: 8px;
   min-height: 2.3em;
   padding-top: 8px;
-  background-color: #FFF;
-  border: 1px solid #e9e9e9;
+  background-color: #ebebeb;
+  border: 1px solid #ebebeb;
 }
 .mura-header .nav-module-specific .btn:focus,
 .sidebar-buttons .btn:focus,
@@ -36463,6 +36566,9 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   background-color: #b3b3b3;
   color: #ffffff;
   opacity: .8;
+}
+.mura-header .mura-nav-group .btn {
+  background-color: #fff;
 }
 .sidebar-buttons .btn {
   padding-top: 2px;

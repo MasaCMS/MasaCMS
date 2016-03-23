@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<div class="mura-actions">
 			<div class="form-actions">
-				<input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
+				<button class="btn mura-primary" onclick="submitForm(document.forms.form1);"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#</button>
 			</div>
 		</div>
 		<input type=hidden name="mlid" value="#esapiEncode('html_attr',rc.mlid)#">

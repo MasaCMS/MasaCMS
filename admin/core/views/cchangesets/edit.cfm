@@ -242,15 +242,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <div class="mura-actions">
       <div class="form-actions">
         <cfif rc.changesetID eq ''>
-          <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
+          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.add')#</button>
+          <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
         <cfelse>
-          <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')" /> 
-          <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.update')#" />
+          <button class="btn" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#</button> 
+          <button class="btn" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.update')#</button>
           <cfif not rc.changeset.getPublished() and not hasPendingApprovals>
-            <input type="button" class="btn mura-primary" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','./?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')" /> 
+            <button class="btn mura-primary" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','./?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#</button>
           </cfif>
           <cfif rc.changeset.getPublished()>
-              <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.rollback')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.rollbackconfirm'))#','./?muraAction=cChangesets.rollback&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')" /> 
+            <button class="btn" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.rollbackconfirm'))#','./?muraAction=cChangesets.rollback&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')">#application.rbFactory.getKeyValue(session.rb,'changesets.rollback')#</button>
           </cfif>
            <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
         </cfif>

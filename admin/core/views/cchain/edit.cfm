@@ -90,10 +90,10 @@
       <div class="mura-actions">
         <div class="form-actions">
           <cfif rc.chainID eq ''>
-            <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.add')#" />
+            <button class="btn" onclick="submitForm(document.forms.form1,'add');">#application.rbFactory.getKeyValue(session.rb,'approvalchains.add')#<i class="mi-check-circle"></i></button>
           <cfelse>
-            <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.delete')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#','./?muraAction=cchain.delete&chainID=#chain.getchainID()#&siteid=#esapiEncode('url',chain.getSiteID())#')" /> 
-            <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'save');" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.update')#" />
+            <button class="btn" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#','./?muraAction=cchain.delete&chainID=#chain.getchainID()#&siteid=#esapiEncode('url',chain.getSiteID())#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'approvalchains.delete')#</button> 
+            <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'save');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'approvalchains.update')#</button>
           </cfif>
           <input type="hidden" name="siteid" value="#chain.getSiteID()#">
           <input type=hidden name="chainID" value="#chain.getchainID()#">

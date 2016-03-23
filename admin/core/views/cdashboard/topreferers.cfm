@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 			<div class="mura-actions">
 				<div class="form-actions">
-					<input type="button" class="btn mura-primary" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
+					<button class="btn mura-primary" onclick="submitForm(document.forms.searchFrm);"><i class="mi-search"></i>#application.rbFactory.getKeyValue(session.rb,"params.search")#</button>
 				</div>
 			</div>
 

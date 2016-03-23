@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" id="mura-quickEdit-cattrim" value="#esapiEncode('html_attr',rc.cattrim)#">
 	<div class="mura-actions">
 		<div class="form-actions">
-		<input type="button" value="Submit" class="btn mura-primary" onclick="siteManager.saveCategoryAssignment();" />
+		<button class="btn mura-primary" onclick="siteManager.saveCategoryAssignment();"><i class="mi-check-circle"></i>Submit</button>
 		</div>
 	</div>
 	</cfoutput>

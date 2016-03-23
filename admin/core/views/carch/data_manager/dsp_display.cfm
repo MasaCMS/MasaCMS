@@ -133,7 +133,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
 
 <div class="mura-actions">
   <div class="form-actions">
-    <input type="button" class="btn btn-sm" class="btn mura-primary" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
+    <button class="btn mura-primary" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#</button>
   </div>
 </div>
 
