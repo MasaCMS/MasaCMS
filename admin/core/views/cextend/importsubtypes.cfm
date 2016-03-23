@@ -127,8 +127,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<input type="file" name="newFile">
 				</div>
 
-		<div class="form-actions">
-			<input id="frmSubmit" type="button" class="btn" value="#rc.$.rbKey('sitemanager.extension.import')#" />
+		<div class="mura-actions">
+			<div class="form-actions">
+				<button id="frmSubmit" class="btn mura-primary"><i class="mi-sign-in"></i>#rc.$.rbKey('sitemanager.extension.import')#</button>
+			</div>
 		</div>
 
 		<input type="hidden" name="action" value="import">

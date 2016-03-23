@@ -166,14 +166,15 @@
 			</script>	
 			</cfif>
 
-
-				<div class="form-actions">
-					<cfif rc.addressid eq ''>
-						<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
-			        <cfelse>
-			            <input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
-						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteaddressconfirm'))#');" value="#rbKey('user.delete')#" />
-			           </cfif>
+				<div class="mura-actions">
+					<div class="form-actions">
+						<cfif rc.addressid eq ''>
+							<button class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
+				        <cfelse>
+				            <button class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
+							<button class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteaddressconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
+				           </cfif>
+			    	</div>
 		    	</div>
 
 					<input type="hidden" name="action" value="">

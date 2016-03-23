@@ -309,11 +309,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input name="package" type="hidden" value="#esapiEncode('html_attr',package)#"/>
 			<input type="hidden" name="moduleID" value="#esapiEncode('html_attr',rc.moduleID)#">
 			#rc.$.renderCSRFTokens(context=rc.moduleID,format="form")#
-
-		<div class="form-actions">
-			<button type="submit" class="btn"><i class="mi-check-circle"></i> Update</button>
-		</div>
-	</form>
+	
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button type="submit" class="btn mura-primary"><i class="mi-check-circle"></i> Update</button>
+				</div>
+			</div>
+	
+		</form>
 
 
 		</div> <!-- /.block-content -->

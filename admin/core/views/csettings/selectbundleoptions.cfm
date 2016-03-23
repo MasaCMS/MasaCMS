@@ -170,11 +170,13 @@ function checkAll (form) {
   
         </div> <!--- /.block-content --->  
       </div> <!--- /.block.block-bordered --->  
-
-    <div class="clearfix form-actions">
-    <input type="button" onClick="return submitBundle();" value="Create Bundle" class="btn">
-    </div>
-    
+  
+      <div class="mura-actions">
+        <div class="clearfix form-actions">
+        <button class="btn mura-primary" onClick="return submitBundle();"><i class="mi-check-circle"></i>Create Bundle</button>
+        </div>
+      </div>
+  
     <input type="hidden" name="muraAction" value="cSettings.createBundle">
     <input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteID)#">
 

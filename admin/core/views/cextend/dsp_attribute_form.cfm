@@ -153,16 +153,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
 </div>
 
-<div class="form-actions">
-<cfif attributes.action eq "add">
-	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'add');" value="Add" />
-	<input type="button" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();" value="Cancel" />
-<cfelse>
-	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'update');" value="Update" />
-	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
-	<input type="button" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');" value="Cancel" />
-</cfif>
+<div class="mura-actions">
+	<div class="form-actions">
+	<cfif attributes.action eq "add">
+		<button class="btn mura-primary" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'add');"><i class="mi-check-circle"></i>Add</button>
+		<button class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();"><i class="mi-times-circle"></i>Cancel</button>
+	<cfelse>
+		<button class="btn mura-primary" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'update');"><i class="mi-check-circle"></i>Update</button>
+		<button class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'delete','Delete Attribute?');"><i class="mi-trash"></i>Delete</button>
+		<button class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');"><i class="mi-times-circle"></i>Cancel</button>
+	</cfif>
+	</div>
 </div>
+
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
 <input name="isActive" type="hidden" value="#attributes.attributeBean.getIsActive()#"/>
 <input name="siteID" type="hidden" value="#attributes.attributeBean.getSiteID()#"/>

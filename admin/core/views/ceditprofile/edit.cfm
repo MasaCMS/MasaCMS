@@ -333,9 +333,11 @@ select * from rsSubTypes where subType <> 'Default'
 					<!-- /end tab -->								
 
 				</div> <!-- /.block-content.tab-content -->
-	
-	<div class="form-actions">
-		<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
+
+	<div class="mura-actions">	
+		<div class="form-actions">
+			<button class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'user.update')#</button>
+		</div>
 	</div>
 	
 </div> <!-- /.block-constrain -->

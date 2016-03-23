@@ -138,8 +138,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</div>
 			</div>
-			<div class="form-actions">
-				<input id="frmSubmit" type="button" class="btn" value="Import" />
+
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button id="frmSubmit" class="btn mura-primary"><i class="mi-sign-in"></i>Import</button>
+				</div>
 			</div>
 
 			<input type="hidden" name="action" value="import">

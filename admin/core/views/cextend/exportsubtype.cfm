@@ -108,9 +108,11 @@
 						</label>
 					</cfloop>
 				</div>
-		
-		<div class="form-actions">
-			<input id="btnSubmit" type="button" class="btn" value="#rc.$.rbKey('sitemanager.extension.export')#" />
+
+		<div class="mura-actions">		
+			<div class="form-actions">
+				<button id="btnSubmit" class="btn mura-primary"><i class="mi-sign-out"></i>#rc.$.rbKey('sitemanager.extension.export')#</button>
+			</div>
 		</div>
 
 		<input type="hidden" name="action" value="export">

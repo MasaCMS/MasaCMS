@@ -127,9 +127,10 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="form-actions">
-			<input id="btnSubmit" type="submit" class="btn" value="#rc.$.rbKey('sitemanager.extension.download')#" />
+		<div class="mura-actions">
+			<div class="form-actions">
+				<button id="btnSubmit" type="submit" class="btn mura-primary"><i class="mi-sign-out"></i>#rc.$.rbKey('sitemanager.extension.download')#</button>
+			</div>
 		</div>
 
 		<input name="exportClassExtensionID" value="#rc.exportClassExtensionID#" type="hidden">

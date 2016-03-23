@@ -79,16 +79,18 @@ to your own modified versions of Mura CMS.
  --->
 		<cfsavecontent variable="actionButtons">
 		<cfoutput>
-			<div class="form-actions">
+			<div class="mura-actions">
+				<div class="form-actions">
 				<cfif rc.siteBean.getsiteid() eq ''>
 					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"><i class="mi-plus-circle"></i> Add</button>
 					<cfelse>
 					<cfif rc.siteBean.getsiteid() neq 'default' and listFind(session.mura.memberships,'S2')>
-						<button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()##rc.$.renderCSRFTokens(context=rc.siteID,format="url")#')});"><i class="mi-times-circle"></i> Delete</button>
+						<button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()##rc.$.renderCSRFTokens(context=rc.siteID,format="url")#')});"><i class="mi-trash"></i> Delete</button>
 					</cfif>
-					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i> Update</button>
+					<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i> Save Settings</button>
 				</cfif>
-			</div>
+				</div> <!-- /.form-actions -->
+			</div> <!-- /.mura-actions -->
 		</cfoutput>
 		</cfsavecontent>
 		<cfif arrayLen(extendSets)>
@@ -361,15 +363,28 @@ to your own modified versions of Mura CMS.
 				<!--- /Custom Context + Port --->
 
 				<!--- Google reCAPTCHA API Keys --->
-						<div class="mura-control-group">
-					<!--- reCAPTCHA Site Key --->
-								<label>
-								<span data-toggle="popover" title="" data-placement="right"
-							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.getapikeys'))#"
-							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.sitekey'))#">
-										#$.rbKey('siteconfig.recaptcha.sitekey')# <i class="mi-question-circle"></i></span>
-								</label>
-										<input name="reCAPTCHASiteKey" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASiteKey())#" maxlength="50">
+				<cfif not Len(rc.siteBean.getReCAPTCHASiteKey()) or not Len(rc.siteBean.getReCAPTCHASecret())>
+					<div class="alert alert-warning">
+						#rc.$.rbKey('siteconfig.recaptcha.message')#
+					</div>
+				</cfif>
+
+					<div class="mura-control-group">
+						<!--- reCAPTCHA Site Key --->
+						<label>
+						<span data-toggle="popover" title="" data-placement="right"
+					  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.getapikeys'))#"
+					  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.sitekey'))#">
+								#$.rbKey('siteconfig.recaptcha.sitekey')# <i class="mi-question-circle"></i></span>
+						</label>
+							<input name="reCAPTCHASiteKey" class="mura-constrain" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASiteKey())#" maxlength="50">
+							<cfif not Len(rc.siteBean.getReCAPTCHASiteKey()) or not Len(rc.siteBean.getReCAPTCHASecret())>
+								<div class="mura-control justify">
+									<a class="btn" href="http://www.google.com/recaptcha/admin" target="_blank">
+									<i class="mi-key"></i> #rc.$.rbKey('siteconfig.recaptcha.getgooglekeys')#
+									</a>
+								</div>
+							</cfif>
 					</div>
 					<!--- reCAPTCHA Secret --->
 						<div class="mura-control-group">
@@ -379,7 +394,7 @@ to your own modified versions of Mura CMS.
 							  	data-original-title="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.secret'))#">
 								#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.secret'))# <i class="mi-question-circle"></i></a>
 								</label>
-								<input name="reCAPTCHASecret" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
+								<input name="reCAPTCHASecret" class="mura-constrain" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
 					</div>
 					<!--- reCAPTCHA Language --->
 						<div class="mura-control-group">
@@ -391,7 +406,7 @@ to your own modified versions of Mura CMS.
 								</label>
 							<cfset rc.langs = application.serviceFactory.getBean('utility').getReCAPTCHALanguages() />
 							<cfset rc.sortedLangs = StructSort(rc.langs, 'textnocase', 'asc') />
-							<select name="reCAPTCHALanguage" class="span12">
+							<select class="mura-constrain" name="reCAPTCHALanguage" class="span12">
 								<option value=""<cfif Not Len(rc.siteBean.getReCAPTACHALanguage())>
 									selected</cfif>>- #$.rbKey('siteconfig.recaptcha.selectlanguage')# -</option>
 								<cfloop array="#rc.sortedLangs#" index="lang">
@@ -400,16 +415,6 @@ to your own modified versions of Mura CMS.
 							</select>
 						</div>
 
-				<cfif not Len(rc.siteBean.getReCAPTCHASiteKey()) or not Len(rc.siteBean.getReCAPTCHASecret())>
-					<div class="alert alert-warning">
-						#rc.$.rbKey('siteconfig.recaptcha.message')#
-					</div>
-					<div class="form-actions">
-						<a class="btn" href="http://www.google.com/recaptcha/admin" target="_blank">
-						<i class="mi-key"></i> #rc.$.rbKey('siteconfig.recaptcha.getgooglekeys')#
-						</a>
-					</div>
-				</cfif>
 				<!--- /Google reCAPTCHA API Keys --->
 
 			</div> <!--- /.block-content --->
@@ -1354,12 +1359,12 @@ to your own modified versions of Mura CMS.
 		<div class="load-inline tab-preloader"></div>
 		<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 		<cfoutput>
-			 #actionButtons#
+			#actionButtons#
 			<input type="hidden" name="action" value="update">
 			#rc.$.renderCSRFTokens(context=rc.siteID,format="form")#
 		</cfoutput>
 
-	</div>	<!--- /.block-content.tab-content --->
+		</div>	<!--- /.block-content.tab-content --->
 	</div>	<!--- /.block-constrain --->
 
 </form>

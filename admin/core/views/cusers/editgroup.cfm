@@ -331,25 +331,27 @@
 			</cfif>
 
 			<cfoutput>
-						<div class="form-actions">
-							<cfif rc.userid eq ''>
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
-							<cfelse>
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');" value="#rbKey('user.delete')#" />
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
-							</cfif>
+				<div class="mura-actions">
+					<div class="form-actions">
+						<cfif rc.userid eq ''>
+							<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
+						<cfelse>
+							<button class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
+							<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
+						</cfif>
 
-							<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
-							<input type="hidden" name="action" value="#tempAction#">
-							<input type="hidden" name="type" value="1">
-							<input type="hidden" name="contact" value="0">
-							<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
-							<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.list', querystring='ispublic=#rc.tempIsPublic#')#">
-							<cfif not rsNonDefault.recordcount>
-								<input type="hidden" name="subtype" value="Default"/>
-							</cfif>
-							#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
-						</div> 
+						<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
+						<input type="hidden" name="action" value="#tempAction#">
+						<input type="hidden" name="type" value="1">
+						<input type="hidden" name="contact" value="0">
+						<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
+						<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.list', querystring='ispublic=#rc.tempIsPublic#')#">
+						<cfif not rsNonDefault.recordcount>
+							<input type="hidden" name="subtype" value="Default"/>
+						</cfif>
+						#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
+					</div> 
+				</div> 
 
 				</div> <!-- /.block-content.tab-content -->
 						
@@ -361,23 +363,25 @@
 			</cfoutput>
 		<cfelse>
 			<cfoutput>
-				<div class="form-actions">
-					<cfif rc.userid eq ''>
-						<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
-					<cfelse>
-						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');" value="#rbKey('user.delete')#" />
-						<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
-					</cfif>
-					<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
-					<input type="hidden" name="action" value="#tempAction#">
-					<input type="hidden" name="type" value="1"><!--- 1=group, 2=user --->
-					<input type="hidden" name="contact" value="0">
-					<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
-					<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.list', querystring='ispublic=#rc.tempIsPublic#')#">
-					<cfif not rsNonDefault.recordcount>
-						<input type="hidden" name="subtype" value="Default"/>
-					</cfif>
-					#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
+				<div class="mura-actions">
+					<div class="form-actions">
+						<cfif rc.userid eq ''>
+							<button class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
+						<cfelse>
+							<button class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
+							<button class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
+						</cfif>
+						<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
+						<input type="hidden" name="action" value="#tempAction#">
+						<input type="hidden" name="type" value="1"><!--- 1=group, 2=user --->
+						<input type="hidden" name="contact" value="0">
+						<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
+						<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.list', querystring='ispublic=#rc.tempIsPublic#')#">
+						<cfif not rsNonDefault.recordcount>
+							<input type="hidden" name="subtype" value="Default"/>
+						</cfif>
+						#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
+					</div>
 				</div>
 			</cfoutput>
 		</cfif>

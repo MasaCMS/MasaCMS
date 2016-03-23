@@ -116,18 +116,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 			</cfif>
 			--->
-
+		<div class="mura-actions">
 			<div class="form-actions">
-			<cfif not len(rc.extendSetID)>
-	<cfset rc.extendSetID=createuuid()>
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
-	<input type=hidden name="extendSetID" value="#esapiEncode('html_attr',rc.extendSetID)#">
-			<cfelse>
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','Delete Attribute Set?');" value="Delete" />
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
-	<input type=hidden name="extendSetID" value="#esapiEncode('html_attr',extendSetBean.getExtendSetID())#">
-			</cfif>
+				<cfif not len(rc.extendSetID)>
+					<cfset rc.extendSetID=createuuid()>
+					<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>Add</button>
+					<input type=hidden name="extendSetID" value="#esapiEncode('html_attr',rc.extendSetID)#">
+				<cfelse>
+					<button class="btn" onclick="submitForm(document.forms.form1,'delete','Delete Attribute Set?');"><i class="mi-trash"></i>Delete</button>
+					<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>Update</button>
+					<input type=hidden name="extendSetID" value="#esapiEncode('html_attr',extendSetBean.getExtendSetID())#">
+				</cfif>
 			</div>
+		</div>
 
 			<input type="hidden" name="action" value="">
 			<input name="muraAction" value="cExtend.updateSet" type="hidden">

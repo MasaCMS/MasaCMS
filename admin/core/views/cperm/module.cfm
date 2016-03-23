@@ -107,9 +107,12 @@
   </cfif>
       </table>
 
-      <div class="form-actions no-offset">
-      <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
+      <div class="mura-actions">
+        <div class="form-actions no-offset">
+        <button class="btn mura-primary" onclick="submitForm(document.forms.form1);"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'permissions.update')#</button>
+        </div>
       </div>
+
       <input type="hidden" name="router" value="#esapiEncode('html_attr',cgi.HTTP_REFERER)#">
       <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
       <input type="hidden" name="topid" value="#esapiEncode('html_attr',rc.topid)#">

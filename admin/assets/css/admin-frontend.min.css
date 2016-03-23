@@ -2509,6 +2509,10 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 .fa-fonticons:before {
   content: "\f280";
 }
+/* Toolbar overlap */
+html.mura-edit-mode > body {
+  margin-top: 30px;
+}
 /* apply to .mura parent class only */
 .mura {
   /*
@@ -7219,8 +7223,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   font-weight: normal !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   overflow: visible !important;
-  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
+  /*	.box-shadow(0 1px 5px rgba(0,0,0,.6)) !important; */
 }
 .mura #frontEndTools > ul {
   min-height: 31px !important;

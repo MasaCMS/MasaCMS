@@ -14,8 +14,10 @@
 		  	<div class="control-group">
 				<textarea name="source" id="source" class="htmlEditor"></textarea>
 			</div>
-			<div class="form-actions">
-				<button class="btn" id="updateBtn">Update</button>
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button class="btn mura-primary" id="updateBtn"><i class="mi-check-circle"></i>Update</button>
+				</div>
 			</div>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->

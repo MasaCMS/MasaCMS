@@ -185,20 +185,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    <textarea name="notes" class="span12" rows="8">#esapiEncode('html',rc.categoryBean.getNotes())#</textarea>
 	  </div>
 
- #$.renderEvent("onCategoryBasicBottomRender")#
-
+   #$.renderEvent("onCategoryBasicBottomRender")#
+    <div class="mura-actions">
       <div class="form-actions">
-  <cfif rc.categoryID eq ''>
-    <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
-    <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
-  <cfelse> 
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> 
-    <input type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
-    <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
-  </cfif>
-  <input type="hidden" name="action" value="">
-  #rc.$.renderCSRFTokens(context=rc.categoryBean.getCategoryID(),format="form")#
+        <cfif rc.categoryID eq ''>
+          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#</button>
+          <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
+        <cfelse> 
+          <button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#</button>
+          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#</button>
+          <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
+        </cfif>
+        <input type="hidden" name="action" value="">
+        #rc.$.renderCSRFTokens(context=rc.categoryBean.getCategoryID(),format="form")#
       </div>
+    </div>
       </form>
       </cfoutput>
 

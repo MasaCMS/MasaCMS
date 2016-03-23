@@ -333,40 +333,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </div> <!-- /.tab-pane -->
   <!-- /end tab -->
 
-<!--- End Tab Container --->
-
-<div class="form-actions"> 
-<!---Delivery Options--->
-	<cfsilent>
-	<cfif rc.emailid eq "">
-	<cfset formAction = "add">
-	<cfset currentEmailid = "">
-	<cfset showDelete = false>
-	<cfset showScheduler = false>
-	<cfelse>
-	<cfif rc.emailBean.getStatus() eq 1>
-	<cfset formAction = "add">
-	<cfset currentEmailid = "">
-	<cfset showDelete = true>
-	<cfset showScheduler = false>
-	<cfset rc.emailBean.setDeliveryDate('')>
-	<cfelse>
-	<cfset formAction = "update">
-	<cfset currentEmailid = rc.emailid>
-	<cfset showDelete = true>
-	<cfset showScheduler = true>
-	</cfif>
-	</cfif>
-	</cfsilent>
-	<cfif showDelete>
-	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('delete', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="mi-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
-	</cfif>
-	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="mi-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
-	<button type="button" class="btn" onClick="emailManager.openScheduler();"><i class="mi-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
-	<button type="button" class="btn toggle" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="mi-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
-	<input type="hidden" name="emailid" value="#currentEmailid#">
-</div>
-       
+  <!--- End Tab Container --->
+  <div class="mura-actions">
+    <div class="form-actions"> 
+    <!---Delivery Options--->
+    	<cfsilent>
+    	<cfif rc.emailid eq "">
+    	<cfset formAction = "add">
+    	<cfset currentEmailid = "">
+    	<cfset showDelete = false>
+    	<cfset showScheduler = false>
+    	<cfelse>
+    	<cfif rc.emailBean.getStatus() eq 1>
+    	<cfset formAction = "add">
+    	<cfset currentEmailid = "">
+    	<cfset showDelete = true>
+    	<cfset showScheduler = false>
+    	<cfset rc.emailBean.setDeliveryDate('')>
+    	<cfelse>
+    	<cfset formAction = "update">
+    	<cfset currentEmailid = rc.emailid>
+    	<cfset showDelete = true>
+    	<cfset showScheduler = true>
+    	</cfif>
+    	</cfif>
+    	</cfsilent>
+    	<cfif showDelete>
+    	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('delete', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="mi-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
+    	</cfif>
+    	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="mi-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+    	<button type="button" class="btn" onClick="emailManager.openScheduler();"><i class="mi-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
+    	<button type="button" class="btn mura-primary toggle" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="mi-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
+    	<input type="hidden" name="emailid" value="#currentEmailid#">
+    </div>
+  </div>
+         
         <div style="display:none" id="scheduler">
 	        <label>#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</label>
 	          <div class="controls">

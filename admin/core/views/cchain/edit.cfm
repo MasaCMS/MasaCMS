@@ -46,57 +46,59 @@
       </div>
 
       <div class="control-group" id="availableGroups">
-	<div class="alert alert-info">
-		<p>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.
-		<strong>All content creators can send for approval without having to be in the chain.</strong></p>
-	</div>
-  <label class="control-label">
-    <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>
-  </label>
+      	<div class="alert alert-info">
+      		<p>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.
+      		<strong>All content creators can send for approval without having to be in the chain.</strong></p>
+      	</div>
+        <label class="control-label">
+          <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>
+        </label>
 
-  <div id="sortableGroups" class="controls">
-    <p class="dragMsg">
-      <span class="dragFrom span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragfrom')#&hellip;</span><span class="span6">&hellip;#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragto')#</span>
-    </p>              
-          
-    <ul id="groupAvailableListSort" class="groupDisplayListSortOptions">
-      <cfset it=chain.getAvailableGroupsIterator()>
-      <cfloop condition="it.hasNext()">
-        <cfset item=it.next()>
-        <li class="ui-state-default">
-          #esapiEncode('html',item.getGroupName())#
-          <input name="availableID" type="hidden" value="#item.getUserID()#">
-        </li>
-      </cfloop>
-    </ul>
-                        
-    <ol id="groupAssignmentListSort" class="groupDisplayListSortOptions">  
-      <cfset it=chain.getMembershipsIterator()>
-      <cfloop condition="it.hasNext()">
-        <cfset item=it.next()>
-        <li class="ui-state-highlight">
-          #esapiEncode('html',item.getGroup().getGroupName())#
-          <input name="groupID" type="hidden" value="#item.getGroupID()#">
-        </li>
-      </cfloop>
-    </ol>   
-    <script>
-      $(function(){
-          chainManager.setGroupMembershipSort();
-        });
-    </script>
-  </div>
+        <div id="sortableGroups" class="controls">
+          <p class="dragMsg">
+            <span class="dragFrom span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragfrom')#&hellip;</span><span class="span6">&hellip;#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragto')#</span>
+          </p>              
+                
+          <ul id="groupAvailableListSort" class="groupDisplayListSortOptions">
+            <cfset it=chain.getAvailableGroupsIterator()>
+            <cfloop condition="it.hasNext()">
+              <cfset item=it.next()>
+              <li class="ui-state-default">
+                #esapiEncode('html',item.getGroupName())#
+                <input name="availableID" type="hidden" value="#item.getUserID()#">
+              </li>
+            </cfloop>
+          </ul>
+                              
+          <ol id="groupAssignmentListSort" class="groupDisplayListSortOptions">  
+            <cfset it=chain.getMembershipsIterator()>
+            <cfloop condition="it.hasNext()">
+              <cfset item=it.next()>
+              <li class="ui-state-highlight">
+                #esapiEncode('html',item.getGroup().getGroupName())#
+                <input name="groupID" type="hidden" value="#item.getGroupID()#">
+              </li>
+            </cfloop>
+          </ol>   
+          <script>
+            $(function(){
+                chainManager.setGroupMembershipSort();
+              });
+          </script>
+        </div>
       </div>
-      <div class="form-actions">
-        <cfif rc.chainID eq ''>
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.add')#" />
-  <cfelse>
-    <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.delete')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#','./?muraAction=cchain.delete&chainID=#chain.getchainID()#&siteid=#esapiEncode('url',chain.getSiteID())#')" /> 
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'save');" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.update')#" />
-  </cfif>
-  <input type="hidden" name="siteid" value="#chain.getSiteID()#">
-  <input type=hidden name="chainID" value="#chain.getchainID()#">
-  #rc.$.renderCSRFTokens(context=chain.getchainID(),format="form")#
+      <div class="mura-actions">
+        <div class="form-actions">
+          <cfif rc.chainID eq ''>
+            <button class="btn" onclick="submitForm(document.forms.form1,'add');">#application.rbFactory.getKeyValue(session.rb,'approvalchains.add')#<i class="mi-check-circle"></i></button>
+          <cfelse>
+            <button class="btn" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#','./?muraAction=cchain.delete&chainID=#chain.getchainID()#&siteid=#esapiEncode('url',chain.getSiteID())#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'approvalchains.delete')#</button> 
+            <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'save');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'approvalchains.update')#</button>
+          </cfif>
+          <input type="hidden" name="siteid" value="#chain.getSiteID()#">
+          <input type=hidden name="chainID" value="#chain.getchainID()#">
+          #rc.$.renderCSRFTokens(context=chain.getchainID(),format="form")#
+        </div>
       </div>
       </form>
       <cfinclude template="js.cfm">

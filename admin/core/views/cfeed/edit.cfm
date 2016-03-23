@@ -789,27 +789,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsavecontent>
 <cfsavecontent variable="actionButtons">
 <cfoutput>
-<div class="clearfix form-actions">
-<cfif rc.feedID eq ''>
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
-	<input type="hidden" name="feedID" value="">
-	<input type="hidden" name="action" value="add">
-<cfelse>
-	<cfif rc.compactDisplay neq "true">
-		<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" />
-	</cfif>
-	<cfif isObjectInstance>
-		<input type="button" class="btn" onclick="updateInstanceObject();submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
+<div class="mura-actions">	
+	<div class="clearfix form-actions">
+	<cfif rc.feedID eq ''>
+		<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.add')#</button>
+		<input type="hidden" name="feedID" value="">
+		<input type="hidden" name="action" value="add">
 	<cfelse>
-		<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
+		<cfif rc.compactDisplay neq "true">
+			<button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</button>
+		</cfif>
+		<cfif isObjectInstance>
+			<button class="btn" onclick="updateInstanceObject();submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
+		<cfelse>
+			<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
+		</cfif>
+		<cfif rc.compactDisplay eq "true">
+			<input type="hidden" name="homeID" value="#rc.homeID#" />
+		</cfif>
+		<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
+		<input type="hidden" name="action" value="update">
 	</cfif>
-	<cfif rc.compactDisplay eq "true">
-		<input type="hidden" name="homeID" value="#rc.homeID#" />
-	</cfif>
-	<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
-	<input type="hidden" name="action" value="update">
-</cfif>
-<input type="hidden" name="type" value="Local"><input name="isActive" type="hidden" value="1" />
+	<input type="hidden" name="type" value="Local"><input name="isActive" type="hidden" value="1" />
+	</div>
 </div>
 </cfoutput>
 </cfsavecontent>
@@ -1113,27 +1115,29 @@ jQuery(document).ready(function(){
 	<div class="load-inline tab-preloader"></div>
 	<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 
-	<div class="form-actions">
-		<cfif rc.feedID eq ''>
-			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
-			<input type=hidden name="feedID" value="">
-			<input type="hidden" name="action" value="add">
-		<cfelse>
-			<cfif rc.compactDisplay neq "true">
-				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" />
-			</cfif>
-			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
-			<cfif rc.compactDisplay eq "true">
-				<input type="hidden" name="homeID" value="#rc.homeID#" />
-			</cfif>
-			<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
-			<input type="hidden" name="action" value="update">
-		</cfif>
-		<input type=hidden name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#">
-		<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
-		<input type="hidden" name="type" value="Remote">
-		#rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
-		</div>
+		<div class="mura-actions">
+			<div class="form-actions">
+				<cfif rc.feedID eq ''>
+					<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.add')#</button>
+					<input type=hidden name="feedID" value="">
+					<input type="hidden" name="action" value="add">
+				<cfelse>
+					<cfif rc.compactDisplay neq "true">
+						<button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</button>
+					</cfif>
+					<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
+					<cfif rc.compactDisplay eq "true">
+						<input type="hidden" name="homeID" value="#rc.homeID#" />
+					</cfif>
+					<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
+					<input type="hidden" name="action" value="update">
+				</cfif>
+				<input type=hidden name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#">
+				<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
+				<input type="hidden" name="type" value="Remote">
+				#rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
+				</div>
+			</div>
 
 		</div> <!-- /.block-content.tab-content -->
 	</div> <!-- /.block-constrain -->

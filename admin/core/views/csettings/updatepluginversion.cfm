@@ -64,16 +64,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li><strong>Package:</strong> <cfif len(rc.pluginConfig.getPackage())>#rc.pluginConfig.getPackage()#<cfelse>N/A</cfif></li>
 			</ul>
 
-
-
 			<form novalidate="novalidate" name="frmNewPlugin" action="./?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return submitForm(document.frmNewPlugin);">
+
 			<div class="mura-control-group">
 				<label>Upload New Plugin Version</label>
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
 			</div>
-			<div class="form-actions">
-			<input type="submit" value="Deploy" class="btn"/>
+
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button type="submit" class="btn"><i class="mi-check-circle"></i>Deploy</button>
+				</div>
 			</div>
+
 			<input type="hidden" name="moduleID" value="#rc.pluginConfig.getModuleID()#">
 			#rc.$.renderCSRFTokens(context=rc.pluginConfig.getModuleID(),format="form")#
 			</form>

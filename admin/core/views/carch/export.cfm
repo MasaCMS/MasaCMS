@@ -111,18 +111,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 
-
-			<div class="form-actions">
-				<button type="button" class="btn" onclick="return history.go(-1);">
-					<i class="mi-arrow-circle-left"></i>
-					#rc.$.rbKey('sitemanager.cancel')#
-				</button>
-
-				<button type="button" class="btn" onClick="return exportPartial();">
-					<i class="mi-sign-out"></i>
-					#rc.$.rbKey('sitemanager.content.exportcontent')#
-				</button>
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button type="button" class="btn" onclick="return history.go(-1);">
+						<i class="mi-arrow-circle-left"></i>
+						#rc.$.rbKey('sitemanager.cancel')#
+					</button>
+					<button type="button" class="btn mura-primary" onClick="return exportPartial();">
+						<i class="mi-sign-out"></i>
+						#rc.$.rbKey('sitemanager.content.exportcontent')#
+					</button>
+				</div>
 			</div>
+
 		</div>
 		<input type="hidden" name="action" value="import">
 		<input name="muraAction" value="cArch.exportcontent" type="hidden">
