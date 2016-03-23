@@ -81,6 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
 <cfset this.setClientCookies = true>
 
+<cfset this.searchImplicitScopes=false>
+
 <!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
 <cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
 --->
@@ -456,4 +458,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tracePoint.total=tracePoint.stop-request.muraRequestStart>
 	</cfif>
 </cffunction>
-
