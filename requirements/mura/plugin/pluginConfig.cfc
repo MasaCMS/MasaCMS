@@ -342,7 +342,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="registerBeanDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="package">
-	<cfset var siteids=valueList(getPluginManager().getAssignedSites(getModuleID()).siteid)>
+	<cfset var rssites=getPluginManager().getAssignedSites(getModuleID())>
+	<cfset var siteids=valueList(rssites.siteid)>
 
 	<cfif listFind('/,\',left(arguments.dir,1) )>
 		<cfset arguments.dir='/' & getPackage() & arguments.dir>
