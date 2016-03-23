@@ -25988,7 +25988,10 @@ text-shadow: 0 0 1px @blue;
 .mura .mura-table-grid td.add a i,
 .mura .mura-grid a.add i {
   width: 16px;
-  margin: 7px auto 0;
+  margin: 2px auto 0;
+}
+.mura .mura-table-grid td.add a i {
+  margin-top: 7px;
 }
 .mura .mura-grid a.add {
   /* really only needed for ie7 */
