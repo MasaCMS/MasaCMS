@@ -919,7 +919,7 @@
 			var propsRet = {};
 			var ct = 100000;
 
-			delete props.isNew;
+			delete props.isnew;
 			delete props.created;
 			delete props.lastUpdate;
 			delete props.errors;

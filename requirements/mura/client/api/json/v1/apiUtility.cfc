@@ -68,6 +68,7 @@ component extends="mura.cfobject" {
 	      .asInteger('pageindex')
 	      .asInteger('code')
 	      .asString('title')
+		  .asInteger('isnew')
 	      .asBoolean('saveErrors');
 
 	    registerEntity('site',{

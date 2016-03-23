@@ -6575,12 +6575,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else {
 				return new Promise(function(resolve,reject) {
 
-					if(self.get('entityname') == 'content'){
-						var context=self.get('contentid');
-					} else {
-						var context=self.get('id');
-					}
-
+					var context=self.get('id');
+				
 					window.mura.ajax({
 						type:'post',
 						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
@@ -7959,7 +7955,7 @@ mura.templates['embed']=function(context){
 			var propsRet = {};
 			var ct = 100000;
 
-			delete props.isNew;
+			delete props.isnew;
 			delete props.created;
 			delete props.lastUpdate;
 			delete props.errors;

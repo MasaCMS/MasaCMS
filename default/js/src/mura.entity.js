@@ -297,12 +297,8 @@
 			} else {
 				return new Promise(function(resolve,reject) {
 
-					if(self.get('entityname') == 'content'){
-						var context=self.get('contentid');
-					} else {
-						var context=self.get('id');
-					}
-
+					var context=self.get('id');
+				
 					window.mura.ajax({
 						type:'post',
 						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
