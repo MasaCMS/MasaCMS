@@ -481,10 +481,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</script>
 	</cfoutput>
 	</cfif>
-	<div class="mura-actions">
-		<div class="form-actions">
-		<button class="btn mura-primary" onclick="siteManager.saveQuickEdit(this);"><i class="mi-check-circle"></i>Submit</button>
-		</div>
+	<div class="form-actions">
+		<button class="btn" onclick="siteManager.saveQuickEdit(this);">Submit</button>
 	</div>
 	</cfoutput>
 <cfelse>
