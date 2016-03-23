@@ -339,6 +339,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfreturn this>
 </cffunction>
 
+<cffunction name="registerBeanDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="package">
+	<cfset var siteids=valueList(getPluginManager().getAssignedSites(getModuleID()).siteid)>
+
+	<cfif listFind('/,\',left(arguments.dir,1) )>
+		<cfset arguments.dir='/' & getPackage() & arguments.dir>
+	<cfelse>
+		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
+	</cfif>
+	<cfset getBean("configBean").registerBeanDir(dir=arguments.dir,siteid=siteids,moduleid=getModuleID())>
+	<cfreturn this>
+</cffunction>
 
 <cffunction name="getAssignedSites" output="false" returntype="any">
     <cfreturn getPluginManager().getAssignedSites(getModuleID())>
@@ -463,17 +476,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="currentUserAccess" output="false">
 	<cfreturn isDefined('session.siteID') and getBean('permUtility').getModulePerm(getModuleID(),session.siteID)>
-</cffunction>
-
-<cffunction name="discoverBeans" output="false">
-	<!---
-	<cfset var configBean=getBean("configBean")>
-	<cfset var dir='#configBean.getPluginDir#/#getDirectory()#'>
-	<cfset var package=getPackage()>
-	<cfset var siteids=valueList(getPluginManager().getAssignedSites(getModuleID()).siteid)>
-	<cfset configBean.registerBeanDir(dir='#dir#/model',siteid=siteids,moduleid=getModuleID())>
-	--->
-	<cfreturn this>
 </cffunction>
 
 </cfcomponent>
