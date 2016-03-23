@@ -30,11 +30,9 @@
     			</label>
     			<textarea name="initjs" id="initjs" rows="10">#esapiEncode('html',rc.contentBean.getVariationTargeting().getInitJS())#</textarea>
     		</div>
-            <div class="mura-actions">
-    			<div class="form-actions">
-    				<button class="btn" id="updateBtn"><i class="mi-check-circle"></i>Update</button>
-                </div>
-			</div>
+    		<div class="form-actions">
+    			<button class="btn" id="updateBtn"><i class="mi-check-circle"></i>Update</button>
+            </div>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.block-constrain -->

@@ -144,10 +144,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 		</div> <!-- /mura-quickEdit-displayDates -->	
 	<input type="hidden" id="mura-quickEdit-cattrim" value="#esapiEncode('html_attr',rc.cattrim)#">
-	<div class="mura-actions">
 		<div class="form-actions">
-		<button class="btn mura-primary" onclick="siteManager.saveCategoryAssignment();"><i class="mi-check-circle"></i>Submit</button>
-		</div>
+		<button class="btn mura-primary" onclick="siteManager.saveCategoryAssignment();">Submit</button>
 	</div>
 	</cfoutput>
 
