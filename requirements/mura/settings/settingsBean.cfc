@@ -1268,6 +1268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif fileExists(expandPath(result))>
 			<cfset setDisplayObjectFilePath(arguments.filePath,result)>
 			<cfreturn result>
+		<!---
 		<cfelseif dirIndex lt coreIndex>
 			<!--- For legacy support --->
 			<cfset result=dir & replace(arguments.filePath,'../','','all')>
@@ -1275,6 +1276,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset setDisplayObjectFilePath(arguments.filePath,result)>
 				<cfreturn result>
 			</cfif>
+		--->
 		</cfif>
 	</cfloop>
 

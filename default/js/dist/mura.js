@@ -4529,8 +4529,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		obj=(obj.node) ? obj : mura(obj);
 
-		if(resp.data.redirect){
-			location.href=resp.data.redirect;
+		if(typeof resp.data.redirect != 'undefined'){
+			if(resp.data.redirect && resp.data.redirect != location.href){
+				location.href=resp.data.redirect;
+			} else {
+				location.reload(true);
+			}
 		} else if(resp.data.apiEndpoint){
 			ajax({
 		        type:"POST",
