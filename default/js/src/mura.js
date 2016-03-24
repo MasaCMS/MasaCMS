@@ -1773,7 +1773,7 @@
 			if(resp.data.redirect){
 				location.href=resp.data.redirect;
 			} else {
-				location.reload();
+				location.reload(true);
 			}
 		} else if(resp.data.apiEndpoint){
 			ajax({
