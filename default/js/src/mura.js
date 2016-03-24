@@ -1770,7 +1770,7 @@
 		obj=(obj.node) ? obj : mura(obj);
 
 		if(typeof resp.data.redirect != 'undefined'){
-			if(resp.data.redirect){
+			if(resp.data.redirect && resp.data.redirect != location.href){
 				location.href=resp.data.redirect;
 			} else {
 				location.reload(true);
