@@ -1649,8 +1649,8 @@
 						type: 'post',
 						url: mura.apiEndpoint + '/validate/',
 						data: {
-								data: JSON.stringify(utility.extend(muraInlineEditor.data,data)),
-								validations: JSON.stringify(validations)
+								data: encodeURIComponent(JSON.stringify(utility.extend(muraInlineEditor.data,data))),
+								validations: encodeURIComponent(JSON.stringify(validations))
 							},
 						success: function(resp) {
 							if(typeof resp != 'object'){
