@@ -390,31 +390,9 @@
 			if($('##displayIntervalRepeats').is(':checked')){
 				$('.mura-repeat-options').show();
 				setDaysOfWeekDefault();
-				/*
-				$('##mura-datepicker-displayStop').hide();
-
-				$('##mura-datepicker-displayStart')
-					.removeClass('span2')
-					.addClass('span3');
-				$('##mura-datepicker-displayStop')
-					.removeClass('span2')
-					.addClass('span3');
-				*/
 			} else {
 				$('.mura-repeat-options').hide();
-				//$('##mura-datepicker-displayStop').show();
 				$('##displayIntervalType').val('daily');
-
-				/*
-				$('##mura-datepicker-displayStart')
-					.removeClass('span3')
-					.addClass('span2');
-
-				$('##mura-datepicker-displayStop')
-					.removeClass('span3')
-					.addClass('span2');
-				*/
-
 				if($('##displayIntervalEndOn').val()){
 					$('##displayIntervalEnd').val('on');
 				} else {
@@ -423,7 +401,6 @@
 
 				setEndOption();
 				toggleRepeatOptions();
-				//input.val(0);
 			}
 
 			setIntervalUnitLabel();
@@ -439,8 +416,6 @@
 		}
 
 		$('##mura-datepicker-displayStop').hide();
-		//$('##displayIntervalToLabel').hide();
-
 		$('.mura-repeat-option').on('change',updateDisplayInterval);
 		$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
 		$('##displayIntervalAllDay').click(toggleAllDayOptions);

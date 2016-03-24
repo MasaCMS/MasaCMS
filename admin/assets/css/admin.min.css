@@ -25990,6 +25990,9 @@ text-shadow: 0 0 1px @blue;
   width: 16px;
   margin: 2px auto 0;
 }
+.mura .mura-table-grid td.add a i {
+  margin-top: 7px;
+}
 .mura .mura-grid a.add {
   /* really only needed for ie7 */
   width: 24px;
@@ -36605,6 +36608,16 @@ ul.dropdown-menu {
 #plugin-license textarea {
   min-height: 528px;
   margin-bottom: 24px;
+}
+/* new parent search */
+#mover1 .btn {
+  margin-left: 12px;
+}
+#mover2 h2 {
+  display: none;
+}
+#mover2 .mura-table-grid {
+  margin-top: 12px;
 }
 /* legacy forms */
 .form-horizontal .control-label {

@@ -120,12 +120,12 @@
 			      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
 		  					</cfif>
 		  				</cfif>
-						<button id="selectParent" name="selectParent" class="btn btn-inverse btn-small">
+						<button id="selectParent" name="selectParent" class="btn">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
 						</button>
 					</span>
-		      	</label>
-			    <div id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></div>
+			    <span id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></span>
+      	</label>
 				<script>
 					jQuery(document).ready(function(){
 						$('##selectParent').click(function(e){

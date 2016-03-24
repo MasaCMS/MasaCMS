@@ -75,16 +75,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul>
 
 			<cfif not listFindNoCase("Page,Folder,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
-			<div class="mura-actions">
-					<div class="clearfix form-actions">
-						<button class="btn mura-primary" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore Item</button>
-						<cfif len(rc.trashItem.getDeleteID())>
-						<button class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore All Items in Delete Transaction</button>
-						</cfif>
-					</div>
+				<div class="mura-actions">
+				<div class="clearfix form-actions">
+					<button class="btn mura-primary" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore Item</button>
+					<cfif len(rc.trashItem.getDeleteID())>
+					<button class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore All Items in Delete Transaction</button>
+					</cfif>
 				</div>
-			<cfelse>
-	<cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.trashItem.getParentID(),siteID=rc.trashItem.getSiteID())>
+			</div>
+		<cfelse>
+		<cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.trashItem.getParentID(),siteID=rc.trashItem.getSiteID())>
 
 		<div class="mura-control-group">
 			<label>
@@ -95,10 +95,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
 					</button>		
 				</span>
-			</label>
-			<div class="mura-control justify" id="mover2" style="display:none">
+			<span id="mover2" style="display:none">
 				<input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.trashItem.getParentID())#">
-			</div>
+			</span>
+			</label>
 		</div>
 		<div class="mura-actions">
 			<div class="clearfix form-actions">

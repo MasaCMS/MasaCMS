@@ -113,9 +113,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</h1>
 		<cfinclude template="dsp_secondary_menu.cfm">
 		<div class="mura-item-metadata">
-			<ul class="metadata-horizontal"><li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#: <strong>#rc.contentBean.gettitle()#</strong></li>
-			<li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.totalrecordsavailable')#: <strong>#rc.rsDataInfo.CountEntered#</strong></li>
-			</ul>
+			<div class="label-group">
+				<span class="label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#: <strong>#rc.contentBean.gettitle()#</strong></span>
+				<span class="label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.totalrecordsavailable')#: <strong>#rc.rsDataInfo.CountEntered#</strong></span>
+			</div>
 		</div><!-- /.mura-item-metadata -->
 	</div> <!-- /.mura-header -->
 	</cfoutput>
