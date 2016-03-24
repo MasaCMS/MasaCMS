@@ -85,11 +85,11 @@
 
     <cfelse>
         <cfif not bean.getIsNew()>
-         	<cfif bean.getIsOnDisplay()
-	          <cfset variables.rsForm=bean.getAllValues()>
-	          #$.getBean('dataCollectionBean')
-	            .set($.event().getAllValues())
-	            .render($)#
+        	<cfif bean.getIsOnDisplay()
+	    		<cfset variables.rsForm=bean.getAllValues()>
+		          #$.getBean('dataCollectionBean')
+		            .set($.event().getAllValues())
+		            .render($)#
 			</cfif>
         <cfelseif listFindNoCase('author,editor',variables.$.event('r').perm)>
           <p>This Form has not been configured.</p>
