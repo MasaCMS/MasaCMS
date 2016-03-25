@@ -1406,7 +1406,7 @@
 									subtype:mura.content.subtype,
 									parentid:mura.content.parentid,
 									title:mura.content.title,
-									body:escape(JSON.stringify(mura.finalVariations))
+									body:encodeURIComponent(JSON.stringify(mura.finalVariations))
 								}
 							);
 						</cfif>
