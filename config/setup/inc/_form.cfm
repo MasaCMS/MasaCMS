@@ -215,16 +215,16 @@ activepanel=0;
 jQuery(document).ready(function(){
 
 	// show DB options on db type select
-	$(".database-config").toggle(#(len(trim(FORM.production_dbtype)) gt 0)#);
+	$(".database-config").toggle(<cfif len(trim(FORM.production_dbtype)) gt 0>true<cfelse>false</cfif>);
 	$('##production_dbtype').on('change',function(){
 		$(".database-config").toggle(this.value.length > 0);
 		$(".database-create-oracle").toggle($('##production_dbtype option:selected').val() == 'oracle' && $('##auto_create').is(':checked'));
 	});
 
 	// existing database y/n
-	$(".database-create-yes").toggle(#(val(FORM.auto_create) eq 1)#);
-	$(".database-create-no").toggle(#(val(FORM.auto_create) eq 0)#);
-	$(".database-create-oracle").toggle(#(FORM.production_dbtype eq 'oracle' and val(FORM.auto_create) eq 1)#);
+	$(".database-create-yes").toggle(<cfif FORM.auto_create eq 1>true<cfelse>false</cfif>);
+	$(".database-create-no").toggle(<cfif FORM.auto_create eq 0>true<cfelse>false</cfif>);
+	$(".database-create-oracle").toggle(<cfif FORM.production_dbtype eq 'oracle' and val(FORM.auto_create) eq 1>true<cfelse>false</cfif>);
 	$('##auto_create').on('change',function(){
 		$(".database-create-yes").toggle(this.checked);
 		$(".database-create-no").toggle(!this.checked);
@@ -232,14 +232,14 @@ jQuery(document).ready(function(){
 	});
 
 	// siteid and index in urls
-  $(".option-siteid-yes").toggle(#(val(FORM.production_siteidinurls) eq 1)#);
-  $(".option-siteid-no").toggle(#(val(FORM.production_siteidinurls) eq 0)#);
+  $(".option-siteid-yes").toggle(<cfif FORM.production_siteidinurls eq 1>true<cfelse>false</cfif>);
+  $(".option-siteid-no").toggle(<cfif FORM.production_siteidinurls eq 0>true<cfelse>false</cfif>);
 	$("##production_siteidinurls").on('change',function(){
 		$(".option-siteid-yes").toggle(this.checked);
 		$(".option-siteid-no").toggle(!this.checked);
 	});
-  $(".option-indexfile-yes").toggle(#(val(FORM.production_indexfileinurls) eq 1)#);
-  $(".option-indexfile-no").toggle(#(val(FORM.production_indexfileinurls) eq 0)#);
+  $(".option-indexfile-yes").toggle(<cfif FORM.production_indexfileinurls eq 1>true<cfelse>false</cfif>);
+  $(".option-indexfile-no").toggle(<cfif FORM.production_indexfileinurls eq 0>true<cfelse>false</cfif>);
 	$("##production_indexfileinurls").on('change',function(){
 		$(".option-indexfile-yes").toggle(this.checked);
 		$(".option-indexfile-no").toggle(!this.checked);

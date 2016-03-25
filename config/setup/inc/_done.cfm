@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
  --->
 
 <div class="mura-focus-actions">
-	<a href="#context#/admin/?appreload&applydbupdates" class="btn mura-setup-complete">Log In to Mura</a>
+	<a href="#context#/admin/?appreload&applydbupdates" class="btn mura-setup-complete">Log in to Mura</a>
 </div>
 
 </cfoutput>
