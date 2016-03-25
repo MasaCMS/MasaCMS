@@ -131,7 +131,8 @@
 		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>
 
 		<cfparam name="rc.contenttype" default="">
-		<cfif rc.contenttype neq 'Variation'>
+		<cfparam name="rc.remoteurl" default="">
+		<cfif rc.contenttype neq 'Variation' and not len(rc.remoteurl)>
 			<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"></script>
 		</cfif>
 
