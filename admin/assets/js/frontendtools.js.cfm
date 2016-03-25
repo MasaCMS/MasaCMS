@@ -886,6 +886,20 @@
 
 						}
 					);
+
+					mura(mura.editableSelector).each(function(){
+						mura(this).closest('a').each(function(){
+							var self=mura(this);
+
+							if(!self.hasClass('mura')){
+								self.on('click',function(event){
+									if(editingVariations){
+										event.preventDefault();
+									}
+								});
+							}
+						});
+					});
 				}
 
 				var exitVariations=function(){
@@ -1649,8 +1663,8 @@
 						type: 'post',
 						url: mura.apiEndpoint + '/validate/',
 						data: {
-								data: urlencode(JSON.stringify(utility.extend(muraInlineEditor.data,data))),
-								validations: urlencode(JSON.stringify(validations))
+								data: encodeURIComponent(JSON.stringify(utility.extend(muraInlineEditor.data,data))),
+								validations: encodeURIComponent(JSON.stringify(validations))
 							},
 						success: function(resp) {
 							if(typeof resp != 'object'){

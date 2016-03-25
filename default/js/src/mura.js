@@ -809,9 +809,9 @@
 
 				lu = new String(lu);
 				if(lu.indexOf('?') != -1){
-					location.href=lu + "&returnUrl=" + $escape(ru);
+					location.href=lu + "&returnUrl=" + encodeURIComponent(ru);
 				} else {
-					location.href=lu + "?returnUrl=" + $escape(ru);
+					location.href=lu + "?returnUrl=" + encodeURIComponent(ru);
 				}
 			}
 		}
@@ -1193,8 +1193,8 @@
 					type: 'post',
 					url: window.mura.apiEndpoint + '?method=validate',
 					data: {
-							data: $escape(JSON.stringify(data)),
-							validations: $escape(JSON.stringify(validations)),
+							data: encodeURIComponent(JSON.stringify(data)),
+							validations: encodeURIComponent(JSON.stringify(validations)),
 							version: 4
 						},
 					success: function(resp) {
@@ -1435,7 +1435,7 @@
 				}
 
 				if('objectparams' in checkdata){
-					data.append('objectparams2', $escape(JSON.stringify(obj.data('objectparams'))));
+					data.append('objectparams2', encodeURIComponent(JSON.stringify(obj.data('objectparams'))));
 				}
 
 				if('nocache' in checkdata){
@@ -1465,7 +1465,7 @@
 				}
 
 				if('objectparams' in data){
-					data['objectparams']= $escape(JSON.stringify(data['objectparams']));
+					data['objectparams']= encodeURIComponent(JSON.stringify(data['objectparams']));
 				}
 
 				var postconfig={
@@ -1846,7 +1846,7 @@
 			}
 
 			if('objectparams' in data){
-				data['objectparams']= $escape(JSON.stringify(data['objectparams']));
+				data['objectparams']= encodeURIComponent(JSON.stringify(data['objectparams']));
 			}
 
 			delete data.params;
