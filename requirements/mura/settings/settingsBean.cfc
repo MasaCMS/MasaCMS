@@ -865,7 +865,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 
 		<cfquery name="rsFinal" dbType="query">
-			select name from rsFinal
+			select distinct name from rsFinal
 			order by name asc
 		</cfquery>
 
