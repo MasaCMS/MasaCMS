@@ -168,7 +168,7 @@ CKEDITOR.editorConfig = function( config )
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
@@ -194,8 +194,8 @@ CKEDITOR.editorConfig = function( config )
 	};
 
 	// Classes applied based on 'Alignment' selection on the Image Properities window
-	config.image2_alignClasses = [ 'image-left', 'image-center', 'image-right' ];
-	config.image2_captionedClass = 'image-captioned';
+	//config.image2_alignClasses = [ 'image-left', 'image-center', 'image-right' ];
+	//config.image2_captionedClass = 'image-captioned';
 
 	// oEmbed Plugin - http://ckeditor.com/addon/oembed + http://w8tcha.github.io/CKEditor-oEmbed-Plugin/
 	//config.oembed_maxWidth = '560';
