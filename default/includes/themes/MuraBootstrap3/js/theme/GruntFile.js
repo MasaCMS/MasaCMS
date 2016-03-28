@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       handlebars: {
           all: {
               files: {
-                  'src/templates.js': 'src/templates/*.hb'
+                  'src/templates.js': ['src/templates/*.hb']
               },
               options: {
                    namespace: 'mura.templates',
