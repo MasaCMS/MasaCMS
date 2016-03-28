@@ -768,7 +768,7 @@ Display Objects
 				<cfset nestedArgs.class="">
 				<cfset nestedArgs.ulTopClass="">
 				<cfset structAppend(nestedArgs,arguments,false)>
-				<cfset nest=dspNestedNav(argumentCollection=nestedArgs)>
+				<cfset nest=this.dspNestedNav(argumentCollection=nestedArgs)>
 				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
 
@@ -877,9 +877,9 @@ Display Objects
 				<cfset nestedArgs.sortDirection=this.crumbdata[this.navGrandParentIdx].sortDirection>
 				<cfset nestedArgs.categoryID=variables.event.getValue('categoryID')>
 				<cfset structAppend(nestedArgs,arguments,false)>
-				<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+				<cfset theNav = this.dspNestedNav(argumentCollection=nestedArgs) />
 			<cfelse>
-				<cfset thenav=dspPeerNav(argumentCollection=arguments) />
+				<cfset thenav=this.dspPeerNav(argumentCollection=arguments) />
 			</cfif>
 		</cfif>
 	<cfelseif arrayLen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet) and this.crumbdata[this.navParentIdx].type eq 'Folder' or (arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type eq 'Folder')>
@@ -892,12 +892,12 @@ Display Objects
 			<cfset nestedArgs.categoryID=variables.event.getValue('categoryID')>
 			<cfset structAppend(nestedArgs,arguments,false)>
 
-			<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+			<cfset theNav = this.dspNestedNav(argumentCollection=nestedArgs) />
 		<cfelse>
-			<cfset thenav=dspSubNav(argumentCollection=nestedArgs) />
+			<cfset thenav=this.dspSubNav(argumentCollection=nestedArgs) />
 		</cfif>
 	<cfelse>
-		<cfset thenav=dspStandardNav(argumentCollection=nestedArgs) />
+		<cfset thenav=this.dspStandardNav(argumentCollection=nestedArgs) />
 	</cfif>
 	<cfset commitTracePoint(tracePoint)>
 
@@ -954,7 +954,7 @@ Display Objects
 					<cfset nestedArgs.sortBy=this.crumbdata[this.navGrandParentIdx].sortBy>
 					<cfset nestedArgs.sortDirection=this.crumbdata[this.navGrandParentIdx].sortDirection>
 					<cfset structAppend(nestedArgs,arguments,false)>
-					<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+					<cfset theNav = this.dspNestedNav(argumentCollection=nestedArgs) />
 				<cfelse>
 					<cfset nestedArgs.contentID=this.crumbdata[this.navParentIdx].contentid>
 					<cfset nestedArgs.viewDepth=2>
@@ -963,13 +963,13 @@ Display Objects
 					<cfset nestedArgs.sortBy=this.crumbdata[this.navParentIdx].sortBy>
 					<cfset nestedArgs.sortDirection=this.crumbdata[this.navParentIdx].sortDirection>
 					<cfset structAppend(nestedArgs,arguments,false)>
-					<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+					<cfset theNav = this.dspNestedNav(argumentCollection=nestedArgs) />
 				</cfif>
 			<cfelse>
-				<cfset theNav=dspSubNav(argumentCollection=arguments) />
+				<cfset theNav=this.dspSubNav(argumentCollection=arguments) />
 			</cfif>
 	<cfelse>
-			<cfset thenav=dspFolderNav(argumentCollection=arguments) />
+			<cfset thenav=this.dspFolderNav(argumentCollection=arguments) />
 	</cfif>
 
 	<cfset commitTracePoint(tracePoint)>
@@ -1022,7 +1022,7 @@ Display Objects
 		<cfset nestedArgs.sortBy=this.crumbdata[this.navSelfIdx].sortBy>
 		<cfset nestedArgs.sortDirection=this.crumbdata[this.navSelfIdx].sortDirection>
 		<cfset structAppend(nestedArgs,arguments,false)>
-		<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+		<cfset theNav = this.dspNestedNav(argumentCollection=nestedArgs) />
 	</cfif>
 
 	<cfset commitTracePoint(tracePoint)>
@@ -1077,7 +1077,7 @@ Display Objects
 		<cfset nestedArgs.sortBy=this.crumbdata[this.navParentIdx].sortBy>
 		<cfset nestedArgs.sortDirection=this.crumbdata[this.navParentIdx].sortDirection>
 		<cfset structAppend(nestedArgs,arguments,false)>
-		<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+		<cfset theNav = this.dspNestedNav(argumentCollection=nestedArgs) />
 	</cfif>
 
 	<cfset commitTracePoint(tracePoint)>
@@ -1798,7 +1798,7 @@ Display Objects
 				<cfset nestedArgs.menuClass="">
 				<cfset nestedArgs.ulTopClass="">
 				<cfset structAppend(nestedArgs,arguments,false)>
-				<cfset nest=dspNestedNavPrimary(argumentCollection=nestedArgs) />
+				<cfset nest=this.dspNestedNavPrimary(argumentCollection=nestedArgs) />
 				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
 
@@ -1904,7 +1904,7 @@ Display Objects
 	<cfset arguments.sortDirection="asc">
 	<cfset arguments.menuClass=arguments.class>
 	<cfset tracepoint=initTracepoint("contentRenderer.dspPrimaryNav")>
-	<cfset theNav = dspNestedNavPrimary(argumentCollection=arguments) />
+	<cfset theNav = this.dspNestedNavPrimary(argumentCollection=arguments) />
 	<cfset commitTracePoint(tracePoint)>
 	<cfreturn thenav />
 </cffunction>
