@@ -73,8 +73,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group" id="availableFields">
 	<label>
-		<div>Selected Fields</div>
-		<button id="editFields" class="btn">Edit</button>
+		<div>#application.rbFactory.getKeyValue(session.rb,'collections.selectedfields')#</div>
+		<button id="editFields" class="btn">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</button>
 	</label>
 
 	<div id="sortableFields" class="sortable-sidebar">
@@ -86,6 +86,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 		<input type="hidden" id="displayList" class="objectParam" value="#esapiEncode('html_attr',feed.getDisplayList())#" name="displayList"  data-displayobjectparam="displayList"/>
 	</div>
+</div>
+<div class="mura-control-group">
+  	<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewimagesasgallery')#</label>
+	<select name="gallery" data-displayobjectparam="gallery" class="objectParam">
+		<cfloop list="True,False" index="i">
+			<option value="#i#"<cfif objectparams.gallery eq i> selected</cfif>>#i#</option>
+		</cfloop>
+	</select>
 </div>
 <script>
 	$(function(){

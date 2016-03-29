@@ -946,13 +946,15 @@
 
 	function initShadowBox(el){
 	    if(mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
+
 	      loader().load(
 	        [
 	          mura.assetpath +'/css/shadowbox.min.css',
-	          mura.assetpath +'/js/external/shadowbox/shadowbox.min.js',
-	          mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js'
+	          mura.assetpath +'/js/external/shadowbox/shadowbox.js',
+	          mura.assetpath +'/js/external/shadowbox/shadowbox-mura.js'
 	        ],
 	        function(){
+				mura('#shadowbox_overlay,#shadowbox_container').remove();
 	            window.Shadowbox.init();
 	        }
 	      );

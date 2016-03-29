@@ -56,7 +56,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	imageSize=arguments.objectParams.imageSize,
 	imageWidth=arguments.objectParams.imageWidth,
 	imageHeight=arguments.objectParams.imageHeight,
-	fields=arguments.objectParams.displaylist
+	fields=arguments.objectParams.displaylist,
+	gallery=arguments.objectParams.gallery
 )#
 </div>
 

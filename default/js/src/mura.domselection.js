@@ -547,17 +547,17 @@
 				return;
 			}
 
-			if(typeof rulename == 'undefined' && typeof value == 'undefined'){
+			if(typeof ruleName == 'undefined' && typeof value == 'undefined'){
 				try{
 					return window.getComputedStyle(this.selection[0]);
 				} catch(e){
 					return {};
 				}
-			} else if (typeof attributeName == 'object'){
+			} else if (typeof ruleName == 'object'){
 				this.each(function(el){
 					try{
-						for(var p in attributeName){
-							el.style[p]=attributeName[p];
+						for(var p in ruleName){
+							el.style[p]=ruleName[p];
 						}
 					} catch(e){}
 				});

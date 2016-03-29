@@ -3706,13 +3706,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function initShadowBox(el){
 	    if(mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
+
 	      loader().load(
 	        [
 	          mura.assetpath +'/css/shadowbox.min.css',
-	          mura.assetpath +'/js/external/shadowbox/shadowbox.min.js',
-	          mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js'
+	          mura.assetpath +'/js/external/shadowbox/shadowbox.js',
+	          mura.assetpath +'/js/external/shadowbox/shadowbox-mura.js'
 	        ],
 	        function(){
+				mura('#shadowbox_overlay,#shadowbox_container').remove();
 	            window.Shadowbox.init();
 	        }
 	      );
@@ -5926,17 +5928,17 @@ return /******/ (function(modules) { // webpackBootstrap
 				return;
 			}
 
-			if(typeof rulename == 'undefined' && typeof value == 'undefined'){
+			if(typeof ruleName == 'undefined' && typeof value == 'undefined'){
 				try{
 					return window.getComputedStyle(this.selection[0]);
 				} catch(e){
 					return {};
 				}
-			} else if (typeof attributeName == 'object'){
+			} else if (typeof ruleName == 'object'){
 				this.each(function(el){
 					try{
-						for(var p in attributeName){
-							el.style[p]=attributeName[p];
+						for(var p in ruleName){
+							el.style[p]=ruleName[p];
 						}
 					} catch(e){}
 				});
@@ -7056,13 +7058,7 @@ mura.templates['embed']=function(context){
 		context:{},
 
 		render:function(){
-
-			mura(this.context.targetEl)
-				.html(
-					mura.templates.content(
-						mura.templates[context.object](this.context)
-					)
-				);
+			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
 			return this;
 		},
 

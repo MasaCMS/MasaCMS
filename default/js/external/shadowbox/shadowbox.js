@@ -1919,7 +1919,7 @@ if(typeof Shadowbox == 'undefined'){
      * @static
      */
     Shadowbox.init = function(opts){
-        if(initialized) return; // don't initialize twice
+        //if(initialized) return; // don't initialize twice
         options = apply(options, opts || {});
 
         // add markup
