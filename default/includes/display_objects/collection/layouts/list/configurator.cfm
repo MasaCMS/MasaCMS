@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   	<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewimagesasgallery')#</label>
 	<select name="modalimages" data-displayobjectparam="modalimages" class="objectParam">
 		<cfloop list="True,False" index="i">
-			<option value="#i#"<cfif objectparams.gallery eq i> selected</cfif>>#i#</option>
+			<option value="#i#"<cfif objectparams.modalimages eq i> selected</cfif>>#i#</option>
 		</cfloop>
 	</select>
 </div>
