@@ -85,8 +85,8 @@
 			<cfset arguments.imageWidth="auto">
 		</cfif>
 
-		<cfif not structKeyExists(arguments,"gallery")>
-			<cfset arguments.gallery=false>
+		<cfif not structKeyExists(arguments,"modalimages")>
+			<cfset arguments.modalimages=false>
 		</cfif>
 
 		<cfif not structKeyExists(arguments,"imagePadding")>
@@ -187,7 +187,7 @@
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 							<cfif variables.$.event('muraMobileTemplate')>
 							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>
-							<cfelseif arguments.gallery>
+							<cfelseif arguments.modalimages>
 							<a href="#arguments.item.getImageURL(size='large')#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" data-rel="shadowbox[gallery]" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#" alt="#HTMLEditFormat(arguments.item.getValue('title'))#"/></a>
 							<cfelse>
 							<a href="#arguments.item.getURL()#"<cfif arguments.item.getTarget() eq '_blank'> target="_blank"</cfif> title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>

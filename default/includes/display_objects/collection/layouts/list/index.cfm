@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="arguments.objectParams.imageSize" default="small">
 <cfparam name="arguments.objectParams.imageHeight" default="auto">
 <cfparam name="arguments.objectParams.imageWidth" default="auto">
-<cfparam name="arguments.objectParams.gallery" default="false">
+<cfparam name="arguments.objectParams.modalimages" default="false">
 <cfoutput>
 <div id="svIndex" class="mura-index #this.folderWrapperClass#">
 #variables.$.dspObject_include(
@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	imageWidth=arguments.objectParams.imageWidth,
 	imageHeight=arguments.objectParams.imageHeight,
 	fields=arguments.objectParams.displaylist,
-	gallery=arguments.objectParams.gallery
+	modalimages=arguments.objectParams.modalimages
 )#
 </div>
 

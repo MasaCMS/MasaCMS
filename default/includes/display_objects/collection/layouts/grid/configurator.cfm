@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<cfparam name="objectParams.gallery" default="false">
+<cfparam name="objectParams.modalimages" default="false">
 <cfset renderer=$.getContentRenderer()>
 <cfset gridStyles=(isdefined('renderer.contentGridStyleMap')) ? renderer.contentGridStyleMap : ''>
 <cfif isStruct(gridStyles)>
@@ -54,7 +54,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not len(gridStyle)>
     <cfset gridStyle='mura-grid-two'>
 </cfif>
-<cfparam name="objectparams.gallery" default="false">
 
 <div class="mura-control-group">
   	<label>#application.rbFactory.getKeyValue(session.rb,'collections.gridstyle')#</label>
@@ -109,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
   	<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewimagesasgallery')#</label>
-	<select name="gallery" data-displayobjectparam="gallery" class="objectParam">
+	<select name="gallery" data-displayobjectparam="modalimages" class="objectParam">
 		<cfloop list="True,False" index="i">
 			<option value="#i#"<cfif objectparams.gallery eq i> selected</cfif>>#i#</option>
 		</cfloop>
