@@ -49,6 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.objectParams.imageSize" default="medium">
 	<cfparam name="arguments.objectParams.imageHeight" default="AUTO">
 	<cfparam name="arguments.objectParams.imageWidth" default="AUTO">
+	<cfparam name="arguments.objectParams.gallery" default="false">
 
 	<cfset imageSizeArgs={
 		size=arguments.objectParams.imageSize,

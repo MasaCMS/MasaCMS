@@ -45,6 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+<cfparam name="objectParams.gallery" default="false">
 <cfset renderer=$.getContentRenderer()>
 <cfset gridStyles=(isdefined('renderer.contentGridStyleMap')) ? renderer.contentGridStyleMap : ''>
 <cfif isStruct(gridStyles)>
