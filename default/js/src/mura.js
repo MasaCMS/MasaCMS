@@ -1590,10 +1590,7 @@
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
-
-
 						var context=deepExtend(obj.data(),response);
-						context.targetEl=obj.node;
 
 						if(typeof context.async != 'undefined'){
 							obj.data('async',context.async);
@@ -1608,16 +1605,15 @@
 						}
 
 						if(typeof mura.render[template] == 'function'){
-							context.html=mura.render[template](context);
-							if(context.html){
-								obj.html(mura.templates.content(context));
-							}
+							context.html='';
+							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
+							context.targetEl=obj.children('.mura-object-content').node;
+							mura.render[template](context);
+
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
-							if(context.html){
-								obj.html(mura.templates.content(context));
-							}
+							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 						}	else {
 							console.log('Missing Client Template for:');
@@ -1627,7 +1623,6 @@
 			}
 		} else {
 			var context=obj.data();
-			context.targetEl=obj.node;
 
 			if(obj.data('object')=='container'){
 				obj.prepend(mura.templates.meta(context));
@@ -1635,13 +1630,11 @@
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
-
-					context.html=mura.templates[template](context);
-
-					if(context.html){
-						obj.html(mura.templates.content(context));
-					}
+					context.html='';
+					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
+					context.targetEl=obj.children('.mura-object-content').node;
+					mura.render[template](context);
 				} else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());

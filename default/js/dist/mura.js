@@ -4350,10 +4350,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
-
-
 						var context=deepExtend(obj.data(),response);
-						context.targetEl=obj.node;
 
 						if(typeof context.async != 'undefined'){
 							obj.data('async',context.async);
@@ -4368,16 +4365,15 @@ return /******/ (function(modules) { // webpackBootstrap
 						}
 
 						if(typeof mura.render[template] == 'function'){
-							context.html=mura.render[template](context);
-							if(context.html){
-								obj.html(mura.templates.content(context));
-							}
+							context.html='';
+							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
+							context.targetEl=obj.children('.mura-object-content').node;
+							mura.render[template](context);
+
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
-							if(context.html){
-								obj.html(mura.templates.content(context));
-							}
+							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 						}	else {
 							console.log('Missing Client Template for:');
@@ -4387,7 +4383,6 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		} else {
 			var context=obj.data();
-			context.targetEl=obj.node;
 
 			if(obj.data('object')=='container'){
 				obj.prepend(mura.templates.meta(context));
@@ -4395,13 +4390,11 @@ return /******/ (function(modules) { // webpackBootstrap
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
-
-					context.html=mura.templates[template](context);
-
-					if(context.html){
-						obj.html(mura.templates.content(context));
-					}
+					context.html='';
+					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
+					context.targetEl=obj.children('.mura-object-content').node;
+					mura.render[template](context);
 				} else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
@@ -6984,35 +6977,7 @@ return /******/ (function(modules) { // webpackBootstrap
 })(window);
 ;mura.render={};
 mura.render['form']=function(context) {
-	var item = new window.mura.UI( context );
-	var ident = "mura-form-" + context.objectid;
-	var data = {};
-
-	context.formEl = "#" + ident;
-
-	context.html = "<div id='"+ident+"'></div>";
-
-	mura(context.targetEl).html( mura.templates.content(context) );
-
-	if (item.settings.view == 'form') {
-
-		/*
-		window.mura.get(
-			window.mura.apiEndpoint + '/content/' + context.objectid
-			 + '?fields=body&ishuman=true'
-		).then(function(data) {
-			this.data = data;
-//		 	formJSON = JSON.parse( data.data.body );
-			item.getForm();
-		});
-		*/
-
-		item.getForm();
-	}
-	else {
-		item.getList();
-	}
-
+	new window.mura.FormUI( context ).render();
 }
 ;mura.templates=mura.templates || {};
 mura.templates['meta']=function(context){
@@ -7088,7 +7053,84 @@ mura.templates['embed']=function(context){
 
 	window.mura.UI=window.mura.Core.extend({
 
-		settings:{},
+		context:{},
+
+		render:function(){
+
+			mura(this.context.targetEl)
+				.html(
+					mura.templates.content(
+						mura.templates[context.object](this.context)
+					)
+				);
+			return this;
+		},
+
+		init:function(){
+			if(arguments.length){
+				this.context=arguments[0];
+			}
+			this.registerHelpers();
+
+			return this;
+		},
+
+		registerHelpers:function(){
+
+		}
+	});
+
+})(window);
+;/* This file is part of Mura CMS.
+
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
+
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
+	requires distribution of source code.
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+
+;(function(window){
+
+	window.mura.FormUI=window.mura.UI.extend({
+		context:{},
 		ormform: false,
 		formJSON:{},
 		data:{},
@@ -7111,19 +7153,37 @@ mura.templates['embed']=function(context){
 
 			properties || {};
 
-			this.settings = properties;
+			this.context = properties;
 
-			if(this.settings.mode == undefined)
-				this.settings.mode = 'form';
+			if(this.context.mode == undefined)
+				this.context.mode = 'form';
 
 			this.registerHelpers();
+		},
+
+		render:function(){
+			var ident = "mura-form-" + this.context.objectid;
+
+			this.context.formEl = "#" + ident;
+
+			this.context.html = "<div id='"+ident+"'></div>";
+
+			mura(this.context.targetEl).html( this.context.html );
+
+			if (this.context.view == 'form') {
+				this.getForm();
+			}
+			else {
+				this.getList();
+			}
+			return this;
 		},
 
 		getTemplates:function() {
 
 			var self = this;
 
-			if (self.settings.view == 'form') {
+			if (self.context.view == 'form') {
 				self.loadForm();
 			} else {
 				self.loadList();
@@ -7141,7 +7201,7 @@ mura.templates['embed']=function(context){
 						success:function(data) {
 							window.mura.templates[temp] = window.mura.Handlebars.compile(data);
 							if(!window.mura.templateList.length) {
-								if (self.settings.view == 'form') {
+								if (self.context.view == 'form') {
 									self.loadForm();
 								} else {
 									self.loadList();
@@ -7192,16 +7252,16 @@ mura.templates['embed']=function(context){
 				context.mode = 'nested';
 				context.master = this;
 
-				var nestedForm = new mura.UI( context );
+				var nestedForm = new mura.FormUI( context );
 				var holder = mura('<div id="nested-'+field.formid+'"></div>');
 
-				mura(".field-container-" + self.settings.objectid,self.settings.formEl).append(holder);
+				mura(".field-container-" + self.context.objectid,self.context.formEl).append(holder);
 
 				context.formEl = holder;
 				nestedForm.getForm();
 
 				var html = window.mura.templates[template](field);
-				mura(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
+				mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
 			}
 			else {
 				if(fieldtype == "checkbox") {
@@ -7234,7 +7294,7 @@ mura.templates['embed']=function(context){
 
 				var html = window.mura.templates[template](field);
 
-				mura(".field-container-" + self.settings.objectid,self.settings.formEl).append(html);
+				mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
 			}
 
 		},
@@ -7362,7 +7422,7 @@ mura.templates['embed']=function(context){
 
 			console.log("render form: " + self.currentpage);
 
-			mura(".field-container-" + self.settings.objectid,self.settings.formEl).empty();
+			mura(".field-container-" + self.context.objectid,self.context.formEl).empty();
 
 			if(!self.formInit) {
 				self.initForm();
@@ -7378,48 +7438,48 @@ mura.templates['embed']=function(context){
 			}
 
 			if(self.ishuman && self.currentpage==(self.formJSON.form.pages.length-1)){
-				mura(".field-container-" + self.settings.objectid,self.settings.formEl).append(self.ishuman);
+				mura(".field-container-" + self.context.objectid,self.context.formEl).append(self.ishuman);
 			}
 
-			if (self.settings.mode == 'form') {
+			if (self.context.mode == 'form') {
 				self.renderPaging();
 			}
 
-			mura.processMarkup(".field-container-" + self.settings.objectid,self.settings.formEl);
+			mura.processMarkup(".field-container-" + self.context.objectid,self.context.formEl);
 
 		},
 
 		renderPaging:function() {
 			var self = this;
-			mura(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
+			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
 
-			mura(".paging-container-" + self.settings.objectid,self.settings.formEl).empty();
+			mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
 
 			if(self.formJSON.form.pages.length == 1) {
-				mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
 			}
 			else {
 				if(self.currentpage == 0) {
-					mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:1,label:"Next",class:"form-nav"}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:1,label:"Next",class:"form-nav"}));
 				} else {
-					mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
 
 					if(self.currentpage+1 < self.formJSON.form.pages.length) {
-						mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
 					}
 					else {
-						mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
 					}
 				}
 
 				if(self.backlink != undefined && self.backlink.length)
-					mura(".paging-container-" + self.settings.objectid,self.settings.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
 			}
 
-			mura(".form-submit",self.settings.formEl).click( function() {
+			mura(".form-submit",self.context.formEl).click( function() {
 				self.submitForm();
 			});
-			mura(".form-cancel",self.settings.formEl).click( function() {
+			mura(".form-cancel",self.context.formEl).click( function() {
 				self.getTableData( self.backlink );
 			});
 
@@ -7446,7 +7506,7 @@ mura.templates['embed']=function(context){
 						}
 					);
 				} else {
-					var data=mura.deepExtend({}, self.data, self.settings);
+					var data=mura.deepExtend({}, self.data, self.context);
 	                data.validateform=true;
 					data.formid=data.objectid;
 					data.siteid=data.siteid || mura.siteid;
@@ -7473,7 +7533,7 @@ mura.templates['embed']=function(context){
 				*/
 			};
 
-			mura(".form-nav",self.settings.formEl).off('click',formNavHandler).on('click',formNavHandler);
+			mura(".form-nav",self.context.formEl).off('click',formNavHandler).on('click',formNavHandler);
 		},
 
 		setDataValues: function() {
@@ -7482,7 +7542,7 @@ mura.templates['embed']=function(context){
 			var item = {};
 			var valid = [];
 
-			mura(".field-container-" + self.settings.objectid + " input, .field-container-" + self.settings.objectid + " select, .field-container-" + self.settings.objectid + " textarea").each( function() {
+			mura(".field-container-" + self.context.objectid + " input, .field-container-" + self.context.objectid + " select, .field-container-" + self.context.objectid + " textarea").each( function() {
 
 				if( mura(this).is('[type="checkbox"]')) {
 					if ( multi[mura(this).attr('name')] == undefined )
@@ -7570,7 +7630,7 @@ mura.templates['embed']=function(context){
 
 
 			window.mura.get(
-					window.mura.apiEndpoint + '/content/' + self.settings.objectid
+					window.mura.apiEndpoint + '/content/' + self.context.objectid
 					 + '?fields=body,title,filename,responsemessage&ishuman=true'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
@@ -7626,16 +7686,16 @@ mura.templates['embed']=function(context){
 
 		initForm: function() {
 			var self = this;
-			mura(self.settings.formEl).empty();
+			mura(self.context.formEl).empty();
 
-			if(self.settings.mode != undefined && self.settings.mode == 'nested') {
-				var html = window.mura.templates['nested'](self.settings);
+			if(self.context.mode != undefined && self.context.mode == 'nested') {
+				var html = window.mura.templates['nested'](self.context);
 			}
 			else {
-				var html = window.mura.templates['form'](self.settings);
+				var html = window.mura.templates['form'](self.context);
 			}
 
-			mura(self.settings.formEl).append(html);
+			mura(self.context.formEl).append(html);
 
 			self.currentpage = 0;
 			self.formInit=true;
@@ -7645,7 +7705,7 @@ mura.templates['embed']=function(context){
 
 			var self = this;
 			var valid = self.setDataValues();
-			mura(".error-container-" + self.settings.objectid,self.settings.formEl).empty();
+			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
 
 			delete self.data.isNew;
 
@@ -7662,7 +7722,7 @@ mura.templates['embed']=function(context){
 							self.getTableData( self.location );
 							return;
 						}
-						mura(self.settings.formEl).html( self.responsemessage );
+						mura(self.context.formEl).html( self.responsemessage );
 					},
 					function( entity ) {
 						self.showErrors( entity.properties.errors );
@@ -7671,7 +7731,7 @@ mura.templates['embed']=function(context){
 			}
 			else {
 				console.log('b!');
-				var data=mura.deepExtend({},self.settings,self.data);
+				var data=mura.deepExtend({},self.context,self.data);
 				data.saveform=true;
 				data.formid=data.objectid;
 				data.siteid=data.siteid || mura.siteid;
@@ -7683,7 +7743,7 @@ mura.templates['embed']=function(context){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
 								self.showErrors( resp.data.errors );
                             } else {
-                                mura(self.settings.formEl).html( resp.data.responsemessage );
+                                mura(self.context.formEl).html( resp.data.responsemessage );
                             }
                         });
 
@@ -7733,7 +7793,7 @@ mura.templates['embed']=function(context){
 			var html = window.mura.templates['error'](errorData);
 			console.log(errorData);
 
-			mura(".error-container-" + self.settings.objectid,self.settings.formEl).html(html);
+			mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
 		},
 
 
@@ -7758,14 +7818,14 @@ mura.templates['embed']=function(context){
 			var before = "";
 			var after = "";
 
-			self.filters.filterby = mura("#results-filterby",self.settings.formEl).val();
-			self.filters.filterkey = mura("#results-keywords",self.settings.formEl).val();
+			self.filters.filterby = mura("#results-filterby",self.context.formEl).val();
+			self.filters.filterkey = mura("#results-keywords",self.context.formEl).val();
 
-			if( mura("#date1",self.settings.formEl).length ) {
-				if(mura("#date1",self.settings.formEl).val().length) {
-					self.filters.from = mura("#date1",self.settings.formEl).val() + " " + mura("#hour1",self.settings.formEl).val() + ":00:00";
-					self.filters.fromhour = mura("#hour1",self.settings.formEl).val();
-					self.filters.fromdate = mura("#date1",self.settings.formEl).val();
+			if( mura("#date1",self.context.formEl).length ) {
+				if(mura("#date1",self.context.formEl).val().length) {
+					self.filters.from = mura("#date1",self.context.formEl).val() + " " + mura("#hour1",self.context.formEl).val() + ":00:00";
+					self.filters.fromhour = mura("#hour1",self.context.formEl).val();
+					self.filters.fromdate = mura("#date1",self.context.formEl).val();
 				}
 				else {
 					self.filters.from = "";
@@ -7773,10 +7833,10 @@ mura.templates['embed']=function(context){
 					self.filters.fromdate = "";
 				}
 
-				if(mura("#date2",self.settings.formEl).val().length) {
-					self.filters.to = mura("#date2",self.settings.formEl).val() + " " + mura("#hour2",self.settings.formEl).val() + ":00:00";
-					self.filters.tohour = mura("#hour2",self.settings.formEl).val();
-					self.filters.todate = mura("#date2",self.settings.formEl).val();
+				if(mura("#date2",self.context.formEl).val().length) {
+					self.filters.to = mura("#date2",self.context.formEl).val() + " " + mura("#hour2",self.context.formEl).val() + ":00:00";
+					self.filters.tohour = mura("#hour2",self.context.formEl).val();
+					self.filters.todate = mura("#date2",self.context.formEl).val();
 				}
 				else {
 					self.filters.to = "";
@@ -7800,7 +7860,7 @@ mura.templates['embed']=function(context){
 			var self = this;
 
 			window.mura.get(
-				window.mura.apiEndpoint + '/content/' + self.settings.objectid
+				window.mura.apiEndpoint + '/content/' + self.context.objectid
 				 + '?fields=body,title,filename,responsemessage'
 				).then(function(data) {
 				 	formJSON = JSON.parse( data.data.body );
@@ -7812,7 +7872,7 @@ mura.templates['embed']=function(context){
 						self.ormform = true;
 					}
 					else {
-						mura(self.settings.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
+						mura(self.context.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
 						return;
 					}
 
@@ -7870,34 +7930,34 @@ mura.templates['embed']=function(context){
 			var self = this;
 
 			var html = window.mura.templates['table'](tableData);
-			mura(self.settings.formEl).html( html );
+			mura(self.context.formEl).html( html );
 
-			if (self.settings.view == 'list') {
-				mura("#date-filters",self.settings.formEl).empty();
-				mura("#btn-results-download",self.settings.formEl).remove();
+			if (self.context.view == 'list') {
+				mura("#date-filters",self.context.formEl).empty();
+				mura("#btn-results-download",self.context.formEl).remove();
 			}
 			else {
-				if (self.settings.render == undefined) {
-					mura(".datepicker", self.settings.formEl).datepicker();
+				if (self.context.render == undefined) {
+					mura(".datepicker", self.context.formEl).datepicker();
 				}
 
-				mura("#btn-results-download",self.settings.formEl).click( function() {
+				mura("#btn-results-download",self.context.formEl).click( function() {
 					self.downloadResults();
 				});
 			}
 
-			mura("#btn-results-search",self.settings.formEl).click( function() {
+			mura("#btn-results-search",self.context.formEl).click( function() {
 				self.filterResults();
 			});
 
 
-			mura(".data-edit",self.settings.formEl).click( function() {
+			mura(".data-edit",self.context.formEl).click( function() {
 				self.renderCRUD( mura(this).attr('data-value'),mura(this).attr('data-pos'));
 			});
-			mura(".data-view",self.settings.formEl).click( function() {
+			mura(".data-view",self.context.formEl).click( function() {
 				self.loadOverview(mura(this).attr('data-value'),mura(this).attr('data-pos'));
 			});
-			mura(".data-nav",self.settings.formEl).click( function() {
+			mura(".data-nav",self.context.formEl).click( function() {
 				self.getTableData( mura(this).attr('data-value') );
 			});
 
@@ -7935,12 +7995,12 @@ mura.templates['embed']=function(context){
 			console.log('ia');
 			console.log(self.item);
 
-			mura(self.settings.formEl).empty();
+			mura(self.context.formEl).empty();
 
 			var html = window.mura.templates['view'](self.item);
-			mura(self.settings.formEl).append(html);
+			mura(self.context.formEl).append(html);
 
-			mura(".nav-back",self.settings.formEl).click( function() {
+			mura(".nav-back",self.context.formEl).click( function() {
 				self.getTableData( self.location );
 			});
 		},
@@ -8073,7 +8133,7 @@ mura.templates['embed']=function(context){
 					ret = ret + options.fn(row);
 				}
 
-				if( self.settings.view == 'edit') {
+				if( self.context.view == 'edit') {
 					row.label='Edit';
 					row.type='data-edit';
 

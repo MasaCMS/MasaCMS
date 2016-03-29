@@ -51,6 +51,7 @@ module.exports = function(grunt) {
           'src/mura.render.js',
           'src/mura.templates.js',
           'src/mura.ui.js',
+          'src/mura.ui.form.js',
           'src/mura.init.js',
           'src/templates/compiled.js'
           ],
