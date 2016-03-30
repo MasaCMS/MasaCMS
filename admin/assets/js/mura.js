@@ -6579,7 +6579,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				return new Promise(function(resolve,reject) {
 
 					var context=self.get('id');
-				
+
 					window.mura.ajax({
 						type:'post',
 						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
@@ -6647,7 +6647,7 @@ return /******/ (function(modules) { // webpackBootstrap
 								'csrf_token_expires':resp.data.csrf_token_expires
 							},
 							success:function(){
-								this.set('isdeleted',true);
+								self.set('isdeleted',true);
 								self.purgeCache();
 								if(typeof resolve == 'function'){
 									resolve(self);
