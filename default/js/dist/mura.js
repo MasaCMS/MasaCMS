@@ -5374,7 +5374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
         purge:function(keyName){
-            var key=getKey(keyName)
+            var key=this.getKey(keyName)
             if( typeof this.cache[key] != 'undefined')
             delete this.cache[key];
 			return this;
