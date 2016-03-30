@@ -183,7 +183,7 @@
                             <cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments() and application.permUtility.getModulePerm("00000000000000000000000000000000015",session.siteid)>
                               <li>
                                 <a<cfif rc.originalcircuit eq 'cComments'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cComments.default&amp;siteid=#session.siteid#">
-                                  <i class="mi-cog"></i>
+                                  <i class="mi-comments"></i>
                                   #application.rbFactory.getKeyValue(session.rb,'layout.comments')#
                                 </a>
                               </li>
