@@ -27,14 +27,12 @@
 $(function(){
 	$('##updateBtn').click(function(){
 
-		CKEDITOR.instances['source'].updateElement();
-
 		frontEndProxy.post({
 			cmd:'setObjectParams',
 			reinit:true,
 			instanceid:'#esapiEncode("javascript",rc.instanceid)#',
 			params:{
-				source:$('##source').val(),
+				source:CKEDITOR.instances['source'].getData(),
 				render:'client',
 				async:false,
 				sourcetype:'custom'
