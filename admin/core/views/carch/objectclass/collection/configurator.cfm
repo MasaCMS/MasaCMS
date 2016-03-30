@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="data.html">
 <cf_objectconfigurator params="#objectparams#">
 	<cfoutput>
+
 	<div id="availableObjectParams"
 		data-object="collection"
 		data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#"
@@ -250,13 +251,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				var params=siteManager.availableObject.params;
 
+			  	params.layout=params.layout || 'default';
+				
 				$.ajax(
 				 {
 				 	type: 'post',
 				 	dataType: 'text',
 					url: './?muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + configOptions.siteid + '&instanceid=#esapiEncode("url",rc.instanceid)#&classid=' + configOptions.object + '&contentid=' + contentid + '&parentid=' + configOptions.parentid + '&contenthistid=' + configOptions.contenthistid + '&regionid=' + configOptions.regionid + '&objectid=' + configOptions.objectid + '&contenttype=' + configOptions.contenttype + '&contentsubtype=' + configOptions.contentsubtype + '&container=layout&cacheid=' + Math.random(),
 
-					data:{params:JSON.stringify(params)},
+					data:{params:encodeURIComponent(JSON.stringify(params))},
 					success:function(response){
 						$('##layoutcontainer').html(response);
 
