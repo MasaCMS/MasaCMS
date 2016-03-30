@@ -4391,12 +4391,16 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
-				if(typeof mura.templates[template] == 'function'){
+				if(typeof mura.render[template] == 'function'){
 					context.html='';
 					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
 					mura.render[template](context);
+				} else if(typeof mura.templates[template] == 'function'){
+					context.html=mura.templates[template](context);
+					obj.html(mura.templates.content(context));
+					obj.prepend(mura.templates.meta(context));
 				} else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
