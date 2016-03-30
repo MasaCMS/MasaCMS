@@ -117,12 +117,14 @@
                     </cfif>
 
                     <!--- site manager --->
+                    <!---
                     <cfset isInSiteManager=listFindNoCase('carch,cfeed,ccategory,cchangesets,cfilemanager,ccomments,cmailinglist,cemail,cadvertising',rc.originalcircuit) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))>
                     <li id="admin-nav-manager"<cfif isInSiteManager> class="open"</cfif>>
                         <a data-toggle="nav-submenu" class="nav-submenu" href="#application.configBean.getContext()#/admin/">
                             <i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitemanager")#</span>
                         </a>
 						<ul>
+                    --->
                             <!--- Site Tree --->
                             <li>
                             <a<cfif rc.originalcircuit eq 'carch'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#">
@@ -251,9 +253,10 @@
                                 </li>
                               </cfif>
                             <!--- /Mailing Lists --->
-						  </ul>
+                    <!---
+                    	  </ul>
                     </li>
-
+                    --->
                     <!--- users --->
                     <cfif ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or (application.settingsManager.getSite(session.siteid).getextranet() and application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>
                         <li id="admin-nav-users"<cfif rc.originalcircuit eq 'cusers'> class="open"</cfif>>
