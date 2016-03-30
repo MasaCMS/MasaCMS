@@ -367,7 +367,7 @@
 							},
 							success:function(){
 								self.set('isdeleted',true);
-								self.purgeCache();
+								self.cachePurge();
 								if(typeof resolve == 'function'){
 									resolve(self);
 								}
