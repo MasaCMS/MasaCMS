@@ -159,7 +159,7 @@
 			return this.loadBy('id',this.get('id'));
 		},
 
-		new:function(params){
+		'new':function(params){
 
 			return new Promise(function(resolve,reject){
 				params=window.mura.extend(
@@ -342,7 +342,7 @@
 
 		},
 
-		delete:function(){
+		'delete':function(){
 
 			var self=this;
 

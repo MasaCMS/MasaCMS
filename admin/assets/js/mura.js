@@ -1,3 +1,148 @@
+
+if (!Object.create) {
+    Object.create = function(proto, props) {
+        if (typeof props !== "undefined") {
+            throw "The multiple-argument version of Object.create is not provided by this browser and cannot be shimmed.";
+        }
+        function ctor() { }
+        ctor.prototype = proto;
+        return new ctor();
+    };
+}
+
+if (!Array.isArray) {
+  Array.isArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+
+!window.addEventListener && (function (WindowPrototype, DocumentPrototype, ElementPrototype, addEventListener, removeEventListener, dispatchEvent, registry) {
+	WindowPrototype[addEventListener] = DocumentPrototype[addEventListener] = ElementPrototype[addEventListener] = function (type, listener) {
+		var target = this;
+
+		registry.unshift([target, type, listener, function (event) {
+			event.currentTarget = target;
+			event.preventDefault = function () { event.returnValue = false };
+			event.stopPropagation = function () { event.cancelBubble = true };
+			event.target = event.srcElement || target;
+
+			listener.call(target, event);
+		}]);
+
+		this.attachEvent("on" + type, registry[0][3]);
+	};
+
+	WindowPrototype[removeEventListener] = DocumentPrototype[removeEventListener] = ElementPrototype[removeEventListener] = function (type, listener) {
+		for (var index = 0, register; register = registry[index]; ++index) {
+			if (register[0] == this && register[1] == type && register[2] == listener) {
+				return this.detachEvent("on" + type, registry.splice(index, 1)[0][3]);
+			}
+		}
+	};
+
+	WindowPrototype[dispatchEvent] = DocumentPrototype[dispatchEvent] = ElementPrototype[dispatchEvent] = function (eventObject) {
+		return this.fireEvent("on" + eventObject.type, eventObject);
+	};
+})(Window.prototype, HTMLDocument.prototype, Element.prototype, "addEventListener", "removeEventListener", "dispatchEvent", []);
+
+if (!Array.prototype.forEach) {
+
+  Array.prototype.forEach = function(callback, thisArg) {
+
+    var T, k;
+
+    if (this == null) {
+      throw new TypeError(' this is null or not defined');
+    }
+
+    // 1. Let O be the result of calling toObject() passing the
+    // |this| value as the argument.
+    var O = Object(this);
+
+    // 2. Let lenValue be the result of calling the Get() internal
+    // method of O with the argument "length".
+    // 3. Let len be toUint32(lenValue).
+    var len = O.length >>> 0;
+
+    // 4. If isCallable(callback) is false, throw a TypeErrorexception.
+    // See: http://es5.github.com/#x9.11
+    if (typeof callback !== "function") {
+      throw new TypeError(callback + ' is not a function');
+    }
+
+    // 5. If thisArg was supplied, let T be thisArg; else let
+    // T be undefined.
+    if (arguments.length > 1) {
+      T = thisArg;
+    }
+
+    // 6. Let k be 0
+    k = 0;
+
+    // 7. Repeat, while k < len
+    while (k < len) {
+
+      var kValue;
+
+      // a. Let Pk be ToString(k).
+      //    This is implicit for LHS operands of the in operator
+      // b. Let kPresent be the result of calling the HasProperty
+      //    internal method of O with argument Pk.
+      //    This step can be combined with c
+      // c. If kPresent is true, then
+      if (k in O) {
+
+        // i. Let kValue be the result of calling the Get internal
+        // method of O with argument Pk.
+        kValue = O[k];
+
+        // ii. Call the Call internal method of callback with T as
+        // the this value and argument list containing kValue, k, and O.
+        callback.call(T, kValue, k, O);
+      }
+      // d. Increase k by 1.
+      k++;
+    }
+    // 8. return undefined
+  };
+}
+
+if(window.Prototype) {
+    delete Object.prototype.toJSON;
+    delete Array.prototype.toJSON;
+    delete Hash.prototype.toJSON;
+    delete String.prototype.toJSON;
+}
+
+if(!this.JSON){JSON=function(){function f(n){return n<10?'0'+n:n;}
+Date.prototype.toJSON=function(key){return this.getUTCFullYear()+'-'+
+f(this.getUTCMonth()+1)+'-'+
+f(this.getUTCDate())+'T'+
+f(this.getUTCHours())+':'+
+f(this.getUTCMinutes())+':'+
+f(this.getUTCSeconds())+'Z';};var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapeable=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={'\b':'\\b','\t':'\\t','\n':'\\n','\f':'\\f','\r':'\\r','"':'\\"','\\':'\\\\'},rep;function quote(string){escapeable.lastIndex=0;return escapeable.test(string)?'"'+string.replace(escapeable,function(a){var c=meta[a];if(typeof c==='string'){return c;}
+return'\\u'+('0000'+
+(+(a.charCodeAt(0))).toString(16)).slice(-4);})+'"':'"'+string+'"';}
+function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&&typeof value==='object'&&typeof value.toJSON==='function'){value=value.toJSON(key);}
+if(typeof rep==='function'){value=rep.call(holder,key,value);}
+switch(typeof value){case'string':return quote(value);case'number':return isFinite(value)?String(value):'null';case'boolean':case'null':return String(value);case'object':if(!value){return'null';}
+gap+=indent;partial=[];if(typeof value.length==='number'&&!(value.propertyIsEnumerable('length'))){length=value.length;for(i=0;i<length;i+=1){partial[i]=str(i,value)||'null';}
+v=partial.length===0?'[]':gap?'[\n'+gap+
+partial.join(',\n'+gap)+'\n'+
+mind+']':'['+partial.join(',')+']';gap=mind;return v;}
+if(rep&&typeof rep==='object'){length=rep.length;for(i=0;i<length;i+=1){k=rep[i];if(typeof k==='string'){v=str(k,value,rep);if(v){partial.push(quote(k)+(gap?': ':':')+v);}}}}else{for(k in value){if(Object.hasOwnProperty.call(value,k)){v=str(k,value,rep);if(v){partial.push(quote(k)+(gap?': ':':')+v);}}}}
+v=partial.length===0?'{}':gap?'{\n'+gap+partial.join(',\n'+gap)+'\n'+
+mind+'}':'{'+partial.join(',')+'}';gap=mind;return v;}}
+return{stringify:function(value,replacer,space){var i;gap='';indent='';if(typeof space==='number'){for(i=0;i<space;i+=1){indent+=' ';}}else if(typeof space==='string'){indent=space;}
+rep=replacer;if(replacer&&typeof replacer!=='function'&&(typeof replacer!=='object'||typeof replacer.length!=='number')){throw new Error('JSON.stringify');}
+return str('',{'':value});},parse:function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&&typeof value==='object'){for(k in value){if(Object.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v;}else{delete value[k];}}}}
+return reviver.call(holder,key,value);}
+cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return'\\u'+('0000'+
+(+(a.charCodeAt(0))).toString(16)).slice(-4);});}
+if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,'@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,']').replace(/(?:^|:|,)(?:\s*\[)+/g,''))){j=eval('('+text+')');return typeof reviver==='function'?walk({'':j},''):j;}
+throw new SyntaxError('JSON.parse');}};}();}
+
+
 //https://github.com/timruffles/ios-html5-drag-drop-shim
 (function(doc) {
 
@@ -3132,10 +3277,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		}
 
-		request.onload = function() {
+
+		var onload=function() {
 		  	//IE9 doesn't appear to return the request status
      		if(typeof request.status == 'undefined' || (request.status >= 200 && request.status < 400)) {
-
 			    try{
 			    	var data = JSON.parse(request.responseText);
 			    } catch(e){
@@ -3146,9 +3291,20 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else {
 			   	params.error(request);
 			}
-		}
+		};
 
-		request.onerror = params.error;
+		onerror=params.error;
+
+		if(typeof request.onload == 'undefined'){
+			request.onreadystatechange = function() {
+				if(request.readyState == 4) {
+				  onload();
+				}
+			}
+		} else {
+			request.onload=onload;
+			request.onerror=onerror;
+		}
 
 		if(params.type.toLowerCase()=='post'){
 			request.open(params.type.toUpperCase(), params.url, params.async);
@@ -3171,7 +3327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var query = [];
 
 			    for (var key in params.data) {
-			        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(params.data[key]));
+			        query.push($escape(key) + '=' + $escape(params.data[key]));
 			    }
 
 			    query=query.join('&');
@@ -3188,7 +3344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var query = [];
 
 		    for (var key in params.data) {
-		        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(params.data[key]));
+		        query.push($escape(key) + '=' + $escape(params.data[key]));
 		    }
 
 		    query=query.join('&');
@@ -3256,15 +3412,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
       	var bubbles=eventName == "change" ? false : true;
 
-      	if(eventClass=='Custom'){
-	    	var event = document.createEvent('CustomEvent');
-	    	event.initCustomEvent(eventName, true, true);
+		if(document.createEvent){
+	      	if(eventClass=='Custom'){
+		    	var event = document.createEvent('CustomEvent');
+		    	event.initCustomEvent(eventName, true, true);
 
-	    } else {
-	    	var event = document.createEvent(eventClass);
-	    	event.initEvent(eventName, bubbles, true);
-	    	event.synthetic = true;
-	    }
+		    } else {
+		    	var event = document.createEvent(eventClass);
+		    	event.initEvent(eventName, bubbles, true);
+		    	event.synthetic = true;
+		    }
+		} else {
+			try{
+				document.fireEvent("on" + eventName);
+			} catch(e){
+				console.warn("Event failed to fire: on" + eventName);
+				console.warn(e);
+			}
+		}
+
+
   	};
 
 	function off(el,eventName,fn){
@@ -3277,10 +3444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		} else if(typeof selector== 'string'){
 			var selection=nodeListToArray(document.querySelectorAll(selector));
 		} else {
-			//var classname=selector.constructor.name;
-			//if(classname=='NodeList' || classname=='HTMLCollection'){
-			//if(typeof selector.length != 'undefined'){
-			if(selector instanceof NodeList || selector instanceof HTMLCollection){
+			if((typeof StaticNodeList != 'undefined' && selector instanceof StaticNodeList) || selector instanceof NodeList || selector instanceof HTMLCollection){
 				var selection=nodeListToArray(selector);
 			} else {
 				var selection=[selector];
@@ -3469,10 +3633,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function $escape(value){
-		return escape(value).replace(
-       	 	new RegExp( "\\+", "g" ),
-        	"%2B"
-        ).replace(/[\x00-\x1F\x7F-\x9F]/g, "");
+		if(typeof encodeURIComponent != 'undefined'){
+			return encodeURIComponent(value)
+		} else {
+			return escape(value).replace(
+	       	 	new RegExp( "\\+", "g" ),
+	        	"%2B"
+	        ).replace(/[\x00-\x1F\x7F-\x9F]/g, "");
+		}
 	}
 
 	function $unescape(value){
@@ -3749,14 +3917,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      loader().load(
 	        [
-	          mura.assetpath +'/css/shadowbox.min.css',
-	          mura.assetpath +'/js/external/shadowbox/shadowbox.js',
-	          mura.assetpath +'/js/external/shadowbox/shadowbox-mura.js'
+	          	mura.assetpath +'/css/shadowbox.min.css',
+				mura.assetpath +'/js/external/shadowbox/shadowbox.js'
 	        ],
 	        function(){
 				mura('#shadowbox_overlay,#shadowbox_container').remove();
-	            window.Shadowbox.init();
-	        }
+				if(window.Shadowbox){
+					window.Shadowbox.init();
+				}
+			}
 	      );
 	  	}
 	}
@@ -4053,11 +4222,17 @@ return /******/ (function(modules) { // webpackBootstrap
 		if(!window || window.innerHeight){
 			true;
 		}
-	    var elemTop = el.getBoundingClientRect().top;
-	    var elemBottom = el.getBoundingClientRect().bottom;
 
-	    var isVisible = elemTop < window.innerHeight && elemBottom >= 0;
-	    return isVisible;
+		try{
+		    var elemTop = el.getBoundingClientRect().top;
+		    var elemBottom = el.getBoundingClientRect().bottom;
+		} catch(e){
+			return true;
+		}
+
+		var isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+		return isVisible;
+
 	}
 
 	function loader(){return window.mura.ljs;}
@@ -4085,7 +4260,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			},
 
 			function(){
-				find(".htmlEditor").each(function(){
+				find(".htmlEditor").each(function(el){
 					setHTMLEditor(this);
 				});
 			},
@@ -4118,9 +4293,9 @@ return /******/ (function(modules) { // webpackBootstrap
 								var self=el;
 								var checkForReCaptcha=function()
 									{
-									   if (typeof grecaptcha == 'object' )
+									   if (typeof grecaptcha == 'object' && self)
 									   {
-									   	//console.log(self)
+									   	console.log(self)
 									     grecaptcha.render(self.getAttribute('id'), {
 									          'sitekey' : self.getAttribute('data-sitekey'),
 									          'theme' : self.getAttribute('data-theme'),
@@ -4606,10 +4781,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		queue=(queue==null) ? false : queue;
 
-		if(queue && !isScrolledIntoView(el)){
+
+		if(document.createEvent && queue && !isScrolledIntoView(el)){
 			setTimeout(function(){processObject(el,true)},10);
 			return;
 		}
+
 
 		return new Promise(function(resolve,reject) {
 
@@ -4664,6 +4841,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				} else {
 					//console.log(data);
 					self.innerHTML=window.mura.preloaderMarkup;
+
 					ajax({
 						url:window.mura.apiEndpoint + '?method=processAsyncObject',
 						type:'get',
@@ -6480,7 +6658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this.loadBy('id',this.get('id'));
 		},
 
-		new:function(params){
+		'new':function(params){
 
 			return new Promise(function(resolve,reject){
 				params=window.mura.extend(
@@ -6663,7 +6841,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
-		delete:function(){
+		'delete':function(){
 
 			var self=this;
 
@@ -7496,24 +7674,24 @@ mura.templates['embed']=function(context){
 			mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
 
 			if(self.formJSON.form.pages.length == 1) {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:"form-submit"}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit","class":"form-submit"}));
 			}
 			else {
 				if(self.currentpage == 0) {
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:1,label:"Next",class:"form-nav"}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:1,label:"Next","class":"form-nav"}));
 				} else {
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage-1,label:"Back",class:'form-nav'}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage-1,label:"Back","class":'form-nav'}));
 
 					if(self.currentpage+1 < self.formJSON.form.pages.length) {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Next",class:'form-nav'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Next","class":'form-nav'}));
 					}
 					else {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit",class:'form-submit  btn-primary'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit","class":'form-submit  btn-primary'}));
 					}
 				}
 
 				if(self.backlink != undefined && self.backlink.length)
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Cancel",class:'form-cancel btn-primary pull-right'}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Cancel","class":'form-cancel btn-primary pull-right'}));
 			}
 
 			mura(".form-submit",self.context.formEl).click( function() {
