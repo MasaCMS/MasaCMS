@@ -3037,7 +3037,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	}
 
-	function isCrossDomainRequest(url){
+	function isXDomainRequest(url){
 		function getHostName(url) {
 		    var match = url.match(/:\/\/([0-9]?\.)?(.[^/:]+)/i);
 		    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
@@ -3121,7 +3121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if(params.crossDomain){
 			if (!("withCredentials" in request)
-				&& typeof XDomainRequest != "undefined" && isCrossDomainRequest(params.url)) {
+				&& typeof XDomainRequest != "undefined" && isXDomainRequest(params.url)) {
 			    // Check if the XMLHttpRequest object has a "withCredentials" property.
 			    // "withCredentials" only exists on XMLHTTPRequest2 objects.
 			    // Otherwise, check if XDomainRequest.
