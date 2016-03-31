@@ -332,8 +332,6 @@
 			    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
 			    request =new XDomainRequest();
 			}
-
-			request.withCredentials=params.xhrFields.withCredentials;
 		}
 
 		request.onload = function() {
@@ -352,7 +350,7 @@
 			}
 		}
 
-		request.onerror = params.onerror;
+		request.onerror = params.error;
 
 		if(params.type.toLowerCase()=='post'){
 			request.open(params.type.toUpperCase(), params.url, params.async);
