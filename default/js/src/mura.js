@@ -388,17 +388,21 @@
 			}
 		};
 
-		onerror=params.error;
+		request.onreadystatechange = function() {
+			if(request.readyState == 4) {
+   	 		  	//IE9 doesn't appear to return the request status
+   	      		if(typeof request.status == 'undefined' || (request.status >= 200 && request.status < 400)) {
+   	 			    try{
+   	 			    	var data = JSON.parse(request.responseText);
+   	 			    } catch(e){
+   	 			    	var data = request.responseText;
+   	 			    }
 
-		if(typeof request.onload == 'undefined'){
-			request.onreadystatechange = function() {
-				if(request.readyState == 4) {
-				  onload();
-				}
+   	 			    params.success(data);
+   	 			} else {
+   	 			   	params.error(request);
+   	 			}
 			}
-		} else {
-			request.onload=onload;
-			request.onerror=onerror;
 		}
 
 		if(params.type.toLowerCase()=='post'){
