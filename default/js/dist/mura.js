@@ -3037,6 +3037,42 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	}
 
+	function isCrossDomainRequest(url){
+		function getHostName(url) {
+		    var match = url.match(/:\/\/([0-9]?\.)?(.[^/:]+)/i);
+		    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
+		    	return match[2];
+		    } else {
+		        return null;
+		    }
+		}
+
+
+		function getDomain(url) {
+		    var hostName = getHostName(url);
+		    var domain = hostName;
+
+		    if (hostName != null) {
+		        var parts = hostName.split('.').reverse();
+
+		        if (parts != null && parts.length > 1) {
+		            domain = parts[1] + '.' + parts[0];
+
+		            if (hostName.toLowerCase().indexOf('.co.uk') != -1 && parts.length > 2) {
+		              domain = parts[2] + '.' + domain;
+		            }
+		        }
+		    }
+
+		    return domain;
+		}
+
+		var requestDomain=getDomain(url);
+
+		return (requestDomain && requestDomain != location.host);
+
+	}
+
 	function ajax(params){
 
 		//params=params || {};
@@ -3085,12 +3121,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if(params.crossDomain){
 			if (!("withCredentials" in request)
-				&& typeof XDomainRequest != "undefined") {
+				&& typeof XDomainRequest != "undefined" && isCrossDomainRequest(params.url)) {
 			    // Check if the XMLHttpRequest object has a "withCredentials" property.
 			    // "withCredentials" only exists on XMLHTTPRequest2 objects.
 			    // Otherwise, check if XDomainRequest.
 			    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-			    request =new XDomainRequest();
+
+				request =new XDomainRequest();
+
 			}
 		}
 
@@ -3138,7 +3176,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			    query=query.join('&');
 
-				request.send(query);
+				setTimeout(function () {
+				   request.send(query);
+				 }, 0);
 			}
 		} else {
 			if(params.url.indexOf('?') == -1){
@@ -3165,7 +3205,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				request.setRequestHeader(p,params.headers[h]);
 			}
 
-			request.send();
+			setTimeout(function () {
+			   request.send();
+			 }, 0);
 		}
 
 	}
