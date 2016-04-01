@@ -756,7 +756,7 @@
 				return this;
 
 			} else {
-				if(this.selection[0].hasOwnProperty('value') || typeof this.selection[0].value != 'undefined'){
+				if(Object.prototype.hasOwnProperty.call(this.selection[0],'value') || typeof this.selection[0].value != 'undefined'){
 					return this.selection[0].value;
 				} else {
 					return '';

@@ -203,7 +203,8 @@
 	    var head = document.getElementsByTagName("head")[0] || document.documentElement,
 	    script = document.createElement("script");
 	    script.type = "text/javascript";
-	    script.appendChild( document.createTextNode( data ) );
+	    //script.appendChild( document.createTextNode( data ) );
+		script.text=data;
 	    head.insertBefore( script, head.firstChild );
 	    head.removeChild( script );
 
@@ -372,27 +373,12 @@
 			}
 		}
 
-
-		var onload=function() {
-		  	//IE9 doesn't appear to return the request status
-     		if(typeof request.status == 'undefined' || (request.status >= 200 && request.status < 400)) {
-			    try{
-			    	var data = JSON.parse(request.responseText);
-			    } catch(e){
-			    	var data = request.responseText;
-			    }
-
-			    params.success(data);
-			} else {
-			   	params.error(request);
-			}
-		};
-
 		request.onreadystatechange = function() {
 			if(request.readyState == 4) {
    	 		  	//IE9 doesn't appear to return the request status
    	      		if(typeof request.status == 'undefined' || (request.status >= 200 && request.status < 400)) {
-   	 			    try{
+
+					try{
    	 			    	var data = JSON.parse(request.responseText);
    	 			    } catch(e){
    	 			    	var data = request.responseText;
@@ -672,7 +658,7 @@
 		      continue;
 
 		    for (var key in arguments[i]) {
-		      if (arguments[i].hasOwnProperty(key))
+		      if (Object.prototype.hasOwnProperty.call(arguments[i],key))
 		        out[key] = arguments[i][key];
 		    }
 	  	}
@@ -691,7 +677,7 @@
 
 		    for (var key in obj) {
 
-		        if (obj.hasOwnProperty(key)) {
+		        if (Object.prototype.hasOwnProperty.call(arguments[i],key)) {
 		        	if(Array.isArray(obj[key])){
 		       			out[key]=obj[key].slice(0);
 			        } else if (typeof obj[key] === 'object') {
@@ -1625,13 +1611,14 @@
 
 		if(obj.data('class')){
 			var classes=obj.data('class');
-
+				console.log(JSON.stringify(classes))
 			if(typeof classes != 'array'){
 				var classes=classes.split(' ');
 			}
 
 			for(var c in classes){
-				if(!obj.hasClass(classes[c])){
+
+				if(false && !obj.hasClass(classes[c])){
 					obj.addClass(classes[c]);
 				}
 			}
@@ -1721,6 +1708,8 @@
 				}
 			}
 		}
+
+		//obj.hide().show();
 
 		if(mura.layoutmanager && mura.editing){
 			if(obj.hasClass('mura-body-object') || obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
@@ -1904,7 +1893,6 @@
 				obj.find('.mura-object').each(function(){
 					this.setAttribute('data-instanceid',createUUID());
 				});
-				obj.hide().show();
 
 			}
 
@@ -1940,7 +1928,6 @@
 				} else {
 					//console.log(data);
 					self.innerHTML=window.mura.preloaderMarkup;
-
 					ajax({
 						url:window.mura.apiEndpoint + '?method=processAsyncObject',
 						type:'get',
