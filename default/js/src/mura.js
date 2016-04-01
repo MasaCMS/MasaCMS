@@ -405,7 +405,7 @@
 			}
 
 			//if(params.data.constructor.name == 'FormData'){
-			if(params.data instanceof FormData){
+			if(typeof FormData != 'undefined' && params.data instanceof FormData){
 				request.send(params.data);
 			} else {
 				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -511,8 +511,7 @@
 			try{
 				document.fireEvent("on" + eventName);
 			} catch(e){
-				console.warn("Event failed to fire: on" + eventName);
-				console.warn(e);
+				console.warn("Event failed to fire do to legacy browser: on" + eventName);
 			}
 		}
 
@@ -658,7 +657,7 @@
 		      continue;
 
 		    for (var key in arguments[i]) {
-		      if (Object.prototype.hasOwnProperty.call(arguments[i],key))
+		      if (typeof arguments[i].hasOwnProperty != 'undefined' && arguments[i].hasOwnProperty(key))
 		        out[key] = arguments[i][key];
 		    }
 	  	}
@@ -677,7 +676,7 @@
 
 		    for (var key in obj) {
 
-		        if (Object.prototype.hasOwnProperty.call(arguments[i],key)) {
+		        if (typeof arguments[i].hasOwnProperty != 'undefined' && arguments[i].hasOwnProperty(key)) {
 		        	if(Array.isArray(obj[key])){
 		       			out[key]=obj[key].slice(0);
 			        } else if (typeof obj[key] === 'object') {
@@ -1611,14 +1610,13 @@
 
 		if(obj.data('class')){
 			var classes=obj.data('class');
-				console.log(JSON.stringify(classes))
+
 			if(typeof classes != 'array'){
 				var classes=classes.split(' ');
 			}
 
-			for(var c in classes){
-
-				if(false && !obj.hasClass(classes[c])){
+			for(var c=0;c<classes.length;c++){
+				if(!obj.hasClass(classes[c])){
 					obj.addClass(classes[c]);
 				}
 			}

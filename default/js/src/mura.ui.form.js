@@ -139,7 +139,7 @@
 				var fields = self.formJSON.form.pages[page];
 				var result=[];
 
-				for(var f in fields){
+				for(var f=0;f < fields.length;f++){
 					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
@@ -228,7 +228,7 @@
 
 					var ds = self.formJSON.datasets[field.datasetid];
 
-					for(var i in ds.datarecords) {
+					for(var i=0;i<ds.datarecords.length;i++) {
 						if (self.ormform) {
 							var sourceid = ds.source + "id";
 
@@ -260,7 +260,7 @@
 				case "radio":
 				case "dropdown":
 					var ds = self.formJSON.datasets[field.datasetid];
-					for(var i in ds.datarecords) {
+					for(var i=0;i<ds.datarecords.length;i++) {
 						if(self.ormform) {
 							if(ds.datarecords[i].id == self.data[field.name+'id']) {
 								ds.datarecords[i].isselected = 1;
@@ -439,7 +439,8 @@
 								self.currentpage = mura(button).data('page');
                                 self.renderForm();
                             }
-                        });
+                        }
+						);
 				}
 
 				/*
@@ -570,7 +571,7 @@
 							self.ormform = true;
 						}
 
-						for(var i in self.formJSON.datasets){
+						for(var i=0;i < self.formJSON.datasets;i++){
 							self.datasets.push(i);
 						}
 

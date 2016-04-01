@@ -16,6 +16,48 @@ if (!Array.isArray) {
   };
 }
 
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+if (!Object.keys) {
+  Object.keys = (function() {
+    'use strict';
+    var hasOwnProperty = Object.prototype.hasOwnProperty,
+        hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
+        dontEnums = [
+          'toString',
+          'toLocaleString',
+          'valueOf',
+          'hasOwnProperty',
+          'isPrototypeOf',
+          'propertyIsEnumerable',
+          'constructor'
+        ],
+        dontEnumsLength = dontEnums.length;
+
+    return function(obj) {
+      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+        throw new TypeError('Object.keys called on non-object');
+      }
+
+      var result = [], prop, i;
+
+      for (prop in obj) {
+        if (hasOwnProperty.call(obj, prop)) {
+          result.push(prop);
+        }
+      }
+
+      if (hasDontEnumBug) {
+        for (i = 0; i < dontEnumsLength; i++) {
+          if (hasOwnProperty.call(obj, dontEnums[i])) {
+            result.push(dontEnums[i]);
+          }
+        }
+      }
+      return result;
+    };
+  }());
+}
+
 !window.addEventListener && (function (WindowPrototype, DocumentPrototype, ElementPrototype, addEventListener, removeEventListener, dispatchEvent, registry) {
 	WindowPrototype[addEventListener] = DocumentPrototype[addEventListener] = ElementPrototype[addEventListener] = function (type, listener) {
 		var target = this;
@@ -3399,7 +3441,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			//if(params.data.constructor.name == 'FormData'){
-			if(params.data instanceof FormData){
+			if(typeof FormData != 'undefined' && params.data instanceof FormData){
 				request.send(params.data);
 			} else {
 				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -3505,8 +3547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			try{
 				document.fireEvent("on" + eventName);
 			} catch(e){
-				console.warn("Event failed to fire: on" + eventName);
-				console.warn(e);
+				console.warn("Event failed to fire do to legacy browser: on" + eventName);
 			}
 		}
 
@@ -3652,7 +3693,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		      continue;
 
 		    for (var key in arguments[i]) {
-		      if (Object.prototype.hasOwnProperty.call(arguments[i],key))
+		      if (typeof arguments[i].hasOwnProperty != 'undefined' && arguments[i].hasOwnProperty(key))
 		        out[key] = arguments[i][key];
 		    }
 	  	}
@@ -3671,7 +3712,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		    for (var key in obj) {
 
-		        if (Object.prototype.hasOwnProperty.call(arguments[i],key)) {
+		        if (typeof arguments[i].hasOwnProperty != 'undefined' && arguments[i].hasOwnProperty(key)) {
 		        	if(Array.isArray(obj[key])){
 		       			out[key]=obj[key].slice(0);
 			        } else if (typeof obj[key] === 'object') {
@@ -4605,14 +4646,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if(obj.data('class')){
 			var classes=obj.data('class');
-				console.log(JSON.stringify(classes))
+
 			if(typeof classes != 'array'){
 				var classes=classes.split(' ');
 			}
 
-			for(var c in classes){
-
-				if(false && !obj.hasClass(classes[c])){
+			for(var c=0;c<classes.length;c++){
+				if(!obj.hasClass(classes[c])){
 					obj.addClass(classes[c]);
 				}
 			}
@@ -7520,7 +7560,7 @@ mura.templates['embed']=function(context){
 				var fields = self.formJSON.form.pages[page];
 				var result=[];
 
-				for(var f in fields){
+				for(var f=0;f < fields.length;f++){
 					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
@@ -7609,7 +7649,7 @@ mura.templates['embed']=function(context){
 
 					var ds = self.formJSON.datasets[field.datasetid];
 
-					for(var i in ds.datarecords) {
+					for(var i=0;i<ds.datarecords.length;i++) {
 						if (self.ormform) {
 							var sourceid = ds.source + "id";
 
@@ -7641,7 +7681,7 @@ mura.templates['embed']=function(context){
 				case "radio":
 				case "dropdown":
 					var ds = self.formJSON.datasets[field.datasetid];
-					for(var i in ds.datarecords) {
+					for(var i=0;i<ds.datarecords.length;i++) {
 						if(self.ormform) {
 							if(ds.datarecords[i].id == self.data[field.name+'id']) {
 								ds.datarecords[i].isselected = 1;
@@ -7820,7 +7860,8 @@ mura.templates['embed']=function(context){
 								self.currentpage = mura(button).data('page');
                                 self.renderForm();
                             }
-                        });
+                        }
+						);
 				}
 
 				/*
@@ -7951,7 +7992,7 @@ mura.templates['embed']=function(context){
 							self.ormform = true;
 						}
 
-						for(var i in self.formJSON.datasets){
+						for(var i=0;i < self.formJSON.datasets;i++){
 							self.datasets.push(i);
 						}
 
