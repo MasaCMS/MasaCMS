@@ -700,15 +700,12 @@ var initMura=function(config){
   var initShadowBox=function (el){
       if($(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
         loader().load(
-          [
             mura.assetpath +'/css/shadowbox.min.css',
+            mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js',
             mura.assetpath +'/js/external/shadowbox/shadowbox.min.js',
-            mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js'
-
-          ],
-          function(){
-              window.Shadowbox.init();
-          }
+            function(){
+                window.Shadowbox.init();
+            }
         );
       }
   }
