@@ -3547,7 +3547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			try{
 				document.fireEvent("on" + eventName);
 			} catch(e){
-				console.warn("Event failed to fire do to legacy browser: on" + eventName);
+				console.warn("Event failed to fire due to legacy browser: on" + eventName);
 			}
 		}
 
