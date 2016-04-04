@@ -7296,7 +7296,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   overflow: visible !important;
-  margin-top: 9px;
 }
 .mura #frontEndTools > ul > li a > i.mi-mobile {
   font-size: 16px !important;
@@ -7461,7 +7460,6 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   /* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu {
-  top: 32px;
   -webkit-border-bottom-right-radius: 2px !important;
   -moz-border-radius-bottomright: 2px !important;
   border-bottom-right-radius: 2px !important;
@@ -7474,17 +7472,17 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   -webkit-border-top-left-radius: 0 !important;
   -moz-border-radius-topleft: 0 !important;
   border-top-left-radius: 0 !important;
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
   border: 0 !important;
   background: rgba(255, 255, 255, 0.13) !important;
   background: rgba(46, 46, 46, 0.97) !important;
-  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
-  text-align: left !important;
-  margin-top: 0 !important;
-  margin-left: 11px !important;
   cursor: pointer !important;
-  padding-top: 0;
+  margin-top: 0 !important;
   padding-bottom: 2px;
+  padding-top: 0;
+  text-align: left !important;
+  top: 32px;
 }
 .mura #frontEndTools > ul > li.dropdown .dropdown-menu li {
   cursor: pointer !important;
