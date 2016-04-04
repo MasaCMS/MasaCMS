@@ -159,7 +159,7 @@
 			sidebarProxy.addEventListener(onAdminMessage);
 	}
 
-	var frontEndModalWidthStandard=990;
+	var frontEndModalWidthStandard=1140;
 	var frontEndModalWidthConfigurator=600;
 	var frontEndModalHeight=0;
 	var frontEndModalWidth=0;

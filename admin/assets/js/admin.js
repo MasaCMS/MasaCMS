@@ -1613,7 +1613,7 @@ $(function(){
 		setDatePickers(".datepicker",dtLocale);
 	}
 	if(typeof activetab != 'undefined'){
-		setTabs(".tabs",activetab);
+		setTabs(".mura-tabs",activetab);
 	}
 	setHTMLEditors();
 	if(typeof activepanel != 'undefined'){
