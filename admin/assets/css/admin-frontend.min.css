@@ -7300,7 +7300,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
 .mura #frontEndTools > ul > li a > i.mi-mobile {
   font-size: 16px !important;
   padding-left: 0px !important;
-  top: -1px !important;
+  top: 2px !important;
 }
 .mura #frontEndTools > ul > li .caret {
   border-top-color: rgba(255, 255, 255, 0.25) !important;
@@ -7478,6 +7478,7 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   background: rgba(255, 255, 255, 0.13) !important;
   background: rgba(46, 46, 46, 0.97) !important;
   cursor: pointer !important;
+  margin-left: -5px;
   margin-top: 0 !important;
   padding-bottom: 2px;
   padding-top: 0;
