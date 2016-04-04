@@ -334,7 +334,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
     <cfloop query="rsSites">
-    <cfset settingsManager.getSite(rs.siteid).registerDisplayObjectDir(argumentCollection=arguments)>
+    <cfset settingsManager.getSite(rssites.siteid).registerDisplayObjectDir(argumentCollection=arguments)>
     </cfloop>
     <cfreturn this>
 </cffunction>
