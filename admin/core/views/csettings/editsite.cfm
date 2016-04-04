@@ -651,7 +651,7 @@ to your own modified versions of Mura CMS.
 					</div>
 					<div class="mura-control-group">
 							<label>Email Broadcaster Limit</label>
-									<input name="EmailBroadcasterLimit" type="text" class="span4" value="#esapiEncode('html_attr',rc.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
+									<input name="EmailBroadcasterLimit" type="text" class="mura-constrain mura-numeric" value="#esapiEncode('html_attr',rc.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
 							</div>
 					</cfif>
 
