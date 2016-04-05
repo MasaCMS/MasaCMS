@@ -3177,7 +3177,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			properties.entityname=properties.entityname || 'content';
 			properties.siteid=properties.siteid || window.mura.siteid;
 		}
-		return new window.mura.Entity(properties);
+
+		if(window.mura.entities[properties.entityname]){
+			return new window.mura.entities[properties.entityname](properties);
+		} else {
+			return new window.mura.Entity(properties);
+		}
 	}
 
 	function getFeed(entityname){
