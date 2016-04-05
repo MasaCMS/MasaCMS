@@ -1,5 +1,6 @@
 component extends="mura.bean.bean" {
 
+    property name="type" datatype="string" default="daily";
     property name="every" datatype="integer" default="1";
     property name="repeats" datatype="integer" default="1";
     property name="allDay" datatype="integer" default="1";
