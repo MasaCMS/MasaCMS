@@ -372,7 +372,7 @@ buttons: {
 				$.get(url + "?" + pars, function(data) {
 					$('#newContentMenuContainer .load-inline').spin(false);
 					$('#newContentMenuContainer').html(data);
-					$("#newContentMenuContainer").dialog("option", "position", "center");
+					$("#newContentMenuContainer").dialog("option", "position",{ my: "center", at: "center", of: window });
 					setToolTips('.add-content-ui');
 
 				});
