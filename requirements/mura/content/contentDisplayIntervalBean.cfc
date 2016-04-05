@@ -2,7 +2,7 @@ component extends="mura.bean.bean" {
 
     property name="every" datatype="integer" default="1";
     property name="repeats" datatype="integer" default="1";
-    property name="allDay" datatype="integer" default="0";
+    property name="allDay" datatype="integer" default="1";
     property name="end" datatype="string" default="";
     property name="endOn" datatype="date";
     property name="endAfter" datatype="integer" default="0";
@@ -26,9 +26,13 @@ component extends="mura.bean.bean" {
         variables.content.setDisplayInterval(this);
         return this;
     }
-    
+
     function repeats(repeats){
-        set('repeats',arguments.repeats);
+        if(arguments.repeats){
+            set('repeats',1);
+        } else {
+            set('repeats',0);
+        }
         return repeats;
     }
 
@@ -38,7 +42,12 @@ component extends="mura.bean.bean" {
     }
 
     function allDay(allDay){
-        set('allDay',arguments.allDay);
+        if(arguments.allDay){
+            set('allDay',1);
+        } else {
+            set('allDay',0);
+        }
+
         return this;
     }
 
@@ -61,7 +70,10 @@ component extends="mura.bean.bean" {
     }
 
     function detectConflicts(detectConflicts){
-        set('detectConflicts',arguments.detectConflicts);
+        set('detectConflicts',1);
+    } else {
+        set('detectConflicts',0);
+    }
         return this;
     }
 
