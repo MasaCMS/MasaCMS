@@ -879,7 +879,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			interval=variables.instance.displayInterval,
 			displayStart=getValue('displayStart'),
 			displayStop=getValue('displayStop')
-		))>
+		)).setContent(this)>
 	<cfelse>
 		<cfreturn variables.instance.displayInterval>
 	</cfif>

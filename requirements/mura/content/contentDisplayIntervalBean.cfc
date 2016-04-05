@@ -16,6 +16,17 @@ component extends="mura.bean.bean" {
             set('timezone',CreateObject("java", "java.util.TimeZone").getDefault().getID());
             return this;
     }
+
+    function setContent(content){
+        variables.content=arguments.content;
+        return this;
+    }
+
+    function save(){
+        variables.content.setDisplayInterval(this);
+        return this;
+    }
+    
     function repeats(repeats){
         set('repeats',arguments.repeats);
         return repeats;

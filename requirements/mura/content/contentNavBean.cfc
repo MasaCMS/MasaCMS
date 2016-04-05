@@ -359,7 +359,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			interval=result,
 			displayStart=getValue('displayStart'),
 			displayStop=getValue('displayStop')
-		))>
+		)).setContent(this)>
 	<cfelse>
 		<cfreturn result>
 	</cfif>
