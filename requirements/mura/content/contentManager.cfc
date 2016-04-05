@@ -1123,7 +1123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif newBean.getDisplay() eq 2
 					and isBoolean(newBean.getConvertDisplayTimeZone())
 					and newBean.getConvertDisplayTimeZone()>
-					<cfset var displayInterval=newBean.getDisplayInterval(deserialize=true)>
+					<cfset var displayInterval=newBean.getDisplayInterval().getAllValues()>
 
 					<cfif not displayInterval.allday>
 						<cfif isDate(newBean.getDisplayStart())>

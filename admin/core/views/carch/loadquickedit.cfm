@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>
 		</div>
 		<div id="editDates" <cfif content.getdisplay() NEQ 2>style="display: none;"</cfif>>
-			<cfset displayInterval=content.getDisplayInterval(deserialize=true)>
+			<cfset displayInterval=content.getDisplayInterval().getAllValues()>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 				<cf_datetimeselector name="displayStart" datetime="#content.getDisplayStart(timezone=displayInterval.timezone)#">
@@ -133,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset defaultTZ=tz.getDefault().getID()>
 				<input type="hidden" name="displayIntervalTZ" id="displayIntervalTZ" value="#defaultTZ#">
 			</cfif>
-			<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',content.getDisplayInterval())#">
+			<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',content.getDisplayInterval(serialize=true))#">
 			<input name="convertDisplayTimeZone" type="hidden" value="true">
 
 			<div class="mura-control-group">
