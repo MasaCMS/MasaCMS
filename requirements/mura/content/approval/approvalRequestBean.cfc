@@ -182,6 +182,10 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 			$.event('approver',$.getCurrentUser());
 			$.event('contentBean',arguments.contentBean);
 
+			var returnURL=contentBean.getURL(complete=true);
+			var contentName=contentBean.getMenuTitle();
+			var contentType=contentBean.getType() & '/' & contentBean.getSubType();
+
 			var finder=refind('##.+?##',script,1,"true");
 
 			while (finder.len[1]) {

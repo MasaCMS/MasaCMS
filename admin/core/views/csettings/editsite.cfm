@@ -758,19 +758,19 @@ to your own modified versions of Mura CMS.
 
 				<div class="mura-control-group">
    				<label>Content Pending Script</label>
-   						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
+   						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
    						<textarea rows="6" name="contentPendingScript">#esapiEncode('html',rc.siteBean.getContentPendingScript())#</textarea>
 	   			</div>
 
 			 <div class="mura-control-group">
 				<label>Content Approval Script</label>
-						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
+						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
 						<textarea rows="6" name="contentApprovalScript">#esapiEncode('html',rc.siteBean.getContentApprovalScript())#</textarea>
 			</div>
 
 			 <div class="mura-control-group">
 				<label>Content Rejection Script</label>
-						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
+						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
 						<textarea rows="6" name="contentRejectionScript">#esapiEncode('html',rc.siteBean.getContentRejectionScript())#</textarea>
 			</div>
 
