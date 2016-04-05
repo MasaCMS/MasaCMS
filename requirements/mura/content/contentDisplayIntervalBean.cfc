@@ -27,11 +27,21 @@ component extends="mura.bean.bean" {
         return this;
     }
 
+    function type(type){
+        set('type',arguments.type);
+        return this;
+    }
+
     function repeats(repeats){
-        if(arguments.repeats){
-            set('repeats',1);
+        if(isBoolean(arguments.repeats)){
+            if(arguments.repeats){
+                set('repeats',1);
+            } else {
+                set('repeats',0);
+            }
         } else {
-            set('repeats',0);
+            set('repeats',1);
+            set('type',arguments.repeats);
         }
         return repeats;
     }
