@@ -70,12 +70,13 @@ component extends="mura.bean.bean" {
     }
 
     function detectConflicts(detectConflicts){
-        set('detectConflicts',1);
-    } else {
-        set('detectConflicts',0);
-    }
-        return this;
-    }
+        if(arguments.detectConflicts){
+            set('detectConflicts',1);
+        } else {
+            set('detectConflicts',0);
+        }
+            return this;
+        }
 
     function detectSpan(detectSpan){
         set('detectSpan',arguments.detectSpan);
