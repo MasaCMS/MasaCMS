@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,18 +36,24 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="js.cfm">
-<cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Folder^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Gallery^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Form^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata,Site^tsettings^baseID^tclassextenddata,Base^tcontent^contentHistID^tclassextenddata"/>
+
 <cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
-<cfoutput>	
+<cfif subtype.getType() eq 'Gallery'>
+<cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Folder^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Gallery^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Form^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata,Site^tsettings^baseID^tclassextenddata,Base^tcontent^contentHistID^tclassextenddata"/>
+<cfelse>
+<cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Folder^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Form^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata,Site^tsettings^baseID^tclassextenddata,Base^tcontent^contentHistID^tclassextenddata"/>
+</cfif>
+
+<cfoutput>
 <div class="mura-header">
 	<h1><cfif len(rc.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h1>
    <div class="nav-module-specific btn-group">
@@ -99,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    <ul id="icon-selector" class="dropdown-menu">
 					      <cfloop list="#subtype.getIconClasses()#" index="i">
 					      	  <li class="icon-selector" data-icon="#i#"><i class="#i#<cfif i eq currentIcon> icon-current</cfif><cfif i eq defaultIcon> icon-default</cfif>"></i></li>
-			     		 </cfloop>      
+			     		 </cfloop>
 					    </ul>
 	              </div>
 				              <button type="button" class="btn" id="iconreset"><i class="mi-undo"></i> Reset</button>
@@ -125,13 +131,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	              		});
 	              	});
 	              </script>
-			</div>	
+			</div>
 	</div>
 				<div class="mura-control-group">
 					<label>Description</label>
 					<textarea name="description" id="description" rows="6" >#esapiEncode('html',subtype.getDescription())#</textarea>
 		</div>
-			
+
 
 				<div class="hasRow1Container" >
 					<div class="mura-control-group hasSummaryContainer">
@@ -139,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<label class="radio inline"><input name="hasSummary" type="radio" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</label>
 						<label class="radio inline"><input name="hasSummary" type="radio" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</label>
 					</div>
-					
+
 					<div class="mura-control-group hasBodyContainer">
 						<label>Show "Body" field when editing?</label>
 							<label class="radio inline"><input name="hasBody" type="radio" value="1"<cfif subType.gethasBody() eq 1 >Checked</cfif>>Yes</label>
@@ -171,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<option value="#i#/#rsItemTypes.subType#" <cfif listFindNoCase(_AvailableSubTypes,'#i#/#rsItemTypes.subType#')> selected</cfif>>#i#/#rsItemTypes.subType#</option>
 					</cfloop>
 				</cfloop>
-				</select>			
+				</select>
 			</div>
 		</div>
 				<div class="mura-control-group hasConfiguratorContainer">

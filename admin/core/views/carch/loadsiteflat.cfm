@@ -652,19 +652,21 @@ if(len($.siteConfig('customTagGroups'))){
 		<select name="contentTypeFilter" id="contentTypeFilter">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
 			<cfloop list="#listSort('#$.getBean('contentManager').getTreeLevelList()#,Form,Component','textNoCase')#" index="i">
-				<option value="#i#^Default"<cfif $.event('type') eq i and $.event('subtype') eq 'Default'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")#<!---  / Default ---></option>
-				<cfquery name="rsSubTypes" dbtype="query">
-					select * from rsTypes where type='#i#' and subtype!='Default'
-					<cfif not (
-						rc.$.currentUser().isAdminUser()
-						or rc.$.currentUser().isSuperUser()
-						)>
-						and adminonly !=1
-					</cfif>
-				</cfquery>
-				<cfloop query="rsSubTypes">
-					<option value="#i#^#rsSubTypes.subtype#"<cfif $.event('type') eq i and $.event('subtype') eq rsSubTypes.subtype> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")# / #rsSubTypes.subtype#</option>
-				</cfloop>
+				<cfif i neq 'Gallery'>
+					<option value="#i#^Default"<cfif $.event('type') eq i and $.event('subtype') eq 'Default'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")#<!---  / Default ---></option>
+					<cfquery name="rsSubTypes" dbtype="query">
+						select * from rsTypes where type='#i#' and subtype!='Default'
+						<cfif not (
+							rc.$.currentUser().isAdminUser()
+							or rc.$.currentUser().isSuperUser()
+							)>
+							and adminonly !=1
+						</cfif>
+					</cfquery>
+					<cfloop query="rsSubTypes">
+						<option value="#i#^#rsSubTypes.subtype#"<cfif $.event('type') eq i and $.event('subtype') eq rsSubTypes.subtype> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")# / #rsSubTypes.subtype#</option>
+					</cfloop>
+				</cfif>
 			</cfloop>
 		</select>
 	</div>
