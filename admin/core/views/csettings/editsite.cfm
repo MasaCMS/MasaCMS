@@ -633,7 +633,7 @@ to your own modified versions of Mura CMS.
 							<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>
 							<label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> checked</cfif>>On</label>
 					</div>
-				
+
 					<cfif not rc.siteBean.getContentRenderer().useLayoutManager()>
 						<div class="mura-control-group">
 								<label>JSON API</label>
@@ -755,6 +755,12 @@ to your own modified versions of Mura CMS.
 						<input type="radio" name="useDefaultSMTPServer" value="0" <cfif rc.siteBean.getUseDefaultSMTPServer() neq 1> checked</cfif>>
 						No </label>
 					</div>
+
+				<div class="mura-control-group">
+   				<label>Content Pending Script</label>
+   						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
+   						<textarea rows="6" name="contentPendingScript">#esapiEncode('html',rc.siteBean.getContentPendingScript())#</textarea>
+	   			</div>
 
 			 <div class="mura-control-group">
 				<label>Content Approval Script</label>

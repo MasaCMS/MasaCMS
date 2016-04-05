@@ -118,6 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="javaLocale" type="string" default=""/>
 <cfproperty name="orderno" type="numeric" default="0" required="true" />
 <cfproperty name="enforceChangesets" type="numeric" default="0" required="true" />
+<cfproperty name="contentPendingScript" type="string" default=""/>
 <cfproperty name="contentApprovalScript" type="string" default=""/>
 <cfproperty name="contentRejectionScript" type="string" default=""/>
 <cfproperty name="enableLockdown" type="string" default="" />
@@ -227,6 +228,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.baseID=createUUID()/>
 	<cfset variables.instance.orderno=0/>
 	<cfset variables.instance.enforceChangesets=0/>
+	<cfset variables.instance.contentPendingScript=""/>
 	<cfset variables.instance.contentApprovalScript=""/>
 	<cfset variables.instance.contentRejectionScript=""/>
 	<cfset variables.instance.enableLockdown=""/>

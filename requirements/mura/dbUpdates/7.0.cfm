@@ -10,4 +10,5 @@
 
 <cfscript>
     getBean('variationTargeting').checkSchema();
+    dbUtility.setTable("tsettings").addColumn(column="contentPendingScript",dataType="longtext");
 </cfscript>
