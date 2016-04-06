@@ -201,7 +201,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 				try{
 					getBean('mailer').sendText($.setDynamicContent(script),
 						$.event('requester').getEmail(),
-						"Approval Request Status Update for #UCase($.event('domain'))#",
+						$.siteConfig('site'),
 						subject,
 						$.event('siteid'),
 						$.event('approver').getEmail());
@@ -211,7 +211,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 					if(isValid('email',$.event('group').getEmail())){
 						getBean('mailer').sendText($.setDynamicContent(script),
 							$.event('group').getEmail(),
-							"Approval Request Status Update for #UCase($.event('domain'))#",
+							$.siteConfig('site'),
 							subject,
 							$.event('siteid'),
 							$.event('approver').getEmail());
