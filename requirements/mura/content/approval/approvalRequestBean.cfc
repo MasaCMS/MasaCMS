@@ -182,7 +182,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 			$.event('approver',$.getCurrentUser());
 			$.event('contentBean',arguments.contentBean);
 
-			var returnURL=contentBean.getURL(complete=true);
+			var returnURL=contentBean.getURL(complete=true,queryString='previewid=#contentBean.getContentHistID()#');
 			var contentName=contentBean.getMenuTitle();
 			var contentType=contentBean.getType() & '/' & contentBean.getSubType();
 
@@ -198,16 +198,17 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 			}
 
 			if(listFindNoCase('Cancelled,Rejected,Approved',arguments.actionType)){
-				try{
+				//try{
 					getBean('mailer').sendText($.setDynamicContent(script),
 						$.event('requester').getEmail(),
 						$.siteConfig('site'),
 						subject,
 						$.event('siteid'),
 						$.event('approver').getEmail());
-				} catch (any e){}
+				//} catch (any e){}
 			} else if (arguments.actionType=='Pending'){
 				//try{
+
 					if(isValid('email',$.event('group').getEmail())){
 						getBean('mailer').sendText($.setDynamicContent(script),
 							$.event('group').getEmail(),
