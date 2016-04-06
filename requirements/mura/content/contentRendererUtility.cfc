@@ -1800,7 +1800,7 @@
 		<cfargument name="content">
 		<cfargument name="renderer">
 
-		<cfset var displayInterval=arguments.content.getDisplayInterval(deserialize=true)>
+		<cfset var displayInterval=arguments.content.getDisplayInterval().getAllValues()>
 		<cfset var returnstring=''>
 
 		<cfif not isDate(arguments.content.getdisplayStart())>

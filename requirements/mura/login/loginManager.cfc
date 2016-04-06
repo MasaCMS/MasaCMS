@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -57,21 +57,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.globalUtility=arguments.utility />
 		<cfset variables.permUtility=arguments.permUtility />
 		<cfset variables.settingsManager=arguments.settingsManager />
-		
+
 <cfreturn this />
 </cffunction>
 
 <cffunction name="rememberMe" access="public" returntype="boolean" output="false">
 	<cfargument name="userid" required="yes" type="string" default="" />
 	<cfargument name="userHash" required="yes" type="string" default="" />
-	
+
 	<cfset var rsUser=variables.userDAO.readUserHash(arguments.userid)/>
 	<cfset var isLoggedin=0/>
-	
+
 	<cfif not len(arguments.userHash) or arguments.userHash eq rsUser.userHash>
 		<cfset isloggedin=variables.userUtility.loginByUserID(rsUser.userID,rsUser.siteID)>
 	</cfif>
-	
+
 	<cfif isloggedin>
 		<cfset session.rememberMe=1>
 		<cfreturn true />
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset session.rememberMe=0>
 		<cfreturn false />
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="handleSuccess" output="false">
@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="compactDisplay" default="false">
 	<cfargument name="deviceid" default="">
 	<cfargument name="publicDevice" default="false">
-	
+
 	<cfset var isloggedin =false />
 	<cfset var site=""/>
 	<cfset var returnDomain="">
@@ -119,13 +119,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset arrayAppend(session.siteArray,site) />
 			</cfif>
 		</cfloop>
-	
-		<cfif arguments.returnUrl eq ''>				
+
+		<cfif arguments.returnUrl eq ''>
 			<cfif len(arguments.linkServID)>
 				<cfset arguments.returnURL="#indexFile#?LinkServID=#arguments.linkServID#">
 			<cfelse>
 				<cfset arguments.returnURL="#indexFile#">
-			</cfif>	
+			</cfif>
 		<cfelse>
 			<cfset arguments.returnURL = getBean('utility').sanitizeHREF(replace(arguments.returnUrl, 'doaction=logout', '', 'ALL'))>
 		</cfif>
@@ -199,7 +199,7 @@ If you did not request a new authorization, contact #contactEmail#.
 
 <cfset mailer.sendText(trim(mailText),
 	email,
-	contactEmail,
+	contactName,
 	emailtitle,
 	user.getSiteID()
 	) />
@@ -302,7 +302,7 @@ If you did not request a new authorization, contact #contactEmail#.
 		</cfif>
 		<cfset variables.userUtility.loginByUserID(argumentCollection=session.mfa)>
 		<cfset handleSuccess(argumentCollection=session.mfa)>
-	</cfif>	
+	</cfif>
 </cffunction>
 
 <cffunction name="login" access="public" output="false">
@@ -334,12 +334,12 @@ If you did not request a new authorization, contact #contactEmail#.
 			<cflocation url="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 		</cfif>
 	<cfelse>
-		
+
 		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false)>
 			<cfset var rsUser=variables.userUtility.lookupByCredentials(arguments.data.username,arguments.data.password,arguments.data.siteid)>
 
 			<cfif rsUser.recordcount>
-			
+
 				<cfset var $=getBean('$').init(arguments.data.siteid)>
 
 				<cfset session.mfa={
@@ -355,16 +355,16 @@ If you did not request a new authorization, contact #contactEmail#.
 					deviceid=cookie.originalurltoken}>
 
 				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
-				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>	
+				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
 
 					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=session.mfa.userid,deviceid=session.mfa.deviceid,siteid=session.mfa.siteid)>
-					
+
 					<cfif userDevice.exists()>
 						<cfset userDevice.setLastLogin(now()).save()>
 						<cfset userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
 						<cfset handleSuccess(argumentCollection=session.mfa)>
 						<cfreturn true>
-					</cfif>	
+					</cfif>
 				</cfif>
 
 				<cfset handleChallenge(argumentCollection=arguments.data)>
@@ -380,7 +380,7 @@ If you did not request a new authorization, contact #contactEmail#.
 			<cfelse>
 				<cfset isloggedin=arguments.loginObject.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
 			</cfif>
-			
+
 			<cfif isloggedin>
 				<cfset handleSuccess(argumentCollection=arguments.data)>
 				<cfreturn true>
@@ -408,7 +408,7 @@ If you did not request a new authorization, contact #contactEmail#.
 
 		<cfreturn false>
 
-	<cfelse>	
+	<cfelse>
 		<cfreturn login(data=arguments.data)>
 	</cfif>
 
@@ -419,7 +419,7 @@ If you did not request a new authorization, contact #contactEmail#.
 	<cfset var isloggedin =false />
 	<cfset var returnURL=""/>
 	<cfset var site=""/>
-	<cfset var returnDomain=""/> 
+	<cfset var returnDomain=""/>
 
 	<cfparam name="arguments.data.redirect" default="" />
 	<cfparam name="arguments.data.returnUrl" default="" />
@@ -443,7 +443,7 @@ If you did not request a new authorization, contact #contactEmail#.
 			<cfset var user=$.getBean('user').loadBy(userid=arguments.data.userid,siteid=arguments.data.siteid)>
 
 			<cfif user.exists()>
-			
+
 				<cfset session.mfa={
 					userid=user.getUserID(),
 					siteid=user.getSiteID(),
@@ -458,16 +458,16 @@ If you did not request a new authorization, contact #contactEmail#.
 					deviceid=session.trackingID}>
 
 				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
-				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>	
+				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
 
 					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=session.mfa.deviceid)>
-					
+
 					<cfif userDevice.exists()>
 						<cfset userDevice.setLastLogin(now()).save()>
 						<cfset userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
 						<cfset handleSuccess(argumentCollection=session.mfa)>
 						<cfreturn true>
-					</cfif>	
+					</cfif>
 				</cfif>
 
 				<cfset handleChallenge(argumentCollection=arguments.data)>
@@ -478,7 +478,7 @@ If you did not request a new authorization, contact #contactEmail#.
 			</cfif>
 		<cfelse>
 			<cfset isloggedin=variables.userUtility.loginByUserID(arguments.data.userID,arguments.data.siteid)>
-			
+
 			<cfif isloggedin>
 				<cfset handleSuccess(argumentCollection=arguments.data)>
 				<cfreturn true>

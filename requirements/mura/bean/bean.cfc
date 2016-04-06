@@ -289,7 +289,7 @@ component extends="mura.cfobject" output="false" {
 		} else if(isStruct(arguments.data)){
 			//set basic values
 			for(prop in arguments.data){
-				if ( IsSimpleValue(prop) && !isNull(arguments.data[prop]) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
+				if (isValid('variableName',prop) && IsSimpleValue(prop) && !isNull(arguments.data['#prop#']) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
 					setValue(prop,arguments.data['#prop#']);
 				}
 			}

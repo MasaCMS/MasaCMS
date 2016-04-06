@@ -10,4 +10,6 @@
 
 <cfscript>
     getBean('variationTargeting').checkSchema();
+    dbUtility.setTable("tsettings").addColumn(column="contentPendingScript",dataType="longtext")
+    .setTable("tsettings").addColumn(column="contentCanceledScript",dataType="longtext");
 </cfscript>

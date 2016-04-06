@@ -14,9 +14,9 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
         setValue('created',now());
         super.init(argumentCollection=arguments);
     }
-    
+
     function approve(comments){
-    	
+
     	if(getValue('status') eq 'Pending'){
 	    	getBean('approvalAction').loadBy(requestID=getValue('requestID'), groupID=getValue('groupID'))
 		    	.setComments(arguments.comments)
@@ -28,27 +28,27 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 	    	var memberships=getBean('approvalChain').loadBy(chainID=getValue('chainID')).getMembershipsIterator();
 
 	    	if(memberships.hasNext()){
-	    		
+
 		    	do {
 		    		var membership=memberships.next();
-		    		
-		    		//writeLog(text=membership.getGroupID() & ' ' & getValue('groupID'));	
+
+		    		//writeLog(text=membership.getGroupID() & ' ' & getValue('groupID'));
 
 		    		if(membership.getGroupID() eq getValue('groupID')){
-		    			
+
 		    			if(memberships.hasNext()){
 		    				setValue('groupID',memberships.next().getGroupID());
 		    				save();
-							
+
 		    			} else {
 		    				setValue('status','Approved');
 		    				save();
-		    					
+
 		    				var content=getBean('content').loadBy(contentHistID=getValue('contentHistID'));
 					      	var sourceid=getValue('contentHistID');
 		    				if(not len(content.getChangesetID())){
 						      	setValue(
-						      		'contentHistID', 
+						      		'contentHistID',
 						      		content
 							      		.setApproved(1)
 							      		.setLastUpdateBy(content.getLastUpdateBy())
@@ -60,13 +60,13 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 						      	save();
 
 						      	var source=getBean('content').loadBy(contenthistid=sourceid);
-						      	
+
 						      	if(not source.getIsNew()){
 						      		source.deleteVersion();
 						      	}
-						      	
+
 						     }
-					      	
+
 		    			}
 
 		    			var content=getBean('content').loadBy(contenthistid=getValue('contenthistid'),siteid=getValue('siteid'));
@@ -79,13 +79,13 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 		    } else {
 		    	setValue('status','Approved');
 		    	save();
-		    	
+
 		    	var content=getBean('content').loadBy(contentHistID=getValue('contentHistID'));
-					      	
+
 		    	if(not len(content.getChangesetID())){
-						      	
+
 					setValue(
-						    'contentHistID', 
+						    'contentHistID',
 						    content
 							.setApproved(1)
 							.setApprovingChainRequest(true)
@@ -98,7 +98,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 	    	}
 		}
 
-		
+
 		sendActionMessage(content,getValue('status'));
 
     	return this;
@@ -158,7 +158,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
     }
 
     function sendActionMessage(contentBean,actionType){
-    	
+
 		var $=getBean('$').init(arguments.contentBean.getSiteID());
 		var script=$.siteConfig('Content#Arguments.actionType#Script');
 		var subject="";
@@ -182,6 +182,10 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 			$.event('approver',$.getCurrentUser());
 			$.event('contentBean',arguments.contentBean);
 
+			var returnURL=contentBean.getURL(complete=true,queryString='previewid=#contentBean.getContentHistID()#');
+			var contentName=contentBean.getMenuTitle();
+			var contentType=contentBean.getType() & '/' & contentBean.getSubType();
+
 			var finder=refind('##.+?##',script,1,"true");
 
 			while (finder.len[1]) {
@@ -194,20 +198,20 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 			}
 
 			if(listFindNoCase('Cancelled,Rejected,Approved',arguments.actionType)){
-				try{
+				//try{
 					getBean('mailer').sendText($.setDynamicContent(script),
 						$.event('requester').getEmail(),
-						$.siteConfig('MailServerUsernameEmail'),
+						$.siteConfig('site'),
 						subject,
 						$.event('siteid'),
 						$.event('approver').getEmail());
-				} catch (any e){}
+				//} catch (any e){}
 			} else if (arguments.actionType=='Pending'){
 				//try{
 					if(isValid('email',$.event('group').getEmail())){
 						getBean('mailer').sendText($.setDynamicContent(script),
 							$.event('group').getEmail(),
-							$.siteConfig('MailServerUsernameEmail'),
+							$.siteConfig('site'),
 							subject,
 							$.event('siteid'),
 							$.event('approver').getEmail());

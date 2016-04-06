@@ -29,8 +29,8 @@
 		<cfset var calendar=getBean('content').loadBy(contentid=content.getParentID(),siteid=content.getSiteID())>
 
 		<cfif calendar.getType() eq 'Calendar'>
-			<cfset var calendarSettings=calendar.getDisplayInterval(deserialize=true)>
-			<cfset var displayInterval=arguments.content.getDisplayInterval(deserialize=true)>
+			<cfset var calendarSettings=calendar.getDisplayInterval().getAllValues()>
+			<cfset var displayInterval=arguments.content.getDisplayInterval().getAllValues()>
 
 			<cfif calendarSettings.detectconflicts and calendarSettings.detectspan>
 				<cfset var events=calendar.getEventsIterator(start=now(),end=dateAdd('m',calendarSettings.detectspan,now()))>
@@ -48,10 +48,17 @@
 
 				<!--- Set query data in the event query. --->
 				<cfloop list="#rscandidate.columnList#" index="local.i">
-					<cfset querySetCell(rscandidate,
-						local.i,
-						arguments.content.getValue(i),
-						rscandidate.recordCount) />
+					<cfif local.i eq 'displayInterval'>
+						<cfset querySetCell(rscandidate,
+							local.i,
+							arguments.content.getDisplayInterval(serialize=true),
+							rscandidate.recordCount) />
+					<cfelse>
+						<cfset querySetCell(rscandidate,
+							local.i,
+							arguments.content.getValue(i),
+							rscandidate.recordCount) />
+					</cfif>
 				</cfloop>
 
 				<cfset querySetCell(rscandidate,

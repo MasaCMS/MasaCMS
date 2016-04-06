@@ -47,8 +47,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset event=request.event>
 <cfinclude template="js.cfm">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
-<cfset pageLevelList="Page,Folder,Calendar,Gallery"/>
-<cfset extendedList="Page,Folder,Calendar,Gallery,Link,File,Component,Form"/>
+<cfif rc.contentBean.getType() eq 'Gallery'>
+	<cfset pageLevelList="Page,Folder,Calendar,Gallery"/>
+	<cfset extendedList="Page,Folder,Calendar,Gallery,Link,File,Component,Form"/>
+<cfelse>
+	<cfset pageLevelList="Page,Folder,Calendar"/>
+	<cfset extendedList="Page,Folder,Calendar,Link,File,Component,Form"/>
+</cfif>
 <cfset isExtended=false>
 <cfset nodeLevelList="Page,Folder,Calendar,Gallery,Link,File"/>
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
@@ -413,7 +418,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</button>
 			</cfif>
 			</div>
-		</div> 
+		</div>
 
 	</cfoutput>
 	</cfsavecontent>

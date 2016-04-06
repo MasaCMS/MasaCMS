@@ -1555,6 +1555,7 @@
 
 		self.removeClass('mura-active');
 		self.removeAttr('data-perm');
+		self.removeAttr('draggable');
 
 		if(self.data('object')=='container'){
 			self.find('.mura-object:not([data-object="container"])').html('');
@@ -1565,6 +1566,7 @@
 				self.removeClass('mura-active');
 				self.removeAttr('data-perm');
 				self.removeAttr('data-inited');
+				self.removeAttr('draggable');
 			});
 
 			self.find('.mura-object[data-object="container"]').each(function(){

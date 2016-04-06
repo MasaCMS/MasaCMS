@@ -265,6 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("changesetTagAssignment","changesetTagAssignmentBean");
 		variables.serviceFactory.addAlias("userDevice","userDeviceBean");
 		variables.serviceFactory.addAlias("variationTargeting","contentVariationTargetingBean");
+		variables.serviceFactory.addAlias("contentDisplayInterval","contentDisplayIntervalBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 

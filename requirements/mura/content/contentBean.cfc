@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="expires" type="date" default=""/>
 <cfproperty name="assocFilename" type="string" default=""/>
-<cfproperty name="displayInterval" type="string" default="Daily" />
+<cfproperty name="displayInterval" default="Daily" />
 <cfproperty name="requestID" type="string" default="" comparable="false"/>
 <cfproperty name="approvalStatus" type="string" default=""/>
 <cfproperty name="approvalGroupID" type="string" default="" comparable="false"/>
@@ -839,6 +839,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayInterval">
 
 	<cfif not isSimpleValue(arguments.displayInterval)>
+
+		<cfif isValid('component',arguments.displayInterval)>
+			<cfset arguments.displayInterval=arguments.displayInterval.getAllValues()>
+		</cfif>
+
 		<cfif isDefined('arguments.displayInterval.end') >
 			<cfif arguments.displayInterval.end eq 'on'
 			and isDefined('arguments.displayInterval.endon')
@@ -867,14 +872,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayInterval" output="false">
-	<cfargument name="deserialize" default="false">
+	<cfargument name="serialize" default="false">
 
-	<cfif arguments.deserialize>
-		<cfreturn getBean('contentIntervalManager').deserializeInterval(
+	<cfif not arguments.serialize>
+		<cfreturn getBean('contentDisplayInterval').set(getBean('contentIntervalManager').deserializeInterval(
 			interval=variables.instance.displayInterval,
 			displayStart=getValue('displayStart'),
 			displayStop=getValue('displayStop')
-		)>
+		)).setContent(this)>
 	<cfelse>
 		<cfreturn variables.instance.displayInterval>
 	</cfif>

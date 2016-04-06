@@ -633,7 +633,7 @@ to your own modified versions of Mura CMS.
 							<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>
 							<label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> checked</cfif>>On</label>
 					</div>
-				
+
 					<cfif not rc.siteBean.getContentRenderer().useLayoutManager()>
 						<div class="mura-control-group">
 								<label>JSON API</label>
@@ -756,17 +756,29 @@ to your own modified versions of Mura CMS.
 						No </label>
 					</div>
 
+				<div class="mura-control-group">
+   				<label>Content Pending Script</label>
+   						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
+   						<textarea rows="6" name="contentPendingScript">#esapiEncode('html',rc.siteBean.getContentPendingScript())#</textarea>
+	   			</div>
+
 			 <div class="mura-control-group">
 				<label>Content Approval Script</label>
-						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
+						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
 						<textarea rows="6" name="contentApprovalScript">#esapiEncode('html',rc.siteBean.getContentApprovalScript())#</textarea>
 			</div>
 
 			 <div class="mura-control-group">
 				<label>Content Rejection Script</label>
-						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
+						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
 						<textarea rows="6" name="contentRejectionScript">#esapiEncode('html',rc.siteBean.getContentRejectionScript())#</textarea>
 			</div>
+
+			<div class="mura-control-group">
+			   <label>Content Canceled Script</label>
+					   <p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
+					   <textarea rows="6" name="contentCanceledScript">#esapiEncode('html',rc.siteBean.getContentCanceledScript())#</textarea>
+		   </div>
 
 			<div class="mura-control-group">
 				<label>User Login Authorization Code Challenge Script</label>
