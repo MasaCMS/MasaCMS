@@ -833,13 +833,32 @@
 							}
 					});
 
-					/*
-					mura('body').find('a:not(.mura),button:not(.mura)').on('click',function(event){
-						if(editingVariations){
-							event.preventDefault();
+					mura(mura.editableSelector + ' a, ' + mura.editableSelector + ' button').each(
+						function(){
+							var self=mura(this);
+
+							if(!self.hasClass('mura')){
+								mura(this).on('click',function(event){
+									if(editingVariations){
+										event.preventDefault();
+									}
+								});
+							}
+
+						}
+					);
+
+					mura(mura.editableSelector).closest('a').each(function(){
+						var self=mura(this);
+
+						if(!self.hasClass('mura')){
+							mura(this).on('click',function(event){
+								if(editingVariations){
+									event.preventDefault();
+								}
+							});
 						}
 					});
-					*/
 				}
 
 				var exitVariations=function(){

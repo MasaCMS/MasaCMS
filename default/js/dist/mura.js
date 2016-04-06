@@ -1841,8 +1841,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
 			    request =new XDomainRequest();
 			}
-
-			request.withCredentials=true;
 		}
 
 		request.onload = function() {
