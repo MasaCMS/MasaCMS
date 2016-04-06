@@ -121,6 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="contentPendingScript" type="string" default=""/>
 <cfproperty name="contentApprovalScript" type="string" default=""/>
 <cfproperty name="contentRejectionScript" type="string" default=""/>
+<cfproperty name="contentCanceledScript" type="string" default=""/>
 <cfproperty name="enableLockdown" type="string" default="" />
 <cfproperty name="customTagGroups" type="string" default="" />
 <cfproperty name="hasComments" type="numeric" default="1" required="true" />
@@ -231,6 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.contentPendingScript=""/>
 	<cfset variables.instance.contentApprovalScript=""/>
 	<cfset variables.instance.contentRejectionScript=""/>
+	<cfset variables.instance.contentCanceledScript=""/>
 	<cfset variables.instance.enableLockdown=""/>
 	<cfset variables.instance.customTagGroups=""/>
 	<cfset variables.instance.hasSharedFilePool=""/>

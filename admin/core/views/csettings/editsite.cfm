@@ -775,6 +775,12 @@ to your own modified versions of Mura CMS.
 			</div>
 
 			<div class="mura-control-group">
+			   <label>Content Canceled Script</label>
+					   <p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##contentType##</p>
+					   <textarea rows="6" name="contentCanceledScript">#esapiEncode('html',rc.siteBean.getContentCanceledScript())#</textarea>
+		   </div>
+
+			<div class="mura-control-group">
 				<label>User Login Authorization Code Challenge Script</label>
 					<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##email## ##authcode## ##contactEmail## ##contactName##</p>
 					<textarea rows="6" name="sendAuthCodeScript">#esapiEncode('html',rc.siteBean.getSendAuthCodeScript())#</textarea>
