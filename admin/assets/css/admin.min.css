@@ -22634,7 +22634,7 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text {
   min-width: 40px;
   -webkit-box-shadow: inset 0 0 0;
   box-shadow: inset 0 0 0;
-  border-color: #75a3d1 #75a3d1 #578fc7 #75a3d1 !important;
+  border-color: #5591f5 #5591f5 #2f79f3 #5591f5 !important;
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35) !important;
   outline: none !important;
 }
@@ -22971,7 +22971,7 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
 }
 .ui-datepicker table th.ui-datepicker-today > .ui-state-highlight,
 .ui-datepicker table td.ui-datepicker-today > .ui-state-highlight {
-  background-color: #6699cc;
+  background-color: #4285f4;
   color: #ffffff;
 }
 #tabTags #svTagCloud > ol,
@@ -22983,7 +22983,7 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
   *display: inline;
   /* IE7 inline-block hack */
   *zoom: 1;
-  background: #69c;
+  background: #4285F4;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -23001,7 +23001,7 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
   cursor: pointer;
 }
 .tagSelector .tag a i {
-  color: #264c73;
+  color: #093d94;
 }
 .tagSelector .tag a:hover {
   text-decoration: none;
@@ -23519,7 +23519,7 @@ fieldset[disabled] .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .
   color: #000000;
 }
 .mura .ui-dialog h1 {
-  color: #6699cc !important;
+  color: #4285f4 !important;
   font-size: 14px;
   margin-bottom: 0;
   line-height: 1;
@@ -27390,7 +27390,7 @@ font-size: 12px;
   text-decoration: none;
 }
 .mura #cextend .attr-list li a:hover i {
-  color: #6699cc;
+  color: #4285f4;
 }
 .mura #cextend .attr-list li i {
   font-size: 14px;
@@ -27457,9 +27457,9 @@ font-size: 12px;
 }
 .mura #cextend .SubTypeIconSelect .dropdown-menu li i:hover {
   cursor: pointer;
-  background-color: #6699cc;
+  background-color: #4285f4;
   color: #ffffff;
-  border-color: #6699cc;
+  border-color: #4285f4;
 }
 .mura #cextend .SubTypeIconSelect .dropdown-menu li i.icon-default {
   background-color: #cccccc;
@@ -35487,7 +35487,7 @@ ul {
 }
 .btn-info {
   color: #fff;
-  background-color: #6699cc;
+  background-color: #4285F4;
   border-color: rgba(102, 153, 204, 0.8);
 }
 .btn-info:focus,
@@ -35571,7 +35571,7 @@ header .btn i {
   background-color: #DEDEDE;
 }
 .form-actions > .btn.mura-primary {
-  background-color: #69c !important;
+  background-color: #4285F4 !important;
   color: #FFF !important;
 }
 .form-actions > .btn.mura-primary > i {
@@ -35605,7 +35605,7 @@ header .btn i {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  color: #69c;
+  color: #4285F4;
   font-size: 14px;
   height: 35px;
   text-transform: uppercase;
