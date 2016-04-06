@@ -260,8 +260,13 @@ component extends="mura.cfobject" output="false" {
 			variables.instance.isNew=0;
 		} else if(isStruct(arguments.data)){
 			for(prop in arguments.data){
-				if ( IsSimpleValue(prop) && !isNull(arguments.data[prop]) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
-					setValue(prop,arguments.data['#prop#']);
+				try{
+					if ( IsSimpleValue(prop) && !isNull(arguments.data['#prop#']) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
+						setValue(prop,arguments.data['#prop#']);
+					}
+				} catch(Any e){
+					writeLog("Error setting bean value #UCase(prop)#: #arguments.data['#prop#']#");
+					rethrow;
 				}
 			}
 		}
