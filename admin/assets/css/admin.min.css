@@ -35614,6 +35614,9 @@ header .btn i {
 .mura-actions .form-actions > .btn > i {
   color: #545454;
 }
+.mura-actions + .block-content {
+  margin-top: 15px;
+}
 .mura form .mura-control-group > * + .help-block:not(.alert) {
   clear: both;
   padding: 2px 12px 2px 0;
