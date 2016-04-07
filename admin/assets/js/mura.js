@@ -6719,12 +6719,17 @@ return /******/ (function(modules) { // webpackBootstrap
 					});
 
 				} else {
-
+					if(typeof defaultValue == 'object'){
+						var params=defaultValue;
+					} else {
+						var params={};
+					}
 					return new Promise(function(resolve,reject) {
 
 						window.mura.ajax({
 							type:'get',
 							url:self.properties.links[propertyName],
+							params:params,
 							success:function(resp){
 
 								if('items' in resp.data){
@@ -6737,7 +6742,10 @@ return /******/ (function(modules) { // webpackBootstrap
 									}
 								}
 
-								self.set(propertyName,resp.data);
+								//Dont cache it there are custom params
+								if(mura.isEmptyObject(params)){
+									self.set(propertyName,resp.data);
+								}
 
 								if(typeof resolve == 'function'){
 									resolve(returnObj);
