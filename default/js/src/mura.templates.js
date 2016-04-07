@@ -43,9 +43,9 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-mura.templates=mura.templates || {};
-mura.templates['meta']=function(context){
+(function(root){
+root.mura.templates=root.mura.templates || {};
+root.mura.templates['meta']=function(context){
 
 	if(context.label){
 		return '<div class="mura-object-meta"><h3>' + mura.escapeHTML(context.label) + '</h3></div>';
@@ -53,18 +53,19 @@ mura.templates['meta']=function(context){
 	    return '';
 	}
 }
-mura.templates['content']=function(context){
+root.mura.templates['content']=function(context){
 	context.html=context.html || context.content || context.source || '';
 
   	return '<div class="mura-object-content">' + context.html + '</div>';
 }
-mura.templates['text']=function(context){
+root.mura.templates['text']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
  	return context.source;
 }
-mura.templates['embed']=function(context){
+root.mura.templates['embed']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
  	return context.source;
 }
+})(this);

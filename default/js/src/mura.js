@@ -44,16 +44,16 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(window){
+;(function(root){
 
 	function login(username,password,siteid){
-		siteid=siteid || window.mura.siteid;
+		siteid=siteid || root.mura.siteid;
 
 		return new Promise(function(resolve,reject) {
-			window.mura.ajax({
+			root.mura.ajax({
 					async:true,
 					type:'post',
-					url:window.mura.apiEndpoint,
+					url:root.mura.apiEndpoint,
 					data:{
 						siteid:siteid,
 						username:username,
@@ -70,13 +70,13 @@
 
 
 	function logout(siteid){
-		siteid=siteid || window.mura.siteid;
+		siteid=siteid || root.mura.siteid;
 
 		return new Promise(function(resolve,reject) {
-			window.mura.ajax({
+			root.mura.ajax({
 					async:true,
 					type:'post',
-					url:window.mura.apiEndpoint,
+					url:root.mura.apiEndpoint,
 					data:{
 						siteid:siteid,
 						method:'logout'
@@ -108,7 +108,7 @@
 		var query = [];
 		params = params || {};
 		params.filename= params.filename || '';
-		params.siteid= params.siteid || window.mura.siteid;
+		params.siteid= params.siteid || root.mura.siteid;
 
 	    for (var key in params) {
 	    	if(key != 'entityname' && key != 'filename' && key != 'siteid' && key != 'method'){
@@ -117,13 +117,13 @@
 	    }
 
 		return new Promise(function(resolve,reject) {
-			window.mura.ajax({
+			root.mura.ajax({
 					async:true,
 					type:'get',
-					url:window.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
+					url:root.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
 					success:function(resp){
 						if(typeof resolve == 'function'){
-							var item=new window.mura.Entity();
+							var item=new root.mura.Entity();
 							item.set(resp.data);
 							resolve(item);
 						}
@@ -135,22 +135,22 @@
 	function getEntity(entityname,siteid){
 		if(typeof entityname == 'string'){
 			var properties={entityname:entityname};
-			properties.siteid = siteid || window.mura.siteid;
+			properties.siteid = siteid || root.mura.siteid;
 		} else {
 			properties=entityname;
 			properties.entityname=properties.entityname || 'content';
-			properties.siteid=properties.siteid || window.mura.siteid;
+			properties.siteid=properties.siteid || root.mura.siteid;
 		}
 
-		if(window.mura.entities[properties.entityname]){
-			return new window.mura.entities[properties.entityname](properties);
+		if(root.mura.entities[properties.entityname]){
+			return new root.mura.entities[properties.entityname](properties);
 		} else {
-			return new window.mura.Entity(properties);
+			return new root.mura.Entity(properties);
 		}
 	}
 
 	function getFeed(entityname){
-		return new window.mura.Feed(mura.siteid,entityname);
+		return new root.mura.Feed(mura.siteid,entityname);
 	}
 
 	function findQuery(params){
@@ -162,12 +162,12 @@
 
 		return new Promise(function(resolve,reject) {
 
-			window.mura.ajax({
+			root.mura.ajax({
 					type:'get',
-					url:window.mura.apiEndpoint,
+					url:root.mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=new window.mura.EntityCollection(resp.data)
+							var collection=new root.mura.EntityCollection(resp.data)
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -562,7 +562,7 @@
 	}
 
 	function select(selector){
-		return new window.mura.DOMSelection(parseSelection(selector),selector);
+		return new root.mura.DOMSelection(parseSelection(selector),selector);
 	}
 
 	function parseHTML(str) {
@@ -738,11 +738,11 @@
 
 	//deprecated
 	function addLoadEvent(func) {
-		 var oldonload = window.onload;
-		 if (typeof window.onload != 'function') {
-			window.onload = func;
+		 var oldonload = root.onload;
+		 if (typeof root.onload != 'function') {
+			root.onload = func;
 		 } else {
-			window.onload = function() {
+			root.onload = function() {
 			 oldonload();
 			 func();
 			}
@@ -751,7 +751,7 @@
 
 	function noSpam(user,domain) {
 		locationstring = "mailto:" + user + "@" + domain;
-		window.location = locationstring;
+		root.location = locationstring;
 	}
 
 	function createUUID() {
@@ -777,7 +777,7 @@
 	function setHTMLEditor(el) {
 
 		function initEditor(){
-			var instance=window.CKEDITOR.instances[el.getAttribute('id')];
+			var instance=root.CKEDITOR.instances[el.getAttribute('id')];
 			var conf={height:200,width:'70%'};
 
 			if(el.getAttribute('data-editorconfig')){
@@ -789,14 +789,14 @@
 				CKEDITOR.remove(instance);
 			}
 
-			window.CKEDITOR.replace( el.getAttribute('id'),getHTMLEditorConfig(conf),htmlEditorOnComplete);
+			root.CKEDITOR.replace( el.getAttribute('id'),getHTMLEditorConfig(conf),htmlEditorOnComplete);
 		}
 
 		function htmlEditorOnComplete( editorInstance ) {
 			//var instance=jQuery(editorInstance).ckeditorGet();
 			//instance.resetDirty();
 			editorInstance.resetDirty();
-			var totalIntances=window.CKEDITOR.instances;
+			var totalIntances=root.CKEDITOR.instances;
 			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;
 		}
 
@@ -815,7 +815,7 @@
 		}
 
 		loader().loadjs(
-			window.mura.requirementspath + '/ckeditor/ckeditor.js'
+			root.mura.requirementspath + '/ckeditor/ckeditor.js'
 			,
 			function(){
 				initEditor();
@@ -847,18 +847,18 @@
 
 			if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
 
-				if(typeof(window.mura.loginURL) != "undefined"){
-					lu=window.mura.loginURL;
-				} else if(typeof(window.mura.loginurl) != "undefined"){
-					lu=window.mura.loginurl;
+				if(typeof(root.mura.loginURL) != "undefined"){
+					lu=root.mura.loginURL;
+				} else if(typeof(root.mura.loginurl) != "undefined"){
+					lu=root.mura.loginurl;
 				} else{
 					lu="?display=login";
 				}
 
-				if(typeof(window.mura.returnURL) != "undefined"){
-					ru=window.mura.returnURL;
-				} else if(typeof(window.mura.returnurl) != "undefined"){
-					ru=window.mura.returnURL;
+				if(typeof(root.mura.returnURL) != "undefined"){
+					ru=root.mura.returnURL;
+				} else if(typeof(root.mura.returnurl) != "undefined"){
+					ru=root.mura.returnURL;
 				} else{
 					ru=location.href;
 				}
@@ -945,15 +945,15 @@
 
 	function isDate(dtStr,fldName){
 		var daysInMonth = DaysArray(12);
-		var dtArray= dtStr.split(window.mura.dtCh);
+		var dtArray= dtStr.split(root.mura.dtCh);
 
 		if (dtArray.length != 3){
 			//alert("The date format for the "+fldName+" field should be : short")
 			return false
 		}
-		var strMonth=dtArray[window.mura.dtFormat[0]];
-		var strDay=dtArray[window.mura.dtFormat[1]];
-		var strYear=dtArray[window.mura.dtFormat[2]];
+		var strMonth=dtArray[root.mura.dtFormat[0]];
+		var strDay=dtArray[root.mura.dtFormat[1]];
+		var strYear=dtArray[root.mura.dtFormat[2]];
 
 		/*
 		if(strYear.length == 2){
@@ -980,11 +980,11 @@
 			//alert("Please enter a valid day  in the "+fldName+" field")
 			return false
 		}
-		if (strYear.length != 4 || year==0 || year<window.mura.minYear || year>window.mura.maxYear){
-			//alert("Please enter a valid 4 digit year between "+window.mura.minYear+" and "+window.mura.maxYear +" in the "+fldName+" field")
+		if (strYear.length != 4 || year==0 || year<root.mura.minYear || year>root.mura.maxYear){
+			//alert("Please enter a valid 4 digit year between "+root.mura.minYear+" and "+root.mura.maxYear +" in the "+fldName+" field")
 			return false
 		}
-		if (isInteger(stripCharsInBag(dtStr, window.mura.dtCh))==false){
+		if (isInteger(stripCharsInBag(dtStr, root.mura.dtCh))==false){
 			//alert("Please enter a valid date in the "+fldName+" field")
 			return false
 		}
@@ -1011,8 +1011,8 @@
 	        ],
 	        function(){
 				mura('#shadowbox_overlay,#shadowbox_container').remove();
-				if(window.Shadowbox){
-					window.Shadowbox.init();
+				if(root.Shadowbox){
+					root.Shadowbox.init();
 				}
 			}
 	      );
@@ -1251,7 +1251,7 @@
 			ajax(
 				{
 					type: 'post',
-					url: window.mura.apiEndpoint + '?method=validate',
+					url: root.mura.apiEndpoint + '?method=validate',
 					data: {
 							data: encodeURIComponent(JSON.stringify(data)),
 							validations: encodeURIComponent(JSON.stringify(validations)),
@@ -1308,7 +1308,7 @@
 	}
 
 	function isScrolledIntoView(el) {
-		if(!window || window.innerHeight){
+		if(!root || root.innerHeight){
 			true;
 		}
 
@@ -1319,18 +1319,18 @@
 			return true;
 		}
 
-		var isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+		var isVisible = elemTop < root.innerHeight && elemBottom >= 0;
 		return isVisible;
 
 	}
 
-	function loader(){return window.mura.ljs;}
+	function loader(){return root.mura.ljs;}
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="mi-pencil"></i>&nbsp;</div>';
 
 	function processMarkup(scope){
 
-		if(!(scope instanceof window.mura.DOMSelection)){
+		if(!(scope instanceof root.mura.DOMSelection)){
 			scope=select(scope);
 		}
 
@@ -1358,7 +1358,7 @@
 				if(find(".cffp_applied  .cffp_mm .cffp_kp").length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
-				        fileref.setAttribute("src", window.mura.requirementspath + '/cfformprotect/js/cffp.js')
+				        fileref.setAttribute("src", root.mura.requirementspath + '/cfformprotect/js/cffp.js')
 
 					document.getElementsByTagName("head")[0].appendChild(fileref)
 				}
@@ -1393,7 +1393,7 @@
 									   }
 									   else
 									   {
-									      window.setTimeout(function(){checkForReCaptcha();},10);
+									      root.setTimeout(function(){checkForReCaptcha();},10);
 									   }
 									}
 
@@ -1433,9 +1433,9 @@
 				}
 
 
-				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCroppers){
+				if(root.muraInlineEditor && root.muraInlineEditor.checkforImageCroppers){
 					find("img").each(function(){
-						 window.muraInlineEditor.checkforImageCroppers(this);
+						 root.muraInlineEditor.checkforImageCroppers(this);
 					});
 
 				}
@@ -1451,7 +1451,7 @@
 					find("a").each(function() {
 						var h=this.getAttribute('href');
 						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
-							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + window.mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + window.mura.mobileformat);
+							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + root.mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + root.mura.mobileformat);
 							this.setAttribute('href',h);
 						}
 					});
@@ -1492,7 +1492,7 @@
 
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys(formToObject(frm));
-				var keys=deepExtend(setLowerCaseKeys(obj.data()),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				var keys=deepExtend(setLowerCaseKeys(obj.data()),urlparams,{siteid:root.mura.siteid,contentid:root.mura.contentid,contenthistid:root.mura.contenthistid,nocache:1});
 
 				for(var k in keys){
 					if(!(k in checkdata)){
@@ -1513,14 +1513,14 @@
 				}
 
 				var postconfig={
-							url:  window.mura.apiEndpoint + '?method=processAsyncObject',
+							url:  root.mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'POST',
 							data: data,
 							success:function(resp){handleResponse(obj,resp);}
 						}
 
 			} else {
-				var data=deepExtend(setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				var data=deepExtend(setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:root.mura.siteid,contentid:root.mura.contentid,contenthistid:root.mura.contenthistid,nocache:1});
 
 				if(data.object=='container' && data.content){
 					delete data.content;
@@ -1535,7 +1535,7 @@
 				}
 
 				var postconfig={
-							url: window.mura.apiEndpoint + '?method=processAsyncObject',
+							url: root.mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'POST',
 							data: data,
 							success:function(resp){handleResponse(obj,resp);}
@@ -1545,7 +1545,7 @@
 			var self=obj.node;
 			self.prevInnerHTML=self.innerHTML;
 			self.prevData=obj.data();
-			self.innerHTML=window.mura.preloaderMarkup;
+			self.innerHTML=root.mura.preloaderMarkup;
 
 			ajax(postconfig);
 	}
@@ -1738,7 +1738,7 @@
 			} else {
 				if(mura.type == 'Variation'){
 					var objectData=obj.data();
-					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+					if(root.muraInlineEditor && (root.muraInlineEditor.objectHasConfigurator(objectData) || root.muraInlineEditor.objectHasEditor(objectData))){
 						obj.children('.frontEndToolsModal').remove();
 						obj.prepend(layoutmanagertoolbar);
 						muraInlineEditor.setAnchorSaveChecks(obj.node);
@@ -1763,7 +1763,7 @@
 						if(region.data('perm')){
 							var objectData=obj.data();
 
-							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+							if(root.muraInlineEditor && (root.muraInlineEditor.objectHasConfigurator(objectData) || root.muraInlineEditor.objectHasEditor(objectData))){
 								obj.children('.frontEndToolsModal').remove();
 								obj.prepend(layoutmanagertoolbar);
 								muraInlineEditor.setAnchorSaveChecks(obj.node);
@@ -1821,7 +1821,7 @@
 					e.preventDefault();
 					var a=this.getAttribute('href').split('?');
 					if(a.length==2){
-						window.location.hash=a[1];
+						root.location.hash=a[1];
 					}
 
 				});
@@ -1901,7 +1901,7 @@
 
 			}
 
-			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
+			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:root.mura.siteid,contentid:root.mura.contentid,contenthistid:root.mura.contenthistid});
 
 			delete data.inited;
 
@@ -1932,9 +1932,9 @@
 					}
 				} else {
 					//console.log(data);
-					self.innerHTML=window.mura.preloaderMarkup;
+					self.innerHTML=root.mura.preloaderMarkup;
 					ajax({
-						url:window.mura.apiEndpoint + '?method=processAsyncObject',
+						url:root.mura.apiEndpoint + '?method=processAsyncObject',
 						type:'get',
 						data:data,
 						success:function(resp){
@@ -1956,7 +1956,7 @@
 
 	function handleHashChange(){
 
-		var hash=window.location.hash;
+		var hash=root.location.hash;
 
 		if(hash){
 			hash=hash.substring(1);
@@ -1991,7 +1991,7 @@
 		muraObject.prototype = Object.create(baseClass.prototype);
 		muraObject.prototype.constructor = muraObject;
 
-		window.mura.extend(muraObject.prototype,subClass);
+		root.mura.extend(muraObject.prototype,subClass);
 
 		return muraObject;
 	}
@@ -2045,7 +2045,7 @@
 	}
 
 	function getURLParams() {
-		return getQueryStringParams(window.location.search);
+		return getQueryStringParams(root.location.search);
 	}
 
 	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
@@ -2100,24 +2100,24 @@
 			config.mobileformat=false;
 		}
 
-		if(typeof config.windowdocumentdomain != 'undefined' && config.windowdocumentdomain != ''){
-			window.document.domain=config.windowdocumentdomain;
+		if(typeof config.rootdocumentdomain != 'undefined' && config.rootdocumentdomain != ''){
+			root.document.domain=config.rootdocumentdomain;
 		}
 
 		mura.editing;
 
-		extend(window.mura,config);
+		extend(root.mura,config);
 
 		mura(function(){
 
-			var hash=window.location.hash;
+			var hash=root.location.hash;
 
 			if(hash){
 				hash=hash.substring(1);
 			}
 
 			hashparams=setLowerCaseKeys(getQueryStringParams(hash));
-			urlparams=setLowerCaseKeys(getQueryStringParams(window.location.search));
+			urlparams=setLowerCaseKeys(getQueryStringParams(root.location.search));
 
 			if(hashparams.nextnid){
 				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
@@ -2129,7 +2129,7 @@
 				});
 			}
 
-			mura(window).on('hashchange',handleHashChange);
+			mura(root).on('hashchange',handleHashChange);
 
 			processMarkup(document);
 
@@ -2218,10 +2218,10 @@
 
 		});
 
-	    return window.mura
+	    return root.mura
 	}
 
-	extend(window,{
+	extend(root,{
 		mura:extend(
 			function(selector){
 				if(typeof selector == 'function'){
@@ -2295,10 +2295,10 @@
 		initMura:init
 	});
 
-	window.m=window.m || window.mura;
+	root.m=root.m || root.mura;
 
 	//for some reason this can't be added via extend
-	window.validateForm=validateForm;
+	root.validateForm=validateForm;
 
 
-})(window);
+})(this);

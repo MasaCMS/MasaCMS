@@ -44,9 +44,9 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(window){
+;(function(root){
 
-	window.mura.FormUI=window.mura.UI.extend({
+	root.mura.FormUI=root.mura.UI.extend({
 		context:{},
 		ormform: false,
 		formJSON:{},
@@ -107,17 +107,17 @@
 			}
 
 			/*
-			if(window.mura.templatesLoaded.length){
-				var temp = window.mura.templateList.pop();
+			if(root.mura.templatesLoaded.length){
+				var temp = root.mura.templateList.pop();
 
-				window.mura.ajax(
+				root.mura.ajax(
 					{
-						url:window.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb',
+						url:root.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb',
 						type:'get',
 						xhrFields:{ withCredentials: false },
 						success:function(data) {
-							window.mura.templates[temp] = window.mura.Handlebars.compile(data);
-							if(!window.mura.templateList.length) {
+							root.mura.templates[temp] = root.mura.Handlebars.compile(data);
+							if(!root.mura.templateList.length) {
 								if (self.context.view == 'form') {
 									self.loadForm();
 								} else {
@@ -151,7 +151,7 @@
 
 		renderField:function(fieldtype,field) {
 			var self = this;
-			var templates = window.mura.templates;
+			var templates = root.mura.templates;
 			var template = fieldtype;
 
 			if( field.datasetid != "" && self.isormform)
@@ -177,7 +177,7 @@
 				context.formEl = holder;
 				nestedForm.getForm();
 
-				var html = window.mura.templates[template](field);
+				var html = root.mura.templates[template](field);
 				mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
 			}
 			else {
@@ -209,7 +209,7 @@
 					}
 				}
 
-				var html = window.mura.templates[template](field);
+				var html = root.mura.templates[template](field);
 
 				mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
 			}
@@ -305,7 +305,7 @@
 				dataset.options = [];
 				self.renderqueue++;
 
-				window.mura.getFeed( dataset.source )
+				root.mura.getFeed( dataset.source )
 					.getQuery()
 					.then( function(collection) {
 						collection.each(function(item) {
@@ -373,24 +373,24 @@
 			mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
 
 			if(self.formJSON.form.pages.length == 1) {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit","class":"form-submit"}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:"Submit","class":"form-submit"}));
 			}
 			else {
 				if(self.currentpage == 0) {
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:1,label:"Next","class":"form-nav"}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:1,label:"Next","class":"form-nav"}));
 				} else {
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage-1,label:"Back","class":'form-nav'}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage-1,label:"Back","class":'form-nav'}));
 
 					if(self.currentpage+1 < self.formJSON.form.pages.length) {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Next","class":'form-nav'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:"Next","class":'form-nav'}));
 					}
 					else {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Submit","class":'form-submit  btn-primary'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:"Submit","class":'form-submit  btn-primary'}));
 					}
 				}
 
 				if(self.backlink != undefined && self.backlink.length)
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(window.mura.templates['paging']({page:self.currentpage+1,label:"Cancel","class":'form-cancel btn-primary pull-right'}));
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:"Cancel","class":'form-cancel btn-primary pull-right'}));
 			}
 
 			mura(".form-submit",self.context.formEl).click( function() {
@@ -407,7 +407,7 @@
 				var button = this;
 
 				if(self.ormform) {
-					window.mura.getEntity(self.entity)
+					root.mura.getEntity(self.entity)
 					.set(
 						self.data
 					)
@@ -429,8 +429,8 @@
 					data.siteid=data.siteid || mura.siteid;
 					data.fields=self.getPageFieldList();
 
-	                window.mura.post(
-                        window.mura.apiEndpoint + '?method=processAsyncObject',
+	                root.mura.post(
+                        root.mura.apiEndpoint + '?method=processAsyncObject',
                         data)
                         .then(function(resp){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
@@ -469,7 +469,7 @@
 					if( this.checked ) {
 						if (self.ormform) {
 							item = {};
-							item['id'] = window.mura.createUUID();
+							item['id'] = root.mura.createUUID();
 							item[self.entity + 'id'] = self.data.id;
 							item[mura(this).attr('source') + 'id'] = mura(this).val();
 							item['key'] = mura(this).val();
@@ -531,7 +531,7 @@
 			}
 
 			/*
-			if(window.mura.templateList.length) {
+			if(root.mura.templateList.length) {
 				self.getTemplates( entityid );
 			}
 			else {
@@ -547,8 +547,8 @@
 						console.log(self.formJSON);
 
 
-			window.mura.get(
-					window.mura.apiEndpoint + '/content/' + self.context.objectid
+			root.mura.get(
+					root.mura.apiEndpoint + '/content/' + self.context.objectid
 					 + '?fields=body,title,filename,responsemessage&ishuman=true'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
@@ -579,16 +579,16 @@
 						 	self.entity = entityName;
 
 						 	if(self.entityid == undefined) {
-								window.mura.get(
-									window.mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
+								root.mura.get(
+									root.mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
 								).then(function(resp) {
 									self.data = resp.data;
 									self.renderData();
 								});
 						 	}
 						 	else {
-								window.mura.get(
-									window.mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
+								root.mura.get(
+									root.mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
 								).then(function(resp) {
 									self.data = resp.data;
 									self.renderData();
@@ -607,10 +607,10 @@
 			mura(self.context.formEl).empty();
 
 			if(self.context.mode != undefined && self.context.mode == 'nested') {
-				var html = window.mura.templates['nested'](self.context);
+				var html = root.mura.templates['nested'](self.context);
 			}
 			else {
-				var html = window.mura.templates['form'](self.context);
+				var html = root.mura.templates['form'](self.context);
 			}
 
 			mura(self.context.formEl).append(html);
@@ -629,7 +629,7 @@
 
 			if(self.ormform) {
 				console.log('a!');
-				window.mura.getEntity(self.entity)
+				root.mura.getEntity(self.entity)
 				.set(
 					self.data
 				)
@@ -654,8 +654,8 @@
 				data.formid=data.objectid;
 				data.siteid=data.siteid || mura.siteid;
 
-                window.mura.post(
-                        window.mura.apiEndpoint + '?method=processAsyncObject',
+                root.mura.post(
+                        root.mura.apiEndpoint + '?method=processAsyncObject',
                         data)
                         .then(function(resp){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
@@ -708,7 +708,7 @@
 				}
 			}
 
-			var html = window.mura.templates['error'](errorData);
+			var html = root.mura.templates['error'](errorData);
 			console.log(errorData);
 
 			mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
@@ -722,7 +722,7 @@
 			var entityName = '';
 
 			/*
-			if(window.mura.templateList.length) {
+			if(root.mura.templateList.length) {
 				self.getTemplates();
 			}
 			else {
@@ -777,8 +777,8 @@
 		loadList: function() {
 			var self = this;
 
-			window.mura.get(
-				window.mura.apiEndpoint + '/content/' + self.context.objectid
+			root.mura.get(
+				root.mura.apiEndpoint + '/content/' + self.context.objectid
 				 + '?fields=body,title,filename,responsemessage'
 				).then(function(data) {
 				 	formJSON = JSON.parse( data.data.body );
@@ -801,16 +801,16 @@
 		getTableData: function( navlink ) {
 			var self = this;
 
-			window.mura.get(
-				window.mura.apiEndpoint  + self.entity + '/listviewdescriptor'
+			root.mura.get(
+				root.mura.apiEndpoint  + self.entity + '/listviewdescriptor'
 			).then(function(resp) {
 					self.columns = resp.data;
-				window.mura.get(
-					window.mura.apiEndpoint + self.entity + '/propertydescriptor/'
+				root.mura.get(
+					root.mura.apiEndpoint + self.entity + '/propertydescriptor/'
 				).then(function(resp) {
 					self.properties = self.cleanProps(resp.data);
 					if( navlink == undefined) {
-						navlink = window.mura.apiEndpoint + self.entity + '?sort=' + self.sortdir + self.sortfield;
+						navlink = root.mura.apiEndpoint + self.entity + '?sort=' + self.sortdir + self.sortfield;
 						var fields = [];
 						for(var i = 0;i < self.columns.length;i++) {
 							fields.push(self.columns[i].column);
@@ -829,7 +829,7 @@
 						}
 					}
 
-					window.mura.get(
+					root.mura.get(
 						navlink
 					).then(function(resp) {
 						self.data = resp.data;
@@ -847,7 +847,7 @@
 		renderTable: function( tableData ) {
 			var self = this;
 
-			var html = window.mura.templates['table'](tableData);
+			var html = root.mura.templates['table'](tableData);
 			mura(self.context.formEl).html( html );
 
 			if (self.context.view == 'list') {
@@ -898,8 +898,8 @@
 		loadOverview: function(itemid,pos) {
 			var self = this;
 
-			window.mura.get(
-				window.mura.apiEndpoint + entityName + '/' + itemid + '?expand=all'
+			root.mura.get(
+				root.mura.apiEndpoint + entityName + '/' + itemid + '?expand=all'
 				).then(function(resp) {
 					self.item = resp.data;
 
@@ -915,7 +915,7 @@
 
 			mura(self.context.formEl).empty();
 
-			var html = window.mura.templates['view'](self.item);
+			var html = root.mura.templates['view'](self.item);
 			mura(self.context.formEl).append(html);
 
 			mura(".nav-back",self.context.formEl).click( function() {
@@ -968,7 +968,7 @@
 		registerHelpers: function() {
 			var self = this;
 
-			window.mura.Handlebars.registerHelper('eachColRow',function(row, columns, options) {
+			root.mura.Handlebars.registerHelper('eachColRow',function(row, columns, options) {
 				var ret = "";
 				for(var i = 0;i < columns.length;i++) {
 					ret = ret + options.fn(row[columns[i].column]);
@@ -976,7 +976,7 @@
 				return ret;
 			});
 
-			window.mura.Handlebars.registerHelper('eachProp',function(data, options) {
+			root.mura.Handlebars.registerHelper('eachProp',function(data, options) {
 				var ret = "";
 				var obj = {};
 
@@ -993,7 +993,7 @@
 				return ret;
 			});
 
-			window.mura.Handlebars.registerHelper('eachKey',function(properties, by, options) {
+			root.mura.Handlebars.registerHelper('eachKey',function(properties, by, options) {
 				var ret = "";
 				var item = "";
 				for(var i in properties) {
@@ -1009,7 +1009,7 @@
 				return ret;
 			});
 
-			window.mura.Handlebars.registerHelper('eachHour',function(hour, options) {
+			root.mura.Handlebars.registerHelper('eachHour',function(hour, options) {
 				var ret = "";
 				var h = 0;
 				var val = "";
@@ -1040,7 +1040,7 @@
 				return ret;
 			});
 
-			window.mura.Handlebars.registerHelper('eachColButton',function(row, options) {
+			root.mura.Handlebars.registerHelper('eachColButton',function(row, options) {
 				var ret = "";
 
 				row.label='View';
@@ -1061,7 +1061,7 @@
 				return ret;
 			});
 
-			window.mura.Handlebars.registerHelper('eachCheck',function(checks, selected, options) {
+			root.mura.Handlebars.registerHelper('eachCheck',function(checks, selected, options) {
 				var ret = "";
 
 				for(var i = 0;i < checks.length;i++) {
@@ -1074,7 +1074,7 @@
 				}
 				return ret;
 			});
-			window.mura.Handlebars.registerHelper('eachStatic',function(dataset, options) {
+			root.mura.Handlebars.registerHelper('eachStatic',function(dataset, options) {
 				var ret = "";
 
 				for(var i = 0;i < dataset.datarecordorder.length;i++) {
@@ -1090,4 +1090,4 @@
 
 	});
 
-})(window);
+})(this);

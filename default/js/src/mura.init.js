@@ -43,9 +43,9 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-;(function(window){
-    window.mura.datacache=new window.mura.Cache();
-    window.mura.Handlebars=Handlebars.create();
-    window.mura.templatesLoaded=false;
+;(function(root){
+    root.mura.datacache=new root.mura.Cache();
+    root.mura.Handlebars=Handlebars.create();
+    root.mura.templatesLoaded=false;
     Handlebars.noConflict();
-})(window);
+})(this);

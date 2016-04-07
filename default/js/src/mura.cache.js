@@ -44,13 +44,13 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(window){
-	window.mura.Cache=window.mura.Core.extend({
+;(function(root){
+	root.mura.Cache=root.mura.Core.extend({
 		init:function(){
 			this.cache={};
 		},
         getKey:function(keyName){
-            return window.mura.hashCode(keyName);
+            return root.mura.hashCode(keyName);
         },
 
         get:function(keyName,keyValue){
@@ -94,4 +94,4 @@
 
 	});
 
-})(window);
+})(this);
