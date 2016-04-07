@@ -1304,7 +1304,7 @@
 									var params=item.data();
 
 									delete params['instanceid'];
-									delete params['objectname'];
+									//delete params['objectname'];
 									delete params['objectid'];
 									delete params['isconfigurator'];
 									delete params['perm'];

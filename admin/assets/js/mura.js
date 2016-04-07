@@ -3259,14 +3259,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		// Try to copy attributes across
 		for (var i = 0, a = el.attributes, n = a.length; i < n; ++i)
-		oldEl.setAttribute(a[i].name, a[i].value);
+		el.setAttribute(a[i].name, a[i].value);
 
 		// Try to move children across
 		while (el.hasChildNodes())
 		newEl.appendChild(el.firstChild);
 
 		// Replace the old element with the new one
-		el.parentNode.replaceChild(newEl, oldEl);
+		el.parentNode.replaceChild(newEl, el);
 
 		// Return the new element, for good measure.
 		return newEl;
@@ -5954,14 +5954,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		parent:function(){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			return window.mura(this.selection[0].parentNode);
 		},
 
 		children:function(selector){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(this.selection[0].hasChildNodes()){
@@ -6038,7 +6038,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		siblings:function(selector){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			var el=this.selection[0];
 
@@ -6274,7 +6274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		css:function(ruleName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof ruleName == 'undefined' && typeof value == 'undefined'){
@@ -6325,7 +6325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		offsetParent:function(){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			var el=this.selection[0];
 			return el.offsetParent || el;
@@ -6333,7 +6333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		outerHeight:function(withMargin){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			if(typeof withMargin == 'undefined'){
 				function outerHeight(el) {
@@ -6352,7 +6352,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		height:function(height) {
 		 	if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof width != 'undefined'){
@@ -6383,7 +6383,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		width:function(width) {
 		  	if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof width != 'undefined'){
@@ -6411,7 +6411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		offset:function(){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			var el=this.selection[0];
 			var rect = el.getBoundingClientRect()
@@ -6428,7 +6428,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		offset:function(attributeName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			var box = this.selection[0].getBoundingClientRect();
 			return {
@@ -6439,7 +6439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		removeAttr:function(attributeName){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			this.each(function(el){
@@ -6454,7 +6454,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		changeElementType:function(type){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			this.each(function(el){
@@ -6467,7 +6467,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
         val:function(value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof value != 'undefined'){
@@ -6496,7 +6496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		attr:function(attributeName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
@@ -6530,7 +6530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		data:function(attributeName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
 				return window.mura.getData(this.selection[0]);
@@ -6556,7 +6556,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		prop:function(attributeName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
 				return window.mura.getProps(this.selection[0]);

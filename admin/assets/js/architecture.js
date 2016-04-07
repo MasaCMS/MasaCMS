@@ -829,6 +829,7 @@ buttons: {
 			siteManager.bindMouse();
 			setCheckboxTrees();
 			siteManager.setupRCQuikEdit();
+			setToolTips(".tab-content");
 
 			$('#rcAdvancedSearch').find('ul.categories:not(.checkboxTrees)').css("margin-left", "10px");
 
@@ -870,7 +871,6 @@ buttons: {
 			}
 			$('#selectedRelatedContent .load-inline').spin(false);
 			d.html(data);
-
 			siteManager.setupRCSortable(contentid,external,relatedcontentsetid);
 		});
 

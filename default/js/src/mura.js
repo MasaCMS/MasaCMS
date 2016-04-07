@@ -223,14 +223,14 @@
 
 		// Try to copy attributes across
 		for (var i = 0, a = el.attributes, n = a.length; i < n; ++i)
-		oldEl.setAttribute(a[i].name, a[i].value);
+		el.setAttribute(a[i].name, a[i].value);
 
 		// Try to move children across
 		while (el.hasChildNodes())
 		newEl.appendChild(el.firstChild);
 
 		// Replace the old element with the new one
-		el.parentNode.replaceChild(newEl, oldEl);
+		el.parentNode.replaceChild(newEl, el);
 
 		// Return the new element, for good measure.
 		return newEl;

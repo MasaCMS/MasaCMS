@@ -911,7 +911,11 @@
 		</cfif>
 
 		<cfif not isDefined('arguments.objectParams.objectname')>
-			<cfset arguments.objectParams.objectname=ucase(left(arguments.object,1)) & right(arguments.object,len(arguments.object)-1)>
+			<cfif isDefined('arguments.objectname') and len(arguments.objectname)>
+				<cfset arguments.objectParams.objectname=arguments.objectname>
+			<cfelse>
+				<cfset arguments.objectParams.objectname=ucase(left(arguments.object,1)) & right(arguments.object,len(arguments.object)-1)>
+			</cfif>
 		</cfif>
 
 		<cfif not find('class=',arguments.objectParams.objectname) and arguments.renderer.hasDisplayObject(arguments.object)>
@@ -1159,6 +1163,7 @@
 								<cfset theObject=renderObjectInManager(object=arguments.object,
 									objectid=arguments.objectid,
 									content=theObject,
+									objectname=arguments.objectname,
 									objectParams=arguments.params,
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
@@ -1297,6 +1302,7 @@
 									objectid=arguments.objectid,
 									content=theObject,
 									objectParams=arguments.params,
+									objectname=arguments.objectname,
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
 									objectname=arguments.objectname,

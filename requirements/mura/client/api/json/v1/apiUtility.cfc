@@ -411,6 +411,30 @@ component extends="mura.cfobject" {
 				if(arrayLen(pathInfo) > 2){
 					if(len(pathInfo[3])==35){
 						params.id=pathInfo[3];
+						if(arrayLen(pathInfo) >= 4 && params.entityName=='content' && pathInfo[4]=='relatedcontent'){
+							var $=getBean('$').init(params.siteid);
+							params.method='findRelatedContent';
+							url.id=params.id;
+							url.siteid=variables.siteid;
+							params.siteid=variables.siteid;
+							url.entityname=params.entityName;
+
+							if(arrayLen(pathInfo) == 5){
+								params.relatedcontentsetid=pathInfo[5];
+							} else {
+								param name='params.relatedcontentsetid' default='default';
+							}
+
+							if(!allowAccess(params.entityName,$)){
+								throw(type="authorization");
+							}
+
+							result=findRelatedContent(argumentCollection=params);
+							result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'='findRelatedContent','params'=getParamsWithOutMethod(params),'data'=result});
+							responseObject.setContentType('application/json; charset=utf-8');
+							responseObject.setStatus(200);
+							return result;
+						}
 
 						if(arrayLen(pathInfo) == 4){
  							if (params.entityName=='content' && pathInfo[4]=='history'){
@@ -442,23 +466,6 @@ component extends="mura.cfobject" {
 
 								result=findCrumbArray(argumentCollection=params);
 								result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'='findCrumbArray','params'=getParamsWithOutMethod(params),'data'=result});
-								responseObject.setContentType('application/json; charset=utf-8');
-								responseObject.setStatus(200);
-								return result;
-							} else if (params.entityName=='content' && pathInfo[4]=='relatedcontent'){
-								var $=getBean('$').init(params.siteid);
-								params.method='findRelatedContent';
-								url.id=params.id;
-								url.siteid=variables.siteid;
-								params.siteid=variables.siteid;
-								url.entityname=params.entityName;
-
-								if(!allowAccess(params.entityName,$)){
-									throw(type="authorization");
-								}
-
-								result=findRelatedContent(argumentCollection=params);
-								result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'='findRelatedContent','params'=getParamsWithOutMethod(params),'data'=result});
 								responseObject.setContentType('application/json; charset=utf-8');
 								responseObject.setStatus(200);
 								return result;
