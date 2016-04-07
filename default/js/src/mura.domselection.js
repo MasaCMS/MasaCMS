@@ -224,14 +224,14 @@
 
 		parent:function(){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			return window.mura(this.selection[0].parentNode);
 		},
 
 		children:function(selector){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(this.selection[0].hasChildNodes()){
@@ -308,7 +308,7 @@
 
 		siblings:function(selector){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			var el=this.selection[0];
 
@@ -544,7 +544,7 @@
 
 		css:function(ruleName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof ruleName == 'undefined' && typeof value == 'undefined'){
@@ -595,7 +595,7 @@
 
 		offsetParent:function(){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			var el=this.selection[0];
 			return el.offsetParent || el;
@@ -603,7 +603,7 @@
 
 		outerHeight:function(withMargin){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			if(typeof withMargin == 'undefined'){
 				function outerHeight(el) {
@@ -622,7 +622,7 @@
 
 		height:function(height) {
 		 	if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof width != 'undefined'){
@@ -653,7 +653,7 @@
 
 		width:function(width) {
 		  	if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof width != 'undefined'){
@@ -681,7 +681,7 @@
 
 		offset:function(){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			var el=this.selection[0];
 			var rect = el.getBoundingClientRect()
@@ -698,7 +698,7 @@
 
 		offset:function(attributeName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			var box = this.selection[0].getBoundingClientRect();
 			return {
@@ -709,7 +709,7 @@
 
 		removeAttr:function(attributeName){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			this.each(function(el){
@@ -724,7 +724,7 @@
 
 		changeElementType:function(type){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			this.each(function(el){
@@ -737,7 +737,7 @@
 
         val:function(value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof value != 'undefined'){
@@ -766,7 +766,7 @@
 
 		attr:function(attributeName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
@@ -800,7 +800,7 @@
 
 		data:function(attributeName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
 				return window.mura.getData(this.selection[0]);
@@ -826,7 +826,7 @@
 
 		prop:function(attributeName,value){
 			if(!this.selection.length){
-				return;
+				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
 				return window.mura.getProps(this.selection[0]);
