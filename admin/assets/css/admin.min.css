@@ -24241,6 +24241,9 @@ i {
   padding: 0;
   margin: 0 0 9px 0 !important;
 }
+.mura .mura-grid ul.categorylist {
+  margin-bottom: 0 !important;
+}
 .mura .mura-grid li {
   clear: both;
   float: left;
