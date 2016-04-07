@@ -291,7 +291,7 @@
 					<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
 					<!--- THE FORM --->
-					<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
+					<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" novalidate="novalidate">
 						<fieldset>
 
 							<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
