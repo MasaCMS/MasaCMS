@@ -80,7 +80,7 @@ function toggleAdminToolbar(){
 	}
 </script>
 
-	<img src="#application.configBean.getContext()#/admin/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+	<img src="#application.configBean.getContext()#/admin/assets/images/mura-logo-fe@2x.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 	<div id="frontEndTools" class="pluginHdr" style="display: #Cookie.fetDisplay#">
 			<ul>
 				<li id="adminPlugIns"><a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="mi-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
