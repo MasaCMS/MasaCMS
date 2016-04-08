@@ -23758,6 +23758,8 @@ i {
   /* associated files */
   /* /associated files */
   /* code diff */
+  /* code diff */
+  /* comments manager */
   /*
 	DEV NOTE
 	ie10 does not allow use of 'inherit' on calculated parent
@@ -28596,6 +28598,69 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   /* IE7 inline-block hack */
   *zoom: 1;
   margin-right: 1em;
+}
+.mura #ccomments #commentsManagerWrapper .btn-success,
+.mura #ccomments #commentsManagerWrapper .btn-danger,
+.mura #ccomments #commentsManagerWrapper .btn-warning {
+  color: white;
+}
+.mura #ccomments #commentsManagerWrapper .mura-table-grid i.icon-calendar {
+  font-size: 14px;
+}
+.mura #ccomments .date-range-selector .input-prepend {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+}
+.mura #ccomments .modal .modal-header h1 {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 25px 0 0;
+}
+.mura #ccomments .modal .modal-header h1 a {
+  color: #000000;
+  letter-spacing: 0;
+}
+.mura #ccomments .modal .modal-header p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.mura #ccomments .modal .modal-body dl {
+  /*
+        margin: 1em 0 1em;
+        border-bottom: 1px dotted @gray;
+        padding-bottom: 1em;
+        
+        
+        &:last-child {
+          margin-top: 0;
+          padding-top: 0;
+          border: 0;
+        }
+        */
+}
+.mura #ccomments .modal .modal-body dt {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: .25em;
+}
+.mura #ccomments .modal .modal-body dt > em {
+  font-weight: normal;
+  color: #cccccc;
+}
+.mura #ccomments .modal .modal-body dd {
+  margin: 0 0 .25em 0;
+}
+.mura #ccomments .modal .modal-body .gravatar {
+  float: left;
+  margin-right: 1em;
+  margin-bottom: .25em;
+}
+.mura #ccomments .modal .modal-body .date-time {
+  font-style: italic;
+  margin-bottom: 0;
 }
 .mura .mura__layout-manager__controls {
   width: 300px;

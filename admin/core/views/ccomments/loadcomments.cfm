@@ -186,10 +186,10 @@
 							</cfsilent>
 
 							<!--- MODAL WINDOW --->
-							<div id="comment-#local.item.getCommentID()#" data-contentid="#local.item.getContentID()#" data-commentid="#local.item.getCommentID()#" class="modal comment-modal hide fade">
+							<div id="comment-#local.item.getCommentID()#" data-contentid="#local.item.getContentID()#" data-commentid="#local.item.getCommentID()#" class="modal fade" role="dialog">
 								<div class="modal-dialog">
 									<div class="modal-content">
-										<div class="modal-header block-header">
+										<div class="modal-header">
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="mi-times-circle"></i></button>
 
 											<p>
@@ -213,17 +213,17 @@
 											<div class="pull-right">
 												<!--- <a href="##" class="btn  btn-primary" data-dismiss="modal"><i class="mi-undo"></i> #rbKey('comments.cancel')#</a> --->
 												<cfif local.item.getIsDeleted()>
-													<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="undelete"><i class="mi-trash"></i> Undelete</a>
+													<a href="##" class="singleEdit btn" data-commentid="#local.item.getCommentID()#" data-action="undelete"><i class="mi-trash"></i> Undelete</a>
 												<cfelse>
-													<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="delete"><i class="mi-trash"></i> #rbKey('comments.delete')#</a>
+													<a href="##" class="singleEdit btn" data-commentid="#local.item.getCommentID()#" data-action="delete"><i class="mi-trash"></i> #rbKey('comments.delete')#</a>
 													<cfif local.item.getIsSpam()>
-														<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unspam"><i class="mi-flag"></i> Unspam</a>
+														<a href="##" class="singleEdit btn" data-commentid="#local.item.getCommentID()#" data-action="unspam"><i class="mi-flag"></i> Unspam</a>
 													<cfelse>
-														<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="spam"><i class="mi-flag"></i> Spam</a>
+														<a href="##" class="singleEdit btn" data-commentid="#local.item.getCommentID()#" data-action="spam"><i class="mi-flag"></i> Spam</a>
 														<cfif local.item.getIsApproved()>
-															<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unapprove"><i class="mi-ban"></i> #rbKey('comments.unapprove')#</a>
+															<a href="##" class="singleEdit btn" data-commentid="#local.item.getCommentID()#" data-action="unapprove"><i class="mi-ban"></i> #rbKey('comments.unapprove')#</a>
 														<cfelse>
-															<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="mi-check"></i> #rbKey('comments.approve')#</a>
+															<a href="##" class="singleEdit btn" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="mi-check"></i> #rbKey('comments.approve')#</a>
 														</cfif>
 													</cfif>
 												</cfif>
@@ -313,7 +313,7 @@
 
 			<!--- RECORDS PER PAGE --->
 			<div class="view-controls mura-layout-row">
-				<div class="btn-group">
+				<div class="btn-group dropup">
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
 									Mark As
 									<span class="caret"></span>
@@ -324,7 +324,7 @@
 									<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="mi-trash"></i> Deleted</a></li>
 								</ul>
 							</div>
-							<div class="btn-group">
+							<div class="btn-group dropup">
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
 									Comments Per Page
 									<span class="caret"></span>
