@@ -44,8 +44,8 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(window){
-	window.mura.Feed=window.mura.Core.extend({
+;(function(root){
+	root.mura.Feed=root.mura.Core.extend({
 		init:function(siteid,entityname){
             this.queryString= entityname + '/?';
 			this.propIndex=0;
@@ -165,12 +165,12 @@
             var self=this;
 
             return new Promise(function(resolve,reject) {
-				window.mura.ajax({
+				root.mura.ajax({
 					type:'get',
-					url:window.mura.apiEndpoint + self.queryString,
+					url:root.mura.apiEndpoint + self.queryString,
 					success:function(resp){
 
-						var returnObj = new window.mura.EntityCollection(resp.data);
+						var returnObj = new root.mura.EntityCollection(resp.data);
 
 						if(typeof resolve == 'function'){
 							resolve(returnObj);
@@ -182,4 +182,4 @@
         }
     });
 
-})(window);
+})(this);

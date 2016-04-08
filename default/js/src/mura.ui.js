@@ -44,9 +44,9 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(window){
+;(function(root){
 
-	window.mura.UI=window.mura.Core.extend({
+	root.mura.UI=root.mura.Core.extend({
 
 		context:{},
 
@@ -69,4 +69,4 @@
 		}
 	});
 
-})(window);
+})(this);

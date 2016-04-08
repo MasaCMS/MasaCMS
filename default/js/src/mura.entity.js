@@ -44,12 +44,12 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(window){
-	window.mura.Entity=window.mura.Core.extend({
+;(function(root){
+	root.mura.Entity=root.mura.Core.extend({
 		init:function(properties){
 			properties=properties || {};
 			properties.entityname = properties.entityname || 'content';
-			properties.siteid = properties.siteid || window.mura.siteid;
+			properties.siteid = properties.siteid || root.mura.siteid;
 			this.set(properties);
 
 			if(typeof this.properties.isnew == 'undefined'){
@@ -78,12 +78,12 @@
 
 					return new Promise(function(resolve,reject) {
 						if('items' in self.properties[propertyName]){
-							var returnObj = new window.mura.EntityCollection(self.properties[propertyName]);
+							var returnObj = new root.mura.EntityCollection(self.properties[propertyName]);
 						} else {
-							if(window.mura.entities[self.properties[propertyName].entityname]){
-								var returnObj = new window.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
+							if(root.mura.entities[self.properties[propertyName].entityname]){
+								var returnObj = new root.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
 							} else {
-								var returnObj = new window.mura.Entity(self.properties[propertyName]);
+								var returnObj = new root.mura.Entity(self.properties[propertyName]);
 							}
 						}
 
@@ -100,19 +100,19 @@
 					}
 					return new Promise(function(resolve,reject) {
 
-						window.mura.ajax({
+						root.mura.ajax({
 							type:'get',
 							url:self.properties.links[propertyName],
 							params:params,
 							success:function(resp){
 
 								if('items' in resp.data){
-									var returnObj = new window.mura.EntityCollection(resp.data);
+									var returnObj = new root.mura.EntityCollection(resp.data);
 								} else {
-									if(window.mura.entities[obj.entityname]){
-										var returnObj = new window.mura.entities[obj.entityname](obj);
+									if(root.mura.entities[obj.entityname]){
+										var returnObj = new root.mura.entities[obj.entityname](obj);
 									} else {
-										var returnObj = new window.mura.Entity(resp.data);
+										var returnObj = new root.mura.Entity(resp.data);
 									}
 								}
 
@@ -144,7 +144,7 @@
 		set:function(propertyName,propertyValue){
 
 			if(typeof propertyName == 'object'){
-				this.properties=window.mura.deepExtend(this.properties,propertyName);
+				this.properties=root.mura.deepExtend(this.properties,propertyName);
 				this.set('isdirty',true);
 			} else if(typeof this.properties[propertyName] == 'undefined' || this.properties[propertyName] != propertyValue){
 				this.properties[propertyName]=propertyValue;
@@ -170,7 +170,7 @@
 		'new':function(params){
 
 			return new Promise(function(resolve,reject){
-				params=window.mura.extend(
+				params=root.mura.extend(
 					{
 						entityname:self.get('entityname'),
 						method:'findQuery',
@@ -179,7 +179,7 @@
 					params
 				);
 
-				window.mura.findNew(params).then(function(collection){
+				root.mura.findNew(params).then(function(collection){
 
 					if(collection.get('items').length){
 						self.set(collection.get('items')[0].getAll());
@@ -199,7 +199,7 @@
 			var self=this;
 
 			if(propertyName =='id'){
-				var cachedValue = window.mura.datacache.get(propertyValue);
+				var cachedValue = root.mura.datacache.get(propertyValue);
 
 				if(cachedValue){
 					this.set(cachedValue);
@@ -210,7 +210,7 @@
 			}
 
 			return new Promise(function(resolve,reject){
-				params=window.mura.extend(
+				params=root.mura.extend(
 					{
 						entityname:self.get('entityname'),
 						method:'findQuery',
@@ -221,7 +221,7 @@
 
 				params[propertyName]=propertyValue;
 
-				window.mura.findQuery(params).then(function(collection){
+				root.mura.findQuery(params).then(function(collection){
 
 					if(collection.get('items').length){
 						self.set(collection.get('items')[0].getAll());
@@ -243,11 +243,11 @@
 
 			return new Promise(function(resolve,reject) {
 
-				window.mura.ajax({
+				root.mura.ajax({
 					type: 'post',
-					url: window.mura.apiEndpoint + '?method=validate',
+					url: root.mura.apiEndpoint + '?method=validate',
 					data: {
-							data: window.mura.escape(data),
+							data: root.mura.escape(data),
 							validations: '{}',
 							version: 4
 						},
@@ -268,7 +268,7 @@
 		},
 		hasErrors:function(){
 			var errors=this.get('errors',{});
-			return (typeof errors=='string' && errors !='') || (typeof errors=='object' && !window.mura.isEmptyObject(errors));
+			return (typeof errors=='string' && errors !='') || (typeof errors=='object' && !root.mura.isEmptyObject(errors));
 		},
 		getErrors:function(){
 			return this.get('errors',{});
@@ -286,11 +286,11 @@
 
 			if(!this.get('id')){
 				return new Promise(function(resolve,reject) {
-					var temp=window.mura.deepExtend({},self.getAll());
+					var temp=root.mura.deepExtend({},self.getAll());
 
-					window.mura.ajax({
+					root.mura.ajax({
 						type:'get',
-						url:window.mura.apiEndpoint + self.get('entityname') + '/new' ,
+						url:root.mura.apiEndpoint + self.get('entityname') + '/new' ,
 						success:function(resp){
 							self.set(resp.data);
 							self.set(temp);
@@ -307,23 +307,23 @@
 
 					var context=self.get('id');
 
-					window.mura.ajax({
+					root.mura.ajax({
 						type:'post',
-						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+						url:root.mura.apiEndpoint + '?method=generateCSRFTokens',
 						data:{
 							siteid:self.get('siteid'),
 							context:context
 						},
 						success:function(resp){
-							window.mura.ajax({
+							root.mura.ajax({
 									type:'post',
-									url:window.mura.apiEndpoint + '?method=save',
-									data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
+									url:root.mura.apiEndpoint + '?method=save',
+									data:root.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
 									success:function(resp){
 										if(resp.data != 'undefined'){
 											self.set(resp.data)
 											self.set('isdirty',false);
-											if(self.get('saveErrors') || window.mura.isEmptyObject(self.getErrors())){
+											if(self.get('saveErrors') || root.mura.isEmptyObject(self.getErrors())){
 												if(typeof resolve == 'function'){
 													resolve(self);
 												}
@@ -355,17 +355,17 @@
 			var self=this;
 
 			return new Promise(function(resolve,reject) {
-				window.mura.ajax({
+				root.mura.ajax({
 					type:'get',
-					url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+					url:root.mura.apiEndpoint + '?method=generateCSRFTokens',
 					data:{
 						siteid:self.get('siteid'),
 						context:self.get('id')
 					},
 					success:function(resp){
-						window.mura.ajax({
+						root.mura.ajax({
 							type:'get',
-							url:window.mura.apiEndpoint + '?method=delete',
+							url:root.mura.apiEndpoint + '?method=delete',
 							data:{
 								siteid:self.get('siteid'),
 								id:self.get('id'),
@@ -389,21 +389,21 @@
 
 		getFeed:function(){
 			var siteid=get('siteid') || mura.siteid;
-			return new window.mura.Feed(this.get('entityName'));
+			return new root.mura.Feed(this.get('entityName'));
 		},
 
 		cachePurge:function(){
-			window.mura.datacache.purge(this.get('id'));
+			root.mura.datacache.purge(this.get('id'));
 			return this;
 		},
 
 		cachePut:function(){
 			if(!this.get('isnew')){
-				window.mura.datacache.set(this.get('id'),this);
+				root.mura.datacache.set(this.get('id'),this);
 			}
 			return this;
 		}
 
 	});
 
-})(window);
+})(this);
