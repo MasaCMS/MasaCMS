@@ -206,7 +206,7 @@
 		--->
 											</p>
 										</div>
-										<div class="modal-body block-content">
+										<div class="modal-body">
 											<!--- loadcommentspage.cfm --->
 										</div>
 										<div class="modal-footer">
