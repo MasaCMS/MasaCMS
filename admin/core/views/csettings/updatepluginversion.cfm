@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<div class="mura-actions">
 				<div class="form-actions">
-					<button type="submit" class="btn"><i class="mi-check-circle"></i>Deploy</button>
+					<button type="submit" class="btn mura-primary"><i class="mi-check-circle"></i>Deploy</button>
 				</div>
 			</div>
 
