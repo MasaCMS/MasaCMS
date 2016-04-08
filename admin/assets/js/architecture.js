@@ -431,7 +431,7 @@ buttons: {
 		document.getElementById('newZoom').style.display = '';
 		document.getElementById('newZoomLink').style.display = '';
 
-		if(navperm != 'none') {
+		if(navperm != 'none' && moduleid != '00000000000000000000000000000000099') {
 
 			document.getElementById('newCopyLink').href = 'javascript:siteManager.copyThis(\'' + siteid + '\', \'' + contentid + '\',\'false\')';
 			document.getElementById('newCopyAllLink').href = 'javascript:siteManager.copyThis(\'' + siteid + '\', \'' + contentid + '\',\'true\')';
@@ -441,7 +441,7 @@ buttons: {
 
 		}
 
-		if(navperm == 'author' || navperm == 'editor') {
+		if((navperm == 'author' || navperm == 'editor') && moduleid != '00000000000000000000000000000000099') {
 
 			document.getElementById('newContentLink').onclick = function() {
 				siteManager.openNewContentMenu(contentid, siteid, topid, parentid, type, moduleid);
