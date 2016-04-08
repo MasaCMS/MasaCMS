@@ -368,25 +368,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
   </div>
          
-        <div style="display:none" id="scheduler">
-	        <label>#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</label>
-	          <div class="controls">
-	          <cf_datetimeselector name="deliveryDate" 
-            datetime="#rc.emailBean.getDeliveryDate()#" >
-            <cfset deliveryDate = rc.emailBean.getDeliveryDate()>
-	          <cfset datecheck=LSisDate(deliveryDate)>
-          </div>
-           
-	          <div class="scheduler-actions">
-		          <button type="button" class="btn" onClick="emailManager.validateScheduler('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="mi-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
-		          <button type="button" class="btn" onClick="emailManager.closeScheduler()"><i class="mi-ban"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
-		       </div>
-        <input type="hidden" name="action" value="">
-        <input type="hidden" name="sendNow" value="">
-        </div>
+    <div style="display:none" id="scheduler">
+      <div class="mura-control-group">
+        <label>#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</label>
+        <cf_datetimeselector name="deliveryDate" 
+        datetime="#rc.emailBean.getDeliveryDate()#" >
+        <cfset deliveryDate = rc.emailBean.getDeliveryDate()>
+        <cfset datecheck=LSisDate(deliveryDate)>
       </div>
-    
-
+     
+      <div class="mura-actions">
+        <div class="form-actions">
+          <button type="button" class="btn" onClick="emailManager.validateScheduler('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="mi-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+          <button type="button" class="btn" onClick="emailManager.closeScheduler()"><i class="mi-ban"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
+          <input type="hidden" name="action" value="">
+          <input type="hidden" name="sendNow" value="">
+       </div>
+     </div>
+    </div>
+  </div>
+  
  </div> 
     
     </div> <!-- /.block-content.tab-content -->	
