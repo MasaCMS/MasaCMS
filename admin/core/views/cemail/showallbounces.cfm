@@ -75,7 +75,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</form>
 		</cfoutput>
 
-
 			<cfif rc.rsBounces.recordcount>
 				<cfoutput>
 					<h2>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h2>
