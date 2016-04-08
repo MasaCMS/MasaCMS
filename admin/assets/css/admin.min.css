@@ -29475,9 +29475,9 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 .mura .mura-list-grid dl.approval-action-form .radio.inline {
   padding-top: 0;
 }
-.mura .mura-list-grid dl.approval-action-form .btn {
-  float: right;
-  margin-bottom: 18px;
+.mura .mura-list-grid dl.approval-action-form .form-actions {
+  text-align: center;
+  margin: 0 auto;
 }
 .mura #status-modal.mura-list-grid .status-locked i {
   color: #b90e0e;

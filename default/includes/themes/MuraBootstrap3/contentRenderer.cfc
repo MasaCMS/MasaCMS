@@ -69,7 +69,7 @@
 
 
 		// GENERAL
-		this.layoutmanager=false;
+		this.layoutmanager=true;
 		this.jsLib = "jquery";
 		this.jsLibLoaded = true;
 		this.suppressWhitespace = true;

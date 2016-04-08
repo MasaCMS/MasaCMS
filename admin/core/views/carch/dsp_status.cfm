@@ -117,7 +117,7 @@ function viewStatusInfo(contenthistid,siteid){
 			resizable: false,
 			modal: true,
 			width: 600,
-			position:["top",20]
+			position: { my: "center", at: "top+180", of: window, collision: "fit" }
 		});
 
 
