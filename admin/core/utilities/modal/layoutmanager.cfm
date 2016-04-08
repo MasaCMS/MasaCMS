@@ -9,7 +9,7 @@
 			<div id="mura-sidebar-objects" class="mura-sidebar__objects-list">
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<cfif $.content('type') neq 'Variation'>
+						<cfif $.content('type') neq 'Variation' and this.legacyobjects>
 						<button id="mura-objects-legacy-btn" class="btn btn-primary">View Legacy Objects</button>
 						</cfif>
 						<h3>Content Objects</h3>
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 			</div>
-			<cfif $.content('type') neq 'Variation'>
+			<cfif $.content('type') neq 'Variation' and this.legacyobjects>
 			<div id="mura-sidebar-objects-legacy" class="mura-sidebar__objects-list" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">

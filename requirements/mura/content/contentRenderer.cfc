@@ -65,6 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.asyncObjects=true>
 <cfset this.asyncRender=false>
 <cfset this.layoutmanager=false>
+<cfset this.legacyobjects=true>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">
