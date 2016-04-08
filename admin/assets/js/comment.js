@@ -45,11 +45,11 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 var commentManager = {
-
+	reload:false,
 	loadSearch: function(values){
 		var url = './';
 		var pars = 'muraAction=cComments.loadComments&siteid=' + siteid + '&' + values + '&cacheid=' + Math.random();
-
+		commentManager.reload=false;
 		var d = $('#commentSearch');
 		d.html('<div class="load-inline"></div>');
 		$('#commentSearch .load-inline').spin(spinnerArgs2);
@@ -77,8 +77,8 @@ var commentManager = {
 	singleEdit: function(commentid, updateaction){
 		var url = './';
 		var pars = 'muraAction=cComments.singleEdit&siteid=' + siteid + '&commentid=' + commentid + '&updateaction=' + updateaction + '&cacheid=' + Math.random();
-
-		$.get(url + "?" + pars, function(){commentManager.submitSearch();});
+		commentManager.reload=true;
+		$.get(url + "?" + pars, function(){$('.modal').modal('hide');});
 	},
 
 	submitSearch: function(){
@@ -167,8 +167,6 @@ var commentManager = {
 
 		$('a.singleEdit').click(function(e) {
 			e.preventDefault();
-			$('.modal').modal('hide');
-
 			var k = $(this);
 			commentManager.singleEdit(k.attr('data-commentid'), k.attr('data-action'));
 
@@ -197,11 +195,15 @@ var commentManager = {
 			})
 		});
 
-		$('.modal').on('hidden', function(){
-			var k = $(this);
-			k.find('#commentsPage').remove();
-			k.find('div.modal-body').html('<div class="load-inline"></div>');
-			k.find('div.modal-body .load-inline').spin(spinnerArgs2);
+		$('.modal').on('hidden.bs.modal', function(){
+			if(commentManager.reload){
+				commentManager.submitSearch();
+			} else {
+				var k = $(this);
+				k.find('#commentsPage').remove();
+				k.find('div.modal-body').html('<div class="load-inline"></div>');
+				k.find('div.modal-body .load-inline').spin(spinnerArgs2);
+			}
 		});
 
 	},
