@@ -368,7 +368,7 @@ component extends="mura.bean.bean" versioned=false {
 					variables.instance.LastUpdateById='';
 				}
 			}
-			
+
 			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
 
 			if(qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
