@@ -173,23 +173,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<dl class="approval-action-form">
 				<dt>#application.rbFactory.getKeyValue(session.rb,"approvalchains.action")#</dt>
 				<dd>
-					<cfif isApprover>
-					<label class="radio inline">
-						<input class="approval-action" id="approval-approve" name="approval-action"type="radio" value="Approve" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.approve")# 
-					</label>
-					<label class="radio inline">
-						<input class="approval-action" id="approval-reject" name="approval-action" type="radio" value="Reject" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.reject")#
-					</label>
-					</cfif>
-					<cfif isRequester>
-					<label class="radio inline">
-						<input class="approval-action" id="approval-cancel" name="approval-action"type="radio" value="Cancel" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.cancel")# 
-					</label>
-					</cfif>
-					
+					<div class="mura-control-group">
+						<cfif isApprover>
+						<label class="radio inline">
+							<input class="approval-action" id="approval-approve" name="approval-action"type="radio" value="Approve" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.approve")# 
+						</label>
+						<label class="radio inline">
+							<input class="approval-action" id="approval-reject" name="approval-action" type="radio" value="Reject" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.reject")#
+						</label>
+						</cfif>
+						<cfif isRequester>
+						<label class="radio inline">
+							<input class="approval-action" id="approval-cancel" name="approval-action"type="radio" value="Cancel" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.cancel")# 
+						</label>
+						</cfif>
+					</div>					
 				<p>#application.rbFactory.getKeyValue(session.rb,"approvalchains.comments")#</p>
 				<textarea id="approval-comments" rows="4"></textarea>
-				<input id="mura-approval-apply" type="button" class="btn btn-primary" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.apply'))#" onclick="applyApprovalAction('#approvalRequest.getRequestID()#',$('input:radio[name=approval-action]:checked').val(),$('##approval-comments').val(),'#esapiEncode('javascript',approvalRequest.getSiteID())#');"/>
+					<div class="form-actions">					
+					<input id="mura-approval-apply" type="button" class="btn mura-primary" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.apply'))#" onclick="applyApprovalAction('#approvalRequest.getRequestID()#',$('input:radio[name=approval-action]:checked').val(),$('##approval-comments').val(),'#esapiEncode('javascript',approvalRequest.getSiteID())#');"/>
+					</div>
 				</dd>
 				</dl>
 			</cfif>
