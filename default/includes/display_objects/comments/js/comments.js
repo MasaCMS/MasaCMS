@@ -54,19 +54,6 @@
 	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
 */
-
-$.fn.changeElementType = function(newType) {
-    var attrs = {};
-
-    $.each(this[0].attributes, function(idx, attr) {
-        attrs[attr.nodeName] = attr.value;
-    });
-
-    var newelement = $("<" + newType + "/>", attrs).append($(this).contents());
-    this.replaceWith(newelement);
-    return newelement;
-};
-
 initMuraComments=function(config){
 	config=config || {};
 

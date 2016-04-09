@@ -243,6 +243,18 @@
 
 			<!--- COMMENTS --->
 			<script>
+				$.fn.changeElementType = function(newType) {
+					var attrs = {};
+
+					$.each(this[0].attributes, function(idx, attr) {
+						attrs[attr.nodeName] = attr.value;
+					});
+
+					var newelement = $("<" + newType + "/>", attrs).append($(this).contents());
+					this.replaceWith(newelement);
+					return newelement;
+				};
+
 				$(function(){
 					mura.loader().loadjs(
 						"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
