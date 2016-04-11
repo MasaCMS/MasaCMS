@@ -479,9 +479,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
-					<ul id="adminDashboard">
-						<li><a href="#$.globalConfig('adminPath')#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
-					</ul>
+					<cfif session.showdashboard>
+						<ul id="adminDashboard">
+							<li><a href="#$.globalConfig('adminPath')#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
+						</ul>
+					</cfif>
 					<ul id="adminSiteManager">
 						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li>
 					</ul>
