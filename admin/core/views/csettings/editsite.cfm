@@ -619,15 +619,15 @@ to your own modified versions of Mura CMS.
 						 </cfif>
 
 						<!--- The ad manager is now gone, but can exist in limited legacy situations --->
-						<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
-					<div class="mura-control-group">
+					<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
+						<div class="mura-control-group">
 							<label>Advertisement Manager</label>
 									<!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
 									<label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> checked</cfif>>Off</label>
 									<label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> checked</cfif>>On</label>
 
 						</div>
-						</cfif>
+					</cfif>
 					<div class="mura-control-group">
 							<label>Comments Manager</label>
 							<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>
@@ -643,39 +643,48 @@ to your own modified versions of Mura CMS.
 					</cfif>
 
 					<cfif application.configBean.getEmailBroadcaster()>
-					<div class="mura-control-group">
+						<div class="mura-control-group">
 							<label>Email Broadcaster</label>
-									<!--- <p class="alert">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
-									<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="0" <cfif rc.siteBean.getemailbroadcaster() neq 1> checked</cfif>>Off</label>
-									<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="1" <cfif rc.siteBean.getemailbroadcaster()  eq 1> checked</cfif>>On</label>
-					</div>
-					<div class="mura-control-group">
+							<!--- <p class="alert">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
+							<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="0" <cfif rc.siteBean.getemailbroadcaster() neq 1> checked</cfif>>Off</label>
+							<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="1" <cfif rc.siteBean.getemailbroadcaster()  eq 1> checked</cfif>>On</label>
+						</div>
+						<div class="mura-control-group">
 							<label>Email Broadcaster Limit</label>
-									<input name="EmailBroadcasterLimit" type="text" class="mura-constrain mura-numeric" value="#esapiEncode('html_attr',rc.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
-							</div>
+							<input name="EmailBroadcasterLimit" type="text" class="mura-constrain mura-numeric" value="#esapiEncode('html_attr',rc.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
+						</div>
 					</cfif>
 
 
 				<div class="mura-control-group">
-				<label>Content Staging Manager</label>
-						<label class="radio inline">
-						<input type="radio" name="hasChangesets" value="0" <cfif rc.siteBean.getHasChangesets() neq 1> checked</cfif>>
-						Off </label>
-						<label class="radio inline">
-						<input type="radio" name="hasChangesets" value="1" <cfif rc.siteBean.getHasChangesets() eq 1> checked</cfif>>
-						On </label>
-					</div>
+					<label>Content Staging Manager</label>
+					<label class="radio inline">
+					<input type="radio" name="hasChangesets" value="0" <cfif rc.siteBean.getHasChangesets() neq 1> checked</cfif>>
+					Off </label>
+					<label class="radio inline">
+					<input type="radio" name="hasChangesets" value="1" <cfif rc.siteBean.getHasChangesets() eq 1> checked</cfif>>
+					On </label>
+				</div>
 
 				<div class="mura-control-group">
-				<label>Publish via Change Sets Only</label>
-						<label class="radio inline">
-						<input type="radio" name="enforceChangesets" value="0" <cfif rc.siteBean.getEnforceChangesets() neq 1> checked</cfif>>
-						Off </label>
-						<label class="radio inline">
-						<input type="radio" name="enforceChangesets" value="1" <cfif rc.siteBean.getEnforceChangesets() eq 1> checked</cfif>>
-						On </label>
-					</div>
+					<label>Publish via Change Sets Only</label>
+					<label class="radio inline">
+					<input type="radio" name="enforceChangesets" value="0" <cfif rc.siteBean.getEnforceChangesets() neq 1> checked</cfif>>
+					Off </label>
+					<label class="radio inline">
+					<input type="radio" name="enforceChangesets" value="1" <cfif rc.siteBean.getEnforceChangesets() eq 1> checked</cfif>>
+					On </label>
+				</div>
 
+				<div class="mura-control-group">
+					<label>Dashboard</label>
+					<label class="radio inline">
+					<input type="radio" name="showDashboard" value="0" <cfif rc.siteBean.getShowDashboard() neq 1> checked</cfif>>
+					Off </label>
+					<label class="radio inline">
+					<input type="radio" name="showDashboard" value="1" <cfif rc.siteBean.getShowDashboard() eq 1> checked</cfif>>
+					On </label>
+				</div>
 			</div> <!--- /.block-content --->
 		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->

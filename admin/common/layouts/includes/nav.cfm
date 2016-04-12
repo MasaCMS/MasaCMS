@@ -110,7 +110,7 @@
                 <ul class="nav-main">
 
                     <!--- dashboard --->
-                    <cfif session.showdashboard>
+                    <cfif rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0)>
                         <li id="admin-nav-dashboard">
                             <a<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&amp;siteid=#esapiEncode('url',session.siteid)#&amp;span=#session.dashboardSpan#"><i class="mi-dashboard"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.dashboard")#</span></a>
                         </li>

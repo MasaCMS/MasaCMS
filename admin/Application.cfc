@@ -305,7 +305,6 @@ component extends="framework" output="false" {
 		param name="request.context.compactDisplay" default="false";
 		param name="session.siteid" default="";
 		param name="session.keywords" default="";
-		param name="session.showdashboard" default=application.configBean.getDashboard();
 		param name="session.alerts" default=structNew();
 
 		request.muraAdminRequest=true;

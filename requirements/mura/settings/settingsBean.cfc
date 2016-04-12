@@ -136,6 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="RemotePort" type="numeric" default="0" />
 <cfproperty name="resourceSSL" type="numeric" default="0" />
 <cfproperty name="resourceDomain" type="string" default="" />
+<cfproperty name="showDashboard" type="numeric" default="0" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -251,6 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.displayObjectLookup={}/>
 	<cfset variables.instance.displayObjectFilePathLookup={}/>
 	<cfset variables.instance.displayObjectLoopUpArray=[]>
+	<cfset variables.instance.showDashboard=0/>
 
 	<cfreturn this />
 </cffunction>
@@ -1096,6 +1098,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setShowDashboard" output="false">
+	<cfargument name="showDashboard">
+
+	<cfif isBoolean(arguments.showDashboard)>
+		<cfif arguments.showDashboard>
+			<cfset variables.instance.showDashboard=1>
+		<cfelse>
+			<cfset variables.instance.showDashboard=0>
+		</cfif>
+	</cfif>
+	<cfreturn this>
+</cffunction>
 
 <cffunction name="getContext" output="false">
 	<cfif getValue('isRemote')>

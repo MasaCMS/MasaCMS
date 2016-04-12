@@ -61,8 +61,8 @@
 	<cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
 	<cfset rc.currentUser=rc.$.currentUser()>
 	<cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-  <cfparam name="session.showdashboard" default="true">
-	<cfif session.showdashboard>
+
+	<cfif rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0)>
 		<cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main">
 	<cfelse>
 		<cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">

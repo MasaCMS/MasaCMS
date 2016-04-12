@@ -25,7 +25,6 @@ clientstorage=
 confirmsaveasdraft=true
 context=
 customtagpaths=
-dashboard=false
 dashboardcomments=true
 datacollection=true
 datasource=
