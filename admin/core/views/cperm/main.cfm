@@ -97,19 +97,20 @@
         <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
       </tr>
 
+
       <cfif chains.hasNext()>
         <tr>
-          <td><input name="exemptID" type="checkbox" class="checkbox" value="#adminGroup.getUserID()#" <cfif len(assignment.getExemptID()) and listFindNoCase(assignment.getExemptID(),adminGroup.getUserID())>checked</cfif>></td>
-          <td><input type="radio" disabled checked></td>
-          <td><input type="radio" disabled></td>
-          <td><input type="radio" disabled></td>
-          <td><input type="radio" disabled></td>
+          <td><input name="exemptID" type="checkbox" class="checkbox" value="#adminGroup.getUserID()#" checked disabled></td>
+          <td><input type="radio" class="checkbox" disabled checked></td>
+          <td><input type="radio" class="checkbox"disabled></td>
+          <td><input type="radio" class="checkbox"disabled></td>
+          <td><input type="radio" class="checkbox"disabled></td>
           <cfif rc.moduleID eq '00000000000000000000000000000000000'>
-            <td><input type="radio" disabled></td>
+            <td><input type="radio" class="checkbox" disabled></td>
           </cfif>
           <td nowrap class="var-width">Admin</td>
         </tr>
-      </cfif>
+    </cfif>
 
       <cfif rc.rslist.recordcount>
           <cfloop query="rc.rslist">
@@ -172,10 +173,10 @@
   <div class="control-group">
         <label class="control-label">
 
-  <span data-toggle="popover" 
-    title="" 
-    data-placement="right" 
-    data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.approvalchain"))#" 
+  <span data-toggle="popover"
+    title=""
+    data-placement="right"
+    data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.approvalchain"))#"
     data-original-title="#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')#">#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')# <i class="mi-question-circle"></i></span>
         </label>
         <div class="controls">
