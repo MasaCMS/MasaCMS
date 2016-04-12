@@ -479,7 +479,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
-					<cfif session.showdashboard>
+					<cfif $.siteConfig('dashboard') or isdefined('session.showdashboard') and session.showdashboard>
 						<ul id="adminDashboard">
 							<li><a href="#$.globalConfig('adminPath')#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
 						</ul>
