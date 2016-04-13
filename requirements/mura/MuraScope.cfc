@@ -309,6 +309,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="globalConfig" output="false" returntype="any">
 	<cfargument name="property">
+	<cfargument name="propertyValue">
 	<cfset var theValue="">
 
 	<cfif structKeyExists(arguments,"property")>
