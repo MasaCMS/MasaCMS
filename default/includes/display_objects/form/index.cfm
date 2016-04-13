@@ -39,7 +39,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(arguments.objectid)>
 	<cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
 
-	<cfif isJSON( local.formBean.getBody())>
+	<cfif $.useLayoutManager() and isJSON( local.formBean.getBody())>
 		<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
 
 		<cftry>
@@ -71,7 +71,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 	<cfelse>
 		<cfset objectParams.render = "server" />
-		<cfinclude template="../datacollection/index.cfm" />
+		<!--- Legacy form support --->
+		<cfoutput>#$.dspObject_include(thefile='datacollection/index.cfm',objectid=arguments.objectid,params=objectparams)#</cfoutput>
 	</cfif>
 <cfelse>
 	<cfset objectParams.render = "server" />
