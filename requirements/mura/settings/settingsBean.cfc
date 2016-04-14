@@ -92,6 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="contentPoolID" type="string" default=""/>
 <cfproperty name="categoryPoolID" type="string" default=""/>
 <cfproperty name="filePoolID" type="string" default=""/>
+<cfproperty name="placeholderImgID" type="string" default=""/>
 <cfproperty name="feedManager" type="numeric" default="1" required="true" />
 <cfproperty name="largeImageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="largeImageWidth" type="numeric" default="600" required="true" />
@@ -195,6 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.ContentPoolID=""/>
 	<cfset variables.instance.CategoryPoolID=""/>
 	<cfset variables.instance.FilePoolID=""/>
+	<cfset variables.instance.placeholderImgID="">
 	<cfset variables.instance.feedManager=1/>
 	<cfset variables.instance.largeImageHeight='AUTO'/>
 	<cfset variables.instance.largeImageWidth='600'/>
@@ -1451,6 +1453,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.configBean.registerBeanDir(dir='#i#/model',siteid=getValue('siteid'))>
 	</cfloop>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFileMetaData" output="false">
+	<cfargument name="property" default="fileid">
+	<cfreturn getBean('fileMetaData').loadBy(siteID=getValue('siteid'),fileid=getValue(arguments.property))>
 </cffunction>
 
 </cfcomponent>

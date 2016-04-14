@@ -260,6 +260,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						primaryColumn=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.primaryColumn#">,
 						</cfif>
 
+						<cfif isdefined("rssite.placeholderImgID")>
+						placeholderImgID=<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.keyFactory.get(rssite.placeholderImgID)#">,
+						</cfif>
+
 						theme=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.theme#">,
 						displayPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
 
