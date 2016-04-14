@@ -330,7 +330,7 @@
 
                     <!--- site config --->
                     <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-                        <cfset isSiteConfig=listFindNoCase('csettings,cextend,ctrash,cchain,cperm',rc.originalcircuit) and request.action neq "core:csettings.list">
+                        <cfset isSiteConfig=listFindNoCase('csettings,cextend,ctrash,cchain,cperm',rc.originalcircuit) and not (request.action eq "core:csettings.list" or request.action eq "core:csettings.sitecopy" or isDefined('url.addsite'))>
                         <li id="admin-nav-site-config"<cfif isSiteConfig> class="open"</cfif>>
 
                             <a class="nav-submenu<cfif isSiteConfig> active</cfif>" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/"><i class="mi-wrench"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitesettings")#</span></a>
@@ -338,7 +338,7 @@
                             <ul>
                                 <!--- edit site --->
                                 <li>
-                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'editSite' and rc.action neq 'updateFiles'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i>#rc.$.rbKey("layout.editcurrentsite")#</a>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'editSite' and rc.action neq 'updateFiles' and not isDefined('url.addsite') and not isDefined('url.deploybundle')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i>#rc.$.rbKey("layout.editcurrentsite")#</a>
                                 </li>
                                 <!--- permissions --->
                                 <li>
@@ -412,7 +412,7 @@
                                 </li>
                                 <!--- deploy site bundle --->
                                 <li>
-                                    <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)###tabBundles">
+                                    <a<cfif isDefined('url.deployBundle')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;deployBundle##tabBundles">
                                         <i class="mi-download"></i>
                                         #rc.$.rbKey('layout.deploysitebundle')#
                                     </a>
@@ -459,15 +459,15 @@
                             <ul>
                                 <!--- global settings --->
                                 <li>
-                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="mi-cogs"></i>#rc.$.rbKey("layout.globalsettings-sites")#</a>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list' and not isDefined('url.plugins')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="mi-cogs"></i>#rc.$.rbKey("layout.globalsettings-sites")#</a>
                                 </li>
                                 <!--- global plugins --->
                                 <li>
-                                    <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins"><i class="mi-puzzle-piece"></i>#rc.$.rbKey("layout.globalsettings-plugins")#</a>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list' and isDefined('url.plugins')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list&plugins##tabPlugins"><i class="mi-puzzle-piece"></i>#rc.$.rbKey("layout.globalsettings-plugins")#</a>
                                 </li>
                                 <!--- add site --->
                                 <li>
-                                    <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid="><i class="mi-plus-circle"></i>#rc.$.rbKey("layout.addsite")#</a>
+                                    <a<cfif isDefined('url.addsite')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=&amp;addsite"><i class="mi-plus-circle"></i>#rc.$.rbKey("layout.addsite")#</a>
                                 </li>
                                 <!--- copy site --->
                                 <li>
