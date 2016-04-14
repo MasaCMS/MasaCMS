@@ -40,38 +40,53 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
 
 	<cfif isJSON( local.formBean.getBody())>
-		<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
+		<cfif not $.useLayoutManager() and this.asyncObjects>
+			<cfoutput>
+				<div class="mura-async-object"
+					data-object="form"
+					data-sam="spade"
+					data-objectname="Form"
+					data-objectid="#esapiEncode('html_attr',local.formBean.getContentID())#"
+					data-responsechart="#esapiEncode('html_attr',local.formBean.getResponseChart())#"
+					data-objectparams=#serializeJSON(objectParams)#>
+				  </div>
+		  	</cfoutput>
 
-		<cftry>
-			<!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
-				<cfset objectParams.render = "client" />
-				<cfset objectParams.async = "true"/>
-				<cfparam name="objectParams.view" default="form"/>
+		<cfelse>
+			<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
 
-                <cfif len($.event('saveform'))>
-					<cfset $.event('fields','')>
+			<cftry>
+				<!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
+					<cfset objectParams.render = "client" />
+					<cfset objectParams.async = "true"/>
+					<cfparam name="objectParams.view" default="form"/>
 
-					<cfset objectParams.errors=$.getBean('dataCollectionBean')
+	                <cfif len($.event('saveform'))>
+						<cfset $.event('fields','')>
+
+						<cfset objectParams.errors=$.getBean('dataCollectionBean')
+		                      .set($.event().getAllValues())
+		                      .submit($).getErrors()>
+
+						<cfif not structCount(objectParams.errors)>
+							  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
+						</cfif>
+					<cfelseif len($.event('validateform'))>
+						<cfparam name="objectparams.fields" default="">
+						<cfset objectParams.errors=$.getBean('dataCollectionBean')
 	                      .set($.event().getAllValues())
-	                      .submit($).getErrors()>
+	                      .validate($,$.event('fields')).getErrors()>
+	                 </cfif>
 
-					<cfif not structCount(objectParams.errors)>
-						  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
-					</cfif>
-				<cfelseif len($.event('validateform'))>
-					<cfparam name="objectparams.fields" default="">
-					<cfset objectParams.errors=$.getBean('dataCollectionBean')
-                      .set($.event().getAllValues())
-                      .validate($,$.event('fields')).getErrors()>
-                 </cfif>
-		<cfcatch>
-			<cfdump var="#cfcatch#">
-			<cfabort>
-		</cfcatch>
-		</cftry>
+			<cfcatch>
+				<cfdump var="#cfcatch#">
+				<cfabort>
+			</cfcatch>
+			</cftry>
+		</cfif>
 	<cfelse>
 		<cfset objectParams.render = "server" />
-		<cfinclude template="../datacollection/index.cfm" />
+		<cfoutput>#$.dspObject_include(thefile='datacollection/index.cfm',objectid=arguments.objectid,params=objectparams)#</cfoutput>
 	</cfif>
 <cfelse>
 	<cfset objectParams.render = "server" />
