@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="../cusers/inc/js.cfm">
@@ -75,9 +75,9 @@ select * from rsSubTypes where subType <> 'Default'
 	<cfif not structIsEmpty(rc.userBean.getErrors())>
 		<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
 	</cfif>
-	
-	<p>(*Required, **Required to login to Site)<p>
- 
+
+	<p class="alert">(*Required, **Required to login to Site)<p>
+
 <div class="block block-constrain">
 
 	<ul class="mura-tabs nav-tabs" data-toggle="tabs">
@@ -87,7 +87,7 @@ select * from rsSubTypes where subType <> 'Default'
 	</ul> <!-- /.mura-tabs -->
 
 		  <div class="block-content tab-content">
-					
+
 					<div id="tabBasic" class="tab-pane active">
 						<div class="block block-bordered">
 							<!-- block header -->
@@ -102,9 +102,9 @@ select * from rsSubTypes where subType <> 'Default'
 									</li>
 								</ul>
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.basic')#</h3>
-							</div> <!-- /.block header -->						
+							</div> <!-- /.block header -->
 							<div class="block-content">
-									  							
+
 								<cfif rsNonDefault.recordcount>
 								<div class="mura-control-group">
 				      		<label>#application.rbFactory.getKeyValue(session.rb,'user.type')#</label>
@@ -115,64 +115,64 @@ select * from rsSubTypes where subType <> 'Default'
 										</cfloop>
 									</select>
 						    	</div>
-						    	
+
 								<cfelse>
 									<input type="hidden" name="subtype" value="Default"/>
 								</cfif>
-							
+
 								<div class="mura-control-group">
 						     		<label>#application.rbFactory.getKeyValue(session.rb,'user.fname')#*</label>
 								    	<input id="fname" name="fname" type="text" value="#esapiEncode('html_attr',rc.userBean.getfname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#">
 						    </div>
-							    
+
 								<div class="mura-control-group">
 						      		<label>#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</label>
 						      			<input id="lname" name="lname" type="text" value="#esapiEncode('html_attr',rc.userBean.getlname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#">
 						    </div>
-					   								
+
 								<div class="mura-control-group">
 							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>
 							      			<input id="organization" name="company" type="text" value="#esapiEncode('html_attr',rc.userBean.getcompany())#" >
 								</div>
-									
+
 								<div class="mura-control-group">
 							      	<label>#application.rbFactory.getKeyValue(session.rb,'user.jobtitle')#</label>
 							      		<input id="jobtitle" name="jobtitle" type="text" value="#esapiEncode('html_attr',rc.userBean.getjobtitle())#" >
 								</div>
-								
+
 								<div class="mura-control-group">
 							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.email')#*</label>
 							      			<input id="email" name="email" type="text" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" value="#esapiEncode('html_attr',rc.userBean.getemail())#">
 								</div>
-							      	
+
 								<div class="mura-control-group">
 							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.mobilephone')#</label>
 							      			<input id="mobilePhone" name="mobilePhone" type="text" value="#esapiEncode('html_attr',rc.userBean.getMobilePhone())#">
 								</div>
-								
+
 								<div class="mura-control-group">
 						      		<label>#application.rbFactory.getKeyValue(session.rb,'user.username')#**</label>
 						      			<input id="username" name="usernameNoCache" type="text" value="#esapiEncode('html_attr',rc.userBean.getusername())#" class="span6" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" >
 						    </div>
-								
+
 								<div class="mura-control-group">
 							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</label>
 							      			<input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value=""  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#">
 						    </div>
-									
+
 								<div class="mura-control-group">
 							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</label>
 							      			<input  name="password2" autocomplete="off" type="password" value="" message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#">
 						    </div>
-						    
+
 
 						    <div class="mura-control-group">
 						      		<label>#application.rbFactory.getKeyValue(session.rb,'user.image')#</label>
 						      		<input type="file" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
 						        <cfif len(rc.userBean.getPhotoFileID())>
 							        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
-							        	
-							        	<input type="checkbox" name="removePhotoFile" value="true"> #application.rbFactory.getKeyValue(session.rb,'user.delete')# 
+
+							        	<input type="checkbox" name="removePhotoFile" value="true"> #application.rbFactory.getKeyValue(session.rb,'user.delete')#
 						        </cfif>
 						    </div>
 
@@ -181,7 +181,7 @@ select * from rsSubTypes where subType <> 'Default'
 						</div> <!-- /.block-bordered -->
 					</div> <!-- /.tab-pane -->
 					<!-- /end tab -->
-					
+
 					<div id="tabAddressinformation" class="tab-pane">
 						<div class="block block-bordered">
 							<!-- block header -->
@@ -196,12 +196,12 @@ select * from rsSubTypes where subType <> 'Default'
 									</li>
 								</ul>
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.addressinformation')#</h3>
-							</div> <!-- /.block header -->						
+							</div> <!-- /.block header -->
 							<div class="block-content">
-								  	
+
 								<div class="mura-control-group">
 									<ul class="navTask nav nav-pills"><li><a href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=&returnURL=#esapiEncode('url',cgi.query_string)#">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul>
-									
+
 							      <cfset rsAddresses=rc.userBean.getAddresses()>
 									<cfif rsAddresses.recordcount>
 									<table class="table table-striped table-condensed table-bordered mura-table-grid">
@@ -235,7 +235,7 @@ select * from rsSubTypes where subType <> 'Default'
 						</div> <!-- /.block-bordered -->
 					</div> <!-- /.tab-pane -->
 					<!-- /end tab -->
-					
+
 					<div id="tabInterests" class="tab-pane">
 
 						<div class="block block-bordered">
@@ -251,7 +251,7 @@ select * from rsSubTypes where subType <> 'Default'
 									</li>
 								</ul>
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.interests')#</h3>
-							</div> <!-- /.block header -->						
+							</div> <!-- /.block header -->
 							<div class="block-content">
 
 							<div id="mura-list-tree" class="mura-control-group">
@@ -260,14 +260,14 @@ select * from rsSubTypes where subType <> 'Default'
 										<cfoutput><label>#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
 										<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
 								</cfif>
-							</cfloop> 
+							</cfloop>
 					    </div>
 
 							</div> <!-- /.block-content -->
 						</div> <!-- /.block-bordered -->
 					</div> <!-- /.tab-pane -->
 					<!-- /end tab -->
-					
+
 					<cfif rsSubTypes.recordcount>
 					<div id="tabExtendedattributes" class="tab-pane">
 						<div class="block block-bordered">
@@ -283,7 +283,7 @@ select * from rsSubTypes where subType <> 'Default'
 									</li>
 								</ul>
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.extendedattributes')#</h3>
-							</div> <!-- /.block header -->						
+							</div> <!-- /.block header -->
 							<div class="block-content">
 								<span id="extendSetsDefault"></span>
 								<script type="text/javascript">
@@ -295,7 +295,7 @@ select * from rsSubTypes where subType <> 'Default'
 					</div> <!-- /.tab-pane -->
 					<!-- /end tab -->
 					</cfif>
-					
+
 					<div id="tabAdvanced" class="tab-pane">
 						<div class="block block-bordered">
 							<!-- block header -->
@@ -310,9 +310,9 @@ select * from rsSubTypes where subType <> 'Default'
 									</li>
 								</ul>
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</h3>
-							</div> <!-- /.block header -->						
+							</div> <!-- /.block header -->
 							<div class="block-content">
-							  	
+
 								<div class="mura-control-group">
 									<label>#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</label>
 										<label class="radio inline">
@@ -330,16 +330,16 @@ select * from rsSubTypes where subType <> 'Default'
 							</div> <!-- /.block-content -->
 						</div> <!-- /.block-bordered -->
 					</div> <!-- /.tab-pane -->
-					<!-- /end tab -->								
+					<!-- /end tab -->
 
 				</div> <!-- /.block-content.tab-content -->
 
-	<div class="mura-actions">	
+	<div class="mura-actions">
 		<div class="form-actions">
 			<button class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'user.update')#</button>
 		</div>
 	</div>
-	
+
 </div> <!-- /.block-constrain -->
 
 		<input type="hidden" name="type" value="2">
@@ -348,12 +348,12 @@ select * from rsSubTypes where subType <> 'Default'
 		<input type="hidden" name="userid" value="#rc.userBean.getuserid()#">
 		<input type="hidden" name="siteid" value="#rc.userBean.getsiteid()#">
 		#rc.$.renderCSRFTokens(format="form")#
-<!---		
+<!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 <script type="text/javascript">
 initTabs(Array("#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.addressinformation'))#","#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.interests'))#"<cfif rsSubTypes.recordcount>,"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"</cfif>,"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"),#rc.activeTab#,0,0);
-</script>	
+</script>
 --->
 	</cfoutput>
 </form>
