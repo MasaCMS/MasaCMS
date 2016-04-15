@@ -3,7 +3,7 @@
 		<div class="form-group-select">
 			<select class="form-control" type="text" name="{{name}}" id="field-{{name}}">
 				{{#eachStatic dataset}}
-					<option data-isother="{{isother}}" id="field-{{id}}" value="{{value}}" {{#if isselected}}selected='selected'{{/if}}>{{label}}</option>
+					<option data-isother="{{isother}}" id="field-{{datarecordid}}" value="{{value}}" {{#if isselected}}selected='selected'{{/if}}>{{label}}</option>
 				{{/eachStatic}}
 			</select>
 		</div>
