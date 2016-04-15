@@ -299,6 +299,7 @@
 
 			if(dataset.sourcetype && dataset.sourcetype != 'muraorm'){
 				self.renderData();
+				return;
 			}
 
 			if(dataset.sourcetype=='muraorm'){
