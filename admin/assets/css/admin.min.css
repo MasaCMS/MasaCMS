@@ -7609,7 +7609,7 @@ main > .content > :first-child:not(.alert):after,
   display: block !important;
 }
 .invisible {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 .text-hide {
   font: 0/0 a;
@@ -23539,51 +23539,51 @@ fieldset[disabled] .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .
   font-weight: bold;
 }
 .badge {
-  padding-left: 7px;
-  padding-right: 7px;
-  border: 0 solid #ffffff;
-  background-color: #b3b3b3;
-  color: #ffffff;
+  padding-left: 7px !important;
+  padding-right: 7px !important;
+  border: 0 solid #ffffff !important;
+  background-color: #b3b3b3 !important;
+  color: #ffffff !important;
 }
 .label-important,
 .badge-important {
-  background-color: #ff3a00;
+  background-color: #ff3a00 !important;
 }
 .label-important[href],
 .badge-important[href] {
-  background-color: #cc2e00;
+  background-color: #cc2e00 !important;
 }
 .label-warning,
 .badge-warning {
-  background-color: #ffc40d;
+  background-color: #ffc40d !important;
 }
 .label-warning[href],
 .badge-warning[href] {
-  background-color: #d9a400;
+  background-color: #d9a400 !important;
 }
 .label-success,
 .badge-success {
-  background-color: #587231;
+  background-color: #587231 !important;
 }
 .label-success[href],
 .badge-success[href] {
-  background-color: #3c4f22;
+  background-color: #3c4f22 !important;
 }
 .label-info,
 .badge-info {
-  background-color: #4e7696;
+  background-color: #4e7696 !important;
 }
 .label-info[href],
 .badge-info[href] {
-  background-color: #3d5c74;
+  background-color: #3d5c74 !important;
 }
 .label-inverse,
 .badge-inverse {
-  background-color: #666666;
+  background-color: #666666 !important;
 }
 .label-inverse[href],
 .badge-inverse[href] {
-  background-color: #4d4d4d;
+  background-color: #4d4d4d !important;
 }
 .mura-modal,
 .modal-backdrop {
@@ -32529,34 +32529,34 @@ a.nav-module-specific .label:focus {
   top: -1px;
 }
 .nav-module-specific .label-important {
-  background-color: #ff3a00;
+  background-color: #ff3a00 !important;
 }
 .nav-module-specific .label-important[href] {
-  background-color: #cc2e00;
+  background-color: #cc2e00 !important;
 }
 .nav-module-specific .label-warning {
-  background-color: #ffc40d;
+  background-color: #ffc40d !important;
 }
 .nav-module-specific .label-warning[href] {
-  background-color: #d9a400;
+  background-color: #d9a400 !important;
 }
 .nav-module-specific .label-success {
-  background-color: #587231;
+  background-color: #587231 !important;
 }
 .nav-module-specific .label-success[href] {
-  background-color: #3c4f22;
+  background-color: #3c4f22 !important;
 }
 .nav-module-specific .label-info {
-  background-color: #4e7696;
+  background-color: #4e7696 !important;
 }
 .nav-module-specific .label-info[href] {
-  background-color: #3d5c74;
+  background-color: #3d5c74 !important;
 }
 .nav-module-specific .label-inverse {
-  background-color: #666666;
+  background-color: #666666 !important;
 }
 .nav-module-specific .label-inverse[href] {
-  background-color: #4d4d4d;
+  background-color: #4d4d4d !important;
 }
 .nav-module-specific .metadata-horizontal li {
   display: inline-block;
@@ -32680,34 +32680,34 @@ a.nav-module-specific .metadata-horizontal li:focus {
   top: -1px;
 }
 .nav-module-specific .metadata-horizontal li-important {
-  background-color: #ff3a00;
+  background-color: #ff3a00 !important;
 }
 .nav-module-specific .metadata-horizontal li-important[href] {
-  background-color: #cc2e00;
+  background-color: #cc2e00 !important;
 }
 .nav-module-specific .metadata-horizontal li-warning {
-  background-color: #ffc40d;
+  background-color: #ffc40d !important;
 }
 .nav-module-specific .metadata-horizontal li-warning[href] {
-  background-color: #d9a400;
+  background-color: #d9a400 !important;
 }
 .nav-module-specific .metadata-horizontal li-success {
-  background-color: #587231;
+  background-color: #587231 !important;
 }
 .nav-module-specific .metadata-horizontal li-success[href] {
-  background-color: #3c4f22;
+  background-color: #3c4f22 !important;
 }
 .nav-module-specific .metadata-horizontal li-info {
-  background-color: #4e7696;
+  background-color: #4e7696 !important;
 }
 .nav-module-specific .metadata-horizontal li-info[href] {
-  background-color: #3d5c74;
+  background-color: #3d5c74 !important;
 }
 .nav-module-specific .metadata-horizontal li-inverse {
-  background-color: #666666;
+  background-color: #666666 !important;
 }
 .nav-module-specific .metadata-horizontal li-inverse[href] {
-  background-color: #4d4d4d;
+  background-color: #4d4d4d !important;
 }
 .label:not([class*="label-"]) {
   background-color: #f3f3f3;
