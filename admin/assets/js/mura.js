@@ -5885,7 +5885,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		hover:function(handlerIn,handlerOut){
 			this.on('mouseover',handlerIn);
-			this.on('mouseout',handlerOut);
+			this.on('touchstart',handlerIn);
+			this.on('touchend',handlerOut);
 			return this;
 		},
 
@@ -7829,6 +7830,7 @@ root.mura.templates['embed']=function(context){
 
 			if(dataset.sourcetype && dataset.sourcetype != 'muraorm'){
 				self.renderData();
+				return;
 			}
 
 			if(dataset.sourcetype=='muraorm'){
@@ -8715,7 +8717,7 @@ this["mura"]["templates"]["checkbox_static"] = this.mura.Handlebars.template({"1
   return "				<label class=\"control-label\">	\r\n				<input class=\"form-control\" type=\"checkbox\" name=\""
     + alias2(alias1((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "\" id=\"field-"
-    + alias2(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias2(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"datarecordid","hash":{},"data":data}) : helper)))
     + "\" value=\""
     + alias2(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"value","hash":{},"data":data}) : helper)))
     + "\" id=\""
@@ -8780,7 +8782,7 @@ this["mura"]["templates"]["dropdown_static"] = this.mura.Handlebars.template({"1
   return "					<option data-isother=\""
     + alias4(((helper = (helper = helpers.isother || (depth0 != null ? depth0.isother : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"isother","hash":{},"data":data}) : helper)))
     + "\" id=\"field-"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
     + "\" value=\""
     + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
     + "\" "
@@ -8946,7 +8948,7 @@ this["mura"]["templates"]["radio_static"] = this.mura.Handlebars.template({"1":f
     + "\">	\n				<input class=\"form-control\" type=\"radio\" name=\""
     + alias4(container.lambda((depths[1] != null ? depths[1].name : depths[1]), depth0))
     + "\" id=\"field-"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.datarecordid || (depth0 != null ? depth0.datarecordid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datarecordid","hash":{},"data":data}) : helper)))
     + "\" value=\""
     + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
     + "\"  "
