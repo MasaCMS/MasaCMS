@@ -809,7 +809,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var begin="">
 
 	<cfif not len(arguments.fileid)>
-		<cfset arguments.fileid=variables.settingsManager.getSite(arguments.siteid).getPlaceholdImgId()>
+		<cfset arguments.fileid=variables.settingsManager.getSite(arguments.siteid).getPlaceholderImgId()>
+		<cfset structDelete(arguments,'fileEXT')>
 	</cfif>
 
 	<cfif not structKeyExists(arguments,"fileEXT")>
