@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 	dataType: 'text',
 						url: './?muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + configOptions.siteid + '&instanceid=#esapiEncode("url",rc.instanceid)#&classid=folder&contentid=' + contentid + '&parentid=' + configOptions.parentid + '&contenthistid=' + configOptions.contenthistid + '&regionid=' + configOptions.regionid + '&objectid=' + configOptions.objectid + '&contenttype=' + configOptions.contenttype + '&contentsubtype=' + configOptions.contentsubtype + '&container=layout&cacheid=' + Math.random(),
 
-						data:{params:JSON.stringify(params)},
+						data:{params:encodeURIComponent(JSON.stringify(params))},
 						success:function(response){
 							$('##layoutcontainer').html(response);
 
@@ -209,8 +209,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
 						</p>
 
-						<cfset displayList=feed.getDisplayList()>
-						<cfset availableList=feed.getAvailableDisplayList()>
+						<cfset displaylist=feed.getdisplaylist()>
+						<cfset availableList=feed.getAvailabledisplaylist()>
 
 						<ul id="availableListSort" class="displayListSortOptions">
 							<cfloop list="#availableList#" index="i">
@@ -219,11 +219,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 
 						<ul id="displayListSort" class="displayListSortOptions">
-							<cfloop list="#displayList#" index="i">
+							<cfloop list="#displaylist#" index="i">
 								<li class="ui-state-highlight">#trim(i)#</li>
 							</cfloop>
 						</ul>
-						<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
+						<input type="hidden" id="displaylist" class="objectParam" value="#displaylist#" name="displaylist"  data-displayobjectparam="displaylist"/>
 					</div>
 				</div>
 			</div>

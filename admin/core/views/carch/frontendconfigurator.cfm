@@ -95,6 +95,8 @@
 						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
 					}
 
+					//console.log(siteManager.availableObject.params);
+
 					frontEndProxy.post(
 					{
 						cmd:'setObjectParams',
@@ -121,7 +123,7 @@
 						}
 
 						//console.log(parameters)
-						
+
 						if(parameters.params.isbodyobject){
 							$(".form-actions").hide();
 						}
@@ -132,7 +134,7 @@
 							'name':'#esapiEncode('javascript',rc.objectname)#',
 							'regionid':'0',
 							'context':'#application.configBean.getContext()#',
-							'params':JSON.stringify(parameters["params"]),
+							'params':encodeURIComponent(JSON.stringify(parameters["params"])),
 							'siteid':'#esapiEncode('javascript',rc.siteid)#',
 							'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
 							'contentid':'#esapiEncode('javascript',rc.contentID)#',

@@ -97,13 +97,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<button id="editFields" class="btn">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</button>
 	</label>
 	<div id="sortableFields" class="sortable-sidebar">
-	<cfset displayList=feed.getDisplayList()>
+	<cfset displaylist=feed.getdisplaylist()>
 	<ul id="displayListSort" class="displayListSortOptions">
-		<cfloop list="#displayList#" index="i">
+		<cfloop list="#displaylist#" index="i">
 			<li class="ui-state-highlight">#trim(i)#</li>
 		</cfloop>
 	</ul>
-	<input type="hidden" id="displayList" class="objectParam" value="#esapiEncode('html_attr',feed.getDisplayList())#" name="displayList"  data-displayobjectparam="displayList"/>
+	<input type="hidden" id="displaylist" class="objectParam" value="#esapiEncode('html_attr',feed.getdisplaylist())#" name="displaylist"  data-displayobjectparam="displaylist"/>
 </div>
 
 <div class="mura-control-group">
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$('##editFields').click(function(){
 			frontEndProxy.post({
 				cmd:'openModal',
-				src:'?muraAction=cArch.selectfields&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&displaylist=' + $("##displayList").val()
+				src:'?muraAction=cArch.selectfields&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&displaylist=' + $("##displaylist").val()
 				}
 			);
 		});
@@ -127,20 +127,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$("##displayListSort").sortable({
 			update: function(event) {
 				event.stopPropagation();
-				$("##displayList").val("");
+				$("##displaylist").val("");
 				$("##displayListSort > li").each(function() {
-					var current = $("##displayList").val();
+					var current = $("##displaylist").val();
 
 					if(current != '') {
-						$("##displayList").val(current + "," + $(this).html());
+						$("##displaylist").val(current + "," + $(this).html());
 					} else {
-						$("##displayList").val($(this).html());
+						$("##displaylist").val($(this).html());
 					}
 
 					updateDraft();
 				});
 
-				siteManager.updateObjectPreview();
+				//siteManager.updateObjectPreview();
 
 			}
 		}).disableSelection();
