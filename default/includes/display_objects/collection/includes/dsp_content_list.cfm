@@ -100,6 +100,8 @@
 				<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
 			</cfif>
 		</cfif>
+	<cfelse>
+		<cfset arguments.imageStyles="">
 	</cfif>
 </cfsilent>
 
@@ -122,7 +124,7 @@
 			<cfset arguments.class=listAppend(arguments.class,"last"," ")/>
 		</cfif>
 
-		<cfset arguments.hasImage=arguments.hasImages and len(arguments.item.getValue('fileID')) and variables.$.showImageInList(arguments.item.getValue('fileEXT')) />
+		<cfset arguments.hasImage=arguments.hasImages and len(arguments.item.getValue('fileID')) and variables.$.showImageInList(arguments.item.getValue('fileEXT')) or len($.siteConfig('placeholderImgID')) />
 
 		<cfif arguments.hasImage>
 			<cfset arguments.class=listAppend(arguments.class,"hasImage"," ")>

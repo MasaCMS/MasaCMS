@@ -252,6 +252,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				var params=siteManager.availableObject.params;
 
 			  	params.layout=params.layout || 'default';
+
+				//console.log(params)
 				
 				$.ajax(
 				 {

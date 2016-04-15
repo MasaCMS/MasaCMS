@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfargument name="pluginManager" type="any" required="yes"/>
 		<cfargument name="fileWriter" required="true" default=""/>
-		
+
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.pluginManager=arguments.pluginManager />
@@ -69,9 +69,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		<cfelse>
 			<cfset variables.s3=""/>
-			<cfset variables.bucket=""/>		
+			<cfset variables.bucket=""/>
 		</cfif>
-		
+
 <cfreturn this />
 </cffunction>
 
@@ -110,24 +110,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="gpsimgdirection" type="string" required="yes" default=""/>
 		<cfargument name="gpstimestamp" type="string" required="yes" default=""/>--->
 		<cfargument name="exif" type="string" required="yes" default=""/>
-		
+
 		<cfset var ct=arguments.contentType & "/" & arguments.contentSubType />
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset var fileBean=getBean('file')>
-	
+
 		<cfset arguments.fileExt=lcase(arguments.fileExt)>
 		<cfset fileBean.set(arguments)>
 		<cfset pluginEvent.setValue('fileBean',fileBean)>
 		<cfset variables.pluginManager.announceEvent("onBeforeFileCache",pluginEvent)>
-		
-		
+
+
 		<cfswitch expression="#variables.configBean.getFileStore()#">
-			<cfcase value="fileDir">		
+			<cfcase value="fileDir">
 				<cfif isBinary(arguments.fileObj)>
-				
+
 					<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#", output="#arguments.fileObj#")>
-				
-					<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>					
+
+					<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>
 						<cfif isBinary(arguments.fileObjSource)>
 							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_source.#arguments.fileExt#", output="#arguments.fileObjSource#")>
 						</cfif>
@@ -144,11 +144,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif isBinary(arguments.fileObjMedium)>
 							<cfset variables.fileWriter.writeFile( mode="774",  file="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_medium.jpg", output="#arguments.fileObjMedium#")>
 						</cfif>
-					</cfif>			
-				<cfelse>				
+					</cfif>
+				<cfelse>
 					<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#", source="#arguments.fileObj#")>
-				
-					<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>	
+
+					<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>
 						<cfif len(arguments.fileObjSource) AND FileExists(arguments.fileObjSource)>
 							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_source.#arguments.fileExt#", source="#arguments.fileObjSource#")>
 						</cfif>
@@ -165,8 +165,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif len(arguments.fileObjMedium) AND FileExists(arguments.fileObjMedium)>
 							<cfset variables.fileWriter.writeFile( mode="774",  destination="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#_medium.jpg", source="#arguments.fileObjMedium#")>
 						</cfif>
-					</cfif>			
-				</cfif>	
+					</cfif>
+				</cfif>
 			</cfcase>
 			<cfcase value="s3">
 				<cfset variables.s3.putFileOnS3(arguments.fileObj,ct,variables.bucket,'#arguments.siteid#/#arguments.fileid#.#arguments.fileExt#') />
@@ -196,19 +196,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="deleteVersion" returntype="void" access="public" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
-		
+
 		<cfquery>
 		update tfiles set deleted=1 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 		</cfquery>
-	
+
 </cffunction>
 
 <cffunction name="deleteAll" returntype="void" access="public" output="false">
 		<cfargument name="contentID" type="string" required="yes"/>
 		<cfset var rs='' />
-		
+
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-		select contentHistID, fileID from tcontent 
+		select contentHistID, fileID from tcontent
 		where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
 		and fileID is not null
 		</cfquery>
@@ -223,9 +223,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		SELECT fileID, contentID, siteID, moduleID, filename, fileSize, contentType, contentSubType, fileExt,image, created, alttext, caption, credits FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 		</cfquery>
-		
+
 		<cfreturn rs />
-	
+
 </cffunction>
 
 <cffunction name="readAll" returntype="query" access="public" output="false">
@@ -234,9 +234,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		SELECT * FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 		</cfquery>
-		
+
 		<cfreturn rs />
-	
+
 </cffunction>
 
 <cffunction name="readMeta" returntype="query" access="public" output="false">
@@ -245,9 +245,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		SELECT fileID, contentID, siteID, moduleID, filename, fileSize, contentType, contentSubType, fileExt, created, alttext, caption, credits  FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 		</cfquery>
-		
+
 		<cfreturn rs />
-	
+
 </cffunction>
 
 <cffunction name="readSmall" returntype="query" access="public" output="false">
@@ -256,9 +256,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		SELECT fileID, contentID, siteID, moduleID, filename, fileSize, contentType, contentSubType, fileExt, imageSmall, created, alttext, caption, credits  FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and imageSmall is not null
 		</cfquery>
-		
+
 		<cfreturn rs />
-	
+
 </cffunction>
 
 <cffunction name="readMedium" returntype="query" access="public" output="false">
@@ -267,9 +267,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		SELECT fileID, contentID, siteID, moduleID, filename, fileSize, contentType, contentSubType, fileExt, imageMedium, created  FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and imageMedium is not null
 		</cfquery>
-		
+
 		<cfreturn rs />
-	
+
 </cffunction>
 
 <cffunction name="deleteIfNotUsed" returntype="void" access="public" output="false">
@@ -279,60 +279,65 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rs2 = "" />
 		<cfset var rs3 = "" />
 		<cfset var rs4 = "" />
-		
+
 		<cfif len(arguments.fileID)>
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs1')#">
-			SELECT fileId FROM tcontent where 
+			SELECT fileId FROM tcontent where
 			fileid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
 			and contenthistId not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.baseID#">)
 			</cfquery>
-			
+
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs2')#">
-			SELECT attributeValue FROM tclassextenddata where 
+			SELECT attributeValue FROM tclassextenddata where
 			stringValue in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
 			and baseId not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.baseID#">)
 			</cfquery>
-			
+
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs3')#">
-			SELECT attributeValue FROM tclassextenddatauseractivity where 
+			SELECT attributeValue FROM tclassextenddatauseractivity where
 			stringValue in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
 			and baseId not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.baseID#">)
 			</cfquery>
-			
+
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs4')#">
-			SELECT photoFileID FROM tusers where 
+			SELECT photoFileID FROM tusers where
 			photoFileID in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
 			and userId not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.baseID#">)
 			</cfquery>
-			
+
+			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs4')#">
+			SELECT placeholderImgID FROM tsettings where
+			placeholderImgID in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
+			</cfquery>
+
 			<cfif not rs1.recordcount and not rs2.recordcount and not rs3.recordcount and not rs4.recordcount>
 				<cfset deleteVersion(arguments.fileID) />
 			</cfif>
 		</cfif>
-	
+
 </cffunction>
 
 <cffunction name="purgeDeleted" output="false">
 <cfargument name="siteid" default="">
 <cfset var rs="">
-	
+
 <cflock type="exclusive" name="purgingDeletedFile#application.instanceID#" timeout="1000">
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select fileID from tfiles where deleted=1 
+	select fileID from tfiles where deleted=1
 	<cfif len(arguments.siteID)>
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfif>
 	</cfquery>
-	
+
 	<cfloop query="rs">
 		<cfset deleteCachedFile(rs.fileID)>
 	</cfloop>
-	
+
 	<cfquery>
 	delete from tfiles where deleted=1
 	<cfif len(arguments.siteID)>
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-	</cfif> 
+	</cfif>
 	</cfquery>
 </cflock>
 
@@ -355,18 +360,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset data.siteID=rsFile.siteID />
 		<cfset data.rsFile=rsFile />
 		<cfset pluginEvent.init(data)>
-		
+
 		<cfset variables.pluginManager.announceEvent("onFileCacheDelete",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeFileCacheDelete",pluginEvent)>
-		
+
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 		<cfcase value="fileDir">
 			<cfdirectory action="list" name="rsDIR" directory="#filepath#" filter="#arguments.fileid#*">
 			<cfloop query="rsDir">
 				<cffile action="delete" file="#filepath##rsDir.name#">
-			</cfloop>		
+			</cfloop>
 		</cfcase>
-		
+
 		<cfcase value="s3">
 			<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#.#rsFile.fileExt#') />
 			<cfif listFindNoCase("png,gif,jpg,jpeg",rsFile.fileExt)>
@@ -377,9 +382,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.jpg') />
 			</cfif>
 		</cfcase>
-		
+
 		</cfswitch>
-		
+
 		<cfset variables.pluginManager.announceEvent("onAfterFileCacheDelete",pluginEvent)>
 </cffunction>
 

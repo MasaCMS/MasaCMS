@@ -55,7 +55,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
 	<cfset rc.classid=listLast(replace(rc.classid, "\", "/", "ALL"),"/")>
 	<cfset rc.container=listLast(replace(rc.container, "\", "/", "ALL"),"/")>
-	<cfif isDefined("form.params") and isJSON(form.params)>
+	<cfparam name="form.params" default="">
+	<cfset form.params=urlDecode(form.params)>
+	<cfif isJSON(form.params)>
 		<cfset objectParams=deserializeJSON(form.params)>
 	<cfelse>
 		<cfset objectParams={}>

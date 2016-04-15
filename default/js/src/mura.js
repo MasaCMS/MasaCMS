@@ -1384,7 +1384,7 @@
 									{
 									   if (typeof grecaptcha == 'object' && self)
 									   {
-									   	console.log(self)
+									   	//console.log(self)
 									     grecaptcha.render(self.getAttribute('id'), {
 									          'sitekey' : self.getAttribute('data-sitekey'),
 									          'theme' : self.getAttribute('data-theme'),

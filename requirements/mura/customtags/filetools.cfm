@@ -21,11 +21,10 @@
 <cfif not fileMetaData.getIsNew()>
 <div class="mura-control justify">
 <cfoutput>
-	<cfif
-		(
-			(attributes.bean.getType() eq 'File' and attributes.property eq 'fileid')
-			or
-			 (not fileMetaData.hasImageFileExt() and attributes.property neq 'fileid')
+	<cfif attributes.bean.getEntityName() neq 'site'
+		and (
+		 	(attributes.bean.getType() eq 'File' and attributes.property eq 'fileid')
+			or (not fileMetaData.hasImageFileExt() and attributes.property neq 'fileid')
 		)>
 	     <div class="mura-file #lcase(attributes.bean.getFileExt())#">
 	     	<!--- <p class="current-file">Current File</p><br> --->
@@ -39,11 +38,13 @@
 			<cfif fileMetaData.hasCroppableImageFileExt()>
 			<a class="btn" href="./?muraAction=cArch.imagedetails&contenthistid=#attributes.bean.getContentHistID()#&siteid=#attributes.bean.getSiteID()#&fileid=#attributes.bean.getvalue(attributes.property)#&compactDisplay=#urlEncodedFormat(attributes.compactDisplay)#"><i class="mi-crop"></i></a>
 			</cfif>
-			<a class="btn" href="" onclick="return openFileMetaData('#fileMetaData.getContentHistID()#','#fileMetaData.getFileID()#','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="mi-info-circle"></i></a>
+			<cfif attributes.bean.getEntityName() eq 'content'>
+				<a class="btn" href="" onclick="return openFileMetaData('#fileMetaData.getContentHistID()#','#fileMetaData.getFileID()#','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="mi-info-circle"></i></a>
+			</cfif>
 	</cfif>
 	<cfif attributes.property neq "fileid" or (attributes.property eq "fileid"  and attributes.bean.getType() neq 'File') >
 		<a class="btn download-file" onclick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm')#',function(){location.href='#application.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#attributes.bean.getvalue(attributes.property)#&method=attachment&size=source';});"><i class="mi-download"></i></a>
-	<cfelse>
+	<cfelseif attributes.bean.getEntityName() eq 'content'>
 		<a id="mura-download-locked" <cfif not attributes.locked> style="display:none"</cfif> class="btn download-file" onclick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm')#',function(){location.href='#application.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#attributes.bean.getvalue(attributes.property)#&method=attachment&size=source';});"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</a>
 		<div id="mura-download-unlocked" class="btn-group"<cfif attributes.locked> style="display:none"</cfif>>
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">

@@ -218,6 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstfiles=getValue("rstfiles")>
 		<cfset var rscheck="">
 		<cfset var started=false>
+		<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
 
 		<!---<cfset var moduleIDSQLlist="" />--->
 		<cfset var i="" />
@@ -260,6 +261,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif isDate(arguments.sinceDate)>
 					and created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+				</cfif>
+				<cfif len(site.getPlaceholderImgID())>
+					or fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#site.getPlaceholderImgID()#">
 				</cfif>
 			</cfquery>
 
@@ -1602,7 +1606,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					largeImageWidth,largeImageHeight,
 					smallImageWidth,smallImageHeight,
 					mediumImageWidth,mediumImageHeight,
-					columnCount,columnNames,primaryColumn,baseID,customtaggroups
+					columnCount,columnNames,primaryColumn,baseID,customtaggroups,
+					placeholderImgID
 				    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				</cfquery>
 

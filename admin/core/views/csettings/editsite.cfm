@@ -997,6 +997,12 @@ to your own modified versions of Mura CMS.
 				</div>
 			</div>
 			</cfif>
+			<div class="mura-control-group">
+				<label>Placeholder Image</label>
+				<div class="mura-control justify">
+					<cf_fileselector b name="newPlaceholderImg" property="placeholderImgID" bean="#rc.siteBean#" deleteKey="deletePlaceholderImg" compactDisplay="#rc.compactDisplay#" locked="0" examplefileext="" >
+				</div>
+			</div>
 
 			</div> <!--- /.block-content --->
 		</div> <!--- /.block --->
