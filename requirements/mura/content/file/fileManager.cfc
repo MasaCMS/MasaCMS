@@ -795,7 +795,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="createHREFForImage" output="false" returntype="any">
 <cfargument name="siteID">
 <cfargument name="fileID" default="">
-<cfargument name="fileExt">
+<cfargument name="fileExt" default="">
 <cfargument name="size" required="true" default="undefined">
 <cfargument name="direct" required="true" default="#this.directImages#">
 <cfargument name="complete" type="boolean" required="true" default="false">
@@ -810,10 +810,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not len(arguments.fileid)>
 		<cfset arguments.fileid=variables.settingsManager.getSite(arguments.siteid).getPlaceholderImgId()>
-		<cfset structDelete(arguments,'fileEXT')>
+		<cfset arguments.fileExt=variables.settingsManager.getSite(arguments.siteid).getPlaceholderImgExt()>
 	</cfif>
 
-	<cfif not structKeyExists(arguments,"fileEXT")>
+	<cfif not len(arguments.fileExt)>
 		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
 	</cfif>
 

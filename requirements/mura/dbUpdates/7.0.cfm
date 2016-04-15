@@ -14,5 +14,6 @@
         .addColumn(column="contentPendingScript",dataType="longtext")
         .addColumn(column="contentCanceledScript",dataType="longtext")
         .addColumn(column="showDashboard",dataType="integer",default=0)
-        .addColumn(column="placeholderImgID",dataType="varchar",length=35);
+        .addColumn(column="placeholderImgID",dataType="varchar",length=35)
+        .addColumn(column="placeholderImgExt",dataType="varchar",length=10);;
 </cfscript>
