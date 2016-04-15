@@ -251,9 +251,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset local.fileBean.setNewFile(bean.getNewPlaceholderImg())>
 			<cfset local.fileBean.save()>
 			<cfset bean.setPlaceholderImgID(local.fileBean.getFileID()) />
+			<cfset bean.setPlaceholderImgExt(local.fileBean.getFileExt()) />
 		<cfelseif len(bean.getDeletePlaceholderImg())>
 			<cfset getBean('fileManager').deleteIfNotUsed(bean.getPlaceholderImgId(),'')>
 			<cfset bean.setPlaceholderImgID('') />
+			<cfset bean.setPlaceholderImgExt('') />
 		</cfif>
 
 		<cfset variables.DAO.update(bean) />
@@ -347,6 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset local.fileBean.setNewFile(bean.getNewPlaceholderImg())>
 				<cfset local.fileBean.save()>
 				<cfset bean.setPlaceholderImgID(local.fileBean.getFileID()) />
+				<cfset bean.setPlaceholderImgExt(local.fileBean.getFileExt()) />
 			</cfif>
 
 		<cfset variables.DAO.create(bean) />

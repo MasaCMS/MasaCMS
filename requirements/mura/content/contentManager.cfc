@@ -2646,7 +2646,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="secure" default="false">
 		<cfargument name="useProtocol" default="true">
 		<cfscript>
-			var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			if(arguments.bean.getType() == 'File' && !ListFindNoCase('png,jpg,jpeg,gif,svg',arguments.bean.getFileExt())){
+				var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), '', '', arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			} else {
+				var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			}
+
 			return Len(image) ? image : arguments.default;
 		</cfscript>
 	</cffunction>

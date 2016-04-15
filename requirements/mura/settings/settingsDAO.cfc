@@ -55,7 +55,7 @@ sendLoginScript, sendAuthCodeScript, mailingListConfirmScript,publicSubmissionAp
 loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
 googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort,
 mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentPendingScript,contentApprovalScript,contentRejectionScript,contentCanceledScript,enableLockdown,customTagGroups,
-hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,JSONApi,useSSL,isRemote,remotecontext,remoteport,resourceSSL,resourceDomain,showDashboard,placeholderImgID</cfoutput></cfsavecontent>
+hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,JSONApi,useSSL,isRemote,remotecontext,remoteport,resourceSSL,resourceDomain,showDashboard,placeholderImgID,placeholderImgExt</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -372,7 +372,8 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		 RemoteContext=<cfif Len(Trim(arguments.bean.getRemoteContext()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getRemoteContext())#" /><cfelse>null</cfif>,
 		 RemotePort=#arguments.bean.getRemotePort()#,
 		 showDashboard=#arguments.bean.getShowDashboard()#,
-		 placeholderImgID=<cfif Len(Trim(arguments.bean.getPlaceholderImgID()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgID())#" /><cfelse>null</cfif>
+		 placeholderImgID=<cfif Len(Trim(arguments.bean.getPlaceholderImgID()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgID())#" /><cfelse>null</cfif>,
+		 placeholderImgExt=<cfif Len(Trim(arguments.bean.getPlaceholderImgExt()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgExt())#" /><cfelse>null</cfif>
 
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">
    </cfquery>
@@ -489,7 +490,8 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		 #arguments.bean.getResourceSSL()#,
 		<cfif Len(Trim(arguments.bean.getResourceDomain()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getResourceDomain())#" /><cfelse>null</cfif>,
 		#arguments.bean.getShowDashboard()#,
-		<cfif Len(Trim(arguments.bean.getPlaceholderImgID()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgID())#" /><cfelse>null</cfif>
+		<cfif Len(Trim(arguments.bean.getPlaceholderImgID()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgID())#" /><cfelse>null</cfif>,
+		<cfif Len(Trim(arguments.bean.getPlaceholderImgExt()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgExt())#" /><cfelse>null</cfif>
 		)
    </cfquery>
 
