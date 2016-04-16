@@ -1697,6 +1697,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+
 <cffunction name="getReadOnlyQRYAttrs" output="false">
 	<cfif not request.muratransaction>
 		<cfset structAppend(arguments,
@@ -1704,6 +1705,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 username=getReadOnlyDbUsername(),
 				 password=getReadOnlyDbPassword()},
 				 false)>
+
+		<cfif not len(arguments.username)>
+			<cfset structDelete(arguments,'username')>
+		</cfif>
+		<cfif not len(arguments.password)>
+			<cfset structDelete(arguments,'password')>
+		</cfif>
 	</cfif>
 
 	<cfif not getValue(property='allowQueryCaching',defaultValue=true)>

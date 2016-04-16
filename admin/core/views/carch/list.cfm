@@ -580,7 +580,7 @@
 						</cfloop>
 					</cfif>
 
-					<cfif rc.sorted>
+					<cfif rc.sorted and isdefined('current')>
 						<cfset application.pluginManager.announceEvent("onAfterContentSort",pluginEvent)>
 						<cfset rc.$.getBean('contentManager').purgeContentCache(contentBean=current)>
 						<cfset application.settingsManager.getSite(rc.siteid).purgeCache()>
