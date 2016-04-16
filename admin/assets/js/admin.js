@@ -854,6 +854,13 @@ function setTabs(target, activetab) {
 
 	if(window.location.hash != "") {
 		$(target + ' a[href="' + window.location.hash + '"]').tab('show');
+
+		window.setTimeout(
+				function(){
+					$('a span.display-tab').html('<i class="mi-chevron-down"></i>');
+					}
+					, 1);
+
 	} else if(typeof(activetab) != 'undefined') {
 		try{
 			$(target + ' li::nth-child(' + (activetab + 1) + ') a').tab('show');
