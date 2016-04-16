@@ -316,7 +316,7 @@
                                 <li class="divider"></li>
                               </cfif>
                               <li>
-                                <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins">
+                                <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list&plugins##tabPlugins">
                                   <i class="mi-plus-circle"></i>
                                   #application.rbFactory.getKeyValue(session.rb,"layout.addplugin")#
                                 </a>
