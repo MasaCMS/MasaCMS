@@ -105,6 +105,10 @@
   }
 }
 
+.nav-header .header-search {
+    width: 220px;
+}
+
 .header-search .input-group .form-control {
   position: relative;
   z-index: 2;
@@ -186,13 +190,17 @@
 }
 
 #header-navbar .dropdown-menu.mura-user-tools{
-  min-width: auto;
-  width: 100%;
+  width: auto;
+  min-width: 100%;
 }
 
 #header-navbar #site-selector-list.dropdown-menu{
   min-width: 100%;
   padding-right: 12px;
+}
+
+#header-navbar .dropdown-menu > li a{
+  font-size: 13px;
 }
 
 #header-navbar .dropdown-menu > .active > a,
@@ -205,6 +213,10 @@
   outline: 0;
   background-color: #fff;
   background-image: none;
+}
+
+#header-navbar .dropdown-menu a .badge{
+  float: right;
 }
 
 .btn,
@@ -327,6 +339,8 @@ header .btn i{
   text-align: center;
 }
 
+.block-constrain form + .mura-tab-links,
+.block-constrain .form-actions + .mura-tab-links,
 .block-constrain form + .mura-tabs,
 .block-constrain .form-actions + .mura-tabs{
   margin-top: 30px;
@@ -949,6 +963,10 @@ ul.dropdown-menu{
         > a {
           margin: 0 -9px;
           }
+        > a.active{
+          font-weight: 600;
+          color: #FF3405;
+        }
         > a:not(.active){
          color: #646464;
             > .badge{

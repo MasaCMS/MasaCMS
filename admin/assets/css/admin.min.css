@@ -7461,6 +7461,8 @@ main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:before,
 .mura-control-group:after,
+.mura-tab-links:before,
+.mura-tab-links:after,
 .mura-tabs:before,
 .mura-tabs:after,
 .container-fluid:before,
@@ -7496,6 +7498,7 @@ main > .content > :first-child:not(.alert):after,
 main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
+.mura-tab-links:after,
 .mura-tabs:after,
 .container-fluid:after,
 .row-fluid:after,
@@ -7550,6 +7553,8 @@ main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:before,
 .mura-control-group:after,
+.mura-tab-links:before,
+.mura-tab-links:after,
 .mura-tabs:before,
 .mura-tabs:after,
 .container-fluid:before,
@@ -7585,6 +7590,7 @@ main > .content > :first-child:not(.alert):after,
 main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
+.mura-tab-links:after,
 .mura-tabs:after,
 .container-fluid:after,
 .row-fluid:after,
@@ -7609,7 +7615,7 @@ main > .content > :first-child:not(.alert):after,
   display: block !important;
 }
 .invisible {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 .text-hide {
   font: 0/0 a;
@@ -23539,51 +23545,51 @@ fieldset[disabled] .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .
   font-weight: bold;
 }
 .badge {
-  padding-left: 7px;
-  padding-right: 7px;
-  border: 0 solid #ffffff;
-  background-color: #b3b3b3;
-  color: #ffffff;
+  padding-left: 7px !important;
+  padding-right: 7px !important;
+  border: 0 solid #ffffff !important;
+  background-color: #b3b3b3 !important;
+  color: #ffffff !important;
 }
 .label-important,
 .badge-important {
-  background-color: #ff3a00;
+  background-color: #ff3a00 !important;
 }
 .label-important[href],
 .badge-important[href] {
-  background-color: #cc2e00;
+  background-color: #cc2e00 !important;
 }
 .label-warning,
 .badge-warning {
-  background-color: #ffc40d;
+  background-color: #ffc40d !important;
 }
 .label-warning[href],
 .badge-warning[href] {
-  background-color: #d9a400;
+  background-color: #d9a400 !important;
 }
 .label-success,
 .badge-success {
-  background-color: #587231;
+  background-color: #587231 !important;
 }
 .label-success[href],
 .badge-success[href] {
-  background-color: #3c4f22;
+  background-color: #3c4f22 !important;
 }
 .label-info,
 .badge-info {
-  background-color: #4e7696;
+  background-color: #4e7696 !important;
 }
 .label-info[href],
 .badge-info[href] {
-  background-color: #3d5c74;
+  background-color: #3d5c74 !important;
 }
 .label-inverse,
 .badge-inverse {
-  background-color: #666666;
+  background-color: #666666 !important;
 }
 .label-inverse[href],
 .badge-inverse[href] {
-  background-color: #4d4d4d;
+  background-color: #4d4d4d !important;
 }
 .mura-modal,
 .modal-backdrop {
@@ -31541,47 +31547,60 @@ input[type="email"]#searchParams select {
 #mura-content > form .alert:not([class*="alert-"]) .alert-link {
   color: #1e8cd7;
 }
+.mura-tab-links,
 .mura-tabs {
   margin-bottom: 0;
   padding-left: 0;
   list-style: none;
 }
+.mura-tab-links > li,
 .mura-tabs > li {
   position: relative;
   display: block;
 }
+.mura-tab-links > li > a,
 .mura-tabs > li > a {
   position: relative;
   display: block;
   padding: 10px 15px;
 }
+.mura-tab-links > li > a:hover,
 .mura-tabs > li > a:hover,
+.mura-tab-links > li > a:focus,
 .mura-tabs > li > a:focus {
   text-decoration: none;
   background-color: #f9f9f9;
 }
+.mura-tab-links > li.disabled > a,
 .mura-tabs > li.disabled > a {
   color: #f3f3f3;
 }
+.mura-tab-links > li.disabled > a:hover,
 .mura-tabs > li.disabled > a:hover,
+.mura-tab-links > li.disabled > a:focus,
 .mura-tabs > li.disabled > a:focus {
   color: #f3f3f3;
   text-decoration: none;
   background-color: transparent;
   cursor: not-allowed;
 }
+.mura-tab-links .open > a,
 .mura-tabs .open > a,
+.mura-tab-links .open > a:hover,
 .mura-tabs .open > a:hover,
+.mura-tab-links .open > a:focus,
 .mura-tabs .open > a:focus {
   background-color: #f9f9f9;
   border-color: #5c90d2;
 }
+.mura-tab-links .nav-divider,
 .mura-tabs .nav-divider {
   height: 1px;
   margin: 10px 0;
   overflow: hidden;
   background-color: #e5e5e5;
 }
+.mura-tab-links > li > a > img,
 .mura-tabs > li > a > img {
   max-width: none;
 }
@@ -32529,34 +32548,34 @@ a.nav-module-specific .label:focus {
   top: -1px;
 }
 .nav-module-specific .label-important {
-  background-color: #ff3a00;
+  background-color: #ff3a00 !important;
 }
 .nav-module-specific .label-important[href] {
-  background-color: #cc2e00;
+  background-color: #cc2e00 !important;
 }
 .nav-module-specific .label-warning {
-  background-color: #ffc40d;
+  background-color: #ffc40d !important;
 }
 .nav-module-specific .label-warning[href] {
-  background-color: #d9a400;
+  background-color: #d9a400 !important;
 }
 .nav-module-specific .label-success {
-  background-color: #587231;
+  background-color: #587231 !important;
 }
 .nav-module-specific .label-success[href] {
-  background-color: #3c4f22;
+  background-color: #3c4f22 !important;
 }
 .nav-module-specific .label-info {
-  background-color: #4e7696;
+  background-color: #4e7696 !important;
 }
 .nav-module-specific .label-info[href] {
-  background-color: #3d5c74;
+  background-color: #3d5c74 !important;
 }
 .nav-module-specific .label-inverse {
-  background-color: #666666;
+  background-color: #666666 !important;
 }
 .nav-module-specific .label-inverse[href] {
-  background-color: #4d4d4d;
+  background-color: #4d4d4d !important;
 }
 .nav-module-specific .metadata-horizontal li {
   display: inline-block;
@@ -32680,34 +32699,34 @@ a.nav-module-specific .metadata-horizontal li:focus {
   top: -1px;
 }
 .nav-module-specific .metadata-horizontal li-important {
-  background-color: #ff3a00;
+  background-color: #ff3a00 !important;
 }
 .nav-module-specific .metadata-horizontal li-important[href] {
-  background-color: #cc2e00;
+  background-color: #cc2e00 !important;
 }
 .nav-module-specific .metadata-horizontal li-warning {
-  background-color: #ffc40d;
+  background-color: #ffc40d !important;
 }
 .nav-module-specific .metadata-horizontal li-warning[href] {
-  background-color: #d9a400;
+  background-color: #d9a400 !important;
 }
 .nav-module-specific .metadata-horizontal li-success {
-  background-color: #587231;
+  background-color: #587231 !important;
 }
 .nav-module-specific .metadata-horizontal li-success[href] {
-  background-color: #3c4f22;
+  background-color: #3c4f22 !important;
 }
 .nav-module-specific .metadata-horizontal li-info {
-  background-color: #4e7696;
+  background-color: #4e7696 !important;
 }
 .nav-module-specific .metadata-horizontal li-info[href] {
-  background-color: #3d5c74;
+  background-color: #3d5c74 !important;
 }
 .nav-module-specific .metadata-horizontal li-inverse {
-  background-color: #666666;
+  background-color: #666666 !important;
 }
 .nav-module-specific .metadata-horizontal li-inverse[href] {
-  background-color: #4d4d4d;
+  background-color: #4d4d4d !important;
 }
 .label:not([class*="label-"]) {
   background-color: #f3f3f3;
@@ -35412,6 +35431,9 @@ ul {
   padding: 0 !important;
   max-width: 167px;
 }
+.nav-header .header-search {
+  width: 220px;
+}
 .header-search .input-group .form-control {
   position: relative;
   z-index: 2;
@@ -35486,12 +35508,15 @@ ul {
   padding-bottom: 0;
 }
 #header-navbar .dropdown-menu.mura-user-tools {
-  min-width: auto;
-  width: 100%;
+  width: auto;
+  min-width: 100%;
 }
 #header-navbar #site-selector-list.dropdown-menu {
   min-width: 100%;
   padding-right: 12px;
+}
+#header-navbar .dropdown-menu > li a {
+  font-size: 13px;
 }
 #header-navbar .dropdown-menu > .active > a,
 #header-navbar .dropdown-menu > .active > a:hover,
@@ -35503,6 +35528,9 @@ ul {
   outline: 0;
   background-color: #fff;
   background-image: none;
+}
+#header-navbar .dropdown-menu a .badge {
+  float: right;
 }
 .btn,
 .btn-group .btn {
@@ -35650,6 +35678,8 @@ header .btn i {
   margin-bottom: 0;
   text-align: center;
 }
+.block-constrain form + .mura-tab-links,
+.block-constrain .form-actions + .mura-tab-links,
 .block-constrain form + .mura-tabs,
 .block-constrain .form-actions + .mura-tabs {
   margin-top: 30px;
@@ -36661,6 +36691,11 @@ ul.dropdown-menu {
 .sidebar .module ul.nav li > a,
 .sidebar .well ul.nav li > a {
   margin: 0 -9px;
+}
+.sidebar .module ul.nav li > a.active,
+.sidebar .well ul.nav li > a.active {
+  font-weight: 600;
+  color: #FF3405;
 }
 .sidebar .module ul.nav li > a:not(.active),
 .sidebar .well ul.nav li > a:not(.active) {
