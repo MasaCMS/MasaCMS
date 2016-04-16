@@ -334,27 +334,26 @@
 			<cfquery>
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
-						#arguments.column#
-						<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif> <cfif not arguments.nullable>NOT NULL</cfif>
-						<cfif not arguments.autoincrement>
-							<cfif not(not arguments.nullable and arguments.default eq 'null')>
-								DEFAULT
-								<cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>
-									#arguments.default#
-								<cfelse>
-									'#arguments.default#'
-								</cfif>
-							</cfif>
-						</cfif>
-					)
 				<cfelse>
-					ALTER TABLE #arguments.table# ADD COLUMN #arguments.column# <cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif>;
-					<cfif not arguments.nullable>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET NOT NULL;
+					ALTER TABLE #arguments.table# ADD COLUMN
+				</cfif>
+
+				#arguments.column#
+				<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif>
+				<cfif not arguments.nullable>NOT NULL</cfif>
+				<cfif not arguments.autoincrement>
+					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+						DEFAULT
+						<cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>
+							#arguments.default#
+						<cfelse>
+							'#arguments.default#'
+						</cfif>
 					</cfif>
-					<cfif not arguments.autoincrement>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
-					</cfif>
+				</cfif>
+
+				<cfif not hasTable>
+					)
 				</cfif>
 			</cfquery>
 		</cfcase>
