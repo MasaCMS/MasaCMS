@@ -173,6 +173,16 @@
 				</cfif>
 				<!--- /approvals --->
 
+				<!--- expiring --->
+				<cfset local.promptcount=$.getBean('contentManager').getMyExpiresCount(session.siteid)>
+				<cfif local.promptcount>
+					<cfset local.prompttally += local.promptcount>
+					<li>
+					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myexpires&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true">Expiring <span class="badge badge-important">#local.promptcount#</span></a>
+					</li>
+				</cfif>
+				<!--- /expiring --->
+
 				<!--- changesets --->
 				 <cfif $.siteConfig('hasChangesets')
 					 and application.permUtility.getModulePerm('00000000000000000000000000000000014',rc.siteid)

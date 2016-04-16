@@ -35043,7 +35043,7 @@ fieldset[disabled] .btn-primary.active {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  opacity: .8;
+  opacity: 1 !important;
   font-weight: normal;
 }
 .badge-primary {
@@ -36439,7 +36439,7 @@ fieldset[disabled] .sidebar-buttons .btn.active {
   border: 0 solid #ffffff;
   background-color: #b3b3b3;
   color: #ffffff;
-  opacity: .8;
+  opacity: 1 !important;
 }
 .mura-header .mura-nav-group .btn {
   background-color: #fff;
