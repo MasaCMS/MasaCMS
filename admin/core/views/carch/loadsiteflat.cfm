@@ -614,8 +614,8 @@ if(len($.siteConfig('customTagGroups'))){
 </div>
 
 <div class="sidebar">
-	<!---<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h2>--->
 	<div class="well">
+	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h2>
 		<ul id="navReports" class="nav nav-list">
 			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
 			<cfset draftCount=$.getBean('contentManager').getMyDraftsCount(siteid=session.siteid, startdate=dateAdd('m',-3,now()))>
