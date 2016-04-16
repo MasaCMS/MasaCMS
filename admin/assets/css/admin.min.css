@@ -7461,6 +7461,8 @@ main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:before,
 .mura-control-group:after,
+.mura-tab-links:before,
+.mura-tab-links:after,
 .mura-tabs:before,
 .mura-tabs:after,
 .container-fluid:before,
@@ -7496,6 +7498,7 @@ main > .content > :first-child:not(.alert):after,
 main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
+.mura-tab-links:after,
 .mura-tabs:after,
 .container-fluid:after,
 .row-fluid:after,
@@ -7550,6 +7553,8 @@ main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:before,
 .mura-control-group:after,
+.mura-tab-links:before,
+.mura-tab-links:after,
 .mura-tabs:before,
 .mura-tabs:after,
 .container-fluid:before,
@@ -7585,6 +7590,7 @@ main > .content > :first-child:not(.alert):after,
 main > .content > :first-child:not(.alert):after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
+.mura-tab-links:after,
 .mura-tabs:after,
 .container-fluid:after,
 .row-fluid:after,
@@ -31541,47 +31547,60 @@ input[type="email"]#searchParams select {
 #mura-content > form .alert:not([class*="alert-"]) .alert-link {
   color: #1e8cd7;
 }
+.mura-tab-links,
 .mura-tabs {
   margin-bottom: 0;
   padding-left: 0;
   list-style: none;
 }
+.mura-tab-links > li,
 .mura-tabs > li {
   position: relative;
   display: block;
 }
+.mura-tab-links > li > a,
 .mura-tabs > li > a {
   position: relative;
   display: block;
   padding: 10px 15px;
 }
+.mura-tab-links > li > a:hover,
 .mura-tabs > li > a:hover,
+.mura-tab-links > li > a:focus,
 .mura-tabs > li > a:focus {
   text-decoration: none;
   background-color: #f9f9f9;
 }
+.mura-tab-links > li.disabled > a,
 .mura-tabs > li.disabled > a {
   color: #f3f3f3;
 }
+.mura-tab-links > li.disabled > a:hover,
 .mura-tabs > li.disabled > a:hover,
+.mura-tab-links > li.disabled > a:focus,
 .mura-tabs > li.disabled > a:focus {
   color: #f3f3f3;
   text-decoration: none;
   background-color: transparent;
   cursor: not-allowed;
 }
+.mura-tab-links .open > a,
 .mura-tabs .open > a,
+.mura-tab-links .open > a:hover,
 .mura-tabs .open > a:hover,
+.mura-tab-links .open > a:focus,
 .mura-tabs .open > a:focus {
   background-color: #f9f9f9;
   border-color: #5c90d2;
 }
+.mura-tab-links .nav-divider,
 .mura-tabs .nav-divider {
   height: 1px;
   margin: 10px 0;
   overflow: hidden;
   background-color: #e5e5e5;
 }
+.mura-tab-links > li > a > img,
 .mura-tabs > li > a > img {
   max-width: none;
 }
@@ -35650,6 +35669,8 @@ header .btn i {
   margin-bottom: 0;
   text-align: center;
 }
+.block-constrain form + .mura-tab-links,
+.block-constrain .form-actions + .mura-tab-links,
 .block-constrain form + .mura-tabs,
 .block-constrain .form-actions + .mura-tabs {
   margin-top: 30px;
