@@ -99,7 +99,7 @@ siteManager.copySiteID = '#session.copySiteID#';
         <tr>
 			     <td class="add">
      <!---<cfif (rc.rslist.type eq 'Page') or  (rc.rslist.type eq 'Folder')  or  (rc.rslist.type eq 'Calendar') or (rc.rslist.type eq 'Gallery')>--->
-		<a href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#rc.rslist.contentid#','#rc.rslist.contentid#','#rc.rslist.parentid#','#rc.siteid#','#rc.rslist.type#','#rc.rslist.moduleid#');">&nbsp;</a>
+		<a href="javascript:;" ontouchstart="this.onmouseover();" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#rc.rslist.contentid#','#rc.rslist.contentid#','#rc.rslist.parentid#','#rc.siteid#','#rc.rslist.type#','#rc.rslist.moduleid#');">&nbsp;</a>
 	<!---<cfelse>
 		&nbsp;
 	</cfif>---></td>

@@ -466,7 +466,7 @@ if(len($.siteConfig('customTagGroups'))){
 		</cfsilent>
 
 		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#esapiEncode('html_attr',item.getModuleID())#" data-type="#item.getType()#" class="mura-node-data">
-			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#','#item.getModuleID()#');"><i class="mi-plus-circle"></i></a></td>
+			<td class="add"><a class="add" href="javascript:;" ontouchstart="this.onmouseover();" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#','#item.getModuleID()#');"><i class="mi-plus-circle"></i></a></td>
 			<td class="var-width item">
 
 			<div class="actions">
