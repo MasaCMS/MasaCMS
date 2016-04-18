@@ -44,7 +44,7 @@
 				} else if(!isNaN(parameters["width"])){
 					frontEndModalWidth=parameters["width"];
 				} else {
-					frontEndModalWidth=frontEndModalWidthStandard;
+					frontEndModalWidth=getConfiguratorWidth();
 				}
 
 				if(parameters["targetFrame"]=='sidebar'){
@@ -165,6 +165,15 @@
 	var frontEndModalWidth=0;
 	var frontEndModalIE8=document.all && document.querySelector && !document.addEventListener;
 
+	var getConfiguratorWidth=function(){
+		var check=window.innerWidth-20;
+		if(check < frontEndModalWidthStandard){
+			return check;
+		} else {
+			return frontEndModalWidthStandard;
+		}
+	}
+
 	var autoScroll=function(y){
 
 		var st = utility(window).scrollTop();
@@ -271,11 +280,11 @@
 			} else {
 				if(!frontEndModalHeight){
 					if (isModal == undefined) {
-						frontEndModalWidth = frontEndModalWidthStandard;
+						frontEndModalWidth = getConfiguratorWidth();
 					} else if (isModal == "true") {
 						frontEndModalWidth=frontEndModalWidthConfigurator;
 					} else {
-						frontEndModalWidth = frontEndModalWidthStandard;
+						frontEndModalWidth = getConfiguratorWidth();
 					}
 				}
 
