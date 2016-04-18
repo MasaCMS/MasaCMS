@@ -166,8 +166,9 @@
 	var frontEndModalIE8=document.all && document.querySelector && !document.addEventListener;
 
 	var getConfiguratorWidth=function(){
-		if(window.innerWidth < frontEndModalWidthStandard){
-			return window.innerWidth;
+		var check=window.innerWidth-20;
+		if(check < frontEndModalWidthStandard){
+			return check;
 		} else {
 			return frontEndModalWidthStandard;
 		}
