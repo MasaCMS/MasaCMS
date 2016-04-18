@@ -1,12 +1,10 @@
-	<div class="form-group" id="field-{{name}}-container">
-		<div class="form-group-radio">
-			<label class="control-label">
+	<div class="mura-control-group" id="field-{{name}}-container">
+		<div class="mura-radio-group">
 			{{displayName}}
 			{{#eachStatic dataset}}
-				<label class="control-label" for="{{label}}">	
-				<input class="form-control" type="radio" name="{{../name}}" id="field-{{datarecordid}}" value="{{value}}"  {{#if isselected}}checked='checked'{{/if}}/>
+				<label for="{{label}}" class="radio">	
+				<input type="radio" name="{{../name}}" id="field-{{datarecordid}}" value="{{value}}"  {{#if isselected}}checked='checked'{{/if}}/>
 				{{label}}</label>
 			{{/eachStatic}}
-			</label>
 		</div>
 	</div>

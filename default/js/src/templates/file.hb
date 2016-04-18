@@ -1,5 +1,4 @@
-
-	<div class="form-group" id="field-{{name}}-container">
-		<label class="control-label" for="{{name}}">{{label}}</label>	
-		<input class="form-control" type="file" name="{{name}}" id="field-{{name}}" />			
-	</div>
+<div class="mura-control-group" id="field-{{name}}-container">
+	<label for="{{name}}">{{label}}</label>	
+	<input type="file" name="{{name}}" id="field-{{name}}" />			
+</div>
