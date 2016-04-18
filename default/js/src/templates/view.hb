@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="mura-control-group">
 <ul>
 {{#eachProp this}}
 	<li>
