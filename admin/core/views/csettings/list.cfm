@@ -223,22 +223,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</tr>
 					</cfoutput>
 				</table>
-				<div class="mura-actions">
-					<div class="form-actions">
-						<cfif rc.siteSortBy eq "orderno">
-							<button type="button" class="btn mura-primary" onclick="document.form1.submit();"><i class="mi-check"></i> Update Bind Order</button>
-						</cfif>
-						<cfif  rc.siteUpdateSelect eq "true">
-								<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-bolt"></i> Update Selected Sites to Latest Version</button>
-							<div class="load-inline" style="display: none;"></div>
-						</cfif>
-						<cfif application.configBean.getMode() eq 'staging'
-								and rc.siteSortBy neq "orderno"
-								and rc.siteUpdateSelect neq "true">
-							<button type="button" class="btn" onclick="document.form1.submit();"><i class="mi-check"></i>Update Auto Deploy Settings</button>
-						</cfif>
+			
+				<cfif rc.siteSortBy eq "orderno" or rc.siteUpdateSelect eq "true" 
+					or (application.configBean.getMode() eq 'staging'
+					and rc.siteSortBy neq "orderno"
+					and rc.siteUpdateSelect neq "true")>
+					<div class="mura-actions">
+						<div class="form-actions">
+							<cfif rc.siteSortBy eq "orderno">
+								<button type="button" class="btn mura-primary" onclick="document.form1.submit();"><i class="mi-check"></i> Update Bind Order</button>
+							</cfif>
+							<cfif  rc.siteUpdateSelect eq "true">
+									<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-bolt"></i> Update Selected Sites to Latest Version</button>
+								<div class="load-inline" style="display: none;"></div>
+							</cfif>
+							<cfif application.configBean.getMode() eq 'staging'
+									and rc.siteSortBy neq "orderno"
+									and rc.siteUpdateSelect neq "true">
+								<button type="button" class="btn" onclick="document.form1.submit();"><i class="mi-check"></i>Update Auto Deploy Settings</button>
+							</cfif>
+						</div>
 					</div>
-				</div>
+				</cfif>
+
 				<cfoutput>
 					<input type="hidden" name="siteSortBy" value="#esapiEncode('html_attr',rc.siteSortBy)#" />
 					#rc.$.renderCSRFTokens(context='updatesites',format='form')#
