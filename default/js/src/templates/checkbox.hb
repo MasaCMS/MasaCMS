@@ -1,8 +1,8 @@
-	<div class="mura-control-group" id="field-{{name}}-container">
+	<div class="{{{inputWrapperClass}}}" id="field-{{name}}-container">
 		<div class="mura-checkbox-group">
-			{{displayName}}
+			{{label}}{{#if isrequired}} <ins>Required</ins>{{/if}}
 			{{#eachCheck dataset.options selected}}
-				<label class="checkbox">	
+				<label class="checkbox">
 				<input source="{{../dataset.source}}" type="checkbox" name="{{../name}}" id="field-{{id}}" value="{{id}}" id="{{../name}}-{{id}}" {{#if isselected}}checked='checked'{{/if}}/>
 				{{label}}</label>
 			{{/eachCheck}}

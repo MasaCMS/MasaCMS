@@ -1,4 +1,4 @@
-<div class="mura-control-group"  id="field-{{name}}-container">
-	<label for="{{name}}">{{label}}</label>	
-	<textarea name="{{name}}" id="field-{{name}}">{{value}}</textarea>	
+<div class="{{{inputWrapperClass}}}"  id="field-{{name}}-container">
+	<label for="{{name}}">{{label}}{{#if isrequired}} <ins>Required</ins>{{/if}}</label>
+	<textarea {{commonInputAttributes}}>{{value}}</textarea>
 </div>
