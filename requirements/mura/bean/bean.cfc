@@ -201,8 +201,9 @@ component extends="mura.cfobject" output="false" {
 
 	private function synthArgs(args){
 		var translatedLoadKey=translatePropKey(args.loadkey);
+		var translatedFKColumn=translatePropKey(arguments.args.fkcolumn);
 		var returnArgs={
-				"#translatedLoadKey#"=getValue(translatePropKey(arguments.args.fkcolumn)),
+				"#translatedLoadKey#"=getValue(translatedFKColumn),
 				returnFormat=arguments.args.returnFormat
 			};
 
@@ -211,8 +212,8 @@ component extends="mura.cfobject" output="false" {
 		fkcolumn (many) value is empty.
 		*/
 		if(!len(returnArgs[translatedLoadKey])){
-			setValue(translatedLoadKey,createUUID());
-			returnArgs[translatedLoadKey]=getValue(translatedLoadKey);
+			setValue(translatedFKColumn,createUUID());
+			returnArgs[translatedLoadKey]=getValue(translatedFKColumn);
 		}
 
 		if(structKeyExists(arguments.args,'siteid')){
