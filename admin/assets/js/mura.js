@@ -8606,6 +8606,7 @@ root.mura.templates['embed']=function(context){
 				}
 				return ret;
 			});
+			
 			root.mura.Handlebars.registerHelper('eachStatic',function(dataset, options) {
 				var ret = "";
 
@@ -8616,11 +8617,11 @@ root.mura.templates['embed']=function(context){
 			});
 
 			root.mura.Handlebars.registerHelper('inputWrapperClass',function() {
-				var safeString=root.mura.Handlebars.escapeExpression;
+				var escapeExpression=root.mura.Handlebars.escapeExpression;
 				var returnString='mura-control-group';
 
 				if(this.wrapperclass){
-					returnString += ' ' + safeString(this.wrapperclass);
+					returnString += ' ' + escapeExpression(this.wrapperclass);
 				}
 
 				if(this.isrequired){
@@ -8631,11 +8632,11 @@ root.mura.templates['embed']=function(context){
 			});
 
 			root.mura.Handlebars.registerHelper('formClass',function() {
-				var safeString=root.mura.Handlebars.escapeExpression;
+				var escapeExpression=root.mura.Handlebars.escapeExpression;
 				var returnString='mura-form';
 
 				if(this.class){
-					returnString += ' ' + safeString(this.class);
+					returnString += ' ' + escapeExpression(this.class);
 				}
 
 				return returnString;
@@ -8643,25 +8644,25 @@ root.mura.templates['embed']=function(context){
 
 			root.mura.Handlebars.registerHelper('commonInputAttributes',function() {
 				//id, class, title, size
-				var safeString=root.mura.Handlebars.escapeExpression;
-				var returnString='name="' + safeString(this.name) + '"';
+				var escapeExpression=root.mura.Handlebars.escapeExpression;
+				var returnString='name="' + escapeExpression(this.name) + '"';
 
 				if(this.cssid){
-					returnString += ' id="' + safeString(this.cssid) + '"';
+					returnString += ' id="' + escapeExpression(this.cssid) + '"';
 				} else {
-					returnString += ' id="field-' + safeString(this.name) + '"';
+					returnString += ' id="field-' + escapeExpression(this.name) + '"';
 				}
 
 				if(this.cssclass){
-					returnString += ' class="' + safeString(this.cssclass) + '"';
+					returnString += ' class="' + escapeExpression(this.cssclass) + '"';
 				}
 
 				if(this.tooltip){
-					returnString += ' title="' + safeString(this.tooltip) + '"';
+					returnString += ' title="' + escapeExpression(this.tooltip) + '"';
 				}
 
 				if(this.size){
-					returnString += ' size="' + safeString(this.size) + '"';
+					returnString += ' size="' + escapeExpression(this.size) + '"';
 				}
 
 				return returnString;
