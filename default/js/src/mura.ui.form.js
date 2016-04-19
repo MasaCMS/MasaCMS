@@ -1083,6 +1083,7 @@
 				}
 				return ret;
 			});
+
 			root.mura.Handlebars.registerHelper('inputWrapperClass',function() {
 				var safeString=root.mura.Handlebars.escapeExpression;
 				var returnString='mura-control-group';
@@ -1093,6 +1094,17 @@
 
 				if(this.isrequired){
 					returnString += ' req';
+				}
+
+				return returnString;
+			});
+
+			root.mura.Handlebars.registerHelper('formClass',function() {
+				var safeString=root.mura.Handlebars.escapeExpression;
+				var returnString='mura-form';
+
+				if(this.class){
+					returnString += ' ' + safeString(this.class);
 				}
 
 				return returnString;
