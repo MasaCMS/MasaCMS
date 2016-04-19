@@ -1785,6 +1785,8 @@
 						}
 					}
 				}
+
+				mura.initDraggableObject(self);
 			}
 		}
 
