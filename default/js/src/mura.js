@@ -1756,6 +1756,8 @@
 									mura(this).removeClass('mura-active-target');
 								}
 							);
+
+						mura.initDraggableObject(self);
 					}
 				} else {
 					var region=mura(self).closest(".mura-region-local");
@@ -1781,12 +1783,12 @@
 											mura(this).removeClass('mura-active-target');
 										}
 									);
+
+								mura.initDraggableObject(self);
 							}
 						}
 					}
 				}
-
-				mura.initDraggableObject(self);
 			}
 		}
 
