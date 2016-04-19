@@ -8934,7 +8934,7 @@ this["mura"]["templates"]["radio"] = this.mura.Handlebars.template({"1":function
   return "	<div class=\"mura-control-group\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\r\n		<div class=\"mura-radio-group\">\r\n			"
-    + alias4(((helper = (helper = helpers.displayName || (depth0 != null ? depth0.displayName : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"displayName","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + "\r\n"
     + ((stack1 = helpers.each.call(alias1,((stack1 = (depth0 != null ? depth0.dataset : depth0)) != null ? stack1.options : stack1),{"name":"each","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "		</div>\r\n	</div>";
@@ -8977,7 +8977,7 @@ this["mura"]["templates"]["section"] = this.mura.Handlebars.template({"compiler"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\r\n"
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
-    + "\r\n<div class=\"mura-divide\"></div>\r\n</div>";
+    + "\r\n<hr class=\"mura-divide\" />\r\n</div>";
 },"useData":true});
 
 this["mura"]["templates"]["table"] = this.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -9059,17 +9059,17 @@ this["mura"]["templates"]["table"] = this.mura.Handlebars.template({"1":function
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {}, alias4=helpers.helperMissing;
 
-  return "	<div class=\"mura-control-group\">\r\n		<div id=\"filter-results-container\">\r\n			<div id=\"date-filters\">\r\n				<div class=\"control-group\">\r\n				  <label>From</label>\r\n				  <div class=\"controls\">\r\n				  	<input type=\"text\" class=\"datepicker span2\" id=\"date1\" name=\"date1\" validate=\"date\" value=\""
+  return "	<div class=\"mura-control-group\">\r\n		<div id=\"filter-results-container\">\r\n			<div id=\"date-filters\">\r\n				<div class=\"control-group\">\r\n				  <label>From</label>\r\n				  <div class=\"controls\">\r\n				  	<input type=\"text\" class=\"datepicker mura-date\" id=\"date1\" name=\"date1\" validate=\"date\" value=\""
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.filters : depth0)) != null ? stack1.fromdate : stack1), depth0))
-    + "\">\r\n				  	<select id=\"hour1\" name=\"hour1\" class=\"span2\">"
+    + "\">\r\n				  	<select id=\"hour1\" name=\"hour1\" class=\"mura-date\">"
     + ((stack1 = (helpers.eachHour || (depth0 && depth0.eachHour) || alias4).call(alias3,((stack1 = (depth0 != null ? depth0.filters : depth0)) != null ? stack1.fromhour : stack1),{"name":"eachHour","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</select></select>\r\n					</div>\r\n				</div>\r\n			\r\n				<div class=\"control-group\">\r\n				  <label>To</label>\r\n				  <div class=\"controls\">\r\n				  	<input type=\"text\" class=\"datepicker span2\" id=\"date2\" name=\"date2\" validate=\"date\" value=\""
+    + "</select></select>\r\n					</div>\r\n				</div>\r\n			\r\n				<div class=\"control-group\">\r\n				  <label>To</label>\r\n				  <div class=\"controls\">\r\n				  	<input type=\"text\" class=\"datepicker mura-date\" id=\"date2\" name=\"date2\" validate=\"date\" value=\""
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.filters : depth0)) != null ? stack1.todate : stack1), depth0))
-    + "\">\r\n				  	<select id=\"hour2\" name=\"hour2\"  class=\"span2\">"
+    + "\">\r\n				  	<select id=\"hour2\" name=\"hour2\"  class=\"mura-date\">"
     + ((stack1 = (helpers.eachHour || (depth0 && depth0.eachHour) || alias4).call(alias3,((stack1 = (depth0 != null ? depth0.filters : depth0)) != null ? stack1.tohour : stack1),{"name":"eachHour","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</select></select>\r\n				   </select>\r\n					</div>\r\n				</div>\r\n			</div>\r\n					\r\n			<div class=\"control-group\">\r\n				<label>Keywords</label>\r\n				<div class=\"controls\">\r\n					<select name=\"filterBy\" class=\"span2\" id=\"results-filterby\">\r\n"
+    + "</select></select>\r\n				   </select>\r\n					</div>\r\n				</div>\r\n			</div>\r\n					\r\n			<div class=\"control-group\">\r\n				<label>Keywords</label>\r\n				<div class=\"controls\">\r\n					<select name=\"filterBy\" class=\"mura-date\" id=\"results-filterby\">\r\n"
     + ((stack1 = (helpers.eachKey || (depth0 && depth0.eachKey) || alias4).call(alias3,(depth0 != null ? depth0.properties : depth0),((stack1 = (depth0 != null ? depth0.filters : depth0)) != null ? stack1.filterby : stack1),{"name":"eachKey","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "					</select>\r\n					<input type=\"text\" class=\"span6\" name=\"keywords\" id=\"results-keywords\" value=\""
+    + "					</select>\r\n					<input type=\"text\" class=\"mura-half\" name=\"keywords\" id=\"results-keywords\" value=\""
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.filters : depth0)) != null ? stack1.filterkey : stack1), depth0))
     + "\">\r\n				</div>\r\n			</div>\r\n			<div class=\"form-actions\">\r\n				<button type=\"button\" class=\"btn\" id=\"btn-results-search\" ><i class=\"mi-bar-chart\"></i> View Data</button>\r\n				<button type=\"button\" class=\"btn\"  id=\"btn-results-download\" ><i class=\"mi-download\"></i> Download</button>\r\n			</div>\r\n		</div>\r\n	<div>\r\n\r\n	<ul class=\"metadata\">\r\n		<li>Page:\r\n			<strong>"
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.rows : depth0)) != null ? stack1.pageindex : stack1), depth0))
@@ -9112,11 +9112,11 @@ this["mura"]["templates"]["textblock"] = this.mura.Handlebars.template({"compile
 
   return "<div class=\"mura-control-group\" id=\"field-"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "-container\">\r\n"
+    + "-container\">\r\n	<div class=\"mura-form-text\">\r\n		"
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
-    + "\r\n"
+    + "\r\n		"
     + ((stack1 = ((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\r\n</div>";
+    + "\r\n	</div>\r\n</div>";
 },"useData":true});
 
 this["mura"]["templates"]["textfield"] = this.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
