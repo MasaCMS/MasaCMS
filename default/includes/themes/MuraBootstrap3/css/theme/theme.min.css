@@ -1035,3 +1035,50 @@ ol.linenums {
     display: none !important;
   }
 }
+.mura-form .mura-divide {
+  border-bottom: 1px solid #eee;
+  height: .5px;
+  margin: 0 0 1em 0;
+  padding: 0;
+  display: block;
+}
+.mura-form .mura-section {
+  font-size: 20px;
+  font-weight: bold;
+}
+.mura-form .mura-control-group {
+  margin: 8px 0;
+  width: 100%;
+  clear: both;
+}
+.mura-form .mura-control-group label,
+.mura-form .mura-control-group .mura-group-label {
+  display: block;
+  font-weight: 600;
+}
+.mura-form .mura-control-group .mura-group-label {
+  margin: 0 0 6px 0;
+}
+.mura-form .mura-control-group input[type=text],
+.mura-form .mura-control-group textarea,
+.mura-form .mura-control-group select,
+.mura-form .mura-control-group .mura-radio-group,
+.mura-form .mura-control-group .mura-checkbox-group {
+  margin: 6px 0 12px 0;
+}
+.mura-form .mura-control-group label.radio,
+.mura-form .mura-control-group label.checkbox {
+  padding-right: 6px;
+  display: inline-block;
+}
+.mura-form .mura-control-group .mura-radio-group label.radio,
+.mura-form .mura-control-group .mura-checkbox-group label.checkbox {
+  margin-left: 0px;
+}
+.mura-form .mura-control-group .mura-radio-group label.radio input[type=radio],
+.mura-form .mura-control-group .mura-checkbox-group label.checkbox input[type=radio],
+.mura-form .mura-control-group .mura-radio-group label.radio input[type=checkbox],
+.mura-form .mura-control-group .mura-checkbox-group label.checkbox input[type=checkbox] {
+  margin-left: 0;
+  position: relative;
+}
