@@ -1075,7 +1075,7 @@
 				}
 				return ret;
 			});
-			
+
 			root.mura.Handlebars.registerHelper('eachStatic',function(dataset, options) {
 				var ret = "";
 

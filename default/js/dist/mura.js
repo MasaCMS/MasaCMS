@@ -8606,7 +8606,7 @@ root.mura.templates['embed']=function(context){
 				}
 				return ret;
 			});
-			
+
 			root.mura.Handlebars.registerHelper('eachStatic',function(dataset, options) {
 				var ret = "";
 
