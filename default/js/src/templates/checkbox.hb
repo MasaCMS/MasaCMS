@@ -1,4 +1,4 @@
-	<div class="mura-control-group" id="field-{{name}}-container">
+	<div class="{{{inputWrapperClass}}}" id="field-{{name}}-container">
 		<div class="mura-checkbox-group">
 			{{label}}
 			{{#eachCheck dataset.options selected}}

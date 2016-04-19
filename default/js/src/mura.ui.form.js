@@ -1083,6 +1083,47 @@
 				}
 				return ret;
 			});
+			root.mura.Handlebars.registerHelper('inputWrapperClass',function() {
+				var safeString=root.mura.Handlebars.escapeExpression;
+				var returnString='mura-control-group';
+
+				if(this.wrapperclass){
+					returnString += ' ' + safeString(this.wrapperclass);
+				}
+
+				if(this.isrequired){
+					returnString += ' req';
+				}
+
+				return returnString;
+			});
+
+			root.mura.Handlebars.registerHelper('commonInputAttributes',function() {
+				//id, class, title, size
+				var safeString=root.mura.Handlebars.escapeExpression;
+				var returnString='name="' + safeString(this.name) + '"';
+
+				if(this.cssid){
+					returnString += ' id="' + safeString(this.cssid) + '"';
+				} else {
+					returnString += ' id="field-' + safeString(this.name) + '"';
+				}
+
+				if(this.cssclass){
+					returnString += ' class="' + safeString(this.cssclass) + '"';
+				}
+
+				if(this.tooltip){
+					returnString += ' title="' + safeString(this.tooltip) + '"';
+				}
+
+				if(this.size){
+					returnString += ' size="' + safeString(this.size) + '"';
+				}
+
+				return returnString;
+			});
+
 		}
 
 
