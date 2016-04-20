@@ -84,10 +84,7 @@
                     <a class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
                         <img src="#application.configBean.getContext()#/admin/assets/images/mura-logo@2x.png" class="mura-logo">
                     </a>
-<!---                     <span class="sidebar-mini-hide logo-credit">
-                        <img src="#application.configBean.getContext()#/admin/assets/images/mura_logo_credit.png" class="mura-logo-credit">
-                    </span>
- --->                </strong>
+                </strong>
                 </div>
                 <!---
                 <button class="btn btn-link text-gray pull-right hidden-sm hidden-xs sidebar-icon-right" type="button">

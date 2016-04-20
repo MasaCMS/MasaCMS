@@ -180,8 +180,8 @@
     <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
 
     <!-- Stylesheets -->
-    <!-- Web fonts -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
+    <!-- Web fonts, stored locally -->
+    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/fonts.css">
 
 		<!-- Admin CSS -->
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
