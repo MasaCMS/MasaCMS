@@ -30,57 +30,6 @@
 	  color: @brand-primary;
 }
 
-//
-// Buttons
-// --------------------------------------------------
-
-// Common styles
-.btn-default,
-.btn-primary,
-.btn-success,
-.btn-info,
-.btn-warning,
-.btn-danger {
-  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
-  @shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 1px rgba(0,0,0,.075);
-  .box-shadow(@shadow);
-
-  // Reset the shadow
-  &:active,
-  &.active {
-    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
-  }
-}
-
-// Mixin for generating new styles
-.btn-styles(@btn-color: #555;) {
-  #gradient > .vertical(@start-color: @btn-color; @end-color: darken(@btn-color, 10%));
-  border-color: darken(@btn-color, 12%);
-
-  &:active,
-  &.active {
-    background-color: darken(@btn-color, 10%);
-    border-color: darken(@btn-color, 12%);
-  }
-}
-
-// Common styles
-.btn {
-  // Remove the gradient for the pressed/active state
-  &:active,
-  &.active {
-    background-image: none;
-  }
-}
-
-// Apply the mixin to the buttons
-.btn-default { .btn-styles(@btn-default-bg;); text-shadow: 0 1px 0 #fff; border-color: #ccc; }
-.btn-primary { .btn-styles(@btn-primary-bg); }
-.btn-success { .btn-styles(@btn-success-bg); }
-.btn-warning { .btn-styles(@btn-warning-bg); }
-.btn-danger  { .btn-styles(@btn-danger-bg); }
-.btn-info    { .btn-styles(@btn-info-bg); }
-
 
 
 //
@@ -139,55 +88,7 @@ figcaption {
 	margin: 1em;
 }
 
-//
-// Dropdowns
-// --------------------------------------------------
 
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus,
-.dropdown-menu > .active > a,
-.dropdown-menu > .active > a:hover,
-.dropdown-menu > .active > a:focus {
-  #gradient > .vertical(@start-color: @dropdown-link-hover-bg; @end-color: darken(@dropdown-link-hover-bg, 5%));
-  background-color: darken(@dropdown-link-hover-bg, 5%);
-}
-
-
-
-//
-// Navbar
-// --------------------------------------------------
-
-// Basic navbar
-.navbar {
-  #gradient > .vertical(@start-color: lighten(@navbar-default-bg, 10%); @end-color: @navbar-default-bg;);
-  filter: none !important;
-  //border-radius: @navbar-border-radius;
-  @shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
-  .box-shadow(@shadow);
-
-  .navbar-nav > .active > a {
-    background-color: @navbar-default-bg;
-  }
-}
-.navbar-brand,
-.navbar-nav > li > a {
-  text-shadow: 0 1px 0 rgba(255,255,255,.25);
-}
-
-// Inverted navbar
-.navbar-inverse {
-  #gradient > .vertical(@start-color: lighten(@navbar-inverse-bg, 10%); @end-color: @navbar-inverse-bg;);
-
-  .navbar-nav > .active > a {
-    background-color: @navbar-inverse-bg;
-  }
-
-  .navbar-brand,
-  .navbar-nav > li > a {
-    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
-  }
-}
 
 // Undo rounded corners in static and fixed navbars
 .navbar-static-top,
@@ -195,110 +96,6 @@ figcaption {
 .navbar-fixed-bottom {
   border-radius: 0;
 }
-
-
-
-//
-// Alerts
-// --------------------------------------------------
-
-// Common styles
-.alert {
-  text-shadow: 0 1px 0 rgba(255,255,255,.2);
-  @shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 1px 2px rgba(0,0,0,.05);
-  .box-shadow(@shadow);
-}
-
-// Mixin for generating new styles
-.alert-styles(@color) {
-  #gradient > .vertical(@start-color: @color; @end-color: darken(@color, 7.5%));
-  border-color: darken(@color, 15%);
-}
-
-// Apply the mixin to the alerts
-.alert-success    { .alert-styles(@alert-success-bg); }
-.alert-info       { .alert-styles(@alert-info-bg); }
-.alert-warning    { .alert-styles(@alert-warning-bg); }
-.alert-danger     { .alert-styles(@alert-danger-bg); }
-
-
-
-//
-// Progress bars
-// --------------------------------------------------
-
-// Give the progress background some depth
-.progress {
-  #gradient > .vertical(@start-color: darken(@progress-bg, 4%); @end-color: @progress-bg;)
-}
-
-// Mixin for generating new styles
-.progress-bar-styles(@color) {
-  #gradient > .vertical(@start-color: @color; @end-color: darken(@color, 10%));
-}
-
-// Apply the mixin to the progress bars
-.progress-bar            { .progress-bar-styles(@progress-bar-bg); }
-.progress-bar-success    { .progress-bar-styles(@progress-bar-success-bg); }
-.progress-bar-info       { .progress-bar-styles(@progress-bar-info-bg); }
-.progress-bar-warning    { .progress-bar-styles(@progress-bar-warning-bg); }
-.progress-bar-danger     { .progress-bar-styles(@progress-bar-danger-bg); }
-
-
-
-//
-// List groups
-// --------------------------------------------------
-
-.list-group {
-  border-radius: @border-radius-base;
-  .box-shadow(0 1px 2px rgba(0,0,0,.075));
-}
-.list-group-item.active,
-.list-group-item.active:hover,
-.list-group-item.active:focus {
-  text-shadow: 0 -1px 0 darken(@list-group-active-bg, 10%);
-  #gradient > .vertical(@start-color: @list-group-active-bg; @end-color: darken(@list-group-active-bg, 7.5%));
-  border-color: darken(@list-group-active-border, 7.5%);
-}
-
-
-
-//
-// Panels
-// --------------------------------------------------
-
-// Common styles
-.panel {
-  .box-shadow(0 1px 2px rgba(0,0,0,.05));
-}
-
-// Mixin for generating new styles
-.panel-heading-styles(@color) {
-  #gradient > .vertical(@start-color: @color; @end-color: darken(@color, 5%));
-}
-
-// Apply the mixin to the panel headings only
-.panel-default > .panel-heading   { .panel-heading-styles(@panel-default-heading-bg); }
-.panel-primary > .panel-heading   { .panel-heading-styles(@panel-primary-heading-bg); }
-.panel-success > .panel-heading   { .panel-heading-styles(@panel-success-heading-bg); }
-.panel-info > .panel-heading      { .panel-heading-styles(@panel-info-heading-bg); }
-.panel-warning > .panel-heading   { .panel-heading-styles(@panel-warning-heading-bg); }
-.panel-danger > .panel-heading    { .panel-heading-styles(@panel-danger-heading-bg); }
-
-
-
-//
-// Wells
-// --------------------------------------------------
-
-.well {
-  #gradient > .vertical(@start-color: darken(@well-bg, 5%); @end-color: @well-bg;);
-  border-color: darken(@well-bg, 10%);
-  @shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.1);
-  .box-shadow(@shadow);
-}
-
 
 // End Bootstrap 3 Defaults
 
@@ -415,20 +212,54 @@ img {
 #homepage {
 	.carousel {
 		margin-bottom: 1em;
-		margin-top: -91px;
+		margin-top: -20px; //-91px
 
 		.row {
 			margin: 0;
 			padding: 0;
+
+			&.item {
+				.container {
+					position: relative;
+					width: 100%;
+					height: 100%;
+					background-color: rgba(50,50,50, 0.2);
+				}
+			}
 		}
 
 		.carousel-caption {
 			z-index: 10;
-			background-color: rgba(50,50,50, 0.5);
+			// background-color: rgba(50,50,50, 0.5);
 			padding: 0 2em 2.5em;
+
 			h3 a {
-				color: @body-bg;
-				font-weight: bold;
+				color: @gray-lighter;
+				font-weight: 400;
+				text-transform: uppercase;
+				font-size: 35px;
+
+				&:hover, &:focus {
+					text-decoration: none;
+				}
+			}
+
+			a {
+				.transition(all, 0.3s, ease-in);
+				&:hover {
+					text-decoration: none;
+				}
+
+				&.btn {
+					background-color: transparent;
+					color: @gray-lighter;
+					border-radius: 0;
+					border: 2px solid @gray-lighter;
+					&:hover, &:focus {
+						background-color: @gray-lighter;
+						color: @gray-dark;
+					}
+				}
 			}
 		}
 
@@ -446,6 +277,95 @@ img {
 	
 	.promos > div { text-align: center; }
 }
+
+div[data-cssclass="home-news"] {
+	padding: 2em 0 0 0;
+
+	.mura-object-meta {
+		text-align: center;
+	}
+
+	.mura-collection-item {
+		.mura-item-content {
+			a {
+				.transition(all, 0.3s, ease-in);
+				&:hover {
+					opacity: 0.8;
+				}
+			}
+		}
+
+		.mura-item-meta {
+			a {
+				color: @gray-darker;
+				.transition(all, 0.3s, ease-in);
+
+				&:hover {
+					text-decoration: none;
+					color: @gray-light;
+				}
+			}
+
+			div[class^="mura-item-meta_"] {
+				margin: 1em 0 0 0;
+			}
+
+			.mura-item-meta__date {
+				color: @gray-light;
+			}
+
+			.mura-item-meta__title {
+			}
+
+			.mura-item-meta__summary {
+			}
+
+			.mura-item-meta__credits {
+				color: @gray-light;
+			}
+		}
+	}
+}
+
+.home-title {
+	text-align: center;
+	h2 {
+		color: @gray;
+	}
+	h3 {
+		&.subtitle {
+			color: @gray-light;
+			font-style: italic;
+		}
+	}
+
+}
+
+.home-box {
+	margin: 4em 0;
+	text-align: center;
+
+	i {
+		font-size: 44px;
+		display: inline-block;
+		width: 90px;
+		height: 90px;
+		line-height: 90px;
+		text-align: center;
+		border-radius: 50%;
+		border: 1px solid @gray-light;
+		color: @gray-light;
+		.transition(all, 0.3s, ease-in);
+	}
+
+	&:hover i {
+		border-color: @gray;
+		background-color: @gray;
+		color: white;
+	}
+}
+
+
 
 //
 // Headings
@@ -574,7 +494,7 @@ a.menu:after, .dropdown-toggle:after {
 // @end .nav-list
 
 .moreResults {
-	.well;
+	// .well;
 	.clearfix;
 	border-radius: 6px;
 	//.make-row();
@@ -991,6 +911,84 @@ section {
 	}
 }
 
+
+footer {
+	&.footer-wrapper {
+		background-color: @gray-darker;
+		color: @gray-lighter;
+		color: white;
+		margin: 4em 0 0 0;
+
+		a {
+			color: @gray-lighter;
+		}
+
+		.footer-top {
+			padding: 1em 0;
+			margin: 3em 0;
+
+			.nav {
+				>li {
+					>a {
+						&:hover, &:focus {
+							background-color: @gray-dark;
+						}
+					}
+				}
+			}
+
+			.nav-social {
+				font-size: 1.5em;
+				li {
+
+					a {
+						background-color: @gray-light;
+						padding: 4px 12px;
+						margin: 0 0.25em 0 0;
+
+						&:hover {
+							background-color: @gray;
+
+							&.github {
+								background-color: white;
+								color: black;
+							}
+
+							&.facebook {
+								background-color: @facebook;
+							}
+
+							&.twitter {
+								background-color: @twitter;
+							}
+
+							&.google {
+								background-color: @google;
+							}
+
+							&.linkedin {
+								background-color: @linkedin;
+							}
+						}
+
+
+					}
+				}
+			}
+		}
+
+		.footer-bottom {
+			padding: 1em 0;
+			margin: 1em 0;
+			border-top: 1px solid @gray-dark;
+			font-size: 0.8em;
+
+			.breadcrumb {
+				background-color: @gray-darker;
+			}
+		}
+	}
+}
 
 // Prettify
 ol.linenums {
