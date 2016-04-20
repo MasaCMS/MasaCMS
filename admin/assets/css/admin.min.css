@@ -35084,13 +35084,11 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura .mura-focus-block .mura-focus-actions .btn,
 .mura .mura-focus-block .mura-focus-actions .btn:hover,
 .mura .mura-focus-block .mura-focus-actions .btn:focus {
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
   padding: 2px 12px;
   font-size: 14px;
   display: block;
   width: 100%;
+  border: none;
   background-color: #ff3405;
   color: #fff !important;
   height: 35px;
