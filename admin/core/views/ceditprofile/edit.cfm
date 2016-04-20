@@ -256,7 +256,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 							<div id="mura-list-tree" class="mura-control-group">
 							<cfloop collection="#application.settingsManager.getSites()#" item="site">
-								<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
+								<cfif site eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
 										<cfoutput><label>#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
 										<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
 								</cfif>
