@@ -33970,6 +33970,13 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   padding-left: 32px;
   background-color: #3B3B3B;
 }
+.mura .nav-main ul > li ul {
+  padding-left: 6px;
+}
+.mura .nav-main ul > li ul > li,
+.mura .nav-main ul > li ul > li a {
+  font-size: 12px;
+}
 .mura .nav-main ul.version {
   padding-left: 20px;
 }
