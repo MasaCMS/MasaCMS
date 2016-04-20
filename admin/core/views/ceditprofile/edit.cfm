@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="../cusers/inc/js.cfm">
@@ -70,7 +70,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<cfif not structIsEmpty(rc.userBean.getErrors())>
 		<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
 	</cfif>
-	
+
 	<p>(*Required, **Required to login to Site)<p>
 
 <div class="tabbable tabs-left mura-ui">
@@ -82,10 +82,10 @@ select * from rsSubTypes where subType <> 'Default'
 	</ul>
 
 	<div class="tab-content">
-	
+
 	<div id="tabBasic" class="tab-pane fade in">
 		<div class="fieldset">
-		
+
 		<cfif rsNonDefault.recordcount>
 		<div class="control-group">
       		<label class="control-label">
@@ -100,12 +100,12 @@ select * from rsSubTypes where subType <> 'Default'
 			</select>
 		    </div>
     	</div>
-    	
+
 		<cfelse>
 			<input type="hidden" name="subtype" value="Default"/>
 		</cfif>
-		
-		
+
+
 			<div class="control-group">
 			<div class="span6">
 	     		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fname')#*</label>
@@ -113,7 +113,7 @@ select * from rsSubTypes where subType <> 'Default'
 			    	<input id="fname" name="fname" type="text" class="span12" value="#esapiEncode('html_attr',rc.userBean.getfname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#">
 			    </div>
 		    </div>
-		    
+
 		    <div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</label>
 	      		<div class="controls"><input id="lname" name="lname" type="text" value="#esapiEncode('html_attr',rc.userBean.getlname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#" class="span12">
@@ -121,50 +121,50 @@ select * from rsSubTypes where subType <> 'Default'
 		</div>
     </div>
 
-   
-		
+
+
 		<div class="control-group">
 			<div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>
 	      		<div class="controls"><input id="organization" name="company" type="text" value="#esapiEncode('html_attr',rc.userBean.getcompany())#"  class="span12"></div>
 	        </div>
-			
+
 			<div class="span6">
 	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.jobtitle')#</label>
 	      	<div class="controls"><input id="jobtitle" name="jobtitle" type="text" value="#esapiEncode('html_attr',rc.userBean.getjobtitle())#"  class="span12"></div>
 	      	</div>
 		</div>
-		
+
 		<div class="control-group">
 			<div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#*</label>
 	      		<div class="controls"><input id="email" name="email" type="text" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" value="#esapiEncode('html_attr',rc.userBean.getemail())#" class="span12"></div>
 	      	</div>
-	      	
+
 			<div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.mobilephone')#</label>
 	      		<div class="controls"><input id="mobilePhone" name="mobilePhone" type="text" value="#esapiEncode('html_attr',rc.userBean.getMobilePhone())#" class="span12"></div>
 			</div>
 		</div>
-		
+
 		<div class="control-group">
       		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.username')#**</label>
       		<div class="controls"><input id="username" name="usernameNoCache" type="text" value="#esapiEncode('html_attr',rc.userBean.getusername())#" class="span6" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" >
           </div>
     </div>
-		
+
 		<div class="control-group">
 			<div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</label>
 	      		<div class="controls"><input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="span12"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#"></div>
 	      	</div>
-			
+
 			<div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</label>
 	      		<div class="controls"><input  name="password2" autocomplete="off" type="password" value="" class="span12" message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#"></div>
 	      	</div>
 	    </div>
-    
+
 
     <div class="control-group">
       		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.image')#</label>
@@ -174,8 +174,8 @@ select * from rsSubTypes where subType <> 'Default'
         <cfif len(rc.userBean.getPhotoFileID())>
 	        <div class="controls">
 	        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
-	        	
-	        	<input type="checkbox" name="removePhotoFile" value="true"> #application.rbFactory.getKeyValue(session.rb,'user.delete')# 
+
+	        	<input type="checkbox" name="removePhotoFile" value="true"> #application.rbFactory.getKeyValue(session.rb,'user.delete')#
 	        </div>
         </cfif>
     </div>
@@ -183,13 +183,13 @@ select * from rsSubTypes where subType <> 'Default'
 	<span id="extendSetsBasic"></span>
 </div>
 	</div>
-	
+
 	<div id="tabAddressinformation" class="tab-pane fade in">
 		<div class="fieldset">
 
 			<div class="control-group">
 				<ul class="navTask nav nav-pills"><li><a href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=&returnURL=#esapiEncode('url',cgi.query_string)#">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul>
-				
+
 		      <cfset rsAddresses=rc.userBean.getAddresses()>
 				<cfif rsAddresses.recordcount>
 				<table class="table table-striped table-condensed table-bordered mura-table-grid">
@@ -220,20 +220,22 @@ select * from rsSubTypes where subType <> 'Default'
 		    </div>
 		</div>
 	</div>
-	
+
 	<div id="tabInterests" class="tab-pane">
 		<div class="fieldset">
 			<div id="mura-list-tree" class="control-group">
+			<cfset matchedlist=''>
 			<cfloop collection="#application.settingsManager.getSites()#" item="site">
-				<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
+				<cfif listFindNoCase(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID()) and  application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
 						<cfoutput><label class="control-label">#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
 						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
 				</cfif>
-			</cfloop> 
+				<cfset matchedlist=listAppend(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID())>
+			</cfloop>
 		</div>
 	    </div>
 	</div>
-	
+
 	<cfif rsSubTypes.recordcount>
 	<div id="tabExtendedattributes" class="tab-pane fade in">
 		<div class="fieldset">
@@ -244,7 +246,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</div>
 	</div>
 	</cfif>
-	
+
 	<div id="tabAdvanced" class="tab-pane fade in">
 		<div class="fieldset">
 			<div class="control-group">
@@ -267,11 +269,11 @@ select * from rsSubTypes where subType <> 'Default'
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-actions">
 		<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 	</div>
-	
+
 </div>
 		<input type="hidden" name="type" value="2">
 		<input type="hidden" name="action" value="">
@@ -279,12 +281,12 @@ select * from rsSubTypes where subType <> 'Default'
 		<input type="hidden" name="userid" value="#rc.userBean.getuserid()#">
 		<input type="hidden" name="siteid" value="#rc.userBean.getsiteid()#">
 		#rc.$.renderCSRFTokens(format="form")#
-<!---		
+<!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 <script type="text/javascript">
 initTabs(Array("#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.addressinformation'))#","#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.interests'))#"<cfif rsSubTypes.recordcount>,"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"</cfif>,"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"),#rc.activeTab#,0,0);
-</script>	
+</script>
 --->
 	</cfoutput>
 </form>
