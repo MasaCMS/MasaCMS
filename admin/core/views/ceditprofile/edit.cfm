@@ -91,16 +91,7 @@ select * from rsSubTypes where subType <> 'Default'
 					<div id="tabBasic" class="tab-pane active">
 						<div class="block block-bordered">
 							<!-- block header -->
-							<div class="block-header bg-gray-lighter">
-								<ul class="block-options">
-									<li>Something here?</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-									</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-									</li>
-								</ul>
+							<div class="block-header">
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.basic')#</h3>
 							</div> <!-- /.block header -->
 							<div class="block-content">
@@ -185,16 +176,7 @@ select * from rsSubTypes where subType <> 'Default'
 					<div id="tabAddressinformation" class="tab-pane">
 						<div class="block block-bordered">
 							<!-- block header -->
-							<div class="block-header bg-gray-lighter">
-								<ul class="block-options">
-									<li>Something here?</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-									</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-									</li>
-								</ul>
+							<div class="block-header">
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.addressinformation')#</h3>
 							</div> <!-- /.block header -->
 							<div class="block-content">
@@ -240,16 +222,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 						<div class="block block-bordered">
 							<!-- block header -->
-							<div class="block-header bg-gray-lighter">
-								<ul class="block-options">
-									<li>Something here?</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-									</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-									</li>
-								</ul>
+							<div class="block-header">
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.interests')#</h3>
 							</div> <!-- /.block header -->
 							<div class="block-content">
@@ -274,16 +247,7 @@ select * from rsSubTypes where subType <> 'Default'
 					<div id="tabExtendedattributes" class="tab-pane">
 						<div class="block block-bordered">
 							<!-- block header -->
-							<div class="block-header bg-gray-lighter">
-								<ul class="block-options">
-									<li>Something here?</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-									</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-									</li>
-								</ul>
+							<div class="block-header">
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.extendedattributes')#</h3>
 							</div> <!-- /.block header -->
 							<div class="block-content">
@@ -301,16 +265,7 @@ select * from rsSubTypes where subType <> 'Default'
 					<div id="tabAdvanced" class="tab-pane">
 						<div class="block block-bordered">
 							<!-- block header -->
-							<div class="block-header bg-gray-lighter">
-								<ul class="block-options">
-									<li>Something here?</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-									</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-									</li>
-								</ul>
+							<div class="block-header">
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</h3>
 							</div> <!-- /.block header -->
 							<div class="block-content">

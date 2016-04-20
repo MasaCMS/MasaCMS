@@ -673,8 +673,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset pluginEvent.setValue("tabList",tabLabelList)>
 					<div id="#tabID#" class="tab-pane">
 						<div class="block block-bordered">
-							<div class="block-header bg-gray-lighter">
-						  	<h3 class="block-title">#tabLabel#</h3>
+							<div class="block-header">
+						<h3 class="block-title">#tabLabel#</h3>
 							</div>
 							<!-- /block header -->
 

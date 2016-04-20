@@ -63,9 +63,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="tabFileMetaBasic" class="tab-pane active">
 			<!-- block -->
 		  	<div class="block block-bordered">
-				<div class="block-header bg-gray-lighter">
-					<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.basic')#</h3>
-				</div>
+					<div class="block-header">
+						<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.basic')#</h3>
+					</div>
 				<div class="block-content">
 				 	<cfif fileMetaData.hasImageFileExt()>
 					<div class="mura-control-group">
@@ -110,8 +110,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="tabFileMetaExifData" class="tab-pane">
 			<!-- block -->
 			  <div class="block block-bordered">
-				<div class="block-header bg-gray-lighter">
-					<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.exifdata')#</h3>
+					<div class="block-header">
+						<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.exifdata')#</h3>
 	  			</div>
   				<div class="block-content">
 				<cfset gpsList="GPS Altitude,GPS Altitude Ref,GPS Latitude,GPS Latitude Ref,GPS Longitude,GPS Longitude Ref,GPS Img Direction,GPS Time-Stamp">
@@ -129,8 +129,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="tabFileMetaAdvanced" class="tab-pane">
 			<!-- block -->
 		  	<div class="block block-bordered">
-				<div class="block-header bg-gray-lighter">
-					<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.advanced')#</h3>
+					<div class="block-header">
+						<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.advanced')#</h3>
 				</div>
 				<div class="block-content">
 					<div class="mura-control-group">
