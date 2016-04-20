@@ -448,6 +448,17 @@ form .mura-control-group > * + .help-block:not(.alert){
 .nav-main ul{
   padding-left: 32px;
   background-color: #3B3B3B;
+
+  > li ul{
+    padding-left: 6px;
+
+    > li, 
+    > li a{
+      font-size: 12px;
+    }
+  }
+
+
 }
 
 .nav-main ul.version{
@@ -1184,9 +1195,9 @@ form .checkbox.inline
   .mura-focus-actions .btn,
   .mura-focus-actions .btn:hover,
   .mura-focus-actions .btn:focus{
-    .border-radius(1px);
     .btn;
     .btn-block;
+    border:none;
     background-color: #ff3405;
     color: #fff !important;
     height: 35px;

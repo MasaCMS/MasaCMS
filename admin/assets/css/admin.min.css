@@ -33970,6 +33970,13 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
   padding-left: 32px;
   background-color: #3B3B3B;
 }
+.mura .nav-main ul > li ul {
+  padding-left: 6px;
+}
+.mura .nav-main ul > li ul > li,
+.mura .nav-main ul > li ul > li a {
+  font-size: 12px;
+}
 .mura .nav-main ul.version {
   padding-left: 20px;
 }
@@ -35077,13 +35084,11 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura .mura-focus-block .mura-focus-actions .btn,
 .mura .mura-focus-block .mura-focus-actions .btn:hover,
 .mura .mura-focus-block .mura-focus-actions .btn:focus {
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
   padding: 2px 12px;
   font-size: 14px;
   display: block;
   width: 100%;
+  border: none;
   background-color: #ff3405;
   color: #fff !important;
   height: 35px;

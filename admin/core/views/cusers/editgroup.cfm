@@ -171,16 +171,7 @@
 		<div class="block block-bordered">
 			<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
 				<!-- block header -->
-				<div class="block-header bg-gray-lighter">
-					<ul class="block-options">
-						<li>Something here?</li>
-						<li>
-							<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-						</li>
-						<li>
-							<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-						</li>
-					</ul>
+				<div class="block-header">
 					<h3 class="block-title">Basic Settings</h3>
 				</div> <!-- /.block header -->	
 				</cfif>					
@@ -280,17 +271,8 @@
 				<div id="tabExtendedattributes" class='tab-pane'>
 					<div class="block block-bordered">
 						<!-- block header -->
-						<div class="block-header bg-gray-lighter">
-							<ul class="block-options">
-								<li>Something here?</li>
-								<li>
-									<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-								</li>
-								<li>
-									<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-								</li>
-							</ul>
-							<h3 class="block-title">Extended Attributes</h3>
+						<div class="block-header">
+								<h3 class="block-title">Extended Attributes</h3>
 						</div> <!-- /.block header -->						
 						<div class="block-content">					
 					<span id="extendSetsDefault"></span>
@@ -309,17 +291,8 @@
 						<div id="#tabID#" class="tab-pane">
 						<div class="block block-bordered">
 							<!-- block header -->
-							<div class="block-header bg-gray-lighter">
-								<ul class="block-options">
-									<li>Something here?</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-									</li>
-									<li>
-										<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-									</li>
-								</ul>
-								<h3 class="block-title">Plugin Events</h3>
+							<div class="block-header">
+						<h3 class="block-title">Plugin Events</h3>
 							</div> <!-- /.block header -->						
 							<div class="block-content">							
 							#$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)#

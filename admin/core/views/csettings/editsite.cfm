@@ -121,17 +121,8 @@ to your own modified versions of Mura CMS.
 		<div id="tabBasic" class="tab-pane active">
 				<div class="block block-bordered">
 						<!-- block header -->
-					  <div class="block-header bg-gray-lighter">
-					    <ul class="block-options">
-					        <li>Something here?</li>
-					        <li>
-					            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-					        </li>
-					        <li>
-					            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-					        </li>
-					    </ul>
-					    <h3 class="block-title">Basic Settings</h3>
+					  <div class="block-header">
+							<h3 class="block-title">Basic Settings</h3>
 					  </div>
 					  <!-- /block header -->
 					  <div class="block-content">
@@ -425,18 +416,9 @@ to your own modified versions of Mura CMS.
 		<div id="tabContactinfo" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Contact Info</h3>
-								</div>
+			  <div class="block-header">
+					<h3 class="block-title">Contact Info</h3>
+				</div>
 			  <!-- /block header -->
 			  <div class="block-content">
 					<div class="mura-control-group">
@@ -479,18 +461,9 @@ to your own modified versions of Mura CMS.
 		<div id="tabSharedresources" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Shared Resources</h3>
-					</div>
+			  <div class="block-header">
+					<h3 class="block-title">Shared Resources</h3>
+				</div>
 			  <!-- /block header -->
 			  <div class="block-content">
 				<div class="mura-control-group">
@@ -585,18 +558,9 @@ to your own modified versions of Mura CMS.
 		<div id="tabModules" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Modules</h3>
-							</div>
+			  <div class="block-header">
+					<h3 class="block-title">Modules</h3>
+				</div>
 			  <!-- /block header -->
 			  <div class="block-content">
 					<div class="mura-control-group">
@@ -693,17 +657,8 @@ to your own modified versions of Mura CMS.
 		<div id="tabEmail" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Email</h3>
+			  <div class="block-header">
+					<h3 class="block-title">Email</h3>
 			  </div>
 			  <!-- /block header -->
 			  <div class="block-content">
@@ -832,19 +787,10 @@ to your own modified versions of Mura CMS.
 		<div id="tabImages" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Image Galleries</h3>
-			</div>
-		  <!-- /block header -->
+			  <div class="block-header">
+					<h3 class="block-title">Image Galleries</h3>
+				</div>
+			  <!-- /block header -->
 
 		  <div class="block-content">
 			<div class="mura-control-group">
@@ -1012,17 +958,8 @@ to your own modified versions of Mura CMS.
 		<div id="tabExtranet" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Extranet Settings</h3>
+			  <div class="block-header">
+					<h3 class="block-title">Extranet Settings</h3>
 			  </div>
 			  <!-- /block header -->
 			  <div class="block-content">
@@ -1076,17 +1013,8 @@ to your own modified versions of Mura CMS.
 		<div id="tabDisplayregions" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Display Regions</h3>
+			  <div class="block-header">
+					<h3 class="block-title">Display Regions</h3>
 			  </div>
 			  <!-- /block header -->
 			  <div class="block-content">
@@ -1123,17 +1051,8 @@ to your own modified versions of Mura CMS.
 				<div id="tabExtendedAttributes" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Extended Attributes</h3>
+			  <div class="block-header">
+					<h3 class="block-title">Extended Attributes</h3>
 			  </div>
 			  <!-- /block header -->
 			  <div class="block-content">					<cfset started=false />
@@ -1192,17 +1111,8 @@ to your own modified versions of Mura CMS.
 			<cfif application.configBean.getJavaEnabled()>
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Deploy Site Bundle</h3>
+			  <div class="block-header">
+					<h3 class="block-title">Deploy Site Bundle</h3>
 			  </div>
 			  <!-- /block header -->
 			  <div class="block-content">
@@ -1297,17 +1207,8 @@ to your own modified versions of Mura CMS.
 		<div id="tabRazuna" class="tab-pane">
 			<div class="block block-bordered">
 				<!-- block header -->
-			  <div class="block-header bg-gray-lighter">
-			    <ul class="block-options">
-			        <li>Something here?</li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-			        </li>
-			        <li>
-			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-			        </li>
-			    </ul>
-			    <h3 class="block-title">Razuna Settings</h3>
+			  <div class="block-header">
+					<h3 class="block-title">Razuna Settings</h3>
 			  </div>
 			  <!-- /block header -->
 			  <div class="block-content">
@@ -1359,17 +1260,8 @@ to your own modified versions of Mura CMS.
 			<cfoutput>
 				<div class="block block-bordered">
 					<!-- block header -->
-				  <div class="block-header bg-gray-lighter">
-				    <ul class="block-options">
-				        <li>Something here?</li>
-				        <li>
-				            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-				        </li>
-				        <li>
-				            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-				        </li>
-				    </ul>
-				    <h3 class="block-title">#rsPluginScripts.name#</h3>
+				  <div class="block-header">
+						<h3 class="block-title">#rsPluginScripts.name#</h3>
 				  </div><!-- /block header -->
 				  <div class="block-content">
 						<cfset rsPluginScript=application.pluginManager.getScripts("onSiteEdit",rc.siteID,rsPluginScripts.moduleID)>

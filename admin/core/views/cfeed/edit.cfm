@@ -238,16 +238,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<div class="block block-bordered">
 			<!-- block header -->
-			<div class="block-header bg-gray-lighter">
-				<ul class="block-options">
-					<li>Something here?</li>
-					<li>
-						<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-					</li>
-					<li>
-						<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-					</li>
-				</ul>
+			<div class="block-header">
 				<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.basic')#</h3>
 			</div> <!-- /.block header -->
 			<div class="block-content">
@@ -418,16 +409,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="tabCategorization" class="tab-pane">
 	<div class="block block-bordered">
 			<!-- block header -->
-			<div class="block-header bg-gray-lighter">
-				<ul class="block-options">
-					<li>Something here?</li>
-					<li>
-						<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-					</li>
-					<li>
-						<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-					</li>
-				</ul>
+			<div class="block-header">
 				<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#</h3>
 			</div> <!-- /.block header -->
 			<div class="block-content">
@@ -467,16 +449,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="tabAdvancedfilters" class="tab-pane">
 	<div class="block block-bordered">
 		<!-- block header -->
-		<div class="block-header bg-gray-lighter">
-			<ul class="block-options">
-				<li>Something here?</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-				</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-				</li>
-			</ul>
+		<div class="block-header">
 			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
@@ -539,16 +512,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="block block-bordered">
 		<!-- block header -->
-		<div class="block-header bg-gray-lighter">
-			<ul class="block-options">
-				<li>Something here?</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-				</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-				</li>
-			</ul>
+		<div class="block-header">
 			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
@@ -682,16 +646,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="block block-bordered">
 		<!-- block header -->
-		<div class="block-header bg-gray-lighter">
-			<ul class="block-options">
-				<li>Something here?</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-				</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-				</li>
-			</ul>
+		<div class="block-header">
 			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.rss')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
@@ -926,16 +881,7 @@ jQuery(document).ready(function(){
 <div id="tabBasic" class="tab-pane active">
 	<div class="block block-bordered">
 		<!-- block header -->
-		<div class="block-header bg-gray-lighter">
-			<ul class="block-options">
-				<li>Something here?</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-				</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-				</li>
-			</ul>
+		<div class="block-header">
 			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.basic')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
@@ -1031,16 +977,7 @@ jQuery(document).ready(function(){
 <div id="tabCategorization" class="tab-pane">
 	<div class="block block-bordered">
 		<!-- block header -->
-		<div class="block-header bg-gray-lighter">
-			<ul class="block-options">
-				<li>Something here?</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-				</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-				</li>
-			</ul>
+		<div class="block-header">
 			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
@@ -1061,17 +998,8 @@ jQuery(document).ready(function(){
 
 		<div class="block block-bordered">
 			<!-- block header -->
-			<div class="block-header bg-gray-lighter">
-				<ul class="block-options">
-					<li>Something here?</li>
-					<li>
-						<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-					</li>
-					<li>
-						<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-					</li>
-				</ul>
-				<h3 class="block-title">application.rbFactory.getKeyValue(session.rb,'collections.importlocation')</h3>
+		<div class="block-header">
+			<h3 class="block-title">application.rbFactory.getKeyValue(session.rb,'collections.importlocation')</h3>
 			</div> <!-- /.block header -->
 			<div class="block-content">
 
