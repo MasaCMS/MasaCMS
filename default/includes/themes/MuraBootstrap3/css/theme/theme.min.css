@@ -2241,6 +2241,9 @@ fieldset[disabled] .mura-form div[class*="paging-container-"] button:not[class*=
 .mura-form .mura-form-text {
   margin: 12px 0;
 }
+.mura-form .form-group {
+  clear: both;
+}
 .mura-form .mura-control-group {
   clear: both;
   float: left;
