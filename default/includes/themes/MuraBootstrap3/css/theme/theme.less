@@ -697,6 +697,16 @@ form:not(.navbar-form) {
 			}
 		}
 	}
+
+	.mura-control-group{
+		label.checkbox {
+			input {
+				height: auto;
+				margin-top: .35em;
+				width: auto;
+			}
+		}
+	}
 	.control-group, .form-group {
 		.controls {
 			label.checkbox {
@@ -930,6 +940,7 @@ footer {
 			.nav {
 				>li {
 					>a {
+						.transition(all, 0.3s, ease-in);
 						&:hover, &:focus {
 							background-color: @gray-dark;
 						}
@@ -945,6 +956,7 @@ footer {
 						background-color: @gray-light;
 						padding: 4px 12px;
 						margin: 0 0.25em 0 0;
+						.transition(all, 0.3s, ease-in);
 
 						&:hover {
 							background-color: @gray;
@@ -986,6 +998,14 @@ footer {
 			.breadcrumb {
 				background-color: @gray-darker;
 			}
+
+			a {
+				.transition(all, 0.3s, ease-in);
+				&:hover {
+					color: @gray-light;
+					text-decoration: none;
+				}
+			}
 		}
 	}
 }
@@ -1019,3 +1039,7 @@ ol.linenums {
 @media print{
 	header, #frontEndTools { display:none !important; }
 }
+
+// FORMS
+// =========================================================
+@import url("theme.forms.less"); // Theme defaults for form styling

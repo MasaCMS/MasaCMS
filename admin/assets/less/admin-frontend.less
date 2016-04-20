@@ -46,13 +46,13 @@
 
 // Bootstrap /* Bringing these in separately to enable name-spacing of bootstrap styles to avoid conflicts with Bootstrapped-based themes
 
-	@import url("bootstrap/variables.less");
-	@import url("bootstrap/mixins.less");
-	@import url("variables.less");
-	@import url("mixins.less");
-	@import url("editable-objects.less");
-	@import url("layoutmanager.less");
-	@import url("oneui/modules/icons.fontawesome.less");
+	@import "bootstrap/variables.less";
+	@import "bootstrap/mixins.less";
+	@import "variables.less";
+	@import "mixins.less";
+	@import "editable-objects.less";
+	@import "layoutmanager.less";
+	@import "oneui/modules/icons.fontawesome.less";
 
 /* Toolbar overlap */
 html.mura-edit-mode > body {
@@ -63,33 +63,33 @@ html.mura-edit-mode > body {
 .mura {
 
 	// Layout Manager Sidebar
-	@import url("layoutmanager-sidebar.less");
+	@import "layoutmanager-sidebar.less";
 
 	// Base CSS
-	@import url("bootstrap/type.less");
+	@import "bootstrap/type.less";
 
 	//Icons
-	@import "icons.less";
+	@import "admin/icons.less";
 
 	// Components: Forms
-	@import url("bootstrap/forms.less");
+	@import "bootstrap/forms.less";
 
 	// Components: Dropdowns
-	@import url("bootstrap/dropdowns.less");
+	@import "bootstrap/dropdowns.less";
 
 	// Components: Nav
-	@import url("bootstrap/navs.less");
-	@import url("bootstrap/navbar.less");
+	@import "bootstrap/navs.less";
+	@import "bootstrap/navbar.less";
 
 	// Utility classes
-	@import url("bootstrap/utilities.less"); // Has to be last to override when necessary
+	@import "bootstrap/utilities.less"; // Has to be last to override when necessary
 
 // End Bootstrap
 
-@import "iconmap.less";
 @import "fonts.less";
-@import url("add-content-ui.less");
-@import url("mobile-preview.less");
+@import "mobile-preview.less";
+@import "admin/iconmap.less";
+@import "admin/add-content-ui.less";
 
 #frontEndToolsModalContainer {
  /* position: [Set in dialog.js]; */

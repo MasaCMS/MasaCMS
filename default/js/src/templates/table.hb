@@ -4,16 +4,16 @@
 				<div class="control-group">
 				  <label>From</label>
 				  <div class="controls">
-				  	<input type="text" class="datepicker span2" id="date1" name="date1" validate="date" value="{{filters.fromdate}}">
-				  	<select id="hour1" name="hour1" class="span2">{{#eachHour filters.fromhour}}<option value="{{num}}" {{selected}}>{{label}}</option>{{/eachHour}}</select></select>
+				  	<input type="text" class="datepicker mura-date" id="date1" name="date1" validate="date" value="{{filters.fromdate}}">
+				  	<select id="hour1" name="hour1" class="mura-date">{{#eachHour filters.fromhour}}<option value="{{num}}" {{selected}}>{{label}}</option>{{/eachHour}}</select></select>
 					</div>
 				</div>
 			
 				<div class="control-group">
 				  <label>To</label>
 				  <div class="controls">
-				  	<input type="text" class="datepicker span2" id="date2" name="date2" validate="date" value="{{filters.todate}}">
-				  	<select id="hour2" name="hour2"  class="span2">{{#eachHour filters.tohour}}<option value="{{num}}" {{selected}}>{{label}}</option>{{/eachHour}}</select></select>
+				  	<input type="text" class="datepicker mura-date" id="date2" name="date2" validate="date" value="{{filters.todate}}">
+				  	<select id="hour2" name="hour2"  class="mura-date">{{#eachHour filters.tohour}}<option value="{{num}}" {{selected}}>{{label}}</option>{{/eachHour}}</select></select>
 				   </select>
 					</div>
 				</div>
@@ -22,12 +22,12 @@
 			<div class="control-group">
 				<label>Keywords</label>
 				<div class="controls">
-					<select name="filterBy" class="span2" id="results-filterby">
+					<select name="filterBy" class="mura-date" id="results-filterby">
 					{{#eachKey properties filters.filterby}}
 					<option value="{{name}}" {{selected}}>{{displayName}}</option>
 					{{/eachKey}}
 					</select>
-					<input type="text" class="span6" name="keywords" id="results-keywords" value="{{filters.filterkey}}">
+					<input type="text" class="mura-half" name="keywords" id="results-keywords" value="{{filters.filterkey}}">
 				</div>
 			</div>
 			<div class="form-actions">

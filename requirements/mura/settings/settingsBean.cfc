@@ -1209,7 +1209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAccessControlOriginList" output="false">
-	<cfset var thelist="#getScheme()#://#getValue('domain')#">
+	<cfset var thelist="http://#getValue('domain')#,https://#getValue('domain')#">
 	<cfset var adminSSL=application.configBean.getAdminSSL()>
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
@@ -1219,19 +1219,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif len(application.configBean.getAdminDomain())>
-		<cfset thelist = listAppend(thelist,"#getScheme()#://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
-		<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
-			<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
-		</cfif>
+		<cfset thelist = listAppend(thelist,"http://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
+		<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
 	</cfif>
 
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
 			<cfset theurl = "#i##getServerPort()#" />
-			<cfif not ListFindNoCase(thelist, '#getScheme()#://#theurl#')>
-				<cfset thelist = listAppend(thelist,"#getScheme()#://#theurl#")>
+			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+				<cfset thelist = listAppend(thelist,"http://#theurl#")>
 			</cfif>
-			<cfif adminSSL and not YesNoFormat(getValue('useSSL')) and not ListFindNoCase(thelist, 'https://#theurl#')>
+			<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
 				<cfset thelist = listAppend(thelist,"https://#theurl#")>
 			</cfif>
 		</cfloop>

@@ -66,5 +66,4 @@
 			</div>
 		</div>
 	</footer>
-	#$.dspThemeInclude('display_objects/examples/sampleModalWindow.cfm')#
 </cfoutput>
