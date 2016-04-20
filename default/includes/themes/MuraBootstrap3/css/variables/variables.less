@@ -6,6 +6,13 @@
 // Global values
 // --------------------------------------------------
 
+// Socials
+// -------------------------
+@facebook: 							#3262b9;
+@linkedin:							#069;
+@twitter:								#3dd7e5;
+@google:								#e23535;
+
 // Grays
 // -------------------------
 
@@ -618,3 +625,13 @@
 
 // Large screen / wide desktop
 @container-lg-desktop:        ((1140px + @grid-gutter-width));
+
+
+// Mixins
+.transition (@prop: all, @time: 1s, @ease: linear) {
+	-webkit-transition: @prop @time @ease;
+	-moz-transition: @prop @time @ease;
+	-o-transition: @prop @time @ease;
+	-ms-transition: @prop @time @ease;
+	transition: @prop @time @ease;
+}

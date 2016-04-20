@@ -16,10 +16,11 @@
 						, showMetaImage=true
 						, metaImageClass='thumbnail'
 					)#
+
 					#$.dspObjects(2)#
 		    </section>
 			</div><!--- /.row --->
-			<cfinclude template="inc/footer.cfm" />
 		</div><!--- /.container --->
+	<cfinclude template="inc/footer.cfm" />
 	<cfinclude template="inc/html_foot.cfm" />
 </cfoutput>

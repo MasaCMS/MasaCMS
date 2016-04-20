@@ -73,7 +73,7 @@
 		this.legacyobjects=false;
 		this.jsLib = "jquery";
 		this.jsLibLoaded = true;
-		this.suppressWhitespace = true;
+		this.suppressWhitespace = false;
 		this.generalWrapperClass = "well";
 
 		// headings
@@ -460,7 +460,7 @@
 											<div class="carousel-caption">
 												<h3><a href="#local.item.getURL()#">#HTMLEditFormat(local.item.getTitle())#</a></h3>
 												#local.item.getSummary()#
-												<p><a class="btn btn-larg btn-primary" href="#local.item.getURL()#">Read More</a></p>
+												<p><a class="btn btn-large btn-primary" href="#local.item.getURL()#">Read More</a></p>
 											</div>
 										</div>
 									</cfif>
