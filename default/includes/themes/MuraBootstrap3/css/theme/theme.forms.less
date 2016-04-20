@@ -18,7 +18,7 @@
 	div[class*="paging-container-"]{
 
 		clear:both;
-		padding-top: 12px;
+		padding-top: 24px;
 
 		 button{
 			.btn;
@@ -47,14 +47,19 @@
 	.mura-section{
 		font-size: 20px;
 		font-weight: bold;
+		margin-bottom: 6px;
 	}
-	.mura-control-group + mura-section{
-		margin-top: 8px;
+	.mura-control-group + .mura-control-group .mura-section{
+		margin-top: 12px;
 	}
 	.mura-form-text{
 		margin: 12px 0;
 	}
 
+	.form-group{
+		clear: both;
+	}
+	
 	.mura-control-group{
 		clear:both;
 		float:left;
@@ -66,10 +71,6 @@
 			.mura-group-label{
 				display: block;
 				font-weight: 600;
-			}
-
-			.mura-group-label{
-				margin: 0 0 6px 0;
 			}
 
 			input[type=text],
@@ -86,7 +87,7 @@
 
 			.mura-radio-group, 
 			.mura-checkbox-group{
-				margin: 12px 0 0 0;
+				margin: 6px 0;
 			}
 
 		.mura-radio-group label.radio,

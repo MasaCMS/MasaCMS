@@ -2105,7 +2105,7 @@ textarea.mura-form select {
 }
 .mura-form div[class*="paging-container-"] {
   clear: both;
-  padding-top: 12px;
+  padding-top: 24px;
 }
 .mura-form div[class*="paging-container-"] button {
   display: inline-block;
@@ -2233,12 +2233,16 @@ fieldset[disabled] .mura-form div[class*="paging-container-"] button:not[class*=
 .mura-form .mura-section {
   font-size: 20px;
   font-weight: bold;
+  margin-bottom: 6px;
 }
-.mura-form .mura-control-group + mura-section {
-  margin-top: 8px;
+.mura-form .mura-control-group + .mura-control-group .mura-section {
+  margin-top: 12px;
 }
 .mura-form .mura-form-text {
   margin: 12px 0;
+}
+.mura-form .form-group {
+  clear: both;
 }
 .mura-form .mura-control-group {
   clear: both;
@@ -2252,9 +2256,6 @@ fieldset[disabled] .mura-form div[class*="paging-container-"] button:not[class*=
   display: block;
   font-weight: 600;
 }
-.mura-form .mura-control-group .mura-group-label {
-  margin: 0 0 6px 0;
-}
 .mura-form .mura-control-group input[type=text],
 .mura-form .mura-control-group textarea,
 .mura-form .mura-control-group select {
@@ -2267,7 +2268,7 @@ fieldset[disabled] .mura-form div[class*="paging-container-"] button:not[class*=
 }
 .mura-form .mura-control-group .mura-radio-group,
 .mura-form .mura-control-group .mura-checkbox-group {
-  margin: 12px 0 0 0;
+  margin: 6px 0;
 }
 .mura-form .mura-control-group .mura-radio-group label.radio,
 .mura-form .mura-control-group .mura-checkbox-group label.checkbox {
