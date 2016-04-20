@@ -93,7 +93,7 @@
 					<cfcase value="cArch">
 					<cfswitch expression="#rc.moduleID#">
 					<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
-						<cfset moduleTitle="Site Manager"/>
+						<cfset moduleTitle="Content Manager"/>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif rc.originalfuseaction eq "imagedetails">
@@ -109,7 +109,7 @@
 					</cfswitch>
 					</cfcase>
 					<cfcase value="cSettings">
-					<cfset moduleTitle="Settings Manager"/>
+					<cfset moduleTitle="Settings"/>
 					</cfcase>
 					<cfcase value="cPrivateUsers">
 					<cfset moduleTitle="Admin Users"/>
@@ -145,10 +145,19 @@
 					<cfset moduleTitle="Dashboard"/>
 					</cfcase>
 					<cfcase value="cCategory">
-					<cfset moduleTitle="Category Manager"/>
+					<cfset moduleTitle="Categories"/>
+					</cfcase>
+					<cfcase value="cChain">
+					<cfset moduleTitle="Approval Chains"/>
+					</cfcase>
+					<cfcase value="cChangesets">
+					<cfset moduleTitle="Content Staging"/>
+					</cfcase>
+					<cfcase value="cComments">
+					<cfset moduleTitle="Comments"/>
 					</cfcase>
 					<cfcase value="cExtend">
-					<cfset moduleTitle="Class Extension Manager"/>
+					<cfset moduleTitle="Class Extensions"/>
 					</cfcase>
 					<cfcase value="cPerm">
 					<cfset moduleTitle="Permissions"/>
@@ -156,6 +165,15 @@
 					<cfcase value="cPlugin">
 					<cfset moduleTitle="Plugins"/>
 					</cfcase>
+					<cfcase value="cPlugins">
+					<cfset moduleTitle="Plugins"/>
+					</cfcase>
+					<cfcase value="cTrash">
+					<cfset moduleTitle="Trash Bin"/>
+					</cfcase>
+					<cfcase value="cUsers">
+					<cfset moduleTitle="Users"/>
+					</cfcase>					
 					<cfdefaultcase>
 					<cfset moduleTitle="">
 					</cfdefaultcase>
