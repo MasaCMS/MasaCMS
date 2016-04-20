@@ -27305,10 +27305,10 @@ font-size: 12px;
   margin: 0 0 .2em 0;
 }
 .mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li.no-results {
-  padding-top: 8px;
-  margin-bottom: 12px !important;
   box-shadow: none !important;
-  border: 1px solid #E7E7E7 !important;
+  padding-top: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #E7E7E7;
   display: block;
   text-align: left;
   line-height: 1em;
@@ -27329,10 +27329,10 @@ font-size: 12px;
   text-align: center;
 }
 .mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results {
-  padding-top: 8px;
-  margin-bottom: 12px !important;
   box-shadow: none !important;
-  border: 1px solid #E7E7E7 !important;
+  padding-top: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #E7E7E7;
   display: block;
   text-align: left;
   line-height: 1em;
@@ -29559,6 +29559,7 @@ input[type="email"].mura .mura-content select.mura-repeat-option {
   padding-left: 15px;
   padding-right: 15px;
   margin-left: 8px;
+  min-width: 70px;
   padding-right: 8px;
 }
 .mura select.time:focus {
@@ -33453,7 +33454,7 @@ a.mura .nav-module-specific .metadata-horizontal li:focus {
 .mura .block-constrain > .nav-tabs {
   margin: -10px 0 0;
   background-color: #e4e4e4;
-  max-height: 48px;
+  max-height: 44px;
   overflow-y: hidden;
 }
 .mura .block > .nav-tabs > li a {
@@ -34748,10 +34749,10 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura .alert,
 .mura p.alert,
 .mura .content p.alert {
-  padding-top: 8px;
-  margin-bottom: 12px !important;
   box-shadow: none !important;
-  border: 1px solid #E7E7E7 !important;
+  padding-top: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #E7E7E7;
 }
 .mura div:not(.mura-header) + .alert,
 .mura div:not(.mura-header) + p.alert,
@@ -35053,13 +35054,6 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   max-width: 100%;
   font-size: 12px;
 }
-.mura .mura-footer .credits {
-  margin-left: 248px;
-  font-weight: 600;
-}
-.mura .sidebar-mini .mura-footer .credits {
-  margin-left: 83px;
-}
 .mura .mura-focus-block {
   width: 360px;
   margin: auto;
@@ -35267,8 +35261,6 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 }
 .mura .modal-wrapper .ui-dialog-content {
   background-color: #fff;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
   border-radius: 2px;
 }
 .mura #changesetContainer {
@@ -35277,6 +35269,9 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+}
+.mura .ui-dialog .ui-dialog-content {
+  margin-top: 0 !important;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
   float: none;
@@ -35290,9 +35285,11 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   font-size: 14px;
 }
 .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
+  background-color: #EEE;
+  border: none;
+}
+.mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button.ui-state-hover {
   background-color: #DDDEDD;
-  border-color: #BCBCBC !important;
-  padding: 0 6px;
 }
 .mura #cropper .jc-dialog .btn {
   margin: 20px 10px 10px;
@@ -35420,6 +35417,13 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
     right: 0;
     left: auto;
   }
+  .mura .mura-footer .credits {
+    margin-left: 248px;
+    font-weight: 600;
+  }
+  .mura .sidebar-mini .mura-footer .credits {
+    margin-left: 83px;
+  }
 }
 @media (max-width: 1199px) {
   .mura #userActivity table + table,
@@ -35436,5 +35440,9 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   .mura .nav-module-specific .btn-group .dropdown-menu {
     right: auto;
     left: -10px;
+  }
+  .mura .block-constrain > .content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
