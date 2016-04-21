@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="block block-bordered">
 		  <div class="block-content">
 
-			<form class="fieldset-wrap" novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
+			<form novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
 
 				<div class="mura-control-group">
 							<label>Base Type</label>

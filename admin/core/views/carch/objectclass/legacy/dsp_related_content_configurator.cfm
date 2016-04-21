@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label>
 					#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#
 				</label>
-				<select name="sortDirection" class="span12 objectParam">
+				<select name="sortDirection" class="objectParam">
 					<option value="asc" <cfif feed.getsortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.ascending')#</option>
 					<option value="desc" <cfif feed.getsortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.descending')#</option>
 				</select>
@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<div class="mura-control-group" id="availableFields">
 			<label>
-				Available Fields</span> <span>Selected Fields</span>
+				<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
 			</label>
 			<div class="sortableFields">
 				<p class="dragMsg">
@@ -169,20 +169,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset displayList=feed.getDisplayList()>
 				<cfset availableList=feed.getAvailableDisplayList()>
 
-					<div class="half">
 						<ul id="availableListSort" class="displayListSortOptions">
 							<cfloop list="#availableList#" index="i">
 								<li class="ui-state-default">#trim(i)#</li>
 							</cfloop>
 						</ul>
-					</div>
-					<div class="half">
 						<ul id="displayListSort" class="displayListSortOptions">
 							<cfloop list="#displayList#" index="i">
 								<li class="ui-state-highlight">#trim(i)#</li>
 							</cfloop>
 						</ul>
-					</div>
 
 				<input type="hidden" id="displayList" class="objectParam " value="#displayList#" name="displayList"/>
 			</div>

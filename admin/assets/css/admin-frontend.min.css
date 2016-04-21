@@ -2572,6 +2572,9 @@ i {
   -khtml-user-drag: element;
   cursor: move;
 }
+.mura .mura__layout-manager__controls .btn i {
+  margin-right: 4px;
+}
 .mura .mura__layout-manager__controls__scrollable {
   height: inherit;
   width: inherit;
@@ -2631,6 +2634,10 @@ i {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+}
+.mura .mura-sidebar__object-group-items + .btn,
+.mura .mura-sidebar__objects-list__object-group-items + .btn {
+  margin-top: 22px;
 }
 .mura .mura-sidebar__object-group-items {
   padding: 0;

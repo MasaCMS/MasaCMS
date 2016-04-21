@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<h2><i class="#subtype.getIconClass(includeDefault=true)# mi-lg"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</h2>
 
-			<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
+			<form novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
 
 
 			<div class="mura-control-group">

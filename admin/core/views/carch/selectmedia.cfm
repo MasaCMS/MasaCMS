@@ -31,7 +31,7 @@
 	<!---
 		<div class="nav-module-specific btn-toolbar">
 			<div class="btn-group">
-				<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
+				<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
 			</div>
 		</div><!-- /.nav-module-specific -->
 	--->

@@ -85,10 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#rc.$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</div> <!-- /.mura-header -->
 
-
-
-
-	<form id="partialExportForm" class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
+	<form id="partialExportForm" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
 		<div class="block block-constrain">
 
 			<h2>#rc.$.rbKey('sitemanager.content.exportoptions')#</h2>
