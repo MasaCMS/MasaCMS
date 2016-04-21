@@ -436,7 +436,13 @@
                         .then(function(resp){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
                                 self.showErrors( resp.data.errors );
-                            } else {
+                            } else if(typeof resp.data.redirect != 'undefined') {
+								if(resp.data.redirect && resp.data.redirect != location.href){
+									location.href=resp.data.redirect;
+								} else {
+									location.reload(true);
+								}
+							} else {
 								self.currentpage = mura(button).data('page');
                                 self.renderForm();
                             }
