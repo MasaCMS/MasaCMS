@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<div class="mura-layout-row">
 			<div class="mura-control-group">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentsource')#</label>
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentsource')#</label>
 				<select class="objectParam" name="sourcetype">
 					<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentsource')#</option>
 					<option <cfif objectParams.sourcetype eq 'localindex'>selected </cfif>value="localindex">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#</option>

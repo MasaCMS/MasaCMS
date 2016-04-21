@@ -162,69 +162,59 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<h2>Edit Folder Listing</h2>
 
-		<div class="fieldset-wrap row-fluid">
-			<div class="fieldset">
-				<div class="control-group">
-					<div class="span4">
-				      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-						<div class="controls">
-								<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
-									<cfloop list="Small,Medium,Large" index="i">
-										<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
-									</cfloop>
+		<div class="mura-layout-row">
+			<div class="mura-control-group">
+      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+				<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+					<cfloop list="Small,Medium,Large" index="i">
+						<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
+					</cfloop>
 
-									<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+					<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
 
-									<cfloop condition="imageSizes.hasNext()">
-										<cfset image=imageSizes.next()>
-										<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
-									</cfloop>
-										<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
-								</select>
-						</div>
-					</div>
-					<span id="feedCustomImageOptions" class=""<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
-						<div class="span4">
-							<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-							<div class="controls">
-								<input class="objectParam span6" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
-							</div>
-						</div>
-
-						<div class="span4">
-							<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-							<div class="controls">
-					      		<input class="objectParam span6" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
-					      	</div>
-					      </div>
-				     </span>
-
+					<cfloop condition="imageSizes.hasNext()">
+						<cfset image=imageSizes.next()>
+						<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
+					</cfloop>
+						<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
+				</select>
+			</div>
+			<span id="feedCustomImageOptions" class=""<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+					<input class="objectParam" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
 				</div>
-				<div class="control-group" id="availableFields">
-					<label class="control-label">
-						<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
-					</label>
-					<div id="sortableFields" class="controls">
-						<p class="dragMsg">
-							<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
-						</p>
 
-						<cfset displaylist=feed.getdisplaylist()>
-						<cfset availableList=feed.getAvailabledisplaylist()>
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+      		<input class="objectParam" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+	      </div>
+     </span>
 
-						<ul id="availableListSort" class="displayListSortOptions">
-							<cfloop list="#availableList#" index="i">
-								<li class="ui-state-default">#trim(i)#</li>
-							</cfloop>
-						</ul>
+			<div class="mura-control-group" id="availableFields">
+				<label>
+					<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
+				</label>
+				<div id="sortableFields">
+					<p class="dragMsg">
+						<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
+					</p>
 
-						<ul id="displayListSort" class="displayListSortOptions">
-							<cfloop list="#displaylist#" index="i">
-								<li class="ui-state-highlight">#trim(i)#</li>
-							</cfloop>
-						</ul>
-						<input type="hidden" id="displaylist" class="objectParam" value="#displaylist#" name="displaylist"  data-displayobjectparam="displaylist"/>
-					</div>
+					<cfset displaylist=feed.getdisplaylist()>
+					<cfset availableList=feed.getAvailabledisplaylist()>
+
+					<ul id="availableListSort" class="displayListSortOptions">
+						<cfloop list="#availableList#" index="i">
+							<li class="ui-state-default">#trim(i)#</li>
+						</cfloop>
+					</ul>
+
+					<ul id="displayListSort" class="displayListSortOptions">
+						<cfloop list="#displaylist#" index="i">
+							<li class="ui-state-highlight">#trim(i)#</li>
+						</cfloop>
+					</ul>
+					<input type="hidden" id="displaylist" class="objectParam" value="#displaylist#" name="displaylist"  data-displayobjectparam="displaylist"/>
 				</div>
 			</div>
 		</div>

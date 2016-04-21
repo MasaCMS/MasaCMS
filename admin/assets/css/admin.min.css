@@ -31644,6 +31644,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   *display: inline;
   /* IE7 inline-block hack */
   *zoom: 1;
+  color: #404040;
 }
 .mura #sortableFields,
 .mura .sortableFields,
