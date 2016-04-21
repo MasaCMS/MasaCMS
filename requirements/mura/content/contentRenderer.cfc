@@ -1603,14 +1603,7 @@ Display Objects
 			<cfinclude template="#bodyLookup.filepath#">
 		<cfelse>
 			<cfif arguments.renderKids>
-				<cfif request.muraApiRequest
-					and listFindNoCase('folder,gallery',$.content('type'))
-					and $.getContentRenderer().useLayoutManager()>
-					<cfset arguments.params.object='collection'>
-					<cfset arguments.params.sourcetype='children'>
-					<cfset arguments.params.source=$.content('contentid')>
-					<cfoutput>#$.dspObject(objectid=$.content('contentid'),object='collection',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
-				<cfelseif $.siteConfig().hasDisplayObject($.content('type'))>
+				<cfif $.siteConfig().hasDisplayObject($.content('type'))>
 					<cfoutput>#dspObject(objectid=$.content('contentid'),object=$.content('type'),params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 				<cfelse>
 					<cfif $.content('type') eq 'folder'>
