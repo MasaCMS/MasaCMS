@@ -30,7 +30,7 @@
 				--->
 				<div id="sortableFields" class="mura-control justify">
 					<p class="dragMsg">
-						<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+						<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
 					</p>
 
 					<cfset displayList=feed.getDisplayList()>
