@@ -107,8 +107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</label>
 						<ul class="configurator-options">
 						<cfloop list="month,basicWeek,basicDay,agendaWeek,agendaDay" index="i">
-						<li>
-							<input type="checkbox" class="objectParam" name="viewoptions" value="#i#" <cfif listFindNoCase(objectParams.viewoptions,i)> checked</cfif>/> #application.rbFactory.getKeyValue(session.rb,'calendar.#i#')#</li>
+						<li><label class="checkbox">
+							<input type="checkbox" class="objectParam" name="viewoptions" value="#i#" <cfif listFindNoCase(objectParams.viewoptions,i)> checked</cfif>/> #application.rbFactory.getKeyValue(session.rb,'calendar.#i#')#</label></li>
 						</cfloop>
 						</ul>
 					</div>

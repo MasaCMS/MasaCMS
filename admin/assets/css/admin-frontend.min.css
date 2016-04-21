@@ -2801,6 +2801,14 @@ i {
   outline: none;
   outline-offset: 0;
 }
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group input.radio,
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group input[type=radio],
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group input.checkbox,
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group input[type=checkbox] {
+  margin-top: 1px;
+  border: none;
+  outline: 0;
+}
 .mura body.configurator-wrapper #configuratorContainer textarea {
   max-width: 230px;
   min-height: 85px;
