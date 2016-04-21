@@ -450,17 +450,23 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 .mura-object.mura-active.mura-object-selected > .frontEndToolsModal.mura {
   opacity: 1;
 }
-/* button colors - reproducing bootstrap */
 .frontEndToolsModal.mura {
+  color: #fff;
+  display: block;
+  font-size: 10.5px;
+  line-height: 24px;
+  min-height: 24px;
+  padding: 0;
+  width: 100%;
+}
+.frontEndToolsModal.mura > span {
   background-color: #337ab7;
   color: #fff;
-  line-height: 24px;
-  display: inline-block;
-}
-/* mini -- reproducing bootstrap */
-.frontEndToolsModal.mura {
+  display: block;
+  float: left;
+  height: 24px;
   padding: 0 6px;
-  font-size: 10.5px;
+  width: 24px;
 }
 .mura-object-primary {
   clear: both;
