@@ -242,8 +242,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) gt 0>
 		<cfset this.datasource = structNew()>
 		<cfset this.datasource.name = evalSetting(getINIProperty("datasource","")) />
-		<cfset this.datasource.username = evalSetting(getINIProperty("dbusername",""))>
-		<cfset this.datasource.password = evalSetting(getINIProperty("dbpassword",""))>
+		<cfset dbUsername=evalSetting(getINIProperty("dbusername",""))>
+		<cfif len(dbUsername)>
+			<cfset this.datasource.username =dbUsername>
+		</cfif>
+		<cfset dbPassword=evalSetting(getINIProperty("dbpassword",""))>
+		<cfif len(dbPassword)>
+			<cfset this.datasource.password = dbPassword>
+		</cfif>
 	<cfelse>
 		<cfset this.datasource = evalSetting(getINIProperty("datasource","")) >
 	</cfif>
@@ -456,4 +462,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tracePoint.total=tracePoint.stop-request.muraRequestStart>
 	</cfif>
 </cffunction>
-
