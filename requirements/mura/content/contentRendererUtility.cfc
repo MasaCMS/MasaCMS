@@ -1907,7 +1907,7 @@
 				<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
 				<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
 			</cfif>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,bodyRender=true)}>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,bodyRender=true,cachekey=$.content('contentid') & cgi.query_string)}>
 		</cfif>
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
@@ -1917,7 +1917,7 @@
 			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
 			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
 		</cfif>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,bodyRender=true)}>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,bodyRender=true,cachekey=$.content('contentid') & cgi.query_string)}>
 		</cfif>
 
 		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
@@ -1939,7 +1939,7 @@
 			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
 			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
 		</cfif>
-			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,bodyRender=true)}>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=params,bodyRender=true,cachekey=$.content('contentid') & cgi.query_string)}>
 		</cfif>
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
