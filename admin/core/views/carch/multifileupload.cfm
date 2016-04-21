@@ -104,7 +104,7 @@ jQuery(document).ready(function(){
     	<div id="fileupload-target" class="alert alert-info"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="fileupload-buttonbar">
-            <div class="span7">
+            <div>
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn fileinput-button">
                     <i class="mi-plus"></i>
@@ -128,7 +128,7 @@ jQuery(document).ready(function(){
                 --->
             </div>
             <!-- The global progress information -->
-            <div class="span5 fileupload-progress fade">
+            <div class="fileupload-progress fade">
                 <!-- The global progress bar -->
                 <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                     <div class="bar" style="width:0%;"></div>

@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <div class="mura-control-group">
 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.message')#</label>
-	<textarea name="message" rows="6" id="messageEditor" class="span12">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.messagetext')#
+	<textarea name="message" rows="6" id="messageEditor">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.messagetext')#
 	</textarea>
 </div>
 </cfoutput>

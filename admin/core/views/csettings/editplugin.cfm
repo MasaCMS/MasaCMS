@@ -173,12 +173,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<div class="mura-control-group">
 				<label>Plugin Name (Alias)</label>
-				<input name="pluginalias" class="span12" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/>
+				<input name="pluginalias" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/>
 			</div>
 		    
 			<div class="mura-control-group">
 				<label>Load Priority</label>
-					<select name="loadPriority" class="span2">
+					<select name="loadPriority">
 						<cfloop from="1" to="10" index="i">
 							<option value="#i#" <cfif rsPlugin.loadPriority eq i>selected</cfif>>#i#</option>
 						</cfloop>
@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div>
 						<label>Display Objects Location</label>
 						<div>
-							<select class="span6" name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
+							<select name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
 								<option value="global" <cfif location eq "global">selected</cfif>>Global</option>
 								<option value="local" <cfif location eq "local">selected</cfif>>Local</option>
 							</select>

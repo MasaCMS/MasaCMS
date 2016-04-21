@@ -81,13 +81,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<label>
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.caption')#
 						</label>
-						<textarea id="file-caption" data-property="caption" class="filemeta span12 htmlEditor">#fileMetaData.getCaption()#</textarea>
+						<textarea id="file-caption" data-property="caption" class="filemeta htmlEditor">#fileMetaData.getCaption()#</textarea>
 					</div>
 					<div class="mura-control-group">
 						<label>
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.credits')#
 						</label>
-						<textarea id="file-credits" data-property="credits" class="filemeta span12 htmlEditor">#fileMetaData.getCredits()#</textarea>
+						<textarea id="file-credits" data-property="credits" class="filemeta htmlEditor">#fileMetaData.getCredits()#</textarea>
 					</div>
 					<div class="mura-control-group">
 						<label>

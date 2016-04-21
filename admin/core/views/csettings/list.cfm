@@ -279,7 +279,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="appurl" class="fileTypeOption" style="display:none;">
 				<form name="frmNewPluginFROMURL" action="./?muraAction=cSettings.deployPlugin" method="post" onsubmit="return validateForm(this);">
 					<div class="mura-control-group">
-							<input type="text" name="newPlugin"  class="span6" type="url" data-required="true" placeholder="http://www.domain.com/plugin.zip" message="Please enter the url for your plugin file" value="">
+							<input type="text" name="newPlugin"  type="url" data-required="true" placeholder="http://www.domain.com/plugin.zip" message="Please enter the url for your plugin file" value="">
 						<div class="mura-control justify">
 							<button type="submit" class="btn" /><i class="mi-bolt"></i> Deploy</button>
 							<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>

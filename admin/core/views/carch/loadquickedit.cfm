@@ -399,30 +399,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if($('##displayIntervalRepeats').is(':checked')){
 				$('.mura-repeat-options').show();
 				setDaysOfWeekDefault();
-				/*
-				$('##mura-datepicker-displayStop').hide();
 
-				$('##mura-datepicker-displayStart')
-					.removeClass('span2')
-					.addClass('span3');
-				$('##mura-datepicker-displayStop')
-					.removeClass('span2')
-					.addClass('span3');
-				*/
 			} else {
 				$('.mura-repeat-options').hide();
 				//$('##mura-datepicker-displayStop').show();
 				$('##displayIntervalType').val('daily');
-
-				/*
-				$('##mura-datepicker-displayStart')
-					.removeClass('span3')
-					.addClass('span2');
-
-				$('##mura-datepicker-displayStop')
-					.removeClass('span3')
-					.addClass('span2');
-				*/
 
 				if($('##displayIntervalEndOn').val()){
 					$('##displayIntervalEnd').val('on');

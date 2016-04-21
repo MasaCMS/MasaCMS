@@ -70,7 +70,7 @@
 				<input type="hidden" name="bulkedit" id="bulkedit" value="" />
 				<!--- BULK EDIT BUTTONS --->
 				<div class="mura-layout-row">
-					<div class="span9">
+					<div>
 						<div class="commentform-actions">
 							<div class="btn-group">
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
@@ -314,32 +314,32 @@
 			<!--- RECORDS PER PAGE --->
 			<div class="view-controls mura-layout-row">
 				<div class="btn-group dropup">
-								<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-									Mark As
-									<span class="caret"></span>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="mi-check"></i> Approved</a></li>
-									<li><a href="##" class="bulkEdit" data-alertmessage="Are you sure you want to mark the selected comments as spam?" data-action="spam"><i class="mi-flag"></i> Spam</a></li>
-									<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="mi-trash"></i> Deleted</a></li>
-								</ul>
-							</div>
-							<div class="btn-group dropup">
-								<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-									Comments Per Page
-									<span class="caret"></span>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="##" class="nextN" data-nextn="10">10</a></li>
-									<li><a href="##" class="nextN" data-nextn="25">25</a></li>
-									<li><a href="##" class="nextN" data-nextn="50">50</a></li>
-									<li><a href="##" class="nextN" data-nextn="100">100</a></li>
-									<li><a href="##" class="nextN" data-nextn="250">250</a></li>
-									<li><a href="##" class="nextN" data-nextn="500">500</a></li>
-									<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
-									<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
-								</ul>
-							</div>
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+						Mark As
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="mi-check"></i> Approved</a></li>
+						<li><a href="##" class="bulkEdit" data-alertmessage="Are you sure you want to mark the selected comments as spam?" data-action="spam"><i class="mi-flag"></i> Spam</a></li>
+						<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="mi-trash"></i> Deleted</a></li>
+					</ul>
+				</div>
+				<div class="btn-group dropup">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+						Comments Per Page
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="##" class="nextN" data-nextn="10">10</a></li>
+						<li><a href="##" class="nextN" data-nextn="25">25</a></li>
+						<li><a href="##" class="nextN" data-nextn="50">50</a></li>
+						<li><a href="##" class="nextN" data-nextn="100">100</a></li>
+						<li><a href="##" class="nextN" data-nextn="250">250</a></li>
+						<li><a href="##" class="nextN" data-nextn="500">500</a></li>
+						<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
+						<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
+					</ul>
+				</div>
 
 				<!--- PAGINATION --->
 				<cfif rc.itComments.pageCount() gt 1>
@@ -390,7 +390,7 @@
 			<!--- /@END RECORDS PER PAGE --->
 		<cfelse>
 			<div class="mura-layout-row">
-				<div class="span12">
+				<div>
 					<div class="alert alert-info">
 						<p>No #$.event('commentStatus')# comments found.</p>
 					</div>

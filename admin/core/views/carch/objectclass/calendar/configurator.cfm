@@ -214,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-layout-row">
 				<div class="mura-control-group">
 		      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-						<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+						<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 							<cfloop list="Small,Medium,Large" index="i">
 								<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 							</cfloop>
