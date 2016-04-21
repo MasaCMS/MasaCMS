@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.muraDynamicContentError" default="false">
 <cfparam name="request.muraPreviewDomain" default="">
 <cfparam name="request.muraOutputCacheOffset" default="">
+<cfparam name="request.muraCachingOutput" default="false">
 <cfparam name="request.muraMostRecentPluginModuleID" default="">
 <cfparam name="request.muraAPIRequest" default="false">
 <cfparam name="request.muraAdminRequest" default="false">

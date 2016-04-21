@@ -1314,12 +1314,14 @@ Display Objects
 	<cfset var tracePoint=0>
 	<cfset var doLayoutManagerWrapper=not arguments.include and request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
 
-	<cfif isJSON(arguments.params)>
-		<cfset var objectParams=deserializeJSON(arguments.params)>
-	<cfelseif isStruct(arguments.params)>
-		<cfset var objectParams=arguments.params>
-	<cfelse>
-		<cfset var objectParams=structNew()>
+	<cfif not isDefined('arguments.objectparams')>
+		<cfif isJSON(arguments.params)>
+			<cfset var objectParams=deserializeJSON(arguments.params)>
+		<cfelseif isStruct(arguments.params)>
+			<cfset var objectParams=arguments.params>
+		<cfelse>
+			<cfset var objectParams=structNew()>
+		</cfif>
 	</cfif>
 
 	<cfif this.layoutmanager>
