@@ -236,9 +236,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</ul>
 						</div>
 					<!---
-					<div class="span3">
+					<div>
 						<label>Display Objects Location</label>
-						<div class="controls">
+						<div>
 							<select class="span6" name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
 								<option value="global" <cfif location eq "global">selected</cfif>>Global</option>
 								<option value="local" <cfif location eq "local">selected</cfif>>Local</option>
@@ -247,9 +247,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 
 					<span id="ov"<cfif location eq "global"> style="display:none;"</cfif>>
-						<div class="span3">
+						<div>
 							<label>If Display Object Already Exists?</label>
-							<div class="controls">
+							<div>
 								<select name="overwrite">
 									<option value="false">Do not overwrite </option>
 									<option value="true">Overwrite</option>

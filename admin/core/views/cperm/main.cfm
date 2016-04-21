@@ -170,24 +170,23 @@
 
   <cfif chains.hasNext()>
   <h2>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchain')#</h2>
-  <div class="control-group">
-        <label class="control-label">
-
-  <span data-toggle="popover"
-    title=""
-    data-placement="right"
-    data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.approvalchain"))#"
-    data-original-title="#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')#">#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')# <i class="mi-question-circle"></i></span>
-        </label>
-        <div class="controls">
-            <select name="chainID" class="dropdown">
-              <option value="">#application.rbFactory.getKeyValue(session.rb,'permissions.none')#</option>
-              <cfloop condition="chains.hasNext()">
-                <cfset chain=chains.next()>
-                <option value="#chain.getChainID()#"<cfif assignment.getChainID() eq chain.getChainID()> selected</cfif>>#esapiEncode('html',chain.getName())#</option>
-              </cfloop>
-          </select>
-        </div>
+  <div class="mura-control-group">
+    <label>
+      <span data-toggle="popover"
+        title=""
+        data-placement="right"
+        data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.approvalchain"))#"
+        data-original-title="#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')#">#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')# <i class="mi-question-circle"></i></span>
+      </label>
+      <div>
+        <select name="chainID" class="dropdown">
+          <option value="">#application.rbFactory.getKeyValue(session.rb,'permissions.none')#</option>
+          <cfloop condition="chains.hasNext()">
+            <cfset chain=chains.next()>
+            <option value="#chain.getChainID()#"<cfif assignment.getChainID() eq chain.getChainID()> selected</cfif>>#esapiEncode('html',chain.getName())#</option>
+          </cfloop>
+        </select>
+      </div>
     </div>
     </cfif>
     <div class="mura-actions">

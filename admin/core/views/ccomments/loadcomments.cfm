@@ -37,10 +37,10 @@
 					</label>
 				</div>
 			</div>
-			<!--- <div class="span4">
+			<!--- <div>
 				<label>ContentID</label>
 
-				<div class="controls">
+				<div>
 					<input type="text" name="contentID" id="inputcontentID" value="#$.event('contentID')#"/>
 				</div>
 			</div> --->
@@ -48,7 +48,7 @@
 		<div class="mura-control-group">
 			<div class="mura-control-justify">
 				<label>Available Categories</label>
-				<div id="mura-list-tree" class="controls">
+				<div id="mura-list-tree">
 					#$.getBean('contentCommentManager').dspCategoriesNestSelect($.event("siteID"), "", $.event('categoryID'), 0, 0, "categoryID")#
 				</div>
 			</div>

@@ -509,7 +509,7 @@
 										--->
 										<!---
 										<cfif rc.tempIsPublic>
-											<div id="privateGroupsNotice" class="controls">
+											<div id="privateGroupsNotice">
 												<p class="alert alert-notice">
 													#rbKey('user.systemgroupmessage')#
 												</p>

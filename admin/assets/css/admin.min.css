@@ -35393,6 +35393,9 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 .mura #csetup #main-container .mura-control-group {
   margin-bottom: 12px;
 }
+.mura #csetup #main-container #multi-file-upload .mura-control-group {
+  pargin-bottom: 10px;
+}
 .mura #csetup #main-container label.switch label {
   margin-left: 8px;
 }
