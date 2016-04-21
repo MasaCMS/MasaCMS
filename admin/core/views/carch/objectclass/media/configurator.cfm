@@ -9,7 +9,7 @@
 	<div class="mura-layout-row">
 			<cfif not len(objectparams.fileid)>
 				<div class="mura-control-group">
-					<button class="btn" id="selectMedia">Select Image</button>
+					<button class="btn" id="selectMedia"><i class="mi-image"></i> Select Image</button>
 				</div>
 			<cfelse>
 				<div class="mura-control-group">
