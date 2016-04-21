@@ -107,8 +107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</label>
 						<ul class="configurator-options">
 						<cfloop list="month,basicWeek,basicDay,agendaWeek,agendaDay" index="i">
-						<li>
-							<input type="checkbox" class="objectParam" name="viewoptions" value="#i#" <cfif listFindNoCase(objectParams.viewoptions,i)> checked</cfif>/> #application.rbFactory.getKeyValue(session.rb,'calendar.#i#')#</li>
+						<li><label class="checkbox">
+							<input type="checkbox" class="objectParam" name="viewoptions" value="#i#" <cfif listFindNoCase(objectParams.viewoptions,i)> checked</cfif>/> #application.rbFactory.getKeyValue(session.rb,'calendar.#i#')#</label></li>
 						</cfloop>
 						</ul>
 					</div>
@@ -211,51 +211,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<h2>Edit Calendar Listing</h2>
 
-		<div class="fieldset-wrap row-fluid">
-			<div class="fieldset">
-				<div class="control-group">
-					<div class="span4">
-				      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-						<div class="controls">
-								<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
-									<cfloop list="Small,Medium,Large" index="i">
-										<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
-									</cfloop>
+		<div class="mura-layout-row">
+				<div class="mura-control-group">
+		      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+						<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+							<cfloop list="Small,Medium,Large" index="i">
+								<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
+							</cfloop>
 
-									<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+							<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
 
-									<cfloop condition="imageSizes.hasNext()">
-										<cfset image=imageSizes.next()>
-										<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
-									</cfloop>
-										<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
-								</select>
-						</div>
-					</div>
-					<span id="feedCustomImageOptions" class=""<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
-						<div class="span4">
-							<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-							<div class="controls">
-								<input class="objectParam span6" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
-							</div>
-						</div>
-
-						<div class="span4">
-							<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-							<div class="controls">
-					      		<input class="objectParam span6" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
-					      	</div>
-					      </div>
-				     </span>
-
+							<cfloop condition="imageSizes.hasNext()">
+								<cfset image=imageSizes.next()>
+								<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
+							</cfloop>
+								<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
+						</select>
 				</div>
-				<div class="control-group" id="availableFields">
-					<label class="control-label">
-						<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
+
+				<span id="feedCustomImageOptions" <cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+						<input class="objectParam half" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+					</div>
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+	      		<input class="objectParam half" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+		      </div>
+		    </span>
+
+				<div class="mura-control-group" id="availableFields">
+					<label>
+						<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
 					</label>
-					<div id="sortableFields" class="controls">
+					<div id="sortableFields">
 						<p class="dragMsg">
-							<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+							<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
 						</p>
 
 						<cfset displaylist=feed.getdisplaylist()>
@@ -274,7 +265,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 						<input type="hidden" id="displaylist" class="objectParam" value="#displaylist#" name="displaylist"  data-displayobjectparam="displaylist"/>
 					</div>
-				</div>
 			</div>
 		</div>
 	</div>

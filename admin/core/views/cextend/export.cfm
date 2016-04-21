@@ -116,16 +116,12 @@
 		<div class="block block-bordered">
 		  <div class="block-content">
 
-	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post">
-		<div class="fieldset">
-			<div class="control-group">
-				<div id="copymessage" class="controls">
-					<div class="info-box alert alert-info"></div>
-				</div>
-				<div class="controls">
-					<textarea id="thecode" class="form-control span12" rows="20" style="height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
-				</div>
+	<form novalidate="novalidate" name="form1" method="post">
+		<div class="mura-control-group">
+			<div id="copymessage" class="controls">
+				<div class="info-box alert alert-info"></div>
 			</div>
+				<textarea id="thecode" rows="20" style="width: 100%; height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
 		</div>
 		<div class="mura-actions">
 			<div class="form-actions">

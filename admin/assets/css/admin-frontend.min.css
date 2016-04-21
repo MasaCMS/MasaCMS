@@ -450,17 +450,23 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 .mura-object.mura-active.mura-object-selected > .frontEndToolsModal.mura {
   opacity: 1;
 }
-/* button colors - reproducing bootstrap */
 .frontEndToolsModal.mura {
+  color: #fff;
+  display: block;
+  font-size: 10.5px;
+  line-height: 24px;
+  min-height: 24px;
+  padding: 0;
+  width: 100%;
+}
+.frontEndToolsModal.mura > span {
   background-color: #337ab7;
   color: #fff;
-  line-height: 24px;
-  display: inline-block;
-}
-/* mini -- reproducing bootstrap */
-.frontEndToolsModal.mura {
+  display: block;
+  float: left;
+  height: 24px;
   padding: 0 6px;
-  font-size: 10.5px;
+  width: 24px;
 }
 .mura-object-primary {
   clear: both;
@@ -2572,6 +2578,9 @@ i {
   -khtml-user-drag: element;
   cursor: move;
 }
+.mura .mura__layout-manager__controls .btn i {
+  margin-right: 4px;
+}
 .mura .mura__layout-manager__controls__scrollable {
   height: inherit;
   width: inherit;
@@ -2631,6 +2640,10 @@ i {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+}
+.mura .mura-sidebar__object-group-items + .btn,
+.mura .mura-sidebar__objects-list__object-group-items + .btn {
+  margin-top: 22px;
 }
 .mura .mura-sidebar__object-group-items {
   padding: 0;
@@ -2793,6 +2806,14 @@ i {
   cursor: pointer;
   outline: none;
   outline-offset: 0;
+}
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group input.radio,
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group input[type=radio],
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group input.checkbox,
+.mura body.configurator-wrapper #configuratorContainer .mura-control-group input[type=checkbox] {
+  margin-top: 1px;
+  border: none;
+  outline: 0;
 }
 .mura body.configurator-wrapper #configuratorContainer textarea {
   max-width: 230px;

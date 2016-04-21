@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfinclude template="dsp_secondary_menu.cfm">
 </div> <!-- /.mura-header -->
 
-<form <cfif rc.mlid eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" action="./?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="./?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
 
 <div class="block block-constrain">
 
@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label>
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
 			</label>
-			<input type="text" name="Name" value="#esapiEncode('html_attr',rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+			<input type="text" name="Name" value="#esapiEncode('html_attr',rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#">
 		</div>
 	<cfelse>
 		<ul class="mura-tabs nav-tabs" data-toggle="tabs">
@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label>
 					#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
 				</label>
-					<input type=text name="Name" value="#esapiEncode('html_attr',rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+					<input type=text name="Name" value="#esapiEncode('html_attr',rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#">
 			</div>
 	</cfif>
 
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="block-content">
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.masterdonotemaillistname')#</label>
-				<input type="text" name="Name" value="#esapiEncode('html_attr',rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+				<input type="text" name="Name" value="#esapiEncode('html_attr',rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#">
 				<input type=hidden name="ispurge" value="1"><input type=hidden name="ispublic" value="1">
 			</div>
 </cfif>
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label>
 			#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.description')#
 		</label>
-		<textarea id="description" name="description" rows="6" class="span12">#esapiEncode('html',rc.listBean.getdescription())#</textarea>
+		<textarea id="description" name="description" rows="6">#esapiEncode('html',rc.listBean.getdescription())#</textarea>
 		<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 	</div>
 	

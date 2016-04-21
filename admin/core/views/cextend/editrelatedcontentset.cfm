@@ -67,27 +67,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h2><i class="#subtype.getIconClass(includeDefault=true)# mi-lg"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #esapiEncode('html',subType.getSubType())#</h2>
 
 
-			<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
+			<form novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
 
-			<div class="fieldset">
 
-			<div class="control-group">
-	<label class="control-label">Related Content Set Name</label>
-	<div class="controls">
+	<div class="mura-control-group">
+	<label>Related Content Set Name</label>
 	<input name="name" type="text" value="#esapiEncode('html_attr',rcsBean.getName())#" required="true"/>
 	</div>
-			</div>
-			<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
-			<div class="control-group">
-	<div class="span6 availableSubTypesContainer" >
-		<label class="control-label">Allow users to add only specific subtypes?</label>
-		<div class="controls"> 
-			<label class="radio inline" ><input name="hasAvailableSubTypes" type="radio" class="radio inline" value="1" <cfif len(rcsBean.getAvailableSubTypes())>checked </cfif>
-			onclick="javascript:toggleDisplay2('rg',true);">Yes</label>
+		<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
+	<div class="mura-control-group availableSubTypesContainer" >
+		<label>Allow users to add only specific subtypes?</label>
+			<label class="radio inline" ><input name="hasAvailableSubTypes" type="radio" class="radio inline" value="1" <cfif len(rcsBean.getAvailableSubTypes())>checked </cfif>onclick="javascript:toggleDisplay2('rg',true);">Yes</label>
 			<label class="radio inline"><input name="hasAvailableSubTypes" type="radio" class="radio inline" value="0" <cfif not len(rcsBean.getAvailableSubtypes())>checked </cfif>
 			onclick="javascript:toggleDisplay2('rg',false);">No</label>
-		</div>
-		<div class="controls" id="rg"<cfif not len(rcsBean.getAvailableSubTypes())> style="display:none;"</cfif>>
+		</div>	
+		<div class="mura-control-group" id="rg"<cfif not len(rcsBean.getAvailableSubTypes())> style="display:none;"</cfif>>
+				<label>Select Subtypes</label>
 			<select name="availableSubTypes" size="8" multiple="multiple" class="multiSelect" id="availableSubTypes">
 			<cfloop list="Page,Folder,Calendar,Gallery,File,Link" index="i">
 				<option value="#i#/Default" <cfif listFindNoCase(rcsBean.getAvailableSubTypes(),'#i#/Default')> selected</cfif>>#i#/Default</option>
@@ -102,9 +97,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>			
 		</div>
 	</div>
-			</div>
-
-			</div>
 			<div class="mura-actions">
 				<div class="form-actions">
 					<cfif not len(rc.relatedContentSetID)>

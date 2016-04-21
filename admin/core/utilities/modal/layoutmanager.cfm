@@ -9,9 +9,6 @@
 			<div id="mura-sidebar-objects" class="mura-sidebar__objects-list">
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<cfif $.content('type') neq 'Variation' and this.legacyobjects>
-						<button id="mura-objects-legacy-btn" class="btn btn-primary">View Legacy Objects</button>
-						</cfif>
 						<h3>Content Objects</h3>
 					</div>
 					<div class="mura-sidebar__objects-list__object-group-items">
@@ -41,6 +38,9 @@
 							</cfif>
 						</cfloop>
 					</div>
+					<cfif $.content('type') neq 'Variation' and this.legacyobjects>
+						<button id="mura-objects-legacy-btn" class="btn btn-primary"><i class="mi-object-ungroup"></i> Legacy Objects</button>
+					</cfif>
 				</div>
 			</div>
 			<cfif $.content('type') neq 'Variation' and this.legacyobjects>
@@ -48,7 +48,7 @@
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<button class="mura-objects-back-btn btn btn-primary">
-							<i class="icon-circle-arrow-left"></i> Back
+							<i class="mi-arrow-left"></i> Back
 						</button>
 						<h3>Legacy Objects</h3>
 					</div>
@@ -90,7 +90,7 @@
 				<!---
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-					<a href="##" class="mura-objects-back-btn" class="btn btn-primary"><i class="icon-circle-arrow-left"></i> Back</a>
+					<a href="##" class="mura-objects-back-btn" class="btn btn-primary"><i class="mi-arrow-left"></i> Back</a>
 					</div>
 				</div>
 				--->

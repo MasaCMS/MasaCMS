@@ -346,6 +346,13 @@ header .btn i{
   margin-top: 30px;
 }
 
+.mura-tab-links > li > a:hover,
+.mura-tabs > li > a:hover,
+.mura-tab-links > li > a:focus,
+.mura-tabs > li > a:focus{
+  background-color: transparent;
+}
+
 // admin form-actions
 .mura-actions{
   background-color: #f5f5f5;
@@ -855,10 +862,10 @@ a.no-link{
 .alert, 
 p.alert, 
 .content p.alert{
-  padding-top: 8px;
-  margin-bottom: 12px !important;
   box-shadow: none !important;
-  border: 1px solid #E7E7E7 !important;
+  padding-top: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #E7E7E7;
 }
 
 div:not(.mura-header) + .alert, 
@@ -1159,15 +1166,6 @@ form .checkbox.inline
   font-size: 12px;
 }
 
-.mura-footer .credits{
-  margin-left: 248px;
-  font-weight: 600;
-}
-
-.sidebar-mini .mura-footer .credits{
-  margin-left: 83px;
-}
-
 /* login and setup */
 .mura-focus-block{
     
@@ -1382,7 +1380,7 @@ body#csetup{
 }
 .modal-wrapper .ui-dialog-content{
   background-color: #fff;
-  .border-radius(2px);
+  border-radius:2px;
 }
 
 #changesetContainer{
@@ -1391,6 +1389,9 @@ body#csetup{
   .border-radius(0);
 }
 
+.ui-dialog .ui-dialog-content{
+  margin-top: 0 !important;
+}
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{
   float:none;
   text-align: center;
@@ -1405,11 +1406,12 @@ body#csetup{
 }
 
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button{
-  background-color: #DDDEDD;
-  border-color: #BCBCBC !important;
-  padding: 0 6px;
+  background-color: #EEE;
+  border: none;
 }
-
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button.ui-state-hover{
+  background-color: #DDDEDD;
+}
 #cropper .jc-dialog .btn{
   margin: 20px 10px 10px;
 }

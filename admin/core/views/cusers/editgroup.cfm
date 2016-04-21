@@ -128,7 +128,7 @@
 			<p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
 		</cfif>
 
-		<form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#')#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return userManager.submitForm(this);">
+		<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#')#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return userManager.submitForm(this);">
 
 		<div class="block block-constrain">
 	</cfoutput>

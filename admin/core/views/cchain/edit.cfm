@@ -25,19 +25,17 @@
           <div class="alert alert-error">#application.utility.displayErrors(chain.getErrors())#</div>
         </cfif>
 
-      <form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cchain.save" method="post" name="form1" onsubmit="return validateForm(this);">
-      <div class="fieldset">
-      <div class="control-group">
-  <label class="control-label">
+      <form novalidate="novalidate" action="./?muraAction=cchain.save" method="post" name="form1" onsubmit="return validateForm(this);">
+      <div class="mura-control-group">
+  <label>
     #application.rbFactory.getKeyValue(session.rb,'approvalchains.name')#
   </label>
   <div class="controls">
   <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'approvalchains.namerequired')#" value="#esapiEncode('html_attr',chain.getName())#" maxlength="50">
    </div>
-      </div>
 
-      <div class="control-group">
-  <label class="control-label">
+      <div class="mura-control-group">
+  <label>
     #application.rbFactory.getKeyValue(session.rb,'approvalchains.description')#
   </label>
   <div class="controls">
@@ -45,18 +43,18 @@
   </div>
       </div>
 
-      <div class="control-group" id="availableGroups">
+      <div class="mura-control-group" id="availableGroups">
       	<div class="alert alert-info">
       		<p>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.
       		<strong>All content creators can send for approval without having to be in the chain.</strong></p>
       	</div>
-        <label class="control-label">
-          <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>
+        <label>
+          <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>
         </label>
 
         <div id="sortableGroups" class="controls">
           <p class="dragMsg">
-            <span class="dragFrom span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragfrom')#&hellip;</span><span class="span6">&hellip;#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragto')#</span>
+            <span class="dragFrom half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragfrom')#&hellip;</span><span class="half">&hellip;#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragto')#</span>
           </p>              
                 
           <ul id="groupAvailableListSort" class="groupDisplayListSortOptions">

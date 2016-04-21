@@ -346,8 +346,11 @@
 
 								// tab drop
 								$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+								$(window).on('resize',function(){
+									$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
+								});
 								$('.tabdrop .dropdown-toggle').on('click',function(){
-								$(this).parents('.nav-tabs').css('overflow-y','visible');
+									$(this).parents('.nav-tabs').css('overflow-y','visible');
 								});
 
 								// dismiss alerts
