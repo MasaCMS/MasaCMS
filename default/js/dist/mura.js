@@ -8108,7 +8108,7 @@ root.mura.templates['embed']=function(context){
 					 	self.fields = formJSON.form.fields;
 					 	self.responsemessage = data.data.responsemessage;
 						self.ishuman=data.data.ishuman;
-
+						
 						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
 							self.ormform = true;
 						}
@@ -8630,8 +8630,8 @@ root.mura.templates['embed']=function(context){
 				var escapeExpression=root.mura.Handlebars.escapeExpression;
 				var returnString='mura-control-group';
 
-				if(this.wrapperclass){
-					returnString += ' ' + escapeExpression(this.wrapperclass);
+				if(this.wrappercssclass){
+					returnString += ' ' + escapeExpression(this.wrappercssclass);
 				}
 
 				if(this.isrequired){
@@ -8941,7 +8941,7 @@ this["mura"]["templates"]["form"] = this.mura.Handlebars.template({"compiler":[7
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<form id=\"frm"
-    + alias4(((helper = (helper = helpers.formid || (depth0 != null ? depth0.formid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"formid","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.objectid || (depth0 != null ? depth0.objectid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"objectid","hash":{},"data":data}) : helper)))
     + "\" class=\""
     + ((stack1 = ((helper = (helper = helpers.formClass || (depth0 != null ? depth0.formClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"formClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\" novalidate=\"novalidate\" enctype='multipart/form-data'>\n<div class=\"error-container-"

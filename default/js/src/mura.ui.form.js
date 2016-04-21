@@ -573,7 +573,7 @@
 					 	self.fields = formJSON.form.fields;
 					 	self.responsemessage = data.data.responsemessage;
 						self.ishuman=data.data.ishuman;
-
+						
 						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
 							self.ormform = true;
 						}
@@ -1095,8 +1095,8 @@
 				var escapeExpression=root.mura.Handlebars.escapeExpression;
 				var returnString='mura-control-group';
 
-				if(this.wrapperclass){
-					returnString += ' ' + escapeExpression(this.wrapperclass);
+				if(this.wrappercssclass){
+					returnString += ' ' + escapeExpression(this.wrappercssclass);
 				}
 
 				if(this.isrequired){
