@@ -213,7 +213,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<div class="mura-layout-row">
 				<div class="mura-control-group">
-					<div class="span4">
 		      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
 						<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 							<cfloop list="Small,Medium,Large" index="i">
@@ -228,20 +227,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 								<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
 						</select>
-					</div>
-					<span id="feedCustomImageOptions" class=""<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
-						<div class="span4">
-							<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-								<input class="objectParam half" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
-						</div>
-
-						<div class="span4">
-							<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-					      		<input class="objectParam half" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
-					      </div>
-				     </span>
-
 				</div>
+
+				<span id="feedCustomImageOptions" <cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+						<input class="objectParam half" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+					</div>
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+	      		<input class="objectParam half" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+		      </div>
+		    </span>
+
 				<div class="mura-control-group" id="availableFields">
 					<label>
 						<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
