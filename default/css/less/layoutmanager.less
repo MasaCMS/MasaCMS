@@ -45,9 +45,9 @@ hr {
 @media only screen and (min-width: 480px) {
 
 	.mura-grid-one .mura-collection-item {
-		position: relative;
-		padding-left: 100px;
-		min-height: 100px;
+		width: 100%;
+		float: left;
+		box-sizing: border-box;
 	}
 
 	.mura-grid-two .mura-collection-item {
@@ -119,9 +119,8 @@ hr {
 		clear: both;
 	}
 
-	.mura-grid-one .mura-item-content {
-		position: absolute;
-		left: 0;
+	.mura-grid-one .mura-collection-item:nth-child(1n+2) {
+		clear: left;
 	}
 
 	.mura-grid-two .mura-collection-item:nth-child(2n+3) {
