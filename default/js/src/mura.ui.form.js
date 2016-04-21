@@ -436,7 +436,13 @@
                         .then(function(resp){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
                                 self.showErrors( resp.data.errors );
-                            } else {
+                            } else if(typeof resp.data.redirect != 'undefined') {
+								if(resp.data.redirect && resp.data.redirect != location.href){
+									location.href=resp.data.redirect;
+								} else {
+									location.reload(true);
+								}
+							} else {
 								self.currentpage = mura(button).data('page');
                                 self.renderForm();
                             }
@@ -567,7 +573,7 @@
 					 	self.fields = formJSON.form.fields;
 					 	self.responsemessage = data.data.responsemessage;
 						self.ishuman=data.data.ishuman;
-
+						
 						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
 							self.ormform = true;
 						}
@@ -1089,8 +1095,8 @@
 				var escapeExpression=root.mura.Handlebars.escapeExpression;
 				var returnString='mura-control-group';
 
-				if(this.wrapperclass){
-					returnString += ' ' + escapeExpression(this.wrapperclass);
+				if(this.wrappercssclass){
+					returnString += ' ' + escapeExpression(this.wrappercssclass);
 				}
 
 				if(this.isrequired){

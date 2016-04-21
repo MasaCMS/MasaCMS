@@ -975,6 +975,7 @@
 		<cfargument name="layoutmanager">
 		<cfargument name="objectname">
 		<cfargument name="bodyRender" required="true" default="false">
+		<cfargument name="include" required="true" default="false">
 		<cfargument name="returnFormat" required="true" default="html">
 
 		<cfset var event=arguments.renderer.getEvent()>
@@ -1159,7 +1160,7 @@
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
 					<cfset theObject=tempObject>
 					<cfif arguments.renderer.useLayoutmanager()>
-						<cfif request.muraFrontEndRequest>
+						<cfif not arguments.include and request.muraFrontEndRequest>
 								<cfset theObject=renderObjectInManager(object=arguments.object,
 									objectid=arguments.objectid,
 									content=theObject,
@@ -1207,7 +1208,7 @@
 						<cfreturn trim(theDisplay1)>
 					</cfif>
 				<cfelse>
-					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,bodyRender=arguments.bodyRender,returnformat=arguments.returnformat}>
+					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,bodyRender=arguments.bodyRender,returnformat=arguments.returnformat,include=arguments.include}>
 
 					<cfif objectargs.object neq 'plugin'>
 						<cfset objectargs.cacheKey=cacheKeyObjectId>
