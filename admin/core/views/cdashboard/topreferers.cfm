@@ -60,9 +60,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <div class="block-content">
 
 			<h3>#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
-			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
+			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
 
-			<div class="fieldset">
 				<div class="mura-control-group">
 					<label class="label-inline">#application.rbFactory.getKeyValue(session.rb,"params.from")#
 						<input type="text" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
@@ -76,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</select>
 					</label>
 				</div>
-			</div>
+
 			<div class="mura-actions">
 				<div class="form-actions">
 					<button class="btn mura-primary" onclick="submitForm(document.forms.searchFrm);"><i class="mi-search"></i>#application.rbFactory.getKeyValue(session.rb,"params.search")#</button>

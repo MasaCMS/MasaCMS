@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif attributes.action eq "add">
 <div style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#container" class="attr-add">
 </cfif>
-<form <cfif attributes.action eq "add"> class="fieldset-wrap"</cfif> novalidate="novalidate" method="post" name="#esapiEncode('html_attr',attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
+<form novalidate="novalidate" method="post" name="#esapiEncode('html_attr',attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
 <cfif attributes.action neq "add">
 <div class="mura-control-group">
 	<label>Attribute ID: #attributes.attributeBean.getAttributeID()#</label>
