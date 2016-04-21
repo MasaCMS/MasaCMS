@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif not structKeyExists(request,"percentFreeMemory")>
 			<cfset runtime = getJavaRuntime()>
-			<cfset request.percentFreeMemory = Round((runtime.freeMemory() / runtime.maxMemory() ) * 100)>
+			<cfset request.percentFreeMemory=100 - (Round((runtime.freeMemory() / runtime.maxMemory() ) * 100))>
 		</cfif>
 
 		<cfreturn request.percentFreeMemory>
