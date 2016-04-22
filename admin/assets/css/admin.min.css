@@ -32024,7 +32024,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura #carch #tabCategorization #mura-nodes dt > label input[type="checkbox"] {
   margin-top: 0 !important;
   position: relative;
-  top: 4px;
+  top: 2px;
 }
 .mura #tabRelatedcontent table {
   margin-top: 18px;
