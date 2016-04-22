@@ -250,8 +250,10 @@
     /*box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);*/
     box-sizing: border-box;
     margin-top: 0;
+    max-height: 196px;
     opacity: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: 0;
     pointer-events: none;
     position: absolute;
