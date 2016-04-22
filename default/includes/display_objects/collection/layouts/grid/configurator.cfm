@@ -97,13 +97,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<button id="editFields" class="btn"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'collections.edit')#</button>
 	</label>
 	<div id="sortableFields" class="sortable-sidebar">
-	<cfset displaylist=feed.getdisplaylist()>
-	<ul id="displayListSort" class="displayListSortOptions">
-		<cfloop list="#displaylist#" index="i">
-			<li class="ui-state-highlight">#trim(i)#</li>
-		</cfloop>
-	</ul>
-	<input type="hidden" id="displaylist" class="objectParam" value="#esapiEncode('html_attr',feed.getdisplaylist())#" name="displaylist"  data-displayobjectparam="displaylist"/>
+    	<cfset displaylist=feed.getdisplaylist()>
+    	<ul id="displayListSort" class="displayListSortOptions">
+    		<cfloop list="#displaylist#" index="i">
+    			<li class="ui-state-highlight">#trim(i)#</li>
+    		</cfloop>
+    	</ul>
+    	<input type="hidden" id="displaylist" class="objectParam" value="#esapiEncode('html_attr',feed.getdisplaylist())#" name="displaylist"  data-displayobjectparam="displaylist"/>
+    </div>
 </div>
 
 <div class="mura-control-group">
