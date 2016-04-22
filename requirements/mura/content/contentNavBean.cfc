@@ -360,7 +360,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var result=getContentBean().getValue("displayInterval")>
 	</cfif>
 
-	<cfif arguments.serialize>
+	<cfif not arguments.serialize>
 		<cfreturn getBean('contentDisplayInterval').set(getBean('contentIntervalManager').deserializeInterval(
 			interval=result,
 			displayStart=getValue('displayStart'),
