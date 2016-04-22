@@ -1813,7 +1813,7 @@
 		<cfif not isDate(arguments.content.getdisplayStart())>
 			<cfreturn ''>
 		<cfelseif content.hasParent()>
-			<cfset returnstring=esapiEncode('html',UCase(content.getParent().getMenuTitle())) & ': '>
+			<cfset returnstring=esapiEncode('html',UCase(arguments.content.getParent().getMenuTitle())) & ': '>
 		</cfif>
 
 		<cfset var allday=variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>

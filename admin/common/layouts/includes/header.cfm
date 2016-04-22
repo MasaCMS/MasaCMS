@@ -61,12 +61,6 @@
 	<cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
 	<cfset rc.currentUser=rc.$.currentUser()>
 	<cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-
-	<cfif rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0)>
-		<cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main">
-	<cfelse>
-		<cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
-	</cfif>
 </cfsilent>
 <cfoutput>
 
@@ -104,10 +98,18 @@
 						<input name="site-search" class="form-control input-sm" type="text" placeholder="#rc.$.rbKey("dashboard.search")#...">
 					</div>
 				</cfif>
+				<cfset settingsManager=rc.$.getBean('settingsManager')>
 				<cfloop query="theSiteList" startrow="1" endrow="100">
-          <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
+					<cfsilent>
+						<cfif settingsManager.getSite(theSiteList.siteID).getValue(property='showDashboard',defaultValue=0)>
+							<cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main">
+						<cfelse>
+							<cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
+						</cfif>
+					</cfsilent>
+          			<li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
 						<a href="#baseURL#&amp;siteID=#theSiteList.siteID#"><i class="mi-globe"></i> #esapiEncode('html',theSiteList.site)#</a>
-        	</li>
+        			</li>
 				</cfloop>
         </ul>
       </div>
@@ -140,7 +142,7 @@
       </li>
 
       <!--- admin user tools --->
-      <cfparam name="local.prompttally" default="0">      
+      <cfparam name="local.prompttally" default="0">
       <cfsavecontent variable="local.userprompt">
 
 				<!--- drafts --->
@@ -210,7 +212,7 @@
 						</li>
 					 </cfif>
 				 </cfif>
-				<!--- /changesets --->                  
+				<!--- /changesets --->
 			</cfsavecontent>
 			<!--- /local.userprompt --->
 
@@ -227,7 +229,7 @@
                   <li>
                       <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #rc.$.rbKey("layout.logout")#</a>
                   </li>
-                  
+
                   <!--- output user prompts --->
                   <cfif local.prompttally>
 	                  <li class="divider"></li>

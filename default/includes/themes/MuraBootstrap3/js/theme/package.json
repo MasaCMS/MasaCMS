@@ -1,0 +1,23 @@
+{
+  "name": "theme.minjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/templates.js",
+  "dependencies": {},
+  "devDependencies": {
+      "grunt": "^0.4.5",
+      "grunt-contrib-concat": "^0.5.1",
+      "grunt-contrib-copy": "^1.0.0",
+      "grunt-contrib-handlebars": "^1.0.0",
+      "grunt-contrib-uglify": "^0.9.1",
+      "grunt-handlebars-compiler": "^0.2.0",
+      "grunt-shell": "^1.1.2",
+      "grunt-text-replace": "^0.4.0",
+      "handlebars": "^4.0.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
