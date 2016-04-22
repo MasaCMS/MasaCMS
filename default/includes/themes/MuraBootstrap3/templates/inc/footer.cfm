@@ -58,12 +58,13 @@
 						<li><a href="http://www.getmura.com"><i class="fa fa-plug"></i> Powered by Mura</a></li>
 					</ul>
 				</div>
-				<cfset backToTop = '<a class="btn" href="##"><i class="fa fa-arrow-circle-up"></i> Back to top</a>' />
+				<cfset backToTop = '<a id="back-to-top" class="btn" href="##"><i class="fa fa-chevron-up"></i></a>' />
 				<div class="col-lg-2">
-					<p class="hidden-sm hidden-xs pull-right">#backToTop#</p>
-					<p class="visible-sm visible-xs pull-left">#backToTop#</p>
+					<p class="scroll-top hidden-sm hidden-xs pull-right">#backToTop#</p>
+					<p class="scroll-top visible-sm visible-xs pull-left">#backToTop#</p>
 				</div>
 			</div>
 		</div>
 	</footer>
+	#$.dspThemeInclude('display_objects/examples/sampleModalWindow.cfm')#
 </cfoutput>
