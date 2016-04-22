@@ -166,6 +166,7 @@
 				},
 				function(e){
 					//e.stopPropagation();
+
 					mura(this).removeClass('mura-active-target');
 				}
 			);

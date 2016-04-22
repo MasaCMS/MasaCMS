@@ -155,6 +155,7 @@
 
 		hover:function(handlerIn,handlerOut){
 			this.on('mouseover',handlerIn);
+			this.on('mouseout',handlerOut);
 			this.on('touchstart',handlerIn);
 			this.on('touchend',handlerOut);
 			return this;
