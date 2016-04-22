@@ -55,11 +55,10 @@
 	Mura CMS.
 --->
 <cfset objectparams.sourcetype='children'>
-<cfset objectparams.sourceid=$.content('contentid')>
+<cfset objectparams.source=$.content('contentid')>
 <cfoutput>
-	#$.dspObject(
-		object='collection',
-		include=true,
-		objectparams=objectparams
+	#$.dspObject_include(
+		thefile="collection/index.cfm",
+		params=objectParams
 	)#
 </cfoutput>

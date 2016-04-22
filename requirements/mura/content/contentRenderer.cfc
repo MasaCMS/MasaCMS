@@ -1250,7 +1250,7 @@ Display Objects
 	<cfset var objectPerm="none">
 	<cfset var result="">
 
-	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
+	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable and not arguments.include>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
 			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.bodyRender,arguments.returnformat,arguments.include)>
@@ -1314,12 +1314,14 @@ Display Objects
 	<cfset var tracePoint=0>
 	<cfset var doLayoutManagerWrapper=not arguments.include and request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
 
-	<cfif isJSON(arguments.params)>
-		<cfset var objectParams=deserializeJSON(arguments.params)>
-	<cfelseif isStruct(arguments.params)>
-		<cfset var objectParams=arguments.params>
-	<cfelse>
-		<cfset var objectParams=structNew()>
+	<cfif not isDefined('arguments.objectparams')>
+		<cfif isJSON(arguments.params)>
+			<cfset var objectParams=deserializeJSON(arguments.params)>
+		<cfelseif isStruct(arguments.params)>
+			<cfset var objectParams=arguments.params>
+		<cfelse>
+			<cfset var objectParams=structNew()>
+		</cfif>
 	</cfif>
 
 	<cfif this.layoutmanager>
@@ -1601,18 +1603,11 @@ Display Objects
 			<cfinclude template="#bodyLookup.filepath#">
 		<cfelse>
 			<cfif arguments.renderKids>
-				<cfif request.muraApiRequest
-					and listFindNoCase('folder,gallery',$.content('type'))
-					and $.getContentRenderer().useLayoutManager()>
-					<cfset arguments.params.object='collection'>
-					<cfset arguments.params.sourcetype='children'>
-					<cfset arguments.params.source=$.content('contentid')>
-					<cfoutput>#$.dspObject(object='collection',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
-				<cfelseif $.siteConfig().hasDisplayObject($.content('type'))>
-					<cfoutput>#dspObject(object=$.content('type'),params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
+				<cfif $.siteConfig().hasDisplayObject($.content('type'))>
+					<cfoutput>#dspObject(objectid=$.content('contentid'),object=$.content('type'),params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 				<cfelse>
 					<cfif $.content('type') eq 'folder'>
-						<cf_CacheOMatic key="folderBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						<cf_CacheOMatic key="folderBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
 						 <cfset var filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
 
 						 <cfif len(filePath)>
@@ -1627,14 +1622,14 @@ Display Objects
 						</cfif>
 						</cf_CacheOMatic>
 					<cfelseif $.content('type') eq 'calendar'>
-						<cf_CacheOMatic key="calendarBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						<cf_CacheOMatic key="calendarBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
 						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
 						 	 <cfif len(filePath)>
 							 	<cfoutput>#$.dspObject_Include(thefile='calendar/index.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 							 </cfif>
 						</cf_CacheOMatic>
 					<cfelseif variables.$.content('type') eq 'gallery'>
-						<cf_CacheOMatic key="galleryBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						<cf_CacheOMatic key="galleryBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
 						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
 						 	 <cfif len(filePath)>
 							 	<cfoutput>#$.dspObject_Include(thefile='gallery/index.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
