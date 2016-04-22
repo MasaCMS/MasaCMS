@@ -18,4 +18,11 @@ this["mura"]["templates"]["example"] = window.mura.Handlebars.template({"compile
 	// Example of how to append a lock icon to a restricted primary nav item
 	//$('#navProtectedArea a').append('&nbsp;<i class="fa fa-lock"></i>');
 
+	$('#back-to-top').on('click', function(e) {
+		$('body,html').animate({
+			scrollTop:0
+		}, 800);
+		return false;
+	});
+
 });

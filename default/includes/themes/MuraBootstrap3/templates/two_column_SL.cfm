@@ -13,7 +13,7 @@
 						body=$.content('body')
 						, pageTitle=$.content('title')
 						, crumbList=false
-						, showMetaImage=true
+						, showMetaImage=false
 						, metaImageClass='thumbnail'
 					)#
 
