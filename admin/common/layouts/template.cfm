@@ -58,8 +58,6 @@
 	</cfscript>
 </cfif>
 <cfif cgi.http_user_agent contains 'msie'>
-	<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
-	<!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
 	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
 	<!--[if (gte IE 9)|!(IE)]><!--><html lang="#esapiEncode('html_attr',session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
@@ -83,10 +81,11 @@
 			<cfparam name="rc.activepanel" default="0">
 			<cfparam name="rc.siteid" default="#session.siteID#">
 			<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
-			<!--- This code is just to prevent errors when people update past version 5.2.2652 --->
+			<!--- default site id --->
 			<cfif not len(rc.siteID)>
 			<cfset rc.siteID="default">
 			</cfif>
+			<!--- admin titles --->
 			<cfparam name="moduleTitle" default="">
 			<cfif not len(moduleTitle)>
 				<cfswitch expression="#rc.originalcircuit#">
@@ -204,20 +203,17 @@
 		<!-- Admin CSS -->
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
-<!--- TODO :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
 		<!-- Spinner JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
     <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-   <script src="#application.configBean.getContext()#/admin/assets/js/oneui.js"></script>
+   	<script src="#application.configBean.getContext()#/admin/assets/js/oneui.js"></script>
 
-<!--- TODO : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+   	<!-- jQuery UI components -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-<!--- TODO : keep chart.min.js? : 2016-01-29T16:52:21-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- Mura js --->
@@ -229,10 +225,6 @@
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
 			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-			<![endif]-->
-
-			<!--[if lte IE 7]>
-			<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript"></script>
 			<![endif]-->
 		</cfif>
 
