@@ -9,7 +9,7 @@
 	<div class="mura-layout-row">
 			<cfif not len(objectparams.fileid)>
 				<div class="mura-control-group">
-					<button class="btn" id="selectMedia">Select Image</button>
+					<button class="btn" id="selectMedia"><i class="mi-image"></i> Select Image</button>
 				</div>
 			<cfelse>
 				<div class="mura-control-group">
@@ -17,7 +17,7 @@
 				</div>
 				<div class="mura-control-group">
 				  	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-					<select name="size" data-displayobjectparam="size" class="objectParam span12">
+					<select name="size" data-displayobjectparam="size" class="objectParam">
 
 						<cfloop list="Small,Medium,Large" index="i">
 							<option value="#lcase(i)#"<cfif i eq objectparams.size> selected</cfif>>#I#</option>
@@ -36,11 +36,11 @@
 				</div>
 
 				<div id="imageoptionscontainer" class="mura-control-group" style="display:none">
-					<div class="span6">
+					<div>
 						<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
 				      	<input class="objectParam" name="height" data-displayobjectparam="height" type="text" value="#objectparams.height#" />
 				    </div>
-					<div class="span6">
+					<div>
 						<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
 						<input class="objectParam" name="width" data-displayobjectparam="width" type="text" value="#objectparams.width#" />
 					</div>

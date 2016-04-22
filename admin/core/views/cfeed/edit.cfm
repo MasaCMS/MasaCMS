@@ -936,7 +936,7 @@ jQuery(document).ready(function(){
 
 			<div class="mura-control-group">
 		    <label>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
-		    <select class="span7" name="maxItems">
+		    <select name="maxItems">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 					<option value="#m#" <cfif rc.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
 					</cfloop>
@@ -944,7 +944,7 @@ jQuery(document).ready(function(){
 				</select>
 
 		    <label>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
-	      <select class="span7" name="version">
+	      <select name="version">
 					<cfloop list="RSS 0.920,RSS 2.0,Atom" index="v">
 					<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
 					</cfloop>

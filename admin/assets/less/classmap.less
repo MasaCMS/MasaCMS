@@ -15,6 +15,7 @@
   margin-right: 0;
 }
 .mura-header h1{
+  .make-xs-column(12);
   .make-sm-column(3.75);
   margin-left: 0;
   margin-right: 0;
@@ -23,6 +24,7 @@
 }
 
 .mura-item-title{
+  .make-xs-column(12);
   .make-sm-column(7);
 }
 .mura-header ul.breadcrumb{
@@ -46,13 +48,16 @@ main > .content > :first-child:not(.alert){
 
 #cdashboard #main,
 #mura-content #main{
+  .make-xs-column(12);
   .make-md-column(8);
   .make-lg-column(9);
+
   padding-left: 0px;
   padding-right: 0px;
 }
 #cdashboard .sidebar,
 #mura-content .sidebar{
+  .make-xs-column(12);
   .make-md-column(4);
   .make-lg-column(3);
 }
@@ -106,6 +111,7 @@ main > .content > :first-child:not(.alert){
 .mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
 .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
   .form-control;
+  .make-xs-column(12);
   .make-sm-column(9);
 }
 
@@ -117,6 +123,7 @@ main > .content > :first-child:not(.alert){
 .mura-control-group > label + textarea.mura-constrain,
 .mura-control-group > label + * + textarea.mura-constrain{
   .form-control;
+  .make-xs-column(9);
   .make-sm-column(2.6);
 }
 
@@ -126,6 +133,7 @@ main > .content > :first-child:not(.alert){
 .mura-control-group > label + * + select.mura-constrain.mura-numeric,
 .mura-control-group > label + textarea.mura-constrain.mura-numeric,
 .mura-control-group > label + * + textarea.mura-constrain.mura-numeric{
+  .make-xs-column(3);
   .make-sm-column(1);
   min-width: 80px !important;
 }
@@ -147,7 +155,7 @@ main > .content > :first-child:not(.alert){
 .sidebar .mura-control-group > label + * + select:not([class*="time"]){
   padding: 4px 8px;
   height: 2em;
-  .make-sm-column(12);
+  .make-xs-column(12);
 }
 
 .mura-control-group > label + textarea[rows],
@@ -160,10 +168,12 @@ select[size],
 
 .mura-control-group > label + .datepicker{
   .form-control;
+  .make-xs-column(12);
   .make-sm-column(2.6);
 }
 .mura-control-group .mura-interval-end input[type=text]{
   .form-control;
+  .make-xs-column(12);
   .make-sm-column(3);
 }
 
@@ -176,11 +186,11 @@ select[size],
   padding-top: 8px;
   }
   > input{
-  .make-sm-column(3);
+  .make-xs-column(3);
   .form-control;
   }
   > select{
-  .make-sm-column(3);
+  .make-xs-column(3);
   .form-control;
   }
 
@@ -222,6 +232,7 @@ select[size],
 // ckeditor fields
 
 .mura-control-group textarea + .cke{
+  .make-xs-column(12);
   .make-sm-column(9);
   padding-left:0px;
   padding-right:0px;
@@ -232,12 +243,13 @@ select[size],
 #main input[type=text].datepicker,
 .mura-content select.mura-repeat-option{
   .form-control;  
+  .make-xs-column(6);
   .make-sm-column(3);
 }
 select.time{
   .form-control;  
-  .make-sm-column(1);
   .make-xs-column(3);
+  .make-sm-column(1);
   margin-left: 8px;
   padding-right: 8px;
 }
@@ -277,11 +289,6 @@ select.time{
   .make-sm-column(12);
 }
 
-
-/* TEMPLATE MAPPING */
-//@import "oneui/main.less";
-//@import "/admin/assets/css/oneui.css";
-
 /* LEGACY MURA / BS2 CLASS MAPPING */
 
 // headings
@@ -296,50 +303,6 @@ h1:not([class]){
 // default to warning
 .alert:not([class*="alert-"]){
   .alert-warning;
-}
-
-// bs3 grid
-.container-fluid{
-  .container;
-}
-.row-fluid{
-  .row;
-}
-.span1{
-  .col-xs-1;
-}
-.span2{
-  .col-xs-2;
-}
-.span3{
-  .col-xs-3;
-}
-.span4{
-  .col-xs-4;
-}
-.span5{
-  .col-xs-5;
-}
-.span6{
-  .col-xs-6;
-}
-.span7{
-  .col-xs-7;
-}
-.span8{
-  .col-xs-8;
-}
-.span9{
-  .col-xs-9;
-}
-.span10{
-  .col-xs-10;
-}
-.span11{
-  .col-xs-11;
-}
-.span12{
-  .col-xs-12;
 }
 
 // bs3 buttons
@@ -375,14 +338,15 @@ h1:not([class]){
 }
 // labels
 .form-horizontal .control-label{
-	.col-xs-3;
+	.make-xs-column(3);
 }
 .form-horizontal .controls{
-	.col-xs-9;
+	.make-xs-column(9);
 }
 
 // secondary nav 
 .nav-module-specific{
+  .make-xs-column(12);
   .make-sm-column(8.25);
   text-align:right;
   padding-left: 0;

@@ -168,9 +168,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
 			<div class="mura-control-inline">
 				<label>#application.rbFactory.getKeyValue(session.rb,"params.from")#</label>
-				<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" /> 
+				<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" /> 
 				<label>#application.rbFactory.getKeyValue(session.rb,"params.to")#</label>
-				 <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
+				 <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
 			</div>
 		</div>
 		</div>
@@ -347,9 +347,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="mura-control-inline mura-related-external" style="display:none;">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.title')#</label>
-		<input type="text" id="mura-related-title" value="" class="span12">
+		<input type="text" id="mura-related-title" value="">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.url')#</label>
-		<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
+		<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com">
 		<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="mi-plus-circle"></i></button>
 </div>
 

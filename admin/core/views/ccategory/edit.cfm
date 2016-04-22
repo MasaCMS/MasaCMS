@@ -71,14 +71,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <label>
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#
   </label>
-        <input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'  categorymanager.namerequired')#" value="#esapiEncode('html_attr',rc.categoryBean.getName())#" maxlength="50">
+        <input type="text" name="name" required="true" message="#application.rbFactory.getKeyValue(session.rb,'  categorymanager.namerequired')#" value="#esapiEncode('html_attr',rc.categoryBean.getName())#" maxlength="50">
   </div>
 
       <div class="mura-control-group">
         <label>
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#
   </label>
-    <input type="text" name="urltitle" class="span12" value="#esapiEncode('html_attr',rc.categoryBean.getURLTitle())#" maxlength="255">
+    <input type="text" name="urltitle" value="#esapiEncode('html_attr',rc.categoryBean.getURLTitle())#" maxlength="255">
   </div>
 
       <div class="mura-control-group">
@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <label>
     #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
   </label>
-    	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups" class="span4">
+    	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups">
 	       <optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 	       <option value="" <cfif rc.categoryBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
 	       <option value="RestrictAll" <cfif rc.categoryBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>	
@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       	  <label>
 	    #application.rbFactory.getKeyValue(session.rb,'categorymanager.notes')#
 	  </label>
-	    <textarea name="notes" class="span12" rows="8">#esapiEncode('html',rc.categoryBean.getNotes())#</textarea>
+	    <textarea name="notes" rows="8">#esapiEncode('html',rc.categoryBean.getNotes())#</textarea>
 	  </div>
 
    #$.renderEvent("onCategoryBasicBottomRender")#

@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-control-group" id="availableFields">
 	<label>
 		<div>#application.rbFactory.getKeyValue(session.rb,'collections.selectedfields')#</div>
-		<button id="editFields" class="btn">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</button>
+		<button id="editFields" class="btn"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'collections.edit')#</button>
 	</label>
 	<div id="sortableFields" class="sortable-sidebar">
 	<cfset displaylist=feed.getdisplaylist()>

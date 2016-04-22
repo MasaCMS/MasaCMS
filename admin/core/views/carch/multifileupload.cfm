@@ -104,7 +104,7 @@ jQuery(document).ready(function(){
     	<div id="fileupload-target" class="alert alert-info"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="fileupload-buttonbar">
-            <div class="span7">
+            <div>
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn fileinput-button">
                     <i class="mi-plus"></i>
@@ -128,7 +128,7 @@ jQuery(document).ready(function(){
                 --->
             </div>
             <!-- The global progress information -->
-            <div class="span5 fileupload-progress fade">
+            <div class="fileupload-progress fade">
                 <!-- The global progress bar -->
                 <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                     <div class="bar" style="width:0%;"></div>
@@ -267,43 +267,33 @@ jQuery(document).ready(function(){
 			</span>
         </td>
         <td class="var-width form-horizontal">
-        	<div class="control-group">
-	            <label class="control-label">File name</label>
-            	<div class="controls">
-            		<div class="name">{%=file.name%}</div>
-            	</div>
+        	<div class="mura-control-group">
+	            <label>File name</label>
+        		<div class="name">{%=file.name%}</div>
 			</div>
-	        <div class="control-group">
-	           	<label class="control-label">Title</label>
-	           	<div class="controls">
-	           		<div class="editable nolinebreaks" data-attribute="title" contenteditable="true">{%=file.name%}</div>
-			   	</div>
+	        <div class="mura-control-group">
+	           	<label>Title</label>
+           		<div class="editable nolinebreaks" data-attribute="title" contenteditable="true">{%=file.name%}</div>
 	        </div>
-	        <div class="control-group">
-	            <label class="control-label">Summary/Caption</label>
-				<div class="controls">
-					<div id="summaryinstance"
-                    class="editable" data-attribute="summary" contenteditable="true"></div>
-				</div>
+	        <div class="mura-control-group">
+	            <label>Summary/Caption</label>
+				<div id="summaryinstance"
+                class="editable" data-attribute="summary" contenteditable="true"></div>
 	        </div>
-	        <div class="control-group">
-	        	<label class="control-label">Credits</label>
-	        	<div class="controls">
-                    {% if(isImageFile){  %}
-	        		 <div id="creditsinstance"
-                        class="editable htmlEditor" data-attribute="credits" contenteditable="true"></div>
-                     {% } else { %}
-                     <div id="creditsinstance"
-                        class="editable" data-attribute="credits" contenteditable="true"></div>
-                    {% } %}
-	        	</div>
+	        <div class="mura-control-group">
+	        	<label>Credits</label>
+                {% if(isImageFile){  %}
+        		 <div id="creditsinstance"
+                    class="editable htmlEditor" data-attribute="credits" contenteditable="true"></div>
+                 {% } else { %}
+                 <div id="creditsinstance"
+                    class="editable" data-attribute="credits" contenteditable="true"></div>
+                {% } %}
 	        </div>
             {% if(isImageFile){  %}
-	        <div class="control-group">
-	        	<label class="control-label">Alt Text</label>
-	        	<div class="controls">
-	        		<div class="editable nolinebreaks" data-attribute="alttext" contenteditable="true"></div>
-				</div>
+	        <div class="mura-control-group">
+	        	<label>Alt Text</label>
+        		<div class="editable nolinebreaks" data-attribute="alttext" contenteditable="true"></div>
 			</div>
             {% } %}
             {% if (file.error) { %}
@@ -350,43 +340,34 @@ jQuery(document).ready(function(){
             </span>
         </td>
         <td class="var-width form-horizontal">
-            <div class="control-group">
-                <label class="control-label">File name</label>
-                <div class="controls">
-                    <div class="name">{%=file.filename%}</div>
-                </div>
+            <div class="mura-control-group">
+                <label>File name</label>
+                <div class="name">{%=file.filename%}</div>
             </div>
             {% if (file.error) { %}
                 <div><span class="label label-important">Error</span> {%=file.error%}</div>
             {% }  else { %}
-                <div class="control-group">
-                    <label class="control-label">Title</label>
-                    <div class="controls">
-                        <div data-attribute="title">{%=file.title%}</div>
-                    </div>
+                <div class="mura-control-group">
+                    <label>Title</label>
+                    <div data-attribute="title">{%=file.title%}</div>
                 </div>
                  {% if (file.summary) { %}
-                <div class="control-group">
-                    <label class="control-label">Summary/Caption</label>
-                    <div class="controls">
-                        <div data-attribute="summary">{%##file.summary%}</div>
+                <div class="mura-control-group">
+                    <label>Summary/Caption</label>
+                    <div data-attribute="summary">{%##file.summary%}</  div>
                     </div>
                 </div>
                 {% } %}
                 {% if (file.credits) { %}
-                <div class="control-group">
-                    <label class="control-label">Credits</label>
-                    <div class="controls">
-                        <div data-attribute="credits">{%##file.credits%}</div>
-                    </div>
+                <div class="mura-control-group">
+                    <label>Credits</label>
+                    <div data-attribute="credits">{%##file.credits%}</div>
                 </div>
                 {% } %}
                 {% if (file.thumbnail_url && file.alttext) { %}
-                <div class="control-group">
-                    <label class="control-label">Alt Text</label>
-                    <div class="controls">
-                        <div data-attribute="alttext">{%=file.alttext%}</div>
-                    </div>
+                <div class="mura-control-group">
+                    <label>Alt Text</label>
+                    <div data-attribute="alttext">{%=file.alttext%}</div>
                 </div>
                  {% } %}
             {% } %}

@@ -74,7 +74,6 @@
 <cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<div class="fieldset">
 		<h2>#extendSetBean.getName()#</h2>
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
@@ -103,7 +102,6 @@
 				#attributeBean.renderAttribute(attributeValue)#
 		</div>
 	</cfloop>
-	</div>
 	</span>
 </cfloop>
 </cfif>

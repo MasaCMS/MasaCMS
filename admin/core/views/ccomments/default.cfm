@@ -106,9 +106,7 @@
 				<form id="frmSearch" action="index.cfm">
 					<div class="tabs-left mura-ui full">
 						<div class="tab-content">
-							<div class="fieldset">
-								<div id="commentSearch"><!--- target for ajax ---></div>
-							</div>
+							<div id="commentSearch"><!--- target for ajax ---></div>
 						</div>
 					</div>
 				</form>

@@ -31644,6 +31644,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   *display: inline;
   /* IE7 inline-block hack */
   *zoom: 1;
+  color: #404040;
 }
 .mura #sortableFields,
 .mura .sortableFields,
@@ -32023,7 +32024,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura #carch #tabCategorization #mura-nodes dt > label input[type="checkbox"] {
   margin-top: 0 !important;
   position: relative;
-  top: 4px;
+  top: 2px;
 }
 .mura #tabRelatedcontent table {
   margin-top: 18px;
@@ -33152,9 +33153,9 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   border-radius: 2px;
   background-image: none;
   text-shadow: none;
-  color: #A4A4A4;
-  background-color: #454545;
-  border-color: #A4A4A4;
+  color: #f3f3f3;
+  background-color: #333;
+  border-color: transparent;
   float: left;
   margin: 4px 0;
 }
@@ -35391,6 +35392,9 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
 }
 .mura #csetup #main-container .mura-control-group {
   margin-bottom: 12px;
+}
+.mura #csetup #main-container #multi-file-upload .mura-control-group {
+  margin-bottom: 10px;
 }
 .mura #csetup #main-container label.switch label {
   margin-left: 8px;

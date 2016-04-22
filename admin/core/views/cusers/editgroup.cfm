@@ -221,7 +221,7 @@
 							<label>
 								#rbKey('user.tablist')#
 							</label>
-								<select name="tablist" multiple="true" class="span12">
+								<select name="tablist" multiple="true">
 									<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
 									<cfloop list="#application.contentManager.getTabList()#" index="t">
 										<option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>

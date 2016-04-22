@@ -241,15 +241,15 @@ to your own modified versions of Mura CMS.
 								On</label>
 							</div>
 						<!---
-						<div class="span4">
+						<div>
 								<label>Cache Capacity <span class="help-inline">(0=Unlimited)</span></label>
 						<div class="mura-control justify">
-								<input name="cacheCapacity" type="text" class="span3" value="#esapiEncode('html_attr',rc.siteBean.getCacheCapacity())#" size="15" maxlength="15">
+								<input name="cacheCapacity" type="text" value="#esapiEncode('html_attr',rc.siteBean.getCacheCapacity())#" size="15" maxlength="15">
 							</div>
 					</div>--->
 							<div class="mura-control-group">
 								<label>Cache Free Memory Threshold <span class="help-inline">(Defaults to 60%)</span></label>
-								<input name="cacheFreeMemoryThreshold" type="text" class="span2" value="#esapiEncode('html_attr',rc.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">
+								<input name="cacheFreeMemoryThreshold" type="text" value="#esapiEncode('html_attr',rc.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">
 										%
 					</div>
 							<div class="mura-control-group">
@@ -397,7 +397,7 @@ to your own modified versions of Mura CMS.
 								</label>
 							<cfset rc.langs = application.serviceFactory.getBean('utility').getReCAPTCHALanguages() />
 							<cfset rc.sortedLangs = StructSort(rc.langs, 'textnocase', 'asc') />
-							<select class="mura-constrain" name="reCAPTCHALanguage" class="span12">
+							<select class="mura-constrain" name="reCAPTCHALanguage">
 								<option value=""<cfif Not Len(rc.siteBean.getReCAPTACHALanguage())>
 									selected</cfif>>- #$.rbKey('siteconfig.recaptcha.selectlanguage')# -</option>
 								<cfloop array="#rc.sortedLangs#" index="lang">
@@ -664,7 +664,7 @@ to your own modified versions of Mura CMS.
 			  <div class="block-content">
 				<div class="mura-control-group">
 				<label>Default "From" Email Address</label>
-						<input name="contact" type="text" class="span8" value="#esapiEncode('html_attr',rc.siteBean.getcontact())#" size="50" maxlength="50">
+						<input name="contact" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontact())#" size="50" maxlength="50">
 					</div>
 				<div class="mura-control-group">
 				<label>Mail Server IP/Host Name</label>
@@ -1020,7 +1020,7 @@ to your own modified versions of Mura CMS.
 			  <div class="block-content">
 				<div class="mura-control-group">
 					<label>Number of Display Regions</label>
-						<select class="span2" name="columnCount">
+						<select name="columnCount">
 						<option value="1" <cfif rc.siteBean.getcolumnCount() eq 1 or rc.siteBean.getcolumnCount() eq 0> selected</cfif>> 1</option>
 						<cfloop from="2" to="20" index="i">
 								<option value="#i#" <cfif rc.siteBean.getcolumnCount() eq i> selected</cfif>>#i#</option>
@@ -1030,7 +1030,7 @@ to your own modified versions of Mura CMS.
 
 				 <div class="mura-control-group">
 				<label>Primary Display Region <span class="help-block">Dynamic System Content such as Login Formsa nd Search Results get displayed here</span></label>
-						<select class="span2" name="primaryColumn">
+						<select name="primaryColumn">
 						<cfloop from="1" to="20" index="i">
 								<option value="#i#" <cfif rc.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option>
 							</cfloop>
@@ -1039,7 +1039,7 @@ to your own modified versions of Mura CMS.
 
 				<div class="mura-control-group">
 				<label>Display Region Names <span class="help-inline">"^" Delimiter</span></label>
-						<input name="columnNames" type="text" class="span6" value="#esapiEncode('html_attr',rc.siteBean.getcolumnNames())#">
+						<input name="columnNames" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcolumnNames())#">
 					</div>
 
 			</div> <!--- /.block-content --->

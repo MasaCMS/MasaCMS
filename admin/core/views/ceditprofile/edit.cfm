@@ -143,7 +143,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 								<div class="mura-control-group">
 						      		<label>#application.rbFactory.getKeyValue(session.rb,'user.username')#**</label>
-						      			<input id="username" name="usernameNoCache" type="text" value="#esapiEncode('html_attr',rc.userBean.getusername())#" class="span6" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" >
+						      			<input id="username" name="usernameNoCache" type="text" value="#esapiEncode('html_attr',rc.userBean.getusername())#" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" >
 						    </div>
 
 								<div class="mura-control-group">

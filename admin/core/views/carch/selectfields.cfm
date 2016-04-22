@@ -23,14 +23,9 @@
 	<div class="block block-bordered">
 	  <div class="block-content">
 			<div class="mura-control-group" id="availableFields">
-				<!---
-				<label class="mura-control-label">
-					<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
-				</label>
-				--->
 				<div id="sortableFields" class="mura-control justify">
 					<p class="dragMsg">
-						<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+						<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
 					</p>
 
 					<cfset displayList=feed.getDisplayList()>

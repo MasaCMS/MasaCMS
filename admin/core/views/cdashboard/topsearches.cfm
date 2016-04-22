@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
 
-			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
+			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
 
 				<div class="mura-control-group">
 					<label class="label-inline">

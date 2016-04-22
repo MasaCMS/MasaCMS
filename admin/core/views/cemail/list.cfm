@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <div id="filterView" class="mura-layout-row">
 	  <h2>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h2></cfoutput>
 
-<form novalidate="novalidate" action="./?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="fieldset-wrap">
+<form novalidate="novalidate" action="./?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch">
 
 	<div class="mura-control-group">
     <label>

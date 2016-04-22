@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-layout-row">
 			<div class="mura-control-group">
 	      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-						<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+						<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 							<cfloop list="Small,Medium,Large" index="i">
 								<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 							</cfloop>
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
-						<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam span4">
+						<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam">
 						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 						<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
 						</cfloop>

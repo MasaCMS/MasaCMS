@@ -105,17 +105,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	data-objectid="#hash('site_map')#">
 	<div class="mura-layout-row">
 		<div class="mura-control-group">
-			<label class="control-label">
+			<label>
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayformat')#
 			</label>
-			<label class="radio">
-				<input name="mapclass" type="radio" value="mura-site-map" class="objectParam radio" <cfif objectParams.mapclass eq "mura-site-map">checked</cfif>>
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.default')#
-			</label>
-			<label class="radio">
-				<input name="mapclass" type="radio" value="mura-site-map-tree" class="objectParam radio" <cfif objectParams.mapclass eq "mura-site-map-tree">checked</cfif>>
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.treeview')#
-			</label>
+			<div class="mura-control">
+				<label class="radio-inline">
+					<input name="mapclass" type="radio" value="mura-site-map" class="objectParam radio" <cfif objectParams.mapclass eq "mura-site-map">checked</cfif>>
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.default')#
+				</label>
+				<label class="radio-inline">
+					<input name="mapclass" type="radio" value="mura-site-map-tree" class="objectParam radio" <cfif objectParams.mapclass eq "mura-site-map-tree">checked</cfif>>
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.treeview')#
+				</label>
+			</div>
 		</div>
 	</div>
 </cfoutput>

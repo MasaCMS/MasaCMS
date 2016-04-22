@@ -23,7 +23,7 @@
 <cf_objectconfigurator>
 	<div class="mura-layout-row">
 		<div class="mura-control-group">
-			<label class="control-label">Select Plugin</label>
+			<label>Select Plugin</label>
 			<select name="subClassSelector"
 			        onchange="siteManager.loadObjectClass('#rc.siteid#','plugin',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);">
 				<option value="">

@@ -30,16 +30,16 @@
   <label>
     #application.rbFactory.getKeyValue(session.rb,'approvalchains.name')#
   </label>
-  <div class="controls">
-  <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'approvalchains.namerequired')#" value="#esapiEncode('html_attr',chain.getName())#" maxlength="50">
+  <div>
+  <input name="name" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'approvalchains.namerequired')#" value="#esapiEncode('html_attr',chain.getName())#" maxlength="50">
    </div>
 
       <div class="mura-control-group">
   <label>
     #application.rbFactory.getKeyValue(session.rb,'approvalchains.description')#
   </label>
-  <div class="controls">
-  <textarea name="description" class="span12" rows="6">#esapiEncode('html',chain.getDescription())#</textarea>
+  <div>
+  <textarea name="description" rows="6">#esapiEncode('html',chain.getDescription())#</textarea>
   </div>
       </div>
 
@@ -52,7 +52,7 @@
           <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>
         </label>
 
-        <div id="sortableGroups" class="controls">
+        <div id="sortableGroups">
           <p class="dragMsg">
             <span class="dragFrom half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragfrom')#&hellip;</span><span class="half">&hellip;#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragto')#</span>
           </p>              

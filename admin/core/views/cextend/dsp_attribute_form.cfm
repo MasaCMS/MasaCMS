@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif attributes.action eq "add">
 <div style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#container" class="attr-add">
 </cfif>
-<form <cfif attributes.action eq "add"> class="fieldset-wrap"</cfif> novalidate="novalidate" method="post" name="#esapiEncode('html_attr',attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
+<form novalidate="novalidate" method="post" name="#esapiEncode('html_attr',attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
 <cfif attributes.action neq "add">
 <div class="mura-control-group">
 	<label>Attribute ID: #attributes.attributeBean.getAttributeID()#</label>
@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <div class="mura-control-group">
 	<label>Input Type</label>
-		<select name="type" class="span12">
+		<select name="type">
 		<cfloop list="#typelist#" index="t">
 			<option value="#t#" <cfif attributes.attributeBean.getType() eq t>selected</cfif>>#t#</option>
 		</cfloop>
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <div class="mura-control-group">
 	<label>Required</label>
-		<select name="required" class="span12">
+		<select name="required">
 			<option value="false" <cfif attributes.attributeBean.getRequired() eq "false">selected</cfif>>False</option>
 			<option value="true" <cfif attributes.attributeBean.getRequired() eq "true">selected</cfif>>True</option>
 		</select>
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
 	<label>Validate</label>
-		<select name="validation" class="span12">
+		<select name="validation">
 			<option value="" <cfif attributes.attributeBean.getValidation() eq "">selected</cfif>>None</option>
 			<option value="Date" <cfif attributes.attributeBean.getValidation() eq "Date">selected</cfif>>Date</option>
 			<option value="DateTime" <cfif attributes.attributeBean.getValidation() eq "DateTime">selected</cfif>>DateTime</option>
