@@ -1921,10 +1921,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.data["#name#"]=arguments.value>
 		<cfwddx action="cfml2wddx" input="#arguments.value#" output="temp">
 
-		<!--- replace lower, non-printable ascii chars --->
+		<!--- replace lower, non-printable ascii chars (except for line breaks and tabs) --->
 		<cfloop from="1" to="31" index="i">
-			<cfset temp = replace(temp, chr(i), "", "all")>
+			<cfif not listFind('9,10,13',i)>
+				<cfset temp = replace(temp, chr(i), "", "all")>
+			</cfif>
 		</cfloop>
+
 
 		<cffile action="write" output="#temp#" file="#variables.backupDir#wddx_#arguments.name#.xml"  charset="utf-8">
 	</cffunction>
