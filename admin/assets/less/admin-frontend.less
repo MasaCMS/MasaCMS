@@ -84,432 +84,430 @@ html.mura-edit-mode > body {
 	// Utility classes
 	@import "bootstrap/utilities.less"; // Has to be last to override when necessary
 
-// End Bootstrap
+	@import "fonts.less";
+	@import "mobile-preview.less";
+	@import "admin/iconmap.less";
+	@import "admin/add-content-ui.less";
 
-@import "fonts.less";
-@import "mobile-preview.less";
-@import "admin/iconmap.less";
-@import "admin/add-content-ui.less";
-
-#frontEndToolsModalContainer {
- /* position: [Set in dialog.js]; */
-  /*height: [Set in dialog.js];*/
-  display: block;
-  width: 100%;
-  top: 0;
-  left: 0;
-  text-align: center; /* centers in quirks and IE */
-  .mura-modal();
-}
-
-#frontEndToolsModalBody {
-  position: relative;
-  overflow: visible;
-  top: 70px;
-  margin: 0 auto;
-  padding: 0;
-  background: transparent;
-
-  body {
-	  border: 6px solid @grayDark !important;
-	  }
-}
-
-#frontEndToolsModaliframe {
-  width: 100%;
-  min-height: 400px;
-  background: transparent;
-  .border-radius(2px);
-}
-
-.modal-configurator #frontEndToolsModaliframe {
-  width: 600px !important;
-  background: transparent;
-}
-
-.modal-configurator #frontEndToolsModalBody {
-  width: 600px;
-}
-
-#shadowbox_container {
-	z-index: 499997;
-}
-
-#shadowbox_overlay {
-	z-index: 499996;
-}
-
-#dialog_overlay {
-	background-color: #000000;
-	display: none;
-	height: 100%;
-	left:0;
-	position: absolute;
-	top:0;
-	width: 100%;
-	z-index: 500000;
-	opacity: 0.8;
-}
-
-#dialog_overlay[id] {
-	position: fixed;
-}
-
-.editForm { /* Holds the edit content, iframe, etc. */
-	display: none;
-	padding: 2%;
-	position: absolute;
-	text-align: center;
-	top: 2%;
-	width: 90%;
-	height: 90%;
-	z-index: 499998;
-}
-
-.editForm[id] {
-	position: fixed;
-}
-
-#editFormIframeContainer {
-	background-color: #fff;
-	height: 100%;
-	position: relative;
-}
-
-#closeDiv {
-	position: absolute;
-	left: -10px;
-	top: -10px;
-	z-index: 50000;
-}
-
-
-// Toolbar
-
-#frontEndToolsHandle {
-	background: transparent !important;
-	left: 12px !important;
-	position: fixed !important;
-	top: 0 !important;
-	z-index: 500001 !important;
-	cursor: pointer !important;
-	border: 0 !important;
-	box-shadow: none !important;
-	padding: 0 !important;
-	margin: 0 !important;
-	width: 27px !important;
-}
-
-@feToolBarBGStart:	hsla(0,0,.30,.85);
-@feToolBarBGEnd:	hsla(0,0,.10,.85);
-
-#frontEndTools {
-	background: #333;
-	/* #gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd); */
-	filter: none !important;
-	height: 32px !important;
-	position: fixed !important;
-	left: 0px !important;
-	top: 0px !important;
-	width: 100% !important;
-	z-index: 499999 !important;
-	text-align: left !important;
-	font-weight: normal !important;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-	overflow: visible !important;
-/*	.box-shadow(0 1px 5px rgba(0,0,0,.6)) !important; */
-
-}
-
-#frontEndTools > ul {
-	min-height: 31px !important;
-	list-style: none !important;
-	margin: 0 !important;
-	padding: 0 12px 0 0 !important;
-	overflow: visible !important;
-	float: left !important;
-
-	&:first-child {
-		margin-left: 53px !important;
-		border-left: 0;
+	#frontEndToolsModalContainer {
+	 /* position: [Set in dialog.js]; */
+	  /*height: [Set in dialog.js];*/
+	  display: block;
+	  width: 100%;
+	  top: 0;
+	  left: 0;
+	  text-align: center; /* centers in quirks and IE */
+	  .mura-modal();
 	}
 
-	&:last-child {
-		float: right !important;
-		border-right: 0 !important;
-	}
-}
+	#frontEndToolsModalBody {
+	  position: relative;
+	  overflow: visible;
+	  top: 70px;
+	  margin: 0 auto;
+	  padding: 0;
+	  background: transparent;
 
-
-#frontEndTools > ul li#adminSiteManager,
-#frontEndTools > ul > li#adminSiteManager404 {
-	border-right: 0 !important;
-}
-
-#frontEndTools > ul > li {
-
-	color: rgba(255,255,255,.7) !important;
-	float: left !important;
-	line-height: 32px !important;
-	height: 32px !important;
-	margin: 0 !important;
-	padding: 0 !important;
-	list-style: none !important;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-	font-weight: normal !important;
-	font-style: normal !important;
-	font-size: 12px !important;
-	background: none !important;
-	/* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
-	overflow: visible !important;
-	box-sizing: border-box !important;
-
-	&:first-child {
-		border-left: 0 !important;
-		padding-left: 0 !important;
-		}
-
-	&:last-child {
-		/* border-right: 1px solid hsla(0,0,.33,.85) !important; */
-// 		padding-right: 16px !important;
-		}
-
-	a {
-	display: block !important;
-	color: @white !important;
-	background: transparent !important;
-	font-size: 11px !important;
-	height: 32px !important;
-	line-height: 32px !important;
-	padding: 0 7px !important;
-	text-decoration: none !important;
-	font-weight: normal !important;
-	font-style: normal !important;
-	outline: 0 !important;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-	border: 0 !important;
-	.border-radius(0) !important;
-
-		> i {
-		color: rgba(255,255,255,.7) !important;
-		font-size: 13px !important;
-		position: relative !important;
-		top: 1px !important;
-		width: 1em !important;
-		padding-top: 0 !important;
-		padding-bottom: 0 !important;
-		overflow: visible !important;
-
-			&.mi-mobile {
-				font-size: 16px !important;
-				padding-left: 0px !important;
-				top: 2px !important;
-				}
-
-			&.mi-plus {
-				//padding-left: 3px
-				}
-		}
-
+	  body {
+		  border: 6px solid @grayDark !important;
+		  }
 	}
 
-	.caret {
-			border-top-color: rgba(255,255,255,.25) !important;
-			margin-left: 5px !important;
-			margin-right: 5px !important;
-			margin-top: 3px !important;
-		}
+	#frontEndToolsModaliframe {
+	  width: 100%;
+	  min-height: 400px;
+	  background: transparent;
+	  .border-radius(2px);
+	}
 
-	&:first-child a {
-		.border-left-radius(0);
-		border-left: 0 !important;
-		}
+	.modal-configurator #frontEndToolsModaliframe {
+	  width: 600px !important;
+	  background: transparent;
+	}
 
-	&:last-child a {
-		.border-right-radius(0);
-		border-right: 0 !important;
-		}
-}
+	.modal-configurator #frontEndToolsModalBody {
+	  width: 600px;
+	}
 
-#frontEndTools > #tools-status > li {
+	#shadowbox_container {
+		z-index: 499997;
+	}
 
- 	padding-right: 6px !important;
-/*	border-right: 1px solid hsla(0,0,.33,.85) !important; */
+	#shadowbox_overlay {
+		z-index: 499996;
+	}
 
-	> a {
+	#dialog_overlay {
+		background-color: #000000;
+		display: none;
+		height: 100%;
+		left:0;
+		position: absolute;
+		top:0;
+		width: 100%;
+		z-index: 500000;
+		opacity: 0.8;
+	}
+
+	#dialog_overlay[id] {
+		position: fixed;
+	}
+
+	.editForm { /* Holds the edit content, iframe, etc. */
+		display: none;
+		padding: 2%;
+		position: absolute;
+		text-align: center;
+		top: 2%;
+		width: 90%;
+		height: 90%;
+		z-index: 499998;
+	}
+
+	.editForm[id] {
+		position: fixed;
+	}
+
+	#editFormIframeContainer {
+		background-color: #fff;
+		height: 100%;
+		position: relative;
+	}
+
+	#closeDiv {
+		position: absolute;
+		left: -10px;
+		top: -10px;
+		z-index: 50000;
+	}
+
+
+	// Toolbar
+
+	#frontEndToolsHandle {
+		background: transparent !important;
+		left: 12px !important;
+		position: fixed !important;
+		top: 0 !important;
+		z-index: 500001 !important;
+		cursor: pointer !important;
 		border: 0 !important;
+		box-shadow: none !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		width: 27px !important;
 	}
 
-	&#adminStatus > a {
-		background-color: #4285F4 !important;
-		border-radius: 0 !important;
-		}
+	@feToolBarBGStart:	hsla(0,0,.30,.85);
+	@feToolBarBGEnd:	hsla(0,0,.10,.85);
+
+	#frontEndTools {
+		background: #333;
+		/* #gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd); */
+		filter: none !important;
+		height: 32px !important;
+		position: fixed !important;
+		left: 0px !important;
+		top: 0px !important;
+		width: 100% !important;
+		z-index: 499999 !important;
+		text-align: left !important;
+		font-weight: normal !important;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+		overflow: visible !important;
+	/*	.box-shadow(0 1px 5px rgba(0,0,0,.6)) !important; */
+
 	}
 
-#frontEndTools > #tools-status.status-locked i:before {
-		color: @errorBorder !important;
-	}
-
-#frontEndTools > ul#tools-version {
-
-	> li {
-
-		&#adminEditPage {
-			padding-right: 0 !important;
-
-			.caret {
-				margin-left: 0 !important;
-				margin-right: 0 !important;
-			}
-		}
-
-		}
-	}
-
-#frontEndTools > ul#tools-changesets {
-
+	#frontEndTools > ul {
+		min-height: 31px !important;
+		list-style: none !important;
+		margin: 0 !important;
+		padding: 0 12px 0 0 !important;
+		overflow: visible !important;
 		float: left !important;
 
-		li {
-			cursor: pointer !important;
-			}
-
-		> li#cs-title > a {
-		padding-right: 4px !important;
-
-		& > i {
-		background: @grayDarker !important;
-		background: rgba(0,0,0,.35) !important;
-		font-size: 10px !important;
-		font-weight: bold !important;
-		font-style: normal !important;
-		text-align: center !important;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-		position: relative !important;
-		//top: 0px !important;
-		padding: 3px 4px 3px 3px !important;
-		line-height: .8 !important;
-		overflow: visible !important;
-		.border-radius(0) !important;
-		margin-right: 4px !important;
-		
-			&.list-alt {
-				top: 2px !important;
-			}
-		
+		&:first-child {
+			margin-left: 53px !important;
+			border-left: 0;
 		}
-	}
-}
 
-#frontEndTools > #adminDashboard,
-#frontEndTools > #adminSiteManager  {
-
-	border-right: 0 !important;
-
-	> li {
-		border: 0 !important;
-
-			> a > i {
-				margin-right: 4px !important;
-				font-size: 11px !important;
-			
-				&.mi-dashboard {
-					top: -1px !important;
-				}
-				
-			}
-
+		&:last-child {
+			float: right !important;
+			border-right: 0 !important;
 		}
 	}
 
-#frontEndTools > #tools-status > li > a i {
-	margin-right: 2px !important;
-}
 
-#frontEndTools > #tools-user {
+	#frontEndTools > ul li#adminSiteManager,
+	#frontEndTools > ul > li#adminSiteManager404 {
+		border-right: 0 !important;
+	}
 
-	border: 0 !important;
+	#frontEndTools > ul > li {
 
-	> li {
-	float: right !important;
-	margin-right: 16px !important;
-	padding: 0 !important;
-	border: 0 !important;
-	font-size: 11px !important;
-	line-height: 32px !important;
-	color: @white !important;
-
-	a {
-		background: transparent !important;
-		font-size: 11px !important;
-		border: 0 !important;
+		color: rgba(255,255,255,.7) !important;
+		float: left !important;
 		line-height: 32px !important;
+		height: 32px !important;
+		margin: 0 !important;
 		padding: 0 !important;
-		}
-
-	i {
+		list-style: none !important;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+		font-weight: normal !important;
+		font-style: normal !important;
 		font-size: 12px !important;
-		top: 1px !important;
-		margin-right: 5px !important;
-		color: rgba(255,255,255,.5)
-		}
-	
-	}
-}
+		background: none !important;
+		/* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
+		overflow: visible !important;
+		box-sizing: border-box !important;
 
-#frontEndTools > ul > li#adminSave {
-	position: relative;
-	color: #fff !important;
-	float: left !important;
-	line-height: 30px !important;
-	//margin-left: 14px !important;
-	list-style: none !important;
-	font-weight: normal !important;
-	font-style: normal !important;
-	background: transparent !important;
-	border: 0 !important;
+		&:first-child {
+			border-left: 0 !important;
+			padding-left: 0 !important;
+			}
 
-		> a {
-		position: relative !important;
+		&:last-child {
+			/* border-right: 1px solid hsla(0,0,.33,.85) !important; */
+	// 		padding-right: 16px !important;
+			}
+
+		a {
 		display: block !important;
 		color: @white !important;
+		background: transparent !important;
 		font-size: 11px !important;
-		padding: 0 12px 2px !important;
-	//	line-height: 24px !important;
-	//	height: 24px !important;
-	//	.border-radius(2px) !important;
-		cursor: pointer !important;
-		background-color: #4485f1 !important;
-		border-color: #4882cc;
-		background-image: none !important;
-
-
-		&:hover {
-
-			cursor: pointer !important;
+		height: 32px !important;
+		line-height: 32px !important;
+		padding: 0 7px !important;
+		text-decoration: none !important;
+		font-weight: normal !important;
+		font-style: normal !important;
+		outline: 0 !important;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+		border: 0 !important;
+		.border-radius(0) !important;
 
 			> i {
-				color: @blueDarker !important;
-				/* text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; */
-				}
+			color: rgba(255,255,255,.7) !important;
+			font-size: 13px !important;
+			position: relative !important;
+			top: 1px !important;
+			width: 1em !important;
+			padding-top: 0 !important;
+			padding-bottom: 0 !important;
+			overflow: visible !important;
 
+				&.mi-mobile {
+					font-size: 16px !important;
+					padding-left: 0px !important;
+					top: 2px !important;
+					}
+
+				&.mi-plus {
+					//padding-left: 3px
+					}
 			}
 
+		}
+
 		.caret {
-			border-top-color: @blueDarker !important;
-			margin: 9px 0 0 4px !important;
+				border-top-color: rgba(255,255,255,.25) !important;
+				margin-left: 5px !important;
+				margin-right: 5px !important;
+				margin-top: 3px !important;
+			}
+
+		&:first-child a {
+			.border-left-radius(0);
+			border-left: 0 !important;
+			}
+
+		&:last-child a {
+			.border-right-radius(0);
+			border-right: 0 !important;
+			}
+	}
+
+	#frontEndTools > #tools-status > li {
+
+	 	padding-right: 6px !important;
+	/*	border-right: 1px solid hsla(0,0,.33,.85) !important; */
+
+		> a {
+			border: 0 !important;
+		}
+
+		&#adminStatus > a {
+			background-color: #4285F4 !important;
+			border-radius: 0 !important;
 			}
 		}
 
+	#frontEndTools > #tools-status.status-locked i:before {
+			color: @errorBorder !important;
+		}
+
+	#frontEndTools > ul#tools-version {
+
+		> li {
+
+			&#adminEditPage {
+				padding-right: 0 !important;
+
+				.caret {
+					margin-left: 0 !important;
+					margin-right: 0 !important;
+				}
+			}
+
+			}
+		}
+
+	#frontEndTools > ul#tools-changesets {
+
+			float: left !important;
+
+			li {
+				cursor: pointer !important;
+				}
+
+			> li#cs-title > a {
+			padding-right: 4px !important;
+
+			& > i {
+			background: @grayDarker !important;
+			background: rgba(0,0,0,.35) !important;
+			font-size: 10px !important;
+			font-weight: bold !important;
+			font-style: normal !important;
+			text-align: center !important;
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+			position: relative !important;
+			//top: 0px !important;
+			padding: 3px 4px 3px 3px !important;
+			line-height: .8 !important;
+			overflow: visible !important;
+			.border-radius(0) !important;
+			margin-right: 4px !important;
+			
+				&.list-alt {
+					top: 2px !important;
+				}
+			
+			}
+		}
 	}
 
-#frontEndTools > ul > li a:hover,
-#frontEndTools > ul > li > a:hover > i {
-	color: @white !important;
-	/* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
+	#frontEndTools > #adminDashboard,
+	#frontEndTools > #adminSiteManager  {
+
+		border-right: 0 !important;
+
+		> li {
+			border: 0 !important;
+
+				> a > i {
+					margin-right: 4px !important;
+					font-size: 11px !important;
+				
+					&.mi-dashboard {
+						top: -1px !important;
+					}
+					
+				}
+
+			}
+		}
+
+	#frontEndTools > #tools-status > li > a i {
+		margin-right: 2px !important;
 	}
 
-#frontEndTools > ul > li.dropdown .dropdown-menu {
+	#frontEndTools > #tools-user {
+
+		border: 0 !important;
+
+		> li {
+		float: right !important;
+		margin-right: 16px !important;
+		padding: 0 !important;
+		border: 0 !important;
+		font-size: 11px !important;
+		line-height: 32px !important;
+		color: @white !important;
+
+		a {
+			background: transparent !important;
+			font-size: 11px !important;
+			border: 0 !important;
+			line-height: 32px !important;
+			padding: 0 !important;
+			}
+
+		i {
+			font-size: 12px !important;
+			top: 1px !important;
+			margin-right: 5px !important;
+			color: rgba(255,255,255,.5)
+			}
+		
+		}
+	}
+
+	#frontEndTools > ul > li#adminSave {
+		position: relative;
+		color: #fff !important;
+		float: left !important;
+		line-height: 30px !important;
+		//margin-left: 14px !important;
+		list-style: none !important;
+		font-weight: normal !important;
+		font-style: normal !important;
+		background: transparent !important;
+		border: 0 !important;
+
+			> a {
+			position: relative !important;
+			display: block !important;
+			color: @white !important;
+			font-size: 11px !important;
+			padding: 0 12px 2px !important;
+		//	line-height: 24px !important;
+		//	height: 24px !important;
+		//	.border-radius(2px) !important;
+			cursor: pointer !important;
+			background-color: #4485f1 !important;
+			border-color: #4882cc;
+			background-image: none !important;
+
+
+			&:hover {
+
+				cursor: pointer !important;
+
+				> i {
+					color: @blueDarker !important;
+					/* text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; */
+					}
+
+				}
+
+			.caret {
+				border-top-color: @blueDarker !important;
+				margin: 9px 0 0 4px !important;
+				}
+			}
+
+		}
+
+	#frontEndTools > ul > li a:hover,
+	#frontEndTools > ul > li > a:hover > i {
+		color: @white !important;
+		/* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
+		}
+
+	#frontEndTools > ul > li.dropdown .dropdown-menu {
 
 		.border-bottom-radius(2px) !important;
 		.border-top-radius(0) !important;
@@ -568,43 +566,42 @@ html.mura-edit-mode > body {
 	}
 
 
-#frontEndTools > ul li.dropdown-submenu {
+	#frontEndTools > ul li.dropdown-submenu {
 
-  position:relative;
+	  position:relative;
 
-	> .dropdown-menu {
-		margin-left: 0 !important;
-    top:0 !important;
-    left:100%;
-    margin-top:-6px;
-    margin-left:-1px;
-	}
+		> .dropdown-menu {
+			margin-left: 0 !important;
+	    top:0 !important;
+	    left:100%;
+	    margin-top:-6px;
+	    margin-left:-1px;
+		}
 
-	a {
-	max-width: 180px !important;
-	.text-overflow();
+		a {
+		max-width: 180px !important;
+		.text-overflow();
 
-		&:after {
-		border-left-color: @grayLight !important;
-		margin-top: 5px !important;
-		margin-right: 0 !important;
-		margin-left: -5px !important;
+			&:after {
+			border-left-color: @grayLight !important;
+			margin-top: 5px !important;
+			margin-right: 0 !important;
+			margin-left: -5px !important;
+			}
 		}
 	}
-}
 
-#frontEndTools > ul > li#adminSave .dropdown-menu,
-#frontEndTools > ul > li#adminPreview .dropdown-menu{
-	margin-left: 0 !important;
-}
+	#frontEndTools > ul > li#adminSave .dropdown-menu,
+	#frontEndTools > ul > li#adminPreview .dropdown-menu{
+		margin-left: 0 !important;
+	}
 
-.dropdown-submenu:hover > .dropdown-menu,
-#frontEndTools .dropdown-submenu:hover > .dropdown-menu{
-    display:block;
-}
+	.dropdown-submenu:hover > .dropdown-menu,
+	#frontEndTools .dropdown-submenu:hover > .dropdown-menu{
+	    display:block;
+	}
 
-}
- // End .mura
+} //  /.mura
 
 .mura-editable {
 

@@ -105,7 +105,6 @@
 	<!-- Spinner JS -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
-	<!--- TODO : include full theme core js in compact view? : 2016-01-29T16:49:50-07:00 --->
     <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/oneui.min.js"></script>
 
