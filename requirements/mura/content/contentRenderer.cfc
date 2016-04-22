@@ -2351,7 +2351,7 @@ Display Objects
 				(
 				 	StructKeyExists(session, 'mura')
 				 	and (
-						listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#')
+						(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
 						or listFind(session.mura.memberships,'S2')
 					)
 				) or (

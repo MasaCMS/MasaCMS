@@ -39,7 +39,7 @@ component extends="mura.bean.beanORMVersioned"
 		switch(arguments.returnFormat){
 			case 'self':
 				if(variables.instance.isnew && len(variables.instance.fileid)){
-					set(getBean('file').loadBy(fileID=variables.instance.fileid,returnFormat='query'));
+					set(getBean('file').loadBy(fileID=variables.instance.fileid,siteid=getBean('settingsManager').getSite(getValue('siteid')).getFilePoolID(),returnFormat='query'));
 				}
 
 				return this;
