@@ -264,7 +264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					data:{params:encodeURIComponent(JSON.stringify(params))},
 					success:function(response){
 						$('##layoutcontainer').html(response);
-
+						$('.mura ##configurator select').niceSelect();
 					}
 				})
 			}

@@ -2931,6 +2931,8 @@ buttons: {
 					$("#configurator").html(resp);
 				}
 
+	      $('.mura #configurator select').niceSelect();
+			
 				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
 				if(siteManager.configuratorMode=='frontEnd'){
