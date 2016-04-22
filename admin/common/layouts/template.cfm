@@ -83,10 +83,11 @@
 			<cfparam name="rc.activepanel" default="0">
 			<cfparam name="rc.siteid" default="#session.siteID#">
 			<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
-			<!--- This code is just to prevent errors when people update past version 5.2.2652 --->
+			<!--- default site id --->
 			<cfif not len(rc.siteID)>
 			<cfset rc.siteID="default">
 			</cfif>
+			<!--- admin titles --->
 			<cfparam name="moduleTitle" default="">
 			<cfif not len(moduleTitle)>
 				<cfswitch expression="#rc.originalcircuit#">
@@ -208,14 +209,13 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
     <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-   <script src="#application.configBean.getContext()#/admin/assets/js/oneui.js"></script>
+   	<script src="#application.configBean.getContext()#/admin/assets/js/oneui.js"></script>
 
    	<!-- jQuery UI components -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-<!--- TODO : keep chart.min.js? : 2016-01-29T16:52:21-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- Mura js --->
