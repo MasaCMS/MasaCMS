@@ -990,8 +990,8 @@ footer {
 		}
 
 		.footer-bottom {
-			padding: 1em 0;
-			margin: 1em 0;
+			padding: 1em 0 0 0;
+			margin: 1em 0 0 0;
 			border-top: 1px solid @gray-dark;
 			font-size: 0.8em;
 
@@ -1004,6 +1004,19 @@ footer {
 				&:hover {
 					color: @gray-light;
 					text-decoration: none;
+				}
+			}
+
+			.scroll-top {
+				border: 1px solid @gray;
+				position: absolute;
+				right: 0px;
+				a {
+					&:hover {
+						background-color: @gray-lighter;
+						color: @gray-darker;
+						border-radius: 0;
+					}
 				}
 			}
 		}
