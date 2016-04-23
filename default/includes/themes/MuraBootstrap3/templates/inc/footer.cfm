@@ -58,7 +58,7 @@
 						<li><a href="http://www.getmura.com"><i class="fa fa-plug"></i> Powered by Mura</a></li>
 					</ul>
 				</div>
-				<cfset backToTop = '<a id="back-to-top" class="btn" href="##"><i class="fa fa-chevron-up"></i></a>' />
+				<cfset backToTop = '<a class="btn back-to-top" href="##"><i class="fa fa-chevron-up"></i></a>' />
 				<div class="col-lg-2">
 					<p class="scroll-top hidden-sm hidden-xs pull-right">#backToTop#</p>
 					<p class="scroll-top visible-sm visible-xs pull-left">#backToTop#</p>
