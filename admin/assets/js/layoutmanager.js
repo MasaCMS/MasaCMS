@@ -162,7 +162,10 @@
 				function(e){
 					//e.stopPropagation();
 					mura('.mura-active-target').removeClass('mura-active-target');
-					mura(this).addClass('mura-active-target');
+					var self=mura(this);
+					if(!self.hasClass('mura-object-selected')){
+						mura(this).addClass('mura-active-target');
+					}
 				},
 				function(e){
 					//e.stopPropagation();
@@ -559,7 +562,10 @@
 				function(e){
 					//e.stopPropagation();
 					mura('.mura-active-target').removeClass('mura-active-target');
-					mura(this).addClass('mura-active-target');
+					var self=mura(this);
+					if(!self.hasClass('mura-object-selected')){
+						mura(this).addClass('mura-active-target');
+					}
 				},
 				function(e){
 					//e.stopPropagation();
