@@ -479,6 +479,9 @@
 				.addClass('mura-sidebar-state__pushed--right');
 			}
 
+			var iframe=mura('#frontEndToolsSidebariframe');
+
+			iframe.attr('src',iframe.data('preloadsrc'));
 
 			obj.find('.mxp-editable').each(function(){
 				var item=mura(this);
