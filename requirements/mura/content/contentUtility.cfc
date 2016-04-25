@@ -1085,7 +1085,7 @@ and active=1
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contentID#" />
 		</cfquery>
-		<cfset updateGlobalMaterializedPath(arguments.siteID,rs.contentID,newPath,updateDSN) />
+		<cfset this.updateGlobalMaterializedPath(arguments.siteID,rs.contentID,newPath,updateDSN) />
 	</cfloop>
 
 </cffunction>
@@ -1125,7 +1125,7 @@ and parentID is null
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.commentID#" />
 		</cfquery>
-		<cfset updateGlobalCommentsMaterializedPath(arguments.siteID,rs.commentID,newPath,updateDSN) />
+		<cfset this.updateGlobalCommentsMaterializedPath(arguments.siteID,rs.commentID,newPath,updateDSN) />
 	</cfloop>
 
 </cffunction>
