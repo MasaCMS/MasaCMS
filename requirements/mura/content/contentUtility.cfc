@@ -1046,7 +1046,7 @@ Sincerely,
 		<cfset rsKids=getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
 
 		<cfloop query="rsKids">
-			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, false, contentBean.getPath(), arguments.setNotOnDisplay)>
+			<cfset this.copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, false, contentBean.getPath(), arguments.setNotOnDisplay)>
 		</cfloop>
 	</cfif>
 
