@@ -2616,17 +2616,19 @@ buttons: {
 					CKEDITOR.instances[item.attr('id')].updateElement();
 				}
 
-				if(typeof(availableObjectParams[item.attr("name")]) == 'undefined') {
-					availableObjectParams[item.attr("name")] = item.val();
-				} else {
-					if(!$.isArray(availableObjectParams[item.attr("name")])) {
-						var tempArray = [];
-						tempArray[0] = availableObjectParams[item.attr("name")];
-						availableObjectParams[item.attr("name")] = tempArray;
+				if(typeof(item.attr("name")) != 'undefined'){
+					if(typeof(availableObjectParams[item.attr("name")]) == 'undefined') {
+						availableObjectParams[item.attr("name")] = item.val();
+					} else {
+						if(!$.isArray(availableObjectParams[item.attr("name")])) {
+							var tempArray = [];
+							tempArray[0] = availableObjectParams[item.attr("name")];
+							availableObjectParams[item.attr("name")] = tempArray;
+						}
+
+						availableObjectParams[item.attr("name")].push(item.val());
+
 					}
-
-					availableObjectParams[item.attr("name")].push(item.val());
-
 				}
 			}
 		})
@@ -2932,7 +2934,7 @@ buttons: {
 				}
 
 	      $('.mura #configurator select').niceSelect();
-			
+
 				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
 				if(siteManager.configuratorMode=='frontEnd'){
