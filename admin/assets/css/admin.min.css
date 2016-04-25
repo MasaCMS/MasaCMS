@@ -33811,7 +33811,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .block > .nav-tabs li.tabdrop a.dropdown-toggle {
   cursor: pointer;
-  background-color: transparent;
+  background-color: #ccc;
 }
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu li.active a,
 .mura .block > .nav-tabs li.tabdrop .dropdown-menu a:hover {
