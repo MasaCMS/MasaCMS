@@ -453,7 +453,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   opacity: 1;
 }
 .frontEndToolsModal.mura {
-  color: #fff !importan;
+  color: #fff !important;
   display: block !important;
   font-size: 10.5px !important;
   line-height: 24px !important;
