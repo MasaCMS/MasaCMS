@@ -162,7 +162,10 @@
 				function(e){
 					//e.stopPropagation();
 					mura('.mura-active-target').removeClass('mura-active-target');
-					mura(this).addClass('mura-active-target');
+					var self=mura(this);
+					if(!self.hasClass('mura-object-selected')){
+						mura(this).addClass('mura-active-target');
+					}
 				},
 				function(e){
 					//e.stopPropagation();
@@ -479,6 +482,9 @@
 				.addClass('mura-sidebar-state__pushed--right');
 			}
 
+			var iframe=mura('#frontEndToolsSidebariframe');
+
+			iframe.attr('src',iframe.data('preloadsrc'));
 
 			obj.find('.mxp-editable').each(function(){
 				var item=mura(this);
@@ -556,7 +562,10 @@
 				function(e){
 					//e.stopPropagation();
 					mura('.mura-active-target').removeClass('mura-active-target');
-					mura(this).addClass('mura-active-target');
+					var self=mura(this);
+					if(!self.hasClass('mura-object-selected')){
+						mura(this).addClass('mura-active-target');
+					}
 				},
 				function(e){
 					//e.stopPropagation();

@@ -61,8 +61,15 @@
 		</div> <!-- /.block-constrain -->
 		</cfif>
 
+	<cfif len(rc.$.event('preloadOnly'))>
+		<script>
+			$('##configurator .load-inline').spin(spinnerArgs2);
+		</script>
+	<cfelse>
 	<cfinclude template="dsp_configuratorJS.cfm">
 	<script>
+		$('##configurator .load-inline').spin(spinnerArgs2);
+
 		siteManager.configuratorMode='frontEnd';
 		siteManager.layoutmanager=true;
 
@@ -178,7 +185,6 @@
 					}
 				}
 
-
 				frontEndProxy.addEventListener(onFrontEndMessage);
 				frontEndProxy.post({cmd:'setWidth',width:'#configuratorWidth#'});
 				frontEndProxy.post({
@@ -202,8 +208,6 @@
 				}
 			}
 
-			$('##configurator .load-inline').spin(spinnerArgs2);
-
 			<cfif rc.sourceFrame eq 'modal'>
 			jQuery("##saveConfigDraft").bind("click",updateDraft);
 			<cfelse>
@@ -221,7 +225,9 @@
 
 
 		});
+
 	</script>
+	</cfif>
 	</cfoutput>
 <cfelse>
 	<cfsilent>

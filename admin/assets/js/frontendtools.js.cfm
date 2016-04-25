@@ -220,6 +220,10 @@
 			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
 			editableObj.hide().show();
 
+			mura('.mura-object-select').removeClass('mura-object-select');
+			mura('.mura-active-target').removeClass('mura-active-target');
+			editableObj.addClass('mura-object-select');
+
 			var legacyMap={
 				feed:true,
 				feed_slideshow:true,
