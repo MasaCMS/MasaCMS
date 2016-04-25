@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)>
 				</cfif>
 
-				<cfset iterator.setNextN(variables.$.event('nextn'))>
+				<cfset iterator.setNextN(objectParams.nextn)>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
 			</cfcase>
 			<cfcase value="children">
@@ -192,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset iterator=$.content().set(objectParams).getKidsIterator(argumentCollection=objectParams)>
-				<cfset iterator.setNextN(variables.$.event('nextn'))>
+				<cfset iterator.setNextN(objectParams.nextn)>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
 
 			</cfcase>
@@ -210,7 +210,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					.set(objectParams)
 					.getIterator()>
 
-				<cfset iterator.setNextN(variables.$.event('nextn'))>
+				<cfset iterator.setNextN(objectParams.nextn)>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
 
 			</cfdefaultcase>
