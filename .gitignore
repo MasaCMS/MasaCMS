@@ -49,6 +49,7 @@ WEB-INF/
 /demo/
 /plugins/
 /temp/
+/node_modules/
 
 # ignored 'config' directory files
 /config/cfapplication.cfm
