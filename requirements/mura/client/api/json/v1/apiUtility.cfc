@@ -1216,7 +1216,7 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		if(!entity.allowRead()){
+		if(!entity.allowRead($)){
 			throw(type="authorization");
 		}
 
@@ -1465,7 +1465,7 @@ component extends="mura.cfobject" {
 		while(iterator.hasNext()){
 			item=iterator.next();
 
-			if(isDefined('item.allowRead') && !entity.allowRead()){
+			if(isDefined('item.allowRead') && !entity.allowRead($)){
 				throw(type="authorization");
 			}
 
@@ -1919,7 +1919,7 @@ component extends="mura.cfobject" {
 				entity.loadBy(argumentCollection=loadparams);
 
 				if(entity.exists()){
-					if(!(entity.allowDelete() || allowAction(entity,$))){
+					if(!(entity.allowDelete($) || allowAction(entity,$))){
 						throw(type="authorization");
 					}
 
@@ -1932,7 +1932,7 @@ component extends="mura.cfobject" {
 				entity.loadBy(argumentCollection=loadparams);
 
 				if(entity.exists()){
-					if(!(entity.allowDelete() || allowAction(entity,$))){
+					if(!(entity.allowDelete($) || allowAction(entity,$))){
 						throw(type="authorization");
 					}
 
@@ -1956,7 +1956,7 @@ component extends="mura.cfobject" {
 			entity.loadBy(argumentCollection=loadparams);
 
 			if(entity.exists()){
-				if(!(entity.allowDelete() || allowAction(entity,$))){
+				if(!(entity.allowDelete($) || allowAction(entity,$))){
 						throw(type="authorization");
 					}
 
