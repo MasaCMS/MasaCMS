@@ -1,1 +1,1 @@
-<displayobject name="Navigation"/>
+<displayobject name="Navigation" contenttypes="*" omitcontenttypes="Variation"/>

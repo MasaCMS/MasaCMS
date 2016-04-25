@@ -228,7 +228,7 @@
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})
 				.loadjs(
-					"#$.siteConfig('requirementspath')#/fullcalendar/lib/moment.min.js",
+					"#$.siteConfig('requirementspath')#/fullcalendar/lib/moment-with-locales.min.min.js",
 					"#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.min.js",
 					"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
 					function(){
