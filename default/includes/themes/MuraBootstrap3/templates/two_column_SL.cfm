@@ -9,7 +9,7 @@
 				</aside><!-- /.span -->
 				<section class="col-lg-9 col-md-9 col-sm-8 col-xs-12 content">
 					<cfinclude template="inc/breadcrumb.cfm" />
-					<cfset pageTitle = $.content('type') != 'Page' ? $.content('title') : ''>
+					<cfset pageTitle = $.content('type') neq 'Page' ? $.content('title') : ''>
 					#$.dspBody(
 						body=$.content('body')
 						, pageTitle=pageTitle
