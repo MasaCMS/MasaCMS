@@ -6,7 +6,7 @@
 			<div class="row">
 				<section class="content col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<cfinclude template="inc/breadcrumb.cfm" />
-					<cfset pageTitle = $.content('type') != 'Page' ? $.content('title') : ''>
+					<cfset pageTitle = $.content('type') neq 'Page' ? $.content('title') : ''>
 					#$.dspBody(body=$.content('body')
 						, pageTitle=pageTitle
 						, crumbList=false

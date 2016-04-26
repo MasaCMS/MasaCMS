@@ -11,7 +11,7 @@
 				<section class="col-lg-6 col-md-6 col-sm-8 col-xs-12 content">
 					<cfinclude template="inc/breadcrumb.cfm" />
 
-					<cfset pageTitle = $.content('type') != 'Page' ? $.content('title') : ''>
+					<cfset pageTitle = $.content('type') neq 'Page' ? $.content('title') : ''>
 
 					#$.dspBody(
 						body=$.content('body')
