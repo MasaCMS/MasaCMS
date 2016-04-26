@@ -133,13 +133,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not arguments.force and structKeyExists(request,"contentRenderer") and request.contentRenderer.getValue('siteid') eq event('siteid')>
 				<cfset event("contentRenderer",request.contentRenderer)>
 			<cfelse>
-				<!-- temp fix, may become permanent--->
+				<!--- temp fix, may become permanent--->
 				<cfif globalConfig().getValue(property='alwaysUseLocalRenderer',defaultValue=false)>
 					<cfset event("contentRenderer",createObject("component","#event('siteid')#.includes.contentRenderer") )>
 				<cfelse>
 					<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
 				</cfif>
-				<!-- end temp fix --->
+				<!--- end temp fix --->
 				<cfset event("contentRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
 				<cfif fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" )>
 					<cfset var themeRenderer=createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer")>
