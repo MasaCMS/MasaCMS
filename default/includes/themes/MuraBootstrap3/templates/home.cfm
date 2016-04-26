@@ -23,7 +23,10 @@
 		<div class="container">
 			<div class="row">
 				<section class="col-md-12 content">
-					<!--- The content --->
+					<!--- 
+							The Content
+							See the file located under '/display_objects/page_default/index.cfm' to override body styling
+					--->
 					#$.dspBody(
 						body=$.content('body')
 						, pageTitle=''

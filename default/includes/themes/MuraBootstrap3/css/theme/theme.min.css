@@ -55,6 +55,9 @@
   margin-right: .25em;
   color: #428bca;
 }
+.mura-asset {
+  padding: 1em 0;
+}
 .thumbnail,
 .img-thumbnail {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
@@ -547,7 +550,7 @@ ol.mura-pager li.activeLI a {
 }
 .mura-calendar table .table tbody tr:hover td,
 .mura-calendar table .table tbody tr:hover th {
-  background: #ffffff;
+  background: #fff;
 }
 .mura-calendar-nav th {
   line-height: 1;
@@ -816,7 +819,7 @@ footer.footer-wrapper .footer-top .nav-social li a:hover.google {
   background-color: #e23535;
 }
 footer.footer-wrapper .footer-top .nav-social li a:hover.linkedin {
-  background-color: #006699;
+  background-color: #069;
 }
 footer.footer-wrapper .footer-bottom {
   padding: 1em 0 0 0;
@@ -951,7 +954,7 @@ ol.linenums {
 .mura-form .btn:hover,
 .mura-form .btn:focus,
 .mura-form .btn.focus {
-  color: #333333;
+  color: #333;
   text-decoration: none;
 }
 .mura-form .btn:active,
@@ -975,25 +978,25 @@ fieldset[disabled] a.mura-form .btn {
   pointer-events: none;
 }
 .mura-form .btn-default {
-  color: #333333;
-  background-color: #ffffff;
-  border-color: #cccccc;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
 }
 .mura-form .btn-default:focus,
 .mura-form .btn-default.focus {
-  color: #333333;
+  color: #333;
   background-color: #e6e6e6;
   border-color: #8c8c8c;
 }
 .mura-form .btn-default:hover {
-  color: #333333;
+  color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
 .mura-form .btn-default:active,
 .mura-form .btn-default.active,
 .open > .dropdown-toggle.mura-form .btn-default {
-  color: #333333;
+  color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
@@ -1006,7 +1009,7 @@ fieldset[disabled] a.mura-form .btn {
 .mura-form .btn-default:active.focus,
 .mura-form .btn-default.active.focus,
 .open > .dropdown-toggle.mura-form .btn-default.focus {
-  color: #333333;
+  color: #333;
   background-color: #d4d4d4;
   border-color: #8c8c8c;
 }
@@ -1024,33 +1027,33 @@ fieldset[disabled] .mura-form .btn-default:focus,
 .mura-form .btn-default.disabled.focus,
 .mura-form .btn-default[disabled].focus,
 fieldset[disabled] .mura-form .btn-default.focus {
-  background-color: #ffffff;
-  border-color: #cccccc;
+  background-color: #fff;
+  border-color: #ccc;
 }
 .mura-form .btn-default .badge {
-  color: #ffffff;
-  background-color: #333333;
+  color: #fff;
+  background-color: #333;
 }
 .mura-form .btn-primary {
-  color: #ffffff;
+  color: #fff;
   background-color: #337ab7;
   border-color: #2e6da4;
 }
 .mura-form .btn-primary:focus,
 .mura-form .btn-primary.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #286090;
   border-color: #122b40;
 }
 .mura-form .btn-primary:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: #286090;
   border-color: #204d74;
 }
 .mura-form .btn-primary:active,
 .mura-form .btn-primary.active,
 .open > .dropdown-toggle.mura-form .btn-primary {
-  color: #ffffff;
+  color: #fff;
   background-color: #286090;
   border-color: #204d74;
 }
@@ -1063,7 +1066,7 @@ fieldset[disabled] .mura-form .btn-default.focus {
 .mura-form .btn-primary:active.focus,
 .mura-form .btn-primary.active.focus,
 .open > .dropdown-toggle.mura-form .btn-primary.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #204d74;
   border-color: #122b40;
 }
@@ -1086,28 +1089,28 @@ fieldset[disabled] .mura-form .btn-primary.focus {
 }
 .mura-form .btn-primary .badge {
   color: #337ab7;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .mura-form .btn-success {
-  color: #ffffff;
+  color: #fff;
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
 .mura-form .btn-success:focus,
 .mura-form .btn-success.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #449d44;
   border-color: #255625;
 }
 .mura-form .btn-success:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: #449d44;
   border-color: #398439;
 }
 .mura-form .btn-success:active,
 .mura-form .btn-success.active,
 .open > .dropdown-toggle.mura-form .btn-success {
-  color: #ffffff;
+  color: #fff;
   background-color: #449d44;
   border-color: #398439;
 }
@@ -1120,7 +1123,7 @@ fieldset[disabled] .mura-form .btn-primary.focus {
 .mura-form .btn-success:active.focus,
 .mura-form .btn-success.active.focus,
 .open > .dropdown-toggle.mura-form .btn-success.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #398439;
   border-color: #255625;
 }
@@ -1143,28 +1146,28 @@ fieldset[disabled] .mura-form .btn-success.focus {
 }
 .mura-form .btn-success .badge {
   color: #5cb85c;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .mura-form .btn-info {
-  color: #ffffff;
+  color: #fff;
   background-color: #5bc0de;
   border-color: #46b8da;
 }
 .mura-form .btn-info:focus,
 .mura-form .btn-info.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #31b0d5;
   border-color: #1b6d85;
 }
 .mura-form .btn-info:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: #31b0d5;
   border-color: #269abc;
 }
 .mura-form .btn-info:active,
 .mura-form .btn-info.active,
 .open > .dropdown-toggle.mura-form .btn-info {
-  color: #ffffff;
+  color: #fff;
   background-color: #31b0d5;
   border-color: #269abc;
 }
@@ -1177,7 +1180,7 @@ fieldset[disabled] .mura-form .btn-success.focus {
 .mura-form .btn-info:active.focus,
 .mura-form .btn-info.active.focus,
 .open > .dropdown-toggle.mura-form .btn-info.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #269abc;
   border-color: #1b6d85;
 }
@@ -1200,28 +1203,28 @@ fieldset[disabled] .mura-form .btn-info.focus {
 }
 .mura-form .btn-info .badge {
   color: #5bc0de;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .mura-form .btn-warning {
-  color: #ffffff;
+  color: #fff;
   background-color: #f0ad4e;
   border-color: #eea236;
 }
 .mura-form .btn-warning:focus,
 .mura-form .btn-warning.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #ec971f;
   border-color: #985f0d;
 }
 .mura-form .btn-warning:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: #ec971f;
   border-color: #d58512;
 }
 .mura-form .btn-warning:active,
 .mura-form .btn-warning.active,
 .open > .dropdown-toggle.mura-form .btn-warning {
-  color: #ffffff;
+  color: #fff;
   background-color: #ec971f;
   border-color: #d58512;
 }
@@ -1234,7 +1237,7 @@ fieldset[disabled] .mura-form .btn-info.focus {
 .mura-form .btn-warning:active.focus,
 .mura-form .btn-warning.active.focus,
 .open > .dropdown-toggle.mura-form .btn-warning.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #d58512;
   border-color: #985f0d;
 }
@@ -1257,28 +1260,28 @@ fieldset[disabled] .mura-form .btn-warning.focus {
 }
 .mura-form .btn-warning .badge {
   color: #f0ad4e;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .mura-form .btn-danger {
-  color: #ffffff;
+  color: #fff;
   background-color: #d9534f;
   border-color: #d43f3a;
 }
 .mura-form .btn-danger:focus,
 .mura-form .btn-danger.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #c9302c;
   border-color: #761c19;
 }
 .mura-form .btn-danger:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: #c9302c;
   border-color: #ac2925;
 }
 .mura-form .btn-danger:active,
 .mura-form .btn-danger.active,
 .open > .dropdown-toggle.mura-form .btn-danger {
-  color: #ffffff;
+  color: #fff;
   background-color: #c9302c;
   border-color: #ac2925;
 }
@@ -1291,7 +1294,7 @@ fieldset[disabled] .mura-form .btn-warning.focus {
 .mura-form .btn-danger:active.focus,
 .mura-form .btn-danger.active.focus,
 .open > .dropdown-toggle.mura-form .btn-danger.focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #ac2925;
   border-color: #761c19;
 }
@@ -1314,7 +1317,7 @@ fieldset[disabled] .mura-form .btn-danger.focus {
 }
 .mura-form .btn-danger .badge {
   color: #d9534f;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .mura-form .btn-link {
   color: #337ab7;
@@ -1446,9 +1449,9 @@ fieldset[disabled] .mura-form .btn-link:focus {
   font-size: 14px;
   line-height: 1.42857143;
   color: #555555;
-  background-color: #ffffff;
+  background-color: #fff;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1908,9 +1911,9 @@ select[multiple].mura-form .input-lg {
   font-size: 14px;
   line-height: 1.42857143;
   color: #555555;
-  background-color: #ffffff;
+  background-color: #fff;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -2026,7 +2029,7 @@ textarea.mura-form select {
 .mura-form div[class*="paging-container-"] button:hover,
 .mura-form div[class*="paging-container-"] button:focus,
 .mura-form div[class*="paging-container-"] button.focus {
-  color: #333333;
+  color: #333;
   text-decoration: none;
 }
 .mura-form div[class*="paging-container-"] button:active,
@@ -2050,25 +2053,25 @@ fieldset[disabled] a.mura-form div[class*="paging-container-"] button {
   pointer-events: none;
 }
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"] {
-  color: #333333;
-  background-color: #ffffff;
-  border-color: #cccccc;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
 }
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"]:focus,
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"].focus {
-  color: #333333;
+  color: #333;
   background-color: #e6e6e6;
   border-color: #8c8c8c;
 }
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"]:hover {
-  color: #333333;
+  color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"]:active,
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"].active,
 .open > .dropdown-toggle.mura-form div[class*="paging-container-"] button:not[class*="btn-"] {
-  color: #333333;
+  color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
@@ -2081,7 +2084,7 @@ fieldset[disabled] a.mura-form div[class*="paging-container-"] button {
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"]:active.focus,
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"].active.focus,
 .open > .dropdown-toggle.mura-form div[class*="paging-container-"] button:not[class*="btn-"].focus {
-  color: #333333;
+  color: #333;
   background-color: #d4d4d4;
   border-color: #8c8c8c;
 }
@@ -2099,12 +2102,12 @@ fieldset[disabled] .mura-form div[class*="paging-container-"] button:not[class*=
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"].disabled.focus,
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"][disabled].focus,
 fieldset[disabled] .mura-form div[class*="paging-container-"] button:not[class*="btn-"].focus {
-  background-color: #ffffff;
-  border-color: #cccccc;
+  background-color: #fff;
+  border-color: #ccc;
 }
 .mura-form div[class*="paging-container-"] button:not[class*="btn-"] .badge {
-  color: #ffffff;
-  background-color: #333333;
+  color: #fff;
+  background-color: #333;
 }
 .mura-form div[class*="paging-container-"] button.btn-primary:hover {
   color: #fff;
