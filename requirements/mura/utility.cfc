@@ -207,7 +207,7 @@
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/eventHandler.template.cfc", destination="#basedir#/eventHandler.cfc")>
 	</cfif>
 
-	<cfif getBean('settingsManager').getSite(arguments.siteid).getEmailBroadcaster()>
+	<cfif getBean('configBean').getEmailBroadcaster()>
 		<cfif not directoryExists("#basedir#/email")>
 			<cfset variables.fileWriter.createDir(directory="#basedir#/email")>
 		</cfif>
