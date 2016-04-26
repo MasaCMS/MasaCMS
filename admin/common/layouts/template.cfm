@@ -398,11 +398,13 @@
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
 
+		<cfif rc.originalcircuit neq "cLogin">
 			<footer class="mura-footer footer navbar-fixed-bottom clearfix">
 				<div class="credits">
 					&copy; #year(now())# Blue River Interactive Group. Licensed under <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank">GNU General Public License Version 2.0 with exceptions</a>
 				</div>
       </footer>
+  	</cfif>
 
     </div><!-- /.page-container -->
 
