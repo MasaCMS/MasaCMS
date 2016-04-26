@@ -296,7 +296,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="hasImage">
-	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) or len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgID())>
+	<<cfargument name="usePlaceholder" default="true">
+	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) or arguments.usePlaceholder and len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgID())>
 </cffunction>
 
 <cffunction name="getExtendedAttributes" returntype="struct" output="false" access="public">
