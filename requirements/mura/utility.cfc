@@ -207,12 +207,14 @@
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/eventHandler.template.cfc", destination="#basedir#/eventHandler.cfc")>
 	</cfif>
 
-	<cfif not directoryExists("#basedir#/email")>
-		<cfset variables.fileWriter.createDir(directory="#basedir#/email")>
-	</cfif>
+	<cfif getBean('settingsManager').getSite(arguments.siteid).getEmailBroadcaster()>
+		<cfif not directoryExists("#basedir#/email")>
+			<cfset variables.fileWriter.createDir(directory="#basedir#/email")>
+		</cfif>
 
-	<cfif not fileExists("#basedir#/email/inc_email.cfm")>
-		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/email.template.cfm", destination="#basedir#/email/inc_email.cfm")>
+		<cfif not fileExists("#basedir#/email/inc_email.cfm")>
+			<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/email.template.cfm", destination="#basedir#/email/inc_email.cfm")>
+		</cfif>
 	</cfif>
 
 </cffunction>
