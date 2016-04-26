@@ -1909,16 +1909,6 @@
 			</cfif>
 			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true,cacheKey=cgi.query_string)}>
 		</cfif>
-		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
-
-		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-		<cfset var params=$.content().getObjectParams()>
-		<cfif not isdefined('params.objectname')>
-			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
-			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
-		</cfif>
-			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true,cacheKey=cgi.query_string)}>
-		</cfif>
 
 		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
 
@@ -1931,6 +1921,18 @@
 			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true,cacheKey=cgi.query_string)}>
 		</cfif>
 
+		<cfset displayObjectKey=arguments.$.content().getType()>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+		<cfset var params=$.content().getObjectParams()>
+		<cfif not isdefined('params.objectname')>
+			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+		</cfif>
+			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true,cacheKey=cgi.query_string)}>
+		</cfif>
+
+		<!---
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey) and arguments.$.siteConfig().getDisplayObject(displayObjectKey).custom>
@@ -1942,6 +1944,7 @@
 			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true,cacheKey=cgi.query_string)}>
 		</cfif>
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+		--->
 
 		<!--- END Checking for Override via Display Object --->
 
@@ -1954,6 +1957,11 @@
 		</cfif>
 
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#/index.cfm')>
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
 		</cfif>
