@@ -1361,7 +1361,7 @@
 								muraInlineEditor.data['sortdirection']=item.data('sortdirection');
 							}
 
-							muraInlineEditor.data['objectparams']=JSON.stringify(item.data());
+							muraInlineEditor.data['objectparams']=encodeURIComponent(JSON.stringify(item.data()));
 
 						});
 

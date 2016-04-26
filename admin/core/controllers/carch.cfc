@@ -282,6 +282,10 @@
 		<cfset arguments.rc.orderno=0>
 	</cfif>
 
+	<cfif isDefined('rc.objectparams') and len(rc.objectparams) and not isJSON(rc.objectparams)>
+		<cfset rc.objectparams=URLDecode(rc.objectparams)>
+	</cfif>
+	
 	<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
 
 	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
