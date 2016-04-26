@@ -1923,7 +1923,7 @@
 
 		<cfset displayObjectKey=arguments.$.content().getType()>
 
-		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey) and arguments.$.siteConfig().getDisplayObject(displayObjectKey).custom>
 		<cfset var params=$.content().getObjectParams()>
 		<cfif not isdefined('params.objectname')>
 			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
@@ -1961,9 +1961,11 @@
 			<cfreturn {filepath=filePath}>
 		</cfif>
 
-		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#/index.cfm')>
-		<cfif len(filePath)>
-			<cfreturn {filepath=filePath}>
+		<cfif not arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#/index.cfm')>
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			</cfif>
 		</cfif>
 
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>

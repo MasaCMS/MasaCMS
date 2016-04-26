@@ -88,7 +88,7 @@
 
 	<!--- Body --->
 		<div class="mura-body">
-			#$.setDynamicContent($.content('body'))#
+			#$.renderEditableAttribute(attribute="body",type="htmlEditor")#
 		</div>
 	<!--- /Body --->
 
