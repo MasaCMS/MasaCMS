@@ -30735,6 +30735,793 @@ font-size: 12px;
 .mura .template-form input[type="checkbox"] {
   margin-left: auto;
 }
+.mura select,
+.mura textarea,
+.mura input[type="text"],
+.mura input.text,
+.mura input[type="password"],
+.mura input[type="datetime"],
+.mura input[type="datetime-local"],
+.mura input[type="date"],
+.mura input[type="month"],
+.mura input[type="time"],
+.mura input[type="week"],
+.mura input[type="number"],
+.mura input[type="email"],
+.mura input[type="url"],
+.mura input[type="search"],
+.mura input[type="tel"],
+.mura input[type="color"],
+.mura .uneditable-input {
+  height: 18px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #000000 !important;
+  margin-bottom: 0;
+}
+.mura select,
+.mura input[type="file"] {
+  height: 28px;
+  line-height: 1;
+  margin-bottom: 0;
+  -webkit-box-shadow: 0 0 0 !important;
+  box-shadow: 0 0 0 !important;
+}
+.mura input[type="file"] {
+  height: auto;
+  margin: 0 0 9px 0;
+}
+.mura input[type="checkbox"],
+.mura input[type="radio"] {
+  margin-top: 2px;
+  -webkit-box-shadow: 0 0 0 !important;
+  box-shadow: 0 0 0 !important;
+}
+.mura input[disabled] {
+  color: #ccc !important;
+}
+.mura textarea,
+.mura select[multiple],
+.mura select[size] {
+  min-height: 100px !important;
+}
+.mura select.time {
+  width: 4.5em;
+}
+.mura .input-prepend {
+  display: block;
+}
+.mura .input-append input[type="text"] {
+  width: 300px;
+}
+.mura .input-append i {
+  font-size: 15px !important;
+}
+.mura td > input[type="radio"],
+.mura th > input[type="radio"],
+.mura td > input[type="checkbox"],
+.mura th > input[type="checkbox"] {
+  margin-top: 0;
+}
+.mura .radio.inline,
+.mura .checkbox.inline {
+  margin-right: .25em;
+  white-space: nowrap;
+}
+.mura .radio.inline input,
+.mura .checkbox.inline input {
+  margin-top: 2px;
+}
+.mura input + .help-block {
+  margin-top: 9px;
+  margin-bottom: 0;
+}
+.mura .form-actions {
+  clear: both;
+  margin: 0;
+  background: transparent;
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
+  border: 0 !important;
+  padding-top: 0;
+  text-align: left;
+}
+.mura .form-actions.no-offset {
+  padding: 0 0 18px;
+}
+.mura .add-on {
+  font-size: 15px;
+}
+.mura #contentForm {
+  clear: both;
+}
+.mura #siteSearch,
+.mura #changesetSearch {
+  float: right;
+  width: auto;
+  margin: 0 0 2em;
+  position: relative;
+  right: 0;
+  background: #f7f7f7;
+  padding: .75em .75em;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.mura #siteSearch input[type="text"],
+.mura #changesetSearch input[type="text"] {
+  line-height: 16px;
+  height: 24px;
+  padding: 2px;
+}
+.mura #siteSearch i,
+.mura #changesetSearch i {
+  font-size: 16px;
+}
+.mura #siteSearch .btn,
+.mura #changesetSearch .btn {
+  line-height: 14px;
+  height: 30px;
+  padding: 0 8px;
+}
+.mura #contentSearch.form-inline {
+  margin-bottom: 18px;
+}
+.mura #contentSearch.form-inline h2 {
+  margin: 0;
+}
+.mura .controls ul {
+  margin: 0;
+  list-style: none;
+}
+.mura .help-inline,
+.mura .help-block {
+  font-weight: normal;
+  color: #666666;
+}
+.mura #editObjects > div {
+  float: left !important;
+  float: left;
+  margin-right: 10px;
+  min-width: 300px;
+}
+.mura #editObjects .region:before,
+.mura #editObjects .region:after {
+  content: " ";
+  display: table;
+}
+.mura #editObjects .region:after {
+  clear: both;
+}
+.mura #editObjects .region:before,
+.mura #editObjects .region:after {
+  content: " ";
+  display: table;
+}
+.mura #editObjects .region:after {
+  clear: both;
+}
+.mura #editObjects .region:before,
+.mura #editObjects .region:after {
+  content: " ";
+  display: table;
+}
+.mura #editObjects .region:after {
+  clear: both;
+}
+.mura #editObjects .region:before,
+.mura #editObjects .region:after {
+  content: " ";
+  display: table;
+}
+.mura #editObjects .region:after {
+  clear: both;
+}
+.mura #editObjects dl {
+  float: left !important;
+  float: left;
+  margin: 0 6px 10px 0;
+  padding: 0 !important;
+}
+.mura #editObjects dl dt {
+  margin-bottom: .5em;
+  font-weight: normal;
+  font-style: italic;
+}
+.mura #editObjects dl dd {
+  margin: 0;
+}
+.mura #editObjects #availableRegions dl {
+  margin-left: 6px;
+}
+.mura #editObjects .btn-group {
+  float: left !important;
+  float: left;
+  height: 100px;
+  padding-top: 50px;
+}
+.mura #editObjects .multiSelect {
+  min-height: 100px;
+  height: auto;
+  width: 300px;
+  margin: 0;
+}
+.mura #editObjects .btn {
+  width: 6px;
+  padding: 4px 10px;
+}
+.mura #editObjects .btn i {
+  position: relative;
+  top: 2px;
+  font-size: 12px;
+  text-shadow: 1px 0 0 #ffffff;
+}
+.mura .form-header {
+  padding-bottom: 1em;
+}
+.mura .form-header:before,
+.mura .form-header:after {
+  content: " ";
+  display: table;
+}
+.mura .form-header:after {
+  clear: both;
+}
+.mura .form-header:before,
+.mura .form-header:after {
+  content: " ";
+  display: table;
+}
+.mura .form-header:after {
+  clear: both;
+}
+.mura .form-header:before,
+.mura .form-header:after {
+  content: " ";
+  display: table;
+}
+.mura .form-header:after {
+  clear: both;
+}
+.mura .form-header:before,
+.mura .form-header:after {
+  content: " ";
+  display: table;
+}
+.mura .form-header:after {
+  clear: both;
+}
+.mura .form-header h2 {
+  float: left;
+  margin-bottom: 0;
+}
+.mura .form-header .metadata-horizontal {
+  margin-top: 0;
+  padding: 0;
+}
+.mura fieldset,
+.mura .fieldset {
+  padding: 12px 0 10px;
+  margin: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  position: relative;
+  max-width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.mura fieldset.padded,
+.mura .fieldset.padded {
+  padding: 20px;
+  padding-bottom: 0;
+}
+.mura fieldset > .list-table:first-child,
+.mura .fieldset > .list-table:first-child {
+  margin-top: 0;
+}
+.mura fieldset h2,
+.mura .fieldset h2 {
+  margin: 0 0 9px 20px;
+  padding-bottom: 0;
+  border: 0;
+  font-size: 14px;
+  line-height: 1;
+  color: #666666;
+}
+.mura fieldset .control-group,
+.mura .fieldset .control-group {
+  background: transparent;
+  padding: 10px 20px 14px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+.mura fieldset .control-group:before,
+.mura .fieldset .control-group:before,
+.mura fieldset .control-group:after,
+.mura .fieldset .control-group:after {
+  content: " ";
+  display: table;
+}
+.mura fieldset .control-group:after,
+.mura .fieldset .control-group:after {
+  clear: both;
+}
+.mura fieldset .control-group:before,
+.mura .fieldset .control-group:before,
+.mura fieldset .control-group:after,
+.mura .fieldset .control-group:after {
+  content: " ";
+  display: table;
+}
+.mura fieldset .control-group:after,
+.mura .fieldset .control-group:after {
+  clear: both;
+}
+.mura fieldset .control-group:before,
+.mura .fieldset .control-group:before,
+.mura fieldset .control-group:after,
+.mura .fieldset .control-group:after {
+  content: " ";
+  display: table;
+}
+.mura fieldset .control-group:after,
+.mura .fieldset .control-group:after {
+  clear: both;
+}
+.mura fieldset .control-group:before,
+.mura .fieldset .control-group:before,
+.mura fieldset .control-group:after,
+.mura .fieldset .control-group:after {
+  content: " ";
+  display: table;
+}
+.mura fieldset .control-group:after,
+.mura .fieldset .control-group:after {
+  clear: both;
+}
+.mura fieldset .control-group:first-of-type,
+.mura .fieldset .control-group:first-of-type {
+  border-top: 0 !important;
+  padding-top: 0 !important;
+}
+.mura fieldset .control-group label + .btn-toolbar,
+.mura .fieldset .control-group label + .btn-toolbar {
+  margin-top: 0;
+}
+.mura fieldset .control-group .well,
+.mura .fieldset .control-group .well {
+  background-color: #e6e6e6;
+}
+.mura fieldset .control-group .well .control-group,
+.mura .fieldset .control-group .well .control-group {
+  border-top: 0;
+  padding: 0;
+}
+.mura fieldset .control-group .control-group-nested,
+.mura .fieldset .control-group .control-group-nested {
+  border-top: 0;
+  padding: 0;
+  margin-bottom: 9px;
+}
+.mura fieldset .control-group .control-group-nested label,
+.mura .fieldset .control-group .control-group-nested label {
+  font-weight: normal;
+  font-size: 12px;
+}
+.mura fieldset .control-group .control-group-nested label a,
+.mura .fieldset .control-group .control-group-nested label a {
+  font-weight: normal;
+  font-size: 12px;
+}
+.mura fieldset .control-group .input-append,
+.mura .fieldset .control-group .input-append {
+  margin-bottom: 0;
+}
+.mura label:last-child {
+  margin-bottom: 0;
+}
+.mura .control-label,
+.mura .control-label a {
+  color: #000000 !important;
+  font-size: 13px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 #ffffff;
+  cursor: default;
+}
+.mura .control-label span,
+.mura .control-label a span {
+  font-weight: normal;
+}
+.mura .control-label .label,
+.mura .control-label a .label {
+  background: #666666;
+}
+.mura .control-label i.icon-question-sign,
+.mura .control-label a i.icon-question-sign {
+  color: #cccccc;
+}
+.mura .well .control-label {
+  color: #000000 !important;
+  font-size: 12px;
+  font-weight: normal;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.mura .controls {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.mura .controls + .controls {
+  margin-top: 9px;
+}
+.mura .controls + .control-label {
+  margin-top: 18px;
+}
+.mura .controls.rule-dotted-top {
+  border-top: 1px dashed #cccccc;
+  margin-top: 18px;
+  padding-top: 9px;
+}
+.mura .tab-content .form-actions,
+.mura .fieldset-wrap .form-actions {
+  text-align: center;
+}
+.mura .tab-content .form-actions .btn,
+.mura .fieldset-wrap .form-actions .btn {
+  color: #fff;
+  background-color: #ff3405;
+  border-color: #ff3838;
+}
+.mura #configurator .fieldset-wrap {
+  margin-bottom: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #e6e6e6;
+  padding: 15px;
+}
+.mura #configurator .fieldset {
+  margin: 0;
+  border: 0;
+}
+.mura .ui-dialog-content #configurator h2 {
+  margin-top: 0;
+}
+.mura .ui-dialog-content #configurator .fieldset-wrap {
+  padding: 0;
+  background-color: transparent;
+}
+.mura .criteria {
+  font-size: 22px;
+  color: #cccccc;
+  text-decoration: none;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  position: relative;
+}
+.mura .criteria:hover {
+  color: #666666;
+}
+.mura .criteria i {
+  position: relative;
+  top: 5px;
+}
+.mura .form-well {
+  padding: 18px;
+  background: #f7f7f7;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.mura .form-well h2 {
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: .8em;
+}
+.mura .form-well select {
+  margin-right: .5em;
+}
+.mura .selectAssocImageResults {
+  max-height: 300px;
+  margin-bottom: 18px;
+  /* Content */
+}
+.mura .selectAssocImageResults > .nav-tabs {
+  border: 0;
+  margin: 0;
+  width: 100%;
+  z-index: 100;
+}
+.mura .selectAssocImageResults > .nav-tabs > li {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 50%;
+}
+.mura .selectAssocImageResults > .nav-tabs > li:last-child {
+  float: right;
+}
+.mura .selectAssocImageResults > .nav-tabs > li > a,
+.mura .selectAssocImageResults > .nav-tabs > li > a:hover {
+  border: 0;
+  margin-bottom: -2px;
+  margin-right: 0;
+  display: block;
+  padding: .75em;
+  background: #f7f7f7;
+  text-align: center;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  border-top-right-radius: 4px;
+  -webkit-border-top-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  border-top-left-radius: 4px;
+  color: #666666;
+}
+.mura .selectAssocImageResults > .nav-tabs > li > a:hover {
+  background: #cccccc;
+}
+.mura .selectAssocImageResults > .nav-tabs > li.active > a {
+  border: 0 !important;
+  background: #e6e6e6;
+  color: #666666;
+  font-weight: bold;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane {
+  max-height: 200px;
+  overflow-y: scroll;
+  background: #e6e6e6;
+  padding: 1em;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li {
+  border: 1px solid #e6e6e6;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #fcfcfc;
+  padding: .5em;
+  margin: 0 .5em .5em 0;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:before,
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  content: " ";
+  display: table;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  clear: both;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:before,
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  content: " ";
+  display: table;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  clear: both;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:before,
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  content: " ";
+  display: table;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  clear: both;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:before,
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  content: " ";
+  display: table;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane > ul > li:after {
+  clear: both;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li {
+  text-align: left;
+  line-height: 28px;
+  margin: 0 0 .2em 0;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li input[type="radio"] {
+  margin: 0;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-files > ul > li i {
+  vertical-align: middle;
+  margin: 0 .2em;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  text-align: center;
+}
+.mura .selectAssocImageResults > .tab-content > .tab-pane.mura-assoc-images > ul > li.no-results {
+  display: block;
+  text-align: left;
+}
+.mura .mura-file {
+  font-size: 15px;
+  line-height: 28px;
+  margin-bottom: 0;
+}
+.mura .mura-file > .current-file {
+  text-transform: uppercase;
+  padding: .5em 1em;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  letter-spacing: 1px;
+  background: #666666;
+  color: #ffffff;
+  font-size: 9px;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  line-height: 1;
+  margin: 0 0 .5em;
+}
+.mura .mura-file > i {
+  vertical-align: middle;
+  float: left;
+  margin-right: .25em;
+}
+.mura .mura-file + .btn {
+  margin: 9px 0;
+}
+.mura .mura-file + .btn > i {
+  font-size: 16px;
+}
+.mura .btn.download-file i {
+  position: relative;
+  left: -2px;
+  top: 1px;
+}
+.mura #assocImage {
+  border: 8px solid #e6e6e6;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin-bottom: 9px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  max-width: 100%;
+  clear: both !important;
+  float: none;
+  display: block;
+}
+.mura #mura-file-unlock {
+  clear: both;
+}
+.mura #deleteFileBox {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+}
+.mura #notifyEditor {
+  width: 100% !important;
+}
+.mura select[multiple] {
+  border-color: #e6e6e6;
+  height: 118px;
+  min-width: 220px !important;
+}
+.mura #selectFilter a {
+  font-weight: normal;
+}
+.mura #availableObjectsContainer select#availableObjects {
+  width: 270px;
+}
+.mura #availableObjectsContainer .control-group {
+  padding: 0;
+}
+.mura #availableObjectsContainer #classList {
+  clear: both;
+}
+.mura #csettings #plugin-license textarea {
+  height: 400px;
+}
+.mura #csettings input[type="checkbox"] {
+  margin-top: 2px;
+}
+.mura #fileupload #fileupload-target {
+  margin-bottom: 18px;
+  padding: 2em;
+}
+.mura #fileupload #fileupload-target:before {
+  content: "";
+}
+.mura #fileupload #fileupload-target p {
+  text-align: center;
+  margin-bottom: 0 !important;
+}
+.mura #fileupload #fileupload-target p i {
+  font-size: 72px;
+  color: #1266f1;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.65);
+  display: block;
+  margin: 18px;
+}
+.mura #custom-image-form {
+  margin-bottom: 18px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+.mura .mura-file-selector .btn-group {
+  margin-bottom: 9px;
+}
+.mura .mura-file-selector .btn-group button[value="Upload"] {
+  -webkit-border-top-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  border-top-left-radius: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  border-bottom-left-radius: 4px;
+}
+.mura .mura-file-selector #mura-download-locked,
+.mura .mura-file-selector #mura-download-unlocked {
+  margin: 9px 0;
+}
+.mura .mura-file-selector #mura-download-locked {
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  border-top-right-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  border-bottom-right-radius: 4px;
+  border-left: 0;
+}
+.mura .mura-file-selector .controls .btn-group i {
+  font-size: 17px;
+  line-height: 19px;
+  top: 2px;
+}
+.mura .mura-file-selector .controls .btn-group i.icon-crop {
+  font-size: 15px;
+  top: 0;
+}
+.mura .mura-file-selector form {
+  margin-bottom: 0;
+}
+.mura .mura-file-selector form input[type=text] {
+  margin-bottom: 0;
+}
+.mura .control-group .mura-file-selector input[type="text"] {
+  float: left;
+}
+.mura .control-group .mura-file-selector input.razuna-url {
+  float: none;
+}
+.mura .control-group .mura-file-selector .btn-razuna {
+  display: inline-block !important;
+}
+.mura #tabPlugins .mura-file-selector {
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #cccccc;
+}
+.mura .btn-group > .dropdown-menu > li > a {
+  margin-right: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.mura #icon-selector > li > .icon-selector-undo {
+  background: #ff3a00;
+  color: #ffffff;
+  border: 0;
+}
 .mura .categoryAssignment {
   /*border-bottom: 1px solid #dbdbdb;*/
   padding-bottom: 0;
