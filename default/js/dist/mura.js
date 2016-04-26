@@ -1519,36 +1519,36 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
   window.addEventListener("load", ready);
 })();
 
-;/* This file is part of Mura CMS. 
+;/* This file is part of Mura CMS.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -1556,13 +1556,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
@@ -1570,7 +1570,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	function login(username,password,siteid){
 		siteid=siteid || window.mura.siteid;
 
-		return new Promise(function(resolve,reject) {	
+		return new Promise(function(resolve,reject) {
 			window.mura.ajax({
 					async:true,
 					type:'post',
@@ -1593,7 +1593,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	function logout(siteid){
 		siteid=siteid || window.mura.siteid;
 
-		return new Promise(function(resolve,reject) {	
+		return new Promise(function(resolve,reject) {
 			window.mura.ajax({
 					async:true,
 					type:'post',
@@ -1630,28 +1630,28 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		params = params || {};
 		params.filename= params.filename || '';
 		params.siteid= params.siteid || window.mura.siteid;
-	
+
 	    for (var key in params) {
 	    	if(key != 'entityname' && key != 'filename' && key != 'siteid' && key != 'method'){
 	        	query.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
 	    	}
 	    }
 
-		return new Promise(function(resolve,reject) {	
+		return new Promise(function(resolve,reject) {
 			window.mura.ajax({
 					async:true,
 					type:'get',
 					url:window.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
 					success:function(resp){
 						if(typeof resolve == 'function'){
-							var item=new window.mura.MuraEntity();
+							var item=new window.mura.Entity();
 							item.set(resp.data);
 							resolve(item);
 						}
 					}
 			});
 		});
-	
+
 	}
 	function getEntity(entityname,siteid){
 		if(typeof entityname == 'string'){
@@ -1661,12 +1661,12 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			properties=entityname;
 			properties.entityname=properties.entityname || 'content';
 			properties.siteid=properties.siteid || window.mura.siteid;
-		}	
-		return new window.mura.MuraEntity(properties);
+		}
+		return new window.mura.Entity(properties);
 	}
 
 	function findQuery(params){
-		
+
 		params=params || {};
 		params.entityname=params.entityname || 'content';
 		params.siteid=params.siteid || mura.siteid;
@@ -1679,11 +1679,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					url:window.mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=new window.mura.MuraEntityCollection(resp.data)
-							//console.log(collection.get('items'))
-							collection.set('items',collection.get('items').map(function(obj){
-								return new window.mura.MuraEntity(obj);
-							}));
+							var collection=new window.mura.EntityCollection(resp.data)
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -1700,7 +1696,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 	    var scripts = [];
 	    var ret = el.childNodes;
-			    
+
 	    for ( var i = 0; ret[i]; i++ ) {
 	      if ( scripts && nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
 	            scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
@@ -1775,9 +1771,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						reject(resp);
 					}
 				}
-			);	
+			);
  		});
-		
+
 	}
 
 	function post(url,data){
@@ -1793,13 +1789,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						reject(resp);
 					}
 				}
-			);	
+			);
  		});
-		
+
 	}
 
 	function ajax(params){
-		
+
 		//params=params || {};
 
 		if(!('type' in params)){
@@ -1836,23 +1832,21 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		var request = new XMLHttpRequest();
 
+		if(params.crossDomain){
+			if (!("withCredentials" in request)
+				&& typeof XDomainRequest != "undefined") {
+			    // Check if the XMLHttpRequest object has a "withCredentials" property.
+			    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+			    // Otherwise, check if XDomainRequest.
+			    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+			    request =new XDomainRequest();
+			}
+		}
 
-		if (params.crossDomain 
-			&& !("withCredentials" in request) 
-			&& typeof XDomainRequest != "undefined") {
-
-		    // Check if the XMLHttpRequest object has a "withCredentials" property.
-		    // "withCredentials" only exists on XMLHTTPRequest2 objects.
-		    // Otherwise, check if XDomainRequest.
-		    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-		    request =new XDomainRequest();
-
-		} 
-		
 		request.onload = function() {
 		  	//IE9 doesn't appear to return the request status
      		if(typeof request.status == 'undefined' || (request.status >= 200 && request.status < 400)) {
-		  
+
 			    try{
 			    	var data = JSON.parse(request.responseText);
 			    } catch(e){
@@ -1865,7 +1859,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 		}
 
-		request.onerror = params.onerror;			
+		request.onerror = params.onerror;
 
 		if(params.type.toLowerCase()=='post'){
 			request.open(params.type.toUpperCase(), params.url, params.async);
@@ -1877,7 +1871,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 
 			for(var h in params.headers){
-				request.setRequestHeader(p,params.headers[h]);		
+				request.setRequestHeader(p,params.headers[h]);
 			}
 
 			//if(params.data.constructor.name == 'FormData'){
@@ -1907,7 +1901,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		    }
 
 		    query=query.join('&');
-			
+
 			request.open(params.type.toUpperCase(), params.url + '&' +  query, params.async);
 
 			for(var p in params.xhrFields){
@@ -1917,7 +1911,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 
 			for(var h in params.headers){
-				request.setRequestHeader(p,params.headers[h]);		
+				request.setRequestHeader(p,params.headers[h]);
 			}
 
 			request.send();
@@ -1949,7 +1943,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
       	var eventClass = "";
 
       	switch (eventName) {
-          	case "click": 
+          	case "click":
           	case "mousedown":
           	case "mouseup":
               	eventClass = "MouseEvents";
@@ -1968,15 +1962,15 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
        	}
 
       	var bubbles=eventName == "change" ? false : true;
-      	
+
       	if(eventClass=='Custom'){
 	    	var event = document.createEvent('CustomEvent');
 	    	event.initCustomEvent(eventName, true, true);
-	        
+
 	    } else {
 	    	var event = document.createEvent(eventClass);
-	    	event.initEvent(eventName, bubbles, true); 
-	    	event.synthetic = true; 
+	    	event.initEvent(eventName, bubbles, true);
+	    	event.synthetic = true;
 	    }
   	};
 
@@ -2022,7 +2016,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function select(selector){
-		return new window.mura.MuraDOMSelection(parseSelection(selector),selector);
+		return new window.mura.DOMSelection(parseSelection(selector),selector);
 	}
 
 	function parseHTML(str) {
@@ -2056,7 +2050,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	function parseString(val){
 		if(typeof val == 'string'){
 			var lcaseVal=val.toLowerCase();
-			
+
 			if(lcaseVal=='false'){
 				return false;
 			} else if (lcaseVal=='true'){
@@ -2068,18 +2062,18 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						return numVal;
 					}
 				}
-				
+
 				try {
 			        var jsonVal=JSON.parse(val);
 			        return jsonVal;
 			    } catch (e) {
 			        return val;
 			    }
-				
+
 			}
 		} else {
 			return val;
-		} 
+		}
 
 	}
 
@@ -2132,7 +2126,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 	function deepExtend(out) {
 		out = out || {};
-	
+
 		for (var i = 1; i < arguments.length; i++) {
 		    var obj = arguments[i];
 
@@ -2182,10 +2176,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function $escape(value){
-		return escape(value).replace( 
-       	 	new RegExp( "\\+", "g" ), 
-        	"%2B" 
-        );
+		return escape(value).replace(
+       	 	new RegExp( "\\+", "g" ),
+        	"%2B"
+        ).replace(/[\x00-\x1F\x7F-\x9F]/g, "");
 	}
 
 	function $unescape(value){
@@ -2212,21 +2206,21 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 	function createUUID() {
 	    var s = [], itoh = '0123456789ABCDEF';
-	   
+
 	    // Make array of random hex digits. The UUID only has 32 digits in it, but we
 	    // allocate an extra items to make room for the '-'s we'll be inserting.
 	    for (var i = 0; i < 35; i++) s[i] = Math.floor(Math.random()*0x10);
-	   
+
 	    // Conform to RFC-4122, section 4.4
 	    s[14] = 4;  // Set 4 high bits of time_high field to version
 	    s[19] = (s[19] & 0x3) | 0x8;  // Specify 2 high bits of clock sequence
-	   
+
 	    // Convert to hex chars
 	    for (var i = 0; i < 36; i++) s[i] = itoh[s[i]];
-	   
+
 	    // Insert '-'s
 	    s[8] = s[13] = s[18] = '-';
-	   
+
 	    return s.join('');
 	 }
 
@@ -2235,25 +2229,25 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		function initEditor(){
 			var instance=window.CKEDITOR.instances[el.getAttribute('id')];
 			var conf={height:200,width:'70%'};
-			
+
 			if(el.getAttribute('data-editorconfig')){
 				extend(conf,el.getAttribute('data-editorconfig'));
 			}
-				
+
 			if (instance) {
 				instance.destroy();
 				CKEDITOR.remove(instance);
-			} 
+			}
 
-			window.CKEDITOR.replace( el.getAttribute('id'),getHTMLEditorConfig(conf),htmlEditorOnComplete);			
+			window.CKEDITOR.replace( el.getAttribute('id'),getHTMLEditorConfig(conf),htmlEditorOnComplete);
 		}
 
-		function htmlEditorOnComplete( editorInstance ) {     
+		function htmlEditorOnComplete( editorInstance ) {
 			//var instance=jQuery(editorInstance).ckeditorGet();
 			//instance.resetDirty();
 			editorInstance.resetDirty();
 			var totalIntances=window.CKEDITOR.instances;
-			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;  
+			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;
 		}
 
 		function getHTMLEditorConfig(customConfig) {
@@ -2262,11 +2256,11 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				toolbar:'htmlEditor',
 				customConfig : 'config.js.cfm'
 				}
-			
-			if(typeof(customConfig)== 'object'){  
+
+			if(typeof(customConfig)== 'object'){
 				extend(htmlEditorConfig,customConfig);
 			}
-			
+
 			return htmlEditorConfig;
 		}
 
@@ -2283,10 +2277,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	var pressed_keys='';
 
 	var loginCheck=function(key){
-		
+
 		if(key==27){
 			pressed_keys = key.toString();
-			
+
 		} else if(key == 76){
 			pressed_keys = pressed_keys + "" + key.toString();
 		}
@@ -2296,13 +2290,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		}
 
 		if (pressed_keys != "") {
-			
+
 			var aux = pressed_keys;
 			var lu='';
 			var ru='';
 
 			if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
-				
+
 				if(typeof(window.mura.loginURL) != "undefined"){
 					lu=window.mura.loginURL;
 				} else if(typeof(window.mura.loginurl) != "undefined"){
@@ -2310,7 +2304,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				} else{
 					lu="?display=login";
 				}
-				
+
 				if(typeof(window.mura.returnURL) != "undefined"){
 					ru=window.mura.returnURL;
 				} else if(typeof(window.mura.returnurl) != "undefined"){
@@ -2319,7 +2313,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					ru=location.href;
 				}
 				pressed_keys = "";
-				
+
 				lu = new String(lu);
 				if(lu.indexOf('?') != -1){
 					location.href=lu + "&returnUrl=" + $escape(ru);
@@ -2332,7 +2326,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 	function isInteger(s){
 		var i;
-			for (i = 0; i < s.length; i++){   
+			for (i = 0; i < s.length; i++){
 					// Check that current character is number.
 					var c = s.charAt(i);
 					if (((c < "0") || (c > "9"))) return false;
@@ -2342,42 +2336,42 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function createDate(str){
-						
+
 		var valueArray = str.split("/");
-					
+
 		var mon = valueArray[0];
 		var dt = valueArray[1];
 		var yr = valueArray[2];
-				
+
 		var date = new Date(yr, mon-1, dt);
-						
+
 		if(!isNaN(date.getMonth())){
 			return date;
 		} else {
-			return new Date();  
+			return new Date();
 		}
-							
+
 	}
-					
+
 	function dateToString(date){
 		var mon   = date.getMonth()+1;
 		var dt  = date.getDate();
 		var yr   = date.getFullYear();
-				
+
 		if(mon < 10){ mon="0" + mon;}
 		if(dt < 10){ dt="0" + dt;}
-						
-						
-		return mon + "/" + dt + "/20" + new String(yr).substring(2,4);      
+
+
+		return mon + "/" + dt + "/20" + new String(yr).substring(2,4);
 	}
-					
+
 
 	function stripCharsInBag(s, bag){
 		var i;
 			var returnString = "";
 			// Search through string's characters one by one.
 			// If character is not in bag, append to returnString.
-			for (i = 0; i < s.length; i++){   
+			for (i = 0; i < s.length; i++){
 					var c = s.charAt(i);
 					if (bag.indexOf(c) == -1) returnString += c;
 			}
@@ -2395,14 +2389,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			this[i] = 31
 			if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
 			if (i==2) {this[i] = 29}
-		 } 
+		 }
 		 return this
 	}
 
 	function isDate(dtStr,fldName){
 		var daysInMonth = DaysArray(12);
 		var dtArray= dtStr.split(window.mura.dtCh);
-		
+
 		if (dtArray.length != 3){
 			//alert("The date format for the "+fldName+" field should be : short")
 			return false
@@ -2410,24 +2404,24 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		var strMonth=dtArray[window.mura.dtFormat[0]];
 		var strDay=dtArray[window.mura.dtFormat[1]];
 		var strYear=dtArray[window.mura.dtFormat[2]];
-		
+
 		/*
 		if(strYear.length == 2){
 			strYear="20" + strYear;
 		}
 		*/
 		strYr=strYear;
-		
+
 		if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
 		if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
 		for (var i = 1; i <= 3; i++) {
 			if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
 		}
-		
+
 		month=parseInt(strMonth)
 		day=parseInt(strDay)
 		year=parseInt(strYr)
-			
+
 		if (month<1 || month>12){
 			//alert("Please enter a valid month in the "+fldName+" field")
 			return false
@@ -2468,8 +2462,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	        function(){
 	            window.Shadowbox.init();
 	        }
-	      );   
-	  	}	
+	      );
+	  	}
 	}
 
 	function validateForm(frm,customaction) {
@@ -2501,7 +2495,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				return theField.getAttribute('message') ;
 			} else {
 				return getValidationFieldName(theField).toUpperCase() + defaultMessage;
-			} 
+			}
 		}
 
 		function getValidationType(theField){
@@ -2564,109 +2558,109 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		var firstErrorNode;
 		var validationType='';
 		var validations={properties:{}};
-		var frmInputs = theForm.getElementsByTagName("input");  
+		var frmInputs = theForm.getElementsByTagName("input");
 		var rules=new Array();
 		var data={};
 		var $customaction=customaction;
-		
+
 		for (var f=0; f < frmInputs.length; f++) {
 		 var theField=frmInputs[f];
 		 validationType=getValidationType(theField).toUpperCase();
-		
+
 			rules=new Array();
-	
+
 			if(theField.style.display==""){
 				if(getValidationIsRequired(theField))
-					{ 
+					{
 						rules.push({
 							required: true,
 							message: getValidationMessage(theField,' is required.')
 						});
-						
-									
+
+
 					}
 				if(validationType != ''){
-						
+
 					if(validationType=='EMAIL' && theField.value != '')
-					{ 
+					{
 						rules.push({
 							dataType: 'EMAIL',
 							message: getValidationMessage(theField,' must be a valid email address.')
 						});
-						
-								
+
+
 					}
-	
+
 					else if(validationType=='NUMERIC' && theField.value != '')
-					{ 
+					{
 						rules.push({
 							dataType: 'NUMERIC',
 							message: getValidationMessage(theField,' must be numeric.')
 						});
-									
+
 					}
-					
+
 					else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-					{ 
+					{
 						rules.push({
 							regex: getValidationRegex(theField),
 							message: getValidationMessage(theField,' is not valid.')
 						});
-										
+
 					}
-					
-					else if(validationType=='MATCH' 
+
+					else if(validationType=='MATCH'
 							&& hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
-					{ 
+					{
 						rules.push({
 							eq: theForm[getValidationMatchField(theField)].value,
 							message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
 						});
-									
+
 					}
-					
+
 					else if(validationType=='DATE' && theField.value != '')
 					{
 						rules.push({
 							dataType: 'DATE',
 							message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
 						});
-						 
+
 					}
 				}
-				
+
 				if(rules.length){
 					validations.properties[theField.getAttribute('name')]=rules;
 					data[theField.getAttribute('name')]=theField.value;
 				}
 			}
 		}
-		var frmTextareas = theForm.getElementsByTagName("textarea");  
+		var frmTextareas = theForm.getElementsByTagName("textarea");
 		for (f=0; f < frmTextareas.length; f++) {
-		
-			
+
+
 				theField=frmTextareas[f];
 				validationType=getValidationType(theField);
 
 				rules=new Array();
-				 
+
 				if(theField.style.display=="" && getValidationIsRequired(theField))
-				{ 
+				{
 					rules.push({
 						required: true,
 						message: getValidationMessage(theField, ' is required.' )
 					});
-					
-				} 
+
+				}
 
 				else if(validationType != ''){
 					if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-					{ 
+					{
 						rules.push({
 							regex: getValidationRegex(theField),
 							message: getValidationMessage(theField, ' is not valid.' )
 						});
-										
+
 					}
 				}
 
@@ -2675,8 +2669,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					data[theField.getAttribute('name')]=theField.value;
 				}
 		}
-		
-		var frmSelects = theForm.getElementsByTagName("select");  
+
+		var frmSelects = theForm.getElementsByTagName("select");
 		for (f=0; f < frmSelects.length; f++) {
 				theField=frmSelects[f];
 				validationType=getValidationType(theField);
@@ -2684,7 +2678,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				rules=new Array();
 
 				if(theField.style.display=="" && getValidationIsRequired(theField))
-				{ 
+				{
 					rules.push({
 						required: true,
 						message: getValidationMessage(theField, ' is required.' )
@@ -2694,7 +2688,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				if(rules.length){
 					validations.properties[theField.getAttribute('name')]=rules;
 					data[theField.getAttribute('name')]=theField.value;
-				} 
+				}
 		}
 
 		try{
@@ -2711,9 +2705,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 							version: 4
 						},
 					success: function(resp) {
-						
+
 						data=resp.data;
-				
+
 						if(Object.keys(data).length === 0){
 							if(typeof $customaction == 'function'){
 								$customaction(theForm);
@@ -2731,23 +2725,23 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						}
 					},
 					error: function(resp) {
-						
+
 						alert(JSON.stringify(resp));
 					}
 
-				}    
+				}
 			);
-		} 
-		catch(err){ 
+		}
+		catch(err){
 			console.log(err);
 		}
 
 		return false;
-			
+
 	}
 
 	function setLowerCaseKeys(obj) {
-		for(var key in obj){ 
+		for(var key in obj){
 			 if (key !== key.toLowerCase()) { // might already be in its lower case version
 						obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
 						delete obj[key] // delete the old key
@@ -2760,16 +2754,27 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		return (obj);
 	}
 
+	function isScrolledIntoView(el) {
+		if(!window || window.innerHeight){
+			true;
+		}
+	    var elemTop = el.getBoundingClientRect().top;
+	    var elemBottom = el.getBoundingClientRect().bottom;
+
+	    var isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+	    return isVisible;
+	}
+
 	function loader(){return window.mura.ljs;}
 
-	var layoutmanagertoolbar='<div class="frontEndToolsModal">[EDIT]</div>';
+	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i>&nbsp;</div>';
 
 	function processMarkup(scope){
 
-		if(!(scope instanceof window.mura.MuraDOMSelection)){
+		if(!(scope instanceof window.mura.DOMSelection)){
 			scope=select(scope);
 		}
-		
+
 		var self=scope;
 
 		function find(selector){
@@ -2780,7 +2785,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			function(){
 				find('.mura-object[data-async="true"], .mura-object[data-render="client"], .mura-async-object').each(function(){
-					processObject(this);
+					processObject(this,true);
 				});
 			},
 
@@ -2814,12 +2819,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					loader().loadjs(
 						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
 						function(){
-							each(find(".g-recaptcha-container" ),function(el){
+							find(".g-recaptcha-container" ).each(function(el){
 								var self=el;
 								var checkForReCaptcha=function()
 									{
 									   if (typeof grecaptcha == 'object' )
 									   {
+									   	//console.log(self)
 									     grecaptcha.render(self.getAttribute('id'), {
 									          'sitekey' : self.getAttribute('data-sitekey'),
 									          'theme' : self.getAttribute('data-theme'),
@@ -2833,32 +2839,31 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 									}
 
 								checkForReCaptcha();
-								
+
 							});
 						}
 					);
-					
+
 				}
 			},
 
 			function(){
 				if(typeof resizeEditableObject == 'function' ){
-					
-					scope.closest('.editableObject').each(function(){ 
+
+					scope.closest('.editableObject').each(function(){
 						resizeEditableObject(this);
-					}); 
+					});
 
 					find(".editableObject").each(function(){
 						resizeEditableObject(this);
 					});
-	
+
 				}
 			},
 
 			function(){
 
-				if(typeof openFrontEndToolsModal == 'function' ){ 
-					
+				if(typeof openFrontEndToolsModal == 'function' ){
 					find(".frontEndToolsModal").on(
 						'click',
 						function(event){
@@ -2868,15 +2873,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					);
 				}
 
-				
+
 				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCroppers){
-					
 					find("img").each(function(){
 						 window.muraInlineEditor.checkforImageCroppers(this);
 					});
-						
+
 				}
-				
+
 			},
 
 			function(){
@@ -2908,13 +2912,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 		} else {
 			on(document,eventName,fn);
-		}	
+		}
 	}
 
 
 	function submitForm(frm,obj){
 		frm=(frm.node) ? frm.node : frm;
-     
+
 	    if(obj){
 	      obj=(obj.node) ? obj : mura(obj);
 	    } else {
@@ -2930,7 +2934,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys(formToObject(frm));
 				var keys=deepExtend(setLowerCaseKeys(obj.data()),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
-				
+
 				for(var k in keys){
 					if(!(k in checkdata)){
 						data.append(k,keys[k]);
@@ -2948,14 +2952,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				if(data.object=='container' && data.content){
 					delete data.content;
 				}
-				
+
 				var postconfig={
 							url:  window.mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'POST',
 							data: data,
 							success:function(resp){handleResponse(obj,resp);}
-						} 
-			
+						}
+
 			} else {
 				var data=deepExtend(setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
 
@@ -2976,7 +2980,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 							type: 'POST',
 							data: data,
 							success:function(resp){handleResponse(obj,resp);}
-						} 
+						}
 			}
 
 			var self=obj.node;
@@ -3001,8 +3005,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				var self=mura(this);
 				self.removeClass('active');
 				self.removeAttr('data-perm');
+				self.removeAttr('data-inited');
 			});
-			
+
 			self.find('.mura-object[data-object="container"]').each(function(){
 				var self=mura(this);
 				var content=self.children('div.mura-object-content');
@@ -3025,13 +3030,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		self.html('');
 	}
 
-	function unpackContainer(container){
-		container.html('<div class="mura-object-meta"></div><div class="mura-object-content"></div>');
-		if(container.data('content')){
-			container.children('div.mura-object-content').html(container.data('content'));
-		}
-	}
-
 	function processAsyncObject(el){
 		obj=mura(el);
 		if(obj.data('async')===null){
@@ -3041,7 +3039,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function wireUpObject(obj,response){
-	
+
 		function validateFormAjax(frm) {
 			validateForm(frm,
 				function(frm){
@@ -3050,7 +3048,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			);
 
 			return false;
-			
+
 		}
 
 		obj=(obj.node) ? obj : mura(obj);
@@ -3062,12 +3060,28 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			if(typeof classes != 'array'){
 				var classes=classes.split(' ');
 			}
-			
+
 			for(var c in classes){
 				if(!obj.hasClass(classes[c])){
 					obj.addClass(classes[c]);
 				}
-			}	
+			}
+		}
+
+		obj.data('inited',true);
+
+		if(obj.data('cssclass')){
+			var classes=obj.data('cssclass');
+
+			if(typeof classes != 'array'){
+				var classes=classes.split(' ');
+			}
+
+			for(var c in classes){
+				if(!obj.hasClass(classes[c])){
+					obj.addClass(classes[c]);
+				}
+			}
 		}
 
 		if(response){
@@ -3077,12 +3091,15 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
+					obj.prepend(mura.templates.meta(response));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
 					if(typeof mura.templates[template] == 'function'){
-						obj.html(mura.templates[template](response));
+						var context=obj.data();
+						context.html=mura.templates[template](obj.data());
+						obj.html(mura.templates.content(context));
+						obj.prepend(mura.templates.meta(context));
 					} else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -3091,13 +3108,15 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 		} else {
 			if(obj.data('object')=='container'){
-				mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
+				obj.prepend(mura.templates.meta(obj.data()));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
-					obj.html(mura.templates[template](obj.data()));
-					processMarkup(self)
+					var context=obj.data();
+					context.html=mura.templates[template](obj.data());
+					obj.html(mura.templates.content(context));
+					obj.prepend(mura.templates.meta(context));
 				} else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
@@ -3106,13 +3125,43 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		}
 
 		if(mura.layoutmanager && mura.editing){
-			if(obj.data('object')=='folder'){
-				obj.html(layoutmanagertoolbar + obj.html());
+			if(obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
+				obj.prepend(layoutmanagertoolbar);
+				muraInlineEditor.setAnchorSaveChecks(obj.node);
+
+				obj
+				.addClass('active')
+				.hover(
+					function(e){
+						//e.stopPropagation();
+						mura('.mura-active-target').removeClass('mura-active-target');
+						mura(this).addClass('mura-active-target');
+					},
+					function(e){
+						//e.stopPropagation();
+						mura(this).removeClass('mura-active-target');
+					}
+				);
 			} else {
 				if(mura.type == 'Variation'){
 					var objectData=obj.data();
 					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-						obj.html(layoutmanagertoolbar + obj.html());
+						obj.prepend(layoutmanagertoolbar);
+						muraInlineEditor.setAnchorSaveChecks(obj.node);
+
+						obj
+							.addClass('active')
+							.hover(
+								function(e){
+									//e.stopPropagation();
+									mura('.mura-active-target').removeClass('mura-active-target');
+									mura(this).addClass('mura-active-target');
+								},
+								function(e){
+									//e.stopPropagation();
+									mura(this).removeClass('mura-active-target');
+								}
+							);
 					}
 				} else {
 					var region=mura(self).closest(".mura-region-local");
@@ -3121,7 +3170,22 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 							var objectData=obj.data();
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-								obj.html(layoutmanagertoolbar + obj.html());
+								obj.prepend(layoutmanagertoolbar);
+								muraInlineEditor.setAnchorSaveChecks(obj.node);
+
+								obj
+									.addClass('active')
+									.hover(
+										function(e){
+											//e.stopPropagation();
+											mura('.mura-active-target').removeClass('mura-active-target');
+											mura(this).addClass('mura-active-target');
+										},
+										function(e){
+											//e.stopPropagation();
+											mura(this).removeClass('mura-active-target');
+										}
+									);
 							}
 						}
 					}
@@ -3130,7 +3194,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		}
 
 		obj.hide().show();
-		
+
 		processMarkup(obj.node);
 
 		obj.find('a[href="javascript:history.back();"]').each(function(){
@@ -3149,7 +3213,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				}
 			});
 		});
-		
+
 		each(self.getElementsByTagName('FORM'),function(el,i){
 			el.onsubmit=function(){return validateFormAjax(this);};
 		});
@@ -3162,11 +3226,11 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					if(a.length==2){
 						window.location.hash=a[1];
 					}
-				
+
 				});
 			})
 		}
-			
+
 		obj.trigger('asyncObjectRendered');
 
 	}
@@ -3178,7 +3242,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		if(resp.data.redirect){
 			location.href=resp.data.redirect;
 		} else if(resp.data.apiEndpoint){
-			ajax({ 
+			ajax({
 		        type:"POST",
 		        xhrFields:{ withCredentials: true },
 		        crossDomain:true,
@@ -3201,12 +3265,20 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		}
 	}
 
-	function processObject(el){
+	function processObject(el,queue){
+
+		var obj=(el.node) ? el : mura(el);
+		el =el.node || el;
+		var self=el;
+
+		queue=(queue==null) ? false : queue;
+
+		if(queue && !isScrolledIntoView(el)){
+			setTimeout(function(){processObject(el,true)},10);
+			return;
+		}
 
 		return new Promise(function(resolve,reject) {
-			var obj=(el.node) ? el : mura(el);
-			el =el.node || el;
-			var self=el;
 
 			if(!self.getAttribute('data-instanceid')){
 				self.setAttribute('data-instanceid',createUUID());
@@ -3216,19 +3288,29 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				obj.addClass("mura-async-object");
 			}
 
-			if(self.getAttribute('data-object')=='container'){
-				//resetAsyncObject(self);
-				unpackContainer(mura(self));
-				mura(self).find('.mura-object').each(function(){
+			if(obj.data('object')=='container'){
+
+				obj.html(mura.templates.content(obj.data()));
+
+				obj.find('.mura-object').each(function(){
 					this.setAttribute('data-instanceid',createUUID());
 				});
-				mura(self).hide().show();
-				unpackedContainer=true;
+				obj.hide().show();
 
 			}
 
 			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
-			
+
+			delete data.inited;
+
+			if(obj.data('contentid')){
+				data.contentid=self.getAttribute('data-contentid');
+			}
+
+			if(obj.data('contenthistid')){
+				data.contenthistid=self.getAttribute('data-contenthistid');
+			}
+
 			if('objectparams' in data){
 				data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 			}
@@ -3246,7 +3328,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					if(typeof resolve == 'function'){
 						resolve(obj);
 					}
-				} else {	
+				} else {
+					//console.log(data);
 					self.innerHTML=window.mura.preloaderMarkup;
 					ajax({
 						url:window.mura.apiEndpoint + '?method=processAsyncObject',
@@ -3258,7 +3341,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 								resolve(obj);
 							}
 						}
-					});		
+					});
 				}
 
 			}
@@ -3276,7 +3359,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		if(hash){
 			hash=hash.substring(1);
 		}
-		
+
 		if(hash){
 			hashparams=getQueryStringParams(hash);
 			if(hashparams.nextnid){
@@ -3289,14 +3372,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					mura(this).data(hashparams);
 					processAsyncObject(this);
 				});
-			}	
+			}
 		}
 	}
 
 	function trim(str) {
 	    return str.replace(/^\s+|\s+$/gm,'');
 	}
-	
+
 
 	function extendClass (baseClass,subClass){
 		var placeholder=function(){
@@ -3317,13 +3400,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	        a = /\+/g,  // Regex for replacing addition symbol with a space
 	        r = /([^&;=]+)=?([^&;]*)/g,
 	        d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
-	        
+
 	        if(queryString.substring(0,1)=='?'){
 	        	var q=queryString.substring(1);
 	        } else {
 	        	var q=queryString;
 	        }
-	        
+
 
 	    while (e = r.exec(q))
 	       params[d(e[1]).toLowerCase()] = d(e[2]);
@@ -3376,6 +3459,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/';
 		}
 
+		if(!config.pluginspath){
+			config.pluginspath=config.context + '/plugins';
+		}
+
 		if(!config.requirementspath){
 			config.requirementspath=config.context + '/requirements';
 		}
@@ -3399,19 +3486,19 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		if(typeof config.windowdocumentdomain != 'undefined' && config.windowdocumentdomain != ''){
 			window.document.domain=config.windowdocumentdomain;
 		}
-		
+
 		mura.editing;
 
 		extend(window.mura,config);
 
 		mura(function(){
-			
+
 			var hash=window.location.hash;
 
 			if(hash){
 				hash=hash.substring(1);
 			}
-			
+
 			hashparams=setLowerCaseKeys(getQueryStringParams(hash));
 			urlparams=setLowerCaseKeys(getQueryStringParams(window.location.search));
 
@@ -3428,7 +3515,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			mura(window).on('hashchange',handleHashChange);
 
 			processMarkup(document);
-			
+
 			mura(document)
 			.on("keydown", function(event){
 				loginCheck(event.which);
@@ -3442,7 +3529,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					}
 				}
 			);
-			
+
 			mura('#my-id').addDisplayObject('objectname',{..});
 
 			mura.login('userame','password')
@@ -3499,7 +3586,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				.then(function(item){
 					alert(item.get('title'));
 				});
-				
+
 			mura.findQuery({
 					entityname:'content',
 					title:'Home'
@@ -3507,14 +3594,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				.then(function(collection){
 					alert(collection.item(0).get('title'));
 				});
-			*/	
+			*/
 
 			mura(document).trigger('muraReady');
-			
+
 		});
 
 	    return window.mura
-	}	
+	}
 
 	extend(window,{
 		mura:extend(
@@ -3527,6 +3614,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				}
 			},
 			{
+			rb:{},
+			entities:{},
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,
@@ -3586,11 +3675,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		initMura:init
 	});
 
+	window.m=window.m || window.mura;
+
 	//for some reason this can't be added via extend
 	window.validateForm=validateForm;
 
 
-})(window);;//https://github.com/malko/l.js
+})(window);
+;//https://github.com/malko/l.js
 ;(function(window){
 /*
 * script for js/css parallel loading with dependancies management
@@ -3626,7 +3718,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		, script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
 	;
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
-	
+
 	if( ! window.mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
@@ -3701,16 +3793,16 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						attrs={};
 					}
 
-					var parts = urlParse(url);  
+					var parts = urlParse(url);
 					var partToAttrs=[['i','id'],['f','fallback'],['u','src']];
-					
+
 					for(var i=0;i<partToAttrs.length;i++){
 						var part=partToAttrs[i];
 						if(!(part[1] in attrs) && (part[0] in parts)){
 							attrs[part[1]]=parts[part[0]];
 						}
 					}
-				
+
 					if(typeof attrs.type === 'undefined'){
 						attrs.type='text/javascript';
 					}
@@ -3722,7 +3814,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 							finalAttrs[a]=attrs[a];
 						}
 					}
-					
+
 					finalAttrs.onerror=function(error){
 						if( attrs.fallback ){
 							var c = error.currentTarget;
@@ -3731,7 +3823,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 							appendElmt('script',attrs,cb);
 						}
 					};
-					
+
 
 					if( loaded[finalAttrs.src] === true ){ // already loaded exec cb if any
 						cb && cb();
@@ -3770,7 +3862,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
 						return loader.load.apply(this, arguments);
 					}
-					
+
 					var parts = urlParse(url);
 					parts={type:'text/css',rel:'stylesheet',href:url,id:parts.i}
 
@@ -3818,36 +3910,37 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		// eval inside tag code if any
 	}
 	script && gEval(script);
-})(window);;/* This file is part of Mura CMS. 
+})(window);
+;/* This file is part of Mura CMS.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -3855,36 +3948,98 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+;(function(window){
+	function Core(){
+		this.init.apply(this,arguments);
+		return this;
+	}
+
+	Core.prototype={
+		init:function(){
+		}
+	};
+
+	Core.extend=function(properties){
+		var self=this;
+		return mura.extend(mura.extendClass(self,properties),{extend:self.extend});
+	};
+
+	window.mura.Core=Core;
+
+})(window);
+;/* This file is part of Mura CMS.
+
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
+
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
+	requires distribution of source code.
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraDOMSelection(selection,origSelector){
-		this.selection=selection;
-		this.origSelector=origSelector;
+	window.mura.DOMSelection=window.mura.Core.extend({
+		init:function(selection,origSelector){
+			this.selection=selection;
+			this.origSelector=origSelector;
 
-		if(this.selection.length && this.selection[0]){
-			this.parentNode=this.selection[0].parentNode;
-			this.childNodes=this.selection[0].childNodes;
-			this.node=selection[0];
-			this.length=this.selection.length;
-		} else {
-			this.parentNode=null;
-			this.childNodes=null;
-			this.node=null;
-			this.length=0;
-		}
+			if(this.selection.length && this.selection[0]){
+				this.parentNode=this.selection[0].parentNode;
+				this.childNodes=this.selection[0].childNodes;
+				this.node=selection[0];
+				this.length=this.selection.length;
+			} else {
+				this.parentNode=null;
+				this.childNodes=null;
+				this.node=null;
+				this.length=0;
+			}
+		},
 
-		
-	}
-
-	MuraDOMSelection.prototype={
 		get:function(index){
 			return this.selection[index];
 		},
@@ -3924,7 +4079,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			if(typeof selector == 'function'){
 				fn=selector;
 				selector='';
-			} 
+			}
 
 			if(eventName=='ready'){
 				if(document.readyState != 'loading'){
@@ -3936,27 +4091,27 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 								if(selector){
 									mura(this).find(selector).each(function(){
 										fn.call(this);
-									});	
+									});
 								} else {
-									fn.call(this);	
+									fn.call(this);
 								}
 							});
 						},
 						1
 					);
-					
+
 					return this;
 
 				} else {
 					eventName='DOMContentLoaded';
 				}
 			}
-					
+
 			this.each(function(){
 				if(typeof this.addEventListener == 'function'){
 					var self=this;
 					this.addEventListener(
-						eventName, 
+						eventName,
 						function(event){
 							if(selector){
 								mura(self).find(selector).each(function(){
@@ -3965,13 +4120,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 							} else {
 								fn.call(self,event);
 							}
-							
+
 						},
 						true
 					);
 				}
 			});
-			
+
 			return this;
 		},
 
@@ -4000,7 +4155,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			return this;
 		},
-		
+
 		ready:function(fn){
 			this.on('ready',fn);
 			return this;
@@ -4020,7 +4175,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					array[idx]=elClone;
 
 				}
-					
+
 			});
 			return this;
 		},
@@ -4058,24 +4213,24 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			if(this.selection[0].hasChildNodes()){
 				var children=window.mura(this.selection[0].childNodes);
-				
+
 				if(typeof selector == 'string'){
 					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
 				} else {
 					var filterFn=function(){ return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
 				}
 
-				return children.filter(filterFn);		
+				return children.filter(filterFn);
 			} else {
 				return window.mura([]);
-			}	
-			
+			}
+
 		},
 
 		find:function(selector){
 			if(this.selection.length){
 				var removeId=false;
-				
+
 				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
 					var result=this.selection[0].querySelectorAll(selector);
 				} else if(this.selection[0].nodeType=='9'){
@@ -4090,56 +4245,40 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		selector:function() {
-		    var pathes = [];
+			var pathes = [];
+			var path, node = window.mura(this.selection[0]);
 
-		    //this.selection.each(function(index, element) {
-		        var path, $node = window.mura(this.selection[0]);
+			while (node.length) {
+				var realNode = node.get(0), name = realNode.localName;
+				if (!name) { break; }
 
-		        while ($node.length) {
-		           var realNode = $node.get(0), name = realNode.localName;
-		           if (!name) { break; }
+				if(!node.data('hastempid') && node.attr('id') && node.attr('id') != 'mura-variation-el'){
+			   		name='#' + node.attr('id');
+					path = name + (path ? ' > ' + path : '');
+					break;
+				} else {
 
-		           /*
-		           if(omitSysEls 
-		           		&& (
-		           			$node.hasClass('mura-editable')
-							|| $node.hasClass('editableObjectContents')
-							|| $node.hasClass('editableObject')
-		           		)
+				    name = name.toLowerCase();
+				    var parent = node.parent();
+				    var sameTagSiblings = parent.children(name);
 
-		           	){
-		           		break;
-		           }
-		           */
-		           if(!$node.data('hastempid') && $node.attr('id') && $node.attr('id') != 'mura-variation-el'){
-		           		name='#' + $node.attr('id');
-		           		path = name + (path ? ' > ' + path : '');
-		            	break;
-		           } else {
+				    if (sameTagSiblings.length > 1)
+				    {
+				        allSiblings = parent.children();
+				        var index = allSiblings.index(realNode) +1;
 
-		                name = name.toLowerCase();
-		                var parent = $node.parent();
-		                var sameTagSiblings = parent.children(name);
+				        if (index > 0) {
+				            name += ':nth-child(' + index + ')';
+				        }
+				    }
 
-		                if (sameTagSiblings.length > 1)
-		                {
-		                    allSiblings = parent.children();
-		                    var index = allSiblings.index(realNode) +1;
+				    path = name + (path ? ' > ' + path : '');
+					node = parent;
+				}
 
-		                    if (index > 0) {
-		                        name += ':nth-child(' + index + ')';
-		                    }
-		                }
+			}
 
-		                path = name + (path ? ' > ' + path : '');
-		            	$node = parent;
-		       		 }
-
-		           
-		        }
-
-		        pathes.push(path);
-		    //});
+			pathes.push(path);
 
 		    return pathes.join(',');
 		},
@@ -4149,20 +4288,20 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				return;
 			}
 			var el=this.selection[0];
-			
+
 			if(el.hasChildNodes()){
 				var silbings=window.mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};	
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
 				} else {
-					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};	
+					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
 				}
 
 				return silbings.filter(filterFn);
 			} else {
 				return window.mura([]);
-			}	
+			}
 		},
 
 		item:function(idx){
@@ -4187,13 +4326,17 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		    } else {
 		    	 return window.mura([]);
 		    }
-		   
+
 		},
 
 		append:function(el) {
-			if(this.selection.length){
-				this.selection[0].appendChild(el);
-			}
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforeend', htmlString);
+				} else {
+					this.appendChild(el);
+				}
+			});
 			return this;
 		},
 
@@ -4213,7 +4356,35 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		prepend:function(el) {
-			this.selection[0].parentNode.insertBefore(el, this.parentNode.firstChild);
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterbegin', el);
+				} else {
+					this.insertBefore(el,this.firstChild);
+				}
+			});
+			return this;
+		},
+
+		before:function(el) {
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforebegin', el);
+				} else {
+					this.parent.insertBefore(el,this);
+				}
+			});
+			return this;
+		},
+
+		after:function(el) {
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterend', el);
+				} else {
+					this.parent.insertBefore(el,this.parent.firstChild);
+				}
+			});
 			return this;
 		},
 
@@ -4226,7 +4397,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 
 			this.prepend(el);
-			
+
 			window.mura.processAsyncObject(el);
 
 			return el;
@@ -4298,16 +4469,17 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			return this;
 		},
 
-		after:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('afterend', htmlString);
+		after:function(el){
+			this.each(function(){
+				if(type)
+				this.insertAdjacentHTML('afterend', el);
 			});
 			return this;
 		},
 
-		before:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('beforebegin', htmlString);
+		before:function(el){
+			this.each(function(){
+				this.insertAdjacentHTML('beforebegin', el);
 			});
 			return this;
 		},
@@ -4329,11 +4501,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			});
 
 			return this;
-			
+
 		},
 
 		html:function(htmlString){
-
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
 					el.innerHTML=htmlString;
@@ -4348,7 +4519,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 		},
 
-		css:function(ruleName,value){	
+		css:function(ruleName,value){
 			if(!this.selection.length){
 				return;
 			}
@@ -4430,7 +4601,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		 	if(!this.selection.length){
 				return;
 			}
-			
+
 			if(typeof width != 'undefined'){
 				if(!isNaN(height)){
 					height += 'px';
@@ -4439,7 +4610,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				return this;
 			}
 
-			var el=this.selection[0]; 
+			var el=this.selection[0];
 			//var type=el.constructor.name.toLowerCase();
 
 			if(el === window){
@@ -4447,7 +4618,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			} else if(el === document){
 				var body = document.body;
 		    	var html = document.documentElement;
-				return  Math.max( body.scrollHeight, body.offsetHeight, 
+				return  Math.max( body.scrollHeight, body.offsetHeight,
 		                       html.clientHeight, html.scrollHeight, html.offsetHeight )
 			}
 
@@ -4470,7 +4641,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				return this;
 			}
 
-			var el=this.selection[0]; 
+			var el=this.selection[0];
 			//var type=el.constructor.name.toLowerCase();
 
 			if(el === window){
@@ -4478,7 +4649,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			} else if(el === document){
 				var body = document.body;
 		    	var html = document.documentElement;
-				return  Math.max( body.scrollWidth, body.offsetWidth, 
+				return  Math.max( body.scrollWidth, body.offsetWidth,
 		                       html.clientWidth, html.scrolWidth, html.offsetWidth )
 			}
 
@@ -4499,7 +4670,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		scrollTop:function() {
-		  	return document.body.scrollTop; 
+		  	return document.body.scrollTop;
 		},
 
 		offset:function(attributeName,value){
@@ -4517,28 +4688,28 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			if(!this.selection.length){
 				return;
 			}
-			
+
 			this.each(function(el){
 				if(el && typeof el.removeAttribute == 'function'){
 					el.removeAttribute(attributeName);
 				}
-				
+
 			});
 			return this;
-			
+
 		},
 
 		changeElementType:function(type){
 			if(!this.selection.length){
 				return;
 			}
-			
+
 			this.each(function(el){
 				window.mura.changeElementType(el,type)
-				
+
 			});
 			return this;
-			
+
 		},
 
         val:function(value){
@@ -4557,10 +4728,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					} else {
 						el.value=value;
 					}
-					
+
 				});
 				return this;
-			
+
 			} else {
 				if(this.selection[0].hasOwnProperty('value')){
 					return this.selection[0].value;
@@ -4593,14 +4764,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					}
 				});
 				return this;
-			
+
 			} else {
 				if(this.selection[0] && this.selection[0].getAttribute){
 					return this.selection[0].getAttribute(attributeName);
 				} else {
 					return undefined;
 				}
-				
+
 			}
 		},
 
@@ -4697,40 +4868,39 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		  	});
 		  	return this;
 		}
-	}
+	});
 
-	window.mura.MuraDOMSelection=MuraDOMSelection;
+})(window);
+;/* This file is part of Mura CMS.
 
-})(window);;/* This file is part of Mura CMS. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
-
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -4738,23 +4908,17 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraEntity(properties){
-		this.init.apply(this,arguments)
-
-		return this;
-	}
-
-	MuraEntity.prototype={
+	window.mura.Entity=window.mura.Core.extend({
 		init:function(properties){
 			properties || {};
 			properties.entityname = properties.entityname || 'content';
@@ -4763,42 +4927,64 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		get:function(propertyName,defaultValue){
+			if(typeof this.properties.links != 'undefined'
+				&& typeof this.properties.links[propertyName] != 'undefined'){
+				var self=this;
 
-			if(typeof this.properties[propertyName] != 'undefined'){
+				if(typeof this.properties[propertyName] != 'undefined'){
+
+					return new Promise(function(resolve,reject) {
+						if('items' in self.properties[propertyName]){
+							var returnObj = new window.mura.EntityCollection(self.properties[propertyName]);
+						} else {
+							if(window.mura.entities[self.properties[propertyName].entityname]){
+								var returnObj = new window.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
+							} else {
+								var returnObj = new window.mura.Entity(self.properties[propertyName]);
+							}
+						}
+
+						if(typeof resolve == 'function'){
+							resolve(returnObj);
+						}
+					});
+
+				} else {
+
+					return new Promise(function(resolve,reject) {
+
+						window.mura.ajax({
+							type:'get',
+							url:self.properties.links[propertyName],
+							success:function(resp){
+
+								if('items' in resp.data){
+									var returnObj = new window.mura.EntityCollection(resp.data);
+								} else {
+									if(window.mura.entities[obj.entityname]){
+										var returnObj = new window.mura.entities[obj.entityname](obj);
+									} else {
+										var returnObj = new window.mura.Entity(resp.data);
+									}
+								}
+
+								self.set(propertyName,resp.data);
+
+								if(typeof resolve == 'function'){
+									resolve(returnObj);
+								}
+							},
+							error:reject
+						});
+					});
+				}
+
+			} else if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
 			} else if (typeof defaultValue != 'undefined') {
 				this.properties[propertyName]=defaultValue;
 				return this.properties[propertyName];
-			} else if(typeof this.properties.links != 'undefined'
-				&& typeof this.properties.links[propertyName] != 'undefined'){
 
-				self=this;
-
-				return new Promise(function(resolve,reject) {
-					window.mura.ajax({
-						type:'get',
-						url:this.properties.links[propertyName],
-						success:function(resp){
-							
-							if('items' in resp.data){
-								var returnObj = new window.mura.MuraEntityCollection(resp.data);
-
-								returnObj.set('items',returnObj.get('items').map(function(obj){
-									return new window.mura.MuraEntity(obj);
-								}));
-							} else {
-								var returnObj = new window.mura.MuraEntity(resp.data);
-							}
-							
-							self.set(propertyName,returnObj);
-
-							if(typeof resolve == 'function'){
-								resolve(returnObj);
-							}
-						}
-					});
-				});
-			
 			} else {
 				return '';
 			}
@@ -4811,9 +4997,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			} else {
 				this.properties[propertyName]=propertyValue;
 			}
-			
+
 			return this;
-			
+
 		},
 
 		has:function(propertyName){
@@ -4832,7 +5018,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			propertyName=propertyName || 'id';
 			propertyValue=propertyValue || this.get(propertyName);
-			
+
 			var self=this;
 
 			return new Promise(function(resolve,reject){
@@ -4844,23 +5030,23 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					params[propertyName]=propertyValue;
 
 					window.mura.findQuery(params).then(function(collection){
-					
+
 					if(collection.get('items').length){
 						self.set(collection.get('items')[0].getAll());
 					}
 					if(typeof resolve == 'function'){
 						resolve(self);
 					}
-				});	
+				});
 			});
 		},
 
 		validate:function(){
-			
+
 			var self=this;
-			
+
 			return new Promise(function(resolve,reject) {
-				
+
 				window.mura.ajax({
 					type: 'post',
 					url: window.mura.apiEndpoint + '?method=validate',
@@ -4881,7 +5067,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						}
 					}
 				});
-			});		
+			});
 
 		},
 		hasErrors:function(){
@@ -4895,9 +5081,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			var self=this;
 
 			if(!this.get('id')){
-				return new Promise(function(resolve,reject) {				
+				return new Promise(function(resolve,reject) {
 					var temp=window.mura.deepExtend({},self.getAll());
-				
+
 					window.mura.ajax({
 						type:'get',
 						url:window.mura.apiEndpoint + self.get('siteid') + '/' + self.get('entityname') + '/new' ,
@@ -4912,7 +5098,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			} else {
 				return new Promise(function(resolve,reject) {
-					
+
 					if(self.get('entityname') == 'content'){
 						var context=self.get('contentid');
 					} else {
@@ -4944,12 +5130,12 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 													reject(self);
 												}
 											}
-											
+
 										} else {
 											self.set('errors',resp.error);
 											if(typeof reject == 'function'){
 												reject(self);
-											}	
+											}
 										}
 									}
 							});
@@ -4957,13 +5143,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					});
 
 				});
-				
+
 			}
 
 		},
 
 		delete:function(){
-			
+
 			var self=this;
 
 			return new Promise(function(resolve,reject) {
@@ -4994,43 +5180,42 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					}
 				});
 			});
-		
+
 		}
 
-	}
+	});
 
-	window.mura.MuraEntity=MuraEntity;
 })(window);
 ;/* This file is part of Mura CMS. 
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -5038,21 +5223,34 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	
-	window.mura.MuraEntityCollection=window.mura.extendClass(window.mura.MuraEntity,{
+	window.mura.EntityCollection=window.mura.Entity.extend({
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
+
+			var self=this;
+
+			if(Array.isArray(self.get('items'))){
+				self.set('items',self.get('items').map(function(obj){
+					if(window.mura.entities[obj.entityname]){
+						return new window.mura.entities[obj.entityname](obj);
+					} else {
+						return new window.mura.Entity(obj);
+					}
+				}));
+			}
+
+			return this;
 		},
 
 		item:function(idx){
@@ -5062,6 +5260,22 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		index:function(item){
 			return this.properties.items.indexOf(item);
 		},
+
+		getAll:function(){
+			var self=this;
+
+			return mura.extend(
+				{},
+				self.properties,
+				{
+					items:self.map(function(obj){
+						return obj.getAll();
+					})
+				}
+			);
+
+		},
+
 		each:function(fn){
 			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
@@ -5074,14 +5288,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		filter:function(fn){
-			var collection=new window.mura.MuraEntityCollection(this.properties);
+			var collection=new window.mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			var collection=new window.mura.MuraEntityCollection(this.properties);
+			var collection=new window.mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
@@ -5090,24 +5304,25 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 })(window);
 ;mura.templates={};
 mura.templates['meta']=function(context){
-  if(context.label){
-    return "<h3>" + mura.escapeHTML(context.label) + "</h3>";
-  } else {
-    return '';
-  }  
+
+	if(context.label){
+		return '<div class="mura-object-meta"><h3>' + mura.escapeHTML(context.label) + '</h3></div>';
+	} else {
+	    return '';
+	}
+}
+mura.templates['content']=function(context){
+	context.html=context.html || context.content || context.source || '';
+
+  	return '<div class="mura-object-content">' + context.html + '</div>';
 }
 mura.templates['text']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
- 	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';
- 		html+='<div class="mura-object-content">' + context.source + '</div>';
- 	return html;
+ 	return context.source;
 }
-mura.templates['socialembed']=function(context){
+mura.templates['embed']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
- 	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';	
- 		html+='<div class="mura-object-content">' + context.source + '</div>';
- 
- 	return html;
+ 	return context.source;
 }

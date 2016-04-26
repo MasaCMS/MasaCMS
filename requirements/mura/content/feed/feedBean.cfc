@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="set" returnType="any" output="false" access="public">
 	<cfargument name="property" required="true">
     <cfargument name="propertyValue">
-    
+   
     <cfif not isDefined('arguments.feed')>
 	    <cfif isSimpleValue(arguments.property)>
 	      <cfreturn setValue(argumentCollection=arguments)>
@@ -188,13 +188,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </cfif>
     
 	<cfset var prop=""/>
-		
+	
 	<cfif isQuery(arguments.feed) and arguments.feed.recordcount>
 		<cfloop list="#arguments.feed.columnlist#" index="prop">
 			<cfset setValue(prop,arguments.feed[prop][1]) />
 		</cfloop>
 		
 	<cfelseif isStruct(arguments.feed)>
+
 		<cfloop collection="#arguments.feed#" item="prop">
 			<cfset setValue(prop,arguments.feed[prop]) />
 		</cfloop>
@@ -547,7 +548,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var hasRating=false>
 	<cfset var hasComments=false>
 	
-	<cfif not len(variables.instance.displayList) and not getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().useLayoutManager()>
+	<cfif not len(variables.instance.displayList)>
 		<cfset variables.instance.displayList="Date,Title,Image,Summary,Credits" />
 		<cfset hasRating=listFindNoCase(variables.instance.displayList,"Rating")>
 		<cfset hasComments=listFindNoCase(variables.instance.displayList,"Comments")>

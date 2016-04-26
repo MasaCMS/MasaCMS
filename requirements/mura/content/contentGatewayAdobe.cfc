@@ -976,11 +976,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList')#">
-	
+	<!--- Versions that have been assigned to you by someone else and there is another active version --->
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	 tapprovalrequests.status AS approvalStatus
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent module ON (draft.ModuleID = module.ContentID and draft.siteid = module.siteid)
 	INNER JOIN tcontentassignments ON (active.contentID=tcontentassignments.contentID and tcontentassignments.type='draft')
@@ -988,31 +987,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
 								and draft.siteID=tcontentstats.siteID
 								)
-	LEFT JOIN tapprovalrequests on (tapprovalrequests.contenthistid=draft.contenthistid 
-				and tapprovalrequests.requestid is null)
 	WHERE
 	draft.active=0 
+	AND draft.approved=0
+	AND draft.contenthistid not in ( select contenthistid from tapprovalrequests where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
 	AND active.active=1 
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
-	<!---
-	GROUP BY draft.contenthistid, tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subType,
-	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
-	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	tapprovalrequests.status
-	HAVING --->
+	<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	
+
+	<!--- Versions that have been assigned to you by someone else and the assigned version is the active version --->
+
 	union 
 	
 	SELECT DISTINCT draft.contenthistid,module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	 tapprovalrequests.status AS approvalStatus
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
 	FROM  tcontent draft INNER JOIN tcontent module ON (draft.ModuleID = module.ContentID and draft.siteid = module.siteid)
 		   INNER JOIN tcontentassignments ON (draft.contentID=tcontentassignments.contentID and tcontentassignments.type='draft')
 			LEFT JOIN tcontent active ON draft.ContentID = active.ContentID and active.approved=1
@@ -1020,124 +1014,67 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
 								and draft.siteID=tcontentstats.siteID
 								)
-			LEFT JOIN tapprovalrequests on (tapprovalrequests.contenthistid=draft.contenthistid 
-				and tapprovalrequests.requestid is null)
 	WHERE 
-		draft.active=1 
+		draft.active=1
 		AND draft.approved=0
+		AND draft.contenthistid not in ( select contenthistid from tapprovalrequests where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
 		and active.contentid is null
 		and draft.changesetID is null
 		and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
 		<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
-	<!---
-	GROUP BY draft.contenthistid, tmodule.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subType,
-	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, tmodule.SiteID, 
-	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	tapprovalrequests.status
-	HAVING --->
+	
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	
-	
+
+	<!--- Versions that have been created by you --->
+
 	union
 	
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	 tapprovalrequests.status AS approvalStatus
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent module ON (draft.ModuleID = module.ContentID and draft.siteid = module.siteid)
 	LEFT join tfiles on active.fileID=tfiles.fileID
 	LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
 								and draft.siteID=tcontentstats.siteID
 								)
-	LEFT JOIN tapprovalrequests on (tapprovalrequests.contenthistid=draft.contenthistid 
-				and tapprovalrequests.requestid is null)
 	WHERE 
-	draft.active=0 
+	draft.active=0
+	AND draft.approved=0
+	AND draft.contenthistid not in ( select contenthistid from tapprovalrequests where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
 	AND active.active=1 
 	AND draft.lastUpdate>active.lastupdate 
-	and draft.changesetID is null
-	and draft.lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
-	<!---
-	GROUP BY draft.contenthistid, tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type,active.subType, 
-	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
-	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	tapprovalrequests.status
-	HAVING--->
+	AND draft.changesetID is null
+	AND draft.lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
+	<cfif isdate(arguments.stopDate)>AND draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>AND draft.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+
 	and  module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND active.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	
+
+	<!--- Versions that have been created by you and it's the active version --->
 	union 
 	
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	 tapprovalrequests.status AS approvalStatus
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
 	FROM  tcontent draft INNER JOIN tcontent module ON (draft.ModuleID = module.ContentID and draft.siteid = module.siteid)
 			LEFT JOIN tcontent active ON draft.ContentID = active.ContentID and active.approved=1
 			LEFT join tfiles on draft.fileID=tfiles.fileID
 			LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
 								and draft.siteID=tcontentstats.siteID
 								)
-			LEFT JOIN tapprovalrequests on (tapprovalrequests.contenthistid=draft.contenthistid 
-				and tapprovalrequests.requestid is null)
 	WHERE 
 		draft.active=1 
 		AND draft.approved=0
-		and active.contentid is null
-		and draft.changesetID is null
-		and draft.lastUpdateByID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
-	<!---
-	GROUP BY draft.contenthistid, module.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type,draft.subType, 
-	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID, 
-	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	tapprovalrequests.status
-	HAVING 
-	--->
-	and module.SiteID='#arguments.siteid#' AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	
-	<!---
-	union
+		AND draft.contenthistid not in ( select contenthistid from tapprovalrequests where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
+		AND active.contentid is null
+		AND draft.changesetID is null
+		AND draft.lastUpdateByID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
+		<cfif isdate(arguments.stopDate)>AND draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+		<cfif isdate(arguments.startDate)>AND draft.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
-	SELECT DISTINCT draft.contenthistid, module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
-	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	 tapprovalrequests.status AS approvalStatus
-	FROM  tcontent draft INNER JOIN tcontent module ON (
-														draft.ModuleID = module.ContentID
-														and draft.siteid=module.siteID
-														)
-		LEFT JOIN tcontent active ON ( 
-										draft.ContentID = active.ContentID 
-										and active.approved=1
-										and draft.siteid=active.siteID
-									)
-		LEFT join tfiles on draft.fileID=tfiles.fileID
-		LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
-								and draft.siteID=tcontentstats.siteID
-								)
-		INNER JOIN tapprovalrequests on (tapprovalrequests.contenthistid=draft.contenthistid)
-	WHERE (draft.active=0 or draft.active=1 and draft.approved=0 )
-	and tapprovalrequests.status = 'Pending'
-	<cfif not getCurrentUser().isAdminUser() and not getCurrentUser().isSuperUser()>
-		and tapprovalrequests.groupid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#session.mura.membershipids#">)
-	</cfif>
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
-	--->
-	<!---
-	GROUP BY draft.contenthistid, module.Title, active.ModuleID, active.ParentID, active.Type, active.subType,
-	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, module.SiteID, 
-	draft.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
-	tapprovalrequests.status--->
+	and module.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
 	
 	<cfquery name="rsDraftList" dbtype="query" maxrows="#arguments.limit#">
@@ -1619,7 +1556,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn, tfiles.fileid,
-	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText,
+	CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+		or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END AS superSort
 	FROM tcontent 
 	LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 	LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1714,7 +1653,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename,tcontentfilemetadata.altText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename,tcontentfilemetadata.altText,
+		CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END
 		
 		
 		<cfif kw neq ''>	
@@ -1724,7 +1665,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText,
+		CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END AS superSort
 		FROM tcontent 
 		LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1775,33 +1718,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename, tcontentfilemetadata.altText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename, tcontentfilemetadata.altText,
+		CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END
 	</cfif>
+	ORDER BY supersort, priority, title
 	</cfquery> 
 	
-	<cfif variables.configBean.getDbType() neq 'oracle'>
-		<cfquery name="rsPrivateSearch" dbtype="query">
-		select *,0 as supersort from rsPrivateSearch 
-		where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				)
-		
-
-		UNION
-
-		select *,1 as supersort from rsPrivateSearch 
-		where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				)
-		
-		</cfquery>
-
-		<cfquery name="rsPrivateSearch" dbtype="query">
-		select * from rsPrivateSearch 
-		order by supersort, priority, title
-		</cfquery>
-	</cfif>
-
 	<cfreturn rsPrivateSearch />
 </cffunction>
 
@@ -1828,8 +1751,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate, tcontent.created,
-	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
-	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+	tcontent.created sortdate, 0 priority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
+	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText,
+	CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+		or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END AS superSort
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1941,8 +1866,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate, tcontent.created,
-	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
-	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+	tcontent.releaseDate sortdate, 0 priority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
+	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText,
+	CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+		or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END AS superSort
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -2043,32 +1970,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 				#renderMobileClause()#			
+
+	ORDER BY supersort, priority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
 	</cfquery>
 
-	<cfif variables.configBean.getDbType() neq 'oracle'>
-		<cfquery name="rsPublicSearch" dbtype="query">
-			select *, 0 as supersort
-			from rsPublicSearch 
-			where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				)
-
-			UNION 
-
-			select *, 1 as supersort
-			from rsPublicSearch 
-			where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				)
-			
-		</cfquery>
-
-		<cfquery name="rsPublicSearch" dbtype="query">
-		select * from rsPublicSearch 
-		order by supersort, sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
-		</cfquery>
-	</cfif>
-	
 	<cfreturn rsPublicSearch />
 </cffunction>
 

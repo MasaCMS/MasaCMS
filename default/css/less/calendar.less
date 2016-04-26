@@ -1,3 +1,34 @@
+
+.mura-calendar__filter-item__option {
+	float: left;
+	padding-left: 10px;
+}
+
+.mura-calendar-object {
+	clear:both;
+}
+
+/* swatch box not checked */
+.mura-calendar__filter-item__option input[type="checkbox"] ~ span .mura-calendar__filter-item__swatch {
+	content: '';
+	height: 12px;
+	width: 12px;
+	display: inline-block;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+
+/* remove border from checked item */
+.mura-calendar__filter-item__option input[type="checkbox"]:checked ~ span .mura-calendar__filter-item__swatch {
+	border-color: transparent;
+}
+
+.mura-calender__filters {
+	padding-bottom: 40px;
+}
+ 
+
+
 // Calendar
 .mura-calendar {
 	text-align: center;

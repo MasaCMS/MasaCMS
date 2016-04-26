@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var contentRenderer=application.settingsManager.getSite(arguments.siteID).getContentRenderer()>
 <cfset var indexFileLen=0>
 <cfset var last=listLast(arguments.cgi_path,"/") >
-<cfset var indexFile="" >	
+<cfset var indexFile="" >
 
 <cfif find(".",last)>
 	<cfset indexFile=last>
@@ -75,26 +75,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID"/>
 	<cfset var cgi_path="">
 	<cfset var parsed_path_info = cgi.path_info>
-	
+
 	<cfscript>
 	// If the cgi.path_info was empty then double check other cgi variable
 	if (not len(parsed_path_info)){
 		// iis6 1/ IIRF (Ionics Isapi Rewrite Filter)
-		if (structKeyExists(cgi,"http_x_rewrite_url") and len(cgi.http_x_rewrite_url)){ 
-			parsed_path_info = listFirst(cgi.http_x_rewrite_url,'?'); 
-		} 
+		if (structKeyExists(cgi,"http_x_rewrite_url") and len(cgi.http_x_rewrite_url)){
+			parsed_path_info = listFirst(cgi.http_x_rewrite_url,'?');
+		}
 		// iis7 rewrite default
-		else if (structKeyExists(cgi,"http_x_original_url") and len(cgi.http_x_original_url)){ 
+		else if (structKeyExists(cgi,"http_x_original_url") and len(cgi.http_x_original_url)){
 			parsed_path_info = listFirst(cgi.http_x_original_url,"?");
-		} 
+		}
 		// apache default
-		else if (structKeyExists(cgi,"request_uri") and len(cgi.request_uri)){ 
-			parsed_path_info = listFirst(cgi.request_uri,'?'); 
-		} 
+		else if (structKeyExists(cgi,"request_uri") and len(cgi.request_uri)){
+			parsed_path_info = listFirst(cgi.request_uri,'?');
+		}
 		// apache fallback
-		else if (structKeyExists(cgi,"redirect_url") and len(cgi.redirect_url)){ 
+		else if (structKeyExists(cgi,"redirect_url") and len(cgi.redirect_url)){
 			parsed_path_info = listFirst(cgi.redirect_url,'?');
-		} 
+		}
 	}
 	</cfscript>
 	<cfif not len(parsed_path_info) and isDefined("url.path")>
@@ -103,8 +103,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(getContextRoot()) and getContextRoot() NEQ "/">
 		<cfset parsed_path_info = replace(parsed_path_info,getContextRoot(),"")/>
 	</cfif>
-	<cfif len(application.configBean.getContext())>
-		<cfset parsed_path_info = replace(parsed_path_info,application.configBean.getContext(),"")/>
+	<cfif len(application.configBean.getContext()) and listFirst(parsed_path_info,"/") eq right(application.configBean.getContext(),len(application.configBean.getContext())-1)>
+		<cfset parsed_path_info = replace(parsed_path_info,application.configBean.getContext() & "/","")/>
 	</cfif>
 	<cfif isDefined('arguments.siteid') && listFirst(parsed_path_info,"/") eq arguments.siteID>
 		<cfset parsed_path_info=listRest(parsed_path_info,"/")>
@@ -117,11 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset cgi_path=parsed_path_info />
 	</cfif>
-	
+
 	<cfif left(cgi_path,1) neq "/">
 		<cfset cgi_path = "/" & cgi_path />
 	</cfif>
-	
+
 	<cfif isDefined('arguments.siteid') && left(cgi_path,1) eq "/" and cgi_path neq "/">
 		<cfset url.path=right(cgi_path,len(cgi_path)-1) />
 	</cfif>
@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
 	<cfset var checkDomain=listFirst(arguments.domain,":")>
-	
+
 	<cfif not len(checkDomain)>
 		<cfset checkDomain=cgi.server_name>
 	</cfif>
@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcatch></cfcatch>
 	</cftry>
 	</cfloop>
-	
+
 	<!--- if not found look for a partial match and redirect--->
 	<cfloop query="rssites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
@@ -166,11 +166,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcatch></cfcatch>
 	</cftry>
 	</cfloop>
-	
+
 	<!--- if still not found site the siteID to default --->
 	<cfif checkDomain eq application.configBean.getAdminDomain()>
 		<cfif arguments.isAdmin>
-			<cfreturn "--none--">	
+			<cfreturn "--none--">
 		<cfelse>
 			<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()#/admin/")>
 		</cfif>
@@ -190,11 +190,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var item="">
 	<cfset var n="">
 	<cfset var rsRedirect="">
-	
+
 	<cfif isDefined('url.path') and url.path neq application.configBean.getContext() & application.configBean.getStub() & "/">
-	
+
 		<cfset last=listLast(url.path,"/") />
-		
+
 		<cfif not structKeyExists(request,"preformated")>
 			<cfif find(".",last)>
 				<cfif last eq 'index.json'>
@@ -206,35 +206,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset getBean('contentRenderer').redirect("#url.path#/")>
 			</cfif>
 		</cfif>
-		
+
 		<cfif isValid("UUID",last)>
 			<cfquery name="rsRedirect" datasource="#application.configBean.getReadOnlyDatasource()#"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
 			select * from tredirects where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#last#">
 			</cfquery>
-			
+
 			<cfif rsRedirect.url neq ''>
 				<cflocation url="#rsRedirect.url#" addtoken="false">
 			</cfif>
 		</cfif>
-		
+
 		<cfset theStart = find(application.configBean.getStub(),url.path)>
 		<cfif theStart>
 			<cfset url.path=mid(url.path,theStart,len(url.path)) />
 		</cfif>
-		
+
 		<cfset trimLen=len(application.configBean.getStub())+1 />
 		<cfset tempfilename=right(url.path,len(url.path)-trimLen) />
 		<cfset request.siteid=listFirst(tempfilename,"/") />
 		<cfset request.muraFrontEndRequest=true>
 		<cfset request.currentFilename="" />
-		
+
 		<cftry>
 			<cfset application.settingsManager.getSite(request.siteid) />
 			<cfcatch>
 				<cflocation url="/" addtoken="false">
 			</cfcatch>
 		</cftry>
-		
+
 		<cfif listLen(tempfilename,'/') gt 1>
 			<cfset theLen=listLen(tempfilename,'/')/>
 			<cfloop from="2" to="#theLen#" index="n">
@@ -244,37 +244,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			</cfloop>
 		</cfif>
-		
+
 		<cfif right(request.currentFilename,1) eq "/">
 			<cfset request.currentFilename=left(request.currentFilename,len(request.currentFilename)-1)/>
 		</cfif>
-		
+
 		<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
-		
+
 		<cfset loadLocalEventHandler(request.servletEvent)>
 
 		<cfset application.pluginManager.announceEvent('onSiteRequestInit',request.servletEvent)/>
-		
+
 		<cfset parseCustomURLVars(request.servletEvent)>
-		
+
 		<cfreturn doRequest(request.servletEvent)>
-		
+
 	<cfelse>
 		<cfset redirect()>
-	</cfif> 
-	
+	</cfif>
+
 </cffunction>
 
 <cffunction name="parseURLLocal" output="false" returntype="any" access="remote">
 	<cfset var siteID="">
 	<cfset var cgi_path="">
 	<cfparam name="url.path" default="" />
-	
+
 	<cfset siteID = listGetAt(cgi.script_name,listLen(cgi.script_name,"/")-1,"/") />
 	<cfset cgi_path=setCGIPath(siteId)>
 
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
-	
+
 	<cfif not len(cgi_path)>
 		<cfset url.path="#application.configBean.getStub()#/#siteID#/" />
 	<cfelse>
@@ -284,29 +284,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset url.path="#application.configBean.getStub()#/#siteID#/" />
 		</cfif>
 	</cfif>
-	
+
 	<cfset request.preformated=true/>
-	
+
 	<cfreturn parseURL()>
 </cffunction>
 
 <cffunction name="parseURLRoot" output="false" returntype="any" access="remote">
 	<cfset var cgi_path="">
 	<cfset var siteid=bindToDomain()>
-	
+
 	<cfparam name="url.path" default="" />
-	
+
 	<cfset cgi_path=setCGIPath(siteId)>
 
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
-	
+
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	<cfset request.preformated=true/>
 
 	<cfif listLast(url.path,'/') eq 'index.json'>
 		<cfset request.returnFormat="JSON">
 	</cfif>
-	
+
 	<cfreturn parseURL()>
 </cffunction>
 
@@ -316,7 +316,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var siteid=bindToDomain()>
 	<cfset var rtrim=0>
 	<cfset var indexFile="" >
-	
+
 	<cfparam name="url.path" default="" />
 	<cfset urlStem=application.configBean.getContext() & application.configBean.getStub() & "/" & siteid />
 
@@ -333,26 +333,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	<cfset url.pathIsComplete=true />
 	</cfif>
-	
+
 	<cfif len(url.path)>
 		<cfset last=listLast(url.path,"/") />
-		
+
 		<cfif find(".",last)>
 			<cfif last eq 'index.json'>
 	 			<cfset request.returnFormat="JSON">
 	 		</cfif>
 			<cfset indexFile=last>
 		</cfif>
-		
+
 		<cfif last neq indexFile and right(url.path,1) neq "/">
 			<cfset getBean('contentRenderer').redirect("#application.configBean.getStub()#/#url.path#/")>
 		</cfif>
 	</cfif>
-	
+
 	<cfif not url.pathIsComplete>
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	</cfif>
-	
+
 	<cfset request.preformated=true/>
 
 <cfreturn parseURL()>
@@ -371,14 +371,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcatch></cfcatch>
 	</cftry>
 	</cfloop>
-	
+
 	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
 		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
 		<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 		<cfset getBean('contentRenderer').redirect("#site.getWebPath(complete=1)##site.getContentRenderer().getURLStem(site.getSiteID(),'')#")>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="renderFilename" output="true" access="public">
@@ -397,7 +397,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  		</cfif>
  		<cfset arguments.filename=listDeleteAt(arguments.filename,listLen(arguments.filename,"/"),"/")>
  	</cfif>
- 
+
 	<cfset request.siteid =arguments.siteid>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
@@ -411,7 +411,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset parseCustomURLVars(request.servletEvent)>
 	</cfif>
 
-	<cfset fileOutput=doRequest(request.servletEvent)>	
+	<cfset fileOutput=doRequest(request.servletEvent)>
 	<cfcontent reset="true"><cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
 
@@ -420,8 +420,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="render404" output="true" access="public">
 	<cfheader statuscode="404" statustext="Content Not Found" />
 	<!--- Must reset the linkservID to prevent recursive 404s --->
-	<cfset request.linkServID=""> 
-	<cfset renderFilename("404",true,false)> 
+	<cfset request.linkServID="">
+	<cfset renderFilename("404",true,false)>
 </cffunction>
 
 <cffunction name="parseCustomURLVars" output="false">
@@ -435,9 +435,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fileArray=arrayNew(1)>
 	<cfset var currentArrayName="fileArray">
 	<cfset var currentItem="">
-	<cfset var currentFilename=arguments.event.getValue('currentFilename')>	
+	<cfset var currentFilename=arguments.event.getValue('currentFilename')>
 	<cfset var currentParam="">
-	
+
 	<cfloop from="1" to="#listLen(currentFilename,'/')#" index="i">
 		<cfset currentItem=listGetAt(currentFilename,i,'/')>
 		<cfif listFindNoCase(application.configBean.getCustomURLVarDelimiters(),currentItem,"^")>
@@ -464,37 +464,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.event.setValue("showmeta",currentItem)>
 			<cfset currentArrayName="">
 		<cfelseif len(currentArrayName)>
-			<cfset arrayAppend(evaluate('#currentArrayName#'),currentItem)>	
+			<cfset arrayAppend(evaluate('#currentArrayName#'),currentItem)>
 		</cfif>
 
 	</cfloop>
-	
+
 	<cfif arrayLen(refArray)>
 		<cfset arguments.event.setValue("currentFilenameAdjusted",arrayToList(refArray,"/"))>
 	<cfelse>
 		<cfset arguments.event.setValue("currentFilenameAdjusted",arrayToList(fileArray,"/"))>
 	</cfif>
-	
+
 	<cfif arrayLen(categoryArray)>
 		<cfset categoryBean=getBean("category").loadBy(filename=arrayToList(categoryArray,"/"), siteID=arguments.event.getValue('siteid'))>
 		<cfset arguments.event.setValue('categoryID',categoryBean.getCategoryID())>
 		<cfset arguments.event.setValue('currentCategory',categoryBean)>
-	</cfif>	
-	
+	</cfif>
+
 	<cfif arrayLen(dateArray)>
 		<cfif arrayLen(dateArray) gte 1 and isNumeric(dateArray[1])>
+			<cfset url.year=dateArray[1]>
 			<cfset arguments.event.setValue("year",dateArray[1])>
-			<cfset arguments.event.setValue("filterBy","releaseYear")>		
+			<cfset arguments.event.setValue("filterBy","releaseYear")>
 		</cfif>
-			
+
 		<cfif arrayLen(dateArray) gte 2 and isNumeric(dateArray[2])>
+			<cfset url.month=dateArray[2]>
 			<cfset arguments.event.setValue("month",dateArray[2])>
-			<cfset arguments.event.setValue("filterBy","releaseMonth")>		
+			<cfset arguments.event.setValue("filterBy","releaseMonth")>
 		</cfif>
-			
+
 		<cfif arrayLen(dateArray) gte 3 and isNumeric(dateArray[3])>
-			<cfset arguments.event.setValue("day",dateArray[3])>	
-			<cfset arguments.event.setValue("filterBy","releaseDate")>	
+			<cfset url.day=dateArray[3]>
+			<cfset arguments.event.setValue("day",dateArray[3])>
+			<cfset arguments.event.setValue("filterBy","releaseDate")>
 		</cfif>
 	</cfif>
 
@@ -516,23 +519,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif left(path,len(jsonendpoint)) eq jsonendpoint or left(path,len(ajaxendpoint)) eq ajaxendpoint>
 		<cfset request.muraAPIRequest=true>
 		<cfif listLen(path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('json','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('json','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('form.siteid')>
-			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('json','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('json','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('url.siteid')>
-			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('json','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('json','v1').processRequest(arguments.path)>
 		<cfelse>
-			<cfreturn getBean('settingsManager').getSite('default').getApi('json','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite('default').getApi('json','v1').processRequest(arguments.path)>
 		</cfif>
 	<cfelseif isDefined('url.feedid') and (left(path,len(feedendpoint)) eq feedendpoint or left(path,len(legacyfeedendpoint)) eq legacyfeedendpoint)>
 		<cfif listLen(path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('form.siteid')>
-			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('feed','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('feed','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('url.siteid')>
-			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('feed','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('feed','v1').processRequest(arguments.path)>
 		<cfelse>
-			<cfreturn getBean('settingsManager').getSite('default').getApi('feed','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite('default').getApi('feed','v1').processRequest(arguments.path)>
 		</cfif>
 	<cfelseif isDefined('url.emailid') and left(path,len(emailendpoint)) eq emailendpoint>
 		<cfset application.emailManager.track(url.emailid,url.email,'emailOpen')>
@@ -572,7 +575,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset application.changesetManager.publishBySchedule()>
 
-		<cfloop collection="#application.settingsManager.getSites()#" item="site"> 
+		<cfloop collection="#application.settingsManager.getSites()#" item="site">
 			<cfset theEmail = application.settingsManager.getSite(site).getMailServerUsername() />
 			<cfif application.settingsManager.getSite(site).getEmailBroadcaster()>
 				<cfif not listFind(emailList,theEmail)>
@@ -586,7 +589,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 
 		<cfquery name="rsChanges" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-			select tcontent.siteid, tcontent.contentid from tcontent inner join tcontent tcontent2 on tcontent.parentid=tcontent2.contentid 
+			select tcontent.siteid, tcontent.contentid from tcontent inner join tcontent tcontent2 on tcontent.parentid=tcontent2.contentid
 			where tcontent.approved=1 and tcontent.active=1 and tcontent.display=2 and tcontent2.type <> 'Calendar'
 			and ((tcontent.displaystart >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
 			and tcontent.displaystart <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">)
@@ -643,19 +646,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFindNoCase('_api,tasks',listFirst(path,'/'))>
 		<cfreturn handleAPIRequest(path)>
 	<cfelse>
-		
+
 		<cfif application.configBean.getSiteIDInURLS()>
 			<cfset application.contentServer.redirect()>
 		<cfelse>
 			<cfif len(application.configBean.getStub())>
 				<cfset pageContent = application.contentServer.parseURLRootStub()>
-			<cfelse>	
+			<cfelse>
 				<cfset pageContent = application.contentServer.parseURLRoot()>
 			</cfif>
 			<cfreturn pageContent>
-		</cfif> 
+		</cfif>
 	</cfif>
-		
+
 </cffunction>
 
 <cffunction name="loadLocalEventHandler" output="false">
@@ -684,7 +687,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 		<cfset getBean('changesetManager').setSessionPreviewData(changesetid=url.changesetID,append=isDefined('url.append'))>
 	</cfif>
-	
+
 	<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 	<cfset request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.event.getValue("siteID")>
 
@@ -702,16 +705,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop list="#previewData.changesetIDList#" index="local.i">
 				<cfif not local.reloaded and getBean('changeset').loadBy(changesetID=local.i,siteid=previewData.siteID).getLastUpdate() gt previewData.lastApplied>
 					<cfloop from="1" to="#listLen(previewData.changesetIDList)#" index="local.i2">
-						<cfset getBean('changesetManager').setSessionPreviewData(changesetid=listGetAt(previewData.changesetIDList,local.i2),append=local.reloaded,showToolBar=request.muraChangesetPreviewToolbar)>	
+						<cfset getBean('changesetManager').setSessionPreviewData(changesetid=listGetAt(previewData.changesetIDList,local.i2),append=local.reloaded,showToolBar=request.muraChangesetPreviewToolbar)>
 						<cfset local.reloaded=true>
-					</cfloop>	
+					</cfloop>
 				</cfif>
 			</cfloop>
-			
+
 			<cfset request.muraOutputCacheOffset=hash(previewData.changesetIDList)>
 		<cfelse>
 			<cfif getBean('changeset').loadBy(changesetID=previewData.changesetid,siteid=previewData.siteID).getLastUpdate() gt previewData.lastApplied>
-				<cfset getBean('changesetManager').setSessionPreviewData(changesetid=previewData.changesetid,append=isDefined('url.append'),showToolBar=request.muraChangesetPreviewToolbar)>	
+				<cfset getBean('changesetManager').setSessionPreviewData(changesetid=previewData.changesetid,append=isDefined('url.append'),showToolBar=request.muraChangesetPreviewToolbar)>
 			</cfif>
 			<cfset request.muraOutputCacheOffset=hash(previewData.changesetid)>
 		</cfif>
@@ -724,24 +727,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var servlet = "" />
 
 	<cfset loadLocalEventHandler(arguments.event)>
-	
+
 	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
 
 	<cfset processChangesetStatus(event=arguments.event)>
-	
+
 	<cfif isdefined("servlet.onRequestStart")>
 		<cfset servlet.onRequestStart()>
 	</cfif>
-	
+
 	<cfif isdefined("servlet.doRequest")>
 		<cfset response=servlet.doRequest()>
 	<cfelse>
-		<cfset arguments.event.getValidator("standardEnableLockdown").validate(arguments.event)> 
-		
+		<cfset arguments.event.getValidator("standardEnableLockdown").validate(arguments.event)>
+
 		<cfset arguments.event.getHandler("standardSetContent").handle(arguments.event)>
-	
-		<cfset arguments.event.getValidator("standardWrongDomain").validate(arguments.event)> 
-		
+
+		<cfset arguments.event.getValidator("standardWrongDomain").validate(arguments.event)>
+
 		<cfif isdefined('request.muraJSONRedirectURL')>
 			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('json','v1')>
 			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
@@ -749,9 +752,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset arguments.event.getValidator("standardTrackSession").validate(arguments.event)>
-		
+
 		<cfset arguments.event.getHandler("standardSetIsOnDisplay").handle(arguments.event)>
-		
+
 		<cfset arguments.event.getHandler("standardDoActions").handle(arguments.event)>
 
 		<cfif isdefined('request.muraJSONRedirectURL')>
@@ -761,7 +764,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset arguments.event.getHandler("standardSetPermissions").handle(arguments.event)>
-		
+
 		<cfif isdefined('request.muraJSONRedirectURL')>
 			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('json','v1')>
 			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
@@ -769,21 +772,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset arguments.event.getValidator("standardRequireLogin").validate(arguments.event)>
-		
+
 		<cfif isdefined('request.muraJSONRedirectURL')>
 			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('json','v1')>
 			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
-	
+
 		<cfset arguments.event.getHandler("standardSetLocale").handle(arguments.event)>
-	
+
 		<cfset arguments.event.getValidator("standardMobile").validate(arguments.event)>
 
  		<cfset arguments.event.getHandler("standardSetCommentPermissions").handle(arguments.event)>
-	 	
+
 	 	<cfset arguments.event.getHandler("standardDoResponse").handle(arguments.event)>
-		
+
 		<cfset response=arguments.event.getValue("__MuraResponse__")>
 	</cfif>
 
@@ -834,7 +837,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn "/index.cfm" & filenamePrefix & arguments.filename />
 			<cfelse>
 				<cfreturn filenamePrefix & arguments.filename />
-			</cfif>	
+			</cfif>
 		<cfelse>
 			<cfreturn "/" />
 		</cfif>

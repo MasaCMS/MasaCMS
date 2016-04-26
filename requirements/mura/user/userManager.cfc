@@ -138,6 +138,7 @@
 					</cfif>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfset bean.setValue('frommuracache',true)>
 					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: userBean, key: #key#}"))>
 					<cfreturn bean />
 					<cfcatch>
@@ -145,7 +146,7 @@
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
-						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: userBean, key: #key#}"))>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: userBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>
@@ -186,6 +187,7 @@
 					</cfif>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfset bean.setValue('frommuracache',true)>
 					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: userBean, key: #key#}"))>
 					<cfreturn bean />
 					<cfcatch>
@@ -193,7 +195,7 @@
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
-						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: userBean, key: #key#}"))>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: userBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>
@@ -230,6 +232,7 @@
 					</cfif>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfset bean.setValue('frommuracache',true)>
 					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: userBean, key: #key#}"))>
 					<cfreturn bean />
 					<cfcatch>
@@ -237,7 +240,7 @@
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
-						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: userBean, key: #key#}"))>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: userBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>
@@ -273,6 +276,7 @@
 					</cfif>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfset bean.setValue('frommuracache',true)>
 					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: userBean, key: #key#}"))>
 					<cfreturn bean />
 					<cfcatch>
@@ -280,7 +284,7 @@
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
-						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: userBean, key: #key#}"))>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: userBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>

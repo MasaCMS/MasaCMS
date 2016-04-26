@@ -13,17 +13,17 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugixns, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugixns, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,12 +37,12 @@
 	 /index.cfm
 	 /MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset event=request.event>
@@ -85,7 +85,7 @@
 			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.variationsmanager')#</h1>
 			<cfelse>
-				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1> 
+				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1>
 			</cfif>
 			<cfinclude template="dsp_secondary_menu.cfm">
 		</cfoutput>
@@ -95,7 +95,7 @@
 				<table class="mura-table-grid">
 					<cfoutput>
 						<thead>
-							<tr> 
+							<tr>
 				  				<th class="var-width">
 				  					<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">
 				  						#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#
@@ -116,15 +116,15 @@
 							</tr>
 						</thead>
 					</cfoutput>
-					
+
 					<tbody>
 						<cfif rc.rstop.recordcount>
 							<cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
 								<cfsilent>
-									<cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid> 
+									<cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
 									<cfif rc.perm neq 'editor'>
 										<cfset verdict=application.permUtility.getPerm(rc.rstop.contentid, rc.siteid)>
-					
+
 										<cfif verdict neq 'deny'>
 											<cfif verdict eq 'none'>
 												<cfset verdict=rc.perm>
@@ -132,7 +132,7 @@
 										<cfelse>
 											<cfset verdict = "none">
 										</cfif>
-					
+
 									<cfelse>
 										<cfset verdict='editor'>
 									</cfif>
@@ -166,11 +166,11 @@
 
 									<!--- Last Update --->
 									<td>
-										#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# 
+										#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)#
 										#LSTimeFormat(rc.rstop.lastupdate,"medium")#
 									</td>
 									<!--- /Last Update --->
-									
+
 									<!--- Actions --->
 									<td class="actions">
 										<ul class="#lcase(rc.rstop.type)#">
@@ -239,7 +239,7 @@
 								</tr>
 							</cfoutput>
 						<cfelse>
-							<tr> 
+							<tr>
 								<td colspan="7" class="noResults">
 									<cfoutput>
 										#application.rbFactory.getKeyValue(session.rb,'sitemanager.noitemsinsection')#
@@ -251,7 +251,7 @@
 				</table>
 
 				<cfif rc.nextn.numberofpages gt 1>
-					<cfoutput> 
+					<cfoutput>
 						<cfset args=arrayNew(1)>
 						<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
 						<cfset args[2]=rc.nextn.totalrecords>
@@ -263,18 +263,18 @@
 							<div class="pagination">
 								<ul>
 									<cfif rc.nextN.currentpagenumber gt 1>
-					
-										<li>    
+
+										<li>
 											<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
 												&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#
 											</a>
 										</li>
 									 </cfif>
-						
+
 									<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextn.lastPage#" index="i">
-										<cfif rc.nextn.currentpagenumber eq i> 
-											<li class="active"><a href="##">#i#</a></li> 
-										<cfelse> 
+										<cfif rc.nextn.currentpagenumber eq i>
+											<li class="active"><a href="##">#i#</a></li>
+										<cfelse>
 											<li>
 												<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
 													#i#
@@ -291,7 +291,7 @@
 						</div>
 					</div>
 				</cfoutput>
-					
+
 		   </cfif>
 		</div>
 
@@ -306,7 +306,7 @@
 					  <input type="hidden" name="sortBy" value="" />
 					  <input type="hidden" name="sortDirection" value="" />
 					  <input type="hidden" name="muraAction" value="cArch.list" />
-			   
+
 					<div id="filters" class="module well">
 					<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h3>
 					 <input type="text" name="searchString" id="searchString" value="#esapiEncode('html_attr',rc.searchString)#" class="text" size="20">
@@ -364,14 +364,14 @@
 							url:'?muraAction=carch.loadtagarray&siteid=' + siteid,
 							dataType: 'text',
 							success: function(data){
-								var tagArray=eval('(' + data + ')'); 
+								var tagArray=eval('(' + data + ')');
 								$('##tags').tagSelector(tagArray, 'tags');
 							}
 						});
 
 						if(customtaggroups.length){
 							for(var g=0;g < customtaggroups.length; g++){
-								
+
 								if(window[customtaggroups[g]]){
 									$('##' + customtaggroups[g] + 'tags').tagSelector(window[customtaggroups[g]], customtaggroups[g] + 'tags');
 								}else{
@@ -379,15 +379,15 @@
 											context:{taggroup:customtaggroups[g]},
 											dataType: 'text',
 											success:function(data){
-												window[this.taggroup]=eval('(' + data + ')'); 
+												window[this.taggroup]=eval('(' + data + ')');
 												$('##' + this.taggroup + 'tags').tagSelector(window[this.taggroup], this.taggroup + 'tags');
 											}
 										});
 								}
-								
+
 							}
 						}
-					});     
+					});
 
 					$('##removeFilter').click(
 						function(){
@@ -403,7 +403,7 @@
 							document.getElementById('filterByTitle').submit();
 
 						}
-					 ); 
+					 );
 
 				</script>
 			</div>
@@ -462,31 +462,31 @@
 						session.flatViewArgs["#session.siteid#"].direction=rc.reportSortDirection;
 					}
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"moduleid")){
 					session.flatViewArgs["#session.siteid#"].moduleid=rc.moduleid;
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"sortby")){
 					session.flatViewArgs["#session.siteid#"].sortby="lastupdate";
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"sortdirection")){
 					session.flatViewArgs["#session.siteid#"].sortdirection="desc";
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"lockid")){
 					session.flatViewArgs["#session.siteid#"].lockid=rc.lockid;
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"assignments")){
 					session.flatViewArgs["#session.siteid#"].assignments=rc.assignments;
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"categoryid")){
 					session.flatViewArgs["#session.siteid#"].categoryid=rc.categoryid;
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tags")){
 					session.flatViewArgs["#session.siteid#"].tags=rc.tags;
 				}
@@ -499,27 +499,27 @@
 						}
 					}
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"page")){
 					session.flatViewArgs["#session.siteid#"].page=rc.page;
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"type")){
 					session.flatViewArgs["#session.siteid#"].type="";
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"subtype")){
 					session.flatViewArgs["#session.siteid#"].subtype=rc.subtype;
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"report")){
 					session.flatViewArgs["#session.siteid#"].report="";
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"keywords")){
 					session.flatViewArgs["#session.siteid#"].keywords="";
 				}
-				
+
 				if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tab")){
 					session.flatViewArgs["#session.siteid#"].tab=0;
 				}
@@ -557,7 +557,7 @@
 						<cfset variables.pluginEvent.setValue("contentBean")>
 						<cfset application.pluginManager.announceEvent("onBeforeContentSort",pluginEvent)>
 					</cfif>
-					
+
 					<cfif isdefined('rc.orderid') >
 						<cfloop from="1" to="#listlen(rc.orderid)#" index="i">
 							<cfset newOrderNo=(rc.startrow+i)-1>
@@ -579,12 +579,12 @@
 							</cfquery>
 						</cfloop>
 					</cfif>
-					
-					<cfif rc.sorted>
+
+					<cfif rc.sorted and isdefined('current')>
 						<cfset application.pluginManager.announceEvent("onAfterContentSort",pluginEvent)>
+						<cfset rc.$.getBean('contentManager').purgeContentCache(contentBean=current)>
+						<cfset application.settingsManager.getSite(rc.siteid).purgeCache()>
 					</cfif>
-					
-					<cfset application.settingsManager.getSite(rc.siteid).purgeCache()>
 				</cflock>
 			</cfif>
 
@@ -606,7 +606,7 @@
 				siteManager.copyAll = 'false';
 				</cfif>
 			</script>
-		 
+
 			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h1>
 
 			<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
@@ -627,15 +627,15 @@
 					<li><a href="##tabArchitectural" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</a></li>
 					<li><a href="##tabFlat" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</a></li>
 				</ul>
-				<div class="tab-content"> 
+				<div class="tab-content">
 					<div id="tabArchitectural" class="tab-pane fade">
 						<div id="gridContainer">
-							
+
 						</div>
 					</div>
 					<div id="tabFlat" class="tab-pane fade">
 						<div id="flatViewContainer">
-							
+
 						</div>
 					</div>
 				</div>
@@ -649,11 +649,11 @@
 
 				function initFlatViewArgs(){
 					return {
-						siteid:'#esapiEncode('javascript',session.siteID)#', 
-						moduleid:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].moduleid)#', 
-						sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#', 
-						sortdirection:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortdirection)#', 
-						page:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].page)#',   
+						siteid:'#esapiEncode('javascript',session.siteID)#',
+						moduleid:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].moduleid)#',
+						sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#',
+						sortdirection:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortdirection)#',
+						page:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].page)#',
 						tags:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].tags)#',
 						categoryid:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].categoryid)#',
 						lockid:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].lockid)#',
@@ -664,8 +664,8 @@
 						filtered: '#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].filtered)#'
 						<cfif len($.siteConfig('customTagGroups'))>
 							<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-								,#g#tags:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"]["#g#tags"])#'  
-							</cfloop>   
+								,#g#tags:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"]["#g#tags"])#'
+							</cfloop>
 						</cfif>
 					};
 				}
@@ -675,7 +675,7 @@
 
 				function initSiteManagerTabContent(index){
 					jQuery.get("./index.cfm","muraAction=carch.siteManagerTab&tab=" + index);
-					
+
 					if(!tabsInited){
 						jQuery("##viewTabs a[href='##tabArchitectural']").click(function(e){
 							e.preventDefault();
@@ -686,7 +686,7 @@
 							initSiteManagerTabContent(1);
 						});
 						tabsInited=true;
-					}   
+					}
 
 					switch(index){
 						case 0:
@@ -707,7 +707,7 @@
 
 
 				jQuery(document).ready(function(){
-					initSiteManagerTabContent(#rc.activeTab#);  
+					initSiteManagerTabContent(#rc.activeTab#);
 				});
 			</script>
 		</cfoutput>

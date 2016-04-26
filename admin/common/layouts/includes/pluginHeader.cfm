@@ -67,9 +67,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <!-- JSON -->
 <script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/admin.js"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/admin.min.js"></script>
 <link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
-<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 function toggleAdminToolbar(){

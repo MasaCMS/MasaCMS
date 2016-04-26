@@ -8,7 +8,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 <cfset renderer=$.getContentRenderer()>
 CKEDITOR.editorConfig = function( config )
 {
-	
+
 	<cfoutput>
 	<!---
 	var LITE = {
@@ -20,7 +20,7 @@ CKEDITOR.editorConfig = function( config )
 			TRACKING : "lite:tracking",
 			CHANGE: "lite:change"
 		},
-		
+
 		Commands : {
 			TOGGLE_TRACKING : "lite_ToggleTracking",
 			TOGGLE_SHOW : "lite_ToggleShow",
@@ -42,7 +42,7 @@ CKEDITOR.editorConfig = function( config )
 	CKEditorBasePath='#application.configBean.getContext()#/requirements';
 	CKFinderBasePath='#application.configBean.getContext()#/requirements';
 	</cfoutput>
-	
+
 	<cfoutput>
 	<cfif renderer.getheadline() eq "h1">
 		// Mura page title set to h1
@@ -85,11 +85,17 @@ CKEDITOR.editorConfig = function( config )
 	config.pasteFromWordRemoveFontStyles = true;
 	config.pasteFromWordRemoveStyles = true;
 
+	config.toolbarStartupExpanded=true;
+	config.toolbarCanCollapse = true;
+	config.startupShowBorders = false;
+	// Hide title attriute
+	config.title = false;
+
 	<!--- Toolbars --->
 
 		config.toolbar_Default = [
 			{name: 'group1', items:['Source']},
-			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items:['BidiLtr','BidiRtl']},
 			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
@@ -102,7 +108,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_QuickEdit = [
 			{name: 'group1', items:['Sourcedialog']},
-			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items:['BidiLtr','BidiRtl']},'/',
 			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
@@ -115,7 +121,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_Summary = [
 			{name: 'group1', items: ['Source']},
-			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items: ['BidiLtr','BidiRtl']},
 			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
@@ -128,7 +134,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_Form = [
 			{name: 'group1', items: ['Source']},
-			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items: ['BidiLtr','BidiRtl']},
 			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
@@ -143,7 +149,7 @@ CKEDITOR.editorConfig = function( config )
 		config.toolbar_Basic = [
 			{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
 		];
-		
+
 		config.toolbar_FormBuilder = [
 			{name: 'group1', items: ['Source']},
 			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
@@ -151,7 +157,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_htmlEditor = [
 			{name: 'group0', items: ['Source']},
-			{name: 'group1', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker','Scayt']},
+			{name: 'group1', items: ['Cut','Copy','Paste','PasteText','PasteFromWord']},
 			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']},
 			{name: 'group3', items: ['Selectlink','SelectComponent','Templates']},
 		];
@@ -162,7 +168,7 @@ CKEDITOR.editorConfig = function( config )
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
@@ -171,14 +177,15 @@ CKEDITOR.editorConfig = function( config )
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
 	</cfif>
-	
+
 	//config.ProtectedTags = 'i';
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
-	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g ); 
+	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g );
+	config.protectedSource.push( /<script.*?>.*?<\/script>/g );
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';
-	
+
 	config.entities_additional = "";
 
 	// Code Mirror Plugin - http://ckeditor.com/addon/codemirror
@@ -187,8 +194,8 @@ CKEDITOR.editorConfig = function( config )
 	};
 
 	// Classes applied based on 'Alignment' selection on the Image Properities window
-	config.image2_alignClasses = [ 'image-left', 'image-center', 'image-right' ];
-	config.image2_captionedClass = 'image-captioned';
+	//config.image2_alignClasses = [ 'image-left', 'image-center', 'image-right' ];
+	//config.image2_captionedClass = 'image-captioned';
 
 	// oEmbed Plugin - http://ckeditor.com/addon/oembed + http://w8tcha.github.io/CKEditor-oEmbed-Plugin/
 	//config.oembed_maxWidth = '560';
@@ -216,7 +223,7 @@ CKEDITOR.editorConfig = function( config )
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css') )>
 			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css');
 		</cfif>
-	
+
 	<!--- templates --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js.cfm') )>
 			config.templates='default';
@@ -225,14 +232,14 @@ CKEDITOR.editorConfig = function( config )
 			config.templates='default';
 			config.templates_files= ['#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js'];
 		</cfif>
-	
+
 	<!--- styleSet --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
 			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js.cfm';
 		<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
 			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js';
 		</cfif>
-	
+
 	<!--- customConfig --->
 		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
 			config.customConfig='#$.siteConfig().getThemeAssetPath(useProtocol=0,secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
@@ -269,7 +276,7 @@ CKEDITOR.on('instanceReady', function(ev){
 					, breakBeforeClose: false
 					, breakAfterClose: true
 				}
-			);	
+			);
 		};
 	};
 });

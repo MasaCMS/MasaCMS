@@ -21,11 +21,13 @@
 		</cfif>
 
 		<cfparam name="attributes.configurable" default="true">
-		<cfparam name="attributes.params.class" default="mura-left mura-twelve">
+		<cfparam name="attributes.params.class" default="">
+		<cfparam name="attributes.params.cssclass" default="">
 		<cfparam name="attributes.params.label" default="">
+		<cfparam name="attributes.params.object" default="">
 	</cfsilent>
 
-	<cfif $.getContentRenderer().useLayoutManager()>
+	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
 	<cfoutput>
 	
 			
@@ -34,25 +36,30 @@
 	</cfif>
 <cfelseif thisTag.ExecutionMode eq 'end'>
 	<cfset $=application.serviceFactory.getBean("muraScope").init(session.siteid)>
+
 	<cfif $.getContentRenderer().useLayoutManager()>
+
 	</div>
+	<cfoutput>
 	<div class="fieldset-wrap">
 		<div class="fieldset">
+			<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
 			<div class="control-group">
-		      	<label class="control-label">Alignment</label>
+		      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
 				<div class="controls">
 					 <select name="alignment" class="span12">
-						<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>Left</option>
-						<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>Center</option>
-						<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>Right</option>
+					 	<option value="">--</option>
+						<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+						<!--<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
+						<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 					</select>
 				</div>
 			</div>
 			<div id="offsetcontainer" class="control-group" style="display:none">
-		      	<label class="control-label">Offset</label>
+		      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.offset')#</label>
 				<div class="controls">
 					<select name="offset" class="span12">
-						<option value="">None</option>
+						<option value="">--</option>
 						<option value="mura-offset-by-one"<cfif listFind(attributes.params.class,'mura-offset-by-one',' ')> selected</cfif>>One Twelfth</option>
 						<option value="mura-offset-by-two"<cfif listFind(attributes.params.class,'mura-offset-by-two',' ')> selected</cfif>>One Sixth</option>
 						<option value="mura-offset-by-three"<cfif listFind(attributes.params.class,'mura-offset-by-three',' ')> selected</cfif>>One Fourth</option>
@@ -68,9 +75,10 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label">Width</label>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
 				<div class="controls">
 					<select name="width" class="span12">
+						<option value="">--</option>
 						<option value="mura-one"<cfif listFind(attributes.params.class,'mura-one',' ')> selected</cfif>>One Twelfth</option>
 						<option value="mura-two"<cfif listFind(attributes.params.class,'mura-two',' ')> selected</cfif>>One Sixth</option>
 						<option value="mura-three"<cfif listFind(attributes.params.class,'mura-three',' ')> selected</cfif>>One Fourth</option>
@@ -86,28 +94,26 @@
 					</select>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="fieldset-wrap">
-		<div class="fieldset">
-			<cfoutput>
-			<div id="labelContainer"class="control-group">
-				<label class="control-label">Label</label>
+			</cfif>
+			<div class="control-group">
+				<label class="control-label">
+					#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
+				</label>
 				<div class="controls">
-					<input name="label" type="text" class="span12 objectParam" value="#esapiEncode('html_attr',attributes.params.label)#"/>
+					<input name="cssclass" class="objectParam span12" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
 				</div>
-			</div>	
-			</cfoutput>	   
+			</div>
 		</div>
 	</div>
-	<cfoutput>
 	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 	</cfoutput>
 	</div>
 	<script>
 		$(function(){
 		
-			$('select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
+			var inited=false;
+
+			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
 				setPlacementVisibility();
 			});
 
@@ -134,6 +140,10 @@
 	  				} else {
 	  					classInput.val(width.val());
 	  				}
+
+	  				if(inited && typeof updateDraft == 'function'){
+	  					updateDraft();
+	  				}
 	  			}
 
 	  			if(alignment.val()=='mura-left'){
@@ -145,7 +155,22 @@
 		  				} else {
 		  					classInput.val(offset.val());
 		  				}
+
+		  				if(inited && typeof updateDraft == 'function'){
+		  					updateDraft();
+		  				}
+		  				
 		  			}
+		  		}
+
+		  		var cssclassInput=$('input[name="cssclass"]');
+		  		
+		  		if(cssclassInput.val()){
+	  				if(classInput.val() ){
+	  					classInput.val(classInput.val() + ' ' + cssclassInput.val());
+	  				} else {
+	  					classInput.val(cssclassInput.val());
+	  				}
 		  		}
 			}
 
@@ -166,6 +191,7 @@
 				$('#globalSettingsBtn').show();
 			});
 
+			inited=true;
 		});
 	</script>
 	</cfif>

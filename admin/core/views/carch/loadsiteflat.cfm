@@ -536,7 +536,7 @@ if(len($.siteConfig('customTagGroups'))){
 				</cfif>	
 			</h2>
 			<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
-			<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><cfif hasCustomImage><img src="#item.getImageURL(height=80,width=80)#" /><cfelse><img src="#item.getImageURL(size='small')#" /></cfif></a></div>
+			<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><cfif hasCustomImage><img src="#item.getImageURL(height=80,width=80,useProtocol=false)#" /><cfelse><img src="#item.getImageURL(size='small',useProtocol=false)#" /></cfif></a></div>
 			</cfif>
 				<cfif len(item.getLockID())>
 					<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>

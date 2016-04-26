@@ -97,8 +97,10 @@
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 	      			<span id="mover1" class="text"> 
 	      				<cfif arrayLen(rc.crumbData)>
-	      					<cfif rc.contentBean.getIsNew()>
-	      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
+	      					<cfif rc.contentBean.exists() and arrayLen(rc.crumbData) gte 2>
+	      						"#rc.crumbData[2].menutitle#"
+	      					<cfelse>
+	      						"#rc.crumbData[1].menutitle#"
 	      					</cfif>
 	      				</cfif>
 						<button id="selectParent" name="selectParent" class="btn btn-inverse btn-small">
@@ -162,6 +164,29 @@
 
 	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
 		<div class="control-group">
+			<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+				 <label class="control-label">
+			     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
+			    </label>
+			    <div class="controls">
+			    	<select name="isFeature" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
+						<option value="0"  <cfif  rc.contentBean.getisfeature() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
+						<option value="1"  <cfif  rc.contentBean.getisfeature() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
+						<option value="2"  <cfif rc.contentBean.getisfeature() EQ 2> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#</option>
+					</select>
+				</div>
+				<div class="controls" id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
+					<div class="control-group">
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
+						<div class="controls">
+							
+							<cf_datetimeselector name="featureStart" datespanclass="span2" datetime="#rc.contentBean.getFeatureStart()#">
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
+							<cf_datetimeselector name="featureStop" datespanclass="span2" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
+						</div>
+					</div>
+				</div>
+			<cfelse>
 		    <label class="control-label">
 		     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
 		    </label>
@@ -192,6 +217,7 @@
 					</div>
 				</div>
 			</div>
+			</cfif>
 		</div> <!--- /end control-group --->
 	</cfif>
 

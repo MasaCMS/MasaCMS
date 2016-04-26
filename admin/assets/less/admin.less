@@ -363,8 +363,65 @@ img.fmImage {
 input[class^="cke_"] {
 	min-height: 2em;
 }
+
+/* make the width of the quickEdit dialog wider */
+.mura-quickEdit.large {
+    width: 355px;
+    margin-left: -191px; /* reposition wider box */
+}
+
+/* reposition wider box pointer */
+.mura-quickEdit.large::after {
+	left: 178px;
+}
+
+.mura-quickEdit {
+	label[for="displayIntervalAllDay"],
+	label[for="displayIntervalDetectConflicts"],
+	label[for="displayIntervalRepeats"] {
+		display: inline-block;
+		margin-right: 10px;
+
+		input {
+			margin-top: 0;
+		}
+	}
+}
+
+/* force the first display field to new line */
+.mura-quickEdit #mura-display {
+    clear: both;
+    display: block;
+}
+
+/* make this wide enough to force the fololowing fields to a new line */
+.mura-quickEdit input.datepicker {
+    display: block;
+    width: 100%;
+}
+
+/* make this wide enough to force the following fields to new line */
+.mura-quickEdit #displayIntervalType {
+    width: 100%;
+    display: block;
+}
+
+/* make the text field wide enough to click into and enter a number */
+.mura-quickEdit #displayIntervalEvery {
+    width: auto;
+}
+
+/* left spacing for the checkboxes - easier to tell which box is for what */
+.mura-daysofweek .mura-repeat-option {
+    margin-left: 10px;
+
+    input {
+   	 margin-top: 0;
+    }
+}
 	
 } /* End .mura */
 
 // @import "../bootstrap/less/responsive.less";
 // .mura { @import "admin-responsive.less"; }
+

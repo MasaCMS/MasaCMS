@@ -365,7 +365,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfobjectcache action="clear"/>
 		<cfcatch></cfcatch>
 	</cftry>
-
 	
 	<cfset rs=getList() />
 
@@ -381,6 +380,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	</cfloop>
 
 	<cfset variables.sites=builtSites>
+
+	<cfloop query="rs">
+		<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
+		<cfset builtSites['#rs.siteid#'].discoverBeans()>
+ 	</cfloop>
 	
 </cffunction>
 
@@ -633,12 +637,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="capacity" required="true" default="0">
 	<cfargument name="freeMemoryThreshold" required="true" default="60">
 	
-	<cfif not arguments.capacity>
+	<!---<cfif not arguments.capacity>--->
 		<cfreturn createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=arguments.freeMemoryThreshold)>
+	<!---
 	<cfelse>
 		<cfreturn createObject("component","mura.cache.cacheFactoryLRU").init(capacity=arguments.capacity, freeMemoryThreshold=arguments.freeMemoryThreshold)>
 	</cfif>
-	
+	--->
 </cffunction>
 
 <cffunction name="save" access="public" returntype="any" output="false">

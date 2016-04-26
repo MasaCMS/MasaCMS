@@ -36,7 +36,7 @@ $(function(){
 				source:$('##source').val(),
 				render:'client',
 				async:false,
-				sourcetype:'freetext'
+				sourcetype:'custom'
 				}
 			});
 	});
@@ -53,8 +53,8 @@ $(function(){
 					originParams=parameters["params"];
 				}
 
-				console.log(parameters)
-				if(parameters["params"].sourcetype == 'freetext'){}
+				//console.log(parameters)
+				if(parameters["params"].sourcetype == 'custom'){}
 					$('##source').val(parameters["params"].source);
 				}
 				

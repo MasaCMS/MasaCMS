@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="request.muraFrontEndRequest" default="false"/>
@@ -78,10 +78,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset this.sessionManagement = true>
 
-<!--- Should we set cookies on the browser? --->
+<!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
 <cfset this.setClientCookies = true>
 
-<!--- should cookies be domain specific, ie, *.foo.com or www.foo.com 
+<!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
 <cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
 --->
 <!--- should we try to block 'bad' input from users --->
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset this.baseDir=baseDir>
 <cfset variables.baseDir=baseDir>
-	
+
 <cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
 <cfset variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm">
 <cfset initINI(variables.iniPath)>
@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.userAgent = LCase( CGI.http_user_agent ) />
 
 <!--- Should we even use sessions? --->
-<cfset request.trackSession = len(request.userAgent) 
+<cfset request.trackSession = len(request.userAgent)
  and not (
  REFind( "bot\b", request.userAgent ) OR
  Find( "_bot_", request.userAgent ) OR
@@ -167,9 +167,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  Find( "google", request.userAgent ) OR
  Find( "zyborg", request.userAgent ) OR
  Find( "emonitor", request.userAgent ) OR
- Find( "jeeves", request.userAgent ) OR 
- Find( "ping", request.userAgent ) OR 
- Find( "java", request.userAgent ) OR 
+ Find( "jeeves", request.userAgent ) OR
+ Find( "ping", request.userAgent ) OR
+ Find( "java", request.userAgent ) OR
  Find( "cfschedule", request.userAgent ) OR
  Find( "reeder", request.userAgent ) OR
  Find( "python", request.userAgent ) OR
@@ -238,14 +238,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(getINIProperty("datasource",""))>
 
 	<!--- You can't depend on 9 supporting datasource as struct --->
-	<cfif listFirst(SERVER.COLDFUSION.PRODUCTVERSION) gt 9 
+	<cfif listFirst(SERVER.COLDFUSION.PRODUCTVERSION) gt 9
 		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) gt 0>
 		<cfset this.datasource = structNew()>
 		<cfset this.datasource.name = evalSetting(getINIProperty("datasource","")) />
-		<cfset this.datasource.username = evalSetting(getINIProperty("dbusername",""))>
-		<cfset this.datasource.password = evalSetting(getINIProperty("dbpassword",""))>
+		<cfset dbUsername=evalSetting(getINIProperty("dbusername",""))>
+		<cfif len(dbUsername)>
+			<cfset this.datasource.username =dbUsername>
+		</cfif>
+		<cfset dbPassword=evalSetting(getINIProperty("dbpassword",""))>
+		<cfif len(dbPassword)>
+			<cfset this.datasource.password = dbPassword>
+		</cfif>
 	<cfelse>
-		<cfset this.datasource = evalSetting(getINIProperty("datasource","")) >			
+		<cfset this.datasource = evalSetting(getINIProperty("datasource","")) >
 	</cfif>
 <cfelse>
 	<cfset this.ormenabled=false>
@@ -336,12 +342,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var entry = "" />
 	<cfset var value = "" />
 
-	
+
 	<cfset variables.iniPath = arguments.iniPath />
 	<cfset variables.ini = structNew() />
 
 	<cffile variable="file" action="read" file="#variables.iniPath#"  />
-	
+
 	<cfloop list="#file#" index="line" delimiters="#chr(10)##chr(13)#">
 		<cfset line = trim( line ) />
 		<cfif NOT ( startsWith( line, ";" ) OR startsWith( line, "##" ) OR startsWith( line, "<" ) )>
@@ -385,7 +391,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn evaluate(arguments.value)>
 	<cfelse>
 		<cfreturn arguments.value>
-	</cfif>	
+	</cfif>
 </cffunction>
 
 <cffunction name="setINIProperty" output="false">
@@ -442,7 +448,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset tracePoint.detail=arguments.detail>
 	<cfset tracePoint.start=getTickCount()>
-	<cfset arrayAppend(request.muraTraceRoute,tracePoint)> 
+	<cfset arrayAppend(request.muraTraceRoute,tracePoint)>
 	<cfreturn arrayLen(request.muraTraceRoute)>
 </cffunction>
 
@@ -454,6 +460,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tracePoint.stop=getTickCount()>
 		<cfset tracePoint.duration=tracePoint.stop-tracePoint.start>
 		<cfset tracePoint.total=tracePoint.stop-request.muraRequestStart>
-	</cfif>	
+	</cfif>
 </cffunction>
-

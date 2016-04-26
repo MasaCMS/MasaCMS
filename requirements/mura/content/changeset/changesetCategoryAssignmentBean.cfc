@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM" 
+component extends="mura.bean.beanORM"
 	entityName='changesetCategoryAssignment' table="tchangesetcategoryassign" bundleable=true {
 
 	property name="assignmentid" fieldtype="id";

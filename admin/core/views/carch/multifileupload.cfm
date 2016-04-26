@@ -485,7 +485,8 @@ $(function () {
                     return data.result.files;
                 }
                 return [];
-            }
+            },
+        limitConcurrentUploads: 10
         }
     ).bind('fileuploadsubmit', function (e, data) {
         

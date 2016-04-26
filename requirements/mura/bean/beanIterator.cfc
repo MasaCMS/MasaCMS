@@ -82,5 +82,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfthrow message="The records have not been set.">
 	</cfif>
 </cffunction>
+
+<cffunction name="getBeanArray" output="false" returntype="any">
+    <cfset var array=arrayNew(1)>
+    <cfset var record = "">
+
+    <cfif isArray(variables.records)>
+        <cfloop array="#variables.records#" index="record">
+            <cfset arrayAppend(array,packageRecord(record))>
+        </cfloop>
+        <cfreturn array>
+    <cfelseif isQuery(variables.records)>
+        <cfloop query="variables.records">
+            <cfset arrayAppend(array,packageRecord(variables.records.currentRow))>
+        </cfloop>
+        <cfreturn array>
+    <cfelse>
+        <cfthrow message="The records have not been set.">
+    </cfif>
+</cffunction>
 	
 </cfcomponent>

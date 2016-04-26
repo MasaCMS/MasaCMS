@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.crumbIterator=variables.archive.getCrumbIterator()>
 	<cfloop condition="variables.crumbIterator.hasNext()">
 		<cfset variables.crumb=variables.crumbIterator.next()>
-		<cfif listFindNoCase('Folder',variables.crumb.getType())>
+		<cfif listFindNoCase('Folder,Calendar',variables.crumb.getType())>
 			<cfset variables.archive=variables.$.getBean('content').loadBy(contentid=crumb.getContentID())>
 			<cfbreak>
 		</cfif>

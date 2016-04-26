@@ -1,33 +1,33 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -35,36 +35,34 @@
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraDOMSelection(selection,origSelector){
-		this.selection=selection;
-		this.origSelector=origSelector;
+	window.mura.DOMSelection=window.mura.Core.extend({
+		init:function(selection,origSelector){
+			this.selection=selection;
+			this.origSelector=origSelector;
 
-		if(this.selection.length && this.selection[0]){
-			this.parentNode=this.selection[0].parentNode;
-			this.childNodes=this.selection[0].childNodes;
-			this.node=selection[0];
-			this.length=this.selection.length;
-		} else {
-			this.parentNode=null;
-			this.childNodes=null;
-			this.node=null;
-			this.length=0;
-		}
+			if(this.selection.length && this.selection[0]){
+				this.parentNode=this.selection[0].parentNode;
+				this.childNodes=this.selection[0].childNodes;
+				this.node=selection[0];
+				this.length=this.selection.length;
+			} else {
+				this.parentNode=null;
+				this.childNodes=null;
+				this.node=null;
+				this.length=0;
+			}
+		},
 
-		
-	}
-
-	MuraDOMSelection.prototype={
 		get:function(index){
 			return this.selection[index];
 		},
@@ -104,7 +102,7 @@
 			if(typeof selector == 'function'){
 				fn=selector;
 				selector='';
-			} 
+			}
 
 			if(eventName=='ready'){
 				if(document.readyState != 'loading'){
@@ -116,27 +114,27 @@
 								if(selector){
 									mura(this).find(selector).each(function(){
 										fn.call(this);
-									});	
+									});
 								} else {
-									fn.call(this);	
+									fn.call(this);
 								}
 							});
 						},
 						1
 					);
-					
+
 					return this;
 
 				} else {
 					eventName='DOMContentLoaded';
 				}
 			}
-					
+
 			this.each(function(){
 				if(typeof this.addEventListener == 'function'){
 					var self=this;
 					this.addEventListener(
-						eventName, 
+						eventName,
 						function(event){
 							if(selector){
 								mura(self).find(selector).each(function(){
@@ -145,13 +143,13 @@
 							} else {
 								fn.call(self,event);
 							}
-							
+
 						},
 						true
 					);
 				}
 			});
-			
+
 			return this;
 		},
 
@@ -180,7 +178,7 @@
 
 			return this;
 		},
-		
+
 		ready:function(fn){
 			this.on('ready',fn);
 			return this;
@@ -200,7 +198,7 @@
 					array[idx]=elClone;
 
 				}
-					
+
 			});
 			return this;
 		},
@@ -238,24 +236,24 @@
 
 			if(this.selection[0].hasChildNodes()){
 				var children=window.mura(this.selection[0].childNodes);
-				
+
 				if(typeof selector == 'string'){
 					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
 				} else {
 					var filterFn=function(){ return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
 				}
 
-				return children.filter(filterFn);		
+				return children.filter(filterFn);
 			} else {
 				return window.mura([]);
-			}	
-			
+			}
+
 		},
 
 		find:function(selector){
 			if(this.selection.length){
 				var removeId=false;
-				
+
 				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
 					var result=this.selection[0].querySelectorAll(selector);
 				} else if(this.selection[0].nodeType=='9'){
@@ -270,56 +268,40 @@
 		},
 
 		selector:function() {
-		    var pathes = [];
+			var pathes = [];
+			var path, node = window.mura(this.selection[0]);
 
-		    //this.selection.each(function(index, element) {
-		        var path, $node = window.mura(this.selection[0]);
+			while (node.length) {
+				var realNode = node.get(0), name = realNode.localName;
+				if (!name) { break; }
 
-		        while ($node.length) {
-		           var realNode = $node.get(0), name = realNode.localName;
-		           if (!name) { break; }
+				if(!node.data('hastempid') && node.attr('id') && node.attr('id') != 'mura-variation-el'){
+			   		name='#' + node.attr('id');
+					path = name + (path ? ' > ' + path : '');
+					break;
+				} else {
 
-		           /*
-		           if(omitSysEls 
-		           		&& (
-		           			$node.hasClass('mura-editable')
-							|| $node.hasClass('editableObjectContents')
-							|| $node.hasClass('editableObject')
-		           		)
+				    name = name.toLowerCase();
+				    var parent = node.parent();
+				    var sameTagSiblings = parent.children(name);
 
-		           	){
-		           		break;
-		           }
-		           */
-		           if(!$node.data('hastempid') && $node.attr('id') && $node.attr('id') != 'mura-variation-el'){
-		           		name='#' + $node.attr('id');
-		           		path = name + (path ? ' > ' + path : '');
-		            	break;
-		           } else {
+				    if (sameTagSiblings.length > 1)
+				    {
+				        allSiblings = parent.children();
+				        var index = allSiblings.index(realNode) +1;
 
-		                name = name.toLowerCase();
-		                var parent = $node.parent();
-		                var sameTagSiblings = parent.children(name);
+				        if (index > 0) {
+				            name += ':nth-child(' + index + ')';
+				        }
+				    }
 
-		                if (sameTagSiblings.length > 1)
-		                {
-		                    allSiblings = parent.children();
-		                    var index = allSiblings.index(realNode) +1;
+				    path = name + (path ? ' > ' + path : '');
+					node = parent;
+				}
 
-		                    if (index > 0) {
-		                        name += ':nth-child(' + index + ')';
-		                    }
-		                }
+			}
 
-		                path = name + (path ? ' > ' + path : '');
-		            	$node = parent;
-		       		 }
-
-		           
-		        }
-
-		        pathes.push(path);
-		    //});
+			pathes.push(path);
 
 		    return pathes.join(',');
 		},
@@ -329,20 +311,20 @@
 				return;
 			}
 			var el=this.selection[0];
-			
+
 			if(el.hasChildNodes()){
 				var silbings=window.mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};	
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
 				} else {
-					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};	
+					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
 				}
 
 				return silbings.filter(filterFn);
 			} else {
 				return window.mura([]);
-			}	
+			}
 		},
 
 		item:function(idx){
@@ -367,13 +349,17 @@
 		    } else {
 		    	 return window.mura([]);
 		    }
-		   
+
 		},
 
 		append:function(el) {
-			if(this.selection.length){
-				this.selection[0].appendChild(el);
-			}
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforeend', htmlString);
+				} else {
+					this.appendChild(el);
+				}
+			});
 			return this;
 		},
 
@@ -393,7 +379,35 @@
 		},
 
 		prepend:function(el) {
-			this.selection[0].parentNode.insertBefore(el, this.parentNode.firstChild);
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterbegin', el);
+				} else {
+					this.insertBefore(el,this.firstChild);
+				}
+			});
+			return this;
+		},
+
+		before:function(el) {
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforebegin', el);
+				} else {
+					this.parent.insertBefore(el,this);
+				}
+			});
+			return this;
+		},
+
+		after:function(el) {
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterend', el);
+				} else {
+					this.parent.insertBefore(el,this.parent.firstChild);
+				}
+			});
 			return this;
 		},
 
@@ -406,7 +420,7 @@
 			}
 
 			this.prepend(el);
-			
+
 			window.mura.processAsyncObject(el);
 
 			return el;
@@ -478,16 +492,17 @@
 			return this;
 		},
 
-		after:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('afterend', htmlString);
+		after:function(el){
+			this.each(function(){
+				if(type)
+				this.insertAdjacentHTML('afterend', el);
 			});
 			return this;
 		},
 
-		before:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('beforebegin', htmlString);
+		before:function(el){
+			this.each(function(){
+				this.insertAdjacentHTML('beforebegin', el);
 			});
 			return this;
 		},
@@ -509,11 +524,10 @@
 			});
 
 			return this;
-			
+
 		},
 
 		html:function(htmlString){
-
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
 					el.innerHTML=htmlString;
@@ -528,7 +542,7 @@
 			}
 		},
 
-		css:function(ruleName,value){	
+		css:function(ruleName,value){
 			if(!this.selection.length){
 				return;
 			}
@@ -610,7 +624,7 @@
 		 	if(!this.selection.length){
 				return;
 			}
-			
+
 			if(typeof width != 'undefined'){
 				if(!isNaN(height)){
 					height += 'px';
@@ -619,7 +633,7 @@
 				return this;
 			}
 
-			var el=this.selection[0]; 
+			var el=this.selection[0];
 			//var type=el.constructor.name.toLowerCase();
 
 			if(el === window){
@@ -627,7 +641,7 @@
 			} else if(el === document){
 				var body = document.body;
 		    	var html = document.documentElement;
-				return  Math.max( body.scrollHeight, body.offsetHeight, 
+				return  Math.max( body.scrollHeight, body.offsetHeight,
 		                       html.clientHeight, html.scrollHeight, html.offsetHeight )
 			}
 
@@ -650,7 +664,7 @@
 				return this;
 			}
 
-			var el=this.selection[0]; 
+			var el=this.selection[0];
 			//var type=el.constructor.name.toLowerCase();
 
 			if(el === window){
@@ -658,7 +672,7 @@
 			} else if(el === document){
 				var body = document.body;
 		    	var html = document.documentElement;
-				return  Math.max( body.scrollWidth, body.offsetWidth, 
+				return  Math.max( body.scrollWidth, body.offsetWidth,
 		                       html.clientWidth, html.scrolWidth, html.offsetWidth )
 			}
 
@@ -679,7 +693,7 @@
 		},
 
 		scrollTop:function() {
-		  	return document.body.scrollTop; 
+		  	return document.body.scrollTop;
 		},
 
 		offset:function(attributeName,value){
@@ -697,28 +711,28 @@
 			if(!this.selection.length){
 				return;
 			}
-			
+
 			this.each(function(el){
 				if(el && typeof el.removeAttribute == 'function'){
 					el.removeAttribute(attributeName);
 				}
-				
+
 			});
 			return this;
-			
+
 		},
 
 		changeElementType:function(type){
 			if(!this.selection.length){
 				return;
 			}
-			
+
 			this.each(function(el){
 				window.mura.changeElementType(el,type)
-				
+
 			});
 			return this;
-			
+
 		},
 
         val:function(value){
@@ -737,10 +751,10 @@
 					} else {
 						el.value=value;
 					}
-					
+
 				});
 				return this;
-			
+
 			} else {
 				if(this.selection[0].hasOwnProperty('value')){
 					return this.selection[0].value;
@@ -773,14 +787,14 @@
 					}
 				});
 				return this;
-			
+
 			} else {
 				if(this.selection[0] && this.selection[0].getAttribute){
 					return this.selection[0].getAttribute(attributeName);
 				} else {
 					return undefined;
 				}
-				
+
 			}
 		},
 
@@ -877,8 +891,6 @@
 		  	});
 		  	return this;
 		}
-	}
-
-	window.mura.MuraDOMSelection=MuraDOMSelection;
+	});
 
 })(window);

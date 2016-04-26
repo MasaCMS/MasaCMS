@@ -18,6 +18,7 @@
 <cfparam name="attributes.message" default="">
 <cfparam name="attributes.break" default="false">
 <cfparam name="attributes.dateclass" default="">
+<cfparam name="attributes.datespanclass" default="span3">
 
 <cfset attributes.hourname="">
 <cfset attributes.minutename="">
@@ -33,11 +34,10 @@
 	}
 </cfscript>
 
-
 </cfsilent>
 
 <cfoutput>
-<input type="text" class="datepicker #esapiEncode('html_attr',attributes.dateclass)# span3 mura-datepicker#esapiEncode('html_attr',attributes.name)#" value="#LSDateFormat(attributes.datetime,session.dateKeyFormat)#" maxlength="12"/><cfif attributes.break><br/></cfif>
+<input type="text" class="datepicker #esapiEncode('html_attr',attributes.dateclass)# #esapiEncode('html_attr',attributes.datespanclass)# mura-datepicker#esapiEncode('html_attr',attributes.name)#" value="#LSDateFormat(attributes.datetime,session.dateKeyFormat)#" maxlength="12" id="mura-datepicker-#esapiEncode('html_attr',attributes.name)#"/><cfif attributes.break><br/></cfif>
 <cf_timeselector attributecollection="#attributes#">
 <input type="hidden" id="mura-#esapiEncode('html_attr',attributes.name)#" name="#esapiEncode('html_attr',attributes.name)#" value="#esapiEncode('html_attr',attributes.datetime)#" data-required="#esapiEncode('html_attr',attributes.required)#" data-required="#esapiEncode('html_attr',attributes.message)#"/>
 <script>

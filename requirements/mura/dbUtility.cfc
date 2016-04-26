@@ -302,7 +302,7 @@
 				<cfelse>
 					#transformDataType(arguments.datatype,arguments.length)#
 					<cfif not arguments.nullable> not null </cfif>
-					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+					<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null'>
 						default
 						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 							#arguments.default#
@@ -334,27 +334,26 @@
 			<cfquery>
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
-						#arguments.column#
-						<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif> <cfif not arguments.nullable>NOT NULL</cfif>
-						<cfif not arguments.autoincrement>
-							<cfif not(not arguments.nullable and arguments.default eq 'null')>
-								DEFAULT
-								<cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>
-									#arguments.default#
-								<cfelse>
-									'#arguments.default#'
-								</cfif>
-							</cfif>
-						</cfif>
-					)
 				<cfelse>
-					ALTER TABLE #arguments.table# ADD COLUMN #arguments.column# <cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif>;
-					<cfif not arguments.nullable>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET NOT NULL;
+					ALTER TABLE #arguments.table# ADD COLUMN
+				</cfif>
+
+				#arguments.column#
+				<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif>
+				<cfif not arguments.nullable>NOT NULL</cfif>
+				<cfif not arguments.autoincrement>
+					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+						DEFAULT
+						<cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>
+							#arguments.default#
+						<cfelse>
+							'#arguments.default#'
+						</cfif>
 					</cfif>
-					<cfif not arguments.autoincrement>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
-					</cfif>
+				</cfif>
+
+				<cfif not hasTable>
+					)
 				</cfif>
 			</cfquery>
 		</cfcase>
@@ -517,7 +516,7 @@
 					<cfelse>
 						#transformDataType(arguments.datatype,arguments.length)#
 						<cfif not arguments.nullable> not null </cfif>
-						<cfif not(not arguments.nullable and arguments.default eq 'null')>
+						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null'>
 							default
 							<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 								#arguments.default#
@@ -708,24 +707,29 @@
 						<cfcatch></cfcatch>
 					</cftry>
 
-					<cfif not MSSQLversion>
-						<cfquery name="MSSQLversion">
-							EXEC sp_MSgetversion
-						</cfquery>
+					<cftry>
+						<cfif not MSSQLversion>
+							<cfquery name="MSSQLversion">
+								EXEC sp_MSgetversion
+							</cfquery>
 
-						<cftry>
-							<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-							<cfcatch>
-								<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-							</cfcatch>
-						</cftry>
-					</cfif>
+							<cftry>
+								<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+								<cfcatch>
+									<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
+								</cfcatch>
+							</cftry>
+						</cfif>
 
-					<cfif MSSQLversion neq 8>
-						<cfreturn "[nvarchar](max)">
-					<cfelse>
-						<cfreturn "[ntext]">
-					</cfif>
+						<cfif MSSQLversion neq 8>
+							<cfreturn "[nvarchar](max)">
+						<cfelse>
+							<cfreturn "[ntext]">
+						</cfif>
+						<cfcatch>
+							<cfreturn "[nvarchar](max)">
+						</cfcatch>
+					</cftry>
 				</cfcase>
 				<cfcase value="float,numeric">
 					<cfreturn "float">
@@ -1099,14 +1103,16 @@
 <cffunction name="transformIndexName" access="public">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
+	<cfset var length = 64>
 	<cfswitch expression="#variables.dbtype#">
-			<cfcase value="mssql,mysql,postgresql,nuodb">
-				<cfreturn rereplace(replace("IX_#arguments.table#_#arguments.column#",",","ALL"),"[[:space:]]","","All")>
-			</cfcase>
-			<cfcase value="oracle">
-				<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",30),",","ALL"),"[[:space:]]","","All")>
-			</cfcase>
-		</cfswitch>
+		<cfcase value="mssql">
+			<cfset length = 128>
+		</cfcase>
+		<cfcase value="oracle">
+			<cfset length = 30>
+		</cfcase>
+	</cfswitch>
+	<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",length),",","_","ALL"),"[[:space:]]","","All")>
 </cffunction>
 
 <cffunction name="indexes" output="false">
@@ -1154,7 +1160,7 @@
 	<cfset var i="">
 	<cfif arrayLen(indexArray)>
 		<cfloop from="1" to="#arrayLen(indexArray)#" index="i">
-			<cfif indexArray[i].column eq arguments.column>
+			<cfif indexArray[i].column eq arguments.column or indexArray[i].name eq transformIndexName(argumentCollection=arguments)>
 				<cfreturn true>
 			</cfif>
 		</cfloop>
@@ -1432,7 +1438,7 @@
 		table="#qualifySchema(arguments.table)#"
 		type="foreignKeys">
 
-	<cfreturn buildForeignKeyMetaData(	
+	<cfreturn buildForeignKeyMetaData(
 		rs = rsCheck,
 		table = arguments.table
 	)>

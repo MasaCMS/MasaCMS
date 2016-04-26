@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="type" type="string" default="Custom" required="true" />
 <cfproperty name="subType" type="string" default="Default" required="true" />
 <cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="extendAutoComplete" type="boolean" default="false" required="true" comparable="false"/>
+<cfproperty name="extendAutoComplete" type="boolean" default="true" required="true" comparable="false"/>
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
@@ -60,10 +60,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.extendSetID="" />
 	<cfset variables.instance.extendDataTable="tclassextenddata" />
 	<cfset variables.instance.extendAutoComplete = true />
+	<cfset variables.instance.frommuracache = false />
 	<cfset variables.instance.type = "Custom" />
 	<cfset variables.instance.subType = "Default" />
 	<cfset variables.instance.siteiD = "" />
 	<cfset variables.instance.sourceIterator = "" />
+
+	<cfset variables.missingDefaultAppended=false>
+
 	<cfreturn this>
 </cffunction>
 
@@ -134,6 +138,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="key" type="string" required="true">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
 		<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
+</cffunction>
+
+<cffunction name="appendMissingAttributes" returnType="string" output="false" access="public">
+	<cfif not variables.missingDefaultAppended>
+		<cfset getBean('configBean')
+		.getClassExtensionManager()
+		.appendMissingAttributes(variables.instance) />
+		<cfset variables.missingDefaultAppended=true>
+	</cfif>
 </cffunction>
 
 <cffunction name="getExtendedAttributes" returnType="struct" output="false" access="public">
@@ -215,21 +228,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var tempFunc=this["set#arguments.property#"]>
 		<cfset tempFunc(arguments.propertyValue)>
 	<cfelse>
-		<!---
-		<cfif not structKeyExists(variables.instance,arguments.property)>
-			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-			<cfif not structIsEmpty(extData)>
-				<cfset structAppend(variables.instance,extData.data,false)>	
-				<cfloop list="#extData.extendSetID#" index="i">
-					<cfif not listFind(variables.instance.extendSetID,i)>
-						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
-		--->
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-		
 	</cfif>
 
 	<cfreturn this>
@@ -245,17 +244,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn tempFunc()>
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelseif structKeyExists(arguments,"defaultValue")>
-		<cfset tempValue=getExtendedAttribute(arguments.property,true) />
-		<cfif tempValue neq "useMuraDefault">
-			<cfset variables.instance["#arguments.property#"]=tempValue />
-			<cfreturn tempValue>
+	<cfelseif not variables.instance.frommuracache>
+		<cfif structKeyExists(arguments,"defaultValue")>
+			<cfset tempValue=getExtendedAttribute(arguments.property,true) />
+			<cfif tempValue neq "useMuraDefault">
+				<cfset variables.instance["#arguments.property#"]=tempValue />
+				<cfreturn tempValue>
+			<cfelse>
+				<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
+				<cfreturn arguments.defaultValue />
+			</cfif>
 		<cfelse>
-			<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
-			<cfreturn arguments.defaultValue />
+			<cfreturn getExtendedAttribute(arguments.property) />
 		</cfif>
+	<cfelseif structKeyExists(arguments,"defaultValue")>
+		<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
+		<cfreturn arguments.defaultValue />
 	<cfelse>
-		<cfreturn getExtendedAttribute(arguments.property) />
+		<cfset appendMissingAttributes()>
+
+		<cfif structKeyExists(variables.instance,"#arguments.property#")>
+			<cfreturn variables.instance["#arguments.property#"]>
+		<cfelse>
+			<cfreturn ''>
+		</cfif>
 	</cfif>
 
 </cffunction>
@@ -279,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		
 	<cfset purgeExtendedData()>
-		
+
 	<cfreturn variables.instance />
 </cffunction>
 

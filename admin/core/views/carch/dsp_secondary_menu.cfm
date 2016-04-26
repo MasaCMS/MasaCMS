@@ -298,7 +298,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfscript>
 							viewContentURL = StructKeyExists(rc, 'homeid') && Len(rc.homeid)
 								? application.contentManager.getActiveContent(rc.homeid, rc.siteid).getURL()
-								: rc.contentBean.getURL();
+								: rc.contentBean.getURL(querystring="?previewid=#rc.contentBean.getContentHistID()#");
 						</cfscript>
 						<a class="btn" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:'#esapiEncode('javascript', viewContentURL)#'}); return false;">
 							<i class="icon-globe"></i>

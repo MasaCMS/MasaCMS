@@ -372,7 +372,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfloop query="arguments.rs">
 			<cfif len(arguments.rs.baseID)>
-				<cfif listFindNoCase("date,datetime",arguments.rs.validation)>
+				<cfif listFindNoCase("date,datetime",arguments.rs.validation) and len(arguments.rs.attributeValue)>
 					<cfset tempDate=arguments.rs.attributeValue>
 					<cftry>
 						<cfset extData.data['#arguments.rs.name#']=parseDateTime(tempDate)>

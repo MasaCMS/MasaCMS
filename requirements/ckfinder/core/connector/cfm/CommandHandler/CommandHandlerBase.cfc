@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://cksource.com/ckfinder
- * Copyright (C) 2007-2014, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2015, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -17,7 +17,34 @@
 <cfset THIS.mustAddCurrentFolderNode = true>
 <cfset THIS.command = "" >
 
+<cffunction name="checkCsrfToken" access="public" returntype="boolean">
+	<cfif not structkeyexists(FORM, "ckCsrfToken")>
+		<cfreturn false>
+	</cfif>
+	<cfif not structkeyexists(Cookie, "ckCsrfToken")>
+		<cfreturn false>
+	</cfif>
+	<cfif Len(Trim(FORM.ckCsrfToken)) lt 32>
+		<cfreturn false>
+	</cfif>
+	<cfif Trim(FORM.ckCsrfToken) eq Trim(Cookie.ckCsrfToken) >
+		<cfreturn true>
+	</cfif>
+
+	<cfreturn false>
+</cffunction>
+
 <cffunction name="checkRequest" access="public" returntype="boolean">
+	<cfset coreConfig = APPLICATION.CreateCFC("Core.Config")>
+
+	<cfif structkeyexists(FORM, "CKFinderCommand") or THIS.command eq "FileUpload" or THIS.command eq "QuickUpload">
+		<cfif not isDefined( "REQUEST.Config.enableCsrfProtection" ) or REQUEST.Config.enableCsrfProtection>
+			<cfif not THIS.checkCsrfToken()>
+				<cfthrow type="ckfinder" errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST#">
+			</cfif>
+		</cfif>
+	</cfif>
+
 	<cfif REFind('(/\.)|(//)|[[:cntrl:]]|([\\:\*\?\"<>])', THIS.currentFolder.clientPath)>
 		<cfthrow type="ckfinder" errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_NAME#">
 	</cfif>
@@ -25,7 +52,6 @@
 		<cfthrow type="ckfinder" errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_TYPE#">
 	</cfif>
 
-	<cfset coreConfig = APPLICATION.CreateCFC("Core.Config")>
 	<cfif coreConfig.checkIsHiddenPath(THIS.currentFolder.clientPath)>
 		<cfthrow type="ckfinder" errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST#">
 	</cfif>

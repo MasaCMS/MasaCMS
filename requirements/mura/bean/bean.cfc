@@ -13,17 +13,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses;.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,12 +37,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
 component extends="mura.cfobject" output="false" {
@@ -69,7 +69,7 @@ component extends="mura.cfobject" output="false" {
 		}
 		variables.instance.addObjects=[];
 		variables.instance.removeObjects=[];
-		
+
 		getProperties();
 
 		return this;
@@ -89,11 +89,11 @@ component extends="mura.cfobject" output="false" {
 					}
 
 					if(structKeyExists(synthedFunctions[arguments.MissingMethodName],'args')){
-						
+
 						if(structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'cfc')){
 							var bean=getBean(synthedFunctions[arguments.MissingMethodName].args.cfc);
 							//writeDump(var=bean.getProperties());
-							
+
 							if(!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')
 								|| !(structKeyExists(bean,'has') && bean.has(synthedFunctions[arguments.MissingMethodName].args.loadkey))
 							){
@@ -119,32 +119,32 @@ component extends="mura.cfobject" output="false" {
 				} catch(any err){
 					if(request.muratransaction){
 						transactionRollback();
-					}				
+					}
 					writeDump(var=synthedFunctions[arguments.MissingMethodName]);
 					writeDump(var=err,abort=true);
 				}
-			} 
+			}
 
 			if(listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3){
-				var prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);	
-				
+				var prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);
+
 				if(prefix eq "get"){
 					return getValue(prop);
-				} 
+				}
 
 				if(not structIsEmpty(arguments.MissingMethodArguments)){
 					return setValue(prop,arguments.MissingMethodArguments[1]);
 				} else {
 					throw(message="The method '#arguments.MissingMethodName#' requires a propery value");
 				}
-					
+
 			} else {
 				throw(message="The method '#arguments.MissingMethodName#' is not defined");
 			}
 		} else {
 			return "";
-		}	
-	
+		}
+
 	}
 
 	function getInstanceName(){
@@ -181,19 +181,19 @@ component extends="mura.cfobject" output="false" {
 
 	private function synthArgs(args){
 		var translatedLoadKey=translatePropKey(args.loadkey);
+		var translatedFKColumn=translatePropKey(arguments.args.fkcolumn);
 		var returnArgs={
-				"#translatedLoadKey#"=getValue(translatePropKey(arguments.args.fkcolumn)),
+				"#translatedLoadKey#"=getValue(translatedFKColumn),
 				returnFormat=arguments.args.returnFormat
 			};
-
 
 		/*
 		This should only happen with loading many-to-one relationships when local
 		fkcolumn (many) value is empty.
 		*/
 		if(!len(returnArgs[translatedLoadKey])){
-			setValue(translatedLoadKey,createUUID());
-			returnArgs[translatedLoadKey]=getValue(translatedLoadKey);
+			setValue(translatedFKColumn,createUUID());
+			returnArgs[translatedLoadKey]=getValue(translatedFKColumn);
 		}
 
 		if(structKeyExists(arguments.args,'siteid')){
@@ -228,7 +228,7 @@ component extends="mura.cfobject" output="false" {
 			} catch(any e){
 				return arguments.arg;
 			}
-			
+
 		} else if(isDate(arguments.arg)){
 			try{
 				return parseDateTime(arguments.arg);
@@ -240,8 +240,8 @@ component extends="mura.cfobject" output="false" {
 		}
 	}
 
-	function set(property,propertyValue){	
-		
+	function set(property,propertyValue){
+
 		if(!isDefined('arguments.data') ){
 			if(isSimpleValue(arguments.property)){
 				return setValue(argumentCollection=arguments);
@@ -260,12 +260,17 @@ component extends="mura.cfobject" output="false" {
 			variables.instance.isNew=0;
 		} else if(isStruct(arguments.data)){
 			for(prop in arguments.data){
-				if ( IsSimpleValue(prop) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
-					setValue(prop,arguments.data['#prop#']);
+				try{
+					if (isValid('variableName',prop) && IsSimpleValue(prop) && !isNull(arguments.data['#prop#']) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
+						setValue(prop,arguments.data['#prop#']);
+					}
+				} catch(Any e){
+					writeLog("Error setting bean value #UCase(prop)#: #arguments.data['#prop#']#");
+					rethrow;
 				}
-			}		
+			}
 		}
-		
+
 		return this;
 	}
 
@@ -274,7 +279,7 @@ component extends="mura.cfobject" output="false" {
 		if(isSimpleValue(arguments.propertyValue)){
 			arguments.propertyValue=trim(arguments.propertyValue);
 		}
-	
+
 		if(arguments.property != 'value' && isValid('variableName',arguments.property) && isDefined("this.set#arguments.property#")){
 			var tempFunc=this["set#arguments.property#"];
 			tempFunc(arguments.propertyValue);
@@ -288,7 +293,7 @@ component extends="mura.cfobject" output="false" {
 		} else {
 			variables.instance["#arguments.property#"]=arguments.propertyValue;
 		}
-	
+
 		return this;
 	}
 
@@ -347,9 +352,9 @@ component extends="mura.cfobject" output="false" {
 		var propVal='';
 
 		variables.instance.errors=getBean('beanValidator').validate(this);
-		
+
 		//writeDump(var=properties,abort=true);
-		
+
 		if(getBean('configBean').getValue(property='stricthtml',defaultValue=false)){
 			var stricthtmlexclude=getBean('configBean').getValue(property='stricthtmlexclude',defaultValue='');
 			for(p in properties){
@@ -362,10 +367,10 @@ component extends="mura.cfobject" output="false" {
 					}
 				}
 			}
-		} 
+		}
 
 		if(arrayLen(variables.instance.addObjects)){
-			for(var obj in variables.instance.addObjects){	
+			for(var obj in variables.instance.addObjects){
 				errorCheck=obj.validate().getErrors();
 				if(!structIsEmpty(errorCheck)){
 					do{
@@ -375,7 +380,7 @@ component extends="mura.cfobject" output="false" {
 						}
 					} while (!checkfound);
 				}
-				
+
 			}
 		}
 
@@ -385,7 +390,7 @@ component extends="mura.cfobject" output="false" {
 	function setErrors(errors){
 		if(isStruct(arguments.errors)){
 			 variables.instance.errors = arguments.errors ;
-		} 
+		}
 		return this;
 	}
 
@@ -432,7 +437,7 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function getProperties(){
-		
+
 		getEntityName();
 
 		if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
@@ -452,10 +457,10 @@ component extends="mura.cfobject" output="false" {
 					param name="application.objectMappings.#variables.entityName#.hasMany" default=[];
 					param name="application.objectMappings.#variables.entityName#.hasOne" default=[];
 
-					application.objectMappings[variables.entityName].properties={};	
+					application.objectMappings[variables.entityName].properties={};
 					application.objectMappings[variables.entityName].primarykey="";
-					
-					
+
+
 					if(structKeyExists(md,'versioned') && md.versioned){
 						application.objectMappings[variables.entityName].versioned=true;
 
@@ -532,18 +537,18 @@ component extends="mura.cfobject" output="false" {
 						application.objectMappings[variables.entityName].usetrash=false;
 					}
 
-					for (md; 
-					    structKeyExists(md, "extends"); 
-					    md = md.extends) 
-					  { 
+					for (md;
+					    structKeyExists(md, "extends");
+					    md = md.extends)
+					  {
 
-					    if (structKeyExists(md, "properties")) 
-					    { 
-					      for (i = 1; 
-					           i <= arrayLen(md.properties); 
-					           i++) 
-					      { 
-					        pName = md.properties[i].name; 
+					    if (structKeyExists(md, "properties"))
+					    {
+					      for (i = 1;
+					           i <= arrayLen(md.properties);
+					           i++)
+					      {
+					        pName = md.properties[i].name;
 
 					        //writeDump(var=pname,abort=true);
 
@@ -589,7 +594,7 @@ component extends="mura.cfobject" output="false" {
 					       	 	}
 
 					       	 	if(structKeyExists(prop,'cfc')){
-					       	 		
+
 					       	 		param name="prop.fkcolumn" default="primaryKey";
 
 					       	 		prop.column=prop.fkcolumn;
@@ -626,7 +631,7 @@ component extends="mura.cfobject" output="false" {
 						       	 				//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
 						       	 			}
 
-						       	 		}		
+						       	 		}
 
 						       	 		arrayAppend(application.objectMappings[variables.entityName].hasMany, prop);
 
@@ -636,15 +641,15 @@ component extends="mura.cfobject" output="false" {
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['remove#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#'];
-							       	 	
+
 							       	 	}
 
 					       	 		} else if (prop.fieldtype eq 'many-to-one' or prop.fieldtype eq 'one-to-one'){
-					 
+
 		   	 							arrayAppend(application.objectMappings[variables.entityName].hasOne, prop);
 
 					       	 			if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
-					       	 				
+
 					       	 				if(prop.fkcolumn eq 'siteid'){
 						       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='getBean("settingsManager").getSite(getValue("siteID"))',args={prop=prop.name,functionType='getEntity'}};
 						       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("siteID",arguments.MissingMethodArguments[1].getSiteID()))',args={prop=prop.name,functionType='setEntity'}};
@@ -665,7 +670,7 @@ component extends="mura.cfobject" output="false" {
 						       	 				application.objectMappings[prop.cfc].synthedFunctions['remove#variables.entityName#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
 
 					       	 				} else {
-							       	 			
+
 							       	 			application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="this",functionType='getEntity'}};
 							       	 			//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
 						       	 			}
@@ -678,7 +683,7 @@ component extends="mura.cfobject" output="false" {
 						       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getPrimaryKey()))',args={prop=prop.name,functionType='setEntity'}};
 						       	 			}
 					       	 			}
-					       	 			
+
 					       	 		}
 
 					       	 		param name="prop.cascade" default="none";
@@ -695,33 +700,33 @@ component extends="mura.cfobject" output="false" {
 
 					       	 	} else if(!structKeyExists(prop,"persistent") ){
 					       	 		prop.persistent=true;
-					       	 	} 
+					       	 	}
 
 					       	 	param name="prop.column" default=prop.name;
 
-					       	 	
+
 					       	 	structAppend(prop,
 					       	 		defaultMetaData,
 									false
 								);
 
-					      	} 
+					      	}
 					      }
 					    }
-				    } 
+				    }
 				}
-			} 
+			}
 
-			
+
 			getValidations();
-			
+
 			//getServiceFactory().declareBean(beanName=variables.entityName,dottedPath=dottedPath,isSingleton=false);
 		}
 
 		//abort;
-		
+
 		//writeDump(var=application.objectMappings[variables.entityName].properties,abort=true);
-		
+
 		return application.objectMappings[variables.entityName].properties;
 	}
 
@@ -735,7 +740,7 @@ component extends="mura.cfobject" output="false" {
 			arguments.prop.nullable=false;
 		}
 		*/
-		
+
 		if(arguments.prop.name eq 'site'){
 			arguments.prop.ormtype="varchar";
 			arguments.prop.datatype="varchar";
@@ -793,13 +798,13 @@ component extends="mura.cfobject" output="false" {
 		getEntityName();
 
 		if(structIsEmpty(variables.validations)){
-			
+
 			if(!isDefined('application.objectMappings.#variables.entityName#.validations')){
 				lock type="exclusive" name="muraORM#variables.entityName##application.instanceID#" timeout="5" {
 					if(!isDefined('application.objectMappings.#variables.entityName#.validations')){
 						param name="application.objectMappings" default={};
 						param name="application.objectMappings.#variables.entityName#" default={};
-						
+
 						application.objectMappings[variables.entityName].validations={};
 						application.objectMappings[variables.entityName].validations.properties={};
 
@@ -843,11 +848,11 @@ component extends="mura.cfobject" output="false" {
 
 							if(structKeyExists(props[prop], "format")){
 								if(structKeyExists(props[prop], "message")){
-									rule={format=props[prop].message};
+									rule={message=props[prop].message};
 								} else {
 									rule={};
 								}
-								structAppend(rule,{required=props[prop].required});
+								structAppend(rule,{format=props[prop].format});
 								arrayAppend(rules,rule);
 							}
 
@@ -873,8 +878,8 @@ component extends="mura.cfobject" output="false" {
 									arrayAppend(rules, rule);
 								}
 
-							}	
-							
+							}
+
 							if(arrayLen(rules)){
 								application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
 							}
@@ -908,7 +913,7 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function compare(bean, propertyList=''){
-		
+
 		var returnStruct={};
 		var diffMatchPatch=getBean('diffMatchPatch');
 		var diffObj={};
@@ -926,12 +931,12 @@ component extends="mura.cfobject" output="false" {
 
 		for(i=1; i lte arrayLen(propertyArray); i++){
 			property=propertyArray[i];
-			if(isComparable(property) 
-				&& isSimpleValue(getValue(property)) 
+			if(isComparable(property)
+				&& isSimpleValue(getValue(property))
 				&& isSimpleValue(arguments.bean.getValue(property))
 				&& getValue(property) != arguments.bean.getValue(property)
 			){
-			
+
 				diffObj=diffMatchPatch.compute(javaCast('string',getValue(property)),javaCast('string',arguments.bean.getValue(property)));
 				returnStruct[property]=diffObj;
 			}
@@ -948,7 +953,7 @@ component extends="mura.cfobject" output="false" {
 		}
 
 		feed.setEntityName(variables.entityName).setTable(getTable());
-	
+
 		if(hasProperty('siteid')){
 			feed.setSiteID(getValue('siteID'));
 		}
@@ -966,6 +971,23 @@ component extends="mura.cfobject" output="false" {
 
 	function clone(){
 		getBean("content").setAllValues(structCopy(getAllValues()));
+	}
+
+	//used in json api for entity specific permission checking
+	function allowSave(){
+		return false;
+	}
+
+	function allowDelete(){
+		return false;
+	}
+
+	function allowRead(){
+		return true;
+	}
+
+	function allowQueryParams(params,$){
+		return true;
 	}
 
 }

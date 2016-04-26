@@ -1,4 +1,4 @@
-<!--- 
+<!---
   This file is part of Mura CMS.
 
   Mura CMS is free software: you can redistribute it and/or modify
@@ -13,22 +13,22 @@
   You should have received a copy of the GNU General Public License
   along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-  Linking Mura CMS statically or dynamically with other modules constitutes 
-  the preparation of a derivative work based on Mura CMS. Thus, the terms 
-  and conditions of the GNU General Public License version 2 ("GPL") cover 
+  Linking Mura CMS statically or dynamically with other modules constitutes
+  the preparation of a derivative work based on Mura CMS. Thus, the terms
+  and conditions of the GNU General Public License version 2 ("GPL") cover
   the entire combined work.
 
-  However, as a special exception, the copyright holders of Mura CMS grant 
-  you permission to combine Mura CMS with programs or libraries that are 
+  However, as a special exception, the copyright holders of Mura CMS grant
+  you permission to combine Mura CMS with programs or libraries that are
   released under the GNU Lesser General Public License version 2.1.
 
-  In addition, as a special exception, the copyright holders of Mura CMS 
-  grant you permission to combine Mura CMS with independent software modules 
-  (plugins, themes and bundles), and to distribute these plugins, themes and 
-  bundles without Mura CMS under the license of your choice, provided that 
-  you follow these specific guidelines: 
+  In addition, as a special exception, the copyright holders of Mura CMS
+  grant you permission to combine Mura CMS with independent software modules
+  (plugins, themes and bundles), and to distribute these plugins, themes and
+  bundles without Mura CMS under the license of your choice, provided that
+  you follow these specific guidelines:
 
-  Your custom code 
+  Your custom code
 
   • Must not alter any default objects in the Mura CMS database and
   • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -42,16 +42,16 @@
     /index.cfm
     /MuraProxy.cfc
 
-  You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
-  meets the above guidelines as a combined work under the terms of GPL for 
-  Mura CMS, provided that you include the source code of that other code when 
+  You may copy and distribute Mura CMS with a plug-in, theme or bundle that
+  meets the above guidelines as a combined work under the terms of GPL for
+  Mura CMS, provided that you include the source code of that other code when
   and as the GNU GPL requires distribution of source code.
 
-  For clarity, if you create a modified version of Mura CMS, you are not 
-  obligated to grant this special exception for your modified version; it is 
-  your choice whether to do so, or to make such modified version available 
-  under the GNU General Public License version 2 without this exception.  You 
-  may, if you choose, apply this exception to your own modified versions of 
+  For clarity, if you create a modified version of Mura CMS, you are not
+  obligated to grant this special exception for your modified version; it is
+  your choice whether to do so, or to make such modified version available
+  under the GNU General Public License version 2 without this exception.  You
+  may, if you choose, apply this exception to your own modified versions of
   Mura CMS.
 --->
 
@@ -92,41 +92,45 @@
 	<cfargument name="startRow" type="numeric" />
 	<cfargument name="pageBuffer" type="numeric" default="5" />
 	<cfset var nextn=structnew() />
-	
+
 	<cfif isNumeric(arguments.data)>
 		<cfset nextn.TotalRecords=arguments.data>
 	<cfelse>
 		<cfset nextn.TotalRecords=arguments.data.RecordCount>
 	</cfif>
-	
-	<cfset nextn.RecordsPerPage=arguments.RecordsPerPage> 
+
+	<cfset nextn.RecordsPerPage=arguments.RecordsPerPage>
 	<cfset nextn.NumberOfPages=Ceiling(nextn.TotalRecords/nextn.RecordsPerPage)>
-	<cfset nextn.CurrentPageNumber=Ceiling(arguments.StartRow/nextn.RecordsPerPage)> 
-	
+	<cfset nextn.CurrentPageNumber=Ceiling(arguments.StartRow/nextn.RecordsPerPage)>
+
 	<cfif nextn.CurrentPageNumber gt arguments.pageBuffer>
 		<cfset nextn.firstPage= nextn.CurrentPageNumber - arguments.pageBuffer />
 	<cfelse>
 		<cfset nextn.firstPage= 1 />
 	</cfif>
-	
-	<cfset nextN.lastPage =nextn.firstPage + (2 * arguments.pageBuffer) + 1/>
-	
+
+	<cfset nextN.lastPage =nextn.firstPage + (2 * arguments.pageBuffer)/>
+
 	<cfif nextn.NumberOfPages lt nextN.lastPage>
 		<cfset nextN.lastPage=nextn.NumberOfPages />
 	</cfif>
-	
+
+	<cfif (nextn.lastPage - nextn.firstPage) lt (2 * arguments.pageBuffer)>
+		<cfset nextn.firstPage = max(1, nextn.lastPage - (2 * arguments.pageBuffer)) />
+	</cfif>
+
 	<cfset nextn.next=nextn.CurrentPageNumber+1 />
-	
+
 	<cfset nextn.next=(nextn.next*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
-	
+
 	<cfset nextn.previous=nextn.CurrentPageNumber-1 />
-	
+
 	<cfif nextn.previous lt 1>
 		<cfset nextn.previous=1 />
 	</cfif>
-	
+
 	<cfset nextn.previous=(nextn.previous*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
-	
+
 	<cfset nextn.through=iif(nextn.totalRecords lt nextn.next,nextn.totalrecords,nextn.next-1)>
 
 	<cfif nextn.next gt nextn.totalrecords>
@@ -134,7 +138,7 @@
 	</cfif>
 
 	<cfset nextn.startrow=arguments.startrow>
-	
+
 	<cfreturn nextn />
 </cffunction>
 
@@ -153,7 +157,7 @@
 	</CFLOOP>
 
 <cfreturn str />
-</cffunction> 
+</cffunction>
 
 <cffunction name="createRequiredSiteDirectories" returntype="void" output="false" access="public">
 <cfargument name="siteid" type="string" default="" required="yes"/>
@@ -161,25 +165,25 @@
 	<cfset var webroot=expandPath('/muraWRM')>
 
 	<!--- make sure that the file cache directory exists, for node level files --->
-	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")> 
-	
-		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")> 
+	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")>
+
+		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")>
 			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")>
 		</cfif>
-	
-		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")> 
+
+		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")>
 			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")>
 		</cfif>
-		
+
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")>
 	</cfif>
-	
+
 	<!--- make sure that the asset directory exists, for fckeditor assets --->
-	<cfif not directoryExists("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")> 
+	<cfif not directoryExists("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 	</cfif>
 
-	<cfif variables.configBean.getSiteIDInURLS() and not fileExists("#webroot#/#arguments.siteid#/index.cfm")> 
+	<cfif variables.configBean.getSiteIDInURLS() and not fileExists("#webroot#/#arguments.siteid#/index.cfm")>
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/index.template.cfm", destination="#webroot#/#arguments.siteid#/index.cfm")>
 	</cfif>
 
@@ -189,30 +193,30 @@
 		<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
 	</cfif>
 
-	<cfif not directoryExists(basedir)> 
+	<cfif not directoryExists(basedir)>
 		<cfset variables.fileWriter.createDir(directory=basedir)>
 	</cfif>
 
-	<cfif not fileExists("#basedir#/contentRenderer.cfc")> 
+	<cfif not fileExists("#basedir#/contentRenderer.cfc")>
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/contentRenderer.template.cfc", destination="#basedir#/contentRenderer.cfc")>
 	</cfif>
 
-	<cfif not fileExists("#basedir#/Application.cfc")> 
+	<cfif not fileExists("#basedir#/Application.cfc")>
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/application.template.cfc", destination="#basedir#/Application.cfc")>
 	</cfif>
 
-	<cfif not fileExists("#basedir#/eventHandler.cfc")> 
+	<cfif not fileExists("#basedir#/eventHandler.cfc")>
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/eventHandler.template.cfc", destination="#basedir#/eventHandler.cfc")>
 	</cfif>
 
-	<cfif not directoryExists("#basedir#/email")> 
+	<cfif not directoryExists("#basedir#/email")>
 		<cfset variables.fileWriter.createDir(directory="#basedir#/email")>
 	</cfif>
 
-	<cfif not fileExists("#basedir#/email/inc_email.cfm")> 
+	<cfif not fileExists("#basedir#/email/inc_email.cfm")>
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/email.template.cfm", destination="#basedir#/email/inc_email.cfm")>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="logEvent" returntype="void" output="false" access="public">
@@ -232,7 +236,7 @@
 
 	<cfset msg="#msg# By #user# from #remoteAddr#" />
 
-	<cflog 
+	<cflog
 		text="#msg#"
 		file="#arguments.file#"
 		type="#arguments.type#"
@@ -263,24 +267,24 @@
 	<cfargument name="baseDir" default="" required="yes">
 	<cfset var rs=""/>
 	<cfdirectory directory="#baseDir#" name="rs" action="delete" recurse="yes">
-	
+
 </cffunction>
 
 <cffunction name="arrayFind" returntype="numeric">
 	<cfargument name="array" required="yes" type="array">
 	<cfargument name="stringa" required="yes" type="string">
 		<cfset var i=0>
-		
+
 		<cfif stringa is "">
 		<cfreturn i>
 		</cfif>
-		
+
 		<cfloop index="i" from="1" to="#arrayLen(array)#">
 		<cfif array[i] is stringa>
 		<cfreturn i>
 		</cfif>
 		</cfloop>
-	
+
 	<cfreturn i>
 </cffunction>
 
@@ -306,7 +310,7 @@
 		#createODBCDateTime(now())#
 		)
 	</cfquery>
-	
+
 	<cfreturn redirectID />
 </cffunction>
 
@@ -385,7 +389,7 @@ delim = Replace(delim, "_Separator_", "|", "ALL");
 
 list = rereplace(list, "(" & delim & ")(" & delim & ")", "\1" & nullString & "\2", "ALL");
 list = rereplace(list, "(" & delim & ")(" & delim & ")", "\1" & nullString & "\2", "ALL");
-    
+
 return list;
 </cfscript>
 </cffunction>
@@ -438,16 +442,16 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 
 <cffunction name="queryRowToStruct" access="public" output="false" returntype="struct">
 	<cfargument name="qry" type="query" required="true">
-		
+
 		<cfscript>
 			/**
 			 * Makes a row of a query into a structure.
-			 * 
-			 * @param query 	 The query to work with. 
-			 * @param row 	 Row number to check. Defaults to row 1. 
-			 * @return Returns a structure. 
-			 * @author Nathan Dintenfass (nathan@changemedia.com) 
-			 * @version 1, December 11, 2001 
+			 *
+			 * @param query 	 The query to work with.
+			 * @param row 	 Row number to check. Defaults to row 1.
+			 * @return Returns a structure.
+			 * @author Nathan Dintenfass (nathan@changemedia.com)
+			 * @version 1, December 11, 2001
 			 */
 			//by default, do this to the first row of the query
 			var row = 1;
@@ -463,7 +467,7 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 			//loop over the cols and build the struct from the query row
 			for(ii = 1; ii lte arraylen(cols); ii = ii + 1){
 				stReturn[cols[ii]] = arguments.qry[cols[ii]][row];
-			}		
+			}
 			//return the struct
 			return stReturn;
 		</cfscript>
@@ -474,7 +478,7 @@ Author: John Mason, mason@fusionlink.com
 Blog: www.codfusion.com--->
 <cffunction name="isValidCFVariableName" output="false" access="public" returntype="Any">
 	<cfargument name="text" required="true" type="String">
-	<cfset var local = StructNew()/>	
+	<cfset var local = StructNew()/>
 	<cfset local.result = true/>
 
 	<cfif len(arguments.text) eq 0>
@@ -491,26 +495,41 @@ Blog: www.codfusion.com--->
 </cffunction>
 
 <cffunction name="setSessionCookies">
-	<cfif application.configBean.getSecureCookies()>
+	<cfif application.configBean.getSecureCookies() or len(application.configBean.getSessionCookiesExpires())>
 		<cftry>
 			<cfif isdefined('session.CFID')>
+				<!--- Lucee uses lowercase cookies the setCookie method allows it to maintain case--->
 				<cfif server.coldfusion.productname neq 'Coldfusion Server'>
-					<cfset setCookie('cfid', session.CFID, "never", "", "/", true, true, true)>
-					<cfset setCookie('cftoken', session.CFTOKEN, "never", "", "/", true, true, true)>
+					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
+						<cfset setCookie('cfid', session.CFID,"", "", "/", application.configBean.getSecureCookies(), true, true)>
+						<cfset setCookie('cftoken', session.CFTOKEN, "", "", "/", application.configBean.getSecureCookies(), true, true)>
+					<cfelse>
+						<cfset setCookie('cfid', session.CFID, application.configBean.getSessionCookiesExpires(), "", "/", application.configBean.getSecureCookies(), true, true)>
+						<cfset setCookie('cftoken', session.CFTOKEN, application.configBean.getSessionCookiesExpires(), "", "/", application.configBean.getSecureCookies(), true, true)>
+					</cfif>
 				<cfelse>
-					<cfcookie name="CFID" value="#session.CFID#" expires="never" secure="true" httpOnly="true"/>
-					<cfcookie name="CFTOKEN" value="#session.CFTOKEN#" expires="never" secure="true" httpOnly="true"/>
+					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
+						<cfcookie name="CFID" value="#session.CFID#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+						<cfcookie name="CFTOKEN" value="#session.CFTOKEN#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+					<cfelse>
+						<cfcookie name="CFID" value="#session.CFID#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+						<cfcookie name="CFTOKEN" value="#session.CFTOKEN#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+					</cfif>
 				</cfif>
 			</cfif>
 			<cfif isdefined('session.jsessionid')>
-				<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="never" secure="true" httpOnly="true"/>
+				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
+					<cfcookie name="JSESSIONID" value="#session.jsessionid#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+				<cfelse>
+					<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+				</cfif>
 			</cfif>
 		<cfcatch></cfcatch>
 		</cftry>
 	</cfif>
 </cffunction>
 
-<!--- 
+<!---
 Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 <cffunction name="SetCookie" hint="Replacement for cfcookie that handles httponly cookies" output="false" returntype="void">
     <cfargument name="name" type="string" required="true">
@@ -563,9 +582,9 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
         <cfset c = c & "secure;">
     </cfif>
     <cfif Arguments.httponly>
-        <cfset c = c & "httponly;">
+        <cfset c = c & "HttpOnly;">
     </cfif>
-    <cfheader name="Set-Cookie" value="#c#" />
+    <cfheader name="SET-COOKIE" value="#c#" />
 </cffunction>
 
 <cffunction name="fixQueryPaths" output="false">
@@ -581,27 +600,27 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
     <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
     <cfargument name="reseedFrequency" default="#variables.configBean.getBCryptReseedFrequency()#" hint="How often to re-seed." >
     <cfif structKeyExists(variables, "cryptoSaltSct") >
-            
-            <cfset var minutesSinceSaltCreated = 
+
+            <cfset var minutesSinceSaltCreated =
                     dateDiff(
                             "n",
                             variables.cryptoSaltSct.dateTimeCreated,
                             now()
                     )
             />
-            
+
             <cfif minutesSinceSaltCreated GTE reseedFrequency >
                     <cfset this.setCryptoSalt(arguments.logRounds) />
             </cfif>
-            
+
     <cfelse>
-            
+
             <cfset this.setCryptoSalt(arguments.logRounds) />
-            
+
     </cfif>
-    
+
     <cfreturn variables.cryptoSaltSct.salt />
-        
+
 </cffunction>
 
 <cffunction name="setCryptoSalt" returntype="void" output="true" >
@@ -614,7 +633,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 
 <cffunction name="toBCryptHash" output="false">
         <cfargument name="string">
-        <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">        
+        <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
         <cfset var hash = getBCrypt().hashpw(JavaCast('string',arguments.string), this.getCryptoSalt(logRounds=arguments.logRounds) )>
         <cfreturn hash >
 </cffunction>
@@ -630,7 +649,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
         </cfcatch>
         </cftry>
         <cfreturn match />
-</cffunction>            		
+</cffunction>
 
 <cffunction name="checkForInstanceOf" output="false">
 	<cfargument name="obj">
@@ -658,7 +677,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			</div>
 		</cfoutput>
 	</cfsavecontent>
-	
+
 	<cfreturn trace>
 </cffunction>
 
@@ -667,7 +686,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		<cfset var rsmeta=getMetaData(arguments.rs)>
 		<cfset var clobArray=arrayNew(1)>
 		<cfset var i=1>
-		
+
 		<cfif arrayLen(rsmeta)>
 		<cfloop from="1" to="#arrayLen(rsmeta)#" index="i">
 			<cfif rsmeta[i].typename eq "clob">
@@ -675,7 +694,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			</cfif>
 		</cfloop>
 		</cfif>
-		
+
 		<cfif arrayLen(clobArray)>
 		<cfloop query="arguments.rs">
 			<cfloop from="1" to="#arrayLen(clobArray)#" index="i">
@@ -691,7 +710,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		<cfargument name="maxlen" type="numeric" required="false" default="100" hint="Maximum length">
 		<cfargument name="finishlist" type="string" required="false" default=".|?|!" hint="List of finish symbols">
 		<cfargument name="finishdelim" type="string" required="false" default="|" hint="Deliemiter for List of finish symbols">
- 
+
 		<cfset var sOutText = "">
  		<cfset var sLastSym = "">
  		<cfset var iFinish="">
@@ -699,7 +718,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
  		<cfset var iTemp="">
 
 		<cfset sOutText = ReReplace(arguments.str, "<[^>]*>","","all") />
- 
+
 		<CFIF Find('[break]', sOutText)>
 			<CFSET sOutText = Left(sOutText, Find('[break]', sOutText)-1)>
 		<CFELSE>
@@ -720,7 +739,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 				</CFTRY>
 			</CFIF>
 		</CFIF>
- 
+
 		<CFRETURN sOutText>
 	</cffunction>
 
@@ -756,7 +775,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			var secret = $.siteConfig('reCAPTCHASecret');
 
 			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
-				var reCaptcha = new mura.ReCAPTCHA(secret);
+				var reCaptcha = new mura.reCAPTCHA(secret);
 				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=cgi.remote_addr);
 			}
 
@@ -849,7 +868,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 
 	</style>
 	<div class="mura-core-errorBox">
-		<h2>500 Error</h2>	
+		<h2>500 Error</h2>
 		<cfif isDefined("arguments.exception.Cause")>
 			<cfset var errorData=arguments.exception.Cause>
 		<cfelse>
@@ -909,7 +928,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			</cfloop>
 		</cfif>
 	</div>
-</cfoutput>	
+</cfoutput>
 </cfsavecontent>
 
 <cfreturn local.str>
@@ -921,9 +940,9 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfif len(arguments.href) and listFindNoCase("http,https",listFirst(arguments.href,":"))>
 		<cfset var returnProtocol = listFirst(arguments.href,':') />
 		<cfset var returnDomain = reReplace(arguments.href, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
-		
+
 		<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginList(),returnProtocol & "://" & returnDomain) and len(returnDomain)>
-			<cfif len(cgi.http_host)>	
+			<cfif len(cgi.http_host)>
 				<cfset arguments.href=replace(arguments.href,returnDomain,listFirst(cgi.http_host,":"))>
 			<cfelse>
 				<cfset arguments.href=replace(arguments.href,returnDomain,cgi.server_name)>
@@ -981,7 +1000,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 				for (counter=1;counter LTE strlen;counter=counter + 1) {
 			 		frontpointer = counter + 1;
 					if (Mid(str, counter, 1) is " ") {
-						newstring = newstring & ' ' & ucase(Mid(str, frontpointer, 1)); 
+						newstring = newstring & ' ' & ucase(Mid(str, frontpointer, 1));
 						counter = counter + 1;
 					} else {
 						if (counter is 1) {

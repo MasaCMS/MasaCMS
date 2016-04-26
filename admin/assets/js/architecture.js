@@ -1,33 +1,33 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -35,15 +35,15 @@
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	verion 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
- 
+
 var siteManager = {
 
 	formSubmitted: false,
@@ -83,7 +83,7 @@ var siteManager = {
 			for(i=0;i<dialogs.length;i++){
 				if(i == handled){
 					var dialog=dialogs[i];
-					
+
 					if(dialog.type.toLowerCase()=='confirmation'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
@@ -97,7 +97,7 @@ var siteManager = {
 							confirmDialog($.extend(dialog,{yesAction:function(){handled++; submit()}}));
 
 							return false
-						} 
+						}
 					} else if (dialog.type.toLowerCase()=='alert'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
@@ -138,7 +138,7 @@ var siteManager = {
 				if(siteManager.assigningChangeset){
 					$("#changesetID").val(currentChangesetSelection);
 					$("#removePreviousChangeset").val(document.getElementById("_removePreviousChangeset").checked);
-					
+
 					if(currentChangesetSelection=='other'){
 						$("#changesetname").val($("#_changesetname").val());
 					} else {
@@ -147,6 +147,7 @@ var siteManager = {
 				}
 
 				siteManager.formSubmitted = true;
+
 				actionModal(function(){document.contentForm.submit()});
 			}
 		}
@@ -154,7 +155,7 @@ var siteManager = {
 		submit();
 	},
 
-	ckContent: function(draftremovalnotice) {
+	ckContent: function(draftremovalnotice,validateOnly) {
 
 		var autosave=false;
 
@@ -164,7 +165,7 @@ var siteManager = {
 			document.contentForm.cancelpendingapproval.value='false';
 			document.contentForm.approved.value=0;
 		}
-		
+
 		if (typeof(isFormBuilder) != "undefined") {
 			var checkComplete = siteManager.saveFormBuilder();
 			if(!checkComplete) {
@@ -219,6 +220,9 @@ var siteManager = {
 			return false;
 		}
 
+		if(!validateForm(document.contentForm)){
+			return false;
+		}
 
 		if(document.contentForm.approved.value == 1 && draftremovalnotice != "" && !confirm(draftremovalnotice)) {
 			return false;
@@ -243,73 +247,77 @@ var siteManager = {
 			return false;
 		}
 
-		if(!autosave && typeof(this.hasNodeLock) != 'undefined' && this.hasNodeLock && !this.nodeLockConfirmed) {
-//			alert('b')
-			confirmDialog(this.unlocknodeconfirm, function() {
-				//alert('true')
-				$("#unlocknodewithpublish").val("true");
-				if(siteManager.ckContent(false)) {
-					siteManager.submitContentForm();
-				}
-			}, function() {
-				//alert('false')
-				$("#unlocknodewithpublish").val("false");
-				if(siteManager.ckContent(false)) {
-					siteManager.submitContentForm();
-				}
-			});
-
-			this.nodeLockConfirmed = true;
-			return false;
-		}
-
-		//alert(document.contentForm.muraPreviouslyApproved)
-		//alert(document.contentForm.approved.value)
-		//alert(cancelPendingApproval)
-
-		if(!autosave && document.contentForm.muraPreviouslyApproved.value == 0 && document.contentForm.approved.value == 1){
-		 if(typeof(currentChangesetID) != 'undefined' && currentChangesetID != '') {
-
-				confirmDialog(publishitemfromchangeset, function() {
-					siteManager.submitContentForm();
-				});
-
-				return false;
-			} else if(pendingApproval != 'undefined' && pendingApproval) {
-
-				confirmDialog(cancelPendingApproval, 
-					function() {
-						document.contentForm.cancelpendingapproval.value='true';
-						siteManager.submitContentForm();
-					},
-					 function() {
-						document.contentForm.cancelpendingapproval.value='false';
+		if(!validateOnly){
+			if(!autosave && typeof(this.hasNodeLock) != 'undefined' && this.hasNodeLock && !this.nodeLockConfirmed) {
+	//			alert('b')
+				confirmDialog(this.unlocknodeconfirm, function() {
+					//alert('true')
+					$("#unlocknodewithpublish").val("true");
+					if(siteManager.ckContent(false)) {
 						siteManager.submitContentForm();
 					}
-				);
+				}, function() {
+					//alert('false')
+					$("#unlocknodewithpublish").val("false");
+					if(siteManager.ckContent(false)) {
+						siteManager.submitContentForm();
+					}
+				});
 
+				this.nodeLockConfirmed = true;
 				return false;
+			}
+
+			//alert(document.contentForm.muraPreviouslyApproved)
+			//alert(document.contentForm.approved.value)
+			//alert(cancelPendingApproval)
+
+			if(!autosave && document.contentForm.muraPreviouslyApproved.value == 0 && document.contentForm.approved.value == 1){
+			 if(typeof(currentChangesetID) != 'undefined' && currentChangesetID != '') {
+
+					confirmDialog(publishitemfromchangeset, function() {
+						siteManager.submitContentForm();
+					});
+
+					return false;
+				} else if(pendingApproval != 'undefined' && pendingApproval) {
+
+					confirmDialog(cancelPendingApproval,
+						function() {
+							document.contentForm.cancelpendingapproval.value='true';
+							siteManager.submitContentForm();
+						},
+						 function() {
+							document.contentForm.cancelpendingapproval.value='false';
+							siteManager.submitContentForm();
+						}
+					);
+
+					return false;
+				} else {
+					siteManager.submitContentForm();
+					return false;
+				}
 			} else {
-				siteManager.submitContentForm();
-				return false;
+				if(autosave){
+					var data= new FormData(document.contentForm)
+					$.ajax({
+					    url: $(document.contentForm).attr("action"),
+					    type: "post",
+					    data: data
+					});
+				} else {
+					siteManager.submitContentForm();
+					return false;
+				}
 			}
 		} else {
-			if(autosave){
-				var data= new FormData(document.contentForm)
-				$.ajax({
-				    url: $(document.contentForm).attr("action"),
-				    type: "post",
-				    data: data
-				});
-			} else {
-				siteManager.submitContentForm();
-				return false;
-			}
+			return true;
 		}
 
 	},
 
- 
+
 	//  DHTML Menu for Site Summary
 	DHTML: (document.getElementById || document.all || document.layers),
 	lastid: "",
@@ -334,7 +342,7 @@ var siteManager = {
 			return true;
 		}
 		else {
-			return false;			
+			return false;
 		}
 	},
 
@@ -603,7 +611,7 @@ buttons: {
 		var url = './';
 		var pars = 'muraAction=cArch.siteParents&compactDisplay=true&siteid=' + siteid + '&contentid=' + contentid + '&parentid=' + parentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = $('#mover2');
-		
+
 		$.get(url + "?" + pars, function(data) {
 			//$('#mover2 .load-inline').spin(false);
 			$('#mover2').html(data);
@@ -624,13 +632,15 @@ buttons: {
 	loadObjectClass: function(siteid, classid, subclassid, contentid, parentid, contenthistid) {
 		var url = './';
 		var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
-		var d = $('#configurator');
-		var id = '#configurator';
-		
-		if(!d.length){
-			$('#classList')
-			id= '#classList';
+
+		if(this.configuratorMode=='backEnd'){
+			var d=$('#classList');
+			var id= '#classList';
+		} else {
+			var d = $('#configurator');
+			var id = '#configurator';
 		}
+
 
 		d.html('<div class="load-inline"></div>');
 		$( id + ' .load-inline').spin(spinnerArgs2);
@@ -697,7 +707,7 @@ buttons: {
 		return false;
 	},
 
-	
+
 	bindDelete: function () {
 		$('a.delete').click(function(){
 			var contentid=$(this).parent().attr('data-contentid');
@@ -708,7 +718,7 @@ buttons: {
 			$('#mura-rc-quickedit').hide();
 		});
 	},
-		
+
 	bindMouse: function () {
 		$(".rcSortable li.item:not(.empty), .rcDraggable li.item").mouseup(function(event){
 			// left mouse button only
@@ -743,18 +753,18 @@ buttons: {
 			if ($(this).find('li.item').length == 1) {
 				$(this).find('li.empty').removeClass('noShow');
 			} else {
-				$(this).find('li.empty').addClass('noShow');	
+				$(this).find('li.empty').addClass('noShow');
 			}
 		});
 	},
-	
+
 	enableBuckets: function () {
 		$(".rcSortable").each(function(index){
 			$(this).sortable("enable");
 			$(this).parent().removeClass('disabled');
 		});
 	},
-	
+
 	disableBuckets: function (el) {
 		$(".rcSortable").each(function(index){
 			// ignore parent container
@@ -772,14 +782,14 @@ buttons: {
 			}
 		});
 	},
-	
-	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch,external) {
+
+	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch,external,relatedcontentsetid) {
 		if(typeof external == 'undefined'){
 			external =true;
 		}
 		var url = './';
-		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
-		
+		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&relatedcontentsetid=' + relatedcontentsetid + '&' + values + '&cacheid=' + Math.random();
+
 		var d = $('#selectRelatedContent');
 		d.html('<div class="load-inline"></div>');
 		$('#selectRelatedContent .load-inline').spin(spinnerArgs2);
@@ -805,23 +815,23 @@ buttons: {
 			}).disableSelection();
 
 			setDatePickers(".mura-relatedContent-datepicker", dtLocale, dtCh);
-			
+
 			$('#aAdvancedSearch').click(function(e){
 				e.preventDefault();
 				$('#rcAdvancedSearch').slideToggle('fast');
-			});	
-			
+			});
+
 			if (isNew == 0 && advSearch == true) {
 				$('#rcAdvancedSearch').show();
 				$('#aAdvancedSearch').addClass('active');
 			}
-			
+
 			siteManager.bindMouse();
 			setCheckboxTrees();
 			siteManager.setupRCQuikEdit();
-			
+
 			$('#rcAdvancedSearch').find('ul.categories:not(.checkboxTrees)').css("margin-left", "10px");
-			
+
 			$('.mura-rc-quickoption').each(function(){
 				siteManager.setupRCResultIcon($(this));
 			});
@@ -832,10 +842,10 @@ buttons: {
 				var valueSelector = '#internalContent input';
 				// if doing an advanced search, then serialze all elements
 				if (advSearching) {
-					valueSelector = '#selectRelatedContent input, #selectRelatedContent select';	
+					valueSelector = '#selectRelatedContent input, #selectRelatedContent select';
 				}
-				$('#mura-rc-quickedit').hide();				
-				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching,external);
+				$('#mura-rc-quickedit').hide();
+				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching,external,relatedcontentsetid);
 			});
 		});
 	},
@@ -844,13 +854,13 @@ buttons: {
 		var url = './';
 		relatedcontentsetid=relatedcontentsetid||'';
 		relateditems=relateditems||'[]';
-	
+
 		if(typeof external == 'undefined'){
 			external =true;
 		}
 
 		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&relatedcontentsetid=' + relatedcontentsetid + '&relateditems=' + relateditems + '&external=' + external +'&cacheid=' + Math.random();
-		
+
 		var d = $('#selectedRelatedContent');
 		d.html('<div class="load-inline"></div>');
 		$('#selectedRelatedContent .load-inline').spin(spinnerArgs2);
@@ -861,7 +871,7 @@ buttons: {
 			$('#selectedRelatedContent .load-inline').spin(false);
 			d.html(data);
 
-			siteManager.setupRCSortable(contentid,external);
+			siteManager.setupRCSortable(contentid,external,relatedcontentsetid);
 		});
 
 	},
@@ -870,18 +880,18 @@ buttons: {
 		if($('#selectedRelatedContent').find('li[data-contentid="'+ el.val() + '"]').length){
 			el.find('i').attr('class','icon-ok-sign');
 		} else {
-			el.find('i').attr('class','icon-plus-sign');	
+			el.find('i').attr('class','icon-plus-sign');
 		}
 	},
 
-	setupRCQuikEdit: function(){	
+	setupRCQuikEdit: function(){
 
 		$('.mura-rc-quickoption').each(function(){
 
 			$(this).unbind('on').on('click',function(){
 				var $contentid=$(this).val();
 				var $currentItem=$('#selectRelatedContent').find('li[data-contentid="' + $contentid + '"]');
-				
+
 				$('#mura-rc-quickedit').show();
 				$('#mura-rc-quickedit').offset({top:$(this).offset().top});
 
@@ -896,12 +906,12 @@ buttons: {
 
 					// ignore parent container
 					if (!($sortable.attr('id') == $currentItem.parent().attr('id'))) {
-					
+
 						if ($sortable.attr('data-accept').length > 0 && $sortable.attr('data-accept').indexOf($currentItem.attr('data-content-type')) == -1) {
 							$($this).attr('disabled',true);
 						}
 					}
-					
+
 					$(this).unbind('change');
 					$(this).prop('checked',isInSet());
 					$(this).on("change",function(){
@@ -920,18 +930,18 @@ buttons: {
 						siteManager.bindDelete();
 						siteManager.bindMouse();
 						siteManager.updateRCForm();
-					});		
+					});
 				});
 			});
 
 		});
 	},
 
-	setupRCSortable: function(contentid,external) {
+	setupRCSortable: function(contentid,external,relatedcontentsetid) {
 		if(typeof external == 'undefined'){
 			external =true;
 		}
-		
+
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
 			revert: true,
@@ -949,23 +959,23 @@ buttons: {
 			},
 			cancel: "li.empty"
 		}).disableSelection();
-	
-		siteManager.loadRelatedContent(contentid,siteid, 1, '', false,external);
+
+		siteManager.loadRelatedContent(contentid,siteid, 1, '', false,external,relatedcontentsetid);
 		siteManager.bindDelete();
 		siteManager.bindMouse();
 		siteManager.updateRCForm();
 		siteManager.setupRCQuikEdit();
 	},
-	
+
 	updateRCForm: function() {
 		var aBuckets = new Array();
-		
+
 
 		$(".rcSortable").each(function(){
 			var aItems = new Array();
 			var bucket = new Object;
 			$(this).find('.mura-rc-quickoption').remove();
-			
+
 			$(this).find('li.item:not(.empty)').each(function(){
 				if(typeof($(this).attr('data-url')) == 'undefined' ){
 					aItems.push($(this).attr('data-contentid'));
@@ -985,8 +995,8 @@ buttons: {
 		});
 		$("#relatedContentSetData").val(JSON.stringify(aBuckets));
 	},
-		
-	
+
+
 	setDirtyRelatedContent: function () {
 		this.dirtyRelatedContent = true;
 	},
@@ -1017,7 +1027,7 @@ buttons: {
 	                    element.options[j].defaultSelected)
 	                {
 	                    return true;
-	                } 
+	                }
 	            }
 	        }
 	        */
@@ -1097,7 +1107,7 @@ buttons: {
 		siteManager.loadRelatedContentSets(contentid,contentHistID,type,subType,_siteID);
 
 		$.ajax({
-			url:url + "?" + pars, 
+			url:url + "?" + pars,
 			dataType: 'text',
 			success: function(data) {
 				siteManager.setExtendedAttributes(data);
@@ -1123,7 +1133,7 @@ buttons: {
 		} else {
 			$('#tabExtendedAttributesLI').removeClass('hide');
 		}
-		
+
 		if(!r['hasconfigurator']) {
 			$('#tabListDisplayOptionsLI').addClass('hide');
 		} else {
@@ -1149,7 +1159,7 @@ buttons: {
 				showBodyEditor();
 			}
 		}
-		
+
 		if(!r.hasassocfile) {
 			$('#assocFileContainer').hide();
 			$("input[name='newfile']").val('');
@@ -1302,7 +1312,7 @@ buttons: {
 		// return false;
 		$.ajax({
 			url: url + "?" + pars,
-			dataType: 'text', 
+			dataType: 'text',
 			success: function(data) {
 				try {
 					var r = eval("(" + data + ")");
@@ -1316,7 +1326,7 @@ buttons: {
 					siteManager.initQuickEdits();
 					initDraftPrompt();
 					setToolTips("#gridContainer");
-					if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {	
+					if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
 						$("#sortableKids").sortable({
 							stop: function(event, ui) {
 								stripe('stripe');
@@ -1346,7 +1356,7 @@ buttons: {
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 		        console.log("error " + textStatus);
-		    
+
 		    }
 		});
 
@@ -1368,7 +1378,7 @@ buttons: {
 			flatViewArgs.subtype = '';
 		}
 		var categoryid = [];
-		
+
 
 		$(".categories :checked").each(
 
@@ -1396,7 +1406,7 @@ buttons: {
 					function() {
 						if($(this).val().length){
 							tags.push($(this).val());
-						}	
+						}
 					}
 				);
 
@@ -1417,7 +1427,7 @@ buttons: {
 		$('#gridContainer').html('<div class="load-inline"></div>');
 		$('#viewTabs a[href="#tabArchitectural"]').tab('show');
 		loader();
-		//document.getElementById("newContentMenu").style.visibility="hidden"; 
+		//document.getElementById("newContentMenu").style.visibility="hidden";
 		return false;
 	},
 
@@ -1450,14 +1460,14 @@ buttons: {
 				url:'?muraAction=carch.loadtagarray&siteid=' + siteid,
 				dataType: 'text',
 				success:function(data){
-					var tagArray=eval('(' + data + ')'); 
+					var tagArray=eval('(' + data + ')');
 					$('#tags').tagSelector(tagArray, 'tags');
 				}
 			});
 
 			if(customtaggroups.length){
 				for(var g=0;g < customtaggroups.length; g++){
-					
+
 					if(window[customtaggroups[g]]){
 						$('#' + customtaggroups[g] + 'tags').tagSelector(window[customtaggroups[g]], customtaggroups[g] + 'tags');
 					}else{
@@ -1465,12 +1475,12 @@ buttons: {
 								context:{taggroup:customtaggroups[g]},
 								dataType: 'test',
 								success:function(data){
-									window[this.taggroup]=eval('(' + data + ')'); 
+									window[this.taggroup]=eval('(' + data + ')');
 									$('#' + this.taggroup + 'tags').tagSelector(window[this.taggroup], this.taggroup + 'tags');
 								}
 							});
 					}
-					
+
 				}
 			}
 
@@ -1551,7 +1561,7 @@ buttons: {
 
 			});
 			initDraftPrompt();
-		
+
 			d.hide().animate({
 				'opacity': 'show'
 			}, 1000);
@@ -1594,22 +1604,22 @@ buttons: {
 					1000
 				);
 
-				
-		
+
+
 
 				icon.removeClass('hasChildren closed');
 				icon.addClass('hasChildren open');
 
 				//d.find(".loadProgress").show();
 				$.ajax({
-					url: url + "?" + pars, 
+					url: url + "?" + pars,
 					dataType: 'text',
 					success: function(data) {
 						try {
 							var r = eval("(" + data + ")");
-						
+
 							node.find('.mura-section:first').remove();
-							
+
 							node.append(r.html);
 
 							$('#newContentMenu').addClass('hide');
@@ -1625,7 +1635,7 @@ buttons: {
 							if(data.indexOf('mura-primary-login-token') != -1) {
 								location.href = './';
 							}
-							
+
 							node.append(data);
 						}
 
@@ -1647,7 +1657,7 @@ buttons: {
 					siteManager.sectionLoading = false;
 				});
 
-				
+
 
 			}
 		}
@@ -1661,7 +1671,7 @@ buttons: {
 			var pars = 'muraAction=cArch.refreshSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 
 			$.ajax({
-				url:url + "?" + pars, 
+				url:url + "?" + pars,
 				dataType: 'text',
 				success: function(data) {
 					try {
@@ -1736,6 +1746,11 @@ buttons: {
 
 						setDatePickers(".mura-quickEdit-datepicker", dtLocale, dtCh);
 						setToolTips(".mura-quickEdit-datepicker");
+
+						setDatePickers("#mura-datepicker-displayStart", dtLocale, dtCh);
+						setDatePickers("#mura-datepicker-displayStop", dtLocale, dtCh);
+						setDatePickers("#displayIntervalEndOn", dtLocale, dtCh);
+
 						if($("#hasDraftsMessage").length) {
 							dd.addClass("hasDraft");
 						}
@@ -1760,7 +1775,7 @@ buttons: {
 		$(".mura-quickEditItem").toggle(
 
 		function(event) {
-			
+
 			event.preventDefault();
 			if(!this.activeQuickEdit) {
 
@@ -1850,11 +1865,23 @@ buttons: {
 			}
 			*/
 
-			var attributeParams = {
-				'display': $("#mura-quickEdit-display").val(),
-				'displayStop': $("#mura-quickEdit-displayStop").val(),
-				'displayStart': $("#mura-quickEdit-displayStart").val(),
+			if($("#displayInterval").length){
+
+				var attributeParams = {
+					'display': $("#mura-display").val(),
+					'displayStop': $("#mura-displayStop").val(),
+					'displayStart': $("#mura-displayStart").val(),
+					'displayInterval': $("#displayInterval").val()
+				}
+
+			} else {
+				var attributeParams = {
+					'display': $("#mura-quickEdit-display").val(),
+					'displayStop': $("#mura-quickEdit-displayStop").val(),
+					'displayStart': $("#mura-quickEdit-displayStart").val()
+				}
 			}
+
 
 		}
 
@@ -1871,7 +1898,7 @@ buttons: {
 						location.href = './';
 					}
 					var parentNode = node.parents("li:first");
-					
+
 					if(parentNode.parents('li:first').length) {
 						siteManager.refreshSiteSection(parentNode, 1)
 					} else {
@@ -1891,7 +1918,7 @@ buttons: {
 				location.href = './';
 			}
 			var parentNode = node.parents("li:first");
-			
+
 			if(parentNode.parents('li:first').length) {
 				siteManager.refreshSiteSection(parentNode, 1)
 			} else {
@@ -1914,12 +1941,13 @@ buttons: {
 
 		function(event) {
 			event.preventDefault();
-
+			/*
 			$(this).data('clicked',!$(this).data('clicked'));
 
 		    if ($(this).data('clicked'))
 		        {
-				
+			*/
+
 				var node = $(this).parents("li:first");
 				var cattrim = node.attr("data-cattrim");
 
@@ -1981,10 +2009,11 @@ buttons: {
 					},
 				  dataType: 'text'
 				});
-
+			/*
 			} else {
 				siteManager.closeQuickEdit();
 			}
+			*/
 		});
 	},
 
@@ -2126,7 +2155,7 @@ buttons: {
 
 		//if the tmpValue evaluated into a js object pull out it's values
 		var checkSelection = false;
-		
+
 		if(typeof(tmpObject) == "object") {
 			//object^name^objectID^params
 			tmpObject.regionid = regionid;
@@ -2195,9 +2224,9 @@ buttons: {
 			if(tmpObject.object == 'plugin') {
 				if(configure){
 					if(tmpObject.objectid && tmpObject.objectid.toLowerCase() != 'none'){
-					
+
 						var configurator = this.getPluginConfigurator(tmpObject.objectid);
-					
+
 						if(configurator != '') {
 							window[configurator](tmpObject);
 							return false;
@@ -2209,9 +2238,9 @@ buttons: {
 					} else if(siteManager.layoutmanager){
 						this.initGenericConfigurator(tmpObject);
 					}
-				} 
+				}
 
-				checkSelection = true;	
+				checkSelection = true;
 			}
 
 			if(siteManager.layoutmanager){
@@ -2219,17 +2248,19 @@ buttons: {
 				if(configure) {
 					if(siteManager.objectHasConfigurator(tmpObject)){
 						siteManager.configuratorMap[tmpObject.object].initConfigurator(tmpObject);
+					} else {
+						this.initGenericConfigurator(tmpObject);
 					}
 				}
 
 				checkSelection = true;
 			}
-			
+
 
 			tmpValue = tmpObject.object;
 			tmpValue = tmpValue + "~" + tmpObject.name;
 			tmpValue = tmpValue + "~" + tmpObject.objectid;
-			
+
 			if(typeof(tmpObject.params) == "string") {
 				tmpValue = tmpValue + "~" + tmpObject.params;
 			} else if(typeof(tmpObject.params) == "object") {
@@ -2331,7 +2362,7 @@ buttons: {
 	initFeedConfigurator: function(data) {
 
 		/*
-		if(typeof(data.object) !='undefined'){	
+		if(typeof(data.object) !='undefined'){
 			if(data.object !='feed'){
 				return false;
 			}
@@ -2355,7 +2386,7 @@ buttons: {
 						$("#configuratorHeader").html(localIndexConfiguratorTitle);
 					} else {
 						$("#configuratorContainer").dialog('option','title',localIndexConfiguratorTitle);
-					}		
+					}
 				}
 
 				if($("#availableListSort").length) {
@@ -2392,7 +2423,7 @@ buttons: {
 	initFolderConfigurator: function(data) {
 
 		/*
-		if(typeof(data.object) !='undefined'){	
+		if(typeof(data.object) !='undefined'){
 			if(data.object !='feed'){
 				return false;
 			}
@@ -2406,13 +2437,13 @@ buttons: {
 			init: function(data, config) {
 				//alert(JSON.stringify(data));
 				folderConfiguratorTitle="Folder";
-				
+
 				if(siteManager.configuratorMode=='frontEnd'){
 					$("#configuratorHeader").html(folderConfiguratorTitle);
 				} else {
 					$("#configuratorContainer").dialog('option','title',folderConfiguratorTitle);
-				}		
-			
+				}
+
 
 				if($("#availableListSort").length) {
 					$("#availableListSort, #displayListSort").sortable({
@@ -2447,7 +2478,7 @@ buttons: {
 	initSlideShowConfigurator: function(data) {
 
 		/*
-		if(typeof(data.object) !='undefined'){	
+		if(typeof(data.object) !='undefined'){
 			if(data.object !='feed_slideshow'){
 				return false;
 			}
@@ -2517,7 +2548,7 @@ buttons: {
 						} else {
 							siteManager.updateAvailableObject();
 						}
-						
+
 					}
 				}).disableSelection();
 			}
@@ -2527,7 +2558,7 @@ buttons: {
 
 	initGenericConfigurator: function(data) {
 		this.resetAvailableObject();
-		
+
 		if(this.configuratorMode=='backEnd'){
 			this.resetConfiguratorContainer();
 		}
@@ -2539,7 +2570,7 @@ buttons: {
 				pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
 				title: data.title || data.name,
 				init: function(data, config) {
-					
+
 				}
 			});
 		} else {
@@ -2607,13 +2638,14 @@ buttons: {
 	configuratorMap:{
 			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'collection':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-			'media':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'text':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-			'socialembed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'embed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'feed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initFeedConfigurator(data);}},
 			'form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'component':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'gallery':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'calendar':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'plugin':{
 				'condition':function(){
@@ -2689,7 +2721,7 @@ buttons: {
 		//$(instance).dialog("destroy");
 		$("#configuratorContainer").remove();
 		$("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"></div>');
-		
+
 		/*
 		if(siteManager.layoutmanager){
 			var html='<div class="clearfix">'
@@ -2754,7 +2786,7 @@ buttons: {
 		src+= configOptions.objectid;
 		src+= '&params=';
 		src+= escape(configOptions.params);
-		
+
 		if(src != siteManager.previewURL){
 			var iframe=$("#configuratorPreview");
 			if(iframe.length){
@@ -2769,7 +2801,7 @@ buttons: {
 		siteManager.loadObjectPreview(configOptions);
 	},
 	initConfigurator: function(data, config) {
-	
+
 		this.resetAvailableObject();
 		this.previewURL='';
 
@@ -2806,7 +2838,7 @@ buttons: {
 				buttons: {
 					Save: function() {
 						siteManager.updateAvailableObject();
-						
+
 						var availableObjectSelector=$('#availableObjectSelector');
 
 						if(availableObjectSelector.length){
@@ -2823,11 +2855,11 @@ buttons: {
 
 							$.extend(siteManager.availableObject.params,selectedObject);
 
-							
+
 						}
 
 						if(siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-							
+
 							if(typeof(config.destroy) != 'undefined') {
 								config.destroy(data, config);
 							}
@@ -2841,10 +2873,8 @@ buttons: {
 									delete siteManager.availableObject[p];
 								}
 							}
-							
+
 							configure=(siteManager.availableObject.objectid != 'none' && originid!=siteManager.availableObject.objectid && siteManager.getPluginConfigurator(siteManager.availableObject.objectid));
-						
-							console.log(siteManager.availableObject)
 
 							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, configure,true);
 						}
@@ -2873,11 +2903,11 @@ buttons: {
 		} else {
 			var url=config.url + "?" + config.pars;
 		}
-		
+
 		$.ajax({
 			url: url,
 			dataType: 'text',
-			data: data, 
+			data: data,
 			type: 'post',
 			success: function(_resp) {
 				try {
@@ -2888,7 +2918,7 @@ buttons: {
 					}
 					resp = _resp;
 				}
-				
+
 				if(typeof(resp) == 'object') {
 					$("#configurator").html(resp.html);
 				} else if(typeof(resp) == 'xml') {
@@ -2896,26 +2926,30 @@ buttons: {
 				} else {
 					$("#configurator").html(resp);
 				}
-				
+
 				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
 				if(siteManager.configuratorMode=='frontEnd'){
-					if(siteManager.layoutmanager){
+					//if(siteManager.layoutmanager){
 						$("#configuratorHeader").html(config.title);
-					}
+					//}
 				} else {
 					$("#configuratorContainer").dialog('option','title',config.title);
 				}
 
 				if(siteManager.availableObjectTemplate == "") {
 					var availableObjectContainer = $("#availableObjectParams");
-					
+
 					siteManager.availableObjectTemplate = {
 						object: availableObjectContainer.attr("data-object"),
 						objectid: availableObjectContainer.attr("data-objectid"),
 						name: availableObjectContainer.attr("data-name")
 					};
-					
+
+					siteManager.availableObjectTemplate.object=siteManager.availableObjectTemplate.object || data.object;
+					siteManager.availableObjectTemplate.objectid=siteManager.availableObjectTemplate.objectid || data.objectid;
+					siteManager.availableObjectTemplate.name=siteManager.availableObjectTemplate.name || data.name;
+
 					siteManager.availableObject = $.extend({}, siteManager.availableObjectTemplate);
 				}
 

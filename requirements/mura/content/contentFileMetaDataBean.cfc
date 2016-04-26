@@ -1,9 +1,9 @@
-component extends="mura.bean.beanORMVersioned" 
-	table="tcontentfilemetadata" 
-	entityName="fileMetaData" 
-	bundleable=true 
+component extends="mura.bean.beanORMVersioned"
+	table="tcontentfilemetadata"
+	entityName="fileMetaData"
+	bundleable=true
 	versioned=true {
-	
+
 	property name="metaID" fieldType="id";
 	property name="file" fieldType="many-to-one" cfc="file" fkcolumn="fileid";
 	property name="altText" dataType="varchar" length="255";
@@ -32,14 +32,14 @@ component extends="mura.bean.beanORMVersioned"
 	property name="gpstimestamp" type="varchar" length=50;
 	*/
 	property name="exif" datatype="text";
-	
+
 	function loadBy(returnFormat="self"){
 		var result=super.loadBy(argumentCollection=arguments);
 
 		switch(arguments.returnFormat){
-			case 'self': 
+			case 'self':
 				if(variables.instance.isnew && len(variables.instance.fileid)){
-					set(getBean('file').loadBy(fileID=variables.instance.fileid,returnFormat='query'));
+					set(getBean('file').loadBy(fileID=variables.instance.fileid,siteid=getBean('settingsManager').getSite(getValue('siteid')).getFilePoolID(),returnFormat='query'));
 				}
 
 				return this;
@@ -111,7 +111,7 @@ component extends="mura.bean.beanORMVersioned"
 		fileid= variables.instance.fileid
 	)
 	{
-	
+
 		var imageURL = getBean('fileManager').createHREFForImage(argumentCollection=arguments);
 		if ( IsSimpleValue(imageURL) ) {
 			return imageURL;

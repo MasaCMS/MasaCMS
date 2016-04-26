@@ -195,7 +195,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.addBean('javaLoader',
 					new mura.javaloader.JavaLoader(
 						loadPaths=[
-									expandPath('/mura/lib/mura.jar'),
 									expandPath('/mura/lib/jBCrypt-0.3'),
 									expandPath('/mura/lib/diff_match_patch.jar')
 								]
@@ -451,6 +450,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.plugins=structNew()>
 	<cfset variables.pluginEvent=createObject("component","mura.event").init()>		
 
+	<!---
+	<cfset application.pluginManager.discoverBeans()>
+	--->
 	<cftry>	
 		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent)>
 		<cfcatch>

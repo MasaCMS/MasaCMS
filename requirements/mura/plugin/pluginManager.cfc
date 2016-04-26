@@ -969,11 +969,18 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfif len(settingsLen)>
 		<cfloop from="1" to="#settingsLen#" index="i">
+			<cfif structKeyExists(pluginXML.plugin.settings.setting[i],'name')>
+				<cfset local.settingName=pluginXML.plugin.settings.setting[i].name.xmlText>
+				<cfset local.settingValue=arguments.args['#pluginXML.plugin.settings.setting[i].name.xmlText#']>
+			<cfelseif structKeyExists(pluginXML.plugin.settings.setting[i].xmlAttributes,'name')>
+				<cfset local.settingName=pluginXML.plugin.settings.setting.xmlAttributes.name>
+				<cfset local.settingValue=arguments.args['#pluginXML.plugin.settings.setting[i].xmlAttributes.name#']>
+			</cfif>
 			<cfquery>
 			insert into tpluginsettings (moduleID,name,settingValue) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.settings.setting[i].name.xmlText#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args['#pluginXML.plugin.settings.setting[i].name.xmlText#']#">
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.settingName#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.settingValue#">
 			)
 			</cfquery>
 		</cfloop>
@@ -1482,7 +1489,7 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfset arguments.runat=REReplace(arguments.runat, "[^a-zA-Z0-9_]", "", "ALL")>
 	
-	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
+	<cfset isValidEvent=arguments.runat eq "onApplicationLoad" or variables.utility.isValidCFVariableName(arguments.runat)>
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
@@ -2773,6 +2780,17 @@ select * from rs order by name
 	<cfset var pluginFileLocation = variables.configBean.getTempDir() & pluginFileName>
 	<cfset fileWrite(pluginFileLocation, myResult.filecontent)>
 	<cfreturn pluginFileLocation>
+</cffunction>
+
+<cffunction name="discoverBeans" output="false">
+	<cfset var rs="">
+	<cfquery name="rs">
+		select moduleid from tplugins where deployed >=1 order by loadPriority desc
+	</cfquery>
+	<cfloop query="rs">
+		<cfset getConfig(id=rs.moduleid,cache=false).discoverBeans()>
+	</cfloop>
+	<cfreturn this>
 </cffunction>
 
 </cfcomponent>

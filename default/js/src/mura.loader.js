@@ -34,7 +34,7 @@
 		, script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
 	;
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
-	
+
 	if( ! window.mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
@@ -109,16 +109,16 @@
 						attrs={};
 					}
 
-					var parts = urlParse(url);  
+					var parts = urlParse(url);
 					var partToAttrs=[['i','id'],['f','fallback'],['u','src']];
-					
+
 					for(var i=0;i<partToAttrs.length;i++){
 						var part=partToAttrs[i];
 						if(!(part[1] in attrs) && (part[0] in parts)){
 							attrs[part[1]]=parts[part[0]];
 						}
 					}
-				
+
 					if(typeof attrs.type === 'undefined'){
 						attrs.type='text/javascript';
 					}
@@ -130,7 +130,7 @@
 							finalAttrs[a]=attrs[a];
 						}
 					}
-					
+
 					finalAttrs.onerror=function(error){
 						if( attrs.fallback ){
 							var c = error.currentTarget;
@@ -139,7 +139,7 @@
 							appendElmt('script',attrs,cb);
 						}
 					};
-					
+
 
 					if( loaded[finalAttrs.src] === true ){ // already loaded exec cb if any
 						cb && cb();
@@ -178,7 +178,7 @@
 					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
 						return loader.load.apply(this, arguments);
 					}
-					
+
 					var parts = urlParse(url);
 					parts={type:'text/css',rel:'stylesheet',href:url,id:parts.i}
 

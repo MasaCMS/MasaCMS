@@ -4,8 +4,17 @@
 	dbUtility.setTable("tclassextendattributes").addColumn(column="adminonly",dataType="integer");
 	dbUtility.setTable("tclassextend").addColumn(column="adminonly",dataType="integer");
 	dbUtility.setTable("tcontentfeeds").addColumn(column="authtype",dataType="varchar",length=10);
-	
+
 	try{
 		dbUtility.setTable("tcontentfeeds").addColumn(column="channellink",dataType="longtext");
-	} catch (any e){}; 
+	} catch (any e){};
+
+	if(getValue(property='advancedScheduling',defaultValue=false)){
+		dbUtility.setTable("tcontent").addColumn(column="displayInterval",dataType="varchar",length=200);
+	}
+	if(getValue(property='layoutmanager',defaultValue=false)){
+		dbUtility.setTable("tcontent").addColumn(column="objectParams",dataType="text");
+	}
+
+	dbUtility.setTable("tclassextenddata").addIndex('baseID,attributeID');
 </cfscript>
