@@ -76,27 +76,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<button class="btn" id="editBtn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
 		</cfif>
 	</div>
+	<!---
 	<div id="viewTypeSelector" class="mura-control-group source-container" style="display:none">
 		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtype')#</label>
-			<select id="viewTypeSelector" class="objectParam" name="view">
-			<option <cfif objectParams.view eq 'form'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeform')#"
-				value="form">
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeform')#
-			</option>
-			<option id="viewTypeSelector-formtypeview" <cfif objectParams.view eq 'view'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
-				value="list">
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#
-			<option id="viewTypeSelector-formtypeedit" <cfif objectParams.view eq 'edit'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeedit')#"
-				value="edit">
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeedit')#
-			</option>
-			</select>
+		<select id="viewTypeSelector" class="objectParam" name="view">
+		<option <cfif objectParams.view eq 'form'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeform')#"
+			value="form">
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeform')#
+		</option>
+		<option id="viewTypeSelector-formtypeview" <cfif objectParams.view eq 'view'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#"
+			value="list">
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeview')#
+		<option id="viewTypeSelector-formtypeedit" <cfif objectParams.view eq 'edit'>selected </cfif>title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeedit')#"
+			value="edit">
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formtypeedit')#
+		</option>
+		</select>
 
-			<input type="hidden" name="render" value="server" class="objectParam" />
-			<input type="hidden" name="async" value="true" class="objectParam" />
-	</div>
+		<input type="hidden" name="render" value="server" class="objectParam" />
+		<input type="hidden" name="async" value="true" class="objectParam" />
+	</div>--->
 </div>
-
+<input type="hidden" name="render" value="server" class="objectParam" />
+<input type="hidden" name="async" value="true" class="objectParam" />
+<input type="hidden" name="view" value="form" class="objectParam" />
 <cfif hasModulePerm>
 <script>
 	$(function(){
@@ -109,15 +112,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 		$('##editBtn').html('Create New');
 		 	}
 
-			if( selector.prop('selectedIndex') > 0 )
+			/*
+			if( selector.prop('selectedIndex') > 0 ){
 				$("##viewTypeSelector").show();
-			else
+			} else {
 				$("##viewTypeSelector").hide();
+			}
+			*/
 
 		}
 
 		$('##availableObjectSelector').change(setEditOption);
 		setEditOption();
+
 		$('##editBtn').click(function(){
 				frontEndProxy.post({
 					cmd:'openModal',

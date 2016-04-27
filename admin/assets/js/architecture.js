@@ -2971,8 +2971,9 @@ buttons: {
 
 				if(siteManager.layoutmanager){
 					setTabs();
-					siteManager.updateObjectPreview();
-					$('#configurator').change(siteManager.updateObjectPreview);
+					siteManager.updateAvailableObject();
+					$('#configurator').change(siteManager.updateAvailableObject);
+					//$('#availableObjectSelector').change(siteManager.updateAvailableObject);
 				} else {
 					siteManager.updateAvailableObject();
 				}

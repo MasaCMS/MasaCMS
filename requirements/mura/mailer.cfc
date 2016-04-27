@@ -65,6 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" default="">
 	<cfargument name="replyto" type="string" default="">
 	<cfargument name="bcc" type="string" required="true" default="">
+	<cfargument name="mailParamArray" type="array" required="false" hint='You can pass the attributes for the cfMailParam tag as an array of structured keys.'>
 
 	<cfset var mailserverUsername="" />
 	<cfset var mailserverIP="" />
@@ -160,6 +161,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
 						bcc="#arguments.bcc#">#tmt_mail_head##Chr(13)##Chr(10)##trim(tmt_mail_body)#
+						<cfif structKeyExists(arguments,'mailParamArray')>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
 				</cfmail>
 			<cfelse>
 				<cfmail to="#filteredSendTo#"
@@ -174,6 +180,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
 						bcc="#arguments.bcc#">#tmt_mail_head##Chr(13)##Chr(10)##trim(tmt_mail_body)#
+						<cfif structKeyExists(arguments,'mailParamArray')>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
 				</cfmail>
 
 			</cfif>
@@ -197,6 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="replyTo" type="string" default="">
 	<cfargument name="mailerID" type="string" default="">
 	<cfargument name="bcc" type="string" required="true" default="">
+	<cfargument name="mailParamArray" type="array" required="false" hint='You can pass the attributes for the cfMailParam tag as an array of structured keys.'>
 
 	<cfset var mailserverUsername=""/>
 	<cfset var mailserverIP=""/>
@@ -236,7 +248,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						failto="#mailServerFailto#"
 						type="text"
 						mailerid="#arguments.mailerID#"
-						bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
+						bcc="#arguments.bcc#">#trim(arguments.text)#
+						<cfif structKeyExists(arguments,'mailParamArray')>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
+				</cfmail>
 			<cfelse>
 				<cfmail to="#filteredSendTo#"
 						from='"#arguments.from#" <#fromEmail#>'
@@ -251,7 +269,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						failto="#mailServerFailto#"
 						type="text"
 						mailerid="#arguments.mailerID#"
-						bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
+						bcc="#arguments.bcc#">#trim(arguments.text)#
+						<cfif structKeyExists(arguments,'mailParamArray')>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
+				</cfmail>
 			</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
@@ -273,6 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="replyTo" type="string" default="">
 	<cfargument name="mailerID" type="string" default="">
 	<cfargument name="bcc" type="string" required="true" default="">
+	<cfargument name="mailParamArray" type="array" required="false" hint='You can pass the attributes for the cfMailParam tag as an array of structured keys.'>
 
 	<cfset var mailserverUsername=""/>
 	<cfset var mailserverIP=""/>
@@ -311,7 +336,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						failto="#mailServerFailto#"
 						type="html"
 						mailerid="#arguments.mailerID#"
-						bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
+						bcc="#arguments.bcc#">#trim(arguments.html)#
+						<cfif structKeyExists(arguments,'mailParamArray')>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
+				</cfmail>
 			<cfelse>
 				<cfmail to="#filteredSendTo#"
 						from='"#arguments.from#" <#fromEmail#>'
@@ -326,7 +357,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						failto="#mailServerFailto#"
 						type="html"
 						mailerid="#arguments.mailerID#"
-						bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
+						bcc="#arguments.bcc#">#trim(arguments.html)#
+						<cfif structKeyExists(arguments,'mailParamArray')>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
+				</cfmail>
 			</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
@@ -349,6 +386,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="replyTo" type="string" default="">
 	<cfargument name="mailerID" type="string" default="">
 	<cfargument name="bcc" type="string" required="true" default="">
+	<cfargument name="mailParamArray" type="array" required="false" hint='You can pass the attributes for the cfMailParam tag as an array of structured keys.'>
 
 	<cfset var mailserverUsername=""/>
 	<cfset var mailserverIP=""/>
@@ -391,6 +429,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					bcc="#arguments.bcc#">
 				<cfmailpart type="text/plain">#trim(arguments.text)#</cfmailpart>
 				<cfmailpart type="text/html">#trim(arguments.html)#</cfmailpart>
+				<cfif structKeyExists(arguments,'mailParamArray')>
+					<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+						<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+					</cfloop>
+				</cfif>
 			</cfmail>
 		<cfelse>
 			<cfmail to="#filteredSendTo#"
@@ -409,6 +452,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					bcc="#arguments.bcc#">
 				<cfmailpart type="text/plain">#trim(arguments.text)#</cfmailpart>
 				<cfmailpart type="text/html">#trim(arguments.html)#</cfmailpart>
+				<cfif structKeyExists(arguments,'mailParamArray')>
+					<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+						<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+					</cfloop>
+				</cfif>
 			</cfmail>
 		</cfif>
 		<cfcatch>

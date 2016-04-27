@@ -258,6 +258,8 @@
 		var currentSize='';
 		var instanceid='#esapiEncode("javascript",rc.instanceid)#';
 
+		$('body').addClass('no-constrain');
+		
 		function reloadImg(id) {
 		   var obj = document.getElementById(id);
 		   var src = obj.src;
