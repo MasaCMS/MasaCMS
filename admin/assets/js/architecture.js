@@ -2933,8 +2933,11 @@ buttons: {
 					$("#configurator").html(resp);
 				}
 
-	      $('.mura #configurator select').niceSelect();
+	      		niceSelects=$('.mura #configurator select');;
 
+				if(niceSelects.niceSelect){
+					niceSelects.niceSelect();
+				}
 				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
 				if(siteManager.configuratorMode=='frontEnd'){

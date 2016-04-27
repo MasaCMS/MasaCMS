@@ -138,10 +138,10 @@
 		<!-- nice-select: select box replacement (sidebar configurator only) -->
 		<cfif rc.sourceFrame neq 'modal'>
 	    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/nice-select.css">
-			<script src="#application.configBean.getContext()#/admin/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
 	    <script type="text/javascript">
-	    $(document).ready(function() {
-			  $('.mura ##configurator select').niceSelect();
+	    	$(document).ready(function() {
+				$('.mura ##configurator select').niceSelect();
 			});
 	    </script>
 		</cfif>
