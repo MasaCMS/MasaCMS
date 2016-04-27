@@ -49,7 +49,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rc.rsObjects" dbtype="query">
 		select * from rc.rsObjects where object like '%nav%'
 		and object != 'folder_nav'
-		or object = 'tag_cloud'
 	</cfquery>
 	<cfset content=rc.$.getBean("content").loadBy(contentID=rc.objectid)>
 	<cfparam name="objectParams.taggroup" default="">
@@ -98,6 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>
 		</div>
 	</div>
+	<input name="objectid" type="hidden" class="objectParam" value="#esapiEncode('html_attr',rc.contentid)#">
 	<script>
 		$(function(){
 			function toggleTagGroups(){
