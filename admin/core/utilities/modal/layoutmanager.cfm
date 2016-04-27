@@ -13,9 +13,7 @@
 					</div>
 					<div class="mura-sidebar__objects-list__object-group-items">
 						<cfset contentRendererUtility=$.getBean('contentRendererUtility')>
-
 						<cfset displayObjects=$.siteConfig('displayObjects')>
-
 						<cfset objectKeys=listSort(structKeylist(displayObjects),'textNoCase')>
 						<cfloop list="#objectKeys#" index="key">
 							<cfif (displayobjects['#key#'].contenttypes eq '*'

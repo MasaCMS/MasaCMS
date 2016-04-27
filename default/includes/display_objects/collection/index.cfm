@@ -191,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset objectParams.sortDirection=$.content('sortDirection')>
 				</cfif>
 
-				<cfset iterator=$.content().set(objectParams).getKidsIterator(argumentCollection=objectParams)>
+				<cfset iterator=$.content().set(objectParams).setType('Folder').getKidsIterator(argumentCollection=objectParams)>
 				<cfset iterator.setNextN(objectParams.nextn)>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
 
