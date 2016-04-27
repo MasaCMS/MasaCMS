@@ -237,5 +237,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)#
 	</cfoutput>
 <cfelse>
-	<cfoutput>#variables.dspObject(object='feed',objectid=objectParams.source,params=objectParams)#</cfoutput>
+	<cfoutput>#variables.dspObject_include(thefile='feed/index.cfm',objectid=objectParams.source,objectParams=objectParams)#</cfoutput>
 </cfif>

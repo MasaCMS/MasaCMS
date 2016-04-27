@@ -1836,7 +1836,8 @@
 			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
 		},
 		objectHasConfigurator:function(displayObject){
-			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition() || !(displayObject.object in this.configuratorMap);
+			return true;
+			//return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition() || !(displayObject.object in this.configuratorMap);
 		},
 		checkforImageCroppers:function(el){
 

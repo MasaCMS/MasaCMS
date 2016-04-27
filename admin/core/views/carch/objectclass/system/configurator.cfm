@@ -76,5 +76,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>
 		</div>
 	</div>
+	<input name="objectid" type="hidden" class="objectParam" value="#esapiEncode('html_attr',rc.contentid)#">
 </cfoutput>
 </cf_objectconfigurator>
