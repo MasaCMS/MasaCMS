@@ -229,12 +229,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}>
 	</cfsilent>
 	<cfoutput>
-		#variables.$.dspObject_include(
+		<cfif iterator.getRecordCount()>
+			#variables.$.dspObject_include(
 					theFile='collection/layouts/#objectParams.layout#/index.cfm',
 					propertyMap=propertyMap,
 					iterator=iterator,
 					objectParams=objectParams
 				)#
+		<cfelse>
+			<p class="mura-no-content-notice">#$.rbkey('collection.nomatchingcontent')#</p>
+		</cfif>
 	</cfoutput>
 <cfelse>
 	<cfoutput>#variables.dspObject_include(thefile='feed/index.cfm',objectid=objectParams.source,objectParams=objectParams)#</cfoutput>
