@@ -940,7 +940,7 @@ Display Objects
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
-	<cfif variables.event.getValue('contentBean').getType() neq 'Gallery'>
+	<cfif not listFindNoCase('Gallery,Folder',variables.event.getValue('contentBean').getType())>
 			<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 				<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
 					<cfset menutype='fixed'>
