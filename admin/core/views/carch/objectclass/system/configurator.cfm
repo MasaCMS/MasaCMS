@@ -55,6 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and object != 'related_content'
 		and object != 'tag_cloud'
 		and object != 'goToFirstChild'
+		and object != 'event_reminder_form'
+		and object != 'forward_email'
 	</cfquery>
 </cfsilent>
 <cf_objectconfigurator>
@@ -62,12 +64,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-layout-row">
 		<div class="mura-control-group">
 			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectsystemobject')#</label>
-			<select id="availableObjectSelector">
-				<option  value="{object:'system',name:'#esapiEncode('html_attr','Select System Object')#',objectid:''}">
+			<select name="object" class="objectParam">
+				<option  value="#esapiEncode('html_attr','Select System Object')#">
 					Select System Object
 				</option>
 				<cfloop query="rc.rsObjects">
-					<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value='{"object":"#esapiEncode('javascript',rc.rsobjects.object)#","objectid":"#createUUID()#"}'>
+					<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value="#esapiEncode('javascript',rc.rsobjects.object)#">
 						#esapiEncode('html',rc.rsObjects.name)#
 					</option>
 				</cfloop>

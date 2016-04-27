@@ -55,25 +55,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-layout-row">
 		<div class="mura-control-group">
 			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectnavigation')#</label>
-			<select id="availableObjectSelector">
-				<option value="{object:'navigation',name:'#esapiEncode('html_attr','Select Navigation')#',objectid:''}">
+			<select name="object" class="objectParam">
+				<option value="">
 					Select Navigation
 				</option>
 				<cfloop query="rc.rsObjects">
-					<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value='{"object":"#esapiEncode('javascript',rc.rsobjects.object)#","name":"#esapiEncode('javascript','Navigation')#","objectid":"#createUUID()#"}'>
+					<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value="#esapiEncode('javascript',rc.rsobjects.object)#">
 						#esapiEncode('html',rc.rsObjects.name)#
 					</option>
 				</cfloop>
-				<option <cfif rc.object eq 'archive_nav'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation'))#" value='{"object":"archive_nav","name":"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation'))#","objectid":"none"}'>
+				<option <cfif rc.object eq 'archive_nav'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation'))#" value="archive_nav">
 					#esapiEncode('html',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation'))#
 				</option>
-				<option <cfif rc.object eq 'category_summary'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary'))#" value='{"object":"category_summary","name":"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary'))#","objectid":"none"}'>
+				<option <cfif rc.object eq 'category_summary'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary'))#" value="category_summary">
 					#esapiEncode('html',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary'))#
 				</option>
-				<option <cfif rc.object eq 'calendar_nav'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation'))#" value='{"object":"calendar_nav","name":"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation'))#","objectid":"none"}'>
+				<option <cfif rc.object eq 'calendar_nav'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation'))#" value="calendar_nav">
 					#esapiEncode('html',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation'))#
 				</option>
-				<option <cfif rc.object eq 'tag_cloud'>selected </cfif>title="Tag Cloud" value='{"object":"tag_cloud","name":"Tag Cloud","objectid":"none"}'>
+				<option <cfif rc.object eq 'tag_cloud'>selected </cfif>title="Tag Cloud" value="tag_cloud">
 					#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.tagcloud')#
 				</option>
 			</select>
