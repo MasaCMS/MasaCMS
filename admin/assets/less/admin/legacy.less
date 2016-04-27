@@ -155,7 +155,7 @@
 }
 
 #availableRegions .btn-group-vertical .btn{
-  .border-radius(0);
+  border-radius:0;
   padding: 4px 13px 4px 10px;
   margin: 0 2px;
 }
@@ -210,7 +210,7 @@
     padding: @baseLineHeight/2;
     cursor: move;
     border: 0;
-    .border-radius(3px);
+    border-radius:3px;
     /* #gradient .vertical(hsl(260,0%,90%),hsl(260,0%,86%)); */
     background: darken(@grayLighter,6%);
     }
@@ -528,7 +528,7 @@
 
         > li {
           border: none;
-          .border-radius(2px);
+          border-radius:2px;
           background: #fff;
           padding: .5em;
           margin: 0 .5em .5em 0;
@@ -542,7 +542,7 @@
             text-align: left;
             line-height: 28px;
             margin: 0 0 .2em 0;
-            //.border-radius(0);
+            //border-radius:0;
 
             &.no-results {
               .alert;
@@ -720,4 +720,140 @@
     }
   }
 }
+#multi-file-upload {
+
+  .fileupload-buttonbar {
+    
+    .btn > i {
+        font-size: 16px;  
+      }
+    }
+  
+  .progress {
+      margin: 0;
+      height: 28px;
+      }
+  
+  .fileupload-progress {
+    
+    .progress-extended {
+        margin: @baseLineHeight/4 0;
+      } 
+  }
+  
+  table {
+    
+    td {
+    
+      vertical-align: top;
+      padding: 1em;
+      
+      .btn.mura-edit-file{
+        font-size: 13px;
+      }
+
+      &.file-preview {
+        
+        img, canvas {
+          .img-rounded;
+          margin-bottom: 4px;
+          width: 60px;
+          max-width: 60px;
+          height: auto;
+          }
+          
+        > .preview {
+        
+          position: relative;
+          
+          > i {
+            font-size: 84px;
+            margin-bottom: 0;
+            
+            &:before {
+              
+            }
+          }
+        
+          > .badge {
+            background-color: #000 !important;
+            border-radius:4px;
+            .center-block;
+            color: #FFF;
+            font-size: 10px;
+            font-weight: normal;
+            padding: 3px 0 !important;
+            text-align:center;
+            width: 32px;
+            }
+          }
+        }
+                
+      label {
+          width: 120px;
+          float: none !important;
+        }
+        
+      .mura-control-group {       
+          
+          /*
+          line-height: 1;
+          margin-left: 130px;
+          text-align: left;
+          min-height: @baseLineHeight;
+          */
+                  
+        > div {
+          line-height: 1.2;
+          min-height: 32px;
+          padding: 8px;
+          border:1px solid #e6e6e6;
+          border-radius: 2px !important;
+          
+          &[data-attribute="summary"] {
+            min-height: 56px;
+            overflow-y: auto;
+          }
+      
+          &.editable {
+            background: @grayLighter;
+            }
+            
+            p {
+              margin: 0;
+              line-height: 1.2;
+            }     
+          }
+        }
+      
+      > .progress {
+        margin-top: 1px;
+        width: 160px;       
+        .center-block;
+        
+        + p {
+          line-height: 2;
+          }
+        }
+      
+      .btn-group > .btn > i {
+            font-size: 20px;
+            vertical-align: -2px;
+            }
+          
+      .size {
+          clear:both;
+          display:block;
+          padding-top: 8px;
+        }
+        
+      }
+      
+    tr:nth-child(odd) > td .controls > .editable {
+      background-color: darken(#ebf4fe,3%);
+      }
+      
+    }
+    
+  }
 /* /Multi-file Upload */
