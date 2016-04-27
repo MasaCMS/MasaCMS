@@ -198,7 +198,7 @@
 
     <!-- Stylesheets -->
     <!-- Web fonts, stored locally -->
-    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/fonts.css">
+    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/fonts.min.css">
 
 		<!-- Admin CSS -->
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />

@@ -116,7 +116,7 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
     <!-- Web fonts, stored locally -->
-    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/fonts.css">
+    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/fonts.min.css">
 
 		<!-- Mura Admin JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -137,7 +137,7 @@
 
 		<!-- nice-select: select box replacement (sidebar configurator only) -->
 		<cfif rc.sourceFrame neq 'modal'>
-	    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/nice-select.css">
+	    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/nice-select.min.css">
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
 	    <script type="text/javascript">
 	    	$(document).ready(function() {
