@@ -48,7 +48,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.rsObjects = application.contentManager.getSystemObjects(rc.siteid)/>
 	<cfquery name="rc.rsObjects" dbtype="query">
 		select * from rc.rsObjects where object like '%nav%'
-		and object != 'folder_nav'
 	</cfquery>
 	<cfset content=rc.$.getBean("content").loadBy(contentID=rc.objectid)>
 	<cfparam name="objectParams.taggroup" default="">
