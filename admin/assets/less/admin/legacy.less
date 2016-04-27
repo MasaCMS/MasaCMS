@@ -767,8 +767,9 @@
           position: relative;
           
           > i {
-            font-size: 84px;
+            font-size: 64px;
             margin-bottom: 0;
+            width: 1em;
             
             &:before {
               
@@ -782,6 +783,7 @@
             color: #FFF;
             font-size: 10px;
             font-weight: normal;
+            margin-top: 12px;
             padding: 3px 0 !important;
             text-align:center;
             width: 32px;
@@ -789,21 +791,21 @@
           }
         }
                 
-      label {
-          width: 120px;
-          float: none !important;
-        }
         
       .mura-control-group {       
           
-          /*
-          line-height: 1;
-          margin-left: 130px;
-          text-align: left;
-          min-height: @baseLineHeight;
-          */
+        >  label {
+            float: left;
+            min-width: 120px;
+            width: 20%;
+          }
+
+        > label + div{
+          width: 75%;
+          float: left;
+        }
                   
-        > div {
+        div {
           line-height: 1.2;
           min-height: 32px;
           padding: 8px;

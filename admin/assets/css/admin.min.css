@@ -32380,7 +32380,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura #multi-file-upload .fileupload-buttonbar .btn > i {
   font-size: 16px;
 }
-.mura #multi-file-upload .progress-bar {
+.mura #multi-file-upload .progress {
   margin: 0;
   height: 28px;
 }
@@ -32406,8 +32406,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   position: relative;
 }
 .mura #multi-file-upload table td.file-preview > .preview > i {
-  font-size: 84px;
+  font-size: 64px;
   margin-bottom: 0;
+  width: 1em;
 }
 .mura #multi-file-upload table td.file-preview > .preview > .badge {
   background-color: #000 !important;
@@ -32418,48 +32419,46 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   color: #FFF;
   font-size: 10px;
   font-weight: normal;
+  margin-top: 12px;
   padding: 3px 0 !important;
   text-align: center;
   width: 32px;
 }
-.mura #multi-file-upload table td label {
-  width: 120px;
-  float: none !important;
+.mura #multi-file-upload table td .mura-control-group > label {
+  float: left;
+  min-width: 120px;
+  width: 20%;
 }
-.mura #multi-file-upload table td .mura-control-group {
-  /*
-          line-height: 1;
-          margin-left: 130px;
-          text-align: left;
-          min-height: @baseLineHeight;
-          */
+.mura #multi-file-upload table td .mura-control-group > label + div {
+  width: 75%;
+  float: left;
 }
-.mura #multi-file-upload table td .mura-control-group > div {
+.mura #multi-file-upload table td .mura-control-group div {
   line-height: 1.2;
   min-height: 32px;
   padding: 8px;
   border: 1px solid #e6e6e6;
   border-radius: 2px !important;
 }
-.mura #multi-file-upload table td .mura-control-group > div[data-attribute="summary"] {
+.mura #multi-file-upload table td .mura-control-group div[data-attribute="summary"] {
   min-height: 56px;
   overflow-y: auto;
 }
-.mura #multi-file-upload table td .mura-control-group > div.editable {
+.mura #multi-file-upload table td .mura-control-group div.editable {
   background: #f7f7f7;
 }
-.mura #multi-file-upload table td .mura-control-group > div p {
+.mura #multi-file-upload table td .mura-control-group div p {
   margin: 0;
   line-height: 1.2;
 }
-.mura #multi-file-upload table td > .progress-bar {
+.mura #multi-file-upload table td > .progress {
   margin-top: 1px;
   width: 160px;
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
-.mura #multi-file-upload table td > .progress-bar + p {
+.mura #multi-file-upload table td > .progress + p {
   line-height: 2;
 }
 .mura #multi-file-upload table td .btn-group > .btn > i {
@@ -32469,7 +32468,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura #multi-file-upload table td .size {
   clear: both;
   display: block;
-  margin-top: 4.5px;
+  padding-top: 8px;
 }
 .mura #multi-file-upload table tr:nth-child(odd) > td .controls > .editable {
   background-color: #dcecfd;
@@ -35190,6 +35189,9 @@ fieldset[disabled] .mura .sidebar-buttons .btn.active {
   clear: both !important;
   float: none;
   display: block;
+}
+.mura body.compact #image-details img {
+  max-width: 1050px;
 }
 .mura #image-details img {
   border-top: 25px solid #fff;

@@ -104,18 +104,18 @@ jQuery(document).ready(function(){
     	<div id="fileupload-target" class="alert alert-info"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="fileupload-buttonbar">
-            <div>
+            <div class="half">
                 <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn fileinput-button">
+                <span class="btn fileinput-button mura-file-add">
                     <i class="mi-plus"></i>
                     <span>Add files...</span>
                     <input type="file" name="files" multiple>
                 </span>
-                <button type="submit" class="btn start">
+                <button type="submit" class="btn start mura-file-start">
                     <i class="mi-upload"></i>
                     <span>Start upload</span>
                 </button>
-                <button type="reset" class="btn cancel">
+                <button type="reset" class="btn cancel mura-file-reset">
                     <i class="mi-ban"></i>
                     <span>Cancel upload</span>
                 </button>
@@ -128,10 +128,10 @@ jQuery(document).ready(function(){
                 --->
             </div>
             <!-- The global progress information -->
-            <div class="fileupload-progress fade">
+            <div class="fileupload-progress fade half">
                 <!-- The global progress bar -->
-                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    <div class="bar" style="width:0%;"></div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;"></div>
                 </div>
                 <!-- The extended global progress information -->
                 <div class="progress-extended">&nbsp;</div>
@@ -203,7 +203,9 @@ jQuery(document).ready(function(){
             <td class="alert-error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
         {% } else if (o.files.valid && !i) { %}
             <td>
-                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+                <div class="progress>
+                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%;"></div>
+                </div>
             </td>
             <td class="start">tet{% if (!o.options.autoUpload) { %}
                 <button class="btn">
@@ -303,7 +305,9 @@ jQuery(document).ready(function(){
         <td>
 
             {% if (!o.files.error) { %}
-                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%;"></div>
+                </div>
                 <p class="size">{%=o.formatFileSize(file.size)%}</p>
             {% } %}
         </td>
@@ -372,7 +376,9 @@ jQuery(document).ready(function(){
                  {% } %}
             {% } %}
         </td>
-        <td><div class="progress progress-success complete" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:100%;"></div></div>
+        <td><div class="progress">
+                <div class="progress-bar progress-bar-success complete" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:100%;"></div>
+            </div>
             <span class="size complete">{%=o.formatFileSize(file.size)%}</span>
         </td>
         <td>
