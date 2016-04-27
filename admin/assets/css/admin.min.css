@@ -21600,7 +21600,7 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text {
   min-width: 40px;
   -webkit-box-shadow: inset 0 0 0;
   box-shadow: inset 0 0 0;
-  border-color: #5591f5 #5591f5 #2f79f3 #5591f5 !important;
+  border-color: #75a3d1 #75a3d1 #578fc7 #75a3d1 !important;
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35) !important;
   outline: none !important;
 }
@@ -21937,7 +21937,7 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
 }
 .ui-datepicker table th.ui-datepicker-today > .ui-state-highlight,
 .ui-datepicker table td.ui-datepicker-today > .ui-state-highlight {
-  background-color: #4285f4;
+  background-color: #6699cc;
   color: #ffffff;
 }
 #tabTags #svTagCloud > ol,
@@ -21949,7 +21949,7 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
   *display: inline;
   /* IE7 inline-block hack */
   *zoom: 1;
-  background: #4285F4;
+  background: #6699CC;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -21967,7 +21967,7 @@ fieldset[disabled] .ui-dialog .ui-dialog-buttonpane button.active {
   cursor: pointer;
 }
 .tagSelector .tag a i {
-  color: #093d94;
+  color: #264c73;
 }
 .tagSelector .tag a:hover {
   text-decoration: none;
@@ -22485,7 +22485,7 @@ fieldset[disabled] .mura .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .
   color: #000000;
 }
 .mura .ui-dialog h1 {
-  color: #4285f4 !important;
+  color: #6699cc !important;
   font-size: 14px;
   margin-bottom: 0;
   line-height: 1;
@@ -31146,7 +31146,7 @@ font-size: 12px;
   text-decoration: none;
 }
 .mura #cextend .attr-list li a:hover i {
-  color: #4285f4;
+  color: #6699cc;
 }
 .mura #cextend .attr-list li i {
   font-size: 14px;
@@ -31213,9 +31213,9 @@ font-size: 12px;
 }
 .mura #cextend .SubTypeIconSelect .dropdown-menu li i:hover {
   cursor: pointer;
-  background-color: #4285f4;
+  background-color: #6699cc;
   color: #ffffff;
-  border-color: #4285f4;
+  border-color: #6699cc;
 }
 .mura #cextend .SubTypeIconSelect .dropdown-menu li i.icon-default {
   background-color: #cccccc;
@@ -32372,7 +32372,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura #fileupload #fileupload-target p i {
   font-size: 72px;
-  color: #1266f1;
+  color: #407fbf;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.65);
   display: block;
   margin: 18px;
@@ -34121,7 +34121,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
 }
 .mura .btn-info {
   color: #fff;
-  background-color: #4285F4;
+  background-color: #6699CC;
   border-color: rgba(102, 153, 204, 0.8);
 }
 .mura .btn-info:focus,
@@ -34205,7 +34205,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   background-color: #DEDEDE;
 }
 .mura .form-actions > .btn.mura-primary {
-  background-color: #4285F4 !important;
+  background-color: #6699CC !important;
   color: #FFF !important;
 }
 .mura .form-actions > .btn.mura-primary > i {
@@ -34247,7 +34247,7 @@ fieldset[disabled] .mura body.modal-wrapper .nav-pills > li > a.active {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  color: #4285F4;
+  color: #6699CC;
   font-size: 14px;
   height: 35px;
   text-transform: uppercase;

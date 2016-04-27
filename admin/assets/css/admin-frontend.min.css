@@ -7473,11 +7473,11 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   cursor: pointer !important;
 }
 .mura #frontEndTools > ul > li#adminSave > a:hover > i {
-  color: #093d94 !important;
+  color: #264c73 !important;
   /* text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; */
 }
 .mura #frontEndTools > ul > li#adminSave > a .caret {
-  border-top-color: #093d94 !important;
+  border-top-color: #264c73 !important;
   margin: 9px 0 0 4px !important;
 }
 .mura #frontEndTools > ul > li a:hover,
