@@ -49,14 +49,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rc.rsObjects" dbtype="query">
 		select * from rc.rsObjects where object like '%nav%'
 		and object != 'folder_nav'
+		or object = 'tag_cloud'
 	</cfquery>
+	<cfset content=rc.$.getBean("content").loadBy(contentID=rc.objectid)>
+	<cfparam name="objectParams.taggroup" default="">
 </cfsilent>
 <cf_objectconfigurator>
 <cfoutput>
 	<div class="mura-layout-row">
 		<div class="mura-control-group">
 			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectnavigation')#</label>
-			<select name="object" class="objectParam">
+			<select id="objectselector" name="object" class="objectParam">
 				<option value="">
 					Select Navigation
 				</option>
@@ -80,5 +83,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>
 		</div>
 	</div>
+	<div class="mura-layout-row" id="taggroupcontainer" style="display:none">
+		<div class="mura-control-group">
+			<label class="mura-control-label">
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selecttaggroup')#
+			</label>
+			<select name="taggroup" class="objectParam">
+				<option value="">Default</option>
+				<cfif len(rc.$.siteConfig('customTagGroups'))>
+					<cfloop list="#rc.$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
+						<option value="#g#" <cfif g eq objectParams.taggroup>selected</cfif>>#g#</option>
+					</cfloop>
+				</cfif>
+			</select>
+		</div>
+	</div>
+	<script>
+		$(function(){
+			function toggleTagGroups(){
+				if($('##objectselector').val() == 'tag_cloud'){
+					$('##taggroupcontainer').show();
+				} else {
+					$('##taggroupcontainer').hide();
+				}
+			}
+
+			toggleTagGroups();
+			$('##objectselector').change(toggleTagGroups);
+
+		});
+	</script>
 </cfoutput>
 </cf_objectconfigurator>

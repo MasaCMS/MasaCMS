@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset rc.classid='mailing_list'>
 	<cfelseif listFindNoCase('comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild',rc.classid)>
 		<cfset rc.classid='system'>
-	<cfelseif listFindNoCase('sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav',rc.classid)>
+	<cfelseif listFindNoCase('sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav,tag_cloud',rc.classid)>
 		<cfset rc.classid='navigation'>
 	</cfif>
 
