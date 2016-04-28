@@ -47,6 +47,11 @@
 		</cfquery>
 
 		<cfquery>
+			delete from tcontentremotepointer
+			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
+		</cfquery>
+		
+		<cfquery>
 			delete from tformresponsepackets
 			where formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
