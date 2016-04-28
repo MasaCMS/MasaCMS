@@ -101,6 +101,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif verdict eq 'none'>
 		<cfset verdict=attributes.perm>
 	</cfif>
+	<cfif variables.restricted and not listFind('author,editor',verdict)>
+		<cfset skip=true>
+	</cfif>
 <cfelseif not variables.restricted>
 	<cfset verdict = "none">
 <cfelse>
