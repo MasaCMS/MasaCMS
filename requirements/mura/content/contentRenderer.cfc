@@ -277,7 +277,7 @@ Display Objects
 		'9 Column'='mura-grid-nine'
 	}>
 
-	<cfset this.contentGridPropertyMap={
+<cfset this.contentGridPropertyMap={
 		itemEl={tag="div",class="mura-item-meta"},
 		labelEl={tag="span"},
 		title={tag="div"},

@@ -72,7 +72,7 @@
 
 	<cfscript>
 		this.layoutmanager=true;
-		
+
 		//this.navOffSet=0;
 		//this.navDepthLimit=1000;
 		//this.navParentIdx=2;
@@ -223,6 +223,29 @@
 		//dsp_categories_nest.cfm
 		this.categoriesNestCheckboxClass="";
 
+		this.contentGridStyleMap={
+				'1 Column'='mura-grid-one',
+				'2 Column'='mura-grid-two',
+				'3 Column'='mura-grid-three',
+				'4 Column'='mura-grid-four',
+				'5 Column'='mura-grid-five',
+				'6 Column'='mura-grid-six',
+				'7 Column'='mura-grid-seven',
+				'8 Column'='mura-grid-eight',
+				'9 Column'='mura-grid-nine'
+			};
+
+		this.contentGridPropertyMap={
+				itemEl={tag="div",class="mura-item-meta"},
+				labelEl={tag="span"},
+				title={tag="div"},
+				date={tag="div"},
+				credits={tag="div",showLabel=true,labelDelim=":",rbkey="list.by"},
+				tags={tag="div",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+				rating={tag="div",showLabel=true,labelDelim=":",rbkey="list.rating"},
+				'default'={tag="div"}
+			};
+
 		//dsp_content_list.cfm
 		this.contentListImageStyles=true;
 		this.contentListImagePadding=20; //must be pixels
@@ -313,7 +336,7 @@
 		this.searchFormSubmitWrapperClass="";
 		this.searchFormSubmitClass="";
 
-		//dsp_search_results.cfm
+		//search/index.cfm
 		this.searchShowNumbers=1;
 		this.searchResultWrapperClass="";
 		this.searchResultInnerClass="";
