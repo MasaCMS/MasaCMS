@@ -769,6 +769,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif len(arguments.siteID)>
+			<!---
+			--- Switching to using content path instead ---
 			<cfif len(arguments.parentid)>
 				<cfquery name="rsparentids">
 					select distinct contentid,
@@ -791,6 +793,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					order by depth, orderno
 				</cfquery>
 			</cfif>
+			--->
 
 			<cfquery name="rstcontent">
 				select tcontent.* from tcontent
@@ -806,7 +809,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 					and tcontent.active = 1
 				<cfelseif len(arguments.parentid)>
-					and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+					tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+					<cfif arguments.doChildrenOnly>
+					and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+					</cfif>
 					and tcontent.active = 1
 				</cfif>
 			</cfquery>
@@ -828,7 +834,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 						and tcontent.active = 1
 					<cfelseif len(arguments.parentid)>
-						and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+						<cfif arguments.doChildrenOnly>
+						and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+						</cfif>
 						and tcontent.active = 1
 					</cfif>
 				)
@@ -859,7 +868,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 						and tcontent.active = 1
 					<cfelseif len(arguments.parentid)>
-						and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+						<cfif arguments.doChildrenOnly>
+						and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+						</cfif>
 						and tcontent.active = 1
 					</cfif>
 				)
@@ -877,7 +889,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 						and tcontent.active = 1
 					<cfelseif len(arguments.parentid)>
-						where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+						<cfif arguments.doChildrenOnly>
+						and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+						</cfif>
 						and tcontent.active = 1
 					</cfif>
 				)
@@ -959,7 +974,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
-							and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+							<cfif arguments.doChildrenOnly>
+							and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+							</cfif>
 							and tcontent.active = 1
 						</cfif>
 					)
@@ -978,7 +996,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
-							where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+							<cfif arguments.doChildrenOnly>
+							and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+							</cfif>
 							and tcontent.active = 1
 						</cfif>
 						)
@@ -1228,7 +1249,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
-							and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+							<cfif arguments.doChildrenOnly>
+							and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+							</cfif>
 							and tcontent.active = 1
 						</cfif>
 					)
@@ -1247,7 +1271,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
-							where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+							<cfif arguments.doChildrenOnly>
+							and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+							</cfif>
 							and tcontent.active = 1
 						</cfif>
 					)
@@ -1275,7 +1302,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
-							and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+							<cfif arguments.doChildrenOnly>
+							and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+							</cfif>
 							and tcontent.active = 1
 						</cfif>
 					)
@@ -1290,7 +1320,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 								and tcontent.active = 1
 							<cfelseif len(arguments.parentid)>
-								and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+								tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+								<cfif arguments.doChildrenOnly>
+								and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+								</cfif>
 								and tcontent.active = 1
 							</cfif>
 							)
@@ -1355,7 +1388,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
-							where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+							<cfif arguments.doChildrenOnly>
+							and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+							</cfif>
 							and tcontent.active = 1
 						</cfif>
 					)
@@ -1376,7 +1412,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
-							where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+							<cfif arguments.doChildrenOnly>
+							and tcontent.contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+							</cfif>
 							and tcontent.active = 1
 						</cfif>
 						)
