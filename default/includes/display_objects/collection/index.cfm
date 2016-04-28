@@ -216,7 +216,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfdefaultcase>
 		</cfswitch>
 
-
 		<cfset propertyMap={
 			itemEl={tag="div",class="mura-item-meta"},
 			labelEl={tag="span"},
