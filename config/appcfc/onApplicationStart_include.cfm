@@ -321,7 +321,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.getBean('contentFilenameArchive');
 			variables.serviceFactory.getBean('commenter');
 			variables.serviceFactory.getBean('userDevice');
-			variables.serviceFactory.getBean('remoteContentPointer');
+			//variables.serviceFactory.getBean('remoteContentPointer');
 			variables.serviceFactory.getBean('contentDisplayInterval');
 			variables.serviceFactory.getBean('variationTargeting');
 		</cfscript>
