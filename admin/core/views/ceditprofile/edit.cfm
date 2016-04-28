@@ -228,7 +228,9 @@ select * from rsSubTypes where subType <> 'Default'
 							<div class="block-content">
 
 							<div id="mura-list-tree" class="mura-control-group">
-								<cfset matchedlist=''>
+								<cfoutput><label>#application.settingsManager.getSite(rc.userBean.getSiteID()).getSite()#</label></cfoutput>
+								<cf_dsp_categories_nest siteID="#rc.userBean.getSiteID()#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
+								<cfset matchedlist=rc.userBean.getSiteID()>
 								<cfloop collection="#application.settingsManager.getSites()#" item="site">
 									<cfif not listFindNoCase(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID()) and  application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
 										<cfoutput><label>#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
@@ -236,7 +238,7 @@ select * from rsSubTypes where subType <> 'Default'
 									</cfif>
 									<cfset matchedlist=listAppend(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID())>
 								</cfloop>
-					    </div>
+					    	</div>
 
 							</div> <!-- /.block-content -->
 						</div> <!-- /.block-bordered -->
