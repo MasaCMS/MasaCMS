@@ -215,23 +215,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfdefaultcase>
 		</cfswitch>
-
-		<cfset propertyMap={
-			itemEl={tag="div",class="mura-item-meta"},
-			labelEl={tag="span"},
-			title={tag="div"},
-			date={tag="div"},
-			credits={tag="div",showLabel=true,labelDelim=":",rbkey="list.by"},
-			tags={tag="div",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
-			rating={tag="div",showLabel=true,labelDelim=":",rbkey="list.rating"},
-			'default'={tag="div"}
-		}>
 	</cfsilent>
 	<cfoutput>
 		<cfif iterator.getRecordCount()>
 			#variables.$.dspObject_include(
 					theFile='collection/layouts/#objectParams.layout#/index.cfm',
-					propertyMap=propertyMap,
+					propertyMap=this.contentGridPropertyMap,
 					iterator=iterator,
 					objectParams=objectParams
 				)#

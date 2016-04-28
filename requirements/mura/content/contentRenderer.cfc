@@ -277,6 +277,17 @@ Display Objects
 		'9 Column'='mura-grid-nine'
 	}>
 
+	<cfset this.contentGridPropertyMap={
+		itemEl={tag="div",class="mura-item-meta"},
+		labelEl={tag="span"},
+		title={tag="div"},
+		date={tag="div"},
+		credits={tag="div",showLabel=true,labelDelim=":",rbkey="list.by"},
+		tags={tag="div",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+		rating={tag="div",showLabel=true,labelDelim=":",rbkey="list.rating"},
+		'default'={tag="div"}
+	}>
+
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListItemImageLinkClass="thumbnail">
 
