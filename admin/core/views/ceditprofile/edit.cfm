@@ -224,15 +224,17 @@ select * from rsSubTypes where subType <> 'Default'
 	<div id="tabInterests" class="tab-pane">
 		<div class="fieldset">
 			<div id="mura-list-tree" class="control-group">
-			<cfset matchedlist=''>
-			<cfloop collection="#application.settingsManager.getSites()#" item="site">
-				<cfif not listFindNoCase(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID()) and  application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
-						<cfoutput><label class="control-label">#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
-						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
-				</cfif>
-				<cfset matchedlist=listAppend(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID())>
-			</cfloop>
-		</div>
+				<cfoutput><label class="control-label">#application.settingsManager.getSite(rc.userBean.getSiteID()).getSite()#</label></cfoutput>
+				<cf_dsp_categories_nest siteID="#rc.userBean.getSiteID()#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
+				<cfset matchedlist=rc.userBean.getSiteID()>
+				<cfloop collection="#application.settingsManager.getSites()#" item="site">
+					<cfif not listFindNoCase(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID()) and  application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
+							<cfoutput><label class="control-label">#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
+							<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
+					</cfif>
+					<cfset matchedlist=listAppend(matchedlist,application.settingsManager.getSite(site).getPrivateUserPoolID())>
+				</cfloop>
+			</div>
 	    </div>
 	</div>
 
