@@ -53,6 +53,7 @@ component extends="mura.bean.bean" versioned=false {
 		super.init();
 		variables.dbUtility="";
 		variables.entityName="";
+		variables.loadSQLHasWhereClause=false;
 
 		var props=getProperties();
 
@@ -670,7 +671,7 @@ component extends="mura.bean.bean" versioned=false {
 		var props=getProperties();
 		var prop="";
 		var columns=getColumns();
-		var started=false;
+		var started=variables.loadSQLHasWhereClause;
 		var rs="";
 		var hasArg=false;
 		var hasdiscriminator=len(getDiscriminatorColumn());
@@ -686,6 +687,7 @@ component extends="mura.bean.bean" versioned=false {
 
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL());
+
 			for(var arg in arguments){
 				hasArg=false;
 				prop=arg;

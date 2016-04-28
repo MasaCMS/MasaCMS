@@ -1160,7 +1160,13 @@ component extends="mura.cfobject" {
 
 			if(arguments.render){
 				if(arguments.variation){
-					var content=$.getBean('content').loadBy(remoteid=id);
+					var pointer=$.getBean('remoteContentPointer').loadBy(remoteid=id);
+
+					if(pointer.exists()){
+						var content=pointer.getContent();
+					} else {
+						var content=$.getBean('content').loadBy(remoteid=id);
+					}
 
 					url.linkservid=content.getContentID();
 

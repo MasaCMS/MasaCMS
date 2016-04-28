@@ -6,4 +6,15 @@ component extends="mura.bean.beanORM" table="tcontentremotepointer" entityname="
     property name="remoteurl" datatype="varchar" length="250";
     property name="created" ormtype="timestamp";
 
+    private function getLoadSQL(){
+        variables.loadSQLHasWhereClause=true;
+
+        return "select tcontentremotepointer.*
+            from tcontentremotepointer
+            INNER JOIN tcontent on (
+                    tcontentremotepointer.contentid=tcontent.contentid
+                    and tcontentremotepointer.siteid=tcontent.siteid
+                )
+            where tcontent.active=1";
+    }
 }
