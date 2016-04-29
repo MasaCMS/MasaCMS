@@ -132,7 +132,10 @@ var siteManager = {
 
 			if(handled==dialogs.length){
 				for(var i=0;i<actions.length;i++){
-					actions[i]();
+					var submitAction = actions[i]();
+					if (typeof submitAction == "boolean" && !submitAction) {
+						return false;
+					}
 				}
 
 				if(siteManager.assigningChangeset){
