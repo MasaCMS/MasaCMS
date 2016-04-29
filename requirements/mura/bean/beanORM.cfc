@@ -686,8 +686,8 @@ component extends="mura.bean.bean" versioned=false {
 		}
 
 		savecontent variable="sql"{
-			writeOutput(getLoadSQL());
-
+			writeOutput(getLoadSQL() & " ");
+			
 			for(var arg in arguments){
 				hasArg=false;
 				prop=arg;
@@ -797,7 +797,7 @@ component extends="mura.bean.bean" versioned=false {
 		}
 	}
 
-	private function getLoadSQL(){
+	function getLoadSQL(){
 		return "select * from #getTable()# ";
 	}
 
