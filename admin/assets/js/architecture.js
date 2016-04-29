@@ -86,12 +86,32 @@ var siteManager = {
 
 					if(dialog.type.toLowerCase()=='confirmation'){
 						if(typeof dialog.condition == 'function'){
-							if(dialog.condition(dialog)){
-								confirmDialog($.extend(dialog,{yesAction:function(){handled++; submit()}}));
+							var yesFn = function(){handled++; submit()};
+							var noFn = null;
 
-								return false
+							if(typeof dialog.yesFn == 'function') {
+								 yesFn = function(){
+								 	if (dialog.yesFn()) { handled++; submit() }
+								 }
+							}
+							if(typeof dialog.noFn == 'function') {
+								 noFn = function(){
+								 	if (dialog.noFn()) { handled++; submit() }
+								 }
+							}
+							if(typeof dialog.condition == 'function'){
+							 	if(dialog.condition(dialog)){
+
+								 	confirmDialog($.extend(dialog,{yesAction:yesFn,noAction:noFn}));
+
+								 	return false
+							 	} else {
+							 		handled++;
+							 	}
 							} else {
-								handled++;
+							 	confirmDialog($.extend(dialog,{yesAction:yesFn,noAction:noFn}));
+
+							 	return false
 							}
 						} else {
 							confirmDialog($.extend(dialog,{yesAction:function(){handled++; submit()}}));
