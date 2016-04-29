@@ -755,10 +755,14 @@ function htmlEditorOnComplete(editorInstance) {
 	var instance = $(editorInstance).ckeditorGet();
 	instance.resetDirty();
 	var totalIntances = CKEDITOR.instances;
-	CKFinder.setupCKEditor(
-	instance, {
-		basePath: context + '/requirements/ckfinder/'
-	});
+
+	if(typeof CKFinder != 'undefined'){
+		CKFinder.setupCKEditor(
+			instance, {
+			basePath: context + '/requirements/ckfinder/'
+			}
+		);
+	}
 
 
 	HTMLEditorLoadCount++;
