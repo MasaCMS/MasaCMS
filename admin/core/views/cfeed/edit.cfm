@@ -66,32 +66,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset options[6][2]=application.rbFactory.getKeyValue(session.rb,'params.credits')>
 <cfset options[7][1]="tcontent.summary^varchar">
 <cfset options[7][2]=application.rbFactory.getKeyValue(session.rb,'params.summary')>
-<cfset options[8][1]="tcontent.metaDesc^varchar">
-<cfset options[8][2]=application.rbFactory.getKeyValue(session.rb,'params.metadesc')>
-<cfset options[9][1]="tcontent.metaKeywords^varchar">
-<cfset options[9][2]=application.rbFactory.getKeyValue(session.rb,'params.metakeywords')>
-<cfset options[10][1]="tcontent.type^varchar">
-<cfset options[10][2]=application.rbFactory.getKeyValue(session.rb,'params.type')>
-<cfset options[11][1]="tcontent.subType^varchar">
-<cfset options[11][2]=application.rbFactory.getKeyValue(session.rb,'params.subtype')>
-<cfset options[12][1]="tcontenttags.tag^varchar">
-<cfset options[12][2]=application.rbFactory.getKeyValue(session.rb,'params.tag')>
-<cfset options[13][1]="tcontent.displayStart^timestamp">
-<cfset options[13][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')>
-<cfset options[14][1]="tcontent.displayStop^timestamp">
-<cfset options[14][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')>
-<cfset options[15][1]="tcontent.expires^timestamp">
-<cfset options[15][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')>
-<cfset options[16][1]="tcontent.contentID^varchar">
-<cfset options[16][2]="Content ID"/>
-<cfset options[17][1]="tcontent.parentID^varchar">
-<cfset options[17][2]="Parent ID"/>
-<cfset options[18][1]="tcontent.path^varchar">
-<cfset options[18][2]="Path"/>
-<cfset options[19][1]="tcontentcategoryassign.categoryID^varchar">
-<cfset options[19][2]="Category ID"/>
-<cfset options[20][1]="tcontent.filename^varchar">
-<cfset options[20][2]="Filename"/>
+<cfset options[8][1]="tcontent.body^varchar">
+<cfset options[8][2]=application.rbFactory.getKeyValue(session.rb,'params.body')>
+<cfset options[9][1]="tcontent.metaDesc^varchar">
+<cfset options[9][2]=application.rbFactory.getKeyValue(session.rb,'params.metadesc')>
+<cfset options[10][1]="tcontent.metaKeywords^varchar">
+<cfset options[10][2]=application.rbFactory.getKeyValue(session.rb,'params.metakeywords')>
+<cfset options[11][1]="tcontent.type^varchar">
+<cfset options[11][2]=application.rbFactory.getKeyValue(session.rb,'params.type')>
+<cfset options[12][1]="tcontent.subType^varchar">
+<cfset options[12][2]=application.rbFactory.getKeyValue(session.rb,'params.subtype')>
+<cfset options[13][1]="tcontenttags.tag^varchar">
+<cfset options[13][2]=application.rbFactory.getKeyValue(session.rb,'params.tag')>
+<cfset options[14][1]="tcontent.displayStart^timestamp">
+<cfset options[14][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')>
+<cfset options[15][1]="tcontent.displayStop^timestamp">
+<cfset options[15][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')>
+<cfset options[16][1]="tcontent.expires^timestamp">
+<cfset options[16][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')>
+<cfset options[17][1]="tcontent.contentID^varchar">
+<cfset options[17][2]="Content ID"/>
+<cfset options[18][1]="tcontent.parentID^varchar">
+<cfset options[18][2]="Parent ID"/>
+<cfset options[19][1]="tcontent.path^varchar">
+<cfset options[19][2]="Path"/>
+<cfset options[20][1]="tcontentcategoryassign.categoryID^varchar">
+<cfset options[20][2]="Category ID"/>
+<cfset options[21][1]="tcontent.filename^varchar">
+<cfset options[21][2]="Filename"/>
 
 <cfset rc.feedBean.setSiteID(rc.siteid)>
 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=rc.siteid,baseTable="tcontent",activeOnly=true)>
@@ -539,7 +541,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
 				<input class="mura-constrain numeric" name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.feedBean.getImageWidth()#" />
 			</div>
-		
+
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
 				<input class="mura-constrain numeric" name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.feedBean.getImageHeight()#" />
@@ -744,7 +746,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsavecontent>
 <cfsavecontent variable="actionButtons">
 <cfoutput>
-<div class="mura-actions">	
+<div class="mura-actions">
 	<div class="clearfix form-actions">
 	<cfif rc.feedID eq ''>
 		<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.add')#</button>
