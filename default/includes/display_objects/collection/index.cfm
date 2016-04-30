@@ -172,6 +172,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset objectParams.type="default">
 				</cfif>
 
+				<cfset objectParams.categoryid=$.event('categoryid')>
+
 				<cfset variables.maxPortalItems=variables.$.globalConfig("maxPortalItems")>
 				<cfif not isNumeric(variables.maxPortalItems)>
 					<cfset variables.maxPortalItems=100>
