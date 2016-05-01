@@ -243,4 +243,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset structDelete(objectParams,'startrow')>
 <cfset structDelete(objectParams,'sortyby')>
 <cfset structDelete(objectParams,'sortdirection')>
-</cfsilet>
+</cfsilent>
