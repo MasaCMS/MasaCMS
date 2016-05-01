@@ -66,8 +66,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.rsArchive=variables.$.getBean('contentGateway').getReleaseCountByMonth(variables.$.event('siteID'),variables.archive.getContentID())>
 </cfsilent>
+<cfif variables.rsArchive.recordcount>
 <cfoutput>
-
 <nav id="navArchive" <cfif this.navWrapperClass neq "">class="mura-nav-archive #this.navWrapperClass#"</cfif>>
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.archive')#</#variables.$.getHeaderTag('subHead1')#>
 <ul class="#this.ulTopClass#">
@@ -88,3 +88,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 </nav>
 </cfoutput>
+</cfif>
