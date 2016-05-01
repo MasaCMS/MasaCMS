@@ -233,3 +233,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<cfoutput>#variables.dspObject_include(thefile='feed/index.cfm',objectid=objectParams.source,objectParams=objectParams)#</cfoutput>
 </cfif>
+
+<cfsilent>
+<!-- delete params that we don't want to persist --->
+<cfset structDelete(objectParams,'categoryid')>
+<cfset structDelete(objectParams,'type')>
+<cfset structDelete(objectParams,'today')>
+<cfset structDelete(objectParams,'tag')>
+<cfset structDelete(objectParams,'startrow')>
+<cfset structDelete(objectParams,'sortyby')>
+<cfset structDelete(objectParams,'sortdirection')>
+</cfsilet>
