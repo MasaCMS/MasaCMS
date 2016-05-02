@@ -318,10 +318,6 @@
     li li li li li li li li li li li dt { padding-left: 10em !important; }
     li li li li li li li li li li li li dt { padding-left: 11em !important; }
       
-    .categorytitle > .hasChildren { 
-    margin-left: 1em; 
-    }
-      
     dt {
     
       > span {
@@ -333,23 +329,27 @@
         margin-right: 2px;
         }
         
-      > label {
-      
-      cursor: pointer;
-      margin-bottom: 0;
-      .inline-block;
-      line-height: 28px;
-      font-weight: normal;
-      
-      input[type="checkbox"] {
-        margin-top: 0 !important;
-        position: relative;
-        top: 2px;
+        > label {
+        
+        cursor: pointer;
+        margin-bottom: 0;
+        .inline-block;
+        line-height: 28px;
+        font-weight: normal;
+        
         }
-      
-      }
 
       }   
+   
+      .categorytitle label input[type=checkbox]{
+        float:left;
+        margin:7px 4px 7px 0;
+      }
+
+      .categorytitle > .hasChildren { 
+      margin-left: 1em; 
+      }
+
     }
   }
 
