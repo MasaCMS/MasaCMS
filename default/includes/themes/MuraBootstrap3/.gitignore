@@ -13,3 +13,4 @@ Thumbs.db
 *_notes/
 compiled/
 *.less.css
+node_modules/
