@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
 						bcc="#arguments.bcc#">#tmt_mail_head##Chr(13)##Chr(10)##trim(tmt_mail_body)#
-						<cfif structKeyExists(arguments,'mailParamArray')>
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
 							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
 								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
 							</cfloop>
@@ -180,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
 						bcc="#arguments.bcc#">#tmt_mail_head##Chr(13)##Chr(10)##trim(tmt_mail_body)#
-						<cfif structKeyExists(arguments,'mailParamArray')>
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
 							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
 								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
 							</cfloop>
@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						type="text"
 						mailerid="#arguments.mailerID#"
 						bcc="#arguments.bcc#">#trim(arguments.text)#
-						<cfif structKeyExists(arguments,'mailParamArray')>
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
 							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
 								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
 							</cfloop>
@@ -270,7 +270,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						type="text"
 						mailerid="#arguments.mailerID#"
 						bcc="#arguments.bcc#">#trim(arguments.text)#
-						<cfif structKeyExists(arguments,'mailParamArray')>
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
 							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
 								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
 							</cfloop>
@@ -337,7 +337,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						type="html"
 						mailerid="#arguments.mailerID#"
 						bcc="#arguments.bcc#">#trim(arguments.html)#
-						<cfif structKeyExists(arguments,'mailParamArray')>
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
 							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
 								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
 							</cfloop>
@@ -358,7 +358,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						type="html"
 						mailerid="#arguments.mailerID#"
 						bcc="#arguments.bcc#">#trim(arguments.html)#
-						<cfif structKeyExists(arguments,'mailParamArray')>
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
 							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
 								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
 							</cfloop>
@@ -429,7 +429,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					bcc="#arguments.bcc#">
 				<cfmailpart type="text/plain">#trim(arguments.text)#</cfmailpart>
 				<cfmailpart type="text/html">#trim(arguments.html)#</cfmailpart>
-				<cfif structKeyExists(arguments,'mailParamArray')>
+				<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
 					<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
 						<cfmailparam attributeCollection='#local.mailParamIndex#'/>
 					</cfloop>
@@ -452,7 +452,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					bcc="#arguments.bcc#">
 				<cfmailpart type="text/plain">#trim(arguments.text)#</cfmailpart>
 				<cfmailpart type="text/html">#trim(arguments.html)#</cfmailpart>
-				<cfif structKeyExists(arguments,'mailParamArray')>
+				<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
 					<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
 						<cfmailparam attributeCollection='#local.mailParamIndex#'/>
 					</cfloop>
