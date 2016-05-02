@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectsystemobject')#</label>
 			<select name="object" class="objectParam">
 				<option  value="#esapiEncode('html_attr','Select System Object')#">
-					Select System Object
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectsystemobject')#
 				</option>
 				<cfloop query="rc.rsObjects">
 					<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value="#esapiEncode('javascript',rc.rsobjects.object)#">
