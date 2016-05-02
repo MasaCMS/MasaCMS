@@ -271,7 +271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" default="">
 	<cfset var diff="">
 
-	<cfhttp attributeCollection='#getHTTPAttrs(url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#&coreversion=#variables.configBean('version')#",result="diff",getasbinary="no")#'>
+	<cfhttp attributeCollection='#getHTTPAttrs(url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#&coreversion=#variables.configBean.getValue('version')#",result="diff",getasbinary="no")#'>
 
 	<cftry>
 	<cfreturn createObject("component","mura.json").decode(diff.filecontent)>
