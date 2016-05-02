@@ -1620,7 +1620,6 @@ Display Objects
 					<cfif $.content('type') eq 'folder'>
 						<cf_CacheOMatic key="folderBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
 						 <cfset var filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
-						<cfoutput>test4</cfoutput>
 						 <cfif len(filePath)>
 						 	<cfoutput>#$.dspObject_Include(thefile='dsp_portal.cfm',params=arguments.params)#</cfoutput>
 						 <cfelse>
