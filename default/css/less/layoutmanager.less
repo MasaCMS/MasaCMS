@@ -32,11 +32,11 @@ hr {
 
 .mura-item-meta__tags {}
 
-.mura-item-meta__tags span {
-	background-color: #999;
-	color: #fff;
-	display: inline-block;
-	padding: 3px 9px;
+.mura-item-meta__tags span:after {
+	content: ", ";
+}
+.mura-item-meta__tags span:last-child:after, .mura-item-meta__tags span:first-child:after {
+	content: "";
 }
 
 .mura-collection-item a {
