@@ -519,10 +519,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#contentBean.getContentID()#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.Name neq '',de('no'),de('yes'))#" value="#rsContentObjects.Name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.Object neq '',de('no'),de('yes'))#" value="#rsContentObjects.Object#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#rsContentObjects.ObjectID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#arguments.keyFactory(rsContentObjects.ObjectID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rsContentObjects.OrderNo),de(rsContentObjects.OrderNo),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.SiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.params neq '',de('no'),de('yes'))#" value="#rsContentObjects.params#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.params neq '',de('no'),de('yes'))#" value="#translateObjectParams(rsContentObjects.params,arguments.keyFactory)#">
 					)
 				</cfquery>
 				<cfcatch></cfcatch>
@@ -749,7 +749,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfif isdefined("rstContent.objectParams")>
 						,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.objectParams neq '',de('no'),de('yes'))#" value="#rstContent.objectParams#">
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.objectParams neq '',de('no'),de('yes'))#" value="#translateObjectParams(rstContent.objectParams,keys)#">
 					</cfif>
 					)
 				</cfquery>
@@ -810,7 +810,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContentObjects.OrderNo),de(rstContentObjects.OrderNo),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.params neq '',de('no'),de('yes'))#" value="#rstContentObjects.params#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.params neq '',de('no'),de('yes'))#" value="#translateObjectParams(rstContentObjects.params,keys)#">
 					)
 				</cfquery>
 			</cfloop>
@@ -4017,6 +4017,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop list="#arguments.list#" index="i">
 		<cfset newList=listAppend(newList,arguments.keyFactory.get(i))>
 	</cfloop>
+	</cffunction>
+
+	<cffunction name="translateObjectParams" output="false">
+		<cfargument name="params">
+		<cfargument name="keyFactory">
+
+		<cfif isJson(arguments.params)>
+			<cfset arguments.params=deserializeJSON(arguments.params)>
+
+			<cfloop collection="#arguments.params#" item="local.key">
+				<cfif isValid('uuid',arguments.params['#local.key#'])>
+					<cfset arguments.params['#local.key#']=arguments.keyFactory.get(arguments.params['#local.key#'])>
+				</cfif>
+			</cfloop>
+
+			<cfset arguments.params=serializeJSON(arguments.params)>
+		</cfif>
+
+		<cfreturn arguments.params>
 	</cffunction>
 
 </cfcomponent>
