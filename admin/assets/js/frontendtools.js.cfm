@@ -44,7 +44,7 @@
 				} else if(!isNaN(parameters["width"])){
 					frontEndModalWidth=parameters["width"];
 				} else {
-					frontEndModalWidth=frontEndModalWidthStandard;
+					frontEndModalWidth=getConfiguratorWidth();
 				}
 
 				if(parameters["targetFrame"]=='sidebar'){
@@ -67,7 +67,12 @@
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
-				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
+				var item=mura('[data-instanceid="' + parameters["instanceid"] + '"]');
+				var data=item.data();
+
+				if(item.hasClass('mura-body-object')){
+					data.isbodyobject=true;
+				}
 
 				if(parameters["targetFrame"]=='sidebar' && document.getElementById('mura-sidebar-editor').style.display=='none'){
 					mura('##mura-sidebar-configurator').show();
@@ -114,7 +119,7 @@
 
 
 				mura.resetAsyncObject(item.node);
-				item.addClass('active');
+				item.addClass('mura-active');
 				mura.processAsyncObject(item.node).then(function(){
 					closeFrontEndToolsModal();
 					if(parameters.reinit){
@@ -130,7 +135,7 @@
 				}
 
 				mura.resetAsyncObject(item.node);
-				item.addClass('active');
+				item.addClass('mura-active');
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 				muraInlineEditor.isDirty=true;
@@ -154,11 +159,20 @@
 			sidebarProxy.addEventListener(onAdminMessage);
 	}
 
-	var frontEndModalWidthStandard=990;
+	var frontEndModalWidthStandard=1140;
 	var frontEndModalWidthConfigurator=600;
 	var frontEndModalHeight=0;
 	var frontEndModalWidth=0;
 	var frontEndModalIE8=document.all && document.querySelector && !document.addEventListener;
+
+	var getConfiguratorWidth=function(){
+		var check=window.innerWidth-20;
+		if(check < frontEndModalWidthStandard){
+			return check;
+		} else {
+			return frontEndModalWidthStandard;
+		}
+	}
 
 	var autoScroll=function(y){
 
@@ -206,6 +220,10 @@
 			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
 			editableObj.hide().show();
 
+			mura('.mura-object-select').removeClass('mura-object-select');
+			mura('.mura-active-target').removeClass('mura-active-target');
+			editableObj.addClass('mura-object-select');
+
 			var legacyMap={
 				feed:true,
 				feed_slideshow:true,
@@ -223,7 +241,7 @@
 				}
 			}
 
-			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname') + '&contenttype=' + mura.type + '&contentsubtype=' + mura.subtype + '&sourceFrame=' + targetFrame;
+			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + encodeURIComponent(editableObj.data('objectname')) + '&contenttype=' + mura.type + '&contentsubtype=' +encodeURIComponent(mura.subtype) + '&sourceFrame=' + targetFrame;
 
 		}
 
@@ -255,22 +273,22 @@
 
 				var $tools='<div id="mura-preview-device-selector">';
 					$tools=$tools+'<p>Preview Mode</p>';
-					$tools=$tools+'<a class="mura-device-standard active" title="Desktop" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i></a>';
-					$tools=$tools+'<a class="mura-device-tablet" title="Tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i></a>';
-					$tools=$tools+'<a class="mura-device-tablet-landscape" title="Tablet Landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i></a>';
-					$tools=$tools+'<a class="mura-device-phone" title="Phone" data-height="480" data-width="320" data-mobileformat="true"><i class="icon-mobile-phone"></i></a>';
-					$tools=$tools+'<a class="mura-device-phone-landscape" title="Phone Landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="icon-mobile-phone icon-rotate-270"></i></a>';
-					$tools=$tools+'<a id="preview-close" title="Close" href="##" onclick="closeFrontEndToolsModal();"><i class="icon-remove-sign"></i></a>';
+					$tools=$tools+'<a class="mura-device-standard active" title="Desktop" data-height="600" data-width="1075" data-mobileformat="false"><i class="mi-desktop"></i></a>';
+					$tools=$tools+'<a class="mura-device-tablet" title="Tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="mi-tablet"></i></a>';
+					$tools=$tools+'<a class="mura-device-tablet-landscape" title="Tablet Landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="mi-tablet mi-rotate-270"></i></a>';
+					$tools=$tools+'<a class="mura-device-phone" title="Phone" data-height="480" data-width="320" data-mobileformat="true"><i class="mi-mobile-phone"></i></a>';
+					$tools=$tools+'<a class="mura-device-phone-landscape" title="Phone Landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="mi-mobile-phone mi-rotate-270"></i></a>';
+					$tools=$tools+'<a id="preview-close" title="Close" href="##" onclick="closeFrontEndToolsModal(); return false;"><i class="mi-times-circle"></i></a>';
 					$tools=$tools+'</div>';
 
 			} else {
 				if(!frontEndModalHeight){
 					if (isModal == undefined) {
-						frontEndModalWidth = frontEndModalWidthStandard;
+						frontEndModalWidth = getConfiguratorWidth();
 					} else if (isModal == "true") {
 						frontEndModalWidth=frontEndModalWidthConfigurator;
 					} else {
-						frontEndModalWidth = frontEndModalWidthStandard;
+						frontEndModalWidth = getConfiguratorWidth();
 					}
 				}
 
@@ -278,14 +296,13 @@
 				var $tools='';
 			}
 
-
-			utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
-			'<div id="frontEndToolsModalBody">' + $tools +
-			'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
-			'</div>' +
-			'</div>');
-
 			if(ispreview){
+				utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+				'<div id="frontEndToolsModalBody">' + $tools +
+				'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
+				'</div>' +
+				'</div>');
+
 				utility('##mura-preview-device-selector a').on('click', function () {
 					var data=utility(this).data();
 
@@ -303,8 +320,27 @@
 				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+80) + "px")
 				resizeFrontEndToolsModal(frontEndModalHeight);
 			} else{
+
+				if(mura.type=='Variation' && mura.remoteid){
+					src+='&remoteid=' + encodeURIComponent(mura.remoteid);
+				}
+
+				if(mura.type=='Variation' && mura.title){
+					src+='&title=' + encodeURIComponent(mura.title);
+				}
+
+				if(mura.type=='Variation' && mura.remoteurl){
+					src+='&remoteurl=' + encodeURIComponent(mura.remoteurl);
+				}
+
+				utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+				'<div id="frontEndToolsModalBody">' + $tools +
+				'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
+				'</div>' +
+				'</div>');
+
 				frontEndModalHeight=0;
-				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+50) + "px")
+				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+70) + "px")
 				resizeFrontEndToolsModal(0);
 			}
 		} else {
@@ -396,7 +432,7 @@
 			utility(".editableObject").addClass('editableObjectHide');
 
 			if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
-				utility(".mura-editable").addClass('inactive');
+				utility(".mura-editable").addClass('mura-inactive');
 			}
 
 		} else {
@@ -410,7 +446,7 @@
 			utility(".editableObject").removeClass('editableObjectHide');
 
 			if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
-				utility(".mura-editable").removeClass('inactive');
+				utility(".mura-editable").removeClass('mura-inactive');
 			}
 		}
 
@@ -522,7 +558,7 @@
 			muraInlineEditor.inited=true;
 			utility('##adminSave').show();
 			utility('##adminStatus').hide();
-			utility('.mura-editable').removeClass('inactive');
+			utility('.mura-editable').removeClass('mura-inactive');
 			window.mura.editing=true;
 
 			utility('##mura-deactivate-editors').click(function(){
@@ -539,7 +575,7 @@
 						selector:item.selector()
 					});
 
-					item.addClass('active');
+					item.addClass('mura-active');
 
 				});
 
@@ -561,11 +597,26 @@
 				}
 
 				var undoVariations=function(){
+
 					if(mura.variations.length){
-						var last=mura.variations.length-1;
-						mura(mura.variations[last].selector).html(mura.variations[last].original);
-						mura.variations.pop();
+						var current=mura('.mura-var-current');
+
+						if(current.length){
+							for(var i=(mura.variations.length-1);i>=0;i--){
+								var target=mura(mura.variations[i].selector);
+								if( current.attr('id')==target.attr('id') ){
+									target.html(mura.variations[i].original);
+									i=-1;
+								}
+							}
+						} else {
+							var last=mura.variations.length-1;
+							mura(mura.variations[last].selector).html(mura.variations[last].original);
+							mura.variations.pop();
+						}
+
 					}
+
 					displayVariations();
 				}
 
@@ -757,7 +808,7 @@
 							var editor=CKEDITOR.inline(
 								document.getElementById( mura.currentId ),
 								{
-									toolbar: 'htmlEditor',
+									toolbar: 'QuickEdit',
 									width: "75%",
 									customConfig: 'config.js.cfm',
 									on: {
@@ -765,7 +816,7 @@
 												e.editor.updateElement();
 												variation.original=e.editor.getData();
 											},
-											'blur': function(){ /*onBlur()*/}
+											//'blur': function(){ onBlur()}
 										}
 								}
 							);
@@ -773,6 +824,7 @@
 						}
 
 					} catch(err){
+						console.log(err);
 
 					}
 
@@ -848,16 +900,18 @@
 						}
 					);
 
-					mura(mura.editableSelector).closest('a').each(function(){
-						var self=mura(this);
+					mura(mura.editableSelector).each(function(){
+						mura(this).closest('a').each(function(){
+							var self=mura(this);
 
-						if(!self.hasClass('mura')){
-							mura(this).on('click',function(event){
-								if(editingVariations){
-									event.preventDefault();
-								}
-							});
-						}
+							if(!self.hasClass('mura')){
+								self.on('click',function(event){
+									if(editingVariations){
+										event.preventDefault();
+									}
+								});
+							}
+						});
 					});
 				}
 
@@ -911,12 +965,14 @@
 
 					var objectParams;
 
-					item.addClass("active");
+					item.addClass("mura-active");
 
 					if(mura.type =='Variation'){
 						objectParams=item.data();
+
 						if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
-							item.html(window.mura.layoutmanagertoolbar + item.html());
+							item.children('.frontEndToolsModal').remove();
+							item.prepend(window.mura.layoutmanagertoolbar );
 
 							item.find(".frontEndToolsModal").on(
 								'click',
@@ -932,13 +988,14 @@
 							item.find('.mura-object').each(initObject);
 						}
 					} else {
-						var region=item.closest(".mura-region-local");
+						var region=item.closest('.mura-region-local');
 
 						if(region && region.length ){
 							if(region.data('perm')){
 								objectParams=item.data();
 								if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
-									item.html(window.mura.layoutmanagertoolbar + item.html());
+									item.children('.frontEndToolsModal').remove();
+									item.prepend(window.mura.layoutmanagertoolbar);
 
 									item.find(".frontEndToolsModal").on(
 										'click',
@@ -961,9 +1018,10 @@
 
 				mura(".mura-object").each(initObject);
 
-				mura('.mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
+				mura('.mura-body-object, .mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
 					var item=mura(this);
-					item.addClass("active");
+					item.addClass("mura-active");
+					item.children('.frontEndToolsModal').remove();
 					item.prepend(window.mura.layoutmanagertoolbar);
 					item.find(".frontEndToolsModal").on(
 						'click',
@@ -1092,13 +1150,13 @@
 						}
 
 						attribute.attr('contenteditable','false');
-						attribute.addClass('active');
+						attribute.addClass('mura-active');
 						attribute.data('manualedit',false);
 						mura.processMarkup(this);
 
 						attribute.find('.mura-object').each(function(){
 							mura.initDraggableObject(this);
-							mura(this).addClass('active')
+							mura(this).addClass('mura-active')
 						});
 
 						attribute.find('h1, h2, h3, h4, p, div, img, table, form, article').each(function(){
@@ -1259,7 +1317,7 @@
 									var params=item.data();
 
 									delete params['instanceid'];
-									delete params['objectname'];
+									//delete params['objectname'];
 									delete params['objectid'];
 									delete params['isconfigurator'];
 									delete params['perm'];
@@ -1278,7 +1336,7 @@
 							}
 						);
 
-						utility('.mura-object[data-object="folder"], .mura-object[data-object="gallery"], .mura-object[data-object="calendar"]').each(function(){
+						utility('.mura-body-object, .mura-object[data-object="folder"], .mura-object[data-object="gallery"], .mura-object[data-object="calendar"]').each(function(){
 							var item=utility(this);
 
 							if(item.data('displaylist')){
@@ -1303,7 +1361,7 @@
 								muraInlineEditor.data['sortdirection']=item.data('sortdirection');
 							}
 
-							muraInlineEditor.data['objectparams']=JSON.stringify(item.data());
+							muraInlineEditor.data['objectparams']=encodeURIComponent(JSON.stringify(item.data()));
 
 						});
 
@@ -1316,7 +1374,7 @@
 
 							count=1;
 
-							if(muraInlineEditor.commitEdit){
+							if(muraInlineEditor.commitEdit && mura.currentId){
 								muraInlineEditor.commitEdit(mura('##' + mura.currentId));
 							}
 
@@ -1361,7 +1419,7 @@
 									subtype:mura.content.subtype,
 									parentid:mura.content.parentid,
 									title:mura.content.title,
-									body:escape(JSON.stringify(mura.finalVariations))
+									body:encodeURIComponent(JSON.stringify(mura.finalVariations))
 								}
 							);
 						</cfif>
@@ -1612,10 +1670,11 @@
 
 			try{
 				//alert(JSON.stringify(validations))
+
 				utility.ajax(
 					{
 						type: 'post',
-						url: mura.apiEndpoint + 'validate/',
+						url: mura.apiEndpoint + '/validate/',
 						data: {
 								data: encodeURIComponent(JSON.stringify(utility.extend(muraInlineEditor.data,data))),
 								validations: encodeURIComponent(JSON.stringify(validations))
@@ -1659,11 +1718,13 @@
 			var instance = utility(editorInstance).ckeditorGet();
 			instance.resetDirty();
 			var totalInstances = CKEDITOR.instances;
+			<cfif url.contenttype neq 'Variation'>
 			CKFinder.setupCKEditor(
 			instance, {
 				basePath: '#application.configBean.getContext()#/requirements/ckfinder/',
 				rememberLastFolder: true
 			});
+			</cfif>
 		},
 		<cfset csrfTokens=$.generateCSRFTokens(context=node.getContentHistID() & 'add')>
 		data:{
@@ -1775,7 +1836,8 @@
 			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
 		},
 		objectHasConfigurator:function(displayObject){
-			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition() || !(displayObject.object in this.configuratorMap);
+			return true;
+			//return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition() || !(displayObject.object in this.configuratorMap);
 		},
 		checkforImageCroppers:function(el){
 
@@ -1879,7 +1941,7 @@
 		setAnchorSaveChecks:function(el){
 			function handleEditCheck(){
 				if(muraInlineEditor.isDirty && confirm("Save as draft?")){
-					muraInlineEditor.requestedURL=this.href;
+					muraInlineEditor.requestedURL=window.location;
 					muraInlineEditor.save();
 					return false;
 				} else {
@@ -1890,14 +1952,16 @@
 			var anchors=el.querySelectorAll('a');
 
 			for(var i=0;i<anchors.length;i++){
-				try{
-					if (typeof(anchors[i].onclick) != 'function'
-						&& typeof(anchors[i].getAttribute('href')) == 'string'
-						&& anchors[i].getAttribute('href').indexOf('#') == -1
-						&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
-			   			anchors[i].onclick = handleEditCheck;
-					}
-				} catch(err){}
+				if(!mura(anchors[i]).closest('.mura').length){
+					try{
+						if (typeof(anchors[i].onclick) != 'function'
+							&& typeof(anchors[i].getAttribute('href')) == 'string'
+							&& anchors[i].getAttribute('href').indexOf('#') == -1
+							&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
+				   			anchors[i].onclick = handleEditCheck;
+						}
+					} catch(err){}
+				}
 			}
 		},
 		isDirty:false

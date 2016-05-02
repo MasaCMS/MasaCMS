@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<script>
 		<!--- Conditional for iOS6. Is this more appropriate? https://gist.github.com/kTmnh/3798925/#comment-592093 --->
 		if(/(iPhone|iPad|iPod)\sOS\s6/.test(navigator.userAgent)) {
-	    
+
 		    (function (window) {
 		    // This library re-implements setTimeout, setInterval, clearTimeout, clearInterval for iOS6.
 		    // iOS6 suffers from a bug that kills timers that are created while a page is scrolling.
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		    function createTimer(set, map, args) {
 		        var id, cb = args[0],
 		            repeat = (set === orgSetInterval);
-		
+
 		        function callback() {
 		            if (cb) {
 		                cb.apply(window, arguments);
@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		        };
 		        return id;
 		    }
-		
+
 		    function resetTimer(set, clear, map, virtualId, correctInterval) {
 		        var timer = map[virtualId];
 		        if (!timer) {
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		        }
 		    });
 		}(window));
-	    
+
 		}
 	</script>
 </cfoutput>
@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  		<div class="svSlides mura-slides cycle-slideshow" data-cycle-slides="dl" data-cycle-pager=".mura-pager" data-cycle-pager-template="<li><a href='##'>{{slideNum}}</a></li>" data-cycle-swipe="true" data-cycle-pause-on-hover="true"<cfif listFindNoCase(variables.feedBean.getDisplayList(),"image")> style="#variables.$.generateListImageStyles(size=variables.feedBean.getImageSize(),height=variables.feedBean.getImageHeight(),setWidth=false)#"</cfif>>
 
 				#variables.$.dspObject_Include(
-					thefile='dsp_content_list.cfm',
+					thefile='collection/includes/dsp_content_list.cfm',
 					fields=variables.feedBean.getDisplayList(),
 					type="Feed",
 					iterator= variables.iterator,
@@ -242,4 +242,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <!-- The Prototype js library is not currently support for the slide show functionality  -->
 </cfdefaultcase>
 </cfswitch>
-

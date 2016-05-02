@@ -1,4 +1,4 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -44,8 +44,8 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(window){
-	window.mura.EntityCollection=window.mura.Entity.extend({
+;(function(root){
+	root.mura.EntityCollection=root.mura.Entity.extend({
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -54,10 +54,10 @@
 
 			if(Array.isArray(self.get('items'))){
 				self.set('items',self.get('items').map(function(obj){
-					if(window.mura.entities[obj.entityname]){
-						return new window.mura.entities[obj.entityname](obj);
+					if(root.mura.entities[obj.entityname]){
+						return new root.mura.entities[obj.entityname](obj);
 					} else {
-						return new window.mura.Entity(obj);
+						return new root.mura.Entity(obj);
 					}
 				}));
 			}
@@ -100,17 +100,17 @@
 		},
 
 		filter:function(fn){
-			var collection=new window.mura.EntityCollection(this.properties);
+			var collection=new root.mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			var collection=new window.mura.EntityCollection(this.properties);
+			var collection=new root.mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		}
 	});
-})(window);
+})(this);

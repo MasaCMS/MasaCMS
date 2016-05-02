@@ -54,12 +54,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="mura-tb-dataset" class="mura-tb-form">
 			
 					<ul class="template-form">
-						<li>
+						<li class="mura-tb-grp-sourcetype">
 							<label for="dataset">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype')#</label>
 							<select class="select" name="sourcetype" id="mura-tb-dataset-sourcetype">
 								<option value="entered">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.entered')#</option>
 								<option value="dsp">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.dsp')#</option>
 								<option value="object">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.object')#</option>
+								<option value="muraorm" id="dataset-source-muraorm">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.muraorm')#</option>
 								<option value="remote">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.remote')#</option>
 							</select>
 						</li>
@@ -99,10 +100,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</li>
 					</ul>
 					<div class="btn-wrap">
-								<input type="button" class="btn" name="save-dataset" id="mura-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
-							</div>
+						<input type="button" class="btn" name="save-dataset" id="mura-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
+					</div>
 				</div>
-				</div>
+			</div>
 							
 		</div>
 </cfoutput>

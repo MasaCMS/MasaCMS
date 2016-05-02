@@ -2,21 +2,21 @@
 <cfif $.siteConfig('hasLockableNodes')>
 	<cfset nodeLockedByYou= stats.getLockType() eq 'node' and stats.getLockID() eq session.mura.userID>
 	<cfset nodeLockedBySomeElse=len(stats.getLockID()) and stats.getLockType() eq 'node' and  stats.getLockID() neq session.mura.userID>
-	
+
 	<cfif nodeLockedByYou or nodeLockedBySomeElse>
 
 		<cfif not nodeLockedBySomeElse>
-			<p id="msg-node-locked" class="alert alert-error"<cfif not nodeLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock" href="##"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+			<p id="msg-node-locked" class="alert alert-error"<cfif not nodeLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock" href="##"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
 			</p>
 		<cfelse>
-			<!--- Locked by someone else --->	
-			<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>	
+			<!--- Locked by someone else --->
+			<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
 			<p id="msg-node-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#.<br>
-			<a href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a>
-				<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+			<a href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="mi-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a>
+				<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
 				</cfif>
 			</p>
-		
+
 		</cfif>
 		<script>
 			$(function(){
@@ -44,7 +44,7 @@
 									csrf_token_expires: '#csrf.expires#'
 								})
 							}
-						);							
+						);
 					}
 				);
 
@@ -61,50 +61,49 @@
 <cfif showApprovalStatus and listFindNoCase('Pending,Rejected',rc.contentBean.getApprovalStatus())  >
 	<p class="alert alert-error">
 		<cfif rc.contentBean.getApprovalStatus() eq 'Rejected'>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.rejectedmessage")#: 
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.rejectedmessage")#:
 		<cfelseif rc.contentBean.getApprovalStatus() eq 'Cancelled'>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.canceledmessage")#: 
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.canceledmessage")#:
 		<cfelse>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.pendingmessage")#: 
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.pendingmessage")#:
 		</cfif>
 		<strong><a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewdetails")#</a></strong>
 	</p>
 </cfif>
 
-<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
-	<cfset conflicts=rc.contentBean.getDisplayConflicts()>
+<cfset conflicts=rc.contentBean.getDisplayConflicts()>
 
-	<cfif rc.contentBean.getDisplay() eq 2>
-		<p class="alert"><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#</p>
-	</cfif>
-
-	<cfif conflicts.hasNext()>
-		<cfset calendar=rc.contentBean.getParent()>
-		<div class="alert alert-error">
-			<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.displayinterval.schedulingconflicts")#:</h3>
-			<cfloop condition="conflicts.hasNext()">
-				<cfset conflict=conflicts.next()>
-				<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
-					<cfset conflictDetails=conflict.getConfictDetailIterator()>
-					<cfloop condition="conflictDetails.hasNext()">
-						<cfset conflictdetail=conflictDetails.next()>
-						<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
-						<cfif conflictDetails.hasNext()>, </cfif>
-					</cfloop>
-				</p>
-			</cfloop>
-		</div>
-	</cfif>
+<cfif rc.contentBean.getDisplay() eq 2>
+	<p class="alert"><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#</p>
 </cfif>
+
+<cfif conflicts.hasNext()>
+	<cfset calendar=rc.contentBean.getParent()>
+	<div class="alert alert-error">
+		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.displayinterval.schedulingconflicts")#:</h3>
+		<cfloop condition="conflicts.hasNext()">
+			<cfset conflict=conflicts.next()>
+			<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
+				<cfset conflictDetails=conflict.getConfictDetailIterator()>
+				<cfloop condition="conflictDetails.hasNext()">
+					<cfset conflictdetail=conflictDetails.next()>
+					<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
+					<cfif conflictDetails.hasNext()>, </cfif>
+				</cfloop>
+			</p>
+		</cfloop>
+	</div>
+</cfif>
+
 <script>
 function viewStatusInfo(contenthistid,siteid){
-	
+
 	var url = 'index.cfm';
 	var pars = 'muraAction=cArch.statusmodal&compactDisplay=true&siteid=' + siteid  + '&contenthistid=' + contenthistid +'&cacheid=' + Math.random();
 	var d = jQuery('##approvalModalContainer');
 	d.html('<div class="load-inline"></div>');
 	//$('##approvalModalContainer .load-inline').spin(spinnerArgs2);
-	$.get(url + "?" + pars, 
+	$.get(url + "?" + pars,
 		function(data) {
 			if(data.indexOf('mura-primary-login-token') != -1) {
 				location.href = './';
@@ -113,25 +112,25 @@ function viewStatusInfo(contenthistid,siteid){
 			jQuery('##approvalModalContainer').html(data);
 			stripe('stripe');
 		});
-		
+
 		$("##approvalModalContainer").dialog({
 			resizable: false,
 			modal: true,
 			width: 600,
-			position:["top",20]
+			position: { my: "center", at: "top+180", of: window, collision: "fit" }
 		});
-	
-	
-	return false;	
+
+
+	return false;
 }
 
 function applyApprovalAction(requestid,action,comment,siteid){
-	
+
 	if(action == 'Reject' && comment == ''){
 		alertDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"approvalchains.rejectioncommentrequired"))#');
 	} else {
 		$('##mura-approval-apply').attr('disabled','disabled').css('opacity', '.30');
-		
+
 		<cfset csrf=rc.$.generateCSRFTokens(context='approvalaction')>
 		var pars={
 					muraAction:'carch.approvalaction',

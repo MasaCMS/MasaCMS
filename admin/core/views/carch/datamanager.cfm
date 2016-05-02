@@ -77,22 +77,62 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.rsDataInfo=application.contentManager.getDownloadselect(rc.contentid,rc.siteid) />
 <cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>>
 </cfsilent>
-<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</h1>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+	
+<cfset isNewForm = false />
 
-<ul class="metadata"><li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#: <strong>#rc.contentBean.gettitle()#</strong></li>
-<li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.totalrecordsavailable')#: <strong>#rc.rsDataInfo.CountEntered#</strong></li>
-</ul></cfoutput>
-
-<cfif rc.action eq "edit">
-<cfinclude template="data_manager/dsp_edit.cfm">
-<cfelseif rc.action eq "display">
-<cfinclude template="data_manager/dsp_display.cfm">
-<cfelse>
-<cfinclude template="data_manager/dsp_response.cfm">
+<cfif isJSON( rc.contentBean.getBody())>
+	<cfset local.formJSON = deserializeJSON( rc.contentBean.getBody() )>
+	
+	<cftry>
+		<cfif structKeyExists(local.formJSON.form,"muraormentities") and structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>
+			<cfset isNewForm = true />
+		</cfif>
+	<cfcatch>
+		<cfdump var="#cfcatch#">
+		<cfabort>
+	</cfcatch>
+	</cftry>
 </cfif>
 
 
 
+<cfif isNewForm>
+	<cfset objectname = rereplacenocase( rc.contentBean.getValue('filename'),"[^[:alnum:]]","","all" ) />
+	
+	<cfinclude template="dsp_secondary_menu.cfm">
+	<cfoutput>
+	<ul class="metadata"><li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#: <strong>#rc.contentBean.gettitle()#</strong></li>
+	</ul></cfoutput>
 
+	<cfinclude template="data_manager/dsp_ormform.cfm">
+<cfelse>
+	<cfoutput>
+	
+	<div class="mura-header">
+		<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</h1>
+		<cfinclude template="dsp_secondary_menu.cfm">
+		<div class="mura-item-metadata">
+			<div class="label-group">
+				<span class="label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#: <strong>#rc.contentBean.gettitle()#</strong></span>
+				<span class="label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.totalrecordsavailable')#: <strong>#rc.rsDataInfo.CountEntered#</strong></span>
+			</div>
+		</div><!-- /.mura-item-metadata -->
+	</div> <!-- /.mura-header -->
+	</cfoutput>
+	
+	<div class="block block-constrain">
+		<div class="block block-bordered">
+		  <div class="block-content">
+					<cfif rc.action eq "edit">
+					<cfinclude template="data_manager/dsp_edit.cfm">
+					<cfelseif rc.action eq "display">
+					<cfinclude template="data_manager/dsp_display.cfm">
+					<cfelse>
+					<cfinclude template="data_manager/dsp_response.cfm">
+					</cfif>
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.block-constrain -->
+</cfif>	
+	

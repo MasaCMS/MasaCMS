@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
 		<td class="actions">
 		<ul>
-			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#esapiEncode('javascript',content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');"><i class="icon-globe"></i></a></li>
+			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#esapiEncode('javascript',content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');"><i class="mi-globe"></i></a></li>
 		</ul>
 		</td>
 	</tr>
@@ -97,8 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <cfif comments.recordCount() and comments.pageCount() gt 1>
-	<div class="pagination">
-	<ul>
+	<ul class="pagination">
 		<cfif comments.getPageIndex() gt 1> 
 			<a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#esapiEncode('url',rc.siteid)#"><li>&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></li>
 			</cfif>
@@ -114,7 +113,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li><a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></li>
 		</cfif>
 	</ul>
-	</div>
 </cfif>	
 </cfoutput>
 

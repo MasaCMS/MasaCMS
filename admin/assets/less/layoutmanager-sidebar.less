@@ -1,74 +1,40 @@
 // use outermost div for higher specificity hook into sidebar objects
 .mura__layout-manager__controls {
-	
+
 	// position styles of sidebar
 	width: 300px;
 	position: fixed;
 	top: 0;
 	bottom: 0;
-	z-index: 15; /* 1 higher than navbar */
+	z-index: 499998 !important;
 	height: 100vh;
-	background-color: #FFFFFF;
-	
+	background-color: #454545;
+
 	// reset typography styles in layout manager sidebar
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight: normal;
 	text-transform: none;
-	
+
 	// reset typography styles NESTED within sidebar
 	* {
 		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 		font-weight: normal;
 		text-transform: none;
 	}
-	
+
 	*[draggable=true] {
 	  -moz-user-select:none;
 	  -khtml-user-drag: element;
 	  cursor: move;
 	}
+
+	.btn i{
+		margin-right: 4px;
+	}
 }
 
-	
-// button styles copied from admin css
-.btn {
-	display: inline-block;
-	padding: 4px 12px;
-	margin-bottom: 0;
-	font-size: 12px;
-	line-height: 18px;
-	text-align: center;
-	vertical-align: middle;
-	cursor: pointer;
-	color: #666;
-	text-shadow: 0 1px 1px rgba(255,255,255,0.75);
-	background-color: #f3f3f3;
-	background-image: -moz-linear-gradient(top, #f7f7f7, #ededed);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f7f7f7), to(#ededed));
-	background-image: -webkit-linear-gradient(top, #f7f7f7, #ededed);
-	background-image: -o-linear-gradient(top, #f7f7f7, #ededed);
-	background-image: linear-gradient(to bottom, #f7f7f7, #ededed);
-	background-repeat: repeat-x;
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff7f7f7', endColorstr='#ffededed', GradientType=0);
-	border-color: #ededed #ededed #c7c7c7;
-	border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
-	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-	border: 1px solid #e6e6e6;
-	border-bottom-color: #ccc;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
-	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
-	box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
-	
-	color: #666;
-	border-color: #e6e6e6 #e6e6e6 #ccc;
-}
-	
 
-
-/* 
+/*
 	DEV NOTE
 	ie10 does not allow use of 'inherit' on calculated parent
 	example: .mura-sidebar uses a calculated height, therefore the child elements cannot use 'inherit' for height
@@ -78,73 +44,125 @@
 .mura__layout-manager__controls__scrollable {
 	height: inherit;
 	width: inherit;
-	overflow: scroll;
+	overflow: auto;
 }
 
 .mura__layout-manager__controls__objects {
-	padding: 50px 0;
+	padding: 30px 0 50px 0;
+}
+
+/* sidebar icons */
+
+*[class^="mi-"],
+*[class*=" mi-"]{
+	font-family: FontAwesome,"Source Sans Pro","Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.mura-sidebar__objects-list__object-item *[class^="mi-"],
+.mura-sidebar__objects-list__object-item *[class*=" mi-"]{
+	font-family: "FontAwesome" !important;
+	width: 18px;
+	padding-right: 1em;
+	font-size: 1em;
+	color: #898989;
 }
 
 .mura-sidebar__objects-list {
 	height: 100%;
 	width: 100%;
-	overflow: scroll;
+	overflow: auto;
 }
 
 .mura-sidebar__objects-list__object-group {
 	margin: 18px;
 }
 
+body.configurator-wrapper #configuratorContainer h1,
 .mura-sidebar__objects-list__object-group h3 {
-	margin: 0 0 .5em 0;
+	margin: 23px 0 15px 0;
 	padding: 0;
-	font-size: 32px;
-	font-weight: bold;
-	color: #ff3a00;
-	line-height: 44px;
-	letter-spacing: -0.05em;
+	font-size: 24px;
+	font-weight: normal;
+	color: #f3f3f3;
+	line-height: 1.2;
 }
 
-.mura-sidebar__objects-list__object-group-heading {}
+body.configurator-wrapper #mura-content{
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: 0;
+	margin-right: 0;
+}
+.mura-sidebar__objects-list__object-group-heading {
+	font-size: 12px;
+	font-weight: normal;
+	color: #f3f3f3;
+	line-height: 1.2;
+
+	+ .mura-sidebar__object-group-items{
+	margin-top: 12px;
+	}
+}
 
 /* legacy, initial set */
 .mura-sidebar__object-group-items,
 .mura-sidebar__objects-list__object-group-items {
-	padding: 8px;
-	background-color: #e6e6e6;
-	border-radius: 3px;
+	padding: 0;
+	background:none;
+	.border-radius(0);
+
+	+ .btn{
+		margin-top: 22px;
+	}
+
 }
 
 .mura-sidebar__object-group-items {
-	padding: 8px;
-	background-color: #e6e6e6;
-	border-radius: 3px;
+	padding: 0;
+	background-color: #454545;
+	.border-radius(2px);
 }
 
 .mura-sidebar__object-group-items select,
-.mura-sidebar__objects-list__object-group-items select {
+.mura-sidebar__objects-list__object-group-items select,
+.mura-sidebar__objects-list__object-group-items select:focus {
 	margin: .5em 0;
 	width: 100%;
+	background-color: #333;
+	color: #d8d8d8;
+	padding: 8px 12px;
+	font-size: 12px;
+	border: none;
+	cursor: pointer;
+	outline: none;
+	outline-offset: 0;
 }
 
 .mura-sidebar__objects-list__object-item {
 	box-sizing: border-box;
-	padding: .5em;
-	margin-bottom: -1px;
-	background-color: #F5F5F5;
-	font-size: 13px;
-	color: #000;
-	text-shadow: 0 1px 0 #fff;
+	display:block;
+	padding: 10px 16px;
+	margin-bottom: 2px;
+	font-size: 12px;
+	color: #d8d8d8;
+	background-color: #565656;
 	font-weight: bold;
+  border: none;
+  border-collapse: collapse;
+}
+
+select + .mura-sidebar__objects-list__object-item{
+	margin-top: 12px;
 }
 
 .mura-sidebar__objects-list__object-item + .mura-sidebar__objects-list__object-item {
-	border-top: 1px solid rgba(0,0,0,0.07);
+	border:none;
 }
 
 .mura-sidebar__objects-list__object-item:hover {
-	background: #f9f9f9;
-	cursor: pointer;
+	background: #6f6f6f;
+	color: #f5f5f5;
+	/* cursor: pointer; */
 }
 
 
@@ -152,7 +170,8 @@
 /* iframe
 ===================================== */
 
-.mura #sortableFields.sortable-sidebar #displayListSort {
+#configurator #sortableFields #displayListSort,
+#configurator #sortableFields #availableListSort {
 	width: 100%;
 	float: none;
 }
@@ -173,4 +192,174 @@
 
 .mura__layout-manager__controls .mura #configurator .fieldset-wrap + .fieldset-wrap {
 	margin-top: 1em;
+}
+
+/* compact view / configurators */
+
+body.configurator-wrapper{
+	background-color: #454545;
+
+	// reset typography styles in sidebar configurator
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-weight: normal;
+	text-transform: none;
+
+		#configuratorContainer{
+			background-color: #454545;
+			padding: 18px 34px 15px 18px;
+
+			// reset typography styles NESTED within sidebar configurator
+			* {
+				font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+				font-weight: normal;
+				text-transform: none;
+			}
+
+			#configuratorHeader{
+				i{
+				min-width: 30px;
+				}
+			}
+
+			// button styles
+			.btn {
+				font-size: 12px;
+				padding: 6px 12px;
+				.border-radius(2px);
+				-webkit-box-shadow: none;
+				-moz-box-shadow: none;
+				box-shadow: none;
+				background-image:none;
+				text-shadow:none;
+			}
+			.btn-primary {
+			  color: #ffffff;
+			  background-color: #4485f1;
+			  border-color: #4882cc;
+			  background-image:none !important;
+			}
+
+			// unclassed buttons default
+			.btn:not([class*="btn-"]){
+				.border-radius(2px);
+				background-image:none;
+				text-shadow:none;
+			  color: #f3f3f3;
+			  background-color: #333;
+			  border-color: transparent;
+			  float: left;
+			  margin: 4px 0;
+		   }
+
+				.btn:not([class*="btn-"]) + *{
+					float: left;
+					clear: left;
+					margin-top: 8px;
+				}
+
+		   label + .btn:not([class*="btn-"]),
+		   label > div + .btn:not([class*="btn-"]){
+		   	margin-top: 8px;
+		   }
+
+		   .alert:not([class*="alert-"]){
+					background-image:none;
+					text-shadow:none;
+					color: #A4A4A4;
+					background-color: #454545;
+					border-color: #A4A4A4;
+		   }
+
+			.mura-layout-row{
+			  padding: 0;
+			  margin: 0;
+			}
+
+			.mura-control-group{
+				margin-bottom: 12px;
+			}
+
+			label,
+			.control-label,
+			.mura-control-label{
+				.mura-sidebar__objects-list__object-group-heading;
+			}
+
+			select,
+			select:focus,
+			input[type=text],
+			textarea {
+				margin: .5em 0;
+				width: 100%;
+				background-color: #333;
+				color: #d8d8d8;
+				padding: 8px 12px;
+				font-size: 12px;
+				border: none;
+				cursor: pointer;
+				outline: none;
+				outline-offset: 0;
+			}
+
+			.mura-control-group input.radio,
+			.mura-control-group input[type=radio],
+			.mura-control-group input.checkbox,
+			.mura-control-group input[type=checkbox]{
+			  margin-top: 1px;
+			  border: none;
+			  outline: 0;
+			}
+
+			textarea{
+			max-width: 230px;
+			min-height: 85px;
+			}
+
+			.form-actions{
+				margin:0;
+				padding:0;
+				.btn{
+					.btn-primary;
+					background-image:none !important;
+				}
+			}
+
+			#sortableFields #displayListSort{
+				padding: 0 !important;
+				border: none !important;
+				margin-bottom: 12px !important;
+			}
+			#sortableFields #displayListSort li:before{
+			  content: "\f0c9";
+			  font-family: FontAwesome,"Source Sans Pro","Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+			  color: #737373;
+			  float: right;
+			}
+
+			#sortableFields #displayListSort li{
+				background-color: #565656;
+				text-shadow:none;
+				.border-radius(0);
+					box-shadow:none;
+				font-size: 12px;
+				padding: 8px 12px;
+			  color: #d8d8d8;
+			}
+
+			ul.configurator-options{
+			list-style-type:none;
+			padding-left:0;
+			margin: 0;
+			clear:both;
+
+				li{
+					list-style-type:none;
+
+					a{
+					color: #f3f3f3;
+					}
+				}
+			}
+
+	}
 }

@@ -265,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			arguments.datasource=getValue('customDatasource');
 			structDelete(arguments,'username');
 			structDelete(arguments,'password');
-
+			
 			if(!getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)){
 				structDelete(arguments,'cachedWithin');
 			}

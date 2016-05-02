@@ -22,24 +22,63 @@
 	<cfargument name="content">
 
 	<cfset var result=[]>
+	<cfset var rsresult=''>
+	<cfset var rscandidate=''>
 
-	<cfif arguments.content.getDisplay() eq 2 and arguments.content.hasParent()>
-		<cfset var calendar=content.getParent()>
+	<cfif arguments.content.getDisplay() eq 2>
+		<cfset var calendar=getBean('content').loadBy(contentid=content.getParentID(),siteid=content.getSiteID())>
 
 		<cfif calendar.getType() eq 'Calendar'>
-			<cfset var displayInterval=arguments.content.getDisplayInterval(deserialize=true)>
+			<cfset var calendarSettings=calendar.getDisplayInterval().getAllValues()>
+			<cfset var displayInterval=arguments.content.getDisplayInterval().getAllValues()>
 
-			<cfif displayInterval.detectconflicts and displayInterval.detectspan>
-				<cfset var events=calendar.getEventsIterator(start=now(),end=dateAdd('m',displayInterval.detectspan,now()))>
-				<cfset var rsevents=events.getQuery()>
+			<cfif calendarSettings.detectconflicts and calendarSettings.detectspan>
+				<cfset var events=calendar.getEventsIterator(start=now(),end=dateAdd('m',calendarSettings.detectspan,now()))>
+				<cfset var rsevents=duplicate(events.getQuery())>
 				<cfset var rscheck=''>
 				<cfset var rsresult=''>
 				<cfset var rsresultfinal=''>
 				<cfset var rsitemdetails=''>
 
+				<cfquery name="rscandidate" dbtype="query">
+					select * from rsevents where 0=1
+				</cfquery>
+
+				<cfset QueryAddRow( rscandidate ) />
+
+				<!--- Set query data in the event query. --->
+				<cfloop list="#rscandidate.columnList#" index="local.i">
+					<cfif local.i eq 'displayInterval'>
+						<cfset querySetCell(rscandidate,
+							local.i,
+							arguments.content.getDisplayInterval(serialize=true),
+							rscandidate.recordCount) />
+					<cfelse>
+						<cfset querySetCell(rscandidate,
+							local.i,
+							arguments.content.getValue(i),
+							rscandidate.recordCount) />
+					</cfif>
+				</cfloop>
+
+				<cfset querySetCell(rscandidate,
+					'parentType',
+					'Calendar',
+					rscandidate.recordCount) />
+
+				<cfset rscandidate=apply(query=rscandidate,current=now(),from=now(),to=dateAdd('m',calendarSettings.detectspan,now())) />
+
 				<cfquery name="rsresult" dbtype="query">
 					select * from rsevents where 0=1
 				</cfquery>
+
+				<cfquery name="rsevents" dbtype="query">
+					select * from rsevents
+					union
+					select * from rscandidate
+				</cfquery>
+
+				<cfset events.setQuery(rsevents)>
 
 				<cfloop condition="events.hasNext()">
 					<cfset var event=events.next()>
@@ -124,7 +163,7 @@
 	<cfparam name="data.endon" default="">
 	<cfparam name="data.allday" default="1">
 	<cfparam name="data.detectconflicts" default="0">
-	<cfparam name="data.detectspan" default="3">
+	<cfparam name="data.detectspan" default="12">
 
 	<cfif not structKeyExists(data,'end')>
 		<cfif not len(arguments.displayStart) or isDate(arguments.displayStop)>

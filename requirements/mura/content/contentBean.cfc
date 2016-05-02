@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="kids" fieldtype="one-to-many" cfc="content" nested=true fkcolumn="contentid" orderby="created asc" cascade="delete"/>
 <cfproperty name="parent" fieldtype="many-to-one" cfc="content" fkcolumn="parentid"/>
 <cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
-<cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign"/>
+<cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign" loadkey="contenthistid"/>
 <cfproperty name="changeset" fieldtype="many-to-one" cfc="changeset" fkcolumn="changesetid"/>
 <cfproperty name="comments" fieldtype="one-to-many" cfc="comment" fkcolumn="contentid"/>
 <cfproperty name="stats" fieldtype="one-to-one" cfc="stats" fkcolumn="contentid" />
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="expires" type="date" default=""/>
 <cfproperty name="assocFilename" type="string" default=""/>
-<cfproperty name="displayInterval" type="string" default="Daily" />
+<cfproperty name="displayInterval" default="Daily" />
 <cfproperty name="requestID" type="string" default="" comparable="false"/>
 <cfproperty name="approvalStatus" type="string" default=""/>
 <cfproperty name="approvalGroupID" type="string" default="" comparable="false"/>
@@ -358,9 +358,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfif>
 
-			<cfif getBean('configBean').getValue(property='advancedScheduling',defaultValue=false)>
-
-			</cfif>
 		</cfif>
 
 		<cfif variables.instance.isFeature eq 2
@@ -495,7 +492,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="validate" access="public" output="false">
 	<cfset var extErrors=structNew() />
 
-
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
@@ -509,6 +505,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFindNoCase('Form,Component',variables.instance.type)
 		and variables.contentManager.doesLoadKeyExist(this,'title',variables.instance.title)>
 			<cfset variables.instance.errors.titleconflict=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.titlenotunique")>
+	</cfif>
+
+	<cfif getValue('display') eq 2 and getDisplayConflicts().hasNext()>
+		<cfset variables.instance.errors.displayconflict=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.displayconflict")>
 	</cfif>
 
 	<cfif variables.instance.isNew
@@ -785,6 +785,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<!--- for variations --->
+<cffunction name="getInitJS" output="false">
+	<cfreturn variables.instance.responseMessage>
+</cffunction>
+
+<cffunction name="setInitJS" output="false">
+	<cfargument name="initjs">
+	<cfset variables.instance.responseMessage=arguments.initjs>
+	<cfreturn this>
+</cffunction>
+<!--- --->
+
 <cffunction name="getDisplayStart" output="false">
 	<cfargument name="timezone" default="">
 
@@ -827,6 +839,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayInterval">
 
 	<cfif not isSimpleValue(arguments.displayInterval)>
+
+		<cfif isValid('component',arguments.displayInterval)>
+			<cfset arguments.displayInterval=arguments.displayInterval.getAllValues()>
+		</cfif>
+
 		<cfif isDefined('arguments.displayInterval.end') >
 			<cfif arguments.displayInterval.end eq 'on'
 			and isDefined('arguments.displayInterval.endon')
@@ -855,14 +872,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayInterval" output="false">
-	<cfargument name="deserialize" default="false">
+	<cfargument name="serialize" default="false">
 
-	<cfif arguments.deserialize>
-		<cfreturn getBean('contentIntervalManager').deserializeInterval(
+	<cfif not arguments.serialize>
+		<cfreturn getBean('contentDisplayInterval').set(getBean('contentIntervalManager').deserializeInterval(
 			interval=variables.instance.displayInterval,
 			displayStart=getValue('displayStart'),
 			displayStop=getValue('displayStop')
-		)>
+		)).setContent(this)>
 	<cfelse>
 		<cfreturn variables.instance.displayInterval>
 	</cfif>
@@ -1448,23 +1465,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var crumb="">
 	<cfset var chain="">
 	<cfset var i="">
-	<cfloop condition="crumbs.hasNext()">
-		<cfset crumb=crumbs.next()>
-		<cfif len(crumb.getChainID())>
-			<cfset chain=getBean('approvalChain').loadBy(chainID=crumb.getChainID())>
-			<cfif not chain.getIsNew()>
-				<cfif arguments.applyExemptions and len(crumb.getExemptID()) and isdefined('session.mura.membershipids')>
-					<cfloop list="#crumb.getExemptID()#" index="i">
-						<cfif listFind(session.mura.membershipids,i)>
-							<cfreturn false>
-						</cfif>
-					</cfloop>
+	<cfset var permUtility=getBean('permUtility')>
+	<cfset var privateUserPool=getBean('settingsManager').getSite(getValue('siteid')).getPrivateUserPoolID()>
+
+	<cfif not ( permUtility.isS2() or permUtility.isUserInGroup('admin',privateUserPool,0) )>
+		<cfloop condition="crumbs.hasNext()">
+			<cfset crumb=crumbs.next()>
+			<cfif len(crumb.getChainID())>
+				<cfset chain=getBean('approvalChain').loadBy(chainID=crumb.getChainID())>
+				<cfif not chain.getIsNew()>
+					<cfif arguments.applyExemptions and len(crumb.getExemptID()) and isdefined('session.mura.membershipids')>
+						<cfloop list="#crumb.getExemptID()#" index="i">
+							<cfif listFind(session.mura.membershipids,i)>
+								<cfreturn false>
+							</cfif>
+						</cfloop>
+					</cfif>
+					<cfset setValue('chainID',crumb.getChainID())>
+					<cfreturn true>
 				</cfif>
-				<cfset setValue('chainID',crumb.getChainID())>
-				<cfreturn true>
 			</cfif>
-		</cfif>
-	</cfloop>
+		</cfloop>
+	</cfif>
 
 	<cfreturn false>
 </cffunction>
@@ -1553,7 +1575,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="hasImage">
-	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT'))>
+	<cfargument name="usePlaceholder" default="true">
+	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) or arguments.usePlaceholder and len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgId())>
 </cffunction>
 
 	<cffunction name="getStatusID" output="false">

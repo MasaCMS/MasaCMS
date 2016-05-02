@@ -8,7 +8,7 @@
 	<cffunction name="dspZoomNoLinks" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
-		<cfargument name="class" type="string" default="navZoom">
+		<cfargument name="class" type="string" default="breadcrumb">
 		<cfargument name="charLimit" type="numeric" default="0">
 		<cfargument name="minLevels" type="numeric" default="0">
 		<cfargument name="maxLevels" type="numeric" default="0">
@@ -41,24 +41,21 @@
 		</cfif>
 		<cfsavecontent variable="content">
 		<cfoutput>
-			<ul class="#arguments.class#">
-		<cfif limited>
-			<li>&hellip;</li>
-		</cfif>
+		<ul class="#arguments.class#">
 		<cfloop from="#crumbLen#" to="2" index="i" step="-1">
 			<cfsilent>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
 				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
-				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
+				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "mi">
 			</cfsilent>
-			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)# &raquo;</li>
+			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)#</li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
 				<cfset lastlocked="locked">
 			</cfif>
 			<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[1])>
-			<cfset isFileIcon=arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "icon">
+			<cfset isFileIcon=arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "mi">
 		</cfsilent>
 		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> <strong>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</strong></li>
 		</ul></cfoutput></cfsavecontent>
@@ -126,17 +123,17 @@
 						cssClass='mura-region-local ';
 						dataString=dataString & ' data-loose="true" data-perm="true" data-inited="false"';
 
-						cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+						cssClass=cssClass & "mura-inactive mura-editable-attribute#inline#";
 
-						return '<div class="mura-region mura-editable inactive#inline#">
+						return '<div class="mura-region mura-editable mura-inactive#inline#">
 							<label class="mura-editable-label">#ucase(arguments.label)#</label>
 							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
 					} else {
 
-						cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+						cssClass=cssClass & "mura-inactive mura-editable-attribute#inline#";
 
-						return '<div class="mura-editable inactive#inline#">
+						return '<div class="mura-editable mura-inactive#inline#">
 							<label class="mura-editable-label">#ucase(arguments.label)#</label>
 							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
@@ -146,7 +143,7 @@
 				} else {
 					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
 
-					return '<div class="mura-editable inactive#inline#">
+					return '<div class="mura-editable mura-inactive#inline#">
 						<label class="mura-editable-label">#ucase(arguments.label)#</label>
 						<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 						</div>';
@@ -178,28 +175,34 @@
 
 		<cfswitch expression="#arguments.type#">
 		<cfcase value="Folder">
-			<cfreturn "icon-folder-open-alt">
+			<cfreturn "mi-folder-open-o">
 		</cfcase>
 		<cfcase value="Calendar">
-			<cfreturn "icon-calendar">
+			<cfreturn "mi-calendar">
+		</cfcase>
+		<cfcase value="Component">
+			<cfreturn "mi-align-justify">
 		</cfcase>
 		<cfcase value="Gallery">
-			<cfreturn "icon-th">
+			<cfreturn "mi-th">
 		</cfcase>
 		<cfcase value="GalleryItem">
-			<cfreturn "icon-picture">
+			<cfreturn "mi-picture">
 		</cfcase>
 		<cfcase value="Link">
-			<cfreturn "icon-link">
+			<cfreturn "mi-link">
 		</cfcase>
 		<cfcase value="Quick">
-			<cfreturn "icon-upload-alt">
+			<cfreturn "mi-upload">
 		</cfcase>
 		<cfcase value="File">
-			<cfreturn "icon-file-text-alt">
+			<cfreturn "mi-file-text-o">
+		</cfcase>
+		<cfcase value="Form">
+			<cfreturn "mi-toggle-on">
 		</cfcase>
 		<cfdefaultcase>
-			<cfreturn "icon-file">
+			<cfreturn "mi-file">
 		</cfdefaultcase>
 		</cfswitch>
 
@@ -695,7 +698,7 @@
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
 		<cfargument name="ajax" type="boolean" default="false">
-		<cfargument name="class" type="string" default="navZoom">
+		<cfargument name="class" type="string" default="breadcrumb">
 		<cfargument name="charLimit" type="numeric" default="0">
 		<cfargument name="minLevels" type="numeric" default="0">
 		<cfargument name="maxLevels" type="numeric" default="0">
@@ -728,34 +731,37 @@
 			<cfset crumbLen = arguments.maxLevels>
 		</cfif>
 		<cfsavecontent variable="content"><cfoutput><ul class="#arguments.class#">
-		<cfif limited>
-			<li>&raquo;</li>
-		</cfif>
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 			<cfsilent>
+				<cfif not structKeyExists(arguments.crumbdata[i],'moduleid')>
+					<cfset arguments.crumbdata[i].moduleid="00000000000000000000000000000000000">
+				</cfif>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
 				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
-				<cfset isFileIcon= arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
+				<cfset isFileIcon= arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "mi">
 			</cfsilent>
 			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>>
 			<a <cfif arguments.ajax>
-				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
+				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','#arguments.crumbdata[I].moduleid#','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
-				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
-			</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a> &raquo;</li>
+				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=#arguments.crumbdata[I].moduleid#&activeTab=0"
+			</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a></li>
 		</cfloop>
 		<cfsilent>
+			<cfif not structKeyExists(arguments.crumbdata[1],'moduleid')>
+				<cfset arguments.crumbdata[1].moduleid="00000000000000000000000000000000000">
+			</cfif>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
 				<cfset lastlocked="locked">
 			</cfif>
 			<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[1])>
-			<cfset isFileIcon= arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "icon">
+			<cfset isFileIcon= arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "mi">
 		</cfsilent>
 		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>><strong>
 		<a <cfif arguments.ajax>
-			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1)});"
+			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','#arguments.crumbdata[1].moduleid#','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
-			href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
+			href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=#arguments.crumbdata[1].moduleid#&activeTab=0"
 		</cfif>>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a></strong></li>
 		</ul></cfoutput></cfsavecontent>
 
@@ -896,8 +902,25 @@
 		<cfargument name="isConfigurator">
 		<cfargument name="objectname">
 		<cfargument name="renderer">
+		<cfargument name="bodyRender" default="false">
 
 		<cfset var openingDiv='<div class="mura-object'>
+
+		<cfif arguments.bodyRender>
+			<cfset openingDiv=openingDiv & ' mura-body-object'>
+		</cfif>
+
+		<cfif not isDefined('arguments.objectParams.objectname')>
+			<cfif isDefined('arguments.objectname') and len(arguments.objectname)>
+				<cfset arguments.objectParams.objectname=arguments.objectname>
+			<cfelse>
+				<cfset arguments.objectParams.objectname=ucase(left(arguments.object,1)) & right(arguments.object,len(arguments.object)-1)>
+			</cfif>
+		</cfif>
+
+		<cfif not find('class=',arguments.objectParams.objectname) and arguments.renderer.hasDisplayObject(arguments.object)>
+			<cfset arguments.objectParams.objectname="<i class='#arguments.renderer.getDisplayObject(arguments.object).iconclass#'></i> " & arguments.objectParams.objectname>
+		</cfif>
 
 		<cfparam name="arguments.objectParams.async" default="false">
 
@@ -905,7 +928,7 @@
 			<cfset openingDiv=openingDiv & " mura-async-object">
 		</cfif>
 
-		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#createUUID()#"'>
+		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#createUUID()#"'>
 
 		<cfloop collection="# arguments.objectparams#" item="local.i">
 			<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
@@ -951,12 +974,15 @@
 		<cfargument name="showEditableObjects">
 		<cfargument name="layoutmanager">
 		<cfargument name="objectname">
+		<cfargument name="bodyRender" required="true" default="false">
+		<cfargument name="include" required="true" default="false">
+		<cfargument name="returnFormat" required="true" default="html">
 
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
 		<cfset var theObject = "" />
-		<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() & arguments.cacheKey />
-		<cfset var cacheKeyObjectId = arguments.object & arguments.objectid & arguments.cacheKey/>
+		<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() & $.event('currentfilename') & cgi.query_string & arguments.cachekey & arguments.cacheKey />
+		<cfset var cacheKeyObjectId = arguments.object & arguments.objectid & $.event('currentfilename') & cgi.query_string & arguments.cachekey & arguments.cacheKey />
 		<cfset var showEditable=false/>
 		<cfset var editableControl={editLink='',isConfigurator=false}>
 		<cfset var historyID="">
@@ -1134,26 +1160,38 @@
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
 					<cfset theObject=tempObject>
 					<cfif arguments.renderer.useLayoutmanager()>
-						<cfif request.muraFrontEndRequest>
+						<cfif not arguments.include and request.muraFrontEndRequest>
 								<cfset theObject=renderObjectInManager(object=arguments.object,
 									objectid=arguments.objectid,
 									content=theObject,
+									objectname=arguments.objectname,
 									objectParams=arguments.params,
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
 									objectname=arguments.objectname,
-									renderer=arguments.renderer)>
+									renderer=arguments.renderer,
+									bodyRender=arguments.bodyRender,
+									returnformat=arguments.returnformat)>
 						</cfif>
 					</cfif>
 					<cfreturn theObject>
 			<cfelse>
 				<cfset var displayobject=$.siteConfig().getDisplayObject(arguments.object)>
 
-				<!--- may push for standardization of display object rendering via .cfm files--->
-				<cfif listLast(displayobject.displayobjectfile,".") neq "cfm">
+				<!--- Standardizing display object rendering via .cfm files--->
+
+				<cfset var filePath=''>
+
+				<cfif len(displayobject.legacyObjectFile) and len($.siteConfig().lookupDisplayObjectFilePath(displayobject.legacyObjectFile))>
+					<cfset filePath=displayobject.legacyObjectFile>
+				<cfelse>
+					<cfset filePath=displayobject.displayObjectFile>
+				</cfif>
+
+				<cfif listLast(filePath,".") neq "cfm">
 					<cfset var theDisplay1=''>
 					<cfset var theDisplay2=''>
-					<cfset var componentPath="#displayobject.displayobjectfile#">
+					<cfset var componentPath="#filePath#">
 					<cfset var eventHandler=createObject(componentPath).init()>
 					<cfset var tracePoint=initTracePoint("#getMetaData(eventHandler).name#.#displayobject.displaymethod#")>
 					<cfsavecontent variable="theDisplay1">
@@ -1170,7 +1208,7 @@
 						<cfreturn trim(theDisplay1)>
 					</cfif>
 				<cfelse>
-					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=displayobject.displayobjectfile,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator}>
+					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,bodyRender=arguments.bodyRender,returnformat=arguments.returnformat,include=arguments.include,cachekey=arguments.cachekey}>
 
 					<cfif objectargs.object neq 'plugin'>
 						<cfset objectargs.cacheKey=cacheKeyObjectId>
@@ -1192,7 +1230,7 @@
 				<cfcase value="contact"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_contact.cfm")></cfcase>
 				<cfcase value="calendar_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/calendarNav/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="plugin"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,params=arguments.params,objectid=arguments.objectid,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<!--- BEGIN: New Layout Manager Objects --->
+				<!--- BEGIN: New Layout Manager Objects
 				<cfcase value="collection">
 					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
 					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="collection/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
@@ -1207,7 +1245,7 @@
 					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="calendar/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
 				<cfcase value="embed">
 					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="embed/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
-				<!--- END: New Layout Manager Objects--->
+				 END: New Layout Manager Objects--->
 				<cfcase value="mailing_list"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="mailing_list_master"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list_master.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="site_map"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_site_map.cfm",cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
@@ -1265,6 +1303,7 @@
 									objectid=arguments.objectid,
 									content=theObject,
 									objectParams=arguments.params,
+									objectname=arguments.objectname,
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
 									objectname=arguments.objectname,
@@ -1348,7 +1387,7 @@
 
 		<cfset request.muraRegionID=arguments.columnID>
 
-		<cfif perm>
+		<cfif perm and arguments.renderer.getShowToolbar() and arguments.renderer.showInlineEditor>
 			<cfif listLen($.siteConfig('columnnames'),'^') gte arguments.columnid>
 				<cfset var regionLabel=UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))>
 			<cfelse>
@@ -1357,7 +1396,7 @@
 			<cfset theRegion.header='<div class="mura-region">'>
 			<cfset theRegion.footer='</div>'>
 
-			<cfset theRegion.local.header='<div class="mura-editable inactive"><div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#"><label class="mura-editable-label">DISPLAY REGION : #regionLabel#</label>'>
+			<cfset theRegion.local.header='<div class="mura-editable mura-inactive"><div class="mura-region-local mura-inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#"><label class="mura-editable-label">DISPLAY REGION : #regionLabel#</label>'>
 			<cfset theRegion.local.footer='</div></div>'>
 
 			<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>
@@ -1523,7 +1562,7 @@
 				)
 			>
 			<cfset arguments.bean=getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
-			<cfset argument.filename=arguments.bean.getFilename()>
+			<cfset arguments.filename=arguments.bean.getFilename()>
 		</cfif>
 
 		<cfif application.configBean.getValue(property='AllowUnicodeInFilenames',defaultValue=false)>
@@ -1756,25 +1795,25 @@
 		<cfargument name="objectid" default="">
 		<cfargument name="objectname" default="">
 		<cfargument name="objectlabel">
+		<cfargument name="objecticonclass" default="mi-cog">
 
 		<cfif not isDefined('arguments.objectlabel')>
 			<cfset arguments.objectlabel=arguments.objectname>
 		</cfif>
-
-		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#">#esapiEncode('html',arguments.objectlabel)#</div>'>
+		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#"><i class="#esapiEncode('html_attr',arguments.objecticonclass)#"></i> #esapiEncode('html',arguments.objectlabel)#</div>'>
 	</cffunction>
 
 	<cffunction name="renderIntervalDesc" output="false">
 		<cfargument name="content">
 		<cfargument name="renderer">
 
-		<cfset var displayInterval=arguments.content.getDisplayInterval(deserialize=true)>
+		<cfset var displayInterval=arguments.content.getDisplayInterval().getAllValues()>
 		<cfset var returnstring=''>
 
 		<cfif not isDate(arguments.content.getdisplayStart())>
 			<cfreturn ''>
 		<cfelseif content.hasParent()>
-			<cfset returnstring=esapiEncode('html',UCase(content.getParent().getMenuTitle())) & ': '>
+			<cfset returnstring=esapiEncode('html',UCase(arguments.content.getParent().getMenuTitle())) & ': '>
 		</cfif>
 
 		<cfset var allday=variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
@@ -1831,11 +1870,12 @@
 		<cfreturn returnstring>
 	</cffunction>
 
-	<cffunction name="processContentTypeBody" output="false">
+	<cffunction name="lookupCustomContentTypeBody" output="false" hint="This is for looking up overrides in dspBody">
 		<cfargument name="$">
 		<cfset var safesubtype=REReplace(arguments.$.content().getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 		<cfset var eventOutput="">
 
+		<!--- START Checking for Override via Event Model --->
 		<!--- For backwards compatibility --->
 		<cfif arguments.$.content().getType() eq 'Folder'>
 			<cfset eventOutput=arguments.$.renderEvent("onPortalBodyRender")>
@@ -1856,7 +1896,77 @@
 			<cfreturn {eventOutput=eventOutput}>
 		</cfif>
 
+		<!--- END Checking for Override via Event Model --->
+
+		<!--- START Checking for Override via Display Object --->
+		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+			<cfset var params=$.content().getObjectParams()>
+			<cfif not isdefined('params.objectname')>
+				<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+				<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+			</cfif>
+			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true)}>
+		</cfif>
+
+		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+		<cfset var params=$.content().getObjectParams()>
+		<cfif not isdefined('params.objectname')>
+			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+		</cfif>
+			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true)}>
+		</cfif>
+
+		<cfset displayObjectKey=arguments.$.content().getType()>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey) and arguments.$.siteConfig().getDisplayObject(displayObjectKey).custom>
+		<cfset var params=$.content().getObjectParams()>
+		<cfif not isdefined('params.objectname')>
+			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+		</cfif>
+			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true)}>
+		</cfif>
+
+		<!---
+		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey) and arguments.$.siteConfig().getDisplayObject(displayObjectKey).custom>
+		<cfset var params=$.content().getObjectParams()>
+		<cfif not isdefined('params.objectname')>
+			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
+			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
+		</cfif>
+			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true,cacheKey=cgi.query_string)}>
+		</cfif>
+		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+		--->
+
+		<!--- END Checking for Override via Display Object --->
+
+		<!--- START Checking for Override via File  --->
 		<cfset var filePath="">
+
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#_#safesubtype#/index.cfm')>
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
+		<cfif not arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#/index.cfm')>
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			</cfif>
+		</cfif>
 
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
 
@@ -1869,18 +1979,18 @@
 			</cfif>
 		</cfif>
 
-		<cfif not len(filePath)>
-			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
 
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		<cfelseif $.content('type') eq 'folder'>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_Portal_#safesubtype#.cfm')>
 			<cfif len(filePath)>
 				<cfreturn {filepath=filePath}>
-			<cfelseif $.content('type') eq 'folder'>
-				<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_Portal_#safesubtype#.cfm')>
-				<cfif len(filePath)>
-					<cfreturn {filepath=filePath}>
-				</cfif>
 			</cfif>
 		</cfif>
+
+		<!--- END Checking for Override via File  --->
 
 		<cfreturn {}>
 	</cffunction>

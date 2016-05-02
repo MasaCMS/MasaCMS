@@ -55,24 +55,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 
+<div class="mura-header">
 	<h1>Plugin Settings</h1>
 
-	<ul class="metadata">
-		<li><strong>Name:</strong> #esapiEncode('html',rc.pluginXML.plugin.name.xmlText)#</li>
-		<li><strong>Category:</strong> #esapiEncode('html',rc.pluginXML.plugin.category.xmlText)#</li>
-		<li><strong>Version:</strong> #esapiEncode('html',rc.pluginXML.plugin.version.xmlText)#</li>
-		<li><strong>Provider:</strong> <a href="#esapiEncode('url',rc.pluginXML.plugin.providerURL.xmlText)#" target="_blank">#esapiEncode('html',rc.pluginXML.plugin.provider.xmlText)#</a></li>
-		<!---<li><strong>Provider URL:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#esapiEncode('html',rc.pluginXML.plugin.providerURL.xmlText)#</a></li>--->
-		<li><strong>Plugin ID:</strong> #rsplugin.pluginID#</li>
-		<li><strong>Package:</strong> <cfif len(package)>#esapiEncode('html',package)#<cfelse>N/A</cfif></li>
-	</ul>
-
 	<cfif rsPlugin.recordcount and rsPlugin.deployed and application.configBean.getJavaEnabled()>
-		<ul class="navTask nav nav-pills">
-			<li><a href="./?muraAction=cSettings.updatePluginVersion&moduleid=#esapiEncode('url',rc.moduleid)#">Update Plugin Version</a></li>
-			<li><a href="./index.cfm?muraAction=cSettings.createBundle&moduleid=#esapiEncode('url',rc.moduleid)#&siteID=&BundleName=#esapiEncode('url',application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
-		</ul>
+		<div class="nav-module-specific btn-group"> 
+			<a class="btn" href="./?muraAction=cSettings.updatePluginVersion&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="mi-gears"></i> Update Plugin Version</a>
+			<a class="btn" href="./index.cfm?muraAction=cSettings.createBundle&moduleid=#esapiEncode('url',rc.moduleid)#&siteID=&BundleName=#esapiEncode('url',application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#"><i class="mi-download"></i> Create and Download Plugin Bundle</a>
+		</div>
 	</cfif>
+
+	<div class="mura-item-metadata">
+		<div class="label-group">
+
+		<span class="label"><strong>Name:</strong> #esapiEncode('html',rc.pluginXML.plugin.name.xmlText)#</span>
+		<span class="label"><strong>Category:</strong> #esapiEncode('html',rc.pluginXML.plugin.category.xmlText)#</span>
+		<span class="label"><strong>Version:</strong> #esapiEncode('html',rc.pluginXML.plugin.version.xmlText)#</span>
+		<span class="label"><strong>Provider:</strong> <a href="#esapiEncode('url',rc.pluginXML.plugin.providerURL.xmlText)#" target="_blank">#esapiEncode('html',rc.pluginXML.plugin.provider.xmlText)#</a></span>
+		<!---<span class="label"><strong>Provider URL:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#esapiEncode('html',rc.pluginXML.plugin.providerURL.xmlText)#</a></span>--->
+		<span class="label"><strong>Plugin ID:</strong> #rsplugin.pluginID#</span>
+		<span class="label"><strong>Package:</strong> <cfif len(package)>#esapiEncode('html',package)#<cfelse>N/A</cfif></span>
+
+
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.mura-header -->
+
+<div class="block block-constrain">
+	<div class="block block-bordered">
+	  <div class="block-content">
+	  	
 
 	<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
 	<cfif isStruct(errors) and not structIsEmpty(errors)>
@@ -80,8 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
 
-	<form novalidate="novalidate" class="fieldset-wrap" method="post" name="frmSettings" action="./?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
-		<div class="fieldset">
+	<form novalidate="novalidate" method="post" name="frmSettings" action="./?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
 			<cfsilent>
 				<cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 					select location from tplugindisplayobjects
@@ -145,41 +156,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and fileExists(licenseFile)>
 			<cfif hasLicense>
 				<cffile file="#licenseFile#" action="read" variable="license">
-				<div class="control-group" id="plugin-license">
-					<label class="control-label">End User License Agreement</label>
-					<div class="controls">
-						<textarea readonly="true" rows="16" class="span12">
+				<div class="mura-control-group" id="plugin-license">
+					<label>End User License Agreement</label>
+						<textarea readonly="true" rows="16">
 							#license#
 						</textarea>
-					</div>
-					<div class="controls">
-						<select class="span3" name="licenseStatus" required="true" message="You Must Accept the End User License Agreement in Order to Proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainter').style.display='block';}else{document.getElementById('settingsContainter').style.display='none';}">
+
+						<select name="licenseStatus" required="true" message="You Must Accept the End User License Agreement in Order to Proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainer').style.display='block';}else{document.getElementById('settingsContainer').style.display='none';}">
 							<option value="">I Do Not Accept</option>
 							<option value="accept">I Accept</option>
 						</select>
-					</div>
+
 				</div>
-				<span id="settingsContainter" style="display:none">
+				<span id="settingsContainer" style="display:none">
 			</cfif>
 
-			<div class="control-group">
-				<div class="span3">
-					<label class="control-label">Plugin Name (Alias)</label>
-					<div class="controls"><input name="pluginalias" class="span12" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></div>
-			    </div>
-
-				<div class="span6">
-					<label class="control-label">Load Priority</label>
-					<div class="controls">
-						<select name="loadPriority" class="span2">
-							<cfloop from="1" to="10" index="i">
-								<option value="#i#" <cfif rsPlugin.loadPriority eq i>selected</cfif>>#i#</option>
-							</cfloop>
-						</select>
-					</div>
-				</div>
+			<div class="mura-control-group">
+				<label>Plugin Name (Alias)</label>
+				<input name="pluginalias" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/>
+			</div>
+		    
+			<div class="mura-control-group">
+				<label>Load Priority</label>
+					<select name="loadPriority">
+						<cfloop from="1" to="10" index="i">
+							<option value="#i#" <cfif rsPlugin.loadPriority eq i>selected</cfif>>#i#</option>
+						</cfloop>
+					</select>
 			</div>
 
+			<cfset rsAssigned=application.pluginManager.getAssignedSites(rc.moduleID)>
+			<div class="mura-control-group">
+				<label>Site Assignment</label>
+				<div class="mura-control-group">
+					<cfloop query="rc.rsSites">
+						<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #esapiEncode('html',rc.rsSites.site)#</label>
+					</cfloop>
+				</div>
+			</div>
+			
 			<cfif settingsLen>
 				<cfloop from="1" to="#settingsLen#" index="i">
 					<cfsilent>
@@ -193,117 +208,99 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 						</cfif>
 					</cfsilent>
-					<div class="control-group">
-				     	<label class="control-label">
+					<div class="mura-control-group">
+				     	<label>
 							<cfif len(settingBean.getHint())>
-								<a href="##" rel="tooltip" title="#esapiEncode('html_attr',settingBean.gethint())#">#settingBean.getLabel()# <i class="icon-question-sign"></i></a>
+								<span data-toggle="popover" title="" data-placement="right" 
+							  	data-content="#esapiEncode('html_attr',settingBean.gethint())#" 
+							  	data-original-title="#settingBean.getLabel()#">
+							  	#settingBean.getLabel()# <i class="mi-question-circle"></i>
+							  </span>
 							<cfelse>
 								#settingBean.getLabel()#
 							</cfif>
 						</label>
-				      	<div class="controls">#settingBean.renderSetting(settingBean.getSettingValue())#</div>
+				     #settingBean.renderSetting(settingBean.getSettingValue())#
 					</div>
 				</cfloop>
 			</cfif>
 
 			<cfif objectsLen>
-				<div class="fieldset">
-					<div class="control-group">
-						<div class="span3">
-							<label class="control-label">Display Objects</label>
-							<div class="controls">
-								<ul>
-									<cfloop from="1" to="#objectsLen#" index="i">
-									<li>#esapiEncode('html',rc.pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name)#</li>
-									</cfloop>
-								</ul>
-							</div>
+				<div class="mura-control-group">
+						<label>Display Objects</label>
+						<div class="mura-control justify">
+							<ul class="metadata">
+								<cfloop from="1" to="#objectsLen#" index="i">
+								<li>#esapiEncode('html',rc.pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name)#</li>
+								</cfloop>
+							</ul>
 						</div>
-						<!---
-						<div class="span3">
-							<label class="control-label">Display Objects Location</label>
-							<div class="controls">
-								<select class="span6" name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
-									<option value="global" <cfif location eq "global">selected</cfif>>Global</option>
-									<option value="local" <cfif location eq "local">selected</cfif>>Local</option>
+					<!---
+					<div>
+						<label>Display Objects Location</label>
+						<div>
+							<select name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
+								<option value="global" <cfif location eq "global">selected</cfif>>Global</option>
+								<option value="local" <cfif location eq "local">selected</cfif>>Local</option>
+							</select>
+						</div>
+					</div>
+
+					<span id="ov"<cfif location eq "global"> style="display:none;"</cfif>>
+						<div>
+							<label>If Display Object Already Exists?</label>
+							<div>
+								<select name="overwrite">
+									<option value="false">Do not overwrite </option>
+									<option value="true">Overwrite</option>
 								</select>
 							</div>
 						</div>
-
-						<span id="ov"<cfif location eq "global"> style="display:none;"</cfif>>
-							<div class="span3">
-								<label class="control-label">If Display Object Already Exists?</label>
-								<div class="controls">
-									<select name="overwrite">
-										<option value="false">Do not overwrite </option>
-										<option value="true">Overwrite</option>
-									</select>
-								</div>
-							</div>
-						</span>
-						--->
-					</div>
+					</span>
+					--->
 				</div>
 			<cfelse>
 				<input type="hidden" name="location" value="global">
 			</cfif>
 
 			<cfif scriptsLen>
-				<div class="fieldset">
-					<div class="control-group">
-						<label class="control-label">Scripts</label>
-						<div class="controls">
-							<ul>
-								<cfloop from="1" to="#scriptsLen#" index="i">
-									<li><cfif structKeyExists(rc.pluginXML.plugin.scripts.script[i].XmlAttributes,"runat")>#esapiEncode('html',rc.pluginXML.plugin.scripts.script[i].xmlAttributes.runat)#<cfelse>#esapiEncode('html',rc.pluginXML.plugin.scripts.script[i].xmlAttributes.event)#</cfif></li>
-								</cfloop>
-							</ul>
-						</div>
+				<div class="mura-control-group">
+					<label>Scripts</label>
+					<div class="mura-control-justify">
+						<ul class="metadata">
+							<cfloop from="1" to="#scriptsLen#" index="i">
+								<li><cfif structKeyExists(rc.pluginXML.plugin.scripts.script[i].XmlAttributes,"runat")>#esapiEncode('html',rc.pluginXML.plugin.scripts.script[i].xmlAttributes.runat)#<cfelse>#esapiEncode('html',rc.pluginXML.plugin.scripts.script[i].xmlAttributes.event)#</cfif></li>
+							</cfloop>
+						</ul>
 					</div>
 				</div>
 			</cfif> 
 
 			<cfif eventHandlersLen>
-				<div class="fieldset">
-					<div class="control-group">
-						<label class="control-label">Event Handlers</label>
-						<div class="controls">
-							<ul>
-								<cfloop from="1" to="#eventHandlersLen#" index="i">
-									<li><cfif structKeyExists(rc.pluginXML.plugin.eventHandlers.eventHandler[i].XmlAttributes,"runat")>#esapiEncode('html',rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.runat)#<cfelse>#esapiEncode('html',rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.event)#</cfif></li>
-								</cfloop>
-							</ul>
-						</div>
+				<div class="mura-control-group">
+					<label>Event Handlers</label>
+					<div class="mura-control-justify">
+						<ul class="metadata">
+							<cfloop from="1" to="#eventHandlersLen#" index="i">
+								<li><cfif structKeyExists(rc.pluginXML.plugin.eventHandlers.eventHandler[i].XmlAttributes,"runat")>#esapiEncode('html',rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.runat)#<cfelse>#esapiEncode('html',rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.event)#</cfif></li>
+							</cfloop>
+						</ul>
 					</div>
 				</div>
 			</cfif> 
 
 			<cfif extensionsLen>
-				<div class="fieldset">
-					<div class="control-group">
-						<label class="control-label">Class Extensions</label>
-						<div class="controls">
-							<ul>
-								<cfloop from="1" to="#extensionsLen#" index="i">
-									<li>#esapiEncode('html',rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.type)#/<cfif structKeyExists(rc.pluginXML.plugin.extensions.extension[i].XmlAttributes,"subtype")>#esapiEncode('html',rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.subtype)#<cfelse>Default</cfif></li>
-								</cfloop>
-							</ul>
-						</div>
+				<div class="mura-control-group">
+					<label>Class Extensions</label>
+					<div class="mura-control-justify">
+						<ul class="metadata">
+							<cfloop from="1" to="#extensionsLen#" index="i">
+								<li>#esapiEncode('html',rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.type)#/<cfif structKeyExists(rc.pluginXML.plugin.extensions.extension[i].XmlAttributes,"subtype")>#esapiEncode('html',rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.subtype)#<cfelse>Default</cfif></li>
+							</cfloop>
+						</ul>
 					</div>
 				</div>
 			</cfif>
-
-			<cfset rsAssigned=application.pluginManager.getAssignedSites(rc.moduleID)>
-			<div class="fieldset">
-				<div class="control-group">
-					<label class="control-label">Site Assignment</label>
-					<div class="controls">
-						<cfloop query="rc.rsSites">
-							<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #esapiEncode('html',rc.rsSites.site)#</label>
-						</cfloop>
-					</div>
-				</div>
-			</div>
 
 			<cfif hasLicense>
 				</span>
@@ -312,11 +309,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input name="package" type="hidden" value="#esapiEncode('html_attr',package)#"/>
 			<input type="hidden" name="moduleID" value="#esapiEncode('html_attr',rc.moduleID)#">
 			#rc.$.renderCSRFTokens(context=rc.moduleID,format="form")#
-		</div>
+	
+			<div class="mura-actions">
+				<div class="form-actions">
+					<button type="submit" class="btn mura-primary"><i class="mi-check-circle"></i> Update</button>
+				</div>
+			</div>
+	
+		</form>
 
-		<div class="form-actions">
-			<button type="submit" class="btn"><i class="icon-ok-sign"></i> Update</button>
-		</div>
-	</form>
 
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
 </cfoutput>

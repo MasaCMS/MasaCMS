@@ -9,29 +9,24 @@ component extends='mura.cfobject' {
     var serializer = new mura.jsonSerializer()
       .asString('id')
       .asString('url')
-      .asString('title');
+      .asBoolean('allDay')
+      .asString('title')
+      .asUTCDate('start')
+      .asUTCDate('end');
 
-    if(getBean('configBean').getValue(property='layoutmanager',defaultValue=false)){
-      serializer
-        .asDate('start')
-        .asDate('end');
-    } else {
-       serializer
-        .asUTCDate('start')
-        .asUTCDate('end');
-    }
-    
+
 
     var qoq = new Query();
     qoq.setDBType('query');
     qoq.setAttributes(rs=arguments.data);
     qoq.setSQL('
-      SELECT 
+      SELECT
         url as [url]
         , contentid as [id]
         , menutitle as [title]
         , displaystart as [start]
         , displaystop as [end]
+        , allday as [allday]
       FROM rs
     ');
 
@@ -55,10 +50,10 @@ component extends='mura.cfobject' {
 
     for(var i in listToArray(arguments.calendarid)){
       local.contentBean = variables.$.getBean('content').loadBy(contentid=i, siteid=arguments.siteid);
-      
-      local.applyPermFilter = variables.$.siteConfig('extranet') == 1 
+
+      local.applyPermFilter = variables.$.siteConfig('extranet') == 1
         && variables.$.getBean('permUtility').setRestriction(local.contentBean.getCrumbArray()).restrict == 1;
-      
+
       if ( !(local.contentBean.getIsNew() || local.contentBean.getType() != 'Calendar') ) {
           arrayAppend(allowable,i);
       }
@@ -81,7 +76,7 @@ component extends='mura.cfobject' {
     // start and end dates
     local.displaystart = DateFormat(arguments.start, 'yyyy-mm-dd');
     local.displaystop = DateFormat(arguments.end, 'yyyy-mm-dd');
-    
+
 
     // the calendar feed
     local.feed = variables.$.getBean('feed')
@@ -102,7 +97,7 @@ component extends='mura.cfobject' {
         ,criteria=local.displaystop
       )
       // OPEN GROUPING
-        // filter records with a displayStop date that occurs after the displayStart date 
+        // filter records with a displayStop date that occurs after the displayStart date
         // OR doesn't have one at all
         .addParam(relationship='andOpenGrouping')
           .addParam(
@@ -138,6 +133,8 @@ component extends='mura.cfobject' {
 
     // prepare to add URL column
     QueryAddColumn(local.rs, 'url', []);
+    QueryAddColumn(local.rs, 'allday', []);
+
     for ( local.i=1; local.i<=local.rs.recordcount; local.i++ ) {
       // add URL to rs
       local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i]);
@@ -148,6 +145,22 @@ component extends='mura.cfobject' {
       local.rs['displaystart'][i] = isoDateTimeFormat(local.rs['displaystart'][i]);
       local.rs['displaystop'][i] = isoDateTimeFormat(local.rs['displaystop'][i]);
       */
+
+      if(isDate(local.rs['displaystart'][i])
+        && hour(local.rs['displaystart'][i])==0
+        && minute(hour(local.rs['displaystart'][i]))==0
+        && (
+            !isDate(isDate(local.rs['displaystop'][i]))
+            || (
+                hour(local.rs['displaystart'][i])==23
+                && minute(hour(local.rs['displaystart'][i]))==59
+                )
+            )
+        ){
+            local.rs['allday'][i]=1;
+        } else {
+            local.rs['allday'][i]=0;
+        }
     }
 
     local.rs = filterCalendarItems(data=local.rs, maxItems=0);

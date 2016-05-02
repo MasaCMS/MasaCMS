@@ -1,2 +1,1 @@
-<displayobject name="Folder" displayobjectfile="../dsp_folder.cfm">
-
+<displayobject name="Folder" legacyobjectfile="../dsp_folder.cfm">

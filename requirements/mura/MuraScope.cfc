@@ -309,6 +309,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="globalConfig" output="false" returntype="any">
 	<cfargument name="property">
+	<cfargument name="propertyValue">
 	<cfset var theValue="">
 
 	<cfif structKeyExists(arguments,"property")>
@@ -605,6 +606,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset structDelete(session.mura.alerts['#event('siteid')#'],'#arguments.key#')>
 	</cfif>
+</cffunction>
+
+<cffunction name="getFeed" output="false">
+	<cfargument name="entityName">
+	<cfreturn getBean(arguments.entityName).getFeed()>
 </cffunction>
 
 </cfcomponent>

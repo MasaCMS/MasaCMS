@@ -47,74 +47,63 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset event=request.event>
 <cfinclude template="js.cfm">
 <cfoutput>
-<h1><cfif rc.categoryID neq ''>#application.rbFactory.getKeyValue(session.rb,'categorymanager.editcontentcategory')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addcontentcategory')#</cfif></h1>
+  <div class="mura-header">
+  <h1><cfif rc.categoryID neq ''>#application.rbFactory.getKeyValue(session.rb,'categorymanager.editcontentcategory')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addcontentcategory')#</cfif></h1>
+  <cfinclude template="dsp_secondary_menu.cfm">
+</div> <!-- /.mura-header -->
 
-<cfinclude template="dsp_secondary_menu.cfm">
+<div class="block block-constrain">
+    <div class="block block-bordered">
+      <div class="block-content">
 
-<cfif not structIsEmpty(rc.categoryBean.getErrors())>
+      <cfif not structIsEmpty(rc.categoryBean.getErrors())>
   <p class="alert alert-error">#application.utility.displayErrors(rc.categoryBean.getErrors())#</p>
-</cfif>
+      </cfif>
 
-<span id="msg">
-#application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#
-</span>
+      <cfif len(trim(application.pluginManager.renderEvent("onCategoryEditMessageRender", event)))>
+        <span id="msg">#application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#</span>
+      </cfif>
 
-<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cCategory.update&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+      <form novalidate="novalidate" action="./?muraAction=cCategory.update&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+      #$.renderEvent("onCategoryBasicTopRender")#
 
-#$.renderEvent("onCategoryBasicTopRender")#
-
-<div class="fieldset">
-<div class="control-group">
-  <label class="control-label">
+      <div class="mura-control-group">
+        <label>
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#
   </label>
-  <div class="controls">
-    <input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#esapiEncode('html_attr',rc.categoryBean.getName())#" maxlength="50">
+        <input type="text" name="name" required="true" message="#application.rbFactory.getKeyValue(session.rb,'  categorymanager.namerequired')#" value="#esapiEncode('html_attr',rc.categoryBean.getName())#" maxlength="50">
   </div>
-</div>
 
-<div class="control-group">
-  <label class="control-label">
+      <div class="mura-control-group">
+        <label>
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#
   </label>
-  <div class="controls">
-    <input type="text" name="urltitle" class="span12" value="#esapiEncode('html_attr',rc.categoryBean.getURLTitle())#" maxlength="255">
+    <input type="text" name="urltitle" value="#esapiEncode('html_attr',rc.categoryBean.getURLTitle())#" maxlength="255">
   </div>
-</div>
 
-<div class="control-group">
-<div class="span6">
-<label class="control-label">
+      <div class="mura-control-group">
+      <label>
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.parentcategory')#
   </label>
-  <div class="controls">
     <select name="parentID">
       <option value="">#application.rbFactory.getKeyValue(session.rb,'categorymanager.primary')#</option>
      <cf_dsp_parents siteID="#rc.siteID#" categoryID="#rc.categoryID#" parentID="" actualParentID="#rc.parentID#" nestLevel="1" >
       </select>
     </div>
-</div>
 
-<div class="span6">
-  <label class="control-label">
+      <div class="mura-control-group">
+        <label>
     CategoryID
   </label>
-  <div class="controls">
     <cfif len(rc.categoryID) and len(rc.categoryBean.getCategoryID())>
       #rc.categoryBean.getCategoryID()#
     <cfelse>
       #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#
     </cfif>
   </div>
-</div>
 
-</div>
-
-<div class="control-group">
-
-
-<div class="span3">  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'categorymanager.isinterestgroup')#</label>
-  <div class="controls">
+      <div class="mura-control-group">
+        <label>#application.rbFactory.getKeyValue(session.rb,'categorymanager.isinterestgroup')#</label>
   	<label class="radio inline" for="isInterestGroupYes">
       <input name="isInterestGroup" id="isInterestGroupYes" type="radio" value="1" <cfif rc.categoryBean.getIsInterestGroup()>checked</cfif>> 
       #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
@@ -123,26 +112,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <input name="isInterestGroup" id="isInterestGroupNo" type="radio" value="0" <cfif not rc.categoryBean.getIsInterestGroup()>checked</cfif>> 
       #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
     </label>
-  </div></div>
+      </div>
 
-
-
-<div class="span3">  <label class="control-label">
+      <div class="mura-control-group">
+        <label>
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.allowcontentassignments')#
   </label>
-  <div class="controls">
   	<label class="radio inline" for="isOpenYes">
       <input name="isOpen" id="isOpenYes" type="radio" value="1" <cfif rc.categoryBean.getIsOpen()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
     </label> 
     <label class="radio inline" for="isOpenNo">
      <input name="isOpen" id="isOpenNo" type="radio" value="0" <cfif not rc.categoryBean.getIsOpen()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
     </label> 
-  </div></div>
+      </div>
   
-  
-  
-<div class="span3">  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'categorymanager.isfeatureable')#</label>
-  <div class="controls">
+      <div class="mura-control-group">
+        <label>#application.rbFactory.getKeyValue(session.rb,'categorymanager.isfeatureable')#</label>
   	<label class="radio inline" for="isfeatureableYes">
       <input name="isfeatureable" id="isfeatureableYes" type="radio" value="1" <cfif rc.categoryBean.getIsfeatureable()>checked</cfif>> 
       #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
@@ -151,10 +136,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <input name="isfeatureable" id="isfeatureableNo" type="radio" value="0" <cfif not rc.categoryBean.getIsfeatureable()>checked</cfif>> 
       #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
     </label> 
-  </div></div>
+      </div>
 
-<div class="span3">  <label class="control-label">Active?</label>
-  <div class="controls">
+      <div class="mura-control-group">
+        <label>Active?</label>
     <label class="radio inline" for="isActiveYes">
       <input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.categoryBean.getIsActive()>checked</cfif>> 
       #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
@@ -163,18 +148,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.categoryBean.getIsActive()>checked</cfif>> 
       #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
     </label> 
-  </div></div>
+      </div>
 
-  
-</div>
-
-		
-<div class="control-group">
-  <label class="control-label">
+      <div class="mura-control-group">
+        <label>
     #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
   </label>
-  <div class="controls">
-    	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups" class="span4">
+    	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups">
 	       <optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 	       <option value="" <cfif rc.categoryBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
 	       <option value="RestrictAll" <cfif rc.categoryBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>	
@@ -197,34 +177,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       	</cfif>
 	   </select>
 	</div>
-</div>
 
-	<div class="control-group">
-	  <label class="control-label">
+      	<div class="mura-control-group">
+      	  <label>
 	    #application.rbFactory.getKeyValue(session.rb,'categorymanager.notes')#
 	  </label>
-	  <div class="controls">
-	    <textarea name="notes" class="span12" rows="8">#esapiEncode('html',rc.categoryBean.getNotes())#</textarea>
+	    <textarea name="notes" rows="8">#esapiEncode('html',rc.categoryBean.getNotes())#</textarea>
 	  </div>
-	</div>
-	
-</div>
 
+   #$.renderEvent("onCategoryBasicBottomRender")#
+    <div class="mura-actions">
+      <div class="form-actions">
+        <cfif rc.categoryID eq ''>
+          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#</button>
+          <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
+        <cfelse> 
+          <button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#</button>
+          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#</button>
+          <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
+        </cfif>
+        <input type="hidden" name="action" value="">
+        #rc.$.renderCSRFTokens(context=rc.categoryBean.getCategoryID(),format="form")#
+      </div>
+    </div>
+      </form>
+      </cfoutput>
 
- #$.renderEvent("onCategoryBasicBottomRender")#
-
-<div class="form-actions">
-  <cfif rc.categoryID eq ''>
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
-    <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
-  <cfelse> 
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> 
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
-    <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
-  </cfif>
-  <input type="hidden" name="action" value="">
-  #rc.$.renderCSRFTokens(context=rc.categoryBean.getCategoryID(),format="form")#
-</div>
-</form>
-</cfoutput>
-
+      </div> <!-- /.block-content -->
+    </div> <!-- /.block-bordered -->
+  </div> <!-- /.block-constrain -->

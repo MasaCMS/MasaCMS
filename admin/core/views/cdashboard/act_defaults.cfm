@@ -55,33 +55,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfparam name="rc.threshold" default="1">
 	
-	<!--- <cfswitch expression="#rc.span#">
-	<cfcase value="Week">
-	<cfset rc.stopDate=LSDateFormat(now(),session.dateKeyFormat)/>
-	<cfset rc.startDate=LSDateFormat(dateAdd("ww",-1,now()),session.dateKeyFormat) />
-	<cfset spanType="ww" />
-	<cfset spanUnits=1 />
-	</cfcase>
-	<cfcase value="Month">
-	<cfset rc.stopDate=LSDateFormat(now(),session.dateKeyFormat)/>
-	<cfset rc.startDate=LSDateFormat(dateAdd("m",-1,now()),session.dateKeyFormat) />
-	<cfset spanType="m" />
-	<cfset spanUnits=1 />
-	</cfcase>
-	<cfcase value="Quarter">
-	<cfset rc.stopDate=LSDateFormat(now(),session.dateKeyFormat)/>
-	<cfset rc.startDate=LSDateFormat(dateAdd("m",-3,now()),session.dateKeyFormat) />
-	<cfset spanType="ww" />
-	<cfset spanUnits=3 />
-	</cfcase>
-	<cfcase value="Year">
-	<cfset rc.stopDate=LSDateFormat(now(),session.dateKeyFormat)/>
-	<cfset rc.startDate=LSDateFormat(dateAdd("yyyy",-1,now()),session.dateKeyFormat) />
-	<cfset spanType="yyyy" />
-	<cfset spanUnits=1 />
-	</cfcase>
-	</cfswitch> --->
-
 	<cfset rc.stopDate=LSDateFormat(now(),session.dateKeyFormat)/>
 	<cfset rc.startDate=LSDateFormat(dateAdd("d",-rc.span,now()),session.dateKeyFormat) />
 	<cfset spanType="d" />

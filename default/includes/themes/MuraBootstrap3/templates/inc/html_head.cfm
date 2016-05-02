@@ -12,17 +12,17 @@
 
 	<title>#esapiEncode('html', $.content('HTMLTitle'))# - #esapiEncode('html', $.siteConfig('site'))#</title>
 	<!--- Mura CMS Base Styles--->
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.2.min.css">
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.7.0.min.css">
 	<!--- Optional: Mura CMS Skin Styles. Duplicate to your theme to customize, changing 'assetPath' to 'themeAssetPath' below. Don't forget to move, remove or replace sprite.png. --->
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.2.skin.css">
-	
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.7.0.skin.css">
+
 	<!--- Bootstrap core CSS --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
 
 	<!--- Font Awesome --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
 
-	<!--- 
+	<!---
 				THEME CSS
 				This has been compiled using a pre-processor such as CodeKit or Prepros
 	--->
@@ -40,7 +40,7 @@
 	<![endif]-->
 
 	<!--- jQuery --->
-	<script src="#$.siteConfig('assetPath')#/jquery/jquery.js"></script>
+	<script src="#$.siteConfig('assetPath')#/js/external/jquery.min.js"></script>
 
 	<!--- FAV AND TOUCH ICONS --->
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico">

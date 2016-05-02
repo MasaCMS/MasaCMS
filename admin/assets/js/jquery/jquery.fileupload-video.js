@@ -1,5 +1,5 @@
 /*
- * jQuery File Upload Video Preview Plugin 1.0.2
+ * jQuery File Upload Video Preview Plugin
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2013, Sebastian Tschan
@@ -9,8 +9,8 @@
  * http://www.opensource.org/licenses/MIT
  */
 
-/*jslint nomen: true, unparam: true, regexp: true */
-/*global define, window, document */
+/* jshint nomen:false */
+/* global define, require, window, document */
 
 (function (factory) {
     'use strict';
@@ -21,6 +21,12 @@
             'load-image',
             './jquery.fileupload-process'
         ], factory);
+    } else if (typeof exports === 'object') {
+        // Node/CommonJS:
+        factory(
+            require('jquery'),
+            require('load-image')
+        );
     } else {
         // Browser globals:
         factory(
@@ -35,9 +41,6 @@
     $.blueimp.fileupload.prototype.options.processQueue.unshift(
         {
             action: 'loadVideo',
-            // Always trigger this action,
-            // even if the previous action was rejected: 
-            always: true,
             // Use the action as prefix for the "@" options:
             prefix: true,
             fileTypes: '@',
@@ -73,9 +76,7 @@
                 if (options.disabled) {
                     return data;
                 }
-                var that = this,
-                    file = data.files[data.index],
-                    dfd = $.Deferred(),
+                var file = data.files[data.index],
                     url,
                     video;
                 if (this._videoElement.canPlayType &&
@@ -90,12 +91,10 @@
                         video.src = url;
                         video.controls = true;
                         data.video = video;
-                        dfd.resolveWith(that, [data]);
-                        return dfd.promise();
+                        return data;
                     }
                 }
-                dfd.rejectWith(that, [data]);
-                return dfd.promise();
+                return data;
             },
 
             // Sets the video element as a property of the file object:

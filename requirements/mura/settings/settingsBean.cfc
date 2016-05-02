@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="mailServerUsernameEmail" type="string" default=""/>
 <cfproperty name="mailServerPassword" type="string" default=""/>
 <cfproperty name="useDefaultSMTPServer" type="numeric" default="1" required="true" />
-<cfproperty name="EmailBroadcaster" type="numeric" default="0" required="true" />
+<cfproperty name="EmailBroadcaster" type="numeric" default="0" required="false" />
 <cfproperty name="EmailBroadcasterLimit" type="numeric" default="0" required="true" />
 <cfproperty name="extranet" type="numeric" default="1" required="true" />
 <cfproperty name="extranetSSL" type="numeric" default="0" required="true" hint="deprecated"/>
@@ -92,6 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="contentPoolID" type="string" default=""/>
 <cfproperty name="categoryPoolID" type="string" default=""/>
 <cfproperty name="filePoolID" type="string" default=""/>
+<cfproperty name="placeholderImgID" type="string" default=""/>
 <cfproperty name="feedManager" type="numeric" default="1" required="true" />
 <cfproperty name="largeImageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="largeImageWidth" type="numeric" default="600" required="true" />
@@ -118,8 +119,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="javaLocale" type="string" default=""/>
 <cfproperty name="orderno" type="numeric" default="0" required="true" />
 <cfproperty name="enforceChangesets" type="numeric" default="0" required="true" />
+<cfproperty name="contentPendingScript" type="string" default=""/>
 <cfproperty name="contentApprovalScript" type="string" default=""/>
 <cfproperty name="contentRejectionScript" type="string" default=""/>
+<cfproperty name="contentCanceledScript" type="string" default=""/>
 <cfproperty name="enableLockdown" type="string" default="" />
 <cfproperty name="customTagGroups" type="string" default="" />
 <cfproperty name="hasComments" type="numeric" default="1" required="true" />
@@ -134,6 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="RemotePort" type="numeric" default="0" />
 <cfproperty name="resourceSSL" type="numeric" default="0" />
 <cfproperty name="resourceDomain" type="string" default="" />
+<cfproperty name="showDashboard" type="numeric" default="0" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -192,6 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.ContentPoolID=""/>
 	<cfset variables.instance.CategoryPoolID=""/>
 	<cfset variables.instance.FilePoolID=""/>
+	<cfset variables.instance.placeholderImgID="">
 	<cfset variables.instance.feedManager=1/>
 	<cfset variables.instance.largeImageHeight='AUTO'/>
 	<cfset variables.instance.largeImageWidth='600'/>
@@ -227,8 +232,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.baseID=createUUID()/>
 	<cfset variables.instance.orderno=0/>
 	<cfset variables.instance.enforceChangesets=0/>
+	<cfset variables.instance.contentPendingScript=""/>
 	<cfset variables.instance.contentApprovalScript=""/>
 	<cfset variables.instance.contentRejectionScript=""/>
+	<cfset variables.instance.contentCanceledScript=""/>
 	<cfset variables.instance.enableLockdown=""/>
 	<cfset variables.instance.customTagGroups=""/>
 	<cfset variables.instance.hasSharedFilePool=""/>
@@ -247,6 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.displayObjectLookup={}/>
 	<cfset variables.instance.displayObjectFilePathLookup={}/>
 	<cfset variables.instance.displayObjectLoopUpArray=[]>
+	<cfset variables.instance.showDashboard=0/>
 
 	<cfreturn this />
 </cffunction>
@@ -865,7 +873,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 
 		<cfquery name="rsFinal" dbType="query">
-			select name from rsFinal
+			select distinct name from rsFinal
 			order by name asc
 		</cfquery>
 
@@ -1092,6 +1100,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setShowDashboard" output="false">
+	<cfargument name="showDashboard">
+
+	<cfif isBoolean(arguments.showDashboard)>
+		<cfif arguments.showDashboard>
+			<cfset variables.instance.showDashboard=1>
+		<cfelse>
+			<cfset variables.instance.showDashboard=0>
+		</cfif>
+	</cfif>
+	<cfreturn this>
+</cffunction>
 
 <cffunction name="getContext" output="false">
 	<cfif getValue('isRemote')>
@@ -1189,7 +1209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAccessControlOriginList" output="false">
-	<cfset var thelist="#getScheme()#://#getValue('domain')#">
+	<cfset var thelist="http://#getValue('domain')#,https://#getValue('domain')#">
 	<cfset var adminSSL=application.configBean.getAdminSSL()>
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
@@ -1199,19 +1219,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif len(application.configBean.getAdminDomain())>
-		<cfset thelist = listAppend(thelist,"#getScheme()#://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
-		<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
-			<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
-		</cfif>
+		<cfset thelist = listAppend(thelist,"http://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
+		<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
 	</cfif>
 
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
 			<cfset theurl = "#i##getServerPort()#" />
-			<cfif not ListFindNoCase(thelist, '#getScheme()#://#theurl#')>
-				<cfset thelist = listAppend(thelist,"#getScheme()#://#theurl#")>
+			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+				<cfset thelist = listAppend(thelist,"http://#theurl#")>
 			</cfif>
-			<cfif adminSSL and not YesNoFormat(getValue('useSSL')) and not ListFindNoCase(thelist, 'https://#theurl#')>
+			<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
 				<cfset thelist = listAppend(thelist,"https://#theurl#")>
 			</cfif>
 		</cfloop>
@@ -1232,7 +1250,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="configuratorInit" default="">
 	<cfargument name="configuratorJS" default="">
 	<cfargument name="contenttypes" default="">
+	<cfargument name="omitcontenttypes" default="">
 	<cfargument name="condition" default="true">
+    <cfargument name="legacyObjectFile" default="">
+	<cfargument name="custom" default="true">
+	<cfargument name="iconclass" default="mi-cog">
 	<cfset arguments.objectid=arguments.object>
 	<cfset variables.instance.displayObjectLookup['#arguments.object#']=arguments>
 	<cfreturn this>
@@ -1240,7 +1262,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="lookupDisplayObjectFilePath" output="false">
 	<cfargument name="filePath">
-	 <cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
+	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
 
 	<cfif len(request.altTheme)>
 		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/display_objects/" & arguments.filePath>
@@ -1255,14 +1277,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var dir="">
 	<cfset var result="">
+	<cfset var coreIndex=arrayLen(variables.instance.displayObjectLoopUpArray)-2>
+	<cfset var dirIndex=0>
 
 	<cfloop array="#variables.instance.displayObjectLoopUpArray#" index="dir">
+		<cfset dirIndex=dirIndex+1>
 		<cfset result=dir & arguments.filePath>
 		<cfif fileExists(expandPath(result))>
 			<cfset setDisplayObjectFilePath(arguments.filePath,result)>
 			<cfreturn result>
 		<!---
-		<cfelse>
+		<cfelseif dirIndex lt coreIndex>
 			<!--- For legacy support --->
 			<cfset result=dir & replace(arguments.filePath,'../','','all')>
 			<cfif fileExists(expandPath(result))>
@@ -1271,7 +1296,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		--->
 		</cfif>
-
 	</cfloop>
 
 	<cfset setDisplayObjectFilePath(arguments.filePath,"")>
@@ -1314,9 +1338,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	]>
 
 	<cfset var dir="">
+	<cfset var dirIndex=0>
+	<cfset var custom=true>
 
 	<cfloop array="#lookupArray#" index="dir">
-		<cfset registerDisplayObjectDir(dir,false)>
+		<cfset dirIndex=dirIndex+1>
+		<cfset custom=dirIndex gt 2>
+		<cfset registerDisplayObjectDir(dir=dir,conditional=false,custom=custom)>
 	</cfloop>
 
 	<cfset var rs="">
@@ -1339,6 +1367,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="registerDisplayObjectDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="conditional" default="true">
+    <cfargument name="package" default="">
+	<cfargument name="custom" default="true">
 	<cfset var rs="">
 	<cfset var config="">
 	<cfset var objectArgs={}>
@@ -1363,20 +1393,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif isDefined('config.displayobject.xmlAttributes.name')>
 					<cfset objectArgs={
-						object=rs.name
+						object=rs.name,
+						custom=arguments.custom
 						}>
-					<cfif structKeyExists(objectArgs,'displayObjectFile')>
-						<cfset objectArgs.displayObjectFile=
-						displayObjectFile=rs.name & "/" & objectArgs.displayObjectFile>
-					<cfelseif structKeyExists(objectArgs,'component')>
-						<cfset objectArgs.displayObjectFile=
-						displayObjectFile=objectArgs["component"]>
+                    <cfif isDefined('config.displayobject.xmlAttributes.legacyObjectFile')>
+    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.legacyObjectFile>
+                    </cfif>
+					<cfif isDefined('config.displayobject.xmlAttributes.displayObjectFile')>
+						<cfset objectArgs.displayObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.displayObjectFile>
+					<cfelseif isDefined('config.displayobject.xmlAttributes.component')>
+						<cfset objectArgs.displayObjectFile=config.displayobject.xmlAttributes.component>
 					<cfelse>
-						<cfset objectArgs.displayObjectFile=
-						displayObjectFile=rs.name & "/index.cfm">
+						<cfset objectArgs.displayObjectFile=rs.name & "/index.cfm">
 					</cfif>
 					<cfloop collection="#config.displayobject.xmlAttributes#" item="o">
-						<cfset objectArgs[o]=config.displayobject.xmlAttributes[o]>
+                        <cfif not structKeyExists(objectArgs,o)>
+					       <cfset objectArgs[o]=config.displayobject.xmlAttributes[o]>
+                        </cfif>
 					</cfloop>
 					<cfset registerDisplayObject(
 						argumentCollection=objectArgs
@@ -1386,6 +1419,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 			</cfif>
+
+            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
+                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
+            </cfif>
 
 		</cfloop>
 
@@ -1414,6 +1451,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.configBean.registerBeanDir(dir='#i#/model',siteid=getValue('siteid'))>
 	</cfloop>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFileMetaData" output="false">
+	<cfargument name="property" default="fileid">
+	<cfreturn getBean('fileMetaData').loadBy(siteID=getValue('siteid'),fileid=getValue(arguments.property))>
 </cffunction>
 
 </cfcomponent>

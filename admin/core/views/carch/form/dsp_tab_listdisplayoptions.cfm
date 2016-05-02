@@ -47,16 +47,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.listdisplayoptions"))/>
 <cfset tabList=listAppend(tabList,"tabListDisplayOptions")>
 <cfoutput>
-  <div id="tabListDisplayOptions" class="tab-pane fade">
+<div id="tabListDisplayOptions" class="tab-pane">
+
+	<!-- block -->
+	<div class="block block-bordered">
+		<!-- block header -->
+	  <div class="block-header">
+			<h3 class="block-title">List Display Options</h3>
+	  </div>
+	  <!-- /block header -->
+		
+		<!-- block content -->
+		<div class="block-content">
 
  <span id="extendset-container-tablistdisplayoptionstop" class="extendset-container"></span>
 
-  <div class="fieldset">
-			<div class="control-group">
-				<div class="span2">
-			      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-					<div class="controls">
-						<select name="imageSize" data-displayobjectparam="imageSize" class="span12" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+					<div class="mura-control-group">
+			      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+							<select name="imageSize" data-displayobjectparam="imageSize" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 							<cfloop list="Small,Medium,Large" index="i">
 								<option value="#lcase(i)#"<cfif i eq rc.contentBean.getImageSize()> selected</cfif>>#I#</option>
 							</cfloop>
@@ -70,33 +78,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<option value="custom"<cfif "custom" eq rc.contentBean.getImageSize()> selected</cfif>>Custom</option>
 						</select>
 					</div>
-				</div>
 			
-				<div id="feedCustomImageOptions" class="span6"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-				      <div class="span4">
-				      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
+						<div id="feedCustomImageOptions" class="mura-control-group half"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
+						      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
 				      </label>
-					<div class="controls">
-						<input class="span10" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.contentBean.getImageWidth()#" />
-					</div>
-				      </div>
-				      <div class="span4">
-				      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-				      <div class="controls">
-				      	<input class="span10" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.contentBean.getImageHeight()#" />
-					  </div>
-				      </div>
-				</div>	
-	</div>
+								<input name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.contentBean.getImageWidth()#" />
+						      <label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+						      	<input name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.contentBean.getImageHeight()#" />
+						</div>
 
-				<div class="control-group" id="availableFields">
-			      	<label class="control-label">
-						<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
+						<div class="mura-control-group" id="availableFields">
+					      	<label>
+								<span class="half">Available Fields</span> <span class="half">Selected Fields</span>
 					</label>
 					
-					<div id="sortableFields" class="controls">
+							<div id="sortableFields">
 						<p class="dragMsg">
-							<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+									<span class="dragFrom half">Drag Fields from Here&hellip;</span><span class="half">&hellip;and Drop Them Here.</span>
 						</p>							
 					
 						<cfset displayList=rc.contentBean.getDisplayList()>
@@ -122,20 +120,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 			    </div>
 
-				<div class="control-group">
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</label> 
-			      <div class="controls"><select name="nextN" class="dropdown">
+						<div class="mura-control-group">
+					      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</label> 
+					      <select name="nextN" class="dropdown">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 						<option value="#r#" <cfif r eq rc.contentBean.getNextN()>selected</cfif>>#r#</option>
 					</cfloop>
 					</select>
 				</div>
-			</div>
-
    
-</div> 
 
 	<span id="extendset-container-listdisplayoptions" class="extendset-container"></span>
 	<span id="extendset-container-tablistdisplayoptionsbottom" class="extendset-container"></span>
 	 
-</div></cfoutput>
+		</div> <!--- /.block-content --->
+	</div> <!--- /.block --->		
+</div> <!--- /.tab-pane --->
+</cfoutput>

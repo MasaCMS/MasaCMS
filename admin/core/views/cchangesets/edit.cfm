@@ -45,141 +45,157 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h1><cfif rc.changesetID neq ''>#application.rbFactory.getKeyValue(session.rb,'changesets.editchangeset')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</cfif></h1>
-<cfset csrfTokens= #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="url")#>
-<cfinclude template="dsp_secondary_menu.cfm">
+<div class="mura-header">
+  <h1><cfif rc.changesetID neq ''>#application.rbFactory.getKeyValue(session.rb,'changesets.editchangeset')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</cfif></h1>
 
-<cfif not structIsEmpty(rc.changeset.getErrors())>
+  <cfset csrfTokens= #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="url")#>
+  <cfinclude template="dsp_secondary_menu.cfm">
+
+</div> <!-- /.mura-header -->
+
+<div class="block block-constrain">
+
+      <cfif not structIsEmpty(rc.changeset.getErrors())>
   <p class="alert alert-error">#application.utility.displayErrors(rc.changeset.getErrors())#</p>
-</cfif>
+      </cfif>
 
-<cfif rc.changeset.getPublished()>
-<p class="alert">
-#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#
-</p>
-<cfelse>
+      <cfif rc.changeset.getPublished()>
+      <p class="alert">
+      #application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#
+      </p>
+      <cfelse>
   <cfset hasPendingApprovals=rc.changeset.hasPendingApprovals()>
   <cfif hasPendingApprovals>
     <div class="alert alert-error">
         #application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')# 
     </div>  
   </cfif>
-</cfif>
+      </cfif>
+      
+      <cfif len(trim(application.pluginManager.renderEvent("onChangesetEditMessageRender", request.event)))>
+        <span id="msg">#application.pluginManager.renderEvent("onChangesetEditMessageRender", request.event)#</span>
+      </cfif>
 
-<span id="msg">
-#application.pluginManager.renderEvent("onChangesetEditMessageRender", request.event)#
-</span>
-
-<form novalidate="novalidate" action="./?muraAction=cChangesets.save&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
-
-<cfset tablist="tabBasic">
-<cfset tablabellist="Basic">
-<cfset hasCategories=application.categoryManager.getCategoryCount(rc.siteid)>
-<cfif hasCategories>
+      <cfset tablist="tabBasic">
+      <cfset tablabellist="Basic">
+      <cfset hasCategories=application.categoryManager.getCategoryCount(rc.siteid)>
+      <cfif hasCategories>
     <cfset tablist=listAppend(tablist,'tabCategorization')>
     <cfset tablabellist=listAppend(tablabellist,'Categorization')>
-</cfif>
+      </cfif>
  <cfset tablist=listAppend(tablist,'tabTags')>
-<cfset tablabellist=listAppend(tablabellist,'Tags')>
-
-<div class="tabbable tabs-left mura-ui">
-    <ul class="nav nav-tabs tabs initActiveTab">
+      <cfset tablabellist=listAppend(tablabellist,'Tags')>
+      <ul class="mura-tabs nav-tabs" data-toggle="tabs">
     <cfloop from="1" to="#listlen(tabList)#" index="t">
-    <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+         <li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
     </cfloop>
     </ul>
-    <div class="tab-content">
-    <div id="tabBasic" class="tab-pane fade">
-      <div class="fieldset">
-      <div class="control-group">
-        <label class="control-label">
+
+      <form novalidate="novalidate" action="./?muraAction=cChangesets.save&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+
+      <div class="block-content tab-content">
+      <div id="tabBasic" class="tab-pane active">
+        <div class="block block-bordered">
+          <!-- block header -->
+          <div class="block-header">
+			       <h3 class="block-title">Basic Settings</h3>
+          </div> <!-- /.block header -->            
+          <div class="block-content">
+          <div class="mura-control-group">
+            <label>
           #application.rbFactory.getKeyValue(session.rb,'changesets.name')#
         </label>
-        <div class="controls">
-        <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#esapiEncode('html_attr',rc.changeset.getName())#" maxlength="50">
-         </div>
+            <input name="name" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#esapiEncode('html_attr',rc.changeset.getName())#" maxlength="50">
       </div>
 
-      <div class="control-group">
-        <label class="control-label">
+          <div class="mura-control-group">
+            <label>
           #application.rbFactory.getKeyValue(session.rb,'changesets.description')#
         </label>
-        <div class="controls">
-        <textarea name="description" class="span12" rows="6">#esapiEncode('html',rc.changeset.getDescription())#</textarea>
-        </div>
+            <textarea name="description" rows="6">#esapiEncode('html',rc.changeset.getDescription())#</textarea>
       </div>
 
-      <div class="control-group">
-        <label class="control-label">
-          <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.changesetclosedate"))#" data-container="body">#application.rbFactory.getKeyValue(session.rb,'changesets.closedate')# <i class="icon-question-sign"></i></a>
+          <div class="mura-control-group">
+            <label>
+    <span data-toggle="popover" title="" data-placement="right" 
+      data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.changesetclosedate"))#" 
+      data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"changesets.closedate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.closedate')# <i class="mi-question-circle"></i></span>
           </label>
-        <div class="controls">
            <cfif rc.changeset.getPublished()>
               <cfif lsIsDate(rc.changeset.getCloseDate())>
                 #LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getCloseDate(),"medium")#
               <cfelse>
                  #LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
               </cfif>
-          <cfelse>
+          <cfelse>                            
              <cf_datetimeselector name="closeDate" datetime="#rc.changeset.getCloseDate()#" defaulthour="23" defaultminute="59">
-          
         </cfif>
         </div>
-      </div>
 
-      <div class="control-group">
-        <label class="control-label">
-          <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#" data-container="body">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-question-sign"></i></a>
+            <div class="mura-control-group">
+              <label>
+      <span data-toggle="popover" title="" data-placement="right" 
+        data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#" 
+        data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"changesets.publishdate"))#">  
+            #application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="mi-question-circle"></i></span>
           </label>
-        <div class="controls">
           <cfif rc.changeset.getPublished()>
           #LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
         <cfelse>
-         
           <cf_datetimeselector name="publishDate" datetime="#rc.changeset.getpublishdate()#">
-         
         </cfif>
+            </div>
 
         </div>
       </div>
+      </div> <!--- /.tab-pane --->
 
-      </div>
+      <cfif hasCategories> 
+        <div id="tabCategorization" class="tab-pane">
 
-    </div>
+          <div class="block block-bordered">
+            <!-- block header -->
+            <div class="block-header">
+			       <h3 class="block-title">Categories</h3>
+            </div> <!-- /.block header -->            
+            <div class="block-content">
 
-    <cfif hasCategories> 
-      <div id="tabCategorization" class="tab-pane fade">
-        <div class="fieldset">
-          <div class="control-group">
-            <!--- Category Filters --->
-            <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'changesets.categoryassignments')#</label>
-            <div id="mura-list-tree" class="controls">
-              <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" categoryid="#rc.changeset.getCategoryID()#">
+              <div class="mura-control-group">
+              <!--- Category Filters --->
+              <label>#application.rbFactory.getKeyValue(session.rb,'changesets.categoryassignments')#</label>
+                <div id="mura-list-tree" class="mura-control justify">
+                <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" categoryid="#rc.changeset.getCategoryID()#">
             </div>
           </div>
         </div>
       </div>
+
+        </div> <!--- /.tab-pane --->
     </cfif>
 
+      <div id="tabTags" class="tab-pane">
    
-    <div id="tabTags" class="tab-pane fade">
-      <div class="fieldset">
-        <div class="control-group"> 
-          <label class="control-label">
+        <div class="block block-bordered">
+          <!-- block header -->
+          <div class="block-header">
+			       <h3 class="block-title">Tags</h3>
+          </div> <!-- /.block header -->            
+          <div class="block-content">
+
+        <div class="mura-control-group"> 
+          <label>
           #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#
           </label>      
-          <div class="controls">
-              <div id="tags" class="tagSelector">
+          <input type="text" name="tags">
+            <div id="tags" class="mura-control justify tagSelector">
               <cfif len(rc.changeset.getTags())>
                 <cfloop list="#rc.changeset.getTags()#" index="i">
                   <span class="tag">
-                  #esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
+                  #esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
                   <input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
                   </span>
                 </cfloop>
               </cfif>
-              <input type="text" name="tags">
-            </div>
           </div>
 
           <script>
@@ -193,23 +209,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
     </div>
   </div>
+    </div> <!--- /.tab-pane --->
 
-<div class="form-actions">
-  <cfif rc.changesetID eq ''>
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
-  <cfelse>
-    <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')" /> 
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.update')#" />
-    <cfif not rc.changeset.getPublished() and not hasPendingApprovals>
-      <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','./?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')" /> 
-    </cfif>
-    <cfif rc.changeset.getPublished()>
-        <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.rollback')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.rollbackconfirm'))#','./?muraAction=cChangesets.rollback&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')" /> 
-    </cfif>
-     <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
-  </cfif>
-  <input type="hidden" name="action" value="">
-  #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="form")#
-</div>
-</form>
+  </div> <!--- /.tab-content --->
+  <div class="mura-actions">
+      <div class="form-actions">
+        <cfif rc.changesetID eq ''>
+          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.add')#</button>
+          <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
+        <cfelse>
+          <button class="btn" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#</button> 
+          <button class="btn" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.update')#</button>
+          <cfif not rc.changeset.getPublished() and not hasPendingApprovals>
+            <button class="btn mura-primary" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','./?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#</button>
+          </cfif>
+          <cfif rc.changeset.getPublished()>
+            <button class="btn" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.rollbackconfirm'))#','./?muraAction=cChangesets.rollback&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')">#application.rbFactory.getKeyValue(session.rb,'changesets.rollback')#</button>
+          </cfif>
+           <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
+        </cfif>
+        <input type="hidden" name="action" value="">
+        #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="form")#
+      </div>
+    </div>
+  </form>
+
+</div> <!-- /.block-constrain -->
 </cfoutput>

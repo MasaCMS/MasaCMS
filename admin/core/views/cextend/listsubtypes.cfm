@@ -47,18 +47,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
 
+<div class="mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.classextensionmanager')#</h1>
 
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',rc.siteid)#">
-			<i class="icon-plus-sign"></i> 
+					<i class="mi-plus-circle"></i> 
 			#rc.$.rbKey('sitemanager.extension.addclassextension')#
 		</a>
 
 		<!--- Actions --->
 		<div class="btn-group">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-				<i class="icon-cogs"></i> 
+						<i class="mi-cogs"></i> 
 				#rc.$.rbKey('sitemanager.extension.actions')#
 				<span class="caret"></span>
 			</a>
@@ -66,14 +67,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif rslist.recordcount>
 					<li>
 						<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
-							<i class="icon-signout"></i> 
+									<i class="mi-sign-out"></i> 
 							#rc.$.rbKey('sitemanager.extension.export')#
 						</a>
 					</li>
 				</cfif>
 				<li>
 					<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
-						<i class="icon-signin"></i> 
+								<i class="mi-sign-in"></i> 
 						#rc.$.rbKey('sitemanager.extension.import')#
 					</a>
 				</li>
@@ -81,9 +82,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<!--- /Actions --->
 	</div>
+
+</div> <!-- /.mura-header -->
 </cfoutput>
 
-<table class="mura-table-grid">
+<div class="block block-constrain">
+		<div class="block block-bordered">
+		  <div class="block-content">
+			<table class="mura-table-grid">
 	<cfoutput>
 		<thead>
 			<tr>
@@ -130,12 +136,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<ul>
 							<li class="edit">
 								<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-									<i class="icon-pencil"></i>
+												<i class="mi-pencil"></i>
 								</a>
 							</li>
 							<li class="view-sets">
 								<a title="#rc.$.rbKey('sitemanager.extension.viewsets')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-									<i class="icon-list"></i>
+												<i class="mi-list-alt"></i>
 								</a>
 							</li>
 						</ul>
@@ -152,4 +158,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</tr>
 		</cfif>
 	</tbody>
-</table>
+			</table>
+
+			</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->

@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
 				<cfset rs=variables.contentGateway.getNest(data.topid,data.siteid,data.sortBy,data.sortDirection,data.searchString) />
 			</cfcase>
-			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
+			<cfcase value="LEGACY">
 				<cfset feed=getBean('feed')>
 				<cfif data.moduleID eq "00000000000000000000000000000000003">
 					<cfset feed.setType('Component')>
@@ -947,6 +947,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var addObjects=[]>
 		<cfset var removeObjects=[]>
 		<cfset var errors={}>
+		<cfset var initjs="">
 
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -1071,16 +1072,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset newBean.setTitle(newBean.getmenutitle())>
 			</cfif>
 
-			<cfif newBean.getmenuTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getmenuTitle() eq ''>
 				<cfset newBean.setmenutitle(newBean.getTitle())>
 			</cfif>
 
-			<cfif newBean.getURLTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getURLTitle() eq ''>
 				<cfset newBean.setURLTitle(getBean('contentUtility').formatFilename(newBean.getmenutitle()))>
 			</cfif>
 
-			<cfif newBean.getHTMLTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getHTMLTitle() eq ''>
 				<cfset newBean.setHTMLTitle(newBean.getTitle())>
+			</cfif>
+
+			<cfif newBean.getType() eq 'Validate'>
+				<cfset initjs=newBean.getInitJS()>
 			</cfif>
 
 			<cfset newBean.validate()>
@@ -1115,11 +1120,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID##newBean.getContentID()#" timeout="600">
 
-				<cfif variables.configBean.getValue(property='advancedScheduling',defaultValue=false)
-					and newBean.getDisplay() eq 2
+				<cfif newBean.getDisplay() eq 2
 					and isBoolean(newBean.getConvertDisplayTimeZone())
 					and newBean.getConvertDisplayTimeZone()>
-					<cfset var displayInterval=newBean.getDisplayInterval(deserialize=true)>
+					<cfset var displayInterval=newBean.getDisplayInterval().getAllValues()>
 
 					<cfif not displayInterval.allday>
 						<cfif isDate(newBean.getDisplayStart())>
@@ -1678,10 +1682,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>
 				</cfif>
 
+				<cfif newBean.getType() eq 'Form' and isJSON(newBean.getBody())>
+					<cfset getBean('formBuilderManager').generateFormObject(pluginEvent.getValue('MuraScope'),pluginEvent) />
+				</cfif>
+
 				<!--- For backwards compatibility --->
 				<cfif newBean.getType() eq 'Folder'>
 					<cfset variables.pluginManager.announceEvent("onAfterPortalSave",pluginEvent)>
 					<cfset variables.pluginManager.announceEvent("onAfterPortal#newBean.getSubType()#Save",pluginEvent)>
+				</cfif>
+				<!--- --->
+
+				<!--- Save remoteVariation init js --->
+				<cfif len(initJS)>
+					<cfset newBean.getVariationTargeting().setInitJS(initJS).save()>
 				</cfif>
 				<!--- --->
 
@@ -2374,7 +2388,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var requestData = GetHttpRequestData()>
 	<cfset var filemetadata= "">
 
-	<cfset fileItem.siteID=arguments.data.siteID/>
+	<cfset fileItem.siteID=arguments.data.siteid/>
 	<cfset fileItem.parentID=arguments.data.parentID/>
 	<cfset fileItem.type="File" />
 	<cfset fileItem.subType=arguments.data.subType />
@@ -2632,7 +2646,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="secure" default="false">
 		<cfargument name="useProtocol" default="true">
 		<cfscript>
-			var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			if(arguments.bean.getType() == 'File' && !ListFindNoCase('png,jpg,jpeg,gif,svg',arguments.bean.getFileExt())){
+				var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), '', '', arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			} else {
+				var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			}
+
 			return Len(image) ? image : arguments.default;
 		</cfscript>
 	</cffunction>

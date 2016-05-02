@@ -51,13 +51,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <form novalidate="novalidate" name="form1" action="index.cfm" method="post">
 
-
-
 <cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
 
-<div class="control-group">
-  <label class="control-label">Date/Time Entered</label>
-  <div class="controls">#rsdata.entered#</div>
+<div class="mura-control-group">
+  <label>Date/Time Entered</label>
+  <div class="mura-control">#rsdata.entered#</div>
 </div>
 
 <cfloop list="#rc.fieldnames#" index="f">
@@ -70,22 +68,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif findNoCase('attachment',f) and isValid("UUID",fvalue)>
 		<input type="hidden" name="#esapiEncode('html_attr',f)#" value="#fvalue#">
 	<cfelse>
-		<div class="control-group">
-  			<label class="control-label">#esapiEncode('html',f)#</label>
-  			<div class="controls">
-  				<cfif len(fValue) gt 100>
-  					<textarea name="#esapiEncode('html_attr',f)#">#esapiEncode('html',fvalue)#</textarea>
-  				<cfelse>
-  					<input type="text" name="#esapiEncode('html_attr',f)#" value="#esapiEncode('html_attr',fvalue)#">
+		<div class="mura-control-group">
+  			<label>#esapiEncode('html',f)#</label>
+				<cfif len(fValue) gt 100>
+					<textarea class="mura-constrain" name="#esapiEncode('html_attr',f)#">#esapiEncode('html',fvalue)#</textarea>
+				<cfelse>
+					<input class="mura-constrain" type="text" name="#esapiEncode('html_attr',f)#" value="#esapiEncode('html_attr',fvalue)#">
   			</cfif>
-  		    </div>
  		 </div>
 	</cfif>
 </cfloop>
 
-<div class="form-actions">
-<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" /><input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" />
+<div class="mura-actions">
+	<div class="form-actions">
+	<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#</button>
+	<button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','This');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#</button>
+	</div>
 </div>
+
 <input type="hidden" name="formid" value="#esapiEncode('html_attr',rc.contentid)#">
 <input type="hidden" name="contentid" value="#esapiEncode('html_attr',rc.contentid)#">
 <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">

@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.muraDynamicContentError" default="false">
 <cfparam name="request.muraPreviewDomain" default="">
 <cfparam name="request.muraOutputCacheOffset" default="">
+<cfparam name="request.muraCachingOutput" default="false">
 <cfparam name="request.muraMostRecentPluginModuleID" default="">
 <cfparam name="request.muraAPIRequest" default="false">
 <cfparam name="request.muraAdminRequest" default="false">
@@ -80,6 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
 <cfset this.setClientCookies = true>
+
+<cfset this.searchImplicitScopes=false>
 
 <!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
 <cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>

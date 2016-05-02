@@ -61,16 +61,28 @@
   <cfset adminGroup=rc.$.getBean('group').loadBy(groupname='Admin',isPublic=0)>
 </cfif>
 <cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
-<div id="nav-module-specific" class="btn-group">
-  <a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
-</div>
-<cfif rc.moduleid eq '00000000000000000000000000000000000'>#$.dspZoom(crumbdata=rc.crumbdata,class="navZoom alt")#</cfif>
-<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),rc.rscontent.title)#</p>
+
+<div class="mura-header">
+  <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
+  <div class="nav-module-specific btn-group">
+    <a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+  </div>
+
+  <cfif rc.moduleid eq '00000000000000000000000000000000000'>#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#</cfif>
+
+</div> <!-- /.mura-header -->
+
+
+<div class="block block-constrain">
+  <div class="block block-bordered">
+    <div class="block-content">
+
 
   <form novalidate="novalidate" method="post" name="form1" action="./?muraAction=cPerm.update&contentid=#esapiEncode('url',rc.contentid)#&parentid=#esapiEncode('url',rc.parentid)#">
     <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
-    <table class="mura-table-grid">
+<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),rc.rscontent.title)#</p>
+
+    <table class="mura-table-grid<cfif rc.rslist.recordcount lt 2> no-stripe</cfif>">
       <tr>
         <cfif chains.hasNext()>
           <th>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchainexempt')#</th>
@@ -85,33 +97,34 @@
         <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
       </tr>
 
+
       <cfif chains.hasNext()>
         <tr>
-          <td><input name="exemptID" type="checkbox" class="checkbox" value="#adminGroup.getUserID()#" <cfif len(assignment.getExemptID()) and listFindNoCase(assignment.getExemptID(),adminGroup.getUserID())>checked</cfif>></td>
-          <td><input type="radio" disabled checked></td>
-          <td><input type="radio" disabled></td>
-          <td><input type="radio" disabled></td>
-          <td><input type="radio" disabled></td>
+          <td><input name="exemptID" type="checkbox" class="checkbox" value="#adminGroup.getUserID()#" checked disabled></td>
+          <td><input type="radio" class="checkbox" disabled checked></td>
+          <td><input type="radio" class="checkbox"disabled></td>
+          <td><input type="radio" class="checkbox"disabled></td>
+          <td><input type="radio" class="checkbox"disabled></td>
           <cfif rc.moduleID eq '00000000000000000000000000000000000'>
-            <td><input type="radio" disabled></td>
+            <td><input type="radio" class="checkbox" disabled></td>
           </cfif>
           <td nowrap class="var-width">Admin</td>
         </tr>
-      </cfif>
+    </cfif>
 
       <cfif rc.rslist.recordcount>
           <cfloop query="rc.rslist">
             <cfset perm=application.permUtility.getGroupPerm(rc.rslist.userid,rc.contentid,rc.siteid)/>
             <tr>
-              <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#" <cfif perm eq 'editor' and len(assignment.getExemptID()) and listFind(assignment.getExemptID(),rc.rslist.userid)>checked</cfif><cfif perm neq 'editor'> disabled</cfif>></td></cfif> 
-              <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
-        <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
-       <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
-        <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
-        <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
-
-    <td nowrap class="var-width">#esapiEncode('html',rc.rslist.GroupName)#</td>
-            </tr></cfloop>
+            <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#"<cfif perm eq 'editor' and len(assignment.getExemptID()) and listFindNoCase(assignment.getExemptID(),rc.rslist.userid)> checked</cfif><cfif perm neq 'editor'> disabled</cfif>></td></cfif>
+            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
+            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
+            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
+            <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
+            <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
+            <td nowrap class="var-width">#esapiEncode('html',rc.rslist.GroupName)#</td>
+        </tr>
+        </cfloop>
     <cfelse>
      <tr>
       <td class="noResults" colspan="#colspan#">
@@ -124,7 +137,7 @@
     <cfset rc.rslist=rc.groups.publicGroups />
     <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>
     <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')# #application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
-    <table class="mura-table-grid">
+    <table class="mura-table-grid<cfif rc.rslist.recordcount lt 2> no-stripe</cfif>">
       <tr>
       <cfif chains.hasNext()><th>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchainexempt')#</th></cfif>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
@@ -157,33 +170,44 @@
 
   <cfif chains.hasNext()>
   <h2>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchain')#</h2>
-  <div class="control-group">
-        <label class="control-label">
-           <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.approvalchain"))#">#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')# <i class="icon-question-sign"></i></a>
-        </label>
-        <div class="controls">
-            <select name="chainID" class="dropdown">
-              <option value="">#application.rbFactory.getKeyValue(session.rb,'permissions.none')#</option>
-              <cfloop condition="chains.hasNext()">
-                <cfset chain=chains.next()>
-                <option value="#chain.getChainID()#"<cfif assignment.getChainID() eq chain.getChainID()> selected</cfif>>#esapiEncode('html',chain.getName())#</option>
-              </cfloop>
-          </select>
-        </div>
+  <div class="mura-control-group">
+    <label>
+      <span data-toggle="popover"
+        title=""
+        data-placement="right"
+        data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.approvalchain"))#"
+        data-original-title="#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')#">#application.rbFactory.getKeyValue(session.rb,'permissions.selectapprovalchain')# <i class="mi-question-circle"></i></span>
+      </label>
+      <div>
+        <select name="chainID" class="dropdown">
+          <option value="">#application.rbFactory.getKeyValue(session.rb,'permissions.none')#</option>
+          <cfloop condition="chains.hasNext()">
+            <cfset chain=chains.next()>
+            <option value="#chain.getChainID()#"<cfif assignment.getChainID() eq chain.getChainID()> selected</cfif>>#esapiEncode('html',chain.getName())#</option>
+          </cfloop>
+        </select>
+      </div>
     </div>
     </cfif>
-  <div class="form-actions no-offset">
-     <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
-  </div>
+    <div class="mura-actions">
+      <div class="form-actions no-offset">
+         <button class="btn mura-primary" onclick="submitForm(document.forms.form1);"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'permissions.update')#</button>
+      </div>
+    </div>
            <input type="hidden" name="router" value="#esapiEncode('html_attr',cgi.HTTP_REFERER)#">
            <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
            <input type="hidden" name="startrow" value="#esapiEncode('html_attr',rc.startrow)#">
       <input type="hidden" name="topid" value="#esapiEncode('html_attr',rc.topid)#">
       <input type="hidden" name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#">
        #rc.$.renderCSRFTokens(context=rc.contentid,format="form")#
-    </form></td>
+  </td>
   </tr>
 </table>
+</form>
+
+    </div> <!-- /.block-content -->
+  </div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
 
 <script>
   $(function(){

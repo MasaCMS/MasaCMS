@@ -51,7 +51,7 @@ var emailManager = {
 		var c = $('#controls');
 		var i = $('.toggle');
 		c.css('display', 'none');
-		s.css('display', 'inline-block');
+		s.css('display', 'block');
 		i.css('opacity', '.30');
 		i.attr('disabled','disabled');
 

@@ -1,0 +1,383 @@
+
+/* BS3 CLASS MAPPING */
+
+// grid 
+
+#mura-content{
+  .make-row();
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.mura-layout-row,
+.mura-header{
+  .make-row();
+  margin-left: 0;
+  margin-right: 0;
+}
+.mura-header h1{
+  .make-xs-column(12);
+  .make-sm-column(3.75);
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;  
+}
+
+.mura-item-title{
+  .make-xs-column(12);
+  .make-sm-column(7);
+}
+.mura-header ul.breadcrumb{
+  .make-xs-column(12);
+}
+.mura-item-metadata{
+  .make-xs-column(12);
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+main > .content > :first-child:not(.alert){
+  .make-row();
+}
+.half{
+  .make-xs-column(6);
+  padding-left:0px;
+  padding-right:0px;
+}
+
+#cdashboard #main,
+#mura-content #main{
+  .make-xs-column(12);
+  .make-md-column(8);
+  .make-lg-column(9);
+
+  padding-left: 0px;
+  padding-right: 0px;
+}
+#cdashboard .sidebar,
+#mura-content .sidebar{
+  .make-xs-column(12);
+  .make-md-column(4);
+  .make-lg-column(3);
+}
+#cdashboard #main + .sidebar,
+#mura-content #main + .sidebar{
+  padding-left: 15px;
+  padding-right: 0;
+}
+
+
+// forms
+
+#mura-content > form{
+  .form-horizontal;
+}
+
+.form-actions{
+  .make-xs-column(12);
+  float: none !important;
+}
+
+.mura-control-group{
+  .form-group;
+  .make-row();
+  margin-left:0px;
+  margin-right:0px;
+}
+
+.mura-control-group[class*="col-"]{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.mura-control-group > label{
+  .make-xs-column(12);
+}
+.mura-control-group > label:not([class*="checkbox"]):not([class*="radio"]){
+  padding-left:0px;
+  padding-right:0px;
+}
+
+// form elements w/ label
+.mura-control-group > label + textarea:not([class*="mura-constrain"]),
+.mura-control-group > label + * + textarea:not([class*="mura-constrain"]),
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]):not([class*="mura-constrain"]),
+.mura-control-group > label + input[type=password],
+.mura-control-group > label + * + input[type=password],
+.mura-control-group > label + input[type=file],
+.mura-control-group > label + * + input[type=file],
+.mura-control-group > label + select:not([class*="time"]):not([class*="mura-constrain"]),
+.mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
+  .form-control;
+  .make-xs-column(12);
+  .make-sm-column(9);
+}
+
+// constrain width elements
+.mura-control-group > label + input[type=text].mura-constrain,
+.mura-control-group > label + * + input[type=text].mura-constrain,
+.mura-control-group > label + select.mura-constrain,
+.mura-control-group > label + * + select.mura-constrain,
+.mura-control-group > label + textarea.mura-constrain,
+.mura-control-group > label + * + textarea.mura-constrain{
+  .form-control;
+  .make-xs-column(9);
+  .make-sm-column(2.6);
+}
+
+.mura-control-group > label + input[type=text].mura-constrain.mura-numeric,
+.mura-control-group > label + * + input[type=text].mura-constrain.mura-numeric,
+.mura-control-group > label + select.mura-constrain.mura-numeric,
+.mura-control-group > label + * + select.mura-constrain.mura-numeric,
+.mura-control-group > label + textarea.mura-constrain.mura-numeric,
+.mura-control-group > label + * + textarea.mura-constrain.mura-numeric{
+  .make-xs-column(3);
+  .make-sm-column(1);
+  min-width: 80px !important;
+}
+
+.mura-control-group .mura-constrain + .mura-constrain{
+  margin-left: 8px;
+}
+
+// sidebar form elements
+.sidebar .mura-control-group > label + textarea,
+.sidebar .mura-control-group > label + * + textarea,
+.sidebar .mura-control-group > label + input[type=text],
+.sidebar .mura-control-group > label + * + input[type=text],
+.sidebar .mura-control-group > label + input[type=password],
+.sidebar .mura-control-group > label + * + input[type=password],
+.sidebar .mura-control-group > label + input[type=file],
+.sidebar .mura-control-group > label + * + input[type=file],
+.sidebar .mura-control-group > label + select:not([class*="time"]),
+.sidebar .mura-control-group > label + * + select:not([class*="time"]){
+  padding: 4px 8px;
+  height: 2em;
+  .make-xs-column(12);
+}
+
+.mura-control-group > label + textarea[rows],
+select[multiple],
+select[size],
+.mura-control-group > label + select[multiple], 
+.mura-control-group > label + select[size] {
+    height: auto !important;
+}
+
+.mura-control-group > label + .datepicker{
+  .form-control;
+  .make-xs-column(12);
+  .make-sm-column(2.6);
+}
+.mura-control-group .mura-interval-end input[type=text]{
+  .form-control;
+  .make-xs-column(12);
+  .make-sm-column(3);
+}
+
+// inline groups
+.mura-control-inline{
+  
+  > label {
+  float:left;
+  padding-right: 8px;
+  padding-top: 8px;
+  }
+  > input{
+  .make-xs-column(3);
+  .form-control;
+  }
+  > select{
+  .make-xs-column(3);
+  .form-control;
+  }
+
+  > input + select,
+  > select + input,
+  > select + label,
+  > input + label{
+  margin-left: 8px !important;
+  }
+
+  > button {
+  .btn;
+  height: 36px;
+  }
+  > i{
+    display: block;
+    float: left;
+    width: 24px;
+    padding-top: 13px;
+    margin-left: 8px;
+  }
+}
+
+.label-inline{
+  input, select{
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+
+// checkboxes / radio buttons
+
+.mura-control-group > .checkbox-group,
+.mura-control-group > .radio-group{
+  .make-xs-column(12);
+  .make-sm-column(9);
+}
+
+// ckeditor fields
+
+.mura-control-group textarea + .cke{
+  .make-xs-column(12);
+  .make-sm-column(9);
+  padding-left:0px;
+  padding-right:0px;
+}
+
+// datepicker fields
+
+#main input[type=text].datepicker,
+.mura-content select.mura-repeat-option{
+  .form-control;  
+  .make-xs-column(6);
+  .make-sm-column(3);
+}
+select.time{
+  .form-control;  
+  .make-xs-column(3);
+  .make-sm-column(1);
+  margin-left: 8px;
+  padding-right: 8px;
+}
+
+// search param fields
+
+#searchParams input[type=text],
+#searchParams select{
+  .form-control;  
+  .make-xs-column(2); 
+  margin-right: 12px; 
+  padding: 0 3px;
+  height: 24px;
+}
+
+// form alerts
+#mura-content > form .alert:not([class*="alert-"]){
+  .alert-info;
+}
+
+// tabs
+.mura-tab-links, 
+.mura-tabs{
+  .nav; 
+}
+/* hide tab header controls for now */
+.tab-pane .block-options{
+  display:none;
+}
+
+// image details
+#mura-content #image-details .mura-control-group label + .btn-group{
+  .make-sm-column(12);
+  padding: 15px 0;
+}
+#mura-content #image-details .mura-control-group .load-inline{
+  .make-sm-column(12);
+}
+
+/* LEGACY MURA / BS2 CLASS MAPPING */
+
+// headings
+h1:not([class]){
+	.page-heading;
+}
+
+// alert classes
+.alert-error{
+  .alert-danger;
+}
+// default to warning
+.alert:not([class*="alert-"]){
+  .alert-warning;
+}
+
+// bs3 buttons
+
+// default to btn-default
+.btn:not([class*="btn-"]){
+  .btn-default;
+}
+// button sizes
+.btn-mini{
+  .btn-xs;
+}
+.btn-small{
+  .btn-sm;
+}
+.btn-large{
+  .btn-lg;
+}
+.mura-button{
+  .btn;
+  .btn-default;
+}
+
+
+// form layout
+
+// form controls
+.tab-pane .fieldset .control-group{
+	.form-group;
+	.row;
+  margin-left: 0;
+  margin-right: 0;
+}
+// labels
+.form-horizontal .control-label{
+	.make-xs-column(3);
+}
+.form-horizontal .controls{
+	.make-xs-column(9);
+}
+
+// secondary nav 
+.nav-module-specific{
+  .make-xs-column(12);
+  .make-sm-column(8.25);
+  text-align:right;
+  padding-left: 0;
+  padding-right: 0;
+  
+  // style a.btn like label
+  .btn{
+    .label;
+  }
+  .label{
+    .btn;
+  }
+  .metadata-horizontal li{
+     .btn;
+     .label;
+  }
+}
+
+// default to label-default
+.label:not([class*="label-"]){
+  .label-default;
+}
+
+// table layout
+.mura-table-grid{
+	.table-striped;
+}
+
+#custom-images-container{
+  .make-xs-column(12);
+  .make-sm-column(7.2);
+  padding-left: 0;
+  padding-right: 0;
+}

@@ -157,7 +157,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
     	return super.save();
     }
 
-	function sendActionMessage(contentBean,actionType){
+    function sendActionMessage(contentBean,actionType){
 
 		var $=getBean('$').init(arguments.contentBean.getSiteID());
 		var script=$.siteConfig('Content#Arguments.actionType#Script');
@@ -208,7 +208,6 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 				//} catch (any e){}
 			} else if (arguments.actionType=='Pending'){
 				//try{
-
 					if(isValid('email',$.event('group').getEmail())){
 						getBean('mailer').sendText($.setDynamicContent(script),
 							$.event('group').getEmail(),
