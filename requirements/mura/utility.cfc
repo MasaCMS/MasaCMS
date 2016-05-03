@@ -331,12 +331,27 @@
 	<cfreturn getRequestProtocol() eq 'https'>
 </cffunction>
 
+<cffunction name="getRequestHost" output="false">
+	<cfset var headers=getHttpRequestData().headers>
+
+	<cfif StructKeyExists(headers,"X-Forwarded-Host") and len(headers["X-Forwarded-Host"])>
+		<cfreturn headers["X-Forwarded-Host"]>
+	<cfelseif len(cgi.http_host)>
+		<cfreturn cgi.http_host>
+	<cfelse>
+		<cfreturn cgi.server_name>
+	</cfif>
+
+</cffunction>
+
 <cffunction name="getRequestProtocol" output="false">
 	<cftry>
 		<cfset var headers=getHttpRequestData().headers>
 
 		<cfif StructKeyExists(headers,"X-Forwarded-Proto") and headers["X-Forwarded-Proto"] eq "https">
 		    <cfreturn "https">
+		<cfelseif StructKeyExists(headers,"Front-End-Https") and isBoolean(headers["Front-End-Https"]) and headers["Front-End-Https"]>
+			<cfreturn "https">
 		<cfelse>
 		    <cfreturn getPageContext().getRequest().getScheme()>
 		</cfif>
