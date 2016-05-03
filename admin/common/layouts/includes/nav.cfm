@@ -490,7 +490,7 @@
                         <ul>
                             <!--- docs --->
                             <li>
-                                <a id="navCSS-API" href="http://docs.getmura.com/v6/" target="_blank"><i class="mi-bookmark"></i>#rc.$.rbKey("layout.developers")#</a>
+                                <a id="navCSS-API" href="http://docs.getmura.com/" target="_blank"><i class="mi-bookmark"></i>#rc.$.rbKey("layout.developers")#</a>
                             </li>
                             <!--- editor docs --->
                             <li>
@@ -498,7 +498,7 @@
                             </li>
                             <!--- component API --->
                             <li>
-                                <a id="navProg-API" href="http://www.getmura.com/component-api/6.1/" target="_blank"><i class="mi-bookmark"></i>Component API</a>
+                                <a id="navProg-API" href="http://www.getmura.com/component-api/7.0/" target="_blank"><i class="mi-bookmark"></i>Component API</a>
                             </li>
                             <!--- professional support --->
                             <li>
