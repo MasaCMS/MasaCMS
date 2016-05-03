@@ -333,19 +333,26 @@
 
 <cffunction name="getRequestProtocol" output="false">
 	<cftry>
-	<cfreturn getPageContext().getRequest().getScheme()>
-	<cfcatch>
-		<!--- Legacy --->
-		<cfif len(cgi.HTTPS) and listFindNoCase("Yes,On,True",cgi.HTTPS)>
-			<cfreturn "https">
-		<cfelseif isBoolean(cgi.SERVER_PORT_SECURE) and cgi.SERVER_PORT_SECURE>
-			<cfreturn "https">
-		<cfelseif len(cgi.SERVER_PORT) and cgi.SERVER_PORT eq "443">
-			<cfreturn "https">
+		<cfset var headers=getHttpRequestData().headers>
+
+		<cfif StructKeyExists(headers,"X-Forwarded-Proto") and headers["X-Forwarded-Proto"] eq "https">
+		    <cfreturn "https">
 		<cfelse>
-			<cfreturn "http">
+		    <cfreturn getPageContext().getRequest().getScheme()>
 		</cfif>
-	</cfcatch>
+
+		<cfcatch>
+			<!--- Legacy --->
+			<cfif len(cgi.HTTPS) and listFindNoCase("Yes,On,True",cgi.HTTPS)>
+				<cfreturn "https">
+			<cfelseif isBoolean(cgi.SERVER_PORT_SECURE) and cgi.SERVER_PORT_SECURE>
+				<cfreturn "https">
+			<cfelseif len(cgi.SERVER_PORT) and cgi.SERVER_PORT eq "443">
+				<cfreturn "https">
+			<cfelse>
+				<cfreturn "http">
+			</cfif>
+		</cfcatch>
 	</cftry>
 </cffunction>
 
