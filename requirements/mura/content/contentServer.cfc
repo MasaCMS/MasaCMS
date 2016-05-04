@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="bindToDomain" output="false" returntype="any" access="remote">
 	<cfargument name="isAdmin" required="true" default="false">
-	<cfargument name="domain" required="true" default="#cgi.http_host#">
+	<cfargument name="domain" required="true" default="">
 	<cfset var siteID= "" />
 	<cfset var rsSites=application.settingsManager.getList(sortBy="orderno") />
 	<cfset var site="">
@@ -139,8 +139,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var checkDomain=listFirst(arguments.domain,":")>
 
 	<cfif not len(checkDomain)>
-		<cfset checkDomain=cgi.server_name>
+		<cfset checkDomain=listFirst(getBean('utility').getRequestHost(),":")>
 	</cfif>
+
 	<!--- check for exact host match to find siteID --->
 	<cfloop query="rsSites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>

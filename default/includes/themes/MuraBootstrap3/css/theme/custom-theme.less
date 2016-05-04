@@ -1,4 +1,4 @@
-// Copied from Font-Awesome.less so we don't have to compile it with everything else used to add 
+// Copied from Font-Awesome.less so we don't have to compile it with everything else used to add
 // icons without resorting to placing the <i> tag (or other elements) into the markup, for example:
 // a.element-with-icon {
 //		.fa;
@@ -156,13 +156,13 @@ img {
 .nav li:hover .dropdown-menu {
     display: inline-block;
     //Second Level Flyouts
-    
+
     ul.dropdown-menu {
 	    display: none;
 		}
 	.dropdown-submenu:hover > ul.dropdown-menu {
 	    display: block;
-		}  
+		}
 	}
 
 // Indexes
@@ -170,7 +170,7 @@ img {
 	padding-top: 0;
 	border-top: 0;
 	margin-top: 0;
-	
+
 	dl {
 		border-bottom: 1px solid @gray-lighter;
 		padding-bottom: 12px;
@@ -185,7 +185,7 @@ img {
 		margin-bottom: .25em;
 		line-height: 1;
 	}
-	
+
 	dd {
 		margin-left: 0;
 	}
@@ -271,7 +271,7 @@ img {
 			}
 		}
 	}
-	
+
 	.promos > div { text-align: center; }
 }
 
@@ -342,7 +342,7 @@ div[data-cssclass="home-news"] {
 	margin: 4em 0;
 	text-align: center;
 
-	i {
+	i.home {
 		font-size: 44px;
 		display: inline-block;
 		width: 90px;
@@ -355,7 +355,7 @@ div[data-cssclass="home-news"] {
 		.transition(all, 0.3s, ease-in);
 	}
 
-	&:hover i {
+	&:hover i.home {
 		border-color: @gray;
 		background-color: @gray;
 		color: white;
@@ -368,10 +368,10 @@ div[data-cssclass="home-news"] {
 // Headings
 // --------------------------------------------------
 
-aside { 
-	h1, h2, h3, h4, h5, h6 { 
+aside {
+	h1, h2, h3, h4, h5, h6 {
 		margin: 0 0 0.5em 0;
-		line-height: 1.1; 
+		line-height: 1.1;
 	}
 	h1 { font-size: 36px; }
 	h2 { font-size: 22px; }
@@ -381,7 +381,7 @@ aside {
 	h6 { font-size: 12px; }
 }
 
-.navArchive { 
+.navArchive {
 	h2, h3 {
 		margin-bottom: 0;
 	}
@@ -487,7 +487,7 @@ a.menu:after, .dropdown-toggle:after {
 		text-shadow: 0 0 0 transparent !important;
 	}
 
-} 
+}
 // @end .nav-list
 
 .moreResults {
@@ -498,14 +498,14 @@ a.menu:after, .dropdown-toggle:after {
 
 	dt {
 		font-size: 12px;
-		font-weight: normal;	
+		font-weight: normal;
 	}
-	
+
 	> p {
 		.pull-left;
 		margin: 0.5em 0;
 		}
-	
+
 	> ul {
 		.pull-right;
 		whitespace: nowrap;
@@ -516,7 +516,7 @@ a.menu:after, .dropdown-toggle:after {
 
 		> li {
 			display: inline-block;
-			
+
 			> a {
 				&:hover {
 					background-color: @gray-light;
@@ -525,7 +525,7 @@ a.menu:after, .dropdown-toggle:after {
 			}
 		}
 	}
-	
+
 }
 
 li.form ol, .mura-tag-cloud ol {
@@ -634,13 +634,13 @@ ol.mura-pager {
 
 //end CALENDAR
 
-.table-bordered { 
+.table-bordered {
 	th, td {
 		border-left: 1px solid #ddd;
 	}
 }
 
-.table { 
+.table {
 	th, td {
 		padding: 8px;
 		line-height: 18px;
@@ -729,10 +729,10 @@ form:not(.navbar-form) {
 	width: 95%;
 	}
 
-.req label { 
+.req label {
 	background: none;
 
-	&:after { 
+	&:after {
 		content: " *";
     	color: red;
     }
@@ -743,7 +743,7 @@ p.required {
     margin-bottom: 1em !important;
 	background: none;
 
-	&:before { 
+	&:before {
 		content: "* ";
     	color: red;
 	}
@@ -813,50 +813,50 @@ section {
 // COMMENTS
 
 .mura-comments {
-	
+
 	> .mura-comment-sort-container,
 	.mura-comment-more-comments-container {
 		margin-bottom: @line-height-computed;
 		}
-		
+
 	dl:last-child {
 		border-bottom: 0;
 		padding-bottom: 0;
 	}
-	
+
 	dt > em {
 		font-weight: normal;
 		font-style: italic;
 	}
-	
+
 	#mura-comment-post-comment legend {
 		border: 0;
 	}
-	
+
 	dd {
-		
+
 		&.mura-comment-reply {
 			.fa;
-						
+
 			&:before {
 			  .icon-before;
 			  content: "\f112";
 			}
 		}
-		
+
 		&.mura-comment-spam {
 			.fa;
-						
+
 			&:before {
 			  .icon-before;
 			  content: "\f05e";
 			}
 		}
-		
+
 		&.mura-comment-post-reply {
 		}
-		
-		
+
+
 	}
 }
 

@@ -573,7 +573,7 @@
 					 	self.fields = formJSON.form.fields;
 					 	self.responsemessage = data.data.responsemessage;
 						self.ishuman=data.data.ishuman;
-						
+
 						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
 							self.ormform = true;
 						}
@@ -647,7 +647,16 @@
 							self.getTableData( self.location );
 							return;
 						}
-						mura(self.context.formEl).html( self.responsemessage );
+						
+						if(typeof resp.data.redirect != 'undefined'){
+							if(resp.data.redirect && resp.data.redirect != location.href){
+								location.href=resp.data.redirect;
+							} else {
+								location.reload(true);
+							}
+						} else {
+							mura(self.context.formEl).html( resp.data.responsemessage );
+						}
 					},
 					function( entity ) {
 						self.showErrors( entity.properties.errors );
@@ -667,9 +676,15 @@
                         .then(function(resp){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
 								self.showErrors( resp.data.errors );
+							} else if(typeof resp.data.redirect != 'undefined'){
+								if(resp.data.redirect && resp.data.redirect != location.href){
+									location.href=resp.data.redirect;
+								} else {
+									location.reload(true);
+								}
                             } else {
-                                mura(self.context.formEl).html( resp.data.responsemessage );
-                            }
+								mura(self.context.formEl).html( resp.data.responsemessage );
+							}
                         });
 
 			}
