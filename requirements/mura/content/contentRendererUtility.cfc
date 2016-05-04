@@ -141,7 +141,7 @@
 					}
 
 				} else {
-					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+					cssClass=cssClass & "mura-inactive mura-editable-attribute#inline#";
 
 					return '<div class="mura-editable mura-inactive#inline#">
 						<label class="mura-editable-label">#ucase(arguments.label)#</label>
