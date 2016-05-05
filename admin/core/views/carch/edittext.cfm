@@ -53,8 +53,12 @@ $(function(){
 				}
 
 				//console.log(parameters)
+
 				if(parameters["params"].sourcetype == 'custom'){}
 					$('##source').val(parameters["params"].source);
+					if(typeof CKEDITOR.instances['source'] != 'undefined'){
+						CKEDITOR.instances['source'].setData(parameters["params"].source);
+					}
 				}
 
 		}
