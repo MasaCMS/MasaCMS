@@ -1436,8 +1436,10 @@ Display Objects
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteEditProfileRender",variables.event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
+						<cfelseif $.siteConfig().hasDisplayObject('editprofile')>
+						<cfoutput>#variables.$.dspObject('editprofile')#</cfoutput>
 						<cfelse>
-						<cfoutput>#variables.$.dspObject('edit_profile')#</cfoutput>
+						<cfoutput>#variables.$.dspObject_include(thefile='dsp_edit_profile.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
@@ -1446,8 +1448,10 @@ Display Objects
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteSearchRender",variables.event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
-						<cfelse>
+						<cfelseif $.siteConfig().hasDisplayObject('search')>
 						<cfoutput>#variables.$.dspObject('search')#</cfoutput>
+						<cfelse>
+						<cfoutput>#variables.$.dspObject_include(thefile='dsp_search_results.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="login">
@@ -1456,8 +1460,10 @@ Display Objects
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
-						<cfelse>
+						<cfelseif $.siteConfig().hasDisplayObject('login')>
 						<cfoutput>#variables.$.dspObject('login')#</cfoutput>
+						<cfelse>
+						<cfoutput>#variables.$.dspObject_include(thefile='dsp_login.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
