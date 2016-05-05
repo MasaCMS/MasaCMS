@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h1 class="page-heading">Mura CMS Setup</h1>
 <div id="installationComplete" class="alert">
-	<p>Mura is now set up and ready to use.</p>
+	<p>Installation complete! Log in to start using Mura.</p>
 </div>
 
 <!--- <div class="alert alert-error">
@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
  --->
 
 <div class="mura-focus-actions">
-	<a href="#context#/admin/?appreload&applydbupdates" class="btn mura-setup-complete">Log in to Mura <i class="mi mi-arrow-right"></i></a>
+	<a href="#context#/admin/?appreload&applydbupdates" class="btn mura-setup-complete">Log in <i class="mi mi-arrow-right"></i></a>
 </div>
 
 </cfoutput>
