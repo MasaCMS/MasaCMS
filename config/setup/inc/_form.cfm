@@ -160,6 +160,7 @@ to your own modified versions of Mura CMS.
 					<div class="mura-control-group">
 						<label>Super Admin Email</label>
 						<input type="text" name="production_adminemail" value="#FORM.production_adminemail#" />
+						<p class="help-block">Required: Enter a valid email addressed.</p>
 					</div>
 
 			</div>
