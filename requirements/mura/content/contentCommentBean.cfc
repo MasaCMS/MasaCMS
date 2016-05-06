@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.bean" entityName="comment" table="tcontentcomments" output="false">
@@ -62,12 +62,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="path" type="string" default="" />
 <cfproperty name="remoteID" type="string" default=""/>
 <cfproperty name="isNew" type="numeric" default="1" />
+<cfproperty name="isSpam" type="numeric" default="0" />
+<cfproperty name="isDeleted" type="numeric" default="0" />
+<cfproperty name="flagCount" type="numeric" default="0" />
 
 <cfset variables.primaryKey = 'commentid'>
 <cfset variables.entityName = 'comment'>
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	
+
 	<cfset super.init(argumentCollection=arguments)>
 
 	<cfset variables.instance.commentID="" />
@@ -88,6 +91,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.kids=0/>
 	<cfset variables.instance.remoteID=""/>
 	<cfset variables.instance.isNew=1/>
+	<cfset variables.instance.isSpam=0/>
+	<cfset variables.instance.isDeleted=0/>
+	<cfset variables.instance.flagCount=0/>
 
 	<cfreturn this />
 </cffunction>
@@ -137,14 +143,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setURL" access="public" output="false">
 	<cfargument name="url" type="String" />
-	
+
 	<cfset variables.instance.url = trim(arguments.url) />
-		
-	<cfif len(variables.instance.url) and 
+
+	<cfif len(variables.instance.url) and
 			not listFindNoCase("http:,https:",listFirst(variables.instance.url,"//"))>
 		<cfset variables.instance.url = "#variables.settingsManager.getSite(variables.instance.siteID).getScheme()#://" & variables.instance.url />
 	</cfif>
-	<cfreturn this>		
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setSubscribe" access="public" output="false">
@@ -159,6 +165,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="isApproved" />
 	<cfif isNumeric(arguments.isApproved)>
 	<cfset variables.instance.isApproved = arguments.isApproved />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setIsSpam" access="public" output="false">
+	<cfargument name="isSpam" />
+	<cfif isNumeric(arguments.isSpam)>
+	<cfset variables.instance.isSpam = arguments.isSpam />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setIsDeleted" access="public" output="false">
+	<cfargument name="isDeleted" />
+	<cfif isNumeric(arguments.isDeleted)>
+	<cfset variables.instance.isDeleted = arguments.isDeleted />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setFlagCount" access="public" output="false">
+	<cfargument name="flagCount" />
+	<cfif isNumeric(arguments.flagCount)>
+	<cfset variables.instance.flagCount = arguments.flagCount />
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -199,19 +229,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfargument name="commentID">
-	<cfargument name="remoteID">	
+	<cfargument name="remoteID">
 	<cfset var rs=""/>
-	
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.isDeleted,c.isSpam,c.subscribe, c.userID, c.path, c.remoteID, k.kids, f.fileid, f.fileExt 
-	from tcontentcomments c left join (select count(*) kids, parentID 
-										from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"> 
+	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.isDeleted,c.isSpam,c.subscribe, c.userID, c.path, c.remoteID, k.kids, c.flagcount, f.fileid, f.fileExt
+	from tcontentcomments c left join (select count(*) kids, parentID
+										from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 										group by parentID
 										) k
 										on c.commentID = k.parentID
 	left join tusers u on c.userid=u.userid
-	left join tfiles f on u.photofileid=f.fileid 
-	where 
+	left join tfiles f on u.photofileid=f.fileid
+	where
 	<cfif isdefined("arguments.commentID")>
 		c.commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.commentID#">
 	<cfelseif isdefined("arguments.remoteID")>
@@ -220,7 +250,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		c.commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfif>
 	</cfquery>
-	
+
 	<cfreturn rs/>
 </cffunction>
 
@@ -228,19 +258,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
-	
+
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
-	
+
 	<cfset pluginManager.announceEvent("onBeforeCommentDelete",pluginEvent)>
-	
+
 	<cfquery>
 		update tcontentcomments set isDeleted = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
-	
+
 	<cfset pluginManager.announceEvent("onAfterCommentDelete",pluginEvent)>
-	
+
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
@@ -248,19 +278,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
-	
+
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
-	
+
 	<cfset pluginManager.announceEvent("onBeforeCommentUndelete",pluginEvent)>
-	
+
 	<cfquery>
 		update tcontentcomments set isDeleted = 0 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
-	
+
 	<cfset pluginManager.announceEvent("onAfterCommentUndelete",pluginEvent)>
-	
+
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
@@ -268,19 +298,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
-	
+
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
-	
+
 	<cfset pluginManager.announceEvent("onBeforeCommentFlag",pluginEvent)>
-	
+
 	<cfquery>
 		update tcontentcomments set flagCount = flagCount + 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
-	
+
 	<cfset pluginManager.announceEvent("onAfterCommentFlag",pluginEvent)>
-	
+
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
@@ -288,19 +318,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
-	
+
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
-	
+
 	<cfset pluginManager.announceEvent("onBeforeCommentMarkAsSpam",pluginEvent)>
-	
+
 	<cfquery>
 		update tcontentcomments set	isSpam = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
-	
+
 	<cfset pluginManager.announceEvent("onAfterCommentMarkAsSpam",pluginEvent)>
-	
+
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
@@ -308,19 +338,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
-	
+
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
-	
+
 	<cfset pluginManager.announceEvent("onBeforeCommentUnMarkAsSpam",pluginEvent)>
-	
+
 	<cfquery>
 		update tcontentcomments set isSpam = 0 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
-	
+
 	<cfset pluginManager.announceEvent("onAfterCommentUnMarkAsSpam",pluginEvent)>
-	
+
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
@@ -334,30 +364,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
-	
+
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset structAppend(eventArgs, arguments)>
 
 	<cfset pluginEvent.init(eventArgs)>
-	
+
 	<cfif len(variables.instance.parentID)>
 		<cfset path=variables.contentManager.getCommentBean().setCommentID(variables.instance.parentID).load().getPath()>
 	</cfif>
-	
+
 	<cfset path=listAppend(path, getCommentID())>
 
 	<cfset validate()>
 
-	<cfif structIsEmpty(getErrors())>	
+	<cfif structIsEmpty(getErrors())>
 		<cfset setCommenter()>
-		
+
 		<cfset pluginManager.announceEvent("onBeforeCommentSave",pluginEvent)>
-		
+
 		<cfif getQuery().recordcount>
-			
+
 			<cfset pluginManager.announceEvent("onBeforeCommentUpdate",pluginEvent)>
-			
+
 			<cfquery>
 			update tcontentcomments set
 				contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
@@ -372,17 +402,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.useriD#"/>,
 				parentID=<cfif len(variables.instance.parentID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.parentID#"/><cfelse>null</cfif>,
 				path=<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
-				remoteID=<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
+				remoteID=<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>,
+				isSpam=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.isSpam#">,
+				isDeleted=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.isDeleted#">,
+				flagCount=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.flagCount#">
 			where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+
 			</cfquery>
-			
+
 			<cfset pluginManager.announceEvent("onAfterCommentUpdate",pluginEvent)>
 		<cfelse>
-		
+
 			<cfset pluginManager.announceEvent("onBeforeCommentCreate",pluginEvent)>
-			
+
 			<cfquery>
-				insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip, remoteID)
+				insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip, remoteID, isspam, isdeleted,flagCount)
 				values (
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"/>,
@@ -398,12 +432,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#"/>,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
 				<cfif isdefined("request.remoteAddr")><cfqueryparam cfsqltype="cf_sql_varchar" value="#request.remoteAddr#"/><cfelse><cfqueryparam cfsqltype="cf_sql_varchar" value="#CGI.REMOTE_ADDR#"/></cfif>,
-				<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
+				<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>,
+				<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.isSpam#">,
+				<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.isDeleted#">,
+				<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.flagCount#">
 				)
 				</cfquery>
-			
+
 			<cfset variables.instance.isNew=0/>
-				
+
 			<cfset pluginManager.announceEvent("onAfterCommentCreate",pluginEvent)>
 			<cfset getBean('trashManager').takeOut(this)>
 		</cfif>
@@ -412,13 +449,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var obj='';
 
 			if(arrayLen(variables.instance.addObjects)){
-				for(obj in variables.instance.addObjects){	
+				for(obj in variables.instance.addObjects){
 					obj.save();
 				}
 			}
 
 			if(arrayLen(variables.instance.removeObjects)){
-				for(obj in variables.instance.removeObjects){	
+				for(obj in variables.instance.removeObjects){
 					obj.delete();
 				}
 			}
@@ -428,21 +465,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfscript>
 
 		<cfset pluginManager.announceEvent("onAfterCommentSave",pluginEvent)>
-		
+
 		<cfif variables.instance.isApproved>
 			<cfset saveSubscription()>
 			<cfif isBoolean(pluginEvent.getValue("notify")) and pluginEvent.getValue("notify")>
 				<cfset notifySubscribers(arguments.script,arguments.subject)>
 			</cfif>
 		</cfif>
-		
+
 		<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="saveSubscription" access="public" output="false">		
+<cffunction name="saveSubscription" access="public" output="false">
 	<cfquery>
 			update tcontentcomments set subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
@@ -471,7 +508,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif not len(arguments.script)>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContent')#">
-			select title from tcontent 
+			select title from tcontent
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 			and active=1
@@ -521,7 +558,7 @@ View
 	<cfset var rsSubscribers=variables.contentDAO.getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
 	<cfset var contentBean=getBean('content').loadBy(contentid=variables.instance.contentID)>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContent')#">
-		select title from tcontent 
+		select title from tcontent
 		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 		and active=1
@@ -537,7 +574,7 @@ A comment has been posted to "#rscontent.title#" by #variables.instance.name#.
 COMMENT:
 #variables.instance.comments#
 
-View 
+View
 #contentBean.getURL(complete=true)#
 
 To Unsubscribe Click Here:
@@ -597,27 +634,27 @@ To Unsubscribe Click Here:
 <cffunction name="getCrumbQuery" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfset var rsCommentCrumbData="">
-	
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommentCrumbData')#">
 		select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,
-		c.isApproved,c.subscribe,c.userID,c.path, 
+		c.isApproved,c.subscribe,c.userID,c.path,
 		<cfif variables.configBean.getDBType() eq "MSSQL">
 		len(Cast(c.path as varchar(1000))) depth
 		<cfelse>
 		length(c.path) depth
 		</cfif>,
 		f.fileID, f.fileExt, k.kids
-		from tcontentcomments c 
+		from tcontentcomments c
 		left join tusers u on (c.userid=u.userid)
 		left join tfiles f on (u.photofileid=f.fileid)
 		left join (select count(*) kids, parentID from tcontentcomments
 					where parentID in (select commentID from tcontentcomments where parentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.path#">))
 					group by parentID
 				)  k on c.commentID=k.parentID
-		where 
+		where
 		commentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.path#">)
 		order by depth <cfif arguments.sort eq "desc">desc<cfelse>asc</cfif>
-	</cfquery>	
+	</cfquery>
 
 	<cfreturn rsCommentCrumbData>
 </cffunction>
