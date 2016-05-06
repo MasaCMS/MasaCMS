@@ -602,8 +602,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getEntityName" output="false">
-	<cfargument name="userProxyName" default="true">
-	<cfif arguments.userProxyName>
+	<cfargument name="useProxyName" default="true">
+	<cfset variables.entityName='feed'>
+	<cfif arguments.useProxyName>
 		<cfreturn "content">
 	<cfelse>
 		<cfreturn "feed">

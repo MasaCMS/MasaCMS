@@ -50,7 +50,7 @@
 			delete from tcontentremotepointer
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery>
 			delete from tformresponsepackets
 			where formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
@@ -473,7 +473,7 @@
 <cffunction name="getIDString" output="false">
 <cfargument name="object">
 
-	<cfif arguments.object.getEntityName(userProxyName=false) eq 'content'>
+	<cfif arguments.object.getEntityName(useProxyName=false) eq 'content'>
 		<cfreturn "contentID">
 	<cfelse>
 		<cfreturn arguments.object.getPrimaryKey()>
