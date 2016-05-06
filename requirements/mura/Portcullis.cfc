@@ -105,14 +105,14 @@
 		<!---Clean up Ampersands and nonexistent names that may mess up variable naming later on--->
 		<cfif arguments.fixValues>
 			<cfloop collection="#object#" item="item">
-				<cfif not isSimpleValue(object[item]) or isValidCFVariableName(item) eq false>
+				<cfif not isSimpleValue(object['#item#']) or isValidCFVariableName("#item#") eq false>
 					<!---Item name is invalid anyway in CF so we just dump it --->
-					<cfset structdelete(object,item,false)/>
+					<cfset structdelete(object,'#item#',false)/>
 				<cfelse>
-					<cfset newitem = replaceNoCase(item,"&amp;","","ALL")/>
-					<cfset newitem = replaceNoCase(newitem,"amp;","","ALL")/>
-					<cfset contents = removeNullChars("#object[item]#")/>
-					<cfset structdelete(object,item,false)/>
+					<cfset newitem = replaceNoCase("#item#","&amp;","","ALL")/>
+					<cfset newitem = replaceNoCase("#newitem#","amp;","","ALL")/>
+					<cfset contents = removeNullChars("#object['#item#']#")/>
+					<cfset structdelete(object,"#item#",false)/>
 					<cfset StructInsert(object,"#newitem#",contents,true)/>
 				</cfif>
 			</cfloop>
@@ -125,9 +125,9 @@
 		<!---Filter CRLF--->
 		<cfif variables.instance.blockCRLF eq true>
 		<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-				<cfset temp = filterCRLF(object[item])/>
-				<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
+			<cfif ListContainsNoCase(exFF,"#item#",',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,"#item#"))>
+				<cfset temp = filterCRLF(object["#item#"])/>
+				<cfset itemname = REReplaceNoCase("#item#",nameregex,"","All")>
 				<!---<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>  // We're not going to take note of CRLFs since it's very likely benign--->
 				<cfif arguments.fixValues>
 					<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
@@ -144,9 +144,9 @@
 		<cfif arguments.useTagFilter>
 			<cfloop collection="#object#" item="item">
 
-				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-					<cfset temp = filterTags(object[item])/>
-					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
+				<cfif ListContainsNoCase(exFF,"#item#",',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,"#item#"))>
+					<cfset temp = filterTags(object["#item#"])/>
+					<cfset itemname = REReplaceNoCase("#item#",nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
 						<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
@@ -161,16 +161,16 @@
 
 		<!---Filter Words--->
 		<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
+			<cfif ListContainsNoCase(exFF,"#item#",',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,"#item#"))>
 				<!---trim white space and deal with "smart quotes" from MS Word, etc.--->
 				<!---trim white space and deal with "smart quotes" from MS Word, etc.--->
 				<cfif arguments.fixValues>
-					<cfset object[item]=trim(REReplace(object[item],"(�|�)", "'", "ALL"))>
+					<cfset object["#item#"]=trim(REReplace(object["#item#"],"(�|�)", "'", "ALL"))>
 				</cfif>
 
 				<cfif arguments.useWordFilter>
-					<cfset temp = filterWords(object[item])/>
-					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
+					<cfset temp = filterWords(object["#item#"])/>
+					<cfset itemname = REReplaceNoCase("#item#",nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
 						<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
@@ -186,9 +186,9 @@
 		<!---Filter SQL--->
 		<cfif arguments.useSQLFilter>
 			<cfloop collection="#object#" item="item">
-				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-					<cfset temp = filterSQL(object[item],arguments.useSQLFilter)/>
-					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
+				<cfif ListContainsNoCase(exFF,"#item#",',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,"#item#"))>
+					<cfset temp = filterSQL(object["#item#"],arguments.useSQLFilter)/>
+					<cfset itemname = REReplaceNoCase("#item#",nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
 						<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
@@ -204,10 +204,10 @@
 		<!---Escape Special Characters--->
 		<cfif variables.instance.escapeChars eq true and arguments.fixValues>
 			<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-				<cfif isNumeric(object[item]) eq false>
-					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
-					<cfset temp = escapeChars(object[item])/>
+			<cfif ListContainsNoCase(exFF,"#item#",',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,"#item#"))>
+				<cfif isNumeric(object["#item#"]) eq false>
+					<cfset itemname = REReplaceNoCase("#item#",nameregex,"","All")>
+					<cfset temp = escapeChars(object["#item#"])/>
 					<cfset "#objectname#.#itemname#" = temp/>
 				</cfif>
 			</cfif>
