@@ -1,33 +1,33 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -35,13 +35,13 @@
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 (function( jQuery ){
 	var _formData		= {ismuraorm:0};
@@ -52,7 +52,7 @@
 	var _selected		= "";
 	var _nameEnabled	= false;
 	var _isMuraORM		= false;
-	
+
 	var _ckeditor		= "";
 
 	var _list			= {};
@@ -65,25 +65,25 @@
 	}
 
 	jQuery.fn.templatebuilder = function( action ) {
-		
+
 		if(action) {
 			var _submitdata = {};
 			var _submitFieldOrder = [];
-						
+
 			_submitdata.form = _formData;
 			_submitdata.datasets = _dataSets;
 
 			if( action == 'iscomplete' && !isComplete() ) {
 				return false;
 			}
-						
+
 			jQuery('#mura-formdata').val(  JSON.stringify( _submitdata ) );
 
 			return true;
 		}
-		
+
 		var settings		= jQuery.extend({},jQuery.fn.templatebuilder.defaults,settings);
-		var _formInitData = jQuery.parseJSON( jQuery("#mura-formdata").val() ); 
+		var _formInitData = jQuery.parseJSON( jQuery("#mura-formdata").val() );
 		var _templates	= {};
 
 		var _currentFieldBtn= '';
@@ -101,8 +101,8 @@
 		if(!settings.url)
 			settings.url = jQuery("#mura-templatebuilder").attr('data-url');
 
-		doInitFormBuilder( _formInitData );		
-		
+		doInitFormBuilder( _formInitData );
+
 		function doInitFormBuilder( data ) {
 			$_field.hide();
 			$_grid.hide();
@@ -125,7 +125,7 @@
 			doActivateMenu();
 
 			doRenderForm( data );
-						
+
 			if ( _formData.formattributes && _formData.formattributes['name-unrestricted'] == 1) {
 				_nameEnabled = true;
 			}
@@ -139,7 +139,7 @@
 				jQuery("#button-file").show();
 				jQuery("#button-nested").show();
 			}
-			
+
 		}
 
 		function doRenderForm( response ) {
@@ -155,18 +155,18 @@
 			if(!_formData.pages.length)  {
 				_formData.pages.push([]);
 			}
-		
+
 			if(_formData.fieldorder.length > 0) {
 				_formData.pages[0] = _formData.fieldorder;
-				_formData.fieldorder = [];	
+				_formData.fieldorder = [];
 			}
-			
+
 			console.log('form');
 			console.log(_formData);
 
 			_dataSets = response.datasets;
 			_formStatus.fields			= {};
-			buildPages( _currentPage );			
+			buildPages( _currentPage );
 			setActivePage( 1 );
 		}
 
@@ -174,47 +174,47 @@
 		}
 
 		function doAddFields() {
-			
-			
+
+
 			console.log( _currentPage );
-			
+
 			jQuery('#mura-tb-fields').empty();
 			_buildList = _formData.pages[ _currentPage ].slice(0);
-			
+
 			if (_buildList.length) {
 				var fieldid = _buildList.shift();
 				doAddField(_formData.fields[fieldid]);
-			}	
+			}
 		}
-	
+
 		function getCurrentPage() {
 			return _formData.pages[ _currentPage ];
 		}
-	
+
 		function setCurrentPageOrder( val ) {
-			
+
 			console.log( "setCurrentPageOrder" );
 			console.log( val );
 			console.log(  _currentPage );
-			
+
 			_formData.pages[ _currentPage ] = val;
 
 			console.log( _formData.pages[ _currentPage ] );
 
 		}
-	
+
 		function doCreateField( obj ) {
 //FO		_formData.fieldorder.push(obj.fieldid);
 			getCurrentPage().push( obj.fieldid );
-			
+
 			_formData.fields[obj.fieldid] = obj;
 			doAddField( obj );
 
 		}
 
 		function doAddField( obj ) {
-			
-			if (_templates['field-block'] == undefined) 
+
+			if (_templates['field-block'] == undefined)
 				goLoadTemplate('field-block',doRenderFieldBlock,obj);
 			else {
 				doRenderFieldBlock('field-block',obj);
@@ -224,7 +224,7 @@
 		function doRenderFieldBlock( template,obj ) {
 			jQuery("#mura-tb-fields-empty").hide();
 
-			var $fieldBlock = jQuery(_templates['field-block']); 
+			var $fieldBlock = jQuery(_templates['field-block']);
 			var mdata = {};
 			mdata.fieldType = 'field-'+obj.fieldtype.fieldtype;
 			mdata.fieldID = obj.fieldid;
@@ -242,9 +242,9 @@
 			if (_buildList.length) {
 				var fieldid = _buildList.shift();
 				doAddField(_formData.fields[fieldid]);
-			}	
+			}
 		}
-	
+
 		function doActivateMenu() {
 			jQuery("#mura-templatebuilder .mura-tb-form-menu div").click( function() {
 				doForm();
@@ -259,7 +259,7 @@
 			jQuery(document).on( 'click',"#mura-tb-fields li div", function() {
 				doField( this );
 			});
-			
+
 			jQuery("#mura-form-addpage").click( function() {
 				_formData.pages.push([]);
 				addPage(_formData.pages.length,true);
@@ -273,36 +273,36 @@
 
 			var pageblock = '<li id="page-~page~" data-page="~page~"></li>';
 			var pageblock = $(pageblock.replace(/\~page\~/g,pageNum));
-			
+
 			if(pageNum == _currentPage )
 				pageblock.addClass('current');
 
 			pageblock.html( pageNum );
-			
+
 			jQuery("#mura-form-pages").append( pageblock );
-			
+
 			pageblock.click( function() {
 				setActivePage( $(this).attr('data-page') );
 			});
-			
+
 			if( isNew )
 				setActivePage( pageNum );
 
 		}
-		
+
 		function buildPages( currentPage ) {
 			_currentPage = currentPage;
-			
+
 			console.log( "buildPages" );
 			console.log( _formData );
-			
+
 			jQuery("#mura-form-pages").empty();
-			
+
 			for(var i = 0; i < _formData.pages.length;i++) {
 				addPage( i+1 );
 			}
-		}	
-		
+		}
+
 		function setActivePage( activePage ) {
 			$("#mura-form-pages li").removeClass('current');
 			$("#mura-form-pages .button-trash").remove();
@@ -310,25 +310,25 @@
 
 			_currentPage = activePage - 1;
 
-			var pageBlock = jQuery("#page-" + activePage); 
+			var pageBlock = jQuery("#page-" + activePage);
 			var delblock = jQuery('<div class="button-trash" title="Delete"></div>');
 
 			pageBlock.addClass('current');
 
 			if( activePage > 1 ) {
 				pageBlock.append( delblock );
-				
+
 				$( ".button-trash",pageBlock ).click( function() {
 					var pageblock = $(this).parent();
 					var pageblockid = pageblock.attr("data-page");
 					pageblock.remove();
-					
+
 					var pagefields = _formData.pages.splice( pageblockid-1,1 );
-				
+
 					if (pagefields && pagefields[0].length) {
 						_formData.pages[pageblockid - 2].push(pagefields[0]);
 					}
-					
+
 					setActivePage( pageblockid-1 );
 					console.log(_formData);
 				} );
@@ -351,25 +351,25 @@
 
 			if (_currentFieldLIBtn != '') {
 				jQuery('.ui-button',_currentFieldLIBtn).each(function() {
-					jQuery(this).unbind();	
+					jQuery(this).unbind();
 				});
 				jQuery('ul',_currentFieldLIBtn).hide();
 
 				_currentFieldLIBtn.removeClass('selected');
 				jQuery('.pointer').remove();
 			}
-		
-		}	
+
+		}
 
 		function doForm(){
 			doPreBlockActions();
 
-			if (_templates['form-form'] == undefined) 
+			if (_templates['form-form'] == undefined)
 				goLoadTemplate('form-form');
 			else {
 				doRenderFormBlock();
 			}
-		}	
+		}
 
 		function doRenderFormBlock() {
 			var templateName	= "form-form";
@@ -389,14 +389,22 @@
 				if (values.kind == 'selected') {
 					if(_selected != undefined)
 						jQuery(_selected).removeClass('selected');
-										
+
 					_selected = values.object;
 					jQuery(_selected).addClass('selected');
 				}
 				else if (values.kind == 'update') {
 					fieldData.isdirty = 1;
 					_formData.isdirty = 1;
-					
+
+				}
+
+				if(typeof values.item != 'undefined'){
+					if(typeof values.value != 'undefined'){
+						fieldData[values.item]=values.value;
+					} else {
+						delete fieldData[values.item];
+					}
 				}
 			});
 
@@ -438,7 +446,7 @@
 			_currentFieldBtn = $btn;
 			_currentFieldLIBtn = $libtn;
 			_currentFieldID = data.fieldID;
-								
+
 			jQuery('ul',_currentFieldLIBtn).show();
 			_currentFieldLIBtn.addClass('selected');
 			_currentFieldLIBtn.append($pointer);
@@ -454,7 +462,7 @@
 				});
 			});
 
-			if (_templates[templateName] == undefined) 
+			if (_templates[templateName] == undefined)
 				goLoadTemplate(templateName);
 			else {
 				doRenderField();
@@ -469,7 +477,7 @@
 				}
 			}
 		}
-		
+
 		function doRenderField() {
 			var fieldData		= _formData.fields[_currentFieldID];
 			var templateName	= "field-" + fieldData.fieldtype.fieldtype;
@@ -480,7 +488,7 @@
 			jQuery('#mura-tb-field-form').unbind();
 			$_field.html(_templates[templateName]);
 			$_field.show();
-			
+
 			if( _nameEnabled ) {
 				jQuery("#tb-name").removeClass("disabled");
 				jQuery("#tb-name").removeAttr("disabled");
@@ -496,14 +504,14 @@
 				if (values.kind == 'selected') {
 					if(_selected != undefined)
 						jQuery(_selected).removeClass('selected');
-										
+
 					_selected = values.object;
 					jQuery(_selected).addClass('selected');
 				}
 				else if (values.kind == 'update') {
 					fieldData.isdirty = 1;
 					_formData.isdirty = 1;
-					
+
 				}
 			});
 
@@ -515,14 +523,14 @@
 
 				if(!_nameEnabled) {
 					fval = fval.replace(/^[^a-zA-Z]*/,'');
-					
+
 					jQuery("#" + _currentFieldID).removeClass('tb-fieldIsEmpty');
-	
+
 					jQuery("#tb-name").val( fval );
 					jQuery("#tb-name").trigger('change');
 				}
-				
-				jQuery("span",_currentFieldBtn).html( val );				
+
+				jQuery("span",_currentFieldBtn).html( val );
 				jQuery("#mura-tb-form-label").html( val );
 			});
 
@@ -530,12 +538,12 @@
 				var val = jQuery(this).val();
 				var fval = val.replace(/[^a-zA-Z0-9_]/gi,'').toLowerCase();
 				fval = fval.replace(/^[^a-zA-Z]*/,'');
-				
+
 				jQuery("#" + _currentFieldID).removeClass('tb-fieldIsEmpty');
 				jQuery("#tb-name").val( fval );
 				jQuery("#tb-name").trigger('change');
 			});
-						
+
 			jQuery("#ui-tabs").tabs();
 //			jQuery("#ui-tabs").tabs('select',0);
 
@@ -544,14 +552,14 @@
 				_ckeditor = true;
 			}
 		}
-		
+
 		function onCKEditorChange() {
 			var instance = CKEDITOR.instances['field_textblock'];
 			var fieldData = _formData.fields[_currentFieldID];
 
 			instance.on("change",
 				function(e) {
-					fieldData.value = jQuery('#field_textblock').val(); 
+					fieldData.value = jQuery('#field_textblock').val();
 				});
 		}
 
@@ -559,7 +567,7 @@
 			var fieldData		= _formData.fields[_currentFieldID];
 			var $fieldButton	= jQuery("#" + _currentFieldID);
 
-			delete _formData.fields[_currentFieldID]; 			
+			delete _formData.fields[_currentFieldID];
 			jQuery("#mura-tb-field-empty").show();
 
 			$fieldButton.remove();
@@ -579,7 +587,7 @@
 
 		function doDataset() {
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var dataset		= _dataSets[datasetID];
 			_currentDataset = dataset;
 
@@ -592,14 +600,14 @@
 			}
 
 			if (_currentDataset.sourcetype == 'entered' ) {
-				if (_templates['dataset-grid'] == undefined) 
+				if (_templates['dataset-grid'] == undefined)
 					goLoadTemplate('dataset-grid', doRenderDataset);
 				else {
 					doRenderDataset();
 				}
 			}
 			else {
-				if (_templates['dataset-sourced'] == undefined) 
+				if (_templates['dataset-sourced'] == undefined)
 					goLoadTemplate('dataset-sourced', doRenderSourced);
 				else {
 					doRenderSourced();
@@ -610,7 +618,7 @@
 		function doRenderSourced() {
 			$_dataset.hide();
 			$_grid.hide();
-			
+
 			jQuery('.ui-button',$_grid).unbind();
 			$_grid.html(_templates['dataset-sourced']);
 
@@ -631,7 +639,7 @@
 		function doRenderDataset() {
 
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var data		= _dataSets[datasetID];
 			jQuery('.ui-tabs-nav li',$_grid).unbind();
 
@@ -659,7 +667,7 @@
 					break;
 				}
 			});
-			
+
 			jQuery(document).on('click',".mura-tb-grid-radio",function() {
 				id = jQuery(this).attr('data-id');
 				_currentDataset.defaultid = id;
@@ -676,14 +684,14 @@
 
 		function doDatasetForm() {
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var dataset		= _dataSets[datasetID];
 			_currentDataset = dataset;
 
 			$_dataset.hide();
 			$_grid.hide();
 
-			if (_templates['dataset-form'] == undefined) { 
+			if (_templates['dataset-form'] == undefined) {
 				goLoadTemplate('dataset-form',doRenderDatasetForm);
 			}
 			else {
@@ -693,7 +701,7 @@
 
 		function doShowDatasetForm() {
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var dataset		= _dataSets[datasetID];
 			_currentDataset = dataset;
 
@@ -708,43 +716,43 @@
 			}
 
 			if(fieldData.fieldtype.fieldtype != 'multientity') {
-				jQuery('#mura-tb-grp-sourcetype').hide();				
+				jQuery('#mura-tb-grp-sourcetype').hide();
 //				_currentDataset.sourcetype = 'muraorm';
 			}
 
 			console.log(_currentDataset.sourcetype);
-			
+
 			switch( _currentDataset.sourcetype ) {
 				case "multientity": {
-					jQuery('.mura-tb-grp-entered').hide();						
+					jQuery('.mura-tb-grp-entered').hide();
 				}
 				case "entered": {
-					jQuery('.mura-tb-grp-entered').show();						
+					jQuery('.mura-tb-grp-entered').show();
 				}
 				break;
 				case "multientity": {
-					jQuery('.mura-tb-grp-source').show();						
+					jQuery('.mura-tb-grp-source').show();
 					jQuery('.mura-tb-grp-sourcetype').hide();
-					jQuery('#button-grid-grid').hide();	
+					jQuery('#button-grid-grid').hide();
 
 				}
 				break;
 				case "dsp":
 				case "object":
 				case "muraorm":{
-					jQuery('.mura-tb-grp-source').show();						
+					jQuery('.mura-tb-grp-source').show();
 					break;
-				}				
+				}
 				case "remote": {
-					jQuery('.mura-tb-grp-source').show();						
-					break;						
+					jQuery('.mura-tb-grp-source').show();
+					break;
 				}
 				break;
 				default: {
-					jQuery('.mura-tb-grp-entered').show();						
+					jQuery('.mura-tb-grp-entered').show();
 					if(_currentDataset.sourcetype.length == 0) {
 						jQuery('#button-grid-grid',$_dataset).unbind();
-						jQuery('#button-grid-grid',$_dataset).hide();	
+						jQuery('#button-grid-grid',$_dataset).hide();
 					}
 					else {
 						jQuery('#button-grid-grid',$_dataset).show();
@@ -757,7 +765,7 @@
 			}
 
 			if(jQuery('#mura-tb-dataset-issorted').val() == 1) {
-				jQuery('.mura-tb-grp-sorted').show();			
+				jQuery('.mura-tb-grp-sorted').show();
 			}
 			else {
 				jQuery('.mura-tb-grp-sorted').hide();
@@ -770,13 +778,13 @@
 			jQuery('#mura-tb-dataset-sortcolumn').val( _currentDataset.sortcolumn );
 			jQuery('#mura-tb-dataset-sortdirection').val( _currentDataset.sortcolumn );
 			jQuery('#mura-tb-dataset-source').val( _currentDataset.source );
-			
+
 			$_dataset.show();
 		}
-		
+
 		function doRenderDatasetForm(){
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var dataset		= _dataSets[datasetID];
 			_currentDataset = dataset;
 
@@ -787,16 +795,16 @@
 
 			jQuery('#mura-tb-dataset-sourcetype').change( function() {
 				jQuery('.mura-tb-dsi').hide();
-				
+
 				_currentDataset.sourcetype = jQuery(this).val();
 				jQuery('#button-grid-grid',$_dataset).unbind();
-				jQuery('#button-grid-grid',$_dataset).hide();	
-				
+				jQuery('#button-grid-grid',$_dataset).hide();
+
 				if( _currentDataset.sourcetype == "entered") {
-					jQuery('.mura-tb-grp-entered').show();						
+					jQuery('.mura-tb-grp-entered').show();
 
 					if(jQuery('#mura-tb-dataset-issorted').val() == 1) {
-						jQuery('.mura-tb-grp-sorted').show();			
+						jQuery('.mura-tb-grp-sorted').show();
 					}
 					else {
 						jQuery('.mura-tb-grp-sorted').hide();
@@ -804,44 +812,44 @@
 				}
 				else if( _currentDataset.sourcetype == "muraorm") {
 					jQuery('.mura-tb-grp-entered').hide();
-					jQuery('.mura-tb-grp-source').show();						
-					jQuery('#button-grid-grid',$_dataset).hide();	
+					jQuery('.mura-tb-grp-source').show();
+					jQuery('#button-grid-grid',$_dataset).hide();
 				}
 				else {
-					jQuery('.mura-tb-grp-source').show();						
+					jQuery('.mura-tb-grp-source').show();
 				}
 			});
 
 			jQuery('#mura-tb-dataset-issorted').change( function() {
 				jQuery('.mura-tb-grp-sorted').hide();
-				
+
 				_currentDataset.issorted = jQuery(this).val();
-				
+
 				if(_currentDataset.issorted == 1) {
-					jQuery('.mura-tb-grp-sorted').show();			
+					jQuery('.mura-tb-grp-sorted').show();
 				}
 				else {
 					jQuery('.mura-tb-grp-sorted').hide();
 				}
 			});
 			if(fieldData.fieldtype.fieldtype == 'multientity') {
-				jQuery('#mura-tb-grp-sourcetype').hide();				
+				jQuery('#mura-tb-grp-sourcetype').hide();
 				jQuery('.mura-tb-grp-entered').hide();
-				jQuery('.mura-tb-grp-source').hide();						
+				jQuery('.mura-tb-grp-source').hide();
 console.log("asdfw");
 				_currentDataset.sourcetype = 'muraorm';
 
 			}
 
 			jQuery('#mura-tb-save-dataset').click( function() {
-				
+
 				_currentDataset.sourcetype = jQuery('#mura-tb-dataset-sourcetype').val();
 				_currentDataset.issorted = jQuery('#mura-tb-dataset-issorted').val();
 				_currentDataset.sorttype = jQuery('#mura-tb-dataset-sorttype').val();
 				_currentDataset.sortcolumn = jQuery('#mura-tb-dataset-sortcolumn').val();
 				_currentDataset.sortdirection = jQuery('#mura-tb-dataset-sortdirection').val();
 				_currentDataset.source = jQuery('#mura-tb-dataset-source').val();
-				
+
 				if(_currentDataset.sourcetype != 'entered'
 						&& _currentDataset.sourcetype != 'muraorm'
 						&& _currentDataset.sourcetype != 'multientity'
@@ -849,21 +857,21 @@ console.log("asdfw");
 					doDisplayDialog( 'message-dataset-sourcerequired' );
 					return;
 				}
-				
+
 				doDataset();
 			});
 
 			doShowDatasetForm();
 		}
-				
+
 		function setDataMode( mode ) {
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var data		= _dataSets[datasetID];
 		}
-		
+
 		function doRenderData() {
-			if (_templates['dataset-row'] == undefined) 
+			if (_templates['dataset-row'] == undefined)
 				goLoadTemplate('dataset-row',doRenderRows);
 			else {
 				doRenderRows();
@@ -872,7 +880,7 @@ console.log("asdfw");
 
 		function doRenderRows() {
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var data		= _dataSets[datasetID];
 			var record 		= "";
 
@@ -881,7 +889,7 @@ console.log("asdfw");
 			var $row 		= "";
 			$_gridtable.html('');
 			$_gridhead.html('');
-						
+
 			if (data.issorted != 1) {
 				$_gridtable.sortable({
 					axis: 'y',
@@ -891,9 +899,9 @@ console.log("asdfw");
 						var i = 0;
 						jQuery(this).children().each(function(){
 							i++;
-							if (i % 2) 
+							if (i % 2)
 								jQuery(this).addClass('alt');
-							else 
+							else
 								jQuery(this).removeClass('alt');
 						})
 						data.datarecordorder = $_gridtable.sortable('toArray');
@@ -903,7 +911,7 @@ console.log("asdfw");
 					}
 				})
 			}
-			
+
 			doRenderGridHeader();
 
 			for(var i = 0;i < data.datarecordorder.length;i++) {
@@ -915,10 +923,10 @@ console.log("asdfw");
 
 		function doDeleteRow( args ){
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var data		= _dataSets[datasetID];
 			var id			= args.id;
-			
+
 			jQuery("#"+id,$_gridtable).remove();
 
 			if (!data.datarecords[id].config.isphantom) {
@@ -931,7 +939,7 @@ console.log("asdfw");
 			for(var i = 0;i < data.datarecordorder.length;i++) {
 				if( data.datarecordorder[i] == id ) {
 					data.datarecordorder.splice(i,1);
-					break;					
+					break;
 				}
 			}
 
@@ -939,7 +947,7 @@ console.log("asdfw");
 
 		function doRenderGridHeader() {
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var data		= _dataSets[datasetID];
 			var $rowHTML	= jQuery(_templates['dataset-row']);
 			var cell		= jQuery('#element-cell',$rowHTML).html();
@@ -947,7 +955,7 @@ console.log("asdfw");
 			var $cell		= "";
 			var $row		= jQuery(row);
 
-			
+
 			$cell = jQuery(cell);
 			$cell.addClass('mura-tb-cell-input');
 			$cell.addClass('mura-tb-cell-label');
@@ -968,10 +976,10 @@ console.log("asdfw");
 			//	jQuery(this).width( (480/(settings.dataColumns.length+2)) );
 			//});
 		}
-		
+
 		function doAddRecord() {
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var data		= _dataSets[datasetID];
 
 			var newID 			= uuid();
@@ -980,24 +988,24 @@ console.log("asdfw");
 			data.iscomplete = 0;
 			data.isdirty = 1;
 			newDataRecord.config = {};
-			
+
 			newDataRecord.datarecordid = newID;
 			newDataRecord.config.isphantom = 1;
 			newDataRecord.isdirty = 1;
-			
+
 			data.datarecordorder.push(newID);
 			data.datarecords[newID] = newDataRecord;
-			
+
 			return newDataRecord;
 		}
-		
+
 		function doRenderRow( record ) {
 			if(!record) {
 				record = doAddRecord();
 			}
 
 			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
+			var datasetID	= fieldData.datasetid;
 			var data		= _dataSets[datasetID];
 
 			var editMode	= 0;
@@ -1005,7 +1013,7 @@ console.log("asdfw");
 			var colName		= "";
 			var isColUsed	= "";
 			var $rowHTML	= jQuery(_templates['dataset-row']);
-			
+
 			var cell		= jQuery('#element-cell',$rowHTML).html();
 			var display		= jQuery('#element-display',$rowHTML).html();
 			var input		= jQuery('#element-input',$rowHTML).html();
@@ -1014,7 +1022,7 @@ console.log("asdfw");
 			var row			= jQuery('#element-row',$rowHTML).html();
 			var handle		= jQuery('#element-handle',$rowHTML).html();
 			var bt_delete	= jQuery('#element-button-delete',$rowHTML).html();
-			
+
 			var $cell		= "";
 			var $display	= "";
 			var $input		= "";
@@ -1029,7 +1037,7 @@ console.log("asdfw");
 
 			$row = jQuery(row);
 			$row.attr('id',record.datarecordid);
-			
+
 			if(data.issorted != 1) {
 				jQuery("#mura-tb-grid-table-header li").removeClass('nohandle');
 				$row.append(handle);
@@ -1037,7 +1045,7 @@ console.log("asdfw");
 			else {
 				jQuery("#mura-tb-grid-table-header li").addClass('nohandle');
 			}
-			
+
 			if(fieldData.fieldtype.fieldtype != 'checkbox')
 			{
 				$cell = jQuery(cell);
@@ -1070,11 +1078,11 @@ console.log("asdfw");
 			$input.attr('data-id', record.datarecordid);
 			$input.attr('name', 'label');
 			$input.val(record.label);
-			
+
 
 			$cell.append($input);
 			$row.append($cell);
-			
+
 			for( var i = 0;i < settings.dataColumns.length;i++) {
 				colName		= settings.dataColumns[i];
 				$cell = jQuery(cell);
@@ -1088,7 +1096,7 @@ console.log("asdfw");
 				$cell.append($input);
 				$row.append($cell);
 			}
-			
+
 			/*jQuery(".mura-tb-cell-input",$row).each( function() {
 				jQuery(this).width( (480/(settings.dataColumns.length+2)) );
 			});*/
@@ -1112,7 +1120,7 @@ console.log("asdfw");
 					var id = jQuery(this).attr('data-id');
 					data.datarecords[id][name] = jQuery(this).val();
 					data.datarecords[id].isdirty = 1;
-					data.isdirty = 1;	
+					data.isdirty = 1;
 				} );
 			});
 
@@ -1126,19 +1134,19 @@ console.log("asdfw");
 				var id = jQuery(this).attr('data-id');
 				data.datarecords[id][name] = jQuery(this).is(":checked") ? 1 : 0;
 				data.datarecords[id].isdirty = 1;
-				data.isdirty = 1;	
+				data.isdirty = 1;
 			} );
 
 			return $row;
 		}
 
 		function doDisplayNewDatasetForm(sFieldID){
-			if (_templates['dataset-create'] == undefined) 
+			if (_templates['dataset-create'] == undefined)
 				goLoadField(_currentFieldID,'dataset-create');
 			else if( fieldData.fieldtype.isdata != 1) {
 				doDisplayDialog( 'message-dataset-new' );
 			}
-			
+
 		}
 
 		function doDisplayDialog( template,isMsg,onYes,args,lblYes,lblNo ) {
@@ -1147,7 +1155,7 @@ console.log("asdfw");
 			if (isMsg == false) {
 				bt[!lblYes ? settings.lbl['yes'] : lblYes] = function(){
 					jQuery(this).dialog('close');
-					if (onYes) 
+					if (onYes)
 						onYes(args);
 				};
 			}
@@ -1155,7 +1163,7 @@ console.log("asdfw");
 			bt[ !lblNo ? settings.lbl['no'] : lblNo ] = function(){
 				jQuery(this).dialog('close');
 			};
-						
+
 			if (!_templates[template]) {
 				goLoadDialog( template,isMsg,onYes,args,lblYes,lblNo );
 			}
@@ -1169,19 +1177,19 @@ console.log("asdfw");
 		}
 
 		function isFieldDirty(fieldID){
-			return _formStatus.fields.dirty[fieldID] == undefined ? false : true; 
+			return _formStatus.fields.dirty[fieldID] == undefined ? false : true;
 		}
 
 		function isFieldNew(fieldID){
-			return _formStatus.fields.created[fieldID] == undefined ? false : true; 
+			return _formStatus.fields.created[fieldID] == undefined ? false : true;
 		}
-		
+
 
 		function doClearForm() {
 			jQuery('#mura-tb-fields').children().remove();
 			$_field.html('');
 		}
-		
+
 		function goLoadField( type ) {
 			var self = this;
 			var data = {};
@@ -1190,7 +1198,7 @@ console.log("asdfw");
 
 			data.fieldtype = fieldtype;
 			data.formid = _formData.formid;
-			
+
 			jQuery.ajax({
 				url: settings.url + "?muraAction=cform.getfield&i=" + iefix,
 				type: 'POST',
@@ -1202,9 +1210,9 @@ console.log("asdfw");
 				error: function(){
 					alert('fail: load field');
 				}
-			});		
+			});
 		}
-		
+
 		function goLoadTemplate( template,fn1,args ) {
 			var data = {};
 			var iefix 		= Math.floor(Math.random()*9999999);
@@ -1219,22 +1227,22 @@ console.log("asdfw");
 				cache: false,
 				success: function( response ) {
 					_templates[template] = response;
-					if (fn1) 
+					if (fn1)
 						fn1(template, args);
 					else {
 						if(template == "form-form")
 							doRenderFormBlock();
 						else
 							doRenderField();
-					
+
 					}
 				},
 				error: function(){
 					alert('fail: load template');
 				}
-			});		
+			});
 		}
-							   
+
 		function goLoadDialog( template,isMsg,onYes,args,lblYes,lblNo ) {
 			var data = {};
 			var iefix 		= Math.floor(Math.random()*9999999);
@@ -1253,7 +1261,7 @@ console.log("asdfw");
 				error: function(){
 					alert('fail: load dialog');
 				}
-			});		
+			});
 		}
 
 		function goLoadDataset( datasetID ) {
@@ -1279,8 +1287,8 @@ console.log("asdfw");
 				error: function(){
 					alert('fail: load dataset');
 				}
-			});		
-			
+			});
+
 		}
 
 		function getFormData(){
@@ -1296,7 +1304,7 @@ console.log("asdfw");
 		function getDatasetData( id ){
 			var sData = {};
 			var Dataset = _dataSets[id];
-			
+
 			for(var i in Dataset ) {
 				if( typeof Dataset[i] == 'string') {
 					sData[i] = Dataset[i];
@@ -1304,11 +1312,11 @@ console.log("asdfw");
 			}
 			return sData;
 		}
-		
+
 		function isComplete() {
 			var formFields = _formData.fields;
 			var pass = true;
-			
+
 			for(var i in formFields) {
 				if(formFields[i].name.length < 1 && formFields[i].fieldtype.fieldtype != 'textblock' && formFields[i].fieldtype.fieldtype != 'section') {
 					jQuery("#" + i).addClass("tb-fieldIsEmpty");
@@ -1318,10 +1326,10 @@ console.log("asdfw");
 					jQuery("#" + i).removeClass("tb-fieldIsEmpty");
 				}
 			}
-		
+
 			return pass;
 		}
-		
+
 	};
 
 	jQuery.templatebuilder = {};

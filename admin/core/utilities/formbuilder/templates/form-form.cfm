@@ -59,6 +59,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<input class="text tb-replyto" type="text" name="replyto" value="" data-label="true">
 				</li>
 				<li>
+					<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.form.submitlabel')#</label>
+					<input class="text tb-submitlabel" type="text" name="submitlabel" value="" data-label="true">
+				</li>
+				<li>
 					<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.form.class')#</label>
 					<input class="text tb-class" type="text" name="class" value="" data-label="true">
 				</li>
@@ -71,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label for="muraormentities">#mmRBF.getKeyValue(session.rb,'formbuilder.form.muraormentities')#</label>
 					<input id="tb-muraormentities" class="text tb-class" type="checkbox" name="muraormentities" value="1" data-label="true"> **
 				</li>--->
-				<input id="tb-muraormentities" class="text tb-class" type="hidden" name="muraormentities" value="0" data-label="true"> 
+				<input id="tb-muraormentities" class="text tb-class" type="hidden" name="muraormentities" value="0" data-label="true">
 
 				<li>
 					<div>
