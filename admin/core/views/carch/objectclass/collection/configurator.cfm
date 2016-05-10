@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 			<div id="localindexcontainer" class="mura-control-group source-container" style="display:none">
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectlocalindex')#</label>
-				<cfset rs=rc.$.getBean('feedManager').getFeeds(type='local',siteid=rc.$.event('siteid'),activeOnlt=true)>
+				<cfset rs=rc.$.getBean('feedManager').getFeeds(type='local',siteid=rc.$.event('siteid'),activeOnly=true)>
 				<select name="source" id="localindex">
 					<option value="">Select Local Index</option>
 					<cfloop query="rs">
