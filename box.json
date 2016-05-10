@@ -1,0 +1,81 @@
+{
+    "name":"Mura CMS",
+    "version":"",
+    "author":"Blue River Interactive Group, Inc.",
+    "location":"https://github.com/blueriver/MuraCMS/archive/master.zip",
+    "directory":"",
+    "createPackageDirectory":true,
+    "packageDirectory":"",
+    "homepage":"http://www.getmura.com/",
+    "documentation":"http://docs.getmura.com/",
+    "repository":{
+        "type":"Git",
+        "URL":"https://github.com/blueriver/MuraCMS"
+    },
+    "bugs":"",
+    "slug":"",
+    "shortDescription":"Mura CMS is an open source content management system for CFML.",
+    "description":"Mura CMS is an open source content management system for CFML, created by Blue River Interactive Group. Mura has been designed to be used by marketing departments, web designers and developers.",
+    "instructions":"",
+    "changelog":"",
+    "type":"",
+    "keywords":[ "mura", "cms", "cfml", "content management system", "content", "management", "system" ],
+    "private":false,
+    "engines":[
+        { "type" : "railo", "version" : ">=4.0.x" },
+        { "type" : "lucee", "version" : ">=4.5.x" },
+        { "type" : "adobe", "version" : ">=9.0.0" }
+    ],
+    "defaultEngine":"lucee",
+    "defaultPort":0,
+    "projectURL":"",
+    "license":[
+        { "type" : "GPL-2.0", "URL" : "http://opensource.org/licenses/GPL-2.0" }
+    ],
+    "contributors":[
+        
+    ],
+    "dependencies":{
+        
+    },
+    "devDependencies":{
+        
+    },
+    "installPaths":{
+        
+    },
+    "ignore":[
+        "**/.*",
+        "test",
+        "tests"
+    ],
+    "testbox":{
+        "runner":[
+            {
+                "default":""
+            }
+        ],
+        "labels":[
+            
+        ],
+        "reporter":"",
+        "reporterResults":"",
+        "bundles":[
+            ""
+        ],
+        "directory":{
+            "mapping":"",
+            "recurse":true
+        },
+        "watchers":[
+            
+        ],
+        "notify":{
+            "emails":[
+                
+            ],
+            "growl":"",
+            "URL":""
+        }
+    }
+}
