@@ -4,7 +4,7 @@
     "author":"Blue River Interactive Group, Inc.",
     "location":"https://github.com/blueriver/MuraCMS/archive/master.zip",
     "directory":"",
-    "createPackageDirectory":true,
+    "createPackageDirectory":false,
     "packageDirectory":"",
     "homepage":"http://www.getmura.com/",
     "documentation":"http://docs.getmura.com/",
@@ -33,16 +33,16 @@
         { "type" : "GPL-2.0", "URL" : "http://opensource.org/licenses/GPL-2.0" }
     ],
     "contributors":[
-        
+
     ],
     "dependencies":{
-        
+
     },
     "devDependencies":{
-        
+
     },
     "installPaths":{
-        
+
     },
     "ignore":[
         "**/.*",
@@ -56,7 +56,7 @@
             }
         ],
         "labels":[
-            
+
         ],
         "reporter":"",
         "reporterResults":"",
@@ -68,11 +68,11 @@
             "recurse":true
         },
         "watchers":[
-            
+
         ],
         "notify":{
             "emails":[
-                
+
             ],
             "growl":"",
             "URL":""
