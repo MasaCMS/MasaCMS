@@ -1,4 +1,4 @@
-<!--- 
+<!---
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -13,17 +13,17 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,12 +37,12 @@
 	 /index.cfm
 	 /MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 ---><cfsilent>
 <cfparam name="request.action" default="core:cplugin.plugin">
@@ -140,10 +140,10 @@
 		var siteid='#esapiEncode('javascript',session.siteid)#';
 		var activepanel=#esapiEncode('javascript',rc.activepanel)#;
 		var activetab=#esapiEncode('javascript',rc.activetab)#;
-		var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+		<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
 		var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 		</script>
-		
+
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 		#session.dateKey#
 		<script type="text/javascript">
@@ -172,17 +172,17 @@
 											height:getHeight(),
 											'targetFrame': '#esapiEncode("javascript",rc.sourceFrame)#'
 										});
-					});					
+					});
 				};
 			});
 		</script>
 		#rc.ajax#
-		
+
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
 			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 			<![endif]-->
-			
+
 			<!--[if lte IE 7]>
 			<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript"></script>
 			<![endif]-->
@@ -193,9 +193,9 @@
 			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-remove-sign"></i></a>
 			<cfinclude template="includes/dialog.cfm">
 		</cfif>
-		
+
 		<div class="main row-fluid"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
-		
+
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
 	</body>

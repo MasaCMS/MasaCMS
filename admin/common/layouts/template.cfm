@@ -1,4 +1,4 @@
-<!--- 
+<!---
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -13,17 +13,17 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,12 +37,12 @@
 	 /index.cfm
 	 /MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
@@ -107,7 +107,7 @@
 					    <cfset moduleTitle="Import Content">
 						<cfelse>
 							<cfset moduleTitle="Drafts">
-						</cfif>	
+						</cfif>
 					</cfdefaultcase>
 					</cfswitch>
 					</cfcase>
@@ -164,8 +164,8 @@
 					</cfdefaultcase>
 				</cfswitch>
 			</cfif>
-			<cfheader name="cache-control" value="no-cache, no-store, must-revalidate"> 
-			<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 
+			<cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
+			<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
 		</cfsilent>
 
 		<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
@@ -196,18 +196,18 @@
 
 		<!-- Spinner JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
-	
+
 		<!-- jQuery -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	
+
 		<!-- Mura Admin JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
-	
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
 			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
@@ -229,7 +229,7 @@
 
 		<!-- JSON -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
-	
+
 	<!-- Mura Vars -->
 	<script type="text/javascript">
 	var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
@@ -240,10 +240,10 @@
 	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
 	var activepanel=#esapiEncode('javascript',rc.activepanel)#;
 	var activetab=#esapiEncode('javascript',rc.activetab)#;
-	var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+	<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
 	var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 	</script>
-	
+
 	#session.dateKey#
 	#rc.ajax#
 
@@ -253,7 +253,7 @@
 		    	top.location.replace(self.location)
 			}
 		</script>
-	</cfif>  
+	</cfif>
 	<cfif structKeyExists(rc,'$')>
 		 #rc.$.renderEvent('onAdminHTMLHeadRender')#
 	</cfif>
@@ -299,7 +299,7 @@
 			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
 		           	</cfif>
      			</cfif>
-     			
+
 	           	<script>
 	           		$(document).ready(function(){
 	           			$('.alert-dismiss').click(
@@ -325,7 +325,7 @@
 	           	</script>
          	</cfif>
          	<div class="row-fluid">
-         		<cfif request.action neq "core:cDashboard.main" 
+         		<cfif request.action neq "core:cDashboard.main"
          			and request.action neq "core:cLogin.main">
          			<div id="mura-content" class="span12">
          		</cfif>
@@ -337,18 +337,18 @@
          	</div> <!-- /row -->
          </div> <!-- /container -->
       </div> <!-- /main-inner -->
-    </div> <!-- /main -->  
-    
+    </div> <!-- /main -->
+
     <!---
     <script type="text/javascript">
 		stripe('stripe');
 	</script>
-	
+
 	<cfif rc.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
 		<script type="text/javascript">
 			window.setTimeout('CountDown()',100);
 		</script>
-	</cfif>	
+	</cfif>
 	--->
 
 		<!-- Le javascript
