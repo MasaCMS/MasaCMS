@@ -163,7 +163,7 @@
 		var siteid='#esapiEncode('javascript',session.siteid)#';
 		var activepanel=#esapiEncode('javascript',rc.activepanel)#;
 		var activetab=#esapiEncode('javascript',rc.activetab)#;
-		var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+		<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
 		var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 		</script>
 
