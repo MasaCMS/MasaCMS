@@ -102,8 +102,8 @@ to your own modified versions of Mura CMS.
 		</cfif>
 
 		<cfif rc.$.globalConfig().getValue(property='razuna',defaultValue=false)>
-			<cfset tabLabelList=listApppend(tabLabelList,'Razuna')>
-			<cfset tabList=listApppend(tabList,'tabRazuna')>
+			<cfset tabLabelList=listAppend(tabLabelList,'Razuna')>
+			<cfset tabList=listAppend(tabList,'tabRazuna')>
 		</cfif>
 
 	</cfoutput> <cfoutput query="rsPluginScripts" group="pluginid"> <cfoutput>
