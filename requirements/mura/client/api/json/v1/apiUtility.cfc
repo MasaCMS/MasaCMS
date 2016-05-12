@@ -972,27 +972,13 @@ component extends="mura.cfobject" {
 
 		var $ = application.serviceFactory.getBean('$').init(arguments.siteid);
 		var calendarUtility = $.getCalendarUtility();
-		var items=$.getCalendarUtility().getCalendarItems(argumentCollection=arguments);
 
 		if(arguments.format=='fullcalendar'){
-		 	var qoq = new Query();
-		    qoq.setDBType('query');
-		    qoq.setAttributes(rs=items);
-		    qoq.setSQL('
-		      SELECT
-		        url as [url]
-		        , contentid as [id]
-		        , menutitle as [title]
-		        , displaystart as [start]
-		        , displaystop as [end]
-		      FROM rs
-		    ');
-
-		    local.rsQoQ = qoq.execute().getResult();
-
-		    return local.rsQoQ;
+			return calendarUtility.fullCalendarFormat(
+				calendarUtility.getCalendarItems(argumentCollection=arguments)
+			);
 		} else {
-			return items;
+			return $.getCalendarUtility().getCalendarItems(argumentCollection=arguments);
 		}
 	}
 

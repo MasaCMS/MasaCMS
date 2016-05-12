@@ -166,11 +166,10 @@
 						</cfif>
 					</cfsilent>
 					{
-						url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc?calendarid=#esapiEncode("javascript",i)#'
+						url: '#variables.$.siteConfig().getApi("JSON","v1").getEndpoint()#/findCalendarItems?calendarid=#esapiEncode("javascript",i)#&format=fullcalendar'
 						, type: 'POST'
 						, data: {
-							method: 'getFullCalendarItems'
-							, calendarid: '#esapiEncode("javascript",i)#'
+							 calendarid: '#esapiEncode("javascript",i)#'
 							, siteid: '#variables.$.content('siteid')#'
 							, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
 							, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
