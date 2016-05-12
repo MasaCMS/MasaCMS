@@ -35,6 +35,10 @@
             </div>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
+	<div class="">
+		<p>Example:</p>
+		<pre>m('SELECTOR').addClass('mxp-editable')</pre>
+	</div>
 </div> <!-- /.block-constrain -->
 <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 <input type="hidden" name="remoteurl" value="#esapiEncode('html_attr',rc.remoteurl)#">
