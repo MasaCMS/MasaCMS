@@ -2138,7 +2138,8 @@ component extends="mura.cfobject" {
 			var returnStruct={
 				small=entity.getImageURL(size='small'),
 				medium=entity.getImageURL(size='medium'),
-				large=entity.getImageURL(size='large')
+				large=entity.getImageURL(size='large'),
+				source=entity.getImageURL(size='source')
 			};
 
 			var image='';
