@@ -166,13 +166,14 @@
 						</cfif>
 					</cfsilent>
 					{
-						url: '#variables.$.siteConfig().getApi("JSON","v1").getEndpoint()#/findCalendarItems?calendarid=#esapiEncode("javascript",i)#&format=fullcalendar'
+						url: '#variables.$.siteConfig().getApi("JSON","v1").getEndpoint()#/findCalendarItems?calendarid=#esapiEncode("javascript",i)#'
 						, type: 'POST'
 						, data: {
 							 calendarid: '#esapiEncode("javascript",i)#'
 							, siteid: '#variables.$.content('siteid')#'
 							, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
 							, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
+							, format:'fullcalendar'
 						}
 						, color: '#this.calendarcolors[colorIndex].background#'
 						, textColor: '#this.calendarcolors[colorIndex].text#'
