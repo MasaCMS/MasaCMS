@@ -125,9 +125,7 @@
 		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
 		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>
 
-		<cfparam name="rc.contenttype" default="">
-		<cfparam name="rc.remoteurl" default="">
-		<cfif rc.contenttype neq 'Variation' and not len(rc.remoteurl)>
+		<cfif rc.$.event('contenttype') neq 'Variation' and not len(rc.$.event('remoteurl')) and not len(rc.$.event('preloadOnly'))>
 			<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"></script>
 		</cfif>
 
@@ -163,7 +161,7 @@
 		var siteid='#esapiEncode('javascript',session.siteid)#';
 		var activepanel=#esapiEncode('javascript',rc.activepanel)#;
 		var activetab=#esapiEncode('javascript',rc.activetab)#;
-		var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+		<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
 		var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 		</script>
 

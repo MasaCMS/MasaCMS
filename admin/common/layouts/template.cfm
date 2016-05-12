@@ -172,7 +172,7 @@
 					</cfcase>
 					<cfcase value="cUsers">
 					<cfset moduleTitle="Users"/>
-					</cfcase>					
+					</cfcase>
 					<cfdefaultcase>
 					<cfset moduleTitle="">
 					</cfdefaultcase>
@@ -251,7 +251,7 @@
 	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
 	var activepanel=#esapiEncode('javascript',rc.activepanel)#;
 	var activetab=#esapiEncode('javascript',rc.activetab)#;
-	var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+	<cfif $.currentUser().isLoggedIn()>var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';</cfif>
 	var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 	</script>
 
@@ -411,4 +411,3 @@
 	</body>
 </html></cfprocessingdirective>
 </cfoutput>
-

@@ -185,7 +185,7 @@
 					<p>#variables.$.rbKey('search.didnotfind')#</p>
 					<label for="txtKeywords">#variables.$.rbKey('search.keywords')#</label>
 					<div class="#this.searchAgainInputWrapperClass#">
-						<input type="text" name="Keywords" id="txtKeywords" class="#this.searchAgainFormInputClass#" value="#HTMLEditFormat(request.keywords)#" placeholder="#variables.$.rbKey('search.search')#">
+						<input type="text" name="Keywords" id="txtKeywords" class="#this.searchAgainFormInputClass#" value="#esapiEncode('html_attr',request.keywords)#" placeholder="#variables.$.rbKey('search.search')#">
 						<span class="#this.searchAgainButtonWrapperClass#">
 							<button type="submit" class="#this.searchAgainSubmitClass#">
 								#$.rbKey('search.search')#
