@@ -1188,6 +1188,8 @@
 					<cfset filePath=displayobject.displayObjectFile>
 				</cfif>
 
+				<cfparam name="displayobject.cacheoutput" default="true">
+
 				<cfif listLast(filePath,".") neq "cfm">
 					<cfset var theDisplay1=''>
 					<cfset var theDisplay2=''>
@@ -1210,7 +1212,7 @@
 				<cfelse>
 					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,bodyRender=arguments.bodyRender,returnformat=arguments.returnformat,include=arguments.include,cachekey=arguments.cachekey}>
 
-					<cfif objectargs.object neq 'plugin'>
+					<cfif objectargs.object neq 'plugin' and displayobject.cacheoutput  and not ( isdefined('form') and not structIsEmpty(form) )>
 						<cfset objectargs.cacheKey=cacheKeyObjectId>
 					</cfif>
 
