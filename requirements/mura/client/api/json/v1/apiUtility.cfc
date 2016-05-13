@@ -268,7 +268,7 @@ component extends="mura.cfobject" {
 			var pathInfo=listToArray(arguments.path,'/');
 			var httpRequestData=getHTTPRequestData();
 			var method='GET';
-			var apiEnabled=getBean('settingsManager').getSite(variables.siteid).getJSONApi() || getBean('settingsManager').getSite(variables.siteid).getContentRenderer().useLayoutManager();
+			var apiEnabled=true;;
 
 			structAppend(params,url);
 			structAppend(params,form);
