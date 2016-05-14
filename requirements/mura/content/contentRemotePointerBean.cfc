@@ -5,19 +5,5 @@ component extends="mura.bean.beanORM" table="tcontentremotepointer" entityname="
     property name="remoteid" fieldtype="index";
     property name="remoteurl" datatype="varchar" length="250";
     property name="created" ormtype="timestamp";
-
-    function init(){
-        super.init(argumentCollection=arguments);
-        variables.loadSQLHasWhereClause=true;
-    }
-
-    function getLoadSQL(){
-        return "select tcontentremotepointer.*
-            FROM tcontentremotepointer
-            INNER JOIN tcontent on (
-                    tcontentremotepointer.contentid=tcontent.contentid
-                    and tcontentremotepointer.siteid=tcontent.siteid
-                )
-            where tcontent.active=1";
-    }
+    
 }
