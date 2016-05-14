@@ -268,7 +268,7 @@ component extends="mura.cfobject" {
 			var pathInfo=listToArray(arguments.path,'/');
 			var httpRequestData=getHTTPRequestData();
 			var method='GET';
-			var apiEnabled=getBean('settingsManager').getSite(variables.siteid).getJSONApi() || getBean('settingsManager').getSite(variables.siteid).getContentRenderer().useLayoutManager();
+			var apiEnabled=true;;
 
 			structAppend(params,url);
 			structAppend(params,form);
@@ -972,27 +972,13 @@ component extends="mura.cfobject" {
 
 		var $ = application.serviceFactory.getBean('$').init(arguments.siteid);
 		var calendarUtility = $.getCalendarUtility();
-		var items=$.getCalendarUtility().getCalendarItems(argumentCollection=arguments);
 
 		if(arguments.format=='fullcalendar'){
-		 	var qoq = new Query();
-		    qoq.setDBType('query');
-		    qoq.setAttributes(rs=items);
-		    qoq.setSQL('
-		      SELECT
-		        url as [url]
-		        , contentid as [id]
-		        , menutitle as [title]
-		        , displaystart as [start]
-		        , displaystop as [end]
-		      FROM rs
-		    ');
-
-		    local.rsQoQ = qoq.execute().getResult();
-
-		    return local.rsQoQ;
+			return calendarUtility.fullCalendarFormat(
+				calendarUtility.getCalendarItems(argumentCollection=arguments)
+			);
 		} else {
-			return items;
+			return $.getCalendarUtility().getCalendarItems(argumentCollection=arguments);
 		}
 	}
 
@@ -2138,7 +2124,8 @@ component extends="mura.cfobject" {
 			var returnStruct={
 				small=entity.getImageURL(size='small'),
 				medium=entity.getImageURL(size='medium'),
-				large=entity.getImageURL(size='large')
+				large=entity.getImageURL(size='large'),
+				source=entity.getImageURL(size='source')
 			};
 
 			var image='';

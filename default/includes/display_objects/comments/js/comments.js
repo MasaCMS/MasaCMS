@@ -328,4 +328,6 @@ initMuraComments=function(config){
 
 	initPage();
 
+	mura(document).trigger('initComments');
+
 }

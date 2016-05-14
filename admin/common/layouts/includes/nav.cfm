@@ -129,6 +129,11 @@
                             #application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#
                             </a>
                             </li>
+
+                            <cfif structKeyExists(rc,'$')>
+                    			#rc.$.renderEvent('onAdminNavMainRender')#
+                    		</cfif>
+
                             <!--- /Site Tree --->
 
                             <!--- Components

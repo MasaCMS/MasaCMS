@@ -166,7 +166,7 @@
 						</cfif>
 					</cfsilent>
 					{
-						url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc?calendarid=#esapiEncode("javascript",i)#'
+						url: '#variables.$.siteConfig().getApi("JSON","v1").getEndpoint()#/findCalendarItems?calendarid=#esapiEncode("javascript",i)#'
 						, type: 'POST'
 						, data: {
 							method: 'getFullCalendarItems'
@@ -174,6 +174,7 @@
 							, siteid: '#variables.$.content('siteid')#'
 							, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
 							, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
+							, format: 'fullcalendar'
 						}
 						, color: '#this.calendarcolors[colorIndex].background#'
 						, textColor: '#this.calendarcolors[colorIndex].text#'
@@ -210,7 +211,6 @@
 							, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
 							, weekends: true // show weekends?
 							, weekMode: 'fixed' // fixed, liquid, or variable
-							<cfif $.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
 							, header: {
 								left: 'today prev,next'
 								, center: 'title'
@@ -220,9 +220,6 @@
 								, defaultView: 'agendaDay'
 							<cfelse>
 								, defaultView:  muraCalendarView.name
-							</cfif>
-							<cfelse>
-							, defaultView: 'month'
 							</cfif>
 							, viewRender: function(view,element){
 								if(view.end){
