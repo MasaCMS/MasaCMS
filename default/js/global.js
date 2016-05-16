@@ -1025,9 +1025,13 @@ var initMura=function(config){
       },
 
       function(){
-        if($(scope).find( ".g-recaptcha" ).length){
-          //loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
-          $.getScript('https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit');
+        if($(scope).find(".g-recaptcha" ).length){
+            var fileref=document.createElement('script')
+                fileref.setAttribute("type","text/javascript")
+                fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
+
+            document.getElementsByTagName("head")[0].appendChild(fileref)
+
         }
 
         if($(scope).find( ".g-recaptcha-container" ).length){
