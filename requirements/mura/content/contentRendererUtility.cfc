@@ -981,8 +981,8 @@
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
 		<cfset var theObject = "" />
-		<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() & $.event('currentfilename') & cgi.query_string & arguments.cachekey & arguments.cacheKey />
-		<cfset var cacheKeyObjectId = arguments.object & arguments.objectid & $.event('currentfilename') & cgi.query_string & arguments.cachekey & arguments.cacheKey />
+		<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() & $.event('currentfilename') & cgi.query_string & arguments.cachekey />
+		<cfset var cacheKeyObjectId = arguments.object & arguments.objectid & $.event('currentfilename') & cgi.query_string & arguments.cachekey />
 		<cfset var showEditable=false/>
 		<cfset var editableControl={editLink='',isConfigurator=false}>
 		<cfset var historyID="">
@@ -1210,10 +1210,10 @@
 						<cfreturn trim(theDisplay1)>
 					</cfif>
 				<cfelse>
-					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,bodyRender=arguments.bodyRender,returnformat=arguments.returnformat,include=arguments.include,cachekey=arguments.cachekey}>
+					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,bodyRender=arguments.bodyRender,returnformat=arguments.returnformat,include=arguments.include}>
 
 					<cfif objectargs.object neq 'plugin' and displayobject.cacheoutput  and not ( isdefined('form') and not structIsEmpty(form) )>
-						<cfset objectargs.cacheKey=cacheKeyObjectId>
+						<cfset objectargs.cacheKey=cacheKeyContentId>
 					</cfif>
 
 					<cfset theObject=arguments.renderer.dspObject_Render(argumentCollection=objectArgs)>
