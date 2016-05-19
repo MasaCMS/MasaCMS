@@ -142,7 +142,7 @@ initMuraComments=function(config){
 		});
 	}
 
-	var initForm=function(data){
+	var initForm=function(id,data){
 
 		for(var p in data){
 			data[p]=data[p] || '';
@@ -259,7 +259,7 @@ initMuraComments=function(config){
 
 			event.preventDefault();
 
-			initForm({
+			initForm(id,{
 				commentid:$newcommentid,
 				mode:"add",
 				parentid:id,
@@ -298,7 +298,7 @@ initMuraComments=function(config){
 
 					data.mode='edit';
 
-					initForm(data);
+					initForm(id,data);
 				},
 				'text'
 			);
@@ -314,7 +314,7 @@ initMuraComments=function(config){
 
 			event.preventDefault();
 
-			initForm({
+			initForm(id,{
 				commentid:$newcommentid,
 				mode:"add",
 				parentid:"",
