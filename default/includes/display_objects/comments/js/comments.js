@@ -148,19 +148,23 @@ initMuraComments=function(config){
 			data[p]=data[p] || '';
 		}
 
+		if(id){
+			id="-" + id;
+
+		}
 		$editor.hide();
 		$editor.detach();
-		jQuery("#mura-comment-post-comment-" + id).append($editor).show();
+		jQuery("#mura-comment-post-comment" + id).append($editor).show();
 		jQuery("#mura-comment-post-a-comment").changeElementType('div').hide();
 		jQuery("#mura-comment-edit-comment").changeElementType('div').hide();
 		jQuery("#mura-comment-reply-to-comment").changeElementType('legend').show();
-		jQuery("#mura-comment-post-comment-" + id + " [name=name]").val(data.name);
-		jQuery("#mura-comment-post-comment-" + id + " [name=email]").val(data.email);
-		jQuery("#mura-comment-post-comment-" + id + " [name=url]").val(data.url);
-		jQuery("#mura-comment-post-comment-" + id + " [name=comments]").val(data.comments);
-		jQuery("#mura-comment-post-comment-" + id + " [name=parentid]").val(data.parentid);
-		jQuery("#mura-comment-post-comment-" + id + " [name=commentid]").val(data.commentid);
-		jQuery("#mura-comment-post-comment-" + id + " [name=commenteditmode]").val(data.mode);
+		jQuery("#mura-comment-post-comment" + id + " [name=name]").val(data.name);
+		jQuery("#mura-comment-post-comment" + id + " [name=email]").val(data.email);
+		jQuery("#mura-comment-post-comment" + id + " [name=url]").val(data.url);
+		jQuery("#mura-comment-post-comment" + id + " [name=comments]").val(data.comments);
+		jQuery("#mura-comment-post-comment" + id + " [name=parentid]").val(data.parentid);
+		jQuery("#mura-comment-post-comment" + id + " [name=commentid]").val(data.commentid);
+		jQuery("#mura-comment-post-comment" + id + " [name=commenteditmode]").val(data.mode);
 		jQuery("#mura-comment-post-comment-comment").show();
 		$editor.slideDown();
 	}
@@ -307,14 +311,14 @@ initMuraComments=function(config){
 		jQuery("#mura-comment-post-comment-comment").on('click', function( event ) {
 			jQuery("#mura-comment-post-comment-comment").hide();
 			jQuery(".mura-comment-reply-wrapper").hide();
-			if($.currentedit != ''){
+			if($currentedit != ''){
 				 jQuery($currentedit).show();
 				 $currentedit='';
 			}
 
 			event.preventDefault();
 
-			initForm(id,{
+			initForm('',{
 				commentid:$newcommentid,
 				mode:"add",
 				parentid:"",
