@@ -255,7 +255,7 @@ initMuraComments=function(config){
 		jQuery(document).on('click', '.mura-comment-reply a', function( event ) {
 			var id = jQuery(this).attr('data-id');
 			jQuery(".mura-comment-reply-wrapper").hide();
-			if($.currentedit != ''){
+			if($currentedit != ''){
 				jQuery($currentedit).show();
 				$currentedit='';
 			}
@@ -284,7 +284,7 @@ initMuraComments=function(config){
 				function(data){
 					data=eval("(" + data + ")" );
 
-					if($.currentedit != ''){
+					if($currentedit != ''){
 						 jQuery($currentedit).show();
 						 $currentedit='';
 					}
