@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  </cfif>
  <cfset icon=icon & " " & rc.rsTop.subtype>
 </cfif>
-<cfset isFileIcon= rc.rsTop.type eq 'File' and listFirst(icon,"-") neq "icon">
+<cfset isFileIcon= rc.rsTop.type eq 'File' and listFirst(icon,"-") neq "icon" and not listFindNoCase("jpg,jpeg,png,gif",listLast(rc.rsTop.assocfilename,"."))>
 <cfparam name="session.flatViewArgs" default="#structNew()#">
 
 <cfif not structKeyExists(session.flatViewArgs,'#rc.siteid#')>
@@ -263,11 +263,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 </cfsilent>
 
 		 <cfif not listFindNoCase('none,read',perm) and rc.rstop.type neq 'module'>
-		   <a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
+		   <a class="<cfif isFileIcon>file </cfif>title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
 		 <cfelse>
-		   <a class="#icon# title" <cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
+		   <a class="title" <cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 		 </cfif>
-	 #esapiEncode('html',left(rc.rsTop.menutitle,75))#
+		<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif>#esapiEncode('html',left(rc.rsTop.menutitle,75))#
 		 <cfif len(rc.rsTop.menutitle) gt 75>&hellip;</cfif>
 		   </a>
 		 <!--- <div class="mura-title-fade"></div> --->

@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset icon=icon & " " & rsnest.subtype>
 </cfif>
-<cfset isFileIcon=rsnest.type eq 'File' and listFirst(icon,"-") neq "icon">
+<cfset isFileIcon=rsnest.type eq 'File' and listFirst(icon,"-") neq "icon" and not listFindNoCase("jpg,jpeg,png,gif",listLast(rsnest.assocfilename,"."))>
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <cfif not skip>
@@ -178,11 +178,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 
 	<cfif not listFindNoCase('none,read',verdict)>
-		<a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#rsnest.moduleid#&startrow=#esapiEncode('url',attributes.startrow)#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
+		<a class="<cfif isFileIcon>file </cfif>title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#rsnest.moduleid#&startrow=#esapiEncode('url',attributes.startrow)#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
 	<cfelse>
-		<a class="<cfif rsnest.type eq 'File'>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
+		<a class="<cfif rsnest.type eq 'File'>file </cfif>title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>
-	#esapiEncode('html',left(rsnest.menutitle,75))#
+	<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif>#esapiEncode('html',left(rsnest.menutitle,75))#
 	<cfif len(rsnest.menutitle) gt 75>&hellip;</cfif>
 	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
 	<!--- <div class="mura-title-fade"></div> --->

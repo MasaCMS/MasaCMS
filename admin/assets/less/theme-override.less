@@ -366,15 +366,21 @@ a.list-group-item:hover,a.list-group-item:focus {
 }
 
 /* table striping */
-.mura .mura-table-grid:not(.no-stripe) > tbody > tr:nth-of-type(odd) {
-    background-color: #F6FAFE;
+.mura-table-grid:not(.no-stripe) > tbody > tr:nth-of-type(odd) {
+    background-color: #F6FAFE !important;
 }
 
-.mura .mura-table-grid:not(.no-stripe) > tbody > tr:hover {
-    background-color: #eaf4fd;
+.mura-table-grid:not(.no-stripe) > tbody > tr:hover {
+    background-color: #eaf4fd !important;
 }
-
-
+.mura-table-grid>tbody>tr>td,
+.mura-table-grid>tbody>tr>th,
+.mura-table-grid>tfoot>tr>td,
+.mura-table-grid>tfoot>tr>th,
+.mura-table-grid>thead>tr>td,
+.mura-table-grid>thead>tr>th {
+  border: 1px solid #dbdbdb !important;
+}
 .panel-primary {
   border-color: hsla(210, 50%, 60%, 0.80);
 }
