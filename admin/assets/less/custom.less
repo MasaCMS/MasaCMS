@@ -1220,6 +1220,16 @@ body#csetup{
 #csetup #main-container{
   background: none;
 }
+#clogin #page-container,
+#clogin #main-container,
+#clogin #main-container > .content{
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 480px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
 #csetup #main-container{
 
@@ -1316,7 +1326,15 @@ body#csetup{
       }
     }
 }
+
 #mura-login{
+    
+    margin-top: -20px;
+    position: relative!important;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
 
   #remember-me{
     margin-top: 7px !important;
