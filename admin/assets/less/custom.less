@@ -1233,8 +1233,16 @@ body#csetup{
 
 #csetup #main-container{
 
+  .mura-focus-block .block-content{
+    padding-top: 0;
+  }
+
   .alert{
       line-height: 1.3em;
+
+      &.alert-error{
+        margin-top: 10px;
+      }
 
       &:not(.alert-error){
        background-color: #DEDEDE !important;
@@ -1245,13 +1253,9 @@ body#csetup{
         margin-top: 12px;
       }
   }
-
-
-  .page-heading + .alert{
-    margin-top: 15px;
-  }
   .wizard-progress{
     padding: 0;
+    margin-bottom: 15px;
   }
   .progress{
     background-color: #FFF;
@@ -1278,9 +1282,9 @@ body#csetup{
     min-height: 290px;
   }
   .page-heading{
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: -15px;
+    color: #FFF;
+    float: right;
+    margin: 9px 20px 0 0;
   }
   .nav-tabs li a{
     margin-right: 0 !important;
