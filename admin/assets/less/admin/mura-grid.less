@@ -1740,9 +1740,23 @@ table + .divide {
 }
 
 .mura-table-grid .var-width {
-	width: 95%;
+	max-width: 100px;
+	overflow: hidden;
 	text-align: left;
-	white-space: normal;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: inherit;
+
+/*
+	> a.draftprompt {
+		position: relative;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  white-space: nowrap;
+	  display:block;
+	  max-width: 90%;
+	}
+*/
 }
 
 .control-group > .mura-grid {
