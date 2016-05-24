@@ -44,36 +44,17 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+
 <cfoutput>
 
-<div class="mura-header">
-	<h1>#application.rbFactory.getKeyValue(session.rb,"plugin.siteplugins")#</h1>
-	<cfinclude template="dsp_secondary_menu.cfm">
-</div> <!-- /.mura-header -->
-
-<cfset started=false>
-	<div class="block block-constrain">
-	<ul class="mura-tabs nav-tabs" data-toggle="tabs">
-		<li class="active"><a href="##tab#ucase('Application')#" onclick="return false;"><span>Application</span></a></li>
-		<li><a href="##tab#ucase('Utility')#" onclick="return false;"><span>Utility</span></a></li>
-		<cfloop collection="#rc.plugingroups#" item="local.category" >
-			<cfif not listFind("Application,Utility",local.category) and rc.plugingroups[local.category].recordCount>
-				<li><a href="##tab#ucase(replace(local.category,' ','','all'))#" onclick="return false;"><span>#esapiEncode('html',local.category)#</span></a></li>
-			</cfif>
-		</cfloop>
-		</ul>
-		<div class="tab-content block-content">
-		<cfset rscategorylist = rc.plugingroups['Application']/>
-		<cfset local.category = "Application" />
-		<cfinclude template="dsp_table.cfm" />
-		<cfset rscategorylist = rc.plugingroups['Utility']/>
-		<cfset local.category = "Utility" />
-		<cfinclude template="dsp_table.cfm" />
-		<cfloop collection="#rc.plugingroups#" item="local.category" >
-			<cfif not listFind("Application,Utility",local.category) and rc.plugingroups[local.category].recordCount>
-				<cfset rscategorylist = rc.plugingroups[local.category]/>
-				<cfinclude template="dsp_table.cfm" />
-			</cfif>
-		</cfloop>
-	</div> <!-- /.block-constrain -->
+	<cfset rc.originalfuseaction=listLast(request.action,".")>
+	<div class="nav-module-specific btn-group">	
+		<cfswitch expression="#rc.originalfuseaction#">
+			<cfcase value="list">
+			  <cfif listFind(session.mura.memberships,'S2')>
+				<a class="btn" href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list&plugins##tabPlugins"><i class="mi-plus-circle"></i> #application.rbFactory.getKeyValue(session.rb,'layout.addplugin')#</a>
+				</cfif>
+			</cfcase>
+		</cfswitch>
+	</div>
 </cfoutput>

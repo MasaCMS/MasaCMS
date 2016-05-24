@@ -382,7 +382,9 @@
                                                 #rc.$.rbKey('layout.exportclassextensions')#
                                             </a>
                                         </li>
+ 
                                         <!--- list class extensions --->
+<!---                                         
                                         <cfif rsExts.recordcount>
                                             <li class="divider"></li>
                                             <cfloop query="rsExts">
@@ -400,7 +402,9 @@
                                                     </a>
                                                 </li>
                                             </cfloop>
-                                        </cfif>
+                                        </cfif> 
+ --->
+
                                     </ul>
                                 </li>
                                 <!--- /class extensions --->

@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		<cfif not started>
 		<tr>
-		<td colspan="7" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")# #local.category#</td>
+		<td colspan="7" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</td>
 		</tr>
 		</cfif>
 		</table>
