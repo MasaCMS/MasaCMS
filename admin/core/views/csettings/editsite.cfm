@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
 			<div class="mura-actions">
 				<div class="form-actions">
 				<cfif rc.siteBean.getsiteid() eq ''>
-					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"><i class="mi-plus-circle"></i> Add</button>
+					<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-plus-circle"></i> Add</button>
 					<cfelse>
 					<cfif rc.siteBean.getsiteid() neq 'default' and listFind(session.mura.memberships,'S2')>
 						<button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()##rc.$.renderCSRFTokens(context=rc.siteID,format="url")#')});"><i class="mi-trash"></i> Delete</button>
