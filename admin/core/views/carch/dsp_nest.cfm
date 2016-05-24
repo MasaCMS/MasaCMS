@@ -182,8 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<a class="<cfif rsnest.type eq 'File'>file </cfif>title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>
-	<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif>#esapiEncode('html',left(rsnest.menutitle,75))#
-	<cfif len(rsnest.menutitle) gt 75>&hellip;</cfif>
+	<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif>#esapiEncode('html',rsnest.menutitle)#
 	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
 	<!--- <div class="mura-title-fade"></div> --->
 </dt>

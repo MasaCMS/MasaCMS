@@ -523,43 +523,43 @@
 				}
 
 			li .add { width: 24px; margin-right: 16px; }
-			li .title { max-width: 80%; }
+			li .title { max-width: 85%; }
 
 			li li .add { margin-right: 32px; }
-			li li .title { max-width: 75%; }
+			li li .title { max-width: 85%; }
 
 			li li li .add { margin-right: 49px; }
-			li li li .title { max-width: 71%; }
+			li li li .title { max-width: 85%; }
 
 			li li li li .add { margin-right: 73px; }
-			li li li li .title { max-width: 65%; }
+			li li li li .title { max-width: 81%; }
 
 			li li li li li .add { margin-right: 93px; }
-			li li li li li .title { max-width: 60%; }
+			li li li li li .title { max-width: 77%; }
 
 			li li li li li li .add { margin-right: 113px; }
-			li li li li li li .title { max-width: 56%; }
+			li li li li li li .title { max-width: 72%; }
 
 			li li li li li li li .add { margin-right: 133px; }
-			li li li li li li li .title { max-width: 50%; }
+			li li li li li li li .title { max-width: 68%; }
 
 			li li li li li li li li .add { margin-right: 153px; }
-			li li li li li li li li .title { max-width: 45%; }
+			li li li li li li li li .title { max-width: 64%; }
 
 			li li li li li li li li li .add { margin-right: 173px; }
-			li li li li li li li li li .title { max-width: 40%; }
+			li li li li li li li li li .title { max-width: 62%; }
 
 			li li li li li li li li li li .add { margin-right: 193px; }
-			li li li li li li li li li li .title { max-width: 35%; }
+			li li li li li li li li li li .title { max-width: 60%; }
 
 			li li li li li li li li li li li .add { margin-right: 213px; }
-			li li li li li li li li li li li .title { max-width: 30%; }
+			li li li li li li li li li li li .title { max-width: 57.5%; }
 
 			li li li li li li li li li li li li .add { margin-right: 233px; }
-			li li li li li li li li li li li li .title { max-width: 25%; }
+			li li li li li li li li li li li li .title { max-width: 55%; }
 
 			li li li li li li li li li li li li li .add { margin-right: 253px; }
-			li li li li li li li li li li li li li .title { max-width: 20%; }
+			li li li li li li li li li li li li li .title { max-width: 52.5%; }
 
 		}
 		/* @end */
@@ -1234,6 +1234,11 @@
 		    padding: 8px 0 0 8px !important;
 			}
 
+			#displayIntervalToLabel{
+				clear: both; 
+				margin-left: 121px;
+			}
+
 			label.time-repeat{
 				width: 54px;
 	    	padding: 8px 0 0 9px !important;
@@ -1343,19 +1348,25 @@
 		}
 
 		.form-actions {
-			text-align: center;
-			margin: .25em 0 0;
-			padding: 0;
 			border: 0;
+			margin: -5px 0 0 0;
+			padding-top: 0 !important;
+			text-align: center;
+
+				.btn {
+					.btn-default;
+					.btn-sm;
+					.border-radius(0);
+					margin: 0 auto;
+					padding: 3px 4px;
+					border: 1px solid #A1A1A1 !important;
+					font-size: 12px;
+					
+					&.mura-primary{
+						border: 1px solid #6699CC !important;
+					}
 			}
 
-		.btn {
-			.btn-default;
-			.btn-sm;
-			.border-radius(0);
-			margin: 0 auto;
-			padding: 3px 6px;
-			border: 1px solid #A1A1A1 !important;
 			}
 
 		li {
@@ -1402,7 +1413,7 @@
 		z-index: 11;
 		width: 24px;
 		height: 14px;
-		left: 80px;
+		left: 71px;
 		bottom: -14px;
 		background: url('../images/quickedit-bottom.png') no-repeat center bottom;
 		opacity: .95;
@@ -1740,9 +1751,23 @@ table + .divide {
 }
 
 .mura-table-grid .var-width {
-	width: 95%;
+	max-width: 100px;
+	overflow: hidden;
 	text-align: left;
-	white-space: normal;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: inherit;
+
+/*
+	> a.draftprompt {
+		position: relative;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  white-space: nowrap;
+	  display:block;
+	  max-width: 90%;
+	}
+*/
 }
 
 .control-group > .mura-grid {

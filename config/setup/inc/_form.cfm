@@ -41,8 +41,7 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h1 class="page-heading">Mura CMS Setup</h1>
-
+	
 <cfif len( trim( message ) )>
 	<p class="alert alert-error">#message#</p>
 </cfif>
@@ -201,8 +200,8 @@ to your own modified versions of Mura CMS.
 
 		<div class="mura-focus-actions center">
 
-					<button class="wizard-prev btn" type="button"><i class="mi mi-arrow-left"></i> Back</button>
-					<button class="wizard-next btn" type="button">Next <i class="mi mi-arrow-right"></i></button>
+					<button class="wizard-prev btn" type="button"><i class="mi mi-angle-left"></i>Back</button>
+					<button class="wizard-next btn" type="button">Next<i class="mi mi-angle-right"></i></button>
 					<button class="wizard-finish btn" name="setupSubmitButton" type="submit"><i class="mi mi-check"></i> Submit</button>
 		</div>
 		<div class="clear-both"></div>

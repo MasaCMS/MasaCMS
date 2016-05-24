@@ -1191,7 +1191,17 @@ form .checkbox.inline
         height: 40px;
         max-height: 40px;
         margin-left: 20px;
+        float: left;
      }
+      h1{
+        color: #FFF;
+        float: left;
+        letter-spacing: .07em;
+        margin: 8px 0 0 24px;
+        padding: 0;
+        text-transform: uppercase;
+      }
+
   }
   .block-content{
     padding: 30px 20px 10px;
@@ -1220,11 +1230,29 @@ body#csetup{
 #csetup #main-container{
   background: none;
 }
+#clogin #page-container,
+#clogin #main-container,
+#clogin #main-container > .content{
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 480px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
 #csetup #main-container{
 
+  .mura-focus-block .block-content{
+    padding-top: 0;
+  }
+
   .alert{
       line-height: 1.3em;
+
+      &.alert-error{
+        margin-top: 10px;
+      }
 
       &:not(.alert-error){
        background-color: #DEDEDE !important;
@@ -1235,13 +1263,15 @@ body#csetup{
         margin-top: 12px;
       }
   }
-
-
-  .page-heading + .alert{
-    margin-top: 15px;
-  }
   .wizard-progress{
     padding: 0;
+    margin-bottom: 15px;
+  }
+  .wizard-next i{
+    margin-left: 5px;
+  }
+  .wizard-prev i{
+    margin-right: 5px;
   }
   .progress{
     background-color: #FFF;
@@ -1266,11 +1296,6 @@ body#csetup{
   .tab-content{
     padding: 0 0;
     min-height: 290px;
-  }
-  .page-heading{
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: -15px;
   }
   .nav-tabs li a{
     margin-right: 0 !important;
@@ -1316,7 +1341,15 @@ body#csetup{
       }
     }
 }
+
 #mura-login{
+    
+    margin-top: -20px;
+    position: relative!important;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
 
   #remember-me{
     margin-top: 7px !important;
@@ -1325,8 +1358,7 @@ body#csetup{
     margin-bottom: 30px !important;
   }
   #login-link,
-  #pw-link,
-  .page-heading{
+  #pw-link{
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 12px;
@@ -1334,9 +1366,6 @@ body#csetup{
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-    .page-heading{
-      color: #FFF;
-    }
     #login-link,
     #pw-link{
       text-align: center;

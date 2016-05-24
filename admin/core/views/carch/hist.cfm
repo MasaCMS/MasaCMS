@@ -144,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not isLockedBySomeoneElse or poweruser>
 				<a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&return=hist&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" class="draftprompt" data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#">
 				</cfif>
-				#esapiEncode('html',left(rc.item.getmenutitle(),90))#
+				#esapiEncode('html',rc.item.getmenutitle())#
 				<cfif not isLockedBySomeoneElse or poweruser>
 				</a>
 				</cfif>
