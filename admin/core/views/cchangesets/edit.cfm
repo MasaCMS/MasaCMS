@@ -53,16 +53,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div> <!-- /.mura-header -->
 
-<div class="block block-constrain">
+
 
       <cfif not structIsEmpty(rc.changeset.getErrors())>
           <div class="alert alert-error">#application.utility.displayErrors(rc.changeset.getErrors())#</div>
       </cfif>
 
       <cfif rc.changeset.getPublished()>
-      <div class="alert">
-      #application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#
-  </div><br/>
+      <div class="alert alert-info">
+       #application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#
+     </div>
       <cfelse>
       <cfset hasPendingApprovals=rc.changeset.hasPendingApprovals()>
       <cfif hasPendingApprovals>
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfif len(trim(application.pluginManager.renderEvent("onChangesetEditMessageRender", request.event)))>
         <span id="msg">#application.pluginManager.renderEvent("onChangesetEditMessageRender", request.event)#</span>
       </cfif>
-
+<div class="block block-constrain">
       <cfset tablist="tabBasic">
       <cfset tablabellist="Basic">
       <cfset hasCategories=application.categoryManager.getCategoryCount(rc.siteid)>

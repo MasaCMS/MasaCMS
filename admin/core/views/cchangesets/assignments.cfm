@@ -53,13 +53,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfinclude template="dsp_secondary_menu.cfm">
 </div> <!-- /.mura-header -->
 
-<div class="block block-constrain">
-    <div class="block block-bordered">
+
       <div class="block-content">
 
       <cfset csrftokens=rc.$.renderCSRFTokens(context=rc.changesetid,format='url')>
       <cfif rc.changeset.getPublished()>
-      <div class="alert">#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</div>
+      <div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</div>
       <cfelse>
   <cfset hasPendingApprovals=rc.changeset.hasPendingApprovals()>
   <cfif hasPendingApprovals>
@@ -73,6 +72,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    <div class="alert">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.hasclosedate"),LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat))#
     </div>
       </cfif>
+
+      <div class="block block-constrain">
+          <div class="block block-bordered">
       <!--- <h2>#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</h2> --->
       <h2>#esapiEncode('html',rc.changeset.getName())#</h2>
 
