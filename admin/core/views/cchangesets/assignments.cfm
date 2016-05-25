@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <cfset csrftokens=rc.$.renderCSRFTokens(context=rc.changesetid,format='url')>
       <cfif rc.changeset.getPublished()>
-      <p class="alert">#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</p>
+      <div class="alert">#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</div>
       <cfelse>
   <cfset hasPendingApprovals=rc.changeset.hasPendingApprovals()>
   <cfif hasPendingApprovals>
