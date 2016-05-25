@@ -285,7 +285,7 @@
 	<cfif isDefined('rc.objectparams') and len(rc.objectparams) and not isJSON(rc.objectparams)>
 		<cfset rc.objectparams=URLDecode(rc.objectparams)>
 	</cfif>
-	
+
 	<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
 
 	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
@@ -368,7 +368,7 @@
 		    <cfif not (
 			  	listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
 			  	and listFindNoCase(rc.contentBean.getPath(),session.topID)
-			  )>
+			  ) or not len(rc.contentBean.getPath())>
 		     	<cfset arguments.rc.topid=rc.contentBean.getParentID() />
 			</cfif>
 		</cfif>

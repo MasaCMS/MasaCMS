@@ -622,13 +622,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset purgeExtendedData()>
 		<cfif variables.instance.Type eq "Form">
 			<cfset variables.instance.moduleID="00000000000000000000000000000000004">
-			<cfset variables.instance.ParentID="00000000000000000000000000000000004">
+			<cfif not isValid('uuid',variables.instance.ParentID)>
+				<cfset variables.instance.ParentID="00000000000000000000000000000000004">
+			</cfif>
 		<cfelseif variables.instance.Type eq "Component">
 			<cfset variables.instance.moduleID="00000000000000000000000000000000003">
-			<cfset variables.instance.ParentID="00000000000000000000000000000000003">
+			<cfif not isValid('uuid',variables.instance.ParentID)>
+				<cfset variables.instance.ParentID="00000000000000000000000000000000003">
+			</cfif>
 		<cfelseif variables.instance.Type eq "Variation">
 			<cfset variables.instance.moduleID="00000000000000000000000000000000099">
-			<cfset variables.instance.ParentID="00000000000000000000000000000000099">
+			<cfif not isValid('uuid',variables.instance.ParentID)>
+				<cfset variables.instance.ParentID="00000000000000000000000000000000099">
+			</cfif>
 		</cfif>
 	</cfif>
 
