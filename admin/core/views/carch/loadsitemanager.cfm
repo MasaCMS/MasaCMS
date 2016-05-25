@@ -53,6 +53,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <cfset rc.sortBy=rc.rstop.sortBy>
 </cfif>
 
+<cfif not len(rc.sortBy)>
+    <cfset rc.sortBy="orderno">
+</cfif>
+
 <cfif not isDefined("rc.sortdirection") or rc.sortdirection eq "">
  <cfset rc.sortdirection=rc.rstop.sortdirection>
 </cfif>
@@ -241,7 +245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 </dl>
 	 <ul id="mura-nodes"<cfif arrayLen(crumbdata) gt 1 and crumbdata[2].type eq 'Gallery'> class="gallery"</cfif>>
 	 <!-- Begin List of Nodes -->
-	 <li data-siteid="#esapiEncode('html_attr',rc.siteid)#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#esapiEncode('html_attr',rc.moduleid)#" data-sortby="#esapiEncode('html_attr',rc.rstop.sortby)#" data-sortdirection="#esapiEncode('html_attr',rc.rstop.sortdirection)#" class="#esapiEncode('html_attr',lcase(rc.rstop.type))# mura-node-data<cfif r> restricted</cfif>" data-csrf="#rc.$.renderCSRFTOkens(context=rc.rstop.contentid & 'quickedit',format='url')#">
+	 <li data-siteid="#esapiEncode('html_attr',rc.siteid)#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#esapiEncode('html_attr',rc.moduleid)#" data-sortby=<cfif len(rc.rstop.sortby)>"#esapiEncode('html_attr',rc.rstop.sortby)#"<cfelse>"orderno"</cfif> data-sortdirection="#esapiEncode('html_attr',rc.rstop.sortdirection)#" class="#esapiEncode('html_attr',lcase(rc.rstop.type))# mura-node-data<cfif r> restricted</cfif>" data-csrf="#rc.$.renderCSRFTOkens(context=rc.rstop.contentid & 'quickedit',format='url')#">
 	  <cfif r><div class="marker"></div></cfif>
 	   <dl id="top-node">
 	   <dt>

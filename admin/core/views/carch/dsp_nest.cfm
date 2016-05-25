@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfif not skip>
 <!--- Start LI for content Item --->
-<li data-siteid="#esapiEncode('html_attr',rsnest.siteid)#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#esapiEncode('html_attr',rsnest.sortby)#" data-sortdirection="#esapiEncode('html_attr',rsnest.sortdirection)#" data-moduleid="#esapiEncode('html_attr',rsnest.moduleid)#" data-type="#esapiEncode('html_attr',rsnest.type)#" class="#esapiEncode('html_attr',lcase(rsnest.type))# mura-node-data<cfif variables.restricted> restricted</cfif>" data-csrf="#attributes.muraScope.renderCSRFTOkens(context=rsnest.contentid & 'quickedit',format='url')#">
+<li data-siteid="#esapiEncode('html_attr',rsnest.siteid)#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby=<cfif len(rsnest.sortby)>"#esapiEncode('html_attr',rsnest.sortby)#"<cfelse>"orderno"</cfif> data-sortdirection="#esapiEncode('html_attr',rsnest.sortdirection)#" data-moduleid="#esapiEncode('html_attr',rsnest.moduleid)#" data-type="#esapiEncode('html_attr',rsnest.type)#" class="#esapiEncode('html_attr',lcase(rsnest.type))# mura-node-data<cfif variables.restricted> restricted</cfif>" data-csrf="#attributes.muraScope.renderCSRFTOkens(context=rsnest.contentid & 'quickedit',format='url')#">
 <cfif variables.restricted><div class="marker"></div></cfif>
 <dl>
 <dt>

@@ -101,7 +101,7 @@
 		<cfif rc.parentBean.getType() neq 'Calendar'>
 			<cfinclude template="dsp_displaycontent.cfm">
 		</cfif>
-		<cfif (rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form' and rc.type neq 'Variation') >
+		<cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
 			<div class="mura-control-group">
 	      		<label>
 		  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
@@ -180,7 +180,7 @@
 			</select>
 		</div>
 		<div id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
-			<div class="mura-control-group">	
+			<div class="mura-control-group">
 				<label class="date-span">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')#</label>
 					<cf_datetimeselector name="featureStart" datespanclass="time" datetime="#rc.contentBean.getFeatureStart()#">
 			</div>
@@ -208,7 +208,7 @@
 
 	<div class="mura-control-group">
 		<label>
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# 
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')#
 		</label>
 		<textarea name="notes" rows="8" id="abstract"></textarea>
 	</div> <!--- /end mura-control-group --->
