@@ -202,11 +202,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="form-actions">
 					<cfif not len(rc.subTypeID)>
 						<cfset rc.subTypeID=createUUID()>
-						<button class="btn mura-primary" onclick="submitForm(document.forms.subTypeFrm,'add');"><i class="mi-check-circle"></i>Add</button>
+						<button class="btn mura-primary" type="button" onclick="submitForm(document.forms.subTypeFrm,'add');"><i class="mi-check-circle"></i>Add</button>
 						<input type=hidden name="subTypeID" value="#esapiEncode('html_attr',rc.subTypeID)#">
 					<cfelse>
-						<button class="btn" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');"><i class="mi-trash"></i>Delete</button>
-						<button class="btn mura-primary" onclick="submitForm(document.forms.subTypeFrm,'update');"><i class="mi-check-circle"></i>Update</button>
+						<button class="btn" type="button" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');"><i class="mi-trash"></i>Delete</button>
+						<button class="btn mura-primary" type="button" onclick="submitForm(document.forms.subTypeFrm,'update');"><i class="mi-check-circle"></i>Update</button>
 						<input type=hidden name="subTypeID" value="#esapiEncode('html_attr',subType.getsubtypeID())#">
 					</cfif>
 				</div>
