@@ -11,6 +11,7 @@
 
 	<cfparam name="rc.object" default="">
 	<cfparam name="rc.objectname" default="">
+	<cfparam name="rc.objecticonclass" default="mi-cog">
 
 	<cfif not len(rc.objectname) and len(rc.object) gt 1>
 		<cfif rc.$.siteConfig().hasDisplayObject(rc.object)>
@@ -19,6 +20,10 @@
 		<cfelse>
 			<cfset rc.objectname=ucase(left(rc.object,1)) & right(rc.object,len(rc.object)-1)>
 		</cfif>
+	</cfif>
+
+	<cfif not len(rc.objecticonclass)>
+		<cfset rc.objecticonclass="mi-cog">
 	</cfif>
 </cfsilent>
 <cfinclude template="js.cfm">
@@ -37,7 +42,7 @@
 			<a class="btn btn-primary" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-arrow-left"></i> Back</a>
 			<h1 id="configuratorHeader"></h1>
 		</cfif>
-
+	
 		<div class="clearfix">
 		    <div id="configurator"><div class="load-inline"></div></div>
 		   <!---
@@ -139,6 +144,7 @@
 							'object':'#esapiEncode('javascript',rc.object)#',
 							'objectid':'#esapiEncode('javascript',rc.objectid)#',
 							'name':'#esapiEncode('javascript',rc.objectname)#',
+							'iconclass':'#esapiEncode('javascript',rc.objecticonclass)#',
 							'regionid':'0',
 							'context':'#application.configBean.getContext()#',
 							'params':encodeURIComponent(JSON.stringify(parameters["params"])),
@@ -167,7 +173,7 @@
 								siteManager.initGenericConfigurator(configOptions);
 							}
 
-							jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
+							jQuery("##configuratorHeader").html('#esapiEncode('javascript','<i class="#rc.objecticonclass#"></i> #rc.objectname#')#');
 						<cfelse>
 							<cfswitch expression="#rc.object#">
 								<cfdefaultcase>

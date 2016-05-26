@@ -1205,33 +1205,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<!--- END CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
 
+				<cfset setMaterializedPath(newBean) />
+
+				<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID()>
+					<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
+				</cfif>
+
+				<!--- Content expiration assignments --->
+				<cfif isDefined("arguments.data.expiresnotify") and len(arguments.data.expiresnotify)>
+					<cfloop list="#arguments.data.expiresnotify#" index="i">
+						<cfset variables.contentDAO.createContentAssignment(newBean,i,'expire')>
+					</cfloop>
+				<cfelseif not newBean.getIsNew()>
+					<cfset rs=variables.contentDAO.getExpireAssignments(currentBean.getContentHistID())>
+					 <cfloop query="rs">
+						<cfset variables.contentDAO.createContentAssignment(newBean,rs.userid,'expire')>
+					</cfloop>
+				</cfif>
+
 				<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
-				<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
+				<!<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
 
 					<!--- Reminder Persistence --->
 					<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>
 						<cfset variables.reminderManager.updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
 					<cfelseif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() neq 2>
 						<cfset variables.reminderManager.deleteReminders(newBean.getcontentID(),newBean.getSiteID()) />
-					</cfif>
-
-					<cfset setMaterializedPath(newBean) />
-
-					<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID()>
-						<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
-					</cfif>
-
-
-					<!--- Content expiration assignments --->
-					<cfif isDefined("arguments.data.expiresnotify") and len(arguments.data.expiresnotify)>
-						<cfloop list="#arguments.data.expiresnotify#" index="i">
-							<cfset variables.contentDAO.createContentAssignment(newBean,i,'expire')>
-						</cfloop>
-					<cfelseif not newBean.getIsNew()>
-						<cfset rs=variables.contentDAO.getExpireAssignments(currentBean.getContentHistID())>
-						 <cfloop query="rs">
-							<cfset variables.contentDAO.createContentAssignment(newBean,rs.userid,'expire')>
-						</cfloop>
 					</cfif>
 				</cfif>
 

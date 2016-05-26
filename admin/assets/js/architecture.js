@@ -2596,6 +2596,7 @@ buttons: {
 				url: './',
 				pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
 				title: data.title || data.name,
+				iconclass: data.iconclass,
 				init: function(data, config) {
 
 				}
@@ -2965,7 +2966,13 @@ buttons: {
 
 				if(siteManager.configuratorMode=='frontEnd'){
 					//if(siteManager.layoutmanager){
-						$("#configuratorHeader").html(config.title);
+						if(config.title.indexOf("<i class=") > -1){
+							$("#configuratorHeader").html(config.title);
+						} else {
+							config.iconclass=config.iconclass || 'mi-cog';
+							$("#configuratorHeader").html('<i class="' + config.iconclass + '"></i> ' + config.title);
+						}
+
 					//}
 				} else {
 					$("#configuratorContainer").dialog('option','title',config.title);

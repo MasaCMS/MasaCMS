@@ -1549,6 +1549,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="tag" type="string" required="true" default="">
 	<cfargument name="sectionID" type="string" required="true" default="">
 	<cfargument name="searchType" type="string" required="true" default="default" hint="Can be default or image">
+	<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 
 	<cfset var rsPrivateSearch = "">
 	<cfset var kw = trim(arguments.keywords)>
@@ -1601,7 +1602,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND
 
 
-					tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery')
+					tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery','Form','Component','Variation')
 
 						<cfif len(arguments.sectionID)>
 							and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">
@@ -1646,6 +1647,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						)
 					</cfif>
 
+				and tcontent.moduleid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
 		<cfelse>
 		0=1
 		</cfif>
@@ -1691,6 +1693,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		tcontent.Active = 1
+
+		and tcontent.moduleid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
+
 				<cfif listFindNoCase("image,file",arguments.searchType)>
 					AND tcontent.siteID in (
 							select siteid
@@ -1705,7 +1710,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND
 
 
-					tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery')
+					tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery','Form','Component','Variation')
 
 						<cfif len(arguments.sectionID)>
 							and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">

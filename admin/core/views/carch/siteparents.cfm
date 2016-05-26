@@ -56,8 +56,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </div>
 <cfif not rc.isNew>
-<cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
 <cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.parentID,siteID=rc.siteID)>
+<cfset rc.rsList=application.contentManager.getPrivateSearch(siteid=rc.siteid,keywords=rc.keywords,moduleid=parentBean.getModuleID())/>
 <cfif not parentBean.getIsNew()>
 <cfset parentCrumb=application.contentManager.getCrumbList(rc.parentid, rc.siteid)/>
 </cfif>
