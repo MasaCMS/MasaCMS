@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 	<!--- mura-header --->
 	<div class="mura-header">
-		<h1>Site Settings</h1>
+		<h1><cfif isDefined('url.addsite')>Add Site<cfelse>Site Settings</cfif></h1>
 	<cfif len(rc.siteid)>
 			<div class="nav-module-specific btn-group"> <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.siteid)#"><i class="mi-trash"></i> Trash Bin</a>
 			<cfif rc.action eq "updateFiles">

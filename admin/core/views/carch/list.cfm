@@ -641,6 +641,10 @@
 						  <!-- /block header -->
 						  <div class="block-content">
 
+			  		<cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)
+			  		OR application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)
+			  		OR application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
+
 							  <ul id="arch-mod" class="navTask nav nav-pills pull-left">
 
   								  <li>
@@ -671,6 +675,7 @@
   								  </li>
   								  </cfif>
   							  </ul>
+				  		</cfif>	
 
 								<script>
 									$(function(){
