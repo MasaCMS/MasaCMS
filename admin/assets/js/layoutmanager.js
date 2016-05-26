@@ -345,7 +345,7 @@
 						mura('#dragtype').html(item.data('object'));
 						mura('.mura-sidebar').addClass('mura-sidebar--dragging');
 
-						e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML,objectid:item.data('objectid')}));
+						e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:item.data('objectname'),objectid:item.data('objectid'),objecticonclass:item.data('objecticonclass'),}));
 					})
 					.on('dragend',function(){
 						mura('#dragtype').html('');
@@ -383,6 +383,7 @@
 				var displayObject=document.createElement("DIV");
 				displayObject.setAttribute('data-object',object.object);
 				displayObject.setAttribute('data-objectname',object.objectname);
+				displayObject.setAttribute('data-objecticonclass',object.objecticonclass);
 				displayObject.setAttribute('data-async',true);
 				displayObject.setAttribute('data-perm','author');
 				displayObject.setAttribute('data-instanceid',mura.createUUID());

@@ -918,8 +918,22 @@
 			</cfif>
 		</cfif>
 
-		<cfif not find('class=',arguments.objectParams.objectname) and arguments.renderer.hasDisplayObject(arguments.object)>
-			<cfset arguments.objectParams.objectname="<i class='#arguments.renderer.getDisplayObject(arguments.object).iconclass#'></i> " & arguments.objectParams.objectname>
+		<cfparam name="arguments.objectParams.objecticonclass" default="">
+
+		<cfif arguments.renderer.hasDisplayObject(arguments.object)>
+			<cfset var objectConfig=arguments.renderer.getDisplayObject(arguments.object)>
+
+			<cfif (find('class=',arguments.objectParams.objectname) or find('class=',arguments.objectname))>
+				<cfset arguments.objectParams.objectname=objectConfig.name>
+				<cfset arguments.objectname=arguments.objectParams.objectname>
+			</cfif>
+
+			<cfif not len(arguments.objectParams.objecticonclass)>
+				<cfset arguments.objectParams.objecticonclass=objectConfig.iconclass>
+			</cfif>
+
+		<cfelseif not len(arguments.objectParams.objecticonclass)>
+			<cfset arguments.objectParams.objecticonclass="mi-cog">
 		</cfif>
 
 		<cfparam name="arguments.objectParams.async" default="false">
@@ -1802,7 +1816,7 @@
 		<cfif not isDefined('arguments.objectlabel')>
 			<cfset arguments.objectlabel=arguments.objectname>
 		</cfif>
-		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#"><i class="#esapiEncode('html_attr',arguments.objecticonclass)#"></i> #esapiEncode('html',arguments.objectlabel)#</div>'>
+		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#" data-objecticonclass="#esapiEncode('html_attr',arguments.objecticonclass)#"><i class="#esapiEncode('html_attr',arguments.objecticonclass)#"></i> #esapiEncode('html',arguments.objectlabel)#</div>'>
 	</cffunction>
 
 	<cffunction name="renderIntervalDesc" output="false">
