@@ -503,15 +503,11 @@
       	var bubbles=eventName == "change" ? false : true;
 
 		if(document.createEvent){
-	      	if(eventClass=='Custom'){
-		    	var event = document.createEvent('CustomEvent');
-		    	event.initCustomEvent(eventName, true, true);
+	    	var event = document.createEvent(eventClass);
+	    	event.initEvent(eventName, bubbles, true);
+	    	event.synthetic = true;
+			el.dispatchEvent(event);
 
-		    } else {
-		    	var event = document.createEvent(eventClass);
-		    	event.initEvent(eventName, bubbles, true);
-		    	event.synthetic = true;
-		    }
 		} else {
 			try{
 				document.fireEvent("on" + eventName);
