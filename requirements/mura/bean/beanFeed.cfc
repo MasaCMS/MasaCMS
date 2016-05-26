@@ -448,8 +448,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
 			<cfif arrayLen(variables.instance.jointables)>
-				<cfloop from="1" to="#arrayLen(variables.instance.jointables)#" index="local.i">
-					<cfif variables.instance.jointables[local.i].table eq jointable>
+				<cfloop from="1" to="#arrayLen(variables.instance.joins)#" index="local.i">
+					<cfif variables.instance.joins[local.i].table eq jointable>
 						<cfset started=true>
 						<!--- has explicit join clause--->
 						<cfbreak>
@@ -462,9 +462,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 
 		<!--- Join to explicit tables based on join clauses --->
-		<cfloop from="1" to="#arrayLen(variables.instance.jointables)#" index="local.i">
-			<cfif len(variables.instance.jointables[local.i].clause)>
-				#variables.instance.jointables[local.i].jointype# join #variables.instance.jointables[local.i].table# #tableModifier# on (#variables.instance.jointables[local.i].clause#)
+		<cfloop from="1" to="#arrayLen(variables.instance.joins)#" index="local.i">
+			<cfif len(variables.instance.joins[local.i].clause)>
+				#variables.instance.joins[local.i].jointype# join #variables.instance.joins[local.i].table# #tableModifier# on (#variables.instance.joins[local.i].clause#)
 			</cfif>
 		</cfloop>
 
