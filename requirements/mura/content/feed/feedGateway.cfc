@@ -218,15 +218,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			FROM
 				<cfif len(altTable)>#arguments.feedBean.getAltTable()#</cfif> tcontent #tableModifier#
 
+				<cfset local.specifiedjoins=arguments.feedBean.getJoins()>
+
+				<!--- Join to implied tables based on field prefix --->
 				<cfloop list="#jointables#" index="jointable">
 					<cfset started=false>
 
 					<cfif arrayLen(arguments.feedBean.getJoins())>
-						<cfset local.specifiedjoins=arguments.feedBean.getJoins()>
 						<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
 							<cfif local.specifiedjoins[local.i].table eq jointable>
 								<cfset started=true>
-								#local.specifiedjoins[local.i].jointype# join #jointable# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
+								<!--- has explicit join clause--->
 								<cfbreak>
 							</cfif>
 						</cfloop>
@@ -237,6 +239,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelse>
 							inner join #jointable# #tableModifier# on (tcontent.contentid=#jointable#.contentid)
 						</cfif>
+					</cfif>
+				</cfloop>
+
+				<!--- Join to explicit tables based on join clauses --->
+				<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
+					<cfif len(local.specifiedjoins[local.i].clause)>
+						#local.specifiedjoins[local.i].jointype# join #local.specifiedjoins[local.i].table# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
 					</cfif>
 				</cfloop>
 
