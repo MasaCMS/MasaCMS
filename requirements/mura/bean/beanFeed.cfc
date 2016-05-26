@@ -444,19 +444,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		from #variables.instance.table#
 
+		<!--- Join to implied tables based on field prefix --->
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
 			<cfif arrayLen(variables.instance.jointables)>
 				<cfloop from="1" to="#arrayLen(variables.instance.jointables)#" index="local.i">
 					<cfif variables.instance.jointables[local.i].table eq jointable>
 						<cfset started=true>
-						#variables.instance.jointables[local.i].jointype# join #jointable# #tableModifier# on (#variables.instance.jointables[local.i].clause#)
+						<!--- has explicit join clause--->
 						<cfbreak>
 					</cfif>
 				</cfloop>
 			</cfif>
 			<cfif not started>
 				inner join #jointable# on (#variables.instance.table#.#variables.instance.keyField#=#jointable#.#variables.instance.keyField#)
+			</cfif>
+		</cfloop>
+
+		<!--- Join to explicit tables based on join clauses --->
+		<cfloop from="1" to="#arrayLen(variables.instance.jointables)#" index="local.i">
+			<cfif len(variables.instance.jointables[local.i].clause)>
+				#variables.instance.jointables[local.i].jointype# join #variables.instance.jointables[local.i].table# #tableModifier# on (#variables.instance.jointables[local.i].clause#)
 			</cfif>
 		</cfloop>
 
@@ -775,15 +783,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="relatedEntity">
 	<cfset var entity=getEntity()>
 	<cfset var p="">
-	<cfloop array="#entity.getHasManyArray()#" index="p">
+
+	<cfloop array="#entity.getHasManyPropArray()#" index="p">
 		<cfif p.cfc eq arguments.relatedEntity>
-			<cfset addJoin('inner',relatedEntity.getTable(),'#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfset addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.translatePropKey(p.column)#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
 			<cfreturn this>
 		</cfif>
 	</cfloop>
-	<cfloop array="#entity.getHasOneArray()#" index="p">
+	<cfloop array="#entity.getHasOnePropArray()#" index="p">
 		<cfif p.cfc eq arguments.relatedEntity>
-			<cfset addJoin('inner',relatedEntity.getTable(),'#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfset addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.translatePropKey(p.column)#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
 			<cfreturn this>
 		</cfif>
 	</cfloop>
@@ -794,15 +803,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="entityName">
 	<cfset var entity=getEntity()>
 	<cfset var p="">
-	<cfloop array="#entity.getHasManyArray()#" index="p">
+	<cfloop array="#entity.getHasManyPropArray()#" index="p">
 		<cfif p.cfc eq arguments.relatedEntity>
-			<cfset addJoin('inner',relatedEntity.getTable(),'#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfset addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
 			<cfreturn this>
 		</cfif>
 	</cfloop>
-	<cfloop array="#entity.getHasOneArray()#" index="p">
+	<cfloop array="#entity.getHasOnePropArray()#" index="p">
 		<cfif p.cfc eq arguments.relatedEntity>
-			<cfset addJoin('inner',relatedEntity.getTable(),'#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfset addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
 			<cfreturn this>
 		</cfif>
 	</cfloop>
