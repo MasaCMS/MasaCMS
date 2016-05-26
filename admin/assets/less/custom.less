@@ -225,16 +225,29 @@
 }
 
 /* input sets */
-.mura-search .mura-input-set .btn,
-.mura-search .mura-input-set input,
-.mura-search .mura-input-set input + .btn,
-.mura-search .mura-input-set .btn + input,
-.mura-control-group .mura-input-set .btn + .btn,
-.mura-control-group .mura-input-set .btn,
-.mura-control-group .mura-input-set input,
-.mura-control-group .mura-input-set input + .btn,
-.mura-control-group .mura-input-set .btn + input,
-.mura-control-group .mura-input-set .btn + .btn{
+
+.mura-input-set .btn,
+.mura-input-set input{
+  line-height: 18px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  vertical-align: middle;
+}
+
+.mura-input-set .btn,
+.mura-input-set input{
+  font-size: 13px;
+}
+
+
+.mura-input-set .btn + .btn,
+.mura-input-set .btn,
+.mura-input-set input,
+.mura-input-set input + .btn,
+.mura-input-set .btn + input,
+.mura-input-set .btn + .btn{
   margin-left: 0;
   margin-right: 0;
 }
@@ -242,15 +255,38 @@
 .mura-input-set .btn:not(:last-child),
 .mura-input-set input:not(:last-child){
   .border-right-radius(0px);
+  margin-right: -2px !important;
  }
 .mura-input-set .btn:not(:first-child),
 .mura-input-set input:not(:first-child){
   .border-left-radius(0px);
+  margin-left: -2px !important;
  }
+
+.mura-input-set input + .btn, 
+.mura-input-set .btn + .btn{
+    margin-left: -3px;
+    border-bottom-left-radius:0;
+    border-top-left-radius:0;
+}
   
 .mura-search .mura-input-set input + .btn{
   margin-left: -4px;
   .border-left-radius(0px);
+}
+
+.mura-search .mura-input-set .btn > i {
+  display: block;
+}
+
+/* min-width elements in input set */
+.mura-input-set .mura-constrain{
+  min-width: 180px;
+}
+
+/* add-on buttons */
+.mura-input-set + .btn{
+  margin-left: 6px;
 }
 
 /* standard button spacing */
@@ -786,8 +822,17 @@ a.no-link{
   margin-top: 4px;
 }
 
-.mura-file-selector .btn-group {
-    margin-bottom: 9px;
+.mura-file-selector .mura-file-selector-tabs {
+    margin-bottom: 12px;
+}
+
+.mura-file-selector .mura-control{
+  margin-top: 0;
+  padding-top: 0 !important;
+}
+
+.mura-file-selector #mura-revision-type{
+  margin-bottom: 12px;
 }
 
 .content + .content{
