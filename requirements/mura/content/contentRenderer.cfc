@@ -1260,7 +1260,7 @@ Display Objects
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
 	<cfset var result="">
-
+		
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable and not arguments.include and arguments.object neq 'plugin'>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
