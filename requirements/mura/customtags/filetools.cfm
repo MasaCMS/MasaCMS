@@ -34,7 +34,7 @@
 	</cfif>
 
 	<cfif fileMetaData.hasImageFileExt()>
-		<div class="btn-group imageToolsButtonGroup">
+		<div class="mura-input-set imageToolsButtonGroup">
 			<cfif fileMetaData.hasCroppableImageFileExt()>
 			<a class="btn" href="./?muraAction=cArch.imagedetails&contenthistid=#attributes.bean.getContentHistID()#&siteid=#attributes.bean.getSiteID()#&fileid=#attributes.bean.getvalue(attributes.property)#&compactDisplay=#urlEncodedFormat(attributes.compactDisplay)#"><i class="mi-crop"></i></a>
 			</cfif>
