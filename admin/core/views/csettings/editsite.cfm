@@ -55,15 +55,15 @@ to your own modified versions of Mura CMS.
 	<cfif len(rc.siteid)>
 			<div class="nav-module-specific btn-group"> <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.siteid)#"><i class="mi-trash"></i> Trash Bin</a>
 			<cfif rc.action eq "updateFiles">
-							<a href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
-				<cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
-							<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-bolt"></i> Update Site Files to Latest Version</a>
+				<a class="btn" href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
+			<cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
+				<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-bolt"></i> Update Site Files to Latest Version</a>
 			</cfif>
 			<cfif application.configBean.getJavaEnabled()>
-						<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="mi-gift"></i> Create Site Bundle</a>
+				<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="mi-gift"></i> Create Site Bundle</a>
 			</cfif>
 			<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
-							<a  class="btn" href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="mi-share"></i> Export Static HTML (BETA)</a>
+				<a  class="btn" href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="mi-share"></i> Export Static HTML (BETA)</a>
 			</cfif>
 		</div>
 	</cfif>
@@ -1292,12 +1292,12 @@ to your own modified versions of Mura CMS.
 	<cftry>
 		<cfset updated=application.autoUpdater.update(rc.siteid)>
 		<cfset files=updated.files>
-		<p class="alert alert-success">Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</p>
+		<p>Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</p>
 		<p> <strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
 			<cfif arrayLen(files)>
 				<cfoutput>
 					<cfloop from="1" to="#arrayLen(files)#" index="i">
-#files[i]#             <br />
+						#files[i]#<br />
 					</cfloop>
 				</cfoutput>
 			</cfif>
