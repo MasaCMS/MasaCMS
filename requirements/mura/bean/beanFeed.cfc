@@ -418,6 +418,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var jointable="">
 	<cfset var jointableS="">
 	<cfset var dbType=getDbType()>
+	<cfset var tableModifier="">
+
+	<cfif getDbType() eq "MSSQL">
+		<cfset tableModifier="with (nolock)">
+	</cfif>
 
 	<cfif hasDiscriminatorColumn()>
 		<cfset addParam(column=hasDiscriminatorColumn(),criteria=hasDiscriminatorValue())>
