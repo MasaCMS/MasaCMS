@@ -30,7 +30,7 @@
     "defaultPort":0,
     "projectURL":"",
     "license":[
-        { "type" : "GPL-2.0", "URL" : "http://opensource.org/licenses/GPL-2.0" }
+        { "type" : "GPL-2.0 with execptions", "URL" : "https://github.com/blueriver/MuraCMS/blob/develop/license.txt" }
     ],
     "contributors":[
 
