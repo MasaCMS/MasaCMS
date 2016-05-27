@@ -227,13 +227,18 @@
 /* input sets */
 
 .mura-input-set .btn,
-.mura-input-set input{
+.mura-input-set input,
+.mura-input-set .btn-group{
   line-height: 18px;
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 4px;
   padding-bottom: 4px;
   vertical-align: middle;
+}
+
+.mura-input-set * + .btn-group{
+  margin-left: -4px;
 }
 
 .mura-input-set .btn,
@@ -252,7 +257,7 @@
   margin-right: 0;
 }
 
-.mura-input-set .btn:not(:last-child),
+.mura-input-set .btn:not(:last-child):not(.dropdown-toggle),
 .mura-input-set input:not(:last-child){
   .border-right-radius(0px);
   margin-right: -2px !important;
@@ -979,6 +984,14 @@ a.close:hover{
   float: none;
   display: block;
 }
+.imageToolsButtonGroup{
+  margin-bottom: 12px;
+   .dropdown-menu{
+    margin-top: -4px;
+   }
+
+}
+
 body.compact #image-details img{
   max-width: 1050px;
 }
