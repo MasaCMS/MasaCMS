@@ -148,5 +148,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<button class="btn mura-primary" onclick="siteManager.saveCategoryAssignment();">Submit</button>
 	</div>
 	</cfoutput>
-
-
