@@ -4517,6 +4517,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 		if(!obj.length){
+			mura(frm).trigger('formSubmit',formToObject(frm));
 			frm.submit();
 		}
 
@@ -4578,6 +4579,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			self.prevInnerHTML=self.innerHTML;
 			self.prevData=obj.data();
 			self.innerHTML=root.mura.preloaderMarkup;
+
+			mura(frm).trigger('formSubmit',data);
 
 			ajax(postconfig);
 	}
@@ -5863,6 +5866,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			this.each(function(){
 				if(typeof this.addEventListener == 'function'){
 					var self=this;
+					
 					this.addEventListener(
 						eventName,
 						function(event){
@@ -8168,6 +8172,10 @@ root.mura.templates['embed']=function(context){
 
 			delete self.data.isNew;
 
+			mura(self.context.formEl)
+				.find('form')
+				.trigger('formSubmit');
+
 			if(self.ormform) {
 				console.log('a!');
 				root.mura.getEntity(self.entity)
@@ -8861,7 +8869,7 @@ this["mura"]["templates"]["dropdown"] = this.mura.Handlebars.template({"1":funct
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isrequired : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</label>\n			<select "
-    + alias4(((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper)))
+    + ((stack1 = ((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + ">\n"
     + ((stack1 = helpers.each.call(alias1,((stack1 = (depth0 != null ? depth0.dataset : depth0)) != null ? stack1.options : stack1),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "			</select>\n	</div>\n";
@@ -8906,7 +8914,7 @@ this["mura"]["templates"]["dropdown_static"] = this.mura.Handlebars.template({"1
     + "</label>\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.summary : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "		<select "
-    + alias4(((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper)))
+    + ((stack1 = ((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + ">\n"
     + ((stack1 = (helpers.eachStatic || (depth0 && depth0.eachStatic) || alias2).call(alias1,(depth0 != null ? depth0.dataset : depth0),{"name":"eachStatic","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "		</select>\n	</div>\n";
@@ -8947,7 +8955,7 @@ this["mura"]["templates"]["file"] = this.mura.Handlebars.template({"1":function(
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isrequired : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</label>\r\n	<input type=\"file\" "
-    + alias4(((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper)))
+    + ((stack1 = ((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "/>\r\n</div>\r\n";
 },"useData":true});
 
@@ -9223,7 +9231,7 @@ this["mura"]["templates"]["textarea"] = this.mura.Handlebars.template({"1":funct
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isrequired : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</label>\r\n	<textarea "
-    + alias4(((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper)))
+    + ((stack1 = ((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + ">"
     + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
     + "</textarea>\r\n</div>\r\n";
