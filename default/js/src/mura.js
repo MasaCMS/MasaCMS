@@ -1481,6 +1481,7 @@
 	    }
 
 		if(!obj.length){
+			mura(frm).trigger('formSubmit',formToObject(frm));
 			frm.submit();
 		}
 
@@ -1542,6 +1543,8 @@
 			self.prevInnerHTML=self.innerHTML;
 			self.prevData=obj.data();
 			self.innerHTML=root.mura.preloaderMarkup;
+
+			mura(frm).trigger('formSubmit',data);
 
 			ajax(postconfig);
 	}

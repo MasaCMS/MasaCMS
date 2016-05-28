@@ -636,6 +636,10 @@
 
 			delete self.data.isNew;
 
+			mura(self.context.formEl)
+				.find('form')
+				.trigger('formSubmit');
+
 			if(self.ormform) {
 				console.log('a!');
 				root.mura.getEntity(self.entity)

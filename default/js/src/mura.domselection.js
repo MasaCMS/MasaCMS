@@ -133,6 +133,7 @@
 			this.each(function(){
 				if(typeof this.addEventListener == 'function'){
 					var self=this;
+					
 					this.addEventListener(
 						eventName,
 						function(event){
