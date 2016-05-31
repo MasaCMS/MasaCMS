@@ -995,8 +995,8 @@
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
 		<cfset var theObject = "" />
-		<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() & $.event('currentfilename') & cgi.query_string & arguments.cachekey />
-		<cfset var cacheKeyObjectId = arguments.object & arguments.objectid & $.event('currentfilename') & cgi.query_string & arguments.cachekey />
+		<cfset var cacheKeyContentId = arguments.object & arguments.objectid & event.getValue('contentBean').getcontentID() & $.event('currentfilename') & cgi.query_string & arguments.cachekey />
+		<cfset var cacheKeyObjectId = cacheKeyContentId />
 		<cfset var showEditable=false/>
 		<cfset var editableControl={editLink='',isConfigurator=false}>
 		<cfset var historyID="">
