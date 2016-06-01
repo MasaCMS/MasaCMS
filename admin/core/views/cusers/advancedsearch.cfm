@@ -132,9 +132,9 @@
 		<!--- Search Params --->
 			<div class="mura-control-group" id="searchParams">
 					<label>#rbKey("user.searchcriteria")#</label>
-					<div class="mura-control justify">
 
 					<cfif rc.newSearch or (session.paramCircuit neq 'cUsers' or not session.paramCount)>
+					<div class="mura-control justify">
 						<select name="paramRelationship1" style="display:none;">
 							<option value="and">#rbKey("params.and")#</option>
 							<option value="or">#rbKey("params.or")#</option>
@@ -165,8 +165,10 @@
 						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey("params.addcriteria")#">
 							<i class="mi-plus-circle"></i>
 						</a>
+					</div> <!--- /.mura-control --->
 				<cfelse>
 					<cfloop from="1" to="#session.paramCount#" index="p">
+						<div class="mura-control justify">
 						<select name="paramRelationship#p#">
 							<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif>>
 								#rbKey("params.and")#
@@ -202,9 +204,9 @@
 						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey('params.addcriteria')#">
 							<i class="mi-plus-circle"></i>
 						</a><br><br>
+						</div> <!--- /.mura-control --->
 					</cfloop>
 				</cfif>
-				</div> <!--- /.mura-control --->
 			</div> <!--- /searchparams --->
 
 		<!--- Active --->
