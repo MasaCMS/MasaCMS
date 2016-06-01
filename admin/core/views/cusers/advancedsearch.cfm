@@ -133,6 +133,7 @@
 			<div class="mura-control-group" id="searchParams">
 					<label>#rbKey("user.searchcriteria")#</label>
 					<div class="mura-control justify">
+
 					<cfif rc.newSearch or (session.paramCircuit neq 'cUsers' or not session.paramCount)>
 						<select name="paramRelationship1" style="display:none;">
 							<option value="and">#rbKey("params.and")#</option>
@@ -164,7 +165,6 @@
 						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey("params.addcriteria")#">
 							<i class="mi-plus-circle"></i>
 						</a>
-					</div>
 				<cfelse>
 					<cfloop from="1" to="#session.paramCount#" index="p">
 						<select name="paramRelationship#p#">
@@ -201,11 +201,11 @@
 						</a>
 						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey('params.addcriteria')#">
 							<i class="mi-plus-circle"></i>
-						</a><br>
+						</a><br><br>
 					</cfloop>
 				</cfif>
-			</div>
-		<!--- /Search Params --->
+				</div> <!--- /.mura-control --->
+			</div> <!--- /searchparams --->
 
 		<!--- Active --->
 			<div class="mura-control-group">
@@ -243,24 +243,26 @@
 
 </form>
 <!--- /Search Form --->
+</div>
 
+<div class="block block-constrain">
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>
-								<ul class="mura-tabs nav-tabs">
-									<!--- Site Members Tab --->
-										<li<cfif rc.ispublic eq 1> class="active"</cfif>>
-											<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=1')#" onclick="actionModal();">
-												#rbKey('user.sitemembers')#
-											</a>
-										</li>
+					<ul class="mura-tab-links nav-tabs">
+						<!--- Site Members Tab --->
+							<li<cfif rc.ispublic eq 1> class="active"</cfif>>
+								<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=1')#" onclick="actionModal();">
+									#rbKey('user.sitemembers')#
+								</a>
+							</li>
 
-					        <!--- System Users Tab --->
-										<li<cfif rc.ispublic eq 0> class="active"</cfif>>
-											<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#" onclick="actionModal();">
-												#rbKey('user.systemusers')#
-											</a>
-										</li>
-					      </ul>
+		        <!--- System Users Tab --->
+							<li<cfif rc.ispublic eq 0> class="active"</cfif>>
+								<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#" onclick="actionModal();">
+									#rbKey('user.systemusers')#
+								</a>
+							</li>
+		      </ul>
 					<!-- start tab -->
 					<div id="tab2" class="tab-pane">
 						<div class="block block-bordered">
@@ -269,7 +271,7 @@
 								<h3 class="block-title"><cfif rc.ispublic eq 1>#rbKey('user.sitemembers')#<cfelse>#rbKey('user.systemusers')#</cfif></h3>
 							</div> <!-- /.block header -->						
 							<div class="block-content">
-							  	
+							  	 
 					  		<!--- Search Results --->
 								<cfinclude template="inc/dsp_users_list.cfm" />
 
@@ -278,7 +280,6 @@
 					</div> <!-- /.tab-pane -->
 					<!-- /end tab -->
 
-			</div> <!-- /.block-content.tab-content -->
     <cfelse>
 			<div class="block block-bordered">
 			  <div class="block-content">
