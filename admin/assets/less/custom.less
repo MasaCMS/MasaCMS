@@ -458,11 +458,12 @@ form .mura-control-group > * + .help-block:not(.alert){
 #mura-content .mura-header ol.breadcrumb {
     background-color: #FFF;
     padding: 6px;
+
 }
 
 #mura-content ul.breadcrumb > :first-child,
 #mura-content ol.breadcrumb > :first-child{
-  margin-left: 8px;
+  margin-left: 8px !important;
 }
 .mura-header ul.breadcrumb li a,
 .mura-header ul.breadcrumb li a:link,
@@ -475,6 +476,12 @@ form .mura-control-group > * + .help-block:not(.alert){
 #gridContainer ul.breadcrumb li a:hover,
 #gridContainer ul.breadcrumb li a:active{
   color: #ff3405;
+  margin-right: 8px;
+
+  &> i{
+    color: #7f7f7f;
+    margin-right: 4px;
+  }
 }
 
 .nav-main a{
