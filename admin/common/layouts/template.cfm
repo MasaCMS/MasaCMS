@@ -345,6 +345,7 @@
 									}, 10);							}
 								// run on page load
 								triggerTabDrop();
+								// run on resize
 								$(window).on('resize',function(){
 									$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
 								});
