@@ -171,14 +171,21 @@
 			var frontEndProxy;
 			jQuery(document).ready(function(){
 
-			// tab drop
-			$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
-			$(window).on('resize',function(){
-				$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
-			});
-			$('.tabdrop .dropdown-toggle').on('click',function(){
-				$(this).parents('.nav-tabs').css('overflow-y','visible');
-			});
+				// tabdrop: trigger on page load w/ slight delay
+				var triggerTabDrop = function(){
+					setTimeout(function(){
+						$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+					}, 10);							}
+				// run on page load
+				triggerTabDrop();
+				// run on resize
+				$(window).on('resize',function(){
+					$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
+				});
+				$('.tabdrop .dropdown-toggle').on('click',function(){
+					$(this).parents('.nav-tabs').css('overflow-y','visible');
+				});
+				// /tabdrop
 
 				if (top.location != self.location) {
 
