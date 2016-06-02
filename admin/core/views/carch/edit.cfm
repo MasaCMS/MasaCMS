@@ -545,9 +545,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<cfinclude template="form/dsp_tab_seo.cfm">
 			</cfif>
+			<!---
 			<cfif  not len(tabAssignments) or listFindNocase(tabAssignments,'Mobile')>
 				<cfinclude template="form/dsp_tab_mobile.cfm">
 			</cfif>
+			--->
 		</cfif>
 
 		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
