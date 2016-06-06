@@ -65,6 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset objectParams.source=content.getContentID()>
 		<cfset objectParams.sourcetype='children'>
+
 	</cfsilent>
 	<cfsavecontent variable="data.html">
 	<cf_objectconfigurator params="#objectparams#">
@@ -74,6 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			data-objectname="Folder"
 			data-objectid="#esapiEncode('html_attr',rc.contentid)#">
 
+			<cfif rc.$.getBean('configBean').getClassExtensionManager().getSubTypeByName(content.get('type'),content.get('subtype'),content.get('siteid')).getHasConfigurator()>
 			<div class="mura-layout-row">
 				<div id="layoutcontainer"></div>
 				<div class="mura-control-group">
@@ -139,6 +141,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				setLayoutOptions();
 			});
 		</script>
+		<cfelse>
+		</div>
 		</cfoutput>
 	</cf_objectconfigurator>
 	</cfsavecontent>
