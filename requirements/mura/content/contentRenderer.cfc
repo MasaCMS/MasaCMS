@@ -1621,7 +1621,7 @@ Display Objects
 		<cfelse>
 			<cfif arguments.renderKids>
 				<cfif $.siteConfig().hasDisplayObject($.content('type'))>
-					<cfoutput>#dspObject(objectid=$.content('contentid'),object=$.content('type'),params=arguments.params)#</cfoutput>
+					<cfoutput>#dspObject(objectid=$.content('contentid'),object=$.content('type'),params=arguments.params,bodyRender=true)#</cfoutput>
 				<cfelse>
 					<cfif $.content('type') eq 'folder'>
 						<cf_CacheOMatic key="folderBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">

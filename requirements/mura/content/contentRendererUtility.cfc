@@ -910,7 +910,14 @@
 			<cfset openingDiv=openingDiv & ' mura-body-object'>
 		</cfif>
 
-		<cfif not isDefined('arguments.objectParams.objectname')>
+		<cfif arguments.bodyRender>
+			<cfset var $=arguments.renderer.getMuraScope()>
+			<cfif $.content('subtype') eq 'Default'>
+				<cfset arguments.objectParams.objectname=$.content('type')>
+			<cfelse>
+				<cfset arguments.objectParams.objectname=$.content('subtype')>
+			</cfif>
+		<cfelseif not isDefined('arguments.objectParams.objectname')>
 			<cfif isDefined('arguments.objectname') and len(arguments.objectname)>
 				<cfset arguments.objectParams.objectname=arguments.objectname>
 			<cfelse>
