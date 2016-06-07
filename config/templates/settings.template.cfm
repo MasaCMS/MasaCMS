@@ -38,6 +38,7 @@ defaultfilemode=777
 donottrackagents=
 editablecomments=0
 enablemuratag=true
+encryptionkey=
 errortemplate=/muraWRM/config/error.html
 filedir=
 filestore=filedir

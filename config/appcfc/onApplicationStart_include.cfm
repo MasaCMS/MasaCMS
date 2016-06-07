@@ -137,6 +137,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
+	<cftry>
+		<cfif not structKeyExists(variables.iniProperties,"encryptionkey") or not len(variables.iniProperties["encryptionkey"])>
+			<cfset variables.iniProperties.encryptionkey=createUUID()>
+			<cfset createobject("component","mura.IniFile").init(variables.iniPath).set( variables.iniProperties.mode, "encryptionkey", variables.iniProperties.encryptionkey )>
+		</cfif>
+		<cfcatch></cfcatch>
+	</cftry>
+
 	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
 	<cfset variables.mode = variables.iniProperties.mode />
 	<cfset variables.mapdir = variables.iniProperties.mapdir />
