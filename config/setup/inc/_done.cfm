@@ -41,7 +41,6 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h1 class="page-heading">Mura CMS Setup</h1>
 <div id="installationComplete" class="alert">
 	<p>Installation complete! Log in to start using Mura.</p>
 </div>
