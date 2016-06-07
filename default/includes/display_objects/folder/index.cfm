@@ -54,8 +54,18 @@
 	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
 --->
-<cfset objectparams.sourcetype='children'>
-<cfset objectparams.source=$.content('contentid')>
+<cfsilent>
+	<cfset objectparams.sourcetype='children'>
+	<cfset objectparams.source=$.content('contentid')>
+
+	<cfif not $.getContentRenderer().useLayoutManager()>
+		<cfset objectparams.displaylist=$.content('displayList')>
+		<cfset objectparams.sortBy=$.content('sortBy')>
+		<cfset objectparams.sortDirectory=$.content('sortDirectory')>
+		<cfset objectparams.nextn=$.content('nextn')>
+		<cfset objectparams.layout='default'>		
+	</cfif>
+</cfsilent>
 <cfoutput>
 	#$.dspObject_include(
 		thefile="collection/index.cfm",

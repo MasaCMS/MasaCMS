@@ -67,6 +67,16 @@
 		<cfparam name="objectParams.tag" default="">
 		<cfparam name="objectParams.layout" default="default">
 		<cfparam name="objectParams.dateparams" default="false">
+
+		<cfif not $.getContentRenderer().useLayoutManager()>
+			<cfset objectparams.displaylist=$.content('displayList')>
+			<cfset objectparams.sortBy=$.content('sortBy')>
+			<cfset objectparams.sortDirectory=$.content('sortDirectory')>
+			<cfset objectparams.nextn=$.content('nextn')>
+			<cfset objectparams.layout='default'>
+			<cfset objectParams.format='calendar'>
+		</cfif>
+	</cfsilent>
 		<cfif isJson(objectParams.items)>
 			<cfset objectParams.items=deserializeJSON(objectParams.items)>
 		<cfelseif isSimpleValue(objectParams.items)>
