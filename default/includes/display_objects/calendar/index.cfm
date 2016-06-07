@@ -76,7 +76,7 @@
 			<cfset objectparams.layout='default'>
 			<cfset objectParams.format='calendar'>
 		</cfif>
-	</cfsilent>
+
 		<cfif isJson(objectParams.items)>
 			<cfset objectParams.items=deserializeJSON(objectParams.items)>
 		<cfelseif isSimpleValue(objectParams.items)>
