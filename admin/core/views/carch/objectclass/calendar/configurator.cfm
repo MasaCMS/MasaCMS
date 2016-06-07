@@ -66,6 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset objectParams.source=content.getContentID()>
 		<cfset objectParams.sourcetype='calendar'>
+
 	</cfsilent>
 	<cfsavecontent variable="data.html">
 	<cf_objectconfigurator params="#objectparams#">
@@ -74,6 +75,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			data-object="calendar"
 			data-name="Calendar"
 			data-objectid="#esapiEncode('html_attr',rc.contentid)#">
+
+			<cfif rc.$.getBean('configBean').getClassExtensionManager().getSubTypeByName(content.get('type'),content.get('subtype'),content.get('siteid')).getHasConfigurator()>
 			<div class="mura-layout-row">
 				<div class="mura-control-group">
 					<label>
@@ -192,6 +195,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				setLayoutOptions();
 			});
 		</script>
+		<cfelse>
+		</div>
+		</cfif>
 		</cfoutput>
 	</cf_objectconfigurator>
 	</cfsavecontent>

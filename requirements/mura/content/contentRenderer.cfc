@@ -1260,7 +1260,7 @@ Display Objects
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
 	<cfset var result="">
-		
+
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable and not arguments.include and arguments.object neq 'plugin'>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
@@ -1621,7 +1621,7 @@ Display Objects
 		<cfelse>
 			<cfif arguments.renderKids>
 				<cfif $.siteConfig().hasDisplayObject($.content('type'))>
-					<cfoutput>#dspObject(objectid=$.content('contentid'),object=$.content('type'),params=arguments.params)#</cfoutput>
+					<cfoutput>#dspObject(objectid=$.content('contentid'),object=$.content('type'),params=arguments.params,bodyRender=true)#</cfoutput>
 				<cfelse>
 					<cfif $.content('type') eq 'folder'>
 						<cf_CacheOMatic key="folderBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
