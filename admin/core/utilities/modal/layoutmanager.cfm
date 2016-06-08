@@ -117,6 +117,28 @@
 	</div>
 
 </div>
+<div class="mura__layout-manager__display-regions">
+	<div class="mura__layout-manager__display-regions__X">
+		<h3>Additional Display Regions</h3>
+
+		<div class="mura-region__item">
+			<h4>Region 1</h4>
+			<!-- may need to be renamed to 'mura-region' -->
+			<div class="mura-region__dropzone">
+				<!-- drop here -->
+			</div>
+		</div>
+
+		<div class="mura-region__item">
+			<h4>Region 3</h4>
+			<!-- may need to be renamed to 'mura-region' -->
+			<div class="mura-region__dropzone">
+				<!-- drop here -->
+			</div>
+		</div>
+
+	</div>
+</div>
 </div>
 <script>
 mura.ready(function(){
