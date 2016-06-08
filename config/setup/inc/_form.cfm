@@ -41,7 +41,7 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-	
+
 <cfif len( trim( message ) )>
 	<p class="alert alert-error">#message#</p>
 </cfif>
@@ -206,6 +206,7 @@ to your own modified versions of Mura CMS.
 		</div>
 		<div class="clear-both"></div>
 
+		<input type="text" name="production_encryptionkey" value="#FORM.production_encryptionkey#" />
 	</form><!-- END Form -->
 </div>
 <!-- END Simple Classic Progress Wizard -->

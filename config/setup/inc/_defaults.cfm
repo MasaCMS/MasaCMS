@@ -136,5 +136,9 @@ variables.setupProcessComplete	= false;
 	<cfparam name="FORM.production_indexfileinurls"	default="#settingsIni.get( "production", "indexfileinurls" )#" />
 </cfif>
 <cfparam name="FORM.production_cfpassword"			default="" />
+<!--- EncryptionKey --->
+<cfparam name="FORM.production_encryptionkey"	default="#settingsIni.get( "production", "encryptionkey" )#" />
+<cfif not len(FORM.production_encryptionkey)>
+	<cfset FORM.production_encryptionkey=createUUID()>
+</cfif>
 <!--- <cfdump var="#form#" abort="true"> --->
-
