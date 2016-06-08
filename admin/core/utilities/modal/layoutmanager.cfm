@@ -43,7 +43,7 @@
 							<br/><br/>
 						</cfif>
 						<cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
-							<button id="mura-objects-openregions-btn" class="btn btn-primary"><i class="mi-object-ungroup"></i> Additional Display Regions</button>
+							<button id="mura-objects-openregions-btn" class="btn btn-primary"><i class="mi-object-group"></i> Additional Display Regions</button>
 						</cfif>
 					</cfif>
 				</div>
