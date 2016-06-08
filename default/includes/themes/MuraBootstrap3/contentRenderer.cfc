@@ -70,7 +70,7 @@
 
 		// GENERAL
 		this.layoutmanager=true;
-		this.legacyobjects=false;
+		this.legacyobjects=true;
 		this.jsLib = "jquery";
 		this.jsLibLoaded = true;
 		this.suppressWhitespace = false;
