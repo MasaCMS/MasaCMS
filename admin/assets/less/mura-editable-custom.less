@@ -1,0 +1,100 @@
+
+.mura-editable {
+
+		position: relative !important;
+		min-height: 20px !important;
+		min-width: 20px !important;
+
+		.mura-editable-attribute {
+
+			outline: 1px dotted #ccc !important;
+
+			&:hover, &:mura-active, &:focus { outline: 1px dotted red !important; }
+
+			}
+
+		.mura-editable-label { display: none !important; }
+
+		&.inline { .inline-block() !important; }
+
+		&:hover .mura-editable-label {
+			position: absolute !important;
+			width: auto !important;
+			text-align: left !important;
+			font-size: 11px !important;
+			line-height: 1 !important;
+			color: #fff !important;
+			background: rgba(255,0,0,0.75) !important;
+			padding: 4px !important;
+			margin: 0 !important;
+			top: -20px !important;
+			left: -1px !important;
+			font-weight: normal !important;
+			/* text-shadow: -1px -1px 0 rgba(0,0,0,.2) !important; */
+			.inline-block() !important;
+			}
+
+		&.mura-inactive, &.mura-inactive:hover {
+
+			outline: 0 !important;
+			min-height: 0 !important;
+
+			.mura-editable-label { display: none !important; }
+
+			.mura-editable-attribute {
+
+				outline: 0px !important;
+
+				&:hover, &:mura-active, &:focus { outline: 0 !important; }
+
+				}
+
+			}
+	}
+
+
+#draft-prompt table {
+	font-size: 11px !important;
+}
+
+#approvalModalContainer {
+
+	dd {
+		margin: 0 0 1em 0;
+	}
+
+	textarea {
+		width: 95%
+	}
+
+}
+
+// bug fix for meta image not being clickable
+.mura-asset + .mura-region.mura-editable {
+	position: relative;
+	z-index: 1;
+}
+
+@media print{
+	.mura-toolbar{
+		display: none;
+	}
+
+	.editableObject ul.editableObjectControl{
+		display: none !important;
+	}
+}
+
+// CK Editor
+.editableObject .cke_editable form { border: 0 !important; padding: 0 !important;}
+.mura-edit-mode #frontEndTools > ul > li.dropdown:hover > ul.dropdown-menu { display: block !important; }
+
+// Z-Indexes
+#frontEndToolsModalContainer { z-index: 999999; }
+#shadowbox_container { z-index: 499997; }
+#shadowbox_overlay { z-index: 499996; }
+#dialog_overlay { z-index: 500000; }
+.editForm { z-index: 499998; }
+
+//Commented out in ckeditor.js
+//.cke_editable form { border: 1px dotted red; padding: 2px; }

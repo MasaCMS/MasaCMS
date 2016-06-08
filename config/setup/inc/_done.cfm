@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
  --->
 
 <div class="mura-focus-actions">
-	<a href="#context#/admin/?appreload&applydbupdates" class="btn mura-setup-complete">Log in <i class="mi mi-arrow-right"></i></a>
+	<a href="#context#/admin/?appreload&applydbupdates" class="btn mura-setup-complete">Log In<i class="mi mi-angle-right"></i></a>
 </div>
 
 </cfoutput>
