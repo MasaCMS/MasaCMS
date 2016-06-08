@@ -1377,6 +1377,7 @@
 		<cfargument name="returnFormat" default="string">
 		<cfargument name="renderer">
 		<cfargument name="layoutmanager">
+		<cfargument name="allowInheritance" default="true">
 
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
@@ -1429,7 +1430,7 @@
 					or (event.getValue('r').restrict and event.getValue('r').allow)))
 						and not (event.getValue('display') neq '' and arguments.renderer.getSite().getPrimaryColumn() eq arguments.columnid)>
 
-			<cfif event.getValue('contentBean').getinheritObjects() eq 'inherit'
+			<cfif arguments.allowInheritance and event.getValue('contentBean').getinheritObjects() eq 'inherit'
 				and event.getValue('inheritedObjects') neq ''
 				and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 					<cfset rsObjects=getBean('contentGateway').getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>

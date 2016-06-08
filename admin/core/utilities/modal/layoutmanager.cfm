@@ -136,7 +136,7 @@
 			<cfif not listFind(request.muraActiveRegions,r) and listLen(regionNames,'^') gte r>
 				<div class="mura-region__item">
 					<h4>#esapiEncode('html',listGetAt(regionNames,r,'^'))#</h4>
-					#$.dspObjects(r)#
+					#$.dspObjects(columnid=r,allowInheritance=false)#
 				</div>
 			</cfif>
 		</cfloop>
