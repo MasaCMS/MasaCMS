@@ -127,8 +127,8 @@
 <cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
 	<div class="mura__layout-manager__display-regions">
 		<div class="mura__layout-manager__display-regions__X">
+			<p><button id="mura-objects-closeregions-btn" class="btn btn-primary">Close <i class="mi-arrow-right"></i></button><p>
 			<h3>Additional Display Regions</h3>
-			<p><button id="mura-objects-closeregions-btn" class="btn btn-primary"><i class="mi-check"></i> Done Editing</button></p>
 
 			<cfset regionNames=$.siteConfig('columnNames')>
 			<cfset regionCount=$.siteConfig('columnCount')>
