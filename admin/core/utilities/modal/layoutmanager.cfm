@@ -36,8 +36,14 @@
 							</cfif>
 						</cfloop>
 					</div>
-					<cfif $.content('type') neq 'Variation' and this.legacyobjects>
-						<button id="mura-objects-legacy-btn" class="btn btn-primary"><i class="mi-object-ungroup"></i> Legacy Objects</button>
+
+					<cfif $.content('type') neq 'Variation'>
+						<cfif this.legacyobjects>
+							<button id="mura-objects-legacy-btn" class="btn btn-primary"><i class="mi-object-ungroup"></i> Legacy Objects</button>
+						</cfif>
+						<cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
+							<button id="mura-objects-openregions-btn" class="btn btn-primary"><i class="mi-object-ungroup"></i> Additional Display Regions</button>
+						</cfif>
 					</cfif>
 				</div>
 			</div>
@@ -101,7 +107,7 @@
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<h3>Editing Content</h3>
-						<button class="mura-objects-back-btn btn btn-primary" id="mura-deactivate-editors">Done Editing</button>
+						<button class="mura-objects-back-btn btn btn-primary" id="mura-deactivate-editors"><i class="mi-check"></i> Done Editing</button>
 					</div>
 				</div>
 
@@ -117,28 +123,26 @@
 	</div>
 
 </div>
-<div class="mura__layout-manager__display-regions">
-	<div class="mura__layout-manager__display-regions__X">
-		<h3>Additional Display Regions</h3>
+<cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
+	<div class="mura__layout-manager__display-regions">
+		<div class="mura__layout-manager__display-regions__X">
+			<h3>Additional Display Regions</h3>
+			<p><button id="mura-objects-closeregions-btn" class="btn btn-primary"><i class="mi-check"></i> Done Editing</button></p>
 
-		<div class="mura-region__item">
-			<h4>Region 1</h4>
-			<!-- may need to be renamed to 'mura-region' -->
-			<div class="mura-region__dropzone">
-				<!-- drop here -->
-			</div>
+			<cfset regionNames=$.siteConfig('columnNames')>
+			<cfset regionCount=$.siteConfig('columnCount')>
+
+			<cfloop from="1" to="#regionCount#" index="r">
+			<cfif not listFind(request.muraActiveRegions,r) and listLen(regionNames,'^') gte r>
+				<div class="mura-region__item">
+					<h4>#esapiEncode('html',listGetAt(regionNames,r,'^'))#</h4>
+					#$.dspObjects(r)#
+				</div>
+			</cfif>
+		</cfloop>
 		</div>
-
-		<div class="mura-region__item">
-			<h4>Region 3</h4>
-			<!-- may need to be renamed to 'mura-region' -->
-			<div class="mura-region__dropzone">
-				<!-- drop here -->
-			</div>
-		</div>
-
 	</div>
-</div>
+</cfif>
 </div>
 <script>
 mura.ready(function(){
@@ -152,6 +156,20 @@ mura.ready(function(){
 	mura('##mura-objects-legacy-btn').click(function(e){
 		e.preventDefault();
 		muraInlineEditor.sidebarAction('showlegacyobjects');
+	});
+
+	mura('##mura-objects-openregions-btn').click(function(e){
+		e.preventDefault();
+		var el=mura('body');
+		if(el.hasClass('mura-regions-state__pushed--right')){
+			el.removeClass('mura-regions-state__pushed--right');
+		} else {
+			el.addClass('mura-regions-state__pushed--right');
+		}
+	});
+	mura('##mura-objects-closeregions-btn').click(function(e){
+		e.preventDefault();
+		mura('body').removeClass('mura-regions-state__pushed--right');
 	});
 
 	mura('.mura-objects-back-btn').click(function(e){

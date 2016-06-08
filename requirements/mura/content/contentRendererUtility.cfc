@@ -1386,6 +1386,9 @@
 		<cfset var perm=(listFindNoCase('author,editor',$.event('r').perm))?true:false>
 		<cfset var i=''>
 		<cfset var html=''>
+		<cfparam name="request.muraActiveRegions" default="">
+
+		<cfset request.muraActiveRegions=listAppend(request.muraActiveRegions,arguments.columnid)>
 
 		<cfif arguments.renderer.uselayoutmanager()>
 			<cfset var inheritedObjectsPerm='none'>

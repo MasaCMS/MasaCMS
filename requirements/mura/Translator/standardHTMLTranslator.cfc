@@ -61,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var inheritedObjectsPerm="">
 	<cfset var inheritedObjectsContentID="">
 	<cfset var defaultTemplatePath = arguments.event.getSite().getTemplateIncludePath() & '/default.cfm' />
+	<cfset request.muraActiveRegions="">
 
 	<cfset variables.$=$>
 	<cfset variables.m=$>
