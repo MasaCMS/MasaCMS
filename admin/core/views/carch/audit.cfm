@@ -164,13 +164,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				</td>
 			</cfif>
-			<td class="notes"><cfif rc.item.getnotes() neq ''><a rel="tooltip" data-original-title="#esapiEncode('html_attr',rc.item.getnotes())#">View&nbsp;Note</a></cfif></td>
+			<td class="notes"><cfif rc.item.getnotes() neq ''>
+				<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html_attr',rc.item.getnotes())#" data-original-title="Notes">View&nbsp;Notes</span>
+			</cfif></td>
 			<cfif hasChangesets>
 				<td class="changeset">
 					<cfif len(rc.item.getchangesetID())>
 					<cfset changeset=$.getBean('changeset').loadby(changesetID=rc.item.getChangesetID())>
 
-					<cfif isDate(changeset.getPublishDate())><a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(changeset.getPublishDate(),"short"))#"> <i class="mi-calendar"></i></a></cfif>
+					<cfif isDate(changeset.getPublishDate())>
+						<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html_attr',LSDateFormat(changeset.getPublishDate(),"short"))#" data-original-title=""><i class="mi-calendar"></i></span>
+					</cfif>
 					<cfif hasChangesetAccess>
 						<a href="./?muraAction=cChangesets.assignments&siteID=#rc.item.getsiteid()#&changesetID=#rc.item.getchangesetID()#">		#esapiEncode('html',changeset.getName())#
 						</a>
