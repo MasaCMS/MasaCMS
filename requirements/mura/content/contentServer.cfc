@@ -507,6 +507,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="handleAPIRequest" output="false">
 	<cfargument name="path" default="#cgi.path_info#">
 	<cfset var jsonendpoint="/_api/json/v1">
+	<cfset var restendpoint="/_api/rest/v1">
 	<cfset var ajaxendpoint="/_api/ajax/v1">
 	<cfset var feedendpoint="/_api/feed/v1">
 	<cfset var fileendpoint="/_api/render/">
@@ -517,10 +518,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var legacyfileendpoint="/tasks/render/">
 	<cfset var legacywidgetendpoint="/tasks/widgets/">
 
-	<cfif left(path,len(jsonendpoint)) eq jsonendpoint or left(path,len(ajaxendpoint)) eq ajaxendpoint>
+	<cfif (left(arguments.path,len(jsonendpoint)) eq jsonendpoint or left(arguments.path,len(ajaxendpoint)) eq ajaxendpoint)>
 		<cfset request.muraAPIRequest=true>
-		<cfif listLen(path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('json','v1').processRequest(arguments.path)>
+		<cfif listLen(arguments.path,'/') gte 4>
+			<cfreturn getBean('settingsManager').getSite(listGetAt(arguments.path,4,'/')).getApi('json','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('form.siteid')>
 			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('json','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('url.siteid')>
@@ -528,9 +529,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfreturn getBean('settingsManager').getSite('default').getApi('json','v1').processRequest(arguments.path)>
 		</cfif>
-	<cfelseif isDefined('url.feedid') and (left(path,len(feedendpoint)) eq feedendpoint or left(path,len(legacyfeedendpoint)) eq legacyfeedendpoint)>
-		<cfif listLen(path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>
+	<cfelseif left(arguments.path,len(restendpoint)) eq restendpoint or left(arguments.path,len(restendpoint)) eq restendpoint>
+		<cfset request.muraAPIRequest=true>
+		<cfset request.muraAPIRequestMode='rest'>
+		<cfif listLen(arguments.path,'/') gte 4>
+			<cfreturn getBean('settingsManager').getSite(listGetAt(arguments.path,4,'/')).getApi('json','v1').processRequest(arguments.path)>
+		<cfelseif isDefined('form.siteid')>
+			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('json','v1').processRequest(arguments.path)>
+		<cfelseif isDefined('url.siteid')>
+			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('json','v1').processRequest(arguments.path)>
+		<cfelse>
+			<cfreturn getBean('settingsManager').getSite('default').getApi('json','v1').processRequest(arguments.path)>
+		</cfif>
+	<cfelseif isDefined('url.feedid') and (left(arguments.path,len(feedendpoint)) eq feedendpoint or left(arguments.path,len(legacyfeedendpoint)) eq legacyfeedendpoint)>
+		<cfif listLen(arguments.path,'/') gte 4>
+			<cfreturn getBean('settingsManager').getSite(listGetAt(arguments.path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('form.siteid')>
 			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('feed','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('url.siteid')>
@@ -556,7 +569,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn application.contentRenderer.renderMedium(url.fileID)>
 			</cfcase>
 		</cfswitch>
-	<cfelseif left(path,len(sitemonitorendpoint)) eq sitemonitorendpoint>
+	<cfelseif left(arguments.path,len(sitemonitorendpoint)) eq sitemonitorendpoint>
 		<cfset var theTime=now()/>
 		<cfset var emailList="" />
 		<cfset var theemail="" />
