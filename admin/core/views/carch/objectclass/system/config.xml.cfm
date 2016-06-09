@@ -1,2 +1,1 @@
-<displayobject name="System" contenttypes="*"/>
-
+<displayobject name="System" contenttypes="*" omitcontenttypes="Variation"/>

@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent displayname="FormBuilderManager" output="false">
@@ -49,13 +49,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="init" access="public" output="false" returntype="FormBuilderManager">
 		<cfargument name="configBean" type="any" required="yes"/>
-		
+
 		<cfset variables.configBean = configBean />
-				
+
 		<cfset variables.filePath = "#expandPath("/muraWRM")#/admin/core/utilities/formbuilder/templates" />
 		<cfset variables.templatePath = "/muraWRM/admin/core/utilities/formbuilder/templates" />
 		<cfset variables.fields["en"] = StructNew()>
-		
+
 		<cfreturn this/>
 	</cffunction>
 
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfreturn formBean  />
 		</cfif>
-		
+
 	</cffunction>
 
 	<cffunction name="getFieldBean" access="public" output="false" returntype="any">
@@ -95,10 +95,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var fieldTypeBean	= "" />
 		<cfset var mmRBF			= application.rbFactory />
 		<cfset var fieldTypeName	= rereplace(arguments.fieldType,".[^\-]*-","") />
+		<cfset var sessionData=getSession()>
 
 		<cfset fieldTypeBean	= getFieldTypeBean( fieldType=fieldType,asJSON=arguments.asJSON ) />
 		<cfset fieldBean.setFieldType( fieldTypeBean ) />
-		<cfset fieldBean.setLabel( mmRBF.getKeyValue(session.rb,'formbuilder.new') & " " & mmRBF.getKeyValue(session.rb,'formbuilder.field.#fieldTypeName#') ) />
+		<cfset fieldBean.setLabel( mmRBF.getKeyValue(sessionData.rb,'formbuilder.new') & " " & mmRBF.getKeyValue(sessionData.rb,'formbuilder.field.#fieldTypeName#') ) />
 
 		<cfif arguments.asJSON>
 			<cfreturn fieldBean.getasJSON() />
@@ -142,12 +143,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var fieldTypeBean		= createObject('component','fieldtypeBean').init(fieldTypeID=arguments.fieldTypeID,fieldtype=typeName,displayType=displayName) />
 
 		<cfswitch expression="#fieldTypeBean.getFieldType()#">
-			<cfcase value="dropdown,checkbox,radio" >
+			<cfcase value="dropdown,checkbox,radio,multientity" >
 				<cfset fieldTypeBean.setIsData( 1 ) />
-			</cfcase>	
+			</cfcase>
 			<cfcase value="textarea,htmleditor" >
 				<cfset fieldTypeBean.setIsLong( 1 ) />
-			</cfcase>	
+			</cfcase>
 		</cfswitch>
 
 		<cfif arguments.asJSON>
@@ -167,19 +168,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var templatePath			= "#variables.templatePath#/#fieldTemplate#" />
 		<cfset var strField				= "" />
 		<cfset var mmRBF				= application.rbFactory />
-		
+		<cfset var sessionData=getSession()>
+
 		<cfif not StructKeyExists( variables.fields,arguments.locale)>
 			<cfset variables.fields[arguments.locale] = StructNew()>
 		</cfif>
-		
+
 		<cfif arguments.reload or not StructKeyExists( variables.fields[arguments.locale],fieldTemplate)>
 			<cfif not fileExists( filePath )>
-				<cfreturn mmRBF.getKeyValue(session.rb,'formbuilder.missingfieldtemplatefile') & ": " & fieldTemplate />
+				<cfreturn mmRBF.getKeyValue(sessionData.rb,'formbuilder.missingfieldtemplatefile') & ": " & fieldTemplate />
 			</cfif>
 			<cfsavecontent variable="strField"><cfinclude template="#templatePath#"></cfsavecontent>
 			<cfset variables.fields[arguments.locale][arguments.fieldType] = trim(strField) />
 		</cfif>
-	
+
 		<cfreturn variables.fields[arguments.locale][arguments.fieldType] />
 	</cffunction>
 
@@ -193,19 +195,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var templatePath			= "#variables.templatePath#/#dialogTemplate#" />
 		<cfset var strField				= "" />
 		<cfset var mmRBF				= application.rbFactory />
-		
+		<cfset var sessionData=getSession()>
+
 		<cfif not StructKeyExists( variables.fields,arguments.locale)>
 			<cfset variables.fields[arguments.locale] = StructNew()>
 		</cfif>
-		
+
 		<cfif arguments.reload or not StructKeyExists( variables.fields[arguments.locale],dialogTemplate)>
 			<cfif not fileExists( filePath )>
-				<cfreturn mmRBF.getKeyValue(session.rb,'formbuilder.missingfieldtemplatefile') & ": " & dialogTemplate />
+				<cfreturn mmRBF.getKeyValue(sessionData.rb,'formbuilder.missingfieldtemplatefile') & ": " & dialogTemplate />
 			</cfif>
 			<cfsavecontent variable="strField"><cfinclude template="#templatePath#"></cfsavecontent>
 			<cfset variables.fields[arguments.locale][arguments.dialog] = trim(strField) />
 		</cfif>
-	
+
 		<cfreturn variables.fields[arguments.locale][arguments.dialog] />
 	</cffunction>
 
@@ -218,9 +221,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var formBean			= "" />
 		<cfset var fieldBean		= "" />
 		<cfset var mmRBF			= application.rbFactory />
+		<cfset var sessionData=getSession()>
 
 		<cfif not isJSON( arguments.formJSON )>
-			<cfthrow message="#mmRBF.getKeyValue(session.rb,"formbuilder.mustbejson")#" >
+			<cfthrow message="#mmRBF.getKeyValue(sessionData.rb,"formbuilder.mustbejson")#" >
 		</cfif>
 
 		<cfset formStruct = deserializeJSON(arguments.formJSON) />
@@ -237,16 +241,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var mmRBF			= application.rbFactory />
 		<cfset var dataArray		= ArrayNew(1) />
 		<cfset var x				= "" />
-		
+
 		<cfset var dataOrder		= ArrayNew(1) />
 		<cfset var dataRecords		= StructNew() />
+		<cfset var dataBean			= "" />
+		<cfset var rsData			= "" />
+		<cfset var primaryKey		= "" />
+		<cfset var rowid			= "" />
+		<cfset var sessionData=getSession()>
 
-		<cfif not StructKeyExists( arguments.dataset,"datasetID" )>			
-			<cfthrow message="#mmRBF.getKeyValue(session.rb,"formbuilder.invaliddataset")#" >
+		<cfif not StructKeyExists( arguments.dataset,"datasetID" )>
+			<cfthrow message="#mmRBF.getKeyValue(sessionData.rb,"formbuilder.invaliddataset")#" >
 		</cfif>
 
 		<cfswitch expression="#arguments.dataset.sourcetype#">
 			<cfcase value="manual,entered">
+				<cfreturn arguments.dataset />
+			</cfcase>
+			<cfcase value="muraorm">
+
+				<cfset dataBean = $.getBean( arguments.dataset.source ) />
+				<cfset primaryKey = dataBean.getPrimaryKey() />
+				<cfset rsData = dataBean
+					.loadby( siteid = $.event('siteid'))
+					.getFeed()
+					.getQuery() />
+
+				<cfloop query="#rsData#">
+					<cfset rowid = rsdata[primaryKey] />
+					<cfset ArrayAppend( arguments.dataset.datarecordorder,rowid )>
+					<cfset arguments.dataset.datarecords[rowid] = $.getBean('utility').queryRowToStruct( rsData,currentrow )>
+					<cfset arguments.dataset.datarecords[rowid]['value'] = rowid>
+					<cfset arguments.dataset.datarecords[rowid]['datarecordid'] = rowid>
+					<cfset arguments.dataset.datarecords[rowid]['datasetid'] = dataset.datasetid>
+					<cfset arguments.dataset.datarecords[rowid]['isselected'] = 0>
+				</cfloop>
+
 				<cfreturn arguments.dataset />
 			</cfcase>
 			<cfcase value="object">
@@ -267,7 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfdefaultcase>
 
 		</cfswitch>
-	
+
 	</cffunction>
 
 	<cffunction name="getForms" access="public" output="false">
@@ -288,7 +318,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfreturn rs />
 	</cffunction>
-	
+
 	<cffunction name="renderNestedForm">
 		<cfargument name="$" required="true" type="any" />
 		<cfargument name="siteid" required="true" type="any" />
@@ -302,8 +332,406 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						isNested=true,
 						prefix=arguments.prefix
 					)/>
-					
+
 		<cfreturn renderedForm />
 	</cffunction>
+
+	<cfscript>
+
+
+
+	function generateFormObject($,event) {
+
+		var content = arguments.event.getValue('contentBean');
+		var siteid = $.event('siteid');
+//		var objectname = rereplacenocase( content.getValue('filename'),"-([a-z])","\U\1","all" );
+		var objectname = rereplacenocase( content.getValue('filename'),"[^[:alnum:]]","","all" );
+
+		var formStruct = deserializeJSON( arguments.event.getValue('contentBean').getValue('body'));
+
+		if( !structKeyExists(formStruct.form,'formattributes') || !structKeyExists(formStruct.form.formattributes,'muraormentities') || formStruct.form.formattributes.muraormentities neq 1 )
+			return;
+
+		var field = "";
+
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/model");
+		}
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model/core")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/model/core");
+		}
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model/core/formbuilder")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/model/core/formbuilder");
+		}
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model/beans")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/model/beans");
+		}
+		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/archive")) {
+			directoryCreate(#expandPath("/muraWRM/" & siteid)# & "/includes/archive");
+		}
+
+		var exists = fileExists( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc" );
+
+		var param = "";
+		var fieldcount = 0;
+
+		var fieldorder = [];
+		var listview = "";
+
+		for(var i = 1;i <= ArrayLen(formStruct.form.pages);i++) {
+			fieldorder.addAll(formStruct.form.pages[i]);
+		}
+
+		var fieldlist = formStruct.form.fields;
+
+		// start CFC
+		var con = 'component contentid="#content.getContentID()#" extends="mura.formbuilder.entityBean" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#Entity" displayName="#objectname#Entity" rendertype="form" access="public"';
+
+		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
+			field = fieldlist[ fieldorder[i] ];
+			if(field.fieldtype.fieldtype == 'textfield' and listLen(listview) < 5)
+				listview = listAppend(listview,field.name);
+		}
+
+		if(listLen(listview) > 0) {
+			con = con & ' listview="#listview#" ';
+		}
+
+		con = con & '{#chr(13)##chr(13)#// ** Not update safe! Edit extending bean in /model/beans **#chr(13)##chr(13)#';
+		con = con & '	property name="#lcase(objectname)#id" fieldtype="id";#chr(13)#';
+
+		var datasets = formStruct.datasets;
+
+		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
+			field = fieldlist[ fieldorder[i] ];
+
+			if( field.fieldtype.fieldtype != "section" && field.fieldtype.fieldtype != "textblock") {
+				fieldcount++;
+				param = '	property name="#field.name#"';
+				param = param & ' displayname="#field.label#"';
+				param = param & ' orderno="#fieldcount#"';
+
+				if(structKeyExists(field,'isrequired') && field.isrequired == true)
+					param = param & ' required="true"';
+
+				if(structKeyExists(field,'validatetype') && len(field.validatetype) > 0) {
+					param = param & ' validate="#field.validatetype#"';
+
+					if(field.validatetype == 'regex' && structKeyExists(field,'validateregex') && len(field.validateregex) > 0)
+						param = param & ' validateparams="#field.validateregex#"';
+				}
+
+				if(structKeyExists(field,'size') && isNumeric(field.size) && field.size > 0) {
+					param = param & ' length="#field.size#"';
+				}
+				else if(field.fieldtype.fieldtype == "textfield" || field.fieldtype.fieldtype == "hidden") {
+					param = param & ' length="250"';
+				}
+
+				param = param & '#getDataType($,field,datasets,objectname)#';
+
+				con = con & "#param#;#chr(13)#";
+			}
+		}
+
+		con = con & "#chr(13)##chr(13)#";
+
+		// close CFC
+		con = con & "#chr(13)#}";
+
+		fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/core/formbuilder/#lcase(objectname)#Entity.cfc",con );
+
+		if( !exists ) {
+		// start update safe CFC
+			var con = 'component contentid="#content.getContentID()#" extends="#siteid#.includes.model.core.formbuilder.#lcase(objectname)#Entity" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" rendertype="form" access="public"';
+			con = con & '{#chr(13)##chr(13)#// ** update safe ** #chr(13)##chr(13)#}';
+
+			fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc",con );
+		}
+
+		if(structKeyExists(application.objectMappings,objectname))
+		try {
+			StructDelete(application.objectMappings,objectname);
+		}
+		catch(any e) {
+
+		}
+
+		$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(objectname)#",siteid );
+		$.getBean(objectname).checkSchema();
+
+	}
+
+	function getDataType( $,fieldData,datasets,objectname ) {
+		var str = "";
+		var fieldtype = fieldData.fieldtype.fieldtype;
+		var dataset = {sourcetype='manual'};
+		var cfcBridgeName = "";
+
+		if(StructKeyExists( arguments.datasets,arguments.fieldData.datasetid )) {
+			dataset = arguments.datasets[arguments.fieldData.datasetid];
+			cfcBridgeName = lcase("#arguments.objectname##dataset.source#");
+		}
+
+		switch(fieldtype) {
+			case "nested":
+				if( dataset.sourcetype == 'muraorm' ) {
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(fieldData.name)#id"';
+					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,false);
+				}
+				else {
+					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+				}
+			break;
+			case "dropdown":
+				if( dataset.sourcetype == 'muraorm' ) {
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(fieldData.name)#id"';
+					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,true);
+				}
+				else {
+					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+				}
+			break;
+			case "radio":
+				if( dataset.sourcetype == 'muraorm' ) {
+					str = ' fieldtype="one-to-one" cfc="#dataset.source#" rendertype="#fieldtype#" fkcolumn="#lcase(fieldData.name)#id"';
+					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,false,true);
+				}
+				else {
+					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+				}
+			break;
+			case "checkbox":
+				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="#fieldtype#" source="#lcase(dataset.source)#" loadkey="#lcase(objectname)#id"';
+				createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,true,true);
+			break;
+			case "multiselect":
+				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="dropdown" source="#lcase(dataset.source)#" loadkey="#lcase(objectname)#id"';
+				createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,true,true);
+			break;
+			case "textfield":
+				str = ' datatype="varchar" rendertype="#fieldtype#" list=true';
+			break;
+			case "hidden":
+				str = ' datatype="varchar" rendertype="#fieldtype#"';
+			break;
+			case "file":
+				str = ' datatype="varchar" length="35" fieldtype="index" rendertype="#fieldtype#"';
+			break;
+			case "textarea":
+				str = ' datatype="text" rendertype="#fieldtype#"';
+			break;
+		}
+
+		return str;
+	}
+
+	function createFieldOptionCFC( $,fieldData,parentObject,cfcBridgeName,dataset,createJoinentity=false,createDataentity=false ) {
+		var objectname = fieldData.name;
+		var exists = fileExists( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(arguments.cfcBridgeName)#.cfc" );
+		var param = "";
+
+		objectname = rereplacenocase( objectname,"[^[:alnum:]]","","all" );
+
+		if( !exists && arguments.createJoinEntity ) {
+			// start relationship CFC
+			var con = 'component extends="mura.bean.beanORM" table="fb_#lcase(arguments.cfcBridgeName)#" entityName="#lcase(arguments.cfcBridgeName)#" displayName="#arguments.cfcBridgeName#" access="public" type="join" {#chr(13)##chr(13)#';
+
+			var con = con & '	property name="#lcase(arguments.cfcBridgeName)#id" fieldtype="id";#chr(13)##chr(13)#';
+
+			var con = con & '	property name="#lcase(arguments.parentobject)#" fieldtype="many-to-one" cfc="#arguments.parentobject#" fkcolumn="#lcase(arguments.parentobject)#id";#chr(13)#';
+			var con = con & '	property name="#lcase(dataset.source)#" fieldtype="one-to-one" cfc="#dataset.source#" fkcolumn="#lcase(dataset.source)#id";#chr(13)#';
+
+			con = con & "#chr(13)##chr(13)#";
+
+			// close relationship CFC
+			con = con & "#chr(13)#}";
+
+
+			fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(cfcBridgeName)#.cfc",con );
+
+			if( structKeyExists(application.objectMappings,dataset.source))
+			try {
+				StructDelete(application.objectMappings,dataset.source);
+			}
+			catch(any e) {}
+		}
+
+		if(arguments.createDataentity == false) {
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(cfcBridgeName)#",siteid );
+			$.getBean(cfcBridgeName).checkSchema();
+			return;
+		}
+
+		exists = fileExists( expandPath("/muraWRM/" & siteid) & "/includes/model/beans/#lcase(dataset.source)#.cfc" );
+
+		// data beans are never recreated
+		if(exists) {
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
+			$.getBean(dataset.source).checkSchema();
+			return;
+		}
+		else if(arguments.dataset.sourcetype != "muraorm") {
+			return;
+		}
+
+		// start data CFC
+		var con = 'component extends="mura.formbuilder.fieldOptionBean" table="fb_#lcase(dataset.source)#" entityName="#lcase(dataset.source)#" displayName="#dataset.source#" access="public" {#chr(13)##chr(13)#';
+
+		var con = con & '	property name="#lcase(dataset.source)#id" fieldtype="id";#chr(13)##chr(13)#';
+
+		con = con & "#chr(13)##chr(13)#";
+
+		// close data CFC
+		con = con & "#chr(13)#}";
+
+		fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(dataset.source)#.cfc",con );
+
+		if(structKeyExists(application.objectMappings,dataset.source))
+		try {
+			StructDelete(application.objectMappings,dataset.source);
+		}
+		catch(any e) {}
+
+		if(arguments.createDataentity == false) {
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
+			$.getBean(dataset.source).checkSchema();
+		}
+
+		if( arguments.createJoinEntity ) {
+			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(cfcBridgeName)#",siteid );
+			$.getBean(cfcBridgeName).checkSchema();
+
+		}
+
+	}
+
+	function getFormFromObject( siteid,formName,nested=false) {
+
+		return getFormProperties( argumentCollection=arguments );
+	}
+
+	function getModuleBeans( siteid ) {
+		var $=getBean('$').init(arguments.siteid);
+		var dirList = directoryList( #expandPath("/muraWRM/" & siteid)# & "/includes/model/beans",false,'query' );
+		var beanArray = [];
+
+		for(var i = 1; i <= dirList.recordCount;i++) {
+			var name = replaceNoCase( dirList.name[i],".cfc","");
+			arrayAppend(beanArray,{name=name});
+
+		}
+
+		return beanArray;
+	}
+
+
+	function getFormProperties( siteid,formName,nested=false,debug=false ) {
+
+		var $=getBean('$').init(arguments.siteid);
+		var formObj = $.getBean( arguments.formname );
+		var util = $.getBean('fb2Utility');
+		var props = formObj.getProperties();
+		var formProps = {};
+		var formArray = [];
+		var formFields = [];
+		var val = 100000;
+		var x = "";
+
+		for(var i in props) {
+			if( !listFindNoCase("errors,fromMuraCache,instanceID,isnew,saveErrors,site",i) ) {
+				formProps[i] = getFieldProperties( props[i] );
+
+				if( formProps[i].rendertype == "form" ) {
+					formProps[i]['nested'] = getFieldProperties( arguments.siteid,formProps[i].cfc,true );
+				}
+
+				if(!structKeyExists(formProps[i],"orderno"))
+					formProps[i]['orderno'] = val++;
+
+				if(structKeyExists(formProps[i],"cfc")) {
+					var dataBean = $.getBean(i);
+
+					if(dataBean.getProperty('source') != "") {
+						var dataBean = $.getBean(dataBean.getProperty('source'));
+					}
+
+					var options = dataBean
+						.getFeed()
+						.addParam(field='siteid',relationship='equals',criteria='#arguments.siteid#')
+						.getIterator();
+
+					formProps[i]['options'] = util.queryToArray( options.getQuery(),dataBean.getPrimaryKey() );
+				}
+			}
+		}
+
+		formArray = structSort(formProps,"numeric","asc","orderno" );
+
+		for( var i = 1;i <= ArrayLen(formArray);i++ ) {
+			ArrayAppend(formFields,formProps[formArray[i]]);
+		}
+
+		if(arguments.debug) {
+			writeDump(formFields);
+			abort;
+		}
+
+
+		return formFields;
+	}
+
+	function getFieldProperties( prop ) {
+
+		var fieldProp = {};
+
+		for(var x in arguments.prop ) {
+			fieldProp["#lcase(x)#"] = arguments.prop[x];
+		}
+
+		if( !structKeyExists(fieldProp,"rendertype")) {
+			fieldProp['rendertype'] = getRenderType( fieldProp );
+		}
+
+		return fieldProp;
+	}
+
+
+	function getRenderType( formProp ) {
+		var retType = "";
+
+		if( structKeyExists(formProp,"cfc") ) {
+			retType = "dropdown";
+		}
+
+		return retType;
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</cfscript>
 
 </cfcomponent>

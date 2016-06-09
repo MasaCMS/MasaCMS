@@ -137,7 +137,7 @@ CREATE TABLE tcontenteventreminders (
 	RemindHour integer NULL ,
 	RemindMinute integer NULL ,
 	RemindInterval integer NULL ,
-	isSent integer NULL 
+	isSent integer NULL
 );
 
 CREATE TABLE tcontentfeedadvancedparams (
@@ -155,7 +155,7 @@ CREATE TABLE tcontentfeedadvancedparams (
 CREATE TABLE tcontentfeeditems (
 	feedID char(35) NOT NULL ,
 	itemID char(35) NOT NULL ,
-	type varchar(50) NULL 
+	type varchar(50) NULL
 );
 
 CREATE TABLE tcontentfeeds (
@@ -204,7 +204,7 @@ CREATE TABLE tcontentdisplaytitleapprovals (
 	contentid char(35) NOT NULL ,
 	isApproved smallint NULL ,
 	email varchar(150) NULL ,
-	siteid varchar(25) NULL 
+	siteid varchar(25) NULL
 );
 
 CREATE TABLE tcontentratings (
@@ -228,7 +228,7 @@ CREATE TABLE temailreturnstats (
 	emailID char(35) NULL ,
 	email varchar(100) NULL ,
 	url varchar(1500) NULL ,
-	created timestamp NULL 
+	created timestamp NULL
 );
 
 CREATE TABLE temailstats (
@@ -238,7 +238,7 @@ CREATE TABLE temailstats (
 	returnClick integer NOT NULL DEFAULT 0 ,
 	bounce integer NOT NULL DEFAULT 0 ,
 	sent integer NOT NULL DEFAULT 0 ,
-	Created timestamp NULL 
+	Created timestamp NULL
 );
 
 CREATE TABLE temails (
@@ -293,12 +293,12 @@ CREATE TABLE tformresponsequestions (
 	formID char(35) NULL ,
 	formField varchar(50) NULL ,
 	formValue text NULL ,
-	pollValue varchar(255) NULL 
+	pollValue varchar(255) NULL
 );
 
 CREATE TABLE tglobals (
-	appreload timestamp NULL, 
-	loadlist varchar(500) NULL 
+	appreload timestamp NULL,
+	loadlist varchar(500) NULL
 );
 
 CREATE TABLE tmailinglist (
@@ -308,7 +308,7 @@ CREATE TABLE tmailinglist (
 	Description text NULL ,
 	LastUpdate timestamp NULL ,
 	isPurge integer NULL ,
-	isPublic integer NULL 
+	isPublic integer NULL
 );
 
 CREATE TABLE tmailinglistmembers (
@@ -325,7 +325,7 @@ CREATE TABLE tpermissions (
 	ContentID char(35) NULL ,
 	GroupID char(35) NULL ,
 	SiteID varchar(25) NULL ,
-	Type varchar(50) NULL 
+	Type varchar(50) NULL
 );
 
 CREATE TABLE tredirects (
@@ -427,7 +427,7 @@ CREATE TABLE tsystemobjects (
 	Object varchar(50) NULL ,
 	SiteID varchar(25) NULL ,
 	Name varchar(50) NULL ,
-	OrderNo integer NULL 
+	OrderNo integer NULL
 );
 
 CREATE TABLE tuseraddresses (
@@ -524,7 +524,7 @@ CREATE TABLE tcontentpublicsubmissionapprovals (
 	contentid char(35) NOT NULL ,
 	isApproved smallint NULL ,
 	email varchar(150) NULL ,
-	siteid varchar(25) NULL 
+	siteid varchar(25) NULL
 );
 
 CREATE TABLE tcontenttags (
@@ -681,8 +681,8 @@ INSERT INTO tsettings (SiteID,Site,MaxNestLevel,PageLimit,Locking,Domain,exportL
 INSERT INTO tcontent
   (SiteID,ModuleID,ParentID,ContentID,ContentHistID,RemoteID,RemoteURL,RemotePubDate,RemoteSourceURL,RemoteSource,Credits,FileID,Template,Type,subType,Active,OrderNo,Title,MenuTitle,Summary,Filename,MetaDesc,MetaKeyWords,Body,lastUpdate,lastUpdateBy,lastUpdateByID,DisplayStart,DisplayStop,Display,Approved,IsNav,Restricted,RestrictGroups,Target,TargetParams,responseChart,responseMessage,responseSendTo,responseDisplayFields,moduleAssign,displayTitle,Notes,inheritObjects,isFeature,ReleaseDate,IsLocked,nextN,sortBy,sortDirection,featureStart,featureStop,forceSSL,audience,keyPoints,searchExclude,path)
 VALUES
-  ('default','00000000000000000000000000000000003','00000000000000000000000000000000END','00000000000000000000000000000000003','6300ED4A-1320-5CC3-F9D6A2D279E386D0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Components',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,null)
-  ,('default','00000000000000000000000000000000004','00000000000000000000000000000000END','00000000000000000000000000000000004','6300ED59-1320-5CC3-F9706221E0EFF7A2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Forms',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,null)
+  ('default','00000000000000000000000000000000003','00000000000000000000000000000000END','00000000000000000000000000000000003','6300ED4A-1320-5CC3-F9D6A2D279E386D0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Components','Components',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,null)
+  ,('default','00000000000000000000000000000000004','00000000000000000000000000000000END','00000000000000000000000000000000004','6300ED59-1320-5CC3-F9706221E0EFF7A2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Forms','Forms',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,null)
   ,('default','00000000000000000000000000000000000','00000000000000000000000000000000END','00000000000000000000000000000000001','6300ED69-1320-5CC3-F922E3012E2C6BAE',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default.cfm','Page','Default',1,1,'Home','Home',NULL,NULL,NULL,NULL,NULL,current_timestamp,'System',NULL,NULL,NULL,1,1,1,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL,'Cascade',0,NULL,0,10,'orderno','asc',NULL,NULL,0,NULL,NULL,0,'''00000000000000000000000000000000001''')
   ,('default','00000000000000000000000000000000006','00000000000000000000000000000000END','00000000000000000000000000000000006','6300ED79-1320-5CC3-F92E6325C26664B6',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Advertising',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,null)
   ,('default','00000000000000000000000000000000000','00000000000000000000000000000000END','00000000000000000000000000000000000','6300ED88-1320-5CC3-F9E241684D21FEC9',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Site Manager',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,null)

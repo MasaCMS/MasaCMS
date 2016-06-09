@@ -41,7 +41,12 @@
 							value: jQuery(this).val()
 						});
 					});
-
+					/*
+					if( && $field.attr('val') == "" || $field.attr('val') == null ) {
+						console.log("skip");
+						return true;
+					}
+					*/
 
 					if( settings.bindTo == 'all' || $field.attr(settings.bindTo) ) {
 						var item = $field.attr(settings.bindBy);
@@ -181,7 +186,7 @@
 								}
 							});
 						} else {
-//							alert('not found: ' + item + " :: " + $field.attr('type'));
+//							console.log('not found: ' + item + " :: " + $field.attr('type'));
 						}
 					}
 				}

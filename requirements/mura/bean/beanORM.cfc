@@ -53,6 +53,7 @@ component extends="mura.bean.bean" versioned=false {
 		super.init();
 		variables.dbUtility="";
 		variables.entityName="";
+		variables.loadSQLHasWhereClause=false;
 
 		var props=getProperties();
 
@@ -81,14 +82,14 @@ component extends="mura.bean.bean" versioned=false {
 					}
 
 					if (prop.name eq 'lastupdateby'){
-						if(isDefined("session.mura") and session.mura.isLoggedIn){
-							variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50);
+						if(isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn){
+							variables.instance.LastUpdateBy = left(variables.sessionData.mura.fname & " " & variables.sessionData.mura.lname,50);
 						} else {
 							variables.instance.LastUpdateBy='';
 						}
 					} else if (prop.name eq 'lastupdatebyid'){
-						if(isDefined("session.mura") and session.mura.isLoggedIn){
-							variables.instance.LastUpdateById = session.mura.userID;
+						if(isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn){
+							variables.instance.LastUpdateById = variables.sessionData.mura.userID;
 						} else {
 							variables.instance.LastUpdateById='';
 						}
@@ -355,15 +356,15 @@ component extends="mura.bean.bean" versioned=false {
 				variables.instance.lastupdate = now();
 			}
 			if (structkeyexists(props, "lastupdateby")) {
-				if(isDefined("session.mura") and session.mura.isLoggedIn){
-					variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50);
+				if(isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn){
+					variables.instance.LastUpdateBy = left(variables.sessionData.mura.fname & " " & variables.sessionData.mura.lname,50);
 				} else {
 					variables.instance.LastUpdateBy='';
 				}
 			}
 			if (structkeyexists(props, "lastupdatebyid")) {
-				if(isDefined("session.mura") and session.mura.isLoggedIn){
-					variables.instance.LastUpdateById = session.mura.userID;
+				if(isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn){
+					variables.instance.LastUpdateById = variables.sessionData.mura.userID;
 				} else {
 					variables.instance.LastUpdateById='';
 				}
@@ -670,7 +671,7 @@ component extends="mura.bean.bean" versioned=false {
 		var props=getProperties();
 		var prop="";
 		var columns=getColumns();
-		var started=false;
+		var started=variables.loadSQLHasWhereClause;
 		var rs="";
 		var hasArg=false;
 		var hasdiscriminator=len(getDiscriminatorColumn());
@@ -685,7 +686,8 @@ component extends="mura.bean.bean" versioned=false {
 		}
 
 		savecontent variable="sql"{
-			writeOutput(getLoadSQL());
+			writeOutput(getLoadSQL() & " ");
+
 			for(var arg in arguments){
 				hasArg=false;
 				prop=arg;
@@ -795,7 +797,7 @@ component extends="mura.bean.bean" versioned=false {
 		}
 	}
 
-	private function getLoadSQL(){
+	function getLoadSQL(){
 		return "select * from #getTable()# ";
 	}
 
@@ -852,7 +854,7 @@ component extends="mura.bean.bean" versioned=false {
 				}
 
 				for(prop in getProperties()){
-					if(isSimpleValue(item.getValue(prop)) && isValid('uuid',item.getValue(prop))){
+					if(isSimpleValue(item.getValue(prop)) && isValid('uuid',item.getValue(prop)) ){
 						item.setValue(prop,arguments.keyFactory.get(item.getValue(prop)));
 					}
 
@@ -898,8 +900,8 @@ component extends="mura.bean.bean" versioned=false {
 		if(len(getValue('siteid'))){
 			return getValue('siteid');
 		} else {
-			param name="session.siteid" default="default";
-			return session.siteid;
+			param name="variables.sessionData.siteid" default="default";
+			return variables.sessionData.siteid;
 		}
 	}
 

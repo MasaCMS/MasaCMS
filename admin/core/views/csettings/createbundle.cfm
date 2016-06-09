@@ -47,8 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h1>Bundle Created</h1>
 
-<div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
+<div class="nav-module-specific btn-group">
+<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
 </div>
 
 <p>The bundle that you have requested has been created and is now available on your server at #rc.bundleFilePath#.</p>

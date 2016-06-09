@@ -76,7 +76,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
 		<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 		<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-		<div class="fieldset">
 			<h2>#esapiEncode('html',extendSetBean.getName())#</h2>
 		<cfsilent>
 		<cfset attributesArray=extendSetBean.getAttributes() />
@@ -84,36 +83,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
 			<cfset attributeBean=attributesArray[a]/>
 			<cfset attributeValue=contentBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-			<div class="control-group">
-		      	<label class="control-label">
+			<div class="mura-control-group">
+      	<label>
 				<cfif len(attributeBean.getHint())>
-				<a href="##" rel="tooltip" title="#esapiEncode('html_attr',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
+				<span data-toggle="popover" title="" data-placement="right"
+			  	data-content="#esapiEncode('html_attr',attributeBean.getLabel())#"
+			  	data-original-title="#esapiEncode('html_attr',attributeBean.gethint())#">
+					#attributeBean.getLabel()# <i class="mi-question-circle"></i></span>
 				<cfelse>
 				#esapiEncode('html',attributeBean.getLabel())#
 				</cfif>
 				</label>
-				<div class="controls">
 					#attributeBean.renderAttribute(theValue=attributeValue,bean=contentBean,compactDisplay=rc.compactDisplay,size='medium')#
 					<cfif attributeBean.getValidation() eq "URL">
 						<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
 							<div class="btn-group">
 		     	 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-		     	 				 	<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
+		     	 				 	<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
 		     	 				</a>
 		     	 				<ul class="dropdown-menu">
 		     	 					<li><a href="##" type="button" data-completepath="false" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
-		     	 						<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
+		     	 						<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
 		     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('#esapiEncode('javascript',attributeBean.getName())#');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
 		     	 				</ul>
 		     	 			</div>
 						<cfelse>
 							<div class="btn-group">
-			     	 			<button type="button" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="icon-folder-open"></i> Browse Assets</button>
+		     	 			<button type="button" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> Browse Assets</button>
 			     	 		</div>
 						</cfif>
 					</cfif>
 
-				</div>
 					<!---<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
 
 					<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
@@ -131,7 +131,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</div>
 		</cfloop>
-		</div><!--- /.fieldset --->
 		</span>
 	</cfloop>
 	</cfif>

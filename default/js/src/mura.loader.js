@@ -1,5 +1,5 @@
 //https://github.com/malko/l.js
-;(function(window){
+;(function(root){
 /*
 * script for js/css parallel loading with dependancies management
 * @author Jonathan Gotti < jgotti at jgotti dot net >
@@ -20,7 +20,7 @@
 * @note coding style is implied by the target usage of this script not my habbits
 */
 	/** gEval credits goes to my javascript idol John Resig, this is a simplified jQuery.globalEval */
-	var gEval = function(js){ ( window.execScript || function(js){ window[ "eval" ].call(window,js);} )(js); }
+	var gEval = function(js){ ( root.execScript || function(js){ root[ "eval" ].call(root,js);} )(js); }
 		, isA =  function(a,b){ return a instanceof (b || Array);}
 		//-- some minifier optimisation
 		, D = document
@@ -35,7 +35,7 @@
 	;
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
 
-	if( ! window.mura.ljs ){
+	if( ! root.mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
 			,header  = D[getElementsByTagName]("head")[0] || D.documentElement
@@ -222,8 +222,8 @@
 			}
 		}
 		//export ljs
-		window.mura.ljs = loader;
+		root.mura.ljs = loader;
 		// eval inside tag code if any
 	}
 	script && gEval(script);
-})(window);
+})(this);

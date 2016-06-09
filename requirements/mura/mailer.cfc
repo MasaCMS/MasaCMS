@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -65,6 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" default="">
 	<cfargument name="replyto" type="string" default="">
 	<cfargument name="bcc" type="string" required="true" default="">
+	<cfargument name="mailParamArray" type="array" required="false" hint='You can pass the attributes for the cfMailParam tag as an array of structured keys.'>
 
 	<cfset var mailserverUsername="" />
 	<cfset var mailserverIP="" />
@@ -117,24 +118,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tmt_cr = Chr(13) & Chr(10)>
 		<cfset tmt_mail_head = "This form was sent at: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')# #tmt_cr#">
 		<cfloop index="form_element" list="#fields.fieldnames#">
-			<cfif form_element neq 'siteid' 
-					and right(form_element,2) neq ".X" 
-					and right(form_element,2) neq ".Y" 
-					and form_element neq 'doaction' 
-					and form_element neq 'userid' 
-					and  form_element neq 'password2' 
-					and form_element neq 'submit' 
+			<cfif form_element neq 'siteid'
+					and right(form_element,2) neq ".X"
+					and right(form_element,2) neq ".Y"
+					and form_element neq 'doaction'
+					and form_element neq 'userid'
+					and  form_element neq 'password2'
+					and form_element neq 'submit'
 					and form_element neq 'sendto'
 					and form_element neq 'HKEY'
 					and form_element neq 'UKEY'
 					and structkeyexists(fields, form_element)>
-				
+
 				<cfif findNoCase('attachment',form_element) and isValid("UUID",fields['#form_element#'])>
-					
+
 					<cfset redirectID=createUUID() />
 					<cfset site=variables.settingsManager.getSite(arguments.siteid)>
 					<cfset reviewLink='#site.getResourcePath(complete=1)#/index.cfm/_api/render/file/?fileID=#fields["#form_element#"]#&method=attachment' />
-					
+
 					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					insert into tredirects (redirectID,URL,created) values(
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
@@ -142,31 +143,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 					)
 					</cfquery>
-					
+
 					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "#site.getWebPath(complete=1)##site.getContentRenderer().getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
-					
+
 				<cfelse>
 					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & fields['#form_element#'] & tmt_cr>
 				</cfif>
-			
+
 			</cfif>
 		</cfloop>
 
 		<cftry>
 			<cfif useDefaultSMTPServer>
-				<cfmail to="#filteredSendTo#" 
+				<cfmail to="#filteredSendTo#"
 						from="#arguments.from# <#fromEmail#>"
-						subject="#arguments.subject#" 
+						subject="#arguments.subject#"
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
 						bcc="#arguments.bcc#">#tmt_mail_head##Chr(13)##Chr(10)##trim(tmt_mail_body)#
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
 				</cfmail>
 			<cfelse>
-				<cfmail to="#filteredSendTo#" 
+				<cfmail to="#filteredSendTo#"
 						from="#arguments.from# <#fromEmail#>"
-						subject="#arguments.subject#" 
-						server="#MailServerIp#" 
-						username="#MailServerUsername#" 
+						subject="#arguments.subject#"
+						server="#MailServerIp#"
+						username="#MailServerUsername#"
 						password="#MailServerPassword#"
 						port="#mailserverPort#"
 						useTLS="#mailserverTLS#"
@@ -174,6 +180,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
 						bcc="#arguments.bcc#">#tmt_mail_head##Chr(13)##Chr(10)##trim(tmt_mail_body)#
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
 				</cfmail>
 
 			</cfif>
@@ -197,6 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="replyTo" type="string" default="">
 	<cfargument name="mailerID" type="string" default="">
 	<cfargument name="bcc" type="string" required="true" default="">
+	<cfargument name="mailParamArray" type="array" required="false" hint='You can pass the attributes for the cfMailParam tag as an array of structured keys.'>
 
 	<cfset var mailserverUsername=""/>
 	<cfset var mailserverIP=""/>
@@ -226,23 +238,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			fromEmail = getFromEmail(arguments.siteid);
 			mailServerFailto = IsValidEmailFormat(fromEmail) ? fromEmail : '';
 		</cfscript>
-		
+
 		<cftry>
 			<cfif useDefaultSMTPServer>
-				<cfmail to="#filteredSendTo#" 
+				<cfmail to="#filteredSendTo#"
 						from='"#arguments.from#" <#fromEmail#>'
-						subject="#arguments.subject#" 
+						subject="#arguments.subject#"
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
 						type="text"
 						mailerid="#arguments.mailerID#"
-						bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
+						bcc="#arguments.bcc#">#trim(arguments.text)#
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
+				</cfmail>
 			<cfelse>
-				<cfmail to="#filteredSendTo#" 
+				<cfmail to="#filteredSendTo#"
 						from='"#arguments.from#" <#fromEmail#>'
-						subject="#arguments.subject#" 
-						server="#MailServerIp#" 
-						username="#MailServerUsername#" 
+						subject="#arguments.subject#"
+						server="#MailServerIp#"
+						username="#MailServerUsername#"
 						password="#MailServerPassword#"
 						port="#mailserverPort#"
 						useTLS="#mailserverTLS#"
@@ -251,7 +269,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						failto="#mailServerFailto#"
 						type="text"
 						mailerid="#arguments.mailerID#"
-						bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
+						bcc="#arguments.bcc#">#trim(arguments.text)#
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
+				</cfmail>
 			</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
@@ -273,6 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="replyTo" type="string" default="">
 	<cfargument name="mailerID" type="string" default="">
 	<cfargument name="bcc" type="string" required="true" default="">
+	<cfargument name="mailParamArray" type="array" required="false" hint='You can pass the attributes for the cfMailParam tag as an array of structured keys.'>
 
 	<cfset var mailserverUsername=""/>
 	<cfset var mailserverIP=""/>
@@ -304,20 +329,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cftry>
 			<cfif useDefaultSMTPServer>
-				<cfmail to="#filteredSendTo#" 
+				<cfmail to="#filteredSendTo#"
 						from='"#arguments.from#" <#fromEmail#>'
-						subject="#arguments.subject#" 
+						subject="#arguments.subject#"
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
 						type="html"
 						mailerid="#arguments.mailerID#"
-						bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
+						bcc="#arguments.bcc#">#trim(arguments.html)#
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
+				</cfmail>
 			<cfelse>
-				<cfmail to="#filteredSendTo#" 
+				<cfmail to="#filteredSendTo#"
 						from='"#arguments.from#" <#fromEmail#>'
-						subject="#arguments.subject#" 
-						server="#MailServerIp#" 
-						username="#MailServerUsername#" 
+						subject="#arguments.subject#"
+						server="#MailServerIp#"
+						username="#MailServerUsername#"
 						password="#MailServerPassword#"
 						port="#mailserverPort#"
 						useTLS="#mailserverTLS#"
@@ -326,7 +357,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						failto="#mailServerFailto#"
 						type="html"
 						mailerid="#arguments.mailerID#"
-						bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
+						bcc="#arguments.bcc#">#trim(arguments.html)#
+						<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
+							<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+								<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+							</cfloop>
+						</cfif>
+				</cfmail>
 			</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
@@ -349,6 +386,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="replyTo" type="string" default="">
 	<cfargument name="mailerID" type="string" default="">
 	<cfargument name="bcc" type="string" required="true" default="">
+	<cfargument name="mailParamArray" type="array" required="false" hint='You can pass the attributes for the cfMailParam tag as an array of structured keys.'>
 
 	<cfset var mailserverUsername=""/>
 	<cfset var mailserverIP=""/>
@@ -364,9 +402,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(arguments.siteid) and not len(arguments.from)>
 		<cfset arguments.from=getFromEmail(arguments.siteid)>
 	</cfif>
-	
+
 	<cfif len(filteredSendto)>
-		
+
 		<cfscript>
 			useDefaultSMTPServer = getUseDefaultSMTPServer(arguments.siteid);
 			mailServerUsername = getMailserverUsername(arguments.siteid);
@@ -381,9 +419,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cftry>
 		<cfif useDefaultSMTPServer>
-			<cfmail to="#filteredSendTo#" 
+			<cfmail to="#filteredSendTo#"
 					from='"#arguments.from#" <#fromEmail#>'
-					subject="#arguments.subject#" 
+					subject="#arguments.subject#"
 					replyto="#arguments.replyto#"
 					failto="#mailServerFailto#"
 					type="html"
@@ -391,13 +429,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					bcc="#arguments.bcc#">
 				<cfmailpart type="text/plain">#trim(arguments.text)#</cfmailpart>
 				<cfmailpart type="text/html">#trim(arguments.html)#</cfmailpart>
+				<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
+					<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+						<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+					</cfloop>
+				</cfif>
 			</cfmail>
 		<cfelse>
-			<cfmail to="#filteredSendTo#" 
+			<cfmail to="#filteredSendTo#"
 					from='"#arguments.from#" <#fromEmail#>'
-					subject="#arguments.subject#" 
-					server="#MailServerIp#" 
-					username="#MailServerUsername#" 
+					subject="#arguments.subject#"
+					server="#MailServerIp#"
+					username="#MailServerUsername#"
 					password="#MailServerPassword#"
 					port="#mailserverPort#"
 					useTLS="#mailserverTLS#"
@@ -409,6 +452,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					bcc="#arguments.bcc#">
 				<cfmailpart type="text/plain">#trim(arguments.text)#</cfmailpart>
 				<cfmailpart type="text/html">#trim(arguments.html)#</cfmailpart>
+				<cfif isDefined('arguments.mailParamArray') and isArray(arguments.mailParamArray)>
+					<cfloop array="#arguments.mailParamArray#" index="local.mailParamIndex">
+						<cfmailparam attributeCollection='#local.mailParamIndex#'/>
+					</cfloop>
+				</cfif>
 			</cfmail>
 		</cfif>
 		<cfcatch>
@@ -454,43 +502,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	public string function getUseDefaultSMTPServer(string siteid='') {
-		return Len(arguments.siteid) 
+		return Len(arguments.siteid)
 			? variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()
 			: variables.configBean.getUseDefaultSMTPServer();
 	}
 
 	public string function getMailServerUsername(string siteid='') {
-		return Len(arguments.siteid) 
+		return Len(arguments.siteid)
 			? variables.settingsManager.getSite(arguments.siteid).getMailServerUsername(true)
 			: variables.configBean.getMailServerUsername(true);
 	}
 
 	public string function getMailServerIP(string siteid='') {
-		return Len(arguments.siteid) 
+		return Len(arguments.siteid)
 			? variables.settingsManager.getSite(arguments.siteid).getMailServerIP()
 			: variables.configBean.getMailServerIP();
 	}
 
 	public string function getMailServerPassword(string siteid='') {
-		return Len(arguments.siteid) 
+		return Len(arguments.siteid)
 			? variables.settingsManager.getSite(arguments.siteid).getMailServerPassword()
 			: variables.configBean.getMailServerPassword();
 	}
 
 	public string function getMailServerPort(string siteid='') {
-		return Len(arguments.siteid) 
+		return Len(arguments.siteid)
 			? variables.settingsManager.getSite(arguments.siteid).getMailServerSMTPPort()
 			: variables.configBean.getMailServerSMTPPort();
 	}
 
 	public string function getMailServerTLS(string siteid='') {
-		return Len(arguments.siteid) 
+		return Len(arguments.siteid)
 			? variables.settingsManager.getSite(arguments.siteid).getMailServerTLS()
 			: variables.configBean.getMailServerTLS();
 	}
 
 	public string function getMailServerSSL(string siteid='') {
-		return Len(arguments.siteid) 
+		return Len(arguments.siteid)
 			? variables.settingsManager.getSite(arguments.siteid).getMailServerSSL()
 			: variables.configBean.getMailServerSSL();
 	}

@@ -7,7 +7,7 @@ select siteID from tsettings where siteid not in(
 <cfif rsCheck.recordcount>
 	<cfloop query="rsCheck">
 		<cfquery>
-		INSERT INTO tcontent 
+		INSERT INTO tcontent
 		(
 			SiteID
 			,ModuleID
@@ -84,8 +84,8 @@ select siteID from tsettings where siteid not in(
 			,'default'
 			,1
 			,NULL
-			,'Variations'
-			,NULL
+			,'Remote Variations'
+			,'Remote Variations'
 			,NULL
 			,NULL
 			,NULL

@@ -14,24 +14,24 @@
 
 	<!--- forward normal getters to the default getValue method --->
 	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>	
+		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
 		<cfif prefix eq "get">
 			<cfreturn getValue(prop)>
 		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
-			<cfset setValue(prop,MissingMethodArguments[1])>	
+			<cfset setValue(prop,MissingMethodArguments[1])>
 			<cfreturn this>
 		</cfif>
 	</cfif>
-	
+
 	<!--- otherwise get the bean and if the method exsists forward request --->
 	<cfset bean=getUserBean()>
-	
+
 	<cfif not structIsEmpty(MissingMethodArguments)>
 		<cfinvoke component="#bean#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
 	<cfelse>
 		<cfinvoke component="#bean#" method="#MissingMethodName#" returnvariable="theValue">
 	</cfif>
-		
+
 	<cfif isDefined("theValue")>
 		<cfreturn theValue>
 	<cfelse>
@@ -43,32 +43,35 @@
 </cfif>
 
 </cffunction>
-		
+
 <cffunction name="init" access="public" returntype="any" output="false">
+	<cfset variables.sessionData=getSession()>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValue" access="public" returntype="any" output="false">
-	<cfargument name="property">	
+	<cfargument name="property">
 	<cfset var theValue="">
+
 	<cfif isDefined('get#arguments.property#')>
 		<cfset var tempFunc=this["get#arguments.property#"]>
         <cfreturn tempFunc()>
-	<cfelseif not structKeyExists(session.mura,arguments.property)>
+	<cfelseif not structKeyExists(variables.sessionData.mura,arguments.property)>
 		<cfset theValue=getUserBean().getValue(arguments.property)>
 		<cfif isSimpleValue(theValue)>
-			<cfset session.mura[arguments.property]=theValue>
+			<cfset variables.sessionData.mura[arguments.property]=theValue>
 		</cfif>
 		<cfreturn theValue>
 	<cfelse>
-		<cfreturn session.mura[arguments.property]>
-	</cfif>	
+		<cfreturn variables.sessionData.mura[arguments.property]>
+	</cfif>
 </cffunction>
 
 <cffunction name="setValue" access="public" returntype="any" output="false">
 	<cfargument name="property">
-	<cfargument name="propertyValue">	
-	<cfset session.mura[arguments.property]=arguments.propertyValue>
+	<cfargument name="propertyValue">
+
+	<cfset variables.sessionData.mura[arguments.property]=arguments.propertyValue>
 	<cfset getUserBean().setValue(arguments.property, arguments.propertyValue)>
 	<cfreturn this>
 </cffunction>
@@ -77,7 +80,7 @@
 	<cfif isObject(variables.userBean) >
 		<cfreturn variables.userBean>
 	<cfelse>
-		<cfset variables.userBean=application.userManager.read(session.mura.userID)>
+		<cfset variables.userBean=application.userManager.read(variables.sessionData.mura.userID)>
 		<cfif variables.userBean.getIsNew()>
 			<cfset variables.userBean.setSiteID(getValue('siteID'))>
 		</cfif>
@@ -87,7 +90,7 @@
 
 <cffunction name="getFullName" access="public" returntype="any" output="false">
 	<cfif hasSession()>
-		<cfreturn trim("#session.mura.fname# #session.mura.lname#")>
+		<cfreturn trim("#variables.sessionData.mura.fname# #variables.sessionData.mura.lname#")>
 	<cfelse>
 		<cfreturn "">
 	</cfif>
@@ -96,20 +99,20 @@
 <cffunction name="isInGroup" access="public" returntype="boolean" output="false">
 	<cfargument name="group">
 	<cfargument name="isPublic" hint="optional">
-	<cfset var siteid=session.mura.siteID>
+	<cfset var siteid=variables.sessionData.mura.siteID>
 	<cfset var publicPool="">
 	<cfset var privatePool="">
-	
+
 	<cfif hasSession()>
-		<cfset siteid=session.mura.siteID>
+		<cfset siteid=variables.sessionData.mura.siteID>
 		<cfif structKeyExists(request,"siteid")>
 			<cfset siteID=request.siteID>
 		</cfif>
-		
+
 		<cfset publicPool=application.settingsManager.getSite(siteid).getPublicUserPoolID()>
 		<cfset privatePool=application.settingsManager.getSite(siteid).getPrivateUserPoolID()>
-		
-		<cfif session.mura.isLoggedIn and len(siteID)>
+
+		<cfif variables.sessionData.mura.isLoggedIn and len(siteID)>
 			<cfif structKeyExists(arguments,"isPublic")>
 				<cfif arguments.isPublic>
 					<cfreturn application.permUtility.isUserInGroup(arguments.group,publicPool,1)>
@@ -128,15 +131,15 @@
 </cffunction>
 
 <cffunction name="isPrivateUser" access="public" returntype="boolean" output="false">
-	<cfset var siteid=session.mura.siteID>
-	
+	<cfset var siteid=variables.sessionData.mura.siteID>
+
 	<cfif hasSession()>
-		<cfset siteid=session.mura.siteID>
-		
+		<cfset siteid=variables.sessionData.mura.siteID>
+
 		<cfif structKeyExists(request,"siteid")>
 			<cfset siteID=request.siteID>
 		</cfif>
-	
+
 		<cfreturn application.permUtility.isS2() or application.permUtility.isPrivateUser(siteid)>
 	<cfelse>
 		<cfreturn false>
@@ -159,15 +162,15 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isLoggedIn" access="public" returntype="boolean" output="false">	
+<cffunction name="isLoggedIn" access="public" returntype="boolean" output="false">
 	<cfif hasSession()>
-		<cfreturn session.mura.isLoggedIn>
+		<cfreturn variables.sessionData.mura.isLoggedIn>
 	<cfelse>
 		<cfreturn false>
 	</cfif>
 </cffunction>
 
-<cffunction name="isPassedLockdown" access="public" returntype="boolean" output="false">	
+<cffunction name="isPassedLockdown" access="public" returntype="boolean" output="false">
 	<cfif not structKeyExists(cookie, "passedLockdown")>
 		<cfcookie name="passedLockdown" value="false" expires="never" httpOnly="true" secure="#application.configBean.getValue('secureCookies')#">
 	</cfif>
@@ -175,7 +178,7 @@
 </cffunction>
 
 <cffunction name="hasSession" output="false" returntype="boolean">
-	<cfreturn isDefined("session.mura")>
+	<cfreturn isDefined("variables.sessionData.mura")>
 </cffunction>
 
 <cffunction name="logout" access="public" returntype="any" output="false">
@@ -192,27 +195,27 @@
 	<cfargument name="context" default="">
 
 	<!---CLEAR OLD TOKENS--->
-	<cfloop collection="#session.mura.csrfusedtokens#" item="local.key">
-		<cfif session.mura.csrfusedtokens['#local.key#'] lt dateAdd('h',-3,now())>
-			<cfset structDelete(session.mura.csrfusedtokens,'#local.key#')>
+	<cfloop collection="#variables.sessionData.mura.csrfusedtokens#" item="local.key">
+		<cfif variables.sessionData.mura.csrfusedtokens['#local.key#'] lt dateAdd('h',-3,now())>
+			<cfset structDelete(variables.sessionData.mura.csrfusedtokens,'#local.key#')>
 		</cfif>
 	</cfloop>
 
 	<!--- CAN ONLY USE TOKEN ONCE --->
-	<cfif not len(arguments.$.event('csrf_token')) or structKeyExists(session.mura.csrfusedtokens, "#arguments.$.event('csrf_token')#")>
+	<cfif not len(arguments.$.event('csrf_token')) or structKeyExists(variables.sessionData.mura.csrfusedtokens, "#arguments.$.event('csrf_token')#")>
 		<cfreturn false>
 	</cfif>
 
 	<cfif application.cfversion lt 10>
-		<cfif arguments.$.event('csrf_token_expires') gt (now() + 0) and arguments.$.event('csrf_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'))>
-			<cfset session.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now()>
+		<cfif arguments.$.event('csrf_token_expires') gt (now() + 0) and arguments.$.event('csrf_token') eq hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'))>
+			<cfset variables.sessionData.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now()>
 			<cfreturn true>
 		<cfelse>
 			<cfreturn false>
 		</cfif>
 	<cfelse>
-		<cfif arguments.$.event('csrf_token_expires') gt datetimeformat(now(),'yyMMddHHnnsslll') and arguments.$.event('csrf_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'))>
-			<cfset session.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now()>
+		<cfif arguments.$.event('csrf_token_expires') gt datetimeformat(now(),'yyMMddHHnnsslll') and arguments.$.event('csrf_token') eq hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'))>
+			<cfset variables.sessionData.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now()>
 			<cfreturn true>
 		<cfelse>
 			<cfreturn false>
@@ -234,7 +237,7 @@
 
 	<cfreturn {
 		expires=expires,
-		token=hash(arguments.context & session.mura.csrfsecretkey & expires)
+		token=hash(arguments.context & variables.sessionData.mura.csrfsecretkey & expires)
 	}>
 </cffunction>
 
@@ -249,7 +252,7 @@
 		</cfcase>
 		<cfcase value="json">
 			<cfreturn "{csrf_token:'#csrf.token#',csrf_token_expires:'#csrf.expires#'}">
-		</cfcase>	
+		</cfcase>
 		<cfdefaultcase>
 			<cfsavecontent variable="local.str">
 			<cfoutput>
@@ -260,7 +263,7 @@
 			<cfreturn local.str>
 		</cfdefaultcase>
 	</cfswitch>
-	
+
 </cffunction>
 
 </cfcomponent>

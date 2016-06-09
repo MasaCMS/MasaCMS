@@ -55,44 +55,6 @@
 	Mura CMS.
 --->
 <cfoutput>
-<cfif this.asyncObjects>
-	<cfif this.layoutmanager and len(arguments.object)>
-		 <cfset objectparams.async=true>
-	<cfelse>
-		<div class="mura-object mura-async-object mura-object-primary"
-			data-object="calendar"
-			data-objectname="Calendar"
-			data-objectid="#$.content('contentid')#"
-			<cfif variables.$.getCalendarUtility().hasCustomDateParams()>
-			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
-			data-month="#esapiEncode('html_attr',variables.$.event('month'))#"
-			data-day="#esapiEncode('html_attr',variables.$.event('day'))#"
-			data-dateparams="true"
-			</cfif>
-			data-items="#esapiEncode('html_attr',serializeJSON($.content().getObjectParam(param='items',defaultValue=[])))#"
-			data-viewoptions="#esapiEncode('html_attr',$.content().getObjectParam(param='viewoptions',defaultValue="agendaDay,agendaWeek,month"))#"
-			data-viewdefault="#esapiEncode('html_attr',$.content().getObjectParam(param='viewdefault',defaultValue="month"))#"
-			data-format="#esapiEncode('html_attr',$.content().getObjectParam(param='format',defaultValue="calendar"))#"
-			data-displaylist="#esapiEncode('html_attr',$.content('displaylist'))#"
-			data-tag="#esapiEncode('html_attr',variables.$.event('tag'))#"
-			data-sortby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
-			data-categoryid ="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
-			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"
-			data-displaylist="#esapiEncode('html_attr',variables.$.content('displaylist'))#"
-			data-layout="#esapiEncode('html_attr',variables.$.content().getObjectParam('layout'))#"
-			data-nextn="#esapiEncode('html_attr',variables.$.content('nextn'))#"
-			data-cssclass="#esapiEncode('html_attr',variables.$.content().getObjectParam('cssclass'))#"
-			<cfif $.content().getObjectParam(param='format',defaultValue="calendar") eq 'list' and $.content().getObjectParam(param='layout',defaultValue="default") eq 'default'>
-					data-imagesize="#esapiEncode('html_attr',variables.$.content('imageSize'))#"
-					<cfif variables.$.content('imageSize') eq 'custom'>
-						data-imageheight="#esapiEncode('html_attr',variables.$.content('imageHeight'))#"
-						data-imagewidth="#esapiEncode('html_attr',variables.$.content('imageWith'))#"
-					</cfif>
-			</cfif>
-			>
-		</div>
-	</cfif>
-<cfelse>
 	<cfsilent>
 		<cfparam name="objectParams.items" default="[]">
 		<cfparam name="objectParams.viewoptions" default="agendaDay,agendaWeek,month">
@@ -105,6 +67,16 @@
 		<cfparam name="objectParams.tag" default="">
 		<cfparam name="objectParams.layout" default="default">
 		<cfparam name="objectParams.dateparams" default="false">
+
+		<cfif not $.getContentRenderer().useLayoutManager()>
+			<cfset objectparams.displaylist=$.content('displayList')>
+			<cfset objectparams.sortBy=$.content('sortBy')>
+			<cfset objectparams.sortDirectory=$.content('sortDirectory')>
+			<cfset objectparams.nextn=$.content('nextn')>
+			<cfset objectparams.layout='default'>
+			<cfset objectParams.format='calendar'>
+		</cfif>
+
 		<cfif isJson(objectParams.items)>
 			<cfset objectParams.items=deserializeJSON(objectParams.items)>
 		<cfelseif isSimpleValue(objectParams.items)>
@@ -121,10 +93,6 @@
 		<cfset objectParams.sourcetype='calendar'>
 		#variables.dspObject(object='collection',objectid=variables.$.content('contentid'),params=objectParams)#
 	<cfelse>
-		<cfset this.calendarcolors=[
-			{background='##3a87ad',text='white'},
-			{background='blue',text='white'}
-		]>
 
 		<div class="mura-calendar-wrapper">
 			<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
@@ -208,7 +176,7 @@
 						</cfif>
 					</cfsilent>
 					{
-						url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc?calendarid=#esapiEncode("javascript",i)#'
+						url: '#variables.$.siteConfig().getApi("JSON","v1").getEndpoint()#/findCalendarItems?calendarid=#esapiEncode("javascript",i)#'
 						, type: 'POST'
 						, data: {
 							method: 'getFullCalendarItems'
@@ -216,6 +184,7 @@
 							, siteid: '#variables.$.content('siteid')#'
 							, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
 							, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
+							, format: 'fullcalendar'
 						}
 						, color: '#this.calendarcolors[colorIndex].background#'
 						, textColor: '#this.calendarcolors[colorIndex].text#'
@@ -232,7 +201,7 @@
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})
 				.loadjs(
-					"#$.siteConfig('requirementspath')#/fullcalendar/lib/moment.min.js",
+					"#$.siteConfig('requirementspath')#/fullcalendar/lib/moment-with-locales.min.js",
 					"#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.min.js",
 					"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
 					function(){
@@ -252,7 +221,6 @@
 							, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
 							, weekends: true // show weekends?
 							, weekMode: 'fixed' // fixed, liquid, or variable
-							<cfif $.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
 							, header: {
 								left: 'today prev,next'
 								, center: 'title'
@@ -262,9 +230,6 @@
 								, defaultView: 'agendaDay'
 							<cfelse>
 								, defaultView:  muraCalendarView.name
-							</cfif>
-							<cfelse>
-							, defaultView: 'month'
 							</cfif>
 							, viewRender: function(view,element){
 								if(view.end){
@@ -326,5 +291,14 @@
 		});
 		</script>
 	</cfif>
-</cfif>
 </cfoutput>
+
+<cfsilent>
+<!-- delete params that we don't want to persist --->
+<cfset structDelete(objectParams,'dateparams')>
+<cfset structDelete(objectParams,'items')>
+<cfset structDelete(objectParams,'categoryid')>
+<cfset structDelete(objectParams,'tag')>
+<cfset structDelete(objectParams,'sortyby')>
+<cfset structDelete(objectParams,'sortdirection')>
+</cfsilent>

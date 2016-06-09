@@ -47,57 +47,70 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.seo"))/>
 <cfset tabList=listAppend(tabList,"tabSEO")>
 <cfoutput>
-  <div id="tabSEO" class="tab-pane fade">
+  <div id="tabSEO" class="tab-pane">
+
+		<!-- block -->
+	  <div class="block block-bordered">
+	  	<!-- block header -->
+	    <div class="block-header">
+					<h3 class="block-title">SEO Settings</h3>
+	    </div>
+	    <!-- /block header -->
+			
+			<!-- block content -->
+			<div class="block-content">
 
   	<span id="extendset-container-tabseotop" class="extendset-container"></span>
 
-	  <div class="fieldset">
-					<div class="control-group">
-			      		<label class="control-label">
-			      			<a href="##" rel="tooltip" title="#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#">
+				<div class="mura-control-group">
+					<label>
+			    	<span data-toggle="popover" title="" data-placement="right" 
+				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle"))#" 
+				    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle"))#"
+				    	>	
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#
-			      			 <i class="icon-question-sign"></i></a>
+						 <i class="mi-question-circle"></i>
 			      		</label>
-						<div class="controls">
-							<input type="text" id="menuTitle" name="menuTitle" value="#esapiEncode('html_attr',rc.contentBean.getmenuTitle())#"  maxlength="255" class="span12">
-						</div>
+				<input type="text" id="menuTitle" name="menuTitle" value="#esapiEncode('html_attr',rc.contentBean.getmenuTitle())#"  maxlength="255">
 					</div>
 							
-					<div class="control-group">
-			      		<label class="control-label">
-			      			<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle"))#">
+				<div class="mura-control-group">
+					<label>
+			    	<span data-toggle="popover" title="" data-placement="right" 
+				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle"))#" 
+				    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle"))#"
+				    	>					
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#
-			      			 <i class="icon-question-sign"></i></a>
+						 <i class="mi-question-circle"></i>
 			      		</label>
-						<div class="controls">
-								<input type="text" id="urlTitle" name="urlTitle" value="#esapiEncode('html_attr',rc.contentBean.getURLTitle())#"  maxlength="255" class="span12">
-						</div>
+					<input type="text" id="urlTitle" name="urlTitle" value="#esapiEncode('html_attr',rc.contentBean.getURLTitle())#"  maxlength="255">
 					</div>
 						
-					<div class="control-group">
-			      		<label class="control-label">
-			      			<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#">
+				<div class="mura-control-group">
+					<label>
+			    	<span data-toggle="popover" title="" data-placement="right" 
+				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#" 
+				    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle"))#"
+				    	>					
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
-			      			 <i class="icon-question-sign"></i></a>
+						 <i class="mi-question-circle"></i>
 			      		</label>
-						<div class="controls">
-							<input type="text" id="htmlTitle" name="htmlTitle" value="#esapiEncode('html_attr',rc.contentBean.getHTMLTitle())#"  maxlength="255" class="span12">
-						</div>
-					</div>
-
-					 <div class="control-group">
-					  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
-					      <div class="controls"><textarea name="metadesc" rows="8" id="metadesc" class="span12">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea></div>
+				<input type="text" id="htmlTitle" name="htmlTitle" value="#esapiEncode('html_attr',rc.contentBean.getHTMLTitle())#"  maxlength="255">
 					    </div>
 
-					  <div class="control-group">
-					  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
-					      <div class="controls"><textarea name="metakeywords" rows="8" id="metakeywords" class="span12">#esapiEncode('html',rc.contentBean.getMETAKEYWORDS())#</textarea></div>
+				<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
+				  <textarea name="metadesc" rows="8" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
 					    </div>
 
+				<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
+				  <textarea name="metakeywords" rows="8" id="metakeywords">#esapiEncode('html',rc.contentBean.getMETAKEYWORDS())#</textarea>
 	  </div>
 
 	<span id="extendset-container-seo" class="extendset-container"></span>
 	<span id="extendset-container-tabseobottom" class="extendset-container"></span>
-
-</div></cfoutput>
+		</div> <!--- /.block-content --->
+	</div> <!--- /.block --->		
+</div> <!--- /.tab-pane --->
+</cfoutput>

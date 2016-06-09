@@ -51,13 +51,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))/>
 <cfset tabList=listAppend(tabList,"tabUsagereport")>
 <cfoutput>
-<div id="tabUsagereport" class="tab-pane fade">
+<div id="tabUsagereport" class="tab-pane">
 
-<span id="extendset-container-tabusagereporttop" class="extendset-container"></span>
+    <!-- block -->
+    <div class="block block-bordered">
+      <!-- block header -->
+      <div class="block-header">
+			   <h3 class="block-title">Usage Report</h3>
+      </div>
+      <!-- /block header -->
+      
+      <!-- block content -->
+      <div class="block-content">
+    <span id="extendset-container-tabusagereporttop" class="extendset-container"></span>
 
-<div class="fieldset">
-<div class="control-group">
-<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</label>
+    <div class="mura-control-group">
+    <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</label>
  <table class="mura-table-grid">
     <tr> 
       <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</th>
@@ -74,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   <td> 
 	    <cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</cfif></td>
 		<td>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
-          <td nowrap class="actions"><ul><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="icon-pencil"></i></a></li><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="icon-book"></i></a></li><cfelse><li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</li><li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</li></cfif></ul></td></tr>
+              <td nowrap class="actions"><ul><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-pencil"></i></a></li><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-history"></i></a></li><cfelse><li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</li><li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</li></cfif></ul></td></tr>
        </cfoutput>
       <cfelse>
      <cfoutput>
@@ -83,15 +92,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</td>
       </tr>
     </cfoutput></cfif>
-<cfoutput>
+    <cfoutput>
 	  </table>
 
 
-</div> <!--- / .control-group --->
-</div> <!--- / .fieldset --->
+    </div> <!--- / .mura-control-group --->
 
-<span id="extendset-container-usagereport" class="extendset-usagereport"></span>
-<span id="extendset-container-tabusagereportbottom" class="extendset-container"></span>
+    <span id="extendset-container-usagereport" class="extendset-usagereport"></span>
+    <span id="extendset-container-tabusagereportbottom" class="extendset-container"></span>
 
-</div> <!--- / .tab --->
+    </div> <!--- /.block-content --->
+  </div> <!--- /.block --->   
+</div> <!--- /.tab-pane --->
 </cfoutput>

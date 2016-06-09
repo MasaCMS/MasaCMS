@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="kids" fieldtype="one-to-many" cfc="content" nested=true fkcolumn="contentid" orderby="created asc" cascade="delete"/>
 <cfproperty name="parent" fieldtype="many-to-one" cfc="content" fkcolumn="parentid"/>
 <cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
-<cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign"/>
+<cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign" loadkey="contenthistid"/>
 <cfproperty name="changeset" fieldtype="many-to-one" cfc="changeset" fkcolumn="changesetid"/>
 <cfproperty name="comments" fieldtype="one-to-many" cfc="comment" fkcolumn="contentid"/>
 <cfproperty name="stats" fieldtype="one-to-one" cfc="stats" fkcolumn="contentid" />
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="expires" type="date" default=""/>
 <cfproperty name="assocFilename" type="string" default=""/>
-<cfproperty name="displayInterval" type="string" default="Daily" />
+<cfproperty name="displayInterval" default="Daily" />
 <cfproperty name="requestID" type="string" default="" comparable="false"/>
 <cfproperty name="approvalStatus" type="string" default=""/>
 <cfproperty name="approvalGroupID" type="string" default="" comparable="false"/>
@@ -168,9 +168,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.type = "Page" />
 	<cfset variables.instance.subType = "Default" />
 
-	<cfif isDefined("session.mura") and session.mura.isLoggedIn>
-		<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
-		<cfset variables.instance.LastUpdateByID = session.mura.userID />
+	<cfset var sessionData=getSession()>
+	<cfif isDefined("sessionData.mura") and sessionData.mura.isLoggedIn>
+		<cfset variables.instance.LastUpdateBy = left(sessionData.mura.fname & " " & sessionData.mura.lname,50) />
+		<cfset variables.instance.LastUpdateByID = sessionData.mura.userID />
 	<cfelse>
 		<cfset variables.instance.LastUpdateBy = "" />
 		<cfset variables.instance.LastUpdateByID = "" />
@@ -358,9 +359,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfif>
 
-			<cfif getBean('configBean').getValue(property='advancedScheduling',defaultValue=false)>
-
-			</cfif>
 		</cfif>
 
 		<cfif variables.instance.isFeature eq 2
@@ -472,9 +470,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 
-		<cfif isDefined("session.mura") and session.mura.isLoggedIn>
-			<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
-			<cfset variables.instance.LastUpdateByID = session.mura.userID />
+		<cfif isDefined("sessionData.mura") and sessionData.mura.isLoggedIn>
+			<cfset variables.instance.LastUpdateBy = left(sessionData.mura.fname & " " & sessionData.mura.lname,50) />
+			<cfset variables.instance.LastUpdateByID = sessionData.mura.userID />
 		<cfelse>
 			<cfset variables.instance.LastUpdateBy = "" />
 			<cfset variables.instance.LastUpdateByID = "" />
@@ -495,7 +493,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="validate" access="public" output="false">
 	<cfset var extErrors=structNew() />
 
-
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
@@ -509,6 +506,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFindNoCase('Form,Component',variables.instance.type)
 		and variables.contentManager.doesLoadKeyExist(this,'title',variables.instance.title)>
 			<cfset variables.instance.errors.titleconflict=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.titlenotunique")>
+	</cfif>
+
+	<cfif getValue('display') eq 2 and getDisplayConflicts().hasNext()>
+		<cfset variables.instance.errors.displayconflict=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.displayconflict")>
 	</cfif>
 
 	<cfif variables.instance.isNew
@@ -622,13 +623,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset purgeExtendedData()>
 		<cfif variables.instance.Type eq "Form">
 			<cfset variables.instance.moduleID="00000000000000000000000000000000004">
-			<cfset variables.instance.ParentID="00000000000000000000000000000000004">
+			<cfif not isValid('uuid',variables.instance.ParentID)>
+				<cfset variables.instance.ParentID="00000000000000000000000000000000004">
+			</cfif>
 		<cfelseif variables.instance.Type eq "Component">
 			<cfset variables.instance.moduleID="00000000000000000000000000000000003">
-			<cfset variables.instance.ParentID="00000000000000000000000000000000003">
+			<cfif not isValid('uuid',variables.instance.ParentID)>
+				<cfset variables.instance.ParentID="00000000000000000000000000000000003">
+			</cfif>
 		<cfelseif variables.instance.Type eq "Variation">
 			<cfset variables.instance.moduleID="00000000000000000000000000000000099">
-			<cfset variables.instance.ParentID="00000000000000000000000000000000099">
+			<cfif not isValid('uuid',variables.instance.ParentID)>
+				<cfset variables.instance.ParentID="00000000000000000000000000000000099">
+			</cfif>
 		</cfif>
 	</cfif>
 
@@ -785,6 +792,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<!--- for variations --->
+<cffunction name="getInitJS" output="false">
+	<cfreturn variables.instance.responseMessage>
+</cffunction>
+
+<cffunction name="setInitJS" output="false">
+	<cfargument name="initjs">
+	<cfset variables.instance.responseMessage=arguments.initjs>
+	<cfreturn this>
+</cffunction>
+<!--- --->
+
 <cffunction name="getDisplayStart" output="false">
 	<cfargument name="timezone" default="">
 
@@ -827,6 +846,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayInterval">
 
 	<cfif not isSimpleValue(arguments.displayInterval)>
+
+		<cfif isValid('component',arguments.displayInterval)>
+			<cfset arguments.displayInterval=arguments.displayInterval.getAllValues()>
+		</cfif>
+
 		<cfif isDefined('arguments.displayInterval.end') >
 			<cfif arguments.displayInterval.end eq 'on'
 			and isDefined('arguments.displayInterval.endon')
@@ -855,14 +879,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayInterval" output="false">
-	<cfargument name="deserialize" default="false">
+	<cfargument name="serialize" default="false">
 
-	<cfif arguments.deserialize>
-		<cfreturn getBean('contentIntervalManager').deserializeInterval(
+	<cfif not arguments.serialize>
+		<cfreturn getBean('contentDisplayInterval').set(getBean('contentIntervalManager').deserializeInterval(
 			interval=variables.instance.displayInterval,
 			displayStart=getValue('displayStart'),
 			displayStop=getValue('displayStop')
-		)>
+		)).setContent(this)>
 	<cfelse>
 		<cfreturn variables.instance.displayInterval>
 	</cfif>
@@ -1430,6 +1454,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="width" default=""/>
 	<cfargument name="default" default=""/>
 	<cfargument name="useProtocol" default="true"/>
+	<cfargument name="secure" default="false">
 	<cfset arguments.bean=this>
 	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
 </cffunction>
@@ -1448,23 +1473,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var crumb="">
 	<cfset var chain="">
 	<cfset var i="">
-	<cfloop condition="crumbs.hasNext()">
-		<cfset crumb=crumbs.next()>
-		<cfif len(crumb.getChainID())>
-			<cfset chain=getBean('approvalChain').loadBy(chainID=crumb.getChainID())>
-			<cfif not chain.getIsNew()>
-				<cfif arguments.applyExemptions and len(crumb.getExemptID()) and isdefined('session.mura.membershipids')>
-					<cfloop list="#crumb.getExemptID()#" index="i">
-						<cfif listFind(session.mura.membershipids,i)>
-							<cfreturn false>
-						</cfif>
-					</cfloop>
+	<cfset var permUtility=getBean('permUtility')>
+	<cfset var privateUserPool=getBean('settingsManager').getSite(getValue('siteid')).getPrivateUserPoolID()>
+
+	<cfif not ( permUtility.isS2() or permUtility.isUserInGroup('admin',privateUserPool,0) )>
+		<cfloop condition="crumbs.hasNext()">
+			<cfset crumb=crumbs.next()>
+			<cfif len(crumb.getChainID())>
+				<cfset chain=getBean('approvalChain').loadBy(chainID=crumb.getChainID())>
+				<cfif not chain.getIsNew()>
+					<cfif arguments.applyExemptions and len(crumb.getExemptID()) and isdefined('sessionData.mura.membershipids')>
+						<cfloop list="#crumb.getExemptID()#" index="i">
+							<cfif listFind(sessionData.mura.membershipids,i)>
+								<cfreturn false>
+							</cfif>
+						</cfloop>
+					</cfif>
+					<cfset setValue('chainID',crumb.getChainID())>
+					<cfreturn true>
 				</cfif>
-				<cfset setValue('chainID',crumb.getChainID())>
-				<cfreturn true>
 			</cfif>
-		</cfif>
-	</cfloop>
+		</cfloop>
+	</cfif>
 
 	<cfreturn false>
 </cffunction>
@@ -1553,7 +1583,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="hasImage">
-	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT'))>
+	<cfargument name="usePlaceholder" default="true">
+	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) or arguments.usePlaceholder and len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgId())>
 </cffunction>
 
 	<cffunction name="getStatusID" output="false">
@@ -1576,19 +1607,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="getStatus" output="false">
 		<cfset var status = '' />
-		<cfif IsDefined('session.rb')>
+		<cfif IsDefined('sessionData.rb')>
 			<cfswitch expression="#getStatusID()#">
 				<cfcase value="0">
-					<cfset status = application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft") />
+					<cfset status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.draft") />
 				</cfcase>
 				<cfcase value="1">
-					<cfset status = application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#variables.instance.approvalstatus#") />
+					<cfset status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.#variables.instance.approvalstatus#") />
 				</cfcase>
 				<cfcase value="2">
-					<cfset status = application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published") />
+					<cfset status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.published") />
 				</cfcase>
 				<cfdefaultcase>
-					<cfset status = application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived") />
+					<cfset status = application.rbFactory.getKeyValue(sessionData.rb,"sitemanager.content.archived") />
 				</cfdefaultcase>
 			</cfswitch>
 		</cfif>

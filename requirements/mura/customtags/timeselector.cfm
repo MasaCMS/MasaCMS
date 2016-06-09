@@ -43,19 +43,17 @@
 					<cfset attributes.defaulthour=12>
 				</cfif>
 				<cfset attributes.daypart="AM">
-			</cfif>	
+			</cfif>
 		</cfsilent>
 		<select id="#esapiEncode('html_attr',attributes.hourid)#" class="#esapiEncode('html_attr',attributes.hourclass)# mura-datepicker#esapiEncode('html_attr',attributes.name)#" name="#esapiEncode('html_attr',attributes.hourname)#"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif h eq attributes.defaulthour>selected</cfif>>#h#</option></cfloop></select>
 	<cfelse>
-		  <select  id="#esapiEncode('html_attr',attributes.hourid)#" class="#esapiEncode('html_attr',attributes.hourclass)# mura-datepicker#esapiEncode('html_attr',attributes.name)#" name="#esapiEncode('html_attr',attributes.hourname)#"><cfloop from="0" to="23" index="h"><option value="#h#" <cfif h eq attributes.defaulthour>selected</cfif>>#h#</option></cfloop></select>
+		<select  id="#esapiEncode('html_attr',attributes.hourid)#" class="#esapiEncode('html_attr',attributes.hourclass)# mura-datepicker#esapiEncode('html_attr',attributes.name)#" name="#esapiEncode('html_attr',attributes.hourname)#"><cfloop from="0" to="23" index="h"><option value="#h#" <cfif h eq attributes.defaulthour>selected</cfif>>#h#</option></cfloop></select>
 	</cfif>
 
 	<select id="#esapiEncode('html_attr',attributes.minuteid)#" class="#esapiEncode('html_attr',attributes.minuteclass)# mura-datepicker#esapiEncode('html_attr',attributes.name)#" name="#esapiEncode('html_attr',attributes.minutename)#"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif m eq attributes.defaultminute>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-	
+
 	<cfif session.localeHasDayParts>
 		<select id="#esapiEncode('html_attr',attributes.daypartid)#" class="#esapiEncode('html_attr',attributes.daypartclass)# mura-datepicker#esapiEncode('html_attr',attributes.name)#" name="#esapiEncode('html_attr',attributes.daypartname)#"><option value="AM">AM</option><option value="PM" <cfif attributes.daypart eq "PM">selected</cfif>>PM</option></select>
 	</cfif>
 
 </cfoutput>
-
-

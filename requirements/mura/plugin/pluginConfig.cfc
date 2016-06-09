@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="data"  type="any" default="#structNew()#">
 	<cfset var appcfcStr="">
 	<cfset variables.settings=arguments.data />
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setDirectory" access="public" output="false">
 	<cfargument name="directory" type="String" />
-	
+
 	<cfif arguments.directory neq variables.directory>
 		<cfset variables.directory = trim(arguments.directory) />
 		<cfset variables.CFStatic=structNew()>
@@ -192,14 +192,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setSetting" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
-	
+
 	<cfset variables.settings["#arguments.property#"]=arguments.propertyValue />
 
 </cffunction>
 
 <cffunction name="getSetting" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
-	
+
 	<cfif structKeyExists(variables.settings,"#arguments.property#")>
 		<cfreturn variables.settings["#arguments.property#"] />
 	<cfelse>
@@ -214,12 +214,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="addToHTMLHeadQueue" output="false">
 <cfargument name="text">
-	
+
 <cfset var headerStr=""/>
 <cfset var pluginPath=""/>
 <cfset var pluginConfig=this>
 <cfset var event="">
-<cfset var eventData=structNew()>	
+<cfset var eventData=structNew()>
+<cfset var sessionData=super.getSession()>
 
 <cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
 	<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
@@ -227,31 +228,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif structKeyExists(request,"servletEvent")>
 	<cfset event=request.servletEvent>
 <cfelse>
-	<cfif structKeyExists(session,"siteid")>
-		<cfset eventData.siteID=session.siteid>
+	<cfif structKeyExists(sessionData,"siteid")>
+		<cfset eventData.siteID=sessionData.siteid>
 	</cfif>
 	<cfset event=createObject("component","mura.event").init(eventData)>
 </cfif>
-<cfset pluginPath= application.configBean.getContext() & "/plugins/" & getDirectory() & "/" >		
+<cfset pluginPath= application.configBean.getContext() & "/plugins/" & getDirectory() & "/" >
 <cfsavecontent variable="headerStr">
 <cfinclude template="/plugins/#getDirectory()#/#arguments.text#">
 </cfsavecontent>
-<cfhtmlhead text="#headerStr#">	
+<cfhtmlhead text="#headerStr#">
 </cfif>
-	
+
 </cffunction>
 
 <cffunction name="addToHTMLFootQueue" output="false">
 <cfargument name="text">
-	
+
 <cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
 	<cfset request.contentRenderer.addtoHTMLFootQueue(getDirectory() & "/" & arguments.text) />
-</cfif>	
+</cfif>
 </cffunction>
 
 <cffunction name="getApplication" returntype="any" access="public" output="false">
 <cfargument name="purge" default="false">
-		
+
 		<cfif not structKeyExists(application,"plugins")>
 			<cflock name="settingPluginStruct#application.instanceID#" timeout="100">
 				<cfif not structKeyExists(application,"plugins")>
@@ -259,28 +260,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cflock>
 		</cfif>
-		
+
 		<cfif not structKeyExists(application.plugins,"p#getPluginID()#") or arguments.purge>
 			<cfset application.plugins["p#getPluginID()#"]=createObject("component","pluginApplication")>
 			<cfset application.plugins["p#getPluginID()#"].setPluginConfig(this)>
 		</cfif>
-		
+
 		<cfreturn application.plugins["p#getPluginID()#"] />
 </cffunction>
 
 <cffunction name="getSession" returntype="any" access="public" output="false">
 <cfargument name="purge" default="false">
-	
-		<cfif not structKeyExists(session,"plugins")>
-			<cfset session.plugins=structNew()>
+	<cfset var sessionData=super.getSession()>
+	<cfif not structKeyExists(sessionData,"plugins")>
+		<cfset sessionData.plugins=structNew()>
+	</cfif>
+
+		<cfif not structKeyExists(sessionData.plugins,"p#getPluginID()#") or arguments.purge>
+			<cfset sessionData.plugins["p#getPluginID()#"]=createObject("component","pluginSession")>
+			<cfset sessionData.plugins["p#getPluginID()#"].setPluginConfig(this)>
 		</cfif>
-		
-		<cfif not structKeyExists(session.plugins,"p#getPluginID()#") or arguments.purge>
-			<cfset session.plugins["p#getPluginID()#"]=createObject("component","pluginSession")>
-			<cfset session.plugins["p#getPluginID()#"].setPluginConfig(this)>
-		</cfif>
-		
-		<cfreturn session.plugins["p#getPluginID()#"] />
+
+		<cfreturn sessionData.plugins["p#getPluginID()#"] />
 </cffunction>
 
 <cffunction name="addEventHandler" output="false">
@@ -319,6 +320,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfreturn this>
 </cffunction>
 
+<cffunction name="registerDisplayObjectDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="conditional" default="true">
+    <cfargument name="package" default="">
+	<cfargument name="custom" default="true">
+	<cfset var settingsManager=getBean('settingsManager')>
+    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
+
+	<cfif listFind('/,\',left(arguments.dir,1) )>
+		<cfset arguments.dir='/' & getPackage() & arguments.dir>
+	<cfelse>
+		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
+	</cfif>
+
+    <cfloop query="rsSites">
+    <cfset settingsManager.getSite(rssites.siteid).registerDisplayObjectDir(argumentCollection=arguments)>
+    </cfloop>
+    <cfreturn this>
+</cffunction>
+
+<cffunction name="registerBeanDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="package">
+	<cfset var rssites=getPluginManager().getAssignedSites(getModuleID())>
+	<cfset var siteids=valueList(rssites.siteid)>
+
+	<cfif listFind('/,\',left(arguments.dir,1) )>
+		<cfset arguments.dir='/' & getPackage() & arguments.dir>
+	<cfelse>
+		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
+	</cfif>
+	<cfset getBean("configBean").registerBeanDir(dir=arguments.dir,siteid=siteids,moduleid=getModuleID())>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getAssignedSites" output="false" returntype="any">
     <cfreturn getPluginManager().getAssignedSites(getModuleID())>
 </cffunction>
@@ -326,11 +362,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="deleteCustomSetting" returntype="any" output="false">
 	<cfargument name="name" type="string" required="true">
 	<cfset var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm">
-	
+
 	<cfif fileExists(wddxFile)>
 		<cffile action="delete" file="#wddxFile#">
 	</cfif>
-	
+
 	<cfset structDelete(variables.customSettings,arguments.name)>
 
 </cffunction>
@@ -341,11 +377,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var customValue="">
 	<cfset var customWDDX="">
 	<cfset var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm">
-	
+
 	<cfif not variables.hasCustomSettingsDir>
 		<cfset createCustomSettingsDir()>
 	</cfif>
-	
+
 	<cfif structKeyExists(variables.customSettings,arguments.name)>
 		<cfreturn variables.customSettings["#arguments.name#"]>
 	<cfelseif fileExists(wddxFile)>
@@ -361,20 +397,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 </cffunction>
-	
+
 <cffunction name="setCustomSetting" returntype="void">
 	<cfargument name="name" type="string" required="true">
 	<cfargument name="value" type="any" required="true">
 	<cfset var temp="">
-	
+
 	<cfif not variables.hasCustomSettingsDir>
 		<cfset createCustomSettingsDir()>
 	</cfif>
-	
+
 	<cfif isQuery(arguments.value) and application.configBean.getDBType() eq "Oracle">
 		<cfset arguments.value=fixOracleClobs(arguments.value)>
 	</cfif>
-		
+
 	<cfset variables.customSettings["#name#"]=arguments.value>
 	<cfwddx action="cfml2wddx" input="#arguments.value#" output="temp">
 	<cffile action="write" output="#temp#" file="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm"  charset="utf-8">
@@ -385,7 +421,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsmeta=getMetaData(arguments.rs)>
 	<cfset var clobArray=arrayNew(1)>
 	<cfset var i=1>
-		
+
 	<cfif arrayLen(rsmeta)>
 	<cfloop from="1" to="#arrayLen(rsmeta)#" index="i">
 		<cfif rsmeta[i].typename eq "clob">
@@ -393,7 +429,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	</cfif>
-		
+
 	<cfif arrayLen(clobArray)>
 		<cfloop query="arguments.rs">
 			<cfloop from="1" to="#arrayLen(clobArray)#" index="i">
@@ -441,19 +477,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="currentUserAccess" output="false">
-	<cfreturn isDefined('session.siteID') and getBean('permUtility').getModulePerm(getModuleID(),session.siteID)>
-</cffunction>
-
-<cffunction name="discoverBeans" output="false">
-	<!---
-	<cfset var configBean=getBean("configBean")>
-	<cfset var dir='#configBean.getPluginDir#/#getDirectory()#'>
-	<cfset var package=getPackage()>
-	<cfset var siteids=valueList(getPluginManager().getAssignedSites(getModuleID()).siteid)>
-	<cfset configBean.registerBeanDir(dir='#dir#/model',siteid=siteids,moduleid=getModuleID())>
-	--->
-	<cfreturn this>	
+	<cfset var sessionData=super.getSession()>
+	<cfreturn isDefined('sessionData.siteID') and getBean('permUtility').getModulePerm(getModuleID(),sessionData.siteID)>
 </cffunction>
 
 </cfcomponent>
-

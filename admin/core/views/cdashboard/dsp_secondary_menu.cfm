@@ -47,8 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 
-
-<div id="nav-module-specific" class="btn-group">
+<div class="nav-module-specific btn-group">
 <!---
 <a class="btn<cfif rc.originalfuseaction eq 'main'> active</cfif>" href="./?muraAction=cDashboard.main&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.overview")#</a>
 --->

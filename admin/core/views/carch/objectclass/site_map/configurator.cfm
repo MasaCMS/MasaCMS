@@ -103,25 +103,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	data-object="site_map"
 	data-name="#esapiEncode('html_attr','Site Map')#"
 	data-objectid="#hash('site_map')#">
-	<div class="fieldset-wrap">
-		<div class="fieldset">
-			<div class="control-group">
-				<label class="control-label">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayformat')#
+	<div class="mura-layout-row">
+		<div class="mura-control-group">
+			<label>
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayformat')#
+			</label>
+			<div class="mura-control">
+				<label class="radio-inline">
+					<input name="mapclass" type="radio" value="mura-site-map" class="objectParam radio" <cfif objectParams.mapclass eq "mura-site-map">checked</cfif>>
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.default')#
 				</label>
-				<div class="controls">
-					<label class="radio">
-						<input name="mapclass" type="radio" value="mura-site-map" class="objectParam radio" <cfif objectParams.mapclass eq "mura-site-map">checked</cfif>>
-							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.default')#
-					</label>
-					<label class="radio">
-						<input name="mapclass" type="radio" value="mura-site-map-tree" class="objectParam radio" <cfif objectParams.mapclass eq "mura-site-map-tree">checked</cfif>>
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.treeview')#
-					</label>
-				</div>
+				<label class="radio-inline">
+					<input name="mapclass" type="radio" value="mura-site-map-tree" class="objectParam radio" <cfif objectParams.mapclass eq "mura-site-map-tree">checked</cfif>>
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.treeview')#
+				</label>
 			</div>
 		</div>
 	</div>
-</div>
 </cfoutput>
 </cf_objectconfigurator>

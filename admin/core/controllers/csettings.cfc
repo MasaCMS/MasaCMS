@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+the preparation of a derivative work based on Mura CMS. Thus, the terms and
 conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
@@ -54,10 +54,10 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="before" output="false">
 	<cfargument name="rc">
-	
+
 	<cfif not (
 				(
-					listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') 
+					listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0')
 					and not listFindNoCase('list,editPlugin,deployPlugin,updatePlugin,updatePluginVersion,siteCopy,sitecopyselect,sitecopyresult',listLast(rc.muraAction,"."))
 				)
 				or listFind(session.mura.memberships,'S2')
@@ -80,14 +80,14 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 	<cfif isdefined("arguments.rc.refresh")>
-		<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="./")>
+		<cfset variables.fw.redirect(action="cSettings.list",path="./")>
 	</cfif>
-	
+
 	<cfif rc.$.validateCSRFTokens(context='updatesites')>
 		<cfset variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID)  />
 		<cfset variables.settingsManager.saveDeploy(arguments.rc.deploy,arguments.rc.orderID) />
 	</cfif>
-	
+
 	<cfset arguments.rc.rsSites=variables.settingsManager.getList(sortBy=arguments.rc.siteSortBy) />
 	<cfset arguments.rc.rsPlugins=variables.pluginManager.getAllPlugins() />
 </cffunction>
@@ -102,9 +102,7 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)>
 		<cfset variables.pluginManager.deletePlugin(arguments.rc.moduleID) />
 	</cfif>
-	<cfset arguments.rc.activeTab=1>
-	<cfset arguments.rc.refresh=1>
-	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="./")>
+	<cflocation url="./?muraAction=cSettings.list&refresh=1##tabPlugins" addtoken="false">
 </cffunction>
 
 <cffunction name="editPlugin" output="false">
@@ -122,12 +120,12 @@ to your own modified versions of Mura CMS.
 	<cfargument name="rc">
 	<cfset var tempID="">
 	<cfparam name="arguments.rc.moduleID" default="" />
-	
-	<cfif len(arguments.rc.moduleid) and arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid) 
+
+	<cfif len(arguments.rc.moduleid) and arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)
 		or arguments.rc.moduleid eq '' and arguments.rc.$.validateCSRFTokens(context='newplugin')>
 		<cfset tempID=variables.pluginManager.deploy(arguments.rc.moduleID) />
 	</cfif>
-	
+
 	<cfif isDefined('tempid') and len(tempID)>
 		<cfset arguments.rc.moduleID=tempID>
 		<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./")>
@@ -135,12 +133,10 @@ to your own modified versions of Mura CMS.
 		<cfif len(arguments.rc.moduleID)>
 			<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./")>
 		<cfelse>
-			<cfset arguments.rc.activeTab=1>
-			<cfset arguments.rc.refresh=1>
-			<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="./")>
-		</cfif>	
+			<cflocation url="./?muraAction=cSettings.list&refresh=1##tabPlugins" addtoken="false">
+		</cfif>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="updatePlugin" output="false">
@@ -148,9 +144,7 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)>
 		<cfset arguments.rc.moduleID=variables.pluginManager.updateSettings(arguments.rc) />
 	</cfif>
-	<cfset arguments.rc.activeTab=1>
-	<cfset arguments.rc.refresh=1>
-	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="./")>
+	<cflocation url="./?muraAction=cSettings.list&refresh=1##tabPlugins" addtoken="false">
 </cffunction>
 
 <cffunction name="updateSite" output="false">
@@ -201,7 +195,7 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="./")>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="sitecopyselect" output="false">
@@ -220,7 +214,7 @@ to your own modified versions of Mura CMS.
 		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
 	</cfif>
 	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="./")>
-	
+
 </cffunction>
 
 <cffunction name="createBundle" output="false">
@@ -236,7 +230,7 @@ to your own modified versions of Mura CMS.
 	<cfparam name="arguments.rc.includeFormData" default="false">
 	<cfparam name="arguments.rc.saveFile" default="false">
 	<cfparam name="arguments.rc.saveFileDir" default="">
-	
+
 	<cfif len(arguments.rc.saveFileDir)>
 		<cfif directoryExists(arguments.rc.saveFileDir)>
 			<cfset arguments.rc.saveFile=true>
@@ -245,11 +239,11 @@ to your own modified versions of Mura CMS.
 			<cfset arguments.rc.saveFile=false>
 		</cfif>
 	</cfif>
-	
+
 	<cfset arguments.rc.bundleFilePath=application.serviceFactory.getBean("Bundle").Bundle(
 			siteID=arguments.rc.siteID,
 			moduleID=arguments.rc.moduleID,
-			BundleName=arguments.rc.BundleName, 
+			BundleName=arguments.rc.BundleName,
 			includeVersionHistory=arguments.rc.includeVersionHistory,
 			includeTrash=arguments.rc.includeTrash,
 			includeMetaData=arguments.rc.includeMetaData,
@@ -292,11 +286,11 @@ to your own modified versions of Mura CMS.
 									<dd>Updated Files (#ArrayLen(local.files)#)</dd>
 									<!---<cfif ArrayLen(local.files)>
 										<dd>
-											<cfloop from="1" to="#ArrayLen(local.files)#" index="local.f"> 
+											<cfloop from="1" to="#ArrayLen(local.files)#" index="local.f">
 												#local.files[local.f]#<br />
 											</cfloop>
 										</dd>
-									</cfif>--->					
+									</cfif>--->
 								</dl>
 							</div>
 							<cfcatch>

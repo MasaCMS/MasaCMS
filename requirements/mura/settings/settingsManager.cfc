@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.utility=arguments.utility />
 		<cfset variables.Gateway=arguments.settingsGateway />
 		<cfset variables.DAO=arguments.settingsDAO />
-		<cfset variables.clusterManager=arguments.clusterManager />		
+		<cfset variables.clusterManager=arguments.clusterManager />
 		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 		<cfset setSites() />
 <cfreturn this />
@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and isObject(variables.DAO)
 	and isObject(variables.clusterManager)
 	and isObject(variables.classExtensionManager)
-	and isDefined('variables.sites') 
+	and isDefined('variables.sites')
 	and not structIsEmpty(variables.sites)>
 </cffunction>
 
@@ -82,9 +82,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortBy" default="orderno">
 	<cfargument name="sortDirection" default="asc">
 	<cfset var rs = variables.gateway.getList(arguments.sortBy,arguments.sortDirection) />
-	
+
 	<cfreturn rs />
-	
+
 </cffunction>
 
 <cffunction name="publishSite" access="public" output="false" returntype="void">
@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bundleFileName = getBean("Bundle").Bundle(
 			siteID=arguments.siteID,
 			moduleID=ValueList(rsPlugins.moduleID),
-			BundleName='deployBundle', 
+			BundleName='deployBundle',
 			includeVersionHistory=false,
 			includeTrash=false,
 			includeMetaData=true,
@@ -107,23 +107,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			includeUsers=false,
 			includeFormData=false,
 			saveFile=true) />
-		
+
 		<cfloop list="#variables.configBean.getServerList()#" index="i" delimiters="^">
 			<cfset serverArgs = deserializeJSON(i)>
 			<cfset result = pushBundle(siteID, bundleFileName, serverArgs)>
 		</cfloop>
-		
+
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 			update tsettings set lastDeployment = #createODBCDateTime(now())#
 			where siteID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.siteID#">
 		</cfquery>
-		
+
 		<cfset fileDelete(bundleFileName)>
 	<cfelse>
 		<cfset getBean("publisher").start(arguments.siteid) />
 	</cfif>
 	<cfset variables.clusterManager.reload() />
-	
+
 </cffunction>
 
 <cffunction name="pushBundle" access="public" output="no" returntype="any">
@@ -140,10 +140,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinvokeargument name="password" value="#serverArgs.password#">
 		<cfinvokeargument name="siteID" value="#serverArgs.siteID#">
 	</cfinvoke>
-	
+
 	<cfset bundleArgs.siteID = arguments.siteID />
 	<cfset bundleArgs.bundleImportKeyMode = "publish">
-	
+
 	<cfif serverArgs.deployMode eq "files">
 		<!--- push just files --->
 		<cfset bundleArgs.bundleImportContentMode = "none">
@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- files and content --->
 		<cfset bundleArgs.bundleImportContentMode = "all">
 	</cfif>
-	
+
 	<cfset bundleArgs.bundleImportRenderingMode = "all">
 	<cfset bundleArgs.bundleImportPluginMode = "all">
 	<cfset bundleArgs.bundleImportMailingListMembersMode = "none">
@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset bundleArgs.bundleImportLastDeployment = "">
 	<cfset bundleArgs.bundleImportModuleID = "">
 	<cfset bundleArgs.bundleImportFormDataMode = "none">
-				
+
 	<cfhttp attributeCollection='#getHTTPAttrs(method="post",url="#serverArgs.serverURL#")#'>
 		<cfhttpparam name="method" type="url" value="call">
 		<cfhttpparam name="serviceName" type="url" value="bundle">
@@ -168,13 +168,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfhttpparam name="args" type="url" value="#serializeJSON(bundleArgs)#">
 		<cfhttpparam name="bundleFile" type="file" file="#bundleFileName#">
 	</cfhttp>
-	
+
 	<cfif cfhttp.FileContent contains "success">
 		<cfset result = "Deployment Successful">
 	<cfelse>
 		<cfset result = cfhttp.FileContent>
 	</cfif>
-	
+
 	<cfreturn result>
 </cffunction>
 
@@ -183,7 +183,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="orderID" required="yes" default="">
 
 <cfset var i=0/>
-	
+
 	<cfif arguments.orderID neq ''>
 		<cfloop from="1" to="#listlen(arguments.orderid)#" index="i">
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -191,15 +191,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		</cfloop>
 	</cfif>
-	
+
 	<cfobjectcache action="clear"/>
-	
+
 </cffunction>
 
 <cffunction name="saveDeploy" access="public" output="false" returntype="void">
 <cfargument name="deploy" required="yes" default="">
 <cfargument name="orderID" required="yes" default="">
- <cfset var i=0/>	
+ <cfset var i=0/>
 	<cfif arguments.deploy neq '' and arguments.orderID neq ''>
 		<cfloop from="1" to="#listlen(arguments.orderid)#" index="i">
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -207,14 +207,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		</cfloop>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="read" access="public" output="false" returntype="any">
 <cfargument name="siteid" type="string" />
 <cfargument name="settingsBean" default=""> />
 	<cfreturn variables.DAO.read(arguments.siteid,arguments.settingsBean) />
-	
+
 </cffunction>
 
 <cffunction name="update" access="public" output="false" returntype="any">
@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset getBean('pluginManager').announceEvent("onBeforeSiteUpdate",pluginEvent)>
 	<cfset getBean('pluginManager').announceEvent("onBeforeSiteSave",pluginEvent)>
-	
+
 	<cfif structIsEmpty(bean.getErrors())>
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was updated","mura-settings","Information",true) />
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
@@ -238,6 +238,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset bean.getRazunaSettings().set(arguments.data).save()>
+
+		<cfif len(bean.getNewPlaceholderImg())>
+			<cfif len(bean.getPlaceholderImgId())>
+				<cfset getBean('fileManager').deleteIfNotUsed(bean.getPlaceholderImgId(),'')>
+			</cfif>
+
+			<cfset local.fileBean=getBean('file')>
+			<cfset local.fileBean.setSiteID(bean.getSiteID())>
+			<cfset local.fileBean.setModuleID('')>
+			<cfset local.fileBean.setFileField('newPlaceholderImg')>
+			<cfset local.fileBean.setNewFile(bean.getNewPlaceholderImg())>
+			<cfset local.fileBean.save()>
+			<cfset bean.setPlaceholderImgID(local.fileBean.getFileID()) />
+			<cfset bean.setPlaceholderImgExt(local.fileBean.getFileExt()) />
+		<cfelseif len(bean.getDeletePlaceholderImg())>
+			<cfset getBean('fileManager').deleteIfNotUsed(bean.getPlaceholderImgId(),'')>
+			<cfset bean.setPlaceholderImgID('') />
+			<cfset bean.setPlaceholderImgExt('') />
+		</cfif>
+
 		<cfset variables.DAO.update(bean) />
 
 		<cfset validateDisplayPool(bean) />
@@ -256,7 +276,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="delete" access="public" output="false" returntype="void">
 	<cfargument name="siteid" type="string" />
-	
+
 	<cfset var bean=read(arguments.siteid) />
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	<cfset var data={sited=arguments.siteid,settingsBean=bean}>
@@ -265,7 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset getBean('pluginManager').announceEvent("onBeforeSiteDelete",pluginEvent)>
 
 	<cfset bean.getRazunaSettings().delete()>
-	
+
 	<cfset variables.utility.logEvent("SiteID:#arguments.siteid# Site:#bean.getSite()# was deleted","mura-settings","Information",true) />
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset setSites() />
@@ -301,31 +321,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset getBean('pluginManager').announceEvent("onBeforeSiteSave",pluginEvent)>
 
 	<cfif structIsEmpty(bean.getErrors()) and  bean.getSiteID() neq ''>
-		
+
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select siteid from tsettings where siteid='#bean.getSiteID()#'
 		</cfquery>
-		
+
 		<cfif rs.recordcount>
 			<cfthrow message="The SiteID you entered is already being used.">
 			<cfabort>
 		</cfif>
-		
+
 		<cfif directoryExists(expandPath("/muraWRM/#bean.getSiteID()#"))>
 			<cfthrow message="A directory with the same name as the SiteID you entered is already being used.">
 		</cfif>
-		
+
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was created","mura-settings","Information",true) />
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
 			<cfset variables.classExtensionManager.saveExtendedData(bean.getBaseID(),bean.getAllValues())/>
 		</cfif>
 		<cfset bean.getRazunaSettings().set(arguments.data).save()>
+
+			<cfif len(bean.getNewPlaceholderImg())>
+				<cfset local.fileBean=getBean('file')>
+				<cfset local.fileBean.setSiteID(bean.getSiteID())>
+				<cfset local.fileBean.setModuleID('')>
+				<cfset local.fileBean.setFileField('newPlaceholderImg')>
+				<cfset local.fileBean.setNewFile(bean.getNewPlaceholderImg())>
+				<cfset local.fileBean.save()>
+				<cfset bean.setPlaceholderImgID(local.fileBean.getFileID()) />
+				<cfset bean.setPlaceholderImgExt(local.fileBean.getFileExt()) />
+			</cfif>
+
 		<cfset variables.DAO.create(bean) />
-		
+
 		<cfset var fileDelim=variables.configBean.getFileDelim()>
 
 		<cfset validateDisplayPool(bean) />
-	
+
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(bean.getSiteID(),bean.getDisplayPoolID()) />
 		</cfif>
@@ -365,14 +397,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfobjectcache action="clear"/>
 		<cfcatch></cfcatch>
 	</cftry>
-	
+
 	<cfset rs=getList() />
 
 	<cfloop query="rs">
 		<cfif arguments.missingOnly and structKeyExists(variables.sites,'#rs.siteid#')>
 			<cfset builtSites['#rs.siteid#']=variables.sites['#rs.siteid#'] />
 		<cfelse>
-			<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />	
+			<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />
 		</cfif>
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid,builtSites['#rs.siteid#'].getDisplayPoolID()) />
@@ -385,7 +417,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
 		<cfset builtSites['#rs.siteid#'].discoverBeans()>
  	</cfloop>
-	
+
 </cffunction>
 
 <cffunction name="getSite" access="public" output="false" returntype="any">
@@ -407,14 +439,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn variables.sites['#arguments.siteid#'] />
 			<cfelse>
 				<cfreturn variables.sites['default'] />
-			</cfif>	
+			</cfif>
 	</cfcatch>
 	</cftry>
 </cffunction>
 
 <cffunction name="siteExists" access="public" output="false" returntype="any">
 	<cfargument name="siteid" type="string" />
-	
+
 	<cfreturn structKeyExists(variables.sites,arguments.siteid) />
 
 </cffunction>
@@ -426,12 +458,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="purgeAllCache" access="public" output="false" returntype="void">
 	<cfargument name="broadcast" default="true">
 	<cfset var rs=getList()>
-	
+
 	<cfloop query="rs">
 		<cfset getSite(rs.siteid).getCacheFactory(name="data").purgeAll()/>
 		<cfset getSite(rs.siteid).getCacheFactory(name="output").purgeAll()/>
 	</cfloop>
-	
+
 	<cfif arguments.broadcast>
 		<cfset variables.clusterManager.purgeCache(name="all")>
 	</cfif>
@@ -448,7 +480,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsAllSites=getList(sortby="site")/>
 	<cfset var s=0/>
 	<cfset var where=false/>
-	
+
 	<cfquery name="rsSites" dbtype="query" maxrows="#arguments.searchMaxRows#">
 		select * from rsAllSites
 		<cfif arrayLen(arguments.siteArray) and not arguments.isS2>
@@ -474,7 +506,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		or	Site like <cfqueryparam value="%#arguments.searchString#%">
 		)
 		</cfif>
-		
+
 	</cfquery>
 
 	<cfreturn rsSites />
@@ -486,11 +518,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fileManager=getBean("fileManager")>
 	<cfset var tempfile="">
 	<cfset var deletetempfile=true>
-	
+
 	<cfif isDefined("arguments.data.serverBundlePath") and len(arguments.data.serverBundlePath) and fileExists(arguments.data.serverBundlePath)>
 		<cfset arguments.data.bundleFile=arguments.data.serverBundlePath>
 	</cfif>
-	
+
 	<cfif structKeyExists(arguments.data,"bundleFile") and len(arguments.data.bundleFile)>
 		<cfif fileManager.isPostedFile(arguments.data.bundleFile)>
 			<cffile action="upload" result="tempFile" filefield="bundleFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
@@ -506,11 +538,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="arguments.data.bundleImportUsersMode" default="none">
 		<cfparam name="arguments.data.bundleImportFormDataMode" default="none">
 		<cfset restoreBundle(
-			"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" , 
+			"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" ,
 			arguments.data.siteID,
-			arguments.errors, 
+			arguments.errors,
 			arguments.data.bundleImportKeyMode,
-			arguments.data.bundleImportContentMode, 
+			arguments.data.bundleImportContentMode,
 			arguments.data.bundleImportRenderingMode,
 			arguments.data.bundleImportMailingListMembersMode,
 			arguments.data.bundleImportUsersMode,
@@ -523,7 +555,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cffile action="delete" file="#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#">
 		</cfif>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="restoreBundle" output="false">
@@ -546,9 +578,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var publisher 		= getBean("publisher") />
 	<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
 	<cfsetting requestTimeout = "7200">
-	
+
 	<cfset Bundle.restore( arguments.BundleFile)>
-	
+
 	<cfset sArgs.fromDSN		= config.getDatasource() />
 	<cfset sArgs.toDSN			= config.getDatasource() />
 	<cfset sArgs.fromSiteID		= "" />
@@ -565,10 +597,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset sArgs.moduleID		= arguments.moduleID />
 	<cfset sArgs.errors			= arguments.errors />
 	<cfset sArgs.lastDeployment = arguments.lastDeployment />
-	
+
 	<cftry>
 		<cfset publisher.getToWork( argumentCollection=sArgs )>
-		
+
 		<cfif len(arguments.siteID)>
 			<!-- Legacy data updates --->
 			<cfquery>
@@ -583,7 +615,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					name='Folder Navigation'
 				where object='portal_nav'
 			</cfquery>
-			<!--- --->	
+			<!--- --->
 
 			<cfset getSite(arguments.siteID).getCacheFactory(name="output").purgeAll()>
 			<cfif sArgs.contentMode neq "none">
@@ -594,7 +626,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset getBean("pluginManager").loadPlugins()>
 			</cfif>
 		</cfif>
-		
+
 		<cfset application.appInitialized=false>
 	<cfcatch>
 
@@ -621,7 +653,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		select entry from rs where entry in ('sitefiles.zip','pluginfiles.zip','filefiles.zip','pluginfiles.zip')
 	</cfquery>
 	<cfreturn rs.recordcount>
-</cffunction>	
+</cffunction>
 
 <cffunction name="isPartialBundle" output="false">
 	<cfargument name="BundleFile">
@@ -631,12 +663,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		select entry from rs where entry in ('assetfiles.zip')
 	</cfquery>
 	<cfreturn rs.recordcount>
-</cffunction>	
+</cffunction>
 
 <cffunction name="createCacheFactory" output="false">
 	<cfargument name="capacity" required="true" default="0">
 	<cfargument name="freeMemoryThreshold" required="true" default="60">
-	
+
 	<!---<cfif not arguments.capacity>--->
 		<cfreturn createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=arguments.freeMemoryThreshold)>
 	<!---
@@ -647,11 +679,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" access="public" returntype="any" output="false">
-	<cfargument name="data" type="any" default="#structnew()#"/>	
-	
+	<cfargument name="data" type="any" default="#structnew()#"/>
+
 	<cfset var siteID="">
 	<cfset var rs="">
-	
+
 	<cfif isObject(arguments.data)>
 		<cfif listLast(getMetaData(arguments.data).name,".") eq "settingsBean">
 			<cfset arguments.data=arguments.data.getAllValues()>
@@ -659,17 +691,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.settings.settingsBean'">
 		</cfif>
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments.data,"siteID")>
 		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a site settingsBean.">
 	</cfif>
-	
+
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" name="rs">
 	select siteID from tsettings where siteID=<cfqueryparam value="#arguments.data.siteID#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
-		<cfreturn update(arguments.data)>	
+		<cfreturn update(arguments.data)>
 	<cfelse>
 		<cfreturn create(arguments.data)>
 	</cfif>
@@ -689,7 +721,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					variables.AccessControlOriginList='';
 
 					var admindomain=variables.configBean.getAdminDomain();
-					
+
 					if(len(admindomain)){
 						variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,"http://#admindomain#");
 						variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,"https://#admindomain#");
@@ -698,7 +730,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					var sites=getSites();
 					var originArray=[];
 					var origin='';
-					
+
 					for(var site in sites){
 						if(sites[site].getJSONApi()){
 							originArray=listToArray(sites[site].getAccessControlOriginList());

@@ -20,9 +20,9 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
         var site=getBean('settingsManager').getSite(getValue('siteID'));
         var qs = new Query();
         var sql="
-            select * from tusers 
+            select * from tusers
             where type=1 and (isPublic=1 and siteid = :publicPoolID or isPublic=0 and siteid = :privatePoolID )
-            and inactive=0 
+            and inactive=0
             and userID not in (select groupID from tapprovalmemberships where chainid = :chainID)
             order by tusers.groupname
             ";
@@ -43,9 +43,11 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
         //writeDump(var=getValue('groupID'),abort=true);
         setValue('lastUpdate',now());
 
-        if(isDefined("session.mura") and session.mura.isLoggedIn){
-            setValue('lastUpdateBy',left(session.mura.fname & " " & session.mura.lname,50));
-            setValue('lastUpdateById', session.mura.userID);
+		var sessionData=getSession();
+
+        if(isDefined("sessionData.mura") and sessionData.mura.isLoggedIn){
+            setValue('lastUpdateBy',left(sessionData.mura.fname & " " & sessionData.mura.lname,50));
+            setValue('lastUpdateById', sessionData.mura.userID);
         } else {
              setValue('lastUpdateBy','');
             setValue('lastUpdateById','');
@@ -112,5 +114,5 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
 
         return super.save();
     }
-    
+
 }

@@ -52,11 +52,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		jQuery("##mura-templatebuilder").templatebuilder();
 	});
 </script>
-<style>
-.tb-fieldIsEmpty {
-	border: 1px solid ##ff0000 !important;
-}	
-</style>
 
 	<div id="mura-templatebuilder" data-url="#$.globalConfig('context')#/admin/">
 		<div class="mura-tb-menu">
@@ -79,6 +74,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul>
 		</div>
 		<div id="mura-tb-form" class="clearfix">
+			<div id="mura-tb-form-pages" class="clearfix">
+					Page
+				<ul id="mura-form-pages">
+				</ul>
+				<div id="mura-form-addpage">+</div>
+			</div>		
 			<div id="mura-tb-form-fields">
 				<div id="mura-tb-fields-empty" class="alert">#application.rbFactory.getKeyValue(session.rb,'formbuilder.fields.empty')#</div>
 				<ul id="mura-tb-fields">

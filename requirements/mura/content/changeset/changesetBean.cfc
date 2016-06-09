@@ -44,9 +44,9 @@
 	<cfset variables.instance.tags=""/>
 	<cfset variables.instance.errors=structNew()>
 
-	<cfif isDefined("session.mura") and session.mura.isLoggedIn>
-		<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
-		<cfset variables.instance.LastUpdateByID = session.mura.userID />
+	<cfif isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn>
+		<cfset variables.instance.LastUpdateBy = left(variables.sessionData.mura.fname & " " & variables.sessionData.mura.lname,50) />
+		<cfset variables.instance.LastUpdateByID = variables.sessionData.mura.userID />
 	<cfelse>
 		<cfset variables.instance.LastUpdateBy = "" />
 		<cfset variables.instance.LastUpdateByID = "" />

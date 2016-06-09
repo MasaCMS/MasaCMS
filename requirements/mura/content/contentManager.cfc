@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
 				<cfset rs=variables.contentGateway.getNest(data.topid,data.siteid,data.sortBy,data.sortDirection,data.searchString) />
 			</cfcase>
-			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
+			<cfcase value="LEGACY">
 				<cfset feed=getBean('feed')>
 				<cfif data.moduleID eq "00000000000000000000000000000000003">
 					<cfset feed.setType('Component')>
@@ -441,13 +441,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif len(arguments.filename)>
 			<cfset var useCache=site.getCache()>
-
-			<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-				<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+			<cfset var sessionData=getSession()>
+			<cfif request.muraChangesetPreview and isDefined('sessionData.mura.ChangesetPreviewData.siteid') and sessionData.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+				<cfif isDefined('sessionData.mura.ChangesetPreviewData.lookupMap')>
 					<cfset var lookupHash=hash(arguments.filename)>
 
-					<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-						<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfif structKeyExists(sessionData.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+						<cfset arguments.contenthistid=sessionData.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
 						<cfset bean=getContentVersion(argumentCollection=arguments)>
 
 						<cfif bean.exists()>
@@ -513,13 +513,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		<cfset var useCache=site.getCache()>
+		<cfset var sessionData=getSession()>
 
-		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+		<cfif request.muraChangesetPreview and isDefined('sessionData.mura.ChangesetPreviewData.siteid') and sessionData.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('sessionData.mura.ChangesetPreviewData.lookupMap')>
 				<cfset var lookupHash=hash(arguments.remoteid)>
 
-				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+				<cfif structKeyExists(sessionData.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=sessionData.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
 					<cfset bean=getContentVersion(argumentCollection=arguments)>
 
 					<cfif bean.exists()>
@@ -580,13 +581,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		<cfset var useCache=site.getCache()>
+		<cfset var sessionData=getSession()>
 
-		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+		<cfif request.muraChangesetPreview and isDefined('sessionData.mura.ChangesetPreviewData.siteid') and sessionData.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('sessionData.mura.ChangesetPreviewData.lookupMap')>
 				<cfset var lookupHash=hash(arguments.title)>
 
-				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+				<cfif structKeyExists(sessionData.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=sessionData.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
 					<cfset bean=getContentVersion(argumentCollection=arguments)>
 
 					<cfif bean.exists()>
@@ -647,13 +649,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		<cfset var useCache=site.getCache()>
+		<cfset var sessionData=getSession()>
 
-		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+		<cfif request.muraChangesetPreview and isDefined('sessionData.mura.ChangesetPreviewData.siteid') and sessionData.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('sessionData.mura.ChangesetPreviewData.lookupMap')>
 				<cfset var lookupHash=hash(arguments.urltitle)>
 
-				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+				<cfif structKeyExists(sessionData.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=sessionData.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
 					<cfset bean=getContentVersion(argumentCollection=arguments)>
 
 					<cfif bean.exists()>
@@ -714,13 +717,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		<cfset var useCache=site.getCache()>
+		<cfset var sessionData=getSession()>
 
-		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+		<cfif request.muraChangesetPreview and isDefined('sessionData.mura.ChangesetPreviewData.siteid') and sessionData.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('sessionData.mura.ChangesetPreviewData.lookupMap')>
 				<cfset var lookupHash=arguments.contentid>
 
-				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+				<cfif structKeyExists(sessionData.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=sessionData.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
 					<cfset bean=getContentVersion(argumentCollection=arguments)>
 
 					<cfif bean.exists()>
@@ -947,6 +951,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var addObjects=[]>
 		<cfset var removeObjects=[]>
 		<cfset var errors={}>
+		<cfset var initjs="">
 
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -1071,16 +1076,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset newBean.setTitle(newBean.getmenutitle())>
 			</cfif>
 
-			<cfif newBean.getmenuTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getmenuTitle() eq ''>
 				<cfset newBean.setmenutitle(newBean.getTitle())>
 			</cfif>
 
-			<cfif newBean.getURLTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getURLTitle() eq ''>
 				<cfset newBean.setURLTitle(getBean('contentUtility').formatFilename(newBean.getmenutitle()))>
 			</cfif>
 
-			<cfif newBean.getHTMLTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getHTMLTitle() eq ''>
 				<cfset newBean.setHTMLTitle(newBean.getTitle())>
+			</cfif>
+
+			<cfif newBean.getType() eq 'Validate'>
+				<cfset initjs=newBean.getInitJS()>
 			</cfif>
 
 			<cfset newBean.validate()>
@@ -1115,11 +1124,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID##newBean.getContentID()#" timeout="600">
 
-				<cfif variables.configBean.getValue(property='advancedScheduling',defaultValue=false)
-					and newBean.getDisplay() eq 2
+				<cfif newBean.getDisplay() eq 2
 					and isBoolean(newBean.getConvertDisplayTimeZone())
 					and newBean.getConvertDisplayTimeZone()>
-					<cfset var displayInterval=newBean.getDisplayInterval(deserialize=true)>
+					<cfset var displayInterval=newBean.getDisplayInterval().getAllValues()>
 
 					<cfif not displayInterval.allday>
 						<cfif isDate(newBean.getDisplayStart())>
@@ -1133,10 +1141,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif isObject(pluginEvent.getValue('approvalRequest'))>
 					<cfset var approvalRequest=pluginEvent.getValue('approvalRequest')>
+					<cfset var sessionData=getSession()>
 					<!---If it does not have a currently pending aproval request create one --->
 					<cfif approvalRequest.getIsNew() or (not newBean.getIsNew() and currentBean.getActive() and currentBean.getApproved())>
-						<cfif isDefined("session.mura") and session.mura.isLoggedIn>
-							<cfset approvalRequest.setUserID(session.mura.userID)>
+						<cfif isDefined("sessionData.mura") and sessionData.mura.isLoggedIn>
+							<cfset approvalRequest.setUserID(sessionData.mura.userID)>
 						</cfif>
 
 						<cfset approvalRequest.setRequestID(createUUID())>
@@ -1164,8 +1173,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 						</cfif>
 
-						<cfif isDefined("session.mura") and session.mura.isLoggedIn>
-							<cfset approvalRequest.setUserID(session.mura.userID)>
+						<cfif isDefined("sessionData.mura") and sessionData.mura.isLoggedIn>
+							<cfset approvalRequest.setUserID(sessionData.mura.userID)>
 						</cfif>
 
 						<cfset approvalRequest.setRequestID(createUUID())>
@@ -1201,33 +1210,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<!--- END CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
 
+				<cfset setMaterializedPath(newBean) />
+
+				<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID()>
+					<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
+				</cfif>
+
+				<!--- Content expiration assignments --->
+				<cfif isDefined("arguments.data.expiresnotify") and len(arguments.data.expiresnotify)>
+					<cfloop list="#arguments.data.expiresnotify#" index="i">
+						<cfset variables.contentDAO.createContentAssignment(newBean,i,'expire')>
+					</cfloop>
+				<cfelseif not newBean.getIsNew()>
+					<cfset rs=variables.contentDAO.getExpireAssignments(currentBean.getContentHistID())>
+					 <cfloop query="rs">
+						<cfset variables.contentDAO.createContentAssignment(newBean,rs.userid,'expire')>
+					</cfloop>
+				</cfif>
+
 				<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
-				<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
+				<!<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
 
 					<!--- Reminder Persistence --->
 					<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>
 						<cfset variables.reminderManager.updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
 					<cfelseif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() neq 2>
 						<cfset variables.reminderManager.deleteReminders(newBean.getcontentID(),newBean.getSiteID()) />
-					</cfif>
-
-					<cfset setMaterializedPath(newBean) />
-
-					<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID()>
-						<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
-					</cfif>
-
-
-					<!--- Content expiration assignments --->
-					<cfif isDefined("arguments.data.expiresnotify") and len(arguments.data.expiresnotify)>
-						<cfloop list="#arguments.data.expiresnotify#" index="i">
-							<cfset variables.contentDAO.createContentAssignment(newBean,i,'expire')>
-						</cfloop>
-					<cfelseif not newBean.getIsNew()>
-						<cfset rs=variables.contentDAO.getExpireAssignments(currentBean.getContentHistID())>
-						 <cfloop query="rs">
-							<cfset variables.contentDAO.createContentAssignment(newBean,rs.userid,'expire')>
-						</cfloop>
 					</cfif>
 				</cfif>
 
@@ -1678,10 +1686,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>
 				</cfif>
 
+				<cfif newBean.getType() eq 'Form' and isJSON(newBean.getBody())>
+					<cfset getBean('formBuilderManager').generateFormObject(pluginEvent.getValue('MuraScope'),pluginEvent) />
+				</cfif>
+
 				<!--- For backwards compatibility --->
 				<cfif newBean.getType() eq 'Folder'>
 					<cfset variables.pluginManager.announceEvent("onAfterPortalSave",pluginEvent)>
 					<cfset variables.pluginManager.announceEvent("onAfterPortal#newBean.getSubType()#Save",pluginEvent)>
+				</cfif>
+				<!--- --->
+
+				<!--- Save remoteVariation init js --->
+				<cfif len(initJS)>
+					<cfset newBean.getVariationTargeting().setInitJS(initJS).save()>
 				</cfif>
 				<!--- --->
 
@@ -2177,10 +2195,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" />
 		<cfargument name="contentID" type="string" />
 		<cfargument name="copyAll" type="string" />
-
-		<cfset session.copySiteID = arguments.siteID>
-		<cfset session.copyContentID = arguments.contentID>
-		<cfset session.copyAll = arguments.copyAll>
+		<cfset var sessionData=getSession()>
+		<cfset sessionData.copySiteID = arguments.siteID>
+		<cfset sessionData.copyContentID = arguments.contentID>
+		<cfset sessionData.copyAll = arguments.copyAll>
 	</cffunction>
 
 	<cffunction name="deleteAllWithNestedContent">
@@ -2374,7 +2392,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var requestData = GetHttpRequestData()>
 	<cfset var filemetadata= "">
 
-	<cfset fileItem.siteID=arguments.data.siteID/>
+	<cfset fileItem.siteID=arguments.data.siteid/>
 	<cfset fileItem.parentID=arguments.data.parentID/>
 	<cfset fileItem.type="File" />
 	<cfset fileItem.subType=arguments.data.subType />
@@ -2632,7 +2650,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="secure" default="false">
 		<cfargument name="useProtocol" default="true">
 		<cfscript>
-			var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			if(arguments.bean.getType() == 'File' && !ListFindNoCase('png,jpg,jpeg,gif,svg',arguments.bean.getFileExt())){
+				var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), '', '', arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			} else {
+				var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
+			}
+
 			return Len(image) ? image : arguments.default;
 		</cfscript>
 	</cffunction>
@@ -2647,6 +2670,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var history = getDraftHist(arguments.contentid,arguments.siteid) />
 		<cfset var pending = "">
 		<cfset var lockableNodes=variables.settingsManager.getSite(arguments.siteid).getHasLockableNodes()>
+		<cfset var sessionData=getSession()>
 
 		<cfset data.verdict=getBean("permUtility").getNodePerm(cb.getCrumbArray())>
 		<cfset data.pendingchangesets=variables.changesetManager.getPendingByContentID(arguments.contentID,arguments.siteID) />
@@ -2693,7 +2717,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not getCurrentUser().isAdminUser() and not getCurrentUser().isSuperUser()>
 					<cfquery name="data.yourapprovals" dbtype="query">
 						select * from data.yourapprovals
-						where approvalGroupID in (<cfqueryparam list='true' cfsqltype='cf_sql_varchar' value='#session.mura.membershipids#'>) order by lastupdate asc
+						where approvalGroupID in (<cfqueryparam list='true' cfsqltype='cf_sql_varchar' value='#sessionData.mura.membershipids#'>) order by lastupdate asc
 					</cfquery>
 				<cfelseif not listFindNoCase('Author,Editor',data.verdict)>
 					<cfset data.pendingchangesets=queryNew("empty")>
@@ -2721,7 +2745,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset data.lockid=stats.getLockID()>
 			<cfset data.locktype=stats.getLockType()>
-			<cfset data.lockedbyyou=stats.getLockID() eq session.mura.userid>
+			<cfset data.lockedbyyou=stats.getLockID() eq sessionData.mura.userid>
 
 			<cfif data.locktype eq 'node' and len(data.lockid)>
 				<cfset data.isLocked=true>
@@ -2737,7 +2761,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset data.hasmultiple = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
 
-		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (lockableNodes and  data.lockID neq session.mura.userID)/>
+		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (lockableNodes and  data.lockID neq sessionData.mura.userID)/>
 
 		<cfreturn data />
 	</cffunction>
@@ -2928,7 +2952,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="getMyExpiresCount" output="false">
 		<cfargument name="siteid" type="string" required="true">
-		<cfset var rsDrafts=getExpiringContent(arguments.siteid,session.mura.userid)>
+		<cfset var sessionData=getSession()>
+		<cfset var rsDrafts=getExpiringContent(arguments.siteid,sessionData.mura.userid)>
 		<cfquery name="rsDrafts" dbtype="query">
 			select distinct contentid from rsDrafts
 		</cfquery>
@@ -2937,7 +2962,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="getMyLockedContentCount" output="false">
 		<cfargument name="siteid" type="string" required="true">
-		<cfreturn variables.contentGateway.getLockedContentCount(arguments.siteid,session.mura.userid)>
+		<cfset var sessionData=getSession()>
+		<cfreturn variables.contentGateway.getLockedContentCount(arguments.siteid,sessionData.mura.userid)>
 	</cffunction>
 
 	<cffunction name="getKidsCount" output="false">

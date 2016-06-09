@@ -68,70 +68,69 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rsDataInfo.CountEntered>
 <cfparam name="rc.columns" default="fixed" />
 <cfoutput>
-<form novalidate="novalidate" action="index.cfm" method="get" name="download" onsubmit="return validate(this);" class="fieldset-wrap">
+<form novalidate="novalidate" action="index.cfm" method="get" name="download" onsubmit="return validate(this);">
 
-<div class="fieldset"><div class="control-group">
-  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.from')#</label>
-  <div class="controls">
-  	<input type="text" class="datepicker span2" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#">
-  	<select name="hour1"  class="span2"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.firstentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
-    <select name="minute1" class="span1"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.firstentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop></select>
-</div>
-</div>
+	<div class="mura-control-group">
+  	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.from')#</label>
+  	<input type="text" class="datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#">
+  	<select name="hour1" class="time"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.firstentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
+    <select name="minute1" class="time"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.firstentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop></select>
+	</div>
 
-<div class="control-group">
-  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.to')#</label>
-  <div class="controls">
-  	<input type="text" class="datepicker span2" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#">
-  	<select name="hour2"  class="span2"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.Lastentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
-    <select name="minute2"  class="span1"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.lastentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop>
+	<div class="mura-control-group">
+  	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.to')#</label>
+  	<input type="text" class="datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#">
+  	<select name="hour2" class="time"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.Lastentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
+    <select name="minute2" class="time" ><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.lastentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop>
    </select>
-</div>
-</div>
+	</div>
 
-<div class="control-group">
-  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</label>
-  <div class="controls"><select name="sortBy" class="span2">
+<div class="mura-control-group">
+  <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</label>
+  <select name="sortBy" class="mura-constrain">
 <option value="Entered" <cfif "Entered" eq rc.sortBy>selected</cfif>>Entered</option>
 <cfloop list="#rc.fieldnames#" index="f">
 <option value="#esapiEncode('html_attr',f)#" <cfif f eq rc.sortBy>selected</cfif>>#esapiEncode('html',f)#</option>
 </cfloop>
 </select>
-<select name="sortDirection" class="span2">
+<select name="sortDirection" class="mura-constrain">
 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ascending')#</option>
 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
 </select>
 </div>
-</div>
 
-<div class="control-group">
-	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</label>
-	<div class="controls">
-		<select name="filterBy" class="span2">
-		<cfloop list="#rc.fieldnames#" index="f">
-		<option value="#esapiEncode('html_attr',f)#" <cfif f eq session.filterBy>selected</cfif>>#esapiEncode('html',f)#</option>
-		</cfloop>
+	<div class="mura-control-group">
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</label>
+		<select name="filterBy" class="mura-constrain">
+			<cfloop list="#rc.fieldnames#" index="f">
+			<option value="#esapiEncode('html_attr',f)#" <cfif f eq session.filterBy>selected</cfif>>#esapiEncode('html',f)#</option>
+			</cfloop>
 		</select>
-		<input type="text" class="span6" name="keywords" value="#esapiEncode('html_attr',session.datakeywords)#">
+		<input type="text" name="keywords" class="mura-constrain" value="#esapiEncode('html_attr',session.datakeywords)#">
 	</div>
-</div>
-</div>
+
 <input type="hidden" name="muraAction" value="cArch.datamanager" />
 <input type="hidden" name="contentid" value="#esapiEncode('html_attr',rc.contentid)#" />
 <input type="hidden" name="siteid" value="#esapiEncode('html_attr',session.siteid)#" />
 <input type="hidden" name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#" />
 <input type="hidden" name="newSearch" value="1" />
-<div class="form-actions">
-	<button type="button" class="btn" onclick="submitForm(document.forms.download);" /><i class="icon-bar-chart"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#</button>
-	<button type="button" class="btn" onclick="location.href='./?muraAction=cArch.downloaddata&siteid=#esapiEncode('url',rc.siteid)#&contentid=#esapiEncode('url',rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#esapiEncode('url',rc.columns)#';"><i class="icon-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</button>
+<div class="mura-actions">
+	<div class="form-actions">
+		<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.download);" /><i class="mi-bar-chart"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#</button>
+		<button type="button" class="btn" onclick="location.href='./?muraAction=cArch.downloaddata&siteid=#esapiEncode('url',rc.siteid)#&contentid=#esapiEncode('url',rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#esapiEncode('url',rc.columns)#';"><i class="mi-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</button>
+	</div>
 </div>
-</form></cfoutput>
+</form>
+</cfoutput>
+<cfelse>
+	<p class="alert">No data to display for this form</p>
 </cfif>
 <cfif isdefined ('rc.minute1')>
 <cfsilent>
 <cfset rsData=application.dataCollectionManager.getData(rc)/>
 </cfsilent>
 <cfif rsData.recordcount>
+<div class="mura-grid-container">
 <table class="mura-table-grid">
 <thead>
 <tr>
@@ -150,10 +149,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="actions">
 		<ul>
 			<li class="edit">
-				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.contentid)#&siteid=#esapiEncode('url',rc.siteid)#&date1=#esapiEncode('url',rc.date1)#&hour1=#esapiEncode('url',rc.hour1)#&minute1=#esapiEncode('url',rc.minute1)#&date2=#esapiEncode('url',rc.date2)#&hour2=#esapiEncode('url',rc.hour2)#&minute2=#esapiEncode('url',rc.minute2)#&responseid=#rsdata.responseid#&action=edit&moduleid=#esapiEncode('url',rc.moduleid)#&sortBy=#esapiEncode('url',rc.sortBy)#&sortDirection=#esapiEncode('url',rc.sortDirection)#&filterBy=#esapiEncode('url',rc.filterBy)#&keywords=#esapiEncode('url',rc.keywords)#"><i class="icon-pencil"></i></a>
+				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.contentid)#&siteid=#esapiEncode('url',rc.siteid)#&date1=#esapiEncode('url',rc.date1)#&hour1=#esapiEncode('url',rc.hour1)#&minute1=#esapiEncode('url',rc.minute1)#&date2=#esapiEncode('url',rc.date2)#&hour2=#esapiEncode('url',rc.hour2)#&minute2=#esapiEncode('url',rc.minute2)#&responseid=#rsdata.responseid#&action=edit&moduleid=#esapiEncode('url',rc.moduleid)#&sortBy=#esapiEncode('url',rc.sortBy)#&sortDirection=#esapiEncode('url',rc.sortDirection)#&filterBy=#esapiEncode('url',rc.filterBy)#&keywords=#esapiEncode('url',rc.keywords)#"><i class="mi-pencil"></i></a>
 			</li>
 			<li class="delete">
-				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.contentid)#&siteid=#esapiEncode('url',rc.siteid)#&date1=#esapiEncode('url',rc.date1)#&hour1=#esapiEncode('url',rc.hour1)#&minute1=#esapiEncode('url',rc.minute1)#&date2=#esapiEncode('url',rc.date2)#&hour2=#esapiEncode('url',rc.hour2)#&minute2=#esapiEncode('url',rc.minute2)#&responseid=#rsdata.responseid#&action=delete&moduleid=#esapiEncode('url',rc.moduleid)#&sortBy=#esapiEncode('url',rc.sortBy)#&sortDirection=#esapiEncode('url',rc.sortDirection)#&filterBy=#esapiEncode('url',rc.filterBy)#&keywords=#esapiEncode('url',rc.keywords)##rc.$.renderCSRFTokens(context=rsdata.responseID,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a>
+				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',rc.contentid)#&siteid=#esapiEncode('url',rc.siteid)#&date1=#esapiEncode('url',rc.date1)#&hour1=#esapiEncode('url',rc.hour1)#&minute1=#esapiEncode('url',rc.minute1)#&date2=#esapiEncode('url',rc.date2)#&hour2=#esapiEncode('url',rc.hour2)#&minute2=#esapiEncode('url',rc.minute2)#&responseid=#rsdata.responseid#&action=delete&moduleid=#esapiEncode('url',rc.moduleid)#&sortBy=#esapiEncode('url',rc.sortBy)#&sortDirection=#esapiEncode('url',rc.sortDirection)#&filterBy=#esapiEncode('url',rc.filterBy)#&keywords=#esapiEncode('url',rc.keywords)##rc.$.renderCSRFTokens(context=rsdata.responseID,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)"><i class="mi-trash"></i></a>
 			</li>
 		</ul>
 	</td>
@@ -170,6 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </tbody>
 </table>
+</div><!-- /.mura-grid-container -->
 
 </cfif>
 </cfif>

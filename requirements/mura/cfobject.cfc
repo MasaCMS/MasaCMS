@@ -400,6 +400,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return tz;
 		}
 	}
+
+	function getSession(){
+		if(request.muraSessionManagement && isdefined('session')){
+			return session;
+		} else {
+			param name="request.muraSessionPlaceholder" default={};
+			return request.muraSessionPlaceholder;
+		}
+	}
 </cfscript>
 
 </cfcomponent>

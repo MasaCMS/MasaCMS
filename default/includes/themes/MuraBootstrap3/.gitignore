@@ -1,0 +1,16 @@
+*~
+.DS_Store
+._*
+Thumbs.db
+.cache
+.project
+.rdsTempFiles
+.settings
+.tmproj
+*.esproj
+*.sublime-project
+*.sublime-workspace
+*_notes/
+compiled/
+*.less.css
+node_modules/

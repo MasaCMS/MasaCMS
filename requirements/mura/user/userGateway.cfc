@@ -1,4 +1,4 @@
-<!--- 
+<!---
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -13,17 +13,17 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,12 +37,12 @@
 	 /index.cfm
 	 /MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -56,17 +56,17 @@
 		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfreturn this />
-	</cffunction> 
+	</cffunction>
 
 	<cffunction name="getUserGroups" returntype="query" access="public" output="false">
 		<cfargument name="siteid" type="string" default="" />
 		<cfargument name="isPublic" type="numeric" default="0" />
 		<cfset var rsUserGroups = "" />
-		
+
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUserGroups')#">
-		SELECT tusers.UserID, tusers.Email, tusers.GroupName, tusers.Type, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, 
+		SELECT tusers.UserID, tusers.Email, tusers.GroupName, tusers.Type, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy,
 		tusers.LastUpdateByID, memberQuery.Counter, tusers.Perm, tusers.isPublic
-		FROM tusers LEFT JOIN 
+		FROM tusers LEFT JOIN
 		(select tusersmemb.groupID, count(tusersmemb.groupID) Counter
 		from tusersmemb inner join tusers on (tusersmemb.userID=tusers.userID)
 		where
@@ -77,7 +77,7 @@
 			</cfif>
 		group by tusersmemb.groupID
 		) memberQuery ON tusers.UserID = memberQuery.GroupID
-		WHERE tusers.Type=1 and tusers.isPublic=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isPublic#"> and 
+		WHERE tusers.Type=1 and tusers.isPublic=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isPublic#"> and
 		tusers.siteid = <cfif arguments.isPublic eq 0 >
 			'#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#'
 			<cfelse>
@@ -85,9 +85,9 @@
 			</cfif>
 		Order by tusers.perm desc, tusers.GroupName
 		</cfquery>
-		
+
 		<cfreturn rsUserGroups />
-	</cffunction> 
+	</cffunction>
 
 	<cffunction name="getSearch" returntype="query" access="public" output="false">
 		<cfargument name="search" type="string" default="" />
@@ -95,25 +95,26 @@
 		<cfargument name="isPublic" type="numeric" default="0" />
 		<cfset var rsUserSearch = "" />
 		<cfset var maxrows=2100>
+		<cfset var sessionData=getSession()>
 
 		<cfif variables.configBean.getDbType() eq 'Oracle'>
 			<cfset maxrows=990>
 		</cfif>
 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUserSearch',maxrows=maxrows)#">
-		Select #variables.fieldList# from tusers 
+		Select #variables.fieldList# from tusers
 		left join tfiles on tusers.photofileID=tfiles.fileID
-		where tusers.type=2 and tusers.isPublic = <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isPublic#"> and 
+		where tusers.type=2 and tusers.isPublic = <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isPublic#"> and
 		tusers.siteid = <cfif arguments.isPublic eq 0 >
 			'#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#'
 			<cfelse>
 			'#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'
-			</cfif> 
-			
+			</cfif>
+
 		<cfif arguments.search eq ''>
 			and 0=1
 		</cfif>
-		
+
 		 and (
 		 		tusers.lname like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
 		 		or tusers.fname like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
@@ -121,10 +122,10 @@
 		 		or tusers.username like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
 		 		or tusers.email like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
 		 		or tusers.jobtitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">)
-		 
-		<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> order by tusers.lname
+
+		<cfif not listFind(sessionData.mura.memberships,'S2')> and tusers.s2=0 </cfif> order by tusers.lname
 		</cfquery>
-		
+
 		<cfreturn rsUserSearch />
 	</cffunction>
 
@@ -152,6 +153,7 @@
 		<cfset var dbtype=variables.configBean.getDbType()>
 		<cfset var tableModifier="">
 		<cfset var castfield="attributeValue">
+		<cfset var sessionData=getSession()>
 
 		<cfif dbtype eq "MSSQL">
 		 	<cfset tableModifier="with (nolock)">
@@ -166,18 +168,18 @@
 		<cfelse>
 			<cfset params=arguments.data>
 		</cfif>
-		
+
 
 		<cfset isExtendedSort=(not listFindNoCase(sortOptions,params.getSortBy())) and not len(params.getSortTable())>
-		
+
 		<cfif len(arguments.siteID)>
 			<cfset params.setSiteID(arguments.siteID)>
 		</cfif>
-		
+
 		<cfif isNumeric(arguments.isPublic)>
 			<cfset params.setIsPublic(arguments.isPublic)>
 		</cfif>
-		
+
 		<cfif params.getIsPublic() eq 0 >
 			<cfset userPoolID=variables.settingsManager.getSite(params.getSiteID()).getPrivateUserPoolID()>
 		<cfelseif params.getIsPublic() eq 1 >
@@ -187,7 +189,7 @@
 		<cfelse>
 			<cfset userPoolID=variables.settingsManager.getSite(params.getSiteID()).getPublicUserPoolID()>
 		</cfif>
-		
+
 		<cfset rsParams=params.getParams() />
 
 		<cfloop query="rsParams">
@@ -205,14 +207,14 @@
 		select <cfif not arguments.countOnly and params.getMaxItems()>top #params.getMaxItems()# </cfif>
 
 		<cfif not arguments.countOnly>
-			#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif> 
+			#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif>
 		<cfelse>
 			count(*) as count
 		</cfif>
 
-		from tusers 
+		from tusers
 		left join tfiles on tusers.photofileID=tfiles.fileID
-		
+
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
 
@@ -230,30 +232,30 @@
 				inner join #jointable# on (tusers.userid=#jointable#.userid)
 			</cfif>
 		</cfloop>
-		
+
 		<cfif not arguments.countOnly and isExtendedSort>
-		left Join (select 
+		left Join (select
 				#variables.classExtensionManager.getCastString(params.getSortBy(),params.getSiteID())# extendedSort
-				 ,tclassextenddatauseractivity.baseID 
+				 ,tclassextenddatauseractivity.baseID
 				from tclassextenddatauseractivity inner join tclassextendattributes
 				on (tclassextenddatauseractivity.attributeID=tclassextendattributes.attributeID)
 				where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#params.getSiteID()#">
 				and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#params.getSortBy()#">
 		) qExtendedSort
-		
+
 		on (tusers.userID=qExtendedSort.baseID)
 		</cfif>
-		
-		where tusers.type=#params.getType()# 
+
+		where tusers.type=#params.getType()#
 		<cfif isNumeric(params.getIsPublic())>
-			and tusers.isPublic =#params.getIsPublic()# 
+			and tusers.isPublic =#params.getIsPublic()#
 		</cfif>
 		<cfif listLen(userPoolID) gt 1>
 			and tusers.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#userPoolID#"> )
 		<cfelse>
 			and tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
 		</cfif>
-		
+
 
 		<cfif rsParams.recordcount>
 			<cfset started=false>
@@ -265,8 +267,8 @@
 						rsParams.condition,
 						rsParams.criteria
 					) />
-									 
-				<cfif param.getIsValid()>	
+
+				<cfif param.getIsValid()>
 					<cfif not started >
 						<cfset openGrouping=true />
 						and (
@@ -292,11 +294,11 @@
 					<cfelseif not openGrouping>
 						#param.getRelationship()#
 					</cfif>
-					
-					<cfset started = true />
-					<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>	
 
-					<cfif listLen(param.getField(),".") gt 1>					
+					<cfset started = true />
+					<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>
+
+					<cfif listLen(param.getField(),".") gt 1>
 						#param.getFieldStatement()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
 						<cfset openGrouping=false />
 					<cfelseif len(param.getField())>
@@ -307,55 +309,55 @@
 								where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 							<cfelse>
 								inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
-								where 
+								where
 								<cfif listLen(userPoolID) gt 1>
 									tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
 								<cfelse>
 									tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
 								</cfif>
-								
+
 								and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 							</cfif>
-							and 
+							and
 							<cfif param.getCondition() neq "like">
 								<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),params.getsiteid())>
-							</cfif> 
+							</cfif>
 							<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
 								upper(#castfield#)
 							<cfelse>
 								#castfield#
 							</cfif>
-							#param.getCondition()# 
+							#param.getCondition()#
 							<cfif isListParam>
 								(
 							</cfif>
 							<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
 							<cfif isListParam>
 								)
-							</cfif>	
+							</cfif>
 						)
 						<cfset openGrouping=false />
 					</cfif>
-				</cfif>						
+				</cfif>
 			</cfloop>
 			<cfif started>)</cfif>
 		</cfif>
-		
+
 		<!---
 		<cfif arrayLen(paramArray)>
 			<cfloop from="1" to="#arrayLen(paramArray)#" index="i">
 					<cfset param=paramArray[i] />
-			 		<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>			
-			 		#param.getField()# #param.getCondition()# <cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#">  	
+			 		<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>
+			 		#param.getField()# #param.getCondition()# <cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#">
 			</cfloop>
 			<cfif started>)</cfif>
 		</cfif>
 		--->
-		
+
 	  	<cfif len(params.getCategoryID())>
 		<cfset paramNum=listLen(params.getCategoryID())>
 		and tusers.userID in (select userID from tusersinterests
-								where categoryID in 
+								where categoryID in
 								(<cfqueryparam cfsqltype="cf_sql_varchar" value="#listFirst(params.getCategoryID())#">
 								<cfif paramNum gt 1>
 								<cfloop from="2" to="#paramNum#" index="i">
@@ -365,11 +367,11 @@
 								)
 								)
 		</cfif>
-		
+
 		<cfif len(params.getGroupID())>
 		<cfset paramNum=listLen(params.getGroupID())>
 		and tusers.userID in (select userID from tusersmemb
-								where groupID in 
+								where groupID in
 								(<cfqueryparam cfsqltype="cf_sql_varchar" value="#listFirst(params.getGroupID())#">
 								<cfif paramNum gt 1>
 								<cfloop from="2" to="#paramNum#" index="i">
@@ -379,15 +381,15 @@
 								)
 								)
 		</cfif>
-			
+
 		<cfif isNumeric(params.getInActive())>
 			and tusers.inactive=#params.getInActive()#
 		</cfif>
-		
-		<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> 
-		
+
+		<cfif not listFind(sessionData.mura.memberships,'S2')> and tusers.s2=0 </cfif>
+
 		order by
-		
+
 		<cfif not arguments.countOnly>
 			<cfif len(params.getOrderBy())>
 				#params.getOrderBy()#
@@ -395,7 +397,7 @@
 				#params.getSortTable()#.#params.getSortBy()# #params.getSortDirection()#
 			<cfelseif isExtendedSort>
 				qExtendedSort.extendedSort #params.getSortDirection()#
-			<cfelse>	
+			<cfelse>
 				<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,created,isPublic",params.getSortBy())>
 					tusers.#params.getSortBy()# #params.getSortDirection()#
 				<cfelse>
@@ -409,7 +411,7 @@
 		</cfif>
 
 		</cfquery>
-		
+
 		<cfreturn rsAdvancedUserSearch />
 	</cffunction>
 
@@ -432,7 +434,7 @@
 		<cfargument name="siteid" type="string" default="" />
 		<cfset var rsPublicGroups = "" />
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPublicGroups')#">
-		SELECT tsettings.Site, #variables.fieldList# 
+		SELECT tsettings.Site, #variables.fieldList#
 		FROM tsettings INNER JOIN tusers ON tsettings.SiteID = tusers.SiteID
 		LEFT JOIN tfiles on tusers.photofileID=tfiles.fileID
 		WHERE tusers.Type=1 AND tusers.isPublic=1
@@ -447,7 +449,7 @@
 		<cfargument name="siteid" type="string" default="" />
 		<cfargument name="startDate" type="string" required="true" default="">
 		<cfargument name="stopDate" type="string" required="true" default="">
-		
+
 		<cfset var rsCreatedMembers = "" />
 		<cfset var start = "" />
 		<cfset var stop = "" />
@@ -469,7 +471,7 @@
 	<cffunction name="getTotalMembers" returntype="numeric" access="public" output="false">
 		<cfargument name="siteid" type="string" default="" />
 
-		
+
 		<cfset var rsTotalMembers = "" />
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsTotalMembers')#">
 		SELECT Count(*) as theCount
@@ -477,7 +479,7 @@
 		WHERE tusers.Type=2 AND tusers.isPublic=1
 		and siteID = '#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'
 		and inActive=0
-		
+
 		</cfquery>
 		<cfreturn rsTotalMembers.theCount />
 	</cffunction>
@@ -485,7 +487,7 @@
 	<cffunction name="getTotalAdministrators" returntype="numeric" access="public" output="false">
 		<cfargument name="siteid" type="string" default="" />
 
-		
+
 		<cfset var rsTotalAdministrators = "" />
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsTotalAdministrators')#">
 		SELECT Count(*) as theCount
@@ -493,7 +495,7 @@
 		WHERE tusers.Type=2 AND tusers.isPublic=0
 		and siteID = '#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#'
 		and inActive=0
-		
+
 		</cfquery>
 		<cfreturn rsTotalAdministrators.theCount />
 	</cffunction>
@@ -514,7 +516,7 @@
 			WHERE 0=0
 				AND tusers.type = 2
 				<cfif Len(arguments.siteid)>
-					AND tusers.siteid = 
+					AND tusers.siteid =
 						<cfif arguments.isPublic eq 0 >
 							<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#" />
 						<cfelse>

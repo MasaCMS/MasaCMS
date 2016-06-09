@@ -45,8 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
+<div class="nav-module-specific btn-group">
+<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
 </div>
 <h1>HTML Static Export</h1>
 <p>The export has been completed.</p>

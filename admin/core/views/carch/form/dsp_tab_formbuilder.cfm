@@ -49,78 +49,82 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))/>
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfoutput>
-<div id="tabBasic" class="tab-pane fade">
+<div id="tabBasic" class="tab-pane active">
 
-<span id="extendset-container-tabbasictop" class="extendset-container"></span>
+		<!-- block -->
+	  <div class="block block-bordered">
+	  	<!-- block header -->
+	    <div class="block-header">
+					<h3 class="block-title">Form Builder</h3>
+	    </div>
+	    <!-- /block header -->
+			
+			<!-- block content -->
+			<div class="block-content">
 
-<div class="fieldset">
+		<span id="extendset-container-tabbasictop" class="extendset-container"></span>
+
 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
-	<div class="control-group">
-		<label class="control-label">
+			<div class="mura-control-group">
+				<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 		</label>
-		<div class="controls">
-			<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.getTitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+			<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.getTitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
 		</div>
-	</div>
 
-<cfif rc.type neq 'Form' and  rc.type neq 'Component' >
-	<div class="control-group">
-		<label class="control-label">
+		<cfif rc.type neq 'Form' and  rc.type neq 'Component' >
+			<div class="mura-control-group">
+				<label>
 			<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
-			 <i class="icon-question-sign"></i></a> 
+					 <i class="mi-question-circle"></i></a> 
 			<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
 				[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
 			</a>
 		</label>
-		<div class="controls" id="editSummary" style="display:none;">
+				<div class="mura-control justify" id="editSummary" style="display:none;">
 			<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#esapiEncode('html',rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
 		</div>
 	</div>
-</cfif>
+		</cfif>
 
-	<div class="control-group">
-		<label class="control-label">
+			<div class="mura-control-group">
+				<label>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
 		</label>
-		<div class="controls" id="bodyContainer">
+				<div id="bodyContainer" class="mura-control justify">
 			<cfinclude template="dsp_formbuilder.cfm">		
 		</div>
 	</div>
 
-<span id="extendSetsBasic"></span>
+		<span id="extendSetsBasic"></span>
 
-<cfif rc.type eq 'Form'>
-	<div class="control-group">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
-		<div class="controls">
+		<cfif rc.type eq 'Form'>
+			<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
+				<div class="mura-control justify">
 			<label for="rc" class="checkbox inline">
-				<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> 
+						<input name="responseChart" id="rc" type="checkbox" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> 
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
 			</label>
 		</div>
 	</div> 
-	<div class="control-group">
-		<label class="control-label">
+			<div class="mura-control-group">
+				<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 		</label>
-		<div class="controls">
-			<textarea name="responseMessage" rows="6" class="span12">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
+			<textarea name="responseMessage" rows="6">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
 		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
+			<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 		</label>
-		<div class="controls">
-			<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#" class="span12">
+			<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
 		</div> 
-	</div>
-</cfif>
-</div>
+		</cfif>
 
-<span id="extendset-container-basic" class="extendset-container"></span>
+		<span id="extendset-container-basic" class="extendset-container"></span>
+		<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
 
-<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
-</div>
-</cfoutput>
+		</div> <!--- /.block-content --->
+	</div> <!--- /.block --->		
+</div> <!--- /.tab-pane ---></cfoutput>

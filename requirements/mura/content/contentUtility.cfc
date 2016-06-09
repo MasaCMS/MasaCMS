@@ -195,6 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var A=""/>
 	<cfset var E=""/>
 	<cfset var rsAdmin = "" />
+	<cfset var sessionData=getSession()>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAdmin')#">
 	SELECT tusers.UserID
@@ -211,7 +212,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	WHERE tusers.Email Is Not Null
 	AND
 	(tusersmemb.GroupID In (<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsAdmin.userID#"/><cfloop list="#permStruct.editorList#" index="E">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#E#"/></cfloop>)
-	<cfif listFind(session.mura.memberships,'S2')>or tusers.s2=1</cfif>)
+	<cfif listFind(sessionData.mura.memberships,'S2')>or tusers.s2=1</cfif>)
 
 	<cfif authorLen>
 	union
@@ -229,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								WHERE tusers.Email Is Not Null
 								AND
 								(tusersmemb.GroupID In (<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsAdmin.userID#"/><cfloop list="#permStruct.editorList#" index="E">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#E#"/></cfloop>)
-								<cfif listFind(session.mura.memberships,'S2')>or tusers.s2=1</cfif>)
+								<cfif listFind(sessionData.mura.memberships,'S2')>or tusers.s2=1</cfif>)
 							)
 
 	</cfif>
@@ -534,6 +535,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var versionLink="">
 	<cfset var historyLink="">
 	<cfset var site=variables.settingsManager.getSite(arguments.contentBean.getSiteID())>
+	<cfset var sessionData=getSession()>
 
 	<cfif listFind("Folder,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
@@ -588,9 +590,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		)
 	</cfquery>
 
-<cfif session.mura.isLoggedIn>
+<cfif sessionData.mura.isLoggedIn>
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsemail')#">
-	select email, fname, lname from tusers where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
+	select email, fname, lname from tusers where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData.mura.userID#">
 </cfquery>
 
 <cfloop query="rslist">

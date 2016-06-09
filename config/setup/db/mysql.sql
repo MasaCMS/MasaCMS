@@ -91,9 +91,9 @@ CREATE TABLE `tcontent` (
 --
 
 /*!40000 ALTER TABLE `tcontent` DISABLE KEYS */;
-INSERT INTO `tcontent` (`SiteID`,`ModuleID`,`ParentID`,`ContentID`,`ContentHistID`,`RemoteID`,`RemoteURL`,`RemotePubDate`,`RemoteSourceURL`,`RemoteSource`,`Credits`,`FileID`,`Template`,`Type`,`subType`,`Active`,`OrderNo`,`Title`,`MenuTitle`,`Summary`,`Filename`,`MetaDesc`,`MetaKeyWords`,`Body`,`lastUpdate`,`lastUpdateBy`,`lastUpdateByID`,`DisplayStart`,`DisplayStop`,`Display`,`Approved`,`IsNav`,`Restricted`,`RestrictGroups`,`Target`,`TargetParams`,`responseChart`,`responseMessage`,`responseSendTo`,`responseDisplayFields`,`moduleAssign`,`displayTitle`,`Notes`,`inheritObjects`,`isFeature`,`ReleaseDate`,`IsLocked`,`nextN`,`sortBy`,`sortDirection`,`featureStart`,`featureStop`,`forceSSL`,`audience`,`keyPoints`,`searchExclude`,`path`) VALUES 
- ('default','00000000000000000000000000000000003','00000000000000000000000000000000END','00000000000000000000000000000000003','6300ED4A-1320-5CC3-F9D6A2D279E386D0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Components',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
- ('default','00000000000000000000000000000000004','00000000000000000000000000000000END','00000000000000000000000000000000004','6300ED59-1320-5CC3-F9706221E0EFF7A2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Forms',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,NULL),
+INSERT INTO `tcontent` (`SiteID`,`ModuleID`,`ParentID`,`ContentID`,`ContentHistID`,`RemoteID`,`RemoteURL`,`RemotePubDate`,`RemoteSourceURL`,`RemoteSource`,`Credits`,`FileID`,`Template`,`Type`,`subType`,`Active`,`OrderNo`,`Title`,`MenuTitle`,`Summary`,`Filename`,`MetaDesc`,`MetaKeyWords`,`Body`,`lastUpdate`,`lastUpdateBy`,`lastUpdateByID`,`DisplayStart`,`DisplayStop`,`Display`,`Approved`,`IsNav`,`Restricted`,`RestrictGroups`,`Target`,`TargetParams`,`responseChart`,`responseMessage`,`responseSendTo`,`responseDisplayFields`,`moduleAssign`,`displayTitle`,`Notes`,`inheritObjects`,`isFeature`,`ReleaseDate`,`IsLocked`,`nextN`,`sortBy`,`sortDirection`,`featureStart`,`featureStop`,`forceSSL`,`audience`,`keyPoints`,`searchExclude`,`path`) VALUES
+ ('default','00000000000000000000000000000000003','00000000000000000000000000000000END','00000000000000000000000000000000003','6300ED4A-1320-5CC3-F9D6A2D279E386D0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Components','Components',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
+ ('default','00000000000000000000000000000000004','00000000000000000000000000000000END','00000000000000000000000000000000004','6300ED59-1320-5CC3-F9706221E0EFF7A2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Forms','Forms',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,NULL),
  ('default','00000000000000000000000000000000000','00000000000000000000000000000000END','00000000000000000000000000000000001','6300ED69-1320-5CC3-F922E3012E2C6BAE',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default.cfm','Page','Default',1,1,'Home','Home',NULL,NULL,NULL,NULL,NULL,now(),'System',NULL,NULL,NULL,1,1,1,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL,'Cascade',0,NULL,0,10,'orderno','asc',NULL,NULL,0,NULL,NULL,0,'\'00000000000000000000000000000000001\''),
  ('default','00000000000000000000000000000000006','00000000000000000000000000000000END','00000000000000000000000000000000006','6300ED79-1320-5CC3-F92E6325C26664B6',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Advertising',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,NULL),
  ('default','00000000000000000000000000000000000','00000000000000000000000000000000END','00000000000000000000000000000000000','6300ED88-1320-5CC3-F9E241684D21FEC9',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Site Manager',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,NULL),
@@ -605,7 +605,7 @@ CREATE TABLE `tmailinglist` (
 
 /*!40000 ALTER TABLE `tmailinglist` DISABLE KEYS */;
 <cfoutput>
-INSERT INTO `tmailinglist` (`MLID`,`SiteID`,`Name`,`Description`,`LastUpdate`,`isPurge`,`isPublic`) VALUES 
+INSERT INTO `tmailinglist` (`MLID`,`SiteID`,`Name`,`Description`,`LastUpdate`,`isPurge`,`isPublic`) VALUES
  ('#createUUID()#','default','Please Remove Me from All Lists','',now(),1,1);
 </cfoutput>
 /*!40000 ALTER TABLE `tmailinglist` ENABLE KEYS */;
@@ -776,7 +776,7 @@ CREATE TABLE `tsettings` (
   `theme` varchar(50) default NULL,
   `mailserverSMTPPort` varchar(5) default NULL,
   `mailserverPOPPort` varchar(5) default NULL,
-  `mailserverTLS` varchar(5) default NULL, 
+  `mailserverTLS` varchar(5) default NULL,
   `mailserverSSL` varchar(5) default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -785,7 +785,7 @@ CREATE TABLE `tsettings` (
 --
 
 /*!40000 ALTER TABLE `tsettings` DISABLE KEYS */;
-INSERT INTO `tsettings` (`SiteID`,`Site`,`MaxNestLevel`,`PageLimit`,`Locking`,`Domain`,`exportLocation`,`FileDir`,`Contact`,`MailserverIP`,`MailServerUsername`,`MailServerPassword`,`EmailBroadcaster`,`Extranet`,`ExtranetPublicReg`,`ExtranetPublicRegNotify`,`ExtranetSSL`,`Cache`,`ViewDepth`,`NextN`,`DataCollection`,`columnCount`,`columnNames`,`primaryColumn`,`publicSubmission`,`AdManager`,`archiveDate`,`contactName`,`contactAddress`,`contactCity`,`contactState`,`contactZip`,`contactEmail`,`contactPhone`,`privateUserPoolID`,`publicUserPoolID`,`advertiserUserPoolID`,`orderNo`,`emailBroadcasterLimit`,`feedManager`,`displayPoolID`,`galleryMainScaleBy`,`galleryMainScale`,`gallerySmallScaleBy`,`gallerySmallScale`,`galleryMediumScaleBy`,`galleryMediumScale`,`sendLoginScript`,`mailingListConfirmScript`,`publicSubmissionApprovalScript`,`reminderScript`,`loginURL`,`editProfileURL`,`CommentApprovalDefault`,`deploy`,`lastDeployment`,`accountActivationScript`,`useDefaultSMTPServer`) VALUES 
+INSERT INTO `tsettings` (`SiteID`,`Site`,`MaxNestLevel`,`PageLimit`,`Locking`,`Domain`,`exportLocation`,`FileDir`,`Contact`,`MailserverIP`,`MailServerUsername`,`MailServerPassword`,`EmailBroadcaster`,`Extranet`,`ExtranetPublicReg`,`ExtranetPublicRegNotify`,`ExtranetSSL`,`Cache`,`ViewDepth`,`NextN`,`DataCollection`,`columnCount`,`columnNames`,`primaryColumn`,`publicSubmission`,`AdManager`,`archiveDate`,`contactName`,`contactAddress`,`contactCity`,`contactState`,`contactZip`,`contactEmail`,`contactPhone`,`privateUserPoolID`,`publicUserPoolID`,`advertiserUserPoolID`,`orderNo`,`emailBroadcasterLimit`,`feedManager`,`displayPoolID`,`galleryMainScaleBy`,`galleryMainScale`,`gallerySmallScaleBy`,`gallerySmallScale`,`galleryMediumScaleBy`,`galleryMediumScale`,`sendLoginScript`,`mailingListConfirmScript`,`publicSubmissionApprovalScript`,`reminderScript`,`loginURL`,`editProfileURL`,`CommentApprovalDefault`,`deploy`,`lastDeployment`,`accountActivationScript`,`useDefaultSMTPServer`) VALUES
  ('default','Default',NULL,1000,'none','localhost',NULL,NULL,'info@getmura.com','mail.server.com','username@server.com','password',0,1,0,NULL,0,0,1,20,1,3,'Left Column^Main Content^Right Column',2,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default','default','default',1,0,1,'default','y',500,'s',100,'y',250,NULL,NULL,NULL,NULL,'?display=login','?display=editProfile',1,0,NULL,NULL,0);
 /*!40000 ALTER TABLE `tsettings` ENABLE KEYS */;
 
@@ -806,7 +806,7 @@ CREATE TABLE `tsystemobjects` (
 --
 
 /*!40000 ALTER TABLE `tsystemobjects` DISABLE KEYS */;
-INSERT INTO `tsystemobjects` (`Object`,`SiteID`,`Name`,`OrderNo`) VALUES 
+INSERT INTO `tsystemobjects` (`Object`,`SiteID`,`Name`,`OrderNo`) VALUES
  ('event_reminder_form','default','Event Reminder Form',12),
  ('forward_email','default','Forward Email',13),
  ('site_map','default','Site Map',2),
@@ -914,7 +914,7 @@ CREATE TABLE `tusers` (
 
 /*!40000 ALTER TABLE `tusers` DISABLE KEYS */;
 <cfoutput>
-INSERT INTO `tusers` (`UserID`,`GroupName`,`Fname`,`Lname`,`UserName`,`Password`,`PasswordCreated`,`Email`,`Company`,`JobTitle`,`mobilePhone`,`Website`,`Type`,`subType`,`Ext`,`ContactForm`,`Admin`,`S2`,`LastLogin`,`LastUpdate`,`LastUpdateBy`,`LastUpdateByID`,`Perm`,`InActive`,`isPublic`,`SiteID`,`Subscribe`,`notes`,`description`,`interests`,`keepPrivate`,`photoFileID`,`IMName`,`IMService`,`created`,`remoteID`,`tags`) VALUES 
+INSERT INTO `tusers` (`UserID`,`GroupName`,`Fname`,`Lname`,`UserName`,`Password`,`PasswordCreated`,`Email`,`Company`,`JobTitle`,`mobilePhone`,`Website`,`Type`,`subType`,`Ext`,`ContactForm`,`Admin`,`S2`,`LastLogin`,`LastUpdate`,`LastUpdateBy`,`LastUpdateByID`,`Perm`,`InActive`,`isPublic`,`SiteID`,`Subscribe`,`notes`,`description`,`interests`,`keepPrivate`,`photoFileID`,`IMName`,`IMService`,`created`,`remoteID`,`tags`) VALUES
  ('#adminUserID#',NULL,'Admin','User','admin','21232F297A57A5A743894A0E4A801FC3',now(),'admin@localhost.com',NULL,NULL,NULL,NULL,2,'Default',NULL,NULL,NULL,1,now(),now(),'System','22FC551F-FABE-EA01-C6EDD0885DDC1682',0,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,now(),NULL,NULL),
  ('#createUUID()#','Admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'Default',NULL,NULL,NULL,0,NULL,now(),'System',NULL,1,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,now(),NULL,NULL);
 </cfoutput>
@@ -1021,7 +1021,7 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tclassextenddatauseractivity`  (
-  `dataID` INTEGER NOT NULL AUTO_INCREMENT, 
+  `dataID` INTEGER NOT NULL AUTO_INCREMENT,
   `baseID` char (35)  NOT NULL ,
   `attributeID`INTEGER NOT NULL ,
   `siteID` varchar (25)  NULL ,
@@ -1062,7 +1062,7 @@ CREATE TABLE `tclassextend` (
 
 
 CREATE TABLE `tclassextendattributes` (
-  `attributeID` INTEGER NOT NULL AUTO_INCREMENT,  
+  `attributeID` INTEGER NOT NULL AUTO_INCREMENT,
   `extendSetID` char (35)  NULL ,
   `siteID` varchar (25) NULL ,
   `name` varchar (100) NULL ,

@@ -43,7 +43,7 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-;(function(window){
+;(function(root){
 	function Core(){
 		this.init.apply(this,arguments);
 		return this;
@@ -56,9 +56,9 @@
 
 	Core.extend=function(properties){
 		var self=this;
-		return mura.extend(mura.extendClass(self,properties),{extend:self.extend});
+		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend});
 	};
 
-	window.mura.Core=Core;
+	root.mura.Core=Core;
 
-})(window);
+})(this);

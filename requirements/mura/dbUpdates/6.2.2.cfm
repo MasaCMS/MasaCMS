@@ -9,12 +9,7 @@
 		dbUtility.setTable("tcontentfeeds").addColumn(column="channellink",dataType="longtext");
 	} catch (any e){};
 
-	if(getValue(property='advancedScheduling',defaultValue=false)){
-		dbUtility.setTable("tcontent").addColumn(column="displayInterval",dataType="varchar",length=200);
-	}
-	if(getValue(property='layoutmanager',defaultValue=false)){
-		dbUtility.setTable("tcontent").addColumn(column="objectParams",dataType="text");
-	}
-
+	dbUtility.setTable("tcontent").addColumn(column="displayInterval",dataType="varchar",length=200);
+	dbUtility.setTable("tcontent").addColumn(column="objectParams",dataType="text");
 	dbUtility.setTable("tclassextenddata").addIndex('baseID,attributeID');
 </cfscript>

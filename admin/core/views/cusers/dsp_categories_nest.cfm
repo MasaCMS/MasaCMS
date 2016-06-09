@@ -67,7 +67,7 @@
 	<cfoutput query="rslist" group="site">
 
 		<cfif attributes.nestlevel eq 0>
-			<label class="control-label">
+			<label>
 				#esapiEncode('html',rslist.site)#
 			</label>
 		</cfif>

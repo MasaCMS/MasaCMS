@@ -13,22 +13,22 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes 
-	the preparation of a derivative work based on Mura CMS. Thus, the terms 
-	and conditions of the GNU General Public License version 2 ("GPL") cover 
+	Linking Mura CMS statically or dynamically with other modules constitutes
+	the preparation of a derivative work based on Mura CMS. Thus, the terms
+	and conditions of the GNU General Public License version 2 ("GPL") cover
 	the entire combined work.
 
-	However, as a special exception, the copyright holders of Mura CMS grant 
-	you permission to combine Mura CMS with programs or libraries that are 
+	However, as a special exception, the copyright holders of Mura CMS grant
+	you permission to combine Mura CMS with programs or libraries that are
 	released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS 
-	grant you permission to combine Mura CMS with independent software modules 
-	(plugins, themes and bundles), and to distribute these plugins, themes and 
-	bundles without Mura CMS under the license of your choice, provided that 
-	you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS
+	grant you permission to combine Mura CMS with independent software modules
+	(plugins, themes and bundles), and to distribute these plugins, themes and
+	bundles without Mura CMS under the license of your choice, provided that
+	you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -42,16 +42,16 @@
 		/index.cfm
 		/MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
-	meets the above guidelines as a combined work under the terms of GPL for 
-	Mura CMS, provided that you include the source code of that other code when 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that
+	meets the above guidelines as a combined work under the terms of GPL for
+	Mura CMS, provided that you include the source code of that other code when
 	and as the GNU GPL requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not 
-	obligated to grant this special exception for your modified version; it is 
-	your choice whether to do so, or to make such modified version available 
-	under the GNU General Public License version 2 without this exception.  You 
-	may, if you choose, apply this exception to your own modified versions of 
+	For clarity, if you create a modified version of Mura CMS, you are not
+	obligated to grant this special exception for your modified version; it is
+	your choice whether to do so, or to make such modified version available
+	under the GNU General Public License version 2 without this exception.  You
+	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject">
@@ -66,14 +66,16 @@
 	--->
 
 	<cfscript>
-	
-		
-		// GENERAL 
+
+
+		// GENERAL
+		this.layoutmanager=true;
+		this.legacyobjects=false;
 		this.jsLib = "jquery";
 		this.jsLibLoaded = true;
-		this.suppressWhitespace = true;
+		this.suppressWhitespace = false;
 		this.generalWrapperClass = "well";
-		
+
 		// headings
 		this.headline = "h1";
 		this.subHead1 = "h2";
@@ -82,7 +84,7 @@
 		this.subHead4 = "h5";
 
 		// preloader markup for async objects
-		this.preloaderMarkup='<i class="fa fa-refresh fa-spin"></i>';
+		this.preloaderMarkup='<i class="mura-preloader fa fa-refresh fa-spin"></i>';
 
 		// nav and list item vars
 		this.navWrapperClass = this.generalWrapperClass;
@@ -117,10 +119,10 @@
 		this.formButtonInnerClass="input-group-btn";
 		this.formButtonClass = "btn btn-default";
 		this.formRequiredWrapperClass="";
-		
+
 		// images
 		this.imageClass="img-thumbnail";
-		
+
 		// tables
 		this.tableClass = "table table-bordered table-striped";
 		this.tableHeadClass = "";
@@ -129,24 +131,24 @@
 		this.tableRowClass = "";
 		this.tableCellClass = "";
 		this.tableFooterClass = "";
-		
+
 		// alerts
 		this.alertSuccessClass = "alert alert-success";
 		this.alertInfoClass = "alert alert-info";
 		this.alertWarningClass = "alert alert-warning";
 		this.alertDangerClass = "alert alert-danger";
-		
+
 		// SPECIFIC (Display Objects)
 		// Use these variables to pass-in specific classes without having to create custom versions of the include
-		
+
 		// calendar/dsp_showMonth.cfm
 		this.calendarWrapperClass="";
 		this.calendarTableClass=this.tableClass;
 		//this.calendarTableHeaderClass="";
-		
+
 		// calendar/dspList.cfm
 		this.calendarListWrapperClass="";
-		
+
 		// comments/index.cfm
 		 this.commentsWrapperClass="";
 		 this.commentSortContainerClass="row";
@@ -178,21 +180,21 @@
 		 this.commentUserEmailClass="btn btn-default btn-sm";
 		 this.commentDeleteButtonClass="btn btn-default btn-sm";
 		 this.commentEditButtonClass="btn btn-default btn-sm";
-		 this.commentApproveButtonClass="btn btn-default btn-sm";	
-		 	
+		 this.commentApproveButtonClass="btn btn-default btn-sm";
+
 		// comments/dsp_comment.cfm
 	 	this.emailLinkClass=this.formButtonClass;
 		this.commentsLinkClass=this.formButtonClass;
 		this.approveCommentLinkClass=this.formButtonClass;
 		this.deleteCommentLinkClass=this.formButtonClass;
-		
+
 		// dataresponses/dsp_detail.cfm
 		this.dataResponseListClass="dl-horizontal";
-		
+
 		// dataresponses/dsp_list.cfm
 		this.dataResponseTableClass="table table-hover";
 		this.dataResponsePaginationClass=this.ulPaginationClass;
-		
+
 		// draggablefeeds/index.cfm
 		this.draggableBoxWrapperClass="row";
 		this.draggableBoxHeaderClass="col-lg-12";
@@ -209,10 +211,10 @@
 		this.addFeedButtonWrapperDivClass=this.formFieldWrapperClass;
 		this.addFeedButtonWrapperDivInnerClass="col-lg-2";
 		this.addFeedButtonClass=this.formButtonClass;
-		
+
 		// dsp_categories_nest.cfm
 		this.categoriesNestCheckboxClass="checkbox";
-		
+
 		// dsp_content_list.cfm
 		this.contentListImageStyles=true;
 		this.contentListImagePadding=20;  //must be pixels
@@ -230,10 +232,10 @@
 
 		this.contentListWrapperDivClass="";
 		this.contentListItemImageLinkClass="";
-		
+
 		// dsp_folder.cfm
 		this.folderWrapperClass="";
-		
+
 		// dsp_edit_profile.cfm
 		this.editProfileWrapperClass="";
 		this.editProfileFormClass="form-horizontal";
@@ -249,24 +251,24 @@
 		this.editProfileSubmitButtonWrapperClass="col-lg-offset-3 col-lg-9";
 		this.editProfileSubmitButtonClass="btn btn-primary";
 		this.editProfileSuccessMessageClass=this.alertSuccessClass;
-		
+
 		// dsp_email_dropdown.cfm
 		this.emailDropdownSelectClass="dropdown";
-		
+
 		// dsp_event_reminder_form.cfm
 		this.eventReminderFormWrapperClass="";
 		this.eventReminderFormClass=this.generalWrapperClass;
 		this.eventReminderFieldWrapperClass="";
 		this.eventReminderFormLabelsClass=this.formFieldLabelClass;
 		this.eventReminderSubmitClass=this.formButtonClass;
-		
+
 		// dsp_features.cfm
 		this.featuresWrapperClass="clearfix";
-		
+
 		// dsp_feed.cfm
 		this.localIndexWrapperClass="clearfix";
 		this.remoteFeedWrapperClass="clearfix";
-		
+
 		// dsp_login.cfm
 		this.loginWrapperClass="";
 		this.loginWrapperInnerClass="row";
@@ -281,7 +283,7 @@
 		this.loginFormSubmitWrapperClass="col-lg-offset-3 col-lg-10";
 		this.loginFormSubmitClass=this.formButtonClass;
 		this.notRegisteredLinkClass="btn btn-primary";
-		
+
 		// dsp_mailing_list_master.cfm
 		this.mailingListWrapperClass=this.generalWrapperClass;
 		this.mailingListFormClass="form-horizontal";
@@ -293,18 +295,18 @@
 		this.mailingListCheckboxClass="checkbox";
 		this.mailingListSubmitWrapperClass="col-lg-offset-2 col-lg-10";
 		this.mailingListSubmitClass=this.formButtonClass;
-		
+
 		// dsp_nextN.cfm
 		this.nextNWrapperClass="";
 		this.nextNInnerClass="row";
-		
+
 		// dsp_search_form.cfm
 		this.searchFormClass="navbar-form";
 		this.searchFormInputWrapperClass=this.formInputWrapperClass;
 		this.searchFormInputClass=this.formInputClass;
 		this.searchFormSubmitWrapperClass=this.formButtonInnerClass;
 		this.searchFormSubmitClass="btn btn-default fa fa-search";
-		
+
 		// dsp_search_results.cfm
 		this.searchShowNumbers=1;
 		this.searchResultWrapperClass="";
@@ -320,7 +322,7 @@
 		this.searchAgainFormInputClass=this.formInputClass;
 		this.searchAgainButtonWrapperClass=this.formButtonInnerClass;
 		this.searchAgainSubmitClass=this.formButtonClass;
-		
+
 		// dsp_user_tools.cfm
 		this.userToolsLoginWrapperClass="well clearfix";
 		this.userToolsLoginFormClass="form-horizontal";
@@ -335,55 +337,55 @@
 		this.userToolsWrapperClass="clearfix";
 		this.userToolsEditProfileLinkClass="btn btn-default fa fa-user";
 		this.userToolsLogoutLinkClass="btn btn-default fa fa-sign-out";
-		
+
 		// formbuilder/dsp_form.cfm
 		this.formBuilderFieldWrapperClass=this.formFieldWrapperClass;
 		this.formBuilderButtonWrapperClass="";
 		this.formBuilderSubmitClass=this.formButtonClass;
-		
+
 		// formbuilder/fields/dsp_checkbox.cfm
-		// formbuilder/fields/dsp_dropdown.cfm 
+		// formbuilder/fields/dsp_dropdown.cfm
 		// formbuilder/fields/dsp_file.cfm
 		// formbuilder/fields/dsp_radio.cfm
 		// formbuilder/fields/dsp_textfield.cfm
-		
+
 		this.formBuilderFormFieldsClass=this.formInputClass;
-		
+
 		// formbuilder/fields/field_dropdown.cfm
 		this.formBuilderTabHeaderClass="dropdown";
 		this.formBuilderDisabledInputClass="disabled";
 		this.formBuilderCheckboxClass="checkbox";
-		
+
 		// gallery/index.cfm
 		this.galleryWrapperClass="";
 		this.galleryULClass="clearfix";
 		this.galleryThumbnailClass="thumbnail";
-		
+
 		// nav/calendarNav/index.cfm
 		this.navCalendarWrapperClass="";
-		
+
 		// nav/calendarNav/navTools.cfc
 		this.navCalendarTableClass="table table-bordered";
-		
+
 		// nav/dsp_sequential.cfm
 		this.navSequentialWrapperClass="";
 		this.navSequentialULClass="pagination";
-		
+
 		// nav/dsp_tag_cloud.cfm
 		this.tagCloudWrapperClass="";
-		
+
 		// navArchive
 		//this.navArchiveWrapperClass="";
 		//this.navArchiveListClass="";
-		
+
 		// navBreadcrumb
 		this.navBreadcrumbULClass="breadcrumb";
-		
+
 		// rater/index.cfm
 		this.raterObjectWrapperClass="row clearfix";
 		this.raterWrapperClass="col-lg-12";
 		this.avgRatingWrapperClass="col-lg-12";
-		
+
 		// Generic form vars
 		this.formWrapperClass = "";
 	</cfscript>
@@ -458,7 +460,7 @@
 											<div class="carousel-caption">
 												<h3><a href="#local.item.getURL()#">#HTMLEditFormat(local.item.getTitle())#</a></h3>
 												#local.item.getSummary()#
-												<p><a class="btn btn-larg btn-primary" href="#local.item.getURL()#">Read More</a></p>
+												<p><a class="btn btn-large btn-primary" href="#local.item.getURL()#">Read More</a></p>
 											</div>
 										</div>
 									</cfif>

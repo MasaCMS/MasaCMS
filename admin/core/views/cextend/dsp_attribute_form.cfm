@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfscript>
@@ -61,11 +61,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.action eq "add">
 <li>
-<a href="javascript:;" id="#esapiEncode('html_attr',attributes.formName)#open" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideDown();this.style.display='none';$('###esapiEncode('html',attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
-<li><a href="javascript:;" class="btn" style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#close" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();this.style.display='none';$('###esapiEncode('html',attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
+<a href="javascript:;" id="#esapiEncode('html_attr',attributes.formName)#open" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideDown();this.style.display='none';$('###esapiEncode('html',attributes.formName)#close').show();return false;"><i class="mi-plus-circle"></i> Add New Attribute</a></li>
+<li><a href="javascript:;" class="btn" style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#close" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();this.style.display='none';$('###esapiEncode('html',attributes.formName)#open').show();return false;"><i class="mi-eye-slash"></i> Close</a></li>
 <cfif isDefined('attributes.attributesArray') and ArrayLen(attributes.attributesArray)>
-<li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a></li>
-<li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-move"></i> Reorder</a></li>
+<li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="mi-check"></i> Save Order</a></li>
+<li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="mi-arrows"></i> Reorder</a></li>
 </cfif>
 </cfif>
 </ul>
@@ -73,72 +73,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif attributes.action eq "add">
 <div style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#container" class="attr-add">
 </cfif>
-<form <cfif attributes.action eq "add"> class="fieldset-wrap"</cfif> novalidate="novalidate" method="post" name="#esapiEncode('html_attr',attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
-<div class="fieldset">
+<form novalidate="novalidate" method="post" name="#esapiEncode('html_attr',attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
 <cfif attributes.action neq "add">
-<div class="control-group">
-	<label class="control-label">Attribute ID</label>
-	<div class="controls">
-		#attributes.attributeBean.getAttributeID()#
-	</div>
+<div class="mura-control-group">
+	<label>Attribute ID: #attributes.attributeBean.getAttributeID()#</label>
 </div>
 </cfif>
 
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">Name (No spaces)</label>
-	<div class="controls">
-		<input class="span12" type="text" name="name" required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" />
-	</div>
+<div class="mura-control-group">
+	<label>Name (No spaces)</label>
+		<input type="text" name="name" required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" />
 </div>
-<div class="span4">
-	<label class="control-label">Label</label>
-	<div class="controls">
-		<input class="span12" type="text" name="label" value="#esapiEncode('html_attr',attributes.attributeBean.getLabel())#" />
-	</div>
+<div class="mura-control-group">
+	<label>Label</label>
+		<input type="text" name="label" value="#esapiEncode('html_attr',attributes.attributeBean.getLabel())#" />
 </div>
-<div class="span4">
-	<label class="control-label">Input Type</label>
-	<div class="controls">
-		<select name="type" class="span12">
+<div class="mura-control-group">
+	<label>Input Type</label>
+		<select name="type">
 		<cfloop list="#typelist#" index="t">
 			<option value="#t#" <cfif attributes.attributeBean.getType() eq t>selected</cfif>>#t#</option>
 		</cfloop>
 		</select>
-	</div>
-</div>
 </div>
 
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">Default Value</label>
-	<div class="controls">
-		<input class="span12" type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#" />
-	</div>
+<div class="mura-control-group">
+	<label>Default Value</label>
+		<input type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#" />
 </div>
-<div class="span4">
-	<label class="control-label">Tooltip</label>
-	<div class="controls">
-		<input class="span12" type="text" name="hint" value="#esapiEncode('html_attr',attributes.attributeBean.getHint())#" />
-	</div>
+<div class="mura-control-group">
+	<label>Tooltip</label>
+		<input type="text" name="hint" value="#esapiEncode('html_attr',attributes.attributeBean.getHint())#" />
 </div>
-<div class="span4">
-	<label class="control-label">Required</label>
-	<div class="controls">
-		<select name="required" class="span12">
+<div class="mura-control-group">
+	<label>Required</label>
+		<select name="required">
 			<option value="false" <cfif attributes.attributeBean.getRequired() eq "false">selected</cfif>>False</option>
 			<option value="true" <cfif attributes.attributeBean.getRequired() eq "true">selected</cfif>>True</option>
 		</select>
-	</div>
 </div>
-</div>
-</div>
-<div class="fieldset">
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">Validate</label>
-	<div class="controls">
-		<select name="validation" class="span12">
+
+<div class="mura-control-group">
+	<label>Validate</label>
+		<select name="validation">
 			<option value="" <cfif attributes.attributeBean.getValidation() eq "">selected</cfif>>None</option>
 			<option value="Date" <cfif attributes.attributeBean.getValidation() eq "Date">selected</cfif>>Date</option>
 			<option value="DateTime" <cfif attributes.attributeBean.getValidation() eq "DateTime">selected</cfif>>DateTime</option>
@@ -148,62 +125,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<option value="Color" <cfif attributes.attributeBean.getValidation() eq "Color">selected</cfif>>Color</option>
 			<option value="URL" <cfif attributes.attributeBean.getValidation() eq "URL">selected</cfif>>URL</option>
 		</select>
-	</div>
-</div>
-<div class="span4">
-	<label class="control-label">Regex</label>
-	<div class="controls">
-		<input class="span12" type="text" name="regex"  value="#esapiEncode('html_attr',attributes.attributeBean.getRegex())#" />
-	</div>
-</div>
-<div class="span4">
-	<label class="control-label">Validation Message</label>
-	<div class="controls">
-		<input class="span12" type="text" name="message"  value="#esapiEncode('html_attr',attributes.attributeBean.getMessage())#" />
-	</div>
-</div>
 </div>
 
-</div>
-<div class="fieldset">
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">Option List ("^" Delimiter)</label>
-	<div class="controls">
-		<input class="span12" type="text" name="optionList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionList())#" />
-	</div>
-</div>
-<div class="span8">
-	<label class="control-label">Option Label List (Optional, "^" Delimiter)</label>
-	<div class="controls">
-		<input class="span12" type="text" name="optionLabelList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionLabelList())#" />
-	</div>
-</div>
-</div>
+<div class="mura-control-group">
+	<label>Regex</label>
+		<input type="text" name="regex"  value="#esapiEncode('html_attr',attributes.attributeBean.getRegex())#" />
 </div>
 
-<div class="fieldset">
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">For administrative Use Only?</label>
-	<div class="controls">
+<div class="mura-control-group">
+	<label>Validation Message</label>
+		<input type="text" name="message"  value="#esapiEncode('html_attr',attributes.attributeBean.getMessage())#" />
+</div>
+
+<div class="mura-control-group">
+	<label>Option List ("^" Delimiter)</label>
+		<input type="text" name="optionList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionList())#" />
+</div>
+
+<div class="mura-control-group">
+	<label>Option Label List (Optional, "^" Delimiter)</label>
+	<input type="text" name="optionLabelList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionLabelList())#" />
+</div>
+
+<div class="mura-control-group">
+	<label>For administrative Use Only?</label>
 		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif attributes.attributeBean.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
 		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
-	</div>
-</div>
-</div>
 </div>
 
-<div class="form-actions">
-<cfif attributes.action eq "add">
-	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'add');" value="Add" />
-	<input type="button" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();" value="Cancel" />
-<cfelse>
-	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'update');" value="Update" />
-	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
-	<input type="button" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');" value="Cancel" />
-</cfif>
+<div class="mura-actions">
+	<div class="form-actions">
+	<cfif attributes.action eq "add">
+		<button class="btn mura-primary" type="button" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'add');"><i class="mi-check-circle"></i>Add</button>
+		<button class="btn" type="button" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();"><i class="mi-times-circle"></i>Cancel</button>
+	<cfelse>
+		<button class="btn mura-primary" type="button" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'update');"><i class="mi-check-circle"></i>Update</button>
+		<button class="btn" type="button" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'delete','Delete Attribute?');"><i class="mi-trash"></i>Delete</button>
+		<button class="btn" type="button" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');"><i class="mi-times-circle"></i>Cancel</button>
+	</cfif>
+	</div>
 </div>
+
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
 <input name="isActive" type="hidden" value="#attributes.attributeBean.getIsActive()#"/>
 <input name="siteID" type="hidden" value="#attributes.attributeBean.getSiteID()#"/>

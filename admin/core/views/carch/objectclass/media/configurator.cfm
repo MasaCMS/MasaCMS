@@ -6,51 +6,44 @@
 </cfsilent>
 <cf_objectconfigurator>
 	<cfoutput>
-	<div class="fieldset-wrap">
-		<div class="fieldset">
+	<div class="mura-layout-row">
 			<cfif not len(objectparams.fileid)>
-				<div class="control-group">
-					<button class="btn" id="selectMedia">Select Image</button>
+				<div class="mura-control-group">
+					<button class="btn" id="selectMedia"><i class="mi-image"></i> Select Image</button>
 				</div>
 			<cfelse>
-				<div class="control-group">
+				<div class="mura-control-group">
 					<img id="selectMedia" src="#$.getURLForImage(fileid=objectparams.fileid,size='small')#"/>
 				</div>
-				<div class="control-group">	
-				  	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-					<div class="controls">
-						<select name="size" data-displayobjectparam="size" class="objectParam span12">
-							
-							<cfloop list="Small,Medium,Large" index="i">
-								<option value="#lcase(i)#"<cfif i eq objectparams.size> selected</cfif>>#I#</option>
-							</cfloop>
-					
-							<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
-													
-							<cfloop condition="imageSizes.hasNext()">
-								<cfset image=imageSizes.next()>
-								<option value="#lcase(image.getName())#"<cfif image.getName() eq objectparams.size> selected</cfif>>#esapiEncode('html',image.getName())#</option>
-							</cfloop>
-							
-								<option value="custom"<cfif "custom" eq objectparams.size> selected</cfif>>Custom</option>
+				<div class="mura-control-group">
+				  	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+					<select name="size" data-displayobjectparam="size" class="objectParam">
 
-						</select>
-					</div>
+						<cfloop list="Small,Medium,Large" index="i">
+							<option value="#lcase(i)#"<cfif i eq objectparams.size> selected</cfif>>#I#</option>
+						</cfloop>
+
+						<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+
+						<cfloop condition="imageSizes.hasNext()">
+							<cfset image=imageSizes.next()>
+							<option value="#lcase(image.getName())#"<cfif image.getName() eq objectparams.size> selected</cfif>>#esapiEncode('html',image.getName())#</option>
+						</cfloop>
+
+							<option value="custom"<cfif "custom" eq objectparams.size> selected</cfif>>Custom</option>
+
+					</select>
 				</div>
-				
-				<div id="imageoptionscontainer" class="control-group" style="display:none">
-					<div class="span6">	
-						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-						<div class="controls">
-				      		<input class="objectParam span12" name="height" data-displayobjectparam="height" type="text" value="#objectparams.height#" />
-				      	</div>
+
+				<div id="imageoptionscontainer" class="mura-control-group" style="display:none">
+					<div>
+						<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+				      	<input class="objectParam" name="height" data-displayobjectparam="height" type="text" value="#objectparams.height#" />
 				    </div>
-					<div class="span6">						
-						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-						<div class="controls">
-							<input class="objectParam span12" name="width" data-displayobjectparam="width" type="text" value="#objectparams.width#" />
-						</div>
-					</div>		
+					<div>
+						<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+						<input class="objectParam" name="width" data-displayobjectparam="width" type="text" value="#objectparams.width#" />
+					</div>
 				</div>
 			</cfif>
 		</div>
@@ -61,7 +54,7 @@
 
 			function onSizeChange(){
 
-				if($('select[name="size"]').val().toLowerCase()=='custom'){
+				if($('select[name="size"]').val() && $('select[name="size"]').val().toLowerCase()=='custom'){
 					$('##imageoptionscontainer').show();
 				} else {
 					$('##imageoptionscontainer').hide();
@@ -76,7 +69,7 @@
 					src:'?muraAction=cArch.selectmedia&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&contentid=#esapiEncode("url",rc.contentid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&fileid=#esapiEncode("url",objectparams.fileid)#'
 					}
 				);
-			
+
 			});
 
 			onSizeChange();

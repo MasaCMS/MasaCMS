@@ -23,27 +23,164 @@
  * @version     SVN: $Id: shadowbox.js 75 2008-02-21 16:51:29Z mjijackson $
  */
 
-if(typeof Shadowbox == 'undefined'){
-    throw 'Unable to load Shadowbox, no base library adapter found.';
-}
+ if(typeof mura == 'undefined'){
+     throw 'Unable to load Shadowbox, Mura library not found.';
+ }
 
-/**
- * The Shadowbox class. Used to display different media on a web page using a
- * Lightbox-like effect.
- *
- * Useful resources:
- * - http://www.alistapart.com/articles/byebyeembed
- * - http://www.w3.org/TR/html401/struct/objects.html
- * - http://www.dyn-web.com/dhtml/iframes/
- * - http://support.microsoft.com/kb/316992
- * - http://www.apple.com/quicktime/player/specs.html
- * - http://www.howtocreate.co.uk/wrongWithIE/?chapter=navigator.plugins
- *
- * @class       Shadowbox
- * @author      Michael J. I. Jackson <mjijackson@gmail.com>
- * @singleton
- */
+ // create the Shadowbox object first
+ var Shadowbox = {};
 
+ Shadowbox.lib = {
+
+     /**
+      * Gets the value of the style on the given element.
+      *
+      * @param   {HTMLElement}   el      The DOM element
+      * @param   {String}        style   The name of the style (e.g. margin-top)
+      * @return  {mixed}                 The value of the given style
+      * @public
+      */
+     getStyle: function(el, style){
+         //console.log(style + ': ' +  mura(el).css(style))
+         return mura(el).css(style);
+     },
+
+     /**
+      * Sets the style on the given element to the given value. May be an
+      * object to specify multiple values.
+      *
+      * @param   {HTMLElement}   el      The DOM element
+      * @param   {String/Object} style   The name of the style to set if a
+      *                                  string, or an object of name =>
+      *                                  value pairs
+      * @param   {String}        value   The value to set the given style to
+      * @return  void
+      * @public
+      */
+     setStyle: function(el, style, value){
+         if(typeof style != 'object'){
+             var temp = {};
+             temp[style] = value;
+             style = temp;
+         }
+         mura(el).css(style);
+     },
+
+     /**
+      * Gets a reference to the given element.
+      *
+      * @param   {String/HTMLElement}    el      The element to fetch
+      * @return  {HTMLElement}                   A reference to the element
+      * @public
+      */
+     get: function(el){
+         return (typeof el == 'string') ? document.getElementById(el) : el;
+     },
+
+     /**
+      * Removes an element from the DOM.
+      *
+      * @param   {HTMLElement}           el      The element to remove
+      * @return  void
+      * @public
+      */
+     remove: function(el){
+         mura(el).remove();
+     },
+
+     /**
+      * Gets the target of the given event. The event object passed will be
+      * the same object that is passed to listeners registered with
+      * addEvent().
+      *
+      * @param   {mixed}                 e       The event object
+      * @return  {HTMLElement}                   The event's target element
+      * @public
+      */
+     getTarget: function(e){
+         return e.target;
+     },
+
+     /**
+      * Prevents the event's default behavior. The event object passed will
+      * be the same object that is passed to listeners registered with
+      * addEvent().
+      *
+      * @param   {mixed}                 e       The event object
+      * @return  void
+      * @public
+      */
+     preventDefault: function(e){
+         e = e.browserEvent || e;
+         if(e.preventDefault){
+             e.preventDefault();
+         }else{
+             e.returnValue = false;
+         }
+     },
+
+     /**
+      * Adds an event listener to the given element. It is expected that this
+      * function will be passed the event as its first argument.
+      *
+      * @param   {HTMLElement}   el          The DOM element to listen to
+      * @param   {String}        name        The name of the event to register
+      *                                      (i.e. 'click', 'scroll', etc.)
+      * @param   {Function}      handler     The event handler function
+      * @return  void
+      * @public
+      */
+     addEvent: function(el, name, handler){
+         mura(el).bind(name, handler);
+     },
+
+     /**
+      * Removes an event listener from the given element.
+      *
+      * @param   {HTMLElement}   el          The DOM element to stop listening to
+      * @param   {String}        name        The name of the event to stop
+      *                                      listening for (i.e. 'click')
+      * @param   {Function}      handler     The event handler function
+      * @return  void
+      * @public
+      */
+     removeEvent: function(el, name, handler){
+         mura(el).unbind(name, handler);
+     },
+
+     /**
+      * Animates numerous styles of the given element. The second parameter
+      * of this function will be an object of the type that is expected by
+      * YAHOO.util.Anim. See http://developer.yahoo.com/yui/docs/YAHOO.util.Anim.html
+      * for more information.
+      *
+      * @param   {HTMLElement}   el          The DOM element to animate
+      * @param   {Object}        obj         The animation attributes/parameters
+      * @param   {Number}        duration    The duration of the animation
+      *                                      (in seconds)
+      * @param   {Function}      callback    A callback function to call when
+      *                                      the animation completes
+      * @return  void
+      * @public
+      */
+     animate: function(el, obj, duration, callback){
+         duration = Math.round(duration * 1000); // convert to milliseconds
+         var o = {};
+         for(var p in obj){
+             for(var p in obj){
+                 o[p] = String(obj[p].to);
+                 if(p != 'opacity') o[p] += 'px';
+             }
+         }
+         if(jQuery){
+             jQuery(el).animate(o, duration, null, callback);
+         } else {
+             mura(el).css(o);
+             if(callback) { callback();}
+         }
+     }
+
+ };
 
 (function(){
 
@@ -1919,7 +2056,7 @@ if(typeof Shadowbox == 'undefined'){
      * @static
      */
     Shadowbox.init = function(opts){
-        if(initialized) return; // don't initialize twice
+        //if(initialized) return; // don't initialize twice
         options = apply(options, opts || {});
 
         // add markup

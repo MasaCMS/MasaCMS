@@ -47,19 +47,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 	<cfset rc.originalfuseaction=listLast(request.action,".")>
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 		<cfswitch expression="#rc.originalfuseaction#">
 			<cfcase value="pending">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#" href="./?muraAction=cchain.list&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#</a>
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.vieweditform')#" href="./?muraAction=cchain.edit&siteid=#esapiEncode('url',rc.siteid)#&chainID=#esapiEncode('html',chain.getChainID())#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.vieweditform')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#" href="./?muraAction=cchain.list&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.vieweditform')#" href="./?muraAction=cchain.edit&siteid=#esapiEncode('url',rc.siteid)#&chainID=#esapiEncode('html',chain.getChainID())#"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.vieweditform')#</a>
 			</cfcase>
 			<cfcase value="list">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.addapprovalchain')#" href="./?muraAction=cchain.edit&chainID=&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.addapprovalchain')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.addapprovalchain')#" href="./?muraAction=cchain.edit&chainID=&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-plus-circle"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.addapprovalchain')#</a>
 			</cfcase>
 			<cfcase value="edit">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#" href="./?muraAction=cchain.list&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#" href="./?muraAction=cchain.list&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#</a>
 				<cfif not chain.getIsNew()>
-					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#" href="./?muraAction=cchain.pending&siteid=#esapiEncode('url',rc.siteid)#&chainID=#chain.getChainID()#"><i class="icon-reorder"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#</a>
+					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#" href="./?muraAction=cchain.pending&siteid=#esapiEncode('url',rc.siteid)#&chainID=#chain.getChainID()#"><i class="mi-reorder"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#</a>
 				</cfif>
 			</cfcase>
 		</cfswitch>

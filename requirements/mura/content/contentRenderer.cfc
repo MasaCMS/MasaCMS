@@ -65,6 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.asyncObjects=true>
 <cfset this.asyncRender=false>
 <cfset this.layoutmanager=false>
+<cfset this.legacyobjects=true>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">
@@ -172,6 +173,12 @@ Display Objects
 <!--- calendar/dspList.cfm --->
 <cfset this.calendarListWrapperClass="svCalendar">
 
+<!--- calendar/index.cfm --->
+<cfset this.calendarcolors=[
+		{background='##3a87ad',text='white'},
+		{background='blue',text='white'}
+	]>
+
 <!--- Comments/index.cfm --->
 <cfset this.commentsWrapperClass="">
 <cfset this.commentSortContainerClass="">
@@ -256,6 +263,29 @@ Display Objects
 		tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
 		rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 		default={tag="dd"}
+	}>
+
+<cfset this.contentGridStyleMap={
+		'1 Column'='mura-grid-one',
+		'2 Column'='mura-grid-two',
+		'3 Column'='mura-grid-three',
+		'4 Column'='mura-grid-four',
+		'5 Column'='mura-grid-five',
+		'6 Column'='mura-grid-six',
+		'7 Column'='mura-grid-seven',
+		'8 Column'='mura-grid-eight',
+		'9 Column'='mura-grid-nine'
+	}>
+
+<cfset this.contentGridPropertyMap={
+		itemEl={tag="div",class="mura-item-meta"},
+		labelEl={tag="span"},
+		title={tag="div"},
+		date={tag="div"},
+		credits={tag="div",showLabel=true,labelDelim=":",rbkey="list.by"},
+		tags={tag="div",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+		rating={tag="div",showLabel=true,labelDelim=":",rbkey="list.rating"},
+		'default'={tag="div"}
 	}>
 
 <cfset this.contentListWrapperDivClass="">
@@ -428,6 +458,7 @@ Display Objects
 
 	<cfset variables.$=variables.event.getValue("muraScope")>
 	<cfset variables.mura=variables.$>
+	<cfset variables.m=variables.$>
 
 	<cfif request.muraExportHtml>
 		<cfset this.showEditableObjects=false>
@@ -702,6 +733,7 @@ Display Objects
 	<cfset var nestedArgs=structNew()>
 	<cfset var linkArgs=structNew()>
 	<cfset var started=false>
+	<cfset var sessionData=getSession()>
 
 	<cfif not isQuery(rsSection)>
 		<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',variables.event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,Val(arguments.size),'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
@@ -735,7 +767,7 @@ Display Objects
 				)
 				and arguments.currDepth lt arguments.viewDepth
 				and rsSection.type neq 'Gallery'
-				and not (rsSection.restricted and not session.mura.isLoggedIn) />
+				and not (rsSection.restricted and not sessionData.mura.isLoggedIn) />
 			</cfif>
 
 			<cfset current=current+1>
@@ -920,7 +952,7 @@ Display Objects
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
-	<cfif variables.event.getValue('contentBean').getType() neq 'Gallery'>
+	<cfif not listFindNoCase('Gallery',variables.event.getValue('contentBean').getType())>
 			<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 				<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
 					<cfset menutype='fixed'>
@@ -947,10 +979,10 @@ Display Objects
 					<cfset theNav = this.dspNestedNav(argumentCollection=nestedArgs) />
 				</cfif>
 			<cfelse>
-				<cfset theNav=dspSubNav(argumentCollection=arguments) />
+				<cfset theNav=this.dspSubNav(argumentCollection=arguments) />
 			</cfif>
 	<cfelse>
-			<cfset thenav=dspFolderNav(argumentCollection=arguments) />
+			<cfset thenav=this.dspFolderNav(argumentCollection=arguments) />
 	</cfif>
 
 	<cfset commitTracePoint(tracePoint)>
@@ -1159,6 +1191,7 @@ Display Objects
 	<cfargument name="id" type="string" default="">
 	<cfset var returnUrl = "" />
 	<cfset var thenav = "" />
+	<cfset var sessionData=getSession()>
 
 	<cfif variables.event.getValue('returnURL') neq "">
 		<cfset returnUrl = variables.event.getValue('returnURL')>
@@ -1167,8 +1200,8 @@ Display Objects
 	</cfif>
 
 	<cfsavecontent variable="theNav">
-		<cfif getSite().getExtranet() eq 1 and session.mura.isLoggedIn>
-			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(variables.event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
+		<cfif getSite().getExtranet() eq 1 and sessionData.mura.isLoggedIn>
+			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#sessionData.mura.fname# #sessionData.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(variables.event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
 		</cfif>
 	</cfsavecontent>
 
@@ -1210,8 +1243,8 @@ Display Objects
 <cffunction name="dspObject_Render" access="public" output="false">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="object" type="string" />
-	<cfargument name="objectid" type="string" />
-	<cfargument name="fileName" type="string" default=''/>
+	<cfargument name="objectid" type="string" default=""/>
+	<cfargument name="fileName" type="string" default=""/>
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
@@ -1222,15 +1255,18 @@ Display Objects
 	<cfargument name="showEditable" required="true" default="false">
 	<cfargument name="isConfigurator" required="true" default="false">
 	<cfargument name="objectname" required="true" default="">
+	<cfargument name="bodyRender" required="true" default="false">
+	<cfargument name="returnformat" required="true" default="html">
+	<cfargument name="include" required="true" default="false">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
 	<cfset var result="">
 
-	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
+	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable and not arguments.include and arguments.object neq 'plugin'>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)>
+			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.bodyRender,arguments.returnformat,arguments.include)>
 			<cfif isSimpleValue(result)>
 				<cfoutput>#result#</cfoutput>
 			<cfelse>
@@ -1245,7 +1281,7 @@ Display Objects
 			<cfreturn result>
 		</cfif>
 	<cfelse>
-		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname) />
+		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname,arguments.bodyRender,arguments.returnformat,arguments.include) />
 
 		<cfif isSimpleValue(result)>
 			<cfreturn trim(result)>
@@ -1274,6 +1310,9 @@ Display Objects
 	<cfargument name="showEditable" required="true" default="false">
 	<cfargument name="isConfigurator" required="true" default="false">
 	<cfargument name="objectname" required="true" default="">
+	<cfargument name="bodyRender" required="true" default="false">
+	<cfargument name="returnFormat" required="true" default="html">
+	<cfargument name="include" required="true" default="false">
 
 	<cfset var fileDelim = "/" />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
@@ -1286,14 +1325,16 @@ Display Objects
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
-	<cfset var doLayoutManagerWrapper=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
+	<cfset var doLayoutManagerWrapper=not arguments.include and request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
 
-	<cfif isJSON(arguments.params)>
-		<cfset var objectParams=deserializeJSON(arguments.params)>
-	<cfelseif isStruct(arguments.params)>
-		<cfset var objectParams=arguments.params>
-	<cfelse>
-		<cfset var objectParams=structNew()>
+	<cfif not isDefined('arguments.objectparams')>
+		<cfif isJSON(arguments.params)>
+			<cfset var objectParams=deserializeJSON(arguments.params)>
+		<cfelseif isStruct(arguments.params)>
+			<cfset var objectParams=arguments.params>
+		<cfelse>
+			<cfset var objectParams=structNew()>
+		</cfif>
 	</cfif>
 
 	<cfif this.layoutmanager>
@@ -1337,7 +1378,8 @@ Display Objects
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname,
-				renderer=this) />
+				renderer=this,
+				bodyRender=arguments.bodyRender) />
 		<cfelse>
 			<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
@@ -1346,10 +1388,14 @@ Display Objects
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname,
-				renderer=this) />
+				renderer=this,
+				bodyRender=arguments.bodyRender) />
 		</cfif>'
 	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>
+	<cfelseif arguments.returnFormat eq 'struct'>
+		<cfset objectparams.html=theContent>
+		<cfreturn objectparams>
 	<cfelse>
 		<cfreturn trim(theContent) />
 	</cfif>
@@ -1377,12 +1423,14 @@ Display Objects
 	<cfset var eventOutput="" />
 	<cfset var rsPages="">
 	<cfset var cacheStub="#variables.event.getValue('contentBean').getcontentID()##variables.event.getValue('pageNum')##variables.event.getValue('startrow')##variables.event.getValue('year')##variables.event.getValue('month')##variables.event.getValue('day')##variables.event.getValue('filterby')##variables.event.getValue('categoryID')##variables.event.getValue('relatedID')#">
+	<cfset var sessionData=getSession()>
+
 	<cfset variables.event.setValue("BodyRenderArgs",arguments)>
 	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
 		<cfif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
-			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not session.mura.isLoggedIn)
-			or (variables.event.getValue('display') eq 'editprofile' and session.mura.isLoggedIn)>
+			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not sessionData.mura.isLoggedIn)
+			or (variables.event.getValue('display') eq 'editprofile' and sessionData.mura.isLoggedIn)>
 			<cfif variables.event.getValue('display') neq ''>
 				<cfswitch expression="#variables.event.getValue('display')#">
 					<cfcase value="editprofile">
@@ -1392,8 +1440,10 @@ Display Objects
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteEditProfileRender",variables.event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
+						<cfelseif $.siteConfig().hasDisplayObject('editprofile')>
+						<cfoutput>#variables.$.dspObject('editprofile')#</cfoutput>
 						<cfelse>
-						<cfoutput>#dspObject_Include(thefile='dsp_edit_profile.cfm')#</cfoutput>
+						<cfoutput>#variables.$.dspObject_include(thefile='dsp_edit_profile.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
@@ -1402,8 +1452,10 @@ Display Objects
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteSearchRender",variables.event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
+						<cfelseif $.siteConfig().hasDisplayObject('search')>
+						<cfoutput>#variables.$.dspObject('search')#</cfoutput>
 						<cfelse>
-						<cfoutput>#dspObject_Include(thefile='dsp_search_results.cfm')#</cfoutput>
+						<cfoutput>#variables.$.dspObject_include(thefile='dsp_search_results.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="login">
@@ -1412,8 +1464,10 @@ Display Objects
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
+						<cfelseif $.siteConfig().hasDisplayObject('login')>
+						<cfoutput>#variables.$.dspObject('login')#</cfoutput>
 						<cfelse>
-						<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
+						<cfoutput>#variables.$.dspObject_include(thefile='dsp_login.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
@@ -1438,19 +1492,23 @@ Display Objects
 					<cfif arguments.crumblist>
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
 					</cfif>
-					<cfif variables.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false) and $.hasParent() and $.getParent().getType() eq 'Calendar' and len(arguments.displayIntervalDesc)>
+					<cfif $.hasParent() and $.getParent().getType() eq 'Calendar' and len(arguments.displayIntervalDesc)>
 						<p<cfif len(displayIntervalClass)> class="#displayIntervalClass#"</cfif>>#arguments.displayIntervalDesc#</p>
 					</cfif>
 				</cfoutput>
 
-				<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
+				<!--- Look for custom overrides--->
+				<cfset var bodyLookup=variables.contentRendererUtility.lookupCustomContentTypeBody(variables.$)>
 
 				<cfif isDefined('bodyLookup.eventOutput')>
 					<cfoutput>#bodyLookup.eventOutput#</cfoutput>
 				<cfelseif isDefined('bodyLookup.filepath')>
+					<cfset var objectParams=$.content().getObjectParams()>
 					<cfinclude template="#bodyLookup.filepath#">
+
+				<!--- Otherwise start default body rendering --->
 				<cfelse>
-					<cfswitch expression="#variables.event.getValue('contentBean').getType()#">
+					<cfswitch expression="#$.content('type')#">
 					<cfcase value="File">
 						<cfif variables.event.getValue('contentBean').getContentType() eq "Image"
 							and listFind("jpg,jpeg,gif,png",lcase(variables.event.getValue('contentBean').getFileExt()))>
@@ -1514,68 +1572,11 @@ Display Objects
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
-
-					<cfif arguments.renderKids>
-						<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
-						<cfcase value="Folder">
-							<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-							 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
-
-							 <cfif len(filePath)>
-							 	<cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
-							 <cfelse>
-							 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
-							 	 <cfif len(filePath)>
-								 	<cfoutput>#dspObject_Include(thefile='dsp_folder.cfm')#</cfoutput>
-								 <cfelse>
-								 	<cfoutput>#dspObject_Include(thefile='folder/index.cfm')#</cfoutput>
-								 </cfif>
-							</cfif>
-							</cf_CacheOMatic>
-						</cfcase>
-						<cfcase value="Calendar">
-							 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-							 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
-							 </cf_CacheOMatic>
-						</cfcase>
-						<cfcase value="Gallery">
-							<cfset loadShadowBoxJS() />
-							<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
-							<cfif not variables.event.valueExists('galleryItemID')><cfset variables.event.setValue('galleryItemID','')></cfif>
-							<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-							<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
-							</cf_CacheOMatic>
-						</cfcase>
-						</cfswitch>
-					</cfif>
+					<cfoutput>#$.dspContentTypeBody(params=$.content().getObjectParams(),renderKids=arguments.renderKids)#</cfoutput>
 				</cfif>
 			</cfif>
-		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
-			<cfset variables.$.noIndex()>
-			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
-			<cfif len(eventOutput)>
-			<cfoutput>#eventOutput#</cfoutput>
-			<cfelse>
-			<cfoutput>#dspObject_Include(thefile='dsp_deny.cfm')#</cfoutput>
-			</cfif>
-		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and not variables.event.getValue('r').loggedIn>
-			<cfset variables.$.noIndex()>
-			<cfset variables.event.setValue('noCache',1)>
-			<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
-			<cfif len(eventOutput)>
-			<cfoutput>#eventOutput#</cfoutput>
-			<cfelse>
-			<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
-			</cfif>
 		<cfelse>
-			<cfset variables.$.noIndex()>
-			<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",variables.event)>
-			<cfheader statuscode="404" statustext="Content Not Found" />
-			<cfif len(eventOutput)>
-			<cfoutput>#eventOutput#</cfoutput>
-			<cfelse>
-			<cfoutput>#dspObject_Include(thefile='dsp_offline.cfm')#</cfoutput>
-			</cfif>
+			<cfoutput>#$.dspContentTypeBody(params=$.content().getObjectParams())#</cfoutput>
 		</cfif>
 	</cfsavecontent>
 
@@ -1584,44 +1585,80 @@ Display Objects
 
 <cffunction name="dspContentTypeBody" output="false">
 	<cfargument name="params" default="#structNew()#">
-
-	<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
-	<cfset var eventOutput="">
+	<cfargument name="renderKids" default="true">
 	<cfsavecontent variable="eventOutput">
 	<cfoutput>
-	<cfif isDefined('bodyLookup.eventOutput')>
-		#bodyLookup.eventOutput#
-	<cfelseif isDefined('bodyLookup.filepath')>
-		<cfinclude template="#bodyLookup.filepath#">
-	<cfelseif variables.$.content('type') eq 'folder'>
-		<cf_CacheOMatic key="folderBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
-		 <cfset var filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
-
-		 <cfif len(filePath)>
-		 	<cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
-		 <cfelse>
-		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
-		 	 <cfif len(filePath)>
-			 	<cfoutput>#dspObject_Include(thefile='dsp_folder.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
-			 <cfelse>
-			 	<cfoutput>#dspObject_Include(thefile='folder/index.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
-			 </cfif>
+	<cfif $.event('isOnDisplay') and $.event('r').restrict and $.event('r').loggedIn and not $.event('r').allow >
+		<cfset $.noIndex()>
+		<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",$)>
+		<cfif len(eventOutput)>
+		<cfoutput>#eventOutput#</cfoutput>
+		<cfelse>
+			<cfoutput>#$.dspObject('deny')#</cfoutput>
 		</cfif>
-		</cf_CacheOMatic>
-	<cfelseif variables.$.content('type') eq 'calendar'>
-		<cf_CacheOMatic key="calendarBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
-		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
-		 	 <cfif len(filePath)>
-			 	<cfoutput>#dspObject_Include(thefile='calendar/index.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
-			 </cfif>
-		</cf_CacheOMatic>
-	<cfelseif variables.$.content('type') eq 'gallery'>
-		<cf_CacheOMatic key="galleryBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
-		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
-		 	 <cfif len(filePath)>
-			 	<cfoutput>#dspObject_Include(thefile='gallery/index.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
-			 </cfif>
-		</cf_CacheOMatic>
+	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and not $.event('r').loggedIn>
+		<cfset $.noIndex()>
+		<cfset $.event('noCache',1)>
+		<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",$)>
+		<cfif len(eventOutput)>
+		<cfoutput>#eventOutput#</cfoutput>
+		<cfelse>
+		<cfoutput>#$.dspObject('login')#</cfoutput>
+		</cfif>
+	<cfelseif not $.event('isOnDisplay')>
+		<cfset $.noIndex()>
+		<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",$)>
+		<cfheader statuscode="404" statustext="Content Not Found" />
+		<cfif len(eventOutput)>
+		<cfoutput>#eventOutput#</cfoutput>
+		<cfelse>
+		<cfoutput>#$.dspObject('offline')#</cfoutput>
+		</cfif>
+	<cfelse>
+		<cfset var bodyLookup=variables.contentRendererUtility.lookupCustomContentTypeBody($=variables.$)>
+		<cfset var eventOutput="">
+		<cfif isDefined('bodyLookup.eventOutput')>
+			#bodyLookup.eventOutput#
+		<cfelseif isDefined('bodyLookup.filepath')>
+			<cfset var objectParams=arguments.params>
+			<cfinclude template="#bodyLookup.filepath#">
+		<cfelse>
+			<cfif arguments.renderKids>
+				<cfif $.siteConfig().hasDisplayObject($.content('type'))>
+					<cfoutput>#dspObject(objectid=$.content('contentid'),object=$.content('type'),params=arguments.params,bodyRender=true)#</cfoutput>
+				<cfelse>
+					<cfif $.content('type') eq 'folder'>
+						<cf_CacheOMatic key="folderBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						 <cfset var filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
+						 <cfif len(filePath)>
+						 	<cfoutput>#$.dspObject_Include(thefile='dsp_portal.cfm',params=arguments.params)#</cfoutput>
+						 <cfelse>
+						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
+						 	 <cfif len(filePath)>
+							 	<cfoutput>#$.dspObject_Include(thefile='dsp_folder.cfm',params=arguments.params)#</cfoutput>
+							 <cfelse>
+							 	<cfoutput>#$.dspObject_Include(thefile='folder/index.cfm',params=arguments.params)#</cfoutput>
+							 </cfif>
+						</cfif>
+						</cf_CacheOMatic>
+					<cfelseif $.content('type') eq 'calendar'>
+						<cf_CacheOMatic key="calendarBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
+						 	 <cfif len(filePath)>
+							 	<cfoutput>#$.dspObject_Include(thefile='calendar/index.cfm',params=arguments.params)#</cfoutput>
+							 </cfif>
+						</cf_CacheOMatic>
+					<cfelseif variables.$.content('type') eq 'gallery'>
+						<cf_CacheOMatic key="galleryBody#$.content('contentid')##hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
+						 	 <cfif len(filePath)>
+							 	<cfoutput>#$.dspObject_Include(thefile='gallery/index.cfm',params=arguments.params)#</cfoutput>
+							 </cfif>
+						</cf_CacheOMatic>
+					</cfif>
+				</cfif>
+			</cfif>
+		</cfif>
 	</cfif>
 	</cfoutput>
 	</cfsavecontent>
@@ -1679,6 +1716,7 @@ Display Objects
 		<cfset var nestedArgs=structNew()>
 		<cfset var linkArgs=structNew()>
 		<cfset var started=false>
+		<cfset var sessionData=getSession()>
 
 		<cfif isDefined("arguments.closePortals")>
 			<cfset arguments.closeFolders=arguments.closePortals>
@@ -1767,7 +1805,7 @@ Display Objects
 					isNotLimited and not isNavSecondary
 					)
 				)
-				and not (rsSection.restricted and not session.mura.isLoggedIn)
+				and not (rsSection.restricted and not sessionData.mura.isLoggedIn)
 			/>
 
 			<cfif subnav>
@@ -1956,9 +1994,15 @@ Display Objects
 	<cfargument name="allowEditable" type="boolean" default="#this.showEditableObjects#">
 	<cfargument name="cacheKey" type="string" required="false" default="">
 	<cfargument name="objectname" default="">
+	<cfargument name="returnFormat" required="true" default="html">
 	<cfset arguments.renderer=this>
 	<cfset arguments.showEditableObjects=this.showEditableObjects>
 	<cfset arguments.layoutmanager=this.layoutmanager>
+
+	<cfif isDefined('arguments.objectParams')>
+		<cfset arguments.params=arguments.objectParams>
+	</cfif>
+
 	<cfreturn variables.contentRendererUtility.dspObject(argumentCollection=arguments)>
 </cffunction>
 
@@ -2342,6 +2386,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
+	<cfset var sessionData=getSession()>
 	<cfreturn this.enableFrontEndTools
 		and (
 			request.muraChangesetPreviewToolbar
@@ -2349,10 +2394,10 @@ Display Objects
 				this.showMemberToolBar or this.showAdminToolBar
 			) or (
 				(
-				 	StructKeyExists(session, 'mura')
+				 	StructKeyExists(sessionData, 'mura')
 				 	and (
-						(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
-						or listFind(session.mura.memberships,'S2')
+						(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
+						or listFind(sessionData.mura.memberships,'S2')
 					)
 				) or (
 					listFindNoCase("editor,author",variables.event.getValue('r').perm)
@@ -2784,7 +2829,7 @@ Display Objects
 	}
 
 	public function getDisplayObject(object,siteid='#variables.$.event('siteid')#'){
-		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
+		return getBean('settingsManager').getSite(arguments.siteid).getDisplayObject(argumentCollection=arguments);
 	}
 
 	public function get(){

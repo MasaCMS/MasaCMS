@@ -49,13 +49,12 @@
 
 	<cfinclude template="inc/dsp_users_header.cfm" />
 
-	<!--- Subheading --->
-		<h2>#rbKey('user.groups')#</h2>
+<div class="block block-constrain">
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
 		<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
 
-				<ul class="nav nav-tabs">
+				<ul id="viewTabs" class="mura-tab-links nav-tabs">
 
 					<!--- Member/Public Groups --->
 						<li<cfif rc.ispublic eq 1> class="active"</cfif>>
@@ -77,6 +76,24 @@
 			<h3>#rbKey('user.membergroups')#</h3>
 		</cfif>
 	<!--- /Tab Nav --->
+
+	<div class="block-content tab-content">
+
+		<!-- start tab -->
+		<div class="tab-pane active">
+		
+			<div class="block block-bordered">
+				<!-- block header -->
+				<div class="block-header">
+					<h3 class="block-title">
+						<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
+							#rbKey('user.groups')#
+						<cfelse>
+							#rbKey('user.membergroups')#
+						</cfif>
+					</h3>
+				</div> <!-- /.block header -->						
+				<div class="block-content">
 
 	<!--- Group Listing --->
 		<cfif rc.it.hasNext()>
@@ -155,7 +172,7 @@
 										<!--- Edit --->
 											<li>
 												<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
-													<i class="icon-pencil"></i>
+																<i class="mi-pencil"></i>
 												</a>
 											</li>
 
@@ -169,12 +186,12 @@
 
 												<li>
 													<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip" title="#rbKey('user.delete')#">
-														<i class="icon-remove-sign"></i>
+																	<i class="mi-trash"></i>
 													</a>
 												</li>
 											<cfelse>
 												<li class="disabled">
-													<i class="icon-remove-sign"></i>
+																<i class="mi-trash"></i>
 												</li>
 											</cfif>
 
@@ -197,4 +214,12 @@
 			</div>
 
 		</cfif>
+
+					</div> <!-- /.block-content -->
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /.tab-pane -->
+
+	</div> <!-- /.block-content.tab-content -->
+</div> <!-- /.block-constrain -->
+
 </cfoutput>

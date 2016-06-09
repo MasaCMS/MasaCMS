@@ -17,9 +17,9 @@
 
 <cffunction name="before" output="false">
 	<cfargument name="rc">
-	
+
 	<cfparam name="session.openSectionList" default=""/>
-	
+
 	<cfif not variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid)>
 		<cfset secure(arguments.rc)>
 	</cfif>
@@ -40,7 +40,7 @@
 		<cfparam name="arguments.rc.size" default="20"/>
 		<cfparam name="arguments.rc.action" default=""/>
 		<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
-		<cfparam name="arguments.rc.compactDisplay" default=""/>	
+		<cfparam name="arguments.rc.compactDisplay" default=""/>
 		<cfparam name="arguments.rc.returnURL" default=""/>
 		<cfparam name="arguments.rc.homeID" default=""/>
 		<cfparam name="arguments.rc.datasource" default="#variables.configBean.getDatasource()#"/>
@@ -75,23 +75,30 @@
 			<cfparam name="arguments.rc.doCache" default="1"/>
 			<cfparam name="arguments.rc.displayTitle" default="0"/>
 		</cfif>
-			
+
 		<cfif not arguments.rc.ommitRelatedContentTab>
 			<cfparam name="arguments.rc.relatedContentSetData" default=""/>
 		</cfif>
-		
+
 		<cfparam name="arguments.rc.responseChart" default="0"/>
 		<cfparam name="arguments.rc.parentid" default=""/>
-		 
+
+		<cfif not len(arguments.rc.moduleid)>
+				<cfset arguments.rc.moduleid='00000000000000000000000000000000000'>
+		</cfif>
+
 		<cfif not isDefined("arguments.rc.topid")>
-			<cfparam name="session.topID" default="00000000000000000000000000000000001">
-			<cfset arguments.rc.topid=session.topID>
-		<cfelseif (left(arguments.rc.topID,10) neq "0000000000" or arguments.rc.topID eq "00000000000000000000000000000000001")
-			and not listFindNoCase("Form,Component,Variation", arguments.rc.type) and rc.moduleid neq "00000000000000000000000000000000099">
+			<cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
+				<cfset session.topid="00000000000000000000000000000000001">
+			<cfelse>
+				<cfset session.topid=arguments.rc.moduleid>
+			</cfif>
+			<cfset arguments.rc.topid=session.topid>
+		<cfelse>
 			<cfset session.topID=arguments.rc.topid>
 		</cfif>
 	</cfif>
-	
+
 </cffunction>
 
 	<cffunction name="export" output="false">
@@ -119,7 +126,7 @@
 	<cfset var settingsBundle = rc.$.getBean('settingsBundle') />
 	<cfset var contentBean = rc.$.getBean('content').loadBy(siteid=session.siteid,contentid=arguments.rc.contentID) />
 	<cfparam name="rc.doChildrenOnly" default="0" />
-	
+
 	<cfset settingsBundle.bundle(siteid=session.siteid,parentid=arguments.rc.contentID,bundlename='export_#rereplace(contentBean.getValue('filename'),"[^[:alnum:]]{1,}","_","all")#',doChildrenOnly=rc.doChildrenOnly) />
 </cffunction>
 
@@ -148,18 +155,18 @@
 	<cfargument name="rc">
 
 	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
-	<cfif arguments.rc.moduleid neq '00000000000000000000000000000000000'>
+	<cfif not listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid )>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="loadsitemanager" output="false">
 	<cfargument name="rc">
 
 	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
-	
-	<cfif arguments.rc.moduleid neq '00000000000000000000000000000000000'>
+
+	<cfif not listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid)>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
 	</cfif>
 
@@ -174,36 +181,33 @@
 
 <cffunction name="draft" output="false">
 	<cfargument name="rc">
-	
+
 	<cfset arguments.rc.rsList=variables.contentManager.getDraftList(arguments.rc.siteid) />
-	
+
 </cffunction>
 
 <cffunction name="saveQuickEdit" output="false">
 	<cfargument name="rc">
-	
+
 	<cfset var local=structNew()>
-	
+
 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "quickedit")>
-		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
 		<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
-		<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />  
+		<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />
 		<cfset local.args={}>
 		<cfset local.args.approved=1>
-		
+
 		<cfif arguments.rc.attribute eq "isnav">
 			<cfset local.args.isnav=arguments.rc.isnav>
 		<cfelseif arguments.rc.attribute eq "display">
 			<cfset local.args.display=arguments.rc.display>
-			
+
 			<cfset local.args.displayStop=arguments.rc.displayStop>
-			
+
 			<cfset local.args.displayStart=arguments.rc.displayStart>
-			
-			<cfif arguments.rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
-				<cfset local.args.displayInterval=arguments.rc.displayInterval>
-			</cfif>
-		
+			<cfset local.args.displayInterval=arguments.rc.displayInterval>
+
 		<cfelseif arguments.rc.attribute eq "template">
 			<cfset local.args.template=arguments.rc.template>
 			<cfset local.args.childTemplate=arguments.rc.childTemplate>
@@ -212,14 +216,14 @@
 		<cfelse>
 			<cfabort>
 		</cfif>
-		
+
 		<cfif local.perm eq "Editor" and not local.contentBean.hasDrafts()>
 			<cfset local.contentBean.set(local.args)>
 			<cfset local.contentBean.save()>
 		</cfif>
 	</cfif>
 	<cfabort>
-	
+
 </cffunction>
 
 <cffunction name="editLive" output="false">
@@ -233,9 +237,9 @@
 	<cfargument name="rc">
 
 	<cfset var local=structNew()>
-	
-	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
-	
+
+	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
+
   	<cfif local.currentBean.getIsNew()>
 		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid,true)/>
 	<cfelse>
@@ -243,11 +247,11 @@
 	</cfif>
 
    	<cfset arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid)/>
-  
-   	<cfif arguments.rc.contentid neq '' and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1 and not len(arguments.rc.instanceid)>
+
+   	<cfif arguments.rc.type neq 'Variation' and arguments.rc.contentid neq ''  and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1 and not len(arguments.rc.instanceid)>
 		<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type",path="./")>
    	</cfif>
-   
+
   	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid) />
   	<cfset arguments.rc.rsPageCount=variables.contentManager.getPageCount(arguments.rc.siteid) />
   	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
@@ -255,14 +259,14 @@
 	<cfif arguments.rc.moduleID eq '00000000000000000000000000000000000'>
 		<cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
 	</cfif>
-	
+
 	<cfif arguments.rc.locknode>
 		<cfset var stats=arguments.rc.contentBean.getStats()>
 		<cfif not len(stats.getLockID()) or stats.getLockID() eq session.mura.userid>
 			<cfset stats.setLockID(session.mura.userID).setLockType('node').save()>
 		</cfif>
 	</cfif>
- 	
+
 	<!--- This is here for backward plugin compatibility--->
 	<cfset appendRequestScope(arguments.rc)>
 
@@ -271,29 +275,33 @@
 <cffunction name="update" ouput="false">
 	<cfargument name="rc">
 	<cfset var local=structNew()>
-	 
+
 	<cfset request.newImageIDList="">
 
 	<cfif structKeyExists(arguments.rc,'orderno') and not isNumeric(arguments.rc.orderno)>
 		<cfset arguments.rc.orderno=0>
 	</cfif>
-	
-	<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) /> 
-	
-	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
-	
+
+	<cfif isDefined('rc.objectparams') and len(rc.objectparams) and not isJSON(rc.objectparams)>
+		<cfset rc.objectparams=URLDecode(rc.objectparams)>
+	</cfif>
+
+	<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
+
+	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
+
 	 <cfif not local.currentBean.getIsNew()>
 		 <cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
-		 <cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />  
+		 <cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
 	 </cfif>
-	 
+
 	 <cfif local.currentBean.getIsNew() and len(arguments.rc.parentID)>
 		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.parentID, arguments.rc.siteid) />
-		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />  
+		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
 	 </cfif>
-	 
+
 	<cfset  arguments.rc.allowAction=listFindNoCase('author,editor',arguments.rc.perm) />
-	 
+
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deleteall'>
 	 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deleteall")>
 			<cfset arguments.rc.topid=variables.contentManager.deleteAll(arguments.rc) />
@@ -301,7 +309,7 @@
 
 		</cfif>
 	 </cfif>
-  
+
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deletehistall'>
 	 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deletehistall")>
 	 		<cfset variables.contentManager.deletehistAll(arguments.rc) />
@@ -309,7 +317,7 @@
 
 	 	</cfif>
 	 </cfif>
-  
+
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'delete'>
 	 	<cfif rc.$.validateCSRFTokens(context=rc.contenthistid & "delete")>
 			<cfset variables.contentManager.delete(arguments.rc) />
@@ -317,7 +325,7 @@
 
 		</cfif>
 	 </cfif>
-  
+
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add'>
 		<cfif structKeyExists(arguments.rc,"sourceid") and isValid('UUID',arguments.rc.sourceid)>
 			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceid, siteid=arguments.rc.siteid).set(arguments.rc) />
@@ -338,9 +346,9 @@
 			<cfset arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens'>
 		</cfif>
 	 </cfif>
-	 
+
 	 <cfif not arguments.rc.ajaxrequest>
-		 		
+
 		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multifileupload'>
 		 		<cfparam name="session.mura.multifileupload" default="false">
 
@@ -355,13 +363,13 @@
 			  	</cfif>
 
 		 </cfif>
-		 
+
 		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
 		    <cfif not (
 			  	listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
 			  	and listFindNoCase(rc.contentBean.getPath(),session.topID)
-			  )>
-		     	<cfset arguments.rc.topid=rc.contentBean.getParentID() />	
+			  ) or not len(rc.contentBean.getPath())>
+		     	<cfset arguments.rc.topid=rc.contentBean.getParentID() />
 			</cfif>
 		</cfif>
 
@@ -370,15 +378,15 @@
 		</cfif>
 
 		<cfif (arguments.rc.closeCompactDisplay neq 'true'  or arguments.rc.murakeepediting) and arguments.rc.action neq 'multiFileUpload'>
-			
+
 			<cfif len(arguments.rc.returnURL) and (arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.preview eq 0 and not arguments.rc.murakeepediting))>
 				<cflocation url="#rc.returnURL#" addtoken="false"/>
 			</cfif>
-			
+
 			<cfif arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.return eq 'hist' and arguments.rc.preview eq 0 and not arguments.rc.murakeepediting)>
 				<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay")>
 			</cfif>
-			
+
 			<cfif arguments.rc.return eq 'changesets' and len(rc.contentBean.getChangesetID()) and not arguments.rc.murakeepediting>
 				<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="./")>
 			</cfif>
@@ -472,27 +480,27 @@
   	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid)>
   	<cfset arguments.rc.rsPageCount=variables.contentManager.getPageCount(arguments.rc.siteid)>
   	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid)>
-	
-	
+
+
 </cffunction>
 
 <cffunction name="updateObjectParams" ouput="true">
 	<cfargument name="rc">
 	<cfset var local=structNew()>
-	
-	<cfset local.versionBean=getBean("content").loadBy(contentHistID=arguments.rc.contentHistID, siteID= arguments.rc.siteid)> 
-	
+
+	<cfset local.versionBean=getBean("content").loadBy(contentHistID=arguments.rc.contentHistID, siteID= arguments.rc.siteid)>
+
 	<cfif not local.versionBean.getIsNew()>
 		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(local.versionBean.getContentID(), arguments.rc.siteid) />
-		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />  
+		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
 	<cfelse>
 		<cfabort>
 	</cfif>
-	
+
 	<cfif structKeyExists(arguments.rc,"changesetid")>
 		<cfset local.versionBean.setChangesetID(arguments.rc.changesetID)>
 	</cfif>
-	
+
 	<cfif structKeyExists(arguments.rc,"removePreviousChangeset")>
 		<cfset local.versionBean.setRemovePreviousChangeset(arguments.rc.removePreviousChangeset)>
 	</cfif>
@@ -509,19 +517,19 @@
 		<cfset local.versionBean.addDisplayObject(argumentCollection=arguments.rc)>
 		<cfset versionBean.save()>
 	</cfif>
-	
+
 	<cfset arguments.rc.versionBean=local.versionBean>
-	
+
 </cffunction>
 
 <cffunction name="lockFile" ouput="false">
 	<cfargument name="rc">
-	
+
 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "lockfile")>
-		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
 		<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
 		<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />
-		
+
 		<cfif listFindNoCase("author,editor",local.perm)
 			or listFindNoCase(session.mura.memberships,"s2")>
 				<cfset local.contentBean.getStats().setLockID(session.mura.userID).setLockType('file').save()>
@@ -533,10 +541,10 @@
 
 <cffunction name="unlockFile" ouput="false">
 	<cfargument name="rc">
-	
+
 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "unlockfile")>
 		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-		<cfset local.stats=local.contentBean.getStats()> 
+		<cfset local.stats=local.contentBean.getStats()>
 
 		<cfif len(local.stats.getLockID())
 			and (
@@ -545,7 +553,7 @@
 				listFindNoCase(session.mura.memberships,"s2")
 				)>
 			<cfset local.stats.setLockID("").setLockType("").save()>
-		
+
 		</cfif>
 	</cfif>
 	<cfabort>
@@ -553,10 +561,10 @@
 
 <cffunction name="unlockNode" ouput="false">
 	<cfargument name="rc">
-	
+
 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "unlocknode")>
 		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-		<cfset local.stats=local.contentBean.getStats()> 
+		<cfset local.stats=local.contentBean.getStats()>
 
 		<cfif len(local.stats.getLockID())
 			and (
@@ -565,7 +573,7 @@
 				listFindNoCase(session.mura.memberships,"s2")
 				)>
 			<cfset local.stats.setLockID("").setLockType("").save()>
-		
+
 		</cfif>
 	</cfif>
 	<cfabort>
@@ -576,7 +584,7 @@
 	<cfset var trail=[]>
 
 	<cfset arguments.rc.item=rc.$.getBean('content').loadBy(contenthistid=arguments.rc.contenthistid,siteid=arguments.rc.siteid)>
-	
+
 	<cfloop condition="not arguments.rc.item.getIsNew()">
 		<cfset arrayAppend(trail, arguments.rc.item.getContentHistID())>
 		<cfset arguments.rc.item=arguments.rc.item.getSource()>
@@ -584,7 +592,7 @@
 	<cfcontent type="application/json">
 	<cfoutput>#createObject("component","mura.json").encode(trail)#</cfoutput>
 	<cfabort>
-		
+
 </cffunction>
 
 <cffunction name="getImageSizeURL" output="true">
@@ -593,7 +601,7 @@
 	<cfcontent type="application/json">
 	<cfoutput>#createObject("component","mura.json").encode(rc.$.getURLForImage(fileID=rc.fileid,size=rc.size))#</cfoutput>
 	<cfabort>
-		
+
 </cffunction>
 
 

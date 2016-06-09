@@ -13,13 +13,13 @@
 	<cfset var i="">
 	<cfset pluginEvent=pluginEvent.init(arguments).getEvent()>
 	<cfset pluginEvent.setValue("rsTrash",rs)>
-	
+
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
 		<cfset getBean("pluginManager").announceEvent("onBeforeSiteEmptyTrash",pluginEvent)>
 	<cfelse>
 		<cfset getBean("pluginManager").announceEvent("onBeforeGlobalEmptyTrash",pluginEvent)>
 	</cfif>
-	
+
 	<cftransaction>
 	<cfset request.muratransaction=request.muratransaction+1>
 
@@ -29,76 +29,87 @@
 			delete from tcontentratings
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery>
 			delete from tcontenteventreminders
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery>
 			delete from tcontentassignments
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 			or userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery>
 			delete from tcontentcomments
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
+		<cfquery>
+			delete from tcontentremotepointer
+			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
+		</cfquery>
+
 		<cfquery>
 			delete from tformresponsepackets
 			where formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery>
 			delete from tformresponsequestions
 			where formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!--- CATEGORIES --->
 		<cfquery>
 			delete from tcontentcategoryassign
 			where categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!--- CONTENT USERGROUPS RELATIONSHIPS --->
 		<cfquery>
 			delete from tpermissions
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 			or groupID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
+		<!--- Variation targeting --->
+		<cfquery>
+			delete from tcontentvariationtargeting
+			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
+		</cfquery>
+
 		<!--- USERS CATEGORY RELATIONSHIP--->
 		<cfquery>
 			delete from tusersinterests
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 			or categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!--- USERS --->
 		<cfquery>
 			delete from tuseraddresses
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery>
 			delete from tusersfavorites
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery>
 			delete from tusersmemb
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 			or groupID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!---MAILINGLISTS --->
 		<cfquery>
 			delete from tmailinglistmembers
 			where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!---FEEDS --->
 		<cfquery>
 			delete from tcontentfeeditems
@@ -123,7 +134,7 @@
 			</cfquery>
 			<cfcatch></cfcatch>
 		</cftry>
-			
+
 		<!--- EMPTY TRASH TABLE--->
 		<cfquery>
 			delete from ttrash
@@ -152,28 +163,28 @@
 		<cfcatch></cfcatch>
 	</cftry>
 	</cftransaction>
-	
+
 	<cfset request.muratransaction=request.muratransaction-1>
-	
+
 	<!--- FILES --->
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
 		<cfset getBean('fileManager').purgeDeleted(arguments.siteID)>
 	<cfelse>
 		<cfset getBean('fileManager').purgeDeleted("")>
 	</cfif>
-	
+
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
 		<cfset getBean("pluginManager").announceEvent("onAfterSiteEmptyTrash",pluginEvent)>
 	<cfelse>
 		<cfset getBean("pluginManager").announceEvent("onAfterGlobalEmptyTrash",pluginEvent)>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="throwIn" output="false">
 <cfargument name="deleted">
 <cfargument name="objectClass" default="">
-	<cfset var $="">	
+	<cfset var $="">
 	<cfset var idString="">
 	<cfset var labelString="">
 	<cfset var objectType="">
@@ -188,11 +199,12 @@
 	<cfset var deleteID="">
 	<cfset var deleteIDHash="">
 	<cfset var orderno="">
+	<cfset var sessionData=getSession()>
 
 	<cfif not len(arguments.objectClass)>
 		<cfset arguments.objectClass=arguments.deleted.getEntityName()>
 	</cfif>
-	
+
 	<cfif not isDate(arguments.deleted.getValue("muraDeleteDateTime"))>
 		<cfset arguments.deleted.setValue("muraDeleteDateTime",now())>
 	</cfif>
@@ -213,23 +225,23 @@
 	<cfif listFindNoCase("campaign,creative",arguments.objectClass)>
 		<cfset siteid=getBean('userManager').read(arguments.deleted.getUserID()).getSiteID()>
 	<cfelseif arguments.objectClass eq "placement">
-		<cfset siteid=getBean('userManager').read( getBean('advertiserManager').readCampaign(arguments.deleted.getCampaignID()).getUserID() ).getSiteID()>	
+		<cfset siteid=getBean('userManager').read( getBean('advertiserManager').readCampaign(arguments.deleted.getCampaignID()).getUserID() ).getSiteID()>
 	<cfelseif len(arguments.deleted.getValue('siteid'))>
 		<cfset siteid=arguments.deleted.getValue('siteid')>
 	<cfelse>
-		<cfset siteid=session.siteid>
+		<cfset siteid=sessionData.siteid>
 	</cfif>
-	
+
 	<cfset $=getBean('MuraScope').init(siteid)>
-	
+
 	<!--- Package up extra stuff related to the contentBean --->
 	<cfif arguments.objectClass eq "content">
-		
+
 		<!--- Store display object assignments --->
 		<cfloop from="1" to="8" index="i">
 			<cfset arguments.deleted.getDisplayRegion(i)>
 		</cfloop>
-		
+
 		<!--- Store related content --->
 		<cfset rsRelated=arguments.deleted.getRelatedContentQuery()>
 		<cfif rsRelated.recordcount>
@@ -237,46 +249,46 @@
 		</cfif>
 		<!--- store categories --->
 		<cfset arguments.deleted.setValue("categoriesFromMuraTrash",  getBean("contentManager").getCategoriesByHistID( arguments.deleted.getContentHistID() )  )>
-	
+
 		<cfif configBean.getDbType() eq 'Oracle'>
 			<cfset fixValues = getBean('utility').fixOracleClobs(arguments.deleted.getAllValues().categoriesFromMuraTrash)>
 			<cfset arguments.deleted = arguments.deleted.setValue('categoriesFromMuraTrash', fixValues)>
 		</cfif>
-		
+
 	</cfif>
-	
+
 	<cfwddx action="cfml2wddx" input="#arguments.deleted.getAllValues()#" output="allValues">
 
-	
+
 	<cfset idString=getIdString(arguments.deleted)>
-	
+
 	<cfif arguments.deleted.valueExists('Type')>
 		<cfset objectType=arguments.deleted.getType()>
 	<cfelse>
 		<cfset objectType=arguments.deleted.getEntityName()>
 	</cfif>
-	
+
 	<cfif objectType eq "1">
 		<cfset objectType="Group">
 	<cfelseif objectType eq "2">
 		<cfset objectType="User">
 	</cfif>
-	
+
 	<cfif arguments.deleted.valueExists('subType')>
 		<cfset objectSubType=arguments.deleted.getSubType()>
 	<cfelse>
 		<cfset objectSubType="Default">
 	</cfif>
-	
+
 	<cfif len(idString)>
 		<cfquery name="rs">
 			select objectID from ttrash where objectID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getValue(IDString)#" />
 		</cfquery>
-		
+
 		<cfif not rs.recordcount>
 			<cfquery>
 				insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy,deleteID,orderno)
-					values(	
+					values(
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getValue(IDString)#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDeletedParentID(arguments.deleted)#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteid#" />,
@@ -289,7 +301,7 @@
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#left($.currentUser('fullname'),50)#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#deleteID#" />,
 						<cfqueryparam cfsqltype="cf_sql_numeric" value="#request['delete#deleteIDHash#']#" />
-					)			
+					)
 			</cfquery>
 		</cfif>
 	</cfif>
@@ -322,11 +334,11 @@
 	<cfset var rs="">
 	<cfset var retrieved="">
 	<cfset var allValues="">
-	
+
 	<cfquery name="rs">
-		select objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy,deleteID,orderno from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#" />				
+		select objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy,deleteID,orderno from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#" />
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
 		<cfset retrieved=getBean(rs.objectClass)>
 		<cfwddx action = "wddx2cfml" input = "#rs.objectstring#" output = "allValues">
@@ -337,21 +349,21 @@
 		<cfset allValues.muraDeleteOrderNO=rs.orderno>
 		<cfset retrieved.setAllValues(allValues)>
 	</cfif>
-	
+
 	<cfreturn retrieved>
-	
+
 </cffunction>
 
 <cffunction name="getQuery" output="false">
 	<cfset var rs="">
-	
+
 	<cfquery name="rs">
-		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy,deleteID,orderno 
-		from ttrash where 
+		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy,deleteID,orderno
+		from ttrash where
 		1=1
 		<cfif structKeyExists(arguments,"sinceDate")>
 		and deletedDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"beforeDate")>
 		and deletedDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.beforeDate#">
 		</cfif>
@@ -360,19 +372,19 @@
 		</cfif>
 		<cfif structKeyExists(arguments,"parentID")>
 		and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"siteID")>
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		</cfif>
 		<cfif structKeyExists(arguments,"objectType")>
 		and objectType=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectType#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"objectSubType")>
 		and objectSubType=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectSubType#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"objectClass")>
 		and objectClass=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectClass#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"deletedBy")>
 		and deletedBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deletedBy#">
 		</cfif>
@@ -384,8 +396,8 @@
 		</cfif>
 		<cfif structKeyExists(arguments,"deletedDate") and isDate(arguments.deletedDate)>
 		and deletedDate=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.deletedDate#">
-		</cfif>		
-		
+		</cfif>
+
 		<cfif structKeyExists(arguments,"keywords") and len(arguments.keywords)>
 			and (
 			objectClass like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
@@ -396,19 +408,19 @@
 			or objectLabel like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 			)
 		</cfif>
-		
-		order by 
+
+		order by
 
 		<cfif isDefined('arguments.deleteID')>
 			orderno desc
 		<cfelse>
 			deletedDate desc
 		</cfif>
-				
+
 	</cfquery>
-	
+
 	<cfreturn rs>
-	
+
 </cffunction>
 
 <cffunction name="getIterator" output="false">
@@ -429,40 +441,40 @@
 	<cfset var doPurge=false>
 	<cfset var it="">
 	<cfset var item="">
-	
+
 
 	<cfif arguments.restored.valueExists("fromMuraTrash")>
 		<cfset doPurge=true>
 	</cfif>
-	
+
 	<cfif doPurge>
-		
+
 		<cfset data=arguments.restored.getAllValues()>
-		
+
 		<cfloop collection="#data#" item="i">
 			<!--- If the values is a uuid try an restore it just in case it's a fileid --->
 			<cfif isSimpleValue(data[i]) and isValid("UUID",data[i])>
 				<cfset getBean('fileManager').restoreVersion(data[i])>
 			</cfif>
 		</cfloop>
-		
+
 		<cfquery>
-			delete from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.restored.get#IDString#()')#" />		
+			delete from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.restored.get#IDString#()')#" />
 		</cfquery>
-		
+
 		<cfset it=getIterator(parentID=arguments.restored.getvalue(arguments.restored.getPrimaryKey()), deletedDate=arguments.restored.getvalue("muraDeleteDateTime"))>
 		<cfset it.end()>
 		<cfloop condition="it.hasPrevious()">
 			<cfset item=it.previous().getObject().save()>
 		</cfloop>
-		
+
 	</cfif>
 </cffunction>
 
 <cffunction name="getIDString" output="false">
 <cfargument name="object">
 
-	<cfif arguments.object.getEntityName(userProxyName=false) eq 'content'>
+	<cfif arguments.object.getEntityName(useProxyName=false) eq 'content'>
 		<cfreturn "contentID">
 	<cfelse>
 		<cfreturn arguments.object.getPrimaryKey()>

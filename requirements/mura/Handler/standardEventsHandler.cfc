@@ -160,12 +160,13 @@
 
 <cffunction name="standardSetLocaleHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfparam name="session.siteID" default="">
+	<cfset var sessionData=getSession()>
+	<cfparam name="sessionData.siteID" default="">
 	<cfset setLocale(application.settingsManager.getSite(arguments.event.getValue('siteid')).getJavaLocale())>
-	<cfif (not request.mura404 and arguments.event.getValue('contentBean').exists() and session.siteid neq arguments.event.getValue('siteid')) or not structKeyExists(session,"locale")>
+	<cfif (not request.mura404 and arguments.event.getValue('contentBean').exists() and sessionData.siteid neq arguments.event.getValue('siteid')) or not structKeyExists(sessionData,"locale")>
 		<!---These are use for admin purposes--->
-		<cfset session.siteID=arguments.event.getValue('siteid')>
-		<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#arguments.event.getValue('siteid')#/assets/">
+		<cfset sessionData.siteID=arguments.event.getValue('siteid')>
+		<cfset sessionData.userFilesPath = "#application.configBean.getAssetPath()#/#arguments.event.getValue('siteid')#/assets/">
 		<cfset application.rbFactory.resetSessionLocale()>
 	</cfif>
 </cffunction>
@@ -521,18 +522,18 @@
 		</cfcase>
 
 		<cfcase value="updateprofile">
-			<cfif session.mura.isLoggedIn>
+			<cfset var sessionData=getSession()>
+			<cfif sessionData.mura.isLoggedIn>
 				<cfset var eventStruct=arguments.event.getAllValues()>
-
 				<cfset structDelete(eventStruct,'isPublic')>
 				<cfset structDelete(eventStruct,'s2')>
 				<cfset structDelete(eventStruct,'type')>
 				<cfset structDelete(eventStruct,'groupID')>
-				<cfset eventStruct.userid=session.mura.userID>
+				<cfset eventStruct.userid=sessionData.mura.userID>
 
 				<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
 
-				<cfset arguments.event.setValue("userID",session.mura.userID)>
+				<cfset arguments.event.setValue("userID",sessionData.mura.userID)>
 				<cfif isDefined('request.addressAction')>
 					<cfif arguments.event.getValue('addressAction') eq "create">
 						<cfset application.userManager.createAddress(eventStruct)>
@@ -659,13 +660,15 @@
 </cffunction>
 
 <cffunction name="standardTrackSessionValidator" output="false" returnType="any">
-	<cfargument name="event" required="true">
+	<cfargument name="$" required="true">
 
 	<cfif arguments.event.getValue('trackSession')
-			and len(arguments.event.getValue('contentBean').getcontentID())
-			and arguments.event.getValue('contentBean').getIsNew() eq 0
-			and not arguments.event.valueExists('previewID')>
-			<cfset arguments.event.getHandler("standardTrackSession").handle(arguments.event)>
+			and len(arguments.$.content().getcontentID())
+			and arguments.$.content().getIsNew() eq 0
+			and not arguments.$.event().valueExists('previewID')
+			and arguments.$.siteConfig().getShowDashboard()
+			and arguments.$.globalConfig().getSessionHistory()>
+			<cfset arguments.$.event().getHandler("standardTrackSession").handle(arguments.event)>
 	</cfif>
 </cffunction>
 
@@ -877,6 +880,10 @@
 			structDelete(result,'extenddatatable');
 			structDelete(result,'extenddata');
 			structDelete(result,'extendAutoComplete');
+
+			if($.content('type')=='Variation'){
+				result.initjs=$.content().getVariationTargeting().getInitJS();
+			}
 
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data=result}));
 

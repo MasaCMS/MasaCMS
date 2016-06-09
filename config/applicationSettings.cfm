@@ -62,11 +62,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.muraDynamicContentError" default="false">
 <cfparam name="request.muraPreviewDomain" default="">
 <cfparam name="request.muraOutputCacheOffset" default="">
+<cfparam name="request.muraCachingOutput" default="false">
 <cfparam name="request.muraMostRecentPluginModuleID" default="">
 <cfparam name="request.muraAPIRequest" default="false">
 <cfparam name="request.muraAdminRequest" default="false">
 <cfparam name="request.mura404" default="false">
 <cfparam name="request.returnFormat" default="html">
+<cfparam name="request.muraSessionManagement" default="true">
 
 <cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 <!--- Application name, should be unique --->
@@ -76,10 +78,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- Where should cflogin stuff persist --->
 <cfset this.loginStorage = "cookie">
 
-<cfset this.sessionManagement = true>
+<cfset this.sessionManagement = not (left(cgi.path_info,11) eq '/_api/rest/')>
 
 <!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
 <cfset this.setClientCookies = true>
+
+<cfset this.searchImplicitScopes=false>
 
 <!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
 <cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
@@ -150,6 +154,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset request.userAgent = LCase( CGI.http_user_agent ) />
 
+<cfif not this.sessionManagement>
+	<cfset request.muraSessionManagement=false>
+	<cfset request.trackSession=0>
+<cfelse>
 <!--- Should we even use sessions? --->
 <cfset request.trackSession = len(request.userAgent)
  and not (
@@ -209,6 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		this.sessionTimeout = CreateTimeSpan(0,0,0,2);
 	}
 </cfscript>
+</cfif>
 
 <cfset this.timeout =  getINIProperty("requesttimeout","1000")>
 
