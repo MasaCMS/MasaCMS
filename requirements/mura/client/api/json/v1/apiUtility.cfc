@@ -302,6 +302,7 @@ component extends="mura.cfobject" {
 				if(isDefined('params.access_token')){
 					var token=getBean('oauthToken').loadBy(token=params.access_token);
 					structDelete(params,'access_token');
+					structDelete(url,'access_token');
 					if(!token.exists() || token.getGrantType() != 'client_credentials' || token.getExpires() < now()){
 						throw(type='invalidAccessToken');
 					} else {
@@ -347,6 +348,7 @@ component extends="mura.cfobject" {
 						} else {
 							if(isdefined('params.grant_type') && params.grant_type == 'client_credentials'){
 								var token=client.generateToken(granttype='client_credentials');
+								params.method='getOauthToken';
 								result=getSerializer().serialize(
 									{'apiversion'=getApiVersion(),
 									'method'=params.method,
