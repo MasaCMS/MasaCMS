@@ -303,8 +303,10 @@ component extends="mura.cfobject" {
 					var token=getBean('oauthToken').loadBy(token=params.access_token);
 					structDelete(params,'access_token');
 					structDelete(url,'access_token');
-					if(!token.exists() || token.getGrantType() != 'client_credentials' || token.getExpires() < now()){
+					if(!token.exists() || token.getGrantType() != 'client_credentials'){
 						throw(type='invalidAccessToken');
+					} else if (token.getExpires() < now()){
+						throw(type='accessTokenExpired');
 					} else {
 						var client=token.getClient();
 
@@ -767,6 +769,12 @@ component extends="mura.cfobject" {
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
 			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Invalid ACCESS_TOKEN'}});
+		}
+
+		catch (accessTokenExpired e){
+			responseObject.setContentType('application/json; charset=utf-8');
+			responseObject.setStatus(401);
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='ACCESS_TOKEN has Expired'}});
 		}
 
 		catch (disabled e){
