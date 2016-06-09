@@ -276,6 +276,8 @@ component extends="mura.cfobject" {
 			var apiEnabled=true;
 			var sessionData=getSession();
 
+			structDelete(url,application.appreloadkey);
+
 			structAppend(params,url);
 			structAppend(params,form);
 
@@ -294,23 +296,33 @@ component extends="mura.cfobject" {
 			}
 
 			if(!request.muraSessionManagement){
-				if(!(isDefined('params.clientid') && isdefined('clientsecret'))){
+				if(!(isDefined('params.clientid') && isdefined('params.clientsecret'))){
 					params.method='Not Available';
+					structDelete(params,'clientid');
+					structDelete(params,'clientsecret');
 					throw(type='authorization');
 				} else {
 					var credentials=getBean('clientCredentials').loadBy(clientid=params.clientid);
 
+					//WriteDump(credentials.getAllValues());abort;
 					if(!credentials.exists() || credentials.getClientSecret() != params.clientsecret){
 						params.method='Not Available';
+						structDelete(params,'clientid');
+						structDelete(params,'clientsecret');
+						structDelete(url,'clientid');
+						structDelete(url,'clientsecret');
 						throw(type='authorization');
 					} else {
 						var clientAccount=credentials.getUser();
-
+						structDelete(params,'clientid');
+						structDelete(params,'clientsecret');
+						structDelete(url,'clientid');
+						structDelete(url,'clientsecret');
 						if(!clientAccount.exists()){
 							params.method='Not Available';
 							throw(type='authorization');
 						} else {
-							variables.userUtility.loginByUserID(clientAccount.getUserID(),clientAccount.getSiteiD());
+							clientAccount.login();
 						}
 					}
 				}

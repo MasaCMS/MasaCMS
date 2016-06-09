@@ -402,7 +402,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	function getSession(){
-		if(request.muraSessionManagement){
+		if(request.muraSessionManagement && isdefined('session')){
 			return session;
 		} else {
 			param name="request.muraSessionPlaceholder" default={};

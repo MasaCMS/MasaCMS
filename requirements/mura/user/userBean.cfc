@@ -704,7 +704,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="loginAsUser" output="false">
+<cffunction name="login" output="false">
 	<cfset getBean('userUtility').loginByUserID(userid=getValue('userid'),siteid=getValue('siteid'))>
 	<cfreturn this>
 </cffunction>
