@@ -363,3 +363,62 @@ body.configurator-wrapper{
 
 	}
 }
+
+.mura__layout-manager__display-regions {
+	padding-right: 300px;
+
+	position: fixed;
+
+	top: 0;
+	left: 100%;
+	right: 0;
+	bottom: 0;
+	background-color: #fff;
+	width: 100%;
+
+	z-index: 499997 !important;
+
+	overflow: scroll;
+
+	transition: left 1s ease;
+}
+
+/* set some sort of class somewhere to trigger the flyout - at the moment it uses 'mura-regions-state__pushed--right' */
+
+.mura__layout-manager__display-regions__X {
+	margin-top: 32px;
+	padding: 18px;
+}
+
+.mura__layout-manager__display-regions h3 {
+	margin: 0 0 15px 0;
+	padding: 0;
+	font-size: 24px;
+	font-weight: 400;
+	color: #777;
+	line-height: 1.2;
+}
+
+.mura-region-X {
+	outline: 1px dotted #ccc !important;
+}
+
+.mura-region__item {
+	margin-bottom: 1.5em;
+}
+
+.mura-region__item h4 {
+	margin: 0 0 .5em 0;
+	padding: 0;
+	font-size: 14px;
+	font-weight: 700;
+	color: #777;
+	line-height: 1.2;
+}
+
+.mura-region__dropzone {
+	padding: 10px 16px;
+	background-color: #fff;
+	min-height: 38px;
+	outline: 1px dotted #ccc!important;
+}

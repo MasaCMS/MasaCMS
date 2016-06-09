@@ -153,6 +153,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset request.userAgent = LCase( CGI.http_user_agent ) />
 
+<cfif left(cgi.path_info,11) eq '/_api/rest/'>
+	<cfset this.sessionTimeout = CreateTimeSpan(0,0,0,2)>
+	<cfset request.trackSession=0>
+<cfelse>
 <!--- Should we even use sessions? --->
 <cfset request.trackSession = len(request.userAgent)
  and not (
@@ -212,6 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		this.sessionTimeout = CreateTimeSpan(0,0,0,2);
 	}
 </cfscript>
+</cfif>
 
 <cfset this.timeout =  getINIProperty("requesttimeout","1000")>
 

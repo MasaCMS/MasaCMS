@@ -219,7 +219,7 @@
 		<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')#
 		</label>
-		<textarea name="notes" rows="8" id="abstract"></textarea>
+		<textarea name="notes" rows="8" id="abstract">#rc.contentBean.getNotes()#</textarea>
 	</div> <!--- /end mura-control-group --->
 
    <span id="extendset-container-publishing" class="extendset-container"></span>

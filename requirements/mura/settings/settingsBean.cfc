@@ -947,6 +947,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getApi" output="false">
 <cfargument name="type" default="json">
 <cfargument name="version" default="v1">
+
 	<cfif not isDefined('variables.instance.api#arguments.type##arguments.version#')>
 		<cfset variables.instance['api#arguments.type##arguments.version#']=evaluate('new mura.client.api.#arguments.type#.#arguments.version#.apiUtility(siteid=getValue("siteid"))')>
 	</cfif>

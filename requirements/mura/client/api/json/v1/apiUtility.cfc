@@ -249,6 +249,8 @@ component extends="mura.cfobject" {
 			var params={};
 			var result="";
 
+			param name="request.muraAPIRequestMode" default="json";
+
 			getBean('utility').suppressDebugging();
 
 			var headers = getHttpRequestData().headers;
@@ -1976,7 +1978,7 @@ component extends="mura.cfobject" {
 
 				var domain=cgi.server_name;
 
-				request.apiEndpoint="#protocol#://#domain##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/json/v1/#variables.siteid#";
+				request.apiEndpoint="#protocol#://#domain##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/#request.muraAPIRequestMode#/v1/#variables.siteid#";
 			}
 			return request.apiEndpoint;
 		}
