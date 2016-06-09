@@ -822,7 +822,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset arguments.siteID=session.siteID>
+		<cfset var sessionData=getSession()>
+		<cfset arguments.siteID=sessionData.siteID>
 	</cfif>
 
 	<cfset arguments.siteid=variables.settingsManager.getSite(arguments.siteid).getFilePoolID()>

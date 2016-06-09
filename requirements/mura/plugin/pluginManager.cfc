@@ -65,6 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="standardEventsHandler" required="true">
 	<cfargument name="fileWriter" required="true">
 
+	<cfset var sessionData=getSession()>
+
 	<cfset variables.configBean=arguments.configBean>
 	<cfset variables.settingsManager=arguments.settingsManager>
 	<cfset variables.utility=arguments.utility>
@@ -75,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.zipTool=createObject("component","mura.Zip")>
 	</cfif>
 
-	<cfif isdefined("url.safemode") and isDefined("session.mura.memberships") and listFindNoCase(session.mura.memberships,"S2")>
+	<cfif isdefined("url.safemode") and isDefined("sessionData.mura.memberships") and listFindNoCase(sessionData.mura.memberships,"S2")>
 		<cfset loadPlugins(safeMode=true)>
 	<cfelse>
 		<cfset loadPlugins(safeMode=false)>
@@ -1150,8 +1152,9 @@ select * from tplugins order by #arguments.orderby#
 	</cfquery>
 
 	<cfif arguments.applyPermFilter>
+		<cfset var sessionData=getSession()>
 		<cfloop query="rs">
-			<cfif application.permUtility.getModulePerm(rs.moduleID,session.siteid)>
+			<cfif application.permUtility.getModulePerm(rs.moduleID,sessionData.siteid)>
 				<cfset moduleList=listAppend(moduleList,rs.moduleID)>
 			</cfif>
 		</cfloop>
@@ -2410,8 +2413,8 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="jsLibLoaded" required="true" default="false">
 <cfargument name="compactDisplay" required="false" default="false" />
 <cfargument name="moduleid" required="false" default="#request.muraMostRecentPluginModuleID#" />
-
-<cfif not (isDefined('session.siteid') and isDefined('session.siteArray'))>
+<cfset var sessionData=getSession()>
+<cfif not (isDefined('sessionData.siteid') and isDefined('sessionData.siteArray'))>
 	<cflocation url="#variables.configBean.getContext()#/admin/" addtoken="false">
 </cfif>
 
@@ -2419,6 +2422,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var returnStr="">
 <cfset var moduleTitle=arguments.pageTitle>
 <cfset var layoutTemplate="template" />
+<cfset var sessionData=getSession()>
 
 <cfset rc.layout =arguments.body>
 <cfset rc.ajax ="">
@@ -2428,7 +2432,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset rc.jsLib=arguments.jsLib>
 <cfset rc.jsLibLoaded=arguments.jsLibLoaded>
 <cfset rc.renderMuraAlerts=false>
-<cfset rc.$=getBean('$').init(session.siteid)>
+<cfset rc.$=getBean('$').init(sessionData.siteid)>
 <cfset var $=rc.$>
 
 <cfif arguments.compactDisplay>

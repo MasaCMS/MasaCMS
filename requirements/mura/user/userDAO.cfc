@@ -586,13 +586,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="readGroupMemberships" returntype="query" output="false" access="public">
 	<cfargument name="userid" type="string" />
 	<cfset var rsGroupMemberships =""/>
+	<cfset var sessionData=getSession()>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGroupMemberships')#">
 	Select tusers.userID AS groupID, #variables.fieldList# from tusers
 	inner join  tusersmemb on tusers.userid=tusersmemb.userid
 	left join tfiles on tusers.photoFileId=tfiles.fileid
 	where tusersmemb.groupid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
-	<cfif not listFind(session.mura.memberships,'S2')>and tusers.s2 =0</cfif>
+	<cfif not listFind(sessionData.mura.memberships,'S2')>and tusers.s2 =0</cfif>
 	order by lname</cfquery>
 
 	<cfreturn rsGroupMemberships />

@@ -270,7 +270,8 @@ component extends="mura.cfobject" {
 			var pathInfo=listToArray(arguments.path,'/');
 			var httpRequestData=getHTTPRequestData();
 			var method='GET';
-			var apiEnabled=true;;
+			var apiEnabled=true;
+			var sessionData=getSession();
 
 			structAppend(params,url);
 			structAppend(params,form);
@@ -291,7 +292,7 @@ component extends="mura.cfobject" {
 
 			structAppend(form,params);
 
-			param name="session.siteid" default=variables.siteid;
+			param name="sessionData.siteid" default=variables.siteid;
 
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
@@ -790,7 +791,8 @@ component extends="mura.cfobject" {
 
 
 	function isValidRequest(){
-		return (isDefined('session.siteid') && isDefined('session.mura.requestcount') && session.mura.requestcount > 1);
+		var sessionData=getSession();
+		return (isDefined('sessionData.siteid') && isDefined('sessionData.mura.requestcount') && sessionData.mura.requestcount > 1);
 	}
 
 	function AllowAccess(bean,$,throwError=true){
@@ -2123,18 +2125,20 @@ component extends="mura.cfobject" {
 				variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
 			}
 
+			var secure=getBean('settingsManager').getSite(entity.getSiteID()).getUseSSL();
+
 			var returnStruct={
-				small=entity.getImageURL(size='small'),
-				medium=entity.getImageURL(size='medium'),
-				large=entity.getImageURL(size='large'),
-				source=entity.getImageURL(size='source')
+				small=entity.getImageURL(secure=secure,complete=1,size='small'),
+				medium=entity.getImageURL(secure=secure,complete=1,size='medium'),
+				large=entity.getImageURL(secure=secure,complete=1,size='large'),
+				source=entity.getImageURL(secure=secure,complete=1,size='source')
 			};
 
 			var image='';
 
 			while(variables.images.hasNext()){
 				image=variables.images.next();
-				returnStruct['#image.getName()#']=entity.getImageURL(size=image.getName());
+				returnStruct['#image.getName()#']=entity.getImageURL(secure=secure,complete=1,size=image.getName());
 			}
 			variables.images.reset();
 		} else {
@@ -2192,10 +2196,11 @@ component extends="mura.cfobject" {
 	}
 
 	function processAsyncObject(siteid){
+		var sessionData=getSession();
 
 		if(!isDefined('arguments.siteid')){
-			if(isDefined('session.siteid')){
-				arguments.siteid=session.siteid;
+			if(isDefined('sessionData.siteid')){
+				arguments.siteid=sessionData.siteid;
 			} else {
 				throw(type="invalidParameters");
 			}
@@ -2280,7 +2285,7 @@ component extends="mura.cfobject" {
 								result={redirect="./##"};
 							}
 						} else {
-							if(isDefined('session.mfa')){
+							if(isDefined('sessionData.mfa')){
 								$.event('status','challenge');
 							} else {
 								$.event('status','failed');
@@ -2314,18 +2319,18 @@ component extends="mura.cfobject" {
 			case 'editprofile':
 				switch($.event('doaction')){
 					case 'updateprofile':
-						if(session.mura.isLoggedIn){
+						if(sessionData.mura.isLoggedIn){
 							var eventStruct=$.event().getAllValues();
 
 							structDelete(eventStruct,'isPublic');
 							structDelete(eventStruct,'s2');
 							structDelete(eventStruct,'type');
 							structDelete(eventStruct,'groupID');
-							eventStruct.userid=session.mura.userID;
+							eventStruct.userid=sessionData.mura.userID;
 
 							$.setValue('passedProtect', $.getBean('utility').isHuman($.event()));
 
-							$.event().setValue("userID",session.mura.userID);
+							$.event().setValue("userID",sessionData.mura.userID);
 
 							if(isDefined('request.addressAction')){
 								if($.event().getValue('addressAction') == "create"){

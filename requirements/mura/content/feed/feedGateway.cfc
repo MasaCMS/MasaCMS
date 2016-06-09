@@ -1110,9 +1110,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="liveOnly" default="1">
 <cfargument name="activeOnly" default="1">
 	<cfset var previewData="">
+	<cfset var sessionData=getSession()>
 	<cfoutput>
 		<cfif arguments.activeOnly>
-			<cfif isDefined('session.mura')>
+			<cfif isDefined('sessionData.mura')>
 				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 			</cfif>
 			<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>

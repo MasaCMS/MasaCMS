@@ -202,8 +202,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn request.event>
 	<cfelse>
 		<cfset temp=structNew()>
-		<cfif isdefined("session.siteid")>
-			<cfset temp.siteID=session.siteID>
+		<cfset var sessionData=getSession()>
+		<cfif isdefined("sessionData.siteid")>
+			<cfset temp.siteID=sessionData.siteID>
 		</cfif>
 		<cfset request.muraGlobalEvent=createObject("component","mura.event").init(temp)>
 		<cfreturn request.muraGlobalEvent>
@@ -280,10 +281,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="propertyValue">
 	<cfset var site="">
 	<cfset var theValue="">
+	<cfset var sessionData=getSession()>
 	<cfset var siteID = Len(event('siteid'))
 		? event('siteid')
-		: IsDefined('session') && StructKeyExists(session, 'siteid')
-			? session.siteid
+		: IsDefined('sessionData') && StructKeyExists(sessionData, 'siteid')
+			? sessionData.siteid
 			: '' />
 
 	<cfif len(siteid)>
@@ -419,7 +421,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.locale)>
 			<cfreturn application.rbFactory.getKeyValue(arguments.locale,arguments.key)>
 		<cfelse>
-			<cfreturn application.rbFactory.getKeyValue(session.rb,arguments.key)>
+			<cfset var sessionData=getSession()>
+			<cfreturn application.rbFactory.getKeyValue(sessionData.rb,arguments.key)>
 		</cfif>
 	<cfelse>
 		<cfif len(arguments.locale)>
@@ -588,11 +591,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.type) and !ListFindNoCase('error,warning,success,info', arguments.type)>
 			<cfset arguments.type=''>
 		</cfif>
-		<cfparam name="session.mura.alerts" default="#structNew()#">
-		<cfif structKeyExists(session.mura.alerts,'#event('siteid')#')>
-			<cfset session.mura.alerts['#event('siteid')#']={}>
+		<cfset var sessionData=getSession()>
+		<cfparam name="sessionData.mura.alerts" default="#structNew()#">
+		<cfif structKeyExists(sessionData.mura.alerts,'#event('siteid')#')>
+			<cfset sessionData.mura.alerts['#event('siteid')#']={}>
 		</cfif>
-		<cfset session.mura.alerts['#event('siteid')#']['#arguments.key#']={text=arguments.text,type=arguments.type}>
+		<cfset sessionData.mura.alerts['#event('siteid')#']['#arguments.key#']={text=arguments.text,type=arguments.type}>
 	</cfif>
 </cffunction>
 
@@ -600,11 +604,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="key">
 	<cfargument name="text">
 	<cfif len(event('siteid'))>
-		<cfparam name="session.mura.alerts" default="#structNew()#">
-		<cfif structKeyExists(session.mura.alerts,'#event('siteid')#')>
-			<cfset session.mura.alerts['#event('siteid')#']={}>
+		<cfset var sessionData=getSession()>
+		<cfparam name="sessionData.mura.alerts" default="#structNew()#">
+		<cfif structKeyExists(sessionData.mura.alerts,'#event('siteid')#')>
+			<cfset sessionData.mura.alerts['#event('siteid')#']={}>
 		</cfif>
-		<cfset structDelete(session.mura.alerts['#event('siteid')#'],'#arguments.key#')>
+		<cfset structDelete(sessionData.mura.alerts['#event('siteid')#'],'#arguments.key#')>
 	</cfif>
 </cffunction>
 

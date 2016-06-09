@@ -68,6 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.muraAdminRequest" default="false">
 <cfparam name="request.mura404" default="false">
 <cfparam name="request.returnFormat" default="html">
+<cfparam name="request.muraSessionManagement" default="true">
 
 <cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 <!--- Application name, should be unique --->
@@ -77,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- Where should cflogin stuff persist --->
 <cfset this.loginStorage = "cookie">
 
-<cfset this.sessionManagement = true>
+<cfset this.sessionManagement = not (left(cgi.path_info,11) eq '/_api/rest/')>
 
 <!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
 <cfset this.setClientCookies = true>
@@ -153,8 +154,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset request.userAgent = LCase( CGI.http_user_agent ) />
 
-<cfif left(cgi.path_info,11) eq '/_api/rest/'>
-	<cfset this.sessionTimeout = CreateTimeSpan(0,0,0,2)>
+<cfif not this.sessionManagement>
+	<cfset request.muraSessionManagement=false>
 	<cfset request.trackSession=0>
 <cfelse>
 <!--- Should we even use sessions? --->

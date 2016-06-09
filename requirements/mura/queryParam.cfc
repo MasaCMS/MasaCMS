@@ -317,13 +317,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getContentRenderer" output="false">
-
+	<cfset var sessionData=getSession()>
 	<cfif structKeyExists(request,"servletEvent")>
 		<cfreturn request.servletEvent.getContentRenderer()>
 	<cfelseif structKeyExists(request,"event")>
 		<cfreturn request.event.getContentRenderer()>
-	<cfelseif isdefined('session.siteID') and len(session.siteID)>
-		<cfreturn getBean("$").init(session.siteID).getContentRenderer()>
+	<cfelseif isdefined('sessionData.siteID') and len(sessionData.siteID)>
+		<cfreturn getBean("$").init(sessionData.siteID).getContentRenderer()>
 	<cfelse>
 		<cfreturn getBean("contentRenderer")>
 	</cfif>

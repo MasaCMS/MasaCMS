@@ -965,7 +965,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getDraftList" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
-	<cfargument name="userID"  type="string"  required="true" default="#session.mura.userID#"/>
+	<cfargument name="userID"  type="string"  required="true" default="#getSession().mura.userID#"/>
 	<cfargument name="limit" type="numeric" required="true" default="100000000">
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
@@ -1088,7 +1088,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getApprovals" output="false">
 	<cfargument name="siteID"  type="string" />
-	<cfargument name="membershipids"  type="string"  required="true" default="#session.mura.membershipids#"/>
+	<cfargument name="membershipids"  type="string"  required="true" default="#getSession().mura.membershipids#"/>
 	<cfargument name="limit" type="numeric" required="true" default="100000000">
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
@@ -1143,7 +1143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getSubmissions" output="false">
 	<cfargument name="siteID"  type="string" />
-	<cfargument name="userID"  type="string"  required="true" default="#session.mura.userID#"/>
+	<cfargument name="userID"  type="string"  required="true" default="#getSession().mura.userID#"/>
 	<cfargument name="limit" type="numeric" required="true" default="100000000">
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
@@ -2533,8 +2533,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="table" default="tcontent">
 <cfargument name="siteID">
 	<cfset var previewData="">
+	<cfset var sessionData=getSession()>
  	<cfoutput>
- 		<cfif isDefined('session.mura')>
+ 		<cfif isDefined('sessionData.mura')>
  			<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
  		</cfif>
 		<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>

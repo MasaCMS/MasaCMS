@@ -102,9 +102,10 @@
 		<cfset var site=""/>
 		<cfset var cacheFactory="">
 		<cfset var bean=arguments.userBean>
+		<cfset var sessionData=getSession()>
 
-		<cfif not len(arguments.siteID) and isdefined("session.siteID")>
-			<cfset arguments.siteID=session.siteID>
+		<cfif not len(arguments.siteID) and isdefined("sessionData.siteID")>
+			<cfset arguments.siteID=sessionData.siteID>
 		</cfif>
 
 		<cfif len(arguments.siteID)>
@@ -766,9 +767,11 @@
 
 	<cffunction name="setLastUpdateInfo" access="public" returntype="void" output="false">
 		<cfargument name="userBean" type="any" default="" required="yes"/>
-		<cfif session.mura.isLoggedIn>
-			<cfset arguments.userBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50))/>
-			<cfset arguments.userBean.setLastUpdateByID(session.mura.userID)/>
+		<cfset var sessionData=getSession()>
+
+		<cfif sessionData.mura.isLoggedIn>
+			<cfset arguments.userBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50))/>
+			<cfset arguments.userBean.setLastUpdateByID(sessionData.mura.userID)/>
 		<cfelse>
 			<cfset arguments.userBean.setLastUpdateBy(left("#arguments.userBean.getFname()# #arguments.userBean.getlname()#",50))/>
 			<cfset arguments.userBean.setLastUpdateByID(arguments.userBean.getUserID())/>
@@ -882,12 +885,14 @@
 	</cffunction>
 
 	<cffunction name="getCurrentUserID" access="public" returntype="string" output="false">
-		<cfreturn session.mura.userID />
+		<cfset var sessionData=getSession()>
+		<cfreturn sessionData.mura.userID />
 	</cffunction>
 
 	<cffunction name="getCurrentName" access="public" returntype="string" output="false">
 		<cftry>
-			<cfreturn session.mura.fname & " " & session.mura.lname />
+			<cfset var sessionData=getSession()>
+			<cfreturn sessionData.mura.fname & " " & sessionData.mura.lname />
 			<cfcatch>
 				<cfreturn ''/>
 			</cfcatch>
@@ -896,7 +901,8 @@
 
 	<cffunction name="getCurrentLastLogin" access="public" returntype="string" output="false">
 		<cftry>
-			<cfreturn session.mura.lastlogin />
+			<cfset var sessionData=getSession()>
+			<cfreturn sessionData.mura.lastlogin />
 			<cfcatch>
 				<cfreturn ''/>
 			</cfcatch>
@@ -905,7 +911,8 @@
 
 	<cffunction name="getCurrentCompany" access="public" returntype="string" output="false">
 		<cftry>
-			<cfreturn session.mura.company />
+			<cfset var sessionData=getSession()>
+			<cfreturn sessionData.mura.company />
 			<cfcatch>
 				<cfreturn ''/>
 			</cfcatch>
@@ -953,7 +960,8 @@
 
 	<cffunction name="setUserStructDefaults" output="false" access="public" returntype="void">
 		<cfset var user="">
-		<cfif not structKeyExists(session,"mura")>
+		<cfset var sessionData=getSession()>
+		<cfif not structKeyExists(sessionData,"mura")>
 			<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))
 					and len(getAuthUser()) and isValid("UUID",listFirst(getAuthUser(),"^"))>
 				<cfset user=read(listFirst(getAuthUser(),"^"))>
@@ -962,7 +970,7 @@
 				<cfset variables.userUtility.setUserStruct()>
 			</cfif>
 		</cfif>
-		<cfparam name="session.mura.membershipids" default="" />
+		<cfparam name="sessionData.mura.membershipids" default="" />
 	</cffunction>
 
 	<cffunction name="getIterator" returntype="any" output="false">
@@ -979,9 +987,10 @@
 		<cfargument name="siteid">
 
 		<cfset var rsLookUp="">
+		<cfset var sessionData=getSession()>
 
 		<cfif variables.permUtility.getModulePerm('00000000000000000000000000000000008',arguments.siteid)
-		or listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')>
+		or listFind(sessionData.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')>
 			<cfreturn true>
 		</cfif>
 
@@ -1004,7 +1013,7 @@
 		</cfquery>
 
 		<cfloop query="rsLookUp">
-			<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(rsLookUp.siteid).getPrivateUserPoolID()#;0')>
+			<cfif listFind(sessionData.mura.memberships,'Admin;#variables.settingsManager.getSite(rsLookUp.siteid).getPrivateUserPoolID()#;0')>
 				<cfreturn true>
 			</cfif>
 		</cfloop>
