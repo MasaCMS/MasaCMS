@@ -52,6 +52,8 @@ component extends="mura.cfobject" {
 			}
 		};
 
+		variables.userUtility=getBean('userUtility');
+
 		variables.serializer = new mura.jsonSerializer()
 	      .asString('csrf_token_expires')
 	      .asString('csrf_token')
@@ -250,6 +252,7 @@ component extends="mura.cfobject" {
 			var result="";
 
 			param name="request.muraAPIRequestMode" default="json";
+			param name="request.muraSessionManagement" default=true;
 
 			getBean('utility').suppressDebugging();
 
@@ -280,6 +283,37 @@ component extends="mura.cfobject" {
 				&& headers['Content-Type'] == 'application/json'
 				&& isJSON(httpRequestData.content)){
 				structAppend(params,deserializeJSON(httpRequestData.content));
+			}
+
+			if( structKeyExists( headers, 'X-clientid' )){
+				params['clientid']=headers['X-clientid'];
+			}
+
+			if( structKeyExists( headers, 'X-clientsecret' )){
+				params['clientsecret']=headers['X-clientsecret'];
+			}
+
+			if(!request.muraSessionManagement){
+				if(!(isDefined('params.clientid') && isdefined('clientsecret'))){
+					params.method='Not Available';
+					throw(type='authorization');
+				} else {
+					var credentials=getBean('clientCredentials').loadBy(clientid=params.clientid);
+
+					if(!credentials.exists() || credentials.getClientSecret() != params.clientsecret){
+						params.method='Not Available';
+						throw(type='authorization');
+					} else {
+						var clientAccount=credentials.getUser();
+
+						if(!clientAccount.exists()){
+							params.method='Not Available';
+							throw(type='authorization');
+						} else {
+							variables.userUtility.loginByUserID(clientAccount.getUserID(),clientAccount.getSiteiD());
+						}
+					}
+				}
 			}
 
 			if( structKeyExists( headers, 'X-csrf_token' )){

@@ -254,10 +254,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginEvent.setValue("remoteID",rsUser.remoteID)>
 				<cfset pluginEvent.setValue("userID",arguments.userID)>
 
-				<cfif len(arguments.siteID)>
-					<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
-				<cfelse>
-					<cfset variables.pluginManager.announceEvent('onGlobalLoginSuccess',pluginEvent)/>
+				<cfif request.muraSessionManagement>
+					<cfif len(arguments.siteID)>
+						<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
+					<cfelse>
+						<cfset variables.pluginManager.announceEvent('onGlobalLoginSuccess',pluginEvent)/>
+					</cfif>
 				</cfif>
 
 				<cfreturn true />
@@ -267,37 +269,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 <cffunction name="loginByQuery">
-<cfargument name="rsUser"/>
-		<cfset var rolelist = "" />
-		<cfset var group = "" />
-		<cfset var lastLogin = now() />
-		<cfset var rsGetRoles = "" />
-		<cfset var user=""/>
+	<cfargument name="rsUser"/>
 
-		<cfset structDelete(session,'siteArray')>
+	<cfset var rolelist = "" />
+	<cfset var group = "" />
+	<cfset var lastLogin = now() />
+	<cfset var rsGetRoles = "" />
+	<cfset var user=""/>
 
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGetRoles')#">
-			Select userID, groupname, isPublic, siteid from tusers where userid in
-			(Select GroupID from tusersmemb where userid='#rsuser.userid#')
-		</cfquery>
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGetRoles')#">
+		Select userID, groupname, isPublic, siteid from tusers where userid in
+		(Select GroupID from tusersmemb where userid='#rsuser.userid#')
+	</cfquery>
 
-		<cfloop query="rsGetRoles">
-			<cfset rolelist=listappend(rolelist, "#rsGetRoles.groupname#;#rsGetRoles.siteid#;#rsGetRoles.isPublic#")>
-		</cfloop>
+	<cfloop query="rsGetRoles">
+		<cfset rolelist=listappend(rolelist, "#rsGetRoles.groupname#;#rsGetRoles.siteid#;#rsGetRoles.isPublic#")>
+	</cfloop>
 
-		<cfif not rsUser.isPublic>
-			<cfset rolelist=listappend(rolelist, 'S2IsPrivate;#rsuser.siteid#')>
-			<cfset rolelist=listappend(rolelist, 'S2IsPrivate')>
-		<cfelse>
-			<cfset rolelist=listappend(rolelist, 'S2IsPublic;#rsuser.siteid#')>
-			<cfset rolelist=listappend(rolelist, 'S2IsPublic')>
-		</cfif>
+	<cfif not rsUser.isPublic>
+		<cfset rolelist=listappend(rolelist, 'S2IsPrivate;#rsuser.siteid#')>
+		<cfset rolelist=listappend(rolelist, 'S2IsPrivate')>
+	<cfelse>
+		<cfset rolelist=listappend(rolelist, 'S2IsPublic;#rsuser.siteid#')>
+		<cfset rolelist=listappend(rolelist, 'S2IsPublic')>
+	</cfif>
 
-		<cfif rsuser.s2>
-			<cfset rolelist=listappend(rolelist, 'S2')>
-		</cfif>
+	<cfif rsuser.s2>
+		<cfset rolelist=listappend(rolelist, 'S2')>
+	</cfif>
 
-		<cfset rolelist=listAppend(rolelist,'#rsuser.username#;username;#rsuser.siteid#')>
+	<cfset rolelist=listAppend(rolelist,'#rsuser.username#;username;#rsuser.siteid#')>
+
+	<cfif request.muraSessionManagement>
+		<cfset structDelete(getSession(),'siteArray')>
 
 		<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))>
 			<cflogout>
@@ -335,12 +339,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset structDelete(cookie,"userhash")>
 		</cfif>
 
-		<cfset setUserStruct(rsuser,rolelist,listAppend(valueList(RsGetRoles.userID),rsuser.userid))>
 		<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
 		<cfif variables.configBean.getValue(property='rotateSessions',defaultValue='false')>
 			<cfset sessionRotate()>
 			<cfset getBean('utility').setSessionCookies()>
 		</cfif>
+	</cfif>
+
+	<cfset setUserStruct(rsuser,rolelist,listAppend(valueList(RsGetRoles.userID),rsuser.userid))>
 </cffunction>
 
 <cffunction name="getUserByEmail" returntype="query" output="false">

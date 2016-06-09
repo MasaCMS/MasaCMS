@@ -275,6 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("variationTargeting","contentVariationTargetingBean");
 		variables.serviceFactory.addAlias("remoteContentPointer","contentRemotePointerBean");
 		variables.serviceFactory.addAlias("contentDisplayInterval","contentDisplayIntervalBean");
+		variables.serviceFactory.addAlias("clientCredentials","clientCredentialsBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
@@ -332,6 +333,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			//variables.serviceFactory.getBean('remoteContentPointer');
 			variables.serviceFactory.getBean('contentDisplayInterval');
 			variables.serviceFactory.getBean('variationTargeting');
+			variables.serviceFactory.getBean('clientCredentials');
 		</cfscript>
 	</cfif>
 
