@@ -618,7 +618,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
     <cfset arguments.Type=trim(arguments.Type)>
 
-	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type>
+	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type and listFindNoCase('Page,Folder,Calendar,Gallery,File,Link,Form,Component,Variation,Module',arguments.type)>
 		<cfset variables.instance.Type = arguments.Type />
 		<cfset purgeExtendedData()>
 		<cfif variables.instance.Type eq "Form">
