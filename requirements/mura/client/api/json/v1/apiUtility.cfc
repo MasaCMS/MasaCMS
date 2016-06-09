@@ -287,42 +287,83 @@ component extends="mura.cfobject" {
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
 
-			if( structKeyExists( headers, 'X-clientid' )){
-				params['clientid']=headers['X-clientid'];
-			}
-
-			if( structKeyExists( headers, 'X-clientsecret' )){
-				params['clientsecret']=headers['X-clientsecret'];
-			}
-
 			if(!request.muraSessionManagement){
-				if(!(isDefined('params.clientid') && isdefined('params.clientsecret'))){
+				if( structKeyExists( headers, 'X-client_id' )){
+					params['client_id']=headers['X-client_id'];
+				}
+
+				if( structKeyExists( headers, 'X-client_secret' )){
+					params['client_secret']=headers['X-client_secret'];
+				}
+
+				if( structKeyExists( headers, 'X-access_token' )){
+					params['access_token']=headers['X-access_token'];
+				}
+				if(isDefined('params.access_token')){
+					var token=getBean('oauthToken').loadBy(token=params.access_token);
+					structDelete(params,'access_token');
+					if(!token.exists() || token.getGrantType() != 'client_credentials' || token.getExpires() < now()){
+						throw(type='invalidAccessToken');
+					} else {
+						var client=token.getClient();
+
+						if(!client.exists() || client.getSiteID() != variables.siteid){
+							throw(type='invalidAccessToken');
+						} else {
+							var clientAccount=client.getUser();
+
+							if(!clientAccount.exists()){
+								throw(type='invalidAccessToken');
+							} else {
+								clientAccount.login();
+							}
+						}
+					}
+				} else if(!(isDefined('params.client_id') && isdefined('params.client_secret'))){
 					params.method='Not Available';
-					structDelete(params,'clientid');
-					structDelete(params,'clientsecret');
+					structDelete(params,'client_id');
+					structDelete(params,'client_secret');
 					throw(type='authorization');
 				} else {
-					var credentials=getBean('clientCredentials').loadBy(clientid=params.clientid);
+					var client=getBean('oauthClient').loadBy(clientid=params.client_id);
 
 					//WriteDump(credentials.getAllValues());abort;
-					if(!credentials.exists() || credentials.getClientSecret() != params.clientsecret){
+					if(!client.exists() || client.getClientSecret() != params.client_secret){
 						params.method='Not Available';
-						structDelete(params,'clientid');
-						structDelete(params,'clientsecret');
-						structDelete(url,'clientid');
-						structDelete(url,'clientsecret');
+						structDelete(params,'client_id');
+						structDelete(params,'client_secret');
+						structDelete(url,'client_id');
+						structDelete(url,'client_secret');
 						throw(type='authorization');
 					} else {
-						var clientAccount=credentials.getUser();
-						structDelete(params,'clientid');
-						structDelete(params,'clientsecret');
-						structDelete(url,'clientid');
-						structDelete(url,'clientsecret');
+						var clientAccount=client.getUser();
+						structDelete(url,'client_id');
+						structDelete(url,'client_secret');
 						if(!clientAccount.exists()){
 							params.method='Not Available';
+							structDelete(params,'client_id');
+							structDelete(params,'client_secret');
 							throw(type='authorization');
 						} else {
-							clientAccount.login();
+							if(isdefined('params.grant_type') && params.grant_type == 'client_credentials'){
+								var token=client.generateToken(granttype='client_credentials');
+								result=getSerializer().serialize(
+									{'apiversion'=getApiVersion(),
+									'method'=params.method,
+									'params'=getParamsWithOutMethod(params),
+									'data'={
+										'access_token':token.getToken(),
+										'expires':token.getExpires()
+									 }});
+								responseObject.setContentType('application/json; charset=utf-8');
+								responseObject.setStatus(200);
+								return result;
+							} else {
+								structDelete(params,'client_id');
+								structDelete(params,'client_secret');
+								clientAccount.login();
+							}
+
 						}
 					}
 				}
@@ -720,6 +761,12 @@ component extends="mura.cfobject" {
 			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Insufficient Account Permissions'}});
 		}
 
+		catch (invalidAccessToken e){
+			responseObject.setContentType('application/json; charset=utf-8');
+			responseObject.setStatus(401);
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Invalid ACCESS_TOKEN'}});
+		}
+
 		catch (disabled e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
@@ -1059,7 +1106,7 @@ component extends="mura.cfobject" {
 			var loadByparams={'#pk#'=arguments.id};
 		}
 
-		if($.validateCSRFTokens(context=arguments.id)){
+		if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 			if(arguments.entityName=='content' && $.event('type')=='Variation'){
 				entity.loadBy(argumentCollection=loadByparams).set(
 						$.event().getAllValues()
@@ -1965,7 +2012,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-					if($.validateCSRFTokens(context=arguments.id)){
+					if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 						entity.deleteVersion();
 					}
 				}
@@ -1978,7 +2025,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-					if($.validateCSRFTokens(context=arguments.id)){
+					if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 						entity.delete();
 					} else {
 						throw(type="invalidTokens");
@@ -2002,7 +2049,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-				if($.validateCSRFTokens(context=arguments.id)){
+				if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 					entity.delete();
 				} else {
 					throw(type="invalidTokens");
