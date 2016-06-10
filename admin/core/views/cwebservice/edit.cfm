@@ -14,8 +14,8 @@
   </cfif>
   <script>
         function generateToken(){
-            mura.generateOAuthToken('client_credentials',$('##clientid').val(),$('##clientsecret').val()).then(function(resp){
-                alertDialog('CLIENT CREDENTIALS:<br/>' + JSON.stringify(resp),function(){},function(){},800);
+            mura.generateOAuthToken('client_credentials',$('##clientid').val(),$('##clientsecret').val()).then(function(data){
+                $('##token-container').html('<div class="alert"><h3>Client Credentials</h3><p><strong>Access Token:</strong> ' + data['access_token'] +'</p><p><strong>Expires:</strong> ' + data['expires'] + '</p></div>');
             });
         }
     </script>
@@ -33,6 +33,7 @@
           <div class="alert alert-error">#application.utility.displayErrors(rc.bean.getErrors())#</div>
         </cfif>
 
+        <span id="token-container"></span>
       <div class="mura-control-group">
           <label>Name</label>
           <div>
