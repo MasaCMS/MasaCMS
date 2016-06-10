@@ -287,6 +287,7 @@ component extends="mura.cfobject" {
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
 
+
 			if(!request.muraSessionManagement){
 				if( structKeyExists( headers, 'X-client_id' )){
 					params['client_id']=headers['X-client_id'];
@@ -299,23 +300,28 @@ component extends="mura.cfobject" {
 				if( structKeyExists( headers, 'X-access_token' )){
 					params['access_token']=headers['X-access_token'];
 				}
+
 				if(isDefined('params.access_token')){
 					var token=getBean('oauthToken').loadBy(token=params.access_token);
 					structDelete(params,'access_token');
 					structDelete(url,'access_token');
 					if(!token.exists() || token.getGrantType() != 'client_credentials'){
+						params.method='Not Available';
 						throw(type='invalidAccessToken');
 					} else if (token.getExpires() < now()){
+						params.method='Not Available';
 						throw(type='accessTokenExpired');
 					} else {
 						var client=token.getClient();
 
 						if(!client.exists() || client.getSiteID() != variables.siteid){
+							params.method='Not Available';
 							throw(type='invalidAccessToken');
 						} else {
 							var clientAccount=client.getUser();
 
 							if(!clientAccount.exists()){
+								params.method='Not Available';
 								throw(type='invalidAccessToken');
 							} else {
 								clientAccount.login();
@@ -348,9 +354,13 @@ component extends="mura.cfobject" {
 							structDelete(params,'client_secret');
 							throw(type='authorization');
 						} else {
-							if(isdefined('params.grant_type') && params.grant_type == 'client_credentials'){
+							if(arrayLen(pathInfo) == 6
+								&& pathInfo[5]=='oauth'
+								&& pathInfo[6]=='token'
+								&& isdefined('params.grant_type')
+								&& params.grant_type == 'client_credentials'){
 								var token=client.generateToken(granttype='client_credentials');
-								params.method='getOauthToken';
+								params.method='getOAuthToken';
 								result=getSerializer().serialize(
 									{'apiversion'=getApiVersion(),
 									'method'=params.method,
