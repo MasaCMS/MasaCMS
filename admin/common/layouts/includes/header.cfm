@@ -152,7 +152,7 @@
 				<cfif local.promptcount>
 					<cfset local.prompttally += local.promptcount>
 					<li>
-					 	<a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=mydrafts&siteID=#session.siteid#&reportSortby=lastupdate&reportSortDirection=desc&refreshFlatview=true"><span class="badge badge-important">#local.promptcount#</span> Drafts</a>
+					 	<a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=mydrafts&siteID=#session.siteid#&reportSortby=lastupdate&reportSortDirection=desc&refreshFlatview=true"><span class="badge">#local.promptcount#</span> Drafts</a>
 					</li>
 				</cfif>
 				<!--- /drafts --->
@@ -162,7 +162,7 @@
 				<cfif local.promptcount>
 					<cfset local.prompttally += local.promptcount>
 					<li>
-					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=mysubmissions&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge badge-important">#local.promptcount#</span> Submissions</a>
+					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=mysubmissions&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge">#local.promptcount#</span> Submissions</a>
 					</li>
 				</cfif>
 				<!--- /submissions --->
@@ -172,7 +172,7 @@
 				<cfif local.promptcount>
 					<cfset local.prompttally += local.promptcount>
 					<li>
-					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myapprovals&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge badge-important">#local.promptcount#</span> Approvals </a>
+					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myapprovals&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge">#local.promptcount#</span> Approvals </a>
 					</li>
 				</cfif>
 				<!--- /approvals --->
@@ -182,7 +182,7 @@
 				<cfif local.promptcount>
 					<cfset local.prompttally += local.promptcount>
 					<li>
-					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myexpires&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge badge-important">#local.promptcount#</span> Expiring</a>
+					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myexpires&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge">#local.promptcount#</span> Expiring</a>
 					</li>
 				</cfif>
 				<!--- /expiring --->
@@ -209,7 +209,7 @@
 					 <cfif rsChangesets.recordcount and totalpending.totalpending>
 						<cfset local.prompttally += totalpending.totalpending>
 					 	<li>
-						   <a href="./?muraAction=cChangesets.list&siteid=#session.siteid#"><span class="badge badge-important">#totalpending.totalpending#</span> Changesets</a>
+						   <a href="./?muraAction=cChangesets.list&siteid=#session.siteid#"><span class="badge">#totalpending.totalpending#</span> Changesets</a>
 						</li>
 					 </cfif>
 				 </cfif>
@@ -220,7 +220,7 @@
       <li>
           <div class="btn-group">
               <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">
-                  <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#<cfif local.prompttally> <span class="badge badge-important">#local.prompttally#</span></cfif><span class="caret"></span>
+                  <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#<cfif local.prompttally> <span class="badge">#local.prompttally#</span></cfif><span class="caret"></span>
               </button>
 
               <ul class="pull-right dropdown-menu dropdown-menu-right mura-user-tools">
