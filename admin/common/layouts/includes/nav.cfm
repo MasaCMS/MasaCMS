@@ -376,12 +376,11 @@
                                     </li>
                                 </cfif>
 
-                                <li>
-                                    <a<cfif rc.originalcircuit eq 'cwebservice'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cwebservice.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-exchange"></i><span class="sidebar-mini-hide">Web Services</span></a>
-                                </li>
-
                                 <cfif listFind(session.mura.memberships,'S2')>
-                                    <!--- trash bin --->
+                                    <li>
+                                        <a<cfif rc.originalcircuit eq 'cwebservice'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cwebservice.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-exchange"></i><span class="sidebar-mini-hide">Web Services</span></a>
+                                    </li>
+                                    <!---trash bin --->
                                     <li>
                                         <a<cfif rc.originalcircuit eq 'cTrash'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#"><i class="mi-trash"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.trashbin')#</span></a>
                                     </li>

@@ -52,8 +52,7 @@ component extends="controller" {
 
 		if(
 			not (
-				listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0')
-				or listFind(session.mura.memberships,'S2')
+				listFind(session.mura.memberships,'S2')
 				)
 		){
 			secure(arguments.rc);
