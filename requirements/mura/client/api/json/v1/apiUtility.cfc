@@ -314,13 +314,13 @@ component extends="mura.cfobject" {
 						var client=token.getClient();
 
 						if(!client.exists()){
-							params.method='Not Available';
+							params.method='undefined';
 							throw(type='invalidAccessToken');
 						} else {
 							var clientAccount=client.getUser();
 
 							if(!clientAccount.exists()){
-								params.method='Not Available';
+								params.method='undefined';
 								throw(type='invalidAccessToken');
 							} else {
 								clientAccount.login();
@@ -348,7 +348,7 @@ component extends="mura.cfobject" {
 						structDelete(url,'client_id');
 						structDelete(url,'client_secret');
 						if(!clientAccount.exists()){
-							params.method='Not Available';
+							params.method='undefined';
 							structDelete(params,'client_id');
 							structDelete(params,'client_secret');
 							throw(type='authorization');

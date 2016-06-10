@@ -6,15 +6,23 @@
     <cfset rc.bean=$.getBean('oauthClient').loadBy(clientid=rc.clientid)/>
 </cfif>
 <cfoutput>
-
-
 <div class="mura-header">
   <cfif not rc.bean.exists()>
 	<h1>Add Web Service</h1>
   <cfelse>
 	<h1>Edit Web Service</h1>
   </cfif>
-
+  <script>
+        function generateToken(){
+            mura.generateOAuthToken('client_credentials',$('##clientid').val(),$('##clientsecret').val()).then(function(resp){
+                alertDialog('CLIENT CREDENTIALS:<br/>' + JSON.stringify(resp),function(){},function(){},800);
+            });
+        }
+    </script>
+  <div class="nav-module-specific btn-group">
+      <a class="btn" href="./?muraAction=cwebservice.list&siteid=&#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i>  Back to Web Services</a>
+       <button class="btn mura-primary" type="button" onclick="generateToken();"><i class="mi-key"></i> Generate Access Token</button>
+  </div>
 </div> <!-- /.mura-header -->
 <form novalidate="novalidate" action="./?muraAction=cwebservice.save" method="post" name="form1" onsubmit="return validateForm(this);">
 <div class="block block-constrain">
@@ -25,33 +33,26 @@
           <div class="alert alert-error">#application.utility.displayErrors(rc.bean.getErrors())#</div>
         </cfif>
 
-
       <div class="mura-control-group">
-          <label>
-              Name
-          </label>
+          <label>Name</label>
           <div>
               <input name="name" type="text" required="true" message="The Name attribute is required." value="#esapiEncode('html_attr',rc.bean.getName())#" maxlength="50">
           </div>
       </div>
       <div class="mura-control-group">
-          <label>
-            Description
-          </label>
+          <label>Description</label>
           <div>
               <textarea name="description" rows="6">#esapiEncode('html',rc.bean.getDescription())#</textarea>
           </div>
       </div>
 
       <div class="mura-control-group">
-          <label>
-            Connected User
-          </label>
+          <label>Connected Account</label>
           <div>
               <cfset users=$.getBean('userFeed').setSiteID(rc.siteid).setIsPublic(0).setSortBy('lname').getIterator()>
 
               <select name="userid">
-                  <option value="">-- Select User --</option>
+                  <option value="">-- Select Account --</option>
                   <cfloop condition="users.hasNext()">
                       <cfset user=users.next()>
                       <option value="#user.getUserID()#"<cfif user.getUserID() eq rc.bean.getUserID()> selected</cfif>>#esapiEncode('html',user.getFullname())#</option>
@@ -65,11 +66,12 @@
           <cfif not rc.bean.exists()>
             <button class="btn mura-primary" type="button" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i> Add</button>
           <cfelse>
-            <button class="btn" type="button" onclick="confirmDialog('Delete Web Service/','./?muraAction=cwebservice.delete&clientid=#rc.bean.getclientid()#&siteid=#esapiEncode('url',rc.bean.getSiteID())##rc.$.renderCSRFTokens(context=rc.bean.getClientID(),format="url")#');"><i class="mi-trash"></i> Delete</button>
-            <button class="btn mura-primary" type="button" onclick="submitForm(document.forms.form1,'save');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'approvalchains.update')#</button>
+            <button class="btn" type="button" onclick="confirmDialog('Delete Web Service?','./?muraAction=cwebservice.delete&clientid=#rc.bean.getclientid()#&siteid=#esapiEncode('url',rc.bean.getSiteID())##rc.$.renderCSRFTokens(context=rc.bean.getClientID(),format="url")#');"><i class="mi-trash"></i> Delete</button>
+            <button class="btn mura-primary" type="button" onclick="submitForm(document.forms.form1,'save');"><i class="mi-check-circle"></i> Update</button>
           </cfif>
-          <input type="hidden" name="siteid" value="#rc.bean.getSiteID()#">
-          <input type=hidden name="clientid" value="#rc.bean.getclientid()#">
+          <input type="hidden" id="siteid" name="siteid" value="#rc.bean.getSiteID()#">
+          <input type=hidden id="clientid" name="clientid" value="#rc.bean.getclientid()#">
+          <input type=hidden id="clientsecret" name="clientsecret" value="#rc.bean.getclientSecret()#">
           #rc.$.renderCSRFTokens(context=rc.bean.getclientid(),format="form")#
         </div>
       </div>
