@@ -61,6 +61,22 @@
           </div>
       </div>
 
+        <cfif rc.bean.exists()>
+            <div class="mura-control-group">
+                <label>client_id</label>
+                <div>
+                    #rc.bean.getClientID()#
+                </div>
+            </div>
+            <div class="mura-control-group">
+                <label>client_secret</label>
+                <div>
+                    #rc.bean.getClientSecret()#
+                </div>
+            </div>
+
+        </cfif>
+
       <div class="mura-actions">
         <div class="form-actions">
           <cfif not rc.bean.exists()>
