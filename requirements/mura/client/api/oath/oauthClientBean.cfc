@@ -25,7 +25,7 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
             var expiredTokens=token.getFeed()
                 .where('clientid').isEQ(get('clientid'))
                 .andProp('granttype').isEQ('client_credentials')
-                .andProp('expires').isLT(dateAdd('n',-30,now()))
+                .andProp('expires').isLT(dateAdd('d',-1,now()))
                 .getIterator();
 
             if(expiredTokens.hasNext()){
