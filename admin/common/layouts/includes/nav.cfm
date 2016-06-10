@@ -369,6 +369,17 @@
                                     <a<cfif isDefined('url.deployBundle')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;deployBundle##tabBundles"><i class="mi-download"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.deploysitebundle')#</span></a>
                                 </li>
 
+                                <!--- export static html --->
+                                <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
+                                    <li>
+                                        <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'exportHtml'> class="active"</cfif> href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=csettings.exportHTML&amp;siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="mi-cog"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.exportstatichtml')#</span></a>
+                                    </li>
+                                </cfif>
+
+                                <li>
+                                    <a<cfif rc.originalcircuit eq 'cwebservice'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cwebservice.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-exchange"></i><span class="sidebar-mini-hide">Web Services</span></a>
+                                </li>
+
                                 <cfif listFind(session.mura.memberships,'S2')>
                                     <!--- trash bin --->
                                     <li>
@@ -382,17 +393,6 @@
                                         </li>
                                     </cfif>
                                 </cfif>
-
-                                <!--- export static html --->
-                                <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
-                                    <li>
-                                        <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'exportHtml'> class="active"</cfif> href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=csettings.exportHTML&amp;siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="mi-cog"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.exportstatichtml')#</span></a>
-                                    </li>
-                                </cfif>
-
-                                <li>
-                                    <a<cfif rc.originalcircuit eq 'cwebservice'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cwebservice.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-exchange"></i><span class="sidebar-mini-hide">Web Services</span></a>
-                                </li>
 
                             </ul>
                         </li>
