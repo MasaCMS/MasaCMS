@@ -2,7 +2,7 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
     property name="clientid" fieldtype="id";
     property name="clientsecret" datatype="varchar" length=100;
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteid" required=true;
-    property name="user" fieldtype="many-to-one" cfc="user" fkcolumn="userid" required=true;
+    property name="user" fieldtype="many-to-one" cfc="user" fkcolumn="userid";
     property name="tokens" fieldtype="one-to-many" cfc="oauthToken" cascade="delete";
     property name="name" datatype="varchar" required=true;
     property name="description" datatype="text";
