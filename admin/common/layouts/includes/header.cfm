@@ -132,7 +132,7 @@
       <li class="js-header-search header-search">
 				<form class="form-horizontal" action="##" novalidate="novalidate" id="globalSearch" name="globalSearch" method="get">
           <div class="form-material form-material-primary input-group remove-margin-t remove-margin-b">
-              <input class="form-control" type="text" id="mura-search-keywords" name="keywords" value="#esapiEncode('html_attr',session.keywords)#" placeholder="Search Content">
+              <input class="form-control" type="text" id="mura-search-keywords" name="keywords" value="#esapiEncode('html_attr',session.keywords)#" placeholder="Search">
               <span onclick="submitForm(document.forms.globalSearch);" class="input-group-addon" id="mura-search-submit"><i class="mi-search"></i></span>
           </div>
 					<input type="hidden" name="muraAction" value="cArch.list">
