@@ -217,13 +217,16 @@
 			</cfsavecontent>
 			<!--- /local.userprompt --->
 
-      <li>
+      <li id="user-tools-selector">
           <div class="btn-group">
-              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">
-                  <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#<cfif local.prompttally> <span class="badge">#local.prompttally#</span></cfif><span class="caret"></span>
+
+            <a tabindex="-1" class="btn btn-default" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"> <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</a>
+
+              <button type="button" class="btn btn-default dropdown-toggle" id="site-selector-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <cfif local.prompttally> <span class="badge">#local.prompttally#</span></cfif><span class="caret"></span>
               </button>
 
-              <ul class="pull-right dropdown-menu dropdown-menu-right mura-user-tools">
+              <ul class="dropdown-menu dropdown-menu-right mura-user-tools">
                   <li>
                       <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"><i class="mi-cog"></i> Edit Profile</a>
                   </li>
