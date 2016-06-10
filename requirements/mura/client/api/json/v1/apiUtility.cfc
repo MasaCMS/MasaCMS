@@ -287,7 +287,6 @@ component extends="mura.cfobject" {
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
 
-
 			if(!request.muraSessionManagement){
 				if( structKeyExists( headers, 'X-client_id' )){
 					params['client_id']=headers['X-client_id'];
@@ -354,9 +353,14 @@ component extends="mura.cfobject" {
 							structDelete(params,'client_secret');
 							throw(type='authorization');
 						} else {
-							if(arrayLen(pathInfo) == 6
+							if(((arrayLen(pathInfo) == 6
 								&& pathInfo[5]=='oauth'
-								&& pathInfo[6]=='token'
+								&& pathInfo[6]=='token')
+								|| (
+									arrayLen(pathInfo) == 5
+									&& pathInfo[4]=='oauth'
+									&& pathInfo[5]=='token'
+								))
 								&& isdefined('params.grant_type')
 								&& params.grant_type == 'client_credentials'){
 								var token=client.generateToken(granttype='client_credentials');
@@ -381,14 +385,14 @@ component extends="mura.cfobject" {
 						}
 					}
 				}
-			}
+			} else {
+				if( structKeyExists( headers, 'X-csrf_token' )){
+				   params['csrf_token']=headers['X-csrf_token'];
+			 	}
 
-			if( structKeyExists( headers, 'X-csrf_token' )){
-				params['csrf_token']=headers['X-csrf_token'];
-			}
-
-			if( structKeyExists( headers, 'X-csrf_token_expires' )){
-				params['csrf_token_expires']=headers['X-csrf_token_expires'];
+			   if( structKeyExists( headers, 'X-csrf_token_expires' )){
+				   params['csrf_token_expires']=headers['X-csrf_token_expires'];
+			   }
 			}
 
 			structAppend(form,params);
