@@ -17,7 +17,7 @@
 
 	// reset typography styles NESTED within sidebar
 	* {
-		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-family: "montserratlight","montserratregular","Helvetica Neue",Helvetica,Arial,sans-serif;
 		font-weight: normal;
 		text-transform: none;
 	}
@@ -26,8 +26,7 @@
 	  -moz-user-select:none;
 	  -khtml-user-drag: element;
 	  cursor: move;
-	}
-
+	}jquercust
 	.btn i{
 		margin-right: 4px;
 	}
@@ -366,21 +365,23 @@ body.configurator-wrapper{
 
 .mura__layout-manager__display-regions {
 	padding-right: 300px;
-
 	position: fixed;
-
 	top: 0;
 	left: 100%;
 	right: 0;
 	bottom: 0;
 	background-color: #fff;
 	width: 100%;
-
 	z-index: 499997 !important;
-
 	overflow: scroll;
-
 	transition: left 1s ease;
+
+	.btn,
+	> div h3,
+	.mura-region__item h4{
+		font-family: "montserratlight","montserratregular","Helvetica Neue", Helvetica, Arial, sans-serif;
+	}
+
 }
 
 /* set some sort of class somewhere to trigger the flyout - at the moment it uses 'mura-regions-state__pushed--right' */
