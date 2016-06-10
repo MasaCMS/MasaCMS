@@ -314,7 +314,7 @@ component extends="mura.cfobject" {
 					} else {
 						var client=token.getClient();
 
-						if(!client.exists() || client.getSiteID() != variables.siteid){
+						if(!client.exists()){
 							params.method='Not Available';
 							throw(type='invalidAccessToken');
 						} else {
