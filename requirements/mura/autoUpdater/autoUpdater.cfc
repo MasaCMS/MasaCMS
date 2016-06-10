@@ -76,8 +76,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var autoUpdateSleep=variables.configBean.getValue("autoUpdateSleep")>
 
 <cfsetting requestTimeout = "7200">
-
-<cfif listFind(session.mura.memberships,'S2')>
+<cfset var sessionData=getSession()>
+	
+<cfif listFind(sessionData.mura.memberships,'S2')>
 	<cfif updateVersion gt currentVersion>
 		<cflock type="exclusive" name="autoUpdate#arguments.siteid##application.instanceID#" timeout="600">
 		<cfif len(arguments.siteID) >

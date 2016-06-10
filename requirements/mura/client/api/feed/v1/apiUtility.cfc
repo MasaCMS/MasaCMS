@@ -19,7 +19,7 @@
 		var configBean=getBean('configBean');
 		var context=configBean.getContext();
 		var site=getBean('settingsManager').getSite(variables.siteid);
-		
+
 		/*
 		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ) {
 			var protocol="https://";
@@ -27,12 +27,12 @@
 			var protocol="http://";
 		}
 		*/
-		
+
 		//if(configBean.getIndexfileinurls()){
-			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/feed/v1/#variables.siteid#";	
+			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/feed/v1/#variables.siteid#";
 		/*
 		} else {
-			variables.endpoint="#site.getResourcePath(complete=1)#/_api/feed/v1/#variables.siteid#";	
+			variables.endpoint="#site.getResourcePath(complete=1)#/_api/feed/v1/#variables.siteid#";
 		}
 		*/
 
@@ -40,7 +40,7 @@
 			publicMethods="feed"
 		};
 
-	
+
 		return this;
 	}
 
@@ -99,8 +99,9 @@
 			var pathInfo=listToArray(cgi.path_info,'/');
 			var method="GET";
 			var httpRequestData=getHTTPRequestData();
+			var sessionData=getSession();
 
-			session.siteid=variables.siteid;	
+			sessionData.siteid=variables.siteid;
 
 			if(arrayLen(pathInfo)){
 				if(pathInfo[1]=='tasks'){
@@ -112,21 +113,21 @@
 					arrayDeleteAt(pathInfo,1);
 				}
 			}
-			
+
 			if(cgi.user_agent contains "Mozilla"){
 				responseObject.setcontenttype('text/xml');
 			} else {
 				responseObject.setcontenttype('application/rss+xml');
 			}
-					
+
 			if(arrayLen(pathInfo) && pathInfo[1]==variables.siteid){
 				arrayDeleteAt(pathInfo,1);
 			}
-			
+
 			if (!isDefined('params.method') && arrayLen(pathInfo)){
 				params.method=pathInfo[1];
 			}
-			
+
 			//writeDump(var=params,abort=1);
 
 			if (isDefined('params.method') && isDefined('#params.method#')){
@@ -141,7 +142,7 @@
 
 				if(isDefined('#params.method#')){
 					result=evaluate('#params.method#(argumentCollection=params)');
-					
+
 					if(!isXML(result)){
 						result=_serializeWDDX({'data'=result});
 					}
@@ -153,7 +154,7 @@
 
 			return feed(params=params);
 
-		} 
+		}
 
 		catch (authorization e){
 			responseObject.setStatus(401);
@@ -255,7 +256,7 @@
 				</cfif>
 			<cfelse>
 				<cfset is404=true>
-			</cfif>	
+			</cfif>
 		</cfif>
 		<cfif isDefined("feedBean") and not is404>
 			<cfset var rs=application.feedManager.getFeed(feedBean=feedBean,tag=arguments.params.tag) />
@@ -294,17 +295,17 @@
 		<cfset var filemeta=''>
 		<cfset var thelink=''>
 		<cfset var returnString=''>
-		
+
 		<cfcontent reset="true"><cfheader name="content-type" value="text/xml;charset=UTF-8">
 		<cfsavecontent variable="returnString"><cfoutput><?xml version="1.0" ?>
 		<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" >
 			<channel>
-				<title>#XMLFormat(arguments.feed.renderName())#</title> 
-				<link>#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#</link> 
-				<description>#XMLFormat(arguments.feed.getDescription())#</description> 
+				<title>#XMLFormat(arguments.feed.renderName())#</title>
+				<link>#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#</link>
+				<description>#XMLFormat(arguments.feed.getDescription())#</description>
 				<webMaster>#application.settingsManager.getSite(arguments.feed.getSiteID()).getContact()#</webMaster>
 				<generator>http://www.getmura.com</generator>
-				<pubDate>#GetHttpTimeString(now())#</pubDate> 
+				<pubDate>#GetHttpTimeString(now())#</pubDate>
 				<language>#XMLFormat(arguments.feed.getLang())#</language>
 			<cfloop condition="arguments.iterator.hasNext()">
 			<cfsilent>
@@ -320,7 +321,7 @@
 				<cfset $.event('crumbdata',item.getCrumbArray()) />
 				<cfset $.getHandler("standardSetContentRenderer").handle($)>
 				<cfset $.getContentREnderer().showInlineEditor=false>
-				<cfset $.getHandler("standardSetPermissions").handle($)>		
+				<cfset $.getHandler("standardSetPermissions").handle($)>
 				<cfset $.getHandler("standardSetIsOnDisplay").handle($)>
 				<cfset $.announceEvent('onRenderStart')>
 				<cfset r=$.event('r')>
@@ -341,7 +342,7 @@
 				</cfif>
 				--->
 				<cfset itemdescription=trim($.setDynamicContent(item.getValue('summary')))>
-				
+
 				<cfif feed.getallowhtml() eq 0>
 					<cfset itemdescription = $.stripHTML(itemdescription)>
 					<cfset itemdescription=left(itemdescription,200) & "...">
@@ -357,7 +358,7 @@
 
 				<cfset rsCats=application.contentManager.getCategoriesByHistID(item.getContentHistID())>
 
-				<cfset theLink=XMLFormat(item.getURL(complete=true)) />		
+				<cfset theLink=XMLFormat(item.getURL(complete=true)) />
 				</cfsilent>
 				<item>
 					<title>#XMLFormat(item.getValue('menuTitle'))#</title>
@@ -366,7 +367,7 @@
 					</cfif>---><guid isPermaLink="false">#item.getValue('contentID')#</guid>
 					<pubDate>#GetHttpTimeString(thePubDate)#</pubDate>
 					<description>#XMLFormat(itemdescription)#</description>
-					<cfloop query="rsCats"><category>#XMLFormat(rsCats.name)#</category>	
+					<cfloop query="rsCats"><category>#XMLFormat(rsCats.name)#</category>
 					</cfloop><!---<cfif item.getType() eq "Page" and len(itemcontent)><content:encoded><![CDATA[#itemcontent#]]></content:encoded>
 					</cfif>---><cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('#application.settingsManager.getSite(item.getValue('siteid')).getScheme()#://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 				</item>
@@ -395,10 +396,10 @@
 		<rss version="0.92"
 			xmlns:dc="http://purl.org/dc/elements/1.1/">
 			<channel>
-				<title>#XMLFormat(arguments.feed.renderName())#</title> 
-				<link>http://#listFirst(cgi.http_host,":")#</link> 
-				<description>#XMLFormat(arguments.feed.getDescription())#</description> 
-				<webMaster>#application.settingsManager.getSite(arguments.feed.getSiteID()).getContact()#</webMaster> 
+				<title>#XMLFormat(arguments.feed.renderName())#</title>
+				<link>http://#listFirst(cgi.http_host,":")#</link>
+				<description>#XMLFormat(arguments.feed.getDescription())#</description>
+				<webMaster>#application.settingsManager.getSite(arguments.feed.getSiteID()).getContact()#</webMaster>
 				<language>#arguments.feed.getLang()#</language>
 			<cfloop condition="arguments.iterator.hasNext()">
 				<cfsilent>
@@ -407,7 +408,7 @@
 				<cfif feed.getallowhtml() eq 0>
 					<cfif not len(itemdescription)>
 						<cfset itemdescription=item.getValue('body')>
-					</cfif>	
+					</cfif>
 					<cfset itemdescription = $.stripHTML($.setDynamicContent(itemdescription))>
 					<cfset itemdescription=left(itemdescription,200) & "...">
 				<cfelse>
@@ -424,7 +425,7 @@
 				</cfsilent>
 					<item>
 						<title>#XMLFormat(item.getMenuTitle())#</title>
-						<description><![CDATA[#itemdescription# ]]></description> 
+						<description><![CDATA[#itemdescription# ]]></description>
 						<link>#theLink#</link>
 						<guid isPermaLink="true">#theLink#</guid>
 						<dc:date>#GetHttpTimeString(thePubDate)#</dc:date>

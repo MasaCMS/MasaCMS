@@ -52,6 +52,8 @@ component extends="mura.cfobject" {
 			}
 		};
 
+		variables.userUtility=getBean('userUtility');
+
 		variables.serializer = new mura.jsonSerializer()
 	      .asString('csrf_token_expires')
 	      .asString('csrf_token')
@@ -250,6 +252,7 @@ component extends="mura.cfobject" {
 			var result="";
 
 			param name="request.muraAPIRequestMode" default="json";
+			param name="request.muraSessionManagement" default=true;
 
 			getBean('utility').suppressDebugging();
 
@@ -270,7 +273,10 @@ component extends="mura.cfobject" {
 			var pathInfo=listToArray(arguments.path,'/');
 			var httpRequestData=getHTTPRequestData();
 			var method='GET';
-			var apiEnabled=true;;
+			var apiEnabled=true;
+			var sessionData=getSession();
+
+			structDelete(url,application.appreloadkey);
 
 			structAppend(params,url);
 			structAppend(params,form);
@@ -281,17 +287,117 @@ component extends="mura.cfobject" {
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
 
-			if( structKeyExists( headers, 'X-csrf_token' )){
-				params['csrf_token']=headers['X-csrf_token'];
-			}
+			if(!request.muraSessionManagement){
+				if( structKeyExists( headers, 'X-client_id' )){
+					params['client_id']=headers['X-client_id'];
+				}
 
-			if( structKeyExists( headers, 'X-csrf_token_expires' )){
-				params['csrf_token_expires']=headers['X-csrf_token_expires'];
+				if( structKeyExists( headers, 'X-client_secret' )){
+					params['client_secret']=headers['X-client_secret'];
+				}
+
+				if( structKeyExists( headers, 'X-access_token' )){
+					params['access_token']=headers['X-access_token'];
+				}
+
+				if(isDefined('params.access_token')){
+					var token=getBean('oauthToken').loadBy(token=params.access_token);
+					structDelete(params,'access_token');
+					structDelete(url,'access_token');
+					if(!token.exists() || token.getGrantType() != 'client_credentials'){
+						params.method='Not Available';
+						throw(type='invalidAccessToken');
+					} else if (token.getExpires() < now()){
+						params.method='Not Available';
+						throw(type='accessTokenExpired');
+					} else {
+						var client=token.getClient();
+
+						if(!client.exists()){
+							params.method='Not Available';
+							throw(type='invalidAccessToken');
+						} else {
+							var clientAccount=client.getUser();
+
+							if(!clientAccount.exists()){
+								params.method='Not Available';
+								throw(type='invalidAccessToken');
+							} else {
+								clientAccount.login();
+							}
+						}
+					}
+				} else if(!(isDefined('params.client_id') && isdefined('params.client_secret'))){
+					params.method='Not Available';
+					structDelete(params,'client_id');
+					structDelete(params,'client_secret');
+					throw(type='authorization');
+				} else {
+					var client=getBean('oauthClient').loadBy(clientid=params.client_id);
+
+					//WriteDump(credentials.getAllValues());abort;
+					if(!client.exists() || client.getClientSecret() != params.client_secret){
+						params.method='Not Available';
+						structDelete(params,'client_id');
+						structDelete(params,'client_secret');
+						structDelete(url,'client_id');
+						structDelete(url,'client_secret');
+						throw(type='authorization');
+					} else {
+						var clientAccount=client.getUser();
+						structDelete(url,'client_id');
+						structDelete(url,'client_secret');
+						if(!clientAccount.exists()){
+							params.method='Not Available';
+							structDelete(params,'client_id');
+							structDelete(params,'client_secret');
+							throw(type='authorization');
+						} else {
+							if(((arrayLen(pathInfo) == 6
+								&& pathInfo[5]=='oauth'
+								&& pathInfo[6]=='token')
+								|| (
+									arrayLen(pathInfo) == 5
+									&& pathInfo[4]=='oauth'
+									&& pathInfo[5]=='token'
+								))
+								&& isdefined('params.grant_type')
+								&& params.grant_type == 'client_credentials'){
+								var token=client.generateToken(granttype='client_credentials');
+								params.method='getOAuthToken';
+								result=getSerializer().serialize(
+									{'apiversion'=getApiVersion(),
+									'method'=params.method,
+									'params'=getParamsWithOutMethod(params),
+									'data'={
+										'access_token':token.getToken(),
+										'expires':token.getExpires()
+									 }});
+								responseObject.setContentType('application/json; charset=utf-8');
+								responseObject.setStatus(200);
+								return result;
+							} else {
+								structDelete(params,'client_id');
+								structDelete(params,'client_secret');
+								clientAccount.login();
+							}
+
+						}
+					}
+				}
+			} else {
+				if( structKeyExists( headers, 'X-csrf_token' )){
+				   params['csrf_token']=headers['X-csrf_token'];
+			 	}
+
+			   if( structKeyExists( headers, 'X-csrf_token_expires' )){
+				   params['csrf_token_expires']=headers['X-csrf_token_expires'];
+			   }
 			}
 
 			structAppend(form,params);
 
-			param name="session.siteid" default=variables.siteid;
+			param name="sessionData.siteid" default=variables.siteid;
 
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
@@ -673,6 +779,18 @@ component extends="mura.cfobject" {
 			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Insufficient Account Permissions'}});
 		}
 
+		catch (invalidAccessToken e){
+			responseObject.setContentType('application/json; charset=utf-8');
+			responseObject.setStatus(401);
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Invalid ACCESS_TOKEN'}});
+		}
+
+		catch (accessTokenExpired e){
+			responseObject.setContentType('application/json; charset=utf-8');
+			responseObject.setStatus(401);
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='ACCESS_TOKEN has Expired'}});
+		}
+
 		catch (disabled e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
@@ -790,7 +908,8 @@ component extends="mura.cfobject" {
 
 
 	function isValidRequest(){
-		return (isDefined('session.siteid') && isDefined('session.mura.requestcount') && session.mura.requestcount > 1);
+		var sessionData=getSession();
+		return (isDefined('sessionData.siteid') && isDefined('sessionData.mura.requestcount') && sessionData.mura.requestcount > 1);
 	}
 
 	function AllowAccess(bean,$,throwError=true){
@@ -1011,7 +1130,7 @@ component extends="mura.cfobject" {
 			var loadByparams={'#pk#'=arguments.id};
 		}
 
-		if($.validateCSRFTokens(context=arguments.id)){
+		if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 			if(arguments.entityName=='content' && $.event('type')=='Variation'){
 				entity.loadBy(argumentCollection=loadByparams).set(
 						$.event().getAllValues()
@@ -1917,7 +2036,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-					if($.validateCSRFTokens(context=arguments.id)){
+					if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 						entity.deleteVersion();
 					}
 				}
@@ -1930,7 +2049,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-					if($.validateCSRFTokens(context=arguments.id)){
+					if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 						entity.delete();
 					} else {
 						throw(type="invalidTokens");
@@ -1954,7 +2073,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-				if($.validateCSRFTokens(context=arguments.id)){
+				if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 					entity.delete();
 				} else {
 					throw(type="invalidTokens");
@@ -2123,18 +2242,20 @@ component extends="mura.cfobject" {
 				variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
 			}
 
+			var secure=getBean('settingsManager').getSite(entity.getSiteID()).getUseSSL();
+
 			var returnStruct={
-				small=entity.getImageURL(size='small'),
-				medium=entity.getImageURL(size='medium'),
-				large=entity.getImageURL(size='large'),
-				source=entity.getImageURL(size='source')
+				small=entity.getImageURL(secure=secure,complete=1,size='small'),
+				medium=entity.getImageURL(secure=secure,complete=1,size='medium'),
+				large=entity.getImageURL(secure=secure,complete=1,size='large'),
+				source=entity.getImageURL(secure=secure,complete=1,size='source')
 			};
 
 			var image='';
 
 			while(variables.images.hasNext()){
 				image=variables.images.next();
-				returnStruct['#image.getName()#']=entity.getImageURL(size=image.getName());
+				returnStruct['#image.getName()#']=entity.getImageURL(secure=secure,complete=1,size=image.getName());
 			}
 			variables.images.reset();
 		} else {
@@ -2192,10 +2313,11 @@ component extends="mura.cfobject" {
 	}
 
 	function processAsyncObject(siteid){
+		var sessionData=getSession();
 
 		if(!isDefined('arguments.siteid')){
-			if(isDefined('session.siteid')){
-				arguments.siteid=session.siteid;
+			if(isDefined('sessionData.siteid')){
+				arguments.siteid=sessionData.siteid;
 			} else {
 				throw(type="invalidParameters");
 			}
@@ -2280,7 +2402,7 @@ component extends="mura.cfobject" {
 								result={redirect="./##"};
 							}
 						} else {
-							if(isDefined('session.mfa')){
+							if(isDefined('sessionData.mfa')){
 								$.event('status','challenge');
 							} else {
 								$.event('status','failed');
@@ -2314,18 +2436,18 @@ component extends="mura.cfobject" {
 			case 'editprofile':
 				switch($.event('doaction')){
 					case 'updateprofile':
-						if(session.mura.isLoggedIn){
+						if(sessionData.mura.isLoggedIn){
 							var eventStruct=$.event().getAllValues();
 
 							structDelete(eventStruct,'isPublic');
 							structDelete(eventStruct,'s2');
 							structDelete(eventStruct,'type');
 							structDelete(eventStruct,'groupID');
-							eventStruct.userid=session.mura.userID;
+							eventStruct.userid=sessionData.mura.userID;
 
 							$.setValue('passedProtect', $.getBean('utility').isHuman($.event()));
 
-							$.event().setValue("userID",session.mura.userID);
+							$.event().setValue("userID",sessionData.mura.userID);
 
 							if(isDefined('request.addressAction')){
 								if($.event().getValue('addressAction') == "create"){

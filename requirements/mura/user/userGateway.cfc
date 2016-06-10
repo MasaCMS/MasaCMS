@@ -95,6 +95,7 @@
 		<cfargument name="isPublic" type="numeric" default="0" />
 		<cfset var rsUserSearch = "" />
 		<cfset var maxrows=2100>
+		<cfset var sessionData=getSession()>
 
 		<cfif variables.configBean.getDbType() eq 'Oracle'>
 			<cfset maxrows=990>
@@ -122,7 +123,7 @@
 		 		or tusers.email like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
 		 		or tusers.jobtitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">)
 
-		<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> order by tusers.lname
+		<cfif not listFind(sessionData.mura.memberships,'S2')> and tusers.s2=0 </cfif> order by tusers.lname
 		</cfquery>
 
 		<cfreturn rsUserSearch />
@@ -152,6 +153,7 @@
 		<cfset var dbtype=variables.configBean.getDbType()>
 		<cfset var tableModifier="">
 		<cfset var castfield="attributeValue">
+		<cfset var sessionData=getSession()>
 
 		<cfif dbtype eq "MSSQL">
 		 	<cfset tableModifier="with (nolock)">
@@ -384,7 +386,7 @@
 			and tusers.inactive=#params.getInActive()#
 		</cfif>
 
-		<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif>
+		<cfif not listFind(sessionData.mura.memberships,'S2')> and tusers.s2=0 </cfif>
 
 		order by
 

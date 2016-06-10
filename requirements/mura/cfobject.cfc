@@ -265,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			arguments.datasource=getValue('customDatasource');
 			structDelete(arguments,'username');
 			structDelete(arguments,'password');
-			
+
 			if(!getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)){
 				structDelete(arguments,'cachedWithin');
 			}
@@ -398,6 +398,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return tz.getTimezone(arguments.timezone);
 		} else {
 			return tz;
+		}
+	}
+
+	function getSession(){
+		if(request.muraSessionManagement && isdefined('session')){
+			return session;
+		} else {
+			param name="request.muraSessionPlaceholder" default={};
+			return request.muraSessionPlaceholder;
 		}
 	}
 </cfscript>

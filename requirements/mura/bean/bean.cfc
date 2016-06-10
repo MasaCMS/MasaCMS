@@ -60,6 +60,7 @@ component extends="mura.cfobject" output="false" {
 	function init(){
 		super.init(argumentCollection=arguments);
 
+		variables.sessionData=getSession();
 		variables.instance=structNew();
 		variables.instance.isNew=1;
 		variables.instance.errors=structNew();

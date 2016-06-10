@@ -1226,9 +1226,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getDashboard" returntype="any" access="public" output="false">
 	<cfset var i="">
 	<cfset var currentUser=getCurrentUser()>
+	<cfset var sessionData=getSession()>
+
 	<cfif isBoolean(variables.instance.dashboard)>
 		<cfreturn variables.instance.dashboard />
-	<cfelseif isdefined("session.mura") and len(session.mura.siteID) and len(variables.instance.dashboard)>
+	<cfelseif isdefined("sessionData.mura") and len(sessionData.mura.siteID) and len(variables.instance.dashboard)>
 		<cfif currentUser.isSuperUser()>
 			<cfreturn true>
 		</cfif>

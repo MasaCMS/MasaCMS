@@ -733,6 +733,7 @@ Display Objects
 	<cfset var nestedArgs=structNew()>
 	<cfset var linkArgs=structNew()>
 	<cfset var started=false>
+	<cfset var sessionData=getSession()>
 
 	<cfif not isQuery(rsSection)>
 		<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',variables.event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,Val(arguments.size),'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
@@ -766,7 +767,7 @@ Display Objects
 				)
 				and arguments.currDepth lt arguments.viewDepth
 				and rsSection.type neq 'Gallery'
-				and not (rsSection.restricted and not session.mura.isLoggedIn) />
+				and not (rsSection.restricted and not sessionData.mura.isLoggedIn) />
 			</cfif>
 
 			<cfset current=current+1>
@@ -1190,6 +1191,7 @@ Display Objects
 	<cfargument name="id" type="string" default="">
 	<cfset var returnUrl = "" />
 	<cfset var thenav = "" />
+	<cfset var sessionData=getSession()>
 
 	<cfif variables.event.getValue('returnURL') neq "">
 		<cfset returnUrl = variables.event.getValue('returnURL')>
@@ -1198,8 +1200,8 @@ Display Objects
 	</cfif>
 
 	<cfsavecontent variable="theNav">
-		<cfif getSite().getExtranet() eq 1 and session.mura.isLoggedIn>
-			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(variables.event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
+		<cfif getSite().getExtranet() eq 1 and sessionData.mura.isLoggedIn>
+			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#sessionData.mura.fname# #sessionData.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(variables.event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
 		</cfif>
 	</cfsavecontent>
 
@@ -1421,12 +1423,14 @@ Display Objects
 	<cfset var eventOutput="" />
 	<cfset var rsPages="">
 	<cfset var cacheStub="#variables.event.getValue('contentBean').getcontentID()##variables.event.getValue('pageNum')##variables.event.getValue('startrow')##variables.event.getValue('year')##variables.event.getValue('month')##variables.event.getValue('day')##variables.event.getValue('filterby')##variables.event.getValue('categoryID')##variables.event.getValue('relatedID')#">
+	<cfset var sessionData=getSession()>
+
 	<cfset variables.event.setValue("BodyRenderArgs",arguments)>
 	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
 		<cfif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
-			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not session.mura.isLoggedIn)
-			or (variables.event.getValue('display') eq 'editprofile' and session.mura.isLoggedIn)>
+			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not sessionData.mura.isLoggedIn)
+			or (variables.event.getValue('display') eq 'editprofile' and sessionData.mura.isLoggedIn)>
 			<cfif variables.event.getValue('display') neq ''>
 				<cfswitch expression="#variables.event.getValue('display')#">
 					<cfcase value="editprofile">
@@ -1712,6 +1716,7 @@ Display Objects
 		<cfset var nestedArgs=structNew()>
 		<cfset var linkArgs=structNew()>
 		<cfset var started=false>
+		<cfset var sessionData=getSession()>
 
 		<cfif isDefined("arguments.closePortals")>
 			<cfset arguments.closeFolders=arguments.closePortals>
@@ -1800,7 +1805,7 @@ Display Objects
 					isNotLimited and not isNavSecondary
 					)
 				)
-				and not (rsSection.restricted and not session.mura.isLoggedIn)
+				and not (rsSection.restricted and not sessionData.mura.isLoggedIn)
 			/>
 
 			<cfif subnav>
@@ -2381,6 +2386,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
+	<cfset var sessionData=getSession()>
 	<cfreturn this.enableFrontEndTools
 		and (
 			request.muraChangesetPreviewToolbar
@@ -2388,10 +2394,10 @@ Display Objects
 				this.showMemberToolBar or this.showAdminToolBar
 			) or (
 				(
-				 	StructKeyExists(session, 'mura')
+				 	StructKeyExists(sessionData, 'mura')
 				 	and (
-						(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
-						or listFind(session.mura.memberships,'S2')
+						(listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') and getBean('permUtility').getModulePerm("00000000000000000000000000000000000",variables.event.getValue('siteID')))
+						or listFind(sessionData.mura.memberships,'S2')
 					)
 				) or (
 					listFindNoCase("editor,author",variables.event.getValue('r').perm)

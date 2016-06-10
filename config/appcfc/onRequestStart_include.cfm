@@ -120,14 +120,15 @@ If it has not, set application.appInitialized=false. --->
 </cfif>
 
 <cfset application.userManager.setUserStructDefaults()>
+<cfset sessionData=application.userManager.getSession()>
 
 <cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
-	<cfset session.mura.showTrace=url.showTrace>
-<cfelseif not isDefined("session.mura.showTrace")>
-	<cfset session.mura.showTrace=false>
+	<cfset sessionData.mura.showTrace=url.showTrace>
+<cfelseif not isDefined("sessionData.mura.showTrace")>
+	<cfset sessionData.mura.showTrace=false>
 </cfif>
 
-<cfset request.muraShowTrace=session.mura.showTrace>
+<cfset request.muraShowTrace=sessionData.mura.showTrace>
 
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
@@ -135,11 +136,11 @@ If it has not, set application.appInitialized=false. --->
 
 <!--- Making sure that session is valid --->
 <cftry>
-<cfif yesNoFormat(application.configBean.getValue("useLegacySessions")) and structKeyExists(session,"mura")>
+<cfif yesNoFormat(application.configBean.getValue("useLegacySessions")) and structKeyExists(sessionData,"mura")>
 	<cfif
-		(not session.mura.isLoggedIn and isValid("UUID",listFirst(getAuthUser(),"^")))
+		(not sessionData.mura.isLoggedIn and isValid("UUID",listFirst(getAuthUser(),"^")))
 			or
-		(session.mura.isLoggedIn and not isValid("UUID",listFirst(getAuthUser(),"^")))	>
+		(sessionData.mura.isLoggedIn and not isValid("UUID",listFirst(getAuthUser(),"^")))	>
 
 		<cfset variables.tempcookieuserID=cookie.userID>
 		<cfset application.loginManager.logout()>
@@ -161,9 +162,9 @@ If it has not, set application.appInitialized=false. --->
 </cfif>
 --->
 <cftry>
-	<cfif (not isdefined('cookie.userid') or cookie.userid eq '') and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
-	<cfcookie name="userid" value="#session.mura.userID#" expires="never" httponly="true" secure="#application.configBean.getValue(property='secureCookies',defaultValue=false)#"/>
-	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+	<cfif (not isdefined('cookie.userid') or cookie.userid eq '') and structKeyExists(sessionData,"rememberMe") and session.rememberMe eq 1 and sessionData.mura.isLoggedIn>
+	<cfcookie name="userid" value="#sessionData.mura.userID#" expires="never" httponly="true" secure="#application.configBean.getValue(property='secureCookies',defaultValue=false)#"/>
+	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 <cfcatch>
 	<cfset structDelete(cookie,"userid")>
@@ -172,14 +173,14 @@ If it has not, set application.appInitialized=false. --->
 </cftry>
 
 <cftry>
-	<cfif isDefined('cookie.userid') and cookie.userid neq '' and not session.mura.isLoggedIn>
+	<cfif isDefined('cookie.userid') and cookie.userid neq '' and not sessionData.mura.isLoggedIn>
 	<cfset application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.userManager.readUserPassword(cookie.userid),"cfmx_compat",'hex')) />
 	</cfif>
 <cfcatch></cfcatch>
 </cftry>
 
 <cftry>
-	<cfif isDefined('cookie.userid') and cookie.userid neq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 0 and session.mura.isLoggedIn>
+	<cfif isDefined('cookie.userid') and cookie.userid neq '' and structKeyExists(sessionData,"rememberMe") and sessionData.rememberMe eq 0 and sessionData.mura.isLoggedIn>
 	<cfset structDelete(cookie,"userid")>
 	<cfset structDelete(cookie,"userhash")>
 	</cfif>
@@ -192,7 +193,7 @@ If it has not, set application.appInitialized=false. --->
 <cftry>
 	<cfif not structKeyExists(cookie,"originalURLToken")>
 	<cfparam name="session.trackingID" default="#application.utility.getUUID()#">
-	<cfcookie name="originalURLToken" value="#session.trackingID#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+	<cfcookie name="originalURLToken" value="#sessionData.trackingID#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 <cfcatch></cfcatch>
 </cftry>
@@ -253,13 +254,13 @@ If it has not, set application.appInitialized=false. --->
 	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
 
-<cfparam name="session.mura.requestcount" default="0">
-<cfset session.mura.requestcount=session.mura.requestcount+1>
+<cfparam name="sessionData.mura.requestcount" default="0">
+<cfset sessionData.mura.requestcount=sessionData.mura.requestcount+1>
 
-<cfparam name="session.mura.csrfsecretkey" default="#createUUID()#">
-<cfparam name="session.mura.csrfusedtokens" default="#structNew()#">
+<cfparam name="sessionData.mura.csrfsecretkey" default="#createUUID()#">
+<cfparam name="sessionData.mura.csrfusedtokens" default="#structNew()#">
 
-<cfif structKeyExists(request,"doMuraGlobalSessionStart")>
+<cfif request.muraSessionManagement and structKeyExists(request,"doMuraGlobalSessionStart")>
 	<cfset application.utility.setSessionCookies()>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>

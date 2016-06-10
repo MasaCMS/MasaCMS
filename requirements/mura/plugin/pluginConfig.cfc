@@ -220,6 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var pluginConfig=this>
 <cfset var event="">
 <cfset var eventData=structNew()>
+<cfset var sessionData=super.getSession()>
 
 <cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
 	<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
@@ -227,8 +228,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif structKeyExists(request,"servletEvent")>
 	<cfset event=request.servletEvent>
 <cfelse>
-	<cfif structKeyExists(session,"siteid")>
-		<cfset eventData.siteID=session.siteid>
+	<cfif structKeyExists(sessionData,"siteid")>
+		<cfset eventData.siteID=sessionData.siteid>
 	</cfif>
 	<cfset event=createObject("component","mura.event").init(eventData)>
 </cfif>
@@ -270,17 +271,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getSession" returntype="any" access="public" output="false">
 <cfargument name="purge" default="false">
+	<cfset var sessionData=super.getSession()>
+	<cfif not structKeyExists(sessionData,"plugins")>
+		<cfset sessionData.plugins=structNew()>
+	</cfif>
 
-		<cfif not structKeyExists(session,"plugins")>
-			<cfset session.plugins=structNew()>
+		<cfif not structKeyExists(sessionData.plugins,"p#getPluginID()#") or arguments.purge>
+			<cfset sessionData.plugins["p#getPluginID()#"]=createObject("component","pluginSession")>
+			<cfset sessionData.plugins["p#getPluginID()#"].setPluginConfig(this)>
 		</cfif>
 
-		<cfif not structKeyExists(session.plugins,"p#getPluginID()#") or arguments.purge>
-			<cfset session.plugins["p#getPluginID()#"]=createObject("component","pluginSession")>
-			<cfset session.plugins["p#getPluginID()#"].setPluginConfig(this)>
-		</cfif>
-
-		<cfreturn session.plugins["p#getPluginID()#"] />
+		<cfreturn sessionData.plugins["p#getPluginID()#"] />
 </cffunction>
 
 <cffunction name="addEventHandler" output="false">
@@ -476,7 +477,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="currentUserAccess" output="false">
-	<cfreturn isDefined('session.siteID') and getBean('permUtility').getModulePerm(getModuleID(),session.siteID)>
+	<cfset var sessionData=super.getSession()>
+	<cfreturn isDefined('sessionData.siteID') and getBean('permUtility').getModulePerm(getModuleID(),sessionData.siteID)>
 </cffunction>
 
 </cfcomponent>

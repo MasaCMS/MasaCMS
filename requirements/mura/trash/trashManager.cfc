@@ -199,6 +199,7 @@
 	<cfset var deleteID="">
 	<cfset var deleteIDHash="">
 	<cfset var orderno="">
+	<cfset var sessionData=getSession()>
 
 	<cfif not len(arguments.objectClass)>
 		<cfset arguments.objectClass=arguments.deleted.getEntityName()>
@@ -228,7 +229,7 @@
 	<cfelseif len(arguments.deleted.getValue('siteid'))>
 		<cfset siteid=arguments.deleted.getValue('siteid')>
 	<cfelse>
-		<cfset siteid=session.siteid>
+		<cfset siteid=sessionData.siteid>
 	</cfif>
 
 	<cfset $=getBean('MuraScope').init(siteid)>

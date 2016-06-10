@@ -88,7 +88,7 @@
 				arguments.value=arguments.renderer.setDynamicContent(arguments.value);
 			}
 
-			var perm=(listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(session.mura.memberships,'S2'));
+			var perm=(listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(getSession().mura.memberships,'S2'));
 			var layoutManager=arguments.renderer.useLayoutmanager();
 
 			if(arguments.renderer.getShowToolbar() && arguments.renderer.showInlineEditor && perm && not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
@@ -474,9 +474,9 @@
 
 	<cffunction name="getPersonalizationID" returntype="string" output="false">
 		<cfargument name="renderer">
-
+		<cfset var sessionData=getSession()>
 		<cfif arguments.renderer.getPersonalization() eq "user">
-		<cfreturn session.mura.userID />
+		<cfreturn sessionData.mura.userID />
 		<cfelse>
 		<cfif not structKeyExists(cookie,"pid")>
 		<cfcookie name="pid" expires="never" value="#application.utility.getUUID()#" httpOnly="true" secure="#arguments.renderer.getMuraScope().globalConfig('secureCookies')#">
@@ -603,17 +603,18 @@
 		<cfargument name="loggedIn"  type="numeric" default=0 />
 		<cfargument name="rspage"  type="query" />
 		<cfargument name="renderer">
+		<cfset var sessionData=getSession()>
 
 		<cfset var allowLink=true>
 		<cfset var G = 0 />
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfif  arguments.loggedIn and (arguments.restrict)>
-			<cfif arguments.restrictgroups eq '' or listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')>
+			<cfif arguments.restrictgroups eq '' or listFind(sessionData.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(sessionData.mura.memberships,'S2')>
 				<cfset allowLink=True>
 			<cfelseif arguments.restrictgroups neq ''>
 				<cfset allowLink=False>
 				<cfloop list="#arguments.restrictgroups#" index="G">
-					<cfif listFind(session.mura.memberships,'#G#;#application.settingsManager.getSite(event.getValue('siteID')).getPublicUserPoolID()#;1')>
+					<cfif listFind(sessionData.mura.memberships,'#G#;#application.settingsManager.getSite(event.getValue('siteID')).getPublicUserPoolID()#;1')>
 					<cfset allowLink=true>
 					</cfif>
 				</cfloop>
@@ -1009,6 +1010,7 @@
 		<cfset var historyID="">
 		<cfset var tempObject="">
 		<cfset var args={}>
+		<cfset var sessionData=getSession()>
 
 		<cfif isJSON(arguments.params)>
 			<cfset arguments.params=deserializeJSON(arguments.params)>
@@ -1019,7 +1021,7 @@
 		<cfset request.muraValidObject=true>
 		<cfset request.muraAsyncEditableObject=false>
 
-		<cfif session.mura.isLoggedIn and arguments.showEditableObjects and arguments.allowEditable>
+		<cfif sessionData.mura.isLoggedIn and arguments.showEditableObjects and arguments.allowEditable>
 
 			<cfif $.siteConfig('hasLockableNodes')>
 				<cfset var configuratorAction="carch.lockcheck&destAction=">
@@ -1821,6 +1823,7 @@
 
 		<cfset var displayInterval=arguments.content.getDisplayInterval().getAllValues()>
 		<cfset var returnstring=''>
+		<cfset var sessionData=getSession()>
 
 		<cfif not isDate(arguments.content.getdisplayStart())>
 			<cfreturn ''>
@@ -1835,46 +1838,46 @@
 			and day(arguments.content.getdisplayStart()) eq day(arguments.content.getdisplayStop())
 			and year(arguments.content.getdisplayStart()) eq year(arguments.content.getdisplayStop())>
 			<cfif allday>
-				<cfreturn returnstring & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
+				<cfreturn returnstring & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),sessionData.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.allday')>
 			<cfelse>
-				<cfreturn returnstring & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone)) & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">
+				<cfreturn returnstring & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),sessionData.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone)) & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">
 			</cfif>
 		<cfelse>
 			<cfif dateCompare(now(),arguments.content.getDisplayStart(),'d') eq -1>
-				<cfset returnstring= returnstring & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.starting') & ' ' & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ', '>
+				<cfset returnstring= returnstring & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.starting') & ' ' & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),sessionData.dateKeyFormat) & ', '>
 			</cfif>
-			<cfset returnstring= returnstring & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.#displayInterval.type#')>
+			<cfset returnstring= returnstring & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.#displayInterval.type#')>
 		</cfif>
 
 		<cfif listFindNoCase('weekly,bi-weekly,monthly,week1,week2,week3,week4,weeklast',displayInterval.type)>
-			<cfset returnstring=returnstring & ' ' & lcase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.on')) & ' '>
+			<cfset returnstring=returnstring & ' ' & lcase(application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.on')) & ' '>
 			<cfset var started=false>
 			<cfloop list="#displayInterval.daysofweek#" index="local.i">
 				<cfif started><cfset returnstring=returnstring & ', '></cfif>
 				<cfset started=true>
-				<cfset returnstring=returnstring & listGetAt(application.rbFactory.getKeyValue(session.rb,'calendar.weekdaylong'),local.i)>
+				<cfset returnstring=returnstring & listGetAt(application.rbFactory.getKeyValue(sessionData.rb,'calendar.weekdaylong'),local.i)>
 			</cfloop>
 		</cfif>
 
 		<cfif isDate(arguments.content.getDisplayStop())>
 			<cfif allday>
-				<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
+				<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.allday')>
 			<cfelse>
-				<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')>
-				<cfset returnstring=returnstring & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone))>
+				<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.from')>
+				<cfset returnstring=returnstring & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone))>
 			</cfif>
 		<cfelse>
 			<cfif allday>
-				<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
+				<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.allday')>
 			<cfelse>
-				<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.at') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone))>
+				<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.at') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone))>
 			</cfif>
 		</cfif>
 
 		<cfif displayInterval.end eq 'on'>
-			<cfset returnstring=returnstring & ',  ' & arguments.renderer.setProperCase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.until')) & ' ' & LSDateFormat(displayinterval.endon,session.dateKeyFormat)>
+			<cfset returnstring=returnstring & ',  ' & arguments.renderer.setProperCase(application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.until')) & ' ' & LSDateFormat(displayinterval.endon,sessionData.dateKeyFormat)>
 		<cfelseif displayInterval.end eq 'after'>
-			<cfset returnstring=returnstring & ', ' & arguments.renderer.setProperCase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.until')) & ' ' & displayinterval.endafter & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')>
+			<cfset returnstring=returnstring & ', ' & arguments.renderer.setProperCase(application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.until')) & ' ' & displayinterval.endafter & ' ' & application.rbFactory.getKeyValue(sessionData.rb,'sitemanager.content.fields.displayinterval.occurrences')>
 		</cfif>
 
 		<cfset returnstring=returnstring & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">

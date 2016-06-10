@@ -11,6 +11,8 @@
 <cfscript>
     getBean('variationTargeting').checkSchema();
     getBean('remoteContentPointer').checkSchema();
+    getBean('oauthClient').checkSchema();
+    getBean('oauthToken').checkSchema();
     dbUtility.setTable("tsettings")
         .addColumn(column="contentPendingScript",dataType="longtext")
         .addColumn(column="contentCanceledScript",dataType="longtext")

@@ -679,8 +679,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event">
 	<cfif not arguments.event.valueExists('localHandler')>
 		<cfset request.muraFrontEndRequest=true>
+		<cfset var sessionData=getSession()>
 		<cfparam name="request.returnFormat" default="HTML">
-		<cfparam name="session.siteid" default="#arguments.event.getValue('siteID')#">
+		<cfparam name="sessionData.siteid" default="#arguments.event.getValue('siteID')#">
 		<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
 			<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.servlet").init(arguments.event)>
 		<cfelse>
@@ -739,6 +740,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="event">
 	<cfset var response=""/>
 	<cfset var servlet = "" />
+	<cfset var sessionData=getSession()>
 
 	<cfset loadLocalEventHandler(arguments.event)>
 
@@ -809,7 +811,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset application.pluginManager.announceEvent('onSiteRequestEnd',arguments.event)/>
-	<cfif isDefined("session.mura.showTrace") and session.mura.showTrace and listFindNoCase(session.mura.memberships,"S2IsPrivate")>
+	<cfif isDefined("sessionData.mura.showTrace") and sessionData.mura.showTrace and listFindNoCase(sessionData.mura.memberships,"S2IsPrivate")>
 		<cfset response=replaceNoCase(response,"</html>","#application.utility.dumpTrace()#</html>")>
 	</cfif>
 

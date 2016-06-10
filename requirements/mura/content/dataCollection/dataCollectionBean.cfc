@@ -238,7 +238,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 			setValue('acceptData',structIsEmpty(getErrors()));
 
-			if( isDefined('session.mura.requestcount') && !(session.mura.requestcount > 1) ){
+			if( isDefined('variables.sessionData.mura.requestcount') && !(variables.sessionData.mura.requestcount > 1) ){
 				setValue('acceptError','Spam');
 				setValue('acceptData','0');
 				variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");

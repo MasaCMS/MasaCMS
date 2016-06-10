@@ -127,6 +127,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var feedBean=getBean("feed") />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var sessionData=getSession()>
+
 	<cfset feedBean.set(arguments.data) />
 	<cfset feedBean.validate()>
 
@@ -136,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.pluginManager.announceEvent("onBeforeFeedCreate",pluginEvent)>
 
 	<cfif structIsEmpty(feedBean.getErrors())>
-		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
+		<cfset feedBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50) ) />
 		<cfif not (structKeyExists(arguments.data,"feedID") and len(arguments.data.feedID))>
 			<cfset feedBean.setFeedID("#createUUID()#") />
 		</cfif>
@@ -355,6 +357,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var feedBean=variables.feedDAO.read(arguments.data.feedID) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var sessionData=getSession()>
 	<cfset feedBean.set(arguments.data) />
 	<cfset feedBean.validate()>
 
@@ -365,7 +368,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","mura-content","Information",true) />
-		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
+		<cfset feedBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50) ) />
 		<cfset variables.feedDAO.update(feedBean) />
 		<cfset purgeFeedCache(feedBean=feedBean)>
 		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
@@ -438,8 +441,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var rs="" />
 			<cfset var rLen=listLen(arguments.feedBean.getRestrictGroups()) />
 			<cfset var G = 0 />
+			<cfset var sessionData=getSession()>
 
-			<cfif listFind(session.mura.memberships,'S2IsPrivate;#arguments.feedBean.getSiteID()#')>
+			<cfif listFind(sessionData.mura.memberships,'S2IsPrivate;#arguments.feedBean.getSiteID()#')>
 				<cfreturn true />
 			<cfelseif arguments.feedBean.getIsNew()>
 				<cfreturn false>

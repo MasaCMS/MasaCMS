@@ -1530,8 +1530,9 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cfargument name="table" default="tcontent">
 <cfargument name="siteID">
 	<cfset var previewData="">
+	<cfset var sessionData=getSession()>
 	<cfoutput>
-		<cfif isDefined('session.mura')>
+		<cfif isDefined('sessionData.mura')>
 			<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 		</cfif>
 		<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
