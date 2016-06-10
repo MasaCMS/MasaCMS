@@ -21,7 +21,7 @@
     </script>
   <div class="nav-module-specific btn-group">
       <a class="btn" href="./?muraAction=cwebservice.list&siteid=&#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i>  Back to Web Services</a>
-       <button class="btn mura-primary" type="button" onclick="generateToken();"><i class="mi-key"></i> Generate Access Token</button>
+      <cfif rc.bean.exists()><a class="btn" href="##" onclick="generateToken();return false;"><i class="mi-key"></i> Generate Access Token</a></cfif>
   </div>
 </div> <!-- /.mura-header -->
 <form novalidate="novalidate" action="./?muraAction=cwebservice.save" method="post" name="form1" onsubmit="return validateForm(this);">
