@@ -71,8 +71,12 @@
 	   <!-- toggle sidebar -->
 	   <li class="hidden-xs hidden-sm">
 	      <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-	      <button class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
-	          <i class="mi-ellipsis-v"></i>
+	      <button id="mura-sidebar-toggle" class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
+	          <i class="mi-angle-left"></i>
+	      </button>
+	      	
+	      <button id="mura-sidebar-toggle-open" class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
+	          <i class="mi-angle-right"></i>
 	      </button>
 	  </li>
 
