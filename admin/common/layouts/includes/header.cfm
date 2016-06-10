@@ -227,6 +227,12 @@
               </button>
 
               <ul class="dropdown-menu dropdown-menu-right mura-user-tools">
+                  <!--- output user prompts --->
+                  <cfif local.prompttally>
+	                  #local.userprompt#
+	                  <li class="divider"></li>
+									</cfif>
+
                   <li>
                       <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"><i class="mi-cog"></i> Edit Profile</a>
                   </li>
@@ -234,11 +240,6 @@
                       <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #rc.$.rbKey("layout.logout")#</a>
                   </li>
 
-                  <!--- output user prompts --->
-                  <cfif local.prompttally>
-	                  <li class="divider"></li>
-	                  #local.userprompt#
-									</cfif>
 
               </ul>
           </div>
