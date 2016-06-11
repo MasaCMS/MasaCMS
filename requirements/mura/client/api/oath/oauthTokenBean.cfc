@@ -3,6 +3,7 @@ component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtoken
     property name="granttype" datatype="varchar" default="client_credentials";
     property name="client" fieldtype="many-to-one" cfc="oauthClient" fkcolumn="clientid" required=true;
     property name="expires" datatype="datetime" required=true;
+    property name="data" datatype="text";
 
     function save(){
         if(isValid('uuid',get('token'))){

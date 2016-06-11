@@ -311,19 +311,24 @@ component extends="mura.cfobject" {
 						params.method='Not Available';
 						throw(type='accessTokenExpired');
 					} else {
-						var client=token.getClient();
-
-						if(!client.exists()){
-							params.method='undefined';
-							throw(type='invalidAccessToken');
+						if(isJSON(token.getData())){
+							structAppend(getSession(), deserializeJSON(token.getData()), true);
 						} else {
-							var clientAccount=client.getUser();
+							var client=token.getClient();
 
-							if(!clientAccount.exists()){
+							if(!client.exists()){
 								params.method='undefined';
 								throw(type='invalidAccessToken');
 							} else {
-								clientAccount.login();
+								var clientAccount=client.getUser();
+
+								if(!clientAccount.exists()){
+									params.method='undefined';
+									throw(type='invalidAccessToken');
+								} else {
+									clientAccount.login();
+									token.setData(serializeJSON(getSession())).save();
+								}
 							}
 						}
 					}
