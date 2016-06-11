@@ -316,7 +316,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	          </div>
 
       </cfif>
-		<h2>Current Plugins</h2>
+		<cfif rc.rsPlugins.recordcount>
+			<h2>Current Plugins</h2>
 			<table class="mura-table-grid">
 				<tr>
 					<th class="var-width">Name</th>
@@ -328,7 +329,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<th>Plugin ID</th>
 					<th class="actions">&nbsp;</th>
 				</tr>
-				<cfif rc.rsPlugins.recordcount>
+
 					<cfoutput query="rc.rsPlugins">
 					<tr>
 						<td class="var-width"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#esapiEncode('html',rc.rsPlugins.name)#</a></td>
@@ -344,12 +345,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</ul></td>
 					</tr>
 					</cfoutput>
-					<cfelse>
-					<tr>
-						<td class="noResults" colspan="7">There are currently no installed plugins.</td>
-					</tr>
-				</cfif>
+
 			</table>
+			<cfelse>
+				<div class="alert alert-info">
+					There are currently no installed plugins.
+				</div>
+			</cfif>
 			</div> <!-- /.block-content -->
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.tab-pane -->
