@@ -9,11 +9,15 @@ component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtoken
         if(isValid('uuid',get('token'))){
             set('token',"000" & hash(encrypt(get('token'),generateSecretKey('AES'))));
         }
-        if(get('granttype')=='client_credentials'){
-            set('expires',dateAdd('n',30,now()));
-        } else {
-            set('expires',dateAdd('yyyy',100,now()));
+
+        if(!isDate(get('expires'))){
+            if(get('granttype')=='client_credentials'){
+                set('expires',dateAdd('n',30,now()));
+            } else {
+                set('expires',dateAdd('yyyy',100,now()));
+            }
         }
+        
         super.save(argumentCollection=arguments);
         return this;
     }
