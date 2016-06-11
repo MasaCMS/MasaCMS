@@ -55,18 +55,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> <!-- /.block header -->
 		<div class="block-content">
 
-		<table class="mura-table-grid">
-		<tr>
-		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
-		<!--- <th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th> --->
-		<th>Plugin ID</th>
-		<th class="actions">&nbsp;</th>
-		</tr>
+
 		<cfloop query="rscategorylist">
+		<cfif not started>
+			<table class="mura-table-grid">
+			<tr>
+			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
+			<!--- <th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th> --->
+			<th>Plugin ID</th>
+			<th class="actions">&nbsp;</th>
+			</tr>
+		</cfif>
 	<cfset started=true>
 	<tr>
 	<td class="var-width"><a class="alt" href="#application.configBean.getContext()#/plugins/#rscategorylist.directory#/">#esapiEncode('html',rscategorylist.name)#</a></td>
@@ -89,13 +92,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</ul></td>
 	</tr>
+	<cfif not started>
+		</table>
+	</cfif>
+	<cfset started=true>
 		</cfloop>
 		<cfif not started>
-		<tr>
-		<td colspan="7" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</td>
-		</tr>
+			<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</div>
 		</cfif>
-		</table>
+
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
