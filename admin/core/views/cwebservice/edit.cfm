@@ -14,8 +14,11 @@
   </cfif>
   <script>
         function generateToken(){
-            mura.generateOAuthToken('client_credentials',$('##clientid').val(),$('##clientsecret').val()).then(function(data){
-                $('##token-container').html('<div class="alert alert-info"><p><strong>Access Token:</strong> ' + data['access_token'] +'</p><p><strong>Expires:</strong> ' + data['expires'] + '</p></div>');
+            actionModal(function(){
+                $('##action-modal').remove();
+                mura.generateOAuthToken('client_credentials',$('##clientid').val(),$('##clientsecret').val()).then(function(data){
+                    $('##token-container').html('<div class="alert alert-info"><p><strong>Access Token:</strong> ' + data['access_token'] +'</p><p><strong>Expires:</strong> ' + data['expires'] + '</p></div>');
+                });
             });
         }
     </script>
