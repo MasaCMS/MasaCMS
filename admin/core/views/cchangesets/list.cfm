@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="block block-bordered">
 					<div class="block-content">
 						<div id="main">
-
+					<cfif rc.changesets.hasNext()>
 					<table class="mura-table-grid">
 					<tr>
 					<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<th>#application.rbFactory.getKeyValue(session.rb,'changesets.lastupdate')#</th>
 					<th>&nbsp;</th>
 					</tr>
-					<cfif rc.changesets.hasNext()>
+
 					<cfloop condition="rc.changesets.hasNext()">
 					<cfset rc.changeset=rc.changesets.next()>
 					<tr>
@@ -92,12 +92,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</ul>
 						</td>
 					</tr></cfloop>
-					<cfelse>
-					<tr>
-					<td class="noResults" colspan="4">#application.rbFactory.getKeyValue(session.rb,'changesets.nochangesets')#</td>
-					</tr>
-					</cfif>
 					</table>
+					<cfelse>
+						<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'changesets.nochangesets')#</div>
+					</cfif>
 
 					<cfif rc.changesets.pageCount() gt 1>
 						<cfset args=arrayNew(1)>

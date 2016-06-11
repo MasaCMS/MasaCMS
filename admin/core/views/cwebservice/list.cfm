@@ -59,44 +59,42 @@
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
+		  <cfif not services.hasNext()>
+			  <div class="alert alert-info">There currently are no web services configured for this site.</div>
+		  <cfelse>
 			<table class="mura-table-grid">
 			<thead>
-	<tr>
-		<th class="var-width">Name</th>
-		<th>Last Update</th>
-		<th class="actions">&nbsp;</th>
-	</tr>
-			<thead>
+				<tr>
+					<th class="var-width">Name</th>
+					<th>Last Update</th>
+					<th class="actions">&nbsp;</th>
+				</tr>
+			</thead>
 			<tbody class="nest">
-			<cfif not services.hasNext()>
-	<tr><td colspan="3">There currently are no web services configured for this site.</td></tr>
-			<cfelse>
-	<cfloop condition="services.hasNext()">
-	<cfset service=services.next()>
-	<tr>
-		<td class="var-width">
-			<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',service.getName())#</a>
-		</td>
-		<td>
-			<cfif isDate(service.getLastUpdate())>
-			    #LSDateFormat(service.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(service.getLastUpdate(),"medium")#
-			</cfif>
-		</td>
-		<td class="actions">
-			<ul>
-				<li class="edit">
-					<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
-				</li>
-				<li class="delete">
-					<a title="Delete" href="./?muraAction=cwebservice.delete&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=service.getClientID(),format='url')#" onClick="return confirmDialog('Delete Web Service?',this.href)"><i class="mi-trash"></i></a>
-				</li>
-			</ul>
-		</td>
-	</tr>
-	</cfloop>
-			</cfif>
+				<cfloop condition="services.hasNext()">
+				<cfset service=services.next()>
+				<tr>
+					<td class="var-width">
+						<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',service.getName())#</a>
+					</td>
+					<td>
+						#LSDateFormat(service.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(service.getLastUpdate(),"medium")#
+					</td>
+					<td class="actions">
+						<ul>
+							<li class="edit">
+								<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
+							</li>
+							<li class="delete">
+								<a title="Delete" href="./?muraAction=cwebservice.delete&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=service.getClientID(),format='url')#" onClick="return confirmDialog('Delete Web Service?',this.href)"><i class="mi-trash"></i></a>
+							</li>
+						</ul>
+					</td>
+				</tr>
+				</cfloop>
 			</tbody>
 			</table>
+			</cfif>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.block-constrain -->
