@@ -59,6 +59,10 @@
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
+		  <cfif not rc.$.siteConfig('useSSL')>
+               <div class="alert alert-error">IMPORTANT: In production thes site should be set to use SSL (HTTPS).</div>
+          </cfif>
+		  
 		  <cfif not services.hasNext()>
 			  <div class="alert alert-info">There currently are no web services configured for this site.</div>
 		  <cfelse>
