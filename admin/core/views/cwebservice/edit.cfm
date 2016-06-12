@@ -36,6 +36,10 @@
           <div class="alert alert-error">#application.utility.displayErrors(rc.bean.getErrors())#</div>
         </cfif>
 
+        <cfif not rc.$.siteConfig('useSSL')>
+             <div class="alert alert-error">IMPORTANT: In production thes site should be set to use SSL.</div>
+        </cfif>
+
         <span id="token-container"></span>
       <div class="mura-control-group">
           <label>Name</label>
@@ -76,6 +80,7 @@
                 <div>
                     #rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#
                 </div>
+
             </div>
 
         </cfif>
