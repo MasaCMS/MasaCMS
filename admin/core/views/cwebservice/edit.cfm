@@ -37,7 +37,7 @@
         </cfif>
 
         <cfif not rc.$.siteConfig('useSSL')>
-             <div class="alert alert-error">IMPORTANT: In production thes site should be set to use SSL.</div>
+             <div class="alert alert-error">IMPORTANT: In production thes site should be set to use SSL (HTTPS).</div>
         </cfif>
 
         <span id="token-container"></span>
