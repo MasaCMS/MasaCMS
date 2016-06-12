@@ -39,22 +39,16 @@
         <span id="token-container"></span>
       <div class="mura-control-group">
           <label>Name</label>
-          <div>
-              <input name="name" type="text" required="true" message="The Name attribute is required." value="#esapiEncode('html_attr',rc.bean.getName())#" maxlength="50">
-          </div>
+          <input name="name" type="text" required="true" message="The Name attribute is required." value="#esapiEncode('html_attr',rc.bean.getName())#" maxlength="50">
       </div>
       <div class="mura-control-group">
           <label>Description</label>
-          <div>
-              <textarea name="description" rows="6">#esapiEncode('html',rc.bean.getDescription())#</textarea>
-          </div>
+          <textarea name="description" rows="6">#esapiEncode('html',rc.bean.getDescription())#</textarea>
       </div>
 
       <div class="mura-control-group">
           <label>Connected Account</label>
-          <div>
               <cfset users=$.getBean('userFeed').setSiteID(rc.siteid).setIsPublic(0).setSortBy('lname').getIterator()>
-
               <select name="userid">
                   <option value="">-- Select Account --</option>
                   <cfloop condition="users.hasNext()">
@@ -62,7 +56,6 @@
                       <option value="#user.getUserID()#"<cfif user.getUserID() eq rc.bean.getUserID()> selected</cfif>>#esapiEncode('html',user.getFullname())#</option>
                   </cfloop>
               </select>
-          </div>
       </div>
 
         <cfif rc.bean.exists()>
