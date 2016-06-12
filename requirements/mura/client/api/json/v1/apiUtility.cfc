@@ -2089,7 +2089,7 @@ component extends="mura.cfobject" {
 		return '';
 	}
 
-	function getEndPoint(){
+	function getEndPoint(mode='json'){
 		if(request.muraApiRequest){
 			var configBean=getBean('configBean');
 			if(!isDefined('request.apiEndpoint')){
@@ -2107,7 +2107,11 @@ component extends="mura.cfobject" {
 			return request.apiEndpoint;
 		}
 
-		return variables.endpoint;
+		if(arguments.mode=='json'){
+			return variables.endpoint;
+		} else {
+			return replace(variables.endpoint,'/json/','/rest/');
+		}
 
 	}
 

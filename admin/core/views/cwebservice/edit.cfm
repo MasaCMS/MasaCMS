@@ -71,6 +71,12 @@
                     #rc.bean.getClientSecret()#
                 </div>
             </div>
+            <div class="mura-control-group">
+                <label>Endpoint</label>
+                <div>
+                    #rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#
+                </div>
+            </div>
 
         </cfif>
 
