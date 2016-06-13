@@ -1205,7 +1205,7 @@
 
 				<cfset var filePath=''>
 
-				<cfif len(displayobject.legacyObjectFile) and len($.siteConfig().lookupDisplayObjectFilePath(displayobject.legacyObjectFile))>
+				<cfif len(displayobject.legacyObjectFile) and len($.siteConfig().lookupDisplayObjectFilePath(filePath=displayobject.legacyObjectFile,customOnly=true))>
 					<cfset filePath=displayobject.legacyObjectFile>
 				<cfelse>
 					<cfset filePath=displayobject.displayObjectFile>
