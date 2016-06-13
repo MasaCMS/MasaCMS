@@ -31,7 +31,7 @@ component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtoken
     }
 
     function isExpired(){
-        return (getExpiresIn() > 0);
+        return (getExpiresIn() <= 0);
     }
 
 }
