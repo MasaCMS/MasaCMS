@@ -17,7 +17,7 @@
             actionModal(function(){
                 $('##action-modal').remove();
                 mura.generateOAuthToken('client_credentials',$('##clientid').val(),$('##clientsecret').val()).then(function(data){
-                    $('##token-container').html('<div class="alert alert-info"><p><strong>Access Token:</strong> ' + data['access_token'] +'</p><p><strong>Expires:</strong> ' + data['expires'] + '</p></div>');
+                    $('##token-container').html('<div class="alert alert-info"><p><strong>access_token:</strong> ' + data['access_token'] +'</p><p><strong>expires_in:</strong> ' + data['expires_in'] + '</p></div>');
                 });
             });
         }

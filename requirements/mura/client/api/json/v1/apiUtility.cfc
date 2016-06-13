@@ -307,7 +307,7 @@ component extends="mura.cfobject" {
 					if(!token.exists() || token.getGrantType() != 'client_credentials'){
 						params.method='Not Available';
 						throw(type='invalidAccessToken');
-					} else if (token.getExpires() < now()){
+					} else if (token.isExpired()){
 						params.method='Not Available';
 						throw(type='accessTokenExpired');
 					} else {
@@ -376,7 +376,8 @@ component extends="mura.cfobject" {
 									'params'=getParamsWithOutMethod(params),
 									'data'={
 										'access_token':token.getToken(),
-										'expires':token.getExpires()
+										'expires_in':token.getExpiresIn(),
+										'expires_at':token.getExpiresAt()
 									 }});
 								responseObject.setContentType('application/json; charset=utf-8');
 								responseObject.setStatus(200);
