@@ -344,6 +344,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							--->
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="mi-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
+								<cfif this.showInlineEditor>
+									<li id="adminQuickEdit">
+										<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
+										<cfif $.content('type') eq 'Variation'>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
+										<cfelseif useLayoutManager()>
+											<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
+											<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
+											</cfif>
+										<cfelse>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
+										</cfif></a>
+									</li>
 									<li id="adminFullEdit">
 										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
 											<cfif $.content('type') eq 'Variation'>
@@ -354,20 +368,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												 <i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											</cfif></a>
 									</li>
-									<cfif this.showInlineEditor>
-										<li id="adminQuickEdit">
-											<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
-											<cfif $.content('type') eq 'Variation'>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
-											<cfelseif useLayoutManager()>
-												<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
-												<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
-												</cfif>
-											<cfelse>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
-											</cfif></a>
-										</li>
 										<cfif request.r.perm eq 'editor' and $.content('type') eq 'Variation'>
 											<li id="adminVariationTargeting"><a id="mura-edit-var-initjs" href="#variables.initJSLink#" #variables.targethook#><i class="mi-code"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-variationtargeting')#</a></li>
 										</cfif>
@@ -485,7 +485,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</cfif>
 					<ul id="adminSiteManager">
-						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li>
+						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li>
 					</ul>
 				</cfif>
 
@@ -495,7 +495,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li id="adminWelcome"><i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
 					</ul>
 				</cfif>
-
 
 				<!---
 				<cfif this.layoutmanager and $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>

@@ -118,7 +118,7 @@
                     <cfset isInSiteManager=listFindNoCase('carch,cfeed,ccategory,cchangesets,cfilemanager,ccomments,cmailinglist,cemail,cadvertising',rc.originalcircuit) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))>
                     <li id="admin-nav-manager"<cfif isInSiteManager> class="open"</cfif>>
                         <a data-toggle="nav-submenu" class="nav-submenu" href="#application.configBean.getContext()#/admin/">
-                            <i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitemanager")#</span>
+                            <i class="mi-list-alt"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.sitesettings")#</span>
                         </a>
 						<ul>
                     --->
