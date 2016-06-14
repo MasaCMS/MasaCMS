@@ -2751,7 +2751,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         	<cfif variables.configBean.getCompiler() eq "Adobe" and variables.configBean.getDbType() eq "MSSQL">
                 <cfreturn "'" & dateFormat(createODBCDateTime(arguments.date), "yyyy-mm-dd") & 'T' & timeFormat(createODBCDateTime(arguments.date), "HH:mm:ss.l") & "'">
         	<cfelseif variables.configBean.getDbType() eq "Oracle">
-				<cfreturn "to_date('#dateFormat(arguments.date,"yyyy-mm-dd")# #timeFormat(arguments.date,"hh:mm:ss")#','YYYY-MM-DD HH:MI:SS')">
+				<cfreturn "to_date('#dateFormat(arguments.date,"yyyy-mm-dd")# #timeFormat(arguments.date,"hh:mm:ss")#','YYYY-MM-DD HH24:MI:SS')">
 			<cfelse>
         		<cfreturn createODBCDateTime(arguments.date)>
         	</cfif>
