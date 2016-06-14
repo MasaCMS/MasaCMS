@@ -488,9 +488,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												OR
 												(
 													tcontent.isFeature = 2
-													AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+													AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 													AND (
-														tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+														tcontent.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 														OR tcontent.FeatureStop is null
 													)
 												)
@@ -518,9 +518,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 																				#talias#.isFeature = 1
 																				OR (
 																					#talias#.isFeature = 2
-																					AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																					AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																					AND (
-																						#talias#.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																						#talias#.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																						OR #talias#.FeatureStop is null
 																					)
 																				)
@@ -535,9 +535,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 															a.isFeature = 1
 															OR (
 																a.isFeature = 2
-																AND a.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																AND a.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																AND (
-																	a.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																	a.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																	or a.FeatureStop is null
 																)
 															)
@@ -558,9 +558,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														tcontentcategoryassign.isFeature = 1
 														OR (
 															tcontentcategoryassign.isFeature = 2
-															AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+															AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 															AND (
-																tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																or tcontentcategoryassign.FeatureStop is null
 															)
 														)
@@ -578,9 +578,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											tcontent.Display = 2
 											AND (
 												(
-													tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+													tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 													AND (
-														tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+														tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 														OR tcontent.DisplayStop is null
 													)
 												)
@@ -591,7 +591,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														WHERE
 															type='Calendar'
 															#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
-															AND siteid  in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+															AND siteid  in (<cfqueryparam cfsqltype="#renderDateTimeParamType()#" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 													)
 											)
 										)
@@ -601,9 +601,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											TKids.Display = 2
 											AND (
 												(
-													TKids.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+													TKids.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 													AND (
-														TKids.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+														TKids.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 														OR TKids.DisplayStop is null
 													)
 												) OR
@@ -832,8 +832,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							OR
 
 							(	tcontent.isFeature = 2
-								AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-								AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
+								AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+								AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
 							)
 						)
 						</cfif>
@@ -859,8 +859,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													OR
 
 														(	#talias#.isFeature = 2
-															AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-															AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or #talias#.FeatureStop is null)
+															AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+															AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or #talias#.FeatureStop is null)
 														)
 
 													)
@@ -877,8 +877,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									OR
 
 										(	a.isFeature = 2
-											AND a.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-											AND (a.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or a.FeatureStop is null)
+											AND a.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+											AND (a.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or a.FeatureStop is null)
 										)
 
 									)
@@ -898,8 +898,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									OR
 
 										(	tcontentcategoryassign.isFeature = 2
-											AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-											AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)
+											AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+											AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)
 										)
 
 									)
@@ -926,8 +926,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											tparent.type!='Calendar'
 										</cfif>
 
-										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
+										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
 									) OR (
 										<cfif len(altTable)>
 											tcontent.parentType='Calendar'
@@ -935,8 +935,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											tparent.type='Calendar'
 										</cfif>
 
-										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.to#">
-										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.from#"> or tcontent.DisplayStop is null)
+										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.to#">
+										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.from#"> or tcontent.DisplayStop is null)
 									)
 								)
 							)
@@ -1136,4 +1136,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfoutput>
 </cffunction>
+
+<cffunction name="renderDateTimeParamType">
+	<cfif variables.configBean.getDBType() eq 'Oracle'>
+		<cfreturn "cf_sql_date">
+	<cfelse>
+		<cfreturn "cf_sql_timestamp">
+	</cfif>
+</cffunction>
+
 </cfcomponent>
