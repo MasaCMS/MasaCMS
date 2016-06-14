@@ -523,11 +523,18 @@ form .mura-control-group > * + .help-block:not(.alert){
 }
 
 .nav-main li a{
+  display: block;
+  overflow: hidden;
+  padding-right: 30px;
   text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   span{
     display: inline-block;
     vertical-align: top;
   }
+
 }
 
 .nav-main li a.nav-submenu:before {
