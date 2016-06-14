@@ -56,22 +56,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif application.configBean.getAllowAutoUpdates()>
 				<div class="btn-group">
 					<cfoutput>
-								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-bolt"></i> Update Core Files to Latest Version</a>
+								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-bolt"></i> Update Core Files</a>
 					</cfoutput>
 					<cfif rc.siteUpdateSelect neq "true">
-									<a class="btn" href="./?muraAction=cSettings.list&siteUpdateSelect=true"><i class="mi-bolt"></i> Multi-Site Version Update</a>
+									<a class="btn" href="./?muraAction=cSettings.list&siteUpdateSelect=true"><i class="mi-bolt"></i> Update Multiple Sites</a>
 					</cfif>
 				</div>
 			</cfif>
 			<div class="btn-group">
 				<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
-								<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=site"><i class="mi-list-alt"></i> View Site List by Site Name</a>
+								<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=site"><i class="mi-list-alt"></i> List Sites by Site Name</a>
 				</cfif>
 				<cfif rc.siteSortBy neq "orderno">
-								<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=orderno"><i class="mi-list-alt"></i> View Site List by Bind Order</a>
+								<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=orderno"><i class="mi-list-alt"></i> List Sites by Bind Order</a>
 				</cfif>
 				<cfelse>
-							<a class="btn" href="./?muraAction=cSettings.list"><i class="mi-list-alt"></i> View Site List</a>
+							<a class="btn" href="./?muraAction=cSettings.list"><i class="mi-list-alt"></i> List Sites</a>
 				</cfif>
 			</div>
 		</div>
@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<button type="button" class="btn mura-primary" onclick="document.form1.submit();"><i class="mi-check"></i> Update Bind Order</button>
 							</cfif>
 							<cfif  rc.siteUpdateSelect eq "true">
-									<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-bolt"></i> Update Selected Sites to Latest Version</button>
+									<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-bolt"></i> Update Selected Sites</button>
 								<div class="load-inline" style="display: none;"></div>
 							</cfif>
 							<cfif application.configBean.getMode() eq 'staging'
