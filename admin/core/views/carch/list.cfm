@@ -98,6 +98,8 @@
 					<div class="block block-bordered">
 					  <div class="block-content">
 							<div id="main">
+
+				<cfif rc.rstop.recordcount>
 				<table class="mura-table-grid">
 					<cfoutput>
 						<thead>
@@ -124,7 +126,6 @@
 					</cfoutput>
 
 					<tbody>
-						<cfif rc.rstop.recordcount>
 							<cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
 								<cfsilent>
 									<cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
@@ -244,17 +245,15 @@
 									<!--- /Actions --->
 								</tr>
 							</cfoutput>
-						<cfelse>
-							<tr>
-								<td colspan="7" class="noResults">
-									<cfoutput>
-										#application.rbFactory.getKeyValue(session.rb,'sitemanager.noitemsinsection')#
-									</cfoutput>
-								</td>
-							</tr>
-						</cfif>
 					</tbody>
 				</table>
+				<cfelse>
+					<div class="alert alert-info">
+						<cfoutput>
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.noitemsinsection')#
+						</cfoutput>
+					</div>
+				</cfif>
 
 				<cfif rc.nextn.numberofpages gt 1>
 					<cfoutput>
@@ -358,8 +357,8 @@
 						<cfif len($.event('categoryID') & $.event('tags') & $.event('searchString'))>
 						<input type="button" class="btn" name="removeFilter" id="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
 						</cfif>
-					</div><!-- /.sidebar-buttons -->	
-						
+					</div><!-- /.sidebar-buttons -->
+
 				 </form>
 
 				 <script>
@@ -675,7 +674,7 @@
   								  </li>
   								  </cfif>
   							  </ul>
-				  		</cfif>	
+				  		</cfif>
 
 								<script>
 									$(function(){

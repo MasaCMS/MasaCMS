@@ -53,7 +53,7 @@
             return this;
 		},
 		fields:function(fields){
-            this.queryString+='&fields=' + fields;
+            this.queryString+='&fields=' + encodeURIComponent(fields);
             return this;
         },
         where:function(property){
@@ -66,59 +66,59 @@
             return this.andProp(property);
         },
         andProp:function(property){
-            this.queryString+='&' + property + '[' + this.propIndex + ']=';
+            this.queryString+='&' + encodeURIComponent(property) + '[' + this.propIndex + ']=';
 			this.propIndex++;
             return this;
         },
         orProp:function(property){
             this.queryString+='&or[' + this.propIndex + ']&';
 			this.propIndex++;
-			this.queryString+= property + '[' + this.propIndex + ']=';
+			this.queryString+= encodeURIComponent(property) + '[' + this.propIndex + ']=';
 			this.propIndex++;
 			return this;
         },
         isEQ:function(criteria){
-            this.queryString+=criteria;
+            this.queryString+=encodeURIComponent(criteria);
 			return this;
         },
         isNEQ:function(criteria){
-            this.queryString+='neq^' + criteria;
+            this.queryString+='neq^' + encodeURIComponent(criteria);
 			return this;
         },
         isLT:function(criteria){
-            this.queryString+='lt^' + criteria;
+            this.queryString+='lt^' + encodeURIComponent(criteria);
 			return this;
         },
         isLTE:function(criteria){
-            this.queryString+='lte^' + criteria;
+            this.queryString+='lte^' + encodeURIComponent(criteria);
 			return this;
         },
         isGT:function(criteria){
-            this.queryString+='gt^' + criteria;
+            this.queryString+='gt^' + encodeURIComponent(criteria);
 			return this;
         },
         isGTE:function(criteria){
-            this.queryString+='gte^' + criteria;
+            this.queryString+='gte^' + encodeURIComponent(criteria);
 			return this;
         },
         isIn:function(criteria){
-            this.queryString+='in^' + criteria;
+            this.queryString+='in^' + encodeURIComponent(criteria);
 			return this;
         },
         isNotIn:function(criteria){
-            this.queryString+='notin^' + criteria;
+            this.queryString+='notin^' + encodeURIComponent(criteria);
 			return this;
         },
         contains:function(criteria){
-            this.queryString+='contains^' + criteria;
+            this.queryString+='contains^' + encodeURIComponent(criteria);
 			return this;
         },
 		beginsWith:function(criteria){
-            this.queryString+='begins^' + criteria;
+            this.queryString+='begins^' + encodeURIComponent(criteria);
 			return this;
         },
 		endsWith:function(criteria){
-            this.queryString+='ends^' + criteria;
+            this.queryString+='ends^' + encodeURIComponent(criteria);
 			return this;
         },
         openGrouping:function(criteria){
@@ -136,28 +136,28 @@
 		sort:function(property,direction){
 			direction=direction || 'asc';
 			if(direction == 'desc'){
-				this.queryString+='&sort[' + this.propIndex + ']=-' + property;
+				this.queryString+='&sort[' + this.propIndex + ']=-' + encodeURIComponent(property);
 			} else {
-				this.queryString+='&sort[' + this.propIndex + ']=+' + property;
+				this.queryString+='&sort[' + this.propIndex + ']=+' + encodeURIComponent(property);
 			}
 			this.propIndex++;
             return this;
         },
 		itemsPerPage:function(itemsPerPage){
-            this.queryString+='&itemsPerPage=' + itemsPerPage;
+            this.queryString+='&itemsPerPage=' + encodeURIComponent(itemsPerPage);
 			return this;
         },
 		maxItems:function(maxItems){
-            this.queryString+='&maxItems=' + maxItems;
+            this.queryString+='&maxItems=' + encodeURIComponent(maxItems);
 			return this;
         },
 		innerJoin:function(relatedEntity){
-            this.queryString+='&innerJoin[' + this.propIndex + ']=' + relatedEntity;
+            this.queryString+='&innerJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
 			this.propIndex++;
             return this;
         },
 		leftJoin:function(relatedEntity){
-            this.queryString+='&leftJoin[' + this.propIndex + ']=' + relatedEntity;
+            this.queryString+='&leftJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
 			this.propIndex++;
             return this;
         },

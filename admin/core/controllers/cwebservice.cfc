@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/* This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,32 +43,53 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfset event=request.event>
-<cfinclude template="js.cfm">
-<cfoutput>
+*/
 
-	<div class="mura-header">
-		<h1>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h1>
-
-		<cfinclude template="dsp_secondary_menu.cfm">
-	</div> <!-- /.mura-header -->
+component extends="controller" {
 
 
-	<div class="block block-constrain">
-			<div class="block block-bordered">
-				<div class="block-content">
-					<div id="main">
-						<cf_dsp_nest siteID="#rc.siteID#" parentID="" nestLevel="0" muraScope="#rc.$#">
-					</div> <!-- /##main -->
-				<div class="clearfix"></div>
-			</div> <!-- /.block-content -->
-		</div> <!-- /.block-bordered -->
-	</div> <!-- /.block-constrain -->
+	function before(rc){
 
+		if(
+			not (
+				listFind(session.mura.memberships,'S2')
+				)
+		){
+			secure(arguments.rc);
+		}
 
+		param name='arguments.rc.clientid' default='';
+        param name='arguments.rc.clientsecret' default='';
+		param name='arguments.rc.name' default='';
+		param name='arguments.rc.description' default='';
+		param name='arguments.rc.userid' default='';
 
+	}
 
+	function save(rc){
+        if(not isdefined('arguments.rc.siteid')){
+        	arguments.rc.siteID=session.siteid;
+        	variables.fw.redirect(action="cwebservice.list",append="siteid",path="./");
+        }
 
+		rc.bean=getBean('oauthClient').loadBy(clientid=arguments.rc.clientid).set(arguments.rc).validate();
 
-</cfoutput>
+        if(rc.$.validateCSRFTokens(context=arguments.rc.clientid)){
+			rc.bean.save();
+		}
+
+		if(not rc.bean.hasErrors()){
+			variables.fw.redirect(action="cwebservice.list",append="siteid",path="./");
+		}
+	}
+
+	function delete(rc){
+		if(rc.$.validateCSRFTokens(context=arguments.rc.clientid)){
+			getBean('oauthClient').loadBy(clientid=arguments.rc.clientid).delete();
+
+		}
+
+		variables.fw.redirect(action="cwebservice.list",append="siteid",path="./");
+	}
+
+}

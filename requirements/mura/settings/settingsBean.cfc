@@ -1264,6 +1264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="lookupDisplayObjectFilePath" output="false">
 	<cfargument name="filePath">
+	<cfargument name="customOnly" default="false">
 	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
 
 	<cfif len(request.altTheme)>
@@ -1284,19 +1285,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop array="#variables.instance.displayObjectLoopUpArray#" index="dir">
 		<cfset dirIndex=dirIndex+1>
-		<cfset result=dir & arguments.filePath>
-		<cfif fileExists(expandPath(result))>
-			<cfset setDisplayObjectFilePath(arguments.filePath,result)>
-			<cfreturn result>
-		<!---
-		<cfelseif dirIndex lt coreIndex>
-			<!--- For legacy support --->
-			<cfset result=dir & replace(arguments.filePath,'../','','all')>
+		<cfif not arguments.customonly or dirIndex lt coreIndex>
+			<cfset result=dir & arguments.filePath>
 			<cfif fileExists(expandPath(result))>
 				<cfset setDisplayObjectFilePath(arguments.filePath,result)>
 				<cfreturn result>
 			</cfif>
-		--->
 		</cfif>
 	</cfloop>
 

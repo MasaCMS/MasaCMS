@@ -45,52 +45,52 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="js.cfm">
-<cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).getIterator()>
+
+<cfset services=$.getFeed('oauthClient').setSiteID(session.siteid).getIterator()>
 
 <cfoutput>
 <div class="mura-header">
-	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains")#</h1>
+	<h1>Web Services</h1>
 
-	<cfinclude template="dsp_secondary_menu.cfm">
-
+    <div class="nav-module-specific btn-group">
+        <a class="btn" href="./?muraAction=cwebservice.edit&clientid=&siteid=&#esapiEncode('url',rc.siteid)#"><i class="mi-plus-circle"></i> Add New Web Service</a>
+    </div>
 </div> <!-- /.mura-header -->
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
-		  <cfif not chains.hasNext()>
-			  <div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"approvalchains.noapprovalchains")#</div>
+		  <cfif not rc.$.siteConfig('useSSL')>
+               <div class="alert alert-error">IMPORTANT: When using web services in production thes site should be set to use SSL (HTTPS).</div>
+          </cfif>
+
+		  <cfif not services.hasNext()>
+			  <div class="alert alert-info">There currently are no web services configured for this site.</div>
 		  <cfelse>
 			<table class="mura-table-grid">
 			<thead>
 				<tr>
-					<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"approvalchains.name")#</th>
-					<th>#application.rbFactory.getKeyValue(session.rb,"approvalchains.lastupdate")#</th>
+					<th class="var-width">Name</th>
+					<th>Last Update</th>
 					<th class="actions">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody class="nest">
-				<cfloop condition="chains.hasNext()">
-				<cfset chain=chains.next()>
+				<cfloop condition="services.hasNext()">
+				<cfset service=services.next()>
 				<tr>
 					<td class="var-width">
-						<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',chain.getName())#</a>
+						<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',service.getName())#</a>
 					</td>
 					<td>
-						<cfif isDate(chain.getLastUpdate())>
-						#LSDateFormat(chain.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(chain.getLastUpdate(),"medium")#
-						</cfif>
+						#LSDateFormat(service.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(service.getLastUpdate(),"medium")#
 					</td>
 					<td class="actions">
 						<ul>
 							<li class="edit">
-								<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.edit&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
-							</li>
-							<li class="change-sets">
-								<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',chain.getSiteID())#"><i class="mi-reorder"></i></a>
+								<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
 							</li>
 							<li class="delete">
-								<a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=chain.getChainID(),format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="mi-trash"></i></a>
+								<a title="Delete" href="./?muraAction=cwebservice.delete&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=service.getClientID(),format='url')#" onClick="return confirmDialog('Delete Web Service?',this.href)"><i class="mi-trash"></i></a>
 							</li>
 						</ul>
 					</td>

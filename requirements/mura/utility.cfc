@@ -1092,6 +1092,21 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			return NumberFormat(theSize*.001, 9) & 'kb';
 		}
 	}
+
+	function getEpochTime() {
+	  var datetime = 0;
+	  if (ArrayLen(Arguments) is 0) {
+		datetime = Now();
+	  }
+	  else {
+		if (IsDate(Arguments[1])) {
+		  datetime = Arguments[1];
+		} else {
+		  return arguments[1];
+		}
+	  }
+	  return DateDiff("s", "January 1 1970 00:00", datetime);
+	}
 </cfscript>
 
 </cfcomponent>

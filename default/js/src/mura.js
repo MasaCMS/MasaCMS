@@ -458,6 +458,20 @@
 
 	}
 
+	function generateOauthToken(grant_type,client_id,client_secret){
+		return new Promise(function(resolve,reject) {
+			get(mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret)).then(function(resp){
+				if(resp.data != 'undefined'){
+					resolve(resp.data);
+				} else {
+					if(typeof reject=='function'){
+						reject(resp);
+					}
+				}
+			})
+		});
+	}
+
 	function each(selector,fn){
 		select(selector).each(fn);
 	}
@@ -2236,6 +2250,7 @@
 			},
 			{
 			rb:{},
+			generateOAuthToken:generateOauthToken,
 			entities:{},
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,

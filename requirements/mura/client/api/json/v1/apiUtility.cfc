@@ -307,23 +307,28 @@ component extends="mura.cfobject" {
 					if(!token.exists() || token.getGrantType() != 'client_credentials'){
 						params.method='Not Available';
 						throw(type='invalidAccessToken');
-					} else if (token.getExpires() < now()){
+					} else if (token.isExpired()){
 						params.method='Not Available';
 						throw(type='accessTokenExpired');
 					} else {
-						var client=token.getClient();
-
-						if(!client.exists()){
-							params.method='Not Available';
-							throw(type='invalidAccessToken');
+						if(isJSON(token.getData())){
+							structAppend(getSession(), deserializeJSON(token.getData()), true);
 						} else {
-							var clientAccount=client.getUser();
+							var client=token.getClient();
 
-							if(!clientAccount.exists()){
-								params.method='Not Available';
+							if(!client.exists()){
+								params.method='undefined';
 								throw(type='invalidAccessToken');
 							} else {
-								clientAccount.login();
+								var clientAccount=client.getUser();
+
+								if(!clientAccount.exists()){
+									params.method='undefined';
+									throw(type='invalidAccessToken');
+								} else {
+									clientAccount.login();
+									token.setData(serializeJSON(getSession())).save();
+								}
 							}
 						}
 					}
@@ -348,7 +353,7 @@ component extends="mura.cfobject" {
 						structDelete(url,'client_id');
 						structDelete(url,'client_secret');
 						if(!clientAccount.exists()){
-							params.method='Not Available';
+							params.method='undefined';
 							structDelete(params,'client_id');
 							structDelete(params,'client_secret');
 							throw(type='authorization');
@@ -371,7 +376,8 @@ component extends="mura.cfobject" {
 									'params'=getParamsWithOutMethod(params),
 									'data'={
 										'access_token':token.getToken(),
-										'expires':token.getExpires()
+										'expires_in':token.getExpiresIn(),
+										'expires_at':token.getExpiresAt()
 									 }});
 								responseObject.setContentType('application/json; charset=utf-8');
 								responseObject.setStatus(200);
@@ -776,56 +782,56 @@ component extends="mura.cfobject" {
 		catch (authorization e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Insufficient Account Permissions'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Insufficient Account Permissions'}});
 		}
 
 		catch (invalidAccessToken e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Invalid ACCESS_TOKEN'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Invalid Access Token'}});
 		}
 
 		catch (accessTokenExpired e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='ACCESS_TOKEN has Expired'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Access Token Expired'}});
 		}
 
 		catch (disabled e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'='The JSON API is currently disabled'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='The JSON API disabled'}});
 		}
 
 		catch (invalidParameters e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'='Insufficient parameters'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Insufficient parameters'}});
 		}
 
 		catch (invalidMethodCall e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Invalid method call"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid method call"}});
 		}
 
 		catch (badRequest e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Bad Request"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Bad Request"}});
 		}
 
 		catch (invalidTokens e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Invalid CSRF tokens"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid CSRF tokens"}});
 		}
 
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=500,'message'="Unhandeld Exception",'stacktrace'=e}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
 		}
 
 	}
@@ -2084,7 +2090,7 @@ component extends="mura.cfobject" {
 		return '';
 	}
 
-	function getEndPoint(){
+	function getEndPoint(mode='json'){
 		if(request.muraApiRequest){
 			var configBean=getBean('configBean');
 			if(!isDefined('request.apiEndpoint')){
@@ -2102,7 +2108,11 @@ component extends="mura.cfobject" {
 			return request.apiEndpoint;
 		}
 
-		return variables.endpoint;
+		if(arguments.mode=='json'){
+			return variables.endpoint;
+		} else {
+			return replace(variables.endpoint,'/json/','/rest/');
+		}
 
 	}
 
