@@ -45,6 +45,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h1>Site Copy Tool</h1>
+<h1>Copy Site</h1>
 <p>The contents of the site named '<strong>#application.settingsManager.getSite(rc.fromsiteid).getSite()#</strong>' have been copied into '<strong>#application.settingsManager.getSite(rc.tositeid).getSite()#</strong>'.
 </cfoutput>
