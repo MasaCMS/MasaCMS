@@ -340,6 +340,13 @@
 								// persist open nav items
 								$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
 
+								// header-search
+								$('##mura-header-search-reveal').click(
+								function(){
+									$(this).hide();
+									$('##mura-header-search').show();
+								});
+
 								// tabdrop: trigger on page load w/ slight delay
 								if ( $( '.mura-tabs').length ) {
 									var triggerTabDrop = function(){
