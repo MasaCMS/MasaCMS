@@ -13,7 +13,7 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
 
     function save(){
         if(!len(get('clientsecret'))){
-            set('clientsecret',"000" & hash(encrypt(get('clientid'),generateSecretKey('AES'))));
+            set('clientsecret',hash(encrypt(get('clientid'),generateSecretKey('AES'))));
         }
         super.save(argumentCollection=arguments);
         return this;

@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cftry>
 		<cfif not structKeyExists(variables.iniProperties,"encryptionkey") or not len(variables.iniProperties["encryptionkey"])>
-			<cfset variables.iniProperties.encryptionkey=createUUID()>
+			<cfset variables.iniProperties.encryptionkey=generateSecretKey('AES')>
 			<cfset createobject("component","mura.IniFile").init(variables.iniPath).set( variables.iniProperties.mode, "encryptionkey", variables.iniProperties.encryptionkey )>
 		</cfif>
 		<cfcatch></cfcatch>
