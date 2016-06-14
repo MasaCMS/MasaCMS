@@ -488,8 +488,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												OR
 
 												(	tcontent.isFeature = 2
-													AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-													AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
+													AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+													AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
 												)
 											)
 									</cfif>
@@ -513,8 +513,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 																OR
 
 																	(	#talias#.isFeature = 2
-																		AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-																		AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or #talias#.FeatureStop is null)
+																		AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+																		AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or #talias#.FeatureStop is null)
 																	)
 
 																)
@@ -531,8 +531,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												OR
 
 													(	a.isFeature = 2
-														AND a.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-														AND (a.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or a.FeatureStop is null)
+														AND a.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+														AND (a.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or a.FeatureStop is null)
 													)
 
 												)
@@ -554,8 +554,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												OR
 
 													(	tcontentcategoryassign.isFeature = 2
-														AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-														AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)
+														AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+														AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)
 													)
 
 												)
@@ -623,8 +623,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								OR
 
 								(	tcontent.isFeature = 2
-									AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-									AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
+									AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+									AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
 								)
 							)
 					</cfif>
@@ -648,8 +648,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												OR
 
 													(	#talias#.isFeature = 2
-														AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-														AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or #talias#.FeatureStop is null)
+														AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+														AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or #talias#.FeatureStop is null)
 													)
 
 												)
@@ -666,8 +666,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								OR
 
 									(	a.isFeature = 2
-										AND a.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-										AND (a.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or a.FeatureStop is null)
+										AND a.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+										AND (a.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or a.FeatureStop is null)
 									)
 
 								)
@@ -689,8 +689,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								OR
 
 									(	tcontentcategoryassign.isFeature = 2
-										AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-										AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)
+										AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+										AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)
 									)
 
 								)
@@ -791,18 +791,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  (
 					  	(tcontent.Display = 2
 					  <cfif arguments.menuType neq 'Calendar'>
-					  AND (tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">)
-					  AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
+					  AND (tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">)
+					  AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
 					  	)
 					 <cfelse>
 					  AND (
 					  		(
-					  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-					  			AND tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',1,nowAdjusted)#">
+					  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+					  			AND tcontent.DisplayStart < <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',1,nowAdjusted)#">
 					  		)
 					  	OR (
-					  			tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-					  			AND tcontent.DisplayStop < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',1,nowAdjusted)#">
+					  			tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+					  			AND tcontent.DisplayStop < <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',1,nowAdjusted)#">
 					  		)
 					  	   )
 					  	  )
@@ -921,8 +921,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 and isNav=1
 	 and (display=1
 	 	 or
-	 	 (display=2 AND (DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)
-					  AND (DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
+	 	 (display=2 AND (DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#now()#">)
+					  AND (DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#now()#"> or tcontent.DisplayStop is null)
 		)
 		)
 
@@ -997,8 +997,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	AND draft.lastUpdate>active.lastupdate
 	and draft.changesetID is null
 	and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 
@@ -1023,8 +1023,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and active.contentid is null
 		and draft.changesetID is null
 		and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-		<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+		<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 
@@ -1049,8 +1049,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	AND draft.lastUpdate>active.lastupdate
 	AND draft.changesetID is null
 	AND draft.lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	<cfif isdate(arguments.stopDate)>AND draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>AND draft.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>AND draft.lastUpdate <=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>AND draft.lastUpdate >=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and  module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND active.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 
@@ -1073,8 +1073,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		AND active.contentid is null
 		AND draft.changesetID is null
 		AND draft.lastUpdateByID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-		<cfif isdate(arguments.stopDate)>AND draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-		<cfif isdate(arguments.startDate)>AND draft.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+		<cfif isdate(arguments.stopDate)>AND draft.lastUpdate <=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+		<cfif isdate(arguments.startDate)>AND draft.lastUpdate >=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and module.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
@@ -1123,8 +1123,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not getCurrentUser().isAdminUser() and not getCurrentUser().isSuperUser()>
 		and tapprovalrequests.groupid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.membershipids#">)
 	</cfif>
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and active.lastUpdate >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 	GROUP BY draft.contentHistID, module.Title, draft.ModuleID, draft.ParentID, draft.Type, draft.subType,
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID,
 	draft.SiteID, draft.targetparams, draft.lastUpdate,
@@ -1177,8 +1177,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tapprovalrequests.status = 'Pending'
 	and tapprovalrequests.userid = <cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.userid#">
 
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and active.lastUpdate >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 	GROUP BY draft.contentHistID,module.Title, draft.ModuleID, draft.ParentID, draft.Type, draft.subType,
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID,
 	draft.SiteID, draft.targetparams, draft.lastUpdate,
@@ -1787,8 +1787,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						  tcontent.Display = 2
 							AND
 							(
-								(tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-								AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
+								(tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#now()#">
+								AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#now()#"> or tcontent.DisplayStop is null)
 								)
 								OR  tparent.type='Calendar'
 							)
@@ -1902,8 +1902,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						  tcontent.Display = 2
 							AND
 							(
-								(tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-								AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
+								(tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#now()#">
+								AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#now()#"> or tcontent.DisplayStop is null)
 								)
 								OR  tparent.type='Calendar'
 							)
@@ -2095,7 +2095,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  	tcontent.Display = 2
 			  	AND (
 				  		(
-				  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#">
+				  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.today#">
 							AND tcontent.parentID in (select contentID from tcontent
 															where type='Calendar'
 															#renderActiveClause("tcontent",arguments.siteID)#
@@ -2104,10 +2104,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 )
 					   OR
 					   	(
-					   		tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#">
+					   		tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.today#">
 							AND
 							(
-								tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#">
+								tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.today#">
 								or tcontent.DisplayStop is null
 							)
 					   )
@@ -2221,8 +2221,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
 
-	<cfif isdate(arguments.stopDate)>and lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and lastUpdate <=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and lastUpdate >=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	order by lastupdate desc
 
@@ -2324,8 +2324,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				AND
 				 (
 					(
-						tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-						AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
+						tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#now()#">
+						AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#now()#"> or tcontent.DisplayStop is null)
 					)
 					<cfif arguments.moduleID eq '00000000000000000000000000000000000'>OR tparent.type='Calendar'</cfif>
 				  )
@@ -2404,8 +2404,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and
 	active=1
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	and expires <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",1,now())#">
-	and expires > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",-12,now())#">
+	and expires <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd("m",1,now())#">
+	and expires > <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd("m",-12,now())#">
 
 	UNION
 
@@ -2417,8 +2417,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.active=1
 	and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	and tcontentassignments.userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	and tcontent.expires <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",1,now())#">
-	and tcontent.expires > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",-12,now())#">
+	and tcontent.expires <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd("m",1,now())#">
+	and tcontent.expires > <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd("m",-12,now())#">
 	</cfquery>
 
 
@@ -2580,7 +2580,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 	AND
 					  		(
 					  			tcontent.DisplayStart >= #renderDateTimeArg(arguments.menuDateTime)#
-					  			OR (tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)# AND tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)#)
+					  			OR (
+									tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)# AND tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)#
+								)
 					  		)
 					 </cfcase>
 					 <cfcase value="ReleaseDate">
@@ -2643,7 +2645,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						(
 						  	(
 						  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#)
+						  		AND  tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+							)
 
 						  	OR
 					  		(
@@ -2706,8 +2709,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 							) AND (
 
-							    (
-							        tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#)
+							    	(
+							        	tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#
+									)
 							    OR
 							        (
 							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#
@@ -2746,7 +2750,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfif isDate(arguments.date)>
         	<cfif variables.configBean.getCompiler() eq "Adobe" and variables.configBean.getDbType() eq "MSSQL">
                 <cfreturn "'" & dateFormat(createODBCDateTime(arguments.date), "yyyy-mm-dd") & 'T' & timeFormat(createODBCDateTime(arguments.date), "HH:mm:ss.l") & "'">
-        	<cfelse>
+        	<cfelseif variables.configBean.getDbType() eq "Oracle">
+				<cfreturn "to_date('#dateFormat(arguments.date,"yyyy-mm-dd")# #timeFormat(arguments.date,"hh:mm:ss")#','YYYY-MM-DD HH:MI:SS')">
+			<cfelse>
         		<cfreturn createODBCDateTime(arguments.date)>
         	</cfif>
         <cfelse>
@@ -2784,6 +2790,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn ucase(arguments.value)>
 	<cfelse>
 		<cfreturn arguments.value>
+	</cfif>
+</cffunction>
+
+<cffunction name="renderDateTimeParamType">
+	<cfif variables.configBean.getDBType() eq 'Oracle'>
+		<cfreturn "cf_sql_date">
+	<cfelse>
+		<cfreturn "cf_sql_timestamp">
 	</cfif>
 </cffunction>
 

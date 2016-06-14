@@ -411,8 +411,17 @@ component extends="mura.cfobject" {
 
 			request.returnFormat='JSON';
 
-			if (!isDefined('params.method') && arrayLen(pathInfo) && isValid('variableName',pathInfo[1]) && isDefined('#pathInfo[1]#')){
-				params.method=pathInfo[1];
+			if (!isDefined('params.method') && arrayLen(pathInfo)){
+				if(isValid('variableName',pathInfo[1])){
+					if(pathInfo[1]==variables.siteid){
+						if(arraylen(pathInfo) > 1 && isValid('variableName',pathInfo[2]) && isDefined('#pathInfo[2]#')){
+							params.method=pathInfo[2];
+							arrayDeleteAt(pathInfo,2);
+						}
+					} else if (isDefined('#pathInfo[1]#')){
+						params.method=pathInfo[1];
+					}
+				}
 			}
 
 			if (isDefined('params.method') && isDefined('#params.method#')){
@@ -428,6 +437,8 @@ component extends="mura.cfobject" {
 				if(arrayLen(pathInfo) > 1){
 					parseParamsFromPath(pathInfo,params,2);
 				}
+
+				param name="params.siteid" default=variables.siteid;
 
 				if(isDefined('#params.method#')){
 
@@ -446,7 +457,6 @@ component extends="mura.cfobject" {
 			if(!isDefined('params.method')){
 				params.method="undefined";
 			}
-
 
 			if(arrayLen(pathInfo)){
 				params.siteid=pathInfo[1];
