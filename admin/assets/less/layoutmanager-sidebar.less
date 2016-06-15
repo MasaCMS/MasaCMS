@@ -32,6 +32,9 @@
 	}
 }
 
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: none !important;
+}
 
 /*
 	DEV NOTE
@@ -78,7 +81,7 @@
 
 body.configurator-wrapper #configuratorContainer h1,
 .mura-sidebar__objects-list__object-group h3 {
-	margin: 23px 0 15px 0;
+	margin: 0 0 15px 0;
 	padding: 0;
 	font-size: 24px;
 	font-weight: normal;
@@ -103,7 +106,7 @@ body.configurator-wrapper #mura-content{
 	}
 }
 .mura-sidebar__objects-list__object-group-instruction {
-	background-color: #707070;
+	background-color: #6f6f6f;
 	font-size: 13px;
 	margin-bottom: 3px;
 	padding: 10px 15px;
@@ -120,7 +123,7 @@ body.configurator-wrapper #mura-content{
 		margin-top: 10px;
 	
 		&:not([class*=btn-]){
-	    background-color: #333;
+	    background-color: #6f6f6f;
 	    background-image: none;
 	    border-color: transparent;
 	    border-radius: 2px;
@@ -251,7 +254,8 @@ body.configurator-wrapper{
 				background-image:none;
 				text-shadow:none;
 			}
-			.btn-primary {
+			.btn-primary,
+			.mura-primary {
 			  color: #ffffff;
 			  background-color: #4485f1;
 			  border-color: #4882cc;
@@ -260,14 +264,14 @@ body.configurator-wrapper{
 
 			// unclassed buttons default
 			.btn:not([class*="btn-"]){
-				.border-radius(2px);
+				border-radius:2px;
 				background-image:none;
 				text-shadow:none;
 			  color: #f3f3f3;
 			  background-color: #333;
 			  border-color: transparent;
 			  float: left;
-			  margin: 4px 0;
+			  margin: 8px 0 4px 0;
 		   }
 
 				.btn:not([class*="btn-"]) + *{
@@ -338,8 +342,17 @@ body.configurator-wrapper{
 				margin:0;
 				padding:0;
 				.btn{
-					.btn-primary;
 					background-image:none !important;
+					clear: none !important;
+					float: left !important;
+					margin:0 4px 0 0;
+					&.mura-primary{
+						background-color: #4485f1 !important;
+					}
+					&.mura-delete{
+						background-color: #6f6f6f;
+			  	  float: right !important;
+					}
 				}
 			}
 
@@ -395,6 +408,10 @@ body.configurator-wrapper{
 	z-index: 499997 !important;
 	overflow: scroll;
 	transition: left 1s ease;
+
+	#mura-objects-closeregions-btn{
+		float: right !important;
+	}
 
 	.btn,
 	> div h3,
