@@ -259,7 +259,7 @@
 		var instanceid='#esapiEncode("javascript",rc.instanceid)#';
 
 		$('body').addClass('no-constrain');
-		
+
 		function reloadImg(id) {
 		   var obj = document.getElementById(id);
 		   var src = obj.src;
@@ -437,7 +437,7 @@
 					            modal: true,
 					            title: title,
 					            close: function(){ $dialog.remove(); },
-					            width: jcrop_api.getWidgetSize()[0]+30,
+					            width: jcrop_api.getWidgetSize()[0]+75,
 					            resizable: false,
 					        });
 					        $('##action-modal').remove();
