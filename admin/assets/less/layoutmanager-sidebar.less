@@ -32,6 +32,9 @@
 	}
 }
 
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: none !important;
+}
 
 /*
 	DEV NOTE
@@ -78,7 +81,7 @@
 
 body.configurator-wrapper #configuratorContainer h1,
 .mura-sidebar__objects-list__object-group h3 {
-	margin: 23px 0 15px 0;
+	margin: 0 0 15px 0;
 	padding: 0;
 	font-size: 24px;
 	font-weight: normal;
@@ -93,7 +96,7 @@ body.configurator-wrapper #mura-content{
 	margin-right: 0;
 }
 .mura-sidebar__objects-list__object-group-heading {
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: normal;
 	color: #f3f3f3;
 	line-height: 1.2;
@@ -101,6 +104,12 @@ body.configurator-wrapper #mura-content{
 	+ .mura-sidebar__object-group-items{
 	margin-top: 12px;
 	}
+}
+.mura-sidebar__objects-list__object-group-instruction {
+	background-color: #6f6f6f;
+	font-size: 13px;
+	margin-bottom: 3px;
+	padding: 10px 15px;
 }
 
 /* legacy, initial set */
@@ -111,7 +120,21 @@ body.configurator-wrapper #mura-content{
 	.border-radius(0);
 
 	+ .btn{
-		margin-top: 22px;
+		margin-top: 10px;
+	
+		&:not([class*=btn-]){
+	    background-color: #6f6f6f;
+	    background-image: none;
+	    border-color: transparent;
+	    border-radius: 2px;
+	    color: #f3f3f3;
+
+	    i{
+    		margin-right: 3px;
+	    }
+
+	    }
+
 	}
 
 }
@@ -130,7 +153,7 @@ body.configurator-wrapper #mura-content{
 	background-color: #333;
 	color: #d8d8d8;
 	padding: 8px 12px;
-	font-size: 12px;
+	font-size: 13px;
 	border: none;
 	cursor: pointer;
 	outline: none;
@@ -142,10 +165,10 @@ body.configurator-wrapper #mura-content{
 	display:block;
 	padding: 10px 16px;
 	margin-bottom: 2px;
-	font-size: 12px;
+	font-size: 13px;
 	color: #d8d8d8;
 	background-color: #565656;
-	font-weight: bold;
+	font-weight: normal;
   border: none;
   border-collapse: collapse;
 }
@@ -222,7 +245,7 @@ body.configurator-wrapper{
 
 			// button styles
 			.btn {
-				font-size: 12px;
+				font-size: 13px;
 				padding: 6px 12px;
 				.border-radius(2px);
 				-webkit-box-shadow: none;
@@ -231,7 +254,8 @@ body.configurator-wrapper{
 				background-image:none;
 				text-shadow:none;
 			}
-			.btn-primary {
+			.btn-primary,
+			.mura-primary {
 			  color: #ffffff;
 			  background-color: #4485f1;
 			  border-color: #4882cc;
@@ -240,14 +264,14 @@ body.configurator-wrapper{
 
 			// unclassed buttons default
 			.btn:not([class*="btn-"]){
-				.border-radius(2px);
+				border-radius:2px;
 				background-image:none;
 				text-shadow:none;
 			  color: #f3f3f3;
 			  background-color: #333;
 			  border-color: transparent;
 			  float: left;
-			  margin: 4px 0;
+			  margin: 8px 0 4px 0;
 		   }
 
 				.btn:not([class*="btn-"]) + *{
@@ -293,7 +317,7 @@ body.configurator-wrapper{
 				background-color: #333;
 				color: #d8d8d8;
 				padding: 8px 12px;
-				font-size: 12px;
+				font-size: 13px;
 				border: none;
 				cursor: pointer;
 				outline: none;
@@ -318,8 +342,17 @@ body.configurator-wrapper{
 				margin:0;
 				padding:0;
 				.btn{
-					.btn-primary;
 					background-image:none !important;
+					clear: none !important;
+					float: left !important;
+					margin:0 4px 0 0;
+					&.mura-primary{
+						background-color: #4485f1 !important;
+					}
+					&.mura-delete{
+						background-color: #6f6f6f;
+			  	  float: right !important;
+					}
 				}
 			}
 
@@ -340,7 +373,7 @@ body.configurator-wrapper{
 				text-shadow:none;
 				.border-radius(0);
 					box-shadow:none;
-				font-size: 12px;
+				font-size: 13px;
 				padding: 8px 12px;
 			  color: #d8d8d8;
 			}
@@ -376,6 +409,10 @@ body.configurator-wrapper{
 	overflow: scroll;
 	transition: left 1s ease;
 
+	#mura-objects-closeregions-btn{
+		float: right !important;
+	}
+
 	.btn,
 	> div h3,
 	.mura-region__item h4{
@@ -395,7 +432,7 @@ body.configurator-wrapper{
 	margin: 0 0 15px 0;
 	padding: 0;
 	font-size: 24px;
-	font-weight: 400;
+	font-weight: normal;
 	color: #777;
 	line-height: 1.2;
 }
@@ -412,7 +449,7 @@ body.configurator-wrapper{
 	margin: 0 0 .5em 0;
 	padding: 0;
 	font-size: 14px;
-	font-weight: 700;
+	font-weight: normal;
 	color: #777;
 	line-height: 1.2;
 }

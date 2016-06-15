@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 				</cfsilent>
 				<select name="source" id="boundattribute">
-					<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectboundattribute')#e</option>
+					<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectboundattribute')#</option>
 					<cfloop from="1" to="#arrayLen(options)#" index="i">
 						<option value="#esapiEncode('html_attr',options[i][1])#"<cfif objectParams.source eq options[i][1]> selected</cfif>>#esapiEncode('html',options[i][2])#</option>
 					</cfloop>
