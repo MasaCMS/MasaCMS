@@ -34,7 +34,8 @@
 			.inline-block() !important;
 			}
 
-		&.mura-inactive, &.mura-inactive:hover {
+		&.mura-inactive, 
+		&.mura-inactive:hover {
 
 			outline: 0 !important;
 			min-height: 0 !important;
@@ -42,10 +43,13 @@
 			.mura-editable-label { display: none !important; }
 
 			.mura-editable-attribute {
-
 				outline: 0px !important;
 
-				&:hover, &:mura-active, &:focus { outline: 0px !important; }
+				&:hover, 
+				&.mura-active, 
+				&:focus { 
+					outline: 0px !important; 
+					}
 
 				}
 
