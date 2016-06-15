@@ -81,12 +81,13 @@
 
 body.configurator-wrapper #configuratorContainer h1,
 .mura-sidebar__objects-list__object-group h3 {
+	color: #f3f3f3;
+	float:left;
+	font-size: 20px;
+	font-weight: normal;
+	line-height: 1.2;
 	margin: 0 0 15px 0;
 	padding: 0;
-	font-size: 24px;
-	font-weight: normal;
-	color: #f3f3f3;
-	line-height: 1.2;
 }
 
 body.configurator-wrapper #mura-content{
@@ -239,9 +240,15 @@ body.configurator-wrapper{
 
 			#configuratorHeader{
 				i{
-				min-width: 30px;
+				min-width: 24px;
 				}
 			}
+
+			.mura-close{
+				float: right !important;
+				margin: 0 0 0 4px !important;
+			}
+
 
 			// button styles
 			.btn {
@@ -339,6 +346,7 @@ body.configurator-wrapper{
 			}
 
 			.form-actions{
+				clear:both;
 				margin:0;
 				padding:0;
 				.btn{
