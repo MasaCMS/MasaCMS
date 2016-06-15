@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 	<div class="mura-header">
 		<h1><cfif isDefined('url.addsite')>Add Site<cfelse>Site Settings</cfif></h1>
 	<cfif len(rc.siteid)>
-			<div class="nav-module-specific btn-group"> <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.siteid)#"><i class="mi-trash"></i> Trash Bin</a>
+			<div class="nav-module-specific btn-group"> 
 			<cfif rc.action eq "updateFiles">
 				<a class="btn" href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
 			<cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
@@ -65,6 +65,7 @@ to your own modified versions of Mura CMS.
 			<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
 				<a  class="btn" href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="mi-share"></i> Export Static HTML (BETA)</a>
 			</cfif>
+			<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-list-alt"></i> Class Extensions</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.siteid)#"><i class="mi-trash"></i> Trash Bin</a>
 		</div>
 	</cfif>
 	</div><!--- /.mura-header --->
