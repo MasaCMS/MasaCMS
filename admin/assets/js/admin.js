@@ -1137,6 +1137,8 @@ function setFileSelectors() {
 
 function alertDialog(message,okAction,title,width) {
 
+	var width = width || 450;
+
 	if(typeof message == 'object'){
 		var config=message;
 		message=config.message || 'Message not defined';
@@ -1146,23 +1148,27 @@ function alertDialog(message,okAction,title,width) {
 	}
 
 	title= title || 'Alert';
-	width= width || null;
 
 	var dialogConfig={
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
-			Ok: function() {
-				$(this).dialog('close');
-				if(okAction){
-					if(typeof(okAction) == 'function') {
-						okAction();
-					} else if (typeof(_okAction) == 'string'){
-						actionModal(okAction);
+			Ok: 
+				{click: function() {
+						$(this).dialog('close');
+						if(okAction){
+							if(typeof(okAction) == 'function') {
+								okAction();
+							} else if (typeof(_okAction) == 'string'){
+								actionModal(okAction);
+							}
+						}
 					}
-				}
-			}
+				, text: 'OK'
+				, class: 'mura-primary'
+				} // /ok
+
 		}
 	};
 
@@ -1177,7 +1183,9 @@ function alertDialog(message,okAction,title,width) {
 	return false;
 }
 
-function confirmDialog(message, yesAction, noAction,title,width) {
+function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noButtonText) {
+
+	var width = width || 450;
 
 	if(typeof message == 'object'){
 		var config=message;
@@ -1197,21 +1205,17 @@ function confirmDialog(message, yesAction, noAction,title,width) {
 
 	title= title || 'Alert';
 
+	yesButtonText = yesButtonText || 'OK';
+	noButtonText = noButtonText || 'Cancel';
+
 	var dialogConfig={
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
-			'Yes': function() {
-				$(this).dialog('close');
-				if(typeof(yesAction) == 'function') {
-					yesAction();
-				} else {
-					actionModal(yesAction);
-				}
 
-			},
-			'No': function() {
+		'No': {
+			click: function() {
 				if(typeof(noAction) != 'undefined') {
 					if(typeof(noAction) == 'function') {
 						noAction();
@@ -1222,6 +1226,22 @@ function confirmDialog(message, yesAction, noAction,title,width) {
 					$(this).dialog('close');
 				}
 			}
+			,text: noButtonText
+			,class: 'mura-cancel'
+			} // /no
+			
+			,'Yes': {
+				click: function() {
+					$(this).dialog('close');
+					if(typeof(yesAction) == 'function') {
+						yesAction();
+					} else {
+						actionModal(yesAction);
+					}
+				}
+				,text: yesButtonText
+				,class: 'mura-primary'
+			} // /yes
 		}
 	};
 
