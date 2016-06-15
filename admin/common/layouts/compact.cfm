@@ -175,8 +175,10 @@
 				if ( $( '.mura-tabs').length ) {
 					var triggerTabDrop = function(){
 						setTimeout(function(){
+							console.log('tabdropping');
 							$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 								$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
+								$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');	
 						}, 10);							
 					}
 					// run on page load
