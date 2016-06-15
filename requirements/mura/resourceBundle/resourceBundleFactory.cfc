@@ -86,6 +86,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getResourceBundle(arguments.locale).getUtils().init(arguments.locale) />
 </cffunction>
 
+<cffunction name="getKeyStructure" returntype="any" access="public" output="false">
+	<cfargument name="locale"  type="string" required="true" default="#variables.locale#">
+	<cfargument name="key">
+	<cfreturn getResourceBundle(arguments.locale).getKeyStructure(arguments.key) />
+</cffunction>	
+
 <cffunction name="getKeyValue" returnType="String" output="false">
 	<cfargument name="locale" required="true" default="#variables.locale#">
 	<cfargument name="key">

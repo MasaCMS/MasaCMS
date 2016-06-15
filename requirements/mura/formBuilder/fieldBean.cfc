@@ -48,19 +48,23 @@ to your own modified versions of Mura CMS.
 	<cfproperty name="DatasetID" type="uuid" default="" maxlength="35" />
 	<cfproperty name="Name" type="string" default="" maxlength="50" />
 	<cfproperty name="Label" type="string" default="" maxlength="50" />
-	<cfproperty name="Rblabel" type="string" default="" maxlength="100" />
-	<cfproperty name="Cssstyle" type="string" default="" maxlength="50" />
-	<cfproperty name="placeholder" type="string" default="" maxlength="255" />
 	<cfproperty name="displaylegend" type="numeric" default="1" />
-	<cfproperty name="ToolTip" type="string" default="" maxlength="250" />
 	<cfproperty name="OrderNo" type="numeric" default="0" required="true" />
-	<cfproperty name="IsLocked" type="boolean" default="0" required="true" />
 	<cfproperty name="IsActive" type="boolean" default="0" required="true" />
 	<cfproperty name="IsDeleted" type="boolean" default="0" required="true" />
 	<cfproperty name="IsRequired" type="boolean" default="0" required="true" />
 	<cfproperty name="Type" type="string" default="COMMON" required="true" maxlength="20" />
 	<cfproperty name="IsEntryType" type="string" default="SINGLE" required="true" maxlength="50" />
+
+	<cfproperty name="SectionID" type="uuid" default="00000000-0000-0000-0000000000000000" required="true" maxlength="35" />
+
+	<cfproperty name="Rblabel" type="string" default="" maxlength="100" />
+	<cfproperty name="Cssstyle" type="string" default="" maxlength="50" />
+	<cfproperty name="placeholder" type="string" default="" maxlength="255" />
+	<cfproperty name="ToolTip" type="string" default="" maxlength="250" />
 	<cfproperty name="ValidateType" type="string" default="" maxlength="35" />
+	<cfproperty name="IsLocked" type="boolean" default="0" required="true" />
+	<cfproperty name="RelatedID" type="uuid" default="" maxlength="35" />
 	<cfproperty name="ValidateRegex" type="string" default="" maxlength="100" />
 	<cfproperty name="ValidateMessage" type="string" default="" maxlength="200" />
 	<cfproperty name="SectionID" type="uuid" default="00000000-0000-0000-0000000000000000" required="true" maxlength="35" />
@@ -119,26 +123,29 @@ to your own modified versions of Mura CMS.
 		<cfset setDatasetID( arguments.DatasetID ) />
 		<cfset setName( arguments.Name ) />
 		<cfset setLabel( arguments.Label ) />
+		<cfset setOrderNo( arguments.OrderNo ) />
+		<cfset setIsActive( arguments.IsActive ) />
+		<cfset setIsRequired( arguments.IsRequired ) />
+		<cfset setType( arguments.Type ) />
+		<cfset setIsEntryType( arguments.IsEntryType ) />
+		<cfset setSectionID( arguments.SectionID ) />
+		<cfset setRemoteID( arguments.RemoteID ) />
+
+
+		<cfset setDateCreate( arguments.DateCreate ) />
+		<cfset setDateLastUpdate( arguments.DateLastUpdate ) />
+		<cfset setIsDeleted( arguments.IsDeleted ) />
 		<cfset setRblabel( arguments.Rblabel ) />
 		<cfset setCssstyle( arguments.Cssstyle ) />
 		<cfset setPlaceHolder( arguments.placeholder ) />
 		<cfset setToolTip( arguments.ToolTip ) />
-		<cfset setOrderNo( arguments.OrderNo ) />
 		<cfset setIsLocked( arguments.IsLocked ) />
-		<cfset setIsActive( arguments.IsActive ) />
-		<cfset setIsDeleted( arguments.IsDeleted ) />
-		<cfset setIsRequired( arguments.IsRequired ) />
-		<cfset setType( arguments.Type ) />
-		<cfset setIsEntryType( arguments.IsEntryType ) />
 		<cfset setValidateType( arguments.ValidateType ) />
 		<cfset setValidateMessage( arguments.ValidateMessage ) />
 		<cfset setValidateRegex( arguments.ValidateRegex ) />
 		<cfset setSectionID( arguments.SectionID ) />
 		<cfset setRelatedID( arguments.RelatedID ) />
 		<cfset setParams( arguments.Params ) />
-		<cfset setRemoteID( arguments.RemoteID ) />
-		<cfset setDateCreate( arguments.DateCreate ) />
-		<cfset setDateLastUpdate( arguments.DateLastUpdate ) />
 		
 		<cfset setFieldType( arguments.FieldType ) />
 		<cfset setValue( arguments.Value ) />
