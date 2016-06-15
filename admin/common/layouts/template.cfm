@@ -340,12 +340,21 @@
 								// persist open nav items
 								$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
 
+								// header-search
+								$('##mura-header-search-reveal').click(
+								function(){
+									$(this).hide();
+									$('##mura-header-search').show();
+								});
+
 								// tabdrop: trigger on page load w/ slight delay
 								if ( $( '.mura-tabs').length ) {
 									var triggerTabDrop = function(){
 										setTimeout(function(){
+											console.log('tabdropping');
 											$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 												$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
+												$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');	
 										}, 10);							
 									}
 									// run on page load

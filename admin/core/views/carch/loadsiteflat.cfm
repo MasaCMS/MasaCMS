@@ -390,6 +390,8 @@ if(len($.siteConfig('customTagGroups'))){
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")#</h2>
 </cfif>
 
+	<cfif iterator.hasNext()>
+		
 	<div class="navSort">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:&nbsp;</h3>
 		<ul class="nav nav-pills">
@@ -416,10 +418,9 @@ if(len($.siteConfig('customTagGroups'))){
 			<!---<th nowrap class="actions">&nbsp;</th>--->
 		</tr>
 		<cfset started=false>
-	 	<cfif iterator.hasNext()>
+
 		<cfloop condition="iterator.hasNext()">
 		<cfsilent>
-
 		<cfset item=iterator.next()>
 		<cfset crumbdata=application.contentManager.getCrumbList(item.getContentID(), item.getSiteID())/>
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
@@ -602,15 +603,13 @@ if(len($.siteConfig('customTagGroups'))){
 				</ul>
 			</tr>
 		</cfloop>
-		</cfif>
-		<cfif not started>
-			<tr>
-				<td colspan="3">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</td>
-			</tr>
-		</cfif>
 	</table>
 
 	#pagination#
+
+	<cfelse>
+		<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</div>
+	</cfif>
 </div>
 
 <div class="sidebar">

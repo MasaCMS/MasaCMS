@@ -1,9 +1,8 @@
 
 body {
   background-color: #f5f5f5;
-  font-family: "Source Sans Pro","Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif; 
+  font-family: "montserratlight","montserratregular","Helvetica Neue",Helvetica,Arial,sans-serif; 
 }
-
 a {
   color: #6498cb;
 }
@@ -62,9 +61,9 @@ a.text-primary-light:hover,a.text-primary-light:active,a.text-primary-light:focu
 
 .mura-header h1,
 .mura-header h1:not([class]) {
-  font-weight: 600;
-  font-size: 34px;
-  letter-spacing: -1px;
+  font-weight: bold;
+  font-size: 32px;
+  letter-spacing: 0;
   white-space: nowrap;
 }
 
@@ -199,12 +198,15 @@ a.bg-primary-lighter:hover,a.bg-primary-lighter:focus {
   color: #ff3405;
   background-color: #fff;
 }
-
 .nav-module-specific * > .badge{ 
     background-color: #c0c0c0;
     margin-left: 8px;
 }
 
+label{
+  font-family: "montserratregular","Helvetica Neue",Helvetica,Arial,sans-serif; 
+  font-weight: normal;
+}
 .label-default{
   background-color: #f1f1f1;
 }
@@ -235,6 +237,7 @@ a.bg-primary-lighter:hover,a.bg-primary-lighter:focus {
 .nav-pills > li > a{
   border: 1px solid #eee; 
   background-color: #fff;
+  font-weight: normal;
 }
 
 .nav-pills > li > a + a{
@@ -428,6 +431,9 @@ a.list-group-item:hover,a.list-group-item:focus {
   padding-bottom: 45px;
 }
 
+.nav-main{
+  font-size:15px;
+}
 .nav-main-header {
   background-color: #333;
 }
@@ -441,23 +447,23 @@ a.list-group-item:hover,a.list-group-item:focus {
   }
 }
 .form-material.form-material-primary>.form-control:focus {
-  -webkit-box-shadow: 0 2px 0 #ff3405;
-  box-shadow: 0 2px 0 #ff3405;
+  -webkit-box-shadow: 0 2px 0 #b1b1b1;
+  box-shadow: 0 2px 0 #b1b1b1;
 }
 
 .form-material.form-material-primary>.form-control:focus+label {
-  color: #ff3405;
+  color: #b1b1b1;
 }
 
 .form-material.form-material-primary>.form-control:focus~.input-group-addon {
-  color: #ff3405;
-  -webkit-box-shadow: 0 2px 0 #ff3405;
-  box-shadow: 0 2px 0 #ff3405;
+  color: #b1b1b1;
+  -webkit-box-shadow: 0 2px 0 #b1b1b1;
+  box-shadow: 0 2px 0 #b1b1b1;
 }
 
 .css-checkbox-primary input:checked+span {
-  background-color: #ff3405;
-  border-color: #ff3405;
+  background-color: #b1b1b1;
+  border-color: #b1b1b1;
 }
 
 .css-radio-primary input:checked+span:after,
@@ -484,6 +490,8 @@ a.list-group-item:hover,a.list-group-item:focus {
 
 .block > .nav-tabs > li  a{
   text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight:normal !important;
 }
 
 .block > .nav-tabs > li.active > a,

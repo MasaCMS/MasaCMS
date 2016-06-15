@@ -9,7 +9,7 @@
 			<div id="mura-sidebar-objects" class="mura-sidebar__objects-list">
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<h3>Content Objects</h3>
+						<div class="mura-sidebar__objects-list__object-group-instruction">Drag to Page:</div>
 					</div>
 					<div class="mura-sidebar__objects-list__object-group-items">
 						<cfset contentRendererUtility=$.getBean('contentRendererUtility')>
@@ -39,11 +39,11 @@
 
 					<cfif $.content('type') neq 'Variation'>
 						<cfif this.legacyobjects>
-							<button id="mura-objects-legacy-btn" class="btn btn-primary"><i class="mi-object-ungroup"></i> Legacy Objects</button>
+							<button id="mura-objects-legacy-btn" class="btn mura-primary"><i class="mi-object-ungroup"></i> Legacy Objects</button>
 							<br/><br/>
 						</cfif>
 						<cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
-							<button id="mura-objects-openregions-btn" class="btn btn-primary"><i class="mi-object-group"></i> Additional Display Regions</button>
+							<button id="mura-objects-openregions-btn" class="btn"><i class="mi-columns"></i> Additional Display Regions</button>
 						</cfif>
 					</cfif>
 				</div>
@@ -52,7 +52,7 @@
 			<div id="mura-sidebar-objects-legacy" class="mura-sidebar__objects-list" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<button class="mura-objects-back-btn btn btn-primary">
+						<button class="mura-objects-back-btn btn mura-primary">
 							<i class="mi-arrow-left"></i> Back
 						</button>
 						<h3>Legacy Objects</h3>
@@ -95,7 +95,7 @@
 				<!---
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-					<a href="##" class="mura-objects-back-btn" class="btn btn-primary"><i class="mi-arrow-left"></i> Back</a>
+					<a href="##" class="mura-objects-back-btn" class="btn mura-primary"><i class="mi-arrow-left"></i> Back</a>
 					</div>
 				</div>
 				--->
@@ -108,7 +108,7 @@
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<h3>Editing Content</h3>
-						<button class="mura-objects-back-btn btn btn-primary" id="mura-deactivate-editors"><i class="mi-check"></i> Done Editing</button>
+						<button class="mura-objects-back-btn btn mura-primary" id="mura-deactivate-editors"><i class="mi-check"></i> Done Editing</button>
 					</div>
 				</div>
 
@@ -127,7 +127,7 @@
 <cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
 	<div class="mura__layout-manager__display-regions">
 		<div class="mura__layout-manager__display-regions__X">
-			<p><button id="mura-objects-closeregions-btn" class="btn btn-primary">Close <i class="mi-arrow-right"></i></button><p>
+			<p><button id="mura-objects-closeregions-btn" class="btn mura-primary">Close <i class="mi-angle-right"></i></button><p>
 			<h3>Additional Display Regions</h3>
 
 			<cfset regionNames=$.siteConfig('columnNames')>

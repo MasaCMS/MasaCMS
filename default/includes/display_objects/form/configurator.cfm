@@ -107,9 +107,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var selector=$('##availableObjectSelector');
 			var val=eval('(' + selector.val() + ')').objectid;
 			if(val && val !='unconfigured'){
-		 		$('##editBtn').html('Edit');
+		 		$('##editBtn').html('<i class="mi-pencil"></i>Edit');
 		 	} else {
-		 		$('##editBtn').html('Create New');
+		 		$('##editBtn').html('<i class="mi-plus-circle"></i> Create New');
 		 	}
 
 			/*

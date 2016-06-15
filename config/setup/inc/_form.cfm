@@ -206,7 +206,7 @@ to your own modified versions of Mura CMS.
 		</div>
 		<div class="clear-both"></div>
 
-		<input type="text" name="production_encryptionkey" value="#FORM.production_encryptionkey#" />
+		<input type="hidden" name="production_encryptionkey" value="#FORM.production_encryptionkey#" />
 	</form><!-- END Form -->
 </div>
 <!-- END Simple Classic Progress Wizard -->

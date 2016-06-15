@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <div class="mura-header">
-<h1>Site Copy Tool</h1>
+<h1>Copy Site</h1>
 <!--- >
 <p class="alert">IMPORTANT: All content in the site that is being copied to will be replaced.</p> --->
 </div> <!-- /.mura-header -->

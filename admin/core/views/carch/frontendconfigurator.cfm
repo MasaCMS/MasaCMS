@@ -39,8 +39,8 @@
 		</cfif>
 	<div id="configuratorContainer">
 		<cfif rc.sourceFrame eq 'sidebar'>
-			<a class="btn btn-primary" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-arrow-left"></i> Back</a>
 			<h1 id="configuratorHeader"></h1>
+			<a class="btn mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-times-circle"></i> Close</a>
 		</cfif>
 	
 		<div class="clearfix">
@@ -53,13 +53,16 @@
 		</div>
 		<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
 			<div class="form-actions">
-				<a href="##" class="btn" id="deleteObject"><i class="mi-trash"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#</a>
+
 				<cfif rc.sourceFrame eq 'modal'>
 					<a href="##" class="btn mura-primary" id="saveConfigDraft"><i class="mi-check"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#</a>
 				</cfif>
+
+				<a href="##" class="btn mura-delete" id="deleteObject"><i class="mi-trash"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#</a>
+
 			</div>
 		</cfif>
-	</div>
+	</div><!-- /configuratorContainer -->
 		<cfif rc.sourceFrame eq 'modal'>
 				</div> <!-- /.block-content -->
 			</div> <!-- /.block-bordered -->
