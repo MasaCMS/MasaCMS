@@ -340,18 +340,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 
-	function generateFormObject($,event) {
-
-		var content = arguments.event.getValue('contentBean');
-		var siteid = $.event('siteid');
-//		var objectname = rereplacenocase( content.getValue('filename'),"-([a-z])","\U\1","all" );
+	function generateFormObject($,event,contentBean,extends) {
+		
+		var content = arguments.contentBean;
+		var siteid = arguments.$.event('siteid');
 		var objectname = rereplacenocase( content.getValue('filename'),"[^[:alnum:]]","","all" );
-
-		var formStruct = deserializeJSON( arguments.event.getValue('contentBean').getValue('body'));
+		var formStruct = deserializeJSON( content.getValue('body') );
 
 		if( !structKeyExists(formStruct.form,'formattributes') || !structKeyExists(formStruct.form.formattributes,'muraormentities') || formStruct.form.formattributes.muraormentities neq 1 )
 			return;
 
+		var extendpath = "mura.formbuilder.entityBean";
+		
+		if( structKeyExists(arguments,"extends") and len(arguments.extends) ) {
+			extendpath = arguments.extends;
+		}
 		var field = "";
 
 		if(!directoryExists(#expandPath("/muraWRM/" & siteid)# & "/includes/model")) {
@@ -384,8 +387,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		var fieldlist = formStruct.form.fields;
 
-		// start CFC
-		var con = 'component contentid="#content.getContentID()#" extends="mura.formbuilder.entityBean" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#Entity" displayName="#objectname#Entity" rendertype="form" access="public"';
+		// start CFC				
+		var con = 'component contentid="#content.getContentID()#"  extends="#extendpath#" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#Entity" displayName="#objectname#Entity" rendertype="form" access="public"';
 
 		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
 			field = fieldlist[ fieldorder[i] ];
@@ -405,7 +408,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
 			field = fieldlist[ fieldorder[i] ];
 
-			if( field.fieldtype.fieldtype != "section" && field.fieldtype.fieldtype != "textblock") {
+			if( field.fieldtype.fieldtype != "section" && field.fieldtype.fieldtype != "textblock" && field.fieldtype.fieldtype != "matrix") {
 				fieldcount++;
 				param = '	property name="#field.name#"';
 				param = param & ' displayname="#field.label#"';
@@ -431,6 +434,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				param = param & '#getDataType($,field,datasets,objectname)#';
 
 				con = con & "#param#;#chr(13)#";
+			}
+			else if( field.fieldtype.fieldtype == "matrix" ) {
+				var matrix = createMatrixParams($,field,datasets,objectname,fieldcount);
+				fieldcount = matrix.fieldcount;
+				con = con & matrix.params;
 			}
 		}
 
@@ -472,7 +480,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataset = arguments.datasets[arguments.fieldData.datasetid];
 			cfcBridgeName = lcase("#arguments.objectname##dataset.source#");
 		}
-
+		if(StructKeyExists(arguments.fieldData,"columnsid") && StructKeyExists( arguments.datasets,arguments.fieldData.columnsid )) {
+			columns = arguments.datasets[arguments.fieldData.columnsid];
+		}
+				
 		switch(fieldtype) {
 			case "nested":
 				if( dataset.sourcetype == 'muraorm' ) {
@@ -502,8 +513,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 			break;
 			case "checkbox":
-				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="#fieldtype#" source="#lcase(dataset.source)#" loadkey="#lcase(objectname)#id"';
-				createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,true,true);
+				if( dataset.sourcetype == 'muraorm' ) {
+					str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="#fieldtype#" source="#lcase(dataset.source)#" loadkey="#lcase(objectname)#id"';
+					createFieldOptionCFC($,fieldData,objectname,cfcBridgeName,dataset,true,true);
+				}
+				else {
+					str = ' datatype="varchar" length="250" rendertype="#fieldtype#"';
+				}
 			break;
 			case "multiselect":
 				str = ' fieldtype="one-to-many" cfc="#cfcBridgeName#" rendertype="dropdown" source="#lcase(dataset.source)#" loadkey="#lcase(objectname)#id"';
@@ -526,9 +542,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		return str;
 	}
 
+	function createMatrixParams( $,fieldData,datasets,objectname,fieldcount ) {
+
+		var matrix = {};
+		matrix.fieldcount = arguments.fieldcount;
+		matrix.params = "";
+		
+		var questions = datasets[fieldData.datasetid];
+		var param = "";
+		var record = "";
+		
+		for(var i = 1;i <= ArrayLen(questions.datarecordorder);i++) {
+			record = questions.datarecords[ questions.datarecordorder[i] ];
+			matrix.fieldcount++;
+			
+			param = '	property name="#fieldData.name#_#record.name#"';
+			param = param & ' displayname="#record.label#"';
+			param = param & ' orderno="#matrix.fieldcount#"';
+			param = param & ' datatype="varchar" length="35" rendertype="matrix" matrix="#fieldData.name#";#chr(13)#';
+			
+			matrix.params = matrix.params & param;
+		}
+		
+		return matrix;
+	}
+
+
 	function createFieldOptionCFC( $,fieldData,parentObject,cfcBridgeName,dataset,createJoinentity=false,createDataentity=false ) {
 		var objectname = fieldData.name;
-		var exists = fileExists( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(arguments.cfcBridgeName)#.cfc" );
+		var exists = fileExists( "#expandPath("/muraWRM/" & $.event('siteid'))#/includes/model/beans/#lcase(arguments.cfcBridgeName)#.cfc" );
 		var param = "";
 
 		objectname = rereplacenocase( objectname,"[^[:alnum:]]","","all" );
@@ -546,9 +588,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			// close relationship CFC
 			con = con & "#chr(13)#}";
-
-
-			fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(cfcBridgeName)#.cfc",con );
+	
+			fileWrite( "#expandPath("/muraWRM/" & $.event('siteid'))#/includes/model/beans/#lcase(cfcBridgeName)#.cfc",con );
 
 			if( structKeyExists(application.objectMappings,dataset.source))
 			try {
@@ -558,16 +599,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		if(arguments.createDataentity == false) {
-			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(cfcBridgeName)#",siteid );
+			$.globalConfig().registerBean( "#$.event('siteid')#.includes.model.beans.#lcase(cfcBridgeName)#",$.event('siteid') );
 			$.getBean(cfcBridgeName).checkSchema();
 			return;
 		}
 
-		exists = fileExists( expandPath("/muraWRM/" & siteid) & "/includes/model/beans/#lcase(dataset.source)#.cfc" );
-
+		exists = fileExists( expandPath("/muraWRM/" & $.event('siteid')) & "/includes/model/beans/#lcase(dataset.source)#.cfc" );
+		
 		// data beans are never recreated
 		if(exists) {
-			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
+			$.globalConfig().registerBean( "#$.event('siteid')#.includes.model.beans.#lcase(dataset.source)#",$.event('siteid') );
 			$.getBean(dataset.source).checkSchema();
 			return;
 		}
@@ -585,7 +626,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		// close data CFC
 		con = con & "#chr(13)#}";
 
-		fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(dataset.source)#.cfc",con );
+		fileWrite( "#expandPath("/muraWRM/" & $.event('siteid'))#/includes/model/beans/#lcase(dataset.source)#.cfc",con );
 
 		if(structKeyExists(application.objectMappings,dataset.source))
 		try {
@@ -594,17 +635,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		catch(any e) {}
 
 		if(arguments.createDataentity == false) {
-			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(dataset.source)#",siteid );
+			$.globalConfig().registerBean( "#$.event('siteid')#.includes.model.beans.#lcase(dataset.source)#",$.event('siteid') );
 			$.getBean(dataset.source).checkSchema();
 		}
 
 		if( arguments.createJoinEntity ) {
-			$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(cfcBridgeName)#",siteid );
+			$.globalConfig().registerBean( "#$.event('siteid')#.includes.model.beans.#lcase(cfcBridgeName)#",$.event('siteid') );
 			$.getBean(cfcBridgeName).checkSchema();
 
 		}
 
 	}
+
+	function createDatasetCFC( $,fieldData,dataset ) {
+		var objectname = fieldData.name & "ExtendedData";
+		var exists = fileExists( "#expandPath("/muraWRM/" & $.event('siteid'))#/includes/core/formbuilder/#lcase(objectname)#.cfc" );
+		var param = "";
+		var record = "";
+		
+		// start data CFC				
+		var con = 'component extends="mura.formbuilder.entityBean" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" access="public" {#chr(13)##chr(13)#';
+		var con = con & '	property name="#lcase(objectname)#id" fieldtype="id";#chr(13)##chr(13)#';
+		var con = con & '	property name="#lcase(fieldData.name)#" fieldtype="many-to-one" cfc="#lcase(fieldData.name)#" fkcolumn="#lcase(fieldData.name)#id";#chr(13)#';
+
+		return;
+
+		for(var i = 1;i <= ArrayLen(arguments.dataset.datarecordcount);i++) {
+			record = arguments.dataset.datarecords[ arguments.dataset.datarecordcount[i] ];
+			var con = con & '	property name="#lcase(record)#" fieldtype="many-to-one" cfc="#lcase(fieldData.name)#" fkcolumn="#lcase(fieldData.name)#id";#chr(13)#';
+		}
+		
+		
+	}
+
+
 
 	function getFormFromObject( siteid,formName,nested=false) {
 

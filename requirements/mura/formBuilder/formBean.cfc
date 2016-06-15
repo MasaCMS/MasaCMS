@@ -56,6 +56,7 @@ to your own modified versions of Mura CMS.
 	<cfproperty name="Fields" type="Struct" default="" required="true" />
 	<cfproperty name="FormAttributes" type="Struct" default="" required="true" />
 	<cfproperty name="FieldOrder" type="Array" default="" required="true" />
+	<cfproperty name="Pages" type="Array" default="" required="true" />
 	<cfproperty name="DeletedFields" type="Struct" default="" required="false" />
 	<cfproperty name="Config" type="Any" default="" required="true" />
 
@@ -80,6 +81,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="FormAttributes" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="Fields" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="FieldOrder" type="Array" required="false" default="#ArrayNew(1)#" />
+		<cfargument name="Pages" type="Array" required="false" default="#ArrayNew(1)#" />
 		<cfargument name="DeletedFields" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="Config" type="Any" required="false" default="#StructNew()#" />
 
@@ -101,6 +103,7 @@ to your own modified versions of Mura CMS.
 		<cfset setFormAttributes( arguments.FormAttributes ) />
 		<cfset setFields( arguments.Fields ) />
 		<cfset setFieldOrder( arguments.FieldOrder ) />
+		<cfset setPages( arguments.Pages ) />
 		<cfset setDeletedFields( arguments.DeletedFields ) />
 		<cfset setConfig( arguments.Config ) />
 
@@ -265,6 +268,14 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	<cffunction name="getFieldOrder" access="public" returntype="Array" output="false">
 		<cfreturn variables.instance.FieldOrder />
+	</cffunction>
+
+	<cffunction name="setPages" access="public" returntype="void" output="false">
+		<cfargument name="Pages" type="Array" required="true" />
+		<cfset variables.instance['pages'] = arguments.Pages />
+	</cffunction>
+	<cffunction name="getPages" access="public" returntype="Array" output="false">
+		<cfreturn variables.instance.pages />
 	</cffunction>
 
 	<cffunction name="setDeletedFields" access="public" returntype="void" output="false">
