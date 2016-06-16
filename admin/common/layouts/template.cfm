@@ -214,9 +214,7 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
-
-		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-
+		
 		<!-- Mura js --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
@@ -316,8 +314,8 @@
 							</div>
 	     			</cfif>
 
-	     			<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown()) 
-	     						and not application.settingsManager.getSite(session.siteID).getCache() 
+	     			<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown())
+	     						and not application.settingsManager.getSite(session.siteID).getCache()
 	     						and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
 			           	<div class="alert">
 			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
@@ -353,8 +351,8 @@
 										setTimeout(function(){
 											$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 												$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
-												$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');	
-										}, 10);							
+												$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');
+										}, 10);
 									}
 									// run on page load
 									triggerTabDrop();

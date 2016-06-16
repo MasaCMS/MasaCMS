@@ -223,7 +223,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var sessionData=super.getSession()>
 
 <cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
-	<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
+	<cfif findNoCase("<script",arguments.text) or findNoCase("<link",arguments.text)>
+		<cfset request.contentRenderer.addtoHTMLHeadQueue(arguments.text) />
+	<cfelse>
+		<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
+	</cfif>
 <cfelse>
 <cfif structKeyExists(request,"servletEvent")>
 	<cfset event=request.servletEvent>

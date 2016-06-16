@@ -56,15 +56,12 @@ to your own modified versions of Mura CMS.
 	<cfproperty name="Type" type="string" default="COMMON" required="true" maxlength="20" />
 	<cfproperty name="IsEntryType" type="string" default="SINGLE" required="true" maxlength="50" />
 
-	<cfproperty name="SectionID" type="uuid" default="00000000-0000-0000-0000000000000000" required="true" maxlength="35" />
-
 	<cfproperty name="Rblabel" type="string" default="" maxlength="100" />
 	<cfproperty name="Cssstyle" type="string" default="" maxlength="50" />
 	<cfproperty name="placeholder" type="string" default="" maxlength="255" />
 	<cfproperty name="ToolTip" type="string" default="" maxlength="250" />
 	<cfproperty name="ValidateType" type="string" default="" maxlength="35" />
 	<cfproperty name="IsLocked" type="boolean" default="0" required="true" />
-	<cfproperty name="RelatedID" type="uuid" default="" maxlength="35" />
 	<cfproperty name="ValidateRegex" type="string" default="" maxlength="100" />
 	<cfproperty name="ValidateMessage" type="string" default="" maxlength="200" />
 	<cfproperty name="SectionID" type="uuid" default="00000000-0000-0000-0000000000000000" required="true" maxlength="35" />
