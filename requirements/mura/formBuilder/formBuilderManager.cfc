@@ -342,8 +342,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	function generateFormObject($,event,contentBean,extends) {
 		
-		var content = arguments.contentBean;
+		var content = "";
 		var siteid = arguments.$.event('siteid');
+
+		if(isDefined(arguments.contentbean))
+			content = arguments.contentBean;
+		else
+			content = $.getBean('content');
+
 		var objectname = rereplacenocase( content.getValue('filename'),"[^[:alnum:]]","","all" );
 		var formStruct = deserializeJSON( content.getValue('body') );
 
