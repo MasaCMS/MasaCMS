@@ -151,7 +151,6 @@
 		<!-- Utilities to support iframe communication -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<script type="text/javascript">
 		var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
@@ -177,8 +176,8 @@
 						setTimeout(function(){
 							$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 								$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
-								$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');	
-						}, 10);							
+								$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');
+						}, 10);
 					}
 					// run on page load
 					triggerTabDrop();
