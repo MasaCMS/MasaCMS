@@ -122,16 +122,16 @@
                         </a>
 						<ul>
                     --->
-                            <!--- Site Tree --->
+                            <!--- Content --->
                             <li>
-                            <a<cfif rc.originalcircuit eq 'carch'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#</span></a>
+                            <a id="navContentAdmin" <cfif rc.originalcircuit eq 'carch'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#</span></a>
                             </li>
 
                             <cfif structKeyExists(rc,'$')>
                     			#rc.$.renderEvent('onAdminNavMainRender')#
                     		</cfif>
 
-                            <!--- /Site Tree --->
+                            <!--- /Content --->
 
                             <!--- Components
                             <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
@@ -170,7 +170,7 @@
                             <cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))
                               and application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014",session.siteid)>
                             <li>
-                            <a<cfif rc.originalcircuit eq 'cChangesets' > class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cChangesets.list&amp;siteid=#session.siteid#"><i class="mi-files-o"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</span></a>
+                            <a<cfif rc.originalcircuit eq 'cChangesets' > class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cChangesets.list&amp;siteid=#session.siteid#"><i class="mi-clone"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</span></a>
                             </li>
                             </cfif>
                             <!--- /Change Sets --->
