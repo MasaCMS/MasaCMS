@@ -739,6 +739,10 @@
 			var html = root.mura.templates['error'](errorData);
 			console.log(errorData);
 
+			mura(self.context.formEl).find('.g-recaptcha-container').each(function(el){
+				grecaptcha.reset(el.getAttribute('data-widgetid'));
+			});
+
 			mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
 		},
 
