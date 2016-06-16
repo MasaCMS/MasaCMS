@@ -264,15 +264,15 @@
                       <cfif rc.rsplugins.recordcount or listFind(session.mura.memberships,'S2')>
                         <li class="divider"></li>
                         <li  id="admin-plugin-manager"<cfif rc.originalcircuit eq 'cPlugins'> class="open"</cfif>>
-                          <a class="nav-submenu<cfif rc.originalcircuit eq 'cPlugins'> active</cfif>" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&amp;siteid=#session.siteid#"><i class="mi-puzzle-piece"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</span></a>
+                          <a class="nav-submenu<cfif rc.originalcircuit eq 'cPlugins'> active</cfif>" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&amp;siteid=#session.siteid#"><i class="mi-plug"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</span></a>
                           <ul>
                             <li>
-                              <a class="<cfif rc.originalcircuit eq 'cplugins' and rc.originalfuseaction eq 'list'> active</cfif>" href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&amp;siteid=#session.siteid#"><i class="mi-puzzle-piece"></i><span class="sidebar-mini-hide">Site Plugins</span></a>
+                              <a class="<cfif rc.originalcircuit eq 'cplugins' and rc.originalfuseaction eq 'list'> active</cfif>" href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&amp;siteid=#session.siteid#"><i class="mi-plug"></i><span class="sidebar-mini-hide">Site Plugins</span></a>
                             </li>
                             <cfloop query="rc.rsplugins">
                                <li>
                                 <a<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif> href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/">
-                                  <i class="mi-puzzle-piece"></i>
+                                  <i class="mi-plug"></i>
                                   #esapiEncode('html',rc.rsplugins.name)#
                                 </a>
                               </li>
@@ -388,7 +388,7 @@
                                     <!--- update site --->
                                     <cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                         <li>
-                                            <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-bolt"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatesite')#</span></a>
+                                            <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-refresh"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatesite')#</span></a>
                                         </li>
                                     </cfif>
                                 </cfif>
@@ -416,12 +416,12 @@
                                 </li>
                                 <!--- global plugins --->
                                 <li>
-                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list' and isDefined('url.plugins')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list&plugins##tabPlugins"><i class="mi-puzzle-piece"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.globalsettings-plugins")#</span></a>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.originalfuseaction eq 'list' and isDefined('url.plugins')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list&plugins##tabPlugins"><i class="mi-plug"></i><span class="sidebar-mini-hide">#rc.$.rbKey("layout.globalsettings-plugins")#</span></a>
                                 </li>
                                 <!--- update core --->
                                 <cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                     <li>
-                                        <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-bolt"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
+                                        <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-refresh"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
                                     </li>
                                 </cfif>
                                 <!--- reload application --->
@@ -478,7 +478,7 @@
                             <!--- update core --->
                             <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                 <li>
-                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-bolt"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-refresh"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
                                 </li>
                             </cfif>
                             <!--- site version --->
@@ -494,7 +494,7 @@
                             <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
-                                        <i class="mi-bolt"></i>
+                                        <i class="mi-refresh"></i>
                                         #rc.$.rbKey('layout.updatesite')#
                                     </a>
                                 </li>
