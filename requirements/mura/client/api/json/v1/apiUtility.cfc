@@ -2106,7 +2106,7 @@ component extends="mura.cfobject" {
 			if(!isDefined('request.apiEndpoint')){
 
 				if(getBean('configBean').getAdminSSL()){
-					var protocol='http';
+					var protocol='https';
 				} else {
 					var protocol=getBean('utility').getRequestProtocol();
 				}
