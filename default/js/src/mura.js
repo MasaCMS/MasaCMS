@@ -1395,11 +1395,14 @@
 									   if (typeof grecaptcha == 'object' && self)
 									   {
 									   	//console.log(self)
-									     grecaptcha.render(self.getAttribute('id'), {
+									     self.setAttribute(
+											'data-widgetid',
+										 	grecaptcha.render(self.getAttribute('id'), {
 									          'sitekey' : self.getAttribute('data-sitekey'),
 									          'theme' : self.getAttribute('data-theme'),
 									          'type' : self.getAttribute('data-type')
-									        });
+									        })
+										);
 									   }
 									   else
 									   {
