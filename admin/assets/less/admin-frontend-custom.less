@@ -145,31 +145,33 @@
 			float: right !important;
 			border-right: 0 !important;
 		}
-	}
 
 
-	#frontEndTools > ul li#adminSiteManager,
-	#frontEndTools > ul > li#adminSiteManager404 {
-		border-right: 0 !important;
+			&> ul > li#adminSiteManager404 {
+				border-right: 0 !important;
+			}
+
+
 	}
 
 	#frontEndTools > ul > li {
 
+		background: none !important;
+		box-sizing: border-box !important;
 		color: rgba(255,255,255,.7) !important;
 		float: left !important;
-		line-height: 32px !important;
-		height: 32px !important;
-		margin: 0 !important;
-		padding: 0 !important;
-		list-style: none !important;
 		font-family: "montserratlight","montserratregular","Helvetica Neue", Arial, sans-serif !important;
+		height: 32px !important;
 		font-weight: normal !important;
-		font-style: normal !important;
 		font-size: 12px !important;
-		background: none !important;
-		/* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
+		font-style: normal !important;
+		line-height: 32px !important;
+		list-style: none !important;
+		margin: 0 !important;
 		overflow: visible !important;
-		box-sizing: border-box !important;
+		padding: 0 !important;
+		text-align:center;
+		/* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
 
 		&:first-child {
 			border-left: 0 !important;
@@ -202,10 +204,10 @@
 			font-size: 14px !important;
 			position: relative !important;
 			top: 1px !important;
-			width: 1em !important;
+			overflow: visible !important;
 			padding-top: 0 !important;
 			padding-bottom: 0 !important;
-			overflow: visible !important;
+			width: auto;
 
 				&.mi-mobile {
 					font-size: 16px !important;
@@ -258,11 +260,16 @@
 		}
 
 	#frontEndTools > ul#tools-version {
+			margin-left: 22px !important;
 
 		> li {
 
 			&#adminEditPage {
 				padding-right: 0 !important;
+
+				a.dropdown-toggle{
+					padding-right: 3px !important;
+				}
 
 				.caret {
 					margin-left: 0 !important;
@@ -276,6 +283,7 @@
 	#frontEndTools > ul#tools-changesets {
 
 			float: left !important;
+			margin-left: 22px !important;
 
 			li {
 				cursor: pointer !important;
@@ -308,8 +316,7 @@
 		}
 	}
 
-	#frontEndTools > #adminDashboard,
-	#frontEndTools > #adminSiteManager  {
+	#frontEndTools > #adminDashboard {
 
 		border-right: 0 !important;
 
@@ -460,7 +467,7 @@
 
 		i {
 			//color: @grayDark !important;
-			top: 2px !important;
+			top: 1px !important;
 			//font-size: 16px !important;
 			margin-right: 2px !important;
 			display: inline-block !important;

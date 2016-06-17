@@ -346,7 +346,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<ul class="dropdown-menu">
 								<cfif this.showInlineEditor>
 									<li id="adminQuickEdit">
-										<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
+										<a onclick="return muraInlineEditor.init();"><i class="mi-pencil"></i>
 										<cfif $.content('type') eq 'Variation'>
 											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
 										<cfelseif useLayoutManager()>
@@ -361,16 +361,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<li id="adminFullEdit">
 										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
 											<cfif $.content('type') eq 'Variation'>
-												<i class="mi-info"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-metadata')#
+												<i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											<cfelseif useLayoutManager()>
-												<i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
+												<i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
 											<cfelse>
-												 <i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
+												 <i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											</cfif></a>
 									</li>
 										<cfif request.r.perm eq 'editor' and $.content('type') eq 'Variation'>
 											<li id="adminVariationTargeting"><a id="mura-edit-var-initjs" href="#variables.initJSLink#" #variables.targethook#><i class="mi-code"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-variationtargeting')#</a></li>
 										</cfif>
+									</cfif>
+									<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
+										<cfif request.contentBean.getType() eq 'Variation'>
+											<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
+										<cfelse>
+											<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
+										</cfif>
+
 									</cfif>
 								</ul>
 							</li>
@@ -384,14 +392,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</li>
 							</cfif>
 							<!---</cfif>--->
-							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
-								<cfif request.contentBean.getType() eq 'Variation'>
-									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i></a></li>
-								<cfelse>
-									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i></a></li>
-								</cfif>
 
-							</cfif>
+						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i></a></li>
+
+
 						</ul>
 					</cfif>
 
@@ -438,7 +442,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<cfelse>
 											<li><a onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'changesets.noassignedcontent')#</a></li>
 										</cfif>
-
 										</ul>
 									</cfif>
 								</li>
@@ -466,17 +469,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<li>
 										<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
 											<i class="mi-ban"></i>
-
 										</a>
 									</li>
 								</cfif>
 							</ul>
 						</cfif>
-
-
 					</cfif>
 				</cfif>
-
 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
 					<cfif $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
@@ -484,9 +483,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li><a href="#$.globalConfig('adminPath')#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
 						</ul>
 					</cfif>
-					<ul id="adminSiteManager">
-						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li>
-					</ul>
 				</cfif>
 
 				<cfif $.currentUser().isLoggedIn()>
