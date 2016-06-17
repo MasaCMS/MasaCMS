@@ -11,6 +11,7 @@
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cfset variables.resourceBundle=structNew() />
+<cfset variables.resourceBundleStruct=structNew() />
 <cfset variables.locale="en_US" />
 <cfset variables.resourceDirectory=getDirectoryFromPath(getCurrentTemplatePath()) & "/resources/"  />
 <cfset variables.isLoaded=false/>
@@ -239,5 +240,24 @@
 	</cfif>
 
 </cffunction>
+
+<cfscript>
+	function getKeyStructure( key ) {
+		if( StructKeyExists(variables.resourceBundleStruct,"key") ) {
+			return variables.resourceBundleStruct[key];
+		}
+		
+		var keyStruct = {};
+		
+		for(var i in variables.resourceBundle) {
+			if( left( i,len(arguments.key) ) eq key ) {
+				variables.resourceBundleStruct[key][replace(i,".","-","all")] = variables.resourceBundle[i];
+			}	
+		}
+		
+		return variables.resourceBundleStruct[key];
+		
+	}
+</cfscript>
 
 </cfcomponent>
