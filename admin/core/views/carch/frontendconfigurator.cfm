@@ -40,7 +40,7 @@
 	<div id="configuratorContainer">
 		<cfif rc.sourceFrame eq 'sidebar'>
 			<h1 id="configuratorHeader"></h1>
-			<a class="btn mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-times-circle"></i> Close</a>
+			<a class="mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-times-circle"></i></a>
 		</cfif>
 	
 		<div class="clearfix">
