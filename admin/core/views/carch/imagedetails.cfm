@@ -74,11 +74,13 @@
 		</div> <!-- /label-group -->
 	</div> <!-- /metadata -->
 	</cfif>
+
+	<cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
+		#$.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="breadcrumb")#
+	</cfif>
+
 </div>
 <!--- /mura-header --->
-<cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
-	#$.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="breadcrumb")#
-</cfif>
 
 <div class="block block-constrain">
 <div id="image-details">
