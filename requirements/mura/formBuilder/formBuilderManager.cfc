@@ -345,7 +345,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var content = "";
 		var siteid = arguments.$.event('siteid');
 
-		if(isDefined(arguments.contentbean))
+		if(structKeyExists(arguments,"contentbean"))
 			content = arguments.contentBean;
 		else
 			content = $.getBean('content');
