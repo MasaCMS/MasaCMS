@@ -346,7 +346,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<ul class="dropdown-menu">
 								<cfif this.showInlineEditor>
 									<li id="adminQuickEdit">
-										<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
+										<a onclick="return muraInlineEditor.init();"><i class="mi-pencil"></i>
 										<cfif $.content('type') eq 'Variation'>
 											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
 										<cfelseif useLayoutManager()>
@@ -363,9 +363,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<cfif $.content('type') eq 'Variation'>
 												<i class="mi-info"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-metadata')#
 											<cfelseif useLayoutManager()>
-												<i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
+												<i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
 											<cfelse>
-												 <i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
+												 <i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											</cfif></a>
 									</li>
 										<cfif request.r.perm eq 'editor' and $.content('type') eq 'Variation'>
