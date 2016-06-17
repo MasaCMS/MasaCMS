@@ -560,8 +560,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		for(var i = 1;i <= ArrayLen(questions.datarecordorder);i++) {
 			record = questions.datarecords[ questions.datarecordorder[i] ];
+
 			matrix.fieldcount++;
-			
+		
+			if(!structKeyExists(record,"name")) {
+				record.name = rereplace( lcase(record.label),'[^a-z0-9]', '', 'all');
+			}
+
 			param = '	property name="#fieldData.name#_#record.name#"';
 			param = param & ' displayname="#record.label#"';
 			param = param & ' orderno="#matrix.fieldcount#"';
