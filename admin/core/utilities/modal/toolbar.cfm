@@ -392,6 +392,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</li>
 							</cfif>
 							<!---</cfif>--->
+
+						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i></a></li>
+
+
 						</ul>
 					</cfif>
 
@@ -438,7 +442,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<cfelse>
 											<li><a onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'changesets.noassignedcontent')#</a></li>
 										</cfif>
-
 										</ul>
 									</cfif>
 								</li>
@@ -466,17 +469,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<li>
 										<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
 											<i class="mi-ban"></i>
-
 										</a>
 									</li>
 								</cfif>
 							</ul>
 						</cfif>
-
-
 					</cfif>
 				</cfif>
-
 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
 					<cfif $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
@@ -484,9 +483,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li><a href="#$.globalConfig('adminPath')#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
 						</ul>
 					</cfif>
-					<ul id="adminSiteManager">
-						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li>
-					</ul>
 				</cfif>
 
 				<cfif $.currentUser().isLoggedIn()>
