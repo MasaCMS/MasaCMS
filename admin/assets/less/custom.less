@@ -1546,9 +1546,13 @@ body#csetup{
  background-repeat: no-repeat;
  padding: 26px;
 }
+ui-dialog[aria-describedby=cropper]{
+  background-image: none;
+}
 .modal-wrapper .ui-dialog{
   padding: 15px 30px !important;
   background-color: #f5f5f5;
+  background-image: none !important;
   height: 100%;
 }
 
@@ -1616,10 +1620,6 @@ body#csetup{
   background-color: #DDDEDD;
   background-position: 0 0;
 }
-#cropper .jc-dialog .btn{
-  margin: 20px 10px 10px;
-}
-
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover{
   background-color:#FFF;
 }
@@ -1628,12 +1628,15 @@ body#csetup{
 .ui-dialog .ui-dialog-titlebar-close:focus,
 .ui-dialog .ui-dialog-titlebar-close:hover{
   color:#949494;
-  /* hide close icon in new layout */
-  opacity: 0;
+  opacity: 1;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:before{
   font-size: 18px;
+}
+
+#cropper .jcrop-holder{
+  margin-left: 8px;
 }
 
 #ui-datepicker-div{
