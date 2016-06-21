@@ -438,6 +438,7 @@
 					            close: function(){ $dialog.remove(); },
 					            width: jcrop_api.getWidgetSize()[0]+75,
 					            resizable: false,
+					            class: "cropper"
 					        });
 					        $('##action-modal').remove();
 		    			});
