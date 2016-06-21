@@ -50,6 +50,8 @@
 <cfparam name="rc.action" default="">
 <cfset rc.currentUser=rc.$.currentUser()>
 <cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
+<cfparam name="session.dashboardSpan" default="30">
+<cfparam name="session.keywords" default="">
 <cfparam name="rc.userid" default="">
 <cfset hidelist="cLogin">
 <cfset rsExts=application.classExtensionManager.getSubTypes(siteID=session.siteid,activeOnly=false) />

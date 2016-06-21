@@ -53,6 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="objectParams.items" default="#arrayNew(1)#">
 		<cfparam name="objectParams.viewoptions" default="">
 		<cfparam name="objectParams.format" default="calendar">
+		<cfparam name="objectParams.forcelayout" default="false">
 
 		<cfif not len(objectParams.viewoptions)>
 			<cfset objectParams.viewoptions='agendaDay,agendaWeek,month'>
@@ -74,7 +75,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="availableObjectParams"
 			data-object="calendar"
 			data-name="Calendar"
-			data-objectid="#esapiEncode('html_attr',rc.contentid)#">
+			data-objectid="#esapiEncode('html_attr',rc.contentid)#"
+			data-forcelayout="#esapiEncode('html_attr',objectParams.forcelayout)#">
 
 			<cfif rc.$.getBean('configBean').getClassExtensionManager().getSubTypeByName(content.get('type'),content.get('subtype'),content.get('siteid')).getHasConfigurator()>
 			<div class="mura-layout-row">

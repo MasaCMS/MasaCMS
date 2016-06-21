@@ -61,7 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset content.set(objectParams)>
 
-		<cfparam name="objectParams.layout" default="a">
+		<cfparam name="objectParams.layout" default="default">
+		<cfparam name="objectParams.forcelayout" default="false">
 
 		<cfset objectParams.source=content.getContentID()>
 		<cfset objectParams.sourcetype='children'>
@@ -73,7 +74,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="availableObjectParams"
 			data-object="folder"
 			data-objectname="Folder"
-			data-objectid="#esapiEncode('html_attr',rc.contentid)#">
+			data-objectid="#esapiEncode('html_attr',rc.contentid)#"
+			data-forcelayout="#esapiEncode('html_attr',objectParams.forcelayout)#">
 
 			<cfif rc.$.getBean('configBean').getClassExtensionManager().getSubTypeByName(content.get('type'),content.get('subtype'),content.get('siteid')).getHasConfigurator()>
 			<div class="mura-layout-row">
