@@ -48,14 +48,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="objectParams.maxitems" default="4">
 <cfparam name="objectParams.source" default="">
 <cfparam name="objectParams.layout" default="default">
+<cfparam name="objectParams.forcelayout" default="false">
 <cfparam name="objectParams.object" default="">
 <cfparam name="objectParams.displaylist" default="Image,Date,Title,Summary,Credits,Tags">
 <cfset feed=rc.$.getBean("feed").loadBy(feedID=objectParams.source)>
 <cfset feed.set(objectParams)>
 <cfparam name="objectParams.sourcetype" default="local">
+
 </cfsilent>
-<cfoutput>
+<cfoutput>	
 	<cfif objectParams.sourcetype neq "remotefeed">
+		<cfif not objectParams.forcelayout>
 		<div class="mura-control-group">
 			<label class="mura-control-label">
 				#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
@@ -72,6 +75,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</select>
 		</div>
+		<cfelse>
+			<cfset layout=feed.getLayout()>
+			<cfset layout=(len(layout)) ? layout :' default'>
+			<input type="hidden" name="layout" class="objectParam" value="#esapiEncode('html_attr',layout)#">
+		</cfif>
 
 		<!---- Begin layout based configuration --->
 		<cfset configFile=rc.$.siteConfig('themeIncludePath') & "/display_objects/collection/layouts/#layout#/configurator.cfm">

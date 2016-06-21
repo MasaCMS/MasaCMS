@@ -49,6 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.items" default="#arrayNew(1)#">
 	<cfparam name="objectParams.layout" default="default">
+	<cfparam name="objectParams.forcelayout" default="false">
 	<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
 </cfsilent>
 <cfsavecontent variable="data.html">
@@ -58,7 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="availableObjectParams"
 		data-object="collection"
 		data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#"
-		data-objectid="none">
+		data-objectid="none"
+		data-forcelayout="#esapiEncode('html_attr',objectParams.forcelayout)#">
 
 		<div class="mura-layout-row">
 			<div class="mura-control-group">
