@@ -187,7 +187,7 @@
 
                             <!--- Categories --->
                             <cfif application.permUtility.getModulePerm("00000000000000000000000000000000010",session.siteid)>
-                              <li><a<cfif  rc.originalcircuit eq 'cCategory'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cCategory.list&amp;siteid=#session.siteid#"><i class="mi-table"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.categories")#</span></a>
+                              <li><a<cfif  rc.originalcircuit eq 'cCategory'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cCategory.list&amp;siteid=#session.siteid#"><i class="mi-th"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.categories")#</span></a>
                               </li>
                             </cfif>
                             <!--- /Categories --->
