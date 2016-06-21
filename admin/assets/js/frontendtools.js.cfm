@@ -1322,6 +1322,8 @@
 									delete params['isconfigurator'];
 									delete params['perm'];
 									delete params['async'];
+									delete params['forcelayout'];
+									delete params['isbodyobject'];
 
 									if(!item.data('objectname')){
 										item.data('objectname',item.data('object'));
