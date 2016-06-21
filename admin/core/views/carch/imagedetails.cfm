@@ -415,8 +415,7 @@
 	    		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
 	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> ';
 	    			$dialogHTML+='<input type="hidden" name="coords" value="" id="coords">';
-	    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
-	    			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
+	    			$dialogHTML+='<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"><div class="ui-dialog-buttonset"><button type="button" class="mura-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"><span class="ui-button-text">Cancel</span></button><button type="button" class="mura-primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" onclick="applyCropping();"><span class="ui-button-text">Apply Cropping</span></button></div></div>';
 	    			$dialogHTML+='</div></div>';
 
 		        var $dialog = $($dialogHTML);
@@ -441,6 +440,7 @@
 					            close: function(){ $dialog.remove(); },
 					            width: jcrop_api.getWidgetSize()[0]+75,
 					            resizable: false,
+					            class: "cropper"
 					        });
 					        $('##action-modal').remove();
 		    			});
