@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfheader name="Generator" value="Mura CMS" />
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfset setEncoding("url", "utf-8")>
-<cfset setEncoding("form", "utf-8")> 
+<cfset setEncoding("form", "utf-8")>
 
 <cfif left(server.coldfusion.productversion,5) eq "9,0,0" or listFirst(server.coldfusion.productversion) lt 9>
 	<cfoutput>Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility</cfoutput>
@@ -62,11 +62,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 If it has not, set application.appInitialized=false. --->
 <cftry>
 	<cfif not (
-			structKeyExists(application.settingsManager,'validate') 
+			structKeyExists(application.settingsManager,'validate')
 			and application.settingsManager.validate()
-			and structKeyExists(application.contentManager,'validate') 
+			and structKeyExists(application.contentManager,'validate')
 			and application.contentManager.validate()
-			and application.serviceFactory.containsBean('contentManager') 
+			and application.serviceFactory.containsBean('contentManager')
 			and isStruct(application.configBean.getAllValues())
 		)>
 		<cfset application.appInitialized=false>
@@ -89,9 +89,9 @@ If it has not, set application.appInitialized=false. --->
 		OR
 		(
 			not request.muraAppreloaded
-			and 
-				( 
-					not application.appInitialized 
+			and
+				(
+					not application.appInitialized
 					or structKeyExists(url,application.appReloadKey)
 				)
 			and not (
@@ -114,7 +114,7 @@ If it has not, set application.appInitialized=false. --->
 	<cfif not application.setupComplete>
 		<cfset renderSetup = true />
 		<!--- go to the index.cfm page (setup) --->
-		<cfinclude template="/muraWRM/config/setup/index.cfm">	
+		<cfinclude template="/muraWRM/config/setup/index.cfm">
 		<cfabort>
 	</cfif>
 </cfif>
@@ -132,15 +132,15 @@ If it has not, set application.appInitialized=false. --->
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
 </cfif>
-	
+
 <!--- Making sure that session is valid --->
 <cftry>
 <cfif yesNoFormat(application.configBean.getValue("useLegacySessions")) and structKeyExists(session,"mura")>
-	<cfif 
+	<cfif
 		(not session.mura.isLoggedIn and isValid("UUID",listFirst(getAuthUser(),"^")))
 			or
 		(session.mura.isLoggedIn and not isValid("UUID",listFirst(getAuthUser(),"^")))	>
-		
+
 		<cfset variables.tempcookieuserID=cookie.userID>
 		<cfset application.loginManager.logout()>
 	</cfif>
@@ -154,7 +154,7 @@ If it has not, set application.appInitialized=false. --->
 <cfif fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm"))>
 	<cfinclude template="/muraWRM/config/settings.custom.vars.cfm">
 </cfif>
-	
+
 <!---<cfif not IsDefined("Cookie.CFID") AND IsDefined("Session.CFID")>
 	<cfcookie name="CFID" value="#Session.CFID#">
 	<cfcookie name="CFTOKEN" value="#Session.CFTOKEN#">
@@ -214,7 +214,7 @@ If it has not, set application.appInitialized=false. --->
 
 <cfif not isdefined('url.muraadminpreview')>
 	<cfif isDefined("form.mobileFormat") and isBoolean(form.mobileFormat)>
-		<cfcookie name="mobileFormat" value="#form.mobileFormat#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>	
+		<cfcookie name="mobileFormat" value="#form.mobileFormat#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	<cfelseif isDefined("url.mobileFormat") and isBoolean(url.mobileFormat)>
 		<cfcookie name="mobileFormat" value="#url.mobileFormat#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
@@ -223,7 +223,7 @@ If it has not, set application.appInitialized=false. --->
 		<cfset application.pluginManager.executeScripts('onGlobalMobileDetection')>
 
 		<cfif not isdefined("cookie.mobileFormat")>
-			<cfif 
+			<cfif
 				findNoCase("iphone",CGI.HTTP_USER_AGENT)
 				or
 					(
@@ -231,9 +231,9 @@ If it has not, set application.appInitialized=false. --->
 						and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
 					)>
 				<cfcookie name="mobileFormat" value="true" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
-			<cfelse>	
+			<cfelse>
 				<cfcookie name="mobileFormat" value="false" httponly="true" secure="#application.configBean.getSecureCookies()#" />
-			</cfif>	
+			</cfif>
 		</cfif>
 	</cfif>
 
@@ -249,7 +249,7 @@ If it has not, set application.appInitialized=false. --->
 
 <cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
 	<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>
-	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
+	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>
 	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
 
@@ -266,3 +266,9 @@ If it has not, set application.appInitialized=false. --->
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
 <cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
 
+<cfscript>
+// HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+	getPageContext()
+		.getResponse()
+		.setHeader('Strict-Transport-Security', 'max-age=1200;includeSubDomains');
+</cfscript>
