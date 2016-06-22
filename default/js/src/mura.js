@@ -603,6 +603,11 @@
 		return data;
 	}
 
+
+	function isNumeric(val) {
+		return Number(parseFloat(val)) == val;
+	}
+
 	function parseString(val){
 		if(typeof val == 'string'){
 			var lcaseVal=val.toLowerCase();
@@ -612,7 +617,7 @@
 			} else if (lcaseVal=='true'){
 				return true;
 			} else {
-				if(val.length != 35){
+				if(isNumeric(val)){
 					var numVal=parseFloat(val);
 					if(numVal==0 || !isNaN(1/numVal)){
 						return numVal;
@@ -2272,6 +2277,7 @@
 			off:off,
 			extend:extend,
 			inArray:inArray,
+			isNumeric:isNumeric,
 			post:post,
 			get:get,
 			deepExtend:deepExtend,
