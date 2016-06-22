@@ -56,6 +56,7 @@
 		<cfparam name="rc.sortBy" default="menutitle">
 		<cfparam name="rc.sortDirection" default="asc">
 		<cfparam name="rc.searchString" default="">
+		<cfparam name="cookie.CONTENTNAV" default="00000000000000000000000000000000000">
 
 		<cfset titleDirection = "asc">
 		<cfset displayDirection = "asc">
@@ -644,41 +645,44 @@
 			  		OR application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)
 			  		OR application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
 
-							  <ul id="arch-mod" class="navTask nav nav-pills pull-left">
+							  <div id="arch-mod" class="mura-input-set">
 
-  								  <li>
-  									  <a data-moduleid="00000000000000000000000000000000000" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.sitetree"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000000"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});">
+  								  
+  									  <a class="btn" data-moduleid="00000000000000000000000000000000000" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.sitetree"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000000"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});">
   										  <i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#
   									  </a>
-  								  </li>
+  								  
 
   								  <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
-  								  <li>
-  									  <a data-moduleid="00000000000000000000000000000000003" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.components"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000003"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000003','00000000000000000000000000000000003','','','Component',1)});">
+  								  
+  									  <a class="btn" data-moduleid="00000000000000000000000000000000003" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.components"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000003"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000003','00000000000000000000000000000000003','','','Component',1)});">
   										  <i class="mi-align-justify"></i> #application.rbFactory.getKeyValue(session.rb,"layout.components")#
   									  </a>
-  								  </li>
+  								  
   								  </cfif>
   								  <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
-  								  <li>
-  									  <a data-moduleid="00000000000000000000000000000000004" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.forms"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000004"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000004','00000000000000000000000000000000004','','','Form',1)});">
+  								  
+  									  <a class="btn" data-moduleid="00000000000000000000000000000000004" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.forms"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000004"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000004','00000000000000000000000000000000004','','','Form',1)});">
   										<i class="mi-toggle-on"></i> #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
   									  </a>
-  								  </li>
+  								  
   								  </cfif>
   								  <cfif application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
-  								  <li>
-  									  <a data-moduleid="00000000000000000000000000000000099" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.variations"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000099"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000099','00000000000000000000000000000000099','','','Variation',1)});">
+  								  
+  									  <a class="btn" data-moduleid="00000000000000000000000000000000099" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.variations"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000099"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000099','00000000000000000000000000000000099','','','Variation',1)});">
   										  <i class="mi-cloud"></i> #application.rbFactory.getKeyValue(session.rb,"layout.variations")#
   									  </a>
-  								  </li>
+  								  
   								  </cfif>
-  							  </ul>
+  							  </div>
 				  		</cfif>
 
 								<script>
 									$(function(){
 										$("##arch-mod  a").click(function(){
+											// persist content nav selection
+											var navSelection = jQuery(this).attr('data-moduleid');
+							 				createCookie('CONTENTNAV',navSelection,5); 
 											$(".site-manager-mod").removeClass('active');
 											$('a[data-moduleid=' + $(this).data('moduleid') +']').removeClass('active');
 											$("##arch-mod  a.active").removeClass('active');
@@ -690,9 +694,13 @@
 											}
 										});
 									});
+
+									$(document).ready(function(){
+										jQuery('##arch-mod').find('a[data-moduleid=#cookie.CONTENTNAV#]').trigger('click');
+									});
 								</script>
 
-						  		<!--- site manager architectural view container --->
+			  		<!--- site manager architectural view container --->
 						<div id="gridContainer"<cfif rc.moduleid eq "00000000000000000000000000000000000"> class="site-tree"</cfif>>
 
 						</div>
@@ -783,13 +791,13 @@
 					}
 				}
 
-
 				jQuery(document).ready(function(){
 					<cfif isdefined('url.moduleid') and not isdefined('url.activetab')>
 						initSiteManagerTabContent(0);
 					<cfelse>
 						initSiteManagerTabContent(#rc.activeTab#);
 					</cfif>
+
 				});
 			</script>
 		</cfoutput>
