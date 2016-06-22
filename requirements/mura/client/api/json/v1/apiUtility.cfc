@@ -838,11 +838,11 @@ component extends="mura.cfobject" {
 		}
 
 		catch (Any e){
-			writeLog(type="Error", file="exception", text="#e.stacktrace#");
+			writeLog(type="Error", file="exception", text="#e#");
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
 
-			if(getBean('configBean'.debuggingEnabled())){
+			if(getBean('configBean').getDebuggingEnabled()){
 				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
 			} else {
 				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception"}});
