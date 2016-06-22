@@ -42,25 +42,28 @@ function saveToChangeset(changesetid,siteid,keywords){
 			stripe('stripe');
 			});
 
-
 		jQuery("##changesetContainer").dialog({
 			resizable: false,
 			modal: true,
 			close: function( event, ui ) { siteManager.assigningChangeset=false;},
 			buttons: {
-				'#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#': function() {
-					jQuery(this).dialog('close');
-					if(siteManager.configuratorMode == 'backEnd') {
-						siteManager.assigningChangeset=true;
-						if(siteManager.ckContent()){
-							//submitForm(document.contentForm, 'add');
+				#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#: 
+					{click: function() {
+							jQuery(this).dialog('close');
+						if(siteManager.configuratorMode == 'backEnd') {
+							siteManager.assigningChangeset=true;
+							if(siteManager.ckContent()){
+								//submitForm(document.contentForm, 'add');
+							}
+						} else {
+							siteManager.saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
 						}
-					} else {
-						siteManager.saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
-					}
-						
-						return false;
-					}
+							
+							return false;						
+						}
+					, text: '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#'
+					, class: 'mura-primary'
+					} // /Save
 			}
 		});
 	

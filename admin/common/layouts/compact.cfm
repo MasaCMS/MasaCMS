@@ -236,7 +236,7 @@
 	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact <cfif rc.sourceFrame eq 'modal'>modal-wrapper<cfelse>configurator-wrapper</cfif>">
 		<div id="mura-content">
 		<cfif rc.sourceFrame eq 'modal'>
-			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-times-circle"></i></a>
+			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-close"></i></a>
 			<cfinclude template="includes/dialog.cfm">
 		</cfif>
 

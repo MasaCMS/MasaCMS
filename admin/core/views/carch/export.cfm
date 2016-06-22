@@ -56,13 +56,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					resizable: false,
 					modal: true,
 					buttons: {
-						'YES': function() {
+						'No': function() {
 							jQuery(this).dialog('close');
-							jQuery('##partialExportForm').submit();
-							},
-						'NO': function() {
-							jQuery(this).dialog('close');
-						}
+						},
+						Yes: 
+							{click: function() {
+								jQuery(this).dialog('close');
+								jQuery('##partialExportForm').submit();
+							}
+							, text: 'Yes'
+							, class: 'mura-primary'
+						} // /Yes
 					}
 				});
 

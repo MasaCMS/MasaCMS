@@ -57,15 +57,19 @@ function submitBundle(){
 			resizable: false,
 			modal: true,
 			buttons: {
-				'YES': function() {
+				'No': function() {
 					jQuery(this).dialog('close');
-					//jQuery(".form-actions").hide();
-					//jQuery("##actionIndicator").show();
-					document.pluginSelectFrm.submit();
-					},
-				'NO': function() {
-					jQuery(this).dialog('close');
-				}
+				},
+        Yes: 
+          {click: function() {
+            jQuery(this).dialog('close');
+            //jQuery(".form-actions").hide();
+            //jQuery("##actionIndicator").show();
+            document.pluginSelectFrm.submit();
+            }
+          , text: 'Yes'
+          , class: 'mura-primary'
+        } // /Yes
 			}
 		});
 

@@ -364,7 +364,7 @@
 					},
 					success:function(resp){
 						root.mura.ajax({
-							type:'get',
+							type:'post',
 							url:root.mura.apiEndpoint + '?method=delete',
 							data:{
 								siteid:self.get('siteid'),

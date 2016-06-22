@@ -833,14 +833,10 @@ to your own modified versions of Mura CMS.
 
 					var editTitle = "Add Custom Image Size";
 
-					var dialogoptions= {
-							Save: function() {
-								saveCustomImageSize();
-								jQuery( this ).dialog( "close" );
-							},
-							Cancel: function() {
-								 jQuery( this ).dialog( "close" );
-							}
+					var dialogoptions= {};
+
+						dialogoptions.Cancel=function() {
+						 jQuery( this ).dialog( "close" );
 						};
 
 						if(sizeid != ''){
@@ -851,14 +847,21 @@ to your own modified versions of Mura CMS.
 							var editTitle = "Edit Custom Image Size";
 						}
 
+						dialogoptions.Save={click: function() {
+								jQuery(this).dialog('close');
+							}
+							, text: 'Save'
+							, class: 'mura-primary'
+						} // /Save
+
 					jQuery("##custom-image-dialog").dialog({
-						resizable: true,
+						resizable: false,
 						modal: true,
 						width: 400,
 						position: getDialogPosition(),
-						buttons: dialogoptions,
+						buttons: 
+						dialogoptions,
 						open: function(){
-
 							jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
 							var url = 'index.cfm';
 							var pars = 'muraAction=cSettings.loadcustomimage&siteid=' + siteid +'&sizeid=' + sizeid  +'&cacheid=' + Math.random();
@@ -869,7 +872,6 @@ to your own modified versions of Mura CMS.
 									$("##custom-image-dialog").dialog("option", "position", "center");
 									}
 								);
-
 						},
 						close: function(){
 							jQuery(this).dialog("destroy");

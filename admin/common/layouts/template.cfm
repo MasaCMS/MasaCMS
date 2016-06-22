@@ -299,7 +299,7 @@
      				<cfloop collection="#alerts#" item="alert">
      					<cfif not listFindNoCase('defaultpasswordnotice,cachenotice',alert)>
      						<div<cfif len(alerts['#alert#'].type)> class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#"<cfelse> class="alert alert-error"</cfif>>
-				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
 		            </div>
 		     				#alerts['#alert#'].text#
 		     			</cfif>
@@ -309,7 +309,7 @@
      			<cfif rc.renderMuraAlerts>
      				<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
      					<div class="alert alert-error">
-			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
      						#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
 							</div>
 	     			</cfif>
@@ -318,7 +318,7 @@
 	     						and not application.settingsManager.getSite(session.siteID).getCache()
 	     						and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
 			           	<div class="alert">
-			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
 			           		#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
 			           </div>
 		           	</cfif>
