@@ -374,7 +374,6 @@
 			.setHeader('Strict-Transport-Security', 'max-age=1200;includeSubDomains');
 	</cfscript>
 
-
 	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 
 	<cfswitch expression="#arguments.event.getValue('contentBean').getType()#">
