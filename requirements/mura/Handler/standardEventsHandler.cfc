@@ -368,13 +368,6 @@
 
 	<cfset arguments.event.getValidator('standardForceSSL').validate(arguments.event)>
 
-	<cfscript>
-	// HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
-		getPageContext()
-			.getResponse()
-			.setHeader('Strict-Transport-Security', 'max-age=1200;includeSubDomains');
-	</cfscript>
-
 	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 
 	<cfswitch expression="#arguments.event.getValue('contentBean').getType()#">
