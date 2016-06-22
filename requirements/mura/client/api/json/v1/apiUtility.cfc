@@ -841,7 +841,13 @@ component extends="mura.cfobject" {
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
+
+			if(getBean('configBean').getDebuggingEnabled()){
+				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
+			} else {
+				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception"}});
+			}
+
 		}
 
 	}

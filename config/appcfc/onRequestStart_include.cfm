@@ -266,3 +266,10 @@ If it has not, set application.appInitialized=false. --->
 </cfif>
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
 <cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
+
+<cfscript>
+// HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+	getPageContext()
+		.getResponse()
+		.setHeader('Strict-Transport-Security', 'max-age=1200;includeSubDomains');
+</cfscript>
