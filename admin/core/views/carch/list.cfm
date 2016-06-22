@@ -674,7 +674,7 @@
   									  </a>
   								  
   								  </cfif>
-  							  </ul>
+  							  </div>
 				  		</cfif>
 
 								<script>
