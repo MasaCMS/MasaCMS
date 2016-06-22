@@ -438,7 +438,7 @@
 					            modal: true,
 					            title: title,
 					            close: function(){ $dialog.remove(); },
-					            width: jcrop_api.getWidgetSize()[0]+75,
+					            width: jcrop_api.getWidgetSize()[0]+68,
 					            resizable: false,
 					            class: "cropper"
 					        });
