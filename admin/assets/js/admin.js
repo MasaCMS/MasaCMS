@@ -588,7 +588,7 @@ function validateForm(theForm) {
 			modal: true,
 			position: getDialogPosition(),
 			buttons: {
-				Ok: function() {
+				Ok: {click: function() {
 					$(this).dialog('close');
 					if(firstErrorNode == "input") {
 						frmInputs[startAt].focus();
@@ -598,7 +598,10 @@ function validateForm(theForm) {
 						frmSelects[startAt].focus();
 					}
 				}
-			}
+				, text: 'OK'
+				, class: 'mura-primary'
+				} // /OK
+				}
 		});
 
 		return false;
@@ -629,17 +632,20 @@ function submitForm(frm, action, msg) {
 				modal: true,
 				position: getDialogPosition(),
 				buttons: {
-					'Yes': function() {
-						$(this).dialog('close');
-						var frmInputs = currentFrm.getElementsByTagName("input");
-						for(f = 0; f < frmInputs.length; f++) {
-							if(frmInputs[f].getAttribute('name') == 'action') {
-								frmInputs[f].setAttribute('value', action);
+					Yes: {click: function() {
+							$(this).dialog('close');
+							var frmInputs = currentFrm.getElementsByTagName("input");
+							for(f = 0; f < frmInputs.length; f++) {
+								if(frmInputs[f].getAttribute('name') == 'action') {
+									frmInputs[f].setAttribute('value', action);
+								}
 							}
+							currentFrm.submit();				
 						}
-						currentFrm.submit();
-					},
-					'No': function() {
+						, text: 'Yes'
+						, class: 'mura-primary'
+						} // /Yes
+					, 'No': function() {
 						$(this).dialog('close');
 					}
 				}
@@ -942,29 +948,27 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 			title: 'Edit Image Properties',
 			position: getDialogPosition(),
 			buttons: {
-				Save:function(){
-					var fileData={exifpartial:{}};
-
-					$('.filemeta').each(function(){
-						fileData[$(this).attr('data-property')]=$(this).val();
-					});
-
-					$('.exif').each(function(){
-						fileData.exifpartial[$(this).attr('data-property')]=$(this).val();
-					});
-
-					fileData.setasdefault=$('#filemeta-setasdefault').is(':checked');
-
-					fileMetaDataAssign[property]=fileData;
-					$('#filemetadataassign').val(JSON.stringify(fileMetaDataAssign));
-					//alert($('#filemetadataassign').val());
-					$(this).dialog( "close" );
-
-				},
 				Cancel: function(){
 					 $(this).dialog( "close" );
-				}
+				},
 
+				Save: {click: function() {
+						var fileData={exifpartial:{}};
+						$('.filemeta').each(function(){
+							fileData[$(this).attr('data-property')]=$(this).val();
+						});
+						$('.exif').each(function(){
+							fileData.exifpartial[$(this).attr('data-property')]=$(this).val();
+						});
+						fileData.setasdefault=$('#filemeta-setasdefault').is(':checked');
+						fileMetaDataAssign[property]=fileData;
+						$('#filemetadataassign').val(JSON.stringify(fileMetaDataAssign));
+						//alert($('#filemetadataassign').val());
+						$(this).dialog( "close" );
+						}
+					, text: 'Save'
+					, class: 'mura-primary'
+					} // /Save
 
 			},
 			open: function() {
@@ -1154,8 +1158,7 @@ function alertDialog(message,okAction,title,width) {
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
-			Ok: 
-				{click: function() {
+			Ok: {click: function() {
 						$(this).dialog('close');
 						if(okAction){
 							if(typeof(okAction) == 'function') {
@@ -1213,9 +1216,7 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
-
-		'No': {
-			click: function() {
+			'No': { click: function() {
 				if(typeof(noAction) != 'undefined') {
 					if(typeof(noAction) == 'function') {
 						noAction();
@@ -1230,8 +1231,7 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 			,class: 'mura-cancel'
 			} // /no
 			
-			,'Yes': {
-				click: function() {
+			,'Yes': {	click: function() {
 					$(this).dialog('close');
 					if(typeof(yesAction) == 'function') {
 						yesAction();

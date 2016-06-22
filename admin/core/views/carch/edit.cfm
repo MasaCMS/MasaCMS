@@ -338,8 +338,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									document.contentForm.murakeepediting.value=false;
 									submitForm(document.contentForm,'add');
 								}
-							}
-
+							},
+							'','','Yes','No'
 						);
 					}
 
