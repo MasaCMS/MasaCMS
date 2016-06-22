@@ -842,8 +842,6 @@ component extends="mura.cfobject" {
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
 
-			WriteLog (text=serializeJSON(e),file="exception");
-
 			if(getBean('configBean'.debuggingEnabled())){
 				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
 			} else {
