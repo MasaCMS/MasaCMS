@@ -190,7 +190,7 @@
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="mi-times-circle"></i></button>
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="mi-close"></i></button>
 
 											<p>
 												<!--- <strong>#esapiEncode('html',local.item.getName())#</strong> <em>#rbKey('comments.commentedon')#:</em><br /> --->

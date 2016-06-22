@@ -1544,6 +1544,7 @@ body#csetup{
  background-image:url(../images/alert-bg.png);
  background-position: -50px -10px;
  background-repeat: no-repeat;
+ box-shadow: 0px 20px 50px 0px rgba(0,0,0,0.30);
  padding: 26px;
 }
 ui-dialog[aria-describedby=cropper]{
@@ -1578,6 +1579,7 @@ ui-dialog[aria-describedby=cropper]{
   .border-radius(0);
 }
 
+
 .ui-dialog .ui-dialog-content{
   margin-top: 0 !important;
   overflow: visible !important;
@@ -1593,7 +1595,7 @@ ui-dialog[aria-describedby=cropper]{
 
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button{
   float:none;
-  margin-right: 13px;
+  margin-left: 13px;
   background-image: linear-gradient(0deg, #C2C2C2 0%, #B6B6B6 100%) !important;
   background-position: 0 0 !important;
   border-radius: 1px !important;
@@ -1626,15 +1628,16 @@ ui-dialog[aria-describedby=cropper]{
 
 .ui-dialog .ui-dialog-titlebar-close,
 .ui-dialog .ui-dialog-titlebar-close:focus,
-.ui-dialog .ui-dialog-titlebar-close:hover{
-  color:#949494;
-  opacity: 1;
+.ui-dialog .ui-dialog-titlebar-close:hover,
+.ui-dialog .ui-dialog-titlebar-close:before,
+.ui-dialog .ui-dialog-titlebar-close:hover:before{
+  color:#949494 !important;
+  opacity: .65 !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:before{
   font-size: 18px;
 }
-
 #cropper .jcrop-holder{
   margin-left: 8px;
 }
@@ -1642,6 +1645,17 @@ ui-dialog[aria-describedby=cropper]{
 #ui-datepicker-div{
   .border-radius(0) !important;
   z-index: 555 !important;
+}
+
+.ui-widget-overlay { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background-image:none !important;
+  background-color: #fff !important;
+  opacity: .7 !important;
 }
 
 .modal-wrapper{
@@ -1653,6 +1667,7 @@ ui-dialog[aria-describedby=cropper]{
   right: 0px !important;
   height: 18px;
   width: 16px;
+  opacity: .65;
   }
   .ui-dialog .ui-dialog-titlebar-close:before{
     font-size: 18px;
