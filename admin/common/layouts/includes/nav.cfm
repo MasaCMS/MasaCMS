@@ -78,7 +78,7 @@
             <div class="side-header side-content">
                 <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
                 <button class="btn btn-link text-gray pull-right hidden-md hidden-lg" type="button" data-toggle="layout" data-action="sidebar_close">
-                    <i class="mi-times"></i>
+                    <i class="mi-close"></i>
                 </button>
                 <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
                 <div class="btn-group">
