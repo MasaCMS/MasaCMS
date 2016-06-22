@@ -1593,7 +1593,7 @@ ui-dialog[aria-describedby=cropper]{
 
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button{
   float:none;
-  margin-right: 13px;
+  margin-left: 13px;
   background-image: linear-gradient(0deg, #C2C2C2 0%, #B6B6B6 100%) !important;
   background-position: 0 0 !important;
   border-radius: 1px !important;
@@ -1626,15 +1626,16 @@ ui-dialog[aria-describedby=cropper]{
 
 .ui-dialog .ui-dialog-titlebar-close,
 .ui-dialog .ui-dialog-titlebar-close:focus,
-.ui-dialog .ui-dialog-titlebar-close:hover{
-  color:#949494;
-  opacity: .65;
+.ui-dialog .ui-dialog-titlebar-close:hover,
+.ui-dialog .ui-dialog-titlebar-close:before,
+.ui-dialog .ui-dialog-titlebar-close:hover:before{
+  color:#949494 !important;
+  opacity: .65 !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:before{
   font-size: 18px;
 }
-
 #cropper .jcrop-holder{
   margin-left: 8px;
 }
