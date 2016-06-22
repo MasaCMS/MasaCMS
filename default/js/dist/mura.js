@@ -5166,7 +5166,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					},
 					success:function(resp){
 						window.mura.ajax({
-							type:'get',
+							type:'post',
 							url:window.mura.apiEndpoint + '?method=delete',
 							data:{
 								siteid:self.get('siteid'),
