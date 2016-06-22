@@ -64,10 +64,14 @@
 						resizable: false,
 						modal: true,
 						buttons: {
-							"#rc.$.rbKey('sitemanager.extension.ok')#": function() {
-								jQuery(this).dialog('close');
-							}
-						}
+							#rc.$.rbKey('sitemanager.extension.ok')#: 
+								{click: function() {
+										$(this).dialog('close');
+									}
+								, text: 'OK'
+								, class: 'mura-primary'
+								} // /ok
+							}						
 					});
 					return false;
 				} else {
