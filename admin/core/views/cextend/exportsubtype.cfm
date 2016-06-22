@@ -66,7 +66,7 @@
 						buttons: {
 							#rc.$.rbKey('sitemanager.extension.ok')#: 
 								{click: function() {
-										$(this).dialog('close');
+										jQuery(this).dialog('close');
 									}
 								, text: 'OK'
 								, class: 'mura-primary'

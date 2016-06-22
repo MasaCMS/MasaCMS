@@ -163,19 +163,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				modal: true,
 				position: getDialogPosition(),
 				buttons: {
-					'Yes': function() {
-						jQuery(this).dialog('close');
-						if(siteManager.ckContent()){
-							document.getElementById('contentForm').returnURL.value=siteManager.requestedURL;
-							submitForm(document.contentForm,'add');
-							}
-							return false;
-						},
 					'No': function() {
 						jQuery(this).dialog('close');
 						location.href=siteManager.requestedURL;
 						siteManager.requestedURL="";
-					}
+					},
+					Yes: 
+						{click: function() {
+								jQuery(this).dialog('close');
+							}
+						, text: 'Yes'
+						, class: 'mura-primary'
+						} // /yes
 				}
 			});
 
