@@ -838,7 +838,7 @@ component extends="mura.cfobject" {
 		}
 
 		catch (Any e){
-			writeLog(type="Error", file="exception", text="#e#");
+			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
 
