@@ -1018,24 +1018,38 @@ p.alert,
   box-shadow: none !important;
   color: #fff;
   font-size: 15px;
+  line-height: 1.3em;
   margin-bottom: 12px;
   min-height: 56px;
   padding-left: 80px;
   padding-top: 8px;
   padding-right: 30px;
 
-  a.close{
+  a.close,
+  a.close:hover{
+    display:block;
+    float:right;
+    /* TODO: center close icon w/ dynamic height alert */
+    height: 38px;
+    margin-left: 13px;
+    margin-right: -17px;
+    margin-top: 0 !important;
+    opacity: .3;
+    width: 24px;
     text-shadow:none;  
   }
 
    i.mi-close{
     box-shadow: none;
     color: #545454;
-    float: left;
     font-size: 24px;
-    margin-top: 13px;
-    opacity: .3;
+    height: 24px;
+    position: relative !important;
     text-shadow: none;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
   }
 }
 
@@ -1073,17 +1087,11 @@ div:not(.mura-header) + p.alert,
   margin-right: -15px;
 }
 
-.alert a.close{
-  font-size: 16px;
-  margin-top: -4px;
-  margin-right: -8px;
-  opacity: 1;
-}
-
 a.close,
 a.close:focus,
 a.close:hover{
   color:#949494;
+  opacity: 1;
 }
 
 #mura-content form .alert{
@@ -1592,6 +1600,11 @@ body#csetup{
   .form-actions{
   padding: 8px 0;
   }
+
+  .alert{
+    margin-bottom: 23px !important;
+  }
+
 
 }
 /* /login and setup */
