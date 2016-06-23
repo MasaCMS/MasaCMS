@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul class="pagination">
 		<cfif rc.nextN.currentpagenumber gt 1> 
 			<li>
-				<a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.prev')#</a>
+				<a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-angle-left"></i></a>
 			</li>
 		</cfif>	
 		<cfloop from="1"  to="#rc.nextN.lastPage#" index="i">
@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 		<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-			<li><a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.next')#&nbsp;&raquo;</a></li>
+			<li><a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-angle-right"></i></a></li>
 		</cfif> 
 		</ul>
 	</div>		

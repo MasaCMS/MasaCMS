@@ -342,7 +342,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <ul class="moreResults pagination">
 		  <cfif rc.nextN.currentpagenumber gt 1>
 		  	<li>
-		  	<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
+		  	<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#"><i class="mi-angle-left"></i></a>
 		  	</li>
 		  </cfif>
 		  <cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
@@ -356,7 +356,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     </cfloop>
 		 <cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 		 	<li>
-		 		<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+		 		<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#"><i class="mi-angle-right"></i></a>
 		 	</li>
 		 </cfif>
 		</ul>
