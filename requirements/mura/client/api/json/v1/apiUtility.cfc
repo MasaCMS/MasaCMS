@@ -375,9 +375,9 @@ component extends="mura.cfobject" {
 									'method'=params.method,
 									'params'=getParamsWithOutMethod(params),
 									'data'={
-										'access_token':token.getToken(),
-										'expires_in':token.getExpiresIn(),
-										'expires_at':token.getExpiresAt()
+										'access_token'=token.getToken(),
+										'expires_in'=token.getExpiresIn(),
+										'expires_at'=token.getExpiresAt()
 									 }});
 								responseObject.setContentType('application/json; charset=utf-8');
 								responseObject.setStatus(200);
