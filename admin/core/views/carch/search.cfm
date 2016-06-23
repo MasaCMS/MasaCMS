@@ -160,7 +160,7 @@ siteManager.copySiteID = '#session.copySiteID#';
 			<ul class="pagination">
 			<cfif rc.nextN.currentpagenumber gt 1>
 				<li>
-					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a>
+					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#"><i class="mi-angle-left"></i></a>
 				</li>
 			</cfif>
 			<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i">
@@ -172,7 +172,7 @@ siteManager.copySiteID = '#session.copySiteID#';
 			</cfloop>
 			<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 				<li>
-					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a>
+					<a href="./?muraAction=cArch.search&siteid=#esapiEncode('url',rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#"><i class="mi-angle-right"></i></a>
 				</li>
 			</cfif>
 			</cfoutput>
