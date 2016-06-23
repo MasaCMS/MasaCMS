@@ -116,7 +116,7 @@
 								}
 							</cfscript>
 							<li class="#local.prevClass#">
-								<a hre="##" data-pageno="#local.prevNo#">&laquo;</a>
+								<a hre="##" data-pageno="#local.prevNo#"><i class="mi-angle-left"></i></a>
 							</li>
 							<!--- LINKS --->
 							<cfloop from="#rc.startPage#" to="#rc.endPage#" index="p">
@@ -141,7 +141,7 @@
 								}
 							</cfscript>
 							<li class="#rc.nextClass#">
-								<a href="##" data-pageno="#rc.prevNo#">&raquo;</a>
+								<a href="##" data-pageno="#rc.prevNo#"><i class="mi-angle-right"></i></a>
 							</li>
 						</ul>
 					</div>

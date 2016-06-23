@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.trashIterator.pageCount() gt 1>
 				<ul class="pagination">
 					<cfif rc.pageNum gt 1>
-									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="mi-caret-left"></i>Previous</a></li>
+									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="mi-angle-left"></i></a></li>
 					</cfif>
 					<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
 
@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					</cfloop>
 					<cfif rc.pageNum lt rc.trashIterator.pageCount()>
-									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next<i class="mi-caret-right"></i></a></li>
+									<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#"><i class="mi-angle-right"></i></a></li>
 					</cfif>
 				</ul>
 			</cfif>

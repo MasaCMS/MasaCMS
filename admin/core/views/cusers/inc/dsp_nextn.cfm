@@ -113,7 +113,7 @@
 								}
 							</cfscript>
 							<li class="#local.prevClass#">
-								<a href="##" data-pageno="#local.prevNo#" class="#local.prevClass#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
+								<a href="##" data-pageno="#local.prevNo#" class="#local.prevClass#"><i class="mi-angle-left"></i></a>
 							</li>
 							
 						<!--- Page Number Links --->
@@ -137,7 +137,7 @@
 								}
 							</cfscript>
 							<li class="#rc.nextClass#">
-								<a href="##" data-pageno="#rc.prevNo#" class="#rc.nextClass#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+								<a href="##" data-pageno="#rc.prevNo#" class="#rc.nextClass#"><i class="mi-angle-right"></i></a>
 							</li>
 
 					</ul>
