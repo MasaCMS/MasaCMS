@@ -888,6 +888,11 @@ component extends="mura.cfobject" {
 			if(find('[',p)){
 				structDelete(temp,listFirst(p,'[') & listFirst(listLast(p,'['),']'));
 			}
+
+			//Don't respond with file paths information
+			if(refind('[\\/]',temp['#p#']) && (fileExists(temp['#p#']) || fileExists(temp['#p#']))){
+				temp['#p#']=true;
+			}
 		}
 		return temp;
 	}
