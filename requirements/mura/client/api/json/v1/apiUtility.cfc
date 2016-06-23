@@ -637,6 +637,13 @@ component extends="mura.cfobject" {
 		var temp={};
 		structAppend(temp,arguments.params);
 		structDelete(temp,'method');
+
+		for(var p in temp){
+			//Don't respond with file paths information
+			if(refind('[\\/]',temp['#p#']) && (fileExists(temp['#p#']) || fileExists(temp['#p#']))){
+				temp['#p#']=true;
+			}
+		}
 		return temp;
 	}
 
