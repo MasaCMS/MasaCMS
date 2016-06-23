@@ -1017,7 +1017,9 @@ p.alert,
   border-radius: 2px !important;
   box-shadow: none !important;
   color: #fff;
+  font-size: 15px;
   margin-bottom: 12px;
+  min-height: 56px;
   padding-left: 80px;
   padding-top: 8px;
   padding-right: 30px;
@@ -1598,15 +1600,30 @@ body#csetup{
 /* jquery-ui overrides */
 
 .ui-dialog{
- background-image:url(../images/alert-bg.png);
  background-position: -50px -10px;
  background-repeat: no-repeat;
+ background-size: 240px 240px;
  box-shadow: 0px 20px 50px 0px rgba(0,0,0,0.30);
  padding: 26px;
-}
-ui-dialog[aria-describedby=cropper]{
-  background-image: none;
-}
+
+ &.dialog-confirm{
+  background-image:url(../images/dialog-confirm-bg@2x.png);
+ }
+ &.dialog-info{
+  background-image:url(../images/dialog-info-bg@2x.png);
+ }
+ &.dialog-warning{
+  background-image:url(../images/dialog-warning-bg@2x.png);
+ }
+ &.dialog-nobg{
+  background-image:none !important;
+ }
+
+  &[aria-describedby=cropper]{
+    background-image: none;
+  }
+} // ui-dialog
+
 .modal-wrapper .ui-dialog{
   padding: 15px 30px !important;
   background-color: #f5f5f5;
@@ -1624,6 +1641,10 @@ ui-dialog[aria-describedby=cropper]{
   font-size: 24px;
   line-height: 1.2;
   padding: 0;
+}
+
+.ui-dialog #draft-prompt>p:first-child {
+    font-size: auto;
 }
 .modal-wrapper .ui-dialog-content{
   background-color: #fff;

@@ -1152,7 +1152,7 @@ function alertDialog(message,okAction,title,width,dialogClass) {
 	}
 
 	title= title || 'Alert';
-	dialogClass= dialogClass || 'alert';
+	dialogClass= dialogClass || 'dialog-warning';
 
 	var dialogConfig={
 		dialogClass: dialogClass,
@@ -1165,7 +1165,7 @@ function alertDialog(message,okAction,title,width,dialogClass) {
 						if(okAction){
 							if(typeof(okAction) == 'function') {
 								okAction();
-							} else if (typeof(_okAction) == 'string'){
+							} else if (typeof(okAction) == 'string' && okAction != ''){
 								actionModal(okAction);
 							}
 						}
@@ -1212,7 +1212,7 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 
 	yesButtonText = yesButtonText || 'OK';
 	noButtonText = noButtonText || 'Cancel';
-	dialogClass = dialogClass || 'confirm';
+	dialogClass = dialogClass || 'dialog-confirm';
 
 	var dialogConfig={
 		dialogClass: dialogClass,
@@ -1221,14 +1221,14 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 		position: getDialogPosition(),
 		buttons: {
 			'No': { click: function() {
-				if(typeof(noAction) != 'undefined') {
+				if(typeof(noAction) != 'undefined' && noAction != '') {
 					if(typeof(noAction) == 'function') {
 						noAction();
 					} else {
 						actionModal(noAction);
 					}
 				} else {
-					$(this).dialog('close');
+					$(this).dialog('destroy');
 				}
 			}
 			,text: noButtonText
@@ -1239,14 +1239,17 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 					$(this).dialog('close');
 					if(typeof(yesAction) == 'function') {
 						yesAction();
-					} else {
+					} else if(noAction != ''){
 						actionModal(yesAction);
 					}
 				}
 				,text: yesButtonText
 				,class: 'mura-primary'
 			} // /yes
-		}
+		} // /buttons
+		, close: function (event, ui) {
+        $(this).dialog('destroy');
+      } // /close
 	};
 
 	if(width){
