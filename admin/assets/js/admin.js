@@ -1139,7 +1139,7 @@ function setFileSelectors() {
 	$('.mura-file-selector').fileselector();
 }
 
-function alertDialog(message,okAction,title,width) {
+function alertDialog(message,okAction,title,width,dialogClass) {
 
 	var width = width || 450;
 
@@ -1152,8 +1152,10 @@ function alertDialog(message,okAction,title,width) {
 	}
 
 	title= title || 'Alert';
+	dialogClass= dialogClass || 'alert';
 
 	var dialogConfig={
+		dialogClass: dialogClass,
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
@@ -1186,7 +1188,7 @@ function alertDialog(message,okAction,title,width) {
 	return false;
 }
 
-function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noButtonText) {
+function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noButtonText,dialogClass) {
 
 	var width = width || 450;
 
@@ -1210,8 +1212,10 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 
 	yesButtonText = yesButtonText || 'OK';
 	noButtonText = noButtonText || 'Cancel';
+	dialogClass = dialogClass || 'confirm';
 
 	var dialogConfig={
+		dialogClass: dialogClass,
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
