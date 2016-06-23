@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 	<div class="mura-header">
 		<h1><cfif isDefined('url.addsite')>Add Site<cfelse>Site Settings</cfif></h1>
 	<cfif len(rc.siteid)>
-			<div class="nav-module-specific btn-group"> 
+			<div class="nav-module-specific btn-group">
 			<cfif rc.action eq "updateFiles">
 				<a class="btn" href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
 			<cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
@@ -848,6 +848,7 @@ to your own modified versions of Mura CMS.
 						}
 
 						dialogoptions.Save={click: function() {
+								saveCustomImageSize();
 								jQuery(this).dialog('close');
 							}
 							, text: 'Save'
@@ -859,7 +860,7 @@ to your own modified versions of Mura CMS.
 						modal: true,
 						width: 400,
 						position: getDialogPosition(),
-						buttons: 
+						buttons:
 						dialogoptions,
 						open: function(){
 							jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
