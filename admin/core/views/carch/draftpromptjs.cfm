@@ -26,6 +26,7 @@ function initDraftPrompt(){
 					var dialog=jQuery(resp.message).dialog({
 						title:"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.title'))#",
 						modal:true,
+						resizable:false,
 						width:"600px"
 					});
 					
