@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<label>
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.image')#
 						</label>
-						<div class="mura-control">
+						<div class="mura-control justify">
 							<img src="#fileMetaData.getUrlForImage(size='medium',useProtocol=false)#"/>
 						</div>
 					</div>

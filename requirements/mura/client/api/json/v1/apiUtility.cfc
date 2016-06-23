@@ -375,9 +375,9 @@ component extends="mura.cfobject" {
 									'method'=params.method,
 									'params'=getParamsWithOutMethod(params),
 									'data'={
-										'access_token':token.getToken(),
-										'expires_in':token.getExpiresIn(),
-										'expires_at':token.getExpiresAt()
+										'access_token'=token.getToken(),
+										'expires_in'=token.getExpiresIn(),
+										'expires_at'=token.getExpiresAt()
 									 }});
 								responseObject.setContentType('application/json; charset=utf-8');
 								responseObject.setStatus(200);
@@ -887,6 +887,11 @@ component extends="mura.cfobject" {
 		for(var p in temp){
 			if(find('[',p)){
 				structDelete(temp,listFirst(p,'[') & listFirst(listLast(p,'['),']'));
+			}
+
+			//Don't respond with file paths information
+			if(refind('[\\/]',temp['#p#'])){
+				structDelete(temp,'#p#');
 			}
 		}
 		return temp;

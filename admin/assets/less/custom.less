@@ -479,6 +479,23 @@ form .mura-control-group > * + .help-block:not(.alert){
     clear:both;
 }
 
+#main-container #tabArchitectural{
+  #arch-mod{
+    margin: 0;
+    
+     a{
+      background-color: #FFF;
+      border-color:#E9E9E9 !important;
+      color: #a5a5a5;
+     }
+
+      a.active{
+        background-color:#F8F8F8;
+        border-color: #e9e9e9;
+        color:#545454;
+      }
+  }
+}   
 #mura-content .mura-table-grid ul.breadcrumb{
   margin: 0;
 }
@@ -505,8 +522,10 @@ form .mura-control-group > * + .help-block:not(.alert){
 #gridContainer ul.breadcrumb li a:hover,
 #gridContainer ul.breadcrumb li a:active{
   color: #ff3405;
-  margin-right: 8px;
   font-weight: normal;
+  font-size:13px;
+  margin-right: 8px;
+  text-transform:none;
 
   &> i{
     color: #7f7f7f;
@@ -564,13 +583,14 @@ form .mura-control-group > * + .help-block:not(.alert){
   padding-left: 20px;
 }
 
-.nav-main ul.version li a{
+.nav-main ul.version li a,
+.nav-main ul.version li a strong{
   font-weight: 100;
 }
 
 .nav-main ul.version li a i{
-  margin-left: 10px;
-  margin-right: 0;
+  margin-left: 0;
+  margin-right: 10px;
   font-weight: 100;
 }
 
@@ -579,6 +599,12 @@ form .mura-control-group > * + .help-block:not(.alert){
   margin-left: -3px;
   min-width: 26px;
   position: relative;
+  text-align:center;
+
+  &.mi-edit{
+    padding-left: 2px;
+  }
+
 }
 
 .nav-main #navContentAdmin i{
@@ -926,6 +952,7 @@ a.no-link{
 }
 
 .tab-content{
+  clear:both;
   padding-left: 0px;
   padding-right: 0px;
 }
@@ -1584,6 +1611,16 @@ ui-dialog[aria-describedby=cropper]{
   margin-top: 0 !important;
   overflow: visible !important;
   padding: 12px 0;
+
+  &#newFileMetaContainer{
+    padding-top: 0;
+    background-color:transparent;
+
+    .block{
+      margin-bottom:-20px;
+    }
+  }
+
 }
 .ui-dialog .ui-dialog-buttonpane{
   margin: 26px 0 8px;
