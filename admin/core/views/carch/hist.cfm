@@ -78,11 +78,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </div> <!-- /.mura-header -->
 
+<cfinclude template="dsp_status.cfm">
+
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
-
-			<cfinclude template="dsp_status.cfm">
 
 			<table class="mura-table-grid">
 			<thead>
