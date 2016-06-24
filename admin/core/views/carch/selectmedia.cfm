@@ -49,7 +49,7 @@
 							</div>
 						</cfloop>
 					<cfelse>
-						<p class="alert">There are currently no related images available.</p>
+						<div class="help-block-empty">There are currently no related images available.</div>
 					</cfif>
 				</div>
 			</div>

@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="draft-prompt">	
 		<cfif $.siteConfig('hasLockableNodes') and draftprompdata.islocked>
 			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
-			<div class="alert alert-error alert-locked">
+			<div class="alert alert-error">
 				<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#.</p>
 				<p><a tabindex="-1" href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="mi-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
 			</div>
@@ -71,13 +71,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not $.siteConfig('hasLockableNodes') or draftprompdata.lockavailable or poweruser or $.currentUser().getUserID() eq  draftprompdata.lockid>
 			
 			<cfif draftprompdata.hasmultiple and not rc.targetversion>
-				<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
+				<div class="help-block">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</div>
 			</cfif>
 			
 			<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
 
 			<cfif $.siteConfig('hasLockableNodes') and (draftprompdata.lockavailable) and  draftprompdata.lockid neq session.mura.userid>
-				<p class="alert"><input id="locknodetoggle" type="checkbox"/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.locknode')#</p>
+				<div class="help-block"><input id="locknodetoggle" type="checkbox"/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.locknode')#</div>
 			</cfif>
 
 			<cfif rc.targetversion>

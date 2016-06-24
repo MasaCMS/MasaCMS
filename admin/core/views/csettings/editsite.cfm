@@ -279,7 +279,7 @@ to your own modified versions of Mura CMS.
 							<div class="mura-control-group">
 								<label>Static HTML Export Location (BETA)</label>
 						<cfif len(rc.siteBean.getExportLocation()) and not directoryExists(rc.siteBean.getExportLocation())>
-								<p class="alert alert-error help-block">The current value is not a valid directory</p>
+								<p class="help-block">The current value is not a valid directory</p>
 							</cfif>
 								<input name="exportLocation" type="text" value="#esapiEncode('html_attr',rc.siteBean.getExportLocation())#" maxlength="100"/>
 					</div>
@@ -587,7 +587,6 @@ to your own modified versions of Mura CMS.
 					<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
 						<div class="mura-control-group">
 							<label>Advertisement Manager</label>
-									<!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
 									<label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> checked</cfif>>Off</label>
 									<label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> checked</cfif>>On</label>
 
@@ -610,7 +609,6 @@ to your own modified versions of Mura CMS.
 					<cfif application.configBean.getEmailBroadcaster()>
 						<div class="mura-control-group">
 							<label>Email Broadcaster</label>
-							<!--- <p class="alert">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
 							<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="0" <cfif rc.siteBean.getemailbroadcaster() neq 1> checked</cfif>>Off</label>
 							<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="1" <cfif rc.siteBean.getemailbroadcaster()  eq 1> checked</cfif>>On</label>
 						</div>

@@ -100,15 +100,15 @@
 				<cfset strikes.clear()>
 			</cfif>
 			<cfif strikes.isBlocked()>
-				<p class="alert alert-error">
+				<div class="alert alert-error">
 					#rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
 					<a href="?muraAction=cUsers.edituser&amp;userid=#esapiEncode('url',rc.userid)#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;removeBlock">[#rbKey('user.remove')#]</a>
-				</p>
+				</div>
 			</cfif>
 		</cfif>
 		
 		<cfif not structIsEmpty(rc.userBean.getErrors())>
-			<p class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
+			<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
 		</cfif>
 		
 

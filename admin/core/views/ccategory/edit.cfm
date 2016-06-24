@@ -52,13 +52,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfinclude template="dsp_secondary_menu.cfm">
 </div> <!-- /.mura-header -->
 
+<cfif not structIsEmpty(rc.categoryBean.getErrors())>
+  <div class="alert alert-error">#application.utility.displayErrors(rc.categoryBean.getErrors())#</div>
+</cfif>
+
 <div class="block block-constrain">
     <div class="block block-bordered">
       <div class="block-content">
-
-      <cfif not structIsEmpty(rc.categoryBean.getErrors())>
-  <p class="alert alert-error">#application.utility.displayErrors(rc.categoryBean.getErrors())#</p>
-      </cfif>
 
       <cfif len(trim(application.pluginManager.renderEvent("onCategoryEditMessageRender", event)))>
         <span id="msg">#application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#</span>
@@ -68,23 +68,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       #$.renderEvent("onCategoryBasicTopRender")#
 
       <div class="mura-control-group">
-        <label>
-    #application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#
-  </label>
+        <label>#application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#</label>
         <input type="text" name="name" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#esapiEncode('html_attr',rc.categoryBean.getName())#" maxlength="50">
-  </div>
+      </div>
 
       <div class="mura-control-group">
-        <label>
-    #application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#
-  </label>
+        <label>#application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#</label>
     <input type="text" name="urltitle" value="#esapiEncode('html_attr',rc.categoryBean.getURLTitle())#" maxlength="255">
   </div>
 
       <div class="mura-control-group">
-      <label>
-    #application.rbFactory.getKeyValue(session.rb,'categorymanager.parentcategory')#
-  </label>
+      <label>#application.rbFactory.getKeyValue(session.rb,'categorymanager.parentcategory')#</label>
     <select name="parentID">
       <option value="">#application.rbFactory.getKeyValue(session.rb,'categorymanager.primary')#</option>
      <cf_dsp_parents siteID="#rc.siteID#" categoryID="#rc.categoryID#" parentID="" actualParentID="#rc.parentID#" nestLevel="1" >
@@ -92,9 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
 
       <div class="mura-control-group">
-        <label>
-    CategoryID
-  </label>
+        <label>CategoryID</label>
     <cfif len(rc.categoryID) and len(rc.categoryBean.getCategoryID())>
       #rc.categoryBean.getCategoryID()#
     <cfelse>
@@ -115,9 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
 
       <div class="mura-control-group">
-        <label>
-    #application.rbFactory.getKeyValue(session.rb,'categorymanager.allowcontentassignments')#
-  </label>
+        <label>#application.rbFactory.getKeyValue(session.rb,'categorymanager.allowcontentassignments')#</label>
   	<label class="radio inline" for="isOpenYes">
       <input name="isOpen" id="isOpenYes" type="radio" value="1" <cfif rc.categoryBean.getIsOpen()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
     </label>
@@ -151,9 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
 
       <div class="mura-control-group">
-        <label>
-    #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
-  </label>
+        <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</label>
     	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups">
 	       <optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 	       <option value="" <cfif rc.categoryBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>

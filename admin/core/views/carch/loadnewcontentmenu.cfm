@@ -67,15 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$(document).ready(function(){setToolTips('.add-content-ui');});
 	</script>
 	</cfif>
-	<!---
-	<p class="alert">
-		#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.newcontentlocation"),'<strong>"' & parentBean.getMenuTitle() & '"</strong>')#
-	</p>
-
-	#$.dspZoomNoLinks(parentBean.getCrumbArray())#
-	--->
 	<div class="add-content-ui">
-		<!---<cfdump var="#rsSubTypes#">--->
 		<ul>
 		<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 			<cfloop list="Form,Folder" index="i">
