@@ -212,7 +212,7 @@
 		<cfelse>
 
 			<!--- No Users Message --->
-				<div class="alert alert-info">
+				<div class="help-block-empty">
 					<cfif IsDefined('rc.noUsersMessage')>
 						#esapiEncode('html', rc.noUsersMessage)#
 					<cfelse>

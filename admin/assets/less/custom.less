@@ -457,7 +457,9 @@ header .btn i{
 }
 
 .help-block, 
-form .help-block{
+.help-block-empty,
+form .help-block,
+form .help-empty{
   background-color: #F9F9F9 !important;
   border: 1px dotted #A7A7A7 !important;
   color: #646464 !important;
@@ -465,8 +467,12 @@ form .help-block{
   font-style: normal !important;
   padding: 12px !important;
   width: 100% !important;
-
 }
+.help-block-empty,
+form .help-block-empty{
+  background-color: transparent !important;  
+}
+
 form .mura-control-group > * + .help-block:not(.alert){
   clear: both;
   padding: 2px 12px 2px 0;

@@ -209,9 +209,7 @@
 		<cfelse>
 
 			<!--- No groups message --->
-			<div class="alert alert-info">
-				#rbKey('user.nogroups')#
-			</div>
+			<div class="help-block-empty">#rbKey('user.nogroups')#</div>
 
 		</cfif>
 

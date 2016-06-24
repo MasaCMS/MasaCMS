@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </cfloop>
        </table>
      <cfelse>
-         <div class="alert alert-info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.nousage'),lcase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.contentBean.getType()#')))#</div>
+         <div class="help-block-empty">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.nousage'),lcase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.contentBean.getType()#')))#</div>
     </cfif>
 
     </div> <!--- / .mura-control-group --->

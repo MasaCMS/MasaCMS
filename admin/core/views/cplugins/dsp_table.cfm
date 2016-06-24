@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</table>
 		</cfif>
 		<cfif not started>
-			<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</div>
+			<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</div>
 		</cfif>
 
 		</div> <!-- /.block-content -->

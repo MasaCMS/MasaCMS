@@ -608,7 +608,7 @@ if(len($.siteConfig('customTagGroups'))){
 	#pagination#
 
 	<cfelse>
-		<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</div>
+		<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</div>
 	</cfif>
 </div>
 

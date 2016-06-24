@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				   		</table>
 						</div>
 				     <cfelse>
-				      	<div class="alert alert-info"><cfif rc.feedBean.getType() eq 'Local'>#application.rbFactory.getKeyValue(session.rb,'collections.noindexusage')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.nofeedusage')#</cfif></div>
+				      	<div class="help-block-empty"><cfif rc.feedBean.getType() eq 'Local'>#application.rbFactory.getKeyValue(session.rb,'collections.noindexusage')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.nofeedusage')#</cfif></div>
 				    </cfif>
 			 </div>
 
