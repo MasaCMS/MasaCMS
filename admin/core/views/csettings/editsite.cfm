@@ -1197,8 +1197,8 @@ to your own modified versions of Mura CMS.
 			<cfelse>
 			<div class="block block-bordered">
 				<div class="mura-control-group">
-					<div class="alert">
-						Java is currently disabled. So this feature is not currently available.
+					<div class="help-block-empty">
+						Java is disabled. This feature is unavailable.
 					</div>
 				</div>
 			</div>

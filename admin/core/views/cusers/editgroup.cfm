@@ -125,7 +125,7 @@
 <!--- Edit Form --->
 	<cfoutput>
 		<cfif not structIsEmpty(rc.userBean.getErrors())>
-			<div class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
+			<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
 		</cfif>
 
 		<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#')#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return userManager.submitForm(this);">

@@ -17,7 +17,7 @@
 	<cfif not fileLockedBySomeElse>
 		<cfif  rc.type eq 'File'
 			and (rc.type eq 'File' and not rc.contentBean.getIsNew())>
-			<p id="msg-file-locked" class="alert"<cfif not fileLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
+			<p id="msg-file-locked" class="help-block"<cfif not fileLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 			</p>
 		</cfif>
 
@@ -32,7 +32,7 @@
 	<cfelse>
 		<!--- Locked by someone else --->
 		<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
-		<p id="msg-file-locked" class="alert" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
+		<p id="msg-file-locked" class="help-block" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 		</p>
 
 
