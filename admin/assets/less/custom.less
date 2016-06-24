@@ -456,7 +456,17 @@ header .btn i{
   margin-top: 15px;
 }
 
+.help-block, 
+form .help-block{
+  background-color: #F9F9F9 !important;
+  border: 1px dotted #A7A7A7 !important;
+  color: #646464 !important;
+  display:block;
+  font-style: normal !important;
+  padding: 12px !important;
+  width: 100% !important;
 
+}
 form .mura-control-group > * + .help-block:not(.alert){
   clear: both;
   padding: 2px 12px 2px 0;
@@ -1037,19 +1047,29 @@ p.alert,
     opacity: .3;
     width: 24px;
     text-shadow:none;  
+ 
+      i.mi-close{
+        height: 24px;
+        margin-top: 0;
+        margin-right: 0;
+        position: relative !important;
+        top: 50%;
+        transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);      
+      }
+
   }
 
    i.mi-close{
     box-shadow: none;
     color: #545454;
     font-size: 24px;
-    height: 24px;
-    position: relative !important;
+    height: 38px;
+    margin-left: 13px;
+    margin-right: -17px;
+    margin-top: 6px !important;    
     text-shadow: none;
-    top: 50%;
-    transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
   }
 }
 
@@ -1115,8 +1135,11 @@ a.close:hover{
 }
 
 #mura-content form .alert{
-  clear:left;
+  clear: both;
+  display: block;
+  float: left;
   margin-top: 12px;
+  width: 100%;
 }
 
 .alert a,
