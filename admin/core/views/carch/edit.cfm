@@ -173,7 +173,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					},
 					Yes: 
 						{click: function() {
-								jQuery(this).dialog('close');
+							jQuery(this).dialog('close');
+							if(siteManager.ckContent()){
+								document.getElementById('contentForm').returnURL.value=siteManager.requestedURL;
+								submitForm(document.contentForm,'add');
+							}
+							return false;								
 							}
 						, text: 'Yes'
 						, class: 'mura-primary'
