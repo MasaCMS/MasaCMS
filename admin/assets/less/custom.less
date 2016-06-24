@@ -1035,41 +1035,34 @@ p.alert,
   padding-top: 8px;
   padding-right: 30px;
 
-  a.close,
-  a.close:hover{
-    display:block;
-    float:right;
-    /* TODO: center close icon w/ dynamic height alert */
-    height: 38px;
-    margin-left: 13px;
-    margin-right: -17px;
-    margin-top: 0 !important;
-    opacity: .3;
-    width: 24px;
-    text-shadow:none;  
- 
-      i.mi-close{
-        height: 24px;
-        margin-top: 0;
-        margin-right: 0;
-        position: relative !important;
-        top: 50%;
-        transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        -webkit-transform: translateY(-50%);      
-      }
-
-  }
 
    i.mi-close{
     box-shadow: none;
     color: #545454;
     font-size: 24px;
     height: 38px;
-    margin-left: 13px;
-    margin-right: -17px;
-    margin-top: 6px !important;    
     text-shadow: none;
+  }
+
+  .close,
+  .close:hover{
+    display:block;
+    float:right;
+    height: 38px;
+    margin-left: 13px;
+    margin-right: -24px;
+    margin-top: -4px !important;
+    padding-left: 5px;
+    opacity: .3;
+    width: 24px;
+    text-shadow:none;  
+ 
+      i.mi-close{
+        margin-top: 0 !important;
+        margin-right: 0;
+        position: relative !important;     
+      }
+
   }
 }
 
@@ -1794,7 +1787,7 @@ body#csetup{
 }
 
 .ui-widget-overlay { 
-  position: absolute; 
+  position: fixed; 
   top: 0; 
   left: 0; 
   width: 100%; 

@@ -24,11 +24,11 @@ function initDraftPrompt(){
 				  
 				  if (resp.showdialog !== undefined && resp.showdialog === "true"){
 					var dialog=jQuery(resp.message).dialog({
-						dialogClass: 'dialog-info',
+						dialogClass: "dialog-info",
 						title:"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.title'))#",
 						modal:true,
 						resizable:false,
-						width:"600px"
+						width:600
 					});
 					
 					$(".draft-prompt-option").click(function(e){

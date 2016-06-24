@@ -58,8 +58,11 @@
 	</cfif>
 </cfif>
 <cfif isdefined('showApprovalStatus')>
+
+<div style="display:none;" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.status"))#" id="approvalModalContainer"></div>
+
 <cfif showApprovalStatus and listFindNoCase('Pending,Rejected',rc.contentBean.getApprovalStatus())  >
-	<p class="alert alert-error">
+	<div class="alert alert-error">
 		<cfif rc.contentBean.getApprovalStatus() eq 'Rejected'>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.rejectedmessage")#:
 		<cfelseif rc.contentBean.getApprovalStatus() eq 'Cancelled'>
@@ -68,13 +71,13 @@
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.pendingmessage")#:
 		</cfif>
 		<strong><a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewdetails")#</a></strong>
-	</p>
+	</div>
 </cfif>
 
 <cfset conflicts=rc.contentBean.getDisplayConflicts()>
 
 <cfif rc.contentBean.getDisplay() eq 2>
-	<p class="alert"><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#</p>
+	<div class="alert alert-info" ><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#</p>
 </cfif>
 
 <cfif conflicts.hasNext()>
@@ -163,8 +166,5 @@ function applyApprovalAction(requestid,action,comment,siteid){
 	}
 }
 </script>
-<div style="display:none;" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.status"))#" id="approvalModalContainer">
-
-</div>
 </cfif>
 </cfoutput>
