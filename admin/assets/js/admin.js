@@ -631,6 +631,9 @@ function submitForm(frm, action, msg) {
 			$("#alertDialog").dialog({
 				modal: true,
 				position: getDialogPosition(),
+				resizable: false,
+				dialogClass: 'dialog-warning',
+				width: 400,
 				buttons: {
 					Yes: {click: function() {
 							$(this).dialog('close');

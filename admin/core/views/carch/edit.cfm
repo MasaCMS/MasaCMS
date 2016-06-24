@@ -530,11 +530,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div> <!-- /.mura-header -->
 
-
+<cfinclude template="dsp_status.cfm">
 
 	<cfif not rc.contentBean.getIsNew()>
 
-		<cfinclude template="dsp_status.cfm">
 
 		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
 
