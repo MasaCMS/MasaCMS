@@ -54,8 +54,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div> <!-- /.mura-header -->
 
 
-      <div class="block-content">
-
       <cfset csrftokens=rc.$.renderCSRFTokens(context=rc.changesetid,format='url')>
       <cfif rc.changeset.getPublished()>
       <div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</div>
@@ -67,6 +65,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
   </cfif>
       </cfif>
+
+
+      <div class="block-content">
 
       <cfif not rc.changeset.getPublished() and isDate(rc.changeset.getCloseDate())>
    <div class="alert">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.hasclosedate"),LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat))#

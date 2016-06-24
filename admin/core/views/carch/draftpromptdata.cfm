@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="draft-prompt">	
 		<cfif $.siteConfig('hasLockableNodes') and draftprompdata.islocked>
 			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
-			<div class="alert alert-error">
+			<div class="help-block">
 				<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#.</p>
 				<p><a tabindex="-1" href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="mi-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
 			</div>

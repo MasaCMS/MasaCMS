@@ -81,17 +81,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.mura-header -->
 
+<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
+<cfif isStruct(errors) and not structIsEmpty(errors)>
+	<div class="alert alert-error">#application.utility.displayErrors(errors)#</div>
+</cfif>
+<cfset application.userManager.getCurrentUser().setValue("errors","")>
+
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
 	  	
-
-	<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
-	<cfif isStruct(errors) and not structIsEmpty(errors)>
-		<div class="alert alert-error">#application.utility.displayErrors(errors)#</div>
-	</cfif>
-	<cfset application.userManager.getCurrentUser().setValue("errors","")>
-
 	<form novalidate="novalidate" method="post" name="frmSettings" action="./?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
 			<cfsilent>
 				<cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">

@@ -119,7 +119,7 @@
 	<form novalidate="novalidate" name="form1" method="post">
 		<div class="mura-control-group">
 			<div id="copymessage">
-				<div class="info-box alert alert-info"></div>
+				<div class="info-box help-block"></div>
 			</div>
 				<textarea id="thecode" rows="20" style="width: 100%; height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
 		</div>
