@@ -510,7 +510,7 @@
 										<!---
 										<cfif rc.tempIsPublic>
 											<div id="privateGroupsNotice">
-												<p class="alert alert-notice">
+												<p class="help-block-empty">
 													#rbKey('user.systemgroupmessage')#
 												</p>
 											</div>
@@ -524,7 +524,7 @@
 													</label>
 												</cfloop>
 											<cfelse>
-												<p class="alert alert-notice">
+												<p class="help-block-empty">
 													#rbKey('user.nogroups')#
 												</p>
 											</cfif>
@@ -544,7 +544,7 @@
 											</label>
 										</cfloop>
 									<cfelse>
-										<p class="alert alert-notice">
+										<p class="help-block-empty">
 											#rbKey('user.nogroups')#
 										</p>
 									</cfif>
