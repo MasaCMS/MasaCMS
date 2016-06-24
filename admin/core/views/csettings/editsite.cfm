@@ -356,7 +356,7 @@ to your own modified versions of Mura CMS.
 
 				<!--- Google reCAPTCHA API Keys --->
 				<cfif not Len(rc.siteBean.getReCAPTCHASiteKey()) or not Len(rc.siteBean.getReCAPTCHASecret())>
-					<div class="alert alert-warning">
+					<div class="help-block-inline">
 						#rc.$.rbKey('siteconfig.recaptcha.message')#
 					</div>
 				</cfif>
@@ -1033,7 +1033,8 @@ to your own modified versions of Mura CMS.
 					</div>
 
 				 <div class="mura-control-group">
-				<label>Primary Display Region <span class="help-block">Dynamic System Content such as Login Forms and Search Results get displayed here</span></label>
+				<label>Primary Display Region</label>
+				<span class="help-block">Dynamic System Content such as Login Forms and Search Results get displayed here</span>
 						<select name="primaryColumn">
 						<cfloop from="1" to="20" index="i">
 								<option value="#i#" <cfif rc.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option>
@@ -1150,8 +1151,8 @@ to your own modified versions of Mura CMS.
 								<input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">
 								All Plugins</label>
 					</div>
-						<p class="alert help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
-						<p class="alert help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
+						<p class="help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
+						<p class="help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
 					</div>
 				 </cfif>
 				<div class="mura-control-group">
@@ -1166,7 +1167,7 @@ to your own modified versions of Mura CMS.
 								<label class="radio inline">
 							 <input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
 							</cfif>
-							<p class="alert help-block"<cfif listFind(session.mura.memberships,'S2')> style="display:none"</cfif> id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
+							<p class="help-block"<cfif listFind(session.mura.memberships,'S2')> style="display:none"</cfif> id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
 					</div>
 
 				<div class="mura-control-group">
@@ -1179,7 +1180,7 @@ to your own modified versions of Mura CMS.
 						<input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value="">
 						<input type="button" value="Browse Server" class="mura-ckfinder" data-completepath="true" data-resourcetype="root" data-target="serverBundlePath"/>
 					</div>
-						<p class="help-block alert">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
+						<p class="help-block">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
 			</div>
 				<cfif application.configBean.getPostBundles()>
 				<div class="mura-control-group">

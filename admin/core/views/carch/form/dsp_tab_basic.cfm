@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				     <div id="alertTitleSuccess" class="alert alert-success" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# <button type="button" class="close" data-dismiss="alert"><i class="mi-close"></i></button></div>
 			     </div>
 			<div class="mura-control-group" id="editAdditionalTitles" style="display:none;">
-				<div class="alert help-block">
+				<div class="help-block">
 					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
 					<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
 				</div>

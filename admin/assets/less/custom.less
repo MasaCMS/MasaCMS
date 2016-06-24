@@ -458,28 +458,57 @@ header .btn i{
 
 .help-block, 
 .help-block-empty,
+.help-block-inline,
 form .help-block,
-form .help-empty{
+form .help-empty,
+form .help-block-inline{
   background-color: #F9F9F9 !important;
   border: 1px dotted #A7A7A7 !important;
   color: #646464 !important;
   display:block;
   font-style: normal !important;
+  margin-bottom: 12px;
   padding: 12px !important;
   width: 100% !important;
 }
+
+.help-block,
+form .help-block{
+  border-radius: 2px !important;
+  box-shadow: none !important;
+  line-height: 1.333em;
+/*
+  background-image:url(../images/alert-info@2x.png);
+  background-position: -17px center;
+  background-repeat: no-repeat;
+  background-size: 80px 80px;
+  padding-left: 80px !important;
+*/  
+}
+
 .help-block-empty,
 form .help-block-empty{
   background-color: transparent !important;  
 }
 
-form .mura-control-group > * + .help-block:not(.alert){
+.help-block-inline,
+form .help-block-inline,
+form .mura-control-group > * + .help-block{
   clear: both;
-  padding: 2px 12px 2px 0;
-}
+  display:inline-block;
+  float:left;
+  margin-bottom: 8px !important;
+  padding: 10px 15px !important;
+  width: auto !important;
 
+  &+ *{
+    clear:both;
+  }
+
+}
+.help-block-inline + .mura-control-group,
 .help-block + .mura-control-group{
-  margin-top: 8px;
+  margin-top: 12px !important;
 }
 
 #mura-search-submit{
