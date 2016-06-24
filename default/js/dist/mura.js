@@ -7290,8 +7290,12 @@ return /******/ (function(modules) { // webpackBootstrap
             this.queryString+='notin^' + encodeURIComponent(criteria);
 			return this;
         },
-        contains:function(criteria){
-            this.queryString+='contains^' + encodeURIComponent(criteria);
+        containsValue:function(criteria){
+            this.queryString+='containsValue^' + encodeURIComponent(criteria);
+			return this;
+        },
+		contains:function(criteria){
+            this.queryString+='containsValue^' + encodeURIComponent(criteria);
 			return this;
         },
 		beginsWith:function(criteria){

@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cf_objectconfigurator></cf_objectconfigurator>
 			<cfelse>
 				<cfoutput>
-					<p class="alert">This display object is not configurable.</p>
+					<div class="help-block-empty">This display object is not configurable.</div>
 				</cfoutput>
 			</cfif>
 		</cfdefaultcase>

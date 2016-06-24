@@ -27,18 +27,20 @@
       <cfif rc.bean.exists()><a class="btn" href="##" onclick="generateToken();return false;"><i class="mi-key"></i> Generate Access Token</a></cfif>
   </div>
 </div> <!-- /.mura-header -->
+
+<cfif not structIsEmpty(rc.bean.getErrors())>
+  <div class="alert alert-error">#application.utility.displayErrors(rc.bean.getErrors())#</div>
+</cfif>
+
+<cfif not rc.$.siteConfig('useSSL')>
+      <div class="alert alert-error">IMPORTANT: When using web services in production this site should be set to use SSL (HTTPS).</div>
+</cfif>
+
 <form novalidate="novalidate" action="./?muraAction=cwebservice.save" method="post" name="form1" onsubmit="return validateForm(this);">
 <div class="block block-constrain">
     <div class="block block-bordered">
       <div class="block-content">
 
-        <cfif not structIsEmpty(rc.bean.getErrors())>
-          <div class="alert alert-error">#application.utility.displayErrors(rc.bean.getErrors())#</div>
-        </cfif>
-
-        <cfif not rc.$.siteConfig('useSSL')>
-              <div class="alert alert-error">IMPORTANT: When using web services in production thes site should be set to use SSL (HTTPS).</div>
-        </cfif>
 
         <span id="token-container"></span>
       <div class="mura-control-group">
