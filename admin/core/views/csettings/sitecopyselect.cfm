@@ -47,14 +47,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="mura-header">
 <h1>Copy Site</h1>
-<!--- >
-<p class="alert">IMPORTANT: All content in the site that is being copied to will be replaced.</p> --->
 </div> <!-- /.mura-header -->
+
+<div class="alert alert-warning">IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</div>
+
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
 
-<p class="alert">IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</p>
 
 <form action="./" onsubmit="if(validateForm(this)){actionModal(function(){});return true;}else{return false;};">
 <div class="mura-control-group">

@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <cfif structKeyExists(request, "inheritedObjects") and len(request.inheritedObjects)>
           <cfset inheritBean=$.getBean('content').loadBy(contenthistid=request.inheritedObjects)>
           <cfif inheritBean.getContentID() neq rc.contentBean.getContentID()>
-          <div class="alert">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.currentinheritance')#:
+          <div class="help-block">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.currentinheritance')#:
           <cfif listFindNoCase("author,editor",application.permUtility.getnodePerm(inheritBean.getCrumbArray()))>
              <strong><a href='#inheritBean.getEditURL(compactDisplay=yesNoFormat(rc.compactdisplay),tab='tabLayoutObjects')#'>#esapiEncode('html',inheritBean.getMenuTitle())#</a></strong>
           <cfelse>

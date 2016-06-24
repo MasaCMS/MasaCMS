@@ -99,8 +99,6 @@
 	</cfoutput>
 <cfelseif attributes.parentID eq ''>
 	<cfoutput>
-		<p class="alert">
-			#request.context.$.rbKey('user.nointerestcategories')#
-		</p>
+<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</div>
 	</cfoutput>
 </cfif> 

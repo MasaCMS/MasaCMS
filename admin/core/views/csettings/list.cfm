@@ -308,12 +308,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			})
 		</script>
 
-
 	   <cfelse>
 
-	          <div class="alert">
-	            Java is currently disabled. So the ability to install plugins is not currently available.
-	          </div>
+    <div class="help-block-empty">
+      Java is disabled. Plugin installation is unavailable.
+    </div>
 
       </cfif>
 		<cfif rc.rsPlugins.recordcount>

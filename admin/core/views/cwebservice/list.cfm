@@ -56,12 +56,14 @@
         <a class="btn" href="./?muraAction=cwebservice.edit&clientid=&siteid=&#esapiEncode('url',rc.siteid)#"><i class="mi-plus-circle"></i> Add New Web Service</a>
     </div>
 </div> <!-- /.mura-header -->
+
+<cfif not rc.$.siteConfig('useSSL')>
+   <div class="alert alert-error">IMPORTANT: When using web services in production thes site should be set to use SSL (HTTPS).</div>
+</cfif>
+
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
-		  <cfif not rc.$.siteConfig('useSSL')>
-               <div class="alert alert-error">IMPORTANT: When using web services in production thes site should be set to use SSL (HTTPS).</div>
-          </cfif>
 
 		  <cfif not services.hasNext()>
 			  <div class="help-block-empty">There currently are no web services configured for this site.</div>

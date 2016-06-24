@@ -533,7 +533,7 @@
 	</div>
 </div>
 <cfelse>
-	<p class="alert">This content does not have any image attached to it.</p>
+	<div class="help-block-empty">This content does not have any image attached to it.</div>
 </cfif>
 
 <cfif isDefined("secondarynav")>

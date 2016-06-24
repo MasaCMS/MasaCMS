@@ -81,13 +81,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div id="mura-form-addpage">+</div>
 			</div>		
 			<div id="mura-tb-form-fields">
-				<div id="mura-tb-fields-empty" class="alert">#application.rbFactory.getKeyValue(session.rb,'formbuilder.fields.empty')#</div>
+				<div id="mura-tb-fields-empty" class="help-block">#application.rbFactory.getKeyValue(session.rb,'formbuilder.fields.empty')#</div>
 				<ul id="mura-tb-fields">
 				</ul>
 			</div>
 			<div id="mura-tb-fields-settings">	
 				<div id="mura-tb-field-form" class="mura-tb-data-form">
-					<div id="mura-tb-field-empty" class="alert">#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.empty')#</div>
+					<div id="mura-tb-field-empty" class="help-block">#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.empty')#</div>
 					<div id="mura-tb-field">
 					</div>
 				</div>

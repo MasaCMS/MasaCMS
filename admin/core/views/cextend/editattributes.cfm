@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </ul>
 
       <cfelse>
-      <p class="alert">This set has no attributes.</p>
+      <div class="help-block-empty">This set has no attributes.</div>
       </cfif>
       </div> <!-- /.block-content -->
     </div> <!-- /.block-bordered -->

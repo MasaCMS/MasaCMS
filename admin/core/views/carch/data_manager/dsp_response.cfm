@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 </cfoutput>
 <cfelse>
-	<p class="alert">No data to display for this form</p>
+	<div class="help-block-empty">No data to display for this form</div>
 </cfif>
 <cfif isdefined ('rc.minute1')>
 <cfsilent>

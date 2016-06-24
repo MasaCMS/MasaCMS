@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 					</ul>
 					<cfelse>
-					<p class="alert">#application.rbFactory.getKeyValue(session.rb,'calendar.noadditional')#</p>
+					<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'calendar.noadditional')#</div>
 					</cfif>
 				</div>
 

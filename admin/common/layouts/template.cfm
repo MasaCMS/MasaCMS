@@ -317,7 +317,7 @@
 	     			<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown())
 	     						and not application.settingsManager.getSite(session.siteID).getCache()
 	     						and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
-			           	<div class="alert">
+			           	<div class="alert alert-info">
 			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
 			           		#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
 			           </div>

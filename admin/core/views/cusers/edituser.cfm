@@ -94,27 +94,28 @@
 	</div>
 </div> <!-- /.mura-header -->
 
-	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
-
-	<div class="block block-constrain">		
-	
 		<cfif len(rc.userBean.getUsername())>
 			<cfset strikes=createObject("component","mura.user.userstrikes").init(rc.userBean.getUsername(),application.configBean)>
 			<cfif structKeyExists(rc,"removeBlock")>
 				<cfset strikes.clear()>
 			</cfif>
 			<cfif strikes.isBlocked()>
-				<p class="alert alert-error">
+				<div class="alert alert-error">
 					#rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
 					<a href="?muraAction=cUsers.edituser&amp;userid=#esapiEncode('url',rc.userid)#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;removeBlock">[#rbKey('user.remove')#]</a>
-				</p>
+				</div>
 			</cfif>
 		</cfif>
 		
 		<cfif not structIsEmpty(rc.userBean.getErrors())>
-			<p class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
+			<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
 		</cfif>
 		
+
+	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
+
+	<div class="block block-constrain">		
+	
 		</cfoutput>
 
 		<cfsavecontent variable="tabContent">
@@ -213,7 +214,7 @@
 
 						<span id="extendSetsBasic"></span>
 
-					<p>#rbKey('user.requiredtext')#</p>
+					<div class="help-block-inline">#rbKey('user.requiredtext')#</div>
 
 
 				</div> <!-- /.block-content -->
@@ -410,7 +411,7 @@
 											</cfloop>
 										</table>
 									<cfelse>
-										<p class="alert">#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</p>
+										<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</div>
 									</cfif>
 								</div>
 								<!--- /Add Address --->
@@ -510,7 +511,7 @@
 										<!---
 										<cfif rc.tempIsPublic>
 											<div id="privateGroupsNotice">
-												<p class="alert alert-notice">
+												<p class="help-block-empty">
 													#rbKey('user.systemgroupmessage')#
 												</p>
 											</div>
@@ -524,7 +525,7 @@
 													</label>
 												</cfloop>
 											<cfelse>
-												<p class="alert alert-notice">
+												<p class="help-block-empty">
 													#rbKey('user.nogroups')#
 												</p>
 											</cfif>
@@ -544,7 +545,7 @@
 											</label>
 										</cfloop>
 									<cfelse>
-										<p class="alert alert-notice">
+										<p class="help-block-empty">
 											#rbKey('user.nogroups')#
 										</p>
 									</cfif>
