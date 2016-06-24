@@ -413,6 +413,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var tempFile=""/>
 <cfset var remoteID=""/>
 <cfset var saveEmptyExtendedValues=variables.configBean.getValue(property='saveEmptyExtendedValues',default=true)>
+<cfset var utility=getBean('utility')>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
@@ -487,7 +488,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
 				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#utility.trimVarchar(theValue,250)#">,
 				<cfif not len(theValue)>
 					null,
 					null,
@@ -615,6 +616,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var s=0/>
 <cfset var hasExtendSets=isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset var remoteID="">
+<cfset var utility=getBean('utility')>
 <cfif isdefined("arguments.data.remoteID")>
 	<cfset remoteID=left(arguments.data.remoteID,35)>
 </cfif>
@@ -691,7 +693,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 			null
 		</cfif>,
 		<cfif len(rs.stringvalue)>
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(rs.stringvalue,250)#">
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#utility.trimVarchar(rs.stringvalue,250)#">
 		<cfelse>
 			null
 		</cfif>,

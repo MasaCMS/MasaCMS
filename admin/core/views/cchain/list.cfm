@@ -59,7 +59,7 @@
 	<div class="block block-bordered">
 	  <div class="block-content">
 		  <cfif not chains.hasNext()>
-			  <div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"approvalchains.noapprovalchains")#</div>
+			  <div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,"approvalchains.noapprovalchains")#</div>
 		  <cfelse>
 			<table class="mura-table-grid">
 			<thead>

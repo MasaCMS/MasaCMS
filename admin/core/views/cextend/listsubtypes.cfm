@@ -152,11 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</tbody>
 		</table>
 		<cfelse>
-			<div class="alert alert-info">
-				<cfoutput>
-					#rc.$.rbKey('sitemanager.extension.nosubtypes')#
-				</cfoutput>
-			</div>
+			<div class="help-block-empty"><cfoutput>#rc.$.rbKey('sitemanager.extension.nosubtypes')#</cfoutput></div>
 		</cfif>
 
 

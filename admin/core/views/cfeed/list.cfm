@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</tr></cfloop>
 	</table>
 	<cfelse>
-		<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'collections.nolocalindexes')#</div>
+		<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'collections.nolocalindexes')#</div>
 	</cfif>
 	</div><!-- /.block-content -->
 
@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</tr></cfloop>
 	</table>
 	<cfelse>
-		<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'collections.noremotefeeds')#</div>
+		<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'collections.noremotefeeds')#</div>
 	</cfif>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->

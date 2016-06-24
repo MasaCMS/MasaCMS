@@ -1139,7 +1139,7 @@ function setFileSelectors() {
 	$('.mura-file-selector').fileselector();
 }
 
-function alertDialog(message,okAction,title,width) {
+function alertDialog(message,okAction,title,width,dialogClass) {
 
 	var width = width || 450;
 
@@ -1152,8 +1152,10 @@ function alertDialog(message,okAction,title,width) {
 	}
 
 	title= title || 'Alert';
+	dialogClass= dialogClass || 'dialog-warning';
 
 	var dialogConfig={
+		dialogClass: dialogClass,
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
@@ -1163,7 +1165,7 @@ function alertDialog(message,okAction,title,width) {
 						if(okAction){
 							if(typeof(okAction) == 'function') {
 								okAction();
-							} else if (typeof(_okAction) == 'string'){
+							} else if (typeof(okAction) == 'string' && okAction != ''){
 								actionModal(okAction);
 							}
 						}
@@ -1186,7 +1188,7 @@ function alertDialog(message,okAction,title,width) {
 	return false;
 }
 
-function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noButtonText) {
+function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noButtonText,dialogClass) {
 
 	var width = width || 450;
 
@@ -1210,21 +1212,23 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 
 	yesButtonText = yesButtonText || 'OK';
 	noButtonText = noButtonText || 'Cancel';
+	dialogClass = dialogClass || 'dialog-confirm';
 
 	var dialogConfig={
+		dialogClass: dialogClass,
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
 			'No': { click: function() {
-				if(typeof(noAction) != 'undefined') {
+				if(typeof(noAction) != 'undefined' && noAction != '') {
 					if(typeof(noAction) == 'function') {
 						noAction();
 					} else {
 						actionModal(noAction);
 					}
 				} else {
-					$(this).dialog('close');
+					$(this).dialog('destroy');
 				}
 			}
 			,text: noButtonText
@@ -1235,14 +1239,17 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 					$(this).dialog('close');
 					if(typeof(yesAction) == 'function') {
 						yesAction();
-					} else {
+					} else if(noAction != ''){
 						actionModal(yesAction);
 					}
 				}
 				,text: yesButtonText
 				,class: 'mura-primary'
 			} // /yes
-		}
+		} // /buttons
+		, close: function (event, ui) {
+        $(this).dialog('destroy');
+      } // /close
 	};
 
 	if(width){

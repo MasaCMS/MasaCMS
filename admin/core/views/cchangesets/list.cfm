@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</tr></cfloop>
 					</table>
 					<cfelse>
-						<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'changesets.nochangesets')#</div>
+						<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'changesets.nochangesets')#</div>
 					</cfif>
 
 					<cfif rc.changesets.pageCount() gt 1>

@@ -248,7 +248,7 @@
 					</tbody>
 				</table>
 				<cfelse>
-					<div class="alert alert-info">
+					<div class="help-block-empty">
 						<cfoutput>
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.noitemsinsection')#
 						</cfoutput>

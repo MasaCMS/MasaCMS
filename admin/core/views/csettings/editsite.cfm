@@ -1033,7 +1033,7 @@ to your own modified versions of Mura CMS.
 					</div>
 
 				 <div class="mura-control-group">
-				<label>Primary Display Region <span class="help-block">Dynamic System Content such as Login Formsa nd Search Results get displayed here</span></label>
+				<label>Primary Display Region <span class="help-block">Dynamic System Content such as Login Forms and Search Results get displayed here</span></label>
 						<select name="primaryColumn">
 						<cfloop from="1" to="20" index="i">
 								<option value="#i#" <cfif rc.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option>
