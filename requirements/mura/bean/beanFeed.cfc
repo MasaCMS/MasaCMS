@@ -705,8 +705,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="contains" output="false">
+<cffunction name="containsValue" output="false">
 	<cfargument name="criteria">
+
 	<cfset variables.instance.pendingParam.condition='contains'>
 	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
 	<cfset addParam(argumentCollection=variables.instance.pendingParam)>

@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.criteria="null">
 	<cfelse>
 		<cfswitch expression="#getDataType()#">
-		<cfcase value="varchar">
+		<cfcase value="varchar,longvarchar">
 			<cfswitch expression="#arguments.condition#">
 				<cfcase value="Begins" >
 					<cfset variables.criteria="#tmp#%" />
