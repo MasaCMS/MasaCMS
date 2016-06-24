@@ -58,9 +58,6 @@
 </cfsilent>
 <script src="assets/js/comment.js?coreversion=<cfoutput>#application.coreversion#</cfoutput>" type="text/javascript"></script>
 <style>
-#frmSearch div.full>div {
-	width: 940px !important;
-}
 </style>
 <script>
 	$(document).ready(function(){
