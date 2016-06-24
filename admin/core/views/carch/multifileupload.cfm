@@ -101,7 +101,7 @@ jQuery(document).ready(function(){
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
     	<!-- Creating a visual target for files. Doesn't actually do anything. Pure eye candy. -->
-    	<div id="fileupload-target" class="alert alert-info"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
+    	<div id="fileupload-target"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="fileupload-buttonbar">
             <div class="half">
