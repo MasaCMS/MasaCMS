@@ -113,11 +113,11 @@ jQuery(document).ready(function(){
                 </span>
                 <button type="submit" class="btn start mura-file-start">
                     <i class="mi-upload"></i>
-                    <span>Start upload</span>
+                    <span>Upload</span>
                 </button>
-                <button type="reset" class="btn cancel mura-file-reset">
+                <button type="reset" class="btn cancel mura-file-resets">
                     <i class="mi-ban"></i>
-                    <span>Cancel upload</span>
+                    <span>Cancel</span>
                 </button>
                 <!---
                 <button type="button" class="btn btn-danger delete">
@@ -383,7 +383,7 @@ jQuery(document).ready(function(){
         </td>
         <td>
         {% if (file.edit_url !='') { %}
-        <a class="btn mura-edit-file" onclick="confirmDialog('Would you like to edit this file in the site manager?','{%=file.edit_url%}');"><i class="mi-pencil"></i> Edit in Site Manager</a>
+        <a class="btn mura-edit-file" onclick="confirmDialog('Would you like to edit this file?','{%=file.edit_url%}','','Edit File');"><i class="mi-pencil"></i> Edit</a>
          {% } %}
         <!---
             <button class="btn btn-danger delete" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}"{% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
