@@ -216,7 +216,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
 					#renderActiveClause("tcontent",arguments.siteID)#
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation','Module')
 				</cfquery>
 			</cfif>
 		</cfif>
@@ -278,7 +278,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation','Module')
 				</cfif>
 			</cfquery>
 		</cfif>
@@ -348,7 +348,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation','Module')
 				</cfif>
 			</cfquery>
 		</cfif>
@@ -418,7 +418,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation','Module')
 				</cfif>
 			</cfquery>
 		</cfif>
