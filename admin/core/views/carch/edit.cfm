@@ -160,6 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		jQuery("#alertDialog").html(msg);
 		jQuery("#alertDialog").dialog({
 				dialogClass: "dialog-info",
+				title:"<cfoutput>#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.savedraft'))#</cfoutput>",
 				width: 400,
 				resizable: false,
 				modal: true,
@@ -178,6 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						, class: 'mura-primary'
 						} // /yes
 				}
+
 			});
 
 			return false;
