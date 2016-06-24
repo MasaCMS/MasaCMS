@@ -119,5 +119,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</table>
 </cfif>
 <cfelseif attributes.nestlevel eq 0>
-	<cfoutput><div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"categorymanager.nocategories")#</div></cfoutput>
+	<cfoutput><div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,"categorymanager.nocategories")#</div></cfoutput>
 </cfif>

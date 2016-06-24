@@ -348,7 +348,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</table>
 			<cfelse>
-				<div class="alert alert-info">
+				<div class="help-block-empty">
 					There are currently no installed plugins.
 				</div>
 			</cfif>

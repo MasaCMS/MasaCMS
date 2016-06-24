@@ -532,7 +532,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 
-<cfif not rc.contentBean.getIsNew()>
+	<cfif not rc.contentBean.getIsNew()>
 
 		<cfinclude template="dsp_status.cfm">
 

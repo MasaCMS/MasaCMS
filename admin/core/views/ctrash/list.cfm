@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</ul>
 			</cfif>
 			<cfelse>
-				<div class="alert alert-info">The trash is currently empty.</div>
+				<div class="help-block-empty">The trash is currently empty.</div>
 			</cfif>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->

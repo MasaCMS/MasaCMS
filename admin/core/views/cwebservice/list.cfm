@@ -64,7 +64,7 @@
           </cfif>
 
 		  <cfif not services.hasNext()>
-			  <div class="alert alert-info">There currently are no web services configured for this site.</div>
+			  <div class="help-block-empty">There currently are no web services configured for this site.</div>
 		  <cfelse>
 			<table class="mura-table-grid">
 			<thead>

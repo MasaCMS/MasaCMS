@@ -391,9 +391,7 @@
 		<cfelse>
 			<div class="mura-layout-row">
 				<div>
-					<div class="alert alert-info">
-						<p>No #$.event('commentStatus')# comments found.</p>
-					</div>
+					<div class="help-block-empty">No #$.event('commentStatus')# comments found.</div>
 				</div>
 			</div>
 		</cfif>
