@@ -1107,6 +1107,55 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	  }
 	  return DateDiff("s", "January 1 1970 00:00", datetime);
 	}
+
+	function getStringBytesLength(str) {
+
+	    return arrayLen(CreateObject(
+	    "java",
+	    "java.lang.String"
+	    ).Init(
+	        JavaCast(
+	            "string",
+	            arguments.str
+	            )
+	        ).getBytes()
+	    );
+	}
+
+	function leftTrimByBytes(str,len){
+	    /*
+	      The java.text.StringCharacterIterator respects unicode characters.
+	      So it iterates over the characters until the resulting string's byte array length reaches the arguments.len value
+	    */
+	    var characterIterator = CreateObject(
+	        "java",
+	        "java.text.StringCharacterIterator"
+	        ).Init(
+	            arguments.str
+	        );
+	    var returnStr='';
+	    var stageStr='';
+	    while(characterIterator.Current() != characterIterator.DONE){
+	        stageStr = stageStr & characterIterator.Current();
+	        if(getStringBytesLength(stageStr) <= arguments.len){
+	            returnStr=stageStr;
+	        } else {
+	            return returnStr;
+	        }
+	        characterIterator.Next();
+	    }
+
+	    return returnStr;
+	}
+
+	function trimVarchar(str,len){
+		if(variables.configBean.getDbType() eq 'Oracle'){
+			return leftTrimByBytes(arguments.str,arguments.len);
+		} else {
+			return left(arguments.str,arguments.len);
+		}
+	}
+
 </cfscript>
 
 </cfcomponent>
