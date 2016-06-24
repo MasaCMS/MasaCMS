@@ -464,6 +464,7 @@ form .help-empty,
 form .help-block-inline{
   background-color: #F9F9F9 !important;
   border: 1px dotted #A7A7A7 !important;
+  clear: both;
   color: #646464 !important;
   display:block;
   font-style: normal !important;
@@ -486,9 +487,14 @@ form .help-block{
 */  
 }
 
+.nav-pills + .help-block-empty,
+.btn + .help-block-empty{
+  margin-top: 12px;
+}
+
 .help-block-empty,
 form .help-block-empty{
-  background-color: transparent !important;  
+  background-color: transparent !important; 
 }
 
 .help-block-inline,
@@ -508,7 +514,13 @@ form .mura-control-group > * + .help-block{
 }
 .help-block-inline + .mura-control-group,
 .help-block + .mura-control-group{
-  margin-top: 12px !important;
+  padding-top: 12px !important;
+}
+
+.mura-tabs + .help-block, 
+.mura-tabs + .help-block-inline{
+  margin-top: 12px;
+  margin-bottom: 0 !important;
 }
 
 #mura-search-submit{
