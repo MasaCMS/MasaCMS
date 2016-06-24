@@ -1239,7 +1239,7 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 					$(this).dialog('close');
 					if(typeof(yesAction) == 'function') {
 						yesAction();
-					} else if(noAction != ''){
+					} else if(yesAction != ''){
 						actionModal(yesAction);
 					}
 				}

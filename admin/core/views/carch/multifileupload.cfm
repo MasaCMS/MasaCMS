@@ -101,7 +101,7 @@ jQuery(document).ready(function(){
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
     	<!-- Creating a visual target for files. Doesn't actually do anything. Pure eye candy. -->
-    	<div id="fileupload-target" class="alert alert-info"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
+    	<div id="fileupload-target"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="fileupload-buttonbar">
             <div class="half">
@@ -113,11 +113,11 @@ jQuery(document).ready(function(){
                 </span>
                 <button type="submit" class="btn start mura-file-start">
                     <i class="mi-upload"></i>
-                    <span>Start upload</span>
+                    <span>Upload</span>
                 </button>
-                <button type="reset" class="btn cancel mura-file-reset">
+                <button type="reset" class="btn cancel mura-file-resets">
                     <i class="mi-ban"></i>
-                    <span>Cancel upload</span>
+                    <span>Cancel</span>
                 </button>
                 <!---
                 <button type="button" class="btn btn-danger delete">
@@ -200,7 +200,7 @@ jQuery(document).ready(function(){
         <td class="name"><span>{%=file.name%}</span></td>
         <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
         {% if (file.error) { %}
-            <td class="alert-error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
         {% } else if (o.files.valid && !i) { %}
             <td>
                 <div class="progress>
@@ -233,7 +233,7 @@ jQuery(document).ready(function(){
             <td></td>
             <td class="name"><span>{%=file.name%}</span></td>
             <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-            <td class="alert-error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
         {% } else { %}
             <td class="preview">{% if (file.thumbnail_url) { %}
                 <a href="{%=file.edit_url%}" title="{%=file.name%}"<!--- rel="gallery" download="{%=file.name%}"--->><img src="{%=file.thumbnail_url%}"></a>
@@ -383,7 +383,7 @@ jQuery(document).ready(function(){
         </td>
         <td>
         {% if (file.edit_url !='') { %}
-        <a class="btn mura-edit-file" onclick="confirmDialog('Would you like to edit this file in the site manager?','{%=file.edit_url%}');"><i class="mi-pencil"></i> Edit in Site Manager</a>
+        <a class="btn mura-edit-file" onclick="confirmDialog('Would you like to edit this file?','{%=file.edit_url%}','','Edit File');"><i class="mi-pencil"></i> Edit</a>
          {% } %}
         <!---
             <button class="btn btn-danger delete" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}"{% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>

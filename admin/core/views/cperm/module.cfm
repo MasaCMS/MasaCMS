@@ -58,7 +58,7 @@
     <div class="block block-bordered">
       <div class="block-content">
 
-      <p class="alert alert-info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
+      <div class="help-block">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</div>
  <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#esapiEncode('url',rc.contentid)#">
         <div class="block-content">
         <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>

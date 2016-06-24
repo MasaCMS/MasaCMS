@@ -80,13 +80,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    <div class="block-content">
 				<cfif not (rc.$.event('status') eq 'challenge' and isdefined('session.mfa'))>	
 					<cfif rc.status eq 'denied'>
-						<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
+						<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</div>
 					<cfelseif rc.status eq 'failed'>
 						<cfset isBlocked=structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now() />
 						<cfif isBLocked>
-							<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
+							<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</div>
 						<cfelse>
-							<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</p>
+							<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</div>
 						</cfif>
 					</cfif>
 				</cfif>
@@ -101,11 +101,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#output#
 						<cfelse>
 							<cfif rc.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(rc.$.event('authcode'))>
-								<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.newdevice')#</p>
+								<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.newdevice')#</div>
 							</cfif>
 
 							<cfif len(rc.$.event('authcode'))>
-								<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.authcodeerror')#</p>
+								<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.authcodeerror')#</div>
 							</cfif>
 
 							<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
