@@ -159,6 +159,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		document.contentForm.approved.value=0;
 		jQuery("#alertDialog").html(msg);
 		jQuery("#alertDialog").dialog({
+				dialogClass: "dialog-info",
+				width: 400,
 				resizable: false,
 				modal: true,
 				position: getDialogPosition(),

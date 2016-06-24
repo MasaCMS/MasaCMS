@@ -28,7 +28,7 @@ function initDraftPrompt(){
 						title:"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.title'))#",
 						modal:true,
 						resizable:false,
-						width:"600px"
+						width:600
 					});
 					
 					$(".draft-prompt-option").click(function(e){
