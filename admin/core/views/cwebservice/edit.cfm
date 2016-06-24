@@ -33,7 +33,7 @@
 </cfif>
 
 <cfif not rc.$.siteConfig('useSSL')>
-      <div class="alert alert-error">IMPORTANT: When using web services in production thes site should be set to use SSL (HTTPS).</div>
+      <div class="alert alert-error">IMPORTANT: When using web services in production this site should be set to use SSL (HTTPS).</div>
 </cfif>
 
 <form novalidate="novalidate" action="./?muraAction=cwebservice.save" method="post" name="form1" onsubmit="return validateForm(this);">
