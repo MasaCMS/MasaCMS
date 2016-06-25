@@ -356,7 +356,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 </dd>
 	  </cfif>
 	   <dd class="updated"><cfif isDate(rc.rstop.lastupdate)>
-		 #LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"medium")#
+		 #LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"short")#
 	   <cfelse>
 		 N/A
 	   </cfif></dd>
