@@ -1685,7 +1685,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.pluginManager.announceEvent("onContentSave",pluginEvent)>
 					<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>
 				</cfif>
-				
+
 <!---
 				<cfif newBean.getType() eq 'Form' and isJSON(newBean.getBody())>
  					<cfset getBean('formBuilderManager').generateFormObject(pluginEvent.getValue('MuraScope'),pluginEvent,newBean) />
@@ -2066,17 +2066,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 	<cffunction name="getCategoriesByParentID" returntype="query" access="public" output="false">
-		<cfargument name="siteID" type="string" required="true" />
-		<cfargument name="parentID" type="string" required="true" />
+		<cfargument name="siteid" type="string" required="true" />
+		<cfargument name="parentid" type="string" required="true" />
+		<cfargument name="categoryid" type="string" default="" />
 		<cfset var rs = ''>
-		<cfset rs = variables.contentGateway.getKidsCategorySummary(arguments.siteID,arguments.parentID)>
+		<cfset rs = variables.contentGateway.getKidsCategorySummary(argumentCollection=arguments)>
 		<cfreturn rs />
 	</cffunction>
 
 	<cffunction name="getCategorySummary" returntype="query" access="public" output="false">
 		<cfargument name="siteID" type="string" required="true" />
+		<cfargument name="categoryid" type="string" default="" />
 		<cfset var rs = ''>
-		<cfset rs = variables.contentGateway.getCategorySummary(arguments.siteID)>
+		<cfset rs = variables.contentGateway.getCategorySummary(argumentCollection=arguments)>
 		<cfreturn rs />
 	</cffunction>
 
