@@ -754,84 +754,89 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="relatedID" type="string" required="yes" default="">
 			<cfargument name="today" type="date" required="yes" default="#now()#">
 			<cfargument name="menutype" type="string" required="true" default="">
+			<cfargument name="categoryid" type="string" required="yes" default="">
 
 			<cfreturn getCategorySummary(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getCategorySummary" returntype="query" output="false">
-			<cfargument name="siteid" type="string">
-			<cfargument name="parentid" type="string" default="">
-			<cfargument name="relatedID" type="string" required="yes" default="">
-			<cfargument name="today" type="date" required="yes" default="#now()#">
-			<cfargument name="menutype" type="string" required="true" default="">
+	<cfargument name="siteid" type="string">
+	<cfargument name="parentid" type="string" default="">
+	<cfargument name="relatedid" type="string" required="yes" default="">
+	<cfargument name="today" type="date" required="yes" default="#now()#">
+	<cfargument name="menutype" type="string" required="true" default="">
+	<cfargument name="categoryid" type="string" required="yes" default="">
 
-			<cfset var rs= "" />
-			<cfset var relatedListLen = listLen(arguments.relatedID) />
-			<cfset var f=""/>
-			<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+	<cfset var rs= "" />
+	<cfset var relatedListLen = listLen(arguments.relatedID) />
+	<cfset var f=""/>
+	<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
 
-				<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-				SELECT tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
-				ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
-					and tcontent.siteID=tcontentcategoryassign.siteID)
-					 inner join tcontentcategories ON
-						(tcontentcategoryassign.categoryID=tcontentcategories.categoryID
-						and tcontentcategoryassign.siteID=tcontentcategories.siteID
-						)
-				WHERE
-				      <cfif len(arguments.parentID)>
-				      	tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
-					  	AND </cfif>
-					  tcontentcategories.isActive=1
-					 #renderActiveClause("tcontent",arguments.siteID)#
-					  AND tcontent.moduleid = '00000000000000000000000000000000000'
-					  AND tcontent.isNav = 1
-					  AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					  AND
-					  (
-					  	(tcontent.Display = 2
-					  <cfif arguments.menuType neq 'Calendar'>
-					  AND (tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">)
-					  AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
-					  	)
-					 <cfelse>
-					  AND (
-					  		(
-					  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
-					  			AND tcontent.DisplayStart < <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',1,nowAdjusted)#">
-					  		)
-					  	OR (
-					  			tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
-					  			AND tcontent.DisplayStop < <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',1,nowAdjusted)#">
-					  		)
-					  	   )
-					  	  )
-					 </cfif>
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
+		SELECT tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
+		ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
+			and tcontent.siteID=tcontentcategoryassign.siteID)
+			 inner join tcontentcategories ON
+				(tcontentcategoryassign.categoryID=tcontentcategories.categoryID
+				and tcontentcategoryassign.siteID=tcontentcategories.siteID
+				)
+		WHERE
+			1=1
+		     <cfif len(arguments.parentID)>
+		     	AND tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
+			</cfif>
+			<cfif len(arguments.categoryid)>
+			    AND tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.categoryid#%"/>
+			</cfif>
+			 #renderActiveClause("tcontent",arguments.siteID)#
+			  AND tcontent.moduleid = '00000000000000000000000000000000000'
+			  AND tcontent.isNav = 1
+			  AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			  AND
+			  (
+			  	(tcontent.Display = 2
+			  <cfif arguments.menuType neq 'Calendar'>
+			  AND (tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">)
+			  AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
+			  	)
+			 <cfelse>
+			  AND (
+			  		(
+			  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+			  			AND tcontent.DisplayStart < <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',1,nowAdjusted)#">
+			  		)
+			  	OR (
+			  			tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+			  			AND tcontent.DisplayStop < <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',1,nowAdjusted)#">
+			  		)
+			  	   )
+			  	  )
+			 </cfif>
 
-					  OR
-                   		  tcontent.Display = 1
-					  )
+			  OR
+	       		  tcontent.Display = 1
+			  )
 
-					#renderMobileClause()#
+			#renderMobileClause()#
 
-					 <cfif relatedListLen >
-					  and tcontent.contentID in (
-							select tcontentrelated.contentID from tcontentrelated
-							where
-							(<cfloop from=1 to="#relatedListLen#" index="f">
-							tcontentrelated.relatedID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.relatedID,f)#"/>
-							<cfif f lt relatedListLen > or </cfif>
-							</cfloop>)
-							and tcontentrelated.siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-						)
-					 </cfif>
+			 <cfif relatedListLen >
+			  and tcontent.contentID in (
+					select tcontentrelated.contentID from tcontentrelated
+					where
+					(<cfloop from=1 to="#relatedListLen#" index="f">
+					tcontentrelated.relatedID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.relatedID,f)#"/>
+					<cfif f lt relatedListLen > or </cfif>
+					</cfloop>)
+					and tcontentrelated.siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+				)
+			 </cfif>
 
-					  group by tcontentcategories.name,tcontentcategories.categoryID,tcontentcategories.filename
-					  order by tcontentcategories.name asc
+			  group by tcontentcategories.name,tcontentcategories.categoryID,tcontentcategories.filename
+			  order by tcontentcategories.name asc
 
 		</cfquery>
 
-		 <cfreturn rs>
+		<cfreturn rs>
 </cffunction>
 
 <cffunction name="getCommentCount" returntype="numeric" access="remote" output="false">
