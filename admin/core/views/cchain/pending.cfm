@@ -3,7 +3,7 @@
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
 
 <cfoutput>
-<div class="mura-header">	
+<div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains")#</h1>
 
 	<cfinclude template="dsp_secondary_menu.cfm">
@@ -22,9 +22,11 @@
 		<cfset member=members.next()>
 		<h4>#members.getRecordIndex()#. #esapiEncode('html',member.getGroup().getGroupName())#</h4>
 		<cfset requests=member.getPendingContentIterator()>
-	
+
+
+    <cfif requests.hasNext()>
 		<table class="mura-table-grid">
-		    <tr> 
+		    <tr>
 		      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 		      <cfif hasChangesets>
 		          	<th>#application.rbFactory.getKeyValue(session.rb,'approvalchains.changeset')#</th>
@@ -33,13 +35,12 @@
 		      <th> Request Date</th>
 		      <th class="actions">&nbsp;</th>
 		    </tr>
-		    <cfif requests.hasNext()>
 		     <cfloop condition="requests.hasNext()">
 			    <cfsilent>
 			      <cfset item=requests.next()>
 			      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#esapiEncode('url',item.getType())#&parentid=#item.getParentID()#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getModuleID()#&return=chain">
 			    </cfsilent>
-		        <tr>  
+		        <tr>
 		          <td class="title var-width">#$.dspZoom(item.getCrumbArray())#</td>
 		          <cfif hasChangesets>
 		          	<td>
@@ -50,8 +51,8 @@
 		          <td>#LSDateFormat(item.getCreated(),session.dateKeyFormat)# #LSTimeFormat(item.getCreated(),"medium")#</td>
 		           <td class="actions">
 		            <ul>
-		           
-					              <li class="edit"><a title="Edit" href="#editlink#"><i class="mi-pencil"></i></a></li>  
+
+					              <li class="edit"><a title="Edit" href="#editlink#"><i class="mi-pencil"></i></a></li>
 		              <cfswitch expression="#esapiEncode('url',item.getType())#">
 						<cfcase value="Page,Folder,Calendar,Gallery,Link,File">
 							<cfset previewURL='#item.getURL(complete=1,queryString="previewid=#item.getcontenthistid()#")#'>
@@ -67,16 +68,17 @@
 		          </td>
 		        </tr>
 		      </cfloop>
+			  	</table>
 		      <cfelse>
-		      <tr> 
-		        <td <cfif hasChangesets>colspan="5"<cfelse>colspan="4"</cfif> class="results"><em>This group has no pending approvals in this chain.</em></td>
-		      </tr>
+
+		        <div class="help-block-empty">This approvals chain has no group assignents.</div>
+
 		    </cfif>
-		</table>
+
 
 	</cfloop>
 			<cfelse>
-	<p>This approvals chain has no group assignents.</p>
+					<div class="help-block-empty">This approvals chain has no group assignents.</div>
 			</cfif>
 
 
@@ -85,4 +87,3 @@
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.block-constrain -->
 </cfoutput>
-			

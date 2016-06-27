@@ -1062,12 +1062,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getKidsCategoryQuery" returntype="any" output="false" access="public">
-	<cfreturn variables.contentManager.getCategoriesByParentID(siteID=variables.instance.siteID,parentID=getContentID()) />
+	<cfargument name="siteid" default="#variables.instance.siteID#">
+	<cfargument name="contentid" default="#getContentID()#">
+	<cfargument name="categoryid" default="">
+	<cfreturn variables.contentManager.getCategoriesByParentID(argumentCollection=arguments) />
 </cffunction>
 
 <cffunction name="getKidsCategoryIterator">
 	<cfscript>
-		var q = getKidsCategoryQuery();
+		var q = getKidsCategoryQuery(argumentCollection=arguments);
 		var it = getBean('categoryIterator').init();
 		it.setQuery(q);
 		return it;
