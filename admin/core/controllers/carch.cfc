@@ -83,13 +83,15 @@
 		<cfparam name="arguments.rc.responseChart" default="0"/>
 		<cfparam name="arguments.rc.parentid" default=""/>
 		<cfparam name="session.moduleid" default="00000000000000000000000000000000000">
+		<cfif not listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004',session.moduleid)>
+			<cfset session.moduleid='00000000000000000000000000000000000'>
+		</cfif>
 		<cfif len(arguments.rc.moduleid) and listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004',arguments.rc.moduleid)>
 			<cfset session.moduleid=arguments.rc.moduleid>
 		</cfif>
 		<cfif not len(arguments.rc.moduleid)>
 				<cfset arguments.rc.moduleid=session.moduleid>
 		</cfif>
-
 		<cfif not isDefined("arguments.rc.topid")>
 			<cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
 				<cfset session.topid="00000000000000000000000000000000001">
