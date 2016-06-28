@@ -1065,6 +1065,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" default="#variables.instance.siteID#">
 	<cfargument name="parentid" default="#getContentID()#">
 	<cfargument name="categoryid" default="">
+	<cfargument name="categorypathid" default="">
 	<cfreturn variables.contentManager.getCategoriesByParentID(argumentCollection=arguments) />
 </cffunction>
 
