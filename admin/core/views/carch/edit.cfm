@@ -171,14 +171,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						location.href=siteManager.requestedURL;
 						siteManager.requestedURL="";
 					},
-					Yes: 
+					Yes:
 						{click: function() {
 							jQuery(this).dialog('close');
 							if(siteManager.ckContent()){
 								document.getElementById('contentForm').returnURL.value=siteManager.requestedURL;
 								submitForm(document.contentForm,'add');
 							}
-							return false;								
+							return false;
 							}
 						, text: 'Yes'
 						, class: 'mura-primary'
@@ -746,7 +746,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfoutput>
 		<cfif rc.contentBean.exists() and rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
-			<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+			<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</div>
 		</cfif>
 
 		<cfif not structIsEmpty(rc.contentBean.getErrors())>
@@ -759,7 +759,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- start output --->
 	<cfoutput>
 
-	
+
 
 	<div class="block block-constrain">
 

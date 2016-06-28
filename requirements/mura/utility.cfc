@@ -1122,7 +1122,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	    );
 	}
 
-	function leftTrimByBytes(str,len){
+	function leftTrimByBytes(str='',len=255){
 	    /*
 	      The java.text.StringCharacterIterator respects unicode characters.
 	      So it iterates over the characters until the resulting string's byte array length reaches the arguments.len value

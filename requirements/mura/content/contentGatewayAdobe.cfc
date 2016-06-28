@@ -749,14 +749,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getKidsCategorySummary" returntype="query" output="false">
-			<cfargument name="siteid" type="string">
-			<cfargument name="parentid" type="string" >
-			<cfargument name="relatedID" type="string" required="yes" default="">
-			<cfargument name="today" type="date" required="yes" default="#now()#">
-			<cfargument name="menutype" type="string" required="true" default="">
-			<cfargument name="categoryid" type="string" required="yes" default="">
+		<cfargument name="siteid" type="string">
+		<cfargument name="parentid" type="string" >
+		<cfargument name="relatedID" type="string" required="yes" default="">
+		<cfargument name="today" type="date" required="yes" default="#now()#">
+		<cfargument name="menutype" type="string" required="true" default="">
+		<cfargument name="categoryid" type="string" required="yes" default="">
+		<cfargument name="categorytreeid" type="string" required="yes" default="">
 
-			<cfreturn getCategorySummary(argumentCollection=arguments)>
+		<cfreturn getCategorySummary(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getCategorySummary" returntype="query" output="false">
@@ -766,10 +767,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="today" type="date" required="yes" default="#now()#">
 	<cfargument name="menutype" type="string" required="true" default="">
 	<cfargument name="categoryid" type="string" required="yes" default="">
+	<cfargument name="categorytreeid" type="string" required="yes" default="">
 
 	<cfset var rs= "" />
 	<cfset var relatedListLen = listLen(arguments.relatedID) />
 	<cfset var f=""/>
+	<cfset var c=""/>
 	<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
@@ -783,12 +786,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		WHERE
 			1=1
 		     <cfif len(arguments.parentID)>
-		     	AND tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
+		     	AND tcontent.parentid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.parentid#"/>)
 			</cfif>
 			<cfif len(arguments.categoryid)>
-			    AND tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.categoryid#%"/>
+				AND tcontentcategoryassign.categoryid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.categoryid#"/>)
 			</cfif>
-			 #renderActiveClause("tcontent",arguments.siteID)#
+
+			#renderActiveClause("tcontent",arguments.siteID)#
+
+			<cfif len(arguments.categorytreeid)>
+				<cfset var started=false>
+			    AND (
+						<cfloop list="#arguments.categorytreeid#" index="c">
+						<cfif started>or</cfif>
+						tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#c#%"/>
+						<cfset started=true>
+						</cfloop>
+					)
+			</cfif>
+
 			  AND tcontent.moduleid = '00000000000000000000000000000000000'
 			  AND tcontent.isNav = 1
 			  AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>

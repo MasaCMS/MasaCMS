@@ -2069,6 +2069,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true" />
 		<cfargument name="parentid" type="string" required="true" />
 		<cfargument name="categoryid" type="string" default="" />
+		<cfargument name="categorytreeid" type="string" default="" />
 		<cfset var rs = ''>
 		<cfset rs = variables.contentGateway.getKidsCategorySummary(argumentCollection=arguments)>
 		<cfreturn rs />
@@ -2076,10 +2077,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="getCategorySummary" returntype="query" access="public" output="false">
 		<cfargument name="siteID" type="string" required="true" />
+		<cfargument name="parentid" type="string" required="true" />
 		<cfargument name="categoryid" type="string" default="" />
+		<cfargument name="categorytreeid" type="string" default="" />
 		<cfset var rs = ''>
 		<cfset rs = variables.contentGateway.getCategorySummary(argumentCollection=arguments)>
 		<cfreturn rs />
+	</cffunction>
+
+	<cffunction name="getCategorySummaryIterator">
+		<cfscript>
+			var q = getCategorySummary(argumentCollection=arguments);
+			var it = getBean('categoryIterator').init();
+			it.setQuery(q);
+			return it;
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="exportHtmlSite" output="false">
