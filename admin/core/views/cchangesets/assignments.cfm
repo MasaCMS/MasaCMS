@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    		</cfloop>
       <cfelse>
       <tr>
-        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="3" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
       </table>
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    		</cfloop>
       <cfelse>
       <tr>
-        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="3" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
       </table>
@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfloop>
       <cfelse>
       <tr>
-        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="3" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
       </table>
@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfloop>
       <cfelse>
       <tr>
-        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="3" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
       </table>

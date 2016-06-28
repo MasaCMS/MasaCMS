@@ -271,7 +271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- Sections --->
 			<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1,$('##contentPoolID').val());return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1,$('##contentPoolID').val());return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
 				<div class="mura-control justify">
 					<table id="contentFilters" class="mura-table-grid">
 						<thead>
@@ -301,7 +301,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfif not started>
 								<tr>
-									<td class="noResults" colspan="4" id="noFilters"><em>#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</em></td>
+									<td class="noResults" colspan="4" id="noFilters">#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</td>
 								</tr>
 							</cfif>
 						</tbody>
