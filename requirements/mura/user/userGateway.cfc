@@ -215,23 +215,33 @@
 		from tusers
 		left join tfiles on tusers.photofileID=tfiles.fileID
 
+		<cfset local.specifiedjoins=params.getJoins()>
+
+		<!--- Join to implied tables based on field prefix --->
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
 
 			<cfif arrayLen(params.getJoins())>
-				<cfset local.specifiedjoins=params.getJoins()>
 				<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
 					<cfif local.specifiedjoins[local.i].table eq jointable>
 						<cfset started=true>
-						#local.specifiedjoins[local.i].jointype# join #jointable# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
+						<!--- has explicit join clause--->
 						<cfbreak>
 					</cfif>
 				</cfloop>
 			</cfif>
 			<cfif not started>
-				inner join #jointable# on (tusers.userid=#jointable#.userid)
+				inner join #jointable# #tableModifier# on (tusers.userid=#jointable#.userid)
 			</cfif>
 		</cfloop>
+
+		<!--- Join to explicit tables based on join clauses --->
+		<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
+			<cfif len(local.specifiedjoins[local.i].clause)>
+				#local.specifiedjoins[local.i].jointype# join #local.specifiedjoins[local.i].table# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
+			</cfif>
+		</cfloop>
+
 
 		<cfif not arguments.countOnly and isExtendedSort>
 		left Join (select
