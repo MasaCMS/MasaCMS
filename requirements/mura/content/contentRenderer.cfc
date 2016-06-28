@@ -661,7 +661,7 @@ Display Objects
 
 <cffunction name="showItemMeta" returntype="any" output="false">
 <cfargument name="fileExt">
-	<cfif listFind(this.showMetaList,lcase(arguments.fileExt))>
+	<cfif listFindNoCase(this.showMetaList,arguments.fileExt)>
 	<cfreturn 1>
 	<cfelse>
 	<cfreturn variables.event.getValue('showMeta')>
@@ -670,7 +670,7 @@ Display Objects
 
 <cffunction name="showImageInList" returntype="any" output="false">
 <cfargument name="fileExt">
-	<cfreturn listFind(this.imageInList,lcase(arguments.fileExt))>
+	<cfreturn listFindNoCase(this.imageInList,arguments.fileExt)>
 </cffunction>
 
 <cffunction name="dspNestedNav" output="false" returntype="string">
