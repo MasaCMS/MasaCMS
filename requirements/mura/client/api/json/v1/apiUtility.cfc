@@ -1903,16 +1903,16 @@ component extends="mura.cfobject" {
 			}
 
 			var returnStruct={
-				small=entity.getImageURL(size='small'),
-				medium=entity.getImageURL(size='medium'),
-				large=entity.getImageURL(size='large')
+				small=entity.getImageURL(size='small',complete=1),
+				medium=entity.getImageURL(size='medium',complete=1),
+				large=entity.getImageURL(size='large',complete=1)
 			};
 
 			var image='';
 
 			while(variables.images.hasNext()){
 				image=variables.images.next();
-				returnStruct['#image.getName()#']=entity.getImageURL(size=image.getName());
+				returnStruct['#image.getName()#']=entity.getImageURL(size=image.getName(),complete=1);
 			}
 			variables.images.reset();
 		} else {
