@@ -755,7 +755,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="today" type="date" required="yes" default="#now()#">
 		<cfargument name="menutype" type="string" required="true" default="">
 		<cfargument name="categoryid" type="string" required="yes" default="">
-		<cfargument name="categorytreeid" type="string" required="yes" default="">
+		<cfargument name="categorypathid" type="string" required="yes" default="">
 
 		<cfreturn getCategorySummary(argumentCollection=arguments)>
 </cffunction>
@@ -767,7 +767,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="today" type="date" required="yes" default="#now()#">
 	<cfargument name="menutype" type="string" required="true" default="">
 	<cfargument name="categoryid" type="string" required="yes" default="">
-	<cfargument name="categorytreeid" type="string" required="yes" default="">
+	<cfargument name="categorypathid" type="string" required="yes" default="">
 
 	<cfset var rs= "" />
 	<cfset var relatedListLen = listLen(arguments.relatedID) />
@@ -794,10 +794,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			#renderActiveClause("tcontent",arguments.siteID)#
 
-			<cfif len(arguments.categorytreeid)>
+			<cfif len(arguments.categorypathid)>
 				<cfset var started=false>
 			    AND (
-						<cfloop list="#arguments.categorytreeid#" index="c">
+						<cfloop list="#arguments.categorypathid#" index="c">
 						<cfif started>or</cfif>
 						tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#c#%"/>
 						<cfset started=true>
