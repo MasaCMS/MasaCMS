@@ -896,7 +896,7 @@ jQuery(document).ready(function(){
 			    <label>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
 			  	<input name="channelLink" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#esapiEncode('html_attr',rc.feedBean.getChannelLink())#">
 			</div>
-
+			<cfif not rc.$.getContentRenderer().useLayoutManager()>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#</label>
 				<input name="viewalllink" type="text" value="#esapiEncode('html_attr',rc.feedBean.getViewAllLink())#" maxlength="255">
@@ -905,7 +905,7 @@ jQuery(document).ready(function(){
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#</label>
 				<input name="viewalllabel" type="text" value="#esapiEncode('html_attr',rc.feedBean.getViewAllLabel())#" maxlength="100">
 			</div>
-
+			</cfif>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.isactive')#</label>
 				<label class="radio inline">
@@ -966,11 +966,12 @@ jQuery(document).ready(function(){
 					</select>
 				</cfif>
 	  		</div>
-
+			<cfif not rc.$.getContentRenderer().useLayoutManager()>
 			<div class="mura-control-group">
 			<label>#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#</label>
 			<input name="cssclass"  data-displayobjectparam="cssclass" type="text" value="#esapiEncode('html_attr',rc.feedBean.getCssclass())#" maxlength="255">
 			</div>
+			</cfif>
 
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
