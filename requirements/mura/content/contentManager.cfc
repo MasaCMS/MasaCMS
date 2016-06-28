@@ -2079,7 +2079,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" required="true" />
 		<cfargument name="parentid" type="string" required="true" />
 		<cfargument name="categoryid" type="string" default="" />
-		<cfargument name="categorytreeid" type="string" default="" />
+		<cfargument name="categorypathid" type="string" default="" />
 		<cfreturn getCategorySummaryQuery(argumentCollection=arguments)>
 	</cffunction>
 
@@ -2087,7 +2087,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" required="true" />
 		<cfargument name="parentid" type="string" required="true" />
 		<cfargument name="categoryid" type="string" default="" />
-		<cfargument name="categorytreeid" type="string" default="" />
+		<cfargument name="categorypathid" type="string" default="" />
 		<cfset var rs = ''>
 		<cfset rs = variables.contentGateway.getCategorySummary(argumentCollection=arguments)>
 		<cfreturn rs />
