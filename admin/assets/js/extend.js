@@ -227,6 +227,19 @@ var extendManager = {
 			$(".availableSubTypesContainer").show();
 			$(".hasAssocFileContainer").show();
 			$(".adminOnlyContainer").show();
+		} else if(dataArray[0] == "Form" || dataArray[0] == "Component" || dataArray[0] == "Variation") {
+			$(".hasRow1Container").hide();
+			$(".subTypeContainer").show();
+			$(".SubTypeIconSelect").show();
+			$(".hasSummaryContainer").hide();
+			$(".hasBodyContainer").hide();
+			if ( $("input[name='isnew']").val() === '1' ) {
+				$('#hasConfiguratorYes').prop('checked', true);
+			}
+			$(".hasConfiguratorContainer").hide();
+			$(".availableSubTypesContainer").show();
+			$(".hasAssocFileContainer").show();
+			$(".adminOnlyContainer").show();
 		} else {
 			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
