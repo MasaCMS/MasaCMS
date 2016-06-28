@@ -98,6 +98,13 @@
 			return isNumeric(this.selection[0]);
 		},
 
+		processMarkup:function(){
+			this.each(function(el){
+				root.mura.processMarkup(el);
+			});
+			return this;
+		},
+
 		on:function(eventName,selector,fn){
 			if(typeof selector == 'function'){
 				fn=selector;
@@ -133,7 +140,7 @@
 			this.each(function(){
 				if(typeof this.addEventListener == 'function'){
 					var self=this;
-					
+
 					this.addEventListener(
 						eventName,
 						function(event){
