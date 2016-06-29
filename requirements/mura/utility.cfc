@@ -78,11 +78,14 @@
 <cfargument name="error" type="struct" required="yes" default="#structnew()#"/>
 <cfset var err=""/>
 <cfset var started=false>
+<cfset var ct = 1>
 <cfloop collection="#arguments.error#" item="err">
-<cfif err neq "siteID">
-<cfset started=true>
-<cfoutput>#structfind(arguments.error,err)#</cfoutput>
-</cfif>
+	<cfif err neq "siteID">
+		<cfset started=true>
+		<cfoutput>#structfind(arguments.error,err)#</cfoutput>
+		<cfif structCount(arguments.error) gt ct><br></cfif>	
+	</cfif>
+	<cfset ct += 1>
 </cfloop>
 </cffunction>
 
