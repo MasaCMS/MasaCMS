@@ -683,10 +683,10 @@
 											var navSelection = jQuery(this).attr('data-moduleid');
 
 											$(".site-manager-mod").removeClass('active');
-											$('a[data-moduleid=' + $(this).data('moduleid') +']').removeClass('active');
+											$('a[data-moduleid=' + navSelection +']').removeClass('active');
 											$("##arch-mod  a.active").removeClass('active');
-											$('a[data-moduleid=' + $(this).data('moduleid') +']').addClass('active');
-											if($(this).data('moduleid')=='00000000000000000000000000000000000'){
+											$('a[data-moduleid=' + navSelection +']').addClass('active');
+											if(navSelection=='00000000000000000000000000000000000'){
 												$('##gridContainer').addClass('site-tree');
 											} else {
 												$('##gridContainer').removeClass('site-tree');

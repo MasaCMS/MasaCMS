@@ -35,10 +35,16 @@
   float: right;
   margin: 0 0 15px 0;
 }
-/* see custom-responsive.less for column widths */
+
+/* 
+  see custom-responsive.less for breakpoint-specific styles 
+*/
 #tabArchitectural #gridContainer{
-  min-width: 419px;
-  max-width: 1030px;
+  min-width: 100%;
+  max-width: 100%;
+}
+#tabArchitectural #gridContainer dl dt:first-child {
+  width: ~'calc(100% - 260px)' !important;
 }
 #tabArchitectural #gridContainer .mura-grid-hdr span.add{
   min-width: 24px;
@@ -48,6 +54,45 @@
 #carch #mura-content #gridContainer ul.breadcrumb{
   float: left;
 }
+#tabArchitectural #gridContainer .overflow-wrap{
+  /*  
+  overflow-x: auto;
+  overflow-y: hidden; 
+  */
+}  
+#tabArchitectural #gridContainer dl {
+  width: 100%;
+  float: none;
+
+  &:after{
+    clear: both;
+    content: '';
+    display: block;
+  }
+}
+#tabArchitectural #gridContainer dl.mura-grid-hdr {
+  overflow: hidden;
+}
+#main-container #tabArchitectural .mura-section {
+  /* 
+    overflow: hidden; 
+  */
+  margin-bottom: 0 !important;
+}
+dd.display, dd.nav, dd.objects, dd.template {
+  display: none;
+}
+.mura-grid li {
+  float: none;
+}
+.mura-grid #mura-nodes{
+  margin-bottom: 0 !important;
+}
+#mura-nodes li li .title {
+  float: none;
+  max-width: none;
+}
+
 /* /site manager architectural */
 
 /* site manager flat layout */
@@ -74,6 +119,7 @@
 #carch #mura-content #flatViewContainer .pagination{
   .pull-right;
 }
+
 
 /* /site manager flat layout */
 
@@ -302,7 +348,7 @@
   
   #mura-nodes {
     
-    // !important needed to overrode .mura-grid styles
+    // !important needed to override .mura-grid styles
     
     li li dt { padding-left: 2em !important; }
     li li li dt { padding-left: 3em !important; }
