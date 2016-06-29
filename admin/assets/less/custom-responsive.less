@@ -1,8 +1,3 @@
-@mgr-grid-w-lg: 1028px;
-@mgr-grid-w-md: 1028px;
-@mgr-grid-w-sm: 829px;
-@mgr-grid-w-xs: 565px;
-  
 /* MAX WIDTH */
 /* MAX WIDTH */
 /* MAX WIDTH */
@@ -12,6 +7,7 @@
   overflow-y:visible;
  } 
 }
+
 
 /* SM: SMALL WIDTH */
 /* SM: SMALL WIDTH */
@@ -76,14 +72,25 @@
     }
   }
 
+
+/* SMALL OR LARGER */
+/* SMALL OR LARGER */
+/* SMALL OR LARGER */
+@media (min-width: @screen-sm-min){
+
+ dd.display, dd.nav, dd.objects, dd.template {
+    display: block;
+  }
+  #tabArchitectural #gridContainer.site-tree dl dt:first-child {
+    width: ~'calc(100% - 440px)' !important;
+  }
+  
+}
+
 /* MAX WIDTH, LARGE & MEDIUM */
 /* MAX WIDTH, LARGE & MEDIUM */
 /* MAX WIDTH, LARGE & MEDIUM */
 @media (min-width: @screen-md-min){
-
-  dd.display, dd.nav, dd.objects, dd.template {
-    display: block;
-  }
   
   .nav-module-specific .btn-group .dropdown-menu{
     right: 0;
