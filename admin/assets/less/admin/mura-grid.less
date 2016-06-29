@@ -1274,14 +1274,20 @@
 		h1,
 		label,
 		.label {
-		color: #fff !important;
-		font-size: 11px !important;
-		text-align: left;
-		margin: 0 0 8px 0;
-		font-weight: normal;
-		padding-right: 20px;
-		line-height: 1;
-			}
+			color: #fff !important;
+			font-size: 11px !important;
+			text-align: left;
+			margin: 0 0 8px 0;
+			font-weight: normal;
+			padding-right: 20px;
+			line-height: 1;
+		}
+
+		select + h1{
+			padding-right: 0px;
+			padding-top: 4px;
+		}
+			
 
 		.cancel {
 			position: absolute;
@@ -1293,6 +1299,7 @@
 					font-size: 16px;
 					color: @gray;
 					text-shadow: none;
+					top: -3px;
 
 				&:hover{
 					i{

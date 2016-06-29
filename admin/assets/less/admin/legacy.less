@@ -56,16 +56,28 @@
   width: ~'calc(100% - 440px)' !important;
 }
 #tabArchitectural #gridContainer .overflow-wrap{
+  /*  
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: hidden; 
+  */
 }  
 #tabArchitectural #gridContainer dl {
   width: 100%;
   float: none;
+
+  &:after{
+    clear: both;
+    content: '';
+    display: block;
+  }
+}
+#tabArchitectural #gridContainer dl.mura-grid-hdr {
   overflow: hidden;
 }
 #main-container #tabArchitectural .mura-section {
-  overflow: hidden;
+  /* 
+    overflow: hidden; 
+  */
   margin-bottom: 0 !important;
 }
 dd.display, dd.nav, dd.objects, dd.template {
@@ -73,6 +85,9 @@ dd.display, dd.nav, dd.objects, dd.template {
 }
 .mura-grid li {
   float: none;
+}
+.mura-grid #mura-nodes{
+  margin-bottom: 0 !important;
 }
 #mura-nodes li li .title {
   float: none;
@@ -105,6 +120,7 @@ dd.display, dd.nav, dd.objects, dd.template {
 #carch #mura-content #flatViewContainer .pagination{
   .pull-right;
 }
+
 
 /* /site manager flat layout */
 
@@ -332,8 +348,6 @@ dd.display, dd.nav, dd.objects, dd.template {
   }
   
   #mura-nodes {
-
-    margin-bottom: 0 !important;
     
     // !important needed to override .mura-grid styles
     
