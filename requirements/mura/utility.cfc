@@ -81,7 +81,7 @@
 <cfloop collection="#arguments.error#" item="err">
 <cfif err neq "siteID">
 <cfset started=true>
-<cfoutput><strong>#structfind(arguments.error,err)#</strong><br/></cfoutput>
+<cfoutput>#structfind(arguments.error,err)#</cfoutput>
 </cfif>
 </cfloop>
 </cffunction>
