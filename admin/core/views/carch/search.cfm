@@ -144,7 +144,7 @@ siteManager.copySiteID = '#session.copySiteID#';
        </cfoutput>
       <cfelse>
       <tr>
-        <td colspan="8" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="8" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
 	</td></tr></table>
