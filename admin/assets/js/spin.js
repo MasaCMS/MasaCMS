@@ -146,7 +146,7 @@
     radius: 10,           // The radius of the inner circle
     rotate: 0,            // Rotation offset
     corners: 1,           // Roundness (0..1)
-    color: '#000',        // #rgb or #rrggbb
+    color: '#696969',        // #rgb or #rrggbb
     direction: 1,         // 1: clockwise, -1: counterclockwise
     speed: 1,             // Rounds per second
     trail: 100,           // Afterglow percentage
