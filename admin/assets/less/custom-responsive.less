@@ -3,11 +3,36 @@
 @mgr-grid-w-sm: 829px;
 @mgr-grid-w-xs: 565px;
 
- #tabArchitectural #gridContainer .overflow-wrap{
+ 
+#tabArchitectural #gridContainer dl dt:first-child {
+  width: ~'calc(100% - 440px)' !important;
+}
+#tabArchitectural #gridContainer .overflow-wrap{
   overflow-x: auto;
   overflow-y: hidden;
- }  
+}  
+#tabArchitectural #gridContainer dl {
+  width: 100%;
+  float: none;
+  overflow: hidden;
+}
+#main-container #tabArchitectural .mura-section {
+  overflow: hidden;
+  margin-bottom: 0 !important;
+}
+dd.display, dd.nav, dd.objects, dd.template {
+  display: none;
+}
+.mura-grid li {
+  float: none;
+}
+#mura-nodes li li .title {
+  float: none;
+  max-width: none;
+}
 
+
+  
 /* MAX WIDTH */
 /* MAX WIDTH */
 /* MAX WIDTH */
@@ -16,28 +41,13 @@
   overflow-x:visible;
   overflow-y:visible;
  } 
-  #tabArchitectural #gridContainer dl{
-    width: @mgr-grid-w-lg;
-  }  
-   #tabArchitectural #gridContainer dl dt:first-child{
-    width: 726px;
-   }
-   #tabArchitectural #gridContainer.site-tree dl dt:first-child{
-    width: 566px;
-   }
 }
 
 /* LESS THAN MAX WIDTH */
 /* LESS THAN MAX WIDTH */
 /* LESS THAN MAX WIDTH */
 @media (max-width: (@screen-lg-min+219)) {
-  /* hide some columns */
-  dd.objects, dd.display, dd.nav, dd.template{
-  display:none;
-  }
-  #tabArchitectural #gridContainer dl dt:first-child .tooltip{
-    display: none !important;
-  }
+
 }
 
 /* LG: FULL WIDTH */
@@ -45,12 +55,7 @@
 /* LG: FULL WIDTH */
 
 @media (min-width: (@screen-lg-min+60)) and (max-width: (@screen-lg-min+219)) {
-   #tabArchitectural #gridContainer dl{
-    width: @mgr-grid-w-lg;
-   }
-   #tabArchitectural #gridContainer dl dt:first-child{
-    width: 786px;
-   }
+
 }
 
 /* MD: MEDIUM WIDTH */
@@ -58,12 +63,7 @@
 /* MD: MEDIUM WIDTH */
 
 @media (min-width: @screen-md-min) and (max-width: (@screen-lg-min + 59)) {
-   #tabArchitectural #gridContainer dl{
-    width: @mgr-grid-w-md;
-   }
-  #tabArchitectural #gridContainer dl dt:first-child{
-    width: 786px;
-   }
+
 }
 
 /* SM: SMALL WIDTH */
@@ -71,12 +71,7 @@
 /* SM: SMALL WIDTH */
 
 @media (min-width: @screen-sm-min) and (max-width: (@screen-md-min - 1)) {
-   #tabArchitectural #gridContainer dl{
-    width: @mgr-grid-w-sm;
-   }
-  #tabArchitectural #gridContainer dl dt:first-child{
-    width: 587px;
-  }
+
   #mura-nodes{
     li .title { max-width: 75%; }
     li li .title { max-width: 75%; }
@@ -92,6 +87,11 @@
     li li li li li li li li li li li li .title { max-width: 53%; }
     li li li li li li li li li li li li li .title { max-width: 51%; }
    }
+
+  dd.display, dd.nav, dd.objects, dd.template {
+    display: block;
+  }
+
 }
 
 
@@ -99,12 +99,6 @@
 /* XS: EXTRA SMALL WIDTH */
 /* XS: EXTRA SMALL WIDTH */
 @media (max-width: (@screen-sm-min - 1)) {
-   #tabArchitectural #gridContainer dl{
-    width: @mgr-grid-w-xs;
-   }
-  #tabArchitectural #gridContainer dl dt:first-child{
-    width: 323px;
-  }
   .mura-item-metadata{
     text-align: left !important;
   }
@@ -131,13 +125,28 @@
     li li li li li li li li li li li li .title { max-width: 20%; }
     li li li li li li li li li li li li li .title { max-width: 15%; }
      }
+    #tabArchitectural #gridContainer dl dt:first-child {
+      width: ~'calc(100% - 200px)' !important; 
+    }
   }
+
+/* MAX WIDTH & LARGE */
+/* MAX WIDTH & LARGE */
+/* MAX WIDTH & LARGE */
+@media (min-width: (@screen-lg-min+60)) {
+
+}
+
 
 /* MAX WIDTH, LARGE & MEDIUM */
 /* MAX WIDTH, LARGE & MEDIUM */
 /* MAX WIDTH, LARGE & MEDIUM */
 @media (min-width: @screen-md-min){
 
+  dd.display, dd.nav, dd.objects, dd.template {
+    display: block;
+  }
+  
   .nav-module-specific .btn-group .dropdown-menu{
     right: 0;
     left: auto;
@@ -154,9 +163,9 @@
 
 }
 
-/* MEDIUM, EXTRA SMALL & SMALL */
-/* MEDIUM, EXTRA SMALL & SMALL */
-/* MEDIUM, EXTRA SMALL & SMALL */
+/* MEDIUM, SMALL & EXTRA SMALL */
+/* MEDIUM, SMALL & EXTRA SMALL */
+/* MEDIUM, SMALL & EXTRA SMALL */
 @media (max-width: (@screen-lg-min - 1)) {
   #userActivity table + table,
   #popularContent table + table {
@@ -165,9 +174,9 @@
 }
 
 
-/* EXTRA SMALL & SMALL */
-/* EXTRA SMALL & SMALL */
-/* EXTRA SMALL & SMALL */
+/* SMALL & EXTRA SMALL */
+/* SMALL & EXTRA SMALL */
+/* SMALL & EXTRA SMALL */
 
 @media (max-width: (@screen-md-min - 1)) {
   #cdashboard #main + .sidebar,
