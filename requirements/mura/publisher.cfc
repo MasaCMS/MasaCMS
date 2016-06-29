@@ -261,7 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 
 						<cfif isdefined("rssite.placeholderImgID")>
-						placeholderImgID=<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.keyFactory.get(rssite.placeholderImgID)#">,
+						placeholderImgID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.keyFactory.get(rssite.placeholderImgID)#">,
 						</cfif>
 
 						theme=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.theme#">,
@@ -4027,7 +4027,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.params=deserializeJSON(arguments.params)>
 
 			<cfloop collection="#arguments.params#" item="local.key">
-				<cfif isValid('uuid',arguments.params['#local.key#'])>
+				<cfif isSimpleValue(arguments.params['#local.key#']) and isValid('uuid',arguments.params['#local.key#'])>
 					<cfset arguments.params['#local.key#']=arguments.keyFactory.get(arguments.params['#local.key#'])>
 				</cfif>
 			</cfloop>

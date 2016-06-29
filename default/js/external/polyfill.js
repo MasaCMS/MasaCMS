@@ -311,15 +311,17 @@ if (!Array.prototype.map) {
     this.dragImage = null;
     this.dragImageTransform = null;
     this.dragImageWebKitTransform = null;
+    this.customDragImage = null;
+    this.customDragImageX = null;
+    this.customDragImageY = null;
     this.el = el || event.target;
 
     log("dragstart");
 
-    this.dispatchDragStart();
-    this.createDragImage();
-
-    this.listen();
-
+    if (this.dispatchDragStart()) {
+      this.createDragImage();
+      this.listen();
+    }
   }
 
   DragDrop.prototype = {
@@ -341,6 +343,9 @@ if (!Array.prototype.map) {
           this.dragImageTransform = null;
           this.dragImageWebKitTransform = null;
         }
+        this.customDragImage = null;
+        this.customDragImageX = null;
+        this.customDragImageY = null;
         this.el = this.dragData = null;
         return [move, end, cancel].forEach(function(handler) {
           return handler.off();
@@ -354,8 +359,8 @@ if (!Array.prototype.map) {
         pageYs.push(touch.pageY);
       });
 
-      var x = average(pageXs) - (parseInt(this.dragImage.offsetWidth, 10) / 2);
-      var y = average(pageYs) - (parseInt(this.dragImage.offsetHeight, 10) / 2);
+      var x = average(pageXs) - (this.customDragImageX || parseInt(this.dragImage.offsetWidth, 10) / 2);
+      var y = average(pageYs) - (this.customDragImageY || parseInt(this.dragImage.offsetHeight, 10) / 2);
       this.translateDragImage(x, y);
 
       this.synthesizeEnterLeave(event);
@@ -363,13 +368,13 @@ if (!Array.prototype.map) {
     // We use translate instead of top/left because of sub-pixel rendering and for the hope of better performance
     // http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
     translateDragImage: function(x, y) {
-      var translate = " translate(" + x + "px," + y + "px)";
+      var translate = "translate(" + x + "px," + y + "px) ";
 
       if (this.dragImageWebKitTransform !== null) {
-        this.dragImage.style["-webkit-transform"] = this.dragImageWebKitTransform + translate;
+        this.dragImage.style["-webkit-transform"] = translate + this.dragImageWebKitTransform;
       }
       if (this.dragImageTransform !== null) {
-        this.dragImage.style.transform = this.dragImageTransform + translate;
+        this.dragImage.style.transform = translate + this.dragImageTransform;
       }
     },
     synthesizeEnterLeave: function(event) {
@@ -416,14 +421,18 @@ if (!Array.prototype.map) {
       var touch = event.changedTouches[0];
       var x = touch[coordinateSystemForElementFromPoint + 'X'];
       var y = touch[coordinateSystemForElementFromPoint + 'Y'];
-      dropEvt.offsetX = x - target.x;
-      dropEvt.offsetY = y - target.y;
+
+      var targetOffset = getOffset(target);
+
+      dropEvt.offsetX = x - targetOffset.x;
+      dropEvt.offsetY = y - targetOffset.y;
 
       dropEvt.dataTransfer = {
         types: this.dragDataTypes,
         getData: function(type) {
           return this.dragData[type];
-        }.bind(this)
+        }.bind(this),
+        dropEffect: "move"
       };
       dropEvt.preventDefault = function() {
          // https://www.w3.org/Bugs/Public/show_bug.cgi?id=14638 - if we don't cancel it, we'll snap back
@@ -449,6 +458,8 @@ if (!Array.prototype.map) {
       var touch = event.changedTouches[0];
       enterEvt.pageX = touch.pageX;
       enterEvt.pageY = touch.pageY;
+      enterEvt.clientX = touch.clientX;
+      enterEvt.clientY = touch.clientY;
 
       this.lastEnter.dispatchEvent(enterEvt);
     },
@@ -466,6 +477,8 @@ if (!Array.prototype.map) {
       var touch = event.changedTouches[0];
       overEvt.pageX = touch.pageX;
       overEvt.pageY = touch.pageY;
+      overEvt.clientX = touch.clientX;
+      overEvt.clientY = touch.clientY;
 
       this.lastEnter.dispatchEvent(overEvt);
     },
@@ -483,6 +496,8 @@ if (!Array.prototype.map) {
       var touch = event.changedTouches[0];
       leaveEvt.pageX = touch.pageX;
       leaveEvt.pageY = touch.pageY;
+      leaveEvt.clientX = touch.clientX;
+      leaveEvt.clientY = touch.clientY;
 
       this.lastEnter.dispatchEvent(leaveEvt);
       this.lastEnter = null;
@@ -498,21 +513,28 @@ if (!Array.prototype.map) {
           }
           return val;
         }.bind(this),
+        setDragImage: function(el, x, y){
+          this.customDragImage = el;
+          this.customDragImageX = x
+          this.customDragImageY = y
+        }.bind(this),
         dropEffect: "move"
       };
-      this.el.dispatchEvent(evt);
+      return this.el.dispatchEvent(evt);
     },
     createDragImage: function() {
-      this.dragImage = this.el.cloneNode(true);
-
-      duplicateStyle(this.el, this.dragImage);
-
+      if (this.customDragImage) {
+        this.dragImage = this.customDragImage.cloneNode(true);
+        duplicateStyle(this.customDragImage, this.dragImage);
+      } else {
+        this.dragImage = this.el.cloneNode(true);
+        duplicateStyle(this.el, this.dragImage);
+      }
       this.dragImage.style.opacity = "0.5";
       this.dragImage.style.position = "absolute";
       this.dragImage.style.left = "0px";
       this.dragImage.style.top = "0px";
       this.dragImage.style.zIndex = "999999";
-
 
       var transform = this.dragImage.style.transform;
       if (typeof transform !== "undefined") {
@@ -539,6 +561,7 @@ if (!Array.prototype.map) {
   // event listeners
   function touchstart(evt) {
     var el = evt.target;
+
     do {
       if (el.draggable === true) {
         // If draggable isn't explicitly set for anchors, then simulate a click event.
@@ -554,6 +577,7 @@ if (!Array.prototype.map) {
         }
         evt.preventDefault();
         new DragDrop(evt,el);
+        break;
       }
     } while((el = el.parentNode) && el !== doc.body);
   }
@@ -566,6 +590,15 @@ if (!Array.prototype.map) {
       touch[coordinateSystemForElementFromPoint + "Y"]
     );
     return target;
+  }
+
+  //calculate the offset position of an element (relative to the window, not the document)
+  function getOffset(el) {
+    var rect = el.getBoundingClientRect();
+    return {
+      "x": rect.left,
+      "y": rect.top
+    };
   }
 
   function onEvt(el, event, handler, context) {
@@ -638,7 +671,6 @@ if (!Array.prototype.map) {
 
 
 })(document);
-
 
 /*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
