@@ -788,13 +788,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		     <cfif len(arguments.parentID)>
 		     	AND tcontent.parentid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.parentid#"/>)
 			</cfif>
-			<cfif len(arguments.categoryid)>
-				AND tcontentcategoryassign.categoryid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.categoryid#"/>)
-			</cfif>
 
 			#renderActiveClause("tcontent",arguments.siteID)#
 
 			<cfif len(arguments.categorypathid)>
+				<cfif len(arguments.categoryid)>
+					AND tcontent.contenthistid in (
+						select contenthistid from tcontentcategoryassign
+						where categoryid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.categoryid#"/>)
+
+					)
+
+				</cfif>
 				<cfset var started=false>
 			    AND (
 						<cfloop list="#arguments.categorypathid#" index="c">
@@ -803,6 +808,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset started=true>
 						</cfloop>
 					)
+			<cfelseif len(arguments.categoryid)>
+				AND  tcontentcategoryassign.categoryid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.categoryid#"/>
 			</cfif>
 
 			  AND tcontent.moduleid = '00000000000000000000000000000000000'
