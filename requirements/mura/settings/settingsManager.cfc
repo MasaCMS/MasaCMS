@@ -641,11 +641,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isDefined("cfcatch.detail") and len(cfcatch.detail)>
 			<cfset arguments.errors.message=arguments.errors.message & "<br/>DETAIL: " & cfcatch.detail>
 		</cfif>
-		<cfif isDefined("cfcatch.ExtendedInfo") and len(cfcatch.ExtendedInfo)>
-			<cfset arguments.errors.message=arguments.errors.message & "<br/>EXTENDED INFO: " & cfcatch.ExtendedInfo>
+		<cfif isDefined("cfcatch.cause.stacktrace") and len(cfcatch.cause.stacktrace)>
+			<cfset arguments.errors.message=arguments.errors.message & "<br/>EXTENDED INFO: " & cfcatch.cause.stacktrace>
 		</cfif>
-
-		<cfdump var="#cfcatch#" abort="true">
 	</cfcatch>
 	</cftry>
 	<cfreturn arguments.errors>
