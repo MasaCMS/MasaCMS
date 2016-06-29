@@ -355,11 +355,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <!--- <i class="mi-calendar"></i> --->
 	 </dd>
 	  </cfif>
-	   <dd class="updated"><cfif isDate(rc.rstop.lastupdate)>
-		 #LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"short")#
+	   	<cfif isDate(rc.rstop.lastupdate)>
+		   <dd class="updated" title="#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"short")#">#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)#</dd>
 	   <cfelse>
-		 N/A
-	   </cfif></dd>
+			 <dd class="updated"></dd>
+	   </cfif>
 	   <dd class="actions">
 		 <ul>
 		   <cfif rc.rstop.type neq 'Module' and not listFindNoCase('none,read',perm)>
