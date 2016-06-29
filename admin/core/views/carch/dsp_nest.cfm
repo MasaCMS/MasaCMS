@@ -263,7 +263,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dd>
 </cfif>
 
-    <dd class="updated">#LSDateFormat(rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rsnest.lastupdate,"short")#</dd>
+	 	<cfif isDate(rsnest.lastupdate)>
+	   <dd class="updated" title="#LSDateFormat(rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rsnest.lastupdate,"short")#">#LSDateFormat(rsnest.lastupdate,session.dateKeyFormat)#</dd>
+	 <cfelse>
+		 <dd class="updated"></dd>
+	 </cfif>
+
     <dd class="actions">
     <ul>
     	<cfif not listFindNoCase('none,read',verdict)>

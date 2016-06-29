@@ -58,7 +58,7 @@
 .mura-grid {
 			border: 1px solid #DBDBDB;
 			border-top: 0;
-			float: left;
+			float: none;
 			background: #f7f7f7;
 			font-size: 13px;
 			position: relative;
@@ -381,14 +381,15 @@
 			}
 
 			.objects {
-				width: 50px;
+				width: 60px;
 			}
 
-			.display, .feature, .template {
+			.display, .feature {
 				width: 60px;
 			}
 
 			.template {
+				width: 70px;
 
 					i {
 						.square(18px);
@@ -409,7 +410,7 @@
 				color: darken(@iconColor,10%);
 				padding-left: 12px !important;
 				text-align: left !important;
-				width: 150px;
+				width: 100px;
 			}
 
 			/*.date {
@@ -421,7 +422,7 @@
 			}*/
 
 			.actions {
-				width: 92px;
+				width: 100px;
 				border-right: 0 !important;
 				padding-left: 4px !important;
 				}
@@ -1273,14 +1274,20 @@
 		h1,
 		label,
 		.label {
-		color: #fff !important;
-		font-size: 11px !important;
-		text-align: left;
-		margin: 0 0 8px 0;
-		font-weight: normal;
-		padding-right: 20px;
-		line-height: 1;
-			}
+			color: #fff !important;
+			font-size: 11px !important;
+			text-align: left;
+			margin: 0 0 8px 0;
+			font-weight: normal;
+			padding-right: 20px;
+			line-height: 1;
+		}
+
+		select + h1{
+			padding-right: 0px;
+			padding-top: 4px;
+		}
+			
 
 		.cancel {
 			position: absolute;
@@ -1292,6 +1299,7 @@
 					font-size: 16px;
 					color: @gray;
 					text-shadow: none;
+					top: -3px;
 
 				&:hover{
 					i{
