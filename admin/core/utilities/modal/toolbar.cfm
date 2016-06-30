@@ -55,7 +55,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				if(!window.CKEDITOR){
 					mura.loader().loadjs(
-							'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js');
+						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js',
+						function(){
+							if ( window.CKEDITOR && ( !CKEDITOR.env.ie || CKEDITOR.env.version > 11 ) ){
+    							CKEDITOR.env.isCompatible = true;
+							}
+						}
+					);
 				}
 				<cfif not $.getContentRenderer().useLayoutManager()>
 				if(!window.CKFinder){
