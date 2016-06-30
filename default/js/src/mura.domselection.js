@@ -376,19 +376,58 @@
 			return this;
 		},
 
-		appendMuraObject:function(data) {
-		    var el=createElement('div');
-		    el.setAttribute('class','mura-async-object');
+		appendDisplayObject:function(data) {
+			this.each(function(){
+				var el=document.createElement('div');
+			    el.setAttribute('class','mura-object');
 
-			for(var a in data){
-				el.setAttribute('data-' + a,data[a]);
-			}
+				for(var a in data){
+					el.setAttribute('data-' + a,data[a]);
+				}
 
-			this.append(el);
+				if(typeof data.async == 'undefined'){
+					el.setAttribute('data-async',true);
+				}
 
-			root.mura.processAsyncObject(this.node);
+				if(typeof data.render == 'undefined'){
+					el.setAttribute('data-render','server');
+				}
 
-			return el;
+				el.setAttribute('data-instanceid',root.mura.createUUID());
+
+				root.mura(this).append(el);
+
+				root.mura.processObject(el);
+
+				return el;
+			});
+		},
+
+		prependDisplayObject:function(data) {
+			this.each(function(){
+				var el=document.createElement('div');
+			    el.setAttribute('class','mura-object');
+
+				for(var a in data){
+					el.setAttribute('data-' + a,data[a]);
+				}
+
+				if(typeof data.async == 'undefined'){
+					el.setAttribute('data-async',true);
+				}
+
+				if(typeof data.render == 'undefined'){
+					el.setAttribute('data-render','server');
+				}
+
+				el.setAttribute('data-instanceid',root.mura.createUUID());
+
+				root.mura(this).prepend(el);
+
+				root.mura.processObject(el);
+
+				return el;
+			});
 		},
 
 		prepend:function(el) {

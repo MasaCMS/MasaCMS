@@ -55,12 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				if(!window.CKEDITOR){
 					mura.loader().loadjs(
-						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js',
-						function(){
-							if ( window.CKEDITOR && ( !CKEDITOR.env.ie || CKEDITOR.env.version > 11 ) ){
-    							CKEDITOR.env.isCompatible = true;
-							}
-						}
+						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js'
 					);
 				}
 				<cfif not $.getContentRenderer().useLayoutManager()>
@@ -88,12 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				if(hasMuraLoader){
 					mura.loader().loadjs(
 						'#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js',
-						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js',
-						function(){
-							if ( window.CKEDITOR && ( !CKEDITOR.env.ie || CKEDITOR.env.version > 11 ) ){
-    							CKEDITOR.env.isCompatible = true;
-							}
-						}
+						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js'
 					);
 
 				} else {
