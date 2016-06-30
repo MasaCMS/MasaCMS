@@ -8738,8 +8738,8 @@ root.mura.templates['embed']=function(context){
 				var escapeExpression=root.mura.Handlebars.escapeExpression;
 				var returnString='mura-form';
 
-				if(this.class){
-					returnString += ' ' + escapeExpression(this.class);
+				if(this['class']){
+					returnString += ' ' + escapeExpression(this['class']);
 				}
 
 				return returnString;
