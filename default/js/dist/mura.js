@@ -5992,7 +5992,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						el[eventName]=null;
 					}
 				} else {
-					if(typeof el.parentElement != 'undefined'){
+					if(typeof el.parentElement != 'undefined' && el.parentElement && typeof el.parentElement.replaceChild != 'undefined'){
 						var elClone = el.cloneNode(true);
 						el.parentElement.replaceChild(elClone, el);
 						array[idx]=elClone;
