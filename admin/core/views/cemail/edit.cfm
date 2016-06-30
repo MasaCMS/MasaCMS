@@ -59,15 +59,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   
       <cfif rc.emailid neq "">
         <div class="metadata-horizontal">
-          <span class="label"><strong>#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#:</strong> #LSDateFormat(rc.emailBean.getCreatedDate(),session.dateKeyFormat)#</span>
-          <span class="label"><strong>#application.rbFactory.getKeyValue(session.rb,'email.createdby')#:</strong> #rc.emailBean.getlastupdateby()#</span>
-          <span class="label"><strong>#application.rbFactory.getKeyValue(session.rb,'email.status')#:</strong>
+          <span class="label">#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#:<strong> #LSDateFormat(rc.emailBean.getCreatedDate(),session.dateKeyFormat)#</strong></span>
+          <span class="label">#application.rbFactory.getKeyValue(session.rb,'email.createdby')#:<strong> #rc.emailBean.getlastupdateby()#</strong></span>
+          <span class="label">#application.rbFactory.getKeyValue(session.rb,'email.status')#:<strong>
             <cfif rc.emailBean.getstatus()>
               #application.rbFactory.getKeyValue(session.rb,'email.sent')#
               <cfelse>
               #application.rbFactory.getKeyValue(session.rb,'email.queued')#
             </cfif>
-          </span>
+          </strong></span>
           <cfif rc.emailBean.getstatus()>
             <cfset clicks=application.emailManager.getStat(rc.emailid,'returnClick')/>
             <cfset opens=application.emailManager.getStat(rc.emailid,'emailOpen')/>
@@ -75,30 +75,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfset bounces=application.emailManager.getStat(rc.emailid,'bounce')/>
             <cfset uniqueClicks=application.emailManager.getStat(rc.emailid,'returnUnique')/>
             <cfset totalClicks=application.emailManager.getStat(rc.emailid,'returnAll')/>
-            <span class="label"><strong>#application.rbFactory.getKeyValue(session.rb,'email.sent')#:</strong> #sent#</span>
-            <span class="label"><strong>#application.rbFactory.getKeyValue(session.rb,'email.opens')#:</strong> #opens# (
+            <span class="label">#application.rbFactory.getKeyValue(session.rb,'email.sent')#:<strong> #sent#</strong></span>
+            <span class="label">#application.rbFactory.getKeyValue(session.rb,'email.opens')#:<strong> #opens# (
               <cfif sent gt 0>
     #evaluate(round((opens/sent)*100))#%
                 <cfelse>
                 0%
               </cfif>
-              )</span>
-            <span class="label"><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (
+              )</strong></span>
+            <span class="label"><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</a> <strong>#clicks#</strong> (
               <cfif sent gt 0>
     #evaluate(round((clicks/sent)*100))#%
                 <cfelse>
                 0%
               </cfif>
               )</span>
-            <span class="label"><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks# </span>
-            <span class="label"><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks# </span>
-            <span class="label"><a href="./?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><strong>Bounces:</strong></a> #bounces# (
+            <span class="label"><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</a> <strong>#uniqueClicks# </strong></span>
+            <span class="label"><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</a> <strong>#totalClicks# </strong></span>
+            <span class="label"><a href="./?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#esapiEncode('url',rc.siteid)#">Bounces:</a> <strong>#bounces# (
               <cfif sent gt 0>
     #evaluate(round((bounces/sent)*100))#%
                 <cfelse>
                 0%
               </cfif>
-              )</span>
+              )</strong></span>
           </cfif>
         </div>
       </cfif>

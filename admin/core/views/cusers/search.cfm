@@ -95,7 +95,7 @@
 <!--- Tab Nav (only tabbed for Admin + Super Users) --->
   <cfif rc.isAdmin>
 
-      <ul class="mura-tabs nav-tabs" data-toggle="tabs">
+      <ul class="mura-tab-links nav-tabs">
 
         <!--- Site Members Tab --->
           <li<cfif rc.ispublic eq 1> class="active"</cfif>>
