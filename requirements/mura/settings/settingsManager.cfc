@@ -392,6 +392,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="missingOnly" default="false">
 	<cfset var rs="" />
 	<cfset var builtSites=structNew()>
+	<cfset var foundSites=structNew()>
 
 	<cftry>
 		<cfobjectcache action="clear"/>
@@ -405,6 +406,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset builtSites['#rs.siteid#']=variables.sites['#rs.siteid#'] />
 		<cfelse>
 			<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />
+			<cfset foundSites['#rs.siteid#']=true>
 		</cfif>
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid,builtSites['#rs.siteid#'].getDisplayPoolID()) />
@@ -414,8 +416,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.sites=builtSites>
 
 	<cfloop query="rs">
-		<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
-		<cfset builtSites['#rs.siteid#'].discoverBeans()>
+		<cfif structKeyExists(foundSites,'#rs.siteid#')>
+			<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
+			<cfset builtSites['#rs.siteid#'].discoverBeans()>
+		</cfif>
  	</cfloop>
 
 </cffunction>
@@ -425,6 +429,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(arguments.siteid)>
 		<cfset arguments.siteid='default'>
 	</cfif>
+
+	<cfif not structKeyExists(variables,'sites')>
+		<cfset setSites(missingOnly=true)>
+	</cfif>
+
 	<cftry>
 	<cfreturn variables.sites['#arguments.siteid#'] />
 	<cfcatch>
