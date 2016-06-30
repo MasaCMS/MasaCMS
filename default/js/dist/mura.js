@@ -5992,10 +5992,13 @@ return /******/ (function(modules) { // webpackBootstrap
 						el[eventName]=null;
 					}
 				} else {
-					var elClone = el.cloneNode(true);
-					el.parentNode.replaceChild(elClone, el);
-					array[idx]=elClone;
-
+					if(typeof el.parentElement != 'undefined' && el.parentElement && typeof el.parentElement.replaceChild != 'undefined'){
+						var elClone = el.cloneNode(true);
+						el.parentElement.replaceChild(elClone, el);
+						array[idx]=elClone;
+					} else {
+						console.log("Mura: Can not remove all handlers from element without a parent node")
+					}
 				}
 
 			});
@@ -6162,19 +6165,58 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
-		appendMuraObject:function(data) {
-		    var el=createElement('div');
-		    el.setAttribute('class','mura-async-object');
+		appendDisplayObject:function(data) {
+			this.each(function(){
+				var el=document.createElement('div');
+			    el.setAttribute('class','mura-object');
 
-			for(var a in data){
-				el.setAttribute('data-' + a,data[a]);
-			}
+				for(var a in data){
+					el.setAttribute('data-' + a,data[a]);
+				}
 
-			this.append(el);
+				if(typeof data.async == 'undefined'){
+					el.setAttribute('data-async',true);
+				}
 
-			root.mura.processAsyncObject(this.node);
+				if(typeof data.render == 'undefined'){
+					el.setAttribute('data-render','server');
+				}
 
-			return el;
+				el.setAttribute('data-instanceid',root.mura.createUUID());
+
+				root.mura(this).append(el);
+
+				root.mura.processObject(el);
+
+				return el;
+			});
+		},
+
+		prependDisplayObject:function(data) {
+			this.each(function(){
+				var el=document.createElement('div');
+			    el.setAttribute('class','mura-object');
+
+				for(var a in data){
+					el.setAttribute('data-' + a,data[a]);
+				}
+
+				if(typeof data.async == 'undefined'){
+					el.setAttribute('data-async',true);
+				}
+
+				if(typeof data.render == 'undefined'){
+					el.setAttribute('data-render','server');
+				}
+
+				el.setAttribute('data-instanceid',root.mura.createUUID());
+
+				root.mura(this).prepend(el);
+
+				root.mura.processObject(el);
+
+				return el;
+			});
 		},
 
 		prepend:function(el) {
@@ -8738,8 +8780,8 @@ root.mura.templates['embed']=function(context){
 				var escapeExpression=root.mura.Handlebars.escapeExpression;
 				var returnString='mura-form';
 
-				if(this.class){
-					returnString += ' ' + escapeExpression(this.class);
+				if(this['class']){
+					returnString += ' ' + escapeExpression(this['class']);
 				}
 
 				return returnString;

@@ -55,7 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				if(!window.CKEDITOR){
 					mura.loader().loadjs(
-							'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js');
+						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js'
+					);
 				}
 				<cfif not $.getContentRenderer().useLayoutManager()>
 				if(!window.CKFinder){
@@ -82,7 +83,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				if(hasMuraLoader){
 					mura.loader().loadjs(
 						'#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js',
-						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js');
+						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js'
+					);
 
 				} else {
 					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js');
