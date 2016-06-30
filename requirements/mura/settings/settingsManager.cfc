@@ -628,6 +628,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset application.appInitialized=false>
+			]
 	<cfcatch>
 
 		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
@@ -639,6 +640,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfif isDefined("cfcatch.detail") and len(cfcatch.detail)>
 			<cfset arguments.errors.message=arguments.errors.message & "<br/>DETAIL: " & cfcatch.detail>
+		</cfif>
+		<cfif isDefined("cfcatch.cause.stacktrace") and len(cfcatch.cause.stacktrace)>
+			<cfset arguments.errors.message=arguments.errors.message & "<br/>EXTENDED INFO: " & cfcatch.cause.stacktrace>
 		</cfif>
 	</cfcatch>
 	</cftry>
