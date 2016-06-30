@@ -207,6 +207,8 @@
 						var elClone = el.cloneNode(true);
 						el.parentElement.replaceChild(elClone, el);
 						array[idx]=elClone;
+					} else {
+						console.log("Mura: Can not remove all handlers from element without a parent node")
 					}
 				}
 
