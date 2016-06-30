@@ -56,10 +56,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif application.configBean.getAllowAutoUpdates()>
 				<div class="btn-group">
 					<cfoutput>
-								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-bolt"></i> Update Core Files</a>
+								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-cloud-download"></i> Update Core Files</a>
 					</cfoutput>
 					<cfif rc.siteUpdateSelect neq "true">
-									<a class="btn" href="./?muraAction=cSettings.list&siteUpdateSelect=true"><i class="mi-bolt"></i> Update Multiple Sites</a>
+									<a class="btn" href="./?muraAction=cSettings.list&siteUpdateSelect=true"><i class="mi-cloud-download"></i> Update Multiple Sites</a>
 					</cfif>
 				</div>
 			</cfif>
@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<button type="button" class="btn mura-primary" onclick="document.form1.submit();"><i class="mi-check"></i> Update Bind Order</button>
 							</cfif>
 							<cfif  rc.siteUpdateSelect eq "true">
-									<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-bolt"></i> Update Selected Sites</button>
+									<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-cloud-download"></i> Update Selected Sites</button>
 								<div class="load-inline" style="display: none;"></div>
 							</cfif>
 							<cfif application.configBean.getMode() eq 'staging'
@@ -260,7 +260,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif application.configBean.getJavaEnabled()>
 		<div class="mura-control-group">
 		<div class="mura-file-selector">
-			<div class="btn-group" data-toggle="buttons-radio">
+			<div class="mura-input-set" data-toggle="buttons-radio">
 			  <button type="button" class="btn btn-default active" data-toggle="button" name="installType" value="Upload" id="apptypefile"><i class="mi-upload"></i> Via Upload</button>
 			  <button type="button" class="btn btn-default" name="installType" value="URL" id="apptypeurl"><i class="mi-globe"></i> Via URL</button>
 			</div>

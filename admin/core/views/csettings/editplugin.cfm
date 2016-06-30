@@ -68,13 +68,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
-		<span class="label"><strong>Name:</strong> #esapiEncode('html',rc.pluginXML.plugin.name.xmlText)#</span>
-		<span class="label"><strong>Category:</strong> #esapiEncode('html',rc.pluginXML.plugin.category.xmlText)#</span>
-		<span class="label"><strong>Version:</strong> #esapiEncode('html',rc.pluginXML.plugin.version.xmlText)#</span>
-		<span class="label"><strong>Provider:</strong> <a href="#esapiEncode('url',rc.pluginXML.plugin.providerURL.xmlText)#" target="_blank">#esapiEncode('html',rc.pluginXML.plugin.provider.xmlText)#</a></span>
-		<!---<span class="label"><strong>Provider URL:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#esapiEncode('html',rc.pluginXML.plugin.providerURL.xmlText)#</a></span>--->
-		<span class="label"><strong>Plugin ID:</strong> #rsplugin.pluginID#</span>
-		<span class="label"><strong>Package:</strong> <cfif len(package)>#esapiEncode('html',package)#<cfelse>N/A</cfif></span>
+		<span class="label">Name: <strong>#esapiEncode('html',rc.pluginXML.plugin.name.xmlText)#</strong></span>
+		<span class="label">Category: <strong>#esapiEncode('html',rc.pluginXML.plugin.category.xmlText)#</strong></span>
+		<span class="label">Version: <strong>#esapiEncode('html',rc.pluginXML.plugin.version.xmlText)#</strong></span>
+		<span class="label">Provider: <strong><a href="#esapiEncode('url',rc.pluginXML.plugin.providerURL.xmlText)#" target="_blank">#esapiEncode('html',rc.pluginXML.plugin.provider.xmlText)#</a></strong></span>
+		<!---<span class="label">Provider URL: <strong><a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#esapiEncode('html',rc.pluginXML.plugin.providerURL.xmlText)#</a></strong></span>--->
+		<span class="label">Plugin ID: <strong>#rsplugin.pluginID#</strong></span>
+		<span class="label">Package: <strong><cfif len(package)>#esapiEncode('html',package)#<cfelse>N/A</cfif></strong></span>
 
 
 		</div><!-- /.label-group -->
