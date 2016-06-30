@@ -203,10 +203,11 @@
 						el[eventName]=null;
 					}
 				} else {
-					var elClone = el.cloneNode(true);
-					el.parentNode.replaceChild(elClone, el);
-					array[idx]=elClone;
-
+					if(typeof el.parentElement != 'undefined'){
+						var elClone = el.cloneNode(true);
+						el.parentElement.replaceChild(elClone, el);
+						array[idx]=elClone;
+					}
 				}
 
 			});
