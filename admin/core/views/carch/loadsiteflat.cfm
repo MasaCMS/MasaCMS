@@ -377,8 +377,8 @@ if(len($.siteConfig('customTagGroups'))){
 <cfset hasCustomImage=structKeyExists(getMetaData($.getBean('fileManager').getValue('imageProcessor')),'getCustomImage')>
 </cfsilent>
 <cfoutput>
-<div id="main">
-<cfif not len($.event("report"))>
+<!--- <div id="main"> --->
+<!--- <cfif not len($.event("report"))>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</h2>
 <cfelseif $.event('report') eq 'mylockedcontent'>
 	<cfif $.siteConfig('hasLockableNodes')>
@@ -388,11 +388,11 @@ if(len($.siteConfig('customTagGroups'))){
 	</cfif>
 <cfelse>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")#</h2>
-</cfif>
+</cfif> --->
 
 	<cfif iterator.hasNext()>
 		
-	<div class="navSort">
+<!--- 	<div class="navSort">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:&nbsp;</h3>
 		<ul class="nav nav-pills">
 			<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->
@@ -407,16 +407,11 @@ if(len($.siteConfig('customTagGroups'))){
 				<li><a href="" data-sortby="expiration"<cfif $.event("sortBy") eq "expiration"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.expiration")#</a></li>
 			</cfif>
 		</ul>
-	</div>
+	</div> --->
 
 	#pagination#
 
 	<table class="mura-table-grid">
-		<tr>
-			<th></th>
-		  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
-			<!---<th nowrap class="actions">&nbsp;</th>--->
-		</tr>
 		<cfset started=false>
 
 		<cfloop condition="iterator.hasNext()">
@@ -467,7 +462,7 @@ if(len($.siteConfig('customTagGroups'))){
 		</cfsilent>
 
 		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#esapiEncode('html_attr',item.getModuleID())#" data-type="#item.getType()#" class="mura-node-data">
-			<td class="add"><a class="add" href="javascript:;" ontouchstart="this.onmouseover();" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#','#item.getModuleID()#');"><i class="mi-plus-circle"></i></a></td>
+			<td class="add"><a class="add" href="javascript:;" ontouchstart="this.onclick();" onclick="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#','#item.getModuleID()#');"><i class="mi-ellipsis-v"></i></a></td>
 			<td class="var-width item">
 
 			<div class="actions">
@@ -610,9 +605,9 @@ if(len($.siteConfig('customTagGroups'))){
 	<cfelse>
 		<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</div>
 	</cfif>
-</div>
+<!--- </div> ---> <!-- /main -->
 
-<div class="sidebar">
+<div class="sidebar hide">
 	<div class="well">
 	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h2>
 		<ul id="navReports" class="nav nav-list">
@@ -717,7 +712,9 @@ if(len($.siteConfig('customTagGroups'))){
 			<button type="submit" class="btn sidebar-submit" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
 		</cfif>
 	</div><!-- /.sidebar-buttons -->
-</div>
+</div> <!--- /.sidebar --->
+
+
 </div>
 </div>
 
