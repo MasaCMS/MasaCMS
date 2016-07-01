@@ -390,6 +390,52 @@ if(len($.siteConfig('customTagGroups'))){
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")#</h2>
 </cfif> --->
 
+	
+<div id="navReportsShowing">
+	<div class="btn-group">
+	<cfif len(trim($.event('report')))>
+
+			<cfif $.event('report') is 'mylockedcontent'>
+	
+				<cfif $.siteConfig('hasLockableNodes')>
+					<cfset showingLabel="#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#">
+				<cfelse>
+					<cfset showingLabel="#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#">
+				</cfif>
+
+			<cfelse>			
+				<cfset showingLabel = application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")>			
+			</cfif>
+
+	<cfelse>
+		<cfset showingLabel = application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")>
+	</cfif>
+	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#:</span> 
+	<a id="navReportsToggle" class="dropdown-toggle" data-toggle="dropdown">#showingLabel#<i class="mi-chevron-down"></i></a>
+		<ul id="navReports" class="dropdown-menu">
+			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
+			<cfset draftCount=$.getBean('contentManager').getMyDraftsCount(siteid=session.siteid, startdate=dateAdd('m',-3,now()))>
+			<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mydrafts")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<cfset draftCount=$.getBean('contentManager').getMySubmissionsCount(session.siteid)>
+			<li><a href="" data-report="mysubmissions"<cfif $.event("report") eq "mysubmissions"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mysubmissions")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<cfset draftCount=$.getBean('contentManager').getMyApprovalsCount(session.siteid)>
+			<li><a href="" data-report="myapprovals"<cfif $.event("report") eq "myapprovals"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myapprovals")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<cfset draftCount=$.getBean('contentManager').getMyExpiresCount(session.siteid)>
+			<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myexpires")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#<!---<span class="badge badge-success">13</span>---></a></li>
+			<cfset draftCount=$.getBean('contentManager').getmylockedcontentCount(session.siteid)>
+			<li><a href="" data-report="mylockedcontent"<cfif $.event("report") eq "mylockedcontent"> class="active"</cfif>>
+				<cfif $.siteConfig('hasLockableNodes')>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#
+				<cfelse>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#
+				</cfif>
+				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+		</ul>
+	</div>
+</div> <!--- /navReportsShowing --->
+
+
 	<cfif iterator.hasNext()>
 		
 <!--- 	<div class="navSort">
@@ -579,8 +625,9 @@ if(len($.siteConfig('customTagGroups'))){
 	</cfif>
 <!--- </div> ---> <!-- /main -->
 
-<div class="sidebar hide">
-	<div class="well">
+<!--- temp remove --->
+<div class="sidebar" style="margin-top: 250px;">
+<!--- 	<div class="well">
 	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h2>
 		<ul id="navReports" class="nav nav-list">
 			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
@@ -602,7 +649,7 @@ if(len($.siteConfig('customTagGroups'))){
 				</cfif>
 				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
 		</ul>
-	</div>
+	</div> --->
 
 	<div class="well">
 	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
