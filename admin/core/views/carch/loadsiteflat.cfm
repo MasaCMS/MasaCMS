@@ -435,6 +435,119 @@ if(len($.siteConfig('customTagGroups'))){
 	</div>
 </div> <!--- /navReportsShowing --->
 
+<div id="navFilters">
+	<div id="navFiltersToggle">#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#<i class="mi-chevron-down"></i></div>
+	<div id="navFilterControls">
+		<div class="mura-layout-row">
+
+			<!--- keywords --->
+			<div class="mura-6 mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</label>
+		    <input class="text" id="contentKeywords" value="#esapiEncode('html_attr',session.flatViewArgs["#rc.siteID#"].keywords)#" type="text">
+	  	</div>
+			<!--- /keywords --->
+
+			<!--- type --->
+			<cfif $.event("report") neq "lockedfiles">
+				<div class="mura-3 mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</label>
+					<select name="contentTypeFilter" id="contentTypeFilter">
+						<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
+						<cfloop list="#listSort('#$.getBean('contentManager').getTreeLevelList()#,Form,Component','textNoCase')#" index="i">
+							<cfif i neq 'Gallery'>
+								<option value="#i#^Default"<cfif $.event('type') eq i and $.event('subtype') eq 'Default'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")#<!---  / Default ---></option>
+								<cfquery name="rsSubTypes" dbtype="query">
+									select * from rsTypes where type='#i#' and subtype!='Default'
+									<cfif not (
+										rc.$.currentUser().isAdminUser()
+										or rc.$.currentUser().isSuperUser()
+										)>
+										and adminonly !=1
+									</cfif>
+								</cfquery>
+								<cfloop query="rsSubTypes">
+									<option value="#i#^#rsSubTypes.subtype#"<cfif $.event('type') eq i and $.event('subtype') eq rsSubTypes.subtype> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")# / #rsSubTypes.subtype#</option>
+								</cfloop>
+							</cfif>
+						</cfloop>
+					</select>
+				</div>
+			</cfif>
+			<!--- /type --->
+
+			<!--- tags --->
+				<div id="tags" class="mura-3 mura-control-group mura-filter-tags tagSelector">
+					<cfif len($.siteConfig('customTagGroups'))>
+			   		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.defaulttags")#</label>
+		   		<cfelse>
+			   		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
+		   		</cfif>
+
+					<input type="text" name="tags">
+					<cfloop list="#$.event('tags')#" index="i">
+						<span class="tag">
+						#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+						<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+						</span>
+					</cfloop>
+				</div>
+
+			<cfif len($.siteConfig('customTagGroups'))>
+				<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
+					<div id="#g#tags" class="mura-3 mura-control-group mura-filter-tags tagSelector">
+						<label>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
+						<input type="text" name="#g#tags">
+						<cfloop list="#$.event('#g#tags')#" index="i">
+							<span class="tag">
+							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+							<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+							</span>
+						</cfloop>
+					</div>
+				</cfloop>
+			</cfif>
+			<!--- /tags --->
+
+			<!--- categories --->
+			<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
+				<div id="mura-list-tree" class="mura-7 mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
+					<select name="category-select" data-placeholder="Choose a Country..." style="width:350px;" multiple="">
+					      <option value=""></option>
+					      <option value="United States">United States</option>
+					      <option value="United Kingdom">United Kingdom</option>
+					      <option value="Afghanistan">Afghanistan</option>
+					      <option value="Aland Islands">Aland Islands</option>
+					      <option value="Albania">Albania</option>
+					      <option value="Algeria">Algeria</option>
+					      <option value="American Samoa">American Samoa</option>
+					      <option value="Zimbabwe">Zimbabwe</option>
+					</select>
+					<div class="mura-control justify">
+					<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+					</div>
+				</div>
+			</cfif>
+			<!--- /categories --->
+
+			<!--- buttons --->
+			<div id="navFilterButtons" class="mura-actions mura-5">
+				<div class="form-actions">
+					<cfif session.flatViewArgs["#rc.siteID#"].filtered>
+						<button type="submit" class="btn btn-default" name="filterList" onclick="clearFlatviewFilter()"><i class="mi-times-circle"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#</button>
+						<button type="submit" class="btn btn-default mura-primary" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
+					<cfelse>
+						<button type="submit" class="btn btn-default mura-primary" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
+					</cfif>
+				</div>
+			</div>
+
+			<!--- /buttons --->
+		</div> <!--- /.mura-layout-row --->
+
+
+	</div>	<!--- /navFilterControls --->
+</div>	<!--- /navFilters --->
 
 	<cfif iterator.hasNext()>
 		
@@ -650,7 +763,7 @@ if(len($.siteConfig('customTagGroups'))){
 				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
 		</ul>
 	</div> --->
-
+<!--- 
 	<div class="well">
 	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 	<div id="filters" class="module">
@@ -730,7 +843,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfelse>
 			<button type="submit" class="btn sidebar-submit" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
 		</cfif>
-	</div><!-- /.sidebar-buttons -->
+	</div><!-- /.sidebar-buttons --> --->
 </div> <!--- /.sidebar --->
 
 
@@ -738,6 +851,21 @@ if(len($.siteConfig('customTagGroups'))){
 </div>
 
 <script>
+	// list view advanced filters
+  jQuery(document).ready(function(){
+		jQuery('##navFilterControls').hide();
+		var toggleNavFilters = function(el){
+			jQuery('##navFilterControls').slideToggle('fast');
+			jQuery(el).find('i').toggleClass('mi-chevron-down').toggleClass('mi-chevron-up');			
+		}
+		jQuery('##navFiltersToggle').click(function(){
+			toggleNavFilters(jQuery(this));
+		})
+		<cfif session.flatViewArgs["#rc.siteID#"].filtered>
+			toggleNavFilters(jQuery('##navFiltersToggle'));
+		</cfif>
+  });
+
 	function clearFlatviewFilter(){
 		flatViewArgs=$.extend(
 			initFlatViewArgs(),
