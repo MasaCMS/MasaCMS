@@ -3120,7 +3120,7 @@ quickEditTmpl += '</div>';
 $(document).ready(function() {
 		siteManager.initDisplayObjectConfigurators();
 		document.onclick = function(e) {
-	     if(e.target != $('#newContentMenu') && e.target.className.indexOf('add') < 0 && (e.target.parentNode.className == 'undefined' || e.target.parentNode.className.indexOf('add') < 0)) {
+	     if(e.target != $('#newContentMenu') && e.target.className.indexOf('add') < 0 && (e.target.parentNode.className == null || e.target.parentNode.className == 'undefined' || e.target.parentNode.className.indexOf('add') < 0)) {
 	       $('#newContentMenu').addClass('hide');
 	     }
 		};
