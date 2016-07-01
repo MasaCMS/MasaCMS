@@ -4827,7 +4827,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else {
 				if(mura.type == 'Variation'){
 					var objectData=obj.data();
-					if(root.muraInlineEditor && (root.muraInlineEditor.objectHasConfigurator(objectData) || root.muraInlineEditor.objectHasEditor(objectData))){
+					if(root.muraInlineEditor && (root.muraInlineEditor.objectHasConfigurator(obj) || root.muraInlineEditor.objectHasEditor(objectData))){
 						obj.children('.frontEndToolsModal').remove();
 						obj.prepend(layoutmanagertoolbar);
 						muraInlineEditor.setAnchorSaveChecks(obj.node);
@@ -4854,7 +4854,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						if(region.data('perm')){
 							var objectData=obj.data();
 
-							if(root.muraInlineEditor && (root.muraInlineEditor.objectHasConfigurator(objectData) || root.muraInlineEditor.objectHasEditor(objectData))){
+							if(root.muraInlineEditor && (root.muraInlineEditor.objectHasConfigurator(obj) || root.muraInlineEditor.objectHasEditor(objectData))){
 								obj.children('.frontEndToolsModal').remove();
 								obj.prepend(layoutmanagertoolbar);
 								muraInlineEditor.setAnchorSaveChecks(obj.node);

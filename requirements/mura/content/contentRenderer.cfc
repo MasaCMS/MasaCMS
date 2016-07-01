@@ -704,6 +704,7 @@ Display Objects
 	<cfargument name="openCurrentOnly" required="true" default="false">
 	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 	<cfargument name="size" required="true" default="#this.navsize#">
+	<cfargument name="liClass" type="string" default="">
 
 	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
 		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
@@ -785,19 +786,24 @@ Display Objects
 				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
 
+			<cfset itemClass="">
+
 			<cfif subnav and arguments.currDepth gt 1 and len(arguments.liHasKidsNestedClass)>
-				<cfset itemClass=arguments.liHasKidsNestedClass>
-			<cfelse>
-				<cfset itemClass="">
+				<cfset itemClass=itemClass & " " & arguments.liHasKidsNestedClass>
 			</cfif>
 
 			<cfif Len(arguments.navLIClass)>
 				<cfset itemClass=ListAppend(itemClass, arguments.navLIClass, ' ')>
 			</cfif>
 
+			<cfif Len(arguments.liClass)>
+				<cfset itemClass=ListAppend(itemClass, arguments.liClass, ' ')>
+			</cfif>
+
 			<cfif current eq 1>
 				<cfset itemClass=listAppend(itemClass,'first',' ')>
 			</cfif>
+
 			<cfif current eq adjust>
 				<cfset itemClass=listAppend(itemClass,'last',' ')>
 			</cfif>
@@ -807,6 +813,7 @@ Display Objects
 			<cfif isCurrent and len(arguments.liCurrentClass)>
 				<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")>
 			</cfif>
+
 			<cfif subnav and len(arguments.liHasKidsClass)>
 				<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")>
 			</cfif>
@@ -1695,7 +1702,7 @@ Display Objects
 		<cfargument name="ulNestedAttributes" required="true" default="">
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 		<cfargument name="siteid" default="#variables.event.getValue('siteID')#">
-
+		<cfargument name="liClass" type="string" default="">
 		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',arguments.siteid,arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',0)>
 		<cfset var adjust=0>
 		<cfset var current=0>
@@ -1747,7 +1754,6 @@ Display Objects
 				</cfif>
 			</cfif>
 		</cfif>
-
 
 		<cfif structKeyExists(arguments,'aHasKidsCustomString') and len(arguments.aHasKidsCustomString) and not (arguments.aHasKidsAttributes contains arguments.aHasKidsCustomString)>
 			<cfset arguments.aHasKidsAttributes = arguments.aHasKidsAttributes & ' ' & arguments.aHasKidsCustomString>
@@ -1821,14 +1827,18 @@ Display Objects
 				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
 
+			<cfset itemClass=''>
+
 			<cfif subnav and arguments.currDepth gt 1 and len(arguments.liHasKidsNestedClass)>
-				<cfset itemClass=arguments.liHasKidsNestedClass>
-			<cfelse>
-				<cfset itemClass="">
+				<cfset itemClass=listAppend(itemClass,arguments.liHasKidsNestedClass,' ')>
 			</cfif>
 
 			<cfif current eq adjust>
-				<cfset itemClass=listAppend(itemClass, "last",' ')>
+				<cfset itemClass=listAppend(itemClass, "last"," ")>
+			</cfif>
+
+			<cfif len(arguments.liClass)>
+				<cfset itemClass=listAppend(itemClass,arguments.liClass,' ')>
 			</cfif>
 
 			<cfif listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentid#") and len(arguments.liCurrentClass)>
@@ -1856,6 +1866,7 @@ Display Objects
 			<cfset linkArgs.siteID=arguments.siteid>
 			<cfset linkArgs.querystring=arguments.querystring>
 			<cfset linkArgs.isParent=subnav>
+			<cfset linkArgs.liClass=arguments.liClass>
 			<cfset link=addlink(argumentCollection=linkArgs)>
 
 			</cfsilent>

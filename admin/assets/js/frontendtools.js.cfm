@@ -970,7 +970,7 @@
 					if(mura.type =='Variation'){
 						objectParams=item.data();
 
-						if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
+						if(window.muraInlineEditor.objectHasConfigurator(item) || window.muraInlineEditor.objectHasEditor(objectParams)){
 							item.children('.frontEndToolsModal').remove();
 							item.prepend(window.mura.layoutmanagertoolbar );
 
@@ -993,7 +993,7 @@
 						if(region && region.length ){
 							if(region.data('perm')){
 								objectParams=item.data();
-								if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
+								if(window.muraInlineEditor.objectHasConfigurator(item) || window.muraInlineEditor.objectHasEditor(objectParams)){
 									item.children('.frontEndToolsModal').remove();
 									item.prepend(window.mura.layoutmanagertoolbar);
 
@@ -1847,7 +1847,14 @@
 				var img=mura(el);
 				var instanceid=mura.createUUID();
 					img.data('instanceid',instanceid);
-				var path=img.attr('src').split( '?' )[0].split('/');
+
+				var path=img.attr('src');
+
+				if(path){
+					path=path.split( '?' )[0].split('/')
+				} else {
+					return;
+				}
 				var fileParts=path[path.length-1].split('.');
 				var filename=fileParts[0];
 
