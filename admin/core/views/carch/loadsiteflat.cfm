@@ -567,7 +567,7 @@ if(len($.siteConfig('customTagGroups'))){
 
 				</cfif>
 
-				#$.dspZoom(crumbData=crumbdata,ajax=true,class="breadcrumb")#
+				<span class="breadcrumb-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.location")#: </span>#$.dspZoom(crumbData=crumbdata,ajax=true,class="breadcrumb")#
 
 				<ul class="nodeMeta">
 					<cfsilent><cfset args=arrayNew(1)>
