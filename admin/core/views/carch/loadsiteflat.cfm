@@ -505,58 +505,10 @@ if(len($.siteConfig('customTagGroups'))){
 
 				</ul>
 			</div>
-
-			<!---
-			<cfif listFindNoCase('mysubmissions,myapprovals',$.event('report')) and isDate(item.getDueDate())>
-				<p><i class="mi-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.due')#: #LSDateFormat(item.getDueDate(),session.dateKeyFormat)#</p>
-			</cfif>
-			--->
-			<!---
-			<a href="##" data-toggle="tooltip" rel="tooltip" data-html="true" title="#esapiEncode('html_attr',$.dspZoomText(crumbData=crumbdata,ajax=true))#">
-				Crumblist as Tooltip</a>
-			--->
-
-			<h2>
-				<cfif not listFindNoCase('none,read',verdict) or listFindNoCase('myapprovals,mysubmissions',$.event('report'))>
-					<a class="draftprompt" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" class="draftprompt"  href="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#esapiEncode('html',item.getMenuTitle())#
-						<!---
-						<cfif $.event('report') eq 'mydrafts'>
-							(
-							<cfif rsHasPendingApprovals.recordcount>
-									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.pending')#
-								<cfif rsHasDrafts.recordcount>,</cfif>
-							</cfif>
-							<cfif rsHasDrafts.recordcount>
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.draft')#
-							</cfif>
-							)
-						</cfif>
-						--->
-						<cfif listFindNoCase('myapprovals,mysubmissions',$.event('report'))>
-							(<cfif item.getApprovalStatus() eq 'Pending'>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.pending')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.draft')#</cfif>)
-						</cfif>
-
-					</a>
-				<cfelse>
-					#esapiEncode('html',item.getMenuTitle())#
-					<!---
-					<cfif $.event('report') eq 'mydrafts'>
-						(
-						<cfif rsHasPendingApprovals.recordcount>
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.pending')#
-							<cfif rsHasDrafts.recordcount>,</cfif>
-						</cfif>
-						<cfif rsHasDrafts.recordcount>
-							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.draft')#
-						</cfif>
-						)
-					</cfif>
-					--->
-				</cfif>
-			</h2>
 			<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
 			<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><cfif hasCustomImage><img src="#item.getImageURL(height=80,width=80,useProtocol=false)#" /><cfelse><img src="#item.getImageURL(size='small',useProtocol=false)#" /></cfif></a></div>
 			</cfif>
+
 				<cfif len(item.getLockID())>
 					<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
 					<cfif item.getLockType() neq 'node'>
@@ -564,8 +516,20 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfelseif $.siteConfig('hasLockableNodes')>
 						<p class="locked-offline"><i class="mi-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodelockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#</p>
 					</cfif>
-
 				</cfif>
+
+				<h2>
+					<cfif not listFindNoCase('none,read',verdict) or listFindNoCase('myapprovals,mysubmissions',$.event('report'))>
+						<a class="draftprompt" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" class="draftprompt"  href="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#esapiEncode('html',item.getMenuTitle())#
+							<cfif listFindNoCase('myapprovals,mysubmissions',$.event('report'))>
+								(<cfif item.getApprovalStatus() eq 'Pending'>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.pending')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.draft')#</cfif>)
+							</cfif>
+
+						</a>
+					<cfelse>
+						#esapiEncode('html',item.getMenuTitle())#
+					</cfif>
+				</h2>
 
 				<span class="breadcrumb-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.location")#: </span>#$.dspZoom(crumbData=crumbdata,ajax=true,class="breadcrumb")#
 
@@ -573,14 +537,14 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfsilent><cfset args=arrayNew(1)>
 					<cfset args[1]=LSDateformat(item.getLastUpdate(),session.dateKeyFormat)>
 					<cfset args[2]=LSTimeFormat(item.getLastUpdate())>
-					<cfset args[3]=item.getLastUpdateBy()></cfsilent>
-					<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>
+					<cfset args[3]=item.getLastUpdateBy()>
+
 					<cfif isDate(item.getCreated())>
-					<cfsilent><cfset args=arrayNew(1)>
-					<cfset args[1]=LSDateformat(item.getCreated(),session.dateKeyFormat)>
-					<cfset args[2]=LSTimeFormat(item.getCreated())></cfsilent>
-					<li class="created">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.createdlong"),args)#</li>
-					</cfif>
+					<cfset argsC=arrayNew(1)>
+					<cfset argsC[1]=LSDateformat(item.getCreated(),session.dateKeyFormat)>
+					<cfset argsC[2]=LSTimeFormat(item.getCreated())>
+					</cfif></cfsilent>
+
 					<cfif isNumeric(item.getMajorVersion()) and item.getMajorVersion()><li class="version">#application.rbFactory.getKeyValue(session.rb,"sitemanager.version")#: <strong>#item.getMajorVersion()#.#item.getMinorVersion()#</strong></li></cfif>
 					<cfif isDate(item.getDueDate())><li class="duedate">#application.rbFactory.getKeyValue(session.rb,"sitemanager.duedate")#: <strong>#LSDateFormat(item.getDueDate(),session.dateKeyFormat)#</strong></li></<cfelseif isDate(item.getExpires())><li class="expiration">#application.rbFactory.getKeyValue(session.rb,"sitemanager.expiration")#: <strong>#LSDateFormat(item.getExpires(),session.dateKeyFormat)#</strong></li></cfif>
 					<cfif isNumeric(item.getFileSize()) and item.getFileSize()><li class="size">#application.rbFactory.getKeyValue(session.rb,"sitemanager.size")#: <strong>#$.renderFileSize(item.getFileSize())#</strong></li></cfif>
@@ -595,6 +559,14 @@ if(len($.siteConfig('customTagGroups'))){
 					</cfif></dd>
 					<cfif len(item.getTags())><li class="tags">#taglabel#: <strong>#item.getTags()#</strong></li></cfif>
 					<li class="type">#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#: <strong>#item.getType()# (#item.getSubType()#)</strong></li>
+					<li class="updated-short" title="#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#<cfif isDate(item.getCreated())> / #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.createdlong"),argsC)#</cfif> ">#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#: <strong>#LSDateformat(item.getLastUpdate(),session.dateKeyFormat)#</strong></li>
+<!--- 					<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>
+					<cfif isDate(item.getCreated())>
+					<cfsilent><cfset args=arrayNew(1)>
+					<cfset args[1]=LSDateformat(item.getCreated(),session.dateKeyFormat)>
+					<cfset args[2]=LSTimeFormat(item.getCreated())></cfsilent>
+					<li class="created">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.createdlong"),args)#</li>
+					</cfif> --->
 				</ul>
 			</tr>
 		</cfloop>
