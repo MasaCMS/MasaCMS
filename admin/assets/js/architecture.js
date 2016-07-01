@@ -432,7 +432,7 @@ buttons: {
 		var xPos = this.findPosX(obj);
 		var yPos = this.findPosY(obj);
 
-		xPos = xPos + 20;
+		xPos = xPos - 10;
 
 		document.getElementById('newZoom').style.display = 'none';
 		document.getElementById('newZoomLink').style.display = 'none';
@@ -463,6 +463,34 @@ buttons: {
 			document.getElementById('newCopyAllLink').style.display = '';
 
 		}
+
+		// append action links
+		var actionLinks = obj.parentNode.parentNode.getElementsByClassName("actions")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+		var optionList = document.getElementById('newContentOptions');
+		// remove old links
+		var oldLinks = optionList.getElementsByClassName("li-action");
+		var l;
+		while ((l = oldLinks[0])) {
+			l.parentNode.removeChild(l);			
+		}
+		// create new links
+		var newZoom = document.getElementById('newZoom');
+	  for (var i = 0; i < actionLinks.length; i++ ) {
+        if(actionLinks[i].className.indexOf('disabled') < 0){
+	        var item = document.createElement("li");
+	        item.innerHTML = actionLinks[i].innerHTML;
+	        var link = item.getElementsByTagName("a")[0];
+	        var titleStr = link.getAttribute("title");
+	        item.className = 'li-action ' + titleStr.toLowerCase();
+	        link.removeAttribute("title");
+	        link.innerHTML = link.innerHTML + titleStr;
+	        if(titleStr.toLowerCase() == 'edit'){
+	        	optionList.insertBefore(item, newZoom.nextSibling);
+	        } else {	
+        		optionList.appendChild(item);
+	        }
+        }
+    }
 
 		if((navperm == 'author' || navperm == 'editor') && moduleid != '00000000000000000000000000000000099') {
 
@@ -495,11 +523,11 @@ buttons: {
 
 		$("#" + id).removeClass("hide");
 
-		if(this.astid != "" && this.lastid != id) {
+		if(this.lastid != "" && this.lastid != id) {
 			this.hideMenu(this.lastid);
 		}
 
-		this.navTimer = setTimeout('siteManager.hideMenu(siteManager.lastid);', 20000);
+		this.navTimer = setTimeout('siteManager.hideMenu(siteManager.lastid);', 100000);
 		this.lastid = id;
 	},
 
@@ -526,7 +554,7 @@ buttons: {
 	},
 
 	keepMenu: function(id) {
-		this.navTimer = setTimeout('hideMenu(lastid);', 20000);
+		this.navTimer = setTimeout('hideMenu(lastid);', 100000);
 		$('#' + id).removeClass('hide');
 		//document.getElementById(id).style.display="block";
 	},
@@ -3088,11 +3116,14 @@ quickEditTmpl = '<div class="mura-quickEdit" id="mura-quickEditor">';
 quickEditTmpl += '<img class="loader" src="assets/images/ajax-loader-alt.gif" />';
 quickEditTmpl += '</div>';
 
-$(document).ready(
-
-function() {
-	siteManager.initDisplayObjectConfigurators();
-});
+$(document).ready(function() {
+		siteManager.initDisplayObjectConfigurators();
+		document.onclick = function(e) {
+	     if(e.target != $('#newContentMenu') && e.target.className.indexOf('add') < 0 && e.target.parentNode.className.indexOf('add') < 0) {
+	       $('#newContentMenu').addClass('hide');
+	     }
+		};
+	});
 
 function initConfigurator(data, config) {
 	return siteManager.initConfigurator(data, config);
