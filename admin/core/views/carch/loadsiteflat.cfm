@@ -512,18 +512,17 @@ if(len($.siteConfig('customTagGroups'))){
 			<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 				<div id="mura-list-tree" class="mura-7 mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
-					<select name="category-select" data-placeholder="Choose a Country..." style="width:350px;" multiple="">
-					      <option value=""></option>
+					<select name="category-filter-select" class="category-select" data-placeholder="Choose a Country..." multiple="multiple">
 					      <option value="United States">United States</option>
 					      <option value="United Kingdom">United Kingdom</option>
 					      <option value="Afghanistan">Afghanistan</option>
-					      <option value="Aland Islands">Aland Islands</option>
-					      <option value="Albania">Albania</option>
+					      <option value="Aland Islands" selected="selected">Aland Islands</option>
+					      <option value="Albania" selected="selected">Albania</option>
 					      <option value="Algeria">Algeria</option>
 					      <option value="American Samoa">American Samoa</option>
 					      <option value="Zimbabwe">Zimbabwe</option>
 					</select>
-					<div class="mura-control justify">
+					<div class="mura-control justify hide">
 					<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 					</div>
 				</div>
@@ -853,6 +852,9 @@ if(len($.siteConfig('customTagGroups'))){
 <script>
 	// list view advanced filters
   jQuery(document).ready(function(){
+
+  	jQuery('select.category-select').select2();
+
 		jQuery('##navFilterControls').hide();
 		var toggleNavFilters = function(el){
 			jQuery('##navFilterControls').slideToggle('fast');
