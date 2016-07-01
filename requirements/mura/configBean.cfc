@@ -1776,6 +1776,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="package">
 	<cfargument name="siteid" hint="Can be a list">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfset var rs="">
 	<cfif directoryExists(expandPath(arguments.dir))>
 		<cfif not isDefined('arguments.package') or isDefined('arguments.package') and not len(arguments.package)>
 			<cfset arguments.package=replace(replace(right(arguments.dir, len(arguments.dir)-1), "\", "/", "ALL"),"/",".","ALL")>
@@ -1784,12 +1785,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir'>
 				<cfif listFindNoCase('handlers,eventhandlers,event_handlers',rs.name)>
-					<cfset this.registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
 				<cfelseif rs.name neq 'archived'>
-					<cfset this.registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
-				<cfset this.registerBean(componentPath="#package#.#listFirst(rs.name,'.')#",siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfset registerBean(componentPath="#package#.#listFirst(rs.name,'.')#",siteid=arguments.siteid,moduleid=arguments.moduleid)>
 			</cfif>
 		</cfloop>
 	</cfif>
@@ -1867,9 +1868,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir'>
 				<cfif listFindNoCase('handlers,eventHandlers',rs.name)>
-					<cfset this.registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
 				<cfelse>
-					<cfset this.registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
 				<cfset beanName=listFirst(rs.name,'.')>
