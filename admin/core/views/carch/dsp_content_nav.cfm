@@ -45,8 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div id="newContentMenu" onMouseOut="siteManager.hideMenu('newContentMenu');" onMouseOver="siteManager.keepMenu('newContentMenu');" class="addNew hide">
-  <ul>
+<div id="newContentMenu" <!--- onMouseOut="siteManager.hideMenu('newContentMenu');" ---> onMouseOver="siteManager.keepMenu('newContentMenu');" class="addNew hide">
+  <ul id="newContentOptions">
   <!--- Need class="first" and class="last" on these list items --->
     <li id="newZoom"><a href="" id="newZoomLink"><i class="mi-search-plus"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.zoom")#</a></li>
     <li id="newContent"><a href="" id="newContentLink"><i class="mi-plus"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addcontent")#</a></li>

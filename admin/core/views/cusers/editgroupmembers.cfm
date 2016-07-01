@@ -57,7 +57,7 @@
 		</a>
 		<!--- View All Groups --->
 		<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
-					<i class="mi-eye"></i>
+					<i class="mi-users"></i>
 			#rbKey('user.viewallgroups')#
 		</a>
 		<!--- Edit Group Settings --->

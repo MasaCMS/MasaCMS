@@ -124,7 +124,7 @@
 
 			dt, dd  {
 				color: #333232;
-				border-right: 1px solid #DBDBDB;
+				// border-right: 1px solid #DBDBDB;
 				text-align: center;
 				float: left;
 				margin: 0 !important;
@@ -422,6 +422,7 @@
 			}*/
 
 			.actions {
+				display:none;
 				width: 100px;
 				border-right: 0 !important;
 				padding-left: 4px !important;
@@ -434,22 +435,22 @@
 				display: block;
 				background: none;
 				padding: 4px;
-				border: 0;
-				border-right: 1px solid #DBDBDB;
+				border: none;
 			}
 
 			.mura-grid-hdr dt, .mura-grid-hdr dd {
+				border: 1px solid #DBDBDB;
+				border-right: none;
+				color: #000;
 				font-style: normal;
 				font-weight: bold;
-				color: #000;
-				border: 1px solid #DBDBDB;
-				white-space: nowrap;
-				text-align: center;
+				height: 26px;
+				line-height: 26px;
 				padding: 0;
 				padding-left: 5px;
 				padding-right: 5px;
-				height: 26px;
-				line-height: 26px;
+				text-align: center;
+				white-space: nowrap;
 			}
 
 			.mura-grid-hdr dt {
@@ -522,9 +523,9 @@
 			li a {
 				width: auto;
 				text-align: left;
-				}
+				}	
 
-			li .add { width: 24px; margin-right: 16px; }
+			li .add { width: 24px; margin-right: 16px; margin-left: 12px;}
 			li .title { max-width: 85%; }
 
 			li li .add { margin-right: 32px; }
@@ -1606,14 +1607,23 @@ p + .mura-table-grid { margin-top: 12px;}
 
 #newContentMenu {
 
-.border-radius(2px);
-.box-shadow(1px 1px 4px rgba(0,0,0,.65));
-background: rgba(0,0,0,.8);
-font-size: 13px;
-padding: 0;
-position: absolute;
-width: 160px;
-z-index: 20;
+	background-color: #FFF;
+	border-radius: 1px;
+	box-shadow: 1px 3px 18px rgba(0,0,0,.35);
+	font-size: 13px;
+	padding: 0;
+	position: absolute;
+	width: 160px;
+	z-index: 20;
+
+	#newContent,
+	#newZoom{
+		border-bottom: 1px solid #E8E8E8;
+	}
+	li.delete,
+	li.view{
+		border-top: 1px solid #E8E8E8;
+	}
 
 	ul {
 		margin: 0;
@@ -1629,22 +1639,23 @@ z-index: 20;
 		padding: 0;
 		position: relative;
 		border-top: 1px dotted rgba(255,255,255,.2);
-
-			&:first-child { border-top: 0; }
+			&:first-child { 
+				border-top: 0; 
+			}
 		}
 
 	li > a {
 		display: block;
 		text-decoration: none;
 		margin: 0;
-		padding: .12em 1em;
-		line-height: 28px;
-		color: @gray;
-		text-shadow: 0 -1px 0 rgba(0,0,0,1.0);
+		padding: 3px 12px;
+		line-height: 24px;
+		color: #999;
 
 			i {
 				font-size: 14px;
 				margin-right: .25em;
+				min-width: 18px;
 				position: relative;
 				top: 2px;
 			}
@@ -1654,24 +1665,16 @@ z-index: 20;
 		}
 
 	li > a:hover {
-		color: @white;
+		color: #545454;
 		text-decoration: none;
 
-		i { color: @white; }
+		i {
+			 color: #545454; 
+			}
 
 		}
 
-	/*
-#newZoom a:before { content: '\f00e'; }
-	#newContent	a:before { content: '\f067';  }
-	#newCopy a:before { content: '\f0c5'; }
-	#newCopyAll a:before { content: '\f0e8'; }
-	#newPaste a:before { content: '\f0ea'; }
-*/
-
 }
-
-// #newContentMenu #newContent	a:before { content: '\f067' !important;  }
 
 .mura-table-grid {
 	margin: 0 0 16px 0;
