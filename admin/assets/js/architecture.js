@@ -3125,8 +3125,8 @@ $(document).ready(function() {
 //	     if(e.target != $('#newContentMenu') && e.target.className.indexOf('add') < 0 && (e.target.parentNode.className == null || e.target.parentNode.className == 'undefined' || e.target.parentNode.className.indexOf('add') < 0)) {
 	       $('#newContentMenu').addClass('hide');
 	     }
-	    if(!(jQuery(e.target).parents().hasClass('category-select'))){
-	    	$('#category-select-list').hide();
+	    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
+	    	$('#category-select-list').slideUp('fast');
 	    } 
 		};
 	});
