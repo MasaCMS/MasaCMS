@@ -107,6 +107,7 @@
 					$(this).removeClass("expanded").addClass("collapsed").html('<i class="mi-plus-circle icon-plus-sign"></i>');
 				}
 				
+				return false;
 			});
 			
 			// Button functions
