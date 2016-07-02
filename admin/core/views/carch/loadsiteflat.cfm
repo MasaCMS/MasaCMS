@@ -421,6 +421,28 @@ if(len($.siteConfig('customTagGroups'))){
 				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
 		</ul>
 	</div>
+
+	<cfif iterator.hasNext()>
+			
+		<div class="navSort">
+			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:&nbsp;</span>
+			<ul>
+				<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->
+				<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
+				<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a></li>
+				<!---<li><a href="" data-sortby="releasedate"<cfif $.event("sortBy") eq "releasedate"> class="active"</cfif>>Release Date</a></li>--->
+				<li><a href="" data-sortby="menutitle"<cfif $.event("sortBy") eq "menutitle"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a></li>
+				<cfif listfindNoCase('mysubmissions,myapprovals',$.event('report'))>
+					<li><a href="" data-sortby="duedate"<cfif $.event("sortBy") eq "duedate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.duedate")#</a></li>
+				</cfif>
+				<cfif listfindNoCase('myexpires,expires',$.event('report'))>
+					<li><a href="" data-sortby="expiration"<cfif $.event("sortBy") eq "expiration"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.expiration")#</a></li>
+				</cfif>
+			</ul>
+		</div>
+
+	</cfif>
+
 </div> <!--- /navReportsShowing --->
 
 <div id="navFilters">
@@ -526,24 +548,7 @@ if(len($.siteConfig('customTagGroups'))){
 </div>	<!--- /navFilters --->
 
 	<cfif iterator.hasNext()>
-		
-<!--- 	<div class="navSort">
-		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:&nbsp;</h3>
-		<ul class="nav nav-pills">
-			<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->
-			<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
-			<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a></li>
-			<!---<li><a href="" data-sortby="releasedate"<cfif $.event("sortBy") eq "releasedate"> class="active"</cfif>>Release Date</a></li>--->
-			<li><a href="" data-sortby="menutitle"<cfif $.event("sortBy") eq "menutitle"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a></li>
-			<cfif listfindNoCase('mysubmissions,myapprovals',$.event('report'))>
-				<li><a href="" data-sortby="duedate"<cfif $.event("sortBy") eq "duedate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.duedate")#</a></li>
-			</cfif>
-			<cfif listfindNoCase('myexpires,expires',$.event('report'))>
-				<li><a href="" data-sortby="expiration"<cfif $.event("sortBy") eq "expiration"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.expiration")#</a></li>
-			</cfif>
-		</ul>
-	</div> --->
-
+	
 	#pagination#
 
 	<table class="mura-table-grid">
@@ -695,13 +700,6 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfif len(item.getTags())><li class="tags">#taglabel#: <strong>#item.getTags()#</strong></li></cfif>
 					<li class="type">#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#: <strong>#item.getType()# (#item.getSubType()#)</strong></li>
 					<li class="updated-short" title="#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#<cfif isDate(item.getCreated())> / #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.createdlong"),argsC)#</cfif> ">#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#: <strong>#LSDateformat(item.getLastUpdate(),session.dateKeyFormat)#</strong></li>
-<!--- 					<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>
-					<cfif isDate(item.getCreated())>
-					<cfsilent><cfset args=arrayNew(1)>
-					<cfset args[1]=LSDateformat(item.getCreated(),session.dateKeyFormat)>
-					<cfset args[2]=LSTimeFormat(item.getCreated())></cfsilent>
-					<li class="created">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.createdlong"),args)#</li>
-					</cfif> --->
 				</ul>
 			</tr>
 		</cfloop>
@@ -712,116 +710,6 @@ if(len($.siteConfig('customTagGroups'))){
 	<cfelse>
 		<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</div>
 	</cfif>
-<!--- </div> ---> <!-- /main -->
-
-<!--- temp remove --->
-<div class="sidebar" style="margin-top: 250px;">
-<!--- 	<div class="well">
-	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h2>
-		<ul id="navReports" class="nav nav-list">
-			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
-			<cfset draftCount=$.getBean('contentManager').getMyDraftsCount(siteid=session.siteid, startdate=dateAdd('m',-3,now()))>
-			<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mydrafts")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-			<cfset draftCount=$.getBean('contentManager').getMySubmissionsCount(session.siteid)>
-			<li><a href="" data-report="mysubmissions"<cfif $.event("report") eq "mysubmissions"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mysubmissions")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-			<cfset draftCount=$.getBean('contentManager').getMyApprovalsCount(session.siteid)>
-			<li><a href="" data-report="myapprovals"<cfif $.event("report") eq "myapprovals"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myapprovals")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-			<cfset draftCount=$.getBean('contentManager').getMyExpiresCount(session.siteid)>
-			<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myexpires")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-			<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#<!---<span class="badge badge-success">13</span>---></a></li>
-			<cfset draftCount=$.getBean('contentManager').getmylockedcontentCount(session.siteid)>
-			<li><a href="" data-report="mylockedcontent"<cfif $.event("report") eq "mylockedcontent"> class="active"</cfif>>
-				<cfif $.siteConfig('hasLockableNodes')>
-					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#
-				<cfelse>
-					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#
-				</cfif>
-				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
-		</ul>
-	</div> --->
-<!--- 
-	<div class="well">
-	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
-	<div id="filters" class="module">
-	<div class="mura-control-group">
-	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</label>
-    <input class="text" id="contentKeywords" value="#esapiEncode('html_attr',session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" />
-	</div>
-
-    <cfif $.event("report") neq "lockedfiles">
-	<div class="module mura-control-group">
-		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</label>
-		<select name="contentTypeFilter" id="contentTypeFilter">
-			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
-			<cfloop list="#listSort('#$.getBean('contentManager').getTreeLevelList()#,Form,Component','textNoCase')#" index="i">
-				<cfif i neq 'Gallery'>
-					<option value="#i#^Default"<cfif $.event('type') eq i and $.event('subtype') eq 'Default'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")#<!---  / Default ---></option>
-					<cfquery name="rsSubTypes" dbtype="query">
-						select * from rsTypes where type='#i#' and subtype!='Default'
-						<cfif not (
-							rc.$.currentUser().isAdminUser()
-							or rc.$.currentUser().isSuperUser()
-							)>
-							and adminonly !=1
-						</cfif>
-					</cfquery>
-					<cfloop query="rsSubTypes">
-						<option value="#i#^#rsSubTypes.subtype#"<cfif $.event('type') eq i and $.event('subtype') eq rsSubTypes.subtype> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")# / #rsSubTypes.subtype#</option>
-					</cfloop>
-				</cfif>
-			</cfloop>
-		</select>
-	</div>
-	</cfif>
-
-	<div id="tags" class="module mura-control-group mura-filter-tags tagSelector">
-		<cfif len($.siteConfig('customTagGroups'))>
-   		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.defaulttags")#</label>
-   		<cfelse>
-   		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
-   		</cfif>
-
-		<input type="text" name="tags">
-		<cfloop list="#$.event('tags')#" index="i">
-			<span class="tag">
-			#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-			<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
-			</span>
-		</cfloop>
-	</div>
-
-	<cfif len($.siteConfig('customTagGroups'))>
-		<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-			<div id="#g#tags" class="module mura-control-group mura-filter-tags tagSelector">
-				<label>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
-				<input type="text" name="#g#tags">
-				<cfloop list="#$.event('#g#tags')#" index="i">
-					<span class="tag">
-					#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-					<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
-					</span>
-				</cfloop>
-			</div>
-		</cfloop>
-	</cfif>
-
-	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-		<div class="module" id="mura-list-tree">
-		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
-		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
-		</div>
-	</cfif>
-
-	<div class="sidebar-buttons">
-		<cfif session.flatViewArgs["#rc.siteID#"].filtered>
-			<button type="submit" class="btn" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
-			<button type="submit" class="btn" name="filterList" onclick="clearFlatviewFilter()"><i class="mi-times-circle"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#</button>
-		<cfelse>
-			<button type="submit" class="btn sidebar-submit" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
-		</cfif>
-	</div><!-- /.sidebar-buttons --> --->
-</div> <!--- /.sidebar --->
-
 
 </div>
 </div>
