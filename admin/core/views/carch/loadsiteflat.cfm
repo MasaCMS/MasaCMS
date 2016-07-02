@@ -512,17 +512,10 @@ if(len($.siteConfig('customTagGroups'))){
 			<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 				<div id="mura-list-tree" class="mura-7 mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
-					<select name="category-filter-select" class="category-select" data-placeholder="Choose a Country..." multiple="multiple">
-					      <option value="United States">United States</option>
-					      <option value="United Kingdom">United Kingdom</option>
-					      <option value="Afghanistan">Afghanistan</option>
-					      <option value="Aland Islands" selected="selected">Aland Islands</option>
-					      <option value="Albania" selected="selected">Albania</option>
-					      <option value="Algeria">Algeria</option>
-					      <option value="American Samoa">American Samoa</option>
-					      <option value="Zimbabwe">Zimbabwe</option>
+					<select name="category-select-list" class="category-select" data-placeholder="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.availablecategories")#..." multiple="multiple">
+							<!--- category options loaded here w/ js --->
 					</select>
-					<div class="mura-control justify hide">
+					<div class="mura-control justify<!---  hide --->">
 					<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 					</div>
 				</div>
@@ -852,6 +845,22 @@ if(len($.siteConfig('customTagGroups'))){
 <script>
 	// list view advanced filters
   jQuery(document).ready(function(){
+
+  	jQuery('##mura-nodes li').each(function(){
+  		// get text, omitting child nodes
+  		var numChildren = $(this).children().find('li').size();
+  		var newOptionText = $(this).clone().children().remove().end().text();
+  		var newOptionID = $(this).find('input[type=checkbox]').attr('value');
+  		var newOptionClass = '';
+  		var newOptionDisabled = '';
+  		console.log(numChildren);
+  		if (numChildren > 0){
+  			var newOptionDisabled = ' disabled';
+  			var newOptionClass = newOptionClass + ' disabled';
+  		}
+  		var newOption = '<option class="' + newOptionClass.trim() + '" value="' + newOptionID + '"' + newOptionDisabled + '>' + newOptionText + '</option>';
+  		$(newOption).appendTo('select.category-select');
+  	})
 
   	jQuery('select.category-select').select2();
 

@@ -623,13 +623,27 @@
   	  	.mura-control-group + .mura-control-group{
   	  		padding-left: 12px;
   	  	}
-
-  	  	.mura-control-group > *{
+  	  	
+  	  	.mura-control-group input, 
+  	  	.mura-control-group label, 
+  	  	.mura-control-group select{
   	  		width: 100% !important;
   	  	}
 
   	  	.tagSelector input{
   	  		margin-top: 0;
+  	  	}
+  	  	.tagSelector .tag{
+  	  		border-radius: 2px;
+  	  		height: 22px;
+  	  	}
+  	  	.tagSelector .tag a i{
+  	  		color: #FFF;
+			    float: right;
+  	  		font-size: 11px;
+			    font-weight: normal;
+			    margin-top: 3px;
+			    margin-left: 6px;
   	  	}
 
   	  	#mura-list-tree{
@@ -638,7 +652,7 @@
   	  	}
 
   	  	.checkboxTree{	
-  	  		display:none
+  	  		/* display:none */
   	  	}
 		}
 
