@@ -119,23 +119,39 @@ var siteManager = {
 							return false
 						}
 					} else if (dialog.type.toLowerCase()=='alert'){
+						var okFn = function(){handled++; submit()};
+
+						if(typeof dialog.okFn == 'function') {
+							 okFn = function(){
+								if (dialog.okFn()) { handled++; submit() }
+							 }
+						}
+
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
-								alertDialog($.extend(dialog,{okAction:function(){handled++; submit()}}));
+								alertDialog($.extend(dialog,{okAction:okFn}));
 
 								return false
 							} else {
 								handled++;
 							}
 						} else {
-							alertDialog($.extend(dialog,{okAction:function(){handled++; submit()}}));
+							alertDialog($.extend(dialog,{okAction:okFn}));
 
 							return false
 						}
 					} else if (dialog.type.toLowerCase()=='validation'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
-								alertDialog($.extend(dialog,{okAction:function(){handled++;}}));
+								var okFn = function(){handled++; submit()};
+
+								if(typeof dialog.okFn == 'function') {
+									 okFn = function(){
+										if (dialog.okFn()) { handled++; submit() }
+									 }
+								}
+								
+								alertDialog($.extend(dialog,{okAction:okFn}));
 
 								return false
 							} else {
@@ -471,7 +487,7 @@ buttons: {
 		var oldLinks = optionList.getElementsByClassName("li-action");
 		var l;
 		while ((l = oldLinks[0])) {
-			l.parentNode.removeChild(l);			
+			l.parentNode.removeChild(l);
 		}
 		// create new links
 		var newZoom = document.getElementById('newZoom');
@@ -486,7 +502,7 @@ buttons: {
 	        link.innerHTML = link.innerHTML + titleStr;
 	        if(titleStr.toLowerCase() == 'edit'){
 	        	optionList.insertBefore(item, newZoom.nextSibling);
-	        } else {	
+	        } else {
         		optionList.appendChild(item);
 	        }
         }
@@ -3127,7 +3143,7 @@ $(document).ready(function() {
 	     }
 	    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
 	    	$('#category-select-list').slideUp('fast');
-	    } 
+	    }
 		};
 	});
 
