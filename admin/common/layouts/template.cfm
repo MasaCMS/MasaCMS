@@ -410,9 +410,6 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/bootstrap-tabdrop.js"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/select2/select2.full.min.js"></script>
-
-
 
 		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (listFind(',00000000000000000000000000000000099,00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleid) or rc.moduleid eq '')>
 			<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">

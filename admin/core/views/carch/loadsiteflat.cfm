@@ -377,18 +377,6 @@ if(len($.siteConfig('customTagGroups'))){
 <cfset hasCustomImage=structKeyExists(getMetaData($.getBean('fileManager').getValue('imageProcessor')),'getCustomImage')>
 </cfsilent>
 <cfoutput>
-<!--- <div id="main"> --->
-<!--- <cfif not len($.event("report"))>
-<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</h2>
-<cfelseif $.event('report') eq 'mylockedcontent'>
-	<cfif $.siteConfig('hasLockableNodes')>
-		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#</h2>
-	<cfelse>
-		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#</h2>
-	</cfif>
-<cfelse>
-<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")#</h2>
-</cfif> --->
 
 	
 <div id="navReportsShowing">
@@ -510,13 +498,11 @@ if(len($.siteConfig('customTagGroups'))){
 
 			<!--- categories --->
 			<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-				<div id="mura-list-tree" class="mura-7 mura-control-group">
+				<div id="mura-list-tree" class="mura-7 mura-control-group category-select">
 					<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
-					<select name="category-select-list" class="category-select" data-placeholder="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.availablecategories")#..." multiple="multiple">
-							<!--- category options loaded here w/ js --->
-					</select>
-					<div class="mura-control justify<!---  hide --->">
-					<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+					<div id="category-select-control"></div>	
+					<div id="category-select-list">
+						<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 					</div>
 				</div>
 			</cfif>
@@ -533,11 +519,9 @@ if(len($.siteConfig('customTagGroups'))){
 					</cfif>
 				</div>
 			</div>
-
 			<!--- /buttons --->
+
 		</div> <!--- /.mura-layout-row --->
-
-
 	</div>	<!--- /navFilterControls --->
 </div>	<!--- /navFilters --->
 
@@ -846,23 +830,28 @@ if(len($.siteConfig('customTagGroups'))){
 	// list view advanced filters
   jQuery(document).ready(function(){
 
-  	jQuery('##mura-nodes li').each(function(){
-  		// get text, omitting child nodes
-  		var numChildren = $(this).children().find('li').size();
-  		var newOptionText = $(this).clone().children().remove().end().text();
-  		var newOptionID = $(this).find('input[type=checkbox]').attr('value');
-  		var newOptionClass = '';
-  		var newOptionDisabled = '';
-  		console.log(numChildren);
-  		if (numChildren > 0){
-  			var newOptionDisabled = ' disabled';
-  			var newOptionClass = newOptionClass + ' disabled';
-  		}
-  		var newOption = '<option class="' + newOptionClass.trim() + '" value="' + newOptionID + '"' + newOptionDisabled + '>' + newOptionText + '</option>';
-  		$(newOption).appendTo('select.category-select');
-  	})
+  	var serializeCatCheckboxes = function(){
+			var catContainer = jQuery('##category-select-control');
+  		jQuery(catContainer).find('.tag').remove();
+			jQuery('##category-select-list input[type=checkbox]:checked').each(function(){
+	  		var thisText = $(this).parent('li').clone().children().remove().end().text();
+	  		var selCat = '<span class="tag">' + thisText + '</span>';
+	  		jQuery(selCat).appendTo(catContainer);
 
-  	jQuery('select.category-select').select2();
+  		});
+  	}
+  	jQuery('##category-select-list input[type=checkbox]').click(function(){
+  			serializeCatCheckboxes();
+  	});
+		serializeCatCheckboxes();
+
+  	jQuery('##category-select-list').hide();
+  	jQuery('##category-select-control').click(function(){
+  		jQuery('##category-select-list').slideToggle('fast');
+  	})
+  	jQuery('##mura-nodes li').each(function(){
+  			
+		})
 
 		jQuery('##navFilterControls').hide();
 		var toggleNavFilters = function(el){
