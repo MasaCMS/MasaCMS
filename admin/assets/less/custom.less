@@ -553,6 +553,14 @@ form .mura-control-group > * + .help-block{
     clear:both;
 }
 
+#main-container #tabArchitectural ul.breadcrumb{
+  margin: 0 0 10px 0;
+}
+
+#main-container #tabFlat td ul.breadcrumb{
+  margin: 0;
+}
+
 #main-container #tabArchitectural{
   #arch-mod{
     margin: 0;
@@ -715,15 +723,42 @@ h3,
 }
 
 .content .navSort{
-  margin-bottom: 15px;
-  font-size: .92em;
+  font-size: 13px;
+  width: 50%;
+  float: right;
+  text-align: right;
+
+    ul{
+      list-style: none;
+      display: inline;
+
+      li{
+        display: block;
+        width: auto;
+        height: 24px;
+        padding: 1px 4px;
+        background-color: #fff;
+        color: #646464;
+        border: 1px solid #e6e6e6;
+        border-radius: 3px;
+        -o-transition: all .15s ease-out;
+        -webkit-transition: all .15s ease-out;
+        transition: all .15s ease-out;
+        min-height: 1px;
+        font-size: 13px;
+        float: right;
+        margin-left: 6px;
+
+          a{
+            color: #646464 !important;
+          }
+          a.active{
+            font-weight: bold;
+          }
+      }
+    }
 }
 
-.content .navSort h3{
-  width: 52px;
-  float: left;
-  font-size: 13px;
-}
 
 .content form + h3{
   margin-top: 30px;
