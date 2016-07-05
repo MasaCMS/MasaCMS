@@ -1736,6 +1736,12 @@
 	
 		// new style actions menu
 		position: relative;
+		border-right: none !important;
+
+		&+ th, 
+		&+ td{
+			border-left: none !important;
+		}
 
 		div.actions-menu{
 	    background-color: #FFF;
@@ -1825,6 +1831,11 @@
 		 }
 	} 
 	// /td
+
+	th{
+		font-weight: bold;
+	}
+
 
 	a > i {
 
