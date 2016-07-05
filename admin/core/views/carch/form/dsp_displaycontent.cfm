@@ -79,7 +79,7 @@
 		<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
 	</div>
 	<cfif len(rc.$.globalConfig('tzRegex'))>
-	<div id="mura-tz-container mura-control-group" style="display:none">
+	<div id="mura-tz-container" class="mura-control-group" style="display:none">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
 		<cfset tz=CreateObject("java", "java.util.TimeZone")>
 		<cfset defaultTZ=tz.getDefault().getID()>
@@ -379,6 +379,7 @@
 				$('##mura-displayStopMinute').show();
 				$('##mura-displayStopDayPart').show();
 				$('##displayIntervalToLabel').show();
+				$('##mura-tz-container').show();
 			}
 
 			updateDisplayInterval();
