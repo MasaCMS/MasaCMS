@@ -71,30 +71,33 @@
 			<table class="mura-table-grid">
 			<thead>
 				<tr>
+					<th class="actions"></th>
 					<th class="var-width">Name</th>
 					<th>Last Update</th>
-					<th class="actions">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody class="nest">
 				<cfloop condition="services.hasNext()">
 				<cfset service=services.next()>
 				<tr>
+					<td class="actions">
+						<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+						<div class="actions-menu hide">
+							<ul class="actions-list">
+								<li class="edit">
+									<a href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i>Edit</a>
+								</li>
+								<li class="delete">
+									<a href="./?muraAction=cwebservice.delete&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=service.getClientID(),format='url')#" onClick="return confirmDialog('Delete Web Service?',this.href)"><i class="mi-trash"></i>Delete</a>
+								</li>
+							</ul>
+						</div>
+					</td>
 					<td class="var-width">
 						<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',service.getName())#</a>
 					</td>
 					<td>
 						#LSDateFormat(service.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(service.getLastUpdate(),"medium")#
-					</td>
-					<td class="actions">
-						<ul>
-							<li class="edit">
-								<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
-							</li>
-							<li class="delete">
-								<a title="Delete" href="./?muraAction=cwebservice.delete&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=service.getClientID(),format='url')#" onClick="return confirmDialog('Delete Web Service?',this.href)"><i class="mi-trash"></i></a>
-							</li>
-						</ul>
 					</td>
 				</tr>
 				</cfloop>
