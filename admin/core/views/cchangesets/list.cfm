@@ -67,10 +67,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif rc.changesets.hasNext()>
 					<table class="mura-table-grid mura-table-actions">
 					<tr>
+					<th class="actions"></th>
 					<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
 					<th>#application.rbFactory.getKeyValue(session.rb,'changesets.datetopublish')#</th>
 					<th>#application.rbFactory.getKeyValue(session.rb,'changesets.lastupdate')#</th>
-					<th>&nbsp;</th>
 					</tr>
 
 					<cfloop condition="rc.changesets.hasNext()">
