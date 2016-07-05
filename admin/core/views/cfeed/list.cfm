@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <div class="block-content">
 	<h2>#application.rbFactory.getKeyValue(session.rb,'collections.localcontentindexes')#</h2>
 	<cfif rc.rsLocal.recordcount>
-	<table class="mura-table-grid mura-table-actions">
+	<table class="mura-table-grid">
 		<tr>
 		<th class="actions"></th>
 		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.index')#</th>
@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="block-content">
 	<h2>#application.rbFactory.getKeyValue(session.rb,'collections.remotecontentfeeds')#</h2>
 	<cfif rc.rsRemote.recordcount>
-	<table class="mura-table-grid mura-table-actions">
+	<table class="mura-table-grid">
 	<tr>
 	<th class="actions"></th>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.feed')#</th>

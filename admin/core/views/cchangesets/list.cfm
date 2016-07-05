@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="block-content">
 						<div id="main">
 					<cfif rc.changesets.hasNext()>
-					<table class="mura-table-grid mura-table-actions">
+					<table class="mura-table-grid">
 					<tr>
 					<th class="actions"></th>
 					<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
