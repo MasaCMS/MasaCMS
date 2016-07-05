@@ -387,6 +387,17 @@
 										);
 									}
 								);
+
+								// click to close new table actions, category selector filter
+								document.onclick = function(e) {
+							    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
+							       $('.actions-menu').addClass('hide');
+							     }
+							    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
+							    	$('##category-select-list').slideUp('fast');
+							    }
+								};
+
 							});
 
 						mura.init({

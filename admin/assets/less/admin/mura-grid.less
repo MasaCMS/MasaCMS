@@ -1675,68 +1675,184 @@
 
 .mura-grid, .mura-table-grid {
 
-.bullet { color: @iconColor;
-	font-size: 20px;
-	 }
+.actions {
 
-.add i {
-		display: block;
-		width: 24px;
-		font-size: 16px;
-		line-height: 27px;
+	ul {
+		margin: 0 auto;
+		.inline-block;
+		}
+	
+	li {
+		list-style: none; 
+		.inline-block;
+		float: none;
+		padding: 0;
+		margin-right: 2px;
+		clear: none !important;
+		line-height: 16px;
+		
+		&.edit { margin-right: 1px; }
+		&.download i { font-size: 16px; top: 1px; }
+		&.preview {  }
+		&.delete { margin-left: 1px; }
+		&.permissions + .delete { margin-left: 0; }
+		&.permissions { margin: 0 3px; }
+		&.version-history + .permissions { margin-left: 2px; }
+		&.download { margin: 0 2px 0 0; }
+		&.manage-data {  }
+		&.rss { margin: 0 4px 0 3px; }
+		&.import {  }
+		&.view-report {  }
+		&:last-child { padding-right: 0 !important; }
+	
+	a {
+		display: inherit;
+		line-height: inherit;
+		
+		&:hover { text-decoration: none; }
+		
+		}
+	
+	i {
+		font-size: 14px;
+		height: 16px;
+		width: auto !important;
 		color: @iconColor;
-		margin-top: 2px;
-		}
-
-.add:hover i {
-		color: @grayDarker;
-		}
-
-td {
-	padding: 4px 5px 4px 5px;
-	border-left: 1px solid #DBDBDB;
-	//border-right: 1px solid #DBDBDB;
-	white-space: nowrap;
-	//text-align: center;
-	width: 1%;
-
-	&.add {
-
-		padding: 5px 4px 0;
-
-		i {  /* Tab Flat */
-			line-height: 1;
+		position: relative;
+		/* text-shadow: 0 1px 0 rgba(255,255,255,1.0); */
+		
+		&:hover { color: @grayDarker; }
+		
+		}	
+	
+		&.disabled i {
+			color: @gray;
 			}
-	 }
-}
+		
+		.template i {
+			font-size: 24px;
+			}
+		}
+	
+		// new style actions menu
+		position: relative;
 
-a > i {
+		div.actions-menu{
+	    background-color: #FFF;
+	    border-radius: 1px;
+	    box-shadow: 1px 3px 18px rgba(0,0,0,.35);
+	    font-size: 13px;
+	    padding: 0;
+	    position: absolute;
+	    	left: 1px;
+	    	top: 1px;
+	    width: 160px;
+	    z-index: 20;
 
-	/*
-text-shadow: 0 0 1px @blue;
-	text-stroke: 1px solid @white;
-*/
+	    	ul.actions-list{
+	    		float: left;
+	    		width: 100%;
 
-	}
+		    	li{
+		    		clear: both !important;
+		    		float: left !important;
+		    		list-style: none;
+				    margin: 0;
+				    padding: 0;
+				    position: relative;
+				    text-align:left;
+				    width: 100%;
 
-i+span, .bullet+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
+				    &.delete{
+		    	    border-top: 1px solid #E8E8E8;
+				    }
 
-i {
-	font-size: 14px;
-	.square(18px);
-	color: lighten(@iconColor,0%);
+			    	a{
+					    display: block;
+					    text-decoration: none;
+					    margin: 0;
+					    padding: 3px 12px;
+					    line-height: 24px;
+					    color: #999;
 
-	&.icon-ban-circle,
-	&.icon-eye-close { font-size: 16px; }
+					    i{
+					    	margin-right: 8px;
+					    }
+			    	}
+	    		}
+	    	} 
+	    	// /.actions-menu
+	} 
+	// /.actions
 
-	&.icon-list-alt,
-	&.icon-calendar { font-size: 20px; }
 
-	&.icon-minus { color: @grayLight; }
+			
+		}
 
-	}
 
-.mura-quickEditItem {
+	.bullet { color: @iconColor;
+		font-size: 20px;
+		 }
+
+	.add i {
+			display: block;
+			width: 24px;
+			font-size: 16px;
+			line-height: 27px;
+			color: @iconColor;
+			margin-top: 2px;
+			}
+
+	.add:hover i {
+			color: @grayDarker;
+			}
+
+	td {
+		padding: 4px 5px 4px 5px;
+		border-left: 1px solid #DBDBDB;
+		//border-right: 1px solid #DBDBDB;
+		white-space: nowrap;
+		//text-align: center;
+		width: 1%;
+
+		&.add {
+
+			padding: 5px 4px 0;
+
+			i {  /* Tab Flat */
+				line-height: 1;
+				}
+		 }
+	} 
+	// /td
+
+	a > i {
+
+		/*
+	text-shadow: 0 0 1px @blue;
+		text-stroke: 1px solid @white;
+	*/
+
+		}
+
+	i+span, .bullet+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
+
+	i {
+		font-size: 14px;
+		.square(18px);
+		color: lighten(@iconColor,0%);
+
+		&.icon-ban-circle,
+		&.icon-eye-close { font-size: 16px; }
+
+		&.icon-list-alt,
+		&.icon-calendar { font-size: 20px; }
+
+		&.icon-minus { color: @grayLight; }
+
+		}
+
+	.mura-quickEditItem {
 		cursor: pointer;
 		/* border-bottom: 1px dotted; */
 
@@ -1824,7 +1940,7 @@ p + .mura-table-grid { margin-top: 12px;}
 
 			i {
 				font-size: 14px;
-				margin-right: .25em;
+				margin-right: 3px;
 				min-width: 18px;
 				position: relative;
 				top: 2px;

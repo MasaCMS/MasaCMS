@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="block-content">
 						<div id="main">
 					<cfif rc.changesets.hasNext()>
-					<table class="mura-table-grid">
+					<table class="mura-table-grid mura-table-actions">
 					<tr>
 					<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
 					<th>#application.rbFactory.getKeyValue(session.rb,'changesets.datetopublish')#</th>
@@ -76,21 +76,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfloop condition="rc.changesets.hasNext()">
 					<cfset rc.changeset=rc.changesets.next()>
 					<tr>
+						<td class="actions">
+							<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+							<div class="actions-menu hide">
+							<ul class="actions-list">
+										<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="./?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#</a></li>
+								<cfif rc.changeset.getPublished()>
+											<!--- <li class="preview disabled"><i class="mi-globe"></i></li> --->
+								<cfelse>
+											<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('#rc.$.getBean('content').loadBy(filename='').getURL(complete=1,queryString='changesetID=#rc.changeset.getchangesetID()#')#');"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#</a></li>
+								</cfif>
+										<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#"><i class="mi-reorder"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#</a></li>
+										<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)##rc.$.renderCSRFTokens(context=rc.changeset.getChangesetID(),format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#</a></li>
+							</ul>
+							</div>
+						</td>
 						<td class="var-width"><a title="Edit" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.siteID)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#">#esapiEncode('html',rc.changeset.getName())#</a></td>
 						<td><cfif isDate(rc.changeset.getPublishDate())>#LSDateFormat(rc.changeset.getPublishDate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getPublishDate(),"medium")#<cfelse>NA</cfif></td>
 						<td>#LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#</td>
-						<td class="actions">
-							<ul>
-										<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="./?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="mi-pencil"></i></a></li>
-								<cfif rc.changeset.getPublished()>
-											<li class="preview disabled"><i class="mi-globe"></i></li>
-								<cfelse>
-											<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('#rc.$.getBean('content').loadBy(filename='').getURL(complete=1,queryString='changesetID=#rc.changeset.getchangesetID()#')#');"><i class="mi-globe"></i></a></li>
-								</cfif>
-										<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#"><i class="mi-reorder"></i></a></li>
-										<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)##rc.$.renderCSRFTokens(context=rc.changeset.getChangesetID(),format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)"><i class="mi-trash"></i></a></li>
-							</ul>
-						</td>
 					</tr></cfloop>
 					</table>
 					<cfelse>
@@ -186,7 +189,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								}
 							);
 						});
-
 
 					</script>
 					</form>
