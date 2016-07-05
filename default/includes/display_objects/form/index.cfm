@@ -37,9 +37,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="objectparams._p" default="1" >
 
 <cfif len(arguments.objectid)>
-	<cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
+	<cfif IsValid('uuid', arguments.objectid)>
+		<cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
+	<cfelse>
+		<cfset local.formBean = $.getBean('content').loadBy( title=arguments.objectid ) />
+	</cfif>
 
 	<cfif isJSON( local.formBean.getBody())>
+		<cfset objectparams.objectid=local.formBean.getContentID()>
+			
 		<cfif not $.useLayoutManager() and this.asyncObjects>
 			<cfoutput>
 				<div class="mura-async-object"

@@ -62,6 +62,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and listFind(variables.rsTemplate.moduleAssign,'00000000000000000000000000000000000')>
 </cfsilent>
 <cfif not bean.getIsNew()>
+	<cfset objectparams.objectid=bean.getContentID()>
+		
 	<cfif variables.rsTemplate.isOnDisplay>
 		<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
 		<cfif not len(variables.componentOutput)>
