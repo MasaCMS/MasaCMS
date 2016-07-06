@@ -22,7 +22,7 @@
       <div class="block-content">
 
         <cfif not structIsEmpty(chain.getErrors())>
-          <div class="alert alert-error">#application.utility.displayErrors(chain.getErrors())#</div>
+          <div class="alert alert-error"><span>#application.utility.displayErrors(chain.getErrors())#</span></div>
         </cfif>
 
       <form novalidate="novalidate" action="./?muraAction=cchain.save" method="post" name="form1" onsubmit="return validateForm(this);">
@@ -45,8 +45,8 @@
 
       <div class="mura-control-group" id="availableGroups">
       	<div class="alert alert-info">
-      		<p>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.
-      		<strong>All content creators can send for approval without having to be in the chain.</strong></p>
+          <span>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.
+          <strong>All content creators can send for approval without having to be in the chain.</strong></span>
       	</div>
         <label>
           <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>

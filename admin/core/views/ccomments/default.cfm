@@ -87,13 +87,14 @@
 	<!--- uses alert-success, alert-error --->
 	<cfif StructKeyExists(rc, 'processed') and IsBoolean(rc.processed)>
 		<cfset local.class = rc.processed ? 'success' : 'error'>
-		<div id="feedback" class="alert alert-#local.class#">
+		<div id="feedback" class="alert alert-#local.class#"><span>
 			<button type="button" class="close" data-dismiss="alert"><i class="mi-close"></i></button>
 			<cfif rc.processed>
 				#rbKey('comments.message.confirmation')#
 			<cfelse>
 				#rbKey('comments.message.error')#
 			</cfif>
+		</span>
 		</div>
 	</cfif>
 
