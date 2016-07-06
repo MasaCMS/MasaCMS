@@ -1837,10 +1837,13 @@
 			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
 		},
 		objectHasConfigurator:function(displayObject){
+			if(!displayObject.hasClass){
+				return true;
+			}
 			if(displayObject.hasClass('mura-body-object')){
 				return true;
 			}
-			
+
 			var check=displayObject.closest('.mura-region');
 
 			if(!check.length){
