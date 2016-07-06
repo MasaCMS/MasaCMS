@@ -46,12 +46,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsavecontent variable="rc.ajax">
 <cfoutput>
-<script src="assets/js/category.min.js?coreversion=#application.coreversion#" type="text/javascript">
+<script src="assets/js/category.js?coreversion=#application.coreversion#" type="text/javascript">
 </script>
 
 <div id="newContentMenu" onMouseOut="categoryManager.hideMenu('newContentMenu');" class="addNew hide">
   <ul>
-    <li id="newPage"><a href="" id="newCategoryLink" ontouchstart="this.onmouseover();" onmouseover="categoryManager.keepMenu('newContentMenu');"><i class="mi-plus"></i> <cfoutput>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addsubcategory')#</cfoutput></a></li>
+    <li id="newPage"><a href="" id="newCategoryLink" ontouchstart="this.onclick();" onmouseover="categoryManager.keepMenu('newContentMenu');"><i class="mi-plus"></i> <cfoutput>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addsubcategory')#</cfoutput></a></li>
  </ul>
 </div>
 </cfoutput>
