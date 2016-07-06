@@ -324,6 +324,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h2>Current Plugins</h2>
 			<table class="mura-table-grid">
 				<tr>
+					<th class="actions"></th>
 					<th class="var-width">Name</th>
 					<th>Directory</th>
 					<th>Category</th>
@@ -331,11 +332,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<th>Provider</th>
 					<!--- <th>Provider URL</th> --->
 					<th>Plugin ID</th>
-					<th class="actions">&nbsp;</th>
 				</tr>
 
 					<cfoutput query="rc.rsPlugins">
 					<tr>
+						<td class="actions">
+							<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+							<div class="actions-menu hide">
+								<ul class="actions-list">
+									<li class="edit"><a href="./?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#"><i class="mi-pencil"></i>Edit</a></li>
+									<li class="delete"><a href="##" onclick="confirmDialog('Delete #esapiEncode("javascript","'#Ucase(rc.rsPlugins.name)#'")#?',function(){actionModal('./?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID##rc.$.renderCSRFTokens(context=rc.rsplugins.moduleid,format='url')#')});return false;"><i class="mi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</td>
 						<td class="var-width"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#esapiEncode('html',rc.rsPlugins.name)#</a></td>
 						<td>#esapiEncode('html',rc.rsPlugins.directory)#</td>
 						<td>#esapiEncode('html',rc.rsPlugins.category)#</td>
@@ -343,10 +352,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<td><a class="alt" href="#esapiEncode('url',rc.rsPlugins.providerurl)#" target="_blank">#esapiEncode('html',rc.rsPlugins.provider)#</a></td>
 						<!--- <td><a href="#rc.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 						<td>#rc.rsPlugins.pluginID#</td>
-						<td class="actions"><ul>
-								<li class="edit"><a title="Edit" href="./?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#"><i class="mi-pencil"></i></a></li>
-								<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('Delete #esapiEncode("javascript","'#Ucase(rc.rsPlugins.name)#'")#?',function(){actionModal('./?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID##rc.$.renderCSRFTokens(context=rc.rsplugins.moduleid,format='url')#')});return false;"><i class="mi-trash"></i></a></li>
-							</ul></td>
 					</tr>
 					</cfoutput>
 
