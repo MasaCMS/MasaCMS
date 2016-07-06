@@ -94,7 +94,7 @@ var categoryManager = {
 
 	// append action links
 		var actionLinks = obj.parentNode.parentNode.getElementsByClassName("actions")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
-		var optionList = document.getElementById('newContentOptions');
+		var optionList = document.getElementById('newCategoryOptions');
 		// remove old links
 		var oldLinks = optionList.getElementsByClassName("li-action");
 		var l;

@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </script>
 
 <div id="newContentMenu" onMouseOut="categoryManager.hideMenu('newContentMenu');" class="addNew hide">
-  <ul>
+  <ul id="newCategoryOptions">
     <li id="newPage"><a href="" id="newCategoryLink" ontouchstart="this.onclick();" onmouseover="categoryManager.keepMenu('newContentMenu');"><i class="mi-plus"></i> <cfoutput>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addsubcategory')#</cfoutput></a></li>
  </ul>
 </div>

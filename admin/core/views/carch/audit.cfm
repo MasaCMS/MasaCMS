@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfsilent>
 			<tr>
 				<td class="actions">
-					<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+					<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 					<div class="actions-menu hide">	
 						<ul class="actions-list">
 							<cfif not isLockedBySomeoneElse or poweruser>

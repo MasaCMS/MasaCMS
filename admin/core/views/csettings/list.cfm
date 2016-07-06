@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfoutput query="rc.rsSites">
 					<tr>
 						<td class="actions">
-							<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+							<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 							<div class="actions-menu hide">
 								<ul class="actions-list">
 									<li class="edit"><a href="./?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#"><i class="mi-pencil"></i>Edit</a></li>
@@ -337,7 +337,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfoutput query="rc.rsPlugins">
 					<tr>
 						<td class="actions">
-							<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+							<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 							<div class="actions-menu hide">
 								<ul class="actions-list">
 									<li class="edit"><a href="./?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#"><i class="mi-pencil"></i>Edit</a></li>

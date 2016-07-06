@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput query="rc.rslist">
 				<tr>
 					<td class="actions">
-						<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+						<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 						<div class="actions-menu hide">	
 							<ul class="mailingLists actions-list">
 								<li class="edit"><a href="./?muraAction=cMailingList.edit&mlid=#rc.rslist.mlid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</a></li>

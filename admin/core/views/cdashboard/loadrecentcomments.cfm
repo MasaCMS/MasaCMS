@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset args[1]="<strong>#esapiEncode('html',comment.getName())#</strong>">
 			<cfset args[2]="<strong>#esapiEncode('html',content.getMenuTitle())#</strong>">
 			<td class="actions">
-				<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+				<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 				<div class="actions-menu hide">
 					<ul class="actions-list">
 						<li class="preview"><a href="##" onclick="return preview('#esapiEncode('javascript',content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#esapiEncode('javascript',content.getTargetParams())#');"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a></li>
