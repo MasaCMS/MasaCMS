@@ -426,9 +426,7 @@
 
 		        initDraggableObject(displayObject);
 
-		        var objectData=mura(displayObject).data();
-
-		        if(muraInlineEditor.objectHasConfigurator(objectData)){
+		        if(muraInlineEditor.objectHasConfigurator(mura(displayObject))){
 		        	openFrontEndToolsModal(displayObject);
 		    	}
 

@@ -969,7 +969,7 @@
 					if(mura.type =='Variation'){
 						objectParams=item.data();
 
-						if(window.muraInlineEditor.objectHasConfigurator(item) || window.muraInlineEditor.objectHasEditor(objectParams)){
+						if(window.muraInlineEditor.objectHasConfigurator(item)){
 							item.children('.frontEndToolsModal').remove();
 							item.prepend(window.mura.layoutmanagertoolbar );
 
@@ -992,7 +992,7 @@
 						if(region && region.length ){
 							if(region.data('perm')){
 								objectParams=item.data();
-								if(window.muraInlineEditor.objectHasConfigurator(item) || window.muraInlineEditor.objectHasEditor(objectParams)){
+								if(window.muraInlineEditor.objectHasConfigurator(item) || (!window.mura.layoutmanager && window.muraInlineEditor.objectHasEditor(objectParams)) ){
 									item.children('.frontEndToolsModal').remove();
 									item.prepend(window.mura.layoutmanagertoolbar);
 
@@ -1837,8 +1837,27 @@
 			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
 		},
 		objectHasConfigurator:function(displayObject){
+			if(!displayObject.hasClass){
+				return true;
+			}
+			if(displayObject.hasClass('mura-body-object')){
+				return true;
+			}
+
+			var check=displayObject.closest('.mura-region');
+
+			if(!check.length){
+				return false
+			}
+
+			check=displayObject.parent().closest('.mura-object');
+
+			if(check.length && check.data('object')!='container'){
+				return false;
+			}
+
 			return true;
-			//return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition() || !(displayObject.object in this.configuratorMap);
+
 		},
 		checkforImageCroppers:function(el){
 
