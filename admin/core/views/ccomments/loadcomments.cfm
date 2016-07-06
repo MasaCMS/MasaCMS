@@ -153,6 +153,7 @@
 				<table class="mura-table-grid">
 					<thead>
 						<tr>
+							<th class="actions"></th>
 							<th>
 								<a id="checkall" href="##" title="#rbKey('comments.selectall')#"><i class="mi-check"></i></a>
 							</th>
@@ -170,7 +171,6 @@
 							<th>
 								<a class="sort" data-sortby="flagCount" data-sortdirection="#rc.sortdirlink#" href="##">Flag Count</a>
 							</th>
-							<th>&nbsp;</th>
 						</tr>
 					</thead>
 
@@ -235,6 +235,23 @@
 							<!--- /@END MODAL --->
 
 							<tr>
+								<!--- ACTIONS --->
+								<td class="actions">
+									<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+									<div class="actions-menu hide">	
+										<ul class="actions-list">
+											<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal"><i class="mi-comments"></i>Comments</a></li>
+											<cfif IsValid('url', local.item.getURL())>
+												<li><a href="#esapiEncode('html_attr',local.item.getURL())#" title="#esapiEncode('html_attr',local.item.getURL())#" target="_blank"><i class="mi-link"></i>View</a></li>
+											<!--- 
+											<cfelse>
+												<li class="disabled"><i class="mi-link"></i></li>
+											 --->	
+											</cfif>
+											<li><a href="mailto:#esapiEncode('html',local.item.getEmail())#"><i class="mi-envelope"></i>#esapiEncode('html_attr',local.item.getEmail())#</a></li>
+										</ul>
+									</div>	
+								</td>
 								<!--- BULK ACTION CHECKBOX --->
 								<td>
 									<input type="checkbox" name="ckUpdate" class="checkall" value="#local.item.getCommentID()#" />
@@ -290,19 +307,6 @@
 
 								<td>
 									#esapiEncode('html',local.item.getFlagCount())#
-								</td>
-
-								<!--- ACTIONS --->
-								<td class="actions">
-								<ul>
-									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="mi-comments"></i></a></li>
-									<cfif IsValid('url', local.item.getURL())>
-										<li><a href="#esapiEncode('html_attr',local.item.getURL())#" title="#esapiEncode('html_attr',local.item.getURL())#" target="_blank"><i class="mi-link"></i></a></li>
-									<cfelse>
-										<li class="disabled"><i class="mi-link"></i></li>
-									</cfif>
-									<li><a href="mailto:#esapiEncode('html',local.item.getEmail())#" title="#esapiEncode('html_attr',local.item.getEmail())#"><i class="mi-envelope"></i></a></li>
-								</ul>
 								</td>
 							</tr>
 						</cfloop>

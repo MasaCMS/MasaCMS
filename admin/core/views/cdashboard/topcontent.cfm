@@ -93,10 +93,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<table class="mura-table-grid">
 			<tr>
-			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.views")#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.percent")#</th>
-			<th>&nbsp;</th>
+				<th class="actions"></th>
+				<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
+				<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.views")#</th>
+				<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.percent")#</th>
 			</tr>
 			<cfif items.hasNext()>
 			<cfloop condition="items.hasNext()">
@@ -104,15 +104,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset item=items.next()>
 			</cfsilent>
 			<tr>
-			<td class="var-width">#$.dspZoom(item.getCrumbArray())#</td>
-			<td>#item.gethits()#</td>
-			<td>#decimalFormat((item.gethits()/rstotal.hits)*100)#%</td>
-			<td class="actions">
-			<ul>		
-				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a>
-				</li>
-				
-			</ul></td>
+				<td class="actions">
+					<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+					<div class="actions-menu hide">	
+						<ul class="actions-list">		
+							<li class="preview"><a href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a>
+							</li>
+						</ul>
+					</div>		
+				</td>
+				<td class="var-width">#$.dspZoom(item.getCrumbArray())#</td>
+				<td>#item.gethits()#</td>
+				<td>#decimalFormat((item.gethits()/rstotal.hits)*100)#%</td>
 			</tr>
 			</cfloop>
 			<cfelse>

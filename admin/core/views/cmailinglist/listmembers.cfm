@@ -110,22 +110,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<table id="metadata" class="mura-table-grid">
 			<tr>
+				<th class="actions"></th>
 				<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emails')# (#rc.rslist.recordcount#)</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.company')#</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.verified')#</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.created')#</th>
-				<th>&nbsp;</th>
 			</tr></cfoutput>
 			<cfif rc.rslist.recordcount>
 			<cfoutput query="rc.rslist" startrow="#rc.startrow#" maxrows="#rc.nextN.RecordsPerPage#">
 				<tr>
+					<td class="actions">
+						<ul class="mailingListMembers actions-list">
+							<li class="delete"><a href="./?muraAction=cMailingList.updatemember&action=delete&mlid=#rc.rslist.mlid#&email=#esapiEncode('url',rc.rslist.email)#&siteid=#esapiEncode('url',rc.siteid)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li>
+						</ul>
+					</td>
 					<td class="var-width"><a href="mailto:#esapiEncode('html',rc.rslist.email)#">#esapiEncode('html',rc.rslist.email)#</a></td>
 					<td>#esapiEncode('html',rc.rslist.fname)#&nbsp;#esapiEncode('html',rc.rslist.lname)#</td>
 					<td>#esapiEncode('html',rc.rslist.company)#</td>
 					<td><cfif rc.rslist.isVerified eq 1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
 					<td>#LSDateFormat(rc.rslist.created,session.dateKeyFormat)#</td>
-					<td class="actions"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="./?muraAction=cMailingList.updatemember&action=delete&mlid=#rc.rslist.mlid#&email=#esapiEncode('url',rc.rslist.email)#&siteid=#esapiEncode('url',rc.siteid)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);"><i class="mi-trash"></i></a></li></ul></td></tr>
+				</tr>
 			</cfoutput>
 			<cfelse>
 			<tr>

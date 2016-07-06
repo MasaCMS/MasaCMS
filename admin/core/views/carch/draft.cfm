@@ -49,9 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts')#</h1>
 	<table class="mura-table-grid">
     <tr> 
+      <th class="actions"></th>
       <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.title')#</th>
-	  <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.contenttype')#</th>
-      <th class="actions">&nbsp;</th>
+    <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.contenttype')#</th>
     </tr></cfoutput>
    
       <cfoutput query="rc.rslist">
@@ -60,7 +60,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or itemperm eq 'editor' or itemperm eq 'author'>
       
 		<tr> 
-        <td class="var-width">
+        <td class="actions">
+          <a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+          <div class="actions-menu hide"> 
+            <ul class="drafts actions-list">
+              <li class="version-history">
+                <a href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#"><i class="mi-history"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</a>
+              </li>
+           </ul>
+        </div>
+      </td>
+      <td class="var-width">
 <cfswitch expression="#rc.rslist.type#">
 <cfcase value="Form,Component">
 <a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#">#rc.rslist.menutitle#</a>
@@ -68,8 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfdefaultcase>
 #$.dspZoom(itemcrumbdata)#</cfdefaultcase>
 </cfswitch></td>
-			<td>#rc.rslist.module#</td> 
-          <td class="actions"><ul class="drafts"><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#"><i class="mi-history"></i></a></li></ul></td>
+      <td>#rc.rslist.module#</td> 
         </tr>
 		<cfset listed=1>
 	  </cfif>

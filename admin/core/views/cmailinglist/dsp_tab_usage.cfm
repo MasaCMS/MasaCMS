@@ -62,21 +62,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagetext')#:</label>
 		<table class="mura-table-grid">
 		    <tr> 
+		      <th class="actions"></th>
 		      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.title')#</th>
 		      <th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.display')#</th>
 		      <th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#</th>
-		      <th>&nbsp;</th>
 		    </tr></cfoutput>
 		    <cfif rsUsage.recordcount>
 		     <cfoutput query="rsUsage">
 				<cfset crumbdata=application.contentManager.getCrumbList(rsUsage.contentid, rc.siteid)/>
 				<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-		        <tr>  
-		          <td class="var-width">#$.dspZoom(crumbdata)#</td>
-					   <td nowrap> 
-			    <cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
-				<td nowrap>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
-		          <td class="actions" nowrap><ul><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-pencil"></i></a></li><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-history"></i></a></li><cfelse><li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</li><li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</li></cfif></ul></td></tr>
+				<tr>  
+					<td class="actions">
+						<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+						<div class="actions-menu hide">	
+							<ul class="actions-list">
+								<cfif verdict neq 'none'>
+									<li class="edit"><a href="./?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</a></li>
+									<li class="version-history"><a href="./?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-history"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</a></li>
+									<!--- 
+								<cfelse>
+									<li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</li>
+									<li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</li></cfif>
+									 --->
+							</ul>
+						</div>
+					</td>
+					<td class="var-width">#$.dspZoom(crumbdata)#</td>
+					<td nowrap> 
+						<cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
+					<td nowrap>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
+				</tr>
 		       </cfoutput>
 		      <cfelse>
 		      <tr> 
