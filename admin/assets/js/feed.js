@@ -80,7 +80,7 @@ var feedManager = {
 			return false;
 		}
 		var deleteIcon = document.createElement("I");
-		deleteIcon.setAttribute("class", "mi-times-circle");
+		deleteIcon.setAttribute("class", "mi-trash");
 
 		deleteLink.appendChild(deleteIcon);
 
@@ -97,9 +97,9 @@ var feedManager = {
 		content.setAttribute("value", contentID);
 		admin.appendChild(content);
 		admin.appendChild(deleteUL);
+		row.appendChild(admin);
 		row.appendChild(name);
 		row.appendChild(type);
-		row.appendChild(admin);
 		tbody.appendChild(row);
 		if($('#noFilters').length) $('#noFilters').hide();
 

@@ -62,20 +62,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <table class="mura-table-grid">
     <thead>
     <tr> 
-      <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
-	  <th class="actions">&nbsp;</th>
+	  <th class="actions"></th>
+    <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
     </tr>
     </thead>
     <cfif rc.rslist.recordcount>
     <tbody>
 	<tr class="alt"><cfoutput>  
+	  <td class="actions"><input type="radio" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" checked="checked"></td>
 		<cfif rc.parentID neq ''>
 		<cfset parentCrumb=application.contentManager.getCrumbList(rc.parentid, rc.siteid)/>
          <td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
 		 <cfelse>
 		  <td class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</td>
 		 </cfif>
-		  <td class="actions"><input type="radio" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" checked="checked"></td>
 		</tr></cfoutput>
      <cfoutput query="rc.rslist" startrow="1" maxrows="100">
 		<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/> 
@@ -83,8 +83,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict neq 'none'  and rc.parentID neq  rc.rslist.contentid>	
 			<cfset counter=counter+1/>
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
-          <td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
 		  <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
+      <td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
 		</tr>
 	 </cfif>
        </cfoutput>
