@@ -135,6 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<form novalidate="novalidate" name="form1" id="form1" action="./?muraAction=csettings.list" method="post">
 				<table class="mura-table-grid">
 					<tr>
+						<th class="actions"></th>
 						<cfif rc.siteUpdateSelect eq "true">
 							<th>
 								<input type="checkbox" name="checkall" id="checkall" />
@@ -154,10 +155,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<th>Last&nbsp;Deployment</th>
 						</cfif>
 						<!---<th>Site Version</th>--->
-						<th class="actions">&nbsp;</th>
 					</tr>
 					<cfoutput query="rc.rsSites">
 					<tr>
+						<td class="actions">
+							<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+							<div class="actions-menu hide">
+								<ul class="actions-list">
+									<li class="edit"><a href="./?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#"><i class="mi-pencil"></i>Edit</a></li>
+									<cfif application.configBean.getMode() eq 'Staging'>
+										<cfif application.configBean.getValue('deployMode') eq "bundle">
+											<li class="deploy"><a href="?muraAction=cSettings.deploybundle&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #esapiEncode('javascript',rc.rsSites.site)# to production?',this.href);"><i class="mi-download"></i>Deploy</a></li>
+										<cfelse>
+											<li class="deploy"><a href="?muraAction=cSettings.list&action=deploy&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #esapiEncode('javascript',rc.rsSites.site)# to production?',this.href);"><i class="mi-download"></i>Deploy</a></li>
+										</cfif>
+									</cfif>
+									<cfif rc.rsSites.siteid neq 'default'>
+										<li class="delete"><a href="##" onclick="confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid##rc.$.renderCSRFTokens(context=rc.rssites.siteid,format='url')#')});return false;"><i class="mi-trash"></i>Delete</a></li>
+	<!--- 									<cfelse>
+										<li class="delete disabled"><i class="mi-trash"></i></li> --->
+									</cfif>
+									<!---<li class="export"><a title="Export" href="./?muraAction=cArch.exportHtmlSite&siteid=#rc.rsSites.siteid#" onclick="return confirm('Export the #esapiEncode("javascript","'#rc.rsSites.site#'")# Site?')">Export</a></li>--->
+							</ul>
+						</div>
+						</td>
 						<cfif rc.siteUpdateSelect eq "true">
 							<td>
 								<input type="checkbox" name="ckUpdate" class="checkall" value="#rc.rsSites.siteid#" />
@@ -195,22 +216,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfif></td>
 						</cfif>
 						<!---<td>#application.autoUpdater.getCurrentCompleteVersion(rc.rsSites.siteid)#</td>--->
-						<td class="actions"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>>
-								<li class="edit"><a title="Edit" href="./?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#"><i class="mi-pencil"></i></a></li>
-								<cfif application.configBean.getMode() eq 'Staging'>
-									<cfif application.configBean.getValue('deployMode') eq "bundle">
-										<li class="deploy"><a href="?muraAction=cSettings.deploybundle&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #esapiEncode('javascript',rc.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
-									<cfelse>
-										<li class="deploy"><a href="?muraAction=cSettings.list&action=deploy&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #esapiEncode('javascript',rc.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
-									</cfif>
-								</cfif>
-								<cfif rc.rsSites.siteid neq 'default'>
-									<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid##rc.$.renderCSRFTokens(context=rc.rssites.siteid,format='url')#')});return false;"><i class="mi-trash"></i></a></li>
-									<cfelse>
-									<li class="delete disabled"><i class="mi-trash"></i></li>
-								</cfif>
-								<!---<li class="export"><a title="Export" href="./?muraAction=cArch.exportHtmlSite&siteid=#rc.rsSites.siteid#" onclick="return confirm('Export the #esapiEncode("javascript","'#rc.rsSites.site#'")# Site?')">Export</a></li>--->
-							</ul></td>
 					</tr>
 					</cfoutput>
 				</table>
