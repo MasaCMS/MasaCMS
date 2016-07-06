@@ -84,10 +84,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</form>
 			<table class="mura-table-grid">
 			<tr>
-			<th class="var-width">Content</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.votes")#</th>
-			<th>&nbsp;</th>
+				<th class="actions"></th>
+				<th class="var-width">Content</th>
+				<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>
+				<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.votes")#</th>
 			</tr>
 			<cfif rslist.recordcount>
 			<cfloop query="rslist">
@@ -95,14 +95,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
 			</cfsilent>
 			<tr>
-			<td class="var-width">#$.dspZoom(crumbdata)#</td>
-			<td><img src="assets/images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
-			<td class="count">#rsList.theCount#</td>
-			<td class="actions">
-					<ul>
-					
-					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rsList.filename)#');"><i class="mi-globe"></i></a></li>
-					</ul></td>
+				<td class="actions">
+					<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+					<div class="actions-menu hide">	
+						<ul class="actions-list">					
+							<li class="preview"><a href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rsList.filename)#');"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a></li>
+						</ul>
+					</div>	
+				</td>
+				<td class="var-width">#$.dspZoom(crumbdata)#</td>
+				<td><img src="assets/images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
+				<td class="count">#rsList.theCount#</td>
 			</tr>
 			</cfloop>
 			<cfelse>

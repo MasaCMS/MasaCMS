@@ -54,21 +54,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="dsp_secondary_menu.cfm">
 	</div> <!-- /.mura-header -->
 
-
 	<div class="block block-constrain">
 			<div class="block block-bordered">
 				<div class="block-content">
-					<div id="main">
 						<cf_dsp_nest siteID="#rc.siteID#" parentID="" nestLevel="0" muraScope="#rc.$#">
-					</div> <!-- /##main -->
 				<div class="clearfix"></div>
 			</div> <!-- /.block-content -->
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.block-constrain -->
-
-
-
-
-
 
 </cfoutput>

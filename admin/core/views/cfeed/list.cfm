@@ -60,44 +60,53 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.rsLocal.recordcount>
 	<table class="mura-table-grid">
 		<tr>
+		<th class="actions"></th>
 		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.index')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'collections.featuresonly')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'collections.restricted')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'collections.active')#</th>
-		<th>&nbsp;</th>
 		</tr>
 		<cfloop query="rc.rsLocal">
 		<tr>
-		<td class="var-width"><a title="Edit" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
-		<td>#rc.rsLocal.lang#</td>
-		<td>#rc.rsLocal.maxItems#</td>
-		<td>
-			<cfif rc.rsLocal.isFeaturesOnly>
-							<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
-			<cfelse>
-							<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
-			</cfif>
-			<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#</span>
-		</td>
-		<td>
-			<cfif rc.rsLocal.restricted>
-							<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#"></i>
-			<cfelse>
-							<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#"></i>
-			</cfif>
-			<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#</span>
-		</td>
-		<td>
-		<cfif rc.rsLocal.isActive>
-							<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#"></i>
-			<cfelse>
-							<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#"></i>
-			</cfif>
-			<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#</span>
-		</td>
-					<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local"><i class="mi-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#" href="#endpoint#/?feedID=#rc.rslocal.feedid#" target="_blank"><i class="mi-rss"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rslocal.feedid,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)"><i class="mi-trash"></i></a></li></ul></td>
+			<td class="actions">
+					<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+					<div class="actions-menu hide">
+					<ul class="actions-list">
+						<li class="edit"><a href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</a></li>
+						<li class="rss"><a href="#endpoint#/?feedID=#rc.rslocal.feedid#" target="_blank"><i class="mi-rss"></i>#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#</a></li>
+						<li class="delete"><a href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rslocal.feedid,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li>
+					</ul>
+				</div>
+			</td>
+			<td class="var-width"><a title="Edit" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
+			<td>#rc.rsLocal.lang#</td>
+			<td>#rc.rsLocal.maxItems#</td>
+			<td>
+				<cfif rc.rsLocal.isFeaturesOnly>
+								<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
+				<cfelse>
+								<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
+				</cfif>
+				<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#</span>
+			</td>
+			<td>
+				<cfif rc.rsLocal.restricted>
+								<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#"></i>
+				<cfelse>
+								<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#"></i>
+				</cfif>
+				<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#</span>
+			</td>
+			<td>
+			<cfif rc.rsLocal.isActive>
+								<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#"></i>
+				<cfelse>
+								<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#"></i>
+				</cfif>
+				<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#</span>
+			</td>
 		</tr></cfloop>
 	</table>
 	<cfelse>
@@ -110,21 +119,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.rsRemote.recordcount>
 	<table class="mura-table-grid">
 	<tr>
+	<th class="actions"></th>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.feed')#</th>
 	<th class="url">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'collections.active')#</th>
-	<th>&nbsp;</th>
 	</tr>
 	<cfloop query="rc.rsRemote">
 	<tr>
-	<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
-	<td class="url">#left(rc.rsRemote.channelLink,70)#</td>
-	<td>#yesnoFormat(rc.rsRemote.isactive)#</td>
-				<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Remote"><i class="mi-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#" href="#rc.rsRemote.channelLink#" target="_blank"><i class="mi-rss"></i></a></li>
-
-				<li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" href="./?muraAction=cFeed.import1&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download-alt"></i></a></li>
-
-				<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsremote.feedid,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#',this.href)"><i class="mi-trash"></i></a></li></ul></td>
+		<td class="actions">
+			<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+			<div class="actions-menu hide">
+			<ul class="actions-list">
+				<li class="edit"><a href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Remote"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</a></li>
+				<li class="rss"><a href="#rc.rsRemote.channelLink#" target="_blank"><i class="mi-rss"></i>#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a></li>
+				<li class="import"><a href="./?muraAction=cFeed.import1&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-sign-in"></i>#application.rbFactory.getKeyValue(session.rb,'collections.import')#</a></li>			
+				<li class="delete"><a href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsremote.feedid,format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li>
+		</ul>
+		</div>
+		</td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
+		<td class="url">#left(rc.rsRemote.channelLink,70)#</td>
+		<td>#yesnoFormat(rc.rsRemote.isactive)#</td>
 	</tr></cfloop>
 	</table>
 	<cfelse>

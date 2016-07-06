@@ -71,12 +71,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<table class="mura-table-grid">
 	<thead>
 	<tr>
-	<th class="add">&nbsp;</td>
+	<th class="add"></th>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.assignable")#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.interestgroup")#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.active")#</th>
-	<th class="actions">&nbsp;</th>
+	<th class="actions hide"></th>
 	</tr>
 	<thead>
 	<tbody class="nest">
@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop query="rslist">
 <tr>
 <td class="add">
- <a href="javascript:;" onmouseover="categoryManager.showMenu('newContentMenu',this,'#rslist.categoryid#','#esapiEncode('javascript',attributes.siteid)#');"><i class="mi-plus-circle"></i></a></td>
+ <a href="javascript:;" ontouchstart="this.onclick();" onclick="categoryManager.showMenu('newContentMenu',this,'#rslist.categoryid#','#esapiEncode('javascript',attributes.siteid)#');"><i class="mi-ellipsis-v"></i></a></td>
 <td class="var-width"><ul <cfif rslist.hasKids>class="nest#variables.nestlevel#on"<cfelse>class="nest#variables.nestlevel#off"</cfif>><li class="Category#iif(rslist.restrictGroups neq '',de('Locked'),de(''))#"><a title="Edit" href="./?muraAction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#esapiEncode('url',attributes.siteid)#">#esapiEncode('html',rslist.name)#</a></li></ul></td>
 <td><cfif rslist.isOpen><i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isOpen)#')#"></i>
 <cfelse><i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isOpen)#')#"></i></cfif>
@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<span>#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isActive)#')#</span>
 </td>
-<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#" href="./?muraAction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#esapiEncode('url',attributes.siteid)#"><i class="mi-pencil"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cCategory.update&action=delete&categoryID=#rslist.categoryID#&siteid=#esapiEncode('url',attributes.siteid)##attributes.muraScope.renderCSRFTokens(context=rslist.categoryid,format="url")#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#',this.href)"><i class="mi-trash"></i></a></li></ul></td>
+<td class="actions hide"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#" href="./?muraAction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#esapiEncode('url',attributes.siteid)#"><i class="mi-pencil"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cCategory.update&action=delete&categoryID=#rslist.categoryID#&siteid=#esapiEncode('url',attributes.siteid)##attributes.muraScope.renderCSRFTokens(context=rslist.categoryid,format="url")#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#',this.href)"><i class="mi-trash"></i></a></li></ul></td>
 </tr>
 <cf_dsp_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#"  muraScope="#attributes.muraScope#">
 </cfloop>

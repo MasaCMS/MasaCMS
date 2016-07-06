@@ -60,6 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not started>
 			<table class="mura-table-grid">
 			<tr>
+			<th class="actions"></th>
 			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
@@ -67,29 +68,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
 			<!--- <th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th> --->
 			<th>Plugin ID</th>
-			<th class="actions">&nbsp;</th>
 			</tr>
 		</cfif>
 			<tr>
+			<td class="actions">
+				<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+				<div class="actions-menu hide">
+					<ul class="actions-list">
+					<cfif listFind(session.mura.memberships,'S2')>
+								<li class="edit"><a href="./?muraAction=cSettings.editPlugin&moduleID=#rscategorylist.moduleID#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
+<!--- 					<cfelse>
+						<li class="edit disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li> --->
+					</cfif>
+					<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+								<li class="permissions"><a href="./?muraAction=cPerm.module&contentid=#rscategorylist.moduleID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rscategorylist.moduleID#"><i class="mi-group"></i>#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
+<!--- 					<cfelse>
+						<li class="permissions disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li> --->
+					</cfif>
+					</ul>
+				</div>
+			</td>
 			<td class="var-width"><a class="alt" href="#application.configBean.getContext()#/plugins/#rscategorylist.directory#/">#esapiEncode('html',rscategorylist.name)#</a></td>
 			<td>#esapiEncode('html',rscategorylist.directory)#</td>
 			<td>#esapiEncode('html',rscategorylist.category)#</td>
 			<td>#esapiEncode('html',rscategorylist.version)#</td>
 			<td><a class="alt" href="#rscategorylist.providerurl#" target="_blank">#esapiEncode('html',rscategorylist.provider)#</a></td>
 			<td>#rscategorylist.pluginID#</td>
-			<td class="actions">
-			<ul>
-			<cfif listFind(session.mura.memberships,'S2')>
-						<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="./?muraAction=cSettings.editPlugin&moduleID=#rscategorylist.moduleID#"><i class="mi-pencil"></i></a></li>
-			<cfelse>
-				<li class="edit disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
-			</cfif>
-			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="./?muraAction=cPerm.module&contentid=#rscategorylist.moduleID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rscategorylist.moduleID#"><i class="mi-group"></i></a></li>
-			<cfelse>
-				<li class="permissions disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
-			</cfif>
-			</ul></td>
 			</tr>
 			<cfset started=true>
 		</cfloop>
