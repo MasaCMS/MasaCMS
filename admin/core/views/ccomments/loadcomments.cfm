@@ -248,7 +248,7 @@
 												<li class="disabled"><i class="mi-link"></i></li>
 											 --->	
 											</cfif>
-											<li><a href="mailto:#esapiEncode('html',local.item.getEmail())#"><i class="mi-envelope"></i>#esapiEncode('html_attr',local.item.getEmail())#</a></li>
+											<li><a href="mailto:#esapiEncode('html',local.item.getEmail())#"><i class="mi-envelope"></i>#application.rbFactory.getKeyValue(session.rb,'user.email')#</a></li>
 										</ul>
 									</div>	
 								</td>
