@@ -64,15 +64,31 @@
 			<table class="mura-table-grid">
 			<thead>
 				<tr>
+					<th class="actions"></th>
 					<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"approvalchains.name")#</th>
 					<th>#application.rbFactory.getKeyValue(session.rb,"approvalchains.lastupdate")#</th>
-					<th class="actions">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody class="nest">
 				<cfloop condition="chains.hasNext()">
 				<cfset chain=chains.next()>
 				<tr>
+					<td class="actions">
+						<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+						<div class="actions-menu hide">
+							<ul class="actions-list">
+								<li class="edit">
+									<a href="./?muraAction=cchain.edit&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#</a>
+								</li>
+								<li class="change-sets">
+									<a href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',chain.getSiteID())#"><i class="mi-reorder"></i>#application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#</a>
+								</li>
+								<li class="delete">
+									<a href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=chain.getChainID(),format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#</a>
+								</li>
+							</ul>
+						</div>	
+					</td>
 					<td class="var-width">
 						<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',chain.getName())#</a>
 					</td>
@@ -80,19 +96,6 @@
 						<cfif isDate(chain.getLastUpdate())>
 						#LSDateFormat(chain.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(chain.getLastUpdate(),"medium")#
 						</cfif>
-					</td>
-					<td class="actions">
-						<ul>
-							<li class="edit">
-								<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.edit&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
-							</li>
-							<li class="change-sets">
-								<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',chain.getSiteID())#"><i class="mi-reorder"></i></a>
-							</li>
-							<li class="delete">
-								<a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=chain.getChainID(),format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="mi-trash"></i></a>
-							</li>
-						</ul>
 					</td>
 				</tr>
 				</cfloop>

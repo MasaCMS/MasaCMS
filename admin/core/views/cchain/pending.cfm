@@ -27,13 +27,13 @@
     <cfif requests.hasNext()>
 		<table class="mura-table-grid">
 		    <tr>
+		      <th class="actions"></th>
 		      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 		      <cfif hasChangesets>
 		          	<th>#application.rbFactory.getKeyValue(session.rb,'approvalchains.changeset')#</th>
 		          </cfif>
 		      <th> Request By</th>
 		      <th> Request Date</th>
-		      <th class="actions">&nbsp;</th>
 		    </tr>
 		     <cfloop condition="requests.hasNext()">
 			    <cfsilent>
@@ -41,31 +41,33 @@
 			      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#esapiEncode('url',item.getType())#&parentid=#item.getParentID()#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getModuleID()#&return=chain">
 			    </cfsilent>
 		        <tr>
+							<td class="actions">
+								<a class="show-actions" href="javascript:;" ontouch="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+								<div class="actions-menu hide">
+			            <ul class="actions-list">
+			              <li class="edit"><a href="#editlink#"><i class="mi-pencil"></i>Edit</a></li>
+				              <cfswitch expression="#esapiEncode('url',item.getType())#">
+												<cfcase value="Page,Folder,Calendar,Gallery,Link,File">
+													<cfset previewURL='#item.getURL(complete=1,queryString="previewid=#item.getcontenthistid()#")#'>
+														<cfif rc.compactDisplay eq 'true'>
+															<li class="preview"><a href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent('#esapiEncode('javascript',previewURL)#')});return false;"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>
+														<cfelse>
+															<li class="preview"><a href="##" onclick="return preview('#previewURL#','');"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>
+													</cfif>
+												</cfcase>
+											</cfswitch>
+										 <li class="version-history"><a href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#esapiEncode('url',item.getType())#&parentid=#item.getParentID()#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getModuleID()#"><i class="mi-history"></i>Version History</a></li>
+			            </ul>
+			          </div>
+			          </td>
 		          <td class="title var-width">#$.dspZoom(item.getCrumbArray())#</td>
 		          <cfif hasChangesets>
 		          	<td>
-					          		<cfif isDate(item.getchangesetPublishDate())><a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(item.getchangesetPublishDate(),"short"))#"> <i class="mi-calendar"></i></a></cfif>
+		          		<cfif isDate(item.getchangesetPublishDate())><a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(item.getchangesetPublishDate(),"short"))#"> <i class="mi-calendar"></i></a></cfif>
 		          		<a href="./?muraAction=cChangesets.assignments&siteID=#item.getSiteID()#&changesetID=#item.getChangeSetID()#">#esapiEncode('html',item.getChangesetName())#</a></td>
 		          </cfif>
 		          <td>#esapiEncode('html',item.getLastUpdateBy())#</td>
 		          <td>#LSDateFormat(item.getCreated(),session.dateKeyFormat)# #LSTimeFormat(item.getCreated(),"medium")#</td>
-		           <td class="actions">
-		            <ul>
-
-					              <li class="edit"><a title="Edit" href="#editlink#"><i class="mi-pencil"></i></a></li>
-		              <cfswitch expression="#esapiEncode('url',item.getType())#">
-						<cfcase value="Page,Folder,Calendar,Gallery,Link,File">
-							<cfset previewURL='#item.getURL(complete=1,queryString="previewid=#item.getcontenthistid()#")#'>
-							<cfif rc.compactDisplay eq 'true'>
-											<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent('#esapiEncode('javascript',previewURL)#')});return false;"><i class="mi-globe"></i></a></li>
-							<cfelse>
-											<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('#previewURL#','');"><i class="mi-globe"></i></a></li>
-							</cfif>
-						</cfcase>
-						</cfswitch>
-									 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#esapiEncode('url',item.getType())#&parentid=#item.getParentID()#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getModuleID()#"><i class="mi-history"></i></a></li>
-		            </ul>
-		          </td>
 		        </tr>
 		      </cfloop>
 			  	</table>
