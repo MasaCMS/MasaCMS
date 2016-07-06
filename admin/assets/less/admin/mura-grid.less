@@ -219,59 +219,6 @@
 						}
 					}
 				}
-
-
-
-				&.icon-mura-folder:before {
-					content: "\f114";
-					top: 2px;
-					}
-
-				&.icon-mura-page:before {
-					.icon-font('FontAwesome');
-					content: "\f016";
-					font-size: 20px;
-					top: 2px;
-					margin-left: 1px;
-					width: 21px;
-					}
-
-				&.icon-mura-link:before {
-					content: "\f0c1";
-					}
-
-				&.icon-mura-calendar:before {
-					content: "\f073";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-component:before {
-					content: "\f039";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-form:before {
-					content: "\f205";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-variation:before {
-					content: "\f0c2";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-module:before {
-					content: "\f013";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-gallery:before { content: "\f00a"; }
-
 			}
 
 			.gallery {
@@ -375,9 +322,6 @@
 				&.closed:before {
 					content: "\f0da"; // Right Caret Icon
 					}
-
-				&.open + .icon-mura-folder:before { content: "\f115" !important; }
-
 			}
 
 			.order {
@@ -1341,7 +1285,7 @@
 
 	table .navZoom {
 		margin: 0 !important;
-		padding: .2em !important;
+		padding: 0 !important;
 		list-style: none;
 		background-image: none !important;
 		position: relative;
@@ -1709,6 +1653,7 @@
 		clear: none !important;
 		line-height: 16px;
 		
+/*
 		&.edit { margin-right: 1px; }
 		&.download i { font-size: 16px; top: 1px; }
 		&.preview {  }
@@ -1722,12 +1667,16 @@
 		&.import {  }
 		&.view-report {  }
 		&:last-child { padding-right: 0 !important; }
+*/
 	
 	a {
 		display: inherit;
 		line-height: inherit;
 		
-		&:hover { text-decoration: none; }
+		&:hover { 
+			text-decoration: none; 
+			color: @grayDarker;
+			}
 		
 		}
 	
@@ -1737,9 +1686,7 @@
 		width: auto !important;
 		color: @iconColor;
 		position: relative;
-		/* text-shadow: 0 1px 0 rgba(255,255,255,1.0); */
-		
-		&:hover { color: @grayDarker; }
+		top: 1px;
 		
 		}	
 	
@@ -1822,9 +1769,7 @@
 			display: block;
 			width: 24px;
 			font-size: 16px;
-			line-height: 27px;
 			color: @iconColor;
-			margin-top: 2px;
 			}
 
 	.add:hover i {
