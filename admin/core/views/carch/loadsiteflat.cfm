@@ -520,7 +520,7 @@ if(len($.siteConfig('customTagGroups'))){
 
 			<!--- categories --->
 			<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-				<div id="mura-list-tree" class="mura-7 mura-control-group category-select">
+				<div id="mura-list-tree" class="mura-6 mura-control-group category-select">
 					<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
 					<div id="category-select-control"></div>	
 					<div id="category-select-list">
@@ -737,21 +737,21 @@ if(len($.siteConfig('customTagGroups'))){
   	jQuery('##category-select-control').click(function(){
   		jQuery('##category-select-list').slideToggle('fast');
   	})
-  	jQuery('##mura-nodes li').each(function(){
-  			
-		})
 
 		jQuery('##navFilterControls').hide();
 		var toggleNavFilters = function(el){
 			jQuery('##navFilterControls').slideToggle('fast');
 			jQuery(el).find('i').toggleClass('mi-chevron-down').toggleClass('mi-chevron-up');			
 		}
+
 		jQuery('##navFiltersToggle').click(function(){
 			toggleNavFilters(jQuery(this));
 		})
+
 		<cfif session.flatViewArgs["#rc.siteID#"].filtered>
 			toggleNavFilters(jQuery('##navFiltersToggle'));
 		</cfif>
+
   });
 
 	function clearFlatviewFilter(){

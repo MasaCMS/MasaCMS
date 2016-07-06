@@ -63,7 +63,87 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="block block-constrain">
 				<div class="block block-bordered">
 					<div class="block-content">
-						<div id="main">
+
+
+
+<div id="navFilters">
+	<div id="navFiltersToggle">#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#<i class="mi-chevron-down"></i></div>
+	<div id="navFilterControls">
+		<form novalidate="novalidate" name="searchFrm" class="form-inline" onsubmit="return validate(this);">
+
+			<div class="mura-layout-row">
+
+				<!--- keywords --->
+				<div class="mura-6 mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,"params.keywords")#</label>
+			  	<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text"  maxlength="50" />
+		  	</div>
+				<!--- /keywords --->
+
+				<!--- from / to --->
+				
+				<div class="mura-control-group mura-3">
+					<label>#application.rbFactory.getKeyValue(session.rb,"params.from")#</label>
+					<input type="text" class="datepicker text" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+				</div>
+				<div class="mura-control-group mura-3">
+				     <label>#application.rbFactory.getKeyValue(session.rb,"params.to")#</label>
+				     <input type="text" class="datepicker text" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+				</div>
+
+				<!--- /type --->
+
+			</div>
+			<div class="mura-layout-row">
+
+				<!--- categories --->
+				<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
+					<div id="mura-list-tree" class="mura-6 mura-control-group category-select">
+						<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
+						<div id="category-select-control"></div>	
+						<div id="category-select-list">
+							<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" categoryid="#rc.categoryid#">
+						</div>
+					</div>
+				</cfif>
+				<!--- /categories --->
+
+				<!--- tags --->
+					<div id="tags" class="mura-3 mura-control-group mura-filter-tags tagSelector">
+						<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
+						<input type="text" class="text" name="tags">
+						<cfloop list="#$.event('tags')#" index="i">
+							<span class="tag">
+							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+							<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+							</span>
+						</cfloop>
+					</div>
+				<!--- /tags --->
+
+
+				<!--- buttons --->
+				<div id="navFilterButtons" class="mura-actions mura-5">
+					<div class="form-actions">
+						<cfif len($.event('categoryID') & $.event('tags') & $.event('keywords') & $.event('startdate') & $.event('stopdate'))>
+					  		<button type="button" class="btn" name="removeFilter" onclick="location.href='./?siteID=#esapiEncode('url',$.event('siteid'))#&muraAction=cChangesets.list'"><i class="mi-times-circle"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")# </button>
+					  	</cfif>	
+							<button type="submit" class="btn mura-primary" onclick="submitForm(document.forms.searchFrm);"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")# </button>
+							<!--- hidden inputs for form action --->
+							<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
+							<input type="hidden" name="muraAction" value="cChangesets.list">
+
+					</div>
+				</div>
+				<!--- /buttons --->
+
+			</div> <!--- /.mura-layout-row --->
+		</form>
+	</div>	<!--- /navFilterControls --->
+</div>	<!--- /navFilters --->
+
+
+
 					<cfif rc.changesets.hasNext()>
 					<table class="mura-table-grid">
 					<tr>
@@ -131,10 +211,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</ul> <!-- /.pagination -->
 						</div> <!-- /.mura-results-wrapper -->
 					</cfif>
-					</div> <!-- /##main -->
 
-					<div class="sidebar">
-						<div class="well">
+
+					 <script>
+
+			  	 	$(function(){
+						$.get('?muraAction=cchangesets.loadtagarray&siteid=' + siteid).done(
+							function(data){
+								var tagArray=eval('(' + data + ')');
+								$('##tags').tagSelector(tagArray, 'tags');
+								}
+							);
+						});
+		  	 		// changesets advanced filters
+		  	 	  jQuery(document).ready(function(){
+
+					  	var serializeCatCheckboxes = function(){
+								var catContainer = jQuery('##category-select-control');
+					  		jQuery(catContainer).find('.tag').remove();
+								jQuery('##category-select-list input[type=checkbox]:checked').each(function(){
+						  		var thisText = $(this).parent('li').clone().children().remove().end().text();
+						  		var selCat = '<span class="tag">' + thisText + '</span>';
+						  		jQuery(selCat).appendTo(catContainer);
+
+					  		});
+					  	}
+					  	jQuery('##category-select-list input[type=checkbox]').click(function(){
+					  			serializeCatCheckboxes();
+					  	});
+							serializeCatCheckboxes();
+
+					  	jQuery('##category-select-list').hide();
+					  	jQuery('##category-select-control').click(function(){
+					  		jQuery('##category-select-list').slideToggle('fast');
+					  	})
+
+							jQuery('##navFilterControls').hide();
+							var toggleNavFilters = function(el){
+								jQuery('##navFilterControls').slideToggle('fast');
+								jQuery(el).find('i').toggleClass('mi-chevron-down').toggleClass('mi-chevron-up');			
+							}
+
+							jQuery('##navFiltersToggle').click(function(){
+								toggleNavFilters(jQuery(this));
+							})
+
+						<cfif len($.event('categoryID') & $.event('tags') & $.event('keywords') & $.event('startdate') & $.event('stopdate'))>
+								toggleNavFilters(jQuery('##navFiltersToggle'));
+							</cfif>
+
+					  });
+					</script>
+
+
+<!--- 
+ 						<div class="well">
 
 					<form novalidate="novalidate" name="searchFrm" class="form-inline" onsubmit="return validate(this);">
 
@@ -179,21 +310,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
 						<input type="hidden" name="muraAction" value="cChangesets.list">
 
-						 <script>
-
-				  	 	$(function(){
-							$.get('?muraAction=cchangesets.loadtagarray&siteid=' + siteid).done(
-								function(data){
-									var tagArray=eval('(' + data + ')');
-									$('##tags').tagSelector(tagArray, 'tags');
-								}
-							);
-						});
-
-					</script>
 					</form>
 				</div> <!-- /.well -->
-				</div> <!-- /.sidebar -->
+ --->
+
 
 			<div class="clearfix"></div>
 		</div> <!-- /.block-content -->
