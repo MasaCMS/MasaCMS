@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<table class="mura-table-grid">
 	<thead>
 	<tr>
-	<th class="add">&nbsp;</td>
+	<th class="add actions"></th>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.assignable")#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.interestgroup")#</th>
