@@ -84,7 +84,7 @@ var categoryManager = {
 		var xPos = this.findPosX(obj);
 		var yPos = this.findPosY(obj);
 
-		xPos = xPos + 20;
+		xPos = xPos - 10;
 
 		document.getElementById(id).style.top = yPos + "px";
 		document.getElementById(id).style.left = xPos + "px";

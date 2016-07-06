@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop query="rslist">
 <tr>
 <td class="add">
- <a href="javascript:;" onmouseover="categoryManager.showMenu('newContentMenu',this,'#rslist.categoryid#','#esapiEncode('javascript',attributes.siteid)#');"><i class="mi-plus-circle"></i></a></td>
+ <a href="javascript:;" ontouchstart="this.onclick();" onclick="categoryManager.showMenu('newContentMenu',this,'#rslist.categoryid#','#esapiEncode('javascript',attributes.siteid)#');"><i class="mi-plus-circle"></i></a></td>
 <td class="var-width"><ul <cfif rslist.hasKids>class="nest#variables.nestlevel#on"<cfelse>class="nest#variables.nestlevel#off"</cfif>><li class="Category#iif(rslist.restrictGroups neq '',de('Locked'),de(''))#"><a title="Edit" href="./?muraAction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#esapiEncode('url',attributes.siteid)#">#esapiEncode('html',rslist.name)#</a></li></ul></td>
 <td><cfif rslist.isOpen><i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isOpen)#')#"></i>
 <cfelse><i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isOpen)#')#"></i></cfif>
