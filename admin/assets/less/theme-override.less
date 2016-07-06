@@ -386,10 +386,14 @@ a.list-group-item:hover,a.list-group-item:focus {
 .mura-table-grid>tfoot>tr>th,
 .mura-table-grid>thead>tr>td,
 .mura-table-grid>thead>tr>th {
-  border: 1px solid #dbdbdb !important;
-  border-left: none !important;
-  border-right: none !important;
+  border: none;
 }
+.mura-table-grid>tbody>tr:first-child>th,
+.mura-table-grid>thead>tr>th {
+  background-color: #f4f3f3;
+  border-bottom: 1px solid #dbdbdb !important;
+}
+
 .panel-primary {
   border-color: hsla(210, 50%, 60%, 0.80);
 }
