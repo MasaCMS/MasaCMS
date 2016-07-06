@@ -437,6 +437,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="exists" output="false">
+	<cfreturn not variables.instance.isNew>
+</cffunction>
+
 <cffunction name="getExtendSets" access="public" returntype="array">
 <cfargument name="Inherit" required="true" default="false"/>
 <cfargument name="doFilter" required="true" default="false"/>
@@ -460,6 +464,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset extendSetBean=getExtendSetBean() />
 			<cfset extendSetBean.set(tempArray[s]) />
+			<cfset extendSetBean.setIsNew(0) />
 			<cfset arrayAppend(extendArray,extendSetBean)/>
 		</cfloop>
 

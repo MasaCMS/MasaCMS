@@ -336,6 +336,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="exists" output="false">
+	<cfreturn not variables.instance.isNew>
+</cffunction>
+
 <cffunction name="load"  access="public" output="false">
 <cfset var rs=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
