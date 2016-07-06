@@ -52,15 +52,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif nodeLockedByYou or nodeLockedBySomeElse>
 
 		<cfif not nodeLockedBySomeElse>
-			<p id="msg-node-locked" class="alert alert-error"<cfif not nodeLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock" href="##"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+			<p id="msg-node-locked" class="alert alert-error"<cfif not nodeLockedByYou> style="display:none;"</cfif>>
+				<span>
+#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock" href="##"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+				</span>
 			</p>
 		<cfelse>
 			<!--- Locked by someone else --->
 			<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
-			<p id="msg-node-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#.<br>
-			<a href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="mi-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a>
-				<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
-				</cfif>
+			<p id="msg-node-locked-else" class="alert alert-error">
+				<span>
+					#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#.<br>
+				<a href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="mi-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a>
+					<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+					</cfif>
+				</span>
 			</p>
 
 		</cfif>
@@ -109,6 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif showApprovalStatus and listFindNoCase('Pending,Rejected',rc.contentBean.getApprovalStatus())  >
 	<div class="alert alert-error">
+		<span>
 		<cfif rc.contentBean.getApprovalStatus() eq 'Rejected'>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.rejectedmessage")#:
 		<cfelseif rc.contentBean.getApprovalStatus() eq 'Cancelled'>
@@ -117,30 +124,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.pendingmessage")#:
 		</cfif>
 		<strong><a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewdetails")#</a></strong>
+		</span>
 	</div>
 </cfif>
 
 <cfset conflicts=rc.contentBean.getDisplayConflicts()>
 
 <cfif rc.contentBean.getDisplay() eq 2>
-	<div class="alert alert-info" ><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#</div>
+	<div class="alert alert-info" >
+		<span>
+			<strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#
+		</span>
+	</div>
 </cfif>
 
 <cfif conflicts.hasNext()>
 	<cfset calendar=rc.contentBean.getParent()>
 	<div class="alert alert-error">
+		<span>
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.displayinterval.schedulingconflicts")#:</h3>
-		<cfloop condition="conflicts.hasNext()">
-			<cfset conflict=conflicts.next()>
-			<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
-				<cfset conflictDetails=conflict.getConfictDetailIterator()>
-				<cfloop condition="conflictDetails.hasNext()">
-					<cfset conflictdetail=conflictDetails.next()>
-					<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
-					<cfif conflictDetails.hasNext()>, </cfif>
-				</cfloop>
-			</p>
-		</cfloop>
+			<cfloop condition="conflicts.hasNext()">
+				<cfset conflict=conflicts.next()>
+				<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
+					<cfset conflictDetails=conflict.getConfictDetailIterator()>
+					<cfloop condition="conflictDetails.hasNext()">
+						<cfset conflictdetail=conflictDetails.next()>
+						<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
+						<cfif conflictDetails.hasNext()>, </cfif>
+					</cfloop>
+				</p>
+			</cfloop>
+		</span>	
 	</div>
 </cfif>
 

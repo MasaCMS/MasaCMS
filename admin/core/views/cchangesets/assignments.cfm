@@ -56,19 +56,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <cfset csrftokens=rc.$.renderCSRFTokens(context=rc.changesetid,format='url')>
       <cfif rc.changeset.getPublished()>
-      <div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</div>
+      <div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</span></div>
       <cfelse>
   <cfset hasPendingApprovals=rc.changeset.hasPendingApprovals()>
   <cfif hasPendingApprovals>
-    <div class="alert alert-error">
-        #application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')#
-    </div>
+    <div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')#</span></div>
   </cfif>
       </cfif>
 
       <cfif not rc.changeset.getPublished() and isDate(rc.changeset.getCloseDate())>
-   <div class="alert alert-info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.hasclosedate"),LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat))#
-    </div>
+        <div class="alert alert-info"><span>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.hasclosedate"),LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat))#</span></div>
       </cfif>
 
 

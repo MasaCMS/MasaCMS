@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h1>Copy Site</h1>
 </div> <!-- /.mura-header -->
 
-<div class="alert alert-warning">IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</div>
+<div class="alert alert-warning"><span>IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</span></div>
 
 <div class="block block-constrain">
 	<div class="block block-bordered">

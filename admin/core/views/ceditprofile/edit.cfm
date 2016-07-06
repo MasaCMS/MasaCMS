@@ -72,7 +72,7 @@ select * from rsSubTypes where subType <> 'Default'
 </div> <!-- /.mura-header -->
 
 <cfif not structIsEmpty(rc.userBean.getErrors())>
-	<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
+	<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
 </cfif>
 
 <div class="block block-constrain">

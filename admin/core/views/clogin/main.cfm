@@ -80,13 +80,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    <div class="block-content">
 				<cfif not (rc.$.event('status') eq 'challenge' and isdefined('session.mfa'))>	
 					<cfif rc.status eq 'denied'>
-						<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</div>
+						<div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'login.denied')#</span></div>
 					<cfelseif rc.status eq 'failed'>
 						<cfset isBlocked=structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now() />
 						<cfif isBLocked>
-							<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</div>
+							<div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</span></div>
 						<cfelse>
-							<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</div>
+							<div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'login.failed')#</span></div>
 						</cfif>
 					</cfif>
 				</cfif>
@@ -101,11 +101,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#output#
 						<cfelse>
 							<cfif rc.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(rc.$.event('authcode'))>
-								<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.newdevice')#</div>
+								<div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'login.newdevice')#</span></div>
 							</cfif>
 
 							<cfif len(rc.$.event('authcode'))>
-								<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.authcodeerror')#</div>
+								<div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'login.authcodeerror')#</span></div>
 							</cfif>
 
 							<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
