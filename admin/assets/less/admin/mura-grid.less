@@ -2026,8 +2026,19 @@ table + .divide {
 	line-height: 1.25em;
 }
 
-#ccategory .mura-table-grid td.add { padding-top: 0; }
-
+#ccategory .mura-table-grid td.add { 
+	padding-top: 0; 
+	border-right: none !important;
+}
+#ccategory .mura-table-grid td.add + td{ 
+	border-left: none !important;
+}
+#ccategory .mura-table-grid th.add { 
+	border-right: none !important;
+}
+#ccategory .mura-table-grid th.add + th{ 
+	border-left: none !important;
+}
 .mura-table-grid .alt td {
 	background-color: #fcfeff;
 }

@@ -1667,11 +1667,9 @@ $(function(){
 
 });
 
-
 // table actions menu
 function showTableControls(el){
 	var optionsList = $(el).next('.actions-menu');
 	$('td.actions div.actions-menu').not('.hide').addClass('hide');
 	$(optionsList).removeClass('hide');
-	console.log($(optionsList));
 };

@@ -3133,20 +3133,10 @@ quickEditTmpl = '<div class="mura-quickEdit" id="mura-quickEditor">';
 quickEditTmpl += '<img class="loader" src="assets/images/ajax-loader-alt.gif" />';
 quickEditTmpl += '</div>';
 
-$(document).ready(function() {
-		siteManager.initDisplayObjectConfigurators();
-		// click to close new content menu, category selector
-		document.onclick = function(e) {
-	    if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
-//	     if(e.target != $('#newContentMenu') && e.target.className.indexOf('add') < 0 && (e.target.parentNode.className == null || e.target.parentNode.className == 'undefined' || e.target.parentNode.className.indexOf('add') < 0)) {
-	       $('#newContentMenu').addClass('hide');
-	     }
-	    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
-	    	$('#category-select-list').slideUp('fast');
-	    }
-		};
-	});
-
 function initConfigurator(data, config) {
 	return siteManager.initConfigurator(data, config);
 }
+
+$(document).ready(function() {
+		siteManager.initDisplayObjectConfigurators();
+	});
