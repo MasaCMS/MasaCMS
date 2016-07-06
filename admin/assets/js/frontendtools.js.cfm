@@ -1847,12 +1847,14 @@
 			var check=displayObject.closest('.mura-region');
 
 			if(!check.length){
+				displayObject.removeClass('mura-active');
 				return false
 			}
 
 			check=displayObject.parent().closest('.mura-object');
 
 			if(check.length && check.data('object')!='container'){
+				displayObject.removeClass('mura-active');
 				return false;
 			}
 
