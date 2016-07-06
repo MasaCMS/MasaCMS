@@ -49,11 +49,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>{success:true}</cfoutput>
 <cfabort>
 <cfelseif rc.ajaxrequest>
+<cfif StructIsEmpty(rc.contentBean.getErrors())>
 <cfoutput>{success:true,location:<cfif rc.contentBean.getActive()>
 	'#esapiEncode('javascript',rc.contentBean.getURL())#'
 <cfelse>
 	'#esapiEncode('javascript',rc.contentBean.getURL(queryString="previewid=" & rc.contentBean.getContentHistID()))#'
 </cfif>}</cfoutput>
+<cfelse>
+<cfoutput>{success:false,errors:#serializeJSON(rc.contentBean.getErrors())#}</cfoutput>
+</cfif>
 <cfelseif rc.action eq 'multiFileUpload'>
 <cfoutput>success</cfoutput>
 <cfabort>

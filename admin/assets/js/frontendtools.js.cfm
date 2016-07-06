@@ -1449,6 +1449,9 @@
 					        url: adminLoc,
 					        data: muraInlineEditor.data,
 					        success: function(data){
+								var resp = eval('(' + data + ')');
+
+								if(resp.success){
 					        	<cfif node.getType() eq 'Variation'>
 					        		if(muraInlineEditor.requestedURL){
 										location.href=muraInlineEditor.requestedURL
@@ -1465,6 +1468,14 @@
 									}
 
 					        	</cfif>
+								} else {
+									var msg='';
+									for(var e in resp.errors){
+										msg=msg + resp.errors[e] + '\n';
+									}
+
+									alert(msg);
+								}
 
 					        },
 					         error: function(data){
