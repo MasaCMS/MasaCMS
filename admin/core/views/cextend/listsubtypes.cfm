@@ -93,6 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 		<thead>
 			<tr>
+				<th class="actions"></th>
 				<th>
 					#rc.$.rbKey('sitemanager.extension.icon')#
 				</th>
@@ -105,9 +106,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<th>
 					#rc.$.rbKey('sitemanager.extension.active')#
 				</th>
-				<th class="actions">
-					&nbsp;
-				</th>
 			</tr>
 		</thead>
 	</cfoutput>
@@ -117,6 +115,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfoutput query="rslist">
 				<tr>
+					<td class="actions">
+						<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+						<div class="actions-menu hide">
+							<ul class="action-list">
+								<li class="edit">
+									<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i>#rc.$.rbKey('sitemanager.extension.edit')#</a>
+								</li>
+								<li class="view-sets">
+									<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-list-alt"></i>#rc.$.rbKey('sitemanager.extension.viewsets')#</a>
+								</li>
+							</ul>
+						</div>
+					</td>
 					<td class="selected-icon">
 						<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 							<i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#" style="font-size:14px;"></i>
@@ -132,20 +143,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</td>
 					<td>
 						#YesNoFormat(rslist.isactive)#
-					</td>
-					<td class="actions">
-						<ul>
-							<li class="edit">
-								<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-												<i class="mi-pencil"></i>
-								</a>
-							</li>
-							<li class="view-sets">
-								<a title="#rc.$.rbKey('sitemanager.extension.viewsets')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-												<i class="mi-list-alt"></i>
-								</a>
-							</li>
-						</ul>
 					</td>
 				</tr>
 			</cfoutput>

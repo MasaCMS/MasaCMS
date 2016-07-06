@@ -171,12 +171,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 </form>
-
-
 </cfoutput>
+
 <div class="block-content">
-	  <table id="metadata" class="mura-table-grid">
-        <tr> 
+  <table id="metadata" class="mura-table-grid">
+    <tr> 
+      <th class="actions"></th>
 		  <cfset subjectDirection = "asc">
 		  <cfset createdDateDirection = "desc">
 		  <cfset deliveryDateDirection = "desc">
@@ -203,64 +203,71 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfcase>
 		  </cfswitch>
-		  <cfoutput>
-		  <th class="var-width"><a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&orderBy=subject&direction=#subjectDirection#">#application.rbFactory.getKeyValue(session.rb,'email.subject')#</a></th>
-		  <th>#application.rbFactory.getKeyValue(session.rb,'email.clicks')#</th>
-		  <th>#application.rbFactory.getKeyValue(session.rb,'email.opens')#</th>
-		  <th>#application.rbFactory.getKeyValue(session.rb,'email.bounces')#</th>
-		  <th>#application.rbFactory.getKeyValue(session.rb,'email.all')#</th>
-		  <th><a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&orderBy=createdDate&direction=#createdDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#</a></th>
-          <th><a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&orderBy=deliveryDate&direction=#deliveryDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</a></th>
-          <th><a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&orderBy=status&direction=#statusDirection#">#application.rbFactory.getKeyValue(session.rb,'email.status')#</a></th>
-          <th>&nbsp;</th>
-		  </cfoutput>
-        </tr>
-		<cfset recordsPerPage = 20>
-        <cfif rc.rslist.recordcount>
-          <cfif isNumeric(rc.page)>
-		  	<cfset startRow = ((rc.page-1) * recordsPerPage) + 1>
-		  <cfelse>
-		  	<cfset startRow = 1>
-		  </cfif>
-		  <cfset endRow = startRow + (recordsPerPage - 1)>
-		  <cfoutput>
-			  <cfloop query="rc.rslist" startRow="#startRow#" endRow="#endRow#"> 
-				  <cfset clicks=application.emailManager.getStat(rc.rslist.emailid,'returnClick')/>
-				  <cfset opens=application.emailManager.getStat(rc.rslist.emailid,'emailOpen')/>
-				  <cfset sent=application.emailManager.getStat(rc.rslist.emailid,'sent')/>
-				  <cfset bounces=application.emailManager.getStat(rc.rslist.emailid,'bounce')/>
-					<tr> 
-					  <td class="var-width"><a title="Edit" href="./?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#">#rc.rslist.subject#</a></td>
-					  <td>#clicks#</td>
-					  <td>#opens#</td>
-					  <td>#bounces#</td>
-					  <td>#sent#</td>
-					  <td>#LSDateFormat(rc.rslist.createddate,session.dateKeyFormat)#</td>
-					  <td><cfif LSisDate(rc.rslist.deliverydate)>#LSDateFormat(rc.rslist.deliverydate,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.deliverydate,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
-					  <td><cfif LSisDate(rc.rslist.deliverydate)><cfif rc.rslist.status eq 99>In Progress<cfelseif rc.rslist.status eq 1>#application.rbFactory.getKeyValue(session.rb,'email.sent')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.queued')#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
-					  <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'email.edit')#" href="./?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a></li><li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'email.download')#" href="./?muraAction=cEmail.download&emailID=#rc.rsList.emailID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download-alt"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" href="./?muraAction=cEmail.update&action=delete&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#',this.href)"><i class="mi-trash"></i></a></li></ul></td>
-					</tr>
-			  </cfloop>
-		  
-		  </cfoutput>
-        <cfelse>
-          <tr> 
-            <td colspan="9" nowrap class="noResults"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.noemails')#</cfoutput></td>
-          </tr>
-        </cfif>
-      </table>
-    		</div> <!-- /.block-content -->
-      </div> <!-- /.block-constrain -->
-
 	  <cfoutput>
-	  <cfif rc.rslist.recordcount gt recordsPerPage>
-		#application.rbFactory.getKeyValue(session.rb,'email.moreresults')#: 
-		<cfloop from="1" to="#Ceiling(rc.rslist.recordcount/recordsPerPage)#" index="i">
-			<cfif i eq rc.page>
-				#i#
-			<cfelse>
-				<a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&page=#i#&direction=#rc.direction#&orderBy=#rc.orderBy#">#i#</a>
-			</cfif>
-		</cfloop> 
-	  </cfif>
+	  <th class="var-width"><a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&orderBy=subject&direction=#subjectDirection#">#application.rbFactory.getKeyValue(session.rb,'email.subject')#</a></th>
+	  <th>#application.rbFactory.getKeyValue(session.rb,'email.clicks')#</th>
+	  <th>#application.rbFactory.getKeyValue(session.rb,'email.opens')#</th>
+	  <th>#application.rbFactory.getKeyValue(session.rb,'email.bounces')#</th>
+	  <th>#application.rbFactory.getKeyValue(session.rb,'email.all')#</th>
+	  <th><a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&orderBy=createdDate&direction=#createdDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#</a></th>
+        <th><a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&orderBy=deliveryDate&direction=#deliveryDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</a></th>
+        <th><a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&orderBy=status&direction=#statusDirection#">#application.rbFactory.getKeyValue(session.rb,'email.status')#</a></th>
 	  </cfoutput>
+      </tr>
+	<cfset recordsPerPage = 20>
+      <cfif rc.rslist.recordcount>
+        <cfif isNumeric(rc.page)>
+	  	<cfset startRow = ((rc.page-1) * recordsPerPage) + 1>
+	  <cfelse>
+	  	<cfset startRow = 1>
+	  </cfif>
+	  <cfset endRow = startRow + (recordsPerPage - 1)>
+	  <cfoutput>
+		  <cfloop query="rc.rslist" startRow="#startRow#" endRow="#endRow#"> 
+			  <cfset clicks=application.emailManager.getStat(rc.rslist.emailid,'returnClick')/>
+			  <cfset opens=application.emailManager.getStat(rc.rslist.emailid,'emailOpen')/>
+			  <cfset sent=application.emailManager.getStat(rc.rslist.emailid,'sent')/>
+			  <cfset bounces=application.emailManager.getStat(rc.rslist.emailid,'bounce')/>
+				<tr> 
+				  <td class="actions">
+						<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+						<div class="actions-menu hide">
+					  	<ul class="actions-list">
+					  		<li class="edit"><a href="./?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a></li><li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'email.download')#" href="./?muraAction=cEmail.download&emailID=#rc.rsList.emailID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download-alt"></i>#application.rbFactory.getKeyValue(session.rb,'email.edit')#</a></li>
+					  		<li class="delete"><a href="./?muraAction=cEmail.update&action=delete&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'email.delete')#</a></li>
+							</ul>
+						</div>
+					</td>
+				  <td class="var-width"><a title="Edit" href="./?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#">#rc.rslist.subject#</a></td>
+				  <td>#clicks#</td>
+				  <td>#opens#</td>
+				  <td>#bounces#</td>
+				  <td>#sent#</td>
+				  <td>#LSDateFormat(rc.rslist.createddate,session.dateKeyFormat)#</td>
+				  <td><cfif LSisDate(rc.rslist.deliverydate)>#LSDateFormat(rc.rslist.deliverydate,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.deliverydate,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
+				  <td><cfif LSisDate(rc.rslist.deliverydate)><cfif rc.rslist.status eq 99>In Progress<cfelseif rc.rslist.status eq 1>#application.rbFactory.getKeyValue(session.rb,'email.sent')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.queued')#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
+				</tr>
+		  </cfloop>
+	  
+	  </cfoutput>
+      <cfelse>
+        <tr> 
+          <td colspan="9" nowrap class="noResults"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.noemails')#</cfoutput></td>
+        </tr>
+      </cfif>
+    </table>
+	</div> <!-- /.block-content -->
+</div> <!-- /.block-constrain -->
+
+<cfoutput>
+<cfif rc.rslist.recordcount gt recordsPerPage>
+#application.rbFactory.getKeyValue(session.rb,'email.moreresults')#: 
+<cfloop from="1" to="#Ceiling(rc.rslist.recordcount/recordsPerPage)#" index="i">
+	<cfif i eq rc.page>
+		#i#
+	<cfelse>
+		<a href="./?muraAction=cEmail.list&siteid=#esapiEncode('url',rc.siteid)#&page=#i#&direction=#rc.direction#&orderBy=#rc.orderBy#">#i#</a>
+	</cfif>
+</cfloop> 
+</cfif>
+</cfoutput>

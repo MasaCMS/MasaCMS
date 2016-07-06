@@ -123,7 +123,7 @@
 			}
 
 			dl.mura-grid-hdr {
-				#gradient .vertical(#fffefe,#f5f5f5);
+				background-color: #f4f3f3;
 			}
 
 			dt, dd  {
@@ -219,59 +219,6 @@
 						}
 					}
 				}
-
-
-
-				&.icon-mura-folder:before {
-					content: "\f114";
-					top: 2px;
-					}
-
-				&.icon-mura-page:before {
-					.icon-font('FontAwesome');
-					content: "\f016";
-					font-size: 20px;
-					top: 2px;
-					margin-left: 1px;
-					width: 21px;
-					}
-
-				&.icon-mura-link:before {
-					content: "\f0c1";
-					}
-
-				&.icon-mura-calendar:before {
-					content: "\f073";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-component:before {
-					content: "\f039";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-form:before {
-					content: "\f205";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-variation:before {
-					content: "\f0c2";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-module:before {
-					content: "\f013";
-					font-size: 16px;
-					top: 2px;
-					}
-
-				&.icon-mura-gallery:before { content: "\f00a"; }
-
 			}
 
 			.gallery {
@@ -375,9 +322,6 @@
 				&.closed:before {
 					content: "\f0da"; // Right Caret Icon
 					}
-
-				&.open + .icon-mura-folder:before { content: "\f115" !important; }
-
 			}
 
 			.order {
@@ -442,14 +386,15 @@
 				border: none;
 			}
 
-			.mura-grid-hdr dt, .mura-grid-hdr dd {
+			.mura-grid-hdr dt, 
+			.mura-grid-hdr dd {
 				border: 1px solid #DBDBDB;
 				border-right: none;
-				color: #000;
+				color: #7a7a7a;
 				font-style: normal;
 				font-weight: bold;
 				height: 26px;
-				line-height: 26px;
+				line-height: 24px;
 				padding: 0;
 				padding-left: 5px;
 				padding-right: 5px;
@@ -529,7 +474,7 @@
 				text-align: left;
 				}	
 
-			li .add { width: 24px; margin-right: 16px; margin-left: 12px;}
+			li .add { width: 24px; margin-right: 16px; margin-left: 12px; margin-top: 5px;}
 			li .title { max-width: 85%; }
 
 			li li .add { margin-right: 32px; }
@@ -1340,13 +1285,30 @@
 
 	table .navZoom {
 		margin: 0 !important;
-		padding: .2em !important;
+		padding: 0 !important;
 		list-style: none;
 		background-image: none !important;
 		position: relative;
 		display: inline-block;
 		clear: none;
 		border: 0;
+
+			> li{
+				font-size: 13px;
+
+				&:before{
+					font-size: 13px !important;
+					min-height: 16px;
+					top: 0px;
+					width: 16px;
+				}
+
+				i{
+					font-size: 13px;
+					min-height: 16px;
+					width: 16px;
+				}
+			}
 	}
 
 	/* @end */
@@ -1675,68 +1637,205 @@
 
 .mura-grid, .mura-table-grid {
 
-.bullet { color: @iconColor;
-	font-size: 20px;
-	 }
+.actions {
 
-.add i {
-		display: block;
-		width: 24px;
-		font-size: 16px;
-		line-height: 27px;
-		color: @iconColor;
-		margin-top: 2px;
+	ul {
+		margin: 0 auto;
+		.inline-block;
 		}
-
-.add:hover i {
-		color: @grayDarker;
-		}
-
-td {
-	padding: 4px 5px 4px 5px;
-	border-left: 1px solid #DBDBDB;
-	//border-right: 1px solid #DBDBDB;
-	white-space: nowrap;
-	//text-align: center;
-	width: 1%;
-
-	&.add {
-
-		padding: 5px 4px 0;
-
-		i {  /* Tab Flat */
-			line-height: 1;
-			}
-	 }
-}
-
-a > i {
-
-	/*
-text-shadow: 0 0 1px @blue;
-	text-stroke: 1px solid @white;
+	
+	li {
+		list-style: none; 
+		.inline-block;
+		float: none;
+		padding: 0;
+		margin-right: 2px;
+		clear: none !important;
+		line-height: 16px;
+		
+/*
+		&.edit { margin-right: 1px; }
+		&.download i { font-size: 16px; top: 1px; }
+		&.preview {  }
+		&.delete { margin-left: 1px; }
+		&.permissions + .delete { margin-left: 0; }
+		&.permissions { margin: 0 3px; }
+		&.version-history + .permissions { margin-left: 2px; }
+		&.download { margin: 0 2px 0 0; }
+		&.manage-data {  }
+		&.rss { margin: 0 4px 0 3px; }
+		&.import {  }
+		&.view-report {  }
+		&:last-child { padding-right: 0 !important; }
 */
+	
+	a {
+		display: inherit;
+		line-height: inherit;
+		
+		&:hover { 
+			text-decoration: none; 
+			color: @grayDarker;
+			}
+		
+		}
+	
+	i {
+		font-size: 16px;
+		height: 16px;
+		width: auto !important;
+		color: @iconColor;
+		position: relative;
+		top: 1px;
+		
+		}	
+	
+		&.disabled i {
+			color: @gray;
+			}
+		
+		.template i {
+			font-size: 24px;
+			}
+		}
+	
+		// new style actions menu
+		position: relative;
+		border-right: none !important;
 
+		&+ th, 
+		&+ td{
+			border-left: none !important;
+		}
+
+		a.show-actions i{
+			font-size: 16px;
+		}
+		div.actions-menu{
+	    background-color: #FFF;
+	    border-radius: 1px;
+	    box-shadow: 1px 3px 18px rgba(0,0,0,.35);
+	    font-size: 13px;
+	    padding: 0;
+	    position: absolute;
+				left: -7px;
+				top: -1px;
+	    width: 160px;
+	    z-index: 20;
+
+	    	ul.actions-list{
+	    		float: left;
+	    		width: 100%;
+
+		    	li{
+		    		clear: both !important;
+		    		float: left !important;
+		    		list-style: none;
+				    margin: 0;
+				    padding: 0;
+				    position: relative;
+				    text-align:left;
+				    width: 100%;
+
+				    &+li.delete{
+		    	    border-top: 1px solid #E8E8E8;
+				    }
+
+			    	a{
+					    display: block;
+					    text-decoration: none;
+					    margin: 0;
+					    padding: 3px 12px;
+					    line-height: 24px;
+					    color: #999;
+
+					    i{
+					    	margin-right: 8px;
+					    }
+			    	}
+	    		}
+	    	} 
+	    	// /.actions-menu
+	} 
+	// /.actions
+
+
+			
+		}
+
+
+	.bullet { color: @iconColor;
+		font-size: 20px;
+		 }
+
+	.add i {
+			display: block;
+			width: 24px;
+			font-size: 16px;
+			color: @iconColor;
+			}
+
+	.add:hover i {
+			color: @grayDarker;
+			}
+
+	td {
+		padding: 4px 8px 3px !important;
+		border-left: 1px solid #DBDBDB;
+		//border-right: 1px solid #DBDBDB;
+		white-space: nowrap;
+		//text-align: center;
+		width: 1%;
+
+		&.add {
+
+			padding: 5px 4px 0;
+
+			i {  /* Tab Flat */
+				line-height: 1;
+				}
+		 }
+	} 
+	// /td
+
+	th{
+		color: #7a7a7a;
+		font-weight: bold;
+		line-height: 24px !important;
+		padding-bottom: 1px !important;
+		padding-top: 0 !important;
 	}
 
-i+span, .bullet+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
 
-i {
-	font-size: 14px;
-	.square(18px);
-	color: lighten(@iconColor,0%);
+	a > i {
 
-	&.icon-ban-circle,
-	&.icon-eye-close { font-size: 16px; }
+		/*
+	text-shadow: 0 0 1px @blue;
+		text-stroke: 1px solid @white;
+	*/
 
-	&.icon-list-alt,
-	&.icon-calendar { font-size: 20px; }
+		}
 
-	&.icon-minus { color: @grayLight; }
+	i+span, .bullet+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
 
-	}
+	i {
+		font-size: 13px;
+		color: lighten(@iconColor,0%);
+		min-height: 16px;
+		width: 16px;
 
-.mura-quickEditItem {
+
+		&.icon-ban-circle,
+		&.icon-eye-close { font-size: 16px; }
+
+		&.icon-list-alt,
+		&.icon-calendar { font-size: 20px; }
+
+		&.icon-minus { color: @grayLight; }
+
+		}
+
+	.mura-quickEditItem {
 		cursor: pointer;
 		/* border-bottom: 1px dotted; */
 
@@ -1824,7 +1923,7 @@ p + .mura-table-grid { margin-top: 12px;}
 
 			i {
 				font-size: 14px;
-				margin-right: .25em;
+				margin-right: 3px;
 				min-width: 18px;
 				position: relative;
 				top: 2px;
@@ -1930,8 +2029,19 @@ table + .divide {
 	line-height: 1.25em;
 }
 
-#ccategory .mura-table-grid td.add { padding-top: 0; }
-
+#ccategory .mura-table-grid td.add { 
+	padding-top: 0; 
+	border-right: none !important;
+}
+#ccategory .mura-table-grid td.add + td{ 
+	border-left: none !important;
+}
+#ccategory .mura-table-grid th.add { 
+	border-right: none !important;
+}
+#ccategory .mura-table-grid th.add + th{ 
+	border-left: none !important;
+}
 .mura-table-grid .alt td {
 	background-color: #fcfeff;
 }
@@ -1987,9 +2097,6 @@ table + .divide {
 	}
 
 }
-.mura-table-grid td.add a i{
-	margin-top: 7px;
-} 
 
 .mura-grid a.add { /* really only needed for ie7 */
 	width: 24px;

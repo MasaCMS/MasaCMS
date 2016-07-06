@@ -79,26 +79,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.trashIterator.hasNext()>
  			<table class="mura-table-grid">
 			<tr>
-			<th class="var-width">Label</th>
-			<th>Type</th>
-			<th>SubType</th>
-			<th>SiteID</th>
-			<th>Date Deleted</th>
-			<th>Date By</th>
-			<th class="actions">&nbsp;</th>
+				<th class="actions"></th>
+				<th class="var-width">Label</th>
+				<th>Type</th>
+				<th>SubType</th>
+				<th>SiteID</th>
+				<th>Date Deleted</th>
+				<th>Date By</th>
 			</tr>
 			<cfset rc.trashIterator.setPage(rc.pageNum)>
 			<cfloop condition="rc.trashIterator.hasNext()">
 			<cfset trashItem=rc.trashIterator.next()>
 			<tr>
-			<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
-			<td>#esapiEncode('html',trashItem.getObjectType())#</td>
-			<td>#esapiEncode('html',trashItem.getObjectSubType())#</td>
-			<td>#esapiEncode('html',trashItem.getSiteID())#</td>
-			<td>#LSDateFormat(trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(trashItem.getDeletedDate(),"short")#</td>
-			<td>#esapiEncode('html',trashItem.getDeletedBy())#</td>
-			<td class="actions"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="mi-pencil"></i></a></li></ul></td>
-			</tr>
+				<td class="actions">
+					<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+					<div class="actions-menu hide">
+						<ul class="actions-list"><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="mi-pencil"></i>Delete</a></li></ul>
+					</div>
+				</td>
+				<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
+				<td>#esapiEncode('html',trashItem.getObjectType())#</td>
+				<td>#esapiEncode('html',trashItem.getObjectSubType())#</td>
+				<td>#esapiEncode('html',trashItem.getSiteID())#</td>
+				<td>#LSDateFormat(trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(trashItem.getDeletedDate(),"short")#</td>
+				<td>#esapiEncode('html',trashItem.getDeletedBy())#</td>
+				</tr>
 			</cfloop>
 			</table>
 

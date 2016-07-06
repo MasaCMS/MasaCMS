@@ -84,7 +84,7 @@ var categoryManager = {
 		var xPos = this.findPosX(obj);
 		var yPos = this.findPosY(obj);
 
-		xPos = xPos + 20;
+		xPos = xPos - 10;
 
 		document.getElementById(id).style.top = yPos + "px";
 		document.getElementById(id).style.left = xPos + "px";
@@ -92,12 +92,40 @@ var categoryManager = {
 
 		document.getElementById('newCategoryLink').href = './?muraAction=cCategory.edit&parentid=' + parentid + '&siteid=' + siteid;
 
+	// append action links
+		var actionLinks = obj.parentNode.parentNode.getElementsByClassName("actions")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+		var optionList = document.getElementById('newCategoryOptions');
+		// remove old links
+		var oldLinks = optionList.getElementsByClassName("li-action");
+		var l;
+		while ((l = oldLinks[0])) {
+			l.parentNode.removeChild(l);
+		}
+		// create new links
+		var newPage = document.getElementById('newPage');
+	  for (var i = 0; i < actionLinks.length; i++ ) {
+        if(actionLinks[i].className.indexOf('disabled') < 0){
+	        var item = document.createElement("li");
+	        item.innerHTML = actionLinks[i].innerHTML;
+	        var link = item.getElementsByTagName("a")[0];
+	        var titleStr = link.getAttribute("title");
+	        item.className = 'li-action ' + titleStr.toLowerCase();
+	        link.removeAttribute("title");
+	        link.innerHTML = link.innerHTML + titleStr;
+	        if(titleStr.toLowerCase() == 'edit'){
+	        	optionList.insertBefore(item, newPage.nextSibling);
+	        } else {
+        		optionList.appendChild(item);
+	        }
+        }
+    }
+
 
 		if(this.lastid != "" && this.lastid != id) {
 			this.hideMenu(this.lastid);
 		}
 
-		this.navTimer = setTimeout('categoryManager.hideMenu(categoryManager.lastid);', 6000);
+//		this.navTimer = setTimeout('categoryManager.hideMenu(categoryManager.lastid);', 6000);
 		this.lastid = id;
 	},
 
@@ -125,12 +153,12 @@ var categoryManager = {
 
 
 	keepMenu: function(id) {
-		this.navTimer = setTimeout('categoryManager.hideMenu(categoryManager.lastid);', 6000);
+//		this.navTimer = setTimeout('categoryManager.hideMenu(categoryManager.lastid);', 6000);
 		$('#' + id).removeClass('hide');
 	},
 
 	hideMenu: function(id) {
-		if(this.navTimer != null) clearTimeout(this.navTimer);
+//		if(this.navTimer != null) clearTimeout(this.navTimer);
 		$('#' + id).addClass('hide');
 	}
 }
