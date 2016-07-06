@@ -61,7 +61,8 @@ CKEDITOR.editorConfig = function( config )
 		config.format_h4 = { element : '#renderer.getHeaderTag('subHead4')#' };
 	</cfif>
 	</cfoutput>
-
+	
+	config.disableNativeSpellChecker = false;
 	config.startupFocus = false;
 	config.skin = 'moono'; // 'bootstrapck'
 	config.allowedContent = {
