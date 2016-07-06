@@ -1348,6 +1348,23 @@
 		display: inline-block;
 		clear: none;
 		border: 0;
+
+			> li{
+				font-size: 13px;
+
+				&:before{
+					font-size: 13px;
+					min-height: 16px;
+					top: 0px;
+					width: 16px;
+				}
+
+				i{
+					font-size: 13px;
+					min-height: 16px;
+					width: 16px;
+				}
+			}
 	}
 
 	/* @end */
@@ -1854,9 +1871,11 @@
 	i+span, .bullet+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
 
 	i {
-		font-size: 14px;
-		.square(18px);
+		font-size: 13px;
 		color: lighten(@iconColor,0%);
+		min-height: 16px;
+		width: 16px;
+
 
 		&.icon-ban-circle,
 		&.icon-eye-close { font-size: 16px; }
