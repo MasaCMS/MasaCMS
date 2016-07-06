@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
 	<cfif isStruct(errors) and not structIsEmpty(errors)>
 		<cfoutput>
-		<div class="alert alert-error">#application.utility.displayErrors(errors)#</div>
+		<div class="alert alert-error"><span>#application.utility.displayErrors(errors)#</span></div>
 		</cfoutput>
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>

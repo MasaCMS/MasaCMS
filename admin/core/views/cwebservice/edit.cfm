@@ -17,7 +17,7 @@
             actionModal(function(){
                 $('##action-modal').remove();
                 mura.generateOAuthToken('client_credentials',$('##clientid').val(),$('##clientsecret').val()).then(function(data){
-                    $('##token-container').html('<div class="alert alert-info"><p><strong>access_token:</strong> ' + data['access_token'] +'</p><p><strong>expires_in:</strong> ' + data['expires_in'] + '</p></div>');
+                    $('##token-container').html('<div class="alert alert-info"><span><strong>access_token:</strong> ' + data['access_token'] +'</p><p><strong>expires_in:</strong> ' + data['expires_in'] + '</span></div>');
                 });
             });
         }
@@ -29,11 +29,11 @@
 </div> <!-- /.mura-header -->
 
 <cfif not structIsEmpty(rc.bean.getErrors())>
-  <div class="alert alert-error">#application.utility.displayErrors(rc.bean.getErrors())#</div>
+  <div class="alert alert-error"><span>#application.utility.displayErrors(rc.bean.getErrors())#</span></div>
 </cfif>
 
 <cfif not rc.$.siteConfig('useSSL')>
-      <div class="alert alert-error">IMPORTANT: When using web services in production this site should be set to use SSL (HTTPS).</div>
+      <div class="alert alert-error"><span>IMPORTANT: When using web services in production this site should be set to use SSL (HTTPS).</span></div>
 </cfif>
 
 <form novalidate="novalidate" action="./?muraAction=cwebservice.save" method="post" name="form1" onsubmit="return validateForm(this);">

@@ -539,21 +539,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
 			<div class="alert alert-info">
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
+				<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong></span>
 			</div>
 		</cfif>
 	</cfif>
 
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 		<div class="alert alert-info">
-		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:
-		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#"><strong>#esapiEncode('html',pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
-		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
+			<span>
+				<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:
+				<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#"><strong>#esapiEncode('html',pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
+				<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
+			</span>		
 		</div>
 	</cfif>
 
 	<cfif len(rc.contentBean.getNotes())>
-		<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</div>
+		<div class="alert alert-info">
+			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</span>
+		</div>
 	</cfif>
 
 	<!--- This is plugin message targeting --->
@@ -562,9 +566,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 	</span>
-
-
-
 
 	</cfoutput>
 
@@ -746,11 +747,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfoutput>
 		<cfif rc.contentBean.exists() and rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
-			<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</div>
+			<div class="alert alert-info">
+				<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</span>
+			</div>
 		</cfif>
 
 		<cfif not structIsEmpty(rc.contentBean.getErrors())>
-			<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
+			<div class="alert alert-error"><span>#application.utility.displayErrors(rc.contentBean.getErrors())#</span></div>
 		</cfif>
 	</cfoutput>
 

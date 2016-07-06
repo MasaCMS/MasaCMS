@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div> <!-- /.mura-header -->
 
 <cfif not structIsEmpty(rc.categoryBean.getErrors())>
-  <div class="alert alert-error">#application.utility.displayErrors(rc.categoryBean.getErrors())#</div>
+  <div class="alert alert-error"><span>#application.utility.displayErrors(rc.categoryBean.getErrors())#</span></div>
 </cfif>
 
 <div class="block block-constrain">

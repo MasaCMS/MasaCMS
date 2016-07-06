@@ -182,11 +182,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
-  <div class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</div>
+  <div class="alert alert-error"><span>#application.utility.displayErrors(rc.feedBean.getErrors())#</span></div>
 </cfif>
 
 <cfif rc.feedBean.exists() and rc.compactDisplay eq "true" and not isObjectInstance>
-	<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</div>
+	<div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</span></div>
 </cfif>
 
 <!-- This is plugin message targeting --->
@@ -856,11 +856,11 @@ jQuery(document).ready(function(){
 </div> <!-- /.mura-header -->
 
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
-  <div class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</div>
+  <div class="alert alert-error"><span>#application.utility.displayErrors(rc.feedBean.getErrors())#</span></div>
 </cfif>
 
 <cfif rc.compactDisplay eq "true">
-	<div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</div>
+	<div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</span></div>
 </cfif>
 
 <span id="msg">

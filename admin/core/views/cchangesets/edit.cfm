@@ -56,19 +56,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
       <cfif not structIsEmpty(rc.changeset.getErrors())>
-          <div class="alert alert-error">#application.utility.displayErrors(rc.changeset.getErrors())#</div>
+          <div class="alert alert-error"><span>#application.utility.displayErrors(rc.changeset.getErrors())#</span></div>
       </cfif>
 
       <cfif rc.changeset.getPublished()>
-      <div class="alert alert-info">
-       #application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#
-     </div>
+      <div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</span></div>
       <cfelse>
       <cfset hasPendingApprovals=rc.changeset.hasPendingApprovals()>
       <cfif hasPendingApprovals>
-        <div class="alert alert-error">
-            #application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')#
-        </div>
+        <div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')#</span></div>
       </cfif>
       </cfif>
 
