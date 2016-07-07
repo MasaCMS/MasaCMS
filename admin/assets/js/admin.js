@@ -309,6 +309,9 @@ function openDisplay(id, close) {
 	if(document.getElementById(id).style.display == 'none') {
 
 		$("#" + id).slideDown();
+		if(id == 'editAdditionalTitles'){
+			$('#alertTitleSuccess').hide();
+		}
 		if(document.getElementById(id + 'Link')) {
 			var theLink = document.getElementById(id + 'Link');
 			theLink.innerHTML = '[' + close + ']';

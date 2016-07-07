@@ -77,12 +77,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    </label>
 			   	<cfset hasSEOTab=rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'SEO'))>
 				<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
+				<div class="mura-control justify">
+					<button type="button" id="showTitles" name="showTitles" class="btn">Show Additional Content Titles</button>
+				</div>
 				<div id="alertTitleSuccess" class="help-block" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# </div>
+				
+				<cfif hasSEOTab>
+					<div class="help-block" id="editAdditionalTitles" style="display:none;">
+						<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
+						<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
+					</div>
+				</cfif>
+			
 			 </div>
 
 			<cfif hasSEOTab>
-				<div id="mura-seo-titles">
 
+				<div id="mura-seo-titles">
 					<div class="mura-control-group">
 						<label>
 					  	<span data-toggle="popover" title="" data-placement="right" 
@@ -121,30 +132,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				</div><!-- /mura-seo-titles -->	
 
-				<div class="mura-control-group" id="editAdditionalTitles" style="display:none;">
-					<div class="help-block">
-						<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
-						<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
-						<button type="button" id="showTitles" name="showTitles" class="btn">Show Additional Content Titles</button>
-					</div>
-
-					<script>
-						jQuery(document).ready(function(){
-							$('##mura-seo-titles').hide();
-							$('##showTitles').click(function(e){
-								$('##mura-seo-titles').fadeIn();
-							})
-
-							$('##resetTitles').click(function(e){
-								e.preventDefault();
-								$('##menuTitle,##urlTitle,##htmlTitle').val('');
-								//$('##editAdditionalTitles').hide();
-								$('##alertTitleSuccess').fadeIn();
-								return true;
-							});
-						});
-					</script>
-				</div>
 			</cfif>
 		</cfcase>
 		<cfdefaultcase>
@@ -433,5 +420,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> <!--- /.block-content --->
 	</div> <!--- /.block --->
 </div> <!--- /.tab-pane --->
+
+	<script>
+		jQuery(document).ready(function(){
+
+			$('##mura-seo-titles').hide();
+			$('##showTitles').click(function(e){
+				$(this).parents('div.mura-control').hide();
+				$('##alertTitleSuccess').hide();
+				$('##mura-seo-titles').fadeIn();
+			})
+
+			$('##resetTitles').click(function(e){
+				e.preventDefault();
+				 $('##menuTitle,##urlTitle,##htmlTitle').val('');
+				$('##editAdditionalTitles').hide();
+				$('##alertTitleSuccess').fadeIn();
+				return true;
+			});
+		});
+	</script>
 
 </cfoutput>
