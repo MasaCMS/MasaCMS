@@ -422,25 +422,21 @@ if(len($.siteConfig('customTagGroups'))){
 		</ul>
 	</div>
 
-	<cfif iterator.hasNext()>
-			
+	<cfif iterator.hasNext()>			
 		<div class="navSort">
-			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:&nbsp;</span>
-			<ul>
-				<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->
-				<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
-				<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a></li>
-				<!---<li><a href="" data-sortby="releasedate"<cfif $.event("sortBy") eq "releasedate"> class="active"</cfif>>Release Date</a></li>--->
-				<li><a href="" data-sortby="menutitle"<cfif $.event("sortBy") eq "menutitle"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a></li>
+			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</span>
+			<div class="mura-input-set">
+				<a href="" data-sortby="lastupdate" class="btn<cfif $.event("sortBy") eq "lastUpdate"> active</cfif>">#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a>
+				<a href="" data-sortby="created" class="btn<cfif $.event("sortBy") eq "created"> active</cfif>">#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a>
+				<a href="" data-sortby="menutitle" class="btn<cfif $.event("sortBy") eq "menutitle"> active</cfif>">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a>
 				<cfif listfindNoCase('mysubmissions,myapprovals',$.event('report'))>
-					<li><a href="" data-sortby="duedate"<cfif $.event("sortBy") eq "duedate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.duedate")#</a></li>
+					<a href="" data-sortby="duedate" class="btn<cfif $.event("sortBy") eq "duedate"> active</cfif>">#application.rbFactory.getKeyValue(session.rb,"sitemanager.duedate")#</a>
 				</cfif>
 				<cfif listfindNoCase('myexpires,expires',$.event('report'))>
-					<li><a href="" data-sortby="expiration"<cfif $.event("sortBy") eq "expiration"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.expiration")#</a></li>
+					<a href="" data-sortby="expiration" class="btn<cfif $.event("sortBy") eq "expiration"> active</cfif>">#application.rbFactory.getKeyValue(session.rb,"sitemanager.expiration")#</a>
 				</cfif>
-			</ul>
-		</div>
-
+			</div>
+		</div> <!-- ./navSort -->
 	</cfif>
 
 </div> <!--- /navReportsShowing --->
