@@ -1444,6 +1444,19 @@ label #selectFilter{
   outline: 0;
 }
 
+select[multiple],
+select[size],
+.mura-control-group > label + select[multiple], 
+.mura-control-group > label + select[size] {
+    height: auto !important;
+}
+
+.mura-control-group > label + textarea[rows]{
+    height: auto;
+    min-height: 36px;
+    resize: vertical;
+}
+
 #searchParams .mura-control,
 #searchParams div.ember-view > div{
   min-height: 38px;
