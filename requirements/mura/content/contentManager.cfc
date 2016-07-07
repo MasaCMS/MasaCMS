@@ -2941,7 +2941,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 	<cffunction name="getTabList" output="false">
-		<cfreturn "Basic,Publishing,Mobile,List Display Options,Layout & Objects,Categorization,Tags,Related Content,Extended Attributes,Advanced,Usage Report">
+		<cfreturn "Basic,Publishing,SEO,Mobile,List Display Options,Layout & Objects,Categorization,Tags,Related Content,Extended Attributes,Advanced,Usage Report">
 	</cffunction>
 
 	<cffunction name="getMyApprovalsCount" output="false">
