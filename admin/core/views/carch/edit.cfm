@@ -327,71 +327,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="form-actions">
 
 			 <button type="button" class="btn" onclick="return saveDraftPrompt();"><i class="mi-edit"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
-			 <script>
-
-					saveDraftPrompt=function(){
-						confirmDialog(
-							'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
-							function(){
-								if(siteManager.ckContent(draftremovalnotice,true)){
-									document.contentForm.approved.value=0;
-									document.contentForm.preview.value=0;
-									document.contentForm.murakeepediting.value=true;
-									submitForm(document.contentForm,'add');
-								}
-							},
-							function(){
-								if(siteManager.ckContent(draftremovalnotice,true)){
-									document.contentForm.approved.value=0;
-									document.contentForm.preview.value=0;
-									document.contentForm.murakeepediting.value=false;
-									submitForm(document.contentForm,'add');
-								}
-							},
-							'','','Yes','No'
-						);
-					}
-
-	 				var shifted=false;
-	 				var lockedbysomeonelse=false;
-
-	 				checkForSave=function(e) {
-					  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-					    	e.preventDefault();
-						   	if(!lockedbysomeonelse){
-						   		if(e.altKey){
-									document.contentForm.approved.value=1;
-								} else {
-									document.contentForm.approved.value=0;
-								}
-
-								if(e.shiftKey){
-									document.contentForm.preview.value=1;
-								} else {
-									document.contentForm.preview.value=0;
-								}
-
-								<cfif rc.compactDisplay neq 'true'>
-								document.contentForm.murakeepediting.value=true;
-								</cfif>
-
-							    if(siteManager.ckContent(draftremovalnotice,true)){
-									submitForm(document.contentForm,'add');
-								} else {
-									document.contentForm.approved.value=0;
-									document.contentForm.murakeepediting.value=false;
-									document.contentForm.preview.value=0;
-									document.contentForm.approved.value=0;
-								}
-
-							}
-						}
-					}
-
-					//try{
-						window.top.document.addEventListener("keydown", checkForSave , false);
-					//} catch (e){};
-			</script>
+			
 			<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
 			<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="mi-eye"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 			</cfif>
@@ -587,16 +523,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
-		<cfif rc.moduleid eq '00000000000000000000000000000000000' and listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
-			<cfinclude template="form/dsp_tab_seo.cfm">
-			</cfif>
-			<!---
-			<cfif  not len(tabAssignments) or listFindNocase(tabAssignments,'Mobile')>
-				<cfinclude template="form/dsp_tab_mobile.cfm">
-			</cfif>
-			--->
-		</cfif>
+	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
+		<cfinclude template="form/dsp_tab_publishing.cfm">
+	<cfelse>
+		<input type="hidden" name="ommitPublishingTab" value="true">
+		<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
+	</cfif>
 
 		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
 			<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
@@ -736,12 +668,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</cfoutput>
 	</cfif>
-	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
-		<cfinclude template="form/dsp_tab_publishing.cfm">
-	<cfelse>
-		<input type="hidden" name="ommitPublishingTab" value="true">
-		<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
-	</cfif>
+
 	</cfsavecontent>
 	<!--- /tabcontent --->
 
@@ -800,13 +727,77 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
 
-	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
-		<script type="text/javascript">
-		siteManager.tablist='#esapiEncode('javascript',lcase(tabList))#';
-		siteManager.loadExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
-		</script>
-	</cfif>
 
+<script type="text/javascript">
+
+<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
+	siteManager.tablist='#esapiEncode('javascript',lcase(tabList))#';
+	siteManager.loadExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
+</cfif>
+
+saveDraftPrompt=function(){
+	confirmDialog(
+		'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
+		function(){
+			if(siteManager.ckContent(draftremovalnotice,true)){
+				document.contentForm.approved.value=0;
+				document.contentForm.preview.value=0;
+				document.contentForm.murakeepediting.value=true;
+				submitForm(document.contentForm,'add');
+			}
+		},
+		function(){
+			if(siteManager.ckContent(draftremovalnotice,true)){
+				document.contentForm.approved.value=0;
+				document.contentForm.preview.value=0;
+				document.contentForm.murakeepediting.value=false;
+				submitForm(document.contentForm,'add');
+			}
+		},
+		'','','Yes','No'
+	);
+}
+
+	var shifted=false;
+	var lockedbysomeonelse=false;
+
+	checkForSave=function(e) {
+  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+    	e.preventDefault();
+	   	if(!lockedbysomeonelse){
+	   		if(e.altKey){
+				document.contentForm.approved.value=1;
+			} else {
+				document.contentForm.approved.value=0;
+			}
+
+			if(e.shiftKey){
+				document.contentForm.preview.value=1;
+			} else {
+				document.contentForm.preview.value=0;
+			}
+
+			<cfif rc.compactDisplay neq 'true'>
+			document.contentForm.murakeepediting.value=true;
+			</cfif>
+
+		    if(siteManager.ckContent(draftremovalnotice,true)){
+				submitForm(document.contentForm,'add');
+			} else {
+				document.contentForm.approved.value=0;
+				document.contentForm.murakeepediting.value=false;
+				document.contentForm.preview.value=0;
+				document.contentForm.approved.value=0;
+			}
+
+		}
+	}
+}
+
+//try{
+	window.top.document.addEventListener("keydown", checkForSave , false);
+//} catch (e){};
+</script>
 	<input name="approved" type="hidden" value="0">
 	<input name="muraPreviouslyApproved" type="hidden" value="#rc.contentBean.getApproved()#">
 	<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
