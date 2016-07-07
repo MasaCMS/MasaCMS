@@ -196,9 +196,9 @@
 
 					function getHeight(){
 						if(document.all){
-							return Math.max(document.body.scrollHeight, document.body.offsetHeight);
+							return Math.max(document.body.scrollHeight, document.body.offsetHeight,160);
 						} else {
-							return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+							return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight,160);
 						}
 					}
 
