@@ -523,6 +523,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
+	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
+		<cfinclude template="form/dsp_tab_publishing.cfm">
+	<cfelse>
+		<input type="hidden" name="ommitPublishingTab" value="true">
+		<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
+	</cfif>
+
 		<cfif rc.moduleid eq '00000000000000000000000000000000000' and listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<cfinclude template="form/dsp_tab_seo.cfm">
@@ -672,12 +679,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</cfoutput>
 	</cfif>
-	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
-		<cfinclude template="form/dsp_tab_publishing.cfm">
-	<cfelse>
-		<input type="hidden" name="ommitPublishingTab" value="true">
-		<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
-	</cfif>
+
 	</cfsavecontent>
 	<!--- /tabcontent --->
 
