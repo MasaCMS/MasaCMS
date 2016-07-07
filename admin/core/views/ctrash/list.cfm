@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="nav-module-specific btn-group">
 	<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
-	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
+	<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);"><i class="mi-trash"></i>Empty Trash</a>
 	</div>
 
 	<div class="mura-item-metadata">
@@ -92,10 +92,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset trashItem=rc.trashIterator.next()>
 			<tr>
 				<td class="actions">
-					<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
-					<div class="actions-menu hide">
-						<ul class="actions-list"><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="mi-pencil"></i>Delete</a></li></ul>
-					</div>
+					<ul>
+						<li class="edit"><a title="Edit" href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="mi-pencil"></i></a></li>
+					</ul>
 				</td>
 				<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
 				<td>#esapiEncode('html',trashItem.getObjectType())#</td>

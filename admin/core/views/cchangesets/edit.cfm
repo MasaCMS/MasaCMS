@@ -73,14 +73,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
 <div class="block block-constrain">
       <cfset tablist="tabBasic">
-      <cfset tablabellist="Basic">
+      <cfset tablabellist=application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")>
       <cfset hasCategories=application.categoryManager.getCategoryCount(rc.siteid)>
       <cfif hasCategories>
     <cfset tablist=listAppend(tablist,'tabCategorization')>
-    <cfset tablabellist=listAppend(tablabellist,'Categorization')>
+    <cfset tablabellist=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))>
       </cfif>
       <cfset tablist=listAppend(tablist,'tabTags')>
-      <cfset tablabellist=listAppend(tablabellist,'Tags')>
+      <cfset tablabellist=listAppend(tablabellist,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.tags"))>
       <ul class="mura-tabs nav-tabs" data-toggle="tabs">
         <cfloop from="1" to="#listlen(tabList)#" index="t">
              <li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
