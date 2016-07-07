@@ -17,11 +17,25 @@
 
 	<span id="extendset-container-tabpublishingtop" class="extendset-container"></span>
 
+
   	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
-		<div class="mura-control-group">
+
+			<div class="mura-control-group">
 	      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
 	      <input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255">
-	    </div> <!--- /end mura-control-group --->
+	    </div> 
+
+		<cfif rc.moduleid eq '00000000000000000000000000000000000' and not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
+			<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
+			  <textarea name="metadesc" rows="3" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
+				    </div>
+
+			<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
+			  <textarea name="metakeywords" rows="3" id="metakeywords">#esapiEncode('html',rc.contentBean.getMETAKEYWORDS())#</textarea>
+  		</div>
+  	</cfif>
 
 		<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
 			<div class="mura-control-group">
