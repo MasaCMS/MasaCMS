@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<td class="actions">
 						<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 						<div class="actions-menu hide">
-							<ul class="action-list">
+							<ul class="actions-list">
 								<li class="edit">
 									<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i>#rc.$.rbKey('sitemanager.extension.edit')#</a>
 								</li>
