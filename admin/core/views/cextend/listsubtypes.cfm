@@ -90,29 +90,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="block block-bordered">
 		  <div class="block-content">
 			<table class="mura-table-grid">
-	<cfoutput>
-		<thead>
-			<tr>
-				<th class="actions"></th>
-				<th>
-					#rc.$.rbKey('sitemanager.extension.icon')#
-				</th>
-				<th class="title">
-					#rc.$.rbKey('sitemanager.extension.classextension')#
-				</th>
-				<th class="var-width">
-					#rc.$.rbKey('sitemanager.extension.description')#
-				</th>
-				<th>
-					#rc.$.rbKey('sitemanager.extension.active')#
-				</th>
-			</tr>
-		</thead>
-	</cfoutput>
 
 	<cfif rslist.recordcount>
 	<tbody>
 
+			<cfoutput>
+				<thead>
+					<tr>
+						<th class="actions"></th>
+						<th>
+							#rc.$.rbKey('sitemanager.extension.icon')#
+						</th>
+						<th class="title">
+							#rc.$.rbKey('sitemanager.extension.classextension')#
+						</th>
+						<th class="var-width">
+							#rc.$.rbKey('sitemanager.extension.description')#
+						</th>
+						<th>
+							#rc.$.rbKey('sitemanager.extension.active')#
+						</th>
+					</tr>
+				</thead>
+			</cfoutput>
 			<cfoutput query="rslist">
 				<tr>
 					<td class="actions">
