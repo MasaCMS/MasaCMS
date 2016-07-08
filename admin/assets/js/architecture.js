@@ -150,7 +150,7 @@ var siteManager = {
 										if (dialog.okFn()) { handled++; submit() }
 									 }
 								}
-								
+
 								alertDialog($.extend(dialog,{okAction:okFn}));
 
 								return false
@@ -3002,6 +3002,8 @@ buttons: {
 					$("#configurator").html(resp);
 				}
 
+				$('.form-actions').show();
+				
 	      		niceSelects=$('.mura #configurator select');;
 
 				if(niceSelects.niceSelect){

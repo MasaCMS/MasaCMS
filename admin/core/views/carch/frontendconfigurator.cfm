@@ -42,7 +42,7 @@
 			<h1 id="configuratorHeader"></h1>
 			<a class="mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-close"></i></a>
 		</cfif>
-	
+
 		<div class="clearfix">
 		    <div id="configurator"><div class="load-inline"></div></div>
 		   <!---
@@ -52,7 +52,7 @@
 		    --->
 		</div>
 		<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
-			<div class="form-actions">
+			<div class="form-actions" style="display:none">
 
 				<cfif rc.sourceFrame eq 'modal'>
 					<a href="##" class="btn mura-primary" id="saveConfigDraft"><i class="mi-check"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#</a>
@@ -188,7 +188,6 @@
 								</cfdefaultcase>
 							</cfswitch>
 						</cfif>
-
 						//siteManager.loadObjectPreview(configOptions);
 
 					}
