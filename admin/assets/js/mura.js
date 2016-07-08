@@ -4646,7 +4646,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			delete data.params;
-			
+
 			if(obj.data('object')=='container'){
 				wireUpObject(obj);
 				if(typeof resolve == 'function'){
@@ -4951,12 +4951,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	extend(root,{
 		mura:extend(
-			function(selector){
+			function(selector,context){
 				if(typeof selector == 'function'){
 					mura.ready(selector);
 					return this;
 				} else {
-					return select(selector);
+					if(typeof context == 'undefined'){
+						return select(selector);
+					} else {
+						return select(context).find(selector);
+					}
 				}
 			},
 			{
