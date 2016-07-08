@@ -104,10 +104,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</tr>
 					</thead>
 					<tbody>
+						<td><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.publishedHistoryID#"><i class="mi-pencil"></i></a></td>
 						<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option var-width" data-contenthistid="#draftprompdata.publishedHistoryID#">#esapiEncode('html',publishedVersion.getMenuTitle())#</a></td>
 						<td>#LSDateFormat(publishedVersion.getlastupdate(),session.dateKeyFormat)# #LSTimeFormat(publishedVersion.getLastUpdate(),"medium")#</td>
 						<td>#esapiEncode('html',publishedVersion.getLastUpdateBy())#</td>
-						<td><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.publishedHistoryID#"><i class="mi-pencil"></i></a></td>
 					</tbody>
 				</table>
 			</cfif>
