@@ -175,6 +175,23 @@
 			);
 		}
 
+		function applyObjectTargetClass(item,e,This){
+			if(item.closest('.mura-region').length){
+				var parentObj=item.parent().closest('.mura-object');
+
+				while(parentObj.length && parentObj.data('object')!='container'){
+					item=parentObj;
+					parentObj=parentObj.parent().closest('.mura-object');
+				}
+
+				if(item.length){
+					item
+						.addClass('mura-drop-target')
+						.addClass('mura-' + getDropDirection(e,This));
+				}
+			}
+		}
+
 		function initLooseDropTarget_dragenter(e){
 			e.preventDefault();
 			//disabledEventPropagation(e)
@@ -185,7 +202,7 @@
 				var item=mura(this).closest(".mura-object");
 
 				if(item.length){
-					item.addClass('mura-drop-target');
+					applyObjectTargetClass(item,e,this);
 				} else {
 					mura(this)
 						.addClass('mura-drop-target')
@@ -219,9 +236,7 @@
 				var item=mura(this).closest('.mura-object');
 
 				if(item.length){
-					item
-						.addClass('mura-drop-target')
-						.addClass('mura-' + getDropDirection(e,this));
+					applyObjectTargetClass(item,e,this);
 				} else {
 					item=mura(this).closest('.mura-object');
 
