@@ -83,7 +83,8 @@
       </div><!-- /.block-content -->
       <cfset rc.rslist=rc.groups.publicGroups />
       <div class="block-content">
- <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>   <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
+ <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>   
+  <div class="help-block">#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</div>
 
   <cfif rc.rslist.recordcount>
       <table class="mura-table-grid">
