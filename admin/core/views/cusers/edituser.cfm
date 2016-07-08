@@ -128,6 +128,8 @@
 							</div> <!-- /.block header -->						
 							<div class="block-content">
 
+							<div class="help-block-inline">#rbKey('user.requiredtext')#</div>
+
 							<!--- Subtype --->
 							<cfif rsNonDefault.recordcount>
 								<div class="mura-control-group">
@@ -211,9 +213,6 @@
 							</div>
 
 						<span id="extendSetsBasic"></span>
-
-					<div class="help-block-inline">#rbKey('user.requiredtext')#</div>
-
 
 				</div> <!-- /.block-content -->
 			</div> <!-- /.block-bordered -->
