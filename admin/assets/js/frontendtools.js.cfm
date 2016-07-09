@@ -1982,11 +1982,11 @@
 			function handleEditCheck(){
 				if(muraInlineEditor.isDirty){
 					<cfoutput>
-					if(confirm("#esapiEncode('javascript',application.rbFactory.getKey('sitemanager.content.saveasdraft',session.rb))#")){
+					if(confirm("#esapiEncode('javascript',application.rbFactory.getKey('sitemanager.content.saveasdraftlm',session.rb))#")){
 						muraInlineEditor.requestedURL=window.location;
 						muraInlineEditor.save();
 						return false;
-					} else if(confirm("#esapiEncode('javascript',application.rbFactory.getKey('sitemanager.content.keepeditingconfirm',session.rb))#")){
+					} else if(confirm("#esapiEncode('javascript',application.rbFactory.getKey('sitemanager.content.keepeditingconfirmlm',session.rb))#")){
 						return false;
 					}
 					</cfoutput>
