@@ -47,7 +47,7 @@
 ;(function(root){
 
 	root.mura.UI=root.mura.Core.extend({
-
+		rb:{},
 		context:{},
 
 		render:function(){

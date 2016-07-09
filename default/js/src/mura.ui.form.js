@@ -65,6 +65,9 @@
 		//templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
 		formInit: false,
 		responsemessage: "",
+		rb: {
+			btnsubmitclass:"form-submit"
+		},
 
 		init:function(properties){
 
@@ -376,7 +379,7 @@
 			mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
 
 			if(self.formJSON.form.pages.length == 1) {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":"form-submit"}));
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.btnsubmitclass}));
 			}
 			else {
 				if(self.currentpage == 0) {
@@ -1169,10 +1172,6 @@
 			});
 
 		}
-
-
-
-
 
 	});
 
