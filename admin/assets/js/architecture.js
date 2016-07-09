@@ -1380,6 +1380,16 @@ buttons: {
 			$('#gridContainer .load-inline').spin(spinnerArgs2);
 
 		}
+
+		$('.site-manager-mod').removeClass('active');
+		$('.site-manager-mod[data-moduleid="' + moduleid +'"]').addClass('active');
+
+		if(moduleid=='00000000000000000000000000000000000'){
+			$('#gridContainer').addClass('site-tree');
+		} else {
+			$('#gridContainer').removeClass('site-tree');
+		}
+
 		// return false;
 		$.ajax({
 			url: url + "?" + pars,
@@ -3003,7 +3013,7 @@ buttons: {
 				}
 
 				$('.form-actions').show();
-				
+
 	      		niceSelects=$('.mura #configurator select');;
 
 				if(niceSelects.niceSelect){
