@@ -4293,7 +4293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		if(obj.data('async')===null){
 			obj.data('async',true);
 		}
-		return processObject(obj);
+		return processObject(obj,false,true);
 	}
 
 	function wireUpObject(obj,response){
@@ -4567,12 +4567,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-	function processObject(el,queue){
+	function processObject(el,queue,rerender){
 
 		var obj=(el.node) ? el : mura(el);
 		el =el.node || el;
 		var self=el;
-		var rendered=!(obj.hasClass('mura-async-object') || obj.data('render')=='client'|| obj.data('async'));
+		var rendered=!rerender && !(obj.hasClass('mura-async-object') || obj.data('render')=='client'|| obj.data('async'));
 
 		queue=(queue==null || rendered) ? false : queue;
 
