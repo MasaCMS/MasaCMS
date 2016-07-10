@@ -1915,9 +1915,9 @@
 			self.setAttribute('data-instanceid',createUUID());
 		}
 
-		if(obj.data('async')){
+		//if(obj.data('async')){
 			obj.addClass("mura-async-object");
-		}
+		//}
 
 		if(obj.data('object')=='container'){
 
