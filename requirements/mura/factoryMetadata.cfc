@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.defaultCacheTimeout = 0 /> <!--- minutes --->
 	<cfset variables.isSoft=true />
 	
-	<cffunction name="init" access="public" output="false" returntype="any" hint="Constructor">
+	<cffunction name="init" output="false" hint="Constructor">
 		<cfargument name="isSoft" type="boolean" required="true" default="true"/>
 		<cfscript>
 			super.init( argumentCollection:arguments );
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- *************************--->
 	<!--- COMMON --->
 	<!--- *************************--->
-	<cffunction name="get" access="public" returntype="any" output="false">
+	<cffunction name="get" output="false">
 		<cfargument name="key" type="string" required="true" />
 		
 		<cfset var hashedKey = getHashKey( arguments.key ) />
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 	
-	<cffunction name="set" access="public" returntype="void" output="false">
+	<cffunction name="set" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="obj" type="any" required="true" />
 		<cfargument name="isSoft" type="boolean" required="false" default="#variables.isSoft#" />
@@ -152,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	</cffunction>
 	
-	<cffunction name="has" access="public" returntype="boolean" output="false">
+	<cffunction name="has" returntype="boolean" output="false">
 		<cfargument name="key" type="string" required="true" />
 
 		<!--- purge by timeout --->
@@ -166,11 +166,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- *************************--->
 	<!--- PURGE --->
 	<!--- *************************--->
-	<cffunction name="purgeAll" access="public" returntype="void" output="false">
+	<cffunction name="purgeAll" output="false">
 		<cfset variables.metadataMap.clear() />
 		<cfset super.purgeAll() />
 	</cffunction>
-	<cffunction name="purge" access="public" returntype="void" output="false">
+	<cffunction name="purge" output="false">
 		<cfargument name="key" type="string" required="true" />
 		
 		<!--- attempt to purge metadata --->
@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- check to see if the id exists --->
 		<cfset super.purge( arguments.key ) />
 	</cffunction>
-	<cffunction name="purgeByTimeout" access="public" returntype="void" output="false">
+	<cffunction name="purgeByTimeout" output="false">
 		<cfargument name="key" type="string" required="true" />
 		
 		<!--- if the key is found within the map collection and meta collection --->
@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 	</cffunction>
-	<cffunction name="purgeByMetadataParamValues" access="public" returntype="void" output="false">
+	<cffunction name="purgeByMetadataParamValues" output="false">
 		
 		<cfset var meta = "" />
 		<cfset var param = "" />
@@ -230,21 +230,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- *************************--->
 	<!--- TIMEOUT --->
 	<!--- *************************--->
-	<cffunction name="setDefaultCacheTimeout" access="public" returntype="void" output="false">
+	<cffunction name="setDefaultCacheTimeout" output="false">
 		<cfargument name="minutes" type="numeric" required="true" />
 		<cfset variables.defaultCacheTimeout = arguments.minutes />
 	</cffunction>
-	<cffunction name="getDefaultCacheTimeout" access="public" returntype="numeric" output="false">
+	<cffunction name="getDefaultCacheTimeout" output="false">
 		<cfreturn variables.defaultCacheTimeout />
 	</cffunction>
 
 	<!--- *************************--->
 	<!--- METADATA --->
 	<!--- *************************--->
-	<cffunction name="getAllMetadata" access="public" returntype="any" output="false">
+	<cffunction name="getAllMetadata" output="false">
 		<cfreturn variables.metadataMap />
 	</cffunction>
-	<cffunction name="setObjectMetadata" access="public" returntype="void" output="false">
+	<cffunction name="setObjectMetadata" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="meta" type="any" required="true" />
 		
@@ -252,14 +252,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset variables.metadataMap.put( hashedKey, arguments.meta ) />
 	</cffunction>
-	<cffunction name="getObjectMetadata" access="public" returntype="any" output="false">
+	<cffunction name="getObjectMetadata" output="false">
 		<cfargument name="key" type="string" required="true" />
 		
 		<cfset var hashedKey = getHashKey( arguments.key ) />
 		
 		<cfreturn variables.metadataMap.get( hashedKey ) />
 	</cffunction>
-	<cffunction name="setObjectMetadataProperty" access="public" returntype="void" output="false">
+	<cffunction name="setObjectMetadataProperty" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="prop" type="string" required="true" />
 		<cfargument name="val" type="any" required="true" />
@@ -277,7 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- assign the property and value --->
 		<cfset meta.put( arguments.prop, arguments.val ) />
 	</cffunction>
-	<cffunction name="getObjectMetadataProperty" access="public" returntype="any" output="false">
+	<cffunction name="getObjectMetadataProperty" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="prop" type="string" required="true" />
 		
@@ -296,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfthrow message="Property '#arguments.prop#' does not exist with key '#arguments.key#'" />
 	</cffunction>
-	<cffunction name="hasObjectMetadata" access="public" returntype="any" output="false">
+	<cffunction name="hasObjectMetadata" output="false">
 		<cfargument name="key" type="string" required="true" />
 		
 		<cfset var hashedKey = getHashKey( arguments.key ) />
@@ -308,7 +308,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 	
 	<!--- ******************************************** PRIVATE ******************************************** --->
-	<cffunction name="cleanUp" access="private" returntype="void" output="false">
+	<cffunction name="cleanUp" access="private" output="false">
 		
 		<cfset var entry = "" />
 
@@ -322,7 +322,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</cffunction>
 	
-	<cffunction name="isSoftReference" access="private" returntype="boolean" output="false" >
+	<cffunction name="isSoftReference" access="private" returntype="boolean" output="false">
 		<cfargument name="obj" type="any" required="true" />
 		<cfif isObject( arguments.obj ) AND getMetaData( arguments.obj ).name EQ "java.lang.ref.SoftReference">
 			<cfreturn true />

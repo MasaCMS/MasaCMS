@@ -15,7 +15,7 @@ limitations under the License.
 --->
 <cfcomponent output="false">
 
-	<cffunction name="init" access="public" output="false" returntype="any">
+	<cffunction name="init" output="false">
 		<cfargument name="awsKey" type="string" required="true" />
 		<cfargument name="awsSecret" type="string" required="true" />
 		<cfargument name="localCacheDir" type="string" required="false"
@@ -35,7 +35,7 @@ limitations under the License.
 		<cfreturn this />
 	</cffunction>
 	
-	<cffunction name="s3Url" access="public" output="false" returntype="string">
+	<cffunction name="s3Url" output="false">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
 		<cfargument name="requestType" type="string" default="vhost"
@@ -69,7 +69,7 @@ limitations under the License.
 
 
 
-	<cffunction name="putFileOnS3" access="public" output="false" returntype="struct"
+	<cffunction name="putFileOnS3" output="false" returntype="struct"
 			hint="I put a file on S3, and return the HTTP response from the PUT">
 		<!---<cfargument name="localFilePath" type="string" required="true" />--->
 		<cfargument name="binaryFileData" type="any" required="true" />
@@ -130,7 +130,7 @@ limitations under the License.
 
 
 
-	<cffunction name="s3FileExists" access="public" output="false" returntype="boolean">
+	<cffunction name="s3FileExists" output="false" returntype="boolean">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
 		<cfset var result = "" />
@@ -161,7 +161,7 @@ limitations under the License.
 
 
 
-	<cffunction name="deleteS3File" access="public" output="false" returntype="void">
+	<cffunction name="deleteS3File" output="false">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
 		<cfset deleteS3FileInternal(bucket, objectKey, 0) />
@@ -169,7 +169,7 @@ limitations under the License.
 
 
 
-	<cffunction name="deleteS3FileInternal" access="private" output="false" returntype="void">
+	<cffunction name="deleteS3FileInternal" access="private" output="false">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
 		<cfargument name="attemptCount" type="numeric" required="true" />
@@ -213,7 +213,7 @@ limitations under the License.
 
 
 
-	<cffunction name="getFileFromS3" access="public" output="false" returntype="string"
+	<cffunction name="getFileFromS3" output="false"
 			hint="Brings a file from S3 down local, and returns the fully qualified local path">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
@@ -284,7 +284,7 @@ limitations under the License.
 
 
 
-	<cffunction name="deleteCacheFor" access="public" output="false" returntype="void">
+	<cffunction name="deleteCacheFor" output="false">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
 		<cfset var cachePath = "" />
@@ -298,7 +298,7 @@ limitations under the License.
 
 
 
-	<cffunction name="getRequestSignature" access="private" output="false" returntype="string">
+	<cffunction name="getRequestSignature" access="private" output="false">
 		<cfargument name="verb" type="string" required="true" />
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
@@ -331,7 +331,7 @@ limitations under the License.
 
 
 
-	<cffunction name="cacheFilenameFromBucketAndKey" access="private" output="false" returntype="string">
+	<cffunction name="cacheFilenameFromBucketAndKey" access="private" output="false">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
 		<cfreturn localCacheDir & "/" & REReplace(bucket & "/" & objectKey, "[^a-zA-Z0-9.-]+", "_", "all") />

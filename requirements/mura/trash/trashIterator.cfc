@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 	
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
+<cffunction name="packageRecord" output="false">
 	<cfset var trashItem=createObject("component","trashItemBean").init() />
 	<cfset trashItem.setAllValues(queryRowToStruct(variables.records,currentIndex()))>
 	<cfset trashItem.setTrashManager(variables.trashManager)>
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn trashItem>
 </cffunction>
 
-<cffunction name="setTrashManager" output="false" access="public">
+<cffunction name="setTrashManager" output="false">
 	<cfargument name="trashManager">
 	<cfset variables.trashManager=arguments.trashManager>
 	<cfreturn this>

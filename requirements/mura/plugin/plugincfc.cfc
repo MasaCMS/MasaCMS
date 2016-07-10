@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset variables.pluginConfig=""/>
 	
-	<cffunction name="init" returntype="any" access="public" output="false">
+	<cffunction name="init" output="false">
 		<cfargument name="pluginConfig"  type="any" default="">
 		<cfargument name="configBean"  type="any" default="">
 		<cfset variables.pluginConfig = arguments.pluginConfig>
@@ -57,15 +57,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cffunction>
 	
-	<cffunction name="install" returntype="void" access="public" output="false">
+	<cffunction name="install" output="false">
 		<cfset application.appInitialized=false>
 	</cffunction>
 	
-	<cffunction name="update" returntype="void" access="public" output="false">
+	<cffunction name="update" output="false">
 		<cfset application.appInitialized=false>
 	</cffunction>
 	
-	<cffunction name="delete" returntype="void" access="public" output="false">
+	<cffunction name="delete" output="false">
 		<cfset application.appInitialized=false>
 	</cffunction>
 

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="true">
+<cffunction name="init" output="true">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="contentIntervalManager" type="any" required="yes"/>
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this >
 </cffunction>
 
-<cffunction name="getCrumblist" returntype="any" access="public" output="false">
+<cffunction name="getCrumblist" output="false">
 		<cfargument name="contentid" required="true" default="">
 		<cfargument name="siteid" required="true" default="">
 		<cfargument name="setInheritance" required="true" type="boolean" default="false">
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn crumbdata>
 </cffunction>
 
-<cffunction name="buildCrumblist" returntype="array" access="public" output="false">
+<cffunction name="buildCrumblist" returntype="array" output="false">
 		<cfargument name="contentid" required="true" default="">
 		<cfargument name="siteid" required="true" default="">
 		<cfargument name="path" required="true" default="">
@@ -283,7 +283,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getContentIDFromContentHistID" returntype="string" access="public" output="false">
+<cffunction name="getContentIDFromContentHistID" output="false">
 	<cfargument name="contenthistid" required="true" default="">
 	<cfset var rsContentIDFromHistID="">
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContentIDFromHistID')#">
@@ -292,7 +292,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsContentIDFromHistID.contentID>
 </cffunction>
 
-<cffunction name="getContentHistIDFromContentID" returntype="string" access="public" output="false">
+<cffunction name="getContentHistIDFromContentID" output="false">
 	<cfargument name="contentID" required="true" default="">
 	<cfargument name="siteID" required="true" default="">
 	<cfset var rsHistIDFromContentID="">
@@ -312,7 +312,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsHistIDFromContentID.contentHistID>
 </cffunction>
 
-<cffunction name="getKidsIterator" returntype="any" output="false">
+<cffunction name="getKidsIterator" output="false">
 			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 			<cfargument name="siteid" type="string">
 			<cfargument name="parentid" type="string" >
@@ -335,7 +335,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn it/>
 </cffunction>
 
-<cffunction name="getKids" returntype="query" output="false">
+<cffunction name="getKids" output="false">
 			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 			<cfargument name="siteid" type="string">
 			<cfargument name="parentid" type="string" >
@@ -748,7 +748,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsKids,menuType=arguments.type,menuDate=nowAdjusted) />
 </cffunction>
 
-<cffunction name="getKidsCategorySummary" returntype="query" output="false">
+<cffunction name="getKidsCategorySummary" output="false">
 		<cfargument name="siteid" type="string">
 		<cfargument name="parentid" type="string" >
 		<cfargument name="relatedID" type="string" required="yes" default="">
@@ -760,7 +760,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn getCategorySummary(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getCategorySummary" returntype="query" output="false">
+<cffunction name="getCategorySummary" output="false">
 	<cfargument name="siteid" type="string">
 	<cfargument name="parentid" type="string" default="">
 	<cfargument name="relatedid" type="string" required="yes" default="">
@@ -862,7 +862,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rs>
 </cffunction>
 
-<cffunction name="getCommentCount" returntype="numeric" access="remote" output="false">
+<cffunction name="getCommentCount" access="remote" output="false">
 			<cfargument name="siteid" type="string">
 			<cfargument name="contentID" type="string" >
 
@@ -877,7 +877,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfreturn rsCommentCount.CommentCount>
 </cffunction>
 
-<cffunction name="getSystemObjects" returntype="query" access="public" output="false">
+<cffunction name="getSystemObjects" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfset var rsSystemObjects = "">
 
@@ -890,7 +890,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsSystemObjects />
 </cffunction>
 
-<cffunction name="getHasComments" returntype="numeric" access="public" output="false">
+<cffunction name="getHasComments" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rsHasComments = "">
@@ -905,7 +905,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsHasComments.theCount />
 </cffunction>
 
-<cffunction name="getHasRatings" returntype="numeric" access="public" output="false">
+<cffunction name="getHasRatings" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rsHasRatings = "">
@@ -920,7 +920,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsHasRatings.theCount />
 </cffunction>
 
-<cffunction name="getHasTagCloud" returntype="numeric" access="public" output="false">
+<cffunction name="getHasTagCloud" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rsHasTagCloud = "">
@@ -935,7 +935,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsHasTagCloud.theCount />
 </cffunction>
 
-<cffunction name="getCount" returntype="numeric" access="public" output="false">
+<cffunction name="getCount" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="contentid"  type="string" />
 	<cfset var rsNodeCount = "">
@@ -959,7 +959,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsNodeCount.theCount />
 </cffunction>
 
-<cffunction name="getSections" returntype="query" access="public" output="false">
+<cffunction name="getSections" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="type"  type="string" required="true" default="" />
 	<cfset var rsSections = "">
@@ -977,7 +977,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsSections />
 </cffunction>
 
-<cffunction name="getPageCount" returntype="query" access="public" output="false">
+<cffunction name="getPageCount" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfset var rsPageCount = "">
 
@@ -991,7 +991,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsPageCount />
 </cffunction>
 
-<cffunction name="getDraftList" returntype="query" access="public" output="false">
+<cffunction name="getDraftList" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="userID"  type="string"  required="true" default="#getSession().mura.userID#"/>
 	<cfargument name="limit" type="numeric" required="true" default="100000000">
@@ -1223,7 +1223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getNest" returntype="query" access="public" output="false">
+<cffunction name="getNest" output="false">
 		<cfargument name="ParentID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfargument name="sortBy" type="string" required="true" default="orderno">
@@ -1351,7 +1351,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsNest />
 	</cffunction>
 
-<cffunction name="getKidsCount" access="public" output="false">
+<cffunction name="getKidsCount" output="false">
 		<cfargument name="parentID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfargument name="liveOnly" default="true" required="true">
@@ -1381,7 +1381,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rs.kids />
 	</cffunction>
 
-<cffunction name="getComponents" returntype="query" access="public" output="false">
+<cffunction name="getComponents" output="false">
 		<cfargument name="moduleID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rsComponents = "">
@@ -1411,7 +1411,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsComponents />
 </cffunction>
 
-<cffunction name="getTop" returntype="query" access="public" output="true">
+<cffunction name="getTop" output="true">
 		<cfargument name="topID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rsTop = "">
@@ -1433,7 +1433,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsTop />
 </cffunction>
 
-<cffunction name="getComponentType" returntype="query" access="public" output="false">
+<cffunction name="getComponentType" output="false">
 	<cfargument name="siteid" type="string" required="true">
 	<cfargument name="type" type="string" required="true">
 	<cfset var rsComponentType = "">
@@ -1461,7 +1461,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsComponentType />
 </cffunction>
 
-<cffunction name="getHist" returntype="query" access="public" output="false" hint="I get all versions">
+<cffunction name="getHist" output="false" hint="I get all versions">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rsHist = "">
@@ -1480,7 +1480,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsHist />
 </cffunction>
 
-<cffunction name="getDraftHist" returntype="query" access="public" output="false" hint="I get all draft versions">
+<cffunction name="getDraftHist" output="false" hint="I get all draft versions">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rsDraftList = "">
@@ -1500,7 +1500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsDraftList />
 </cffunction>
 
-<cffunction name="getPendingChangesets" returntype="query" access="public" output="false" hint="I get all draft versions">
+<cffunction name="getPendingChangesets" output="false" hint="I get all draft versions">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rsPendingChangeSets = "">
@@ -1522,7 +1522,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsPendingChangeSets />
 </cffunction>
 
-<cffunction name="getArchiveHist" returntype="query" access="public" output="false" hint="I get all archived versions">
+<cffunction name="getArchiveHist" output="false" hint="I get all archived versions">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rsArchiveHist = "">
@@ -1543,7 +1543,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsArchiveHist />
 </cffunction>
 
-<cffunction name="getItemCount" returntype="query" access="public" output="false">
+<cffunction name="getItemCount" output="false">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rsItemCount = "">
@@ -1557,7 +1557,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsItemCount />
 </cffunction>
 
-<cffunction name="getDownloadSelect" returntype="query" access="public" output="false">
+<cffunction name="getDownloadSelect" output="false">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rsDownloadSelect = "">
@@ -1571,7 +1571,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsDownloadSelect />
 </cffunction>
 
-<cffunction name="getPrivateSearch" returntype="query" access="public" output="false">
+<cffunction name="getPrivateSearch" output="false">
 	<cfargument name="siteid" type="string" required="true">
 	<cfargument name="keywords" type="string" required="true">
 	<cfargument name="tag" type="string" required="true" default="">
@@ -1763,7 +1763,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsPrivateSearch />
 </cffunction>
 
-<cffunction name="getPublicSearch" returntype="query" access="public" output="false">
+<cffunction name="getPublicSearch" output="false">
 	<cfargument name="siteid" type="string" required="true">
 	<cfargument name="keywords" type="string" required="true">
 	<cfargument name="tag" type="string" required="true" default="">
@@ -2012,7 +2012,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsPublicSearch />
 </cffunction>
 
-<cffunction name="getCategoriesByHistID" returntype="query" access="public" output="false">
+<cffunction name="getCategoriesByHistID" output="false">
 	<cfargument name="contentHistID" type="string" required="true">
 	<cfset var rsCategoriesByHistID = "">
 
@@ -2027,7 +2027,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsCategoriesByHistID />
 </cffunction>
 
-<cffunction name="getRelatedContent" access="public" output="false" returntype="query">
+<cffunction name="getRelatedContent" output="false">
 	<cfargument name="siteID" type="String">
 	<cfargument name="contentHistID" type="String">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="true">
@@ -2184,7 +2184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getUsage" access="public" output="false" returntype="query">
+<cffunction name="getUsage" output="false">
 	<cfargument name="objectID" type="String">
 
 	<cfset var rsUsage= ''/>
@@ -2206,7 +2206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsUsage />
 </cffunction>
 
-<cffunction name="getTypeCount" access="public" output="false" returntype="query">
+<cffunction name="getTypeCount" output="false">
 	<cfargument name="siteID" type="String" required="true" default="">
 	<cfargument name="type" type="String" required="true" default="">
 
@@ -2231,7 +2231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsTypeCount />
 </cffunction>
 
-<cffunction name="getRecentUpdates" access="public" output="false" returntype="query">
+<cffunction name="getRecentUpdates" output="false">
 	<cfargument name="siteID" type="String" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="5">
 	<cfargument name="startDate" type="string" required="true" default="">
@@ -2262,7 +2262,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsRecentUpdate />
 </cffunction>
 
-<cffunction name="getRecentFormActivity" access="public" output="false" returntype="query">
+<cffunction name="getRecentFormActivity" output="false">
 	<cfargument name="siteID" type="String" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="5">
 
@@ -2296,7 +2296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsFormActivity />
 </cffunction>
 
-<cffunction name="getTagCloud" access="public" output="false" returntype="query">
+<cffunction name="getTagCloud" output="false">
 	<cfargument name="siteID" type="String" required="true" default="">
 	<cfargument name="parentID" type="string" required="true" default="">
 	<cfargument name="categoryID" type="string" required="true" default="">
@@ -2372,7 +2372,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsTagCloud />
 </cffunction>
 
-<cffunction name="getObjects" access="public" returntype="query" output="false">
+<cffunction name="getObjects" output="false">
 	<cfargument name="columnID" required="yes" type="numeric" >
 	<cfargument name="ContentHistID" required="yes" type="string" >
 	<cfargument name="siteID" required="yes" type="string" >
@@ -2396,7 +2396,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getObjectInheritance" access="public" returntype="query" output="false">
+<cffunction name="getObjectInheritance" output="false">
 	<cfargument name="columnID" required="yes" type="numeric" >
 	<cfargument name="inheritedObjects" required="yes" type="string" >
 	<cfargument name="siteID" required="yes" type="string" >
@@ -2418,7 +2418,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getExpiringContent" returntype="query" access="public" output="false">
+<cffunction name="getExpiringContent" output="false">
 	<cfargument name="siteid" type="string" required="true">
 	<cfargument name="userid" type="string" required="true">
 	<cfset var rsExpiringContent = "">
@@ -2453,7 +2453,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsExpiringContent />
 </cffunction>
 
-<cffunction name="getLockedContentCount" access="public" output="false">
+<cffunction name="getLockedContentCount" output="false">
 	<cfargument name="siteid" type="string" required="true">
 	<cfargument name="userid" type="string" required="true">
 	<cfset var rs = "">
@@ -2772,7 +2772,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cffunction>
 
-<cffunction name="renderDateTimeArg" returntype="string" output="false">
+<cffunction name="renderDateTimeArg" output="false">
         <cfargument name="date">
 
         <cfif isDate(arguments.date)>

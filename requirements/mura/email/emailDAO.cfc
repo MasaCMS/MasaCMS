@@ -55,13 +55,13 @@ Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-	<cffunction name="init" access="public" output="false" returntype="any">
+	<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="create" access="public" output="false" returntype="void">
+	<cffunction name="create" output="false">
 		<cfargument name="emailBean" type="any" />
 		<cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	        INSERT INTO temails  (EmailID, Subject,BodyText, BodyHtml,
@@ -90,7 +90,7 @@ Mura CMS.
 	   </cfquery>
 	</cffunction> 
 
-	<cffunction name="read" access="public" output="false" returntype="any" >
+	<cffunction name="read" output="false">
 		<cfargument name="emailID" type="string" />
 		<cfset var emailBean=getBean("email") />
 		<cfset var rs ="" />
@@ -107,7 +107,7 @@ Mura CMS.
 		<cfreturn emailBean />
 	</cffunction>
 
-	<cffunction name="update" access="public" output="false" returntype="void" >
+	<cffunction name="update" output="false" >
 		<cfargument name="emailBean" type="any" />
 		
 	 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -132,7 +132,7 @@ Mura CMS.
 	   </cfquery>
 	</cffunction>
 
-	<cffunction name="delete" access="public" output="false" returntype="void" >
+	<cffunction name="delete" output="false" >
 		<cfargument name="emailid" type="string" />
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >

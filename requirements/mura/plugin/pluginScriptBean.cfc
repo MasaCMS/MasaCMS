@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="scriptFile" type="string" default="" required="true" />
 <cfproperty name="doCache" type="boolean" default="false" required="true" />
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.scriptID="" />
@@ -70,25 +70,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getScriptID" returntype="String" access="public" output="false">
+<cffunction name="getScriptID" output="false">
 	<cfif not len(variables.instance.scriptID)>
 		<cfset variables.instance.scriptID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.scriptID />
 </cffunction>
 
-<cffunction name="setDoCache" access="public" output="false">
+<cffunction name="setDoCache" output="false">
 	<cfargument name="docache" type="String" />
 	<cfif isBoolean(arguments.docache)>
 		<cfset variables.instance.docache = arguments.docache />
 	</cfif>
 </cffunction>
 
-<cffunction name="load"  access="public" output="false" returntype="void">
+<cffunction name="load"  output="false">
 	<cfset set(getQuery()) />
 </cffunction>
 
-<cffunction name="getQuery"  access="public" output="false" returntype="query">
+<cffunction name="getQuery"  output="false">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select scriptID, moduleID, scriptfile, runat, docache from tpluginscripts where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
@@ -97,14 +97,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void">
+<cffunction name="delete">
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tpluginscripts
 	where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getScriptID()#">
 	</cfquery>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save"  output="false">
 <cfset var rs=""/>
 <cfset var rsLocation=""/>
 <cfset var pluginXML=""/>

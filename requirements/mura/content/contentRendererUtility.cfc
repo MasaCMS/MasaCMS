@@ -5,7 +5,7 @@
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="dspZoomNoLinks" returntype="string" output="false">
+	<cffunction name="dspZoomNoLinks" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
 		<cfargument name="class" type="string" default="breadcrumb">
@@ -304,7 +304,7 @@
 		<cfreturn urlArray>
 	</cffunction>
 
-	<cffunction name="getPagesQuery" returntype="query" output="false">
+	<cffunction name="getPagesQuery" output="false">
 		<cfargument name="str">
 
 		<cfset var pageList=replaceNocase(arguments.str,"[mura:pagebreak]","murapagebreak","ALL")>
@@ -326,7 +326,7 @@
 		<cfreturn rs>
 	</cffunction>
 
-	<cffunction name="dspMultiPageContent" returntype="any" output="false">
+	<cffunction name="dspMultiPageContent" output="false">
 		<cfargument name="body">
 		<cfargument name="renderer">
 		<cfset var str="">
@@ -363,7 +363,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="generateEditableObjectControl" access="public" output="no" returntype="string">
+	<cffunction name="generateEditableObjectControl" output="no">
 		<cfargument name="editLink" required="yes" default="">
 		<cfargument name="isConfigurator" default="false">
 		<cfargument name="showEditableObjects" default="false">
@@ -384,7 +384,7 @@
 		<cfreturn str>
 	</cffunction>
 
-	<cffunction name="renderEditableObjectHeader" access="public" output="no" returntype="string">
+	<cffunction name="renderEditableObjectHeader" output="no">
 		<cfargument name="class" required="yes" default="">
 		<cfargument name="customWrapperString" required="yes" default="">
 		<cfargument name="showEditableObjects" default="false">
@@ -403,7 +403,7 @@
 		<cfreturn str>
 	</cffunction>
 
-	<cffunction name="renderEditableObjectfooter" access="public" output="no" returntype="string">
+	<cffunction name="renderEditableObjectfooter" output="no">
 		<cfargument name="control" required="yes" default="">
 		<cfargument name="showEditableObjects" default="false">
 		<cfargument name="enableFrontEndTools" default="false">
@@ -421,7 +421,7 @@
 		<cfreturn str>
 	</cffunction>
 
-	<cffunction name="getCurrentURL" access="public" returntype="string" output="false">
+	<cffunction name="getCurrentURL" output="false">
 		<cfargument name="complete" required="true" type="boolean" default="true">
 		<cfargument name="injectVars" required="true" type="string" default="">
 		<cfargument name="filterVars" required="true" type="boolean" default="true">
@@ -472,7 +472,7 @@
 
 	</cffunction>
 
-	<cffunction name="getPersonalizationID" returntype="string" output="false">
+	<cffunction name="getPersonalizationID" output="false">
 		<cfargument name="renderer">
 		<cfset var sessionData=getSession()>
 		<cfif arguments.renderer.getPersonalization() eq "user">
@@ -542,7 +542,7 @@
 		<cfreturn returnString>
 	</cffunction>
 
-	<cffunction name="getContentListAttributes" returntype="string" output="false">
+	<cffunction name="getContentListAttributes" output="false">
 		<cfargument name="property" default="">
 		<cfargument name="class" default="">
 		<cfargument name="contentListPropertyMap">
@@ -582,7 +582,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="loadShadowboxJS" returntype="void" output="false">
+	<cffunction name="loadShadowboxJS" output="false">
 		<cfargument name="renderer">
 		<!---<cfif not cookie.mobileFormat>--->
 			<cfswitch expression="#arguments.renderer.getJsLib()#">
@@ -624,7 +624,7 @@
 		<cfreturn allowLink>
 	</cffunction>
 
-	<cffunction name="getTopId" output="false" returntype="string">
+	<cffunction name="getTopId" output="false">
 		<cfargument name="useNavOffset" required="true" default="false"/>
 		<cfargument name="renderer">
 		<cfset var id="homepage">
@@ -651,7 +651,7 @@
 		<cfreturn id>
 	</cffunction>
 
-	<cffunction name="getTopVar" output="false" returntype="string">
+	<cffunction name="getTopVar" output="false">
 		<cfargument name="topVar" required="true" default="" type="String">
 		<cfargument name="useNavOffset" required="true" type="boolean" default="false">
 		<cfargument name="renderer">
@@ -665,7 +665,7 @@
 		<cfreturn arguments.renderer.getCrumbVarByLevel(arguments.topVar,offset)>
 	</cffunction>
 
-	<cffunction name="getCrumbVarByLevel" output="false" returntype="string">
+	<cffunction name="getCrumbVarByLevel" output="false">
 		<cfargument name="theVar" required="true" default="" type="String">
 		<cfargument name="level" required="true" type="numeric" default="1">
 		<cfargument name="renderer">
@@ -677,7 +677,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="dspZoomText" returntype="string" output="false">
+	<cffunction name="dspZoomText" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="separator" required="yes" default=">">
 		<cfargument name="renderer">
@@ -695,7 +695,7 @@
 		<cfreturn trim(content) />
 	</cffunction>
 
-	<cffunction name="dspZoom" returntype="string" output="false">
+	<cffunction name="dspZoom" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
 		<cfargument name="ajax" type="boolean" default="false">
@@ -769,7 +769,7 @@
 		<cfreturn content />
 	</cffunction>
 
-	<cffunction name="setParagraphs" access="public" output="false" returntype="string">
+	<cffunction name="setParagraphs" output="false">
 		<cfargument name="theString" type="string">
 		<cfargument name="renderer">
 		<cfset var str=arguments.thestring/>
@@ -809,19 +809,19 @@
 		<cfreturn str />
 	</cffunction>
 
-	<cffunction name="createCSSID"  output="false" returntype="string">
+	<cffunction name="createCSSID"  output="false">
 		<cfargument name="title" type="string" required="true" default="">
 		<cfargument name="renderer">
 		<cfset var id=arguments.renderer.setProperCase(arguments.title)>
 		<cfreturn "sys" & rereplace(id,"[^a-zA-Z0-9]","","ALL")>
 	</cffunction>
 
-	<cffunction name="createCSSHook"  output="false" returntype="string">
+	<cffunction name="createCSSHook"  output="false">
 		<cfargument name="text" type="string" required="true">
 		<cfreturn application.utility.createCSSHook(arguments.text)>
 	</cffunction>
 
-	<cffunction name="getTemplate"  output="false" returntype="string">
+	<cffunction name="getTemplate"  output="false">
 		<cfargument name="renderer">
 		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
 		<cfset var I = 0 />
@@ -841,7 +841,7 @@
 		<cfreturn "default.cfm" />
 	</cffunction>
 
-	<cffunction name="getMetaDesc"  output="false" returntype="string">
+	<cffunction name="getMetaDesc"  output="false">
 		<cfargument name="renderer">
 		<cfset var I = 0 />
 		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
@@ -853,7 +853,7 @@
 		<cfreturn "" />
 	</cffunction>
 
-	<cffunction name="getMetaKeyWords"  output="false" returntype="string">
+	<cffunction name="getMetaKeyWords"  output="false">
 		<cfargument name="renderer">
 		<cfset var I = 0 />
 		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
@@ -865,12 +865,12 @@
 		<cfreturn "" />
 	</cffunction>
 
-	<cffunction name="stripHTML" returntype="string" output="false">
+	<cffunction name="stripHTML" output="false">
 		<cfargument name="str" type="string">
 		<cfreturn ReReplace(arguments.str, "<[^>]*>","","all") />
 	</cffunction>
 
-	<cffunction name="addCompletePath" returntype="string" output="false">
+	<cffunction name="addCompletePath" output="false">
 		<cfargument name="str" type="string">
 		<cfargument name="siteID" type="string">
 		<cfset var returnstring=arguments.str/>
@@ -882,7 +882,7 @@
 		<cfreturn returnstring />
 	</cffunction>
 
-	<cffunction name="dspSection" access="public" output="false" returntype="string">
+	<cffunction name="dspSection" output="false">
 		<cfargument name="level" default="1" required="true">
 		<cfargument name="renderer">
 		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
@@ -985,7 +985,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="dspObject" access="public" output="false">
+	<cffunction name="dspObject" output="false">
 		<cfargument name="object" type="string">
 		<cfargument name="objectid" type="string" required="true" default="">
 		<cfargument name="siteid" type="string" required="true" default="">
@@ -1506,7 +1506,7 @@
 
 	</cffunction>
 
-	<cffunction name="createHREF" returntype="string" output="false" access="public">
+	<cffunction name="createHREF" output="false">
 		<cfargument name="type" required="true" default="Page">
 		<cfargument name="filename" required="true">
 		<cfargument name="siteid" required="true" default="">
@@ -1620,7 +1620,7 @@
 		<cfreturn href />
 	</cffunction>
 
-	<cffunction name="createHREFforRSS" returntype="string" output="false" access="public">
+	<cffunction name="createHREFforRSS" output="false">
 		<cfargument name="type" required="true" default="Page">
 		<cfargument name="filename" required="true">
 		<cfargument name="siteid" required="true">
@@ -1659,7 +1659,7 @@
 		<cfreturn arguments.renderer.createHREF(argumentCollection=arguments) />
 	</cffunction>
 
-	<cffunction name="createHREFForImage" output="false" returntype="any">
+	<cffunction name="createHREFForImage" output="false">
 		<cfargument name="siteID">
 		<cfargument name="fileID">
 		<cfargument name="fileExt">
@@ -1672,7 +1672,7 @@
 		<cfreturn getBean("fileManager").createHREFForImage(argumentCollection=arguments)>
 	</cffunction>
 
-	<cffunction name="addlink" output="false" returntype="string">
+	<cffunction name="addlink" output="false">
 		<cfargument name="type" required="true">
 		<cfargument name="filename" required="true">
 		<cfargument name="title" required="true">
@@ -1734,7 +1734,7 @@
 		<cfreturn link>
 	</cffunction>
 
-	<cffunction name="dspCrumblistLinks"  output="false" returntype="string">
+	<cffunction name="dspCrumblistLinks"  output="false">
 		<cfargument name="id" type="string" default="crumblist">
 		<cfargument name="separator" type="string" default="">
 		<cfargument name="class" type="string" default="#this.navBreadcrumbULClass#">
@@ -1756,7 +1756,7 @@
 		<cfreturn trim(theNav)>
 	</cffunction>
 
-	<cffunction name="renderIcon" returntype="string" output="false">
+	<cffunction name="renderIcon" output="false">
 		<cfargument name="data">
 		<cfargument name="renderer">
 

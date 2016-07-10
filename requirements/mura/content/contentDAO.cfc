@@ -60,7 +60,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTemplate,tcontent.majorVersion,tcontent.minorVersion,tcontent.expires,tcontent.displayInterval,tcontent.objectParams
 </cfoutput></cfsavecontent>
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
@@ -70,7 +70,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cfreturn this />
 </cffunction>
 
-<cffunction name="readVersion" access="public" returntype="any" output="false">
+<cffunction name="readVersion" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
@@ -157,7 +157,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="readActive" access="public" returntype="any" output="false">
+<cffunction name="readActive" output="false">
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
@@ -250,7 +250,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="readActiveByRemoteID" access="public" returntype="any" output="false">
+<cffunction name="readActiveByRemoteID" output="false">
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
@@ -320,7 +320,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="readActiveByTitle" access="public" returntype="any" output="false">
+<cffunction name="readActiveByTitle" output="false">
 		<cfargument name="title" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
@@ -390,7 +390,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="readActiveByURLTitle" access="public" returntype="any" output="false">
+<cffunction name="readActiveByURLTitle" output="false">
 		<cfargument name="urltitle" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
@@ -460,7 +460,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="readActiveByFilename" access="public" returntype="any" output="true">
+<cffunction name="readActiveByFilename" output="true">
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
@@ -535,7 +535,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="create" access="public" returntype="void" output="false">
+<cffunction name="create" output="false">
 		<cfargument name="contentBean" type="any" required="yes" />
 
 		 <cfquery >
@@ -709,7 +709,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="deleteHistAll" access="public" returntype="void" output="false" hint="I delete all archived and draft versions">
+<cffunction name="deleteHistAll" output="false" hint="I delete all archived and draft versions">
 <cfargument name="contentID" type="string" required="yes" />
 <cfargument name="siteID" type="string" required="yes" />
 	<cfset var rsdate= "">
@@ -784,7 +784,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset deleteOldSourceMaps(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="deleteDraftHistAll" access="public" returntype="void" output="false" hint="I delete all draft versions">
+<cffunction name="deleteDraftHistAll" output="false" hint="I delete all draft versions">
 <cfargument name="contentID" type="string" required="yes" />
 <cfargument name="siteID" type="string" required="yes" />
 	<cfset var rslist= "">
@@ -848,7 +848,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="archiveActive" access="public" returntype="void" output="false">
+<cffunction name="archiveActive" output="false">
 <cfargument name="contentID" type="string" required="yes" />
 <cfargument name="siteID" type="string" required="yes" />
 
@@ -860,7 +860,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="createObjects" access="public" returntype="void" output="false">
+<cffunction name="createObjects" output="false">
 	<cfargument name="data" type="struct" />
 	<cfargument name="contentBean" type="any" />
 	<cfargument name="oldContentHistID" type="string" default="" required="yes"/>
@@ -950,7 +950,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfreturn rs>
 </cffunction>
 
-<cffunction name="setCustomTagGroups" access="public" returntype="void" output="false">
+<cffunction name="setCustomTagGroups" output="false">
 	<cfargument name="contentBean">
 	<cfset var tagGroupList=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCustomTagGroups()>
 	<cfset var g="">
@@ -977,7 +977,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="createTags" access="public" returntype="void" output="false">
+<cffunction name="createTags" output="false">
 	<cfargument name="contentBean" type="any" />
 	<cfset var taglist  = "" />
 	<cfset var t = "" />
@@ -1027,7 +1027,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfif>
 </cffunction>
 
-<cffunction name="readRegionObjects" access="public" returntype="query" output="false">
+<cffunction name="readRegionObjects" output="false">
 	<cfargument name="contenthistid"  type="string" />
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="regionID"  type="numeric" />
@@ -1047,7 +1047,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfreturn rs />
 </cffunction>
 
-<cffunction name="deleteObjects" access="public" returntype="void" output="false">
+<cffunction name="deleteObjects" output="false">
 	<cfargument name="contentID"  type="string" />
 	<cfargument name="siteID"  type="string" />
 
@@ -1056,7 +1056,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfquery>
 </cffunction>
 
-<cffunction name="deleteTags" access="public" returntype="void" output="false">
+<cffunction name="deleteTags" output="false">
 	<cfargument name="contentID"  type="string" />
 	<cfargument name="siteID"  type="string" />
 
@@ -1065,7 +1065,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfquery>
 </cffunction>
 
-<cffunction name="deleteObjectsHist" access="public" returntype="void" output="false">
+<cffunction name="deleteObjectsHist" output="false">
 	<cfargument name="contentHistID"  type="string" />
 	<cfargument name="siteID"  type="string" />
 	<cfquery>
@@ -1073,7 +1073,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfquery>
 </cffunction>
 
-<cffunction name="deleteTagHist" access="public" returntype="void" output="false">
+<cffunction name="deleteTagHist" output="false">
 	<cfargument name="contentHistID"  type="string" />
 	<cfargument name="siteID"  type="string" />
 	<cfquery>
@@ -1081,7 +1081,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfquery>
 </cffunction>
 
-<cffunction name="deleteHist" access="public" returntype="void" output="false">
+<cffunction name="deleteHist" output="false">
 	<cfargument name="contentHistID"  type="string" />
 	<cfargument name="siteID"  type="string" />
 
@@ -1092,12 +1092,12 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfquery>
 </cffunction>
 
-<cffunction name="deleteExtendDataHist" access="public" returntype="void" output="false">
+<cffunction name="deleteExtendDataHist" output="false">
 	<cfargument name="contentHistID"  type="string" />
 	<cfset variables.configBean.getClassExtensionManager().deleteExtendedData(arguments.contentHistID)/>
 </cffunction>
 
-<cffunction name="deleteCategoryHist" access="public" returntype="void" output="false">
+<cffunction name="deleteCategoryHist" output="false">
 	<cfargument name="contentHistID"  type="string" />
 	<cfargument name="siteID"  type="string" />
 	<cfquery>
@@ -1106,7 +1106,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfquery>
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void" output="false">
+<cffunction name="delete" output="false">
 	<cfargument name="contentBean"  type="any" />
 	<cfset var rsList="">
 	<cfset var ap="">
@@ -1187,7 +1187,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfif>
 </cffunction>
 
-<cffunction name="createRelatedItems" access="public" output="false">
+<cffunction name="createRelatedItems" output="false">
 	<cfargument name="contentID" type="string" required="yes" default="" />
 	<cfargument name="contentHistID" type="string" required="yes" default="" />
 	<cfargument name="data" type="struct" required="yes" default="#structNew()#" />
@@ -1321,7 +1321,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="deleteRelatedItems" access="public" output="false" returntype="void" >
+<cffunction name="deleteRelatedItems" output="false" >
 	<cfargument name="contentHistID" type="String" />
 
 	<cfquery>
@@ -1331,7 +1331,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="readRelatedItems" returntype="query" access="public" output="false">
+<cffunction name="readRelatedItems" output="false">
 	<cfargument name="contentHistID" type="string" required="yes" default="" />
 	<cfargument name="siteid" type="string" required="yes" default="" />
 	<cfargument name="relatedcontentsetid" type="string" required="yes" default="" />
@@ -1351,7 +1351,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="deleteContentAssignments" access="public" output="false" returntype="void" >
+<cffunction name="deleteContentAssignments" output="false" >
 	<cfargument name="id" type="String" />
 	<cfargument name="siteID" type="String" />
 	<cfargument name="type" type="String" default="draft"/>
@@ -1370,7 +1370,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="createContentAssignment" access="public" output="false" returntype="void" >
+<cffunction name="createContentAssignment" output="false" >
 	<cfargument name="contentBean" type="any" />
 	<cfargument name="userID" type="String" />
 	<cfargument name="type" type="String" default="draft"/>
@@ -1387,7 +1387,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 </cffunction>
 
-<cffunction name="readComments" access="public" output="false" returntype="query">
+<cffunction name="readComments" output="false">
 	<cfargument name="contentID" type="String" required="true" default="">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
@@ -1445,7 +1445,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfreturn rsComments />
 </cffunction>
 
-<cffunction name="readRecentComments" access="public" output="false" returntype="query">
+<cffunction name="readRecentComments" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="size" type="numeric" required="true" default="5">
 	<cfargument name="approvedOnly" type="boolean" required="true" default="true">
@@ -1483,7 +1483,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfreturn rsRecentComments />
 </cffunction>
 
-<cffunction name="getCommentCount" access="public" output="false" returntype="numeric">
+<cffunction name="getCommentCount" output="false">
 	<cfargument name="contentID" type="String" required="true" default="">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
@@ -1507,7 +1507,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfreturn rs.TotalComments />
 </cffunction>
 
-<cffunction name="getCommentSubscribers" access="public" output="false" returntype="query">
+<cffunction name="getCommentSubscribers" output="false">
 	<cfargument name="contentID" type="String" required="true" default="">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfset var rsCommentSubscribers= ''/>

@@ -57,7 +57,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentPendingScript,contentApprovalScript,contentRejectionScript,contentCanceledScript,enableLockdown,customTagGroups,
 hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,JSONApi,useSSL,isRemote,remotecontext,remoteport,resourceSSL,resourceDomain,showDashboard,placeholderImgID,placeholderImgExt</cfoutput></cfsavecontent>
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
 	<cfset variables.configBean=arguments.configBean />
@@ -65,7 +65,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="read" access="public" output="false" returntype="any">
+<cffunction name="read" output="false">
 <cfargument name="siteid" type="string" />
 <cfargument name="settingsBean" default="" />
 	<cfset var rs ="" />
@@ -88,7 +88,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void">
+<cffunction name="delete" output="false">
 <cfargument name="siteid" type="string" />
 
 	<cftransaction>
@@ -275,7 +275,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 
 </cffunction>
 
-<cffunction name="update" access="public" output="false" returntype="void">
+<cffunction name="update" output="false">
 <cfargument name="bean" type="any" />
 
 <cfquery>
@@ -381,7 +381,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 
 </cffunction>
 
-<cffunction name="create" access="public" output="false" returntype="void">
+<cffunction name="create" output="false">
 <cfargument name="bean" type="any" />
 
 <cfset var rssites="">

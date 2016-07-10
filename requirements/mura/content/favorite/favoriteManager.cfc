@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-	<cffunction name="init" access="public" returntype="any">
+	<cffunction name="init">
 		<cfargument name="configBean" type="any" required="yes">
 		<cfargument name="settingsManager" type="any" required="yes">
 		
@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn super.getBean(arguments.beanName)>
 	</cffunction>
 		
-	<cffunction name="getFavorites" access="public" returntype="any">
+	<cffunction name="getFavorites">
 		<cfargument name="userID" type="string" required="yes">
 		<cfargument name="favoriteType" type="string" required="yes" default="all">
 		<cfargument name="siteID" type="string" required="yes">
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsFavorites />
 	</cffunction>
 
-<cffunction name="getInternalContentFavorites" access="public" output="false" returntype="query">
+<cffunction name="getInternalContentFavorites" output="false">
 	<cfargument name="userID" type="string" required="yes">
 	<cfargument name="siteID" type="String">
 	<cfargument name="type" type="String" required="false" default="">
@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 	
-	<cffunction name="readFavorite" access="public" returntype="any">
+	<cffunction name="readFavorite">
 		<cfargument name="favoriteID" type="string" required="yes">
 	
 		<cfset var favorite = getBean("favorite") />
@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn favorite />
 	</cffunction>
 	
-	<cffunction name="checkForFavorite" access="public" returntype="boolean">
+	<cffunction name="checkForFavorite" returntype="boolean">
 		<cfargument name="userID" type="string" required="yes">
 		<cfargument name="contentID" type="string" required="yes">
 		<cfargument name="type" type="string" required="false">
@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn returnVar />
 	</cffunction>
 	
-	<cffunction name="saveFavorite" access="public" returntype="any">
+	<cffunction name="saveFavorite">
 		<cfargument name="favoriteID" type="string" required="yes">
 		<cfargument name="userID" type="string" required="yes">
 		<cfargument name="siteID" type="string" required="yes">
@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 	</cffunction>
 	
-	<cffunction name="deleteFavorite" access="public" returntype="void">
+	<cffunction name="deleteFavorite">
 		<cfargument name="favoriteID" type="string" required="yes">
 
 		<cfset var favorite = getBean("favorite") />
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 	</cffunction>
 	
-	<cffunction name="deleteRSSFavoriteByUserID" access="public" returntype="void">
+	<cffunction name="deleteRSSFavoriteByUserID">
 		<cfargument name="userID" type="string" required="yes">
 		<cfargument name="siteID" type="string" required="yes">
 	

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="feedGateway" type="any" required="yes"/>
 <cfargument name="feedDAO" type="any" required="yes"/>
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn super.getBean(arguments.beanName)>
 </cffunction>
 
-<cffunction name="getFeeds" returntype="query" access="public" output="false">
+<cffunction name="getFeeds" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="type"  type="string" />
 	<cfargument name="publicOnly" type="boolean" required="true" default="false">
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.feedgateway.getFeeds(arguments.siteID,arguments.type,arguments.publicOnly,arguments.activeOnly) />
 </cffunction>
 
-<cffunction name="getFeed" returntype="query" access="public" output="false">
+<cffunction name="getFeed" output="false">
 	<cfargument name="feedBean"  type="any">
 	<cfargument name="tag"  required="true" default="">
 	<cfargument name="aggregation"  required="true" default="false">
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	) />
 </cffunction>
 
-<cffunction name="getFeedIterator" returntype="any" access="public" output="false">
+<cffunction name="getFeedIterator" output="false">
 	<cfargument name="feedBean"  type="any" />
 	<cfargument name="tag"  required="true" default="" />
 	<cfargument name="aggregation"  required="true" default="false" />
@@ -116,13 +116,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it/>
 </cffunction>
 
-<cffunction name="getcontentItems" returntype="query" access="public" output="false">
+<cffunction name="getcontentItems" output="false">
 	<cfargument name="feedBean" />
 
 	<cfreturn variables.feedgateway.getcontentItems(arguments.feedBean) />
 </cffunction>
 
-<cffunction name="create" access="public" returntype="any" output="false">
+<cffunction name="create" output="false">
 	<cfargument name="data" type="struct" default="#structnew()#"/>
 
 	<cfset var feedBean=getBean("feed") />
@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn feedBean />
 </cffunction>
 
-<cffunction name="read" access="public" returntype="any" output="false">
+<cffunction name="read" output="false">
 	<cfargument name="feedID" required="true" default=""/>
 	<cfargument name="name" required="true" default=""/>
 	<cfargument name="remoteID" required="true" default=""/>
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readByName" access="public" returntype="any" output="false">
+<cffunction name="readByName" output="false">
 	<cfargument name="name" type="String" />
 	<cfargument name="siteid" type="String" />
 	<cfargument name="feedBean" required="true" default=""/>
@@ -256,7 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readByRemoteID" access="public" returntype="any" output="false">
+<cffunction name="readByRemoteID" output="false">
 	<cfargument name="remoteID" type="String" />
 	<cfargument name="siteid" type="String" />
 	<cfargument name="feedBean" required="true" default=""/>
@@ -330,13 +330,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="doImport" access="public" returntype="struct" output="false">
+<cffunction name="doImport" returntype="struct" output="false">
 	<cfargument name="data" type="struct" />
 	<cfreturn variables.feedUtility.doImport(arguments.data) />
 
 </cffunction>
 
-<cffunction name="doAutoImport" access="public" output="false">
+<cffunction name="doAutoImport" output="false">
 	<cfargument name="siteid">
 	<cfset var rs=getFeeds(arguments.siteid,'Remote',0,1)>
 	<cfset var importArgs=structNew()>
@@ -352,7 +352,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="update" access="public" returntype="any" output="false">
+<cffunction name="update" output="false">
 	<cfargument name="data" type="struct" default="#structnew()#"/>
 
 	<cfset var feedBean=variables.feedDAO.read(arguments.data.feedID) />
@@ -380,7 +380,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn feedBean />
 </cffunction>
 
-<cffunction name="save" access="public" returntype="any" output="false">
+<cffunction name="save" output="false">
 	<cfargument name="data" type="any" default="#structnew()#"/>
 
 	<cfset var feedID="">
@@ -411,7 +411,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void" output="false">
+<cffunction name="delete" output="false">
 	<cfargument name="feedID" type="String" />
 
 	<cfset var feedBean=read(arguments.feedID) />
@@ -481,20 +481,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getDefaultFeeds" returntype="query" access="public" output="false">
+<cffunction name="getDefaultFeeds" output="false">
 	<cfargument name="siteID" type="string" />
 
 	<cfreturn variables.feedgateway.getDefaultFeeds(arguments.siteID) />
 </cffunction>
 
-<cffunction name="getFeedsByCategoryID" returntype="query" access="public" output="false">
+<cffunction name="getFeedsByCategoryID" output="false">
 	<cfargument name="categoryID" type="string" />
 	<cfargument name="siteID" type="string" />
 
 	<cfreturn variables.feedgateway.getFeedsByCategoryID(arguments.categoryID, arguments.siteID) />
 </cffunction>
 
-<cffunction name="getRemoteFeedData" returntype="any" output="false">
+<cffunction name="getRemoteFeedData" output="false">
 	<cfargument name="feedURL" required="true" >
 	<cfargument name="maxItems" required="true" >
 	<cfargument name="timeout" required="true" default="5" >

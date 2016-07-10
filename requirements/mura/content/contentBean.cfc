@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.entityName = 'content'>
 <cfset variables.instanceName= 'title'>
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 
 	<cfset super.init(argumentCollection=arguments)>
 
@@ -267,7 +267,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn settingsManager>
 </cffunction>
 
-<cffunction name="set" returnType="any" output="false" access="public">
+<cffunction name="set" output="false">
    	<cfargument name="property" required="true">
 	<cfargument name="propertyValue">
 
@@ -490,7 +490,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="validate" access="public" output="false">
+<cffunction name="validate" output="false">
 	<cfset var extErrors=structNew() />
 
 	<cfif len(variables.instance.siteID)>
@@ -542,7 +542,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+<cffunction name="getAllValues" returntype="struct" output="false">
 	<cfargument name="autocomplete" required="true" default="#variables.instance.extendAutoComplete#">
 	<cfset var i="">
 	<cfset var extData="">
@@ -571,45 +571,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance />
 </cffunction>
 
-<cffunction name="getContentHistID" returnType="string" output="false" access="public">
+<cffunction name="getContentHistID" output="false">
     <cfif not len(variables.instance.ContentHistID)>
 		<cfset variables.instance.ContentHistID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.ContentHistID />
 </cffunction>
 
-<cffunction name="getContentID" returnType="string" output="false" access="public">
+<cffunction name="getContentID" output="false">
     <cfif not len(variables.instance.contentid)>
 		<cfset variables.instance.contentid = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.contentid />
 </cffunction>
 
-<cffunction name="setDisplayStart" output="false" access="public">
+<cffunction name="setDisplayStart" output="false">
     <cfargument name="DisplayStart" type="string" required="true">
 	<cfset variables.instance.displayStart = parseDateArg(arguments.displayStart) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setDisplaystop" output="false" access="public">
+<cffunction name="setDisplaystop" output="false">
     <cfargument name="Displaystop" type="string" required="true">
 	<cfset variables.instance.Displaystop = parseDateArg(arguments.Displaystop) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setExpires" output="false" access="public">
+<cffunction name="setExpires" output="false">
     <cfargument name="expires" type="string" required="true">
 	<cfset variables.instance.expires = parseDateArg(arguments.expires) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLastUpdate" output="false" access="public">
+<cffunction name="setLastUpdate" output="false">
     <cfargument name="LastUpdate" type="string" required="true">
 	<cfset variables.instance.LastUpdate = parseDateArg(arguments.LastUpdate) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setType" output="false" access="public">
+<cffunction name="setType" output="false">
     <cfargument name="Type" type="string" required="true">
 
     <cfif arguments.type eq 'Portal'>
@@ -642,7 +642,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setTitle" output="false" access="public">
+<cffunction name="setTitle" output="false">
     <cfargument name="title" type="string" required="true">
    	<cfset arguments.title=trim(arguments.title)>
 
@@ -658,19 +658,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLastUpdateBy" access="public" output="false">
+<cffunction name="setLastUpdateBy" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setReleaseDate" output="false" access="public">
+<cffunction name="setReleaseDate" output="false">
     <cfargument name="releaseDate" type="string" required="true">
 	<cfset variables.instance.releaseDate = parseDateArg(arguments.releaseDate) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setNextN" output="false" access="public">
+<cffunction name="setNextN" output="false">
     <cfargument name="NextN" type="any" required="true">
 	<cfif isNumeric(arguments.NextN)>
    		<cfset variables.instance.NextN = arguments.NextN />
@@ -678,25 +678,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setFeatureStop" output="false" access="public">
+<cffunction name="setFeatureStop" output="false">
     <cfargument name="FeatureStop" type="string" required="true">
     <cfset variables.instance.FeatureStop = parseDateArg(arguments.FeatureStop) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setFeatureStart" output="false" access="public">
+<cffunction name="setFeatureStart" output="false">
     <cfargument name="FeatureStart" type="string" required="true">
 	<cfset variables.instance.FeatureStart = parseDateArg(arguments.FeatureStart) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setRemotePubDate" output="false" access="public">
+<cffunction name="setRemotePubDate" output="false">
     <cfargument name="RemotePubDate" type="string" required="true">
 	<cfset variables.instance.RemotePubDate = parseDateArg(arguments.RemotePubDate) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setDisplayTitle" output="false" access="public">
+<cffunction name="setDisplayTitle" output="false">
     <cfargument name="DisplayTitle" required="true">
 	<cfif isNumeric(arguments.DisplayTitle)>
   	  <cfset variables.instance.DisplayTitle = arguments.DisplayTitle />
@@ -704,7 +704,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMajorVersion" output="false" access="public">
+<cffunction name="setMajorVersion" output="false">
     <cfargument name="majorVersion" required="true">
 	<cfif isNumeric(arguments.majorVersion)>
   	  <cfset variables.instance.majorVersion = arguments.majorVersion />
@@ -712,7 +712,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMinorVersion" output="false" access="public">
+<cffunction name="setMinorVersion" output="false">
     <cfargument name="minorVersion" required="true">
 	<cfif isNumeric(arguments.minorVersion)>
   	  <cfset variables.instance.minorVersion = arguments.minorVersion />
@@ -720,7 +720,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setDoCache" output="false" access="public">
+<cffunction name="setDoCache" output="false">
     <cfargument name="doCache" required="true">
 	<cfif isNumeric(arguments.doCache)>
     <cfset variables.instance.doCache = arguments.doCache />
@@ -728,7 +728,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMobileExclude" output="false" access="public">
+<cffunction name="setMobileExclude" output="false">
     <cfargument name="mobileExclude" required="true">
 	<cfif isNumeric(arguments.mobileExclude)>
     <cfset variables.instance.mobileExclude = arguments.mobileExclude />
@@ -736,7 +736,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setCreated" output="false" access="public">
+<cffunction name="setCreated" output="false">
     <cfargument name="Created" type="string" required="true">
 	<cfset variables.instance.Created = parseDateArg(arguments.Created) />
 	<cfreturn this>
@@ -750,7 +750,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getImageSize" output="false" access="public">
+<cffunction name="getImageSize" output="false">
 	<cfif variables.instance.imageSize eq "Custom"
 	and variables.instance.ImageHeight eq "AUTO"
 	and variables.instance.ImageWidth eq "AUTO">
@@ -760,7 +760,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setImageHeight" output="false" access="public">
+<cffunction name="setImageHeight" output="false">
     <cfargument name="ImageHeight" required="true">
 	<cfif isNumeric(arguments.ImageHeight)>
   	  <cfset variables.instance.ImageHeight = arguments.ImageHeight />
@@ -768,7 +768,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getImageHeight" output="false" access="public">
+<cffunction name="getImageHeight" output="false">
 	<cfif variables.instance.imageSize eq "Custom">
   	  <cfreturn variables.instance.ImageHeight />
 	<cfelse>
@@ -776,7 +776,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setImageWidth" output="false" access="public">
+<cffunction name="setImageWidth" output="false">
     <cfargument name="ImageWidth" required="true">
 	<cfif isNumeric(arguments.ImageWidth)>
   	  <cfset variables.instance.ImageWidth = arguments.ImageWidth />
@@ -784,7 +784,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getImageWidth" output="false" access="public">
+<cffunction name="getImageWidth" output="false">
 	<cfif variables.instance.imageSize eq "Custom">
   	  <cfreturn variables.instance.ImageWidth />
 	<cfelse>
@@ -927,7 +927,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn returnList>
 </cffunction>
 
-<cffunction name="setCategory" returntype="any" access="public" output="false">
+<cffunction name="setCategory" output="false">
 	<cfargument name="categoryID"  required="true" default=""/>
 	<cfargument name="isFeature"  required="true" default="0"/>
 	<cfargument name="featureStart"  required="true" default=""/>
@@ -971,7 +971,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setCategories" returntype="any" access="public" output="false">
+<cffunction name="setCategories" output="false">
 	<cfargument name="categoryList"  required="true" default=""/>
 	<cfargument name="membership"  required="true" default="0"/>
 	<cfargument name="featureStart"  required="true" default=""/>
@@ -989,14 +989,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setAllValues" returntype="any" access="public" output="false">
+<cffunction name="setAllValues" output="false">
 	<cfargument name="instance">
 	<cfset super.setAllValues(argumentCollection=arguments)>
 	<cfset variables.displayRegions=structNew()>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getHTMLTitle" returnType="string" output="false" access="public">
+<cffunction name="getHTMLTitle" output="false">
 	<cfif len(variables.instance.HTMLTitle)>
 		<cfreturn variables.instance.HTMLTitle />
 	<cfelse>
@@ -1004,7 +1004,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getKidsQuery" returnType="query" output="false" access="public">
+<cffunction name="getKidsQuery" output="false">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="size" required="true" default="0">
@@ -1016,7 +1016,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.contentManager.getKidsQuery(argumentCollection=arguments) />
 </cffunction>
 
-<cffunction name="getKidsIterator" returnType="any" output="false" access="public">
+<cffunction name="getKidsIterator" output="false">
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
@@ -1061,7 +1061,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cffunction>
 
-<cffunction name="getKidsCategoryQuery" returntype="any" output="false" access="public">
+<cffunction name="getKidsCategoryQuery" output="false">
 	<cfargument name="siteid" default="#variables.instance.siteID#">
 	<cfargument name="parentid" default="#getContentID()#">
 	<cfargument name="categoryid" default="">
@@ -1078,29 +1078,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cffunction>
 
-<cffunction name="getVersionHistoryQuery" returnType="query" output="false" access="public">
+<cffunction name="getVersionHistoryQuery" output="false">
 	<cfreturn variables.contentManager.getHist(getContentID(), variables.instance.siteID) />
 </cffunction>
 
-<cffunction name="getVersionHistoryIterator" returnType="any" output="false" access="public">
+<cffunction name="getVersionHistoryIterator" output="false">
 	<cfset var q=getVersionHistoryQuery() />
 	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>
 
-<cffunction name="getCategoriesQuery" returnType="query" output="false" access="public">
+<cffunction name="getCategoriesQuery" output="false">
 	<cfreturn variables.contentManager.getCategoriesByHistID(getContentHistID()) />
 </cffunction>
 
-<cffunction name="getCategoriesIterator" returnType="any" output="false" access="public">
+<cffunction name="getCategoriesIterator" output="false">
 	<cfset var q=getCategoriesQuery() />
 	<cfset var it=getBean("categoryIterator").init()>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>
 
-<cffunction name="getRelatedContentQuery" returnType="query" output="false" access="public">
+<cffunction name="getRelatedContentQuery" output="false">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="true" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	<cfargument name="sortBy" type="string" default="orderno">
@@ -1113,7 +1113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getContentID(),arguments.navOnly) />
 </cffunction>
 
-<cffunction name="getRelatedContentIterator" returnType="any" output="false" access="public">
+<cffunction name="getRelatedContentIterator" output="false">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="true" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	<cfargument name="sortBy" type="string" default="orderno" >
@@ -1129,7 +1129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it>
 </cffunction>
 
-<cffunction name="save" returnType="any" output="false" access="public">
+<cffunction name="save" output="false">
 	<cfset var obj="">
 	<cfset var i="">
 	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
@@ -1271,7 +1271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs.recordcount>
 </cffunction>
 
-<cffunction name="getDisplayRegion" output="false" access="public" returntype="any">
+<cffunction name="getDisplayRegion" output="false">
 	<cfargument name="regionID">
 	<cfset var rs="">
 	<cfif not structKeyExists(variables.displayRegions,"objectlist#arguments.regionID#")>
@@ -1281,7 +1281,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.displayRegions["objectlist#arguments.regionID#"]>
 </cffunction>
 
-<cffunction name="deleteVersion" returnType="any" output="false" access="public">
+<cffunction name="deleteVersion" output="false">
 	<cfif not getValue('active')>
 		<cfset variables.contentManager.delete(getAllValues()) />
 		<cfreturn true>
@@ -1290,15 +1290,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="deleteVersionHistory" output="false" access="public">
+<cffunction name="deleteVersionHistory" output="false">
 	<cfset variables.contentManager.deleteHistAll(getAllValues()) />
 </cffunction>
 
-<cffunction name="delete" output="false" access="public">
+<cffunction name="delete" output="false">
 	<cfset variables.contentManager.deleteAll(getAllValues()) />
 </cffunction>
 
-<cffunction name="loadBy" returnType="any" output="false" access="public">
+<cffunction name="loadBy" output="false">
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
@@ -1308,7 +1308,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.contentManager.read(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getStats" returnType="any" output="false" access="public">
+<cffunction name="getStats" output="false">
 	<cfset var statsBean=getBean("stats") />
 	<cfset statsBean.setSiteID(variables.instance.siteID)>
 	<cfset statsBean.setContentID(getContentID())>
@@ -1316,14 +1316,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn statsBean>
 </cffunction>
 
-<cffunction name="getCommentsQuery" returnType="query" output="false" access="public">
+<cffunction name="getCommentsQuery" output="false">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="string" required="true" default="">
 	<cfreturn variables.contentManager.readComments(getContentID(), variables.instance.siteID, arguments.isEditor, arguments.sortOrder, arguments.parentID) />
 </cffunction>
 
-<cffunction name="getCommentsIterator" returnType="any" output="false" access="public">
+<cffunction name="getCommentsIterator" output="false">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="string" required="true" default="">
@@ -1333,7 +1333,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it />
 </cffunction>
 
-<cffunction name="getParent" output="false" returntype="any">
+<cffunction name="getParent" output="false">
 	<cfif getContentID() neq '00000000000000000000000000000000001'>
 		<cfreturn variables.contentManager.read(contentID=variables.instance.parentID,siteID=variables.instance.siteID)>
 	<cfelse>
@@ -1341,7 +1341,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getCrumbArray" output="false" returntype="any">
+<cffunction name="getCrumbArray" output="false">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
 	<cfif getValue('isNew') and getValue('contentid') neq '00000000000000000000000000000000001'>
@@ -1351,7 +1351,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getCrumbIterator" output="false" returntype="any">
+<cffunction name="getCrumbIterator" output="false">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
 	<cfset var a=getCrumbArray(setInheritance=arguments.setInheritance,sort=arguments.sort)>
@@ -1360,7 +1360,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it>
 </cffunction>
 
-<cffunction name="hasDrafts" returntype="any" access="public" output="false">
+<cffunction name="hasDrafts" output="false">
 	<cfreturn variables.contentManager.getHasDrafts(getContentID(),variables.instance.siteID) />
 </cffunction>
 
@@ -1407,7 +1407,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getEditUrl" access="public" returntype="string" output="false">
+<cffunction name="getEditUrl" output="false">
 	<cfargument name="compactDisplay" type="boolean" required="true" default="false"/>
 	<cfargument name="tab">
 	<cfargument name="complete" required="true" default="false">

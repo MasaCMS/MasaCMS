@@ -56,7 +56,7 @@
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-	<cffunction name="init" access="public" output="false" returntype="any">
+	<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="utility" type="any" required="yes"/>
 		<cfargument name="mailinglistManager" type="any" required="yes"/>
@@ -72,12 +72,12 @@
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="setMailer" access="public" output="false" returntype="any">
+	<cffunction name="setMailer" output="false">
 		<cfargument name="mailer"  required="true">
 		<cfset variables.mailer=arguments.mailer />
 	</cffunction>
 
-	<cffunction name="send" access="public" output="false" returntype="void">
+	<cffunction name="send" output="false">
 		<cfset var clickid=""/>
 		<cfset var rsEmailList=""/>
 		<cfset var rsEmail=""/>
@@ -254,7 +254,7 @@
 		</cfloop>
 	</cffunction>
 
-	<cffunction name="forward" access="public" output="false" returntype="void">
+	<cffunction name="forward" output="false">
 		<cfargument name="data" type="struct"/>
 
 		<cfset var clickid=""/>
@@ -409,7 +409,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="track" access="public" output="false" returntype="void">
+	<cffunction name="track" output="false">
 		<cfargument name="emailid" type="string" required="yes">
 		<cfargument name="email" type="string" required="yes">
 		<cfargument name="type" type="string" required="yes">
@@ -450,7 +450,7 @@
 		</cfif>		
 	</cffunction>
 
-	<cffunction name="trackBounces" access="public" output="false" returntype="void">
+	<cffunction name="trackBounces" output="false">
 		<cfargument name="siteid" type="string" required="yes">
 		<cfset var startPos = "" />
 		<cfset var endPos = "" />
@@ -549,7 +549,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getAddresses" access="public" output="false" returntype="query">
+	<cffunction name="getAddresses" output="false">
 		<cfargument name="groupList" type="String" required="true">
 		<cfargument name="siteID" type="String" required="true">
 
@@ -638,7 +638,7 @@
 		<cfreturn rsAddresses>
 	</cffunction>
 
-	<cffunction name="appendReturnParams" access="private" output="false" returntype="string">
+	<cffunction name="appendReturnParams" access="private" output="false">
 		<cfargument name="_text" default="" required="yes">
 		<cfargument name="_returnParams" default="" required="yes">
 		<cfargument name="_domain" default="" required="yes">
@@ -683,7 +683,7 @@
 		<cfreturn text>
 	</cffunction>
 
-	<cffunction name="getTemplates" access="public" output="false" returntype="query">
+	<cffunction name="getTemplates" output="false">
 		<cfargument name="siteid" type="string" required="true">
 		<cfreturn variables.settingsManager.getSite(arguments.siteID).getTemplates('email')/>
 	</cffunction>

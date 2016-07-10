@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent output="false" extends="mura.cfobject">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	
 	
 	<cfscript>
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setValue" returntype="any" access="public" output="false">
+<cffunction name="setValue" output="false">
 	<cfargument name="property"  type="string" required="true">
 	<cfargument name="propertyValue" default="" >
 	<cfargument name="scope" default="request" required="true">
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn setValue(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getValue" returntype="any" access="public" output="false">
+<cffunction name="getValue" output="false">
 	<cfargument name="property"  type="string" required="true">
 	<cfargument name="defaultValue">
 	<cfargument name="scope" default="request" required="true">
@@ -129,12 +129,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getValue(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getAllValues" returntype="any" access="public" output="false">
+<cffunction name="getAllValues" output="false">
 <cfargument name="scope" default="request" required="true">
 		<cfreturn getScope(arguments.scope)  />
 </cffunction>
 
-<cffunction name="getScope" returntype="struct" access="public" output="false">
+<cffunction name="getScope" returntype="struct" output="false">
 <cfargument name="scope" default="request" required="true">
 		
 		<cfswitch expression="#arguments.scope#">
@@ -166,60 +166,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 </cffunction>
 
-<cffunction name="valueExists" returntype="any" access="public" output="false">
+<cffunction name="valueExists" output="false">
 	<cfargument name="property" type="string" required="true">
 	<cfargument name="scope" default="request" required="true">
 		<cfset var theScope=getScope(arguments.scope) />
 		<cfreturn structKeyExists(theScope,arguments.property) />
 </cffunction>
 
-<cffunction name="removeValue" access="public" output="false">
+<cffunction name="removeValue" output="false">
 	<cfargument name="property" type="string" required="true"/>
 	<cfargument name="scope" default="request" required="true">
 		<cfset var theScope=getScope(arguments.scope) />
 		<cfset structDelete(theScope,arguments.property) />
 </cffunction>
 
-<cffunction name="getHandler" returntype="any" access="public" output="false">
+<cffunction name="getHandler" output="false">
 	<cfargument name="handler">
 	<cfreturn getValue('HandlerFactory').get(arguments.handler & "Handler",getValue("localHandler")) />	
 </cffunction>
 
-<cffunction name="getValidator" returntype="any" access="public" output="false">
+<cffunction name="getValidator" output="false">
 	<cfargument name="validation">
 	<cfreturn getValue('HandlerFactory').get(arguments.validation & "Validator",getValue("localHandler")) />	
 </cffunction>
 
-<cffunction name="getTranslator" returntype="any" access="public" output="false">
+<cffunction name="getTranslator" output="false">
 	<cfargument name="translator">
 	<cfreturn getValue('HandlerFactory').get(arguments.translator & "Translator",getValue("localHandler")) />	
 </cffunction>
 
-<cffunction name="getContentRenderer" returntype="any" access="public" output="false">
+<cffunction name="getContentRenderer" output="false">
 	<cfreturn getValue('contentRenderer') />	
 </cffunction>
 
-<cffunction name="getThemeRenderer" returntype="any" access="public" output="false" hint="deprecated: use getContentRenderer()">
+<cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
 	<cfreturn getContentRenderer() />	
 </cffunction>
 
-<cffunction name="getContentBean" returntype="any" access="public" output="false">
+<cffunction name="getContentBean" output="false">
 	<cfreturn getValue('contentBean') />	
 </cffunction>
 
-<cffunction name="getCrumbData" returntype="any" access="public" output="false">
+<cffunction name="getCrumbData" output="false">
 	<cfreturn getValue('crumbdata') />	
 </cffunction>
 
-<cffunction name="getSite" returntype="any" access="public" output="false">
+<cffunction name="getSite" output="false">
 	<cfreturn application.settingsManager.getSite(getValue('siteid')) />	
 </cffunction>
 
-<cffunction name="getMuraScope" returntype="any" access="public" output="false">
+<cffunction name="getMuraScope" output="false">
 	<cfreturn getValue("MuraScope") />	
 </cffunction>
 
-<cffunction name="getBean" returntype="any" access="public" output="false">
+<cffunction name="getBean" output="false">
 	<cfargument name="beanName">
 	<cfargument name="siteID" required="false">
 	

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent output="false" extends="mura.cfobject">
 
-<cffunction name="init" output="false" returntype="any">
+<cffunction name="init" output="false">
 	<cfset super.init()>
 	<cfreturn this>
 </cffunction>
@@ -67,13 +67,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="format" returntype="any">
+<cffunction name="format">
 	<cfargument name="data">
 	
 	<cfreturn removeObjects(arguments.data)>
 </cffunction>
 
-<cffunction name="removeObjects" returntype="any">
+<cffunction name="removeObjects">
 	<cfargument name="data">
 	
 	<cfif isstruct(arguments.data)>

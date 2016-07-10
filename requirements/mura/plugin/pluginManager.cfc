@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.eventHandlersLoaded = false>
 <cfset variables.zipTool="">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" required="true">
 	<cfargument name="settingsManager" required="true">
 	<cfargument name="utility" required="true">
@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="loadPlugins" returntype="void" access="public" output="false">
+<cffunction name="loadPlugins" output="false">
 <cfargument name="safeMode" default="false">
 <cfset var rsScripts1="">
 <cfset var rsScripts2="">
@@ -196,13 +196,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cflock>
 </cffunction>
 
-<cffunction name="getLocation" returntype="string" access="public" output="false">
+<cffunction name="getLocation" output="false">
 <cfargument name="directory">
 
 	<cfreturn "#variables.configBean.getPluginDir()#/#arguments.directory#/">
 </cffunction>
 
-<cffunction name="getAllPlugins" returntype="query" access="public" output="false">
+<cffunction name="getAllPlugins" output="false">
 <cfargument name="orderby" default="name" required="true">
 <cfset var rsAllPlugins="">
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAllPlugins')#">
@@ -211,7 +211,7 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn rsAllPlugins/>
 </cffunction>
 
-<cffunction name="deploy" returntype="any" access="public" output="false" hint="This method is primarily used internally by Mura. See deployPlugin." >
+<cffunction name="deploy" output="false" hint="This method is primarily used internally by Mura. See deployPlugin." >
 <cfargument name="moduleID" required="true" default="">
 <cfargument name="id" required="true" default="" hint="Either ModuleID, PluginID or Package. Can be used instead of moduleID argument.">
 <cfargument name="useDefaultSettings" required="true" default="false" hint="Deploy default config.xml settings values, not applicable for bundles">
@@ -435,7 +435,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="savePluginXML" output="false" access="public">
+<cffunction name="savePluginXML" output="false">
 <cfargument name="modID">
 
 	<cfset var scriptsLen=0 />
@@ -779,7 +779,7 @@ select * from tplugins order by #arguments.orderby#
 	</cflock>
 </cffunction>
 
-<cffunction name="hasPlugin" returntype="any" output="false">
+<cffunction name="hasPlugin" output="false">
 <cfargument name="ID">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="cache" required="true" default="true">
@@ -787,7 +787,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn getPlugin(arguments.ID, arguments.siteID, arguments.cache).recordcount>
 </cffunction>
 
-<cffunction name="getPlugin" returntype="query" output="false">
+<cffunction name="getPlugin" output="false">
 <cfargument name="ID">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="cache" required="true" default="true">
@@ -865,7 +865,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn xmlParse(theXML)/>
 </cffunction>
 
-<cffunction name="getAttributeBean" returntype="any" output="false">
+<cffunction name="getAttributeBean" output="false">
 <cfargument name="theXML">
 <cfargument name="moduleID">
 	<cfset var bean=getBean("pluginSettingBean")>
@@ -874,7 +874,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn bean/>
 </cffunction>
 
-<cffunction name="getConfig" returntype="any" output="false">
+<cffunction name="getConfig" output="false">
 <cfargument name="ID">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="cache" required="true" default="true">
@@ -919,7 +919,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn variables.pluginConfigs["p#pluginID#"]/>
 </cffunction>
 
-<cffunction name="getAssignedSites" returntype="query" output="false">
+<cffunction name="getAssignedSites" output="false">
 <cfargument name="moduleID">
 	<cfset var rsAssignedSites=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAssignedSites')#">
@@ -928,14 +928,14 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn rsAssignedSites>
 </cffunction>
 
-<cffunction name="deleteAssignedSites" returntype="void" output="false">
+<cffunction name="deleteAssignedSites" output="false">
 <cfargument name="moduleID">
 	<cfquery>
 	delete from tcontent where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfquery>
 </cffunction>
 
-<cffunction name="updateSettings" returntype="void" output="false">
+<cffunction name="updateSettings" output="false">
 <cfargument name="args">
 
 	<cfset var pluginXML=getPluginXML(arguments.args.moduleID) />
@@ -1112,21 +1112,21 @@ select * from tplugins order by #arguments.orderby#
 	</cfif>
 </cffunction>
 
-<cffunction name="deleteSettings" returntype="void" output="false">
+<cffunction name="deleteSettings" output="false">
 <cfargument name="moduleID">
 	<cfquery>
 	delete from tpluginsettings where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfquery>
 </cffunction>
 
-<cffunction name="deleteScripts" returntype="void" output="false">
+<cffunction name="deleteScripts" output="false">
 <cfargument name="moduleID">
 	<cfquery>
 	delete from tpluginscripts where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfquery>
 </cffunction>
 
-<cffunction name="deleteDisplayObjects" returntype="void" output="false">
+<cffunction name="deleteDisplayObjects" output="false">
 <cfargument name="moduleID">
 	<cfquery>
 	delete from tcontentobjects where
@@ -1137,7 +1137,7 @@ select * from tplugins order by #arguments.orderby#
 	</cfquery>
 </cffunction>
 
-<cffunction name="getSitePlugins" returntype="query" output="false">
+<cffunction name="getSitePlugins" output="false">
 <cfargument name="siteID">
 <cfargument name="orderby" default="name" required="true">
 <cfargument name="applyPermFilter" default="false" required="true">
@@ -1206,7 +1206,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn str>
 </cffunction>
 
-<cffunction name="deletePlugin" returntype="void" output="false">
+<cffunction name="deletePlugin" output="false">
 <cfargument name="moduleID">
 
 	<cfset var rsPlugin=getPlugin(arguments.moduleID) />
@@ -1249,7 +1249,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="announceEvent" output="false" returntype="void">
+<cffunction name="announceEvent" output="false">
 <cfargument name="eventToAnnounce" required="true" default="" type="any">
 <cfargument name="currentEventObject" required="true" default="" type="any">
 <cfargument name="rsHandlers" required="true" default="" type="any">
@@ -1268,7 +1268,7 @@ select * from tplugins order by #arguments.orderby#
 	</cfif>
 </cffunction>
 
-<cffunction name="renderEvent" output="false" returntype="any">
+<cffunction name="renderEvent" output="false">
 <cfargument name="eventToRender" required="true" default="" type="any">
 <cfargument name="currentEventObject" required="true" default="" type="any">
 <cfargument name="rsHandlers" required="true" default="" type="any">
@@ -1288,7 +1288,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="getEventMappings" output="false" returntype="any">
+<cffunction name="getEventMappings" output="false">
 <cfargument name="eventName">
 <cfargument name="siteID" required="true" default="">
 
@@ -1322,7 +1322,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="executeScript" output="false" returntype="any">
+<cffunction name="executeScript" output="false">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="event" required="true" default="" type="any">
@@ -1469,7 +1469,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="executeScripts" output="false" returntype="any">
+<cffunction name="executeScripts" output="false">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="event" required="true" default="" type="any">
@@ -1682,7 +1682,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="renderScript" output="false" returntype="any">
+<cffunction name="renderScript" output="false">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="event" required="true" default="" type="any">
@@ -1878,7 +1878,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn trim(str)>
 </cffunction>
 
-<cffunction name="renderScripts" output="false" returntype="any">
+<cffunction name="renderScripts" output="false">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="event" required="true" default="" type="any">
@@ -2163,14 +2163,14 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn trim(str)>
 </cffunction>
 
-<cffunction name="getHandlersQuery" output="false" returntype="query">
+<cffunction name="getHandlersQuery" output="false">
 <cfargument name="eventToHandle">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="moduleID" required="true" default="">
 	<cfreturn getScripts(arguments.eventToHandle,arguments.siteID,arguments.moduleID)>
 </cffunction>
 
-<cffunction name="getScripts" output="false" returntype="query">
+<cffunction name="getScripts" output="false">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="moduleID" required="true" default="">
@@ -2191,7 +2191,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="getDisplayObjectsBySiteID" output="false" returntype="query">
+<cffunction name="getDisplayObjectsBySiteID" output="false">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="modulesOnly" required="true" default="false">
 <cfargument name="moduleID" required="true" default="">
@@ -2225,7 +2225,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="displayObject" output="false" returntype="any">
+<cffunction name="displayObject" output="false">
 <cfargument name="object">
 <cfargument name="event" required="true" default="">
 <cfargument name="moduleID" required="true" default="">
@@ -2325,7 +2325,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfreturn "">
 </cffunction>
 
-<cffunction name="getDirectoryFromQuery" returntype="String" output="false">
+<cffunction name="getDirectoryFromQuery" output="false">
 <cfargument name="rs">
 	<cfif len(rs.package)>
 		<cfreturn "#rs.package#.#rs.pluginID#">
@@ -2334,7 +2334,7 @@ select * from tplugins order by #arguments.orderby#
 	</cfif>
 </cffunction>
 
-<cffunction name="getComponent" returntype="any" output="false">
+<cffunction name="getComponent" output="false">
 <cfargument name="componentPath">
 <cfargument name="pluginID">
 <cfargument name="siteID">
@@ -2359,24 +2359,24 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="getExecutor" returntype="any" output="false">
+<cffunction name="getExecutor" output="false">
 <cfset var executor=createObject("component","pluginExecutor").init(variables.configBean,variables.settingsManager,this) />
 <cfreturn executor />
 </cffunction>
 
-<cffunction name="getDisplayObjectBean" returntype="any" output="false">
+<cffunction name="getDisplayObjectBean" output="false">
 <cfreturn getBean("pluginDisplayObjectBean") />
 </cffunction>
 
-<cffunction name="getScriptBean" returntype="any" output="false">
+<cffunction name="getScriptBean" output="false">
 <cfreturn getBean("pluginScriptBean") />
 </cffunction>
 
-<cffunction name="purgeStandardEventFactories" returntype="any" output="false">
+<cffunction name="purgeStandardEventFactories" output="false">
 <cfset variables.standardEventFactories=structNew()/>
 </cffunction>
 
-<cffunction name="getStandardEventFactory" returntype="any" output="false">
+<cffunction name="getStandardEventFactory" output="false">
 <cfargument name="siteid" required="true" default="">
 
 
@@ -2387,7 +2387,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn variables.standardEventFactories[arguments.siteid]>
 </cffunction>
 
-<cffunction name="getCacheFactory" returntype="any" output="false">
+<cffunction name="getCacheFactory" output="false">
 <cfargument name="siteid" required="true" default="">
 
 
@@ -2398,15 +2398,15 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn variables.cacheFactories[arguments.siteid]>
 </cffunction>
 
-<cffunction name="purgeCacheFactories" returntype="any" output="false">
+<cffunction name="purgeCacheFactories" output="false">
 <cfset variables.cacheFactories=structNew()/>
 </cffunction>
 
-<cffunction name="purgePluginConfigs" returntype="any" output="false">
+<cffunction name="purgePluginConfigs" output="false">
 <cfset variables.pluginConfigs=structNew()/>
 </cffunction>
 
-<cffunction name="renderAdminTemplate" returntype="any" output="false">
+<cffunction name="renderAdminTemplate" output="false">
 <cfargument name="body">
 <cfargument name="pageTitle">
 <cfargument name="jsLib" required="true" default="prototype">
@@ -2446,7 +2446,7 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn returnStr/>
 </cffunction>
 
-<cffunction name="renderAdminToolbar" returntype="any" output="false">
+<cffunction name="renderAdminToolbar" output="false">
 <cfargument name="jsLib" required="true" default="prototype">
 <cfargument name="jsLibLoaded" required="true" default="false">
 <cfset var returnStr="">
@@ -2458,7 +2458,7 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn returnStr/>
 </cffunction>
 
-<cffunction name="createLookupTXT" returntype="void" output="false">
+<cffunction name="createLookupTXT" output="false">
 <cfset var lookUpText="">
 <cfset var rs=getAllPlugins("pluginID")>
 <cfsavecontent variable="lookUpText"><cfoutput query="rs">#rs.pluginID# - #rs.name#
@@ -2478,12 +2478,12 @@ select * from rs order by name
 
 </cffunction>
 
-<cffunction name="getIDFromPath" returntype="any" output="false">
+<cffunction name="getIDFromPath" output="false">
 <cfargument name="path">
 	<cfreturn listLast(listGetat(getDirectoryFromPath(arguments.path),listLen(replace(getDirectoryFromPath(arguments.path),'\','/','all'),'/')-1,'/'),"_")>
 </cffunction>
 
-<cffunction name="addEventHandler" output="false" returntype="void">
+<cffunction name="addEventHandler" output="false">
 <cfargument name="component">
 <cfargument name="siteID" required="true">
 <cfargument name="persist" required="true" default="true">
@@ -2570,7 +2570,7 @@ select * from rs order by name
 
 </cffunction>
 
-<cffunction name="getEventHandlerFromPath" output="false" returntype="any">
+<cffunction name="getEventHandlerFromPath" output="false">
 <cfargument name="component">
 	<cfset var eventhandler=createObject("component",arguments.component)>
 	<cfif structKeyExists(eventHandler,"init")>
@@ -2579,7 +2579,7 @@ select * from rs order by name
 	<cfreturn eventHandler>
 </cffunction>
 
-<cffunction name="getSiteListener" ouput="false" returntype="any">
+<cffunction name="getSiteListener" ouput="false">
 <cfargument name="siteID">
 <cfargument name="runat">
 

@@ -55,7 +55,7 @@ Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-	<cffunction name="init" access="public" output="false" returntype="any">
+	<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="emailDAO" type="any" required="yes"/>
 		<cfargument name="emailGateway" type="any" required="yes"/>
@@ -73,40 +73,40 @@ Mura CMS.
 		<cfreturn this />	
 	</cffunction>
 
-	<cffunction name="getBean" access="public" output="false" returntype="any">
+	<cffunction name="getBean" output="false">
 		<cfargument name="beanName" default="email">
 		<cfreturn super.getBean(arguments.beanName)>
 	</cffunction>
 
-	<cffunction name="getList" access="public" output="false" returntype="query">
+	<cffunction name="getList" output="false">
 		<cfargument name="data" type="struct"/>
 		<cfset var rs ="" />
 		<cfset rs=variables.emailGateway.getList(data) />
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getPrivateGroups" access="public" output="false" returntype="query">
+	<cffunction name="getPrivateGroups" output="false">
 		<cfargument name="siteid" type="string"/>
 		<cfset var rs ="" />	
 		<cfset rs=variables.emailGateway.getPrivateGroups(arguments.siteid) />
 		<cfreturn rs />
 	</cffunction>
 
-	<cffunction name="getPublicGroups" access="public" output="false" returntype="query">
+	<cffunction name="getPublicGroups" output="false">
 		<cfargument name="siteid" type="string"/>
 		<cfset var rs ="" />
 		<cfset rs=variables.emailGateway.getPublicGroups(arguments.siteid) />
 		<cfreturn rs />
 	</cffunction>
 
-	<cffunction name="getMailingLists" access="public" output="false" returntype="query">
+	<cffunction name="getMailingLists" output="false">
 		<cfargument name="siteid" type="string"/>
 		<cfset var rs ="" />
 		<cfset rs=variables.emailGateway.getMailingLists(arguments.siteid) />
 		<cfreturn rs />
 	</cffunction>
 
-	<cffunction name="save" access="public" output="false" returntype="any">
+	<cffunction name="save" output="false">
 		<cfargument name="data" />
 		<cfset var rs="">
 		<cfset var emailBean="">
@@ -138,7 +138,7 @@ Mura CMS.
 		<cfreturn update(arguments.data) />
 	</cffunction>
 	
-	<cffunction name="update" access="public" output="false" returntype="void">
+	<cffunction name="update" output="false">
 		<cfargument name="args" type="struct"/>	
 		<cfset var emailBean = "" /> 
 		<cfset var data=arguments.args />
@@ -193,19 +193,19 @@ Mura CMS.
 		</cfswitch>
 	</cffunction>
 
-	<cffunction name="read" access="public" output="false" returntype="any">
+	<cffunction name="read" output="false">
 		<cfargument name="emailid" type="string" default="" required="yes" />
 		<cfset var emailBean ="" />
 		<cfset emailBean=variables.emailDAO.read(arguments.emailid) />
 		<cfreturn emailBean />
 	</cffunction>
 
-	<cffunction name="send" access="public" output="false" returntype="void">
+	<cffunction name="send" output="false">
 		<cfset var pluginEvent=""/>
 		<cfset variables.emailUtility.send() />
 	</cffunction>
 
-	<cffunction name="forward" access="public" output="false" returntype="void">
+	<cffunction name="forward" output="false">
 		<cfargument name="data" type="struct"/>
 		<cfset var pluginEvent=""/>
 
@@ -222,63 +222,63 @@ Mura CMS.
 		<cfset getPluginManager().announceEvent('onAfterEmailForward',pluginEvent)/>
 	</cffunction>
 
-	<cffunction name="track" access="public" output="false" returntype="void">
+	<cffunction name="track" output="false">
 		<cfargument name="emailid" type="string" required="yes">
 		<cfargument name="email" type="string" required="yes">
 		<cfargument name="type" type="string" required="yes">
 		<cfset variables.emailUtility.track(arguments.emailid,arguments.email,arguments.type)/>
 	</cffunction>
 
-	<cffunction name="getStat" access="public" output="false" returntype="numeric">
+	<cffunction name="getStat" output="false">
 		<cfargument name="emailid" type="string">
 		<cfargument name="type" type="string">
 		<cfreturn variables.emailGateway.getStat(arguments.emailid,arguments.type) />
 	</cffunction>
 
-	<cffunction name="trackBounces" access="public" output="false" returntype="void">
+	<cffunction name="trackBounces" output="false">
 		<cfargument name="siteid" type="string" required="yes">
 		<cfset variables.emailUtility.trackBounces(arguments.siteid) />
 	</cffunction>
 
-	<cffunction name="getBounces" access="public" output="false" returntype="any">
+	<cffunction name="getBounces" output="false">
 		<cfargument name="emailid" type="string">
 		<cfreturn variables.emailGateway.getBounces(arguments.emailid) />
 	</cffunction>
 
-	<cffunction name="getReturns" access="public" output="false" returntype="any">
+	<cffunction name="getReturns" output="false">
 		<cfargument name="emailid" type="string">
 		<cfreturn variables.emailGateway.getReturns(arguments.emailid) />
 	</cffunction>
 
-	<cffunction name="getReturnsByUser" access="public" output="false" returntype="any">
+	<cffunction name="getReturnsByUser" output="false">
 		<cfargument name="emailid" type="string">
 		<cfreturn variables.emailGateway.getReturnsByUser(arguments.emailid) />
 	</cffunction>
 
-	<cffunction name="getSentCount" access="public" output="false" returntype="any">
+	<cffunction name="getSentCount" output="false">
 		<cfargument name="siteid" type="string" default="">
 		<cfargument name="startDate" type="string" default="">
 		<cfargument name="stopDate" type="string" default="">
 		<cfreturn variables.emailGateway.getSentCount(arguments.siteid, arguments.startDate, arguments.stopDate) />
 	</cffunction>
 
-	<cffunction name="getAllBounces" access="public" output="false" returntype="any">
+	<cffunction name="getAllBounces" output="false">
 		<cfargument name="data" type="struct">
 		<cfreturn variables.emailGateway.getAllBounces(arguments.data) />
 	</cffunction>
 
-	<cffunction name="deleteBounces" access="public" output="false" returntype="void">
+	<cffunction name="deleteBounces" output="false">
 		<cfargument name="data" type="struct">
 		<cfreturn variables.emailGateway.deleteBounces(arguments.data) />
 	</cffunction>
 
-	<cffunction name="getAddresses" access="public" output="false" returntype="query">
+	<cffunction name="getAddresses" output="false">
 		<cfargument name="groupList" type="String" required="true">
 		<cfargument name="siteID" type="String" required="true">
 		<cfreturn variables.emailUtility.getAddresses(arguments.groupList,arguments.siteID) />
 	</cffunction>
 
-	<cffunction name="getEmailActivity" access="public" output="false" returntype="query" >
+	<cffunction name="getEmailActivity" output="false" >
 		<cfargument name="siteid" type="string" />
 		<cfargument name="limit" type="numeric" required="true" default="3">
 		<cfargument name="startDate" type="string" required="true" default="">
@@ -286,7 +286,7 @@ Mura CMS.
 		<cfreturn variables.emailGateway.getEmailActivity(arguments.siteID,arguments.limit,arguments.startDate,arguments.stopDate) />
 	</cffunction>
 
-	<cffunction name="getTemplates" access="public" output="false" returntype="any">
+	<cffunction name="getTemplates" output="false">
 		<cfargument name="siteid" type="string" required="true">
 		<cfreturn variables.emailUtility.getTemplates(arguments.siteid)>
 	</cffunction>

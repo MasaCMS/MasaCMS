@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.Factory" output="false">
 
-<cffunction name="init" output="false" returnType="any">
+<cffunction name="init" output="false">
 <cfargument name="siteid">
 <cfargument name="standardEventsHandler">
 <cfargument name="pluginManager">
@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="get" access="public" returntype="any" output="false">
+<cffunction name="get" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="localHandler" default="" required="true" />
 		<!---<cfargument name="persist" default="true" required="true" />--->
@@ -132,13 +132,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="wrapHandler" access="public"  output="false">
+<cffunction name="wrapHandler"  output="false">
 <cfargument name="handler">
 <cfargument name="eventName">
 <cfreturn createObject("component","mura.plugin.pluginStandardEventWrapper").init(arguments.handler,arguments.eventName)>
 </cffunction>
 
-<cffunction name="has" access="public" returntype="boolean" output="false">
+<cffunction name="has" returntype="boolean" output="false">
 	<cfargument name="key" type="string" required="true" />
 	<cfreturn structKeyExists( variables.collection , getHashKey( arguments.key ) ) >
 </cffunction>

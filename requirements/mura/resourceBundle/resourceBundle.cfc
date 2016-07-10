@@ -20,7 +20,7 @@
 <cfset variables.javaLocale=createObject("java","java.util.Locale") />
 <cfset variables.utils=createObject("component","utils") />
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 <cfargument name="locale"  type="string" required="true">
 <cfargument name="resourceDirectory"  type="string" default="" required="true">
 	
@@ -50,11 +50,11 @@
 </cffunction>
 
 
-<cffunction name="getUtils" returntype="any" output="false">
+<cffunction name="getUtils" output="false">
 	<cfreturn variables.utils />
 </cffunction>
 
-<cffunction name="convertToUTF" returntype="any" hint="reads and parses java resource bundle per locale">
+<cffunction name="convertToUTF" hint="reads and parses java resource bundle per locale">
 	<cfargument name="rbfile">
 	<cfscript>
 		var keys=""; // var to hold rb keys
@@ -85,7 +85,7 @@
 	</cfscript>
 </cffunction>
 
-<cffunction name="LoadResourceBundleLegacy" returntype="any" hint="reads and parses java resource bundle per locale">
+<cffunction name="LoadResourceBundleLegacy" hint="reads and parses java resource bundle per locale">
 	<cfargument name="rbFile">
 
 	<cfscript>
@@ -108,7 +108,7 @@
 
 </cffunction> 
 
-<cffunction name="LoadResourceBundle" returntype="any" hint="reads and parses java resource bundle per locale">
+<cffunction name="LoadResourceBundle" hint="reads and parses java resource bundle per locale">
 	<cfscript>
 		var isOk=false; // success flag
 		var keys=""; // var to hold rb keys
@@ -167,7 +167,7 @@
 
 </cffunction> 
 
-<cffunction name="getResourceBundle" returntype="any" access="public" output="false">
+<cffunction name="getResourceBundle" output="false">
 	<cfif not variables.isLoaded>	
 		<cfset variables.resourceBundle=loadResourceBundle() />			
 	</cfif>	
@@ -175,7 +175,7 @@
 	<cfreturn variables.resourceBundle />	
 </cffunction>
 
-<cffunction name="messageFormat" access="public" output="no" returnType="string" hint="performs messageFormat on compound rb string">
+<cffunction name="messageFormat" output="no" hint="performs messageFormat on compound rb string">
 	<cfargument name="thisPattern" required="yes" type="string" hint="pattern to use in formatting">
 	<cfargument name="args" required="yes" hint="substitution values"> <!--- array or single value to format --->
 
@@ -208,7 +208,7 @@
 		</cftry>
 </cffunction>
 
-<cffunction name="verifyPattern" access="public" output="no" returnType="boolean" hint="performs verification on MessageFormat pattern">
+<cffunction name="verifyPattern" output="no" returnType="boolean" hint="performs verification on MessageFormat pattern">
 	<cfargument name="pattern" required="yes" type="string" hint="format pattern to test">
 	<cfscript>
 		var test="";
@@ -223,7 +223,7 @@
 	</cfscript>		
 </cffunction>
 
-<cffunction name="getKeyValue" returnType="String">
+<cffunction name="getKeyValue">
 	<cfargument name="key">
 	<cfargument name="useMuraDefault" required="true" type="boolean" default="false">
 	

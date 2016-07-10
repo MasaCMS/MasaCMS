@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.broadcastCachePurges=variables.configBean.getValue("broadcastCachePurges")>
@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="purgeCache" returntype="void" access="public" output="false">
+<cffunction name="purgeCache" output="false">
 	<cfargument name="siteid" required="true" default="">
 	<cfargument name="name" required="true" default="both" hint="data, output or both">
 
@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeUserCache" returntype="void" access="public" output="false">
+<cffunction name="purgeUserCache" output="false">
 	<cfargument name="userID" required="true" default="">
 	
 	<cfif variables.broadcastCachePurges>
@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeFeedCache" returntype="void" access="public" output="false">
+<cffunction name="purgeFeedCache" output="false">
 	<cfargument name="feedID" required="true" default="">
 	
 	<cfif variables.broadcastCachePurges>
@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeCategoryCache" returntype="void" access="public" output="false">
+<cffunction name="purgeCategoryCache" output="false">
 	<cfargument name="categoryID" required="true" default="">
 	
 	<cfif variables.broadcastCachePurges>
@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeCategoryDescendentsCache" returntype="void" access="public" output="false">
+<cffunction name="purgeCategoryDescendentsCache" output="false">
 	<cfargument name="categoryID" required="true" default="">
 
 	<cfif variables.broadcastCachePurges>
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeContentCache" returntype="void" access="public" output="false">
+<cffunction name="purgeContentCache" output="false">
 	<cfargument name="contentID" required="true" default="">
 	<cfargument name="siteID" required="true" default="">
 	
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeCacheKey" returntype="void" access="public" output="false">
+<cffunction name="purgeCacheKey" output="false">
 	<cfargument name="cacheName" required="true" default="data">
 	<cfargument name="cacheKey" required="true" default="">
 	<cfargument name="siteid" required="true" default="">
@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeContentDescendentsCache" returntype="void" access="public" output="false">
+<cffunction name="purgeContentDescendentsCache" output="false">
 	<cfargument name="contentID" required="true" default="">
 	<cfargument name="siteID" required="true" default="">
 
@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 </cffunction>	
 
-<cffunction name="broadcastCommand" returntype="void" access="public" output="false">
+<cffunction name="broadcastCommand" output="false">
 	<cfargument name="command" required="true" default="">
 	<cfset var rsPeers=getPeers()>
 
@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="reload" output="false" returntype="void">	
+<cffunction name="reload" output="false">	
 	<cfargument name="broadcast" default="true">
 
 	<cfset touchInstance()>

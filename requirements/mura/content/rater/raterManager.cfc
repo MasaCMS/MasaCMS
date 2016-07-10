@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-<cffunction name="init" access="public" returntype="any">
+<cffunction name="init">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfset variables.configBean=arguments.configBean />
 	<cfreturn this>
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn super.getBean(arguments.beanName)>
 </cffunction>
 
-<cffunction name="getStarText" access="public" output="false" returntype="string">
+<cffunction name="getStarText" output="false">
 <cfargument name="avg" type="any" default="" required="yes"/>
 
 	<cfset var num="" />
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <cfreturn num />
 </cffunction>
 
-<cffunction name="saveRate" access="public" output="true" returntype="any">
+<cffunction name="saveRate" output="true">
 	<cfargument name="contentID" type="string" default="" required="yes"/>
 	<cfargument name="siteID" type="string" default="" required="yes"/>
 	<cfargument name="userID" type="string" default="" required="yes"/>
@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <cfreturn rating />
 </cffunction>
 
-<cffunction name="readRate" access="public" output="true" returntype="any">
+<cffunction name="readRate" output="true">
 	<cfargument name="contentID" type="string" default="" required="yes"/>
 	<cfargument name="siteID" type="string" default="" required="yes"/>
 	<cfargument name="userID" type="string" default="" required="yes"/>
@@ -136,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <cfreturn rating />
 </cffunction>
 
-<cffunction name="getAvgRating" access="public" output="true" returntype="query">
+<cffunction name="getAvgRating" output="true">
 	<cfargument name="contentID" type="string" default="" required="yes"/>
 	<cfargument name="siteID" type="string" default="" required="yes"/>
 	
@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <cfreturn rsAvgRating />
 </cffunction>
 
-<cffunction name="getTopRated" access="public" output="true" returntype="query">
+<cffunction name="getTopRated" output="true">
 	<cfargument name="siteID" type="string" default="" required="yes"/>
 	<cfargument name="threshold" type="numeric" default="0" required="yes"/>
 	<cfargument name="limit" type="numeric" default="0" required="yes"/>

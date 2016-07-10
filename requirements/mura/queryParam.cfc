@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.isValid=true />
 <cfset variables.grouprelationships="(,and (,or (,),and not (,or not (,openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping">
 
-<cffunction name="init" returntype="any" access="public">
+<cffunction name="init">
 	<cfargument name="relationship" default="">
 	<cfargument name="field" default="">
 	<cfargument name="dataType" default="">

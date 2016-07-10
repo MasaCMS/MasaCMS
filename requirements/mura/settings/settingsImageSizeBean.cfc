@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="width" type="string" default="AUT0" required="true" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	
 	<cfset super.init(argumentCollection=arguments)>
 	
@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="loadBy" access="public" output="false">
+<cffunction name="loadBy" output="false">
 	<cfargument name="sizeID">
 	<cfargument name="name">
 	<cfargument name="siteID" default="#variables.instance.siteID#">
@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getQuery" access="public" output="false" returntype="query">
+<cffunction name="getQuery" output="false">
 
 	<cfset var rs=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs',cachedwithin=createTimeSpan(0, 0, 0, 1))#">
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false">
+<cffunction name="save"  output="false">
 	<cfset var rs=""/>
 
 	<cfif getQuery().recordcount>
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="delete"  access="public" output="false">
+<cffunction name="delete"  output="false">
 
 	<cfquery>
 		delete from timagesizes 

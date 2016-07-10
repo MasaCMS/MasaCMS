@@ -24,7 +24,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="read" access="public" returntype="any" output="false">
+<cffunction name="read" output="false">
 	<cfargument name="changesetID" type="string" default=""/>
 	<cfargument name="name" type="string" default=""/>
 	<cfargument name="siteID" type="string" default=""/>
@@ -81,7 +81,7 @@
 
 </cffunction>
 
-<cffunction name="save" access="public" returntype="any" output="false">
+<cffunction name="save" output="false">
 	<cfargument name="bean"/>
 	
 	<cfset arguments.bean.validate()>
@@ -222,7 +222,7 @@
 
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="any" output="false">
+<cffunction name="delete" output="false">
 <cfargument name="changesetID">
     <cfset var bean=read(arguments.changesetID) />
 	
@@ -245,7 +245,7 @@
 
 </cffunction>
 
-<cffunction name="getQuery" access="public" returntype="any" output="false">
+<cffunction name="getQuery" output="false">
 <cfargument name="siteID">
 <cfargument name="published">
 <cfargument name="publishDate">
@@ -306,7 +306,7 @@
 	<cfreturn rsChangeSets>
 </cffunction>
 
-<cffunction name="getPendingByContentID" access="public" returntype="any" output="false">
+<cffunction name="getPendingByContentID" output="false">
 <cfargument name="contentID">
 <cfargument name="siteID">
 	<cfset var rsPendingChangeSets="">
@@ -324,7 +324,7 @@
 	<cfreturn rsPendingChangeSets>
 </cffunction>
 
-<cffunction name="publishBySchedule" access="public" returntype="any" output="false">
+<cffunction name="publishBySchedule" output="false">
 	<cfset var rsPendingChangeSets="">
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPendingChangeSets')#">
@@ -342,7 +342,7 @@
 
 </cffunction>
 
-<cffunction name="setSessionPreviewData" access="public" returntype="any" output="false">
+<cffunction name="setSessionPreviewData" output="false">
 <cfargument name="changesetID">
 <cfargument name="append" default="false">
 <cfargument name="showToolbar" default="true">
@@ -491,13 +491,13 @@
 
 </cffunction>
 
-<cffunction name="removeSessionPreviewData" access="public" returntype="any" output="false">
+<cffunction name="removeSessionPreviewData" output="false">
 	<cfset getCurrentUser().setValue("ChangesetPreviewData","")>
 	<cfset request.muraChangesetPreviewToolbar=false>
 	<cfset request.muraChangesetPreview=false>
 </cffunction>
 
-<cffunction name="publish" access="public" returntype="any" output="false">
+<cffunction name="publish" output="false">
 <cfargument name="changesetID">
 <cfargument name="byDate" default="false">
 	<cfif not hasPendingApprovals(arguments.changesetID)>
@@ -560,7 +560,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="getAssignmentsIterator" access="public" returntype="any" output="false">
+<cffunction name="getAssignmentsIterator" output="false">
 <cfargument name="changesetID">
 <cfargument name="keywords" default="">
 	<cfset var rs=getAssignmentsQuery(argumentCollection=arguments)>
@@ -569,7 +569,7 @@
 	<cfreturn it>
 </cffunction>
 
-<cffunction name="getAssignmentsQuery" access="public" returntype="any" output="false">
+<cffunction name="getAssignmentsQuery" output="false">
 <cfargument name="changesetID">
 <cfargument name="keywords" default="">
 <cfargument name="moduleid" default="">
@@ -599,7 +599,7 @@
 </cffunction>
 
 
-<cffunction name="hasPendingApprovals" access="public" returntype="any" output="false">
+<cffunction name="hasPendingApprovals" output="false">
 <cfargument name="changesetID">
 
 	<cfset var rs="">
@@ -613,7 +613,7 @@
 	<cfreturn rs.recordcount>
 </cffunction>
 
-<cffunction name="removeItem" access="public" returntype="any" output="false">
+<cffunction name="removeItem" output="false">
 <cfargument name="changesetID">
 <cfargument name="contentHistID">
 	
@@ -627,14 +627,14 @@
 	
 </cffunction>
 
-<cffunction name="getIterator" access="public" returntype="any" output="false">
+<cffunction name="getIterator" output="false">
 <cfargument name="siteID">
 	<cfset var iterator=getBean("changesetIterator")>
 	<cfset iterator.setQuery(getQuery(argumentCollection=arguments))>
 	<cfreturn iterator>
 </cffunction>
 
-<cffunction name="getFeed" access="public" returntype="any" output="false">
+<cffunction name="getFeed" output="false">
 <cfargument name="siteID">
 	<cfreturn getBean("beanFeed").setEntityName('changeset').setTable('tchangesets')>
 </cffunction>
@@ -645,7 +645,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getTagCloud" access="public" output="false" returntype="query">
+<cffunction name="getTagCloud" output="false">
 	<cfargument name="siteID" type="String" required="true" default="">
 	
 	<cfset var rsTagCloud= ''/>

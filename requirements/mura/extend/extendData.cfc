@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.idLookUp=structNew()>
 <cfset variables.instance.nameLookUp=structNew()>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfargument name="configBean">
 	<cfargument name="baseID"/>
 	<cfargument name="dataTable" required="true" default="tclassextenddata"/>
@@ -89,67 +89,67 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getBaseID" returntype="String" access="public" output="false">
+<cffunction name="getBaseID" output="false">
 	<cfreturn variables.instance.BaseID />
 </cffunction>
 
-<cffunction name="setBaseID" returntype="void" access="public" output="false">
+<cffunction name="setBaseID" output="false">
 	<cfargument name="BaseID" type="String" />
 	<cfset variables.instance.BaseID = trim(arguments.BaseID) />
 </cffunction>
 
-<cffunction name="getDefinitionsQuery" access="public" output="false">
+<cffunction name="getDefinitionsQuery" output="false">
 	<cfreturn variables.instance.definitions />
 </cffunction>
 
-<cffunction name="setDefinitions" returntype="void" access="public" output="false">
+<cffunction name="setDefinitions" output="false">
 	<cfargument name="definitions" />
 	<cfset variables.instance.definitions= arguments.definitions />
 </cffunction>
 
-<cffunction name="setSourceIterator" returntype="void" access="public" output="false">
+<cffunction name="setSourceIterator" output="false">
 	<cfargument name="sourceIterator" />
 	<cfset variables.instance.sourceIterator= arguments.sourceIterator />
 </cffunction>
 
 
-<cffunction name="getDataTable" returntype="String" access="public" output="false">
+<cffunction name="getDataTable" output="false">
 	<cfreturn variables.instance.dataTable />
 </cffunction>
 
-<cffunction name="setDataTable" returntype="void" access="public" output="false">
+<cffunction name="setDataTable" output="false">
 	<cfargument name="dataTable" type="String" />
 	<cfset variables.instance.dataTable = trim(arguments.dataTable) />
 </cffunction>
 
-<cffunction name="getType" returntype="String" access="public" output="false">
+<cffunction name="getType" output="false">
 	<cfreturn variables.instance.type />
 </cffunction>
 
-<cffunction name="setType" returntype="void" access="public" output="false">
+<cffunction name="setType" output="false">
 	<cfargument name="type" type="String" />
 	<cfset variables.instance.type = trim(arguments.type) />
 </cffunction>
 
-<cffunction name="getSubType" returntype="String" access="public" output="false">
+<cffunction name="getSubType" output="false">
 	<cfreturn variables.instance.subType />
 </cffunction>
 
-<cffunction name="setSubType" returntype="void" access="public" output="false">
+<cffunction name="setSubType" output="false">
 	<cfargument name="subType" type="String" />
 	<cfset variables.instance.subType = trim(arguments.subType) />
 </cffunction>
 
-<cffunction name="getSiteID" returntype="String" access="public" output="false">
+<cffunction name="getSiteID" output="false">
 	<cfreturn variables.instance.siteID />
 </cffunction>
 
-<cffunction name="setSiteID" returntype="void" access="public" output="false">
+<cffunction name="setSiteID" output="false">
 	<cfargument name="siteID" type="String" />
 	<cfset variables.instance.siteID = trim(arguments.siteID) />
 </cffunction>
 
-<cffunction name="getAttribute" access="public" returntype="any" output="false">
+<cffunction name="getAttribute" output="false">
 <cfargument name="key">
 <cfargument name="useMuraDefault" type="boolean" required="true" default="false">
 <cfset var rs="" />
@@ -186,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="loadData" access="public" returntype="void" output="false">
+<cffunction name="loadData" output="false">
 	<cfset var rsExtendedAttributes=""/>
 	<cfset var rsCombine=""/>
 	<cfset var rsPreValue=""/>
@@ -328,23 +328,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="setAllValues" returntype="any" access="public" output="false">
+<cffunction name="setAllValues" output="false">
 	<cfargument name="instance">
 	<cfset variables.instance=arguments.instance/>
 </cffunction>
 
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+<cffunction name="getAllValues" returntype="struct" output="false">
 		<cfreturn variables.instance />
 </cffunction>
 
-<cffunction name="getAllExtendSetData" access="public" returntype="struct" output="false">
+<cffunction name="getAllExtendSetData" returntype="struct" output="false">
 	<cfset var extData=structNew() />	
 	<cfreturn convertDataToStruct(variables.instance.data)/>
 	<cfreturn extData/>	
 </cffunction>
 
 <!---
-<cffunction name="getExtendSetDataByAttributeName" access="public" returntype="struct" output="false">
+<cffunction name="getExtendSetDataByAttributeName" returntype="struct" output="false">
 	<cfargument name="key">
 	<cfset var rsExtendSetDataByAttributeName="" />
 	
@@ -361,7 +361,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 --->
 
-<cffunction name="convertDataToStruct" output="false" returntype="any">
+<cffunction name="convertDataToStruct" output="false">
 <cfargument name="rs">
 
 	<cfset var extData=structNew() />

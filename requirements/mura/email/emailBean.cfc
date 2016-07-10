@@ -77,7 +77,7 @@ Mura CMS.
 	<cfset variables.entityName = 'email'>
 	<cfset variables.instanceName= 'subject'>
 
-	<cffunction name="Init" access="public" output="false" returntype="any">
+	<cffunction name="Init" output="false">
 		<cfset super.init(argumentCollection=arguments)>
 		
 		<cfset variables.instance.emailID="" />
@@ -100,19 +100,19 @@ Mura CMS.
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="setEmailManager" access="public" output="false" returntype="any">
+	<cffunction name="setEmailManager" output="false">
 		<cfargument name="emailManager">
 		<cfset variables.emailManager=arguments.emailManager>
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="setConfigBean" access="public" output="false" returntype="any">
+	<cffunction name="setConfigBean" output="false">
 		<cfargument name="configBean">
 		<cfset variables.configBean=arguments.configBean>
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="getEmailID" access="public" output="false" returntype="any">
+	<cffunction name="getEmailID" output="false">
 	    <cfif not len(variables.instance.EmailID)>
 			<cfset variables.instance.EmailID = createUUID() />
 		</cfif>
@@ -120,40 +120,40 @@ Mura CMS.
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="setCreatedDate" access="public" output="false" returntype="any">
+	<cffunction name="setCreatedDate" output="false">
 	    <cfargument name="CreatedDate" type="string" required="true">
 		<cfset variables.instance.CreatedDate = parseDateArg(arguments.CreatedDate)/>
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="setDeliveryDate" access="public" output="false" returntype="any">
+	<cffunction name="setDeliveryDate" output="false">
 	    <cfargument name="DeliveryDate" type="string" required="true">
 		<cfset variables.instance.DeliveryDate = parseDateArg(arguments.DeliveryDate)/>
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="setLastUpdateBy" access="public" output="false" returntype="any">
+	<cffunction name="setLastUpdateBy" output="false">
 	    <cfargument name="LastUpdateBy" type="string" required="true">
 	    <cfset variables.instance.LastUpdateBy = left(trim(arguments.LastUpdateBy),50) />
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="setGroupList" access="public" output="false" returntype="any">
+	<cffunction name="setGroupList" output="false">
 	    <cfargument name="groupList" type="string" required="true">
 	    <cfset variables.instance.groupID = arguments.groupList />
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="save" access="public" output="false" returntype="any">
+	<cffunction name="save" output="false">
 		<cfset setAllValues(variables.emailManager.save(this).getAllValues())>
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="delete" access="public" output="false" returntype="void">
+	<cffunction name="delete" output="false">
 		<cfset variables.emailManager.delete(getEmailID())>
 	</cffunction>
 
-	<cffunction name="getPrimaryKey" access="public" output="false" returntype="string">
+	<cffunction name="getPrimaryKey" output="false">
 		<cfreturn "emailID">
 	</cffunction>
 

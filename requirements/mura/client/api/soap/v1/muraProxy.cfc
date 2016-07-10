@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 
-<cffunction name="login" returntype="any" output="false" access="remote">
+<cffunction name="login" output="false" access="remote">
 	<cfargument name="username">
 	<cfargument name="password">
 	<cfargument name="siteID">
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="logout" returntype="any" output="false" access="remote">
+<cffunction name="logout" output="false" access="remote">
 	<cfargument name="authToken">
 	
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getService" returntype="any" output="false">
+<cffunction name="getService" output="false">
 <cfargument name="serviceName">
 	
 	<cfif not structKeyExists(application,"proxyServices")>
@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.proxyServices[arguments.serviceName]>
 </cffunction>
 
-<cffunction name="isValidSession" returntype="any" output="false" access="remote">
+<cffunction name="isValidSession" output="false" access="remote">
 <cfargument name="authToken">
 	<cfset var rsSession="">
 	
@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getSession" returntype="any" output="false">
+<cffunction name="getSession" output="false">
 <cfargument name="authToken">
 	<cfset var rsSession="">
 	<cfset var sessionData=structNew()>
@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn sessionData>
 </cffunction>
 
-<cffunction name="call" returntype="any" access="remote">
+<cffunction name="call" access="remote">
 <cfargument name="serviceName" type="string">
 <cfargument name="methodName" type="string">
 <cfargument name="authToken" type="string" default="">
@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cffunction>
 
-<cffunction name="callWithStringArgs" returntype="any" access="remote">
+<cffunction name="callWithStringArgs" access="remote">
 	<cfargument name="serviceName" type="string">
 	<cfargument name="methodName" type="string">
 	<cfargument name="authToken" type="string" default="">

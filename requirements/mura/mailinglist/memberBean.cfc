@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="isVerified" type="numeric" default="0" required="true" />
 <cfproperty name="created" type="date" default="" required="true" />
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.MLID="" />
@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setCreated" output="false" access="public">
+<cffunction name="setCreated" output="false">
     <cfargument name="Created" type="string" required="true">
 	<cfif lsisDate(arguments.created)>
 		<cftry>

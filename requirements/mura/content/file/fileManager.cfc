@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 		<cfargument name="fileDAO" type="any" required="yes"/>
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="settingsManager" type="any" required="yes"/>
@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="create" returntype="string" access="public" output="false">
+<cffunction name="create" output="false">
 		<cfargument name="fileObj" type="any" required="yes"/>
 		<cfargument name="contentid" type="any" required="yes"/>
 		<cfargument name="siteid" type="any" required="yes"/>
@@ -104,21 +104,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteAll" returntype="void" access="public" output="false">
+<cffunction name="deleteAll" output="false">
 		<cfargument name="contentID" type="string" required="yes"/>
 
 		<cfset variables.fileDAO.deleteAll(arguments.contentID) />
 
 </cffunction>
 
-<cffunction name="deleteVersion" returntype="void" access="public" output="false">
+<cffunction name="deleteVersion" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 
 		<cfset variables.fileDAO.deleteVersion(arguments.fileID) />
 
 </cffunction>
 
-<cffunction name="deleteIfNotUsed" returntype="void" access="public" output="false">
+<cffunction name="deleteIfNotUsed" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfargument name="contentHistID" type="any" required="yes"/>
 
@@ -126,42 +126,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readMeta" returntype="query" access="public" output="false">
+<cffunction name="readMeta" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 
 		<cfreturn variables.fileDAO.readMeta(arguments.fileID) />
 
 </cffunction>
 
-<cffunction name="read" returntype="query" access="public" output="false">
+<cffunction name="read" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 
 		<cfreturn variables.fileDAO.read(arguments.fileID) />
 
 </cffunction>
 
-<cffunction name="readAll" returntype="query" access="public" output="false">
+<cffunction name="readAll" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 
 		<cfreturn variables.fileDAO.readAll(arguments.fileID) />
 
 </cffunction>
 
-<cffunction name="readSmall" returntype="query" access="public" output="false">
+<cffunction name="readSmall" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 
 		<cfreturn variables.fileDAO.readSmall(arguments.fileID) />
 
 </cffunction>
 
-<cffunction name="readMedium" returntype="query" access="public" output="false">
+<cffunction name="readMedium" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 
 		<cfreturn variables.fileDAO.readMedium(arguments.fileID) />
 
 </cffunction>
 
-<cffunction name="renderFile" output="true" access="public">
+<cffunction name="renderFile" output="true">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
 <cfargument name="size" type="string" required="true" default="">
@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="renderSmall" output="true" access="public">
+<cffunction name="renderSmall" output="true">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
 
@@ -281,7 +281,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="renderMedium" output="true" access="public">
+<cffunction name="renderMedium" output="true">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
 
@@ -323,7 +323,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="renderMimeType" output="true" access="public" hint="deprecated in favor of streamFile">
+<cffunction name="renderMimeType" output="true" hint="deprecated in favor of streamFile">
 <cfargument name="mimeType" default="" required="yes" type="string">
 <cfargument name="file" default="" required="yes" type="any">
 
@@ -350,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn fileStruct>
 </cffunction>
 
-<cffunction name="renderS3" output="true" access="public" returntype="any">
+<cffunction name="renderS3" output="true">
 	<cfargument name="fileid" type="string" required="true" />
 	<cfargument name="method" type="string" required="false" default="inline" />
 	<cfargument name="size" type="string" required="false" default="" />
@@ -423,7 +423,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn local.results>
 </cffunction>
 
-<cffunction name="emulateUpload" returntype="any" output="false">
+<cffunction name="emulateUpload" output="false">
 	<cfargument name="filePath" type="string" required="true" />
 	<cfargument name="destinationDir" type="string" required="true" default="#variables.configBean.getTempDir()#"/>
 	<cfset var local = structNew() />
@@ -590,7 +590,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cffunction>
 
-<cffunction name="getPostedClientFileName" returntype="string" output="false" hint="">
+<cffunction name="getPostedClientFileName" output="false" hint="">
     <cfargument name="fieldName" required="true" type="string" hint="Name of the Form field" />
     <cftry>
 	    <cfif variables.configBean.getCompiler() eq 'Adobe'>
@@ -792,7 +792,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.imageProcessor.getCustomImage(argumentCollection=arguments) />
 </cffunction>
 
-<cffunction name="createHREFForImage" output="false" returntype="any">
+<cffunction name="createHREFForImage" output="false">
 <cfargument name="siteID">
 <cfargument name="fileID" default="">
 <cfargument name="fileExt" default="">

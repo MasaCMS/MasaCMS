@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="userUtility" type="any" required="yes"/>
 <cfargument name="userDAO" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="rememberMe" access="public" returntype="boolean" output="false">
+<cffunction name="rememberMe" returntype="boolean" output="false">
 	<cfargument name="userid" required="yes" type="string" default="" />
 	<cfargument name="userHash" required="yes" type="string" default="" />
 
@@ -315,7 +315,7 @@ If you did not request a new authorization, contact #contactEmail#.
 	</cfif>
 </cffunction>
 
-<cffunction name="login" access="public" output="false">
+<cffunction name="login" output="false">
 	<cfargument name="data" type="struct" />
 	<cfargument name="loginObject" type="any"  required="true" default=""/>
 
@@ -406,7 +406,7 @@ If you did not request a new authorization, contact #contactEmail#.
 
 </cffunction>
 
-<cffunction name="remoteLogin" access="public" output="false" returntype="any">
+<cffunction name="remoteLogin" output="false">
 	<cfargument name="data" type="struct" />
 	<cfargument name="loginObject" type="any"  required="true" default=""/>
 
@@ -426,7 +426,7 @@ If you did not request a new authorization, contact #contactEmail#.
 
 </cffunction>
 
-<cffunction name="loginByUserID" access="public" output="true">
+<cffunction name="loginByUserID" output="true">
 	<cfargument name="data" type="struct" />
 	<cfset var isloggedin =false />
 	<cfset var returnURL=""/>
@@ -505,7 +505,7 @@ If you did not request a new authorization, contact #contactEmail#.
 </cffunction>
 
 
-<cffunction name="logout" returntype="void" access="public" output="false">
+<cffunction name="logout" output="false">
 	<cfset var pluginEvent="">
 
 	<cfif structKeyExists(request,"servletEvent")>

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" required="true" default=""/>
 	<cfargument name="fileWriter" required="true" default=""/>
 	<cfset variables.configBean=arguments.configBean />
@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="update" output="false" returntype="any" access="public">
+<cffunction name="update" output="false">
 <cfargument name="siteID" required="true" default="">
 <cfset var baseDir=expandPath("/#variables.configBean.getWebRootMap()#")>
 <cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#")>

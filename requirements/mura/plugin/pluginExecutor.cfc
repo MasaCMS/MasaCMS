@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.settingsManager="">
 <cfset variables.pluginManager="">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="configBean">
 	<cfargument name="settingsManager">
 	<cfargument name="pluginManager">
@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="displayObject" output="true" returntype="any">
+<cffunction name="displayObject" output="true">
 <cfargument name="objectID">
 <cfargument name="event">
 <cfargument name="rsDisplayObject">
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn trim(str) />
 </cffunction>
 
-<cffunction name="executeScript" output="false" returntype="any">
+<cffunction name="executeScript" output="false">
 <cfargument name="event" required="true" default="" type="any">
 <cfargument name="scriptFile" required="true" default="" type="any">
 <cfargument name="pluginConfig" required="true" default="" type="any">
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="renderScript" output="true" returntype="any">
+<cffunction name="renderScript" output="true">
 <cfargument name="event" required="true" default="" type="any">
 <cfargument name="scriptFile" required="true" default="" type="any">
 <cfargument name="pluginConfig" required="true" default="" type="any">

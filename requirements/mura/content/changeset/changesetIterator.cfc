@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cfset variables.changesetBean="">
 <cfset variables.recordIDField="changesetID">
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
+<cffunction name="packageRecord" output="false">
 	<cfif NOT isObject(variables.changesetBean)>
 		<cfset variables.changesetBean=getBean('changeset') />
 		<cfset variables.changesetStructTemplate=structCopy(variables.changesetBean.getAllValues())>

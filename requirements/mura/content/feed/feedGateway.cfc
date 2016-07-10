@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes" />
 	<cfargument name="contentIntervalManager" type="any" required="yes" />
 	<cfargument name="permUtility" type="any" required="yes" />
@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getFeeds" access="public" output="false" returntype="query">
+<cffunction name="getFeeds" output="false">
 	<cfargument name="siteID" type="String">
 	<cfargument name="type" type="String">
 	<cfargument name="publicOnly" type="boolean" required="true" default="false">
@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsFeeds />
 </cffunction>
 
-<cffunction name="getDefaultFeeds" access="public" output="false" returntype="query">
+<cffunction name="getDefaultFeeds" output="false">
 	<cfargument name="siteID" type="String">
 
 	<cfset var rsDefaultFeeds ="" />
@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsDefaultFeeds />
 </cffunction>
 
-<cffunction name="getFeed" access="public" output="false" returntype="query">
+<cffunction name="getFeed" output="false">
 	<cfargument name="feedBean" type="any">
 	<cfargument name="tag" required="true" default="">
 	<cfargument name="aggregation" required="true" type="boolean" default="false">
@@ -1034,7 +1034,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn arguments.feedBean.getSortBy() eq 'displayStart' ? getBean('contentCalendarUtilityBean').filterCalendarItems(data=rsFeed,maxitems=0,sortDirection=arguments.feedBean.getSortDirection()) : rsFeed />
 </cffunction>
 
-<cffunction name="getcontentItems" access="public" output="false" returntype="query">
+<cffunction name="getcontentItems" output="false">
 	<cfargument name="feedBean">
 
 	<cfset var rsFeedItems ="" />
@@ -1058,7 +1058,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsFeedItems />
 </cffunction>
 
-<cffunction name="getFeedsByCategoryID" returntype="query" access="public" output="false">
+<cffunction name="getFeedsByCategoryID" output="false">
 	<cfargument name="categoryID" type="string" />
 	<cfargument name="siteID" type="string" />
 
@@ -1083,7 +1083,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsFeedByCategory />
 </cffunction>
 
-<cffunction name="getTypeCount" access="public" output="false" returntype="query">
+<cffunction name="getTypeCount" output="false">
 	<cfargument name="siteID" type="String" required="true" default="">
 	<cfargument name="type" type="String" required="true" default="">
 

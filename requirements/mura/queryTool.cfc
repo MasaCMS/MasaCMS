@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent name="queryTool" hint="Transforms a query into other data types." output="false">
 
 <!--- Public queryTool init() --->
-<cffunction output="false" access="public" returnType="any" name="init">
+<cffunction output="false" name="init">
   <cfargument name="inQuery" type="query" required="true" hint="The query to transform."/>
   <cfset variables.instance = structNew() />
   <cfset variables.instance.inQuery = arguments.inQuery>
@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <!--- Public Array toArray(query inQuery) --->
-<cffunction output="false" access="public" returnType="array" name="toArray" hint="Transforms a query into an array of structures.">
+<cffunction output="false" returnType="array" name="toArray" hint="Transforms a query into an array of structures.">
   <cfset var result = arrayNew(1) />
   <cfset var row = structNew() />
   <cfset var i = "" />
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <!--- Public Struct toStruct(query inQuery, string primaryKey) --->
-<cffunction output="false" access="public" returnType="struct" name="toStruct" hint="Transforms a query into a structure, using a designated column as the key.">
+<cffunction output="false" returnType="struct" name="toStruct" hint="Transforms a query into a structure, using a designated column as the key.">
   <cfargument name="primaryKey" type="string" required="true" hint="The name of the column to be used as the key for the structure.  Should be a unique identifier or rows will be lost!"/>
   
   <cfset var result = structNew() />
@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <!--- Public XML toXml(query inQuery) --->
-<cffunction output="false" access="public" returnType="any" name="toXml" hint="Transforms a query into an XML recordset.">
+<cffunction output="false" name="toXml" hint="Transforms a query into an XML recordset.">
   <cfset var result = "">
   <cfset var i=""/>
   <cfxml variable="result">
@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <!--- Public XML toDelimited(query inQuery) --->
-<cffunction output="false" access="public" returnType="string" name="toDelimited" hint="Transforms a query into a delimited string using the given delimiter and linefeed characters.">
+<cffunction output="false" name="toDelimited" hint="Transforms a query into a delimited string using the given delimiter and linefeed characters.">
   <cfargument name="delimiter" type="string" default="#chr(9)#" hint="Default column delimiter (default is TAB)."/>
   <cfargument name="linefeed" type="string" default="#chr(10)#" hint="Default linefeed (default is chr(10))."/>
 
@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 
-<cffunction name="QueryAppend" access="public" returntype="void" output="false"
+<cffunction name="QueryAppend" output="false"
 	hint="This takes two queries and appends the second one to the first one. This actually updates the first query and does not return anything.">
 
 	<!--- Define arguments. --->

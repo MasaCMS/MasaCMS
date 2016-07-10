@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.entityName = 'user'>
 <cfset variables.instanceName = 'fullname'>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 
 	<cfset super.init(argumentCollection=arguments)>
 
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="set" returnType="any" output="false" access="public">
+<cffunction name="set" output="false">
 	<cfargument name="property" required="true">
     <cfargument name="propertyValue">
 
@@ -213,7 +213,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+<cffunction name="getAllValues" returntype="struct" output="false">
 	<cfargument name="autocomplete" required="true" default="true">
 	<cfset var i="">
 	<cfset var extData="">
@@ -235,20 +235,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance />
 </cffunction>
 
-<cffunction name="getUserID" returnType="string" output="false" access="public">
+<cffunction name="getUserID" output="false">
     <cfif not len(variables.instance.UserID)>
 		<cfset variables.instance.UserID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.UserID />
 </cffunction>
 
-<cffunction name="setLastUpdateBy" access="public" output="false">
+<cffunction name="setLastUpdateBy" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLastLogin" output="false" access="public">
+<cffunction name="setLastLogin" output="false">
     <cfargument name="LastLogin" type="String" required="true">
 	<cfif isDate(arguments.LastLogin)>
     <cfset variables.instance.LastLogin = parseDateTime(arguments.LastLogin) />
@@ -256,19 +256,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLastUpdate" output="false" access="public">
+<cffunction name="setLastUpdate" output="false">
     <cfargument name="LastUpdate" type="string" required="true">
 	<cfset variables.instance.LastUpdate = parseDateArg(arguments.LastUpdate) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setCreated" output="false" access="public">
+<cffunction name="setCreated" output="false">
     <cfargument name="Created" type="string" required="true">
 	<cfset variables.instance.Created = parseDateArg(arguments.Created) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setGroupID" access="public" output="false">
+<cffunction name="setGroupID" output="false">
 	<cfargument name="groupID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">
@@ -285,7 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="removeGroupID" access="public" output="false">
+<cffunction name="removeGroupID" output="false">
 	<cfargument name="groupID" type="String" />
 	<cfset var i=0>
 	<cfset var offset=0>
@@ -302,19 +302,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setUsernameNoCache" output="false" access="public">
+<cffunction name="setUsernameNoCache" output="false">
     <cfargument name="Username" type="string" required="true">
     <cfset variables.instance.Username = trim(arguments.Username) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setPasswordNoCache" output="false" access="public">
+<cffunction name="setPasswordNoCache" output="false">
     <cfargument name="Password" type="string" required="true">
     <cfset variables.instance.Password = trim(arguments.Password) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setCategoryID" access="public" output="false">
+<cffunction name="setCategoryID" output="false">
 	<cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">
@@ -331,7 +331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="removeCategoryID" access="public" output="false">
+<cffunction name="removeCategoryID" output="false">
 	<cfargument name="categoryID" type="String" />
 	<cfset var i=0>
 	<cfset var offset=0>
@@ -348,7 +348,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setAddresses" output="false" access="public" hint="deprecated">
+<cffunction name="setAddresses" output="false" hint="deprecated">
     <cfargument name="addresses" required="true">
     <cfif not isQuery(arguments.addresses)>
 	<cfset variables.instance.addresses = arguments.addresses />
@@ -356,21 +356,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAddresses" returnType="query" output="false" access="public">
+<cffunction name="getAddresses" output="false">
     <cfreturn getAddressesQuery() />
 </cffunction>
 
-<cffunction name="getAddressesQuery" returnType="query" output="false" access="public">
+<cffunction name="getAddressesQuery" output="false">
    <cfreturn variables.userManager.getAddresses(getUserID()) />
 </cffunction>
 
-<cffunction name="getAddressesIterator" returnType="any" output="false" access="public">
+<cffunction name="getAddressesIterator" output="false">
    	<cfset var it=getBean("addressIterator").init()>
 	<cfset it.setQuery(getAddressesQuery())>
 	<cfreturn it />
 </cffunction>
 
-<cffunction name="checkUsername" returntype="boolean" output="false" access="public">
+<cffunction name="checkUsername" returntype="boolean" output="false">
 	<cfset var rsCheck=""/>
 	<cfquery name="rsCheck" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select username from tusers where type=2 and username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.username)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.userID)#">
@@ -384,7 +384,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="checkEmail" returntype="boolean" output="false" access="public">
+<cffunction name="checkEmail" returntype="boolean" output="false">
 	<cfset var rsCheck=""/>
 	<cfquery name="rsCheck" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select username from tusers where type=2 and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.email)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(getUserID())#">
@@ -403,7 +403,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 
-<cffunction name="validate" access="public" output="false" >
+<cffunction name="validate" output="false">
 	<cfset var extErrors=structNew() />
 	<cfset var passwordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
 
@@ -475,12 +475,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAddressByID" returnType="query" output="false" access="public">
+<cffunction name="getAddressByID" output="false">
 	<cfargument name="addressID" type="string" required="true">
 	<cfreturn variables.userManager.getAddressByID(arguments.addressID) />
 </cffunction>
 
-<cffunction name="getAddressBeanByID" returnType="any" output="false" access="public">
+<cffunction name="getAddressBeanByID" output="false">
 	<cfargument name="addressID" type="string" required="true">
 	<cfset var addressBean=getBean("addressBean") />
 
@@ -492,7 +492,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn addressBean />
 </cffunction>
 
-<cffunction name="setKeepPrivate" output="false" access="public">
+<cffunction name="setKeepPrivate" output="false">
     <cfargument name="KeepPrivate" type="any" required="true">
 	<cfif isNumeric(arguments.keepPrivate)>
     		<cfset variables.instance.KeepPrivate = arguments.KeepPrivate />
@@ -500,7 +500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setPasswordCreated" output="false" access="public">
+<cffunction name="setPasswordCreated" output="false">
     <cfargument name="PasswordCreated" type="string" required="true">
 	<cfif isDate(arguments.PasswordCreated)>
     	<cfset variables.instance.PasswordCreated = parseDateTime(arguments.PasswordCreated) />
@@ -508,7 +508,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setPassedProtect" output="false" access="public">
+<cffunction name="setPassedProtect" output="false">
     <cfargument name="passedProtect" required="true">
 	<cfif isBoolean(arguments.passedProtect)>
     	<cfset variables.instance.passedProtect = arguments.passedProtect />
@@ -516,7 +516,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="save" output="false" access="public">
+<cffunction name="save" output="false">
 	<cfset var i="">
 	<cfset var address="">
 	<cfset var newAddressArr = variables.newAddresses>
@@ -533,41 +533,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="delete" output="false" access="public">
+<cffunction name="delete" output="false">
 	<cfset variables.userManager.delete(getUserID(),variables.instance.type)>
 </cffunction>
 
-<cffunction name="getMembersQuery" returnType="query" output="false" access="public">
+<cffunction name="getMembersQuery" output="false">
    <cfreturn variables.userManager.readGroupMemberships(getUserID()) />
 </cffunction>
 
-<cffunction name="getMembersIterator" returnType="any" output="false" access="public">
+<cffunction name="getMembersIterator" output="false">
    	<cfset var it=getBean("userIterator").init()>
 	<cfset it.setQuery(getMembersQuery())>
 	<cfreturn it />
 </cffunction>
 
-<cffunction name="getMembershipsQuery" returnType="query" output="false" access="public">
+<cffunction name="getMembershipsQuery" output="false">
    <cfreturn variables.userManager.readMemberships(getUserID()) />
 </cffunction>
 
-<cffunction name="getMembershipsIterator" returnType="any" output="false" access="public">
+<cffunction name="getMembershipsIterator" output="false">
    	<cfset var it=getBean("userIterator").init()>
 	<cfset it.setQuery(getMembershipsQuery())>
 	<cfreturn it />
 </cffunction>
 
-<cffunction name="getInterestGroupsQuery" returnType="query" output="false" access="public">
+<cffunction name="getInterestGroupsQuery" output="false">
    <cfreturn variables.userManager.readInterestGroups(getUserID()) />
 </cffunction>
 
-<cffunction name="getInterestGroupsIterator" returnType="any" output="false" access="public">
+<cffunction name="getInterestGroupsIterator" output="false">
    	<cfset var it=getBean("categoryIterator").init()>
 	<cfset it.setQuery(getInterestGroupsQuery())>
 	<cfreturn it />
 </cffunction>
 
-<cffunction name="loadBy" returnType="any" output="false" access="public">
+<cffunction name="loadBy" output="false">
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
@@ -580,7 +580,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.userManager.read(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="addAddress" output="false" >
+<cffunction name="addAddress" output="false">
 	<cfargument name="address" hint="Instance of a addressBean">
 	<cfset arguments.address.setSiteID(variables.instance.siteID)>
 	<cfset arguments.address.setUserID(getUserID())>
@@ -588,7 +588,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getContentTabAssignments" output="false" >
+<cffunction name="getContentTabAssignments" output="false">
 	<cfset var it=getMemberShipsIterator()>
 	<cfset var item="">
 	<cfset var userlist="">
@@ -614,7 +614,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn userlist>
 </cffunction>
 
-<cffunction name="readAddress" returntype="any" output="false">
+<cffunction name="readAddress" output="false">
 	<cfargument name="name" default="">
 	<cfargument name="addressID" default="">
 	<cfset var addressFound=false/>
@@ -649,7 +649,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn address>
 </cffunction>
 
-<cffunction name="isInGroup" access="public" returntype="any" output="false">
+<cffunction name="isInGroup" output="false">
 	<cfargument name="group">
 	<cfargument name="isPublic" hint="optional">
 
@@ -696,7 +696,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "userID">
 </cffunction>
 
-<cffunction name="getFullName" access="public" returntype="any" output="false">
+<cffunction name="getFullName" output="false">
 	<cfif variables.instance.type eq 2>
 		<cfreturn trim("#variables.instance.fname# # variables.instance.lname#")>
 	<cfelse>

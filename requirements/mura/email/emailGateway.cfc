@@ -55,13 +55,13 @@ Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 	
-	<cffunction name="init" access="public" returntype="any" output="false">
+	<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfreturn this />
 	</cffunction>
 	
-	<cffunction name="getPrivateGroups" access="public" output="false" returntype="query">
+	<cffunction name="getPrivateGroups" output="false">
 		<cfargument name="siteid" type="string" />
 		<cfset var rsPrivateGroups = "" />
 	
@@ -72,7 +72,7 @@ Mura CMS.
 		<cfreturn rsPrivateGroups />
 	</cffunction>
 	
-	<cffunction name="getPublicGroups" access="public" output="false" returntype="query">
+	<cffunction name="getPublicGroups" output="false">
 		<cfargument name="siteid" type="string" />
 		<cfset var rs ="" />
 		<cfquery name="rs"  datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
@@ -81,7 +81,7 @@ Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getMailingLists" access="public" output="false" returntype="query">
+	<cffunction name="getMailingLists" output="false">
 		<cfargument name="siteid" type="string" />
 		<cfset var rs ="" />
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
@@ -90,7 +90,7 @@ Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getList" access="public" output="false" returntype="query" >
+	<cffunction name="getList" output="false" >
 		<cfargument name="args" type="struct" />
 		
 		<cfset var rs ="" />
@@ -156,7 +156,7 @@ Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getStat" output="false" returntype="numeric" access="public">
+	<cffunction name="getStat" output="false">
 		<cfargument name="emailid" type="string">
 		<cfargument name="type" type="string">
 	
@@ -186,7 +186,7 @@ Mura CMS.
 		<cfreturn returnVar />
 	</cffunction>
 	
-	<cffunction name="getBounces" output="false" returntype="any" access="public">
+	<cffunction name="getBounces" output="false">
 		<cfargument name="emailid" type="string">
 	
 		<cfset var rs=""/>
@@ -202,7 +202,7 @@ Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getAllBounces" output="false" returntype="any" access="public">
+	<cffunction name="getAllBounces" output="false">
 		<cfargument name="data" type="struct">
 	
 		<cfset var rs=""/>
@@ -222,7 +222,7 @@ Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getReturns" output="false" returntype="any" access="public">
+	<cffunction name="getReturns" output="false">
 		<cfargument name="emailid" type="string">
 	
 		<cfset var rs=""/>
@@ -237,7 +237,7 @@ Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getReturnsByUser" output="false" returntype="any" access="public">
+	<cffunction name="getReturnsByUser" output="false">
 		<cfargument name="emailid" type="string">
 	
 		<cfset var rs=""/>
@@ -251,7 +251,7 @@ Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getSentCount" output="false" returntype="any" access="public">
+	<cffunction name="getSentCount" output="false">
 		<cfargument name="siteid" type="string">
 		<cfargument name="startDate" type="string" default="#dateAdd('d',-30,now())#">
 		<cfargument name="stopDate" type="string">
@@ -273,7 +273,7 @@ Mura CMS.
 		<cfreturn returnVar />
 	</cffunction>
 	
-	<cffunction name="deleteBounces" output="false" returntype="void" access="public">
+	<cffunction name="deleteBounces" output="false">
 		<cfargument name="data" type="struct">
 	
 		<cfset var rs=""/>
@@ -286,7 +286,7 @@ Mura CMS.
 		</cfloop>
 	</cffunction>
 
-	<cffunction name="getEmailActivity" access="public" output="false" returntype="query" >
+	<cffunction name="getEmailActivity" output="false" >
 		<cfargument name="siteid" type="string" />
 		<cfargument name="limit" type="numeric" required="true" default="3">
 		<cfargument name="startDate" type="string" required="true" default="">

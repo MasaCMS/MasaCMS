@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" displayname="FormBuilderManager" output="false">
 	<cfset variables.fields		= StructNew()>
 
-	<cffunction name="init" access="public" output="false" returntype="FormBuilderManager">
+	<cffunction name="init" output="false" returntype="FormBuilderManager">
 		<cfargument name="configBean" type="any" required="yes"/>
 
 		<cfset variables.configBean = configBean />
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn this/>
 	</cffunction>
 
-	<cffunction name="createJSONForm" access="public" output="false" returntype="any">
+	<cffunction name="createJSONForm" output="false">
 		<cfargument name="formID" required="false" type="uuid" default="#createUUID()#" />
 
 		<cfset var formStruct	= StructNew() />
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn serializeJSON( formStruct ) />
 	</cffunction>
 
-	<cffunction name="getFormBean" access="public" output="false" returntype="any">
+	<cffunction name="getFormBean" output="false">
 		<cfargument name="formID" required="false" type="uuid" default="#createUUID()#" />
 		<cfargument name="asJSON" required="false" type="boolean" default="false" />
 
@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getFieldBean" access="public" output="false" returntype="any">
+	<cffunction name="getFieldBean" output="false">
 		<cfargument name="formID" required="true" type="uuid" />
 		<cfargument name="fieldID" required="false" type="uuid" default="#createUUID()#" />
 		<cfargument name="fieldType" required="false" type="string" default="field-textfield" />
@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getDatasetBean" access="public" output="false" returntype="any">
+	<cffunction name="getDatasetBean" output="false">
 		<cfargument name="datasetID" required="true" type="uuid" />
 		<cfargument name="fieldID" required="false" type="uuid" default="#createUUID()#" />
 		<cfargument name="asJSON" required="false" type="boolean" default="false" />
@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getFieldTypeBean" access="public" output="false" returntype="any">
+	<cffunction name="getFieldTypeBean" output="false">
 		<cfargument name="fieldTypeID" required="false" type="uuid" default="#createUUID()#" />
 		<cfargument name="fieldType" required="false" type="string" default="field-textfield" />
 		<cfargument name="asJSON" required="false" type="boolean" default="false" />
@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getFieldTemplate" access="public" output="false" returntype="string">
+	<cffunction name="getFieldTemplate" output="false">
 		<cfargument name="fieldType" required="true" type="string" />
 		<cfargument name="locale" required="false" type="string" default="en" />
 		<cfargument name="reload" required="false" type="boolean" default="false" />
@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.fields[arguments.locale][arguments.fieldType] />
 	</cffunction>
 
-	<cffunction name="getDialog" access="public" output="false" returntype="string">
+	<cffunction name="getDialog" output="false">
 		<cfargument name="dialog" required="true" type="string" />
 		<cfargument name="locale" required="false" type="string" default="en" />
 		<cfargument name="reload" required="false" type="boolean" default="false" />
@@ -212,7 +212,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.fields[arguments.locale][arguments.dialog] />
 	</cffunction>
 
-	<cffunction name="renderFormJSON" access="public" output="false" returntype="struct">
+	<cffunction name="renderFormJSON" output="false" returntype="struct">
 		<cfargument name="formJSON" required="true" type="string" />
 
 		<cfset var formStruct		= StructNew() />
@@ -232,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn formStruct />
 	</cffunction>
 
-	<cffunction name="processDataset" access="public" output="false" returntype="struct">
+	<cffunction name="processDataset" output="false" returntype="struct">
 		<cfargument name="$" required="true" type="any" />
 		<cfargument name="dataset" required="true" type="struct" />
 
@@ -300,7 +300,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getForms" access="public" output="false">
+	<cffunction name="getForms" output="false">
 		<cfargument name="$" required="true" type="any" />
 		<cfargument name="siteid" required="true" type="any" />
 		<cfargument name="excludeformid" required="false" type="string" default="" />
@@ -392,7 +392,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var fieldlist = formStruct.form.fields;
 
 		// start CFC
-		var con = 'component contentid="#content.getContentID()#"  extends="#extendpath#" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#Entity" displayName="#objectname#Entity" rendertype="form" access="public"';
+		var con = 'component contentid="#content.getContentID()#"  extends="#extendpath#" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#Entity" displayName="#objectname#Entity" rendertype="form"';
 
 		for(var i = 1;i <= ArrayLen(fieldorder);i++) {
 			field = fieldlist[ fieldorder[i] ];
@@ -455,7 +455,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		if( !exists ) {
 		// start update safe CFC
-			var con = 'component contentid="#content.getContentID()#" extends="#siteid#.includes.model.core.formbuilder.#lcase(objectname)#Entity" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" rendertype="form" access="public"';
+			var con = 'component contentid="#content.getContentID()#" extends="#siteid#.includes.model.core.formbuilder.#lcase(objectname)#Entity" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" rendertype="form"';
 			con = con & '{#chr(13)##chr(13)#// ** update safe ** #chr(13)##chr(13)#}';
 
 			fileWrite( "#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc",con );
@@ -613,7 +613,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		if( !exists && arguments.createJoinEntity ) {
 			// start relationship CFC
-			var con = 'component extends="mura.bean.beanORM" table="fb_#lcase(arguments.cfcBridgeName)#" entityName="#lcase(arguments.cfcBridgeName)#" displayName="#arguments.cfcBridgeName#" access="public" type="join" {#chr(13)##chr(13)#';
+			var con = 'component extends="mura.bean.beanORM" table="fb_#lcase(arguments.cfcBridgeName)#" entityName="#lcase(arguments.cfcBridgeName)#" displayName="#arguments.cfcBridgeName#" type="join" {#chr(13)##chr(13)#';
 
 			var con = con & '	property name="#lcase(arguments.cfcBridgeName)#id" fieldtype="id";#chr(13)##chr(13)#';
 
@@ -653,7 +653,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		// start data CFC
-		var con = 'component extends="mura.formbuilder.fieldOptionBean" table="fb_#lcase(dataset.source)#" entityName="#lcase(dataset.source)#" displayName="#dataset.source#" access="public" {#chr(13)##chr(13)#';
+		var con = 'component extends="mura.formbuilder.fieldOptionBean" table="fb_#lcase(dataset.source)#" entityName="#lcase(dataset.source)#" displayName="#dataset.source#" {#chr(13)##chr(13)#';
 
 		var con = con & '	property name="#lcase(dataset.source)#id" fieldtype="id";#chr(13)##chr(13)#';
 
@@ -690,7 +690,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var record = "";
 
 		// start data CFC
-		var con = 'component extends="mura.formbuilder.entityBean" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" access="public" {#chr(13)##chr(13)#';
+		var con = 'component extends="mura.formbuilder.entityBean" table="fb_#lcase(objectname)#" entityName="#lcase(objectname)#" displayName="#objectname#" {#chr(13)##chr(13)#';
 		var con = con & '	property name="#lcase(objectname)#id" fieldtype="id";#chr(13)##chr(13)#';
 		var con = con & '	property name="#lcase(fieldData.name)#" fieldtype="many-to-one" cfc="#lcase(fieldData.name)#" fkcolumn="#lcase(fieldData.name)#id";#chr(13)#';
 

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="memberDAO" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
@@ -60,14 +60,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setMailer" returntype="any" access="public" output="false">
+<cffunction name="setMailer" output="false">
 <cfargument name="mailer"  required="true">
 
 	<cfset variables.mailer=arguments.mailer />
 
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void" >
+<cffunction name="delete" output="false" >
 	<cfargument name="data" type="struct" />
 	
 	<cfset var memberBean=getBean("memberBean") />
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="deleteAll" access="public" output="false" returntype="void" >
+<cffunction name="deleteAll" output="false" >
 	<cfargument name="data" type="struct" />
 	
 	<cfset var memberBean=getBean("memberBean") />
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="create" access="public" output="false" returntype="void" >
+<cffunction name="create" output="false" >
 	<cfargument name="data" type="struct" />
 	<cfargument name="mailingListManager" type="any" required="yes"/>
 	
@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="read" access="public" output="false" returntype="any" >
+<cffunction name="read" output="false">
 	<cfargument name="data" type="struct" />
 	<cfset var memberBean="">
 	
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="masterSubscribe" access="public" output="false" returntype="void" >
+<cffunction name="masterSubscribe" output="false" >
 	<cfargument name="data" type="struct" />
 	<cfargument name="mailingListManager" type="any" required="yes"/>
 
@@ -133,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="sendVerification" returntype="void" output="false">
+<cffunction name="sendVerification" output="false">
 <cfargument name="sendto" type="string" default="">
 <cfargument name="mlid" type="string" default="">
 <cfargument name="siteid" type="string" default="">
@@ -204,7 +204,7 @@ The #contactName# staff
 	
 </cffunction>
 
-<cffunction name="validateMember" access="public" output="false" returntype="void" >
+<cffunction name="validateMember" output="false" >
 	<cfargument name="data" type="struct" />
 	
 	

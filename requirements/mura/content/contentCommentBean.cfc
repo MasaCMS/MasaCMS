@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.primaryKey = 'commentid'>
 <cfset variables.entityName = 'comment'>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 
 	<cfset super.init(argumentCollection=arguments)>
 
@@ -134,14 +134,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getCommentID" returntype="String" access="public" output="false">
+<cffunction name="getCommentID" output="false">
 	<cfif not len(variables.instance.commentID)>
 	<cfset variables.instance.commentID=createUUID() />
 	</cfif>
 	<cfreturn variables.instance.commentID />
 </cffunction>
 
-<cffunction name="setURL" access="public" output="false">
+<cffunction name="setURL" output="false">
 	<cfargument name="url" type="String" />
 
 	<cfset variables.instance.url = trim(arguments.url) />
@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSubscribe" access="public" output="false">
+<cffunction name="setSubscribe" output="false">
 	<cfargument name="subscribe" />
 	<cfif isNumeric(arguments.subscribe)>
 	<cfset variables.instance.subscribe = arguments.subscribe />
@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setIsApproved" access="public" output="false">
+<cffunction name="setIsApproved" output="false">
 	<cfargument name="isApproved" />
 	<cfif isNumeric(arguments.isApproved)>
 	<cfset variables.instance.isApproved = arguments.isApproved />
@@ -169,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setIsSpam" access="public" output="false">
+<cffunction name="setIsSpam" output="false">
 	<cfargument name="isSpam" />
 	<cfif isNumeric(arguments.isSpam)>
 	<cfset variables.instance.isSpam = arguments.isSpam />
@@ -177,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setIsDeleted" access="public" output="false">
+<cffunction name="setIsDeleted" output="false">
 	<cfargument name="isDeleted" />
 	<cfif isNumeric(arguments.isDeleted)>
 	<cfset variables.instance.isDeleted = arguments.isDeleted />
@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setFlagCount" access="public" output="false">
+<cffunction name="setFlagCount" output="false">
 	<cfargument name="flagCount" />
 	<cfif isNumeric(arguments.flagCount)>
 	<cfset variables.instance.flagCount = arguments.flagCount />
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setEntered" access="public" output="false">
+<cffunction name="setEntered" output="false">
 	<cfargument name="entered" />
 	<cfif isDate(arguments.entered)>
 	<cfset variables.instance.entered = parseDateArg(arguments.entered) />
@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setKids" access="public" output="false">
+<cffunction name="setKids" output="false">
 	<cfargument name="kids"/>
 	<cfif isNumeric(arguments.kids)>
 	<cfset variables.instance.kids = arguments.kids />
@@ -209,14 +209,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="load" access="public" output="false">
+<cffunction name="load" output="false">
 	<cfargument name="commentID">
 	<cfargument name="remoteID">
 	<cfset loadBy(argumentCollection=arguments)>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="loadBy" access="public" output="false">
+<cffunction name="loadBy" output="false">
 	<cfargument name="commentID">
 	<cfargument name="remoteID">
 	<cfset var rs=getQuery(argumentCollection=arguments)>
@@ -227,7 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getQuery"  access="public" output="false" returntype="query">
+<cffunction name="getQuery"  output="false">
 	<cfargument name="commentID">
 	<cfargument name="remoteID">
 	<cfset var rs=""/>
@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="delete" access="public">
+<cffunction name="delete">
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
@@ -274,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
-<cffunction name="undelete" access="public">
+<cffunction name="undelete">
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
@@ -294,7 +294,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
-<cffunction name="flag" access="public">
+<cffunction name="flag">
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
@@ -314,7 +314,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
-<cffunction name="markAsSpam" access="public">
+<cffunction name="markAsSpam" output="false">
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
@@ -334,7 +334,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
-<cffunction name="unMarkAsSpam" access="public">
+<cffunction name="unMarkAsSpam" output="false">
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
@@ -354,7 +354,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
-<cffunction name="save" access="public" output="false">
+<cffunction name="save" output="false">
 	<cfargument name="script" required="true" default="" hint="I'm the script that is sent to the subscribers.">
 	<cfargument name="subject" required="true" default="" hint="I'm the subject that is sent to the subscribers.">
 	<cfargument name="notify" required="true" default="false" hint="I tell whether to notify subscribers.">
@@ -479,7 +479,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="saveSubscription" access="public" output="false">
+<cffunction name="saveSubscription" output="false">
 	<cfquery>
 			update tcontentcomments set subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
@@ -489,7 +489,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="sendNotification"  access="public" output="false">
+<cffunction name="sendNotification"  output="false">
 	<cfargument name="script" required="true" default="">
 	<cfset var rsContent="">
 	<cfset var notifyText="">
@@ -546,7 +546,7 @@ View
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="notifySubscribers" access="public" output="false">
+<cffunction name="notifySubscribers" output="false">
 	<cfargument name="script" required="true" default="">
 	<cfargument name="subject" required="true" default="">
 	<cfargument name="notifyAdmin" required="true" default="true">
@@ -599,7 +599,7 @@ To Unsubscribe Click Here:
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getKidsQuery" returnType="query" output="false" access="public">
+<cffunction name="getKidsQuery" output="false">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<!---<cfif getKids()>--->
@@ -611,7 +611,7 @@ To Unsubscribe Click Here:
 	--->
 </cffunction>
 
-<cffunction name="getKidsIterator" returnType="any" output="false" access="public">
+<cffunction name="getKidsIterator" output="false">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfset var q=getKidsQuery(arguments.isEditor, arguments.sortOrder)>
@@ -620,7 +620,7 @@ To Unsubscribe Click Here:
 	<cfreturn it />
 </cffunction>
 
-<cffunction name="getParent" output="false" returntype="any">
+<cffunction name="getParent" output="false">
 	<cfset var commentBean=getBean("comment") />
 	<cfif len(variables.instance.parentID)>
 		<cfset commentBean.setCommentID(variables.instance.parentID) />
@@ -631,7 +631,7 @@ To Unsubscribe Click Here:
 	</cfif>
 </cffunction>
 
-<cffunction name="getCrumbQuery" output="false" returntype="any">
+<cffunction name="getCrumbQuery" output="false">
 	<cfargument name="sort" required="true" default="asc">
 	<cfset var rsCommentCrumbData="">
 
@@ -659,7 +659,7 @@ To Unsubscribe Click Here:
 	<cfreturn rsCommentCrumbData>
 </cffunction>
 
-<cffunction name="getCrumbIterator" output="false" returntype="any">
+<cffunction name="getCrumbIterator" output="false">
 	<cfargument name="sort" required="true" default="asc">
 	<cfset var rs=getCrumbQuery(arguments.sort)>
 	<cfset var it=getBean("contentCommentIterator").init()>
@@ -671,11 +671,11 @@ To Unsubscribe Click Here:
 	<cfreturn listLen(variables.instance.path) gt 1>
 </cffunction>
 
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+<cffunction name="getAllValues" returntype="struct" output="false">
 	<cfreturn variables.instance />
 </cffunction>
 
-<cffunction name="setAllValues" returntype="any" access="public" output="false">
+<cffunction name="setAllValues" output="false">
 	<cfargument name="instance">
 	<cfset variables.instance=arguments.instance/>
 	<cfreturn this>

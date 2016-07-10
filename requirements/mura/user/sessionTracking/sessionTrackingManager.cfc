@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
 	<cfargument name="sessionTrackingDAO" type="any" required="yes"/>
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="trackRequest" access="public" returntype="string">
+<cffunction name="trackRequest">
 	<cfargument name="siteid" type="string" default="">
 	<cfargument name="script_name" type="string" required="yes" default="#cgi.SCRIPT_NAME#">
 	<cfargument name="keywords" type="string" required="yes" default="">
@@ -105,14 +105,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getSessionData" access="public" returntype="query">
+<cffunction name="getSessionData">
 	<cfargument name="urlToken" type="string" default="">
 
 	<cfreturn variables.sessionTrackingGateway.getSessionHistory(arguments.urlToken) />
 
 </cffunction>
 
-<cffunction name="getSiteSessions" access="public" returntype="query" output="false">
+<cffunction name="getSiteSessions" output="false">
 	<cfargument name="siteid" type="string" default="">
 	<cfargument name="contentid" required="yes" type="string" default="">
 
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTopContent" access="public" returntype="query">
+<cffunction name="getTopContent">
 	<cfargument name="siteid" type="string" default="">
 	<cfargument name="limit" type="numeric" required="yes" default="10">
 
@@ -128,21 +128,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteSession" access="public" returntype="void">
+<cffunction name="deleteSession">
 <cfargument name="URLToken" type="string" required="yes"/>
 
 <cfset variables.sessionTrackingDAO.deleteSession(arguments.URLToken) />
 
 </cffunction>
 
-<cffunction name="getSiteSessionCount" access="public" returntype="numeric" output="false">
+<cffunction name="getSiteSessionCount" output="false">
 	<cfargument name="siteid" type="string" default="">
 
 	<cfreturn variables.sessionTrackingGateway.getSiteSessionCount(arguments.siteid) />
 
 </cffunction>
 
-<cffunction name="isUserOnline" access="public" returntype="numeric">
+<cffunction name="isUserOnline">
 	<cfargument name="userID" type="string" required="true" default="">
 
 	<cfreturn variables.sessionTrackingGateway.isUserOnline(arguments.userID) />
@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <!--- Author:Paul Hastings, Raymond Camden --->
-<cffunction name="getCFLocale" access="public" returnType="string" output="false" hint="Switches Java locale to CF locale (for CF6)">
+<cffunction name="getCFLocale" output="false" hint="Switches Java locale to CF locale (for CF6)">
 		<cfargument name="javalocale" type="string" required="false" default="#variables.lang#_#variables.country#">
 		<cfset var sessionData=getSession()>
 		<cfif len(arguments.javalocale)>

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
 <cfargument name="settingsGateway" type="any" required="yes"/>
@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn super.getBean(arguments.beanName)>
 </cffunction>
 
-<cffunction name="getList" access="public" output="false" returntype="query">
+<cffunction name="getList" output="false">
 	<cfargument name="sortBy" default="orderno">
 	<cfargument name="sortDirection" default="asc">
 	<cfset var rs = variables.gateway.getList(arguments.sortBy,arguments.sortDirection) />
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="publishSite" access="public" output="false" returntype="void">
+<cffunction name="publishSite" output="false">
 	<cfargument name="siteID" required="yes" default="">
 	<cfset var bundleFileName = "">
 	<cfset var authToken = "">
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="pushBundle" access="public" output="no" returntype="any">
+<cffunction name="pushBundle" output="no">
 	<cfargument name="siteID" required="yes" default="">
 	<cfargument name="bundleFileName" required="yes">
 	<cfargument name="serverArgs" required="yes">
@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn result>
 </cffunction>
 
-<cffunction name="saveOrder" access="public" output="false" returntype="void">
+<cffunction name="saveOrder" output="false">
 <cfargument name="orderno" required="yes" default="">
 <cfargument name="orderID" required="yes" default="">
 
@@ -196,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="saveDeploy" access="public" output="false" returntype="void">
+<cffunction name="saveDeploy" output="false">
 <cfargument name="deploy" required="yes" default="">
 <cfargument name="orderID" required="yes" default="">
  <cfset var i=0/>
@@ -210,14 +210,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="read" access="public" output="false" returntype="any">
+<cffunction name="read" output="false">
 <cfargument name="siteid" type="string" />
 <cfargument name="settingsBean" default=""> />
 	<cfreturn variables.DAO.read(arguments.siteid,arguments.settingsBean) />
 
 </cffunction>
 
-<cffunction name="update" access="public" output="false" returntype="any">
+<cffunction name="update" output="false">
 	<cfargument name="data" type="struct" />
 	<cfset var bean=variables.DAO.read(arguments.data.SiteID) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
@@ -274,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void">
+<cffunction name="delete" output="false">
 	<cfargument name="siteid" type="string" />
 
 	<cfset var bean=read(arguments.siteid) />
@@ -306,7 +306,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="create" access="public" output="false" returntype="any">
+<cffunction name="create" output="false">
 	<cfargument name="data" type="struct" />
 	<cfset var rs=""/>
 	<cfset var bean=getBean("settingsBean") />
@@ -373,7 +373,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn bean />
 </cffunction>
 
-<cffunction name="validateDisplayPool" access="public" output="false" returntype="void">
+<cffunction name="validateDisplayPool" output="false">
 	<cfargument name="bean" required="true" >
 
 	<cfset var fileDelim=variables.configBean.getFileDelim()>
@@ -388,7 +388,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setSites" access="public" output="false" returntype="void">
+<cffunction name="setSites" output="false">
 	<cfargument name="missingOnly" default="false">
 	<cfset var rs="" />
 	<cfset var builtSites=structNew()>
@@ -424,7 +424,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getSite" access="public" output="false" returntype="any">
+<cffunction name="getSite" output="false">
 	<cfargument name="siteid" type="string" />
 	<cfif not len(arguments.siteid)>
 		<cfset arguments.siteid='default'>
@@ -453,18 +453,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 </cffunction>
 
-<cffunction name="siteExists" access="public" output="false" returntype="any">
+<cffunction name="siteExists" output="false">
 	<cfargument name="siteid" type="string" />
 
 	<cfreturn structKeyExists(variables.sites,arguments.siteid) />
 
 </cffunction>
 
-<cffunction name="getSites" access="public" output="false" returntype="any">
+<cffunction name="getSites" output="false">
 	<cfreturn variables.sites />
 </cffunction>
 
-<cffunction name="purgeAllCache" access="public" output="false" returntype="void">
+<cffunction name="purgeAllCache" output="false">
 	<cfargument name="broadcast" default="true">
 	<cfset var rs=getList()>
 
@@ -478,7 +478,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getUserSites" access="public" output="false" returntype="query">
+<cffunction name="getUserSites" output="false">
 <cfargument name="siteArray" type="array" required="yes" default="#arrayNew(1)#">
 <cfargument name="isS2" type="boolean" required="yes" default="false">
 <cfargument name="searchString" type="string" required="no" default="">
@@ -691,7 +691,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	--->
 </cffunction>
 
-<cffunction name="save" access="public" returntype="any" output="false">
+<cffunction name="save" output="false">
 	<cfargument name="data" type="any" default="#structnew()#"/>
 
 	<cfset var siteID="">

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="getGroupPermVerdict" returntype="numeric" access="public" output="false">
+<cffunction name="getGroupPermVerdict" output="false">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="GroupID" type="string" required="true">
 		<cfargument name="Type" type="string" required="false" default="Editor">
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="buildGroupPermVerdict" returntype="numeric" access="public" output="false">
+<cffunction name="buildGroupPermVerdict" output="false">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="GroupID" type="string" required="true">
 		<cfargument name="Type" type="string" required="false" default="Editor">
@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfreturn perm>
 </cffunction>
 
-<cffunction name="getGroupPerm" returntype="string" access="public" output="false">
+<cffunction name="getGroupPerm" output="false">
 		<cfargument name="GroupID" type="string" required="true">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn verdict>
 </cffunction>
 
-<cffunction name="getPermVerdict" returntype="numeric" access="public" output="false">
+<cffunction name="getPermVerdict" output="false">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="Type" type="string" required="false" default="Editor">
 		<cfargument name="siteid" type="string" required="true">
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn perm>
 </cffunction>
 
-<cffunction name="getPermVerdictQuery" returntype="query" access="public" output="false">
+<cffunction name="getPermVerdictQuery" output="false">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="Type" type="string" required="false" default="Editor">
 		<cfargument name="siteid" type="string" required="true">
@@ -188,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsPermVerdict>
 </cffunction>
 
-<cffunction name="getPerm" returntype="string" access="public" output="false">
+<cffunction name="getPerm" output="false">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var verdict="none">
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn verdict>
 </cffunction>
 
-<cffunction name="getPermPublic" returntype="string" access="public" output="false">
+<cffunction name="getPermPublic" output="false">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var verdict="none">
@@ -234,7 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn verdict>
 </cffunction>
 
-<cffunction name="getNodePerm" output="false" returntype="string">
+<cffunction name="getNodePerm" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfset var verdictlist="" />
 		<cfset var verdict="" />
@@ -252,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn verdict>
 </cffunction>
 
-<cffunction name="getNodePermPublic" output="false" returntype="string">
+<cffunction name="getNodePermPublic" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfset var verdictlist="" />
 		<cfset var verdict="" />
@@ -270,7 +270,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn verdict/>
 </cffunction>
 
-<cffunction name="getModulePerm" returntype="boolean" access="public" output="false">
+<cffunction name="getModulePerm" returntype="boolean" output="false">
 		<cfargument name="moduleID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var Verdict=0>
@@ -319,7 +319,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getModulePermQuery" returntype="query" access="public" output="false">
+<cffunction name="getModulePermQuery" output="false">
 		<cfargument name="moduleID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rsModulePerm="">
@@ -332,7 +332,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsModulePerm>
 </cffunction>
 
-<cffunction name="setRestriction" returntype="struct" access="public" output="false">
+<cffunction name="setRestriction" returntype="struct" output="false">
 			<cfargument name="crumbdata" required="yes" type="array">
 			<cfargument name="hasModuleAccess" required="yes" default="">
 
@@ -409,7 +409,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn r>
 </cffunction>
 
-<cffunction name="getCategoryPerm" returntype="boolean" access="public" output="false">
+<cffunction name="getCategoryPerm" returntype="boolean" output="false">
 			<cfargument name="groupList" required="yes" type="string">
 			<cfargument name="siteid" required="yes" type="string">
 
@@ -479,7 +479,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn permStruct>
 </cffunction>
 
-<cffunction name="update" returntype="void" access="public" output="false">
+<cffunction name="update" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsGroups=""/>
 
@@ -513,7 +513,7 @@ and (form['p#replacelist(rsGroups.userid,"-","")#'] eq 'Editor'
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output")>
 </cffunction>
 
-<cffunction name="updateGroup" returntype="void" access="public" output="true">
+<cffunction name="updateGroup" output="true">
 <cfargument name="data" type="struct" />
 <cfset var rsContentlist=""/>
 
@@ -549,7 +549,7 @@ and (form['p#replacelist(rsGroups.userid,"-","")#'] eq 'Editor'
 
 </cffunction>
 
-<cffunction name="getModule" access="public" returntype="query" output="false">
+<cffunction name="getModule" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsModulePerm = "" />
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsModulePerm')#">
@@ -559,7 +559,7 @@ SELECT * FROM tcontent WHERE
 <cfreturn rsModulePerm />
 </cffunction>
 
-<cffunction name="getGroupList" access="public" returntype="struct" output="false">
+<cffunction name="getGroupList" returntype="struct" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsGroupList = "" />
 <cfset var returnStruct=structNew() />
@@ -582,7 +582,7 @@ order by groupname
 <cfreturn returnStruct />
 </cffunction>
 
-<cffunction name="getPermitedGroups"  access="public" returntype="query" output="false">
+<cffunction name="getPermitedGroups"  output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsGroupPermissions = "" />
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGroupPermissions')#">
@@ -591,7 +591,7 @@ select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varc
 <cfreturn rsGroupPermissions />
 </cffunction>
 
-<cffunction name="getcontent" access="public" returntype="query" output="false">
+<cffunction name="getcontent" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsContent = "" />
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContent')#">
@@ -602,7 +602,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 <cfreturn rsContent />
 </cffunction>
 
-<cffunction name="updateModule" access="public"  returntype="void" output="false">
+<cffunction name="updateModule"  output="false">
 <cfargument name="data" type="struct" />
 <cfset var I = "" />
 <cfparam name="arguments.data.groupid" type="string" default="" />
@@ -628,7 +628,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 
 </cffunction>
 
-<cffunction name="isPrivateUser" access="public" returntype="boolean" output="false">
+<cffunction name="isPrivateUser" returntype="boolean" output="false">
 <cfargument name="siteID" required="true" default="" />
 	<cfset var sessionData=getSession()>
 
@@ -640,7 +640,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 
 </cffunction>
 
-<cffunction name="isUserInGroup" access="public" returntype="boolean" output="false">
+<cffunction name="isUserInGroup" returntype="boolean" output="false">
 <cfargument name="group" required="true" default="" />
 <cfargument name="siteID" required="true" default="" />
 <cfargument name="isPublic" required="true" default="1" />
@@ -652,7 +652,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 	</cfif>
 </cffunction>
 
-<cffunction name="isS2" access="public" returntype="boolean" output="false">
+<cffunction name="isS2" returntype="boolean" output="false">
 	<cfset var sessionData=getSession()>
 	<cfreturn listFindNoCase(sessionData.mura.memberships,'S2') />
 
@@ -667,7 +667,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 	</cfif>
 </cffunction>
 
-<cffunction name="queryPermFilter" returntype="query" access="public" output="false">
+<cffunction name="queryPermFilter" output="false">
 	<cfargument name="rawQuery" type="query">
 	<cfargument name="resultQuery" default="">
 	<cfargument name="siteID" type="string">
@@ -713,7 +713,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="newResultQuery" returntype="query" access="public" output="false">
+<cffunction name="newResultQuery" output="false">
 <cfset var rs = "" />
 		<cfswitch expression="#variables.configBean.getCompiler()#">
 		<cfcase value="adobe">
@@ -726,7 +726,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="getDisplayObjectPerm" output="false" returntype="string">
+<cffunction name="getDisplayObjectPerm" output="false">
 <cfargument name="siteID">
 <cfargument name="object">
 <cfargument name="objectID" required="true" default="">
@@ -825,7 +825,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 
 </cffunction>
 
-<cffunction name="getFilePermissions" returntype="string" access="public" output="false">
+<cffunction name="getFilePermissions" output="false">
 <cfargument name="siteId" type="string" required="true">
 <cfargument name="path" type="string" required="true">
 
@@ -886,7 +886,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 
 </cffunction>
 
-<cffunction name="getFilePermissionsByGroup" returntype="string" access="public" output="false">
+<cffunction name="getFilePermissionsByGroup" output="false">
 <cfargument name="groupId" type="string" required="true">
 <cfargument name="siteId" type="string" required="true">
 <cfargument name="path" type="string" required="true">
@@ -967,7 +967,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 
 </cffunction>
 
-<cffunction name="getDirectoryId" returntype="string" access="public" output="false">
+<cffunction name="getDirectoryId" output="false">
 <cfargument name="data" type="struct">
 <cfset var ret = "">
 <cfset var qExists="">
@@ -983,7 +983,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
     <cfreturn ret>
 </cffunction>
 
-<cffunction name="updateFile" returntype="void" access="public" output="false">
+<cffunction name="updateFile" output="false">
 <cfargument name="data" type="struct" />
 <cfargument name="siteid" type="string"/>
 

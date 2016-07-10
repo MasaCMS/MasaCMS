@@ -72,7 +72,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- AddFiles --->
-	<cffunction name="AddFiles" access="public" output="no" returntype="boolean" hint="Add files to a new or an existing Zip file archive.">
+	<cffunction name="AddFiles" output="no" returntype="boolean" hint="Add files to a new or an existing Zip file archive.">
 
 		<!--- Function Arguments --->
 		<cfargument name="zipFilePath" required="yes" type="string"                hint="Pathname of the Zip file to add files.">
@@ -190,7 +190,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- DeleteFiles --->
-	<cffunction name="DeleteFiles" access="public" output="no" returntype="boolean" hint="Delete files from an existing Zip file archive.">
+	<cffunction name="DeleteFiles" output="no" returntype="boolean" hint="Delete files from an existing Zip file archive.">
 
 		<!--- Function Arguments --->
 		<cfargument name="zipFilePath" required="yes" type="string" hint="Pathname of the Zip file to delete files from.">
@@ -293,7 +293,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- Extract --->
-	<cffunction name="Extract" access="public" output="no" returntype="boolean" hint="Extracts a specified Zip file into a specified directory.">
+	<cffunction name="Extract" output="no" returntype="boolean" hint="Extracts a specified Zip file into a specified directory.">
 
 		<!--- Function Arguments --->
 		<cfargument name="zipFilePath"    required="yes" type="string"                              hint="Pathname of the Zip file to extract.">
@@ -494,7 +494,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- List --->
-	<cffunction name="List" access="public" output="no" returntype="query" hint="List the content of a specified Zip file.">
+	<cffunction name="List" output="no" hint="List the content of a specified Zip file.">
 
 		<!--- Function Arguments --->
 		<cfargument name="zipFilePath" required="yes" type="string" hint="Pathname of the Zip file to list the content.">
@@ -557,7 +557,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- gzipAddFile --->
-	<cffunction name="gzipAddFile" access="public" output="no" returntype="boolean" hint="Create a new GZip file archive.">
+	<cffunction name="gzipAddFile" output="no" returntype="boolean" hint="Create a new GZip file archive.">
 
 		<!--- Function Arguments --->
 		<cfargument name="gzipFilePath" required="yes" type="string" hint="Pathname of the GZip file to create.">
@@ -619,7 +619,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- gzipExtract --->
-	<cffunction name="gzipExtract" access="public" output="no" returntype="boolean" hint="Extracts a specified GZip file into a specified directory.">
+	<cffunction name="gzipExtract" output="no" returntype="boolean" hint="Extracts a specified GZip file into a specified directory.">
 
 		<!--- Function Arguments --->
 		<cfargument name="gzipFilePath" required="yes" type="string"                             hint="Pathname of the GZip file to extract.">
@@ -757,7 +757,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- PathFormat --->
-	<cffunction name="PathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
+	<cffunction name="PathFormat" access="private" output="no" hint="Convert path into Windows or Unix format.">
 
 		<!--- Function Arguments --->
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
@@ -772,7 +772,7 @@
 
 	</cffunction>
 	
-	<cffunction name="ZipPathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
+	<cffunction name="ZipPathFormat" access="private" output="no" hint="Convert path into Windows or Unix format.">
 		<!--- Function Arguments --->
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>

@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.commentBean="">
 <cfset variables.recordIDField="commentid">
 
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
+<cffunction name="packageRecord" output="false">
 	<cfif NOT isObject(variables.commentBean)>
 		<cfset variables.commentBean=getBean('comment') />
 		<cfset variables.commentStructTemplate=structCopy(variables.commentBean.getAllValues())>

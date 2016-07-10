@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfreturn this />
 </cffunction>
 
-<cffunction name="create" returntype="void" access="public" output="false">
+<cffunction name="create" output="false">
 <cfargument name="listBean" type="any" />
  
 <cfquery>
@@ -68,7 +68,7 @@ values (
 
 </cffunction> 
 
-<cffunction name="read" access="public" output="false" returntype="any" >
+<cffunction name="read" output="false">
 	<cfargument name="MLID" type="string" />
 	<cfargument name="mailingListBean" default="" />
 	<cfset var rs ="" />
@@ -91,7 +91,7 @@ values (
 	<cfreturn bean />
 </cffunction>
 
-<cffunction name="readByName" access="public" output="false" returntype="any" >
+<cffunction name="readByName" output="false">
 	<cfargument name="name" type="string" />
 	<cfargument name="siteid" type="string" />
 	<cfargument name="mailingListBean" default="" />
@@ -127,7 +127,7 @@ values (
 	<cfreturn bean />
 </cffunction>
 
-<cffunction name="update" access="public" output="false" returntype="void" >
+<cffunction name="update" output="false" >
 	<cfargument name="listBean" type="any" />
 	
 	<cfquery>
@@ -141,7 +141,7 @@ values (
 
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void" >
+<cffunction name="delete" output="false" >
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 	
@@ -151,7 +151,7 @@ values (
 
 </cffunction>
 
-<cffunction name="deleteMembers" access="public" output="false" returntype="void" >
+<cffunction name="deleteMembers" output="false" >
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 

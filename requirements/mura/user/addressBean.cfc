@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.entityName = 'address'>
 <cfset variables.instanceName= 'addressname'>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 
 	<cfset super.init(argumentCollection=arguments)>
 
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="set" returnType="any" output="false" access="public">
+<cffunction name="set" output="false">
 	<cfargument name="property" required="true">
     <cfargument name="propertyValue">
 
@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setGeoCoding"   output="false" access="public">
+<cffunction name="setGeoCoding"   output="false">
 	<cfset var result=structNew() />
 	<cfset var address=""/>
 	<cfset var googleAPIKey="" />
@@ -202,14 +202,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAddressID" returnType="string" output="false" access="public">
+<cffunction name="getAddressID" output="false">
     <cfif not len(variables.instance.addressID)>
 		<cfset variables.instance.addressID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.addressID />
 </cffunction>
 
-<cffunction name="setIsPrimary" output="false" access="public">
+<cffunction name="setIsPrimary" output="false">
     <cfargument name="IsPrimary" required="true">
 
 	<cfif isNumeric(arguments.IsPrimary)>
@@ -218,7 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="validate" access="public" output="false" >
+<cffunction name="validate" output="false">
 	<cfset var extErrors=structNew() />
 
 	<cfif len(variables.instance.siteID)>
@@ -235,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLongitude" output="false" access="public">
+<cffunction name="setLongitude" output="false">
     <cfargument name="Longitude" required="true">
 
 	<cfif isNumeric(arguments.Longitude)>
@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLatitude" output="false" access="public">
+<cffunction name="setLatitude" output="false">
     <cfargument name="Latitude" required="true">
 
 	<cfif isNumeric(arguments.Latitude)>
@@ -257,7 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getAddressID()>
 </cffunction>
 
-<cffunction name="save" output="false" access="public" returntype="any">
+<cffunction name="save" output="false">
 	<cfset var rs="">
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select addressID from tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getAddressID()#">
@@ -272,7 +272,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="delete" output="false" access="public">
+<cffunction name="delete" output="false">
 	<cfset variables.userManager.deleteAddress(getAddressID())>
 </cffunction>
 
@@ -284,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "addressID">
 </cffunction>
 
-<cffunction name="loadBy" returnType="any" output="false" access="public">
+<cffunction name="loadBy" output="false">
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>

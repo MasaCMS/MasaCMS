@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.fieldList="feedID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,altName,lang,maxitems,isActive,isPublic,isDefault,description,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,channelLink,type,sortBy,sortDirection,nextn,displayName,displayRatings,displayComments,parentID,remoteID,remoteSourceURL,remotePubDate,imageSize,imageHeight,imageWidth,displayList,showNavOnly,showExcludeSearch,viewalllink,viewalllabel,autoimport,isLocked,CssClass,useCategoryIntersect,contentpoolid,authtype">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
 	<cfset variables.configBean=arguments.configBean />
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="create" returntype="void" access="public" output="false">
+<cffunction name="create" output="false">
 	<cfargument name="feedBean" type="any" />
 	 
 	<cfquery>
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction> 
 
-<cffunction name="read" access="public" output="false" returntype="any" >
+<cffunction name="read" output="false">
 	<cfargument name="feedID" type="string" />
 	<cfargument name="feedBean" default="" />
 	<cfset var rs ="" />
@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn bean />
 </cffunction>
 
-<cffunction name="readByName" access="public" output="false" returntype="any" >
+<cffunction name="readByName" output="false">
 	<cfargument name="name" type="string" />
 	<cfargument name="siteid" type="string" />
 	<cfargument name="feedBean" default="" />
@@ -189,7 +189,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn bean />
 </cffunction>
 
-<cffunction name="readByRemoteID" access="public" output="false" returntype="any" >
+<cffunction name="readByRemoteID" output="false">
 	<cfargument name="remoteID" type="string" />
 	<cfargument name="siteid" type="string" />
 	<cfargument name="feedBean" default="" />
@@ -232,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn bean />
 </cffunction>
 
-<cffunction name="update" access="public" output="false" returntype="void" >
+<cffunction name="update" output="false" >
 	<cfargument name="feedBean" type="any" />
 	
 	<cfquery>
@@ -288,7 +288,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void" >
+<cffunction name="delete" output="false" >
 	<cfargument name="feedID" type="String" />
 	
 	<cfquery>
@@ -298,7 +298,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="createItems" returntype="void" access="public" output="false">
+<cffunction name="createItems" output="false">
 	<cfargument name="feedID" type="string" required="yes" default="" />
 	<cfargument name="itemList" type="string" required="yes" default="" />
 	<cfargument name="type" type="string" required="yes" default="" />
@@ -318,7 +318,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction> 
 
-<cffunction name="deleteItems" access="public" output="false" returntype="void" >
+<cffunction name="deleteItems" output="false" >
 	<cfargument name="feedID" type="String" />
 	
 	<cfquery>
@@ -328,7 +328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteItem" access="public" output="false" returntype="void" >
+<cffunction name="deleteItem" output="false" >
 	<cfargument name="feedID" type="String" />
 	<cfargument name="itemID" type="String" />
 	
@@ -339,7 +339,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readItems" returntype="string" access="public" output="false">
+<cffunction name="readItems" output="false">
 	<cfargument name="feedID" type="string" required="yes" default="" />
 	<cfargument name="type" type="string" required="yes" default="" />
 	
@@ -357,7 +357,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction> 
 
-<cffunction name="readAdvancedParams" returntype="query" access="public" output="false">
+<cffunction name="readAdvancedParams" output="false">
 	<cfargument name="feedID" type="string" required="yes" default="" />
 	
 	 <cfset var rs =""/>
@@ -371,7 +371,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction> 
 
-<cffunction name="createAdvancedParams" returntype="void" access="public" output="false">
+<cffunction name="createAdvancedParams" output="false">
 	<cfargument name="feedID" type="any" required="yes" default="" />
 	<cfargument name="params" type="any" required="yes" default="" />
 	
@@ -397,7 +397,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction> 
 
-<cffunction name="deleteAdvancedParams" access="public" output="false" returntype="void" >
+<cffunction name="deleteAdvancedParams" output="false" >
 	<cfargument name="feedID" type="String" />
 	
 	<cfquery>

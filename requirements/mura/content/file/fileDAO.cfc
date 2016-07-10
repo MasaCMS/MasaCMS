@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfargument name="pluginManager" type="any" required="yes"/>
@@ -75,11 +75,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="getS3" returntype="any" access="public" output="false">
+<cffunction name="getS3" output="false">
 	<cfreturn variables.s3 />
 </cffunction>
 
-<cffunction name="create" returntype="string" access="public" output="false">
+<cffunction name="create" output="false">
 		<cfargument name="fileObj" type="any" required="yes"/>
 		<cfargument name="contentid" type="any" required="yes"/>
 		<cfargument name="siteid" type="any" required="yes"/>
@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn fileid />
 </cffunction>
 
-<cffunction name="deleteVersion" returntype="void" access="public" output="false">
+<cffunction name="deleteVersion" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 
 		<cfquery>
@@ -203,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteAll" returntype="void" access="public" output="false">
+<cffunction name="deleteAll" output="false">
 		<cfargument name="contentID" type="string" required="yes"/>
 		<cfset var rs='' />
 
@@ -217,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="read" returntype="query" access="public" output="false">
+<cffunction name="read" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
@@ -228,7 +228,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readAll" returntype="query" access="public" output="false">
+<cffunction name="readAll" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readMeta" returntype="query" access="public" output="false">
+<cffunction name="readMeta" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
@@ -250,7 +250,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readSmall" returntype="query" access="public" output="false">
+<cffunction name="readSmall" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
@@ -261,7 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readMedium" returntype="query" access="public" output="false">
+<cffunction name="readMedium" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
@@ -272,7 +272,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteIfNotUsed" returntype="void" access="public" output="false">
+<cffunction name="deleteIfNotUsed" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfargument name="baseID" type="any" required="yes"/>
 		<cfset var rs1 = "" />
@@ -350,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 </cffunction>
 
-<cffunction name="deleteCachedFile" returntype="void" access="public">
+<cffunction name="deleteCachedFile">
 <cfargument name="fileID" type="string" required="yes"/>
 		<cfset var rsFile=readMeta(arguments.fileID) />
 		<cfset var pluginEvent = createObject("component","mura.event") />

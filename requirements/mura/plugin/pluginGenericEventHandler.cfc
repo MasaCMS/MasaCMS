@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" output="false" returnType="any">
+<cffunction name="init" output="false">
 	<cfargument name="pluginConfig" required="true">
 	<cfargument name="configBean" required="true">
 	<cfset variables.pluginConfig=arguments.pluginConfig>
@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="renderPluginDisplayObject" access="private" returntype="any" output="false" hint="gets the objectid associated with the passed in display object">
+<cffunction name="renderPluginDisplayObject" access="private" output="false" hint="gets the objectid associated with the passed in display object">
 	<cfargument name="object" type="string" required="true" />
 	<cfargument name="event" type="component" required="true" />
 	<cfset var rsObjID = "" />

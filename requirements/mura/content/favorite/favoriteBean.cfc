@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="maxRSSItems" type="numeric" default="0" required="true" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.favoriteID="" />
@@ -82,14 +82,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getFavoriteID" returntype="String" access="public" output="false">
+<cffunction name="getFavoriteID" output="false">
 	<cfif not len(variables.instance.favoriteID)>
 		<cfset variables.instance.favoriteID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.favoriteID />
 </cffunction>
 
-<cffunction name="setColumnNumber" access="public" output="false">
+<cffunction name="setColumnNumber" output="false">
 	<cfargument name="ColumnNumber" />
 	<cfif isNumeric(arguments.ColumnNumber)>
 	<cfset variables.instance.ColumnNumber = arguments.ColumnNumber />
@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setRowNumber" access="public" output="false">
+<cffunction name="setRowNumber" output="false">
 	<cfargument name="RowNumber" />
 	<cfif isNumeric(arguments.RowNumber)>
 	<cfset variables.instance.RowNumber = arguments.RowNumber />
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMaxRSSItems" access="public" output="false">
+<cffunction name="setMaxRSSItems" output="false">
 	<cfargument name="MaxRSSItems" />
 	<cfif isNumeric(arguments.MaxRSSItems)>
 	<cfset variables.instance.MaxRSSItems = arguments.MaxRSSItems />
@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setDateCreated" access="public" output="false">
+<cffunction name="setDateCreated" output="false">
 	<cfargument name="DateCreated" />
 	<cfif isDate(arguments.DateCreated)>
 	<cfset variables.instance.DateCreated = arguments.DateCreated />
@@ -121,14 +121,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="load"  access="public" output="false" returntype="void">
+<cffunction name="load"  output="false">
 	<cfset var rs=getQuery(argumentcollection=arguments)>
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
 </cffunction>
 
-<cffunction name="loadBy" returnType="any" output="false" access="public">
+<cffunction name="loadBy" output="false">
 	<cfset var response="">
 	
 	<cfif not structKeyExists(arguments,"siteID")>
@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getQuery"  access="public" output="false" returntype="query">
+<cffunction name="getQuery"  output="false">
 	<cfset var rs=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select * from tusersfavorites 
@@ -166,14 +166,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void">
+<cffunction name="delete">
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tusersfavorites
 	where favoriteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getFavoriteID()#">
 	</cfquery>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save"  output="false">
 	<cfset var rs=""/>
 
 	<cfif getQuery().recordcount>
@@ -213,13 +213,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="getFavoritesByUser" returntype="any" access="public" output="false">
+<cffunction name="getFavoritesByUser" output="false">
 	<cfargument name="userID">
 	<cfargument name="type">
 	<cfreturn variables.instance>
 </cffunction>
 
-<cffunction name="getUsersByFavorite" returntype="any" access="public" output="false">
+<cffunction name="getUsersByFavorite" output="false">
 	<cfargument name="favorite">
 	<cfargument name="type">
 	<cfreturn variables.instance>

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-	<cffunction name="update" returntype="void" output="false">
+	<cffunction name="update" output="false">
 		<cfargument name="find" type="string" default="" required="true">
 		<cfargument name="replace" type="string"  default="" required="true">
 		<cfargument name="datasource" type="string"  default="#application.configBean.getDatasource()#" required="true">
@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getToWork" returntype="any" output="false">
+	<cffunction name="getToWork" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="any" default="" required="true">
@@ -329,7 +329,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn arguments.errors>
 	</cffunction>
 
-	<cffunction name="getToWorkPartial" returntype="any" output="false">
+	<cffunction name="getToWorkPartial" output="false">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="parentID" type="string" default="">
 		<cfargument name="Bundle" type="any" required="false">
@@ -549,7 +549,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn arguments.errors>
 	</cffunction>
 
-	<cffunction name="getToWorkSite" returntype="void" output="false">
+	<cffunction name="getToWorkSite" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="any" default="" required="true">
@@ -1417,7 +1417,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 	</cffunction>
 
-	<cffunction name="getToWorkFiles" returntype="void" output="false">
+	<cffunction name="getToWorkFiles" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="any" default="" required="true">
@@ -1576,7 +1576,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getToWorkTrash" returntype="void" output="false">
+	<cffunction name="getToWorkTrash" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="string" default="" required="true">
@@ -1676,7 +1676,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getToWorkSyncMeta" returntype="void" output="false">
+	<cffunction name="getToWorkSyncMeta" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="string" default="" required="true">
@@ -1800,7 +1800,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getToWorkFormData" returntype="void" output="false">
+	<cffunction name="getToWorkFormData" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="any" default="" required="true">
@@ -1871,7 +1871,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getToWorkMailingLists" returntype="void" output="false">
+	<cffunction name="getToWorkMailingLists" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="any" default="" required="true">
@@ -1968,7 +1968,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getToWorkUsers" returntype="void" output="false">
+	<cffunction name="getToWorkUsers" output="false">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="toDSN" type="string" default="" required="true">
 		<cfargument name="keyFactory" type="any" required="true">
@@ -2401,7 +2401,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 	<!---
-	<cffunction name="getToWorkAdvertising" returntype="void" output="false">
+	<cffunction name="getToWorkAdvertising" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="any" default="" required="true">
@@ -2827,7 +2827,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 	--->
 
-	<cffunction name="getToWorkClassExtensions" returntype="void">
+	<cffunction name="getToWorkClassExtensions">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="string" default="" required="true">
@@ -3369,7 +3369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getToWorkClassExtensionsUsers" returntype="void">
+	<cffunction name="getToWorkClassExtensionsUsers">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="string" default="" required="true">
@@ -3459,7 +3459,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getToWorkPlugins" returntype="void">
+	<cffunction name="getToWorkPlugins">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="string" default="" required="true">
@@ -3749,7 +3749,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="publish" returntype="void">
+	<cffunction name="publish">
 		<cfargument name="siteid" required="yes" default="">
 		<cfargument name="pushMode" required="yes" default="">
 
@@ -3843,7 +3843,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.pluginManager.announceEvent("onAfterSiteDeploy",pluginEvent)>
 	</cffunction>
 
-	<cffunction name="copy" returntype="void" output="no">
+	<cffunction name="copy" output="no">
 		<cfargument name="fromsiteid" required="yes" default="">
 		<cfargument name="tositeid" required="yes" default="">
 		<cfargument name="fromDSN" required="yes" default="#application.configBean.getDatasource()#">

@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.MFAEnabled=false/>
 <cfset variables.instance.MFASendAuthCode=true/>
 
-<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
+<cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
 <cfargument name="MissingMethodArguments" type="struct" required="true" />
 <cfset var prop="">
@@ -209,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="set" returntype="any" output="true" access="public">
+<cffunction name="set" output="true">
 	<cfargument name="property" required="true">
 	<cfargument name="propertyValue">
 
@@ -285,113 +285,113 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getMode" returntype="any" access="public" output="false">
+<cffunction name="getMode" output="false">
 	<cfreturn variables.instance.mode />
 </cffunction>
 
-<cffunction name="setMode" access="public" output="false">
+<cffunction name="setMode" output="false">
 	<cfargument name="Mode" type="String" />
 	<cfset variables.instance.Mode = arguments.Mode />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getVersion" returntype="any" access="public" output="false">
+<cffunction name="getVersion" output="false">
 	<cfreturn variables.instance.version />
 </cffunction>
 
-<cffunction name="setVersion" access="public" output="false">
+<cffunction name="setVersion" output="false">
 	<cfargument name="Version" type="String" />
 	<cfset variables.instance.version = arguments.Version />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getTitle" returntype="any" access="public" output="false">
+<cffunction name="getTitle" output="false">
 	<cfreturn variables.instance.title />
 </cffunction>
 
-<cffunction name="setTitle" access="public" output="false">
+<cffunction name="setTitle" output="false">
 	<cfargument name="Title" type="String" />
 	<cfset variables.instance.Title = arguments.Title />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getWebRoot" returntype="any" access="public" output="false">
+<cffunction name="getWebRoot" output="false">
 	<cfreturn variables.instance.webroot />
 </cffunction>
 
-<cffunction name="setWebRoot" access="public" output="false">
+<cffunction name="setWebRoot" output="false">
 	<cfargument name="webroot" type="String" />
 	<cfset variables.instance.webroot = cleanFilePath(arguments.webroot) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getWebRootMap" returntype="any" access="public" output="false">
+<cffunction name="getWebRootMap" output="false">
 	<cfreturn variables.instance.webrootmap />
 </cffunction>
 
-<cffunction name="setWebRootMap" access="public" output="false">
+<cffunction name="setWebRootMap" output="false">
 	<cfargument name="webrootmap" type="String" />
 	<cfset variables.instance.webrootmap = arguments.webrootmap />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMapDir" returntype="any" access="public" output="false">
+<cffunction name="getMapDir" output="false">
 	<cfreturn variables.instance.mapDir />
 </cffunction>
 
-<cffunction name="setMapDir" access="public" output="false">
+<cffunction name="setMapDir" output="false">
 	<cfargument name="MapDir" type="String" />
 	<cfset variables.instance.mapDir = arguments.MapDir />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDatasource" returntype="any" access="public" output="false">
+<cffunction name="getDatasource" output="false">
 	<cfargument name="mode" default="" />
 	<cfreturn variables.instance.datasource />
 </cffunction>
 
-<cffunction name="setDatasource" access="public" output="false">
+<cffunction name="setDatasource" output="false">
 	<cfargument name="Datasource" type="String" />
 	<cfset variables.instance.Datasource = arguments.Datasource />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getReadOnlyDatasource" returntype="any" access="public" output="false">
+<cffunction name="getReadOnlyDatasource" output="false">
 	<cfargument name="mode" default="" />
 	<cfreturn variables.instance.readOnlyDatasource />
 </cffunction>
 
-<cffunction name="setReadOnlyDatasource" access="public" output="false">
+<cffunction name="setReadOnlyDatasource" output="false">
 	<cfargument name="readOnlyDatasource" type="String" />
 	<cfset variables.instance.readOnlyDatasource = arguments.readOnlyDatasource />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getReadOnlyDbPassword" returntype="any" access="public" output="false">
+<cffunction name="getReadOnlyDbPassword" output="false">
 	<cfreturn variables.instance.readOnlyDbPassword />
 </cffunction>
 
-<cffunction name="setReadOnlyDbPassword" access="public" output="false">
+<cffunction name="setReadOnlyDbPassword" output="false">
 	<cfargument name="readOnlyDbPassword" type="String" />
 	<cfset variables.instance.readOnlyDbPassword = arguments.readOnlyDbPassword />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getReadOnlyDbUsername" returntype="any" access="public" output="false">
+<cffunction name="getReadOnlyDbUsername" output="false">
 	<cfreturn variables.instance.readOnlyDbUsername />
 </cffunction>
 
-<cffunction name="setReadOnlyDbUsername" access="public" output="false">
+<cffunction name="setReadOnlyDbUsername" output="false">
 	<cfargument name="readOnlyDbUsername" type="String" />
 	<cfset variables.instance.readOnlyDbUsername = arguments.readOnlyDbUsername />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getContext" returntype="any" access="public" output="false">
+<cffunction name="getContext" output="false">
 	<cfreturn variables.instance.context />
 </cffunction>
 
-<cffunction name="setContext" access="public" output="false">
+<cffunction name="setContext" output="false">
 	<cfargument name="Context" type="String" />
 	<cfset arguments.Context=cleanFilePath(arguments.Context) />
 	<cfif getContextRoot() NEQ "/" and getContextRoot() NEQ "/admin">
@@ -402,47 +402,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getStub" returntype="any" access="public" output="false">
+<cffunction name="getStub" output="false">
 	<cfreturn variables.instance.stub />
 </cffunction>
 
-<cffunction name="setStub" access="public" output="false">
+<cffunction name="setStub" output="false">
 	<cfargument name="Stub" type="String" />
 	<cfset variables.instance.stub = cleanFilePath(arguments.Stub) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAdminDomain" returntype="any" access="public" output="false">
+<cffunction name="getAdminDomain" output="false">
 	<cfreturn variables.instance.adminDomain />
 </cffunction>
 
-<cffunction name="setAdminDomain" access="public" output="false">
+<cffunction name="setAdminDomain" output="false">
 	<cfargument name="AdminDomain" type="String" />
 	<cfset variables.instance.AdminDomain = arguments.AdminDomain />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getIndexFile" returntype="any" access="public" output="false">
+<cffunction name="getIndexFile" output="false">
 	<cfreturn variables.instance.indexFile />
 </cffunction>
 
-<cffunction name="setIndexFile" access="public" output="false">
+<cffunction name="setIndexFile" output="false">
 	<cfargument name="IndexFile" type="String" />
 	<cfset variables.instance.IndexFile = arguments.IndexFile />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAdminEmail" returntype="any" access="public" output="false">
+<cffunction name="getAdminEmail" output="false">
 	<cfreturn variables.instance.adminEmail />
 </cffunction>
 
-<cffunction name="setAdminEmail" access="public" output="false">
+<cffunction name="setAdminEmail" output="false">
 	<cfargument name="AdminEmail" type="String" />
 	<cfset variables.instance.adminEmail = arguments.AdminEmail />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSendFromMailServerUsername" access="public" output="false">
+<cffunction name="setSendFromMailServerUsername" output="false">
 	<cfargument name="sendFromMailServerUsername"/>
 	<cfif isBoolean(arguments.sendFromMailServerUsername)>
 		<cfset variables.instance.sendFromMailServerUsername = arguments.sendFromMailServerUsername />
@@ -450,11 +450,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getSendFromMailServerUsername" returntype="any" access="public" output="false">
+<cffunction name="getSendFromMailServerUsername" output="false">
 	<cfreturn variables.instance.SendFromMailServerUsername />
 </cffunction>
 
-<cffunction name="setMailServerUsernameEmail" returntype="any" access="public" output="false">
+<cffunction name="setMailServerUsernameEmail" output="false">
 	<cfargument name="MailServerUsernameEmail" type="String" />
 
 	<cfif find("@",arguments.MailServerUsernameEmail)>
@@ -467,18 +467,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerUsernameEmail" returntype="any" access="public" output="false">
+<cffunction name="getMailServerUsernameEmail" output="false">
 		<cfreturn variables.instance.mailServerUsernameEmail />
 </cffunction>
 
-<cffunction name="setMailServerUsername" access="public" output="false">
+<cffunction name="setMailServerUsername" output="false">
 	<cfargument name="MailServerUsername" type="String" />
 	<cfset setMailServerUsernameEmail(arguments.MailServerUsername) />
 	<cfset variables.instance.mailServerUsername = arguments.MailServerUsername />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerUsername" returntype="any" access="public" output="false">
+<cffunction name="getMailServerUsername" output="false">
 	<cfargument name="forLogin" default="false" required="true">
 	<cfif not arguments.forLogin or len(getMailServerPassword())>
 		<cfreturn variables.instance.mailServerUsername />
@@ -487,51 +487,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getMailServerPassword" returntype="any" access="public" output="false">
+<cffunction name="getMailServerPassword" output="false">
 	<cfreturn variables.instance.mailServerPassword />
 </cffunction>
 
-<cffunction name="setMailServerPassword" access="public" output="false">
+<cffunction name="setMailServerPassword" output="false">
 	<cfargument name="MailServerPassword" type="String" />
 	<cfset variables.instance.mailServerPassword = arguments.MailServerPassword />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerIP" returntype="any" access="public" output="false">
+<cffunction name="getMailServerIP" output="false">
 	<cfreturn variables.instance.mailServerIP />
 </cffunction>
 
-<cffunction name="setMailServerIP" access="public" output="false">
+<cffunction name="setMailServerIP" output="false">
 	<cfargument name="MailServerIP" type="String" />
 	<cfset variables.instance.MailServerIP = arguments.MailServerIP />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAdminSSL" returntype="Numeric" access="public" output="false">
+<cffunction name="getAdminSSL" output="false">
 	<cfreturn variables.instance.adminSSL />
 </cffunction>
 
-<cffunction name="setAdminSSL" access="public" output="false">
+<cffunction name="setAdminSSL" output="false">
 	<cfargument name="AdminSSL" type="Numeric" />
 	<cfset variables.instance.adminSSL = arguments.AdminSSL />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getLogEvents" returntype="Numeric" access="public" output="false">
+<cffunction name="getLogEvents" output="false">
 	<cfreturn variables.instance.logEvents />
 </cffunction>
 
-<cffunction name="setLogEvents" access="public" output="false">
+<cffunction name="setLogEvents" output="false">
 	<cfargument name="logEvents" type="Numeric" />
 	<cfset variables.instance.logEvents = arguments.logEvents />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getFileDelim" returntype="any" access="public" output="false">
+<cffunction name="getFileDelim" output="false">
 	<cfreturn variables.instance.fileDelim />
 </cffunction>
 
-<cffunction name="setFileDelim" access="public" output="false">
+<cffunction name="setFileDelim" output="false">
 	<cfargument name="fileDelim" default="" />
 	<cfif Len(arguments.fileDelim)>
 		<cfset variables.instance.fileDelim = arguments.fileDelim />
@@ -543,11 +543,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfreturn this>
 </cffunction>
 
-<cffunction name="getDbType" returntype="any" access="public" output="false">
+<cffunction name="getDbType" output="false">
 	<cfreturn variables.instance.dbType />
 </cffunction>
 
-<cffunction name="setDbType" access="public" output="false">
+<cffunction name="setDbType" output="false">
 	<cfargument name="dbType" type="string" />
 	<cfif left(arguments.dbType,5) eq "mysql" or arguments.dbType eq "h2">
 		<cfset variables.instance.dbType = "mysql" />
@@ -557,33 +557,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDbPassword" returntype="any" access="public" output="false">
+<cffunction name="getDbPassword" output="false">
 	<cfargument name="mode" default="" />
 	<cfreturn variables.instance.dbPassword />
 </cffunction>
 
-<cffunction name="setDbPassword" access="public" output="false">
+<cffunction name="setDbPassword" output="false">
 	<cfargument name="dbPassword" type="string" />
 	<cfset variables.instance.dbPassword = arguments.dbPassword />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDbUsername" returntype="any" access="public" output="false">
+<cffunction name="getDbUsername" output="false">
 	<cfargument name="mode" default="" />
 	<cfreturn variables.instance.dbUsername />
 </cffunction>
 
-<cffunction name="setDbUsername" access="public" output="false">
+<cffunction name="setDbUsername" output="false">
 	<cfargument name="dbUsername" type="string" />
 	<cfset variables.instance.dbUsername = arguments.dbUsername />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDbTablespace" returntype="any" access="public" output="false">
+<cffunction name="getDbTablespace" output="false">
 	<cfreturn variables.instance.dbTablespace />
 </cffunction>
 
-<cffunction name="setDbTablespace" access="public" output="false">
+<cffunction name="setDbTablespace" output="false">
 	<cfargument name="dbTablespace" type="string" />
 	<cfset arguments.dbTablespace=trim(ucase(arguments.dbTablespace))>
 	<cfif len(arguments.dbTablespace)>
@@ -592,31 +592,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDebuggingEnabled" returntype="any" access="public" output="false">
+<cffunction name="getDebuggingEnabled" output="false">
 	<cfreturn variables.instance.debuggingEnabled />
 </cffunction>
 
-<cffunction name="setDebuggingEnabled" access="public" output="false">
+<cffunction name="setDebuggingEnabled" output="false">
 	<cfargument name="debuggingEnabled" type="string" />
 	<cfset variables.instance.debuggingEnabled = arguments.debuggingEnabled />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getCompiler" returntype="any" access="public" output="false">
+<cffunction name="getCompiler" output="false">
 	<cfreturn variables.instance.compiler />
 </cffunction>
 
-<cffunction name="setCompiler" access="public" output="false">
+<cffunction name="setCompiler" output="false">
 	<cfargument name="compiler" type="string" />
 	<cfset variables.instance.compiler = arguments.compiler />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getServerPort" returntype="any" access="public" output="false">
+<cffunction name="getServerPort" output="false">
 	<cfreturn variables.instance.serverPort />
 </cffunction>
 
-<cffunction name="setServerPort" access="public" output="false">
+<cffunction name="setServerPort" output="false">
 	<cfargument name="ServerPort" type="string" />
 	<cfif !ListFind('80,443', arguments.serverPort) and len(trim(arguments.serverPort))>
 		<cfset variables.instance.ServerPort = ":#arguments.ServerPort#" />
@@ -626,11 +626,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getFileDir" returntype="any" access="public" output="false">
+<cffunction name="getFileDir" output="false">
 	<cfreturn variables.instance.fileDir />
 </cffunction>
 
-<cffunction name="setFileDir" access="public" output="false">
+<cffunction name="setFileDir" output="false">
 	<cfargument name="fileDir" type="string" default="" />
 
 	<cfset var ap=variables.instance.assetPath/>
@@ -653,11 +653,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAssetDir" returntype="any" access="public" output="false">
+<cffunction name="getAssetDir" output="false">
 	<cfreturn variables.instance.assetDir />
 </cffunction>
 
-<cffunction name="setAssetDir" access="public" output="false">
+<cffunction name="setAssetDir" output="false">
 	<cfargument name="assetDir" type="string" default="" />
 
 	<cfset var ap=variables.instance.assetPath/>
@@ -680,111 +680,111 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAssetPath" returntype="any" access="public" output="false">
+<cffunction name="getAssetPath" output="false">
 	<cfreturn variables.instance.assetPath />
 </cffunction>
 
-<cffunction name="setAssetPath" access="public" output="false">
+<cffunction name="setAssetPath" output="false">
 	<cfargument name="assetPath" type="String" default="" />
 	<cfset variables.instance.assetPath =cleanFilePath(arguments.assetPath) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProductionDatasource" returntype="any" access="public" output="false">
+<cffunction name="getProductionDatasource" output="false">
 	<cfreturn variables.instance.productionDatasource />
 </cffunction>
 
-<cffunction name="setProductionDatasource" access="public" output="false">
+<cffunction name="setProductionDatasource" output="false">
 	<cfargument name="ProductionDatasource" type="String" />
 	<cfset variables.instance.productionDatasource = arguments.ProductionDatasource />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProductionAssetPath" returntype="any" access="public" output="false">
+<cffunction name="getProductionAssetPath" output="false">
 	<cfreturn variables.instance.productionAssetPath />
 </cffunction>
 
-<cffunction name="setProductionAssetPath" access="public" output="false">
+<cffunction name="setProductionAssetPath" output="false">
 	<cfargument name="ProductionAssetPath" type="String" />
 	<cfset variables.instance.ProductionAssetPath=cleanFilePath(arguments.ProductionAssetPath) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProductionWebroot" returntype="any" access="public" output="false">
+<cffunction name="getProductionWebroot" output="false">
 	<cfreturn variables.instance.productionWebroot />
 </cffunction>
 
-<cffunction name="setProductionWebroot" access="public" output="false">
+<cffunction name="setProductionWebroot" output="false">
 	<cfargument name="ProductionWebroot" type="String" />
 	<cfset variables.instance.ProductionWebroot=cleanFilePath(arguments.ProductionWebroot) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProductionFiledir" returntype="any" access="public" output="false">
+<cffunction name="getProductionFiledir" output="false">
 	<cfreturn variables.instance.productionFiledir />
 </cffunction>
 
-<cffunction name="setProductionFiledir" access="public" output="false">
+<cffunction name="setProductionFiledir" output="false">
 	<cfargument name="ProductionFiledir" type="String" />
 	<cfset variables.instance.productionFiledir=cleanFilePath(arguments.ProductionFiledir)/>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProductionAssetdir" returntype="any" access="public" output="false">
+<cffunction name="getProductionAssetdir" output="false">
 	<cfreturn variables.instance.productionAssetdir />
 </cffunction>
 
-<cffunction name="setProductionAssetdir" access="public" output="false">
+<cffunction name="setProductionAssetdir" output="false">
 	<cfargument name="ProductionAssetdir" type="String" />
 	<cfset variables.instance.productionAssetdir=cleanFilePath(arguments.ProductionAssetdir)/>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProductionPushMode" returntype="any" access="public" output="false">
+<cffunction name="getProductionPushMode" output="false">
 	<cfreturn variables.instance.ProductionPushMode />
 </cffunction>
 
-<cffunction name="setProductionPushMode" access="public" output="false">
+<cffunction name="setProductionPushMode" output="false">
 	<cfargument name="productionPushMode" type="String" />
 	<cfset variables.instance.productionPushMode=arguments.productionPushMode/>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getFileStore" returntype="any" access="public" output="false">
+<cffunction name="getFileStore" output="false">
 	<cfreturn variables.instance.fileStore />
 </cffunction>
 
-<cffunction name="setFileStore" access="public" output="false">
+<cffunction name="setFileStore" output="false">
 	<cfargument name="fileStore" type="String" />
 	<cfset variables.instance.fileStore = arguments.fileStore />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setFileStoreAccessInfo" access="public" output="false">
+<cffunction name="setFileStoreAccessInfo" output="false">
 	<cfargument name="fileStoreAccessInfo" type="String" />
 	<cfset variables.instance.fileStoreAccessInfo = arguments.fileStoreAccessInfo />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getFileStoreAccessInfo" returntype="any" access="public" output="false">
+<cffunction name="getFileStoreAccessInfo" output="false">
 	<cfreturn variables.instance.fileStoreAccessInfo />
 </cffunction>
 
-<cffunction name="setFileStoreEndPoint" access="public" output="false">
+<cffunction name="setFileStoreEndPoint" output="false">
   	<cfargument name="fileStoreEndPoint" type="String" />
   	<cfset variables.instance.fileStoreEndPoint = arguments.fileStoreEndPoint />
   	<cfreturn this>
 </cffunction>
 
-<cffunction name="getFileStoreEndPoint" returntype="any" access="public" output="false">
+<cffunction name="getFileStoreEndPoint" output="false">
   	<cfreturn variables.instance.fileStoreEndPoint />
 </cffunction>
 
-<cffunction name="getSessionHistory" returntype="numeric" access="public" output="false">
+<cffunction name="getSessionHistory" output="false">
 	<cfreturn variables.instance.sessionHistory />
 </cffunction>
 
-<cffunction name="setSessionHistory" access="public" output="false">
+<cffunction name="setSessionHistory" output="false">
 	<cfargument name="SessionHistory" type="String" />
 	<cfif isNumeric(arguments.SessionHistory)>
 		<cfset variables.instance.sessionHistory = arguments.SessionHistory />
@@ -793,17 +793,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <!---
-<cffunction name="createGUID" access="public" output="false" returntype="any">
+<cffunction name="createGUID" output="false">
    <cfreturn insert("-", CreateUUID(), 23) />
 </cffunction>
 --->
 
-<cffunction name="loadClassExtensionManager" returntype="any" access="public" output="false">
+<cffunction name="loadClassExtensionManager" output="false">
 	<cfset variables.instance.extensionManager=createObject("component","mura.extend.extendManager").init(this) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="applyDbUpdates" returntype="any" access="public" output="false">
+<cffunction name="applyDbUpdates" output="false">
 
 	<cfset var rsCheck ="" />
 	<cfset var rsSubCheck ="" />
@@ -1090,7 +1090,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 	</cfif>
 </cffunction>
-<cffunction name="getClassExtensionManager" returntype="any" access="public" output="false">
+<cffunction name="getClassExtensionManager" output="false">
 
 	<cfif not isObject(variables.instance.extensionManager)>
 		<cfset loadClassExtensionManager()/>
@@ -1098,7 +1098,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.extensionManager />
 </cffunction>
 
-<cffunction name="setDefaultLocale" access="public" output="false">
+<cffunction name="setDefaultLocale" output="false">
 	<cfargument name="locale" type="String" />
 
 	<cfif len(arguments.locale)>
@@ -1107,11 +1107,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDefaultLocale" returntype="any" access="public" output="false">
+<cffunction name="getDefaultLocale" output="false">
 	<cfreturn variables.instance.locale />
 </cffunction>
 
-<cffunction name="setUseDefaultSMTPServer" access="public" output="false">
+<cffunction name="setUseDefaultSMTPServer" output="false">
 	<cfargument name="UseDefaultSMTPServer"  />
 
 	<cfif isNumeric(arguments.UseDefaultSMTPServer)>
@@ -1120,11 +1120,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getUseDefaultSMTPServer" returntype="numeric" access="public" output="false">
+<cffunction name="getUseDefaultSMTPServer" output="false">
 	<cfreturn variables.instance.UseDefaultSMTPServer />
 </cffunction>
 
-<cffunction name="setAdminDir" access="public" output="false">
+<cffunction name="setAdminDir" output="false">
 	<cfargument name="adminDir" type="String" />
 
 	<cfif len(arguments.adminDir)>
@@ -1133,11 +1133,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAdminDir" returntype="any" access="public" output="false">
+<cffunction name="getAdminDir" output="false">
 	<cfreturn variables.instance.adminDir />
 </cffunction>
 
-<cffunction name="setImageInterpolation" access="public" output="false">
+<cffunction name="setImageInterpolation" output="false">
 	<cfargument name="imageInterpolation" type="String" />
 
 	<cfif len(arguments.imageInterpolation)>
@@ -1146,11 +1146,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getImageInterpolation" returntype="any" access="public" output="false">
+<cffunction name="getImageInterpolation" output="false">
 	<cfreturn variables.instance.imageInterpolation />
 </cffunction>
 
-<cffunction name="setImageQuality" access="public" output="false">
+<cffunction name="setImageQuality" output="false">
 	<cfargument name="imageQuality" type="numeric" />
 
 	<cfif val(arguments.imageQuality)>
@@ -1159,15 +1159,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getImageQuality" returntype="any" access="public" output="false">
+<cffunction name="getImageQuality" output="false">
 	<cfreturn variables.instance.imageQuality />
 </cffunction>
 
-<cffunction name="getMailServerSMTPPort" returntype="any" access="public" output="false">
+<cffunction name="getMailServerSMTPPort" output="false">
 	<cfreturn variables.instance.mailServerSMTPPort />
 </cffunction>
 
-<cffunction name="setMailServerSMTPPort" access="public" output="false">
+<cffunction name="setMailServerSMTPPort" output="false">
 	<cfargument name="mailServerSMTPPort" type="String" />
 	<cfif isNumeric(arguments.mailServerSMTPPort)>
 	<cfset variables.instance.mailServerSMTPPort = arguments.mailServerSMTPPort />
@@ -1175,11 +1175,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerPOPPort" returntype="any" access="public" output="false">
+<cffunction name="getMailServerPOPPort" output="false">
 	<cfreturn variables.instance.mailServerPOPPort />
 </cffunction>
 
-<cffunction name="setMailServerPOPPort" access="public" output="false">
+<cffunction name="setMailServerPOPPort" output="false">
 	<cfargument name="MailServerPOPPort" type="String" />
 	<cfif isNumeric(arguments.MailServerPOPPort)>
 	<cfset variables.instance.mailServerPOPPort = arguments.MailServerPOPPort />
@@ -1187,11 +1187,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerTLS" returntype="any" access="public" output="false">
+<cffunction name="getMailServerTLS" output="false">
 	<cfreturn variables.instance.mailServerTLS />
 </cffunction>
 
-<cffunction name="setMailServerTLS" access="public" output="false">
+<cffunction name="setMailServerTLS" output="false">
 	<cfargument name="mailServerTLS" type="String" />
 	<cfif isBoolean(arguments.mailServerTLS)>
 	<cfset variables.instance.mailServerTLS = arguments.mailServerTLS />
@@ -1199,11 +1199,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerSSL" returntype="any" access="public" output="false">
+<cffunction name="getMailServerSSL" output="false">
 	<cfreturn variables.instance.mailServerSSL />
 </cffunction>
 
-<cffunction name="setMailServerSSL" access="public" output="false">
+<cffunction name="setMailServerSSL" output="false">
 	<cfargument name="mailServerSSL" type="String" />
 	<cfif isBoolean(arguments.mailServerSSL)>
 	<cfset variables.instance.mailServerSSL = arguments.mailServerSSL />
@@ -1211,11 +1211,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getEnableMuraTag" returntype="any" access="public" output="false">
+<cffunction name="getEnableMuraTag" output="false">
 	<cfreturn variables.instance.enableMuraTag />
 </cffunction>
 
-<cffunction name="setEnableMuraTag" access="public" output="false">
+<cffunction name="setEnableMuraTag" output="false">
 	<cfargument name="enableMuraTag" type="String" />
 	<cfif isBoolean(arguments.enableMuraTag)>
 	<cfset variables.instance.enableMuraTag = arguments.enableMuraTag />
@@ -1223,7 +1223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDashboard" returntype="any" access="public" output="false">
+<cffunction name="getDashboard" output="false">
 	<cfset var i="">
 	<cfset var currentUser=getCurrentUser()>
 	<cfset var sessionData=getSession()>
@@ -1245,77 +1245,77 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setDashboard" access="public" output="false">
+<cffunction name="setDashboard" output="false">
 	<cfargument name="dashboard" type="String" />
 	<cfset variables.instance.dashboard = arguments.dashboard />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getClusterIPList" returntype="any" access="public" output="false">
+<cffunction name="getClusterIPList" output="false">
 	<cfreturn variables.instance.clusterIPList />
 </cffunction>
 
-<cffunction name="setClusterIPList" access="public" output="false">
+<cffunction name="setClusterIPList" output="false">
 	<cfargument name="clusterIPList" type="String" />
 	<cfset variables.instance.clusterIPList = trim(arguments.clusterIPList) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAppreloadKey" returntype="any" access="public" output="false">
+<cffunction name="getAppreloadKey" output="false">
 	<cfreturn variables.instance.appreloadKey />
 </cffunction>
 
-<cffunction name="setAppreloadKey" access="public" output="false">
+<cffunction name="setAppreloadKey" output="false">
 	<cfargument name="AppreloadKey" type="String" />
 	<cfset variables.instance.appreloadKey = arguments.appreloadKey />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getSortPermission" returntype="any" access="public" output="false">
+<cffunction name="getSortPermission" output="false">
 	<cfreturn variables.instance.sortPermission />
 </cffunction>
 
-<cffunction name="setSortPermission" access="public" output="false">
+<cffunction name="setSortPermission" output="false">
 	<cfargument name="sortPermission" type="String" />
 	<cfset variables.instance.sortPermission = arguments.sortPermission />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProxyUser" returntype="any" access="public" output="false">
+<cffunction name="getProxyUser" output="false">
 	<cfreturn variables.instance.proxyUser />
 </cffunction>
 
-<cffunction name="setProxyUser" access="public" output="false">
+<cffunction name="setProxyUser" output="false">
 	<cfargument name="proxyUser" type="String" />
 	<cfset variables.instance.proxyUser = arguments.proxyUser />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProxyPassword" returntype="any" access="public" output="false">
+<cffunction name="getProxyPassword" output="false">
 	<cfreturn variables.instance.proxyPassword />
 </cffunction>
 
-<cffunction name="setProxyPassword" access="public" output="false">
+<cffunction name="setProxyPassword" output="false">
 	<cfargument name="proxyPassword" type="String" />
 	<cfset variables.instance.proxyPassword = arguments.proxyPassword />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProxyServer" returntype="any" access="public" output="false">
+<cffunction name="getProxyServer" output="false">
 	<cfreturn variables.instance.proxyServer />
 </cffunction>
 
-<cffunction name="setProxyServer" access="public" output="false">
+<cffunction name="setProxyServer" output="false">
 	<cfargument name="proxyServer" type="String" />
 	<cfset variables.instance.proxyServer = arguments.proxyServer />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getProxyPort" returntype="any" access="public" output="false">
+<cffunction name="getProxyPort" output="false">
 	<cfreturn variables.instance.proxyPort />
 </cffunction>
 
-<cffunction name="setProxyPort" access="public" output="false">
+<cffunction name="setProxyPort" output="false">
 	<cfargument name="proxyPort" type="String" />
 	<cfif isnumeric(arguments.proxyPort)>
 	<cfset variables.instance.proxyPort = arguments.proxyPort />
@@ -1323,7 +1323,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMaxSourceImageWidth" access="public" output="false">
+<cffunction name="setMaxSourceImageWidth" output="false">
 	<cfargument name="maxSourceImageWidth" type="String" />
 	<cfif isnumeric(arguments.maxSourceImageWidth)>
 	<cfset variables.instance.maxSourceImageWidth = arguments.maxSourceImageWidth />
@@ -1331,7 +1331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setTempDir" returntype="any" access="public" output="false">
+<cffunction name="setTempDir" output="false">
 	<cfargument name="tempDir" />
 	<cfif len(arguments.tempDir) and directoryExists(arguments.tempDir)>
 		<cfset variables.instance.tempDir = arguments.tempDir />
@@ -1342,11 +1342,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getTempDir" returntype="any" access="public" output="false">
+<cffunction name="getTempDir" output="false">
 	<cfreturn variables.instance.tempDir />
 </cffunction>
 
-<cffunction name="setPluginDir" access="public" output="false">
+<cffunction name="setPluginDir" output="false">
 	<cfargument name="pluginDir" type="String" />
 	<cfset arguments.pluginDir=cleanFilePath(arguments.pluginDir)>
 	<cfif len(arguments.pluginDir)>
@@ -1355,11 +1355,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getPluginDir" returntype="any" access="public" output="false">
+<cffunction name="getPluginDir" output="false">
 	<cfreturn variables.instance.pluginDir />
 </cffunction>
 
-<cffunction name="setSharableRemoteSessions" access="public" output="false">
+<cffunction name="setSharableRemoteSessions" output="false">
 	<cfargument name="sharableRemoteSessions" />
 	<cfif isBoolean(arguments.sharableRemoteSessions)>
 		<cfset variables.instance.sharableRemoteSessions = arguments.sharableRemoteSessions />
@@ -1367,11 +1367,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getSharableRemoteSessions" returntype="boolean" access="public" output="false">
+<cffunction name="getSharableRemoteSessions" returntype="boolean" output="false">
 	<cfreturn variables.instance.sharableRemoteSessions />
 </cffunction>
 
-<cffunction name="setSiteIDInURLS" access="public" output="false">
+<cffunction name="setSiteIDInURLS" output="false">
 	<cfargument name="siteIDInURLS" />
 	<cfif isBoolean(arguments.siteIDInURLS)>
 		<cfset variables.instance.siteIDInURLS = arguments.siteIDInURLS />
@@ -1379,11 +1379,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getSiteIDInURLS" returntype="boolean" access="public" output="false">
+<cffunction name="getSiteIDInURLS" returntype="boolean" output="false">
 	<cfreturn variables.instance.siteIDInURLS />
 </cffunction>
 
-<cffunction name="setIndexFileInURLS" access="public" output="false">
+<cffunction name="setIndexFileInURLS" output="false">
 	<cfargument name="indexFileInURLS" />
 	<cfif isBoolean(arguments.indexFileInURLS)>
 		<cfset variables.instance.indexFileInURLS = arguments.indexFileInURLS />
@@ -1391,11 +1391,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getIndexFileInURLS" returntype="boolean" access="public" output="false">
+<cffunction name="getIndexFileInURLS" returntype="boolean" output="false">
 	<cfreturn variables.instance.indexFileInURLS />
 </cffunction>
 
-<cffunction name="setStrictExtendedData" access="public" output="false">
+<cffunction name="setStrictExtendedData" output="false">
 	<cfargument name="strictExtendedData" />
 	<cfif isBoolean(arguments.strictExtendedData)>
 		<cfset variables.instance.strictExtendedData = arguments.strictExtendedData />
@@ -1403,23 +1403,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getStrictExtendedData" returntype="boolean" access="public" output="false">
+<cffunction name="getStrictExtendedData" returntype="boolean" output="false">
 	<cfreturn variables.instance.strictExtendedData />
 </cffunction>
 
-<cffunction name="setLoginStrikes" access="public" output="false">
+<cffunction name="setLoginStrikes" output="false">
 	<cfargument name="loginStrikes" />
 	<cfif isNumeric(arguments.loginStrikes)>
 		<cfset variables.instance.loginStrikes = arguments.loginStrikes />
 	</cfif>
 </cffunction>
 
-<cffunction name="getLoginStrikes" returntype="any" access="public" output="false">
+<cffunction name="getLoginStrikes" output="false">
 	<cfreturn variables.instance.loginStrikes />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setPurgeDrafts" access="public" output="false">
+<cffunction name="setPurgeDrafts" output="false">
 	<cfargument name="purgeDrafts" />
 	<cfif isBoolean(arguments.purgeDrafts)>
 		<cfset variables.instance.purgeDrafts = arguments.purgeDrafts />
@@ -1427,11 +1427,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getPurgeDrafts" returntype="boolean" access="public" output="false">
+<cffunction name="getPurgeDrafts" returntype="boolean" output="false">
 	<cfreturn variables.instance.purgeDrafts />
 </cffunction>
 
-<cffunction name="setConfirmSaveAsDraft" access="public" output="false">
+<cffunction name="setConfirmSaveAsDraft" output="false">
 	<cfargument name="ConfirmSaveAsDraft" />
 	<cfif isBoolean(arguments.confirmSaveAsDraft)>
 		<cfset variables.instance.confirmSaveAsDraft = arguments.confirmSaveAsDraft />
@@ -1439,15 +1439,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getConfirmSaveAsDraft" returntype="boolean" access="public" output="false">
+<cffunction name="getConfirmSaveAsDraft" returntype="boolean" output="false">
 	<cfreturn variables.instance.confirmSaveAsDraft />
 </cffunction>
 
-<cffunction name="getNotifyWithVersionLink" returntype="boolean" access="public" output="false">
+<cffunction name="getNotifyWithVersionLink" returntype="boolean" output="false">
 	<cfreturn variables.instance.notifyWithVersionLink />
 </cffunction>
 
-<cffunction name="setNotifyWithVersionLink" access="public" output="false">
+<cffunction name="setNotifyWithVersionLink" output="false">
 	<cfargument name="notifyWithVersionLink" />
 	<cfif isBoolean(arguments.notifyWithVersionLink)>
 		<cfset variables.instance.notifyWithVersionLink = arguments.notifyWithVersionLink />
@@ -1455,7 +1455,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setScriptProtect" access="public" output="false">
+<cffunction name="setScriptProtect" output="false">
 	<cfargument name="scriptProtect" />
 	<cfif isBoolean(arguments.scriptProtect)>
 		<cfset variables.instance.scriptProtect = arguments.scriptProtect />
@@ -1463,11 +1463,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getCreateRequiredDirectories" returntype="boolean" access="public" output="false">
+<cffunction name="getCreateRequiredDirectories" returntype="boolean" output="false">
 	<cfreturn variables.instance.createRequiredDirectories />
 </cffunction>
 
-<cffunction name="setCreateRequiredDirectories" access="public" output="false">
+<cffunction name="setCreateRequiredDirectories" output="false">
 	<cfargument name="createRequiredDirectories" />
 	<cfif isBoolean(arguments.createRequiredDirectories)>
 		<cfset variables.instance.createRequiredDirectories = arguments.createRequiredDirectories />
@@ -1475,11 +1475,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getScriptProtect" returntype="boolean" access="public" output="false">
+<cffunction name="getScriptProtect" returntype="boolean" output="false">
 	<cfreturn variables.instance.scriptProtect />
 </cffunction>
 
-<cffunction name="setEncryptPasswords" access="public" output="false">
+<cffunction name="setEncryptPasswords" output="false">
 	<cfargument name="encryptPasswords" />
 	<cfif isBoolean(arguments.encryptPasswords)>
 		<cfset variables.instance.encryptPasswords = arguments.encryptPasswords />
@@ -1487,11 +1487,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getEncryptPasswords" returntype="boolean" access="public" output="false">
+<cffunction name="getEncryptPasswords" returntype="boolean" output="false">
 	<cfreturn variables.instance.encryptPasswords />
 </cffunction>
 
-<cffunction name="setAutoResetPasswords" access="public" output="false">
+<cffunction name="setAutoResetPasswords" output="false">
 	<cfargument name="autoresetpasswords" />
 	<cfif isBoolean(arguments.autoresetpasswords)>
 		<cfset variables.instance.autoresetpasswords = arguments.autoresetpasswords />
@@ -1500,7 +1500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 
-<cffunction name="getDataCollection" access="public" output="false">
+<cffunction name="getDataCollection" output="false">
 	<cfif isDefined('variables.instance.datacollection') and isBoolean(variables.instance.datacollection)>
 		<cfreturn variables.instance.datacollection>
 	<cfelse>
@@ -1508,11 +1508,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getAutoResetPasswords" returntype="boolean" access="public" output="false">
+<cffunction name="getAutoResetPasswords" returntype="boolean" output="false">
 	<cfreturn variables.instance.autoresetpasswords />
 </cffunction>
 
-<cffunction name="setEncryptionKey" access="public" output="false">
+<cffunction name="setEncryptionKey" output="false">
 	<cfargument name="encryptionKey" />
 	<cfif len(arguments.encryptionKey)>
 		<cfset variables.instance.encryptionKey = arguments.encryptionKey />
@@ -1520,18 +1520,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getEncryptionKey" returntype="any" access="public" output="false">
+<cffunction name="getEncryptionKey" output="false">
 	<cfreturn variables.instance.encryptionKey />
 </cffunction>
 
-<cffunction name="setMaxArchivedVersions" access="public" output="false">
+<cffunction name="setMaxArchivedVersions" output="false">
 	<cfargument name="maxArchivedVersions" />
 	<cfif isNumeric(arguments.maxArchivedVersions)>
 		<cfset variables.instance.maxArchivedVersions = arguments.maxArchivedVersions />
 	</cfif>
 </cffunction>
 
-<cffunction name="setPostBundles" access="public" output="false">
+<cffunction name="setPostBundles" output="false">
 	<cfargument name="postBundles" type="string" />
 	<cfif isBoolean(arguments.postBundles)>
 		<cfset variables.instance.postBundles = arguments.postBundles />
@@ -1539,12 +1539,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMaxArchivedVersions" returntype="any" access="public" output="false">
+<cffunction name="getMaxArchivedVersions" output="false">
 	<cfreturn variables.instance.maxArchivedVersions />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setTrackSessionInNewThread" access="public" output="false">
+<cffunction name="setTrackSessionInNewThread" output="false">
 	<cfargument name="trackSessionInNewThread" type="string" />
 	<cfif isBoolean(arguments.trackSessionInNewThread)>
 		<cfset variables.instance.trackSessionInNewThread = arguments.trackSessionInNewThread />
@@ -1552,11 +1552,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getBCryptLogRounds" returntype="numeric" access="public" output="false">
+<cffunction name="getBCryptLogRounds" output="false">
 	<cfreturn variables.instance.BCryptLogRounds />
 </cffunction>
 
-<cffunction name="setBCryptLogRounds" access="public" output="false">
+<cffunction name="setBCryptLogRounds" output="false">
 	<cfargument name="BCryptLogRounds" type="String" />
 	<cfif isNumeric(arguments.BCryptLogRounds)>
 		<cfset variables.instance.BCryptLogRounds = arguments.BCryptLogRounds />
@@ -1564,11 +1564,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getBCryptReseedFrequency" returntype="numeric" access="public" output="false">
+<cffunction name="getBCryptReseedFrequency" output="false">
         <cfreturn variables.instance.BCryptReseedFrequency />
 </cffunction>
 
-<cffunction name="setBCryptReseedFrequency" access="public" output="false">
+<cffunction name="setBCryptReseedFrequency" output="false">
         <cfargument name="BCryptReseedFrequency" type="String" />
         <cfif isNumeric(arguments.BCryptReseedFrequency)>
                 <cfset variables.instance.BCryptReseedFrequency = arguments.BCryptReseedFrequency />
@@ -1576,7 +1576,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfreturn this>
 </cffunction>
 
-<cffunction name="setAllowAutoUpdates" access="public" output="false">
+<cffunction name="setAllowAutoUpdates" output="false">
 	<cfargument name="allowAutoUpdates" />
 	<cfif isBoolean(arguments.allowAutoUpdates)>
 		<cfset variables.instance.allowAutoUpdates = arguments.allowAutoUpdates />
@@ -1584,15 +1584,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAllowAutoUpdates" returntype="boolean" access="public" output="false">
+<cffunction name="getAllowAutoUpdates" returntype="boolean" output="false">
 	<cfreturn variables.instance.allowAutoUpdates />
 </cffunction>
 
-<cffunction name="getAllValues" returntype="any" access="public" output="false">
+<cffunction name="getAllValues" output="false">
 	<cfreturn variables.instance />
 </cffunction>
 
-<cffunction name="setValue" returntype="any" access="public" output="false">
+<cffunction name="setValue" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
 
@@ -1600,7 +1600,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getValue" returntype="any" access="public" output="false">
+<cffunction name="getValue" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
 
@@ -1615,7 +1615,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="get" returntype="any" access="public" output="false">
+<cffunction name="get" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
 	<cfreturn getValue(argumentCollection=arguments)>
@@ -1723,7 +1723,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn arguments>
 </cffunction>
 
-<cffunction name="getScheme" returntype="string" output="false">
+<cffunction name="getScheme" output="false">
 	<cfreturn YesNoFormat(getValue('adminSSL')) ? 'https' : 'http' />
 </cffunction>
 

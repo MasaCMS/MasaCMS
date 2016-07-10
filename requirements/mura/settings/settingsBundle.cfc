@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-	<cffunction name="init" access="public" returntype="any" output="false">
+	<cffunction name="init" output="false">
 		<cfset variables.configBean	= application.configBean />
 		<cfset variables.dsn		= variables.configBean.getDatasource() />
 
@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 
-	<cffunction name="renameFiles" returntype="void">
+	<cffunction name="renameFiles">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="keyFactory" type="any" required="true">
 		<cfargument name="dsn" type="string" default="#variables.configBean.getDatasource()#" required="true">
@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</cffunction>
 
-	<cffunction name="bundleFiles" returntype="void">
+	<cffunction name="bundleFiles">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="includeVersionHistory" type="boolean" default="true" required="true">
 		<cfargument name="includeTrash" type="boolean" default="true" required="true">
@@ -327,7 +327,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="bundlePartialFiles" returntype="void">
+	<cffunction name="bundlePartialFiles">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="moduleID" type="string" default="" required="true">
 		<cfargument name="sinceDate" type="any" default="">
@@ -483,7 +483,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn fileArray />
 	</cffunction>
 
-	<cffunction name="unpackPartialFile" returntype="string">
+	<cffunction name="unpackPartialFile">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="fileid" type="string" required="true">
 		<cfargument name="contentid" type="string" required="true">
@@ -519,7 +519,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn newFileID />
 	</cffunction>
 
-	<cffunction name="unpackPartialAssets" returntype="string">
+	<cffunction name="unpackPartialAssets">
 		<cfargument name="siteID" type="string" default="" required="true">
 
 		<cfset var zipPath = getBundle() & "assetfiles.zip" />
@@ -530,7 +530,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 	</cffunction>
 
-	<cffunction name="unpackFiles" returntype="string">
+	<cffunction name="unpackFiles">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="keyFactory" type="any" required="true">
 		<cfargument name="dsn" type="string" default="#variables.configBean.getDatasource()#" required="true">
@@ -643,7 +643,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cffunction>
 
-	<cffunction name="bundle" returntype="any">
+	<cffunction name="bundle">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="includeVersionHistory" type="boolean" default="true" required="true">
 		<cfargument name="includeTrash" type="boolean" default="true" required="true">
@@ -1906,11 +1906,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getBundle" returntype="string">
+	<cffunction name="getBundle">
 		<cfreturn variables.Bundle />
 	</cffunction>
 
-	<cffunction name="cleanUp" returntype="string">
+	<cffunction name="cleanUp">
 		<cfif not len( getBundle() ) or not directoryExists( getBundle() )>
 			<cfreturn>
 		</cfif>
@@ -1922,7 +1922,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 	</cffunction>
 
-	<cffunction name="getValue" returntype="any" output="false">
+	<cffunction name="getValue" output="false">
 		<cfargument name="name" type="string" required="true">
 		<cfargument name="default">
 
@@ -1937,7 +1937,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cffunction>
 
-	<cffunction name="fixAssetPath" returntype="void">
+	<cffunction name="fixAssetPath">
 		<cfargument name="siteID" type="string" default="" required="true">
 
 		<cfset var content = "" />
@@ -1958,7 +1958,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="write" output="#extenddata#" file="#variables.backupDir#wddx_rstclassextenddata.xml"  charset="utf-8">
 	</cffunction>
 
-	<cffunction name="setValue" returntype="void">
+	<cffunction name="setValue">
 		<cfargument name="name" type="string" required="true">
 		<cfargument name="value" type="any" required="true">
 		<cfset var temp="">
@@ -1982,12 +1982,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="write" output="#temp#" file="#variables.backupDir#wddx_#arguments.name#.xml"  charset="utf-8">
 	</cffunction>
 
-	<cffunction name="valueExists" access="public" output="false">
+	<cffunction name="valueExists" output="false">
 		<cfargument name="valueKey">
 		<cfreturn structKeyExists(variables.data,arguments.valueKey) />
 	</cffunction>
 
-	<cffunction name="getAllValues" access="public" output="false">
+	<cffunction name="getAllValues" output="false">
 		<cfreturn variables.data />
 	</cffunction>
 </cfcomponent>

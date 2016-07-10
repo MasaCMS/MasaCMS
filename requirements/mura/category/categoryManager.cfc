@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="categoryGateway" type="any" required="yes"/>
 <cfargument name="categoryDAO" type="any" required="yes"/>
@@ -71,35 +71,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getPrivateInterestGroups" returntype="query" access="public" output="false">
+<cffunction name="getPrivateInterestGroups" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="parentID"  type="string" />
 
 	<cfreturn variables.gateway.getPrivateInterestGroups(arguments.siteid,arguments.parentID) />
 </cffunction>
 
-<cffunction name="getPublicInterestGroups" returntype="query" access="public" output="false">
+<cffunction name="getPublicInterestGroups" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="parentID"  type="string" />
 
 	<cfreturn variables.gateway.getPublicInterestGroups(arguments.siteid,arguments.parentID) />
 </cffunction>
 
-<cffunction name="getInterestGroupCount" access="public" output="false" returntype="numeric">
+<cffunction name="getInterestGroupCount" output="false">
 	<cfargument name="siteID" type="String">
 	<cfargument name="activeOnly" type="boolean" required="true" default="false">
 
 	<cfreturn variables.gateway.getInterestGroupCount(arguments.siteid,arguments.activeOnly) />
 </cffunction>
 
-<cffunction name="getCategoryCount" access="public" output="false" returntype="numeric">
+<cffunction name="getCategoryCount" output="false">
 	<cfargument name="siteID" type="String">
 	<cfargument name="activeOnly" type="boolean" required="true" default="false">
 
 	<cfreturn variables.gateway.getCategoryCount(arguments.siteid,arguments.activeOnly) />
 </cffunction>
 
-<cffunction name="getCategories" returntype="query" access="public" output="false">
+<cffunction name="getCategories" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="parentID"  type="string" />
 	<cfargument name="keywords"  type="string" required="true" default=""/>
@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.gateway.getCategories(arguments.siteid,arguments.parentID,arguments.keywords,arguments.activeOnly,arguments.InterestsOnly) />
 </cffunction>
 
-<cffunction name="getIterator" returntype="any" access="public" output="false">
+<cffunction name="getIterator" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="parentID"  type="string" />
 	<cfargument name="keywords"  type="string" required="true" default=""/>
@@ -121,35 +121,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it />
 </cffunction>
 
-<cffunction name="getCategoriesBySiteID" returntype="query" access="public" output="false">
+<cffunction name="getCategoriesBySiteID" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="keywords"  type="string" required="true" default=""/>
 
 	<cfreturn variables.gateway.getCategoriesBySiteID(arguments.siteid,arguments.keywords) />
 </cffunction>
 
-<cffunction name="getInterestGroupsBySiteID" returntype="query" access="public" output="false">
+<cffunction name="getInterestGroupsBySiteID" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="keywords"  type="string" required="true" default=""/>
 
 	<cfreturn variables.gateway.getInterestGroupsBySiteID(arguments.siteid,arguments.keywords) />
 </cffunction>
 
-<cffunction name="getCategoryfeatures" returntype="query" access="public" output="false">
+<cffunction name="getCategoryfeatures" output="false">
 	<cfargument name="categoryID"  type="string" />
 
 	<cfset var categoryBean=read(arguments.categoryID) />
 	<cfreturn variables.gateway.getCategoryFeatures(categoryBean) />
 </cffunction>
 
-<cffunction name="getLiveCategoryFeatures" returntype="query" access="public" output="false">
+<cffunction name="getLiveCategoryFeatures" output="false">
 	<cfargument name="categoryID"  type="string" />
 
 	<cfset var categoryBean=read(arguments.categoryID) />
 	<cfreturn variables.gateway.getLiveCategoryFeatures(categoryBean) />
 </cffunction>
 
-<cffunction name="setMaterializedPath" returntype="void" output="false">
+<cffunction name="setMaterializedPath" output="false">
 <cfargument name="categoryBean" type="any">
 
 <cfset var rsCat= ""/>
@@ -179,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="updateMaterializedPath" returntype="void" output="false">
+<cffunction name="updateMaterializedPath" output="false">
 <cfargument name="newPath" type="any">
 <cfargument name="currentPath" type="any">
 <cfargument name="siteID" type="any">
@@ -195,7 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="save" access="public" returntype="any" output="false">
+<cffunction name="save" output="false">
 	<cfargument name="data" type="any" default="#structnew()#"/>
 
 	<cfset var categoryID="">
@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="create" access="public" returntype="any" output="false">
+<cffunction name="create" output="false">
 	<cfargument name="data" type="struct" default="#structnew()#"/>
 
 	<cfset var categoryBean=getBean("categoryBean") />
@@ -321,7 +321,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="read" access="public" returntype="any" output="false">
+<cffunction name="read" output="false">
 	<cfargument name="categoryID" required="true" default=""/>
 	<cfargument name="name" required="true" default=""/>
 	<cfargument name="remoteID" required="true" default=""/>
@@ -390,7 +390,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readByName" access="public" returntype="any" output="false">
+<cffunction name="readByName" output="false">
 	<cfargument name="name" type="String" />
 	<cfargument name="siteid" type="string" />
 	<cfargument name="categoryBean" required="true" default=""/>
@@ -434,7 +434,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readByURLTitle" access="public" returntype="any" output="false">
+<cffunction name="readByURLTitle" output="false">
 	<cfargument name="urlTitle" type="String" />
 	<cfargument name="siteid" type="string" />
 	<cfargument name="categoryBean" required="true" default=""/>
@@ -478,7 +478,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readByFilename" access="public" returntype="any" output="false">
+<cffunction name="readByFilename" output="false">
 	<cfargument name="filename" type="String" />
 	<cfargument name="siteid" type="string" />
 	<cfargument name="categoryBean" required="true" default=""/>
@@ -544,7 +544,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readByRemoteID" access="public" returntype="any" output="false">
+<cffunction name="readByRemoteID" output="false">
 	<cfargument name="remoteID" type="String" />
 	<cfargument name="siteID" type="String" />
 	<cfargument name="categoryBean" required="true" default=""/>
@@ -653,7 +653,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="update" access="public" returntype="any" output="false">
+<cffunction name="update" output="false">
 	<cfargument name="data" type="struct" default="#structnew()#"/>
 
 	<cfset var categoryBean=variables.DAO.read(arguments.data.categoryID) />
@@ -751,7 +751,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn categoryBean />
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void" output="false">
+<cffunction name="delete" output="false">
 	<cfargument name="categoryID" type="String" />
 
 	<cfset var categoryBean=read(arguments.categoryID) />
@@ -783,7 +783,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="setListOrder" returntype="void" access="public" output="false">
+<cffunction name="setListOrder" output="false">
 	<cfargument name="categoryID" type="string" default=""/>
 	<cfargument name="orderID" type="string" default=""/>
 	<cfargument name="orderno" type="string" default=""/>
@@ -794,7 +794,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="setCategories" returntype="void" access="public" output="false">
+<cffunction name="setCategories" output="false">
 	<cfargument name="data" type="struct" default="#structNew()#"/>
 	<cfargument name="contentID" type="string" default=""/>
 	<cfargument name="contentHistID" type="string" default=""/>
@@ -868,7 +868,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="keepCategories" returntype="void" access="public" output="false">
+<cffunction name="keepCategories" output="false">
 	<cfargument name="contentHistID" type="string" default=""/>
 	<cfargument name="rsKeepers" type="query"/>
 
@@ -876,7 +876,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getCrumbQuery" output="false" returntype="any">
+<cffunction name="getCrumbQuery" output="false">
 	<cfargument name="path" required="true">
 	<cfargument name="siteID" required="true">
 	<cfargument name="sort" required="true" default="asc">

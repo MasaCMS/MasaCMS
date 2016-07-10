@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.utility="">
 	<!--- default variables --->
 
-	<cffunction name="init" access="public" returntype="mura.Factory" output="false">
+	<cffunction name="init" returntype="mura.Factory" output="false">
 
 		<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
 		<cfset variables.collection = "" />
@@ -71,28 +71,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- GLOBAL --->
 	<!--- *************************--->
 	<!---
-	<cffunction name="configure" access="public" returntype="void" output="false">
+	<cffunction name="configure" output="false">
 	</cffunction>
 	--->
 
-	<cffunction name="getHashKey" access="public" returntype="string" output="false">
+	<cffunction name="getHashKey" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfreturn hash( arguments.key, "MD5" ) />
 	</cffunction>
 
-	<cffunction name="setParent" access="public" returntype="void" output="false">
+	<cffunction name="setParent" output="false">
 		<cfargument name="parent" type="mura.Factory" required="true" />
 		<cfset variables.parent = arguments.parent />
 	</cffunction>
 
-	<cffunction name="getParent" access="public" returntype="mura.Factory" output="false">
+	<cffunction name="getParent" returntype="mura.Factory" output="false">
 		<cfreturn variables.parent />
 	</cffunction>
-	<cffunction name="hasParent" access="public" returntype="boolean" output="false">
+	<cffunction name="hasParent" returntype="boolean" output="false">
 		<cfreturn isObject( variables.parent ) />
 	</cffunction>
 
-	<cffunction name="setCollection" access="private" returntype="void" output="false">
+	<cffunction name="setCollection" access="private" output="false">
 		<cfargument name="collection" type="struct" required="true" />
 		<cfset variables.collection = arguments.collection />
 	</cffunction>
@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- *************************--->
 	<!--- COMMON --->
 	<!--- *************************--->
-	<cffunction name="get" access="public" returntype="any" output="false">
+	<cffunction name="get" output="false">
 		<cfargument name="key" type="string" required="true" />
 
 		<cfset var hashedKey = getHashKey( arguments.key ) />
@@ -130,11 +130,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getAll" access="public" returntype="any" output="false">
+	<cffunction name="getAll" output="false">
 		<cfreturn variables.collection />
 	</cffunction>
 
-	<cffunction name="set" access="public" returntype="void" output="false">
+	<cffunction name="set" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="obj" type="any" required="true" />
 		<cfargument name="isSoft" type="boolean" required="false" default="false" />
@@ -164,16 +164,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="size" access="public" returntype="numeric" output="false">
+	<cffunction name="size" output="false">
 		<cfreturn variables.map.size() />
 	</cffunction>
 
-	<cffunction name="keyExists" access="public" returntype="boolean" output="false">
+	<cffunction name="keyExists" returntype="boolean" output="false">
 		<cfargument name="key">
 		<cfreturn structKeyExists( variables.collection , arguments.key ) />
 	</cffunction>
 
-	<cffunction name="has" access="public" returntype="boolean" output="false">
+	<cffunction name="has" returntype="boolean" output="false">
 		<cfargument name="key" type="string" required="true" />
 
 		<cfset var refLocal = structnew() />
@@ -202,13 +202,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- *************************--->
 	<!--- PURGE --->
 	<!--- *************************--->
-	<cffunction name="purgeAll" access="public" returntype="void" output="false">
+	<cffunction name="purgeAll" output="false">
 		<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
 		<cfset variables.collection = "" />
 		<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
 		<cfset init()/>
 	</cffunction>
-	<cffunction name="purge" access="public" returntype="void" output="false">
+	<cffunction name="purge" output="false">
 		<cfargument name="key" type="string" required="true" />
 
 		<!--- check to see if the id exists --->
@@ -221,18 +221,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- *************************--->
 	<!--- JAVALOADER --->
 	<!--- *************************--->
-	<cffunction name="setJavaLoader" access="public" returntype="void" output="false">
+	<cffunction name="setJavaLoader" output="false">
 		<cfargument name="javaLoader" type="any" required="true" />
 		<cfset variables.javaLoader = arguments.javaLoader />
 	</cffunction>
-	<cffunction name="getJavaLoader" access="public" returntype="any" output="false">
+	<cffunction name="getJavaLoader" output="false">
 		<cfreturn variables.javaLoader />
 	</cffunction>
 
 	<!--- *************************--->
 	<!--- SOFT REFERENCE --->
 	<!--- *************************--->
-	<cffunction name="isSoftReference" access="private" returntype="boolean" output="false" >
+	<cffunction name="isSoftReference" access="private" returntype="boolean" output="false">
 		<cfargument name="obj" type="any" required="true" />
 		<cfif isdefined("arguments.obj") and isObject( arguments.obj ) AND variables.utility.checkForInstanceOf( arguments.obj, "java.lang.ref.SoftReference")>
 			<cfreturn true />

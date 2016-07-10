@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.entityName>
 </cffunction>
 
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
+<cffunction name="packageRecord" output="false">
 	<cfargument name="recordIndex" default="#currentIndex()#">
 	<cfset var bean="">
 		
@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getBeanArray" output="false" returntype="any">
+<cffunction name="getBeanArray" output="false">
     <cfset var array=arrayNew(1)>
     <cfset var record = "">
 

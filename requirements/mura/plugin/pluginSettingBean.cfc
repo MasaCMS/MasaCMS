@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="optionList" type="string" default="" required="true" />
 <cfproperty name="optionListLabel" type="string" default="" required="true" />
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.name=""/>
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="set"  access="public" output="false" returntype="any">
+<cffunction name="set"  output="false">
 	<cfargument name="theXML">
 	<cfargument name="moduleID">
 	<cfset var i="">
@@ -102,81 +102,81 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getName" returntype="String" access="public" output="false">
+<cffunction name="getName" output="false">
 	<cfreturn variables.instance.name />
 </cffunction>
 
-<cffunction name="setName" access="public" output="false">
+<cffunction name="setName" output="false">
 	<cfargument name="name" type="String" />
 	<cfset variables.instance.name = trim(arguments.name) />
 </cffunction>
 
-<cffunction name="getModuleID" returntype="String" access="public" output="false">
+<cffunction name="getModuleID" output="false">
 	<cfreturn variables.instance.ModuleID />
 </cffunction>
 
-<cffunction name="setModuleID" access="public" output="false">
+<cffunction name="setModuleID" output="false">
 	<cfargument name="ModuleID" type="String" />
 	<cfset variables.instance.ModuleID = trim(arguments.ModuleID) />
 </cffunction>
 
-<cffunction name="getHint" returntype="String" access="public" output="false">
+<cffunction name="getHint" output="false">
 	<cfreturn variables.instance.Hint />
 </cffunction>
 
-<cffunction name="setHint" access="public" output="false">
+<cffunction name="setHint" output="false">
 	<cfargument name="Hint" type="String" />
 	<cfset variables.instance.Hint = trim(arguments.Hint) />
 </cffunction>
 
-<cffunction name="getType" returntype="String" access="public" output="false">
+<cffunction name="getType" output="false">
 	<cfreturn variables.instance.Type />
 </cffunction>
 
-<cffunction name="setType" access="public" output="false">
+<cffunction name="setType" output="false">
 	<cfargument name="Type" type="String" />
 	<cfset variables.instance.Type = trim(arguments.Type) />
 </cffunction>
 
-<cffunction name="getRequired" returntype="String" access="public" output="false">
+<cffunction name="getRequired" output="false">
 	<cfreturn variables.instance.Required />
 </cffunction>
 
-<cffunction name="setRequired" access="public" output="false">
+<cffunction name="setRequired" output="false">
 	<cfargument name="Required" type="String" />
 	<cfset variables.instance.Required = trim(arguments.Required) />
 </cffunction>
 
-<cffunction name="getValidation" returntype="String" access="public" output="false">
+<cffunction name="getValidation" output="false">
 	<cfreturn variables.instance.validation />
 </cffunction>
 
-<cffunction name="setValidation" access="public" output="false">
+<cffunction name="setValidation" output="false">
 	<cfargument name="validation" type="String" />
 	<cfset variables.instance.validation = trim(arguments.validation) />
 </cffunction>
 
-<cffunction name="getRegex" returntype="String" access="public" output="false">
+<cffunction name="getRegex" output="false">
 	<cfreturn variables.instance.Regex />
 </cffunction>
 
-<cffunction name="setRegex" access="public" output="false">
+<cffunction name="setRegex" output="false">
 	<cfargument name="Regex" type="String" />
 	<cfset variables.instance.Regex = trim(arguments.Regex) />
 </cffunction>
 
-<cffunction name="getMessage" returntype="String" access="public" output="false">
+<cffunction name="getMessage" output="false">
 	
 	<cfreturn variables.instance.Message />
 	
 </cffunction>
 
-<cffunction name="setMessage" access="public" output="false">
+<cffunction name="setMessage" output="false">
 	<cfargument name="Message" type="String" />
 	<cfset variables.instance.Message = trim(arguments.Message) />
 </cffunction>
 
-<cffunction name="getLabel" returntype="String" access="public" output="false">
+<cffunction name="getLabel" output="false">
 	<cfif len(variables.instance.Label)>
 	<cfreturn variables.instance.Label />
 	<cfelse>
@@ -184,39 +184,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setLabel" access="public" output="false">
+<cffunction name="setLabel" output="false">
 	<cfargument name="Label" type="String" />
 	<cfset variables.instance.Label = trim(arguments.Label) />
 </cffunction>
 
-<cffunction name="getSettingValue" returntype="String" access="public" output="false">
+<cffunction name="getSettingValue" output="false">
 	<cfreturn variables.instance.SettingValue />
 </cffunction>
 
-<cffunction name="setSettingValue" access="public" output="false">
+<cffunction name="setSettingValue" output="false">
 	<cfargument name="SettingValue" type="String" />
 	<cfset variables.instance.SettingValue = trim(arguments.SettingValue) />
 </cffunction>
 
-<cffunction name="getOptionList" returntype="String" access="public" output="false">
+<cffunction name="getOptionList" output="false">
 	<cfreturn variables.instance.optionList />
 </cffunction>
 
-<cffunction name="setOptionList" access="public" output="false">
+<cffunction name="setOptionList" output="false">
 	<cfargument name="OptionList" type="String" />
 	<cfset variables.instance.OptionList = trim(arguments.OptionList) />
 </cffunction>
 
-<cffunction name="getOptionLabelList" returntype="String" access="public" output="false">
+<cffunction name="getOptionLabelList" output="false">
 	<cfreturn variables.instance.OptionLabelList />
 </cffunction>
 
-<cffunction name="setOptionLabelList" access="public" output="false">
+<cffunction name="setOptionLabelList" output="false">
 	<cfargument name="OptionLabelList" type="String" />
 	<cfset variables.instance.OptionLabelList = trim(arguments.OptionLabelList) />
 </cffunction>
 
-<cffunction name="renderSetting" output="false" returntype="string">
+<cffunction name="renderSetting" output="false">
 <cfargument name="theValue" required="true" default="useMuraDefault"/>
 <cfset var renderValue= arguments.theValue />
 <cfset var optionValue= "" />
@@ -242,7 +242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn str/>
 </cffunction>
 
-<cffunction name="loadSettingValue"  access="public" output="false" returntype="void">
+<cffunction name="loadSettingValue"  output="false">
 <cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tpluginsettings 

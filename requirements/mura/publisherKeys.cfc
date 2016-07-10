@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.keys="" />
 <cfset variables.mode="" />
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="mode">
 	<cfargument name="utility">
 	
@@ -60,21 +60,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getMode" output="false" returntype="any">
+<cffunction name="getMode" output="false">
 	<cfreturn variables.mode>
 </cffunction>
 
-<cffunction name="setMode" output="false" returntype="any">
+<cffunction name="setMode" output="false">
 	<cfargument name="mode">
 	<cfset variables.mode=arguments.mode>
 </cffunction>
 
-<cffunction name="has" output="false" returntype="any">
+<cffunction name="has" output="false">
 	<cfargument name="key">
 	<cfreturn variables.keys.hasValue(hash(arguments.key))>
 </cffunction>
 
-<cffunction name="get" output="false" returntype="any">
+<cffunction name="get" output="false">
 	<cfargument name="key">
 	<cfargument name="defaultValue" required="true" default="#variables.utility.getUUID()#">
 	

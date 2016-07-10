@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- PRIVATE --->
 
-	<cffunction name="setSection" returntype="void" output="false">
+	<cffunction name="setSection" output="false">
 		<cfargument name="section" type="string" required="true" hint="Section name." />
 
 		<cfif NOT structKeyExists( variables.ini, arguments.section )>
@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 
-	<cffunction name="cleanIni" returntype="void" output="false">
+	<cffunction name="cleanIni" output="false">
 		<cfset var settingsFileContent = "" />
 		
 		<cffile action="read" file="#variables.iniPath#" variable="settingsFileContent" />

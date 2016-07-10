@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 
-<cffunction name="upload" access="public" returntype="void" output="false">
+<cffunction name="upload" output="false">
 	<cfargument name="direction" type="string" />
 	<cfargument name="listBean" type="any" />
 	<cfset var templist ="" />

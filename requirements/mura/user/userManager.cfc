@@ -48,7 +48,7 @@
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-	<cffunction name="init" returntype="any" output="false" access="public">
+	<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="userDAO" type="any" required="yes"/>
 		<cfargument name="userGateway" type="any" required="yes"/>
@@ -84,13 +84,13 @@
 		<cfreturn super.getBean(arguments.beanName)>
 	</cffunction>
 
-	<cffunction name="getUserGroups" access="public" returntype="query" output="false">
+	<cffunction name="getUserGroups" output="false">
 		<cfargument name="siteid" type="string" default=""/>
 		<cfargument name="isPublic" type="numeric" default="0"/>
 		<cfreturn variables.userGateway.getUserGroups(arguments.siteid,arguments.isPublic) />
 	</cffunction>
 
-	<cffunction name="read" access="public" returntype="any" output="false">
+	<cffunction name="read" output="false">
 		<cfargument name="userid" type="string" default=""/>
 		<cfargument name="username" type="string" default=""/>
 		<cfargument name="remoteID" type="string" default=""/>
@@ -157,12 +157,12 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="readUserHash" access="public" returntype="query" output="false">
+	<cffunction name="readUserHash" output="false">
 		<cfargument name="userid" type="string" default=""/>
 		<cfreturn variables.userDAO.readUserHash(arguments.userid) />
 	</cffunction>
 
-	<cffunction name="readByUsername" access="public" returntype="any" output="false">
+	<cffunction name="readByUsername" output="false">
 		<cfargument name="username" type="string" default=""/>
 		<cfargument name="siteid" type="string" default=""/>
 		<cfargument name="userBean" type="any" default=""/>
@@ -206,7 +206,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="readByGroupName" access="public" returntype="any" output="false">
+	<cffunction name="readByGroupName" output="false">
 		<cfargument name="groupname" type="string" default=""/>
 		<cfargument name="siteid" type="string" default=""/>
 		<cfargument name="isPublic" type="string" required="yes" default="both"/>
@@ -251,7 +251,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="readByRemoteID" access="public" returntype="any" output="false">
+	<cffunction name="readByRemoteID" output="false">
 		<cfargument name="remoteID" type="string" default=""/>
 		<cfargument name="siteid" type="string" default=""/>
 		<cfargument name="userBean" type="any" default=""/>
@@ -332,7 +332,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="save" access="public" returntype="any" output="false">
+	<cffunction name="save" output="false">
 		<cfargument name="data" type="any" default="#structnew()#"/>
 		<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
 		<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
@@ -364,7 +364,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="update" access="public" returntype="any" output="false">
+	<cffunction name="update" output="false">
 		<cfargument name="data" type="any" default="#structnew()#"/>
 		<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
 		<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
@@ -510,7 +510,7 @@
 		<cfreturn userBean />
 	</cffunction>
 
-	<cffunction name="create" access="public" returntype="any" output="false">
+	<cffunction name="create" output="false">
 		<cfargument name="data" type="any" default="#structnew()#"/>
 
 		<cfset var addressBean = "" />
@@ -638,7 +638,7 @@
 		<cfreturn userBean />
 	</cffunction>
 
-	<cffunction name="delete" access="public" returntype="void" output="false">
+	<cffunction name="delete" output="false">
 		<cfargument name="userid" type="string" default=""/>
 		<cfargument name="type" type="numeric" default="2"/>
 
@@ -677,54 +677,54 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="readGroupMemberships" access="public" returntype="any" output="false">
+	<cffunction name="readGroupMemberships" output="false">
 		<cfargument name="userid" type="string" default="" required="yes"/>
 		<cfreturn variables.userDAO.readGroupMemberships(arguments.userid) />
 	</cffunction>
 
-	<cffunction name="getAddresses" access="public" returntype="any" output="false">
+	<cffunction name="getAddresses" output="false">
 		<cfargument name="userid" type="string" default="" required="yes"/>
 		<cfreturn variables.userDAO.getAddresses(arguments.userid) />
 	</cffunction>
 
-	<cffunction name="getAddressByID" access="public" returntype="any" output="false">
+	<cffunction name="getAddressByID" output="false">
 		<cfargument name="addressid" type="string" default="" required="yes"/>
 		<cfreturn variables.userDAO.getAddressByID(arguments.addressid) />
 	</cffunction>
 
-	<cffunction name="readInterestGroups" access="public" returntype="any" output="false">
+	<cffunction name="readInterestGroups" output="false">
 		<cfargument name="userid" type="string" default="" required="yes"/>
 		<cfreturn variables.userDAO.readInterestGroups(arguments.userid) />
 	</cffunction>
 
-	<cffunction name="readMemberships" access="public" returntype="any" output="false">
+	<cffunction name="readMemberships" output="false">
 		<cfargument name="userid" type="string" default="" required="yes"/>
 		<cfreturn variables.userDAO.readMemberships(arguments.userid) />
 	</cffunction>
 
-	<cffunction name="getPublicGroups" access="public" returntype="any" output="false">
+	<cffunction name="getPublicGroups" output="false">
 		<cfargument name="siteid" type="string" default="" required="yes"/>
 		<cfreturn variables.userGateway.getPublicGroups(arguments.siteid) />
 	</cffunction>
 
-	<cffunction name="getPublicGroupsIterator" access="public" returntype="any" output="false">
+	<cffunction name="getPublicGroupsIterator" output="false">
 		<cfargument name="siteid" type="string" default="" required="yes"/>
 		<cfset var rs=variables.userGateway.getPublicGroups(arguments.siteid) />
 		<cfreturn getBean("userIterator").setQuery(rs) />
 	</cffunction>
 
-	<cffunction name="getPrivateGroups" access="public" returntype="any" output="false">
+	<cffunction name="getPrivateGroups" output="false">
 		<cfargument name="siteid" type="string" default="" required="yes"/>
 		<cfreturn variables.userGateway.getPrivateGroups(arguments.siteid) />
 	</cffunction>
 
-	<cffunction name="getPrivateGroupsIterator" access="public" returntype="any" output="false">
+	<cffunction name="getPrivateGroupsIterator" output="false">
 		<cfargument name="siteid" type="string" default="" required="yes"/>
 		<cfset var rs=variables.userGateway.getPrivateGroups(arguments.siteid) />
 		<cfreturn getBean("userIterator").setQuery(rs) />
 	</cffunction>
 
-	<cffunction name="createUserInGroup" access="public" returntype="void" output="false">
+	<cffunction name="createUserInGroup" output="false">
 		<cfargument name="userid" type="string" default="" required="yes"/>
 		<cfargument name="groupid" type="string" default="" required="yes"/>
 		<cfset variables.userDAO.createUserInGroup(arguments.userid,arguments.groupid) />
@@ -732,7 +732,7 @@
 		<cfset purgeUserCache(userID=arguments.groupID)>
 	</cffunction>
 
-	<cffunction name="deleteUserFromGroup" access="public" returntype="void" output="false">
+	<cffunction name="deleteUserFromGroup" output="false">
 		<cfargument name="userid" type="string" default="" required="yes"/>
 		<cfargument name="groupid" type="string" default="" required="yes"/>
 		<cfset variables.userDAO.deleteUserFromGroup(arguments.userid,arguments.groupid) />
@@ -740,32 +740,32 @@
 		<cfset purgeUserCache(userID=arguments.groupID)>
 	</cffunction>
 
-	<cffunction name="getSearch" access="public" returntype="query" output="false">
+	<cffunction name="getSearch" output="false">
 		<cfargument name="search" type="string" default="" required="yes"/>
 		<cfargument name="siteid" type="string" default="" required="yes"/>
 		<cfargument name="isPublic" type="numeric" default="1" required="yes"/>
 		<cfreturn variables.userGateway.getSearch(argumentCollection=arguments) />
 	</cffunction>
 
-	<cffunction name="getAdvancedSearch" access="public" returntype="query" output="false">
+	<cffunction name="getAdvancedSearch" output="false">
 		<cfargument name="data" type="any" default="" hint="This can be a struct or an instance of userFeedBean."/>
 		<cfargument name="siteid" type="any" hint="deprecated, use userFeedBean.setSiteID()" default=""/>
 		<cfargument name="isPublic" type="any" hint="deprecated, use userFeedBean.setIsPublic()" default=""/>
 		<cfreturn variables.userGateway.getAdvancedSearch(argumentCollection=arguments) />
 	</cffunction>
 
-	<cffunction name="getAdvancedSearchQuery" access="public" returntype="query" output="false">
+	<cffunction name="getAdvancedSearchQuery" output="false">
 		<cfargument name="userFeedBean" type="any" default="" required="yes"/>
 		<cfreturn getAdvancedSearch(arguments.userFeedBean) />
 	</cffunction>
 
-	<cffunction name="getAdvancedSearchIterator" access="public" returntype="query" output="false">
+	<cffunction name="getAdvancedSearchIterator" output="false">
 		<cfargument name="userFeedBean" type="any" required="yes"/>
 		<cfset var rs= getAdvancedSearch(arguments.userFeedBean) />
 		<cfreturn getBean("userIterator").setQuery(rs) />
 	</cffunction>
 
-	<cffunction name="setLastUpdateInfo" access="public" returntype="void" output="false">
+	<cffunction name="setLastUpdateInfo" output="false">
 		<cfargument name="userBean" type="any" default="" required="yes"/>
 		<cfset var sessionData=getSession()>
 
@@ -778,14 +778,14 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="sendLoginByEmail" access="public" returntype="string" output="false">
+	<cffunction name="sendLoginByEmail" output="false">
 		<cfargument name="email" type="string" default=""/>
 		<cfargument name="siteid" type="string" default=""/>
 		<cfargument name="returnURL" type="string" default=""/>
 		<cfreturn variables.userUtility.sendLoginByEmail(arguments.email,arguments.siteid,arguments.returnURL) />
 	</cffunction>
 
-	<cffunction name="sendLoginByUser" access="public" returntype="string" output="false">
+	<cffunction name="sendLoginByUser" output="false">
 		<cfargument name="userBean" type="any"/>
 		<cfargument name="siteid" type="string" default=""/>
 		<cfargument name="returnURL" type="string" default=""/>
@@ -793,7 +793,7 @@
 		<cfreturn variables.userUtility.sendLoginByUser(arguments.userBean,arguments.siteid,arguments.returnURL,arguments.isPublicReg) />
 	</cffunction>
 
-	<cffunction name="createAddress" access="public" returntype="struct" output="false">
+	<cffunction name="createAddress" returntype="struct" output="false">
 		<cfargument name="data" type="any" default="#structnew()#"/>
 
 		<cfset var addressBean=getBean("addressBean") />
@@ -831,7 +831,7 @@
 		<cfreturn addressBean />
 	</cffunction>
 
-	<cffunction name="updateAddress" access="public" returntype="any" output="false">
+	<cffunction name="updateAddress" output="false">
 		<cfargument name="data" type="any" default="#structnew()#"/>
 
 		<cfset var error =""/>
@@ -874,7 +874,7 @@
 		<cfreturn addressBean />
 	</cffunction>
 
-	<cffunction name="deleteAddress" access="public" returntype="void" output="false">
+	<cffunction name="deleteAddress" output="false">
 		<cfargument name="addressid" type="string" default=""/>
 		<cfset var addressBean=variables.userDAO.readAddress(arguments.addressID) />
 		<cfif not addressBean.getIsNew()>
@@ -884,12 +884,12 @@
 		<cfset purgeUserCache(userID=addressBean.getUserID())>
 	</cffunction>
 
-	<cffunction name="getCurrentUserID" access="public" returntype="string" output="false">
+	<cffunction name="getCurrentUserID" output="false">
 		<cfset var sessionData=getSession()>
 		<cfreturn sessionData.mura.userID />
 	</cffunction>
 
-	<cffunction name="getCurrentName" access="public" returntype="string" output="false">
+	<cffunction name="getCurrentName" output="false">
 		<cftry>
 			<cfset var sessionData=getSession()>
 			<cfreturn sessionData.mura.fname & " " & sessionData.mura.lname />
@@ -899,7 +899,7 @@
 		</cftry>
 	</cffunction>
 
-	<cffunction name="getCurrentLastLogin" access="public" returntype="string" output="false">
+	<cffunction name="getCurrentLastLogin" output="false">
 		<cftry>
 			<cfset var sessionData=getSession()>
 			<cfreturn sessionData.mura.lastlogin />
@@ -909,7 +909,7 @@
 		</cftry>
 	</cffunction>
 
-	<cffunction name="getCurrentCompany" access="public" returntype="string" output="false">
+	<cffunction name="getCurrentCompany" output="false">
 		<cftry>
 			<cfset var sessionData=getSession()>
 			<cfreturn sessionData.mura.company />
@@ -953,12 +953,12 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="setUserBeanMetaData" output="false" returntype="any">
+	<cffunction name="setUserBeanMetaData" output="false">
 		<cfargument name="userBean">
 		<cfreturn variables.userDAO.setUserBeanMetaData(userBean)>
 	</cffunction>
 
-	<cffunction name="setUserStructDefaults" output="false" access="public" returntype="void">
+	<cffunction name="setUserStructDefaults" output="false">
 		<cfset var user="">
 		<cfset var sessionData=getSession()>
 		<cfif not structKeyExists(sessionData,"mura")>
@@ -973,11 +973,11 @@
 		<cfparam name="sessionData.mura.membershipids" default="" />
 	</cffunction>
 
-	<cffunction name="getIterator" returntype="any" output="false">
+	<cffunction name="getIterator" output="false">
 		<cfreturn getBean("userIterator").init()>
 	</cffunction>
 
-	<cffunction name="getUserFeedBean" returntype="any" output="false">
+	<cffunction name="getUserFeedBean" output="false">
 		<cfset var userFeedBean=createObject("component","mura.user.userFeedBean").init()>
 		<cfset userFeedBean.setUserManager(this)>
 		<cfreturn userFeedBean>
