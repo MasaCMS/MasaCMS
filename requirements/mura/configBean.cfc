@@ -1786,7 +1786,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rs.type eq 'dir'>
 				<cfif listFindNoCase('handlers,eventhandlers,event_handlers',rs.name)>
 					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
-				<cfelseif rs.name neq 'archived'>
+				<cfelseif listFindNoCase('archived,archive',rs.name)>
 					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
 				</cfif>
 			<cfelseif listLast(rs.name,'.') eq 'cfc'>
