@@ -1469,6 +1469,10 @@
 
 					        	</cfif>
 								} else {
+
+									muraInlineEditor.data['csrf_token']=resp['csrf_token'];
+									muraInlineEditor.data['csrf_token_expires']=resp['csrf_token_expires'];
+
 									var msg='';
 									for(var e in resp.errors){
 										msg=msg + resp.errors[e] + '\n';

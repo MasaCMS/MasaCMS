@@ -56,7 +56,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	'#esapiEncode('javascript',rc.contentBean.getURL(queryString="previewid=" & rc.contentBean.getContentHistID()))#'
 </cfif>}</cfoutput>
 <cfelse>
-<cfoutput>{success:false,errors:#serializeJSON(rc.contentBean.getErrors())#}</cfoutput>
+<cfset csrfTokens=$.generateCSRFTokens(context=rc.contentBean.getContentHistID() & 'add')>
+<cfoutput>{success:false,
+		errors:#serializeJSON(rc.contentBean.getErrors())#,
+		csrf_token: '#csrfTokens.token#',
+		csrf_token_expires: '#csrfTokens.expires#'
+}</cfoutput><cfabort>
 </cfif>
 <cfelseif rc.action eq 'multiFileUpload'>
 <cfoutput>success</cfoutput>

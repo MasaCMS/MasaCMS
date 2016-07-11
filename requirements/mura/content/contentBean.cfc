@@ -792,6 +792,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="setTarget" output="false">
+    <cfargument name="target" type="string" default="_self">
+	<cfif len(arguments.target)>
+		<cfset variables.instance.target=arguments.target>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 <!--- for variations --->
 <cffunction name="getInitJS" output="false">
 	<cfreturn variables.instance.responseMessage>
