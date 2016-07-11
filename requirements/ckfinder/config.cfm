@@ -18,7 +18,7 @@ currentUser=application.usermanager.read(session.mura.userID);
 // authorized to upload and access files in the File Browser. '
 function CheckAuthentication()
 {
-  
+
   if (isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)) {
     return true;
   } else {
@@ -43,7 +43,7 @@ config.licenseKey = 'VJ42-3FHF-3FVT-9FH2-TU71-G6D1-XDXF';
 currentSite=application.settingsManager.getSite(session.siteid);
 
 
-config.defaultAlledExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v,less';
+config.defaultAlledExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v,less';
 
 //ATTENTION: The trailing slash is required.
 config.baseUrl = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets/';
@@ -193,11 +193,11 @@ if (isdefined("url.type")){
 	  config.resourceType[4].allowedExtensions = '';
 	  config.resourceType[4].deniedExtensions = '';
 	}
-	
+
 	if (not isdefined('application.CKFinderResources')){
 	  application.CKFinderResources=arrayNew(1);
 	  rsSites=application.settingsManager.getList();
-	  
+
 	  for (i=1; i lte rsSites.recordcount; i=(i+1)){
 	    temp = structNew();
 	    temp.name = '#rsSites.siteID[i]#_User_Assets';
@@ -207,12 +207,12 @@ if (isdefined("url.type")){
 	    if(application.configBean.getValue('fmAllowedExtensions') eq ''){
 	      temp.allowedExtensions = config.defaultAlledExtensions;
 	    } else {
-	      temp.allowedExtensions = application.configBean.getValue('fmAllowedExtensions');    
+	      temp.allowedExtensions = application.configBean.getValue('fmAllowedExtensions');
 	    }
 	    temp.deniedExtensions = '';
-	    
+
 	    arrayAppend(application.CKFinderResources,temp);
-	    
+
 	    if(!isBoolean(application.configBean.getValue('fmShowSiteFiles')) || application.configBean.getValue('fmShowSiteFiles')){
 	      temp = structNew();
 	      temp.name = '#rsSites.siteID[i]#_Site_Files';
@@ -223,7 +223,7 @@ if (isdefined("url.type")){
 	      temp.deniedExtensions = '';
 	      arrayAppend(application.CKFinderResources,temp);
 	    }
-	    
+
 	  }
 
 	}
@@ -312,7 +312,7 @@ if (application.configBean.getValue("usefilemode") eq "" or yesNoFormat(applicat
 	config.chmodFolders = 755;
 } else {
 	config.chmodFiles = 0;
-	config.chmodFolders = 0;		
+	config.chmodFolders = 0;
 }
 
 
