@@ -424,7 +424,7 @@ if(len($.siteConfig('customTagGroups'))){
 
 	<cfif iterator.hasNext()>			
 		<div class="navSort">
-			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</span>
+			<span class="hidden-xs hidden-sm">#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</span>
 			<div class="mura-input-set">
 				<a href="" data-sortby="lastupdate" class="btn<cfif $.event("sortBy") eq "lastUpdate"> active</cfif>">#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a>
 				<a href="" data-sortby="created" class="btn<cfif $.event("sortBy") eq "created"> active</cfif>">#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a>
