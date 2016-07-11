@@ -85,8 +85,7 @@
 	text-align: right;
 
 	.btn{
-		margin-right: 0;
-		margin-left: 15px;
+		margin-right: 12px;
 	}
 	.form-actions{
 		clear:both;
@@ -100,19 +99,24 @@
   padding: 13px 0px;
   margin: 12px 20px; 
 
+  	.mura-layout-row{
+  		margin-right: -12px;
+  	}
 		.mura-control-group{
 			float: left;
 			margin-bottom: 12px;
+  		padding-right: 12px;
 		}
-  
-  	.mura-control-group + .mura-control-group{
-  		padding-left: 12px;
-  	}
   	
   	.mura-control-group input[type=text], 
   	.mura-control-group label, 
   	.mura-control-group select{
   		width: 100% !important;
+  	}
+  	.mura-control-group label{
+  		overflow:hidden;
+  		text-overflow: ellipsis;
+  		white-space: nowrap;
   	}
 
   	.tagSelector input{
