@@ -5805,57 +5805,58 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		appendDisplayObject:function(data) {
-			this.each(function(){
-				var el=document.createElement('div');
-			    el.setAttribute('class','mura-object');
+			if(!this.selection.length){
+				return null;
+			}
 
-				for(var a in data){
-					el.setAttribute('data-' + a,data[a]);
-				}
+			var el=document.createElement('div');
+		    el.setAttribute('class','mura-object');
 
-				if(typeof data.async == 'undefined'){
-					el.setAttribute('data-async',true);
-				}
+			for(var a in data){
+				el.setAttribute('data-' + a,data[a]);
+			}
 
-				if(typeof data.render == 'undefined'){
-					el.setAttribute('data-render','server');
-				}
+			if(typeof data.async == 'undefined'){
+				el.setAttribute('data-async',true);
+			}
 
-				el.setAttribute('data-instanceid',root.mura.createUUID());
+			if(typeof data.render == 'undefined'){
+				el.setAttribute('data-render','server');
+			}
 
-				root.mura(this).append(el);
+			el.setAttribute('data-instanceid',root.mura.createUUID());
 
-				root.mura.processObject(el);
+			root.mura(this.selection[0]).append(el);
 
-				return el;
-			});
+			return root.mura.processObject(el);
+
 		},
 
 		prependDisplayObject:function(data) {
-			this.each(function(){
-				var el=document.createElement('div');
-			    el.setAttribute('class','mura-object');
+			if(!this.selection.length){
+				return null;
+			}
 
-				for(var a in data){
-					el.setAttribute('data-' + a,data[a]);
-				}
+			var el=document.createElement('div');
+		    el.setAttribute('class','mura-object');
 
-				if(typeof data.async == 'undefined'){
-					el.setAttribute('data-async',true);
-				}
+			for(var a in data){
+				el.setAttribute('data-' + a,data[a]);
+			}
 
-				if(typeof data.render == 'undefined'){
-					el.setAttribute('data-render','server');
-				}
+			if(typeof data.async == 'undefined'){
+				el.setAttribute('data-async',true);
+			}
 
-				el.setAttribute('data-instanceid',root.mura.createUUID());
+			if(typeof data.render == 'undefined'){
+				el.setAttribute('data-render','server');
+			}
 
-				root.mura(this).prepend(el);
+			el.setAttribute('data-instanceid',root.mura.createUUID());
 
-				root.mura.processObject(el);
+			root.mura(this.selection[0]).prepend(el);
 
-				return el;
-			});
+			return root.mura.processObject(el);
 		},
 
 		prepend:function(el) {
