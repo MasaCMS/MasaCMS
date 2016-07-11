@@ -53,7 +53,9 @@ var siteManager = {
 	nodeLockConfirmed: false,
 	hasNodeLock: false,
 	dirtyRelatedContent: false,
+	currentModuleID: "",
 	copyContentID: "",
+	copyModuleID: "",
 	copySiteID: "",
 	reloadURL: "",
 	tablist: "",
@@ -517,7 +519,9 @@ buttons: {
 
 			//.href='./?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 
-			if(this.copySiteID != "" && this.copyContentID != "") {
+			//var test=this.copySiteID != "" && this.copyContentID != "" && this.copyModuleID==this.currentModuleID;
+
+			if(this.copySiteID != "" && this.copyContentID != "" && this.copyModuleID==this.currentModuleID) {
 				document.getElementById('newPasteLink').href = 'javascript:siteManager.pasteThis(\'' + contentid + '\')';
 				document.getElementById('newPaste').style.display = '';
 				document.getElementById('newPasteLink').style.display = '';
@@ -1119,33 +1123,38 @@ buttons: {
 
 	copyThis: function(siteID, contentID, _copyAll) {
 		var url = './';
-		var pars = 'muraAction=cArch.saveCopyInfo&siteid=' + siteID + '&contentid=' + contentID + '&copyAll=' + _copyAll + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.saveCopyInfo&siteid=' + siteID + '&contentid=' + contentID  + '&moduleid=' +  siteManager.currentModuleID + '&copyAll=' + _copyAll + '&cacheid=' + Math.random();
 
 		$.get(url + "?" + pars);
 
 		this.copyContentID = contentID;
 		this.copySiteID = siteID;
+		this.copyModuleID = siteManager.currentModuleID;
 		this.copyAll = _copyAll;
 
 		this.hideMenu('newContentMenu');
 	},
 
 	pasteThis: function(parentID) {
-		var url = './';
-		var pars = 'muraAction=cArch.copy&compactDisplay=true&siteid=' + this.copySiteID + '&copyAll=' + this.copyAll + '&contentid=' + this.copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
-		var d = $('#newPasteLink');
-		d.css('background', 'url(assets/images/ajax-loader.gif) no-repeat 1px 5px;');
-		this.reloadURL = $('#newZoomLink').attr("href");
+		if(this.copyModuleID != this.currentModuleID){
+			alert("Pasting between modules is not supported.");
+		} else {
+			var url = './';
+			var pars = 'muraAction=cArch.copy&compactDisplay=true&siteid=' + this.copySiteID + '&copyAll=' + this.copyAll + '&contentid=' + this.copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
+			var d = $('#newPasteLink');
+			d.css('background', 'url(assets/images/ajax-loader.gif) no-repeat 1px 5px;');
+			this.reloadURL = $('#newZoomLink').attr("href");
 
-		actionModal(function(){
-			$.get(url + "?" + pars, function(data) {
-				$('#action-modal').remove();
-				siteManager.loadSiteManagerInTab(
-				function() {
-					siteManager.loadSiteManager(siteManager.copySiteID, parentID, '00000000000000000000000000000000000', '', '', '', 1);
+			actionModal(function(){
+				$.get(url + "?" + pars, function(data) {
+					$('#action-modal').remove();
+					siteManager.loadSiteManagerInTab(
+					function() {
+						siteManager.loadSiteManager(siteManager.copySiteID, parentID, siteManager.currentModuleID, '', '', '', 1);
+					});
 				});
 			});
-		});
+		}
 	},
 
 	reloadPage: function() {
@@ -1374,6 +1383,8 @@ buttons: {
 		$('#newContentMenu').addClass('hide');
 		//$('#viewTabs a[href="#tabArchitectural"]').tab('show');
 		//location.href=url + "?" + pars;
+		siteManager.currentModuleID=moduleid;
+
 		var d = $('#gridContainer');
 		if(!this.activeQuickEdit) {
 			d.html('<div class="load-inline"></div>').show();

@@ -2217,10 +2217,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="saveCopyInfo" output="false">
 		<cfargument name="siteID" type="string" />
 		<cfargument name="contentID" type="string" />
+		<cfargument name="moduleID" type="string" />
 		<cfargument name="copyAll" type="string" />
 		<cfset var sessionData=getSession()>
 		<cfset sessionData.copySiteID = arguments.siteID>
 		<cfset sessionData.copyContentID = arguments.contentID>
+		<cfset sessionData.copyModuleID = arguments.moduleID>
 		<cfset sessionData.copyAll = arguments.copyAll>
 	</cffunction>
 

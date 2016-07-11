@@ -474,7 +474,7 @@
 
 <cffunction name="saveCopyInfo" ouput="false">
 	<cfargument name="rc">
-	<cfset variables.contentManager.saveCopyInfo(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.copyAll)  />
+	<cfset variables.contentManager.saveCopyInfo(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.moduleid,arguments.rc.copyAll)  />
 	<cfabort>
 </cffunction>
 

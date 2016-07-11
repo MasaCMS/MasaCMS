@@ -970,8 +970,10 @@ Sincerely,
 		<cfset contentBean.setDisplay(0)>
 	</cfif>
 
-	<cfif listFindNoCase("Page,Folder,Gallery,Calendar",contentBean.getType())>
+	<cfif listFindNoCase("Page,Folder,Gallery,Calendar,Link,File",contentBean.getType())>
 		<cfset setUniqueFilename(contentBean)>
+	<cfelse>
+		<cfset setUniqueTitle(contentBean)>
 	</cfif>
 
 	<cfif not structKeyExists(arguments,"path")>
@@ -984,6 +986,7 @@ Sincerely,
 
 	<cfset contentBean.setCreated(now())>
 	<cfset contentBean.save()>
+	
 	<cfset newContentHistID=contentBean.getContentHistID()>
 	<cfset newContentID=contentBean.getContentID()>
 
