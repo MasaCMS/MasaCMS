@@ -5831,7 +5831,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					root.mura.processObject(el).then(resolve,reject);
 
-					return el;
 				});
 			});
 		},
@@ -5861,8 +5860,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					root.mura(this).prepend(el);
 
 					root.mura.processObject(el).then(resolve,reject);
-
-					return el;
+					
 				});
 			});
 		},

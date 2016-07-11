@@ -402,7 +402,6 @@
 
 					root.mura.processObject(el).then(resolve,reject);
 
-					return el;
 				});
 			});
 		},
@@ -432,8 +431,7 @@
 					root.mura(this).prepend(el);
 
 					root.mura.processObject(el).then(resolve,reject);
-
-					return el;
+					
 				});
 			});
 		},
