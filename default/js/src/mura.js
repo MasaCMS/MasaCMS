@@ -1361,7 +1361,7 @@
 
 			function(){
 				find('.mura-object, .mura-async-object').each(function(){
-					processObject(this,true);
+					processDisplayObject(this,true);
 
 				});
 			},
@@ -1623,7 +1623,7 @@
 		if(obj.data('async')===null){
 			obj.data('async',true);
 		}
-		return processObject(obj,false,true);
+		return processDisplayObject(obj,false,true);
 	}
 
 	function wireUpObject(obj,response){
@@ -1897,7 +1897,7 @@
 		}
 	}
 
-	function processObject(el,queue,rerender){
+	function processDisplayObject(el,queue,rerender){
 
 		var obj=(el.node) ? el : mura(el);
 		el =el.node || el;
@@ -1907,7 +1907,7 @@
 		queue=(queue==null || rendered) ? false : queue;
 
 		if(document.createEvent && queue && !isScrolledIntoView(el)){
-			setTimeout(function(){processObject(el,true)},10);
+			setTimeout(function(){processDisplayObject(el,true)},10);
 			return;
 		}
 
@@ -2301,7 +2301,7 @@
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,
-			processObject:processObject,
+			processDisplayObject:processDisplayObject,
 			processAsyncObject:processAsyncObject,
 			resetAsyncObject:resetAsyncObject,
 			setLowerCaseKeys:setLowerCaseKeys,

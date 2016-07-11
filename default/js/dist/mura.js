@@ -4031,7 +4031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			function(){
 				find('.mura-object, .mura-async-object').each(function(){
-					processObject(this,true);
+					processDisplayObject(this,true);
 
 				});
 			},
@@ -4293,7 +4293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		if(obj.data('async')===null){
 			obj.data('async',true);
 		}
-		return processObject(obj,false,true);
+		return processDisplayObject(obj,false,true);
 	}
 
 	function wireUpObject(obj,response){
@@ -4567,7 +4567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-	function processObject(el,queue,rerender){
+	function processDisplayObject(el,queue,rerender){
 
 		var obj=(el.node) ? el : mura(el);
 		el =el.node || el;
@@ -4577,7 +4577,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		queue=(queue==null || rendered) ? false : queue;
 
 		if(document.createEvent && queue && !isScrolledIntoView(el)){
-			setTimeout(function(){processObject(el,true)},10);
+			setTimeout(function(){processDisplayObject(el,true)},10);
 			return;
 		}
 
@@ -4971,7 +4971,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,
-			processObject:processObject,
+			processDisplayObject:processDisplayObject,
 			processAsyncObject:processAsyncObject,
 			resetAsyncObject:resetAsyncObject,
 			setLowerCaseKeys:setLowerCaseKeys,
@@ -5829,7 +5829,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			root.mura(this.selection[0]).append(el);
 
-			return root.mura.processObject(el);
+			return root.mura.processDisplayObject(el);
 
 		},
 
@@ -5857,7 +5857,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			root.mura(this.selection[0]).prepend(el);
 
-			return root.mura.processObject(el);
+			return root.mura.processDisplayObject(el);
+		},
+
+		processDisplayObject:function() {
+			if(!this.selection.length){
+				return null;
+			}
+			return root.mura.processDisplayObject(this.selection[0]);
 		},
 
 		prepend:function(el) {

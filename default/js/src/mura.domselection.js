@@ -400,7 +400,7 @@
 
 			root.mura(this.selection[0]).append(el);
 
-			return root.mura.processObject(el);
+			return root.mura.processDisplayObject(el);
 
 		},
 
@@ -428,7 +428,14 @@
 
 			root.mura(this.selection[0]).prepend(el);
 
-			return root.mura.processObject(el);
+			return root.mura.processDisplayObject(el);
+		},
+
+		processDisplayObject:function() {
+			if(!this.selection.length){
+				return null;
+			}
+			return root.mura.processDisplayObject(this.selection[0]);
 		},
 
 		prepend:function(el) {
