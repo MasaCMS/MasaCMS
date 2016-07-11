@@ -301,7 +301,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfif not started>
 								<tr>
-									<td class="noResults" colspan="4" id="noFilters">#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</td>
+									<td class="noResults" colspan="3" id="noFilters">#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</td>
 								</tr>
 							</cfif>
 						</tbody>

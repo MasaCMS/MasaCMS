@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfoutput>
 			<cfelse>
 			<tr>
-			<td class="noResults" colspan="5"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.nomembers')#</cfoutput></td>
+			<td class="noResults" colspan="6"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.nomembers')#</cfoutput></td>
 			</tr>
 			</cfif>
 			</table>
