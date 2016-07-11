@@ -4600,32 +4600,33 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		if(rendered){
-			var forms=obj.find('form');
+			return new Promise(function(resolve,reject) {
+				var forms=obj.find('form');
 
-			obj.find('form').each(function(){
-				var form=mura(this);
+				obj.find('form').each(function(){
+					var form=mura(this);
 
-				if(!form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
-					form.on('submit',function(e){
-						e.preventDefault();
-						validateForm(this,
-							function(frm){
-								submitForm(frm,obj);
-							}
-						);
+					if(!form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+						form.on('submit',function(e){
+							e.preventDefault();
+							validateForm(this,
+								function(frm){
+									submitForm(frm,obj);
+								}
+							);
 
-						return false;
-					});
+							return false;
+						});
+					}
+
+
+				});
+
+				if(typeof resolve == 'function'){
+					resolve(obj);
 				}
 
-
 			});
-
-			if(typeof resolve == 'function'){
-				resolve(obj);
-			}
-
-			return;
 		}
 
 		return new Promise(function(resolve,reject) {
