@@ -377,65 +377,74 @@
 		},
 
 		appendDisplayObject:function(data) {
-			if(!this.selection.length){
-				return null;
-			}
+			var self=this;
 
-			var el=document.createElement('div');
-		    el.setAttribute('class','mura-object');
+			return new Promise(function(resolve,reject){
+				self.each(function(){
+					var el=document.createElement('div');
+				    el.setAttribute('class','mura-object');
 
-			for(var a in data){
-				el.setAttribute('data-' + a,data[a]);
-			}
+					for(var a in data){
+						el.setAttribute('data-' + a,data[a]);
+					}
 
-			if(typeof data.async == 'undefined'){
-				el.setAttribute('data-async',true);
-			}
+					if(typeof data.async == 'undefined'){
+						el.setAttribute('data-async',true);
+					}
 
-			if(typeof data.render == 'undefined'){
-				el.setAttribute('data-render','server');
-			}
+					if(typeof data.render == 'undefined'){
+						el.setAttribute('data-render','server');
+					}
 
-			el.setAttribute('data-instanceid',root.mura.createUUID());
+					el.setAttribute('data-instanceid',root.mura.createUUID());
 
-			root.mura(this.selection[0]).append(el);
+					root.mura(this).append(el);
 
-			return root.mura.processDisplayObject(el);
+					root.mura.processObject(el).then(resolve,reject);
 
+					return el;
+				});
+			});
 		},
 
 		prependDisplayObject:function(data) {
-			if(!this.selection.length){
-				return null;
-			}
+			var self=this;
 
-			var el=document.createElement('div');
-		    el.setAttribute('class','mura-object');
+			return new Promise(function(resolve,reject){
+				self.each(function(){
+					var el=document.createElement('div');
+				    el.setAttribute('class','mura-object');
 
-			for(var a in data){
-				el.setAttribute('data-' + a,data[a]);
-			}
+					for(var a in data){
+						el.setAttribute('data-' + a,data[a]);
+					}
 
-			if(typeof data.async == 'undefined'){
-				el.setAttribute('data-async',true);
-			}
+					if(typeof data.async == 'undefined'){
+						el.setAttribute('data-async',true);
+					}
 
-			if(typeof data.render == 'undefined'){
-				el.setAttribute('data-render','server');
-			}
+					if(typeof data.render == 'undefined'){
+						el.setAttribute('data-render','server');
+					}
 
-			el.setAttribute('data-instanceid',root.mura.createUUID());
+					el.setAttribute('data-instanceid',root.mura.createUUID());
 
-			root.mura(this.selection[0]).prepend(el);
+					root.mura(this).prepend(el);
 
-			return root.mura.processDisplayObject(el);
+					root.mura.processObject(el).then(resolve,reject);
+
+					return el;
+				});
+			});
 		},
 
-		processDisplayObject:function() {
-			if(!this.selection.length){
-				return null;
-			}
-			return root.mura.processDisplayObject(this.selection[0]);
+		processDisplayObject:function(data) {
+			var self=this;
+			return new Promise(function(resolve,reject){
+				self.each(function(){
+					root.mura.processObject(this).then(resolve,reject);
+				});
+			});
 		},
 
 		prepend:function(el) {
