@@ -306,7 +306,7 @@
 			<cfif local.displayInterval.end eq 'after' and  isNumeric(local.displayInterval.endafter)>
 				<cfset local.repeatmax=local.displayInterval.endafter>
 			<cfelseif local.displayInterval.end eq 'on' and isDate(local.displayInterval.endon)>
-				<cfset local.repeatuntil=local.displayInterval.endon>
+				<cfset local.repeatuntil=fix(local.displayInterval.endon)>
 			</cfif>
 
 			<cfset LOCAL.DisplayStart=fix(arguments.query.displayStart[local.currentrow])>
