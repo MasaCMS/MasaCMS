@@ -572,9 +572,10 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfelse>
 				<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
 			</cfif>
-
-			<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
-			<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+			<cfif not StructIsEmpty(tempFile)>
+				<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
+				<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+			</cfif>
 		<cfelse>
 			<cfset fileID=arguments.data[formField]>
 		</cfif>
