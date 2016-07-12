@@ -10,7 +10,7 @@ if ( 'CKEDITOR' in window) {
 	{
 		// The name of sub folder which hold the shortcut preview images of the templates.
 		//imagesPath : CKEDITOR.getUrl( themepath + '/js/editor/templates/images/' ),
-		imagesPath : themepath + '/js/editor/templates/images/',
+		imagesPath : mura.themepath + '/js/editor/templates/images/',
 		// The templates definitions.
 		templates :
 			[
