@@ -662,7 +662,12 @@
 	                            s[s.name] = field.options[j].value;
 	                    }
 	                } else if ((field.type != 'checkbox' && field.type != 'radio') || field.checked) {
-	                    s[field.name ] =field.value;
+						if(typeof s[field.name ] == 'undefined'){
+							s[field.name ] =field.value;
+						} else {
+							s[field.name ] = s[field.name ] + ',' + field.value;
+						}
+
 	                }
 	            }
 	        }

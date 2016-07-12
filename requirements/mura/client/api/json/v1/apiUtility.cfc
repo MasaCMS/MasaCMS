@@ -2581,6 +2581,14 @@ component extends="mura.cfobject" {
 						}
 					}
 
+					if(isDefined('form') && isStruct(form)){
+						for(var f in form){
+							if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',f)){
+								args.params['#f#']=form['#f#'];
+							}
+						}
+					}
+
 				}
 
 				if(listFindNoCase('folder,gallery,calendar,page',$.event('object'))){
