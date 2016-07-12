@@ -576,23 +576,25 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 				<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
 				<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
 			<cfelse>
-				<cfset fileID=arguments.data[formField]>
+				<cfset fileID="">
 			</cfif>
 		<cfelse>
 			<cfset fileID=arguments.data[formField]>
 		</cfif>
 
-		<cfquery >
-			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
-			values (
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
-			<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
-			)
-		</cfquery>
+		<cfif len(fileid)>
+			<cfquery >
+				insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
+				values (
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
+				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
+				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
+				)
+			</cfquery>
+		</cfif>
 
 	</cfif>
 
