@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
 
       <div class="mura-control-group">
-        <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</label>
+        <label>#application.rbFactory.getKeyValue(session.rb,'categorymanager.restrictaccess')#</label>
     	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups">
 	       <optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 	       <option value="" <cfif rc.categoryBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
