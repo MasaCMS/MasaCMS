@@ -400,7 +400,7 @@
 
 					root.mura(this).append(el);
 
-					root.mura.processObject(el).then(resolve,reject);
+					root.mura.processDisplayObject(el).then(resolve,reject);
 
 				});
 			});
@@ -430,8 +430,8 @@
 
 					root.mura(this).prepend(el);
 
-					root.mura.processObject(el).then(resolve,reject);
-					
+					root.mura.processDisplayObject(el).then(resolve,reject);
+
 				});
 			});
 		},
@@ -440,7 +440,7 @@
 			var self=this;
 			return new Promise(function(resolve,reject){
 				self.each(function(){
-					root.mura.processObject(this).then(resolve,reject);
+					root.mura.processDisplayObject(this).then(resolve,reject);
 				});
 			});
 		},
