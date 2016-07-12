@@ -5729,7 +5729,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				    if (sameTagSiblings.length > 1)
 				    {
-				        allSiblings = parent.children();
+				        var allSiblings = parent.children();
 				        var index = allSiblings.index(realNode) +1;
 
 				        if (index > 0) {
