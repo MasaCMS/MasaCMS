@@ -2062,6 +2062,10 @@
 				root.mura.extend(muraObject.prototype,subClass);
 			};
 
+		muraObject.reopenClass=function(subClass){
+				root.mura.extend(muraObject,subClass);
+			};
+
 		root.mura.extend(muraObject.prototype,subClass);
 
 		return muraObject;
