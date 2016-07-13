@@ -445,7 +445,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			} else {
 				renderedForm=bean.getBody();
 				if(!find("dsp_form_protect.cfm",renderedForm) ){
-					renderedForm=replaceNoCase(renderedForm,"</form>","[mura]$.dspObject_Include(thefile='dsp_form_protect.cfm')[/mura]</form>");
+					renderedForm=replaceNoCase(renderedForm,"</form>","[mura]$.dspObject_Include(thefile='form/dsp_form_protect.cfm')[/mura]</form>");
 				}
 				renderedForm=arguments.$.setDynamicContent(renderedForm);
 			}
