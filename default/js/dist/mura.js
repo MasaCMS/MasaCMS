@@ -4728,6 +4728,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		muraObject.prototype = Object.create(baseClass.prototype);
 		muraObject.prototype.constructor = muraObject;
+		muraObject.reopen=function(subClass){
+				root.mura.extend(muraObject.prototype,subClass);
+			};
 
 		root.mura.extend(muraObject.prototype,subClass);
 
@@ -7178,7 +7181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 (function(root){
 	root.mura.render={};
 	root.mura.render['form']=function(context) {
-		new root.mura.FormUI( context ).render();
+		new root.mura.FormUI( context );
 	}
 })(this);
 ;/* This file is part of Mura CMS.
@@ -7303,9 +7306,25 @@ root.mura.templates['embed']=function(context){
 	root.mura.UI=root.mura.Core.extend({
 		rb:{},
 		context:{},
+		onBeforeRender:function(){},
+		onAfterRender:function(){},
+		trigger:function(eventName){
+			if(typeof this.context.targetEl != 'undefined'){
+				var obj=mura(this.context.targetEl).closest('.mura-object');
+				if(obj.length && typeof obj.node != 'undefined'){
+					if(eventName.toLowerCase() == 'beforerender'){
+						this.onBeforeRender.call(obj.node);
+					} else if(eventName.toLowerCase() == 'afterrender'){
+						this.onAfterRender.call(obj.node);
+					}
+				}
+			}
 
+			return this;
+		},
 		render:function(){
 			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
+			this.trigger('afterRender');
 			return this;
 		},
 
@@ -7314,7 +7333,8 @@ root.mura.templates['embed']=function(context){
 				this.context=arguments[0];
 			}
 			this.registerHelpers();
-
+			this.trigger('beforerender');
+			this.render();
 			return this;
 		},
 
@@ -7394,20 +7414,12 @@ root.mura.templates['embed']=function(context){
 		rb: {
 			btnsubmitclass:"form-submit"
 		},
-
-		init:function(properties){
-
-			properties || {};
-
-			this.context = properties;
-
-			if(this.context.mode == undefined)
-				this.context.mode = 'form';
-
-			this.registerHelpers();
-		},
-
 		render:function(){
+
+			if(this.context.mode == undefined){
+				this.context.mode = 'form';
+			}
+
 			var ident = "mura-form-" + this.context.objectid;
 
 			this.context.formEl = "#" + ident;
@@ -7955,6 +7967,7 @@ root.mura.templates['embed']=function(context){
 
 			self.currentpage = 0;
 			self.formInit=true;
+			self.trigger('afterRender');
 		},
 
 		submitForm: function() {

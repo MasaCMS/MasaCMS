@@ -49,9 +49,25 @@
 	root.mura.UI=root.mura.Core.extend({
 		rb:{},
 		context:{},
+		onBeforeRender:function(){},
+		onAfterRender:function(){},
+		trigger:function(eventName){
+			if(typeof this.context.targetEl != 'undefined'){
+				var obj=mura(this.context.targetEl).closest('.mura-object');
+				if(obj.length && typeof obj.node != 'undefined'){
+					if(eventName.toLowerCase() == 'beforerender'){
+						this.onBeforeRender.call(obj.node);
+					} else if(eventName.toLowerCase() == 'afterrender'){
+						this.onAfterRender.call(obj.node);
+					}
+				}
+			}
 
+			return this;
+		},
 		render:function(){
 			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
+			this.trigger('afterRender');
 			return this;
 		},
 
@@ -60,7 +76,8 @@
 				this.context=arguments[0];
 			}
 			this.registerHelpers();
-
+			this.trigger('beforerender');
+			this.render();
 			return this;
 		},
 

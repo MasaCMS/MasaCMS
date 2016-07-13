@@ -68,20 +68,12 @@
 		rb: {
 			btnsubmitclass:"form-submit"
 		},
-
-		init:function(properties){
-
-			properties || {};
-
-			this.context = properties;
-
-			if(this.context.mode == undefined)
-				this.context.mode = 'form';
-
-			this.registerHelpers();
-		},
-
 		render:function(){
+
+			if(this.context.mode == undefined){
+				this.context.mode = 'form';
+			}
+
 			var ident = "mura-form-" + this.context.objectid;
 
 			this.context.formEl = "#" + ident;
@@ -629,6 +621,7 @@
 
 			self.currentpage = 0;
 			self.formInit=true;
+			self.trigger('afterRender');
 		},
 
 		submitForm: function() {

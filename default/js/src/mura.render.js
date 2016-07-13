@@ -46,6 +46,6 @@
 (function(root){
 	root.mura.render={};
 	root.mura.render['form']=function(context) {
-		new root.mura.FormUI( context ).render();
+		new root.mura.FormUI( context );
 	}
 })(this);

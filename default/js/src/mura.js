@@ -2058,6 +2058,9 @@
 
 		muraObject.prototype = Object.create(baseClass.prototype);
 		muraObject.prototype.constructor = muraObject;
+		muraObject.reopen=function(subClass){
+				root.mura.extend(muraObject.prototype,subClass);
+			};
 
 		root.mura.extend(muraObject.prototype,subClass);
 
