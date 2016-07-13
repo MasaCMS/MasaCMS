@@ -4515,9 +4515,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 		});
 
-		each(self.getElementsByTagName('FORM'),function(el,i){
-			if(!el.onsubmit){
-				el.onsubmit=function(){return validateFormAjax(this);};
+
+		obj.find('FORM').each(function(){
+			var form=mura(this);
+			var self=this;
+
+			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+				self.onsubmit=function(){return validateFormAjax(this);};
 			}
 		});
 
@@ -4611,7 +4615,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				obj.find('form').each(function(){
 					var form=mura(this);
 
-					if(!form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
 						form.on('submit',function(e){
 							e.preventDefault();
 							validateForm(this,
@@ -6093,6 +6097,23 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 			return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
 		},
+
+		hasAttr:function(attributeName){
+			if(!this.selection.length){
+				return false;
+			}
+
+			return typeof this.selection[0].hasAttribute == 'function' && this.selection[0].hasAttribute(attributeName);
+		},
+
+		hasData:function(attributeName){
+			if(!this.selection.length){
+				return false;
+			}
+
+			return this.hasAttr('data-' + attributeName);
+		},
+
 
 		offsetParent:function(){
 			if(!this.selection.length){

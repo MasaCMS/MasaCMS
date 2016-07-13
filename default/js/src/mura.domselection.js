@@ -660,6 +660,23 @@
 			return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
 		},
 
+		hasAttr:function(attributeName){
+			if(!this.selection.length){
+				return false;
+			}
+
+			return typeof this.selection[0].hasAttribute == 'function' && this.selection[0].hasAttribute(attributeName);
+		},
+
+		hasData:function(attributeName){
+			if(!this.selection.length){
+				return false;
+			}
+
+			return this.hasAttr('data-' + attributeName);
+		},
+
+
 		offsetParent:function(){
 			if(!this.selection.length){
 				return this;
