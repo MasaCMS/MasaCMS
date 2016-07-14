@@ -49,7 +49,7 @@
 	root.mura.UI=root.mura.Core.extend({
 		rb:{},
 		context:{},
-		rendered:false,
+		status:'pending',
 		onBeforeRender:function(){},
 		onAfterRender:function(){},
 		trigger:function(eventName){
@@ -58,15 +58,26 @@
 				if(obj.length && typeof obj.node != 'undefined'){
 					if(eventName.toLowerCase() == 'beforerender'){
 						this.onBeforeRender.call(obj.node);
-					} else if(eventName.toLowerCase() == 'afterrender'){
+						this.status='rendering';
+					} else if(this.status != 'rendered' && eventName.toLowerCase() == 'afterrender'){
 						this.onAfterRender.call(obj.node);
-						this.rendered=true;
+						this.status='rendered';
 					}
 				}
 			}
 
 			return this;
 		},
+		reInit:function(){
+			if(arguments.length){
+				this.context=arguments[0];
+			}
+			this.status='pending';
+			this.trigger('beforerender');
+			this.render();
+			return this;
+		},
+
 		render:function(){
 			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
 			this.trigger('afterRender');
