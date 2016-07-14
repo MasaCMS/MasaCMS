@@ -68,26 +68,14 @@
 
 			return this;
 		},
-		reInit:function(){
-			if(arguments.length){
-				this.context=arguments[0];
-			}
-			this.status='pending';
-			this.trigger('beforerender');
-			this.render();
-			return this;
-		},
-
 		render:function(){
 			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
 			this.trigger('afterRender');
 			return this;
 		},
 
-		init:function(){
-			if(arguments.length){
-				this.context=arguments[0];
-			}
+		init:function(args){
+			this.context=args;
 			this.registerHelpers();
 			this.trigger('beforerender');
 			this.render();
