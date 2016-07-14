@@ -657,7 +657,7 @@
 								location.reload(true);
 							}
 						} else {
-							mura(self.context.formEl).html( resp.data.responsemessage );
+							mura(self.context.formEl).html( root.mura.templates['success'](data) );
 						}
 					},
 					function( entity ) {
@@ -685,7 +685,7 @@
 									location.reload(true);
 								}
                             } else {
-								mura(self.context.formEl).html( resp.data.responsemessage );
+								mura(self.context.formEl).html( root.mura.templates['success'](resp.data) );
 							}
                         });
 
