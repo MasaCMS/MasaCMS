@@ -45,7 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.Entity=root.mura.Core.extend({
+	root.mura.entity=root.mura.core.extend({
 		init:function(properties){
 			properties=properties || {};
 			properties.entityname = properties.entityname || 'content';
@@ -78,12 +78,12 @@
 
 					return new Promise(function(resolve,reject) {
 						if('items' in self.properties[propertyName]){
-							var returnObj = new root.mura.EntityCollection(self.properties[propertyName]);
+							var returnObj = new root.mura.entityCollection(self.properties[propertyName]);
 						} else {
 							if(root.mura.entities[self.properties[propertyName].entityname]){
 								var returnObj = new root.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
 							} else {
-								var returnObj = new root.mura.Entity(self.properties[propertyName]);
+								var returnObj = new root.mura.entity(self.properties[propertyName]);
 							}
 						}
 
@@ -107,12 +107,12 @@
 							success:function(resp){
 
 								if('items' in resp.data){
-									var returnObj = new root.mura.EntityCollection(resp.data);
+									var returnObj = new root.mura.entityCollection(resp.data);
 								} else {
 									if(root.mura.entities[obj.entityname]){
 										var returnObj = new root.mura.entities[obj.entityname](obj);
 									} else {
-										var returnObj = new root.mura.Entity(resp.data);
+										var returnObj = new root.mura.entity(resp.data);
 									}
 								}
 
@@ -389,7 +389,7 @@
 
 		getFeed:function(){
 			var siteid=get('siteid') || mura.siteid;
-			return new root.mura.Feed(this.get('entityName'));
+			return new root.mura.feed(this.get('entityName'));
 		},
 
 		cachePurge:function(){

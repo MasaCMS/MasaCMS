@@ -44,21 +44,21 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 ;(function(root){
-	function Core(){
+	function core(){
 		this.init.apply(this,arguments);
 		return this;
 	}
 
-	Core.prototype={
+	core.prototype={
 		init:function(){
 		}
 	};
 
-	Core.extend=function(properties){
+	core.extend=function(properties){
 		var self=this;
 		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend});
 	};
 
-	root.mura.Core=Core;
+	root.mura.core=core;
 
 })(this);

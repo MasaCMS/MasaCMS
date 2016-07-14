@@ -46,7 +46,7 @@
 
 ;(function(root){
 
-	root.mura.displayobject['form']=root.mura.UI.extend({
+	root.mura.displayObject['form']=root.mura.ui.extend({
 		context:{},
 		ormform: false,
 		formJSON:{},
@@ -657,7 +657,7 @@
 								location.reload(true);
 							}
 						} else {
-							mura(self.context.formEl).html( resp.data.responsemessage );
+							mura(self.context.formEl).html( root.mura.templates['success'](data) );
 						}
 					},
 					function( entity ) {
@@ -685,7 +685,7 @@
 									location.reload(true);
 								}
                             } else {
-								mura(self.context.formEl).html( resp.data.responsemessage );
+								mura(self.context.formEl).html( root.mura.templates['success'](resp.data) );
 							}
                         });
 

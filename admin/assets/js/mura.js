@@ -2793,7 +2793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					url:root.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
 					success:function(resp){
 						if(typeof resolve == 'function'){
-							var item=new root.mura.Entity();
+							var item=new root.mura.entity();
 							item.set(resp.data);
 							resolve(item);
 						}
@@ -2815,12 +2815,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		if(root.mura.entities[properties.entityname]){
 			return new root.mura.entities[properties.entityname](properties);
 		} else {
-			return new root.mura.Entity(properties);
+			return new root.mura.entity(properties);
 		}
 	}
 
 	function getFeed(entityname){
-		return new root.mura.Feed(mura.siteid,entityname);
+		return new root.mura.feed(mura.siteid,entityname);
 	}
 
 	function findQuery(params){
@@ -2837,7 +2837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					url:root.mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=new root.mura.EntityCollection(resp.data)
+							var collection=new root.mura.entityCollection(resp.data)
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -3244,7 +3244,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function select(selector){
-		return new root.mura.DOMSelection(parseSelection(selector),selector);
+		return new root.mura.domSelection(parseSelection(selector),selector);
 	}
 
 	function parseHTML(str) {
@@ -4022,7 +4022,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function processMarkup(scope){
 
-		if(!(scope instanceof root.mura.DOMSelection)){
+		if(!(scope instanceof root.mura.domSelection)){
 			scope=select(scope);
 		}
 
@@ -4226,8 +4226,12 @@ return /******/ (function(modules) { // webpackBootstrap
 					delete data.content;
 				}
 
-				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
-					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
+				if(!('g-recaptcha-response' in data)) {
+					var reCaptchaCheck=mura(frm).find("#g-recaptcha-response");
+
+					if(reCaptchaCheck.length && typeof reCaptchaCheck.val() != 'undefined'){
+						data['g-recaptcha-response']=eCaptchaCheck.val();
+					}
 				}
 
 				if('objectparams' in data){
@@ -4374,12 +4378,12 @@ return /******/ (function(modules) { // webpackBootstrap
 							obj.data('rendertemplate',context.rendertemplate);
 						}
 
-						if(typeof mura.displayobject[template] != 'undefined'){
+						if(typeof mura.displayObject[template] != 'undefined'){
 							context.html='';
 							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 							context.targetEl=obj.children('.mura-object-content').node;
-							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
+							mura.displayObjectInstances[obj.data('instanceid')]=new mura.displayObject[template]( context );
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
 							obj.html(mura.templates.content(context));
@@ -4398,12 +4402,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
-				if(typeof mura.displayobject[template] == 'function'){
+				if(typeof mura.displayObject[template] == 'function'){
 					context.html='';
 					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
-					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
+					mura.displayObjectInstances[obj.data('instanceid')]=new mura.displayObject[template]( context );
 				} else if(typeof mura.templates[template] == 'function'){
 					context.html=mura.templates[template](context);
 					obj.html(mura.templates.content(context));
@@ -4519,7 +4523,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var form=mura(this);
 			var self=this;
 
-			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !(form.hasData('autowire') && !form.data('autowire')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
 				self.onsubmit=function(){return validateFormAjax(this);};
 			}
 		});
@@ -4614,7 +4618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				obj.find('form').each(function(){
 					var form=mura(this);
 
-					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !(form.hasData('autowire') && !form.data('autowire')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
 						form.on('submit',function(e){
 							e.preventDefault();
 							validateForm(this,
@@ -5033,8 +5037,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			readCookie:readCookie,
 			trim:trim,
 			hashCode:hashCode,
-			displayobject:{},
-			displayobjectinstances:{}
+			displayObject:{},
+			displayObjectInstances:{}
 			}
 		),
 		//these are here for legacy support
@@ -5329,22 +5333,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 ;(function(root){
-	function Core(){
+	function core(){
 		this.init.apply(this,arguments);
 		return this;
 	}
 
-	Core.prototype={
+	core.prototype={
 		init:function(){
 		}
 	};
 
-	Core.extend=function(properties){
+	core.extend=function(properties){
 		var self=this;
 		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend});
 	};
 
-	root.mura.Core=Core;
+	root.mura.core=core;
 
 })(this);
 ;/* This file is part of Mura CMS.
@@ -5394,7 +5398,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.Cache=root.mura.Core.extend({
+	root.mura.cache=root.mura.core.extend({
 		init:function(){
 			this.cache={};
 		},
@@ -5491,7 +5495,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.DOMSelection=root.mura.Core.extend({
+	root.mura.domSelection=root.mura.core.extend({
 		init:function(selection,origSelector){
 			this.selection=selection;
 			this.origSelector=origSelector;
@@ -6471,7 +6475,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.Entity=root.mura.Core.extend({
+	root.mura.entity=root.mura.core.extend({
 		init:function(properties){
 			properties=properties || {};
 			properties.entityname = properties.entityname || 'content';
@@ -6504,12 +6508,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					return new Promise(function(resolve,reject) {
 						if('items' in self.properties[propertyName]){
-							var returnObj = new root.mura.EntityCollection(self.properties[propertyName]);
+							var returnObj = new root.mura.entityCollection(self.properties[propertyName]);
 						} else {
 							if(root.mura.entities[self.properties[propertyName].entityname]){
 								var returnObj = new root.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
 							} else {
-								var returnObj = new root.mura.Entity(self.properties[propertyName]);
+								var returnObj = new root.mura.entity(self.properties[propertyName]);
 							}
 						}
 
@@ -6533,12 +6537,12 @@ return /******/ (function(modules) { // webpackBootstrap
 							success:function(resp){
 
 								if('items' in resp.data){
-									var returnObj = new root.mura.EntityCollection(resp.data);
+									var returnObj = new root.mura.entityCollection(resp.data);
 								} else {
 									if(root.mura.entities[obj.entityname]){
 										var returnObj = new root.mura.entities[obj.entityname](obj);
 									} else {
-										var returnObj = new root.mura.Entity(resp.data);
+										var returnObj = new root.mura.entity(resp.data);
 									}
 								}
 
@@ -6815,7 +6819,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		getFeed:function(){
 			var siteid=get('siteid') || mura.siteid;
-			return new root.mura.Feed(this.get('entityName'));
+			return new root.mura.feed(this.get('entityName'));
 		},
 
 		cachePurge:function(){
@@ -6880,7 +6884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.EntityCollection=root.mura.Entity.extend({
+	root.mura.entityCollection=root.mura.entity.extend({
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -6892,7 +6896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					if(root.mura.entities[obj.entityname]){
 						return new root.mura.entities[obj.entityname](obj);
 					} else {
-						return new root.mura.Entity(obj);
+						return new root.mura.entity(obj);
 					}
 				}));
 			}
@@ -6935,14 +6939,14 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		filter:function(fn){
-			var collection=new root.mura.EntityCollection(this.properties);
+			var collection=new root.mura.entityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			var collection=new root.mura.EntityCollection(this.properties);
+			var collection=new root.mura.entityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
@@ -6996,7 +7000,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.Feed=root.mura.Core.extend({
+	root.mura.feed=root.mura.core.extend({
 		init:function(siteid,entityname){
             this.queryString= entityname + '/?';
 			this.propIndex=0;
@@ -7125,7 +7129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					url:root.mura.apiEndpoint + self.queryString,
 					success:function(resp){
 
-						var returnObj = new root.mura.EntityCollection(resp.data);
+						var returnObj = new root.mura.entityCollection(resp.data);
 
 						if(typeof resolve == 'function'){
 							resolve(returnObj);
@@ -7257,7 +7261,7 @@ root.mura.templates['embed']=function(context){
 
 ;(function(root){
 
-	root.mura.UI=root.mura.Core.extend({
+	root.mura.ui=root.mura.core.extend({
 		rb:{},
 		context:{},
 		status:'pending',
@@ -7347,7 +7351,7 @@ root.mura.templates['embed']=function(context){
 
 ;(function(root){
 
-	root.mura.displayobject['form']=root.mura.UI.extend({
+	root.mura.displayObject['form']=root.mura.ui.extend({
 		context:{},
 		ormform: false,
 		formJSON:{},
@@ -7958,7 +7962,7 @@ root.mura.templates['embed']=function(context){
 								location.reload(true);
 							}
 						} else {
-							mura(self.context.formEl).html( resp.data.responsemessage );
+							mura(self.context.formEl).html( root.mura.templates['success'](data) );
 						}
 					},
 					function( entity ) {
@@ -7986,7 +7990,7 @@ root.mura.templates['embed']=function(context){
 									location.reload(true);
 								}
                             } else {
-								mura(self.context.formEl).html( resp.data.responsemessage );
+								mura(self.context.formEl).html( root.mura.templates['success'](resp.data) );
 							}
                         });
 
@@ -8516,7 +8520,7 @@ root.mura.templates['embed']=function(context){
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 ;(function(root){
-    root.mura.datacache=new root.mura.Cache();
+    root.mura.datacache=new root.mura.cache();
     root.mura.Handlebars=Handlebars.create();
     root.mura.templatesLoaded=false;
     Handlebars.noConflict();
@@ -8684,7 +8688,7 @@ this["mura"]["templates"]["dropdown_static"] = this.mura.Handlebars.template({"1
 this["mura"]["templates"]["error"] = this.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "	<div class=\"mura-alert mura-danger\" data-field=\""
+  return "	<div class=\"mura-response-error\" data-field=\""
     + alias4(((helper = (helper = helpers.field || (depth0 != null ? depth0.field : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"field","hash":{},"data":data}) : helper)))
     + "\">"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.label : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -8866,6 +8870,14 @@ this["mura"]["templates"]["section"] = this.mura.Handlebars.template({"compiler"
     + "-container\">\r\n<div class=\"mura-section\">"
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + "</div>\r\n<div class=\"mura-divide\"></div>\r\n</div>";
+},"useData":true});
+
+this["mura"]["templates"]["success"] = this.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper;
+
+  return "<div class=\"mura-response-success\">"
+    + ((stack1 = ((helper = (helper = helpers.responsemessage || (depth0 != null ? depth0.responsemessage : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"responsemessage","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "</div>\n";
 },"useData":true});
 
 this["mura"]["templates"]["table"] = this.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {

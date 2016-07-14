@@ -45,7 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.Cache=root.mura.Core.extend({
+	root.mura.cache=root.mura.core.extend({
 		init:function(){
 			this.cache={};
 		},

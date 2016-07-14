@@ -45,7 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.EntityCollection=root.mura.Entity.extend({
+	root.mura.entityCollection=root.mura.entity.extend({
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -57,7 +57,7 @@
 					if(root.mura.entities[obj.entityname]){
 						return new root.mura.entities[obj.entityname](obj);
 					} else {
-						return new root.mura.Entity(obj);
+						return new root.mura.entity(obj);
 					}
 				}));
 			}
@@ -100,14 +100,14 @@
 		},
 
 		filter:function(fn){
-			var collection=new root.mura.EntityCollection(this.properties);
+			var collection=new root.mura.entityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			var collection=new root.mura.EntityCollection(this.properties);
+			var collection=new root.mura.entityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));

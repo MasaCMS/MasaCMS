@@ -2701,12 +2701,12 @@ buttons: {
 
 		function() {
 			var item = $(this);
-			if((item.attr("type") != "radio" && item.attr("type") != "checkbox") || ((item.attr("type") == "radio" || item.attr("type") == "checkbox") && item.is(':checked'))) {
+			if(item.val() != null && (item.attr("type") != "radio" && item.attr("type") != "checkbox") || ((item.attr("type") == "radio" || item.attr("type") == "checkbox") && item.is(':checked'))) {
 				if(item.attr('id') && typeof CKEDITOR.instances[item.attr('id')] != 'undefined'){
 					CKEDITOR.instances[item.attr('id')].updateElement();
 				}
 
-				if(typeof(item.attr("name")) != 'undefined'){
+				if(typeof item.attr("name") != 'undefined'){
 					if(typeof(availableObjectParams[item.attr("name")]) == 'undefined') {
 						availableObjectParams[item.attr("name")] = item.val();
 					} else {
