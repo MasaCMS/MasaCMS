@@ -60,7 +60,7 @@
 						this.onBeforeRender.call(obj.node);
 					} else if(!this.rendered && eventName.toLowerCase() == 'afterrender'){
 						this.onAfterRender.call(obj.node);
-						this.rendered=false;
+						this.rendered=true;
 					}
 				}
 			}
