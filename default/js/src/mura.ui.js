@@ -58,7 +58,7 @@
 				if(obj.length && typeof obj.node != 'undefined'){
 					if(eventName.toLowerCase() == 'beforerender'){
 						this.onBeforeRender.call(obj.node);
-					} else if(!this.rendered && eventName.toLowerCase() == 'afterrender'){
+					} else if(eventName.toLowerCase() == 'afterrender'){
 						this.onAfterRender.call(obj.node);
 						this.rendered=true;
 					}
