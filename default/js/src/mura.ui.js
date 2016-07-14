@@ -49,6 +49,7 @@
 	root.mura.UI=root.mura.Core.extend({
 		rb:{},
 		context:{},
+		rendered:false,
 		onBeforeRender:function(){},
 		onAfterRender:function(){},
 		trigger:function(eventName){
@@ -57,8 +58,9 @@
 				if(obj.length && typeof obj.node != 'undefined'){
 					if(eventName.toLowerCase() == 'beforerender'){
 						this.onBeforeRender.call(obj.node);
-					} else if(eventName.toLowerCase() == 'afterrender'){
+					} else if(!this.rendered && eventName.toLowerCase() == 'afterrender'){
 						this.onAfterRender.call(obj.node);
+						this.rendered=false;
 					}
 				}
 			}

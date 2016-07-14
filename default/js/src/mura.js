@@ -1709,7 +1709,7 @@
 							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 							context.targetEl=obj.children('.mura-object-content').node;
-							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context ).render();
+							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
 							obj.html(mura.templates.content(context));
@@ -1733,7 +1733,7 @@
 					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
-					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context ).render();
+					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
 				} else if(typeof mura.templates[template] == 'function'){
 					context.html=mura.templates[template](context);
 					obj.html(mura.templates.content(context));

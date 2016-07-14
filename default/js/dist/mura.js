@@ -4379,7 +4379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 							context.targetEl=obj.children('.mura-object-content').node;
-							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context ).render();
+							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
 							obj.html(mura.templates.content(context));
@@ -4403,7 +4403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
-					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context ).render();
+					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
 				} else if(typeof mura.templates[template] == 'function'){
 					context.html=mura.templates[template](context);
 					obj.html(mura.templates.content(context));
@@ -7260,6 +7260,7 @@ root.mura.templates['embed']=function(context){
 	root.mura.UI=root.mura.Core.extend({
 		rb:{},
 		context:{},
+		rendered:false,
 		onBeforeRender:function(){},
 		onAfterRender:function(){},
 		trigger:function(eventName){
@@ -7268,8 +7269,9 @@ root.mura.templates['embed']=function(context){
 				if(obj.length && typeof obj.node != 'undefined'){
 					if(eventName.toLowerCase() == 'beforerender'){
 						this.onBeforeRender.call(obj.node);
-					} else if(eventName.toLowerCase() == 'afterrender'){
+					} else if(!this.rendered && eventName.toLowerCase() == 'afterrender'){
 						this.onAfterRender.call(obj.node);
+						this.rendered=false;
 					}
 				}
 			}
