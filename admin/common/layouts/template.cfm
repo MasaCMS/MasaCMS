@@ -214,7 +214,7 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
-		
+
 		<!-- Mura js --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
@@ -394,7 +394,7 @@
 									}
 								);
 
-								// click to close new table actions, category selector filter	
+								// click to close new table actions, category selector filter
 								document.onclick = function(e) {
 								if (jQuery('##newContentMenu').length > 0){
 								  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
@@ -411,15 +411,16 @@
 								if(jQuery('##category-select-list').length > 0){
 							    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
 							    	jQuery('##category-select-list').slideUp('fast');
-								    }							
+								    }
 									}
-								};	
+								};
 								// /click to close
 
 							});
 
 						mura.init({
 						context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
+						themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
 						siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
 						});
 						</script>

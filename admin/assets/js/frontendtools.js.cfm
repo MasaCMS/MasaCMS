@@ -2035,4 +2035,5 @@
 	window.toggleAdminToolbar=toggleAdminToolbar;
 	window.closeFrontEndToolsModal=closeFrontEndToolsModal;
 	window.openFrontEndToolsModal=openFrontEndToolsModal;
+	window.themepath=window.themepath || mura.themepath;
 })(window);

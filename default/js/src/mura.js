@@ -1704,13 +1704,12 @@
 							obj.data('rendertemplate',context.rendertemplate);
 						}
 
-						if(typeof mura.render[template] == 'function'){
+						if(typeof mura.displayobject[template] != 'undefined'){
 							context.html='';
 							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 							context.targetEl=obj.children('.mura-object-content').node;
-							mura.render[template](context);
-
+							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
 							obj.html(mura.templates.content(context));
@@ -1729,12 +1728,12 @@
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
-				if(typeof mura.render[template] == 'function'){
+				if(typeof mura.displayobject[template] == 'function'){
 					context.html='';
 					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
-					mura.render[template](context);
+					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
 				} else if(typeof mura.templates[template] == 'function'){
 					context.html=mura.templates[template](context);
 					obj.html(mura.templates.content(context));
@@ -1845,9 +1844,13 @@
 			});
 		});
 
-		each(self.getElementsByTagName('FORM'),function(el,i){
-			if(!el.onsubmit){
-				el.onsubmit=function(){return validateFormAjax(this);};
+
+		obj.find('FORM').each(function(){
+			var form=mura(this);
+			var self=this;
+
+			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+				self.onsubmit=function(){return validateFormAjax(this);};
 			}
 		});
 
@@ -1941,7 +1944,7 @@
 				obj.find('form').each(function(){
 					var form=mura(this);
 
-					if(!form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
 						form.on('submit',function(e){
 							e.preventDefault();
 							validateForm(this,
@@ -2054,6 +2057,13 @@
 
 		muraObject.prototype = Object.create(baseClass.prototype);
 		muraObject.prototype.constructor = muraObject;
+		muraObject.reopen=function(subClass){
+				root.mura.extend(muraObject.prototype,subClass);
+			};
+
+		muraObject.reopenClass=function(subClass){
+				root.mura.extend(muraObject,subClass);
+			};
 
 		root.mura.extend(muraObject.prototype,subClass);
 
@@ -2352,7 +2362,9 @@
 			createCookie:createCookie,
 			readCookie:readCookie,
 			trim:trim,
-			hashCode:hashCode
+			hashCode:hashCode,
+			displayobject:{},
+			displayobjectinstances:{}
 			}
 		),
 		//these are here for legacy support

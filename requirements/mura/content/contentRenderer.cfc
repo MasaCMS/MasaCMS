@@ -1321,6 +1321,8 @@ Display Objects
 	<cfargument name="returnFormat" required="true" default="html">
 	<cfargument name="include" required="true" default="false">
 
+	<cfparam name="request.muraDisplayObjectNestLevel" default="0">
+
 	<cfset var fileDelim = "/" />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
 	<cfset var themeObjectPath = variables.$.siteConfig('ThemeIncludePath') & fileDelim & "display_objects"/>
@@ -1332,7 +1334,9 @@ Display Objects
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
-	<cfset var doLayoutManagerWrapper=not arguments.include and request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
+	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and this.layoutmanager and len(arguments.object)>
+
+	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel+1>
 
 	<cfif not isDefined('arguments.objectparams')>
 		<cfif isJSON(arguments.params)>
@@ -1375,6 +1379,8 @@ Display Objects
 		</cfsavecontent>
 	</cfif>
 
+	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel-1>
+		
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
 

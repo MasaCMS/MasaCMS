@@ -4374,13 +4374,12 @@ return /******/ (function(modules) { // webpackBootstrap
 							obj.data('rendertemplate',context.rendertemplate);
 						}
 
-						if(typeof mura.render[template] == 'function'){
+						if(typeof mura.displayobject[template] != 'undefined'){
 							context.html='';
 							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 							context.targetEl=obj.children('.mura-object-content').node;
-							mura.render[template](context);
-
+							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
 							obj.html(mura.templates.content(context));
@@ -4399,12 +4398,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
-				if(typeof mura.render[template] == 'function'){
+				if(typeof mura.displayobject[template] == 'function'){
 					context.html='';
 					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
-					mura.render[template](context);
+					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
 				} else if(typeof mura.templates[template] == 'function'){
 					context.html=mura.templates[template](context);
 					obj.html(mura.templates.content(context));
@@ -4515,9 +4514,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 		});
 
-		each(self.getElementsByTagName('FORM'),function(el,i){
-			if(!el.onsubmit){
-				el.onsubmit=function(){return validateFormAjax(this);};
+
+		obj.find('FORM').each(function(){
+			var form=mura(this);
+			var self=this;
+
+			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+				self.onsubmit=function(){return validateFormAjax(this);};
 			}
 		});
 
@@ -4611,7 +4614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				obj.find('form').each(function(){
 					var form=mura(this);
 
-					if(!form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
 						form.on('submit',function(e){
 							e.preventDefault();
 							validateForm(this,
@@ -4724,6 +4727,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		muraObject.prototype = Object.create(baseClass.prototype);
 		muraObject.prototype.constructor = muraObject;
+		muraObject.reopen=function(subClass){
+				root.mura.extend(muraObject.prototype,subClass);
+			};
+
+		muraObject.reopenClass=function(subClass){
+				root.mura.extend(muraObject,subClass);
+			};
 
 		root.mura.extend(muraObject.prototype,subClass);
 
@@ -5022,7 +5032,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			createCookie:createCookie,
 			readCookie:readCookie,
 			trim:trim,
-			hashCode:hashCode
+			hashCode:hashCode,
+			displayobject:{},
+			displayobjectinstances:{}
 			}
 		),
 		//these are here for legacy support
@@ -6094,6 +6106,23 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
 		},
 
+		hasAttr:function(attributeName){
+			if(!this.selection.length){
+				return false;
+			}
+
+			return typeof this.selection[0].hasAttribute == 'function' && this.selection[0].hasAttribute(attributeName);
+		},
+
+		hasData:function(attributeName){
+			if(!this.selection.length){
+				return false;
+			}
+
+			return this.hasAttr('data-' + attributeName);
+		},
+
+
 		offsetParent:function(){
 			if(!this.selection.length){
 				return this;
@@ -7155,57 +7184,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 (function(root){
-	root.mura.render={};
-	root.mura.render['form']=function(context) {
-		new root.mura.FormUI( context ).render();
-	}
-})(this);
-;/* This file is part of Mura CMS.
-
-	Mura CMS is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, Version 2 of the License.
-
-	Mura CMS is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
-
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
-	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-
-	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-	or libraries that are released under the GNU Lesser General Public License version 2.1.
-
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
-
-	Your custom code
-
-	• Must not alter any default objects in the Mura CMS database and
-	• May not alter the default display of the Mura CMS logo within Mura CMS and
-	• Must not alter any files in the following directories.
-
-	 /admin/
-	 /tasks/
-	 /config/
-	 /requirements/mura/
-	 /Application.cfc
-	 /index.cfm
-	 /MuraProxy.cfc
-
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
-	requires distribution of source code.
-
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
-	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-(function(root){
 root.mura.templates=root.mura.templates || {};
 root.mura.templates['meta']=function(context){
 
@@ -7282,18 +7260,36 @@ root.mura.templates['embed']=function(context){
 	root.mura.UI=root.mura.Core.extend({
 		rb:{},
 		context:{},
+		status:'pending',
+		onBeforeRender:function(){},
+		onAfterRender:function(){},
+		trigger:function(eventName){
+			if(typeof this.context.targetEl != 'undefined'){
+				var obj=mura(this.context.targetEl).closest('.mura-object');
+				if(obj.length && typeof obj.node != 'undefined'){
+					if(eventName.toLowerCase() == 'beforerender'){
+						this.onBeforeRender.call(obj.node);
+						this.status='rendering';
+					} else if(this.status != 'rendered' && eventName.toLowerCase() == 'afterrender'){
+						this.onAfterRender.call(obj.node);
+						this.status='rendered';
+					}
+				}
+			}
 
+			return this;
+		},
 		render:function(){
 			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
+			this.trigger('afterRender');
 			return this;
 		},
 
-		init:function(){
-			if(arguments.length){
-				this.context=arguments[0];
-			}
+		init:function(args){
+			this.context=args;
 			this.registerHelpers();
-
+			this.trigger('beforerender');
+			this.render();
 			return this;
 		},
 
@@ -7351,7 +7347,7 @@ root.mura.templates['embed']=function(context){
 
 ;(function(root){
 
-	root.mura.FormUI=root.mura.UI.extend({
+	root.mura.displayobject['form']=root.mura.UI.extend({
 		context:{},
 		ormform: false,
 		formJSON:{},
@@ -7373,20 +7369,12 @@ root.mura.templates['embed']=function(context){
 		rb: {
 			btnsubmitclass:"form-submit"
 		},
-
-		init:function(properties){
-
-			properties || {};
-
-			this.context = properties;
-
-			if(this.context.mode == undefined)
-				this.context.mode = 'form';
-
-			this.registerHelpers();
-		},
-
 		render:function(){
+
+			if(this.context.mode == undefined){
+				this.context.mode = 'form';
+			}
+
 			var ident = "mura-form-" + this.context.objectid;
 
 			this.context.formEl = "#" + ident;
@@ -7934,6 +7922,7 @@ root.mura.templates['embed']=function(context){
 
 			self.currentpage = 0;
 			self.formInit=true;
+			self.trigger('afterRender');
 		},
 
 		submitForm: function() {

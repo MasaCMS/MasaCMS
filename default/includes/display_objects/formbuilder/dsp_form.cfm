@@ -314,7 +314,7 @@ $(function() {
 	#local.frmFieldContents#
 <cfif not arguments.isNested>
 	<cfif local.pageCount eq pageIndex>
-	#variables.$.dspObject_Include(thefile='/datacollection/dsp_form_protect.cfm')#
+	#variables.$.dspObject_Include(thefile='/form/dsp_form_protect.cfm')#
 	</cfif>
 	<div class="#this.formBuilderButtonWrapperClass#"><br>
 	<button type="button" class="btn" id="btn-next">Next</button>
