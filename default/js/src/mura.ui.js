@@ -46,7 +46,7 @@
 
 ;(function(root){
 
-	root.mura.UI=root.mura.Core.extend({
+	root.mura.ui=root.mura.core.extend({
 		rb:{},
 		context:{},
 		status:'pending',

@@ -45,7 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.DOMSelection=root.mura.Core.extend({
+	root.mura.domSelection=root.mura.core.extend({
 		init:function(selection,origSelector){
 			this.selection=selection;
 			this.origSelector=origSelector;

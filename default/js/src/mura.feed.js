@@ -45,7 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(root){
-	root.mura.Feed=root.mura.Core.extend({
+	root.mura.feed=root.mura.core.extend({
 		init:function(siteid,entityname){
             this.queryString= entityname + '/?';
 			this.propIndex=0;
@@ -174,7 +174,7 @@
 					url:root.mura.apiEndpoint + self.queryString,
 					success:function(resp){
 
-						var returnObj = new root.mura.EntityCollection(resp.data);
+						var returnObj = new root.mura.entityCollection(resp.data);
 
 						if(typeof resolve == 'function'){
 							resolve(returnObj);

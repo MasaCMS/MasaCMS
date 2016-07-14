@@ -123,7 +123,7 @@
 					url:root.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
 					success:function(resp){
 						if(typeof resolve == 'function'){
-							var item=new root.mura.Entity();
+							var item=new root.mura.entity();
 							item.set(resp.data);
 							resolve(item);
 						}
@@ -145,12 +145,12 @@
 		if(root.mura.entities[properties.entityname]){
 			return new root.mura.entities[properties.entityname](properties);
 		} else {
-			return new root.mura.Entity(properties);
+			return new root.mura.entity(properties);
 		}
 	}
 
 	function getFeed(entityname){
-		return new root.mura.Feed(mura.siteid,entityname);
+		return new root.mura.feed(mura.siteid,entityname);
 	}
 
 	function findQuery(params){
@@ -167,7 +167,7 @@
 					url:root.mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=new root.mura.EntityCollection(resp.data)
+							var collection=new root.mura.entityCollection(resp.data)
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -574,7 +574,7 @@
 	}
 
 	function select(selector){
-		return new root.mura.DOMSelection(parseSelection(selector),selector);
+		return new root.mura.domSelection(parseSelection(selector),selector);
 	}
 
 	function parseHTML(str) {
@@ -1352,7 +1352,7 @@
 
 	function processMarkup(scope){
 
-		if(!(scope instanceof root.mura.DOMSelection)){
+		if(!(scope instanceof root.mura.domSelection)){
 			scope=select(scope);
 		}
 
@@ -1704,12 +1704,12 @@
 							obj.data('rendertemplate',context.rendertemplate);
 						}
 
-						if(typeof mura.displayobject[template] != 'undefined'){
+						if(typeof mura.displayObject[template] != 'undefined'){
 							context.html='';
 							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 							context.targetEl=obj.children('.mura-object-content').node;
-							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
+							mura.displayObjectInstances[obj.data('instanceid')]=new mura.displayObject[template]( context );
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
 							obj.html(mura.templates.content(context));
@@ -1728,12 +1728,12 @@
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
-				if(typeof mura.displayobject[template] == 'function'){
+				if(typeof mura.displayObject[template] == 'function'){
 					context.html='';
 					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
-					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context );
+					mura.displayObjectInstances[obj.data('instanceid')]=new mura.displayObject[template]( context );
 				} else if(typeof mura.templates[template] == 'function'){
 					context.html=mura.templates[template](context);
 					obj.html(mura.templates.content(context));
@@ -2363,8 +2363,8 @@
 			readCookie:readCookie,
 			trim:trim,
 			hashCode:hashCode,
-			displayobject:{},
-			displayobjectinstances:{}
+			displayObject:{},
+			displayObjectInstances:{}
 			}
 		),
 		//these are here for legacy support
