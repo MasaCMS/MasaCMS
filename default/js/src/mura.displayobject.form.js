@@ -46,7 +46,7 @@
 
 ;(function(root){
 
-	root.mura.FormUI=root.mura.UI.extend({
+	root.mura.displayobject['form']=root.mura.UI.extend({
 		context:{},
 		ormform: false,
 		formJSON:{},

@@ -1704,13 +1704,12 @@
 							obj.data('rendertemplate',context.rendertemplate);
 						}
 
-						if(typeof mura.render[template] == 'function'){
+						if(typeof mura.displayobject[template] != 'undefined'){
 							context.html='';
 							obj.html(mura.templates.content(context));
 							obj.prepend(mura.templates.meta(context));
 							context.targetEl=obj.children('.mura-object-content').node;
-							mura.render[template](context);
-
+							mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context ).render();
 						} else if(typeof mura.templates[template] == 'function'){
 							context.html=mura.templates[template](context);
 							obj.html(mura.templates.content(context));
@@ -1729,12 +1728,12 @@
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
-				if(typeof mura.render[template] == 'function'){
+				if(typeof mura.displayobject[template] == 'function'){
 					context.html='';
 					obj.html(mura.templates.content(context));
 					obj.prepend(mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
-					mura.render[template](context);
+					mura.displayobjectinstances[obj.data('instanceid')]=new mura.displayobject[template]( context ).render();
 				} else if(typeof mura.templates[template] == 'function'){
 					context.html=mura.templates[template](context);
 					obj.html(mura.templates.content(context));
@@ -2363,7 +2362,9 @@
 			createCookie:createCookie,
 			readCookie:readCookie,
 			trim:trim,
-			hashCode:hashCode
+			hashCode:hashCode,
+			displayobject:{},
+			displayobjectinstances:{}
 			}
 		),
 		//these are here for legacy support
