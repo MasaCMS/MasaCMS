@@ -4226,8 +4226,12 @@ return /******/ (function(modules) { // webpackBootstrap
 					delete data.content;
 				}
 
-				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
-					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
+				if(!('g-recaptcha-response' in data)) {
+					var reCaptchaCheck=mura(frm).find("#g-recaptcha-response");
+
+					if(reCaptchaCheck.length && typeof reCaptchaCheck.val() != 'undefined'){
+						data['g-recaptcha-response']=eCaptchaCheck.val();
+					}
 				}
 
 				if('objectparams' in data){
@@ -4519,7 +4523,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var form=mura(this);
 			var self=this;
 
-			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !(form.hasData('autowire') && !form.data('autowire')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
 				self.onsubmit=function(){return validateFormAjax(this);};
 			}
 		});
@@ -4614,7 +4618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				obj.find('form').each(function(){
 					var form=mura(this);
 
-					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !(form.hasData('autowire') && !form.data('autowire')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
 						form.on('submit',function(e){
 							e.preventDefault();
 							validateForm(this,
