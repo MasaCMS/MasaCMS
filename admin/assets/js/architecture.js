@@ -2710,6 +2710,8 @@ buttons: {
 					if(typeof(availableObjectParams[item.attr("name")]) == 'undefined') {
 						availableObjectParams[item.attr("name")] = item.val();
 					} else {
+						availableObjectParams[item.attr("name")] = availableObjectParams[item.attr("name")] + ',' + item.val();
+						/*
 						if(!$.isArray(availableObjectParams[item.attr("name")])) {
 							var tempArray = [];
 							tempArray[0] = availableObjectParams[item.attr("name")];
@@ -2717,7 +2719,7 @@ buttons: {
 						}
 
 						availableObjectParams[item.attr("name")].push(item.val());
-
+						*/
 					}
 				}
 			}
