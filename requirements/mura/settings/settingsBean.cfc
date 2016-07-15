@@ -1262,6 +1262,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="clearDisplayObjectFilePaths" output="false">
+	<cfset variables.instance.displayObjectFilePathLookup=structNew()>
+</cffunction>
+
 <cffunction name="lookupDisplayObjectFilePath" output="false">
 	<cfargument name="filePath">
 	<cfargument name="customOnly" default="false">
