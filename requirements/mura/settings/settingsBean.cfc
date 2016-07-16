@@ -1339,11 +1339,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="registerContentTypeDir" output="false">
 	<cfargument name="dir">
 
-	<cfif not listFind('/,\',right(arguments.dir,1))>
-		<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
-	</cfif>
-	<cfset arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir)>
+	<cfset var rs="">
+	<cfset var config="">
 
+	<cfif directoryExists(expandPath(arguments.dir))>
+		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" type="dir">
+		<cfloop query="rs">
+
+			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
+				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">
+			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
+				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
+			<cfelse>
+				<cfset config="">
+			</cfif>
+
+			<cfif isXML(config)>
+				<cfset config=xmlParse(config)>
+				<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
+			</cfif>
+
+            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
+                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
+            </cfif>
+
+		</cfloop>
+
+		<cfif not listFind('/,\',right(arguments.dir,1))>
+			<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
+		</cfif>
+		<cfset arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir)>
+	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
