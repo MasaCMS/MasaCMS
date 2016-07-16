@@ -251,6 +251,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.RemotePort=80/>
 	<cfset variables.instance.resourceSSL=0/>
 	<cfset variables.instance.resourceDomain=""/>
+	<cfset variables.instance.contentTypeFilePathLookup={}>
+	<cfset variables.instance.contentTypeLoopUpArray=[]>
 	<cfset variables.instance.displayObjectLookup={}/>
 	<cfset variables.instance.displayObjectFilePathLookup={}/>
 	<cfset variables.instance.displayObjectLoopUpArray=[]>
@@ -1262,8 +1264,87 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="clearDisplayObjectFilePaths" output="false">
+<cffunction name="clearFilePaths" output="false">
 	<cfset variables.instance.displayObjectFilePathLookup=structNew()>
+	<cfset variables.instance.contentTypeFilePathLookup=structNew()>
+</cffunction>
+
+<cffunction name="lookupContentTypeFilePath" output="false">
+	<cfargument name="filePath">
+	<cfargument name="customOnly" default="false">
+	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
+
+	<cfif len(request.altTheme)>
+		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/content_types/" & arguments.filePath>
+		<cfif fileExists(expandPath(altThemePath))>
+			<cfreturn altThemePath>
+		</cfif>
+	</cfif>
+
+	<cfif hasContentTypeFilePath(arguments.filePath)>
+		<cfreturn getContentTypeFilePath(arguments.filePath)>
+	</cfif>
+
+	<cfset var dir="">
+	<cfset var result="">
+	<cfset var coreIndex=arrayLen(variables.instance.contentTypeLoopUpArray)-2>
+	<cfset var dirIndex=0>
+
+	<cfloop array="#variables.instance.contentTypeLoopUpArray#" index="dir">
+		<cfset dirIndex=dirIndex+1>
+		<cfif not arguments.customonly or dirIndex lt coreIndex>
+			<cfset result=dir & arguments.filePath>
+			<cfif fileExists(expandPath(result))>
+				<cfset setContentTypeFilePath(arguments.filePath,result)>
+				<cfreturn result>
+			</cfif>
+		</cfif>
+	</cfloop>
+
+	<cfset setContentTypeFilePath(arguments.filePath,"")>
+	<cfreturn "">
+</cffunction>
+
+<cffunction name="hasContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfreturn structKeyExists(variables.instance.contentTypeFilePathLookup,'#arguments.filepath#')>
+</cffunction>
+
+<cffunction name="getContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfreturn variables.instance.contentTypeFilePathLookup['#arguments.filepath#']>
+</cffunction>
+
+<cffunction name="setContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfargument name="result">
+	<cfset variables.instance.contentTypeFilePathLookup['#arguments.filepath#']=arguments.result>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerContentTypeDirs" output="false">
+	<cfset var lookupArray=[
+		getIncludePath()  & "/includes/content_types/",
+		getThemeIncludePath(getValue('theme')) & "/content_types/"
+	]>
+
+	<cfset var dir="">
+	<cfloop array="#lookupArray#" index="dir">
+		<cfset registerContentTypeDir(dir=dir)>
+	</cfloop>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerContentTypeDir" output="false">
+	<cfargument name="dir">
+
+	<cfif not listFind('/,\',right(arguments.dir,1))>
+		<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
+	</cfif>
+	<cfset arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir)>
+
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="lookupDisplayObjectFilePath" output="false">

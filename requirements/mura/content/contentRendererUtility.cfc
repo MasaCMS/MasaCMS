@@ -1918,6 +1918,26 @@
 
 		<!--- END Checking for Override via Event Model --->
 
+		<!--- START Checking for Override via content_types includes  --->
+		<cfset var filePath="">
+
+		<cfset filePath=$.siteConfig().lookupContentTypeFilePath('#arguments.$.content().getType()#_#safesubtype#/index.cfm')>
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
+		<cfset filePath=$.siteConfig().lookupContentTypeFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
+		<cfset filePath=$.siteConfig().lookupContentTypeFilePath('#arguments.$.content().getType()#/index.cfm')>
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
+		<!--- END Checking for Override via content_types includes--->
+
 		<!--- START Checking for Override via Display Object --->
 		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
@@ -1954,20 +1974,6 @@
 		</cfif>
 			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true)}>
 		</cfif>
-
-		<!---
-		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
-
-		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey) and arguments.$.siteConfig().getDisplayObject(displayObjectKey).custom>
-		<cfset var params=$.content().getObjectParams()>
-		<cfif not isdefined('params.objectname')>
-			<cfset var objectDef=arguments.$.siteConfig().getDisplayObject(displayObjectKey)>
-			<cfset params.objectname='<i class="#objectDef.iconclass#"></i> #objectDef.name#'>
-		</cfif>
-			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true,cacheKey=cgi.query_string)}>
-		</cfif>
-		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
-		--->
 
 		<!--- END Checking for Override via Display Object --->
 
