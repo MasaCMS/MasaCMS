@@ -1921,17 +1921,17 @@
 		<!--- START Checking for Override via content_types includes  --->
 		<cfset var filePath="">
 
-		<cfset filePath=$.siteConfig().lookupContentTypeFilePath('#arguments.$.content().getType()#_#safesubtype#/index.cfm')>
+		<cfset filePath=$.siteConfig().lookupContentTypeFilePath(lcase('#arguments.$.content().getType()#_#safesubtype#/index.cfm'))>
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
 		</cfif>
 
-		<cfset filePath=$.siteConfig().lookupContentTypeFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
+		<cfset filePath=$.siteConfig().lookupContentTypeFilePath(lcase('#arguments.$.content().getType()##safesubtype#/index.cfm'))>
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
 		</cfif>
 
-		<cfset filePath=$.siteConfig().lookupContentTypeFilePath('#arguments.$.content().getType()#/index.cfm')>
+		<cfset filePath=$.siteConfig().lookupContentTypeFilePath(lcase('#arguments.$.content().getType()#/index.cfm'))>
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
 		</cfif>

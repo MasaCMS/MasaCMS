@@ -4422,7 +4422,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		//obj.hide().show();
 
 		if(mura.layoutmanager && mura.editing){
-			if(obj.hasClass('mura-body-object') || obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
+			if(obj.hasClass('mura-body-object')){
 				obj.children('.frontEndToolsModal').remove();
 				obj.prepend(layoutmanagertoolbar);
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
