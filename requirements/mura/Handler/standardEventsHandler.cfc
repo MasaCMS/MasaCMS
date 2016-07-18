@@ -368,6 +368,12 @@
 
 	<cfset arguments.event.getValidator('standardForceSSL').validate(arguments.event)>
 
+	<!---
+	<cfif listFindNoCase('author,editor',arguments.event.getValue('r').perm) and arguments.event.getValue('showMeta') neq 2>
+		<cfset arguments.event.setValue('showMeta',1)>
+	</cfif>
+	--->
+
 	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 
 	<cfswitch expression="#arguments.event.getValue('contentBean').getType()#">
