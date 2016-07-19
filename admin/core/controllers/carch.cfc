@@ -89,19 +89,34 @@
 		<cfif len(arguments.rc.moduleid) and listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004',arguments.rc.moduleid)>
 			<cfset session.moduleid=arguments.rc.moduleid>
 		</cfif>
-		<cfif not len(arguments.rc.moduleid)>
-				<cfset arguments.rc.moduleid=session.moduleid>
+
+		<cfif len(arguments.rc.moduleid) and session.moduleid neq arguments.rc.moduleid>
+			<cfset arguments.rc.moduleid=session.moduleid>
+		<cfelseif not len(arguments.rc.moduleid)>
+			<cfset arguments.rc.moduleid=session.moduleid>
 		</cfif>
-		<cfif not isDefined("arguments.rc.topid")>
-			<cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
-				<cfset session.topid="00000000000000000000000000000000001">
-			<cfelse>
-				<cfset session.topid=arguments.rc.moduleid>
-			</cfif>
-			<cfset arguments.rc.topid=session.topid>
-		<cfelse>
-			<cfset session.topID=arguments.rc.topid>
+
+		<cfif not structKeyExists(session,'00000000000000000000000000000000000')>
+			<cfset session['00000000000000000000000000000000000']={topid="00000000000000000000000000000000001"}>
 		</cfif>
+
+		<cfif not structKeyExists(session,'00000000000000000000000000000000003')>
+			<cfset session['00000000000000000000000000000000003']={topid="00000000000000000000000000000000003"}>
+		</cfif>
+
+		<cfif not structKeyExists(session,'00000000000000000000000000000000004')>
+			<cfset session['00000000000000000000000000000000004']={topid="00000000000000000000000000000000004"}>
+		</cfif>
+
+		<cfif not structKeyExists(session,'00000000000000000000000000000000099')>
+			<cfset session['00000000000000000000000000000000099']={topid="00000000000000000000000000000000099"}>
+		</cfif>
+
+		<cfif not isDefined("arguments.rc.topid") or not len(arguments.rc.topid)>
+			<cfset arguments.rc.topid=session['#session.moduleid#'].topid>
+		</cfif>
+
+		<cfset session['#session.moduleid#']={topid=arguments.rc.topid}>
 	</cfif>
 
 </cffunction>
@@ -372,9 +387,10 @@
 		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
 		    <cfif not (
 			  	listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
-			  	and listFindNoCase(rc.contentBean.getPath(),session.topID)
+			  	and structKeyExists(session,'#rc.contentBean.getModuleID()#') and listFindNoCase(rc.contentBean.getPath(),session['#rc.contentBean.getModuleID()#'].topID)
 			  ) or not len(rc.contentBean.getPath())>
 		     	<cfset arguments.rc.topid=rc.contentBean.getParentID() />
+				<cfset session.openSectionList=listAppend(session.openSectionList,rc.contentBean.getParentID()) />
 			</cfif>
 		</cfif>
 

@@ -465,7 +465,7 @@ buttons: {
 
 		document.getElementById('newZoomLink').onclick = function() {
 			siteManager.loadSiteManagerInTab(function() {
-				return siteManager.loadSiteManager(siteid, contentid, '00000000000000000000000000000000000', '', '', type, 1);
+				return siteManager.loadSiteManager(siteid, contentid, moduleid, '', '', type, 1);
 			});
 			return false;
 		}
