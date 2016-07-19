@@ -86,12 +86,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						)>
 
 				<cfelse>
+					<cfif objectParams.source eq '0'>
+						<cfset objectParams.source='00000000000000000000000000000000000'>
+					</cfif>
 					<cfset iterator=$.content().getRelatedContentIterator(relatedcontentsetid=objectParams.source)>
 				</cfif>
 
 				<cfset iterator.setNextN(variables.$.event('nextn'))>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
-
 			</cfcase>
 			<cfcase value="calendar">
 				<cfset calendarUtility=variables.$.getCalendarUtility()>

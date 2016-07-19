@@ -2049,6 +2049,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.sortDirection='asc'>
 	</cfif>
 
+	<cfif arguments.relatedContentSetID eq '0'>
+		<cfset arguments.relatedContentSetID='00000000000000000000000000000000000'>
+	</cfif>
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsRelatedContent')#">
 	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.lastupdatebyid, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
