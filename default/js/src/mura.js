@@ -619,7 +619,7 @@
 			} else if (lcaseVal=='true'){
 				return true;
 			} else {
-				if(isNumeric(val)){
+				if(!(typeof val == 'string' && val.length==35) && isNumeric(val)){
 					var numVal=parseFloat(val);
 					if(numVal==0 || !isNaN(1/numVal)){
 						return numVal;
