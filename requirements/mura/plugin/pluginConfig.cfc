@@ -344,6 +344,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfreturn this>
 </cffunction>
 
+<cffunction name="registerContentTypeDir" output="false">
+	<cfargument name="dir">
+	<cfset var settingsManager=getBean('settingsManager')>
+    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
+
+	<cfif listFind('/,\',left(arguments.dir,1) )>
+		<cfset arguments.dir='/' & getPackage() & arguments.dir>
+	<cfelse>
+		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
+	</cfif>
+
+    <cfloop query="rsSites">
+    <cfset settingsManager.getSite(rssites.siteid).registerContentTypeDir(argumentCollection=arguments)>
+    </cfloop>
+    <cfreturn this>
+</cffunction>
+
 <cffunction name="registerBeanDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="package">
