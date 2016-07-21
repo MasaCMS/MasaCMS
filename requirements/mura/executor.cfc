@@ -2,8 +2,9 @@ component extends="mura.cfobject" {
 
 	function execute(filepath){
 		var result='';
+		var expandedPath=expandPath(arguments.filePath);
 
-		if(fileExists(arguments.filepath)){
+		if(expandedPath == arguments.filepath && fileExists(arguments.filepath)){
 			var tempfile=createUUID() & '.cfm';
 			var tempDir=expandPath('/mura/temp');
 
