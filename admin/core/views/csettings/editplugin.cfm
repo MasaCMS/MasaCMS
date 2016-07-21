@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h1>Plugin Settings</h1>
 
 	<cfif rsPlugin.recordcount and rsPlugin.deployed and application.configBean.getJavaEnabled()>
-		<div class="nav-module-specific btn-group"> 
+		<div class="nav-module-specific btn-group">
 			<a class="btn" href="./?muraAction=cSettings.updatePluginVersion&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="mi-gears"></i> Update Plugin Version</a>
 			<a class="btn" href="./index.cfm?muraAction=cSettings.createBundle&moduleid=#esapiEncode('url',rc.moduleid)#&siteID=&BundleName=#esapiEncode('url',application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#"><i class="mi-download"></i> Create and Download Plugin Bundle</a>
 		</div>
@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
-	  	
+
 	<form novalidate="novalidate" method="post" name="frmSettings" action="./?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
 			<cfsilent>
 				<cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 				--->
 						<cfset location="global">
-				
+
 				<!---
 					</cfif>
 				</cfif>
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset settingsLen=0>
 				</cfif>
 
-				<cfif structKeyExists(rc.pluginXML.plugin,"extensions") 
+				<cfif structKeyExists(rc.pluginXML.plugin,"extensions")
 				and structKeyExists(rc.pluginXML.plugin.extensions,"extension")>
 					<cfset extensionsLen=arraylen(rc.pluginXML.plugin.extensions.extension)/>
 				<cfelse>
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset eventHandlersLen=0>
 				</cfif>
 
-				<cfif structKeyExists(rc.pluginXML.plugin.displayobjects,"displayobject")>
+				<cfif structkeyExists(rc.pluginXML.plugin,'displayobjects') and  structKeyExists(rc.pluginXML.plugin.displayobjects,"displayobject")>
 					<cfset objectsLen=arraylen(rc.pluginXML.plugin.displayobjects.displayobject)/>
 				<cfelse>
 					<cfset objectsLen=0>
@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label>Plugin Name (Alias)</label>
 				<input name="pluginalias" type="text" value="#esapiEncode('html_attr',rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/>
 			</div>
-		    
+
 			<div class="mura-control-group">
 				<label>Load Priority</label>
 					<select name="loadPriority">
@@ -193,11 +193,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 				</div>
 			</div>
-			
+
 			<cfif settingsLen>
 				<cfloop from="1" to="#settingsLen#" index="i">
 					<cfsilent>
-						<cfset settingBean=application.pluginManager.getAttributeBean(rc.pluginXML.plugin.settings.setting[i],rc.moduleID)/>		
+						<cfset settingBean=application.pluginManager.getAttributeBean(rc.pluginXML.plugin.settings.setting[i],rc.moduleID)/>
 						<cfif not len(settingBean.getSettingValue())
 								and not rsPlugin.deployed>
 							<cfif structKeyExists(rc.pluginXML.plugin.settings.setting[i],"defaultValue")>
@@ -210,8 +210,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="mura-control-group">
 				     	<label>
 							<cfif len(settingBean.getHint())>
-								<span data-toggle="popover" title="" data-placement="right" 
-							  	data-content="#esapiEncode('html_attr',settingBean.gethint())#" 
+								<span data-toggle="popover" title="" data-placement="right"
+							  	data-content="#esapiEncode('html_attr',settingBean.gethint())#"
 							  	data-original-title="#settingBean.getLabel()#">
 							  	#settingBean.getLabel()# <i class="mi-question-circle"></i>
 							  </span>
@@ -273,7 +273,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</div>
 				</div>
-			</cfif> 
+			</cfif>
 
 			<cfif eventHandlersLen>
 				<div class="mura-control-group">
@@ -286,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</div>
 				</div>
-			</cfif> 
+			</cfif>
 
 			<cfif extensionsLen>
 				<div class="mura-control-group">
@@ -308,13 +308,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input name="package" type="hidden" value="#esapiEncode('html_attr',package)#"/>
 			<input type="hidden" name="moduleID" value="#esapiEncode('html_attr',rc.moduleID)#">
 			#rc.$.renderCSRFTokens(context=rc.moduleID,format="form")#
-	
+
 			<div class="mura-actions">
 				<div class="form-actions">
 					<button type="submit" class="btn mura-primary"><i class="mi-check-circle"></i> Update</button>
 				</div>
 			</div>
-	
+
 		</form>
 
 
