@@ -1501,24 +1501,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset config=xmlParse(config)>
 
-				<cfif isDefined('config.displayobject.xmlAttributes.name')>
+				<cfif isDefined('config.displayobject.xmlAttributes.name') or isDefined('config.mura.xmlAttributes.name')>
 					<cfset objectArgs={
 						object=rs.name,
 						custom=arguments.custom
 						}>
-                    <cfif isDefined('config.displayobject.xmlAttributes.legacyObjectFile')>
-    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.legacyObjectFile>
+					<cfif isDefined('config.displayobject.xmlAttributes.name')>
+						<cfset var baseXML=config.displayobject>
+					<cfelse>
+						<cfset var baseXML=config.mura>
+					</cfif>
+                    <cfif isDefined('baseXML.xmlAttributes.legacyObjectFile')>
+    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & baseXML.xmlAttributes.legacyObjectFile>
                     </cfif>
-					<cfif isDefined('config.displayobject.xmlAttributes.displayObjectFile')>
-						<cfset objectArgs.displayObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.displayObjectFile>
-					<cfelseif isDefined('config.displayobject.xmlAttributes.component')>
-						<cfset objectArgs.displayObjectFile=config.displayobject.xmlAttributes.component>
+					<cfif isDefined('baseXML.xmlAttributes.displayObjectFile')>
+						<cfset objectArgs.displayObjectFile=rs.name & "/" & baseXML.xmlAttributes.displayObjectFile>
+					<cfelseif isDefined('baseXML.xmlAttributes.component')>
+						<cfset objectArgs.displayObjectFile=baseXML.xmlAttributes.component>
 					<cfelse>
 						<cfset objectArgs.displayObjectFile=rs.name & "/index.cfm">
 					</cfif>
-					<cfloop collection="#config.displayobject.xmlAttributes#" item="o">
+					<cfloop collection="#baseXML.xmlAttributes#" item="o">
                         <cfif not structKeyExists(objectArgs,o)>
-					       <cfset objectArgs[o]=config.displayobject.xmlAttributes[o]>
+					       <cfset objectArgs[o]=baseXML.xmlAttributes[o]>
                         </cfif>
 					</cfloop>
 					<cfset registerDisplayObject(
