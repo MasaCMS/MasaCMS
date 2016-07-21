@@ -305,7 +305,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 									<cfif variables.$.siteConfig('HasChangesets') and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) >
 										<li class="dropdown-submenu">
-											<a href=""><i class="mi-list-alt"></i>
+											<a href="##" onclick="return false;"><i class="mi-list-alt"></i>
 											#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#<i class="mi-caret-right"></i></a>
 											<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
 											<cfset changesets=application.changesetManager.getIterator(siteID=variables.$.event('siteid'),published=0,publishdate=now(),publishDateOnly=false)>
