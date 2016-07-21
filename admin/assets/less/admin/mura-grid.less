@@ -328,26 +328,26 @@
 
 				&.file {
 
-					padding-left: 29px;
+					padding-left: 0;
 					position: relative;
 
 					&:before {
-					position: absolute;
-					left: 0;
-					width: auto;
-					content: attr(data-filetype);
-					font-family: 'SilkscreenNormal';
-					font-size: 8px;
-					line-height: 10px;
-					.inline-block;
-					color: @white;
-					background: @iconColor;
-					//#gradient .vertical (lighten(@grayDark,20%),@grayDark);
-					text-shadow: -1px -1px 0 rgba(0,0,0,.2);
-					padding: 3px 4px 2px;
-					.border-radius(2px);
-					overflow: hidden;
-					top: 7px;
+						background: @iconColor;
+						border-radius:2px;
+						color: @white;
+						display: block;
+						content: attr(data-filetype);
+						float: left;
+						font-family: 'SilkscreenNormal';
+						font-size: 8px;
+						left: 0;
+						line-height: 10px;
+						overflow: hidden;
+						padding: 3px 4px 2px;
+						position: relative;
+						text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+						top: 7px;
+						width: auto;
 					}
 
 					&.gif,
