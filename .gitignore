@@ -39,6 +39,7 @@ logs/
 mxunit/
 tests/
 unitTests/
+temp/
 
 # ignored CF & Tomcat directories
 CFIDE/

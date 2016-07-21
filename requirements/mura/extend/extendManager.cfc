@@ -1745,6 +1745,8 @@ and tclassextendattributes.type='File'
 		<cfset baseElement="mura">
 	<cfelseif isDefined("arguments.configXML.displayobject")>
 		<cfset baseElement="displayobject">
+	<cfelseif isDefined("arguments.configXML.contenttype")>
+		<cfset baseElement="contenttype">
 	</cfif>
 
 	<cfif len(baseElement)

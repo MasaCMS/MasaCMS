@@ -251,6 +251,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.RemotePort=80/>
 	<cfset variables.instance.resourceSSL=0/>
 	<cfset variables.instance.resourceDomain=""/>
+	<cfset variables.instance.contentTypeFilePathLookup={}>
+	<cfset variables.instance.contentTypeLoopUpArray=[]>
 	<cfset variables.instance.displayObjectLookup={}/>
 	<cfset variables.instance.displayObjectFilePathLookup={}/>
 	<cfset variables.instance.displayObjectLoopUpArray=[]>
@@ -1262,6 +1264,117 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="clearFilePaths" output="false">
+	<cfset variables.instance.displayObjectFilePathLookup=structNew()>
+	<cfset variables.instance.contentTypeFilePathLookup=structNew()>
+</cffunction>
+
+<cffunction name="lookupContentTypeFilePath" output="false">
+	<cfargument name="filePath">
+	<cfargument name="customOnly" default="false">
+	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
+
+	<cfif len(request.altTheme)>
+		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/content_types/" & arguments.filePath>
+		<cfif fileExists(expandPath(altThemePath))>
+			<cfreturn altThemePath>
+		</cfif>
+	</cfif>
+
+	<cfif hasContentTypeFilePath(arguments.filePath)>
+		<cfreturn getContentTypeFilePath(arguments.filePath)>
+	</cfif>
+
+	<cfset var dir="">
+	<cfset var result="">
+	<cfset var coreIndex=arrayLen(variables.instance.contentTypeLoopUpArray)-2>
+	<cfset var dirIndex=0>
+
+	<cfloop array="#variables.instance.contentTypeLoopUpArray#" index="dir">
+		<cfset dirIndex=dirIndex+1>
+		<cfif not arguments.customonly or dirIndex lt coreIndex>
+			<cfset result=dir & arguments.filePath>
+			<cfif fileExists(expandPath(result))>
+				<cfset setContentTypeFilePath(arguments.filePath,result)>
+				<cfreturn result>
+			</cfif>
+		</cfif>
+	</cfloop>
+
+	<cfset setContentTypeFilePath(arguments.filePath,"")>
+	<cfreturn "">
+</cffunction>
+
+<cffunction name="hasContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfreturn structKeyExists(variables.instance.contentTypeFilePathLookup,'#arguments.filepath#')>
+</cffunction>
+
+<cffunction name="getContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfreturn variables.instance.contentTypeFilePathLookup['#arguments.filepath#']>
+</cffunction>
+
+<cffunction name="setContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfargument name="result">
+	<cfset variables.instance.contentTypeFilePathLookup['#arguments.filepath#']=arguments.result>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerContentTypeDirs" output="false">
+	<cfset var lookupArray=[
+		getIncludePath()  & "/includes/content_types/",
+		getThemeIncludePath(getValue('theme')) & "/content_types/"
+	]>
+
+	<cfset var dir="">
+	<cfloop array="#lookupArray#" index="dir">
+		<cfset registerContentTypeDir(dir=dir)>
+	</cfloop>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerContentTypeDir" output="false">
+	<cfargument name="dir">
+
+	<cfset var rs="">
+	<cfset var config="">
+
+	<cfif directoryExists(expandPath(arguments.dir))>
+		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" type="dir">
+		<cfloop query="rs">
+
+			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">--->
+			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
+				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
+			<cfelse>
+				<cfset config="">
+			</cfif>
+
+			<cfif isXML(config)>
+				<cfset config=xmlParse(config)>
+				<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
+			</cfif>
+
+            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
+                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
+            </cfif>
+
+		</cfloop>
+
+		<cfif not listFind('/,\',right(arguments.dir,1))>
+			<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
+		</cfif>
+		<cfset arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir)>
+	</cfif>
+
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="lookupDisplayObjectFilePath" output="false">
 	<cfargument name="filePath">
 	<cfargument name="customOnly" default="false">
@@ -1376,7 +1489,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 
 			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
-				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">---->
 			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
 				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
 			<cfelse>
@@ -1387,24 +1501,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset config=xmlParse(config)>
 
-				<cfif isDefined('config.displayobject.xmlAttributes.name')>
+				<cfif isDefined('config.displayobject.xmlAttributes.name') or isDefined('config.mura.xmlAttributes.name')>
 					<cfset objectArgs={
 						object=rs.name,
 						custom=arguments.custom
 						}>
-                    <cfif isDefined('config.displayobject.xmlAttributes.legacyObjectFile')>
-    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.legacyObjectFile>
+					<cfif isDefined('config.displayobject.xmlAttributes.name')>
+						<cfset var baseXML=config.displayobject>
+					<cfelse>
+						<cfset var baseXML=config.mura>
+					</cfif>
+                    <cfif isDefined('baseXML.xmlAttributes.legacyObjectFile')>
+    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & baseXML.xmlAttributes.legacyObjectFile>
                     </cfif>
-					<cfif isDefined('config.displayobject.xmlAttributes.displayObjectFile')>
-						<cfset objectArgs.displayObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.displayObjectFile>
-					<cfelseif isDefined('config.displayobject.xmlAttributes.component')>
-						<cfset objectArgs.displayObjectFile=config.displayobject.xmlAttributes.component>
+					<cfif isDefined('baseXML.xmlAttributes.displayObjectFile')>
+						<cfset objectArgs.displayObjectFile=rs.name & "/" & baseXML.xmlAttributes.displayObjectFile>
+					<cfelseif isDefined('baseXML.xmlAttributes.component')>
+						<cfset objectArgs.displayObjectFile=baseXML.xmlAttributes.component>
 					<cfelse>
 						<cfset objectArgs.displayObjectFile=rs.name & "/index.cfm">
 					</cfif>
-					<cfloop collection="#config.displayobject.xmlAttributes#" item="o">
+					<cfloop collection="#baseXML.xmlAttributes#" item="o">
                         <cfif not structKeyExists(objectArgs,o)>
-					       <cfset objectArgs[o]=config.displayobject.xmlAttributes[o]>
+					       <cfset objectArgs[o]=baseXML.xmlAttributes[o]>
                         </cfif>
 					</cfloop>
 					<cfset registerDisplayObject(

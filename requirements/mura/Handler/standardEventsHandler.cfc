@@ -368,6 +368,12 @@
 
 	<cfset arguments.event.getValidator('standardForceSSL').validate(arguments.event)>
 
+	<!---
+	<cfif listFindNoCase('author,editor',arguments.event.getValue('r').perm) and arguments.event.getValue('showMeta') neq 2>
+		<cfset arguments.event.setValue('showMeta',1)>
+	</cfif>
+	--->
+
 	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 
 	<cfswitch expression="#arguments.event.getValue('contentBean').getType()#">
@@ -384,7 +390,7 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="File">
-						<cfif not renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or arguments.event.getValue('showMeta') eq 2 or listFindNoCase('attachment,inline',arguments.event.getValue('method'))>
+						<cfif not (renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or renderer.showItemMeta('File') ) or arguments.event.getValue('showMeta') eq 2 or listFindNoCase('attachment,inline',arguments.event.getValue('method'))>
 							<!---<cftry>--->
 							<cfset translator=arguments.event.getHandler('standardFileTranslation')>
 							<!---

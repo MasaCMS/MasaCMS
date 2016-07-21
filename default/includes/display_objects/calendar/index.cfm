@@ -296,7 +296,6 @@
 <cfsilent>
 <!-- delete params that we don't want to persist --->
 <cfset structDelete(objectParams,'dateparams')>
-<cfset structDelete(objectParams,'items')>
 <cfset structDelete(objectParams,'categoryid')>
 <cfset structDelete(objectParams,'tag')>
 <cfset structDelete(objectParams,'sortyby')>

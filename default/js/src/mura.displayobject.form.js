@@ -364,7 +364,7 @@
 
 		renderPaging:function() {
 			var self = this;
-			var submitlabel=(typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : 'Submit';
+			var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : 'Submit';
 
 			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
 

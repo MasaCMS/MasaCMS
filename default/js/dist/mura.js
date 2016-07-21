@@ -3289,7 +3289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else if (lcaseVal=='true'){
 				return true;
 			} else {
-				if(isNumeric(val)){
+				if(!(typeof val == 'string' && val.length==35) && isNumeric(val)){
 					var numVal=parseFloat(val);
 					if(numVal==0 || !isNaN(1/numVal)){
 						return numVal;
@@ -4422,7 +4422,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		//obj.hide().show();
 
 		if(mura.layoutmanager && mura.editing){
-			if(obj.hasClass('mura-body-object') || obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
+			if(obj.hasClass('mura-body-object')){
 				obj.children('.frontEndToolsModal').remove();
 				obj.prepend(layoutmanagertoolbar);
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
@@ -7669,7 +7669,7 @@ root.mura.templates['embed']=function(context){
 
 		renderPaging:function() {
 			var self = this;
-			var submitlabel=(typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : 'Submit';
+			var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : 'Submit';
 
 			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
 
@@ -8750,7 +8750,7 @@ this["mura"]["templates"]["hidden"] = this.mura.Handlebars.template({"compiler":
     + "\" "
     + ((stack1 = ((helper = (helper = helpers.commonInputAttributes || (depth0 != null ? depth0.commonInputAttributes : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"commonInputAttributes","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + " value=\""
-    + alias4(((helper = (helper = helpers.defaultvalue || (depth0 != null ? depth0.defaultvalue : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"defaultvalue","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
     + "\" />			\n";
 },"useData":true});
 

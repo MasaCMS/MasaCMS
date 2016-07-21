@@ -1380,7 +1380,7 @@ Display Objects
 	</cfif>
 
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel-1>
-		
+
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
 
@@ -1517,6 +1517,7 @@ Display Objects
 					<cfoutput>#bodyLookup.eventOutput#</cfoutput>
 				<cfelseif isDefined('bodyLookup.filepath')>
 					<cfset var objectParams=$.content().getObjectParams()>
+					<cfset objectParams.isBodyObject=true>
 					<cfinclude template="#bodyLookup.filepath#">
 
 				<!--- Otherwise start default body rendering --->
@@ -1634,6 +1635,7 @@ Display Objects
 			#bodyLookup.eventOutput#
 		<cfelseif isDefined('bodyLookup.filepath')>
 			<cfset var objectParams=arguments.params>
+			<cfset objectParams.isBodyObject=true>
 			<cfinclude template="#bodyLookup.filepath#">
 		<cfelse>
 			<cfif arguments.renderKids>

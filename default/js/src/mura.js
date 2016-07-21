@@ -619,7 +619,7 @@
 			} else if (lcaseVal=='true'){
 				return true;
 			} else {
-				if(isNumeric(val)){
+				if(!(typeof val == 'string' && val.length==35) && isNumeric(val)){
 					var numVal=parseFloat(val);
 					if(numVal==0 || !isNaN(1/numVal)){
 						return numVal;
@@ -1752,7 +1752,7 @@
 		//obj.hide().show();
 
 		if(mura.layoutmanager && mura.editing){
-			if(obj.hasClass('mura-body-object') || obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
+			if(obj.hasClass('mura-body-object')){
 				obj.children('.frontEndToolsModal').remove();
 				obj.prepend(layoutmanagertoolbar);
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
