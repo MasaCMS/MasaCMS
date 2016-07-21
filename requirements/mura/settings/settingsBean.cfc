@@ -1347,7 +1347,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 
 			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
-				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">--->
 			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
 				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
 			<cfelse>
@@ -1370,7 +1371,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir)>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -1488,7 +1489,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 
 			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
-				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">---->
 			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
 				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
 			<cfelse>

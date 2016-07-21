@@ -306,93 +306,95 @@
 		<cfset rc.objectparams=URLDecode(rc.objectparams)>
 	</cfif>
 
-	<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
+	<cflock type="exclusive" name="admincontroller#arguments.rc.contentID#" timeout="600">
+		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
 
-	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
+		<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
 
-	 <cfif not local.currentBean.getIsNew()>
-		 <cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
-		 <cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
-	 </cfif>
-
-	 <cfif local.currentBean.getIsNew() and len(arguments.rc.parentID)>
-		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.parentID, arguments.rc.siteid) />
-		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
-	 </cfif>
-
-	<cfset  arguments.rc.allowAction=listFindNoCase('author,editor',arguments.rc.perm) />
-
-	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deleteall'>
-	 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deleteall")>
-			<cfset arguments.rc.topid=variables.contentManager.deleteAll(arguments.rc) />
-		<cfelse>
-
-		</cfif>
-	 </cfif>
-
-	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deletehistall'>
-	 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deletehistall")>
-	 		<cfset variables.contentManager.deletehistAll(arguments.rc) />
-	 	<cfelse>
-
-	 	</cfif>
-	 </cfif>
-
-	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'delete'>
-	 	<cfif rc.$.validateCSRFTokens(context=rc.contenthistid & "delete")>
-			<cfset variables.contentManager.delete(arguments.rc) />
-		<cfelse>
-
-		</cfif>
-	 </cfif>
-
-	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add'>
-		<cfif structKeyExists(arguments.rc,"sourceid") and isValid('UUID',arguments.rc.sourceid)>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceid, siteid=arguments.rc.siteid).set(arguments.rc) />
-		<cfelseif structKeyExists(arguments.rc,"contenthistid") and isValid('UUID',arguments.rc.contenthistid)>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.contenthistid, siteid=arguments.rc.siteid).set(arguments.rc) />
-		<cfelse>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc) />
-		</cfif>
-
-		<cfif rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add")>
-			<cfset arguments.rc.contentBean=arguments.rc.contentBean.save()>
-			<cfif application.configBean.getValue(property='autopreviewimages',defaultValue=true) and not arguments.rc.ajaxrequest and len(request.newImageIDList) and not arguments.rc.murakeepediting>
-				<cfset arguments.rc.fileid=request.newImageIDList>
-				<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
-				<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay,homeID",path="./")>
-			</cfif>
-		<cfelse>
-			<cfset arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens'>
-		</cfif>
-	 </cfif>
-
-	 <cfif not arguments.rc.ajaxrequest>
-
-		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multifileupload'>
-		 		<cfparam name="session.mura.multifileupload" default="false">
-
-		 		<cflock name="multifileupload#application.instanceid#" timeout="5">
-		 			<cfset session.mura.multifileupload=rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload") or session.mura.multifileupload>
-		 		</cflock>
-
-		 		<cfif session.mura.multifileupload>
-			  		<cfset variables.contentManager.multiFileUpload(arguments.rc) />
-			  	<cfelse>
-
-			  	</cfif>
-
+		 <cfif not local.currentBean.getIsNew()>
+			 <cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
+			 <cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
 		 </cfif>
 
-		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
-		    <cfif not (
-			  	listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
-			  	and structKeyExists(session,'#rc.contentBean.getModuleID()#') and listFindNoCase(rc.contentBean.getPath(),session['#rc.contentBean.getModuleID()#'].topID)
-			  ) or not len(rc.contentBean.getPath())>
-		     	<cfset arguments.rc.topid=rc.contentBean.getParentID() />
-				<cfset session.openSectionList=listAppend(session.openSectionList,rc.contentBean.getParentID()) />
+		 <cfif local.currentBean.getIsNew() and len(arguments.rc.parentID)>
+			<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.parentID, arguments.rc.siteid) />
+			<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
+		 </cfif>
+
+		<cfset  arguments.rc.allowAction=listFindNoCase('author,editor',arguments.rc.perm) />
+
+		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deleteall'>
+		 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deleteall")>
+				<cfset arguments.rc.topid=variables.contentManager.deleteAll(arguments.rc) />
+			<cfelse>
+
 			</cfif>
-		</cfif>
+		 </cfif>
+
+		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deletehistall'>
+		 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deletehistall")>
+		 		<cfset variables.contentManager.deletehistAll(arguments.rc) />
+		 	<cfelse>
+
+		 	</cfif>
+		 </cfif>
+
+		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'delete'>
+		 	<cfif rc.$.validateCSRFTokens(context=rc.contenthistid & "delete")>
+				<cfset variables.contentManager.delete(arguments.rc) />
+			<cfelse>
+
+			</cfif>
+		 </cfif>
+
+		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add'>
+			<cfif structKeyExists(arguments.rc,"sourceid") and isValid('UUID',arguments.rc.sourceid)>
+				 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceid, siteid=arguments.rc.siteid).set(arguments.rc) />
+			<cfelseif structKeyExists(arguments.rc,"contenthistid") and isValid('UUID',arguments.rc.contenthistid)>
+				 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.contenthistid, siteid=arguments.rc.siteid).set(arguments.rc) />
+			<cfelse>
+				 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc) />
+			</cfif>
+
+			<cfif rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add")>
+				<cfset arguments.rc.contentBean=arguments.rc.contentBean.save()>
+				<cfif application.configBean.getValue(property='autopreviewimages',defaultValue=true) and not arguments.rc.ajaxrequest and len(request.newImageIDList) and not arguments.rc.murakeepediting>
+					<cfset arguments.rc.fileid=request.newImageIDList>
+					<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
+					<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay,homeID",path="./")>
+				</cfif>
+			<cfelse>
+				<cfset arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens'>
+			</cfif>
+		 </cfif>
+		 </cflock>
+
+		 <cfif not arguments.rc.ajaxrequest>
+
+			 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multifileupload'>
+			 		<cfparam name="session.mura.multifileupload" default="false">
+
+			 		<cflock name="multifileupload#application.instanceid#" timeout="5">
+			 			<cfset session.mura.multifileupload=rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload") or session.mura.multifileupload>
+			 		</cflock>
+
+			 		<cfif session.mura.multifileupload>
+				  		<cfset variables.contentManager.multiFileUpload(arguments.rc) />
+				  	<cfelse>
+
+				  	</cfif>
+
+			 </cfif>
+
+			 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
+			    <cfif not (
+				  	listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
+				  	and structKeyExists(session,'#rc.contentBean.getModuleID()#') and listFindNoCase(rc.contentBean.getPath(),session['#rc.contentBean.getModuleID()#'].topID)
+				  ) or not len(rc.contentBean.getPath())>
+			     	<cfset arguments.rc.topid=rc.contentBean.getParentID() />
+					<cfset session.openSectionList=listAppend(session.openSectionList,rc.contentBean.getParentID()) />
+				</cfif>
+			</cfif>
 
 		<cfif not arguments.rc.murakeepediting>
 			<cfset arguments.rc.murakeepediting=arguments.rc.contentBean.getDisplayConflicts().hasNext()>
