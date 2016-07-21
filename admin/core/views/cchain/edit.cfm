@@ -30,23 +30,19 @@
          <label>
             #application.rbFactory.getKeyValue(session.rb,'approvalchains.name')#
          </label>
-        <div>
           <input name="name" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'approvalchains.namerequired')#" value="#esapiEncode('html_attr',chain.getName())#" maxlength="50">
-        </div>
         </div>
       <div class="mura-control-group">
           <label>
             #application.rbFactory.getKeyValue(session.rb,'approvalchains.description')#
           </label>
-          <div>
           <textarea name="description" rows="6">#esapiEncode('html',chain.getDescription())#</textarea>
-          </div>
       </div>
 
       <div class="mura-control-group" id="availableGroups">
-      	<div class="alert alert-info">
-          <span>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.
-          <strong>All content creators can send for approval without having to be in the chain.</strong></span>
+      	<div class="help-block">
+          <span>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.<br>
+          <em>All content creators can send for approval whether or not they belong to a group in the chain.</em></span>
       	</div>
         <label>
           <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>

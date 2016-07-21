@@ -367,7 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.componentassign')#
 	      	</label>
 			<label for="m1" class="checkbox inline">
-				<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sitemanager')#
+				<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.content')#
 			</label>
 
 			<label for="m2" class="checkbox inline">
