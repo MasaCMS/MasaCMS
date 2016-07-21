@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				recurse=true,
 				exclude=["/.","/mura/autoUpdater/global","/mura/bean/beanFactory.cfc"],
 				strict=application.configBean.getStrictFactory(),
-				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility|extendObject)$"
+				transientPattern = "(Iterator|Bean|executor|MuraScope|Event|dbUtility|extendObject)$"
 				});
 
 		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
