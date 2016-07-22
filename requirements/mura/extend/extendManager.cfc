@@ -1767,7 +1767,7 @@ and tclassextendattributes.type='File'
 
 			for(var subtypetype in subtypeArray){
 
-				subType = application.classExtensionManager.getSubTypeBean();
+				subType = getSubTypeBean();
 
 				if(subtypetype eq 'User'){
 					subType.setType( 2 );
