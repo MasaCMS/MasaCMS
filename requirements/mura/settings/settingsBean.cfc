@@ -1489,7 +1489,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 
 			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
-				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<cfset config=new mura.executor().execute('#rs.directory#/#rs.name#/config.xml.cfm')>
 				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">---->
 			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
 				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
