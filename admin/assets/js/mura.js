@@ -4075,9 +4075,9 @@ return /******/ (function(modules) { // webpackBootstrap
 								var self=el;
 								var checkForReCaptcha=function()
 									{
-									   if (typeof grecaptcha == 'object' && self)
+									   if (typeof grecaptcha == 'object' && !self.innerHTML)
 									   {
-									   	//console.log(self)
+								
 									     self.setAttribute(
 											'data-widgetid',
 										 	grecaptcha.render(self.getAttribute('id'), {
@@ -7638,7 +7638,7 @@ root.mura.templates['embed']=function(context){
 		renderForm: function( ) {
 			var self = this;
 
-			console.log("render form: " + self.currentpage);
+			//console.log("render form: " + self.currentpage);
 
 			mura(".field-container-" + self.context.objectid,self.context.formEl).empty();
 
@@ -7650,8 +7650,12 @@ root.mura.templates['embed']=function(context){
 
 			for(var i = 0;i < fields.length;i++) {
 				var field =  self.formJSON.form.fields[fields[i]];
-				if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
-					self.renderField(field.fieldtype.fieldtype,field);
+				try {
+					if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
+						self.renderField(field.fieldtype.fieldtype,field);
+					}
+				} catch(e){
+					console.log(field);
 				}
 			}
 
@@ -7852,10 +7856,57 @@ root.mura.templates['embed']=function(context){
 		loadForm: function( data ) {
 			var self = this;
 
-						console.log('a');
-						console.log(self.formJSON);
+			//console.log('a');
+			//console.log(self.formJSON);
 
+			formJSON = JSON.parse(self.context.def);
 
+			// old forms
+			if(!formJSON.form.pages) {
+				formJSON.form.pages = [];
+				formJSON.form.pages[0] = formJSON.form.fieldorder;
+				formJSON.form.fieldorder = [];
+			}
+
+			entityName = self.context.filename.replace(/\W+/g, "");
+			self.entity = entityName;
+			self.formJSON = formJSON;
+			self.fields = formJSON.form.fields;
+			self.responsemessage = self.context.responsemessage;
+			self.ishuman=self.context.ishuman;
+
+			if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
+				self.ormform = true;
+			}
+
+			for(var i=0;i < self.formJSON.datasets;i++){
+				self.datasets.push(i);
+			}
+
+			if(self.ormform) {
+				self.entity = entityName;
+
+				if(self.entityid == undefined) {
+					root.mura.get(
+						root.mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
+					).then(function(resp) {
+						self.data = resp.data;
+						self.renderData();
+					});
+				}
+				else {
+					root.mura.get(
+						root.mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
+					).then(function(resp) {
+						self.data = resp.data;
+						self.renderData();
+					});
+				}
+			}
+			else {
+				self.renderData();
+			}
+			/*
 			root.mura.get(
 					root.mura.apiEndpoint + '/content/' + self.context.objectid
 					 + '?fields=body,title,filename,responsemessage&ishuman=true'
@@ -7909,6 +7960,8 @@ root.mura.templates['embed']=function(context){
 						}
 					 }
 				);
+
+			*/
 		},
 
 		initForm: function() {
@@ -8110,8 +8163,24 @@ root.mura.templates['embed']=function(context){
 		loadList: function() {
 			var self = this;
 
+			formJSON = self.context.formdata;
+			entityName = dself.context.filename.replace(/\W+/g, "");
+			self.entity = entityName;
+			self.formJSON = formJSON;
+
+			if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
+				self.ormform = true;
+			}
+			else {
+				mura(self.context.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
+				return;
+			}
+
+			self.getTableData();
+
+			/*
 			root.mura.get(
-				root.mura.apiEndpoint + '/content/' + self.context.objectid
+				root.mura.apiEndpoint + 'content/' + self.context.objectid
 				 + '?fields=body,title,filename,responsemessage'
 				).then(function(data) {
 				 	formJSON = JSON.parse( data.data.body );
@@ -8129,6 +8198,7 @@ root.mura.templates['embed']=function(context){
 
 					self.getTableData();
 			});
+			*/
 		},
 
 		getTableData: function( navlink ) {
