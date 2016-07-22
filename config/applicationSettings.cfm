@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.mapPrefix=mapPrefix>
 <cfset variables.mapPrefix=mapPrefix>
 
-<cfset this.mappings["/"] = variables.baseDir>
+<cfset this.mappings = structNew()>
 <cfset this.mappings["/plugins"] = variables.baseDir & "/plugins">
 <cfset this.mappings["/muraWRM"] = variables.baseDir>
 <cfset this.mappings["/savaWRM"] = variables.baseDir>
