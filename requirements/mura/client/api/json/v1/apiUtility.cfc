@@ -880,22 +880,22 @@ component extends="mura.cfobject" {
 	};
 
 	function getParamsWithOutMethod(params){
-		var temp={};
-		structAppend(temp,arguments.params);
-		structDelete(temp,'method');
+        var temp={};
+        structAppend(temp,arguments.params);
+        structDelete(temp,'method');
 
-		for(var p in temp){
-			if(find('[',p)){
-				structDelete(temp,listFirst(p,'[') & listFirst(listLast(p,'['),']'));
-			}
+        for(var p in temp){
+            if(find('[',p)){
+                structDelete(temp,listFirst(p,'[') & listFirst(listLast(p,'['),']'));
+            }
 
-			//Don't respond with file paths information
-			if(refind('[\\/]',temp['#p#'])){
-				structDelete(temp,'#p#');
-			}
-		}
-		return temp;
-	}
+            //Don't respond with file paths information
+            if(refind('[\\/]',temp['#p#'])){
+                structDelete(temp,'#p#');
+            }
+        }
+        return temp;
+    }
 
 	function parseParamsFromPath(pathInfo,params,start){
 		var paramsArray=[];
