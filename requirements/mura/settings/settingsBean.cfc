@@ -1361,7 +1361,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
             <cfif directoryExists('#rs.directory#/#rs.name#/model')>
-                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
+                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'))>
             </cfif>
 
 		</cfloop>
