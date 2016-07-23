@@ -227,7 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					objectParams=objectParams
 				)#
 		<cfelse>
-			<p class="mura-no-content-notice">#$.rbkey('collection.nomatchingcontent')#</p>
+			<cfoutput>#variables.dspObject_include(thefile='collection/includes/dsp_empty.cfm',objectid=objectParams.source,objectParams=objectParams)#</cfoutput>
 		</cfif>
 	</cfoutput>
 <cfelse>

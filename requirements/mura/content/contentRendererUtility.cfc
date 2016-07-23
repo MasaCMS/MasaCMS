@@ -968,7 +968,11 @@
 		</cfif>
 
 		<cfif arguments.renderer.useLayoutManager()>
-			<cfreturn '#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)##arguments.renderer.dspObject_include(theFile='object/content.cfm',params=arguments)#</div>'>
+			<cfif len(trim(arguments.content))>
+				<cfreturn '#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)##arguments.renderer.dspObject_include(theFile='object/content.cfm',params=arguments)#</div>'>
+			<cfelse>
+				<cfreturn '#openingDiv#</div>'>
+			</cfif>
 		<cfelse>
 			<cfreturn '#openingDiv##trim(arguments.content)#</div>'>
 		</cfif>
