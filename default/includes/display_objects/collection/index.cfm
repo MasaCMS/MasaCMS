@@ -226,7 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					iterator=iterator,
 					objectParams=objectParams
 				)#
-		<cfelseif listFindNoCase('calendar,children',objectParams.sourceType)>
+		<cfelseif listFindNoCase('calendar,children',objectParams.sourceType) or listFindNoCase('author,editor',$.event('r').perm)>
 			<p class="mura-no-content-notice">#$.rbkey('collection.nomatchingcontent')#</p>
 		</cfif>
 	</cfoutput>
