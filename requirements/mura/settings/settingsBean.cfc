@@ -1333,6 +1333,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset registerContentTypeDir(dir=dir)>
 	</cfloop>
 
+	<cfset var rs="">
+
+	<cfquery name="rs">
+		select tplugins.package
+		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
+		where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getValue('siteid')#">
+		and tplugins.deployed=1
+		order by tplugins.loadPriority desc
+	</cfquery>
+	
+	<cfloop query="rs">
+		<cfset registerContentTypeDir('/' & rs.package & '/content_types')>
+	</cfloop>
+
 	<cfreturn this>
 </cffunction>
 
@@ -1341,15 +1355,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rs="">
 	<cfset var config="">
+	<cfset var expandedDir=expandPath(arguments.dir)>
 
-	<cfif directoryExists(expandPath(arguments.dir))>
-		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" type="dir">
+	<cfif directoryExists(expandedDir)>
+		<cfdirectory name="rs" directory="#expandedDir#" action="list" type="dir">
 		<cfloop query="rs">
 
-			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
+			<cfif fileExists('#expandedDir#/#rs.name#/config.xml.cfm')>
 				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
 				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">--->
-			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
+			<cfelseif fileExists('#expandedDir#/#rs.name#/config.xml')>
 				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
 			<cfelse>
 				<cfset config="">
@@ -1372,6 +1387,85 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir)>
 	</cfif>
 
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerDisplayObjectDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="conditional" default="true">
+    <cfargument name="package" default="">
+	<cfargument name="custom" default="true">
+	<cfset var rs="">
+	<cfset var config="">
+	<cfset var objectArgs={}>
+	<cfset var o="">
+	<cfset var objectfound=(arguments.conditional) ? false : true>
+	<cfset var expandedDir=expandPath(arguments.dir)>
+
+	<cfif directoryExists(expandedDir)>
+		<cfdirectory name="rs" directory="#expandedDir#" action="list" type="dir">
+		<cfloop query="rs">
+			<cfif fileExists('#expandedDir#/#rs.name#/config.xml.cfm')>
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">---->
+			<cfelseif fileExists('#expandedDir#/#rs.name#/config.xml')>
+				<cffile action="read" file="#expandedDir#/#rs.name#/config.xml" variable="config">
+			<cfelse>
+				<cfset config="">
+			</cfif>
+
+			<cfif isXML(config)>
+
+				<cfset config=xmlParse(config)>
+
+				<cfif isDefined('config.displayobject.xmlAttributes.name') or isDefined('config.mura.xmlAttributes.name')>
+					<cfset objectArgs={
+						object=rs.name,
+						custom=arguments.custom
+						}>
+					<cfif isDefined('config.displayobject.xmlAttributes.name')>
+						<cfset var baseXML=config.displayobject>
+					<cfelse>
+						<cfset var baseXML=config.mura>
+					</cfif>
+                    <cfif isDefined('baseXML.xmlAttributes.legacyObjectFile')>
+    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & baseXML.xmlAttributes.legacyObjectFile>
+                    </cfif>
+					<cfif isDefined('baseXML.xmlAttributes.displayObjectFile')>
+						<cfset objectArgs.displayObjectFile=rs.name & "/" & baseXML.xmlAttributes.displayObjectFile>
+					<cfelseif isDefined('baseXML.xmlAttributes.component')>
+						<cfset objectArgs.displayObjectFile=baseXML.xmlAttributes.component>
+					<cfelse>
+						<cfset objectArgs.displayObjectFile=rs.name & "/index.cfm">
+					</cfif>
+					<cfloop collection="#baseXML.xmlAttributes#" item="o">
+                        <cfif not structKeyExists(objectArgs,o)>
+					       <cfset objectArgs[o]=baseXML.xmlAttributes[o]>
+                        </cfif>
+					</cfloop>
+					<cfset registerDisplayObject(
+						argumentCollection=objectArgs
+					)>
+					<cfset objectfound=true>
+					<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
+				</cfif>
+
+			</cfif>
+
+            <cfif directoryExists('#rs.directory##rs.name#/model')>
+                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
+            </cfif>
+
+		</cfloop>
+
+		<cfif objectfound>
+			<cfif not listFind('/,\',right(arguments.dir,1))>
+				<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
+			</cfif>
+			<cfset arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir)>
+		</cfif>
+
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -1459,7 +1553,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs="">
 
 	<cfquery name="rs">
-		select tplugins.directory
+		select tplugins.package
 		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
 		where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getValue('siteid')#">
 		and tplugins.deployed=1
@@ -1467,88 +1561,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfloop query="rs">
-		<cfset registerDisplayObjectDir(getBean('configBean').getPluginDir() & '/' & rs.directory & '/display_objects/',true)>
+		<cfset registerDisplayObjectDir('/' & rs.package & '/display_objects',true)>
 	</cfloop>
 
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="registerDisplayObjectDir" output="false">
-	<cfargument name="dir">
-	<cfargument name="conditional" default="true">
-    <cfargument name="package" default="">
-	<cfargument name="custom" default="true">
-	<cfset var rs="">
-	<cfset var config="">
-	<cfset var objectArgs={}>
-	<cfset var o="">
-	<cfset var objectfound=(arguments.conditional) ? false : true>
-
-	<cfif directoryExists(expandPath(arguments.dir))>
-		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" type="dir">
-		<cfloop query="rs">
-
-			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
-				<cfset config=new mura.executor().execute('#rs.directory#/#rs.name#/config.xml.cfm')>
-				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">---->
-			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
-				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
-			<cfelse>
-				<cfset config="">
-			</cfif>
-
-			<cfif isXML(config)>
-
-				<cfset config=xmlParse(config)>
-
-				<cfif isDefined('config.displayobject.xmlAttributes.name') or isDefined('config.mura.xmlAttributes.name')>
-					<cfset objectArgs={
-						object=rs.name,
-						custom=arguments.custom
-						}>
-					<cfif isDefined('config.displayobject.xmlAttributes.name')>
-						<cfset var baseXML=config.displayobject>
-					<cfelse>
-						<cfset var baseXML=config.mura>
-					</cfif>
-                    <cfif isDefined('baseXML.xmlAttributes.legacyObjectFile')>
-    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & baseXML.xmlAttributes.legacyObjectFile>
-                    </cfif>
-					<cfif isDefined('baseXML.xmlAttributes.displayObjectFile')>
-						<cfset objectArgs.displayObjectFile=rs.name & "/" & baseXML.xmlAttributes.displayObjectFile>
-					<cfelseif isDefined('baseXML.xmlAttributes.component')>
-						<cfset objectArgs.displayObjectFile=baseXML.xmlAttributes.component>
-					<cfelse>
-						<cfset objectArgs.displayObjectFile=rs.name & "/index.cfm">
-					</cfif>
-					<cfloop collection="#baseXML.xmlAttributes#" item="o">
-                        <cfif not structKeyExists(objectArgs,o)>
-					       <cfset objectArgs[o]=baseXML.xmlAttributes[o]>
-                        </cfif>
-					</cfloop>
-					<cfset registerDisplayObject(
-						argumentCollection=objectArgs
-					)>
-					<cfset objectfound=true>
-					<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
-				</cfif>
-
-			</cfif>
-
-            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
-                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
-            </cfif>
-
-		</cfloop>
-
-		<cfif objectfound>
-			<cfif not listFind('/,\',right(arguments.dir,1))>
-				<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
-			</cfif>
-			<cfset arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir)>
-		</cfif>
-
-	</cfif>
 	<cfreturn this>
 </cffunction>
 
