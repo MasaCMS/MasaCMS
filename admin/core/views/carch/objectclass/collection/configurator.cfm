@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="mura-control-group sort-container" style="display:none">
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
 				<select name="sortby" class="sort-param">
-					<cfloop list="menutitle,lastupdate,releasedate,displaystart,displaystop,created,credits,type,subtype,comments,rating" index="s">
+					<cfloop list="menutitle,lastupdate,releasedate,displaystart,created,credits,type,subtype,comments,rating" index="s">
 						<option value="#s#"<cfif objectParams.sortby eq s> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.#s#')#</option>
 					</cfloop>
 				</select>
