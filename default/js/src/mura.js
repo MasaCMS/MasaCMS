@@ -1407,7 +1407,7 @@
 									{
 									   if (typeof grecaptcha == 'object' && !self.innerHTML)
 									   {
-								
+
 									     self.setAttribute(
 											'data-widgetid',
 										 	grecaptcha.render(self.getAttribute('id'), {

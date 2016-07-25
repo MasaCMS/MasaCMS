@@ -1383,7 +1383,6 @@ Display Objects
 
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
-
 				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content='',
@@ -1396,7 +1395,7 @@ Display Objects
 		<cfelse>
 			<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
-				content=theContent,
+				content=trim(theContent),
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
@@ -1407,7 +1406,7 @@ Display Objects
 	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>
 	<cfelseif arguments.returnFormat eq 'struct'>
-		<cfset objectparams.html=theContent>
+		<cfset objectparams.html=trim(theContent)>
 		<cfreturn objectparams>
 	<cfelse>
 		<cfreturn trim(theContent) />
