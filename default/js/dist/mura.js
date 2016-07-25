@@ -4077,7 +4077,7 @@ return /******/ (function(modules) { // webpackBootstrap
 									{
 									   if (typeof grecaptcha == 'object' && !self.innerHTML)
 									   {
-								
+
 									     self.setAttribute(
 											'data-widgetid',
 										 	grecaptcha.render(self.getAttribute('id'), {
@@ -7440,11 +7440,11 @@ root.mura.templates['embed']=function(context){
 				var result=[];
 
 				for(var f=0;f < fields.length;f++){
-					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
+					//console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
 
-				console.log(result);
+				//console.log(result);
 
 				return result.join(',');
 		},
@@ -7560,6 +7560,7 @@ root.mura.templates['embed']=function(context){
 				case "radio":
 				case "dropdown":
 					var ds = self.formJSON.datasets[field.datasetid];
+
 					for(var i=0;i<ds.datarecords.length;i++) {
 						if(self.ormform) {
 							if(ds.datarecords[i].id == self.data[field.name+'id']) {
@@ -7655,6 +7656,7 @@ root.mura.templates['embed']=function(context){
 						self.renderField(field.fieldtype.fieldtype,field);
 					}
 				} catch(e){
+					console.log('Error rendering form field:');
 					console.log(field);
 				}
 			}
@@ -7868,6 +7870,20 @@ root.mura.templates['embed']=function(context){
 				formJSON.form.fieldorder = [];
 			}
 
+
+			if(typeof formJSON.datasets != 'undefined'){
+				for(var d in formJSON.datasets){
+					if(typeof formJSON.datasets[d].DATARECORDS != 'undefined'){
+						formJSON.datasets[d].datarecords=formJSON.datasets[d].DATARECORDS;
+						delete formJSON.datasets[d].DATARECORDS;
+					}
+					if(typeof formJSON.datasets[d].DATARECORDORDER != 'undefined'){
+						formJSON.datasets[d].datarecordorder=formJSON.datasets[d].DATARECORDORDER;
+						delete formJSON.datasets[d].DATARECORDORDER;
+					}
+				}
+			}
+
 			entityName = self.context.filename.replace(/\W+/g, "");
 			self.entity = entityName;
 			self.formJSON = formJSON;
@@ -7995,7 +8011,7 @@ root.mura.templates['embed']=function(context){
 				.trigger('formSubmit');
 
 			if(self.ormform) {
-				console.log('a!');
+				//console.log('a!');
 				root.mura.getEntity(self.entity)
 				.set(
 					self.data
@@ -8024,7 +8040,7 @@ root.mura.templates['embed']=function(context){
 				);
 			}
 			else {
-				console.log('b!');
+				//console.log('b!');
 				var data=mura.deepExtend({},self.context,self.data);
 				data.saveform=true;
 				data.formid=data.objectid;
@@ -8313,8 +8329,8 @@ root.mura.templates['embed']=function(context){
 		renderOverview: function() {
 			var self = this;
 
-			console.log('ia');
-			console.log(self.item);
+			//console.log('ia');
+			//console.log(self.item);
 
 			mura(self.context.formEl).empty();
 

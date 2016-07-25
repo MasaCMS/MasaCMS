@@ -73,13 +73,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfscript>
    					 if(isdefined('local.formJSON.form.fields')){
    						 for(b in local.formJSON.form.fields){
-							if(structKeyExists(local.formJSON.form.fields[b],'value')){
-   							 	local.formJSON.form.fields[b].value=$.setDynamicContent(local.formJSON.form.fields[b].value);
+							 field=local.formJSON.form.fields[b];
+							if(structKeyExists(field,'value')){
+   							 	local.formJSON.form.fields[b].value=$.setDynamicContent(field.value);
 						 	}
+
+							if(isDefined('field.fieldtype.isdata') && field.fieldtype.isdata==1){
+								local.formJSON.datasets['#field.datasetid#']=$.getBean('formBuilderManager').processDataset( $, local.formJSON.datasets['#field.datasetid#'] );
+							}
 						 }
 
    					 }
-
+					 
    					 request.cffpJS=true;
 
    					 objectParams.def=serializeJSON(local.formJSON);
