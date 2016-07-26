@@ -366,6 +366,8 @@
 
 			mura.processMarkup(".field-container-" + self.context.objectid,self.context.formEl);
 
+			self.trigger('afterRender');
+
 		},
 
 		renderPaging:function() {
@@ -554,7 +556,7 @@
 			var self = this;
 
 			//console.log('a');
-			//console.log(self.formJSON);
+			//console.log(self.formJSOrenderN);
 
 			formJSON = JSON.parse(self.context.def);
 
@@ -690,7 +692,6 @@
 
 			self.currentpage = 0;
 			self.formInit=true;
-			self.trigger('afterRender');
 		},
 
 		submitForm: function() {

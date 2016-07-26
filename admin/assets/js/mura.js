@@ -4731,6 +4731,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		muraObject.prototype = Object.create(baseClass.prototype);
 		muraObject.prototype.constructor = muraObject;
+		muraObject.prototype.handlers={};
+
 		muraObject.reopen=function(subClass){
 				root.mura.extend(muraObject.prototype,subClass);
 			};
@@ -4738,6 +4740,49 @@ return /******/ (function(modules) { // webpackBootstrap
 		muraObject.reopenClass=function(subClass){
 				root.mura.extend(muraObject,subClass);
 			};
+
+		muraObject.on=function(eventName,fn){
+			eventName=eventName.toLowerCase();
+
+			if(typeof muraObject.prototype.handlers[eventName] == 'undefined'){
+				muraObject.prototype.handlers[eventName]=[];
+			}
+
+			if(!fn){
+				return muraObject;
+			}
+
+			for(var i=0;i < muraObject.prototype.handlers[eventName].length;i++){
+				if(muraObject.prototype.handlers[eventName][i]==handler){
+					return muraObject;
+				}
+			}
+
+
+			muraObject.prototype.handlers[eventName].push(fn);
+			return muraObject;
+		};
+
+		muraObject.off=function(eventName,fn){
+			eventName=eventName.toLowerCase();
+
+			if(typeof muraObject.prototype.handlers[eventName] == 'undefined'){
+				muraObject.prototype.handlers[eventName]=[];
+			}
+
+			if(!fn){
+				muraObject.prototype.handlers[eventName]=[];
+				return muraObject;
+			}
+
+			for(var i=0;i < muraObject.prototype.handlers[eventName].length;i++){
+				if(muraObject.prototype.handlers[eventName][i]==handler){
+					muraObject.prototype.handlers[eventName].splice(i,1);
+				}
+			}
+			return muraObject;
+		}
+
 
 		root.mura.extend(muraObject.prototype,subClass);
 
@@ -5340,12 +5385,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	core.prototype={
 		init:function(){
-		}
+		},
+		trigger:function(eventName){
+			eventName=eventName.toLowerCase();
+
+			if(typeof this.prototype.handlers[eventName] != 'undefined'){
+				var handlers=this.prototype.handlers[eventName];
+				for(var handler in handlers){
+					handler.call(this);
+				}
+			}
+
+			return this;
+		},
 	};
 
 	core.extend=function(properties){
 		var self=this;
-		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend});
+		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend,handlers:[]});
 	};
 
 	root.mura.core=core;
@@ -7264,25 +7321,31 @@ root.mura.templates['embed']=function(context){
 	root.mura.ui=root.mura.core.extend({
 		rb:{},
 		context:{},
-		status:'pending',
-		onBeforeRender:function(){},
 		onAfterRender:function(){},
+		onBeforeRender:function(){},
 		trigger:function(eventName){
+			eventName=eventName.toLowerCase();
 			if(typeof this.context.targetEl != 'undefined'){
 				var obj=mura(this.context.targetEl).closest('.mura-object');
 				if(obj.length && typeof obj.node != 'undefined'){
-					if(eventName.toLowerCase() == 'beforerender'){
+					if(typeof this.handlers[eventName] != 'undefined'){
+						var $handlers=this.handlers[eventName];
+						for(var i=0;i < $handlers.length;i++){
+							$handlers[i].call(obj.node);
+						}
+					}
+
+					if(eventName=='beforerender'){
 						this.onBeforeRender.call(obj.node);
-						this.status='rendering';
-					} else if(this.status != 'rendered' && eventName.toLowerCase() == 'afterrender'){
+					} else if(eventName=='afterrender'){
 						this.onAfterRender.call(obj.node);
-						this.status='rendered';
 					}
 				}
 			}
 
 			return this;
 		},
+
 		render:function(){
 			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
 			this.trigger('afterRender');
@@ -7671,6 +7734,8 @@ root.mura.templates['embed']=function(context){
 
 			mura.processMarkup(".field-container-" + self.context.objectid,self.context.formEl);
 
+			self.trigger('afterRender');
+
 		},
 
 		renderPaging:function() {
@@ -7859,7 +7924,7 @@ root.mura.templates['embed']=function(context){
 			var self = this;
 
 			//console.log('a');
-			//console.log(self.formJSON);
+			//console.log(self.formJSOrenderN);
 
 			formJSON = JSON.parse(self.context.def);
 
@@ -7995,7 +8060,6 @@ root.mura.templates['embed']=function(context){
 
 			self.currentpage = 0;
 			self.formInit=true;
-			self.trigger('afterRender');
 		},
 
 		submitForm: function() {

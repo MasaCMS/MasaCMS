@@ -51,12 +51,24 @@
 
 	core.prototype={
 		init:function(){
-		}
+		},
+		trigger:function(eventName){
+			eventName=eventName.toLowerCase();
+
+			if(typeof this.prototype.handlers[eventName] != 'undefined'){
+				var handlers=this.prototype.handlers[eventName];
+				for(var handler in handlers){
+					handler.call(this);
+				}
+			}
+
+			return this;
+		},
 	};
 
 	core.extend=function(properties){
 		var self=this;
-		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend});
+		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend,handlers:[]});
 	};
 
 	root.mura.core=core;

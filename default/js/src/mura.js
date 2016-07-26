@@ -2061,6 +2061,8 @@
 
 		muraObject.prototype = Object.create(baseClass.prototype);
 		muraObject.prototype.constructor = muraObject;
+		muraObject.prototype.handlers={};
+
 		muraObject.reopen=function(subClass){
 				root.mura.extend(muraObject.prototype,subClass);
 			};
@@ -2068,6 +2070,49 @@
 		muraObject.reopenClass=function(subClass){
 				root.mura.extend(muraObject,subClass);
 			};
+
+		muraObject.on=function(eventName,fn){
+			eventName=eventName.toLowerCase();
+
+			if(typeof muraObject.prototype.handlers[eventName] == 'undefined'){
+				muraObject.prototype.handlers[eventName]=[];
+			}
+
+			if(!fn){
+				return muraObject;
+			}
+
+			for(var i=0;i < muraObject.prototype.handlers[eventName].length;i++){
+				if(muraObject.prototype.handlers[eventName][i]==handler){
+					return muraObject;
+				}
+			}
+
+
+			muraObject.prototype.handlers[eventName].push(fn);
+			return muraObject;
+		};
+
+		muraObject.off=function(eventName,fn){
+			eventName=eventName.toLowerCase();
+
+			if(typeof muraObject.prototype.handlers[eventName] == 'undefined'){
+				muraObject.prototype.handlers[eventName]=[];
+			}
+
+			if(!fn){
+				muraObject.prototype.handlers[eventName]=[];
+				return muraObject;
+			}
+
+			for(var i=0;i < muraObject.prototype.handlers[eventName].length;i++){
+				if(muraObject.prototype.handlers[eventName][i]==handler){
+					muraObject.prototype.handlers[eventName].splice(i,1);
+				}
+			}
+			return muraObject;
+		}
+
 
 		root.mura.extend(muraObject.prototype,subClass);
 
