@@ -135,11 +135,11 @@
 				var result=[];
 
 				for(var f=0;f < fields.length;f++){
-					console.log("add: " + self.formJSON.form.fields[fields[f]].name);
+					//console.log("add: " + self.formJSON.form.fields[fields[f]].name);
 					result.push(self.formJSON.form.fields[fields[f]].name);
 				}
 
-				console.log(result);
+				//console.log(result);
 
 				return result.join(',');
 		},
@@ -255,6 +255,7 @@
 				case "radio":
 				case "dropdown":
 					var ds = self.formJSON.datasets[field.datasetid];
+
 					for(var i=0;i<ds.datarecords.length;i++) {
 						if(self.ormform) {
 							if(ds.datarecords[i].id == self.data[field.name+'id']) {
@@ -350,6 +351,7 @@
 						self.renderField(field.fieldtype.fieldtype,field);
 					}
 				} catch(e){
+					console.log('Error rendering form field:');
 					console.log(field);
 				}
 			}
@@ -363,6 +365,8 @@
 			}
 
 			mura.processMarkup(".field-container-" + self.context.objectid,self.context.formEl);
+
+			self.trigger('afterRender');
 
 		},
 
@@ -552,7 +556,7 @@
 			var self = this;
 
 			//console.log('a');
-			//console.log(self.formJSON);
+			//console.log(self.formJSOrenderN);
 
 			formJSON = JSON.parse(self.context.def);
 
@@ -561,6 +565,20 @@
 				formJSON.form.pages = [];
 				formJSON.form.pages[0] = formJSON.form.fieldorder;
 				formJSON.form.fieldorder = [];
+			}
+
+
+			if(typeof formJSON.datasets != 'undefined'){
+				for(var d in formJSON.datasets){
+					if(typeof formJSON.datasets[d].DATARECORDS != 'undefined'){
+						formJSON.datasets[d].datarecords=formJSON.datasets[d].DATARECORDS;
+						delete formJSON.datasets[d].DATARECORDS;
+					}
+					if(typeof formJSON.datasets[d].DATARECORDORDER != 'undefined'){
+						formJSON.datasets[d].datarecordorder=formJSON.datasets[d].DATARECORDORDER;
+						delete formJSON.datasets[d].DATARECORDORDER;
+					}
+				}
 			}
 
 			entityName = self.context.filename.replace(/\W+/g, "");
@@ -674,7 +692,6 @@
 
 			self.currentpage = 0;
 			self.formInit=true;
-			self.trigger('afterRender');
 		},
 
 		submitForm: function() {
@@ -690,7 +707,7 @@
 				.trigger('formSubmit');
 
 			if(self.ormform) {
-				console.log('a!');
+				//console.log('a!');
 				root.mura.getEntity(self.entity)
 				.set(
 					self.data
@@ -719,7 +736,7 @@
 				);
 			}
 			else {
-				console.log('b!');
+				//console.log('b!');
 				var data=mura.deepExtend({},self.context,self.data);
 				data.saveform=true;
 				data.formid=data.objectid;
@@ -1008,8 +1025,8 @@
 		renderOverview: function() {
 			var self = this;
 
-			console.log('ia');
-			console.log(self.item);
+			//console.log('ia');
+			//console.log(self.item);
 
 			mura(self.context.formEl).empty();
 
