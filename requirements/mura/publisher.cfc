@@ -536,7 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset var bb="">
 					<cfset var bbList="">
 					<cfloop list="#bundleablebeans#" index="bb">
-						<cfif getServiceFactory().containsBean(bb) and not listFind(bbList,bb)>
+						<cfif getServiceFactory().containsBean(bb) and not listFindNoCase(bbList,bb)>
 							<cfset getBean(bb).fromBundle(bundle=arguments.bundle,keyFactory=arguments.keyFactory,siteid=arguments.siteid)>
 							<cfset bbList=listAppend(bbList,bb)>
 						</cfif>
