@@ -2045,6 +2045,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.sortBy='orderno'>
 	</cfif>
 
+	<cfif arguments.reverse and arguments.sortby eq 'orderno'>
+		<cfset arguments.sortby="menutitle">
+		<cfset arguments.sortDirection="asc">
+	</cfif>
+
 	<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
 		<cfset arguments.sortDirection='asc'>
 	</cfif>

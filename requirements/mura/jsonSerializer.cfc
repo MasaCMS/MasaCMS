@@ -34,7 +34,7 @@ component
 	// ---
 
 
-	// I define the given key without a type. This is here to provide key-casing without caring 
+	// I define the given key without a type. This is here to provide key-casing without caring
 	// about why type of data convertion takes place. Returns serializer.
 	public any function asAny( required string key ) {
 
@@ -103,7 +103,7 @@ component
 	/**
 	* I serialize the given input as JavaScript Object Notation (JSON) using the case-sensitive
 	* values defined in the key-list.
-	* 
+	*
 	* @output false
 	*/
 	public string function serialize( required any input ) {
@@ -135,8 +135,8 @@ component
 		if ( structKeyExists( fullKeyList, key ) ) {
 
 			return this;
-			
-			throw( 
+
+			throw(
 				type = "DuplicateKey",
 				message = "The key [#key#] has already been defined within the serializer.",
 				detail = "The current key list is: #structKeyList( fullKeyList, ', ' )#"
@@ -151,16 +151,16 @@ component
 		// of the key so that it doesn't have to be recalculated each time the object is serialized.
 		fullKeyList[ key ] = serializeJson( key );
 
-		// If we have a specific type, then add the hint to the full hint list as well. This will 
+		// If we have a specific type, then add the hint to the full hint list as well. This will
 		// allow us to quickly look up the pass-through data type hint during serialization.
 		// --
 		// NOTE: The reason we don't want to pass through "any" is that we want parent types to be
-		// able to "fall through" during the object traversal. If we added "any" to the type list, 
+		// able to "fall through" during the object traversal. If we added "any" to the type list,
 		// then it would always overwrite the parent data type.
 		if ( hint != "any" ) {
 
 			fullHintList[ key ] = hint;
-			
+
 		}
 
 		// Return this reference for method chaining.
@@ -169,26 +169,26 @@ component
 	}
 
 
-	// I walk the given object, writing the serialized value to the output (which is expected to 
+	// I walk the given object, writing the serialized value to the output (which is expected to
 	// be a content buffer).
 	// ---
-	// NOTE: THIS METHOD IS HUGE - this is on purpose. Since serialization is a rather intense 
-	// process, I am trying to cut out as much overhead as possible. In this case, we're cutting 
-	// out extra stack space by inlining and duplicating a lot of functionality. This is being done 
+	// NOTE: THIS METHOD IS HUGE - this is on purpose. Since serialization is a rather intense
+	// process, I am trying to cut out as much overhead as possible. In this case, we're cutting
+	// out extra stack space by inlining and duplicating a lot of functionality. This is being done
 	// at the COST of clarity and non-repetative code.
 	private void function serializeInput(
 		required any input,
 		required string hint
 		) {
 
-		// Serialize the data base on the type of input. We are organizing this in terms of the 
-		// most commonly-used values first. The anticipation is that the vast majority of data 
-		// types will be simple values. 
+		// Serialize the data base on the type of input. We are organizing this in terms of the
+		// most commonly-used values first. The anticipation is that the vast majority of data
+		// types will be simple values.
 		if ( isSimpleValue( input ) ) {
 
 			if ( ( hint == "string" ) || ( hint == "any" ) ) {
 
-				// If the string appears to be numeric, then we have to prefix it to make sure 
+				// If the string appears to be numeric, then we have to prefix it to make sure
 				// ColdFusion doesn't accidentally convert it to a number.
 				if ( isNumeric( input ) ) {
 
@@ -221,8 +221,8 @@ component
 				if(hour(input) == 0  && minute(input) == 0 || hour(input)==23 && minute(input)==59){
 					writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & """" );
 				} else {
-					// Write the date in ISO 8601 time string format. We're going to assume that the 
-					// date is already in the dezired timezone. 
+					// Write the date in ISO 8601 time string format. We're going to assume that the
+					// date is already in the dezired timezone.
 					//input=DateConvert('local2utc',input);
 					var tzinfo=getTimeZoneInfo();
 					var tzmod=(tzinfo.utcTotalOffset < 0) ? '+' : '-';
@@ -241,7 +241,7 @@ component
 		} // END: isSimpleValue().
 
 
-		// I'm expecting the struct to be the next most common data type since it will likely be 
+		// I'm expecting the struct to be the next most common data type since it will likely be
 		// the container for the majority of data values.
 		if ( isStruct( input ) ) {
 
@@ -284,7 +284,7 @@ component
 
 					serializeInput( input[ key ], fullHintList[ key ] );
 
-				// If the given key is unknown, just pass through the most recent hint as 
+				// If the given key is unknown, just pass through the most recent hint as
 				// it may be defining the type for an entire sturcture.
 				} else {
 					if(isNull(input[ key ])){
@@ -394,7 +394,7 @@ component
 
 						serializeInput( input[ key ][ i ], fullHintList[ key ] );
 
-					// If the given key is unknown, just pass through the most recent hint as 
+					// If the given key is unknown, just pass through the most recent hint as
 					// it may be defining the type for an entire sturcture.
 					} else {
 
@@ -409,7 +409,7 @@ component
 			} // END: Row list.
 
 			writeOutput( "]" );
-			
+
 			return;
 
 		} // END: isQuery().

@@ -80,6 +80,10 @@
 			<cfparam name="arguments.rc.relatedContentSetData" default=""/>
 		</cfif>
 
+		<cfif len(arguments.rc.instanceid)>
+			<cfset session.mura.objectInstanceId=arguments.rc.instanceid>
+		</cfif>
+
 		<cfparam name="arguments.rc.responseChart" default="0"/>
 		<cfparam name="arguments.rc.parentid" default=""/>
 		<cfparam name="session.moduleid" default="00000000000000000000000000000000000">

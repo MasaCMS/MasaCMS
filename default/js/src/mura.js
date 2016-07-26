@@ -1405,9 +1405,9 @@
 								var self=el;
 								var checkForReCaptcha=function()
 									{
-									   if (typeof grecaptcha == 'object' && self)
+									   if (typeof grecaptcha == 'object' && !self.innerHTML)
 									   {
-									   	//console.log(self)
+
 									     self.setAttribute(
 											'data-widgetid',
 										 	grecaptcha.render(self.getAttribute('id'), {

@@ -538,7 +538,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler.getValue('_objectName')#.onApplicationLoad")>
-				<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
+				<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 			</cfif>
 		</cfif>
@@ -564,7 +564,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset variables.themeHandler.setValue("_objectName","#variables.siteBean.getThemeAssetMap()#.eventHandler")>
 				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler.getValue('_objectName')#.onApplicationLoad")>
-				<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
+				<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 			</cfif>
 			<cfset application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID)>

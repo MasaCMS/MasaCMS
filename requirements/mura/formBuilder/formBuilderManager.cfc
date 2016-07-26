@@ -284,10 +284,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn arguments.dataset />
 			</cfcase>
 			<cfcase value="dsp">
-				<cfif fileExists( expandPath( $.siteConfig().getIncludePath() ) & "/includes/display_objects/custom/#dataset.source#"  )>
-					<cfinclude template="#$.siteConfig().getIncludePath()#/includes/display_objects/custom/#dataset.source#">
-				<cfelse>
-					<cfinclude template="#$.siteConfig().getIncludePath()##dataset.source#">
+				<cfset var filepath=$.siteConfig().lookupDisplayObjectFilePath(filePath=dataset.source)>
+				<cfif len(filepath)>
+					<cfinclude template="#filepath#">
 				</cfif>
 				<cfreturn arguments.dataset />
 			</cfcase>

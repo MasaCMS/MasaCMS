@@ -84,7 +84,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						.findMany(
 							argumentCollection=objectParams
 						)>
-
+				<cfelseif objectParams.source eq 'reverse'>
+					<cfset iterator=$.content().getRelatedContentIterator(reverse=true)>
 				<cfelse>
 					<cfif objectParams.source eq '0'>
 						<cfset objectParams.source='00000000000000000000000000000000000'>
@@ -227,13 +228,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					objectParams=objectParams
 				)#
 		<cfelse>
-			<p class="mura-no-content-notice">#$.rbkey('collection.nomatchingcontent')#</p>
+			<cfoutput>#variables.dspObject_include(thefile='collection/includes/dsp_empty.cfm',objectid=objectParams.source,objectParams=objectParams)#</cfoutput>
 		</cfif>
 	</cfoutput>
 <cfelse>
 	<cfoutput>#variables.dspObject_include(thefile='feed/index.cfm',objectid=objectParams.source,objectParams=objectParams)#</cfoutput>
 </cfif>
-
 <cfsilent>
 <!-- delete params that we don't want to persist --->
 <cfset structDelete(objectParams,'categoryid')>

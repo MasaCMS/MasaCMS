@@ -538,7 +538,7 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 
-	<cfif structKeyExists(pluginXML.plugin.displayobjects,"displayobject")>
+	<cfif structKeyExists(pluginXML.plugin,"displayobjects") and structKeyExists(pluginXML.plugin.displayobjects,"displayobject")>
 	<cfset objectsLen=arraylen(pluginXML.plugin.displayobjects.displayobject)/>
 		<cfif objectsLen>
 			<cfloop from="1" to="#objectsLen#" index="i">

@@ -45,51 +45,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif isJSON( local.formBean.getBody())>
 		<cfset objectparams.objectid=local.formBean.getContentID()>
-			
-		<cfif not $.useLayoutManager() and this.asyncObjects>
-			<cfoutput>
-				<div class="mura-async-object"
-					data-object="form"
-					data-sam="spade"
-					data-objectname="Form"
-					data-objectid="#esapiEncode('html_attr',local.formBean.getContentID())#"
-					data-responsechart="#esapiEncode('html_attr',local.formBean.getResponseChart())#"
-					data-objectparams=#serializeJSON(objectParams)#>
-				  </div>
-		  	</cfoutput>
 
-		<cfelse>
-			<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
+		<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
 
-			<cftry>
-				<!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
-					<cfset objectParams.render = "client" />
-					<cfset objectParams.async = "true"/>
-					<cfparam name="objectParams.view" default="form"/>
+		<cftry>
+			<!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
+			<cfset objectParams.render = "client" />
+			<cfset objectParams.async = "true"/>
+			<cfparam name="objectParams.view" default="form"/>
 
-	                <cfif len($.event('saveform'))>
-						<cfset $.event('fields','')>
+            <cfif len($.event('saveform'))>
+				<cfset $.event('fields','')>
 
-						<cfset objectParams.errors=$.getBean('dataCollectionBean')
-		                      .set($.event().getAllValues())
-		                      .submit($).getErrors()>
+				<cfset objectParams.errors=$.getBean('dataCollectionBean')
+                      .set($.event().getAllValues())
+                      .submit($).getErrors()>
 
-						<cfif not structCount(objectParams.errors)>
-							  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
-						</cfif>
-					<cfelseif len($.event('validateform'))>
-						<cfparam name="objectparams.fields" default="">
-						<cfset objectParams.errors=$.getBean('dataCollectionBean')
-	                      .set($.event().getAllValues())
-	                      .validate($,$.event('fields')).getErrors()>
-	                 </cfif>
+				<cfif not structCount(objectParams.errors)>
+					  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
+				</cfif>
+			<cfelseif len($.event('validateform'))>
+				<cfparam name="objectparams.fields" default="">
+				<cfset objectParams.errors=$.getBean('dataCollectionBean')
+                  .set($.event().getAllValues())
+                  .validate($,$.event('fields')).getErrors()>
+			<cfelseif request.muraApiRequest>
+				<cfscript>
+   					 if(isdefined('local.formJSON.form.fields')){
+   						 for(b in local.formJSON.form.fields){
+							 field=local.formJSON.form.fields[b];
+							if(structKeyExists(field,'value')){
+   							 	local.formJSON.form.fields[b].value=$.setDynamicContent(field.value);
+						 	}
 
-			<cfcatch>
-				<cfdump var="#cfcatch#">
-				<cfabort>
-			</cfcatch>
-			</cftry>
-		</cfif>
+							if(isDefined('field.fieldtype.isdata') && field.fieldtype.isdata==1){
+								local.formJSON.datasets['#field.datasetid#']=$.getBean('formBuilderManager').processDataset( $, local.formJSON.datasets['#field.datasetid#'] );
+							}
+						 }
+
+   					 }
+					 
+   					 request.cffpJS=true;
+
+   					 objectParams.def=serializeJSON(local.formJSON);
+   					 objectParams.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
+   					 objectParams.title=local.formBean.get('title');
+   					 objectParams.filename=local.formBean.get('filename');
+   					 objectParams.responsemessage=local.formBean.get('repsonseMesage');
+   				 </cfscript>
+			 </cfif>
+		<cfcatch>
+			<cfdump var="#cfcatch#">
+			<cfabort>
+		</cfcatch>
+		</cftry>
 	<cfelse>
 		<cfset objectParams.render = "server" />
 		<cfoutput>#$.dspObject_include(thefile='datacollection/index.cfm',objectid=arguments.objectid,params=objectparams)#</cfoutput>
