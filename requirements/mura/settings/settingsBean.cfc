@@ -1270,14 +1270,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset thelist = listAppend(thelist,"https://#theurl#")>
 			</cfif>
 
-			<cfif appendCGIVal>
-				<cfset theurl = "#i#:#cgi.server_port#" />
-				<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-					<cfset thelist = listAppend(thelist,"http://#theurl#")>
-				</cfif>
-				<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-					<cfset thelist = listAppend(thelist,"https://#theurl#")>
-				</cfif>
+			<cfset theurl = "#i#:#cgi.server_port#" />
+			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+				<cfset thelist = listAppend(thelist,"http://#theurl#")>
+			</cfif>
+			<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+				<cfset thelist = listAppend(thelist,"https://#theurl#")>
 			</cfif>
 		</cfloop>
 	</cfif>
