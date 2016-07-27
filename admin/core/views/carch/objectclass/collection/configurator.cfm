@@ -117,30 +117,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input type="hidden" name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">
 				<button class="btn" id="editBtnRelatedContent"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 			</div>
-			<div class="mura-control-group sort-container" style="display:none">
-				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
-				<select name="sortby" class="sort-param">
-				<option value="orderno" <cfif objectparams.sortby eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
-				<option value="releaseDate" <cfif objectparams.sortby eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
-				<option value="lastUpdate" <cfif objectparams.sortby eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
-				<option value="created" <cfif objectparams.sortby eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
-				<option value="menuTitle" <cfif objectparams.sortby eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
-				<option value="title" <cfif objectparams.sortby eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
-				<option value="rating" <cfif objectparams.sortby eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
-				<option value="comments" <cfif objectparams.sortby eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
-				 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
-				<cfloop query="rsExtend">
-				  <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif objectparams.sortby eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
-				</cfloop>
-				</select>
-			</div>
-			<div class="mura-control-group sort-container" style="display:none">
-				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</label>
-				<select name="sortdirection" class="sort-param">
-					<option value="asc" <cfif objectparams.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
-					<option value="desc" <cfif objectparams.sortDirection  eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
-				</select>
-			</div>>
 		</div>
 		<div class="mura-layout-row" id="layoutcontainer">
 		</div>
@@ -223,7 +199,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				$('select[name="source"], ##items').removeClass('objectParam');
 				$('.source-container').hide();
 				$('.sort-container').hide();
-				$('.sort-param').removeClass('objectParam');
 
 				var val=$('select[name="sourcetype"]').val();
 
@@ -239,11 +214,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##selectedRelatedContent').html('');
 					$('##relatedcontentcontainer').show();
 					$('##relatedcontent').addClass('objectParam');
-
-					if($('##relatedcontent').val()=='reverse'){
-						$('.sort-container').show();
-						$('.sort-param').addClass('objectParam');
-					}
 				}
 			}
 
