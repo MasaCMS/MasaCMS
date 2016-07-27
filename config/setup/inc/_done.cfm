@@ -41,7 +41,7 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div id="installationComplete" class="alert">
+<div id="installationComplete" class="alert alert-warning">
 	<p>Installation complete!<br>Log in to start using Mura.</p>
 </div>
 
