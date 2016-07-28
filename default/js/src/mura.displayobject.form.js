@@ -412,7 +412,7 @@
 				self.setDataValues();
 
 				var keepGoing=self.onPageSubmit.call(self.context.targetEl);
-				if(typeof keepGoing != 'null' && !keepGoing){
+				if(typeof keepGoing != 'undefined' && !keepGoing){
 					return;
 				}
 
@@ -715,7 +715,7 @@
 			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
 
 			var keepGoing=this.onSubmit.call(this.context.targetEl);
-			if(typeof keepGoing != 'null' && !keepGoing){
+			if(typeof keepGoing != 'undefined' && !keepGoing){
 				return;
 			}
 
