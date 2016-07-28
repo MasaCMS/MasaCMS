@@ -59,6 +59,7 @@
 		datasets: [],
 		sortfield: '',
 		sortdir: '',
+		inlineerrors: false,
 		properties: {},
 		rendered: {},
 		renderqueue: 0,
@@ -410,6 +411,11 @@
 			var formNavHandler=function() {
 				self.setDataValues();
 
+				var keepGoing=self.onPageSubmit.call(self.context.targetEl);
+				if(typeof keepGoing != 'undefined' && !keepGoing){
+					return;
+				}
+
 				var button = this;
 
 				if(self.ormform) {
@@ -440,7 +446,7 @@
                         data)
                         .then(function(resp){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
-                                self.showErrors( resp.data.errors );
+								self.showErrors( resp.data.errors );
                             } else if(typeof resp.data.redirect != 'undefined') {
 								if(resp.data.redirect && resp.data.redirect != location.href){
 									location.href=resp.data.redirect;
@@ -694,11 +700,24 @@
 			self.formInit=true;
 		},
 
+		onSubmit: function(){
+			return true;
+		},
+
+		onPageSubmit: function(){
+			return true;
+		},
+
 		submitForm: function() {
 
 			var self = this;
 			var valid = self.setDataValues();
 			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
+
+			var keepGoing=this.onSubmit.call(this.context.targetEl);
+			if(typeof keepGoing != 'undefined' && !keepGoing){
+				return;
+			}
 
 			delete self.data.isNew;
 
@@ -765,10 +784,14 @@
 
 		showErrors: function( errors ) {
 			var self = this;
+			var frm=root.mura(this.context.formEl);
+			var frmErrors=frm.find(".error-container-" + self.context.objectid);
+
+			frm.find('.mura-response-error').remove();
 
 			console.log(errors);
 
-			var errorData = {};
+			//var errorData = {};
 
 			/*
 			for(var i in self.fields) {
@@ -792,24 +815,36 @@
 					error.message = field.validatemessage && field.validatemessage.length ? field.validatemessage : errors[field.name];
 					error.field = field.name;
 					error.label = field.label;
-					errorData[e] = error;
+					//errorData[e] = error;
 				} else {
 					var error = {};
 					error.message = errors[e];
 					error.field = '';
 					error.label = '';
-					errorData[e] = error;
+					//errorData[e] = error;
+				}
+
+				if(this.inlineerrors){
+					var label=root.mura(this.context.formEl).find('label[for="' + e + '"]');
+
+					if(label.length){
+						label.node.insertAdjacentHTML('afterend',root.mura.templates['error'](error));
+					} else {
+						frmErrors.append(root.mura.templates['error'](error));
+					}
+				} else {
+					frmErrors.append(root.mura.templates['error'](error));
 				}
 			}
 
-			var html = root.mura.templates['error'](errorData);
-			console.log(errorData);
+			//var html = root.mura.templates['error'](errorData);
+			//console.log(errorData);
 
 			mura(self.context.formEl).find('.g-recaptcha-container').each(function(el){
 				grecaptcha.reset(el.getAttribute('data-widgetid'));
 			});
 
-			mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
+			//mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
 		},
 
 

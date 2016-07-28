@@ -62,7 +62,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                       .submit($).getErrors()>
 
 				<cfif not structCount(objectParams.errors)>
-					  <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
+					<cfset objectParams.responsemessage=$.renderEvent("onFormSubmitResponseRender")>
+
+					<cfif len($.event('redirect_url'))>
+						<cfset $.event('redirect_url',variables.$.getBean('utility').sanitizeHref($.event('redirect_url')))>
+						<cfif request.muraFrontEndRequest>
+							<cflocation addtoken="false" url="#$.event('redirect_url')#">
+						<cfelse>
+							<cfset request.muraJSONRedirectURL=$.event('redirect_url')>
+						</cfif>
+					</cfif>
+
+					<cfif not len(objectParams.responsemessage)>
+						<cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
+					</cfif>
 				</cfif>
 			<cfelseif len($.event('validateform'))>
 				<cfparam name="objectparams.fields" default="">
@@ -84,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 }
 
    					 }
-					 
+
    					 request.cffpJS=true;
 
    					 objectParams.def=serializeJSON(local.formJSON);

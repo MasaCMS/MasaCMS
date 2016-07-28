@@ -52,21 +52,24 @@
 		onAfterRender:function(){},
 		onBeforeRender:function(){},
 		trigger:function(eventName){
-			eventName=eventName.toLowerCase();
+			$eventName=eventName.toLowerCase();
 			if(typeof this.context.targetEl != 'undefined'){
 				var obj=mura(this.context.targetEl).closest('.mura-object');
 				if(obj.length && typeof obj.node != 'undefined'){
-					if(typeof this.handlers[eventName] != 'undefined'){
-						var $handlers=this.handlers[eventName];
+					if(typeof this.handlers[$eventName] != 'undefined'){
+						var $handlers=this.handlers[$eventName];
 						for(var i=0;i < $handlers.length;i++){
 							$handlers[i].call(obj.node);
 						}
 					}
 
-					if(eventName=='beforerender'){
-						this.onBeforeRender.call(obj.node);
-					} else if(eventName=='afterrender'){
-						this.onAfterRender.call(obj.node);
+					if(typeof this[eventName] == 'function'){
+						this[eventName].call(obj.node);
+					}
+					var fnName='on' + eventName.substring(0,1).toUpperCase() + eventName.substring(1,eventName.length);
+
+					if(typeof this[fnName] == 'function'){
+						this[fnName].call(obj.node);
 					}
 				}
 			}
@@ -83,7 +86,7 @@
 		init:function(args){
 			this.context=args;
 			this.registerHelpers();
-			this.trigger('beforerender');
+			this.trigger('beforeRender');
 			this.render();
 			return this;
 		},

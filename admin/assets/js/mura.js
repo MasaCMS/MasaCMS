@@ -7324,21 +7324,24 @@ root.mura.templates['embed']=function(context){
 		onAfterRender:function(){},
 		onBeforeRender:function(){},
 		trigger:function(eventName){
-			eventName=eventName.toLowerCase();
+			$eventName=eventName.toLowerCase();
 			if(typeof this.context.targetEl != 'undefined'){
 				var obj=mura(this.context.targetEl).closest('.mura-object');
 				if(obj.length && typeof obj.node != 'undefined'){
-					if(typeof this.handlers[eventName] != 'undefined'){
-						var $handlers=this.handlers[eventName];
+					if(typeof this.handlers[$eventName] != 'undefined'){
+						var $handlers=this.handlers[$eventName];
 						for(var i=0;i < $handlers.length;i++){
 							$handlers[i].call(obj.node);
 						}
 					}
 
-					if(eventName=='beforerender'){
-						this.onBeforeRender.call(obj.node);
-					} else if(eventName=='afterrender'){
-						this.onAfterRender.call(obj.node);
+					if(typeof this[eventName] == 'function'){
+						this[eventName].call(obj.node);
+					}
+					var fnName='on' + eventName.substring(0,1).toUpperCase() + eventName.substring(1,eventName.length);
+
+					if(typeof this[fnName] == 'function'){
+						this[fnName].call(obj.node);
 					}
 				}
 			}
@@ -7355,7 +7358,7 @@ root.mura.templates['embed']=function(context){
 		init:function(args){
 			this.context=args;
 			this.registerHelpers();
-			this.trigger('beforerender');
+			this.trigger('beforeRender');
 			this.render();
 			return this;
 		},
@@ -7427,6 +7430,7 @@ root.mura.templates['embed']=function(context){
 		datasets: [],
 		sortfield: '',
 		sortdir: '',
+		inlineerrors: false,
 		properties: {},
 		rendered: {},
 		renderqueue: 0,
@@ -7778,6 +7782,11 @@ root.mura.templates['embed']=function(context){
 			var formNavHandler=function() {
 				self.setDataValues();
 
+				var keepGoing=self.onPageSubmit.call(self.context.targetEl);
+				if(typeof keepGoing != 'undefined' && !keepGoing){
+					return;
+				}
+
 				var button = this;
 
 				if(self.ormform) {
@@ -7808,7 +7817,7 @@ root.mura.templates['embed']=function(context){
                         data)
                         .then(function(resp){
                             if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
-                                self.showErrors( resp.data.errors );
+								self.showErrors( resp.data.errors );
                             } else if(typeof resp.data.redirect != 'undefined') {
 								if(resp.data.redirect && resp.data.redirect != location.href){
 									location.href=resp.data.redirect;
@@ -8062,11 +8071,24 @@ root.mura.templates['embed']=function(context){
 			self.formInit=true;
 		},
 
+		onSubmit: function(){
+			return true;
+		},
+
+		onPageSubmit: function(){
+			return true;
+		},
+
 		submitForm: function() {
 
 			var self = this;
 			var valid = self.setDataValues();
 			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
+
+			var keepGoing=this.onSubmit.call(this.context.targetEl);
+			if(typeof keepGoing != 'undefined' && !keepGoing){
+				return;
+			}
 
 			delete self.data.isNew;
 
@@ -8133,10 +8155,14 @@ root.mura.templates['embed']=function(context){
 
 		showErrors: function( errors ) {
 			var self = this;
+			var frm=root.mura(this.context.formEl);
+			var frmErrors=frm.find(".error-container-" + self.context.objectid);
+
+			frm.find('.mura-response-error').remove();
 
 			console.log(errors);
 
-			var errorData = {};
+			//var errorData = {};
 
 			/*
 			for(var i in self.fields) {
@@ -8160,24 +8186,36 @@ root.mura.templates['embed']=function(context){
 					error.message = field.validatemessage && field.validatemessage.length ? field.validatemessage : errors[field.name];
 					error.field = field.name;
 					error.label = field.label;
-					errorData[e] = error;
+					//errorData[e] = error;
 				} else {
 					var error = {};
 					error.message = errors[e];
 					error.field = '';
 					error.label = '';
-					errorData[e] = error;
+					//errorData[e] = error;
+				}
+
+				if(this.inlineerrors){
+					var label=root.mura(this.context.formEl).find('label[for="' + e + '"]');
+
+					if(label.length){
+						label.node.insertAdjacentHTML('afterend',root.mura.templates['error'](error));
+					} else {
+						frmErrors.append(root.mura.templates['error'](error));
+					}
+				} else {
+					frmErrors.append(root.mura.templates['error'](error));
 				}
 			}
 
-			var html = root.mura.templates['error'](errorData);
-			console.log(errorData);
+			//var html = root.mura.templates['error'](errorData);
+			//console.log(errorData);
 
 			mura(self.context.formEl).find('.g-recaptcha-container').each(function(el){
 				grecaptcha.reset(el.getAttribute('data-widgetid'));
 			});
 
-			mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
+			//mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
 		},
 
 
@@ -8836,23 +8874,19 @@ this["mura"]["templates"]["dropdown_static"] = this.mura.Handlebars.template({"1
 },"useData":true});
 
 this["mura"]["templates"]["error"] = this.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "	<div class=\"mura-response-error\" data-field=\""
-    + alias4(((helper = (helper = helpers.field || (depth0 != null ? depth0.field : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"field","hash":{},"data":data}) : helper)))
-    + "\">"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.label : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + alias4(((helper = (helper = helpers.message || (depth0 != null ? depth0.message : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"message","hash":{},"data":data}) : helper)))
-    + "</div>\r\n";
-},"2":function(container,depth0,helpers,partials,data) {
     var helper;
 
   return container.escapeExpression(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"label","hash":{},"data":data}) : helper)))
     + ": ";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},depth0,{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+  return "<div class=\"mura-response-error\" data-field=\""
+    + alias4(((helper = (helper = helpers.field || (depth0 != null ? depth0.field : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"field","hash":{},"data":data}) : helper)))
+    + "\">"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.label : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + alias4(((helper = (helper = helpers.message || (depth0 != null ? depth0.message : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"message","hash":{},"data":data}) : helper)))
+    + "</div>\r\n";
 },"useData":true});
 
 this["mura"]["templates"]["file"] = this.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
