@@ -261,27 +261,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	function getQueryAttrs(readOnly=false){
+		var configBean=getBean('configBean');
+
+		structAppend(arguments,{
+			datasource=configBean.getDatasource(),
+			username=configBean.getDbUsername(),
+			password=configBean.getDbPassword()
+		});
+
+		if(!configBean.getValue(property='allowQueryCaching',defaultValue=true)){
+			structDelete(arguments,'cachedWithin');
+		}
+
 		if( hasCustomDatasource() ){
 			arguments.datasource=getValue('customDatasource');
 			structDelete(arguments,'username');
 			structDelete(arguments,'password');
-
-			if(!getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)){
-				structDelete(arguments,'cachedWithin');
-			}
-
 			structDelete(arguments,'readOnly');
 
 			return arguments;
 		} else if (isDefined('arguments.readOnly')) {
 			if(arguments.readOnly){
-				return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
+				return configBean.getReadOnlyQRYAttrs(argumentCollection=arguments);
 			} else {
 				structDelete(arguments,'readOnly');
 				return arguments;
 			}
 		} else {
-			return structNew();
+			return arguments;
 		}
 	}
 
