@@ -1,3 +1,1 @@
-{{#each this}}
-	<div class="mura-response-error" data-field="{{field}}">{{#if label}}{{label}}: {{/if}}{{message}}</div>
-{{/each}}
+<div class="mura-response-error" data-field="{{field}}">{{#if label}}{{label}}: {{/if}}{{message}}</div>
