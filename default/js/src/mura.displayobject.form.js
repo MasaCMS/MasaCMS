@@ -59,7 +59,7 @@
 		datasets: [],
 		sortfield: '',
 		sortdir: '',
-		inlineerrors: false,
+		inlineerrors: true,
 		properties: {},
 		rendered: {},
 		renderqueue: 0,
