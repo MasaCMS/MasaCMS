@@ -2714,7 +2714,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(root){
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        root.mura=factory(root);
+    } else {
+        // Browser globals (root is window)
+        root.mura=factory(root);
+    }
+}(this, function (root) {
 
 	function login(username,password,siteid){
 		siteid=siteid || root.mura.siteid;
@@ -5101,8 +5114,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	//for some reason this can't be added via extend
 	root.validateForm=validateForm;
 
-
-})(this);
+	return mura;
+}));
 ;//https://github.com/malko/l.js
 ;(function(root){
 /*
@@ -5377,7 +5390,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-;(function(root){
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.mura);
+    }
+}(this, function (mura) {
 	function core(){
 		this.init.apply(this,arguments);
 		return this;
@@ -5402,12 +5428,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	core.extend=function(properties){
 		var self=this;
-		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend,handlers:[]});
+		return mura.extend(mura.extendClass(self,properties),{extend:self.extend,handlers:[]});
 	};
 
-	root.mura.core=core;
+	mura.core=core;
 
-})(this);
+}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -5454,13 +5480,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(root){
-	root.mura.cache=root.mura.core.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.mura);
+    }
+}(this, function (mura) {
+	mura.cache=mura.core.extend({
 		init:function(){
 			this.cache={};
 		},
         getKey:function(keyName){
-            return root.mura.hashCode(keyName);
+            return mura.hashCode(keyName);
         },
 
         get:function(keyName,keyValue){
@@ -5504,7 +5543,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	});
 
-})(this);
+}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -5550,9 +5589,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(root){
-	root.mura.domSelection=root.mura.core.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.mura);
+    }
+}(this, function (mura) {
+	mura.domSelection=mura.core.extend({
 		init:function(selection,origSelector){
 			this.selection=selection;
 			this.origSelector=origSelector;
@@ -5575,11 +5626,11 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		ajax:function(data){
-			return root.mura.ajax(data);
+			return mura.ajax(data);
 		},
 
 		select:function(selector){
-			return root.mura(selector);
+			return mura(selector);
 		},
 
 		each:function(fn){
@@ -5590,13 +5641,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		filter:function(fn){
-			return root.mura(this.selection.filter( function(el,idx,array){
+			return mura(this.selection.filter( function(el,idx,array){
 				return fn.call(el,el,idx,array);
 			}));
 		},
 
 		map:function(fn){
-			return root.mura(this.selection.map( function(el,idx,array){
+			return mura(this.selection.map( function(el,idx,array){
 				return fn.call(el,el,idx,array);
 			}));
 		},
@@ -5607,7 +5658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		processMarkup:function(){
 			this.each(function(el){
-				root.mura.processMarkup(el);
+				mura.processMarkup(el);
 			});
 			return this;
 		},
@@ -5688,7 +5739,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else {
 				this.each(function(el){
 					if(typeof el.submit == 'function'){
-						root.mura.submitForm(el);
+						mura.submitForm(el);
 					}
 				});
 			}
@@ -5737,7 +5788,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			eventDetails=eventDetail || {};
 
 			this.each(function(el){
-				root.mura.trigger(el,eventName,eventDetail);
+				mura.trigger(el,eventName,eventDetail);
 			});
 			return this;
 		},
@@ -5746,7 +5797,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if(!this.selection.length){
 				return this;
 			}
-			return root.mura(this.selection[0].parentNode);
+			return mura(this.selection[0].parentNode);
 		},
 
 		children:function(selector){
@@ -5755,7 +5806,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			if(this.selection[0].hasChildNodes()){
-				var children=root.mura(this.selection[0].childNodes);
+				var children=mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
 					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
@@ -5765,7 +5816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				return children.filter(filterFn);
 			} else {
-				return root.mura([]);
+				return mura([]);
 			}
 
 		},
@@ -5777,19 +5828,19 @@ return /******/ (function(modules) { // webpackBootstrap
 				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
 					var result=this.selection[0].querySelectorAll(selector);
 				} else if(this.selection[0].nodeType=='9'){
-					var result=root.document.querySelectorAll(selector);
+					var result=document.querySelectorAll(selector);
 				} else {
 					var result=[];
 				}
-				return root.mura(result);
+				return mura(result);
 			} else {
-				return root.mura([]);
+				return mura([]);
 			}
 		},
 
 		selector:function() {
 			var pathes = [];
-			var path, node = root.mura(this.selection[0]);
+			var path, node = mura(this.selection[0]);
 
 			while (node.length) {
 				var realNode = node.get(0), name = realNode.localName;
@@ -5833,7 +5884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var el=this.selection[0];
 
 			if(el.hasChildNodes()){
-				var silbings=root.mura(this.selection[0].childNodes);
+				var silbings=mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
 					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
@@ -5843,7 +5894,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				return silbings.filter(filterFn);
 			} else {
-				return root.mura([]);
+				return mura([]);
 			}
 		},
 
@@ -5865,9 +5916,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		    for( var parent = el ; parent !== null  && parent.matchesSelector && !parent.matchesSelector(selector) ; parent = el.parentElement ){ el = parent; };
 
 		    if(parent){
-		    	 return root.mura(parent)
+		    	 return mura(parent)
 		    } else {
-		    	 return root.mura([]);
+		    	 return mura([]);
 		    }
 
 		},
@@ -5903,11 +5954,11 @@ return /******/ (function(modules) { // webpackBootstrap
 						el.setAttribute('data-render','server');
 					}
 
-					el.setAttribute('data-instanceid',root.mura.createUUID());
+					el.setAttribute('data-instanceid',mura.createUUID());
 
-					root.mura(this).append(el);
+					mura(this).append(el);
 
-					root.mura.processDisplayObject(el).then(resolve,reject);
+					mura.processDisplayObject(el).then(resolve,reject);
 
 				});
 			});
@@ -5933,11 +5984,11 @@ return /******/ (function(modules) { // webpackBootstrap
 						el.setAttribute('data-render','server');
 					}
 
-					el.setAttribute('data-instanceid',root.mura.createUUID());
+					el.setAttribute('data-instanceid',mura.createUUID());
 
-					root.mura(this).prepend(el);
+					mura(this).prepend(el);
 
-					root.mura.processDisplayObject(el).then(resolve,reject);
+					mura.processDisplayObject(el).then(resolve,reject);
 
 				});
 			});
@@ -5947,7 +5998,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var self=this;
 			return new Promise(function(resolve,reject){
 				self.each(function(){
-					root.mura.processDisplayObject(this).then(resolve,reject);
+					mura.processDisplayObject(this).then(resolve,reject);
 				});
 			});
 		},
@@ -5995,7 +6046,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			this.prepend(el);
 
-			root.mura.processAsyncObject(el);
+			mura.processAsyncObject(el);
 
 			return el;
 		},
@@ -6094,7 +6145,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			this.each(function(el){
-				root.mura.evalScripts(el);
+				mura.evalScripts(el);
 			});
 
 			return this;
@@ -6105,7 +6156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
 					el.innerHTML=htmlString;
-					root.mura.evalScripts(el);
+					mura.evalScripts(el);
 				});
 				return this;
 			} else {
@@ -6123,7 +6174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			if(typeof ruleName == 'undefined' && typeof value == 'undefined'){
 				try{
-					return root.getComputedStyle(this.selection[0]);
+					return getComputedStyle(this.selection[0]);
 				} catch(e){
 					return {};
 				}
@@ -6144,7 +6195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				return this;
 			} else{
 				try{
-					return root.getComputedStyle(this.selection[0])[ruleName];
+					return getComputedStyle(this.selection[0])[ruleName];
 				} catch(e){}
 			}
 		},
@@ -6199,7 +6250,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if(typeof withMargin == 'undefined'){
 				function outerHeight(el) {
 				  var height = el.offsetHeight;
-				  var style = root.getComputedStyle(el);
+				  var style = getComputedStyle(el);
 
 				  height += parseInt(style.marginTop) + parseInt(style.marginBottom);
 				  return height;
@@ -6228,7 +6279,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			//var type=el.constructor.name.toLowerCase();
 
 			if(el === root){
-				return root.innerHeight
+				return innerHeight
 			} else if(el === document){
 				var body = document.body;
 		    	var html = document.documentElement;
@@ -6236,7 +6287,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		                       html.clientHeight, html.scrollHeight, html.offsetHeight )
 			}
 
-			var styles = root.getComputedStyle(el);
+			var styles = getComputedStyle(el);
 			var margin = parseFloat(styles['marginTop']) + parseFloat(styles['marginBottom']);
 
 			return Math.ceil(el.offsetHeight + margin);
@@ -6259,7 +6310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			//var type=el.constructor.name.toLowerCase();
 
 			if(el === root){
-				return root.innerWidth
+				return innerWidth
 			} else if(el === document){
 				var body = document.body;
 		    	var html = document.documentElement;
@@ -6267,7 +6318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		                       html.clientWidth, html.scrolWidth, html.offsetWidth )
 			}
 
-		  	return root.getComputedStyle(el).width;
+		  	return getComputedStyle(el).width;
 		},
 
 		offset:function(){
@@ -6293,8 +6344,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 			var box = this.selection[0].getBoundingClientRect();
 			return {
-			  top: box.top  + ( root.pageYOffset || document.scrollTop )  - ( document.clientTop  || 0 ),
-			  left: box.left + ( root.pageXOffset || document.scrollLeft ) - ( document.clientLeft || 0 )
+			  top: box.top  + ( pageYOffset || document.scrollTop )  - ( document.clientTop  || 0 ),
+			  left: box.left + ( pageXOffset || document.scrollLeft ) - ( document.clientLeft || 0 )
 			};
 		},
 
@@ -6319,7 +6370,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			this.each(function(el){
-				root.mura.changeElementType(el,type)
+				mura.changeElementType(el,type)
 
 			});
 			return this;
@@ -6361,7 +6412,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return root.mura.getAttributes(this.selection[0]);
+				return mura.getAttributes(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					if(el.setAttribute){
@@ -6394,7 +6445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return root.mura.getData(this.selection[0]);
+				return mura.getData(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){
@@ -6409,7 +6460,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				});
 				return this;
 			} else if (this.selection[0] && this.selection[0].getAttribute) {
-				return root.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
+				return mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
 			} else {
 				return undefined;
 			}
@@ -6420,7 +6471,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return root.mura.getProps(this.selection[0]);
+				return mura.getProps(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){
@@ -6435,7 +6486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				});
 				return this;
 			} else {
-				return root.mura.parseString(this.selection[0].getAttribute(attributeName));
+				return mura.parseString(this.selection[0].getAttribute(attributeName));
 			}
 		},
 
@@ -6484,7 +6535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	});
 
-})(this);
+}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -6530,13 +6581,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(root){
-	root.mura.entity=root.mura.core.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.mura);
+    }
+}(this, function (mura) {
+	mura.entity=mura.core.extend({
 		init:function(properties){
 			properties=properties || {};
 			properties.entityname = properties.entityname || 'content';
-			properties.siteid = properties.siteid || root.mura.siteid;
+			properties.siteid = properties.siteid || mura.siteid;
 			this.set(properties);
 
 			if(typeof this.properties.isnew == 'undefined'){
@@ -6565,12 +6628,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					return new Promise(function(resolve,reject) {
 						if('items' in self.properties[propertyName]){
-							var returnObj = new root.mura.entityCollection(self.properties[propertyName]);
+							var returnObj = new mura.entityCollection(self.properties[propertyName]);
 						} else {
-							if(root.mura.entities[self.properties[propertyName].entityname]){
-								var returnObj = new root.mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
+							if(mura.entities[self.properties[propertyName].entityname]){
+								var returnObj = new mura.entities[self.properties[propertyName].entityname](obj.properties[propertyName]);
 							} else {
-								var returnObj = new root.mura.entity(self.properties[propertyName]);
+								var returnObj = new mura.entity(self.properties[propertyName]);
 							}
 						}
 
@@ -6587,19 +6650,19 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 					return new Promise(function(resolve,reject) {
 
-						root.mura.ajax({
+						mura.ajax({
 							type:'get',
 							url:self.properties.links[propertyName],
 							params:params,
 							success:function(resp){
 
 								if('items' in resp.data){
-									var returnObj = new root.mura.entityCollection(resp.data);
+									var returnObj = new mura.entityCollection(resp.data);
 								} else {
-									if(root.mura.entities[obj.entityname]){
-										var returnObj = new root.mura.entities[obj.entityname](obj);
+									if(mura.entities[obj.entityname]){
+										var returnObj = new mura.entities[obj.entityname](obj);
 									} else {
-										var returnObj = new root.mura.entity(resp.data);
+										var returnObj = new mura.entity(resp.data);
 									}
 								}
 
@@ -6631,7 +6694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		set:function(propertyName,propertyValue){
 
 			if(typeof propertyName == 'object'){
-				this.properties=root.mura.deepExtend(this.properties,propertyName);
+				this.properties=mura.deepExtend(this.properties,propertyName);
 				this.set('isdirty',true);
 			} else if(typeof this.properties[propertyName] == 'undefined' || this.properties[propertyName] != propertyValue){
 				this.properties[propertyName]=propertyValue;
@@ -6657,7 +6720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		'new':function(params){
 
 			return new Promise(function(resolve,reject){
-				params=root.mura.extend(
+				params=mura.extend(
 					{
 						entityname:self.get('entityname'),
 						method:'findQuery',
@@ -6666,7 +6729,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					params
 				);
 
-				root.mura.findNew(params).then(function(collection){
+				mura.findNew(params).then(function(collection){
 
 					if(collection.get('items').length){
 						self.set(collection.get('items')[0].getAll());
@@ -6686,7 +6749,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var self=this;
 
 			if(propertyName =='id'){
-				var cachedValue = root.mura.datacache.get(propertyValue);
+				var cachedValue = mura.datacache.get(propertyValue);
 
 				if(cachedValue){
 					this.set(cachedValue);
@@ -6697,7 +6760,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			return new Promise(function(resolve,reject){
-				params=root.mura.extend(
+				params=mura.extend(
 					{
 						entityname:self.get('entityname'),
 						method:'findQuery',
@@ -6708,7 +6771,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				params[propertyName]=propertyValue;
 
-				root.mura.findQuery(params).then(function(collection){
+				mura.findQuery(params).then(function(collection){
 
 					if(collection.get('items').length){
 						self.set(collection.get('items')[0].getAll());
@@ -6730,11 +6793,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return new Promise(function(resolve,reject) {
 
-				root.mura.ajax({
+				mura.ajax({
 					type: 'post',
-					url: root.mura.apiEndpoint + '?method=validate',
+					url: mura.apiEndpoint + '?method=validate',
 					data: {
-							data: root.mura.escape(data),
+							data: mura.escape(data),
 							validations: '{}',
 							version: 4
 						},
@@ -6755,7 +6818,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 		hasErrors:function(){
 			var errors=this.get('errors',{});
-			return (typeof errors=='string' && errors !='') || (typeof errors=='object' && !root.mura.isEmptyObject(errors));
+			return (typeof errors=='string' && errors !='') || (typeof errors=='object' && !mura.isEmptyObject(errors));
 		},
 		getErrors:function(){
 			return this.get('errors',{});
@@ -6773,11 +6836,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			if(!this.get('id')){
 				return new Promise(function(resolve,reject) {
-					var temp=root.mura.deepExtend({},self.getAll());
+					var temp=mura.deepExtend({},self.getAll());
 
-					root.mura.ajax({
+					mura.ajax({
 						type:'get',
-						url:root.mura.apiEndpoint + self.get('entityname') + '/new' ,
+						url:mura.apiEndpoint + self.get('entityname') + '/new' ,
 						success:function(resp){
 							self.set(resp.data);
 							self.set(temp);
@@ -6794,23 +6857,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					var context=self.get('id');
 
-					root.mura.ajax({
+					mura.ajax({
 						type:'post',
-						url:root.mura.apiEndpoint + '?method=generateCSRFTokens',
+						url:mura.apiEndpoint + '?method=generateCSRFTokens',
 						data:{
 							siteid:self.get('siteid'),
 							context:context
 						},
 						success:function(resp){
-							root.mura.ajax({
+							mura.ajax({
 									type:'post',
-									url:root.mura.apiEndpoint + '?method=save',
-									data:root.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
+									url:mura.apiEndpoint + '?method=save',
+									data:mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
 									success:function(resp){
 										if(resp.data != 'undefined'){
 											self.set(resp.data)
 											self.set('isdirty',false);
-											if(self.get('saveErrors') || root.mura.isEmptyObject(self.getErrors())){
+											if(self.get('saveErrors') || mura.isEmptyObject(self.getErrors())){
 												if(typeof resolve == 'function'){
 													resolve(self);
 												}
@@ -6842,17 +6905,17 @@ return /******/ (function(modules) { // webpackBootstrap
 			var self=this;
 
 			return new Promise(function(resolve,reject) {
-				root.mura.ajax({
+				mura.ajax({
 					type:'get',
-					url:root.mura.apiEndpoint + '?method=generateCSRFTokens',
+					url:mura.apiEndpoint + '?method=generateCSRFTokens',
 					data:{
 						siteid:self.get('siteid'),
 						context:self.get('id')
 					},
 					success:function(resp){
-						root.mura.ajax({
+						mura.ajax({
 							type:'post',
-							url:root.mura.apiEndpoint + '?method=delete',
+							url:mura.apiEndpoint + '?method=delete',
 							data:{
 								siteid:self.get('siteid'),
 								id:self.get('id'),
@@ -6876,24 +6939,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		getFeed:function(){
 			var siteid=get('siteid') || mura.siteid;
-			return new root.mura.feed(this.get('entityName'));
+			return new mura.feed(this.get('entityName'));
 		},
 
 		cachePurge:function(){
-			root.mura.datacache.purge(this.get('id'));
+			mura.datacache.purge(this.get('id'));
 			return this;
 		},
 
 		cachePut:function(){
 			if(!this.get('isnew')){
-				root.mura.datacache.set(this.get('id'),this);
+				mura.datacache.set(this.get('id'),this);
 			}
 			return this;
 		}
 
 	});
-
-})(this);
+}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -6939,9 +7001,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(root){
-	root.mura.entityCollection=root.mura.entity.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.mura);
+    }
+}(this, function (mura) {
+	mura.entityCollection=mura.entity.extend({
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -6950,10 +7024,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			if(Array.isArray(self.get('items'))){
 				self.set('items',self.get('items').map(function(obj){
-					if(root.mura.entities[obj.entityname]){
-						return new root.mura.entities[obj.entityname](obj);
+					if(mura.entities[obj.entityname]){
+						return new mura.entities[obj.entityname](obj);
 					} else {
-						return new root.mura.entity(obj);
+						return new mura.entity(obj);
 					}
 				}));
 			}
@@ -6996,20 +7070,20 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		filter:function(fn){
-			var collection=new root.mura.entityCollection(this.properties);
+			var collection=new mura.entityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			var collection=new root.mura.entityCollection(this.properties);
+			var collection=new mura.entityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		}
 	});
-})(this);
+}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -7055,150 +7129,162 @@ return /******/ (function(modules) { // webpackBootstrap
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+	;(function (root, factory) {
+	    if (typeof define === 'function' && define.amd) {
+	        // AMD. Register as an anonymous module.
+	        define(['mura'], factory);
+	    } else if (typeof module === 'object' && module.exports) {
+	        // Node. Does not work with strict CommonJS, but
+	        // only CommonJS-like environments that support module.exports,
+	        // like Node.
+	        factory(require('mura'));
+	    } else {
+	        // Browser globals (root is window)
+	        factory(root.mura);
+	    }
+	}(this, function (mura) {
+		mura.feed=mura.core.extend({
+			init:function(siteid,entityname){
+	            this.queryString= entityname + '/?';
+				this.propIndex=0;
+				this.entityname=entityname;
+	            return this;
+			},
+			fields:function(fields){
+	            this.queryString+='&fields=' + encodeURIComponent(fields);
+	            return this;
+	        },
+	        where:function(property){
+	            if(property){
+	                return this.andProp(property);
+	            }
+	            return this;
+	        },
+	        prop:function(property){
+	            return this.andProp(property);
+	        },
+	        andProp:function(property){
+	            this.queryString+='&' + encodeURIComponent(property) + '[' + this.propIndex + ']=';
+				this.propIndex++;
+	            return this;
+	        },
+	        orProp:function(property){
+	            this.queryString+='&or[' + this.propIndex + ']&';
+				this.propIndex++;
+				this.queryString+= encodeURIComponent(property) + '[' + this.propIndex + ']=';
+				this.propIndex++;
+				return this;
+	        },
+	        isEQ:function(criteria){
+	            this.queryString+=encodeURIComponent(criteria);
+				return this;
+	        },
+	        isNEQ:function(criteria){
+	            this.queryString+='neq^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isLT:function(criteria){
+	            this.queryString+='lt^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isLTE:function(criteria){
+	            this.queryString+='lte^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isGT:function(criteria){
+	            this.queryString+='gt^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isGTE:function(criteria){
+	            this.queryString+='gte^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isIn:function(criteria){
+	            this.queryString+='in^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isNotIn:function(criteria){
+	            this.queryString+='notin^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        containsValue:function(criteria){
+	            this.queryString+='containsValue^' + encodeURIComponent(criteria);
+				return this;
+	        },
+			contains:function(criteria){
+	            this.queryString+='containsValue^' + encodeURIComponent(criteria);
+				return this;
+	        },
+			beginsWith:function(criteria){
+	            this.queryString+='begins^' + encodeURIComponent(criteria);
+				return this;
+	        },
+			endsWith:function(criteria){
+	            this.queryString+='ends^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        openGrouping:function(criteria){
+	            this.queryString+='&openGrouping';
+				return this;
+	        },
+	        andOpenGrouping:function(criteria){
+	            this.queryString+='&andOpenGrouping';
+				return this;
+	        },
+	        closeGrouping:function(criteria){
+	            this.queryString+='&closeGrouping:';
+				return this;
+	        },
+			sort:function(property,direction){
+				direction=direction || 'asc';
+				if(direction == 'desc'){
+					this.queryString+='&sort[' + this.propIndex + ']=-' + encodeURIComponent(property);
+				} else {
+					this.queryString+='&sort[' + this.propIndex + ']=+' + encodeURIComponent(property);
+				}
+				this.propIndex++;
+	            return this;
+	        },
+			itemsPerPage:function(itemsPerPage){
+	            this.queryString+='&itemsPerPage=' + encodeURIComponent(itemsPerPage);
+				return this;
+	        },
+			maxItems:function(maxItems){
+	            this.queryString+='&maxItems=' + encodeURIComponent(maxItems);
+				return this;
+	        },
+			innerJoin:function(relatedEntity){
+	            this.queryString+='&innerJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
+				this.propIndex++;
+	            return this;
+	        },
+			leftJoin:function(relatedEntity){
+	            this.queryString+='&leftJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
+				this.propIndex++;
+	            return this;
+	        },
+	        getQuery:function(){
+	            var self=this;
 
-;(function(root){
-	root.mura.feed=root.mura.core.extend({
-		init:function(siteid,entityname){
-            this.queryString= entityname + '/?';
-			this.propIndex=0;
-			this.entityname=entityname;
-            return this;
-		},
-		fields:function(fields){
-            this.queryString+='&fields=' + encodeURIComponent(fields);
-            return this;
-        },
-        where:function(property){
-            if(property){
-                return this.andProp(property);
-            }
-            return this;
-        },
-        prop:function(property){
-            return this.andProp(property);
-        },
-        andProp:function(property){
-            this.queryString+='&' + encodeURIComponent(property) + '[' + this.propIndex + ']=';
-			this.propIndex++;
-            return this;
-        },
-        orProp:function(property){
-            this.queryString+='&or[' + this.propIndex + ']&';
-			this.propIndex++;
-			this.queryString+= encodeURIComponent(property) + '[' + this.propIndex + ']=';
-			this.propIndex++;
-			return this;
-        },
-        isEQ:function(criteria){
-            this.queryString+=encodeURIComponent(criteria);
-			return this;
-        },
-        isNEQ:function(criteria){
-            this.queryString+='neq^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isLT:function(criteria){
-            this.queryString+='lt^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isLTE:function(criteria){
-            this.queryString+='lte^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isGT:function(criteria){
-            this.queryString+='gt^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isGTE:function(criteria){
-            this.queryString+='gte^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isIn:function(criteria){
-            this.queryString+='in^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isNotIn:function(criteria){
-            this.queryString+='notin^' + encodeURIComponent(criteria);
-			return this;
-        },
-        containsValue:function(criteria){
-            this.queryString+='containsValue^' + encodeURIComponent(criteria);
-			return this;
-        },
-		contains:function(criteria){
-            this.queryString+='containsValue^' + encodeURIComponent(criteria);
-			return this;
-        },
-		beginsWith:function(criteria){
-            this.queryString+='begins^' + encodeURIComponent(criteria);
-			return this;
-        },
-		endsWith:function(criteria){
-            this.queryString+='ends^' + encodeURIComponent(criteria);
-			return this;
-        },
-        openGrouping:function(criteria){
-            this.queryString+='&openGrouping';
-			return this;
-        },
-        andOpenGrouping:function(criteria){
-            this.queryString+='&andOpenGrouping';
-			return this;
-        },
-        closeGrouping:function(criteria){
-            this.queryString+='&closeGrouping:';
-			return this;
-        },
-		sort:function(property,direction){
-			direction=direction || 'asc';
-			if(direction == 'desc'){
-				this.queryString+='&sort[' + this.propIndex + ']=-' + encodeURIComponent(property);
-			} else {
-				this.queryString+='&sort[' + this.propIndex + ']=+' + encodeURIComponent(property);
-			}
-			this.propIndex++;
-            return this;
-        },
-		itemsPerPage:function(itemsPerPage){
-            this.queryString+='&itemsPerPage=' + encodeURIComponent(itemsPerPage);
-			return this;
-        },
-		maxItems:function(maxItems){
-            this.queryString+='&maxItems=' + encodeURIComponent(maxItems);
-			return this;
-        },
-		innerJoin:function(relatedEntity){
-            this.queryString+='&innerJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
-			this.propIndex++;
-            return this;
-        },
-		leftJoin:function(relatedEntity){
-            this.queryString+='&leftJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
-			this.propIndex++;
-            return this;
-        },
-        getQuery:function(){
-            var self=this;
+	            return new Promise(function(resolve,reject) {
+					mura.ajax({
+						type:'get',
+						url:mura.apiEndpoint + self.queryString,
+						success:function(resp){
 
-            return new Promise(function(resolve,reject) {
-				root.mura.ajax({
-					type:'get',
-					url:root.mura.apiEndpoint + self.queryString,
-					success:function(resp){
+							var returnObj = new mura.entityCollection(resp.data);
 
-						var returnObj = new root.mura.entityCollection(resp.data);
-
-						if(typeof resolve == 'function'){
-							resolve(returnObj);
-						}
-					},
-					error:reject
+							if(typeof resolve == 'function'){
+								resolve(returnObj);
+							}
+						},
+						error:reject
+					});
 				});
-			});
-        }
-    });
+	        }
+	    });
 
-})(this);
+}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -7244,32 +7330,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-(function(root){
-root.mura.templates=root.mura.templates || {};
-root.mura.templates['meta']=function(context){
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(mura);
+    }
+}(this, function (mura) {
+	mura.templates=mura.templates || {};
+	mura.templates['meta']=function(context){
 
-	if(context.label){
-		return '<div class="mura-object-meta"><h3>' + mura.escapeHTML(context.label) + '</h3></div>';
-	} else {
-	    return '';
+		if(context.label){
+			return '<div class="mura-object-meta"><h3>' + mura.escapeHTML(context.label) + '</h3></div>';
+		} else {
+		    return '';
+		}
 	}
-}
-root.mura.templates['content']=function(context){
-	context.html=context.html || context.content || context.source || '';
+	mura.templates['content']=function(context){
+		context.html=context.html || context.content || context.source || '';
 
-  	return '<div class="mura-object-content">' + context.html + '</div>';
-}
-root.mura.templates['text']=function(context){
-	context=context || {};
-	context.source=context.source || '<p>This object has not been configured.</p>';
- 	return context.source;
-}
-root.mura.templates['embed']=function(context){
-	context=context || {};
-	context.source=context.source || '<p>This object has not been configured.</p>';
- 	return context.source;
-}
-})(this);
+	  	return '<div class="mura-object-content">' + context.html + '</div>';
+	}
+	mura.templates['text']=function(context){
+		context=context || {};
+		context.source=context.source || '<p>This object has not been configured.</p>';
+	 	return context.source;
+	}
+	mura.templates['embed']=function(context){
+		context=context || {};
+		context.source=context.source || '<p>This object has not been configured.</p>';
+	 	return context.source;
+	}
+}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -7315,10 +7414,21 @@ root.mura.templates['embed']=function(context){
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(root){
-
-	root.mura.ui=root.mura.core.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.mura);
+    }
+}(this, function (mura) {
+	mura.ui=mura.core.extend({
 		rb:{},
 		context:{},
 		onAfterRender:function(){},
@@ -7368,7 +7478,7 @@ root.mura.templates['embed']=function(context){
 		}
 	});
 
-})(this);
+}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -7414,1254 +7524,1265 @@ root.mura.templates['embed']=function(context){
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+	;(function (root, factory) {
+	    if (typeof define === 'function' && define.amd) {
+	        // AMD. Register as an anonymous module.
+	        define(['mura'], factory);
+	    } else if (typeof module === 'object' && module.exports) {
+	        // Node. Does not work with strict CommonJS, but
+	        // only CommonJS-like environments that support module.exports,
+	        // like Node.
+	        factory(require('mura'));
+	    } else {
+	        // Browser globals (root is window)
+	        factory(root.mura);
+	    }
+	}(this, function (mura) {
+		mura.displayObject.form=mura.ui.extend({
+			context:{},
+			ormform: false,
+			formJSON:{},
+			data:{},
+			columns:[],
+			currentpage: 0,
+			entity: {},
+			fields:{},
+			filters: {},
+			datasets: [],
+			sortfield: '',
+			sortdir: '',
+			inlineerrors: true,
+			properties: {},
+			rendered: {},
+			renderqueue: 0,
+			//templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
+			formInit: false,
+			responsemessage: "",
+			rb: {
+				btnsubmitclass:"form-submit"
+			},
+			render:function(){
 
-;(function(root){
-
-	root.mura.displayObject['form']=root.mura.ui.extend({
-		context:{},
-		ormform: false,
-		formJSON:{},
-		data:{},
-		columns:[],
-		currentpage: 0,
-		entity: {},
-		fields:{},
-		filters: {},
-		datasets: [],
-		sortfield: '',
-		sortdir: '',
-		inlineerrors: true,
-		properties: {},
-		rendered: {},
-		renderqueue: 0,
-		//templateList: ['file','error','textblock','checkbox','checkbox_static','dropdown','dropdown_static','radio','radio_static','nested','textarea','textfield','form','paging','list','table','view','hidden','section'],
-		formInit: false,
-		responsemessage: "",
-		rb: {
-			btnsubmitclass:"form-submit"
-		},
-		render:function(){
-
-			if(this.context.mode == undefined){
-				this.context.mode = 'form';
-			}
-
-			var ident = "mura-form-" + this.context.objectid;
-
-			this.context.formEl = "#" + ident;
-
-			this.context.html = "<div id='"+ident+"'></div>";
-
-			mura(this.context.targetEl).html( this.context.html );
-
-			if (this.context.view == 'form') {
-				this.getForm();
-			}
-			else {
-				this.getList();
-			}
-			return this;
-		},
-
-		getTemplates:function() {
-
-			var self = this;
-
-			if (self.context.view == 'form') {
-				self.loadForm();
-			} else {
-				self.loadList();
-			}
-
-			/*
-			if(root.mura.templatesLoaded.length){
-				var temp = root.mura.templateList.pop();
-
-				root.mura.ajax(
-					{
-						url:root.mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb',
-						type:'get',
-						xhrFields:{ withCredentials: false },
-						success:function(data) {
-							root.mura.templates[temp] = root.mura.Handlebars.compile(data);
-							if(!root.mura.templateList.length) {
-								if (self.context.view == 'form') {
-									self.loadForm();
-								} else {
-									self.loadList();
-								}
-							} else {
-								self.getTemplates();
-							}
-						}
-					}
-				);
-
-			}
-			*/
-		},
-
-		getPageFieldList:function(){
-				var page=this.currentpage;
-				var fields = self.formJSON.form.pages[page];
-				var result=[];
-
-				for(var f=0;f < fields.length;f++){
-					//console.log("add: " + self.formJSON.form.fields[fields[f]].name);
-					result.push(self.formJSON.form.fields[fields[f]].name);
+				if(this.context.mode == undefined){
+					this.context.mode = 'form';
 				}
 
-				//console.log(result);
+				var ident = "mura-form-" + this.context.objectid;
 
-				return result.join(',');
-		},
+				this.context.formEl = "#" + ident;
 
-		renderField:function(fieldtype,field) {
-			var self = this;
-			var templates = root.mura.templates;
-			var template = fieldtype;
+				this.context.html = "<div id='"+ident+"'></div>";
 
-			if( field.datasetid != "" && self.isormform)
-				field.options = self.formJSON.datasets[field.datasetid].options;
-			else if(field.datasetid != "") {
-				field.dataset = self.formJSON.datasets[field.datasetid];
-			}
+				mura(this.context.targetEl).html( this.context.html );
 
-			self.setDefault( fieldtype,field );
+				if (this.context.view == 'form') {
+					this.getForm();
+				}
+				else {
+					this.getList();
+				}
+				return this;
+			},
 
-			if (fieldtype == "nested") {
-				var context = {};
-				context.objectid = field.formid;
-				context.paging = 'single';
-				context.mode = 'nested';
-				context.master = this;
+			getTemplates:function() {
 
-				var nestedForm = new mura.FormUI( context );
-				var holder = mura('<div id="nested-'+field.formid+'"></div>');
+				var self = this;
 
-				mura(".field-container-" + self.context.objectid,self.context.formEl).append(holder);
+				if (self.context.view == 'form') {
+					self.loadForm();
+				} else {
+					self.loadList();
+				}
 
-				context.formEl = holder;
-				nestedForm.getForm();
+				/*
+				if(mura.templatesLoaded.length){
+					var temp = mura.templateList.pop();
 
-				var html = root.mura.templates[template](field);
-				mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
-			}
-			else {
-				if(fieldtype == "checkbox") {
-					if(self.ormform) {
-						field.selected = [];
+					mura.ajax(
+						{
+							url:mura.assetpath + '/includes/display_objects/form/templates/' + temp + '.hb',
+							type:'get',
+							xhrFields:{ withCredentials: false },
+							success:function(data) {
+								mura.templates[temp] = mura.Handlebars.compile(data);
+								if(!mura.templateList.length) {
+									if (self.context.view == 'form') {
+										self.loadForm();
+									} else {
+										self.loadList();
+									}
+								} else {
+									self.getTemplates();
+								}
+							}
+						}
+					);
+
+				}
+				*/
+			},
+
+			getPageFieldList:function(){
+					var page=this.currentpage;
+					var fields = self.formJSON.form.pages[page];
+					var result=[];
+
+					for(var f=0;f < fields.length;f++){
+						//console.log("add: " + self.formJSON.form.fields[fields[f]].name);
+						result.push(self.formJSON.form.fields[fields[f]].name);
+					}
+
+					//console.log(result);
+
+					return result.join(',');
+			},
+
+			renderField:function(fieldtype,field) {
+				var self = this;
+				var templates = mura.templates;
+				var template = fieldtype;
+
+				if( field.datasetid != "" && self.isormform)
+					field.options = self.formJSON.datasets[field.datasetid].options;
+				else if(field.datasetid != "") {
+					field.dataset = self.formJSON.datasets[field.datasetid];
+				}
+
+				self.setDefault( fieldtype,field );
+
+				if (fieldtype == "nested") {
+					var context = {};
+					context.objectid = field.formid;
+					context.paging = 'single';
+					context.mode = 'nested';
+					context.master = this;
+
+					var nestedForm = new mura.FormUI( context );
+					var holder = mura('<div id="nested-'+field.formid+'"></div>');
+
+					mura(".field-container-" + self.context.objectid,self.context.formEl).append(holder);
+
+					context.formEl = holder;
+					nestedForm.getForm();
+
+					var html = mura.templates[template](field);
+					mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
+				}
+				else {
+					if(fieldtype == "checkbox") {
+						if(self.ormform) {
+							field.selected = [];
+
+							var ds = self.formJSON.datasets[field.datasetid];
+
+							for (var i in ds.datarecords) {
+								if(ds.datarecords[i].selected && ds.datarecords[i].selected == 1)
+									field.selected.push(i);
+							}
+
+							field.selected = field.selected.join(",");
+						}
+						else {
+							template = template + "_static";
+						}
+					}
+					else if(fieldtype == "dropdown") {
+						if(!self.ormform) {
+							template = template + "_static";
+						}
+					}
+					else if(fieldtype == "radio") {
+						if(!self.ormform) {
+							template = template + "_static";
+						}
+					}
+
+					var html = mura.templates[template](field);
+
+					mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
+				}
+
+			},
+
+			setDefault:function(fieldtype,field) {
+				var self = this;
+
+				switch( fieldtype ) {
+					case "textfield":
+					case "textarea":
+						field.value = self.data[field.name];
+					 break;
+					case "checkbox":
 
 						var ds = self.formJSON.datasets[field.datasetid];
 
-						for (var i in ds.datarecords) {
-							if(ds.datarecords[i].selected && ds.datarecords[i].selected == 1)
-								field.selected.push(i);
-						}
+						for(var i=0;i<ds.datarecords.length;i++) {
+							if (self.ormform) {
+								var sourceid = ds.source + "id";
 
-						field.selected = field.selected.join(",");
-					}
-					else {
-						template = template + "_static";
-					}
-				}
-				else if(fieldtype == "dropdown") {
-					if(!self.ormform) {
-						template = template + "_static";
-					}
-				}
-				else if(fieldtype == "radio") {
-					if(!self.ormform) {
-						template = template + "_static";
-					}
-				}
+								ds.datarecords[i].selected = 0;
+								ds.datarecords[i].isselected = 0;
 
-				var html = root.mura.templates[template](field);
-
-				mura(".field-container-" + self.context.objectid,self.context.formEl).append(html);
-			}
-
-		},
-
-		setDefault:function(fieldtype,field) {
-			var self = this;
-
-			switch( fieldtype ) {
-				case "textfield":
-				case "textarea":
-					field.value = self.data[field.name];
-				 break;
-				case "checkbox":
-
-					var ds = self.formJSON.datasets[field.datasetid];
-
-					for(var i=0;i<ds.datarecords.length;i++) {
-						if (self.ormform) {
-							var sourceid = ds.source + "id";
-
-							ds.datarecords[i].selected = 0;
-							ds.datarecords[i].isselected = 0;
-
-							if(self.data[field.name].items && self.data[field.name].items.length) {
-								for(var x = 0;x < self.data[field.name].items.length;x++) {
-									if (ds.datarecords[i].id == self.data[field.name].items[x][sourceid]) {
-										ds.datarecords[i].isselected = 1;
-										ds.datarecords[i].selected = 1;
+								if(self.data[field.name].items && self.data[field.name].items.length) {
+									for(var x = 0;x < self.data[field.name].items.length;x++) {
+										if (ds.datarecords[i].id == self.data[field.name].items[x][sourceid]) {
+											ds.datarecords[i].isselected = 1;
+											ds.datarecords[i].selected = 1;
+										}
 									}
 								}
 							}
+							else {
+								if (self.data[field.name] && ds.datarecords[i].value && self.data[field.name].indexOf(ds.datarecords[i].value) > -1) {
+									ds.datarecords[i].isselected = 1;
+									ds.datarecords[i].selected = 1;
+								}
+								else {
+									ds.datarecords[i].selected = 0;
+									ds.datarecords[i].isselected = 0;
+								}
+							}
 						}
-						else {
-							if (self.data[field.name] && ds.datarecords[i].value && self.data[field.name].indexOf(ds.datarecords[i].value) > -1) {
-								ds.datarecords[i].isselected = 1;
-								ds.datarecords[i].selected = 1;
+
+					break;
+					case "radio":
+					case "dropdown":
+						var ds = self.formJSON.datasets[field.datasetid];
+
+						for(var i=0;i<ds.datarecords.length;i++) {
+							if(self.ormform) {
+								if(ds.datarecords[i].id == self.data[field.name+'id']) {
+									ds.datarecords[i].isselected = 1;
+									field.selected = self.data[field.name+'id'];
+								}
+								else {
+									ds.datarecords[i].selected = 0;
+									ds.datarecords[i].isselected = 0;
+								}
 							}
 							else {
-								ds.datarecords[i].selected = 0;
-								ds.datarecords[i].isselected = 0;
+								 if(ds.datarecords[i].value == self.data[field.name]) {
+									ds.datarecords[i].isselected = 1;
+									field.selected = self.data[field.name];
+								}
+								else {
+									ds.datarecords[i].isselected = 0;
+								}
 							}
 						}
-					}
-
-				break;
-				case "radio":
-				case "dropdown":
-					var ds = self.formJSON.datasets[field.datasetid];
-
-					for(var i=0;i<ds.datarecords.length;i++) {
-						if(self.ormform) {
-							if(ds.datarecords[i].id == self.data[field.name+'id']) {
-								ds.datarecords[i].isselected = 1;
-								field.selected = self.data[field.name+'id'];
-							}
-							else {
-								ds.datarecords[i].selected = 0;
-								ds.datarecords[i].isselected = 0;
-							}
-						}
-						else {
-							 if(ds.datarecords[i].value == self.data[field.name]) {
-								ds.datarecords[i].isselected = 1;
-								field.selected = self.data[field.name];
-							}
-							else {
-								ds.datarecords[i].isselected = 0;
-							}
-						}
-					}
-				 break;
-			}
-		},
-
-		renderData:function() {
-			var self = this;
-
-			if(self.datasets.length == 0){
-				if (self.renderqueue == 0) {
-					self.renderForm();
+					 break;
 				}
-				return;
-			}
+			},
 
-			var dataset = self.formJSON.datasets[self.datasets.pop()];
+			renderData:function() {
+				var self = this;
 
-			if(dataset.sourcetype && dataset.sourcetype != 'muraorm'){
-				self.renderData();
-				return;
-			}
+				if(self.datasets.length == 0){
+					if (self.renderqueue == 0) {
+						self.renderForm();
+					}
+					return;
+				}
 
-			if(dataset.sourcetype=='muraorm'){
-				dataset.options = [];
-				self.renderqueue++;
+				var dataset = self.formJSON.datasets[self.datasets.pop()];
 
-				root.mura.getFeed( dataset.source )
-					.getQuery()
-					.then( function(collection) {
-						collection.each(function(item) {
-							var itemid = item.get('id');
-							dataset.datarecordorder.push( itemid );
-							dataset.datarecords[itemid] = item.getAll();
-							dataset.datarecords[itemid]['value'] = itemid;
-							dataset.datarecords[itemid]['datarecordid'] = itemid;
-							dataset.datarecords[itemid]['datasetid'] = dataset.datasetid;
-							dataset.datarecords[itemid]['isselected'] = 0;
-							dataset.options.push( dataset.datarecords[itemid] );
+				if(dataset.sourcetype && dataset.sourcetype != 'muraorm'){
+					self.renderData();
+					return;
+				}
+
+				if(dataset.sourcetype=='muraorm'){
+					dataset.options = [];
+					self.renderqueue++;
+
+					mura.getFeed( dataset.source )
+						.getQuery()
+						.then( function(collection) {
+							collection.each(function(item) {
+								var itemid = item.get('id');
+								dataset.datarecordorder.push( itemid );
+								dataset.datarecords[itemid] = item.getAll();
+								dataset.datarecords[itemid]['value'] = itemid;
+								dataset.datarecords[itemid]['datarecordid'] = itemid;
+								dataset.datarecords[itemid]['datasetid'] = dataset.datasetid;
+								dataset.datarecords[itemid]['isselected'] = 0;
+								dataset.options.push( dataset.datarecords[itemid] );
+							});
+
+						})
+						.then(function() {
+							self.renderqueue--;
+							self.renderData();
+							if (self.renderqueue == 0) {
+								self.renderForm();
+							}
 						});
-
-					})
-					.then(function() {
-						self.renderqueue--;
-						self.renderData();
-						if (self.renderqueue == 0) {
-							self.renderForm();
-						}
-					});
-			} else {
-				if (self.renderqueue == 0) {
-					self.renderForm();
-				}
-			}
-		},
-
-		renderForm: function( ) {
-			var self = this;
-
-			//console.log("render form: " + self.currentpage);
-
-			mura(".field-container-" + self.context.objectid,self.context.formEl).empty();
-
-			if(!self.formInit) {
-				self.initForm();
-			}
-
-			var fields = self.formJSON.form.pages[self.currentpage];
-
-			for(var i = 0;i < fields.length;i++) {
-				var field =  self.formJSON.form.fields[fields[i]];
-				try {
-					if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
-						self.renderField(field.fieldtype.fieldtype,field);
-					}
-				} catch(e){
-					console.log('Error rendering form field:');
-					console.log(field);
-				}
-			}
-
-			if(self.ishuman && self.currentpage==(self.formJSON.form.pages.length-1)){
-				mura(".field-container-" + self.context.objectid,self.context.formEl).append(self.ishuman);
-			}
-
-			if (self.context.mode == 'form') {
-				self.renderPaging();
-			}
-
-			mura.processMarkup(".field-container-" + self.context.objectid,self.context.formEl);
-
-			self.trigger('afterRender');
-
-		},
-
-		renderPaging:function() {
-			var self = this;
-			var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : 'Submit';
-
-			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
-
-			mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
-
-			if(self.formJSON.form.pages.length == 1) {
-				mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.btnsubmitclass}));
-			}
-			else {
-				if(self.currentpage == 0) {
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:1,label:"Next","class":"form-nav"}));
 				} else {
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage-1,label:"Back","class":'form-nav'}));
+					if (self.renderqueue == 0) {
+						self.renderForm();
+					}
+				}
+			},
 
-					if(self.currentpage+1 < self.formJSON.form.pages.length) {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:"Next","class":'form-nav'}));
+			renderForm: function( ) {
+				var self = this;
+
+				//console.log("render form: " + self.currentpage);
+
+				mura(".field-container-" + self.context.objectid,self.context.formEl).empty();
+
+				if(!self.formInit) {
+					self.initForm();
+				}
+
+				var fields = self.formJSON.form.pages[self.currentpage];
+
+				for(var i = 0;i < fields.length;i++) {
+					var field =  self.formJSON.form.fields[fields[i]];
+					try {
+						if( field.fieldtype.fieldtype != undefined && field.fieldtype.fieldtype != "") {
+							self.renderField(field.fieldtype.fieldtype,field);
+						}
+					} catch(e){
+						console.log('Error rendering form field:');
+						console.log(field);
+					}
+				}
+
+				if(self.ishuman && self.currentpage==(self.formJSON.form.pages.length-1)){
+					mura(".field-container-" + self.context.objectid,self.context.formEl).append(self.ishuman);
+				}
+
+				if (self.context.mode == 'form') {
+					self.renderPaging();
+				}
+
+				mura.processMarkup(".field-container-" + self.context.objectid,self.context.formEl);
+
+				self.trigger('afterRender');
+
+			},
+
+			renderPaging:function() {
+				var self = this;
+				var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : 'Submit';
+
+				mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
+
+				mura(".paging-container-" + self.context.objectid,self.context.formEl).empty();
+
+				if(self.formJSON.form.pages.length == 1) {
+					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":self.rb.btnsubmitclass}));
+				}
+				else {
+					if(self.currentpage == 0) {
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(mura.templates['paging']({page:1,label:"Next","class":"form-nav"}));
+					} else {
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(mura.templates['paging']({page:self.currentpage-1,label:"Back","class":'form-nav'}));
+
+						if(self.currentpage+1 < self.formJSON.form.pages.length) {
+							mura(".paging-container-" + self.context.objectid,self.context.formEl).append(mura.templates['paging']({page:self.currentpage+1,label:"Next","class":'form-nav'}));
+						}
+						else {
+							mura(".paging-container-" + self.context.objectid,self.context.formEl).append(mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":'form-submit  btn-primary'}));
+						}
+					}
+
+					if(self.backlink != undefined && self.backlink.length)
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(mura.templates['paging']({page:self.currentpage+1,label:"Cancel","class":'form-cancel btn-primary pull-right'}));
+				}
+
+				mura(".form-submit",self.context.formEl).click( function() {
+					self.submitForm();
+				});
+				mura(".form-cancel",self.context.formEl).click( function() {
+					self.getTableData( self.backlink );
+				});
+
+
+				var formNavHandler=function() {
+					self.setDataValues();
+
+					var keepGoing=self.onPageSubmit.call(self.context.targetEl);
+					if(typeof keepGoing != 'undefined' && !keepGoing){
+						return;
+					}
+
+					var button = this;
+
+					if(self.ormform) {
+						mura.getEntity(self.entity)
+						.set(
+							self.data
+						)
+						.validate(self.getPageFieldList())
+						.then(
+							function( entity ) {
+								if(entity.hasErrors()){
+									self.showErrors( entity.properties.errors );
+								} else {
+									self.currentpage = mura(button).data('page');
+									self.renderForm();
+								}
+							}
+						);
+					} else {
+						var data=mura.deepExtend({}, self.data, self.context);
+		                data.validateform=true;
+						data.formid=data.objectid;
+						data.siteid=data.siteid || mura.siteid;
+						data.fields=self.getPageFieldList();
+
+		                mura.post(
+	                        mura.apiEndpoint + '?method=processAsyncObject',
+	                        data)
+	                        .then(function(resp){
+	                            if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
+									self.showErrors( resp.data.errors );
+	                            } else if(typeof resp.data.redirect != 'undefined') {
+									if(resp.data.redirect && resp.data.redirect != location.href){
+										location.href=resp.data.redirect;
+									} else {
+										location.reload(true);
+									}
+								} else {
+									self.currentpage = mura(button).data('page');
+	                                self.renderForm();
+	                            }
+	                        }
+							);
+					}
+
+					/*
 					}
 					else {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":'form-submit  btn-primary'}));
+						console.log('oops!');
+					}
+					*/
+				};
+
+				mura(".form-nav",self.context.formEl).off('click',formNavHandler).on('click',formNavHandler);
+			},
+
+			setDataValues: function() {
+				var self = this;
+				var multi = {};
+				var item = {};
+				var valid = [];
+
+				mura(".field-container-" + self.context.objectid + " input, .field-container-" + self.context.objectid + " select, .field-container-" + self.context.objectid + " textarea").each( function() {
+
+					if( mura(this).is('[type="checkbox"]')) {
+						if ( multi[mura(this).attr('name')] == undefined )
+							multi[mura(this).attr('name')] = [];
+
+						if( this.checked ) {
+							if (self.ormform) {
+								item = {};
+								item['id'] = mura.createUUID();
+								item[self.entity + 'id'] = self.data.id;
+								item[mura(this).attr('source') + 'id'] = mura(this).val();
+								item['key'] = mura(this).val();
+
+								multi[mura(this).attr('name')].push(item);
+							}
+							else {
+								multi[mura(this).attr('name')].push(mura(this).val());
+							}
+						}
+					}
+					else if( mura(this).is('[type="radio"]')) {
+						if( this.checked ) {
+							self.data[ mura(this).attr('name') ] = mura(this).val();
+							valid[ mura(this).attr('name') ] = self.data[name];
+						}
+					}
+					else {
+						self.data[ mura(this).attr('name') ] = mura(this).val();
+						valid[ mura(this).attr('name') ] = self.data[mura(this).attr('name')];
+					}
+				});
+
+				for(var i in multi) {
+					if(self.ormform) {
+						self.data[ i ].cascade = "replace";
+						self.data[ i ].items = multi[ i ];
+						valid[ i ] = self.data[i];
+					}
+					else {
+						self.data[ i ] = multi[i].join(",");
+						valid[ i ] = multi[i].join(",");
 					}
 				}
 
-				if(self.backlink != undefined && self.backlink.length)
-					mura(".paging-container-" + self.context.objectid,self.context.formEl).append(root.mura.templates['paging']({page:self.currentpage+1,label:"Cancel","class":'form-cancel btn-primary pull-right'}));
-			}
+				return valid;
 
-			mura(".form-submit",self.context.formEl).click( function() {
-				self.submitForm();
-			});
-			mura(".form-cancel",self.context.formEl).click( function() {
-				self.getTableData( self.backlink );
-			});
+			},
+
+			validate: function( entity,fields ) {
+				return true;
+			},
+
+			getForm: function( entityid,backlink ) {
+				var self = this;
+				var formJSON = {};
+				var entityName = '';
+
+				if(entityid != undefined){
+					self.entityid = entityid;
+				} else {
+					delete self.entityid;
+				}
+
+				if(backlink != undefined){
+					self.backlink = backlink;
+				} else {
+					delete self.backlink;
+				}
+
+				/*
+				if(mura.templateList.length) {
+					self.getTemplates( entityid );
+				}
+				else {
+				*/
+					self.loadForm();
+				//}
+			},
+
+			loadForm: function( data ) {
+				var self = this;
+
+				//console.log('a');
+				//console.log(self.formJSOrenderN);
+
+				formJSON = JSON.parse(self.context.def);
+
+				// old forms
+				if(!formJSON.form.pages) {
+					formJSON.form.pages = [];
+					formJSON.form.pages[0] = formJSON.form.fieldorder;
+					formJSON.form.fieldorder = [];
+				}
 
 
-			var formNavHandler=function() {
-				self.setDataValues();
+				if(typeof formJSON.datasets != 'undefined'){
+					for(var d in formJSON.datasets){
+						if(typeof formJSON.datasets[d].DATARECORDS != 'undefined'){
+							formJSON.datasets[d].datarecords=formJSON.datasets[d].DATARECORDS;
+							delete formJSON.datasets[d].DATARECORDS;
+						}
+						if(typeof formJSON.datasets[d].DATARECORDORDER != 'undefined'){
+							formJSON.datasets[d].datarecordorder=formJSON.datasets[d].DATARECORDORDER;
+							delete formJSON.datasets[d].DATARECORDORDER;
+						}
+					}
+				}
 
-				var keepGoing=self.onPageSubmit.call(self.context.targetEl);
+				entityName = self.context.filename.replace(/\W+/g, "");
+				self.entity = entityName;
+				self.formJSON = formJSON;
+				self.fields = formJSON.form.fields;
+				self.responsemessage = self.context.responsemessage;
+				self.ishuman=self.context.ishuman;
+
+				if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
+					self.ormform = true;
+				}
+
+				for(var i=0;i < self.formJSON.datasets;i++){
+					self.datasets.push(i);
+				}
+
+				if(self.ormform) {
+					self.entity = entityName;
+
+					if(self.entityid == undefined) {
+						mura.get(
+							mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
+						).then(function(resp) {
+							self.data = resp.data;
+							self.renderData();
+						});
+					}
+					else {
+						mura.get(
+							mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
+						).then(function(resp) {
+							self.data = resp.data;
+							self.renderData();
+						});
+					}
+				}
+				else {
+					self.renderData();
+				}
+				/*
+				mura.get(
+						mura.apiEndpoint + '/content/' + self.context.objectid
+						 + '?fields=body,title,filename,responsemessage&ishuman=true'
+						).then(function(data) {
+						 	formJSON = JSON.parse( data.data.body );
+
+							// old forms
+							if(!formJSON.form.pages) {
+								formJSON.form.pages = [];
+								formJSON.form.pages[0] = formJSON.form.fieldorder;
+								formJSON.form.fieldorder = [];
+							}
+
+							entityName = data.data.filename.replace(/\W+/g, "");
+							self.entity = entityName;
+						 	self.formJSON = formJSON;
+						 	self.fields = formJSON.form.fields;
+						 	self.responsemessage = data.data.responsemessage;
+							self.ishuman=data.data.ishuman;
+
+							if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
+								self.ormform = true;
+							}
+
+							for(var i=0;i < self.formJSON.datasets;i++){
+								self.datasets.push(i);
+							}
+
+							if(self.ormform) {
+							 	self.entity = entityName;
+
+							 	if(self.entityid == undefined) {
+									mura.get(
+										mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
+									).then(function(resp) {
+										self.data = resp.data;
+										self.renderData();
+									});
+							 	}
+							 	else {
+									mura.get(
+										mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
+									).then(function(resp) {
+										self.data = resp.data;
+										self.renderData();
+									});
+								}
+							}
+							else {
+								self.renderData();
+							}
+						 }
+					);
+
+				*/
+			},
+
+			initForm: function() {
+				var self = this;
+				mura(self.context.formEl).empty();
+
+				if(self.context.mode != undefined && self.context.mode == 'nested') {
+					var html = mura.templates['nested'](self.context);
+				}
+				else {
+					var html = mura.templates['form'](self.context);
+				}
+
+				mura(self.context.formEl).append(html);
+
+				self.currentpage = 0;
+				self.formInit=true;
+			},
+
+			onSubmit: function(){
+				return true;
+			},
+
+			onPageSubmit: function(){
+				return true;
+			},
+
+			submitForm: function() {
+
+				var self = this;
+				var valid = self.setDataValues();
+				mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
+
+				var keepGoing=this.onSubmit.call(this.context.targetEl);
 				if(typeof keepGoing != 'undefined' && !keepGoing){
 					return;
 				}
 
-				var button = this;
+				delete self.data.isNew;
+
+				mura(self.context.formEl)
+					.find('form')
+					.trigger('formSubmit');
 
 				if(self.ormform) {
-					root.mura.getEntity(self.entity)
+					//console.log('a!');
+					mura.getEntity(self.entity)
 					.set(
 						self.data
 					)
-					.validate(self.getPageFieldList())
+					.save()
 					.then(
 						function( entity ) {
-							if(entity.hasErrors()){
-								self.showErrors( entity.properties.errors );
-							} else {
-								self.currentpage = mura(button).data('page');
-								self.renderForm();
+							if(self.backlink != undefined) {
+								self.getTableData( self.location );
+								return;
 							}
-						}
-					);
-				} else {
-					var data=mura.deepExtend({}, self.data, self.context);
-	                data.validateform=true;
-					data.formid=data.objectid;
-					data.siteid=data.siteid || mura.siteid;
-					data.fields=self.getPageFieldList();
 
-	                root.mura.post(
-                        root.mura.apiEndpoint + '?method=processAsyncObject',
-                        data)
-                        .then(function(resp){
-                            if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors)){
-								self.showErrors( resp.data.errors );
-                            } else if(typeof resp.data.redirect != 'undefined') {
+							if(typeof resp.data.redirect != 'undefined'){
 								if(resp.data.redirect && resp.data.redirect != location.href){
 									location.href=resp.data.redirect;
 								} else {
 									location.reload(true);
 								}
 							} else {
-								self.currentpage = mura(button).data('page');
-                                self.renderForm();
-                            }
-                        }
-						);
+								mura(self.context.formEl).html( mura.templates['success'](data) );
+							}
+						},
+						function( entity ) {
+							self.showErrors( entity.properties.errors );
+						}
+					);
 				}
+				else {
+					//console.log('b!');
+					var data=mura.deepExtend({},self.context,self.data);
+					data.saveform=true;
+					data.formid=data.objectid;
+					data.siteid=data.siteid || mura.siteid;
+
+	                mura.post(
+	                        mura.apiEndpoint + '?method=processAsyncObject',
+	                        data)
+	                        .then(function(resp){
+	                            if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
+									self.showErrors( resp.data.errors );
+								} else if(typeof resp.data.redirect != 'undefined'){
+									if(resp.data.redirect && resp.data.redirect != location.href){
+										location.href=resp.data.redirect;
+									} else {
+										location.reload(true);
+									}
+	                            } else {
+									mura(self.context.formEl).html( mura.templates['success'](resp.data) );
+								}
+	                        });
+
+				}
+
+			},
+
+			showErrors: function( errors ) {
+				var self = this;
+				var frm=mura(this.context.formEl);
+				var frmErrors=frm.find(".error-container-" + self.context.objectid);
+
+				frm.find('.mura-response-error').remove();
+
+				console.log(errors);
+
+				//var errorData = {};
 
 				/*
-				}
-				else {
-					console.log('oops!');
+				for(var i in self.fields) {
+					var field = self.fields[i];
+
+					if( errors[ field.name ] ) {
+						var error = {};
+						error.message = field.validatemessage && field.validatemessage.length ? field.validatemessage : errors[field.name];
+						error.field = field.name;
+						error.label = field.label;
+						errorData[field.name] = error;
+					}
+
 				}
 				*/
-			};
 
-			mura(".form-nav",self.context.formEl).off('click',formNavHandler).on('click',formNavHandler);
-		},
+				for(var e in errors) {
+					if( typeof self.fields[e] != 'undefined' ) {
+						var field = self.fields[e]
+						var error = {};
+						error.message = field.validatemessage && field.validatemessage.length ? field.validatemessage : errors[field.name];
+						error.field = field.name;
+						error.label = field.label;
+						//errorData[e] = error;
+					} else {
+						var error = {};
+						error.message = errors[e];
+						error.field = '';
+						error.label = '';
+						//errorData[e] = error;
+					}
 
-		setDataValues: function() {
-			var self = this;
-			var multi = {};
-			var item = {};
-			var valid = [];
+					if(this.inlineerrors){
+						var label=mura(this.context.formEl).find('label[for="' + e + '"]');
 
-			mura(".field-container-" + self.context.objectid + " input, .field-container-" + self.context.objectid + " select, .field-container-" + self.context.objectid + " textarea").each( function() {
-
-				if( mura(this).is('[type="checkbox"]')) {
-					if ( multi[mura(this).attr('name')] == undefined )
-						multi[mura(this).attr('name')] = [];
-
-					if( this.checked ) {
-						if (self.ormform) {
-							item = {};
-							item['id'] = root.mura.createUUID();
-							item[self.entity + 'id'] = self.data.id;
-							item[mura(this).attr('source') + 'id'] = mura(this).val();
-							item['key'] = mura(this).val();
-
-							multi[mura(this).attr('name')].push(item);
+						if(label.length){
+							label.node.insertAdjacentHTML('afterend',mura.templates['error'](error));
+						} else {
+							frmErrors.append(mura.templates['error'](error));
 						}
-						else {
-							multi[mura(this).attr('name')].push(mura(this).val());
-						}
+					} else {
+						frmErrors.append(mura.templates['error'](error));
 					}
 				}
-				else if( mura(this).is('[type="radio"]')) {
-					if( this.checked ) {
-						self.data[ mura(this).attr('name') ] = mura(this).val();
-						valid[ mura(this).attr('name') ] = self.data[name];
-					}
+
+				//var html = mura.templates['error'](errorData);
+				//console.log(errorData);
+
+				mura(self.context.formEl).find('.g-recaptcha-container').each(function(el){
+					grecaptcha.reset(el.getAttribute('data-widgetid'));
+				});
+
+				//mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
+			},
+
+
+	// lists
+			getList: function() {
+				var self = this;
+
+				var entityName = '';
+
+				/*
+				if(mura.templateList.length) {
+					self.getTemplates();
 				}
 				else {
-					self.data[ mura(this).attr('name') ] = mura(this).val();
-					valid[ mura(this).attr('name') ] = self.data[mura(this).attr('name')];
-				}
-			});
+				*/
+					self.loadList();
+				//}
+			},
 
-			for(var i in multi) {
-				if(self.ormform) {
-					self.data[ i ].cascade = "replace";
-					self.data[ i ].items = multi[ i ];
-					valid[ i ] = self.data[i];
-				}
-				else {
-					self.data[ i ] = multi[i].join(",");
-					valid[ i ] = multi[i].join(",");
-				}
-			}
+			filterResults: function() {
+				var self = this;
+				var before = "";
+				var after = "";
 
-			return valid;
+				self.filters.filterby = mura("#results-filterby",self.context.formEl).val();
+				self.filters.filterkey = mura("#results-keywords",self.context.formEl).val();
 
-		},
-
-		validate: function( entity,fields ) {
-			return true;
-		},
-
-		getForm: function( entityid,backlink ) {
-			var self = this;
-			var formJSON = {};
-			var entityName = '';
-
-			if(entityid != undefined){
-				self.entityid = entityid;
-			} else {
-				delete self.entityid;
-			}
-
-			if(backlink != undefined){
-				self.backlink = backlink;
-			} else {
-				delete self.backlink;
-			}
-
-			/*
-			if(root.mura.templateList.length) {
-				self.getTemplates( entityid );
-			}
-			else {
-			*/
-				self.loadForm();
-			//}
-		},
-
-		loadForm: function( data ) {
-			var self = this;
-
-			//console.log('a');
-			//console.log(self.formJSOrenderN);
-
-			formJSON = JSON.parse(self.context.def);
-
-			// old forms
-			if(!formJSON.form.pages) {
-				formJSON.form.pages = [];
-				formJSON.form.pages[0] = formJSON.form.fieldorder;
-				formJSON.form.fieldorder = [];
-			}
-
-
-			if(typeof formJSON.datasets != 'undefined'){
-				for(var d in formJSON.datasets){
-					if(typeof formJSON.datasets[d].DATARECORDS != 'undefined'){
-						formJSON.datasets[d].datarecords=formJSON.datasets[d].DATARECORDS;
-						delete formJSON.datasets[d].DATARECORDS;
+				if( mura("#date1",self.context.formEl).length ) {
+					if(mura("#date1",self.context.formEl).val().length) {
+						self.filters.from = mura("#date1",self.context.formEl).val() + " " + mura("#hour1",self.context.formEl).val() + ":00:00";
+						self.filters.fromhour = mura("#hour1",self.context.formEl).val();
+						self.filters.fromdate = mura("#date1",self.context.formEl).val();
 					}
-					if(typeof formJSON.datasets[d].DATARECORDORDER != 'undefined'){
-						formJSON.datasets[d].datarecordorder=formJSON.datasets[d].DATARECORDORDER;
-						delete formJSON.datasets[d].DATARECORDORDER;
+					else {
+						self.filters.from = "";
+						self.filters.fromhour = 0;
+						self.filters.fromdate = "";
+					}
+
+					if(mura("#date2",self.context.formEl).val().length) {
+						self.filters.to = mura("#date2",self.context.formEl).val() + " " + mura("#hour2",self.context.formEl).val() + ":00:00";
+						self.filters.tohour = mura("#hour2",self.context.formEl).val();
+						self.filters.todate = mura("#date2",self.context.formEl).val();
+					}
+					else {
+						self.filters.to = "";
+						self.filters.tohour = 0;
+						self.filters.todate = "";
 					}
 				}
-			}
 
-			entityName = self.context.filename.replace(/\W+/g, "");
-			self.entity = entityName;
-			self.formJSON = formJSON;
-			self.fields = formJSON.form.fields;
-			self.responsemessage = self.context.responsemessage;
-			self.ishuman=self.context.ishuman;
+				self.getTableData();
+			},
 
-			if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
-				self.ormform = true;
-			}
+			downloadResults: function() {
+				var self = this;
 
-			for(var i=0;i < self.formJSON.datasets;i++){
-				self.datasets.push(i);
-			}
+				self.filterResults();
 
-			if(self.ormform) {
+			},
+
+
+			loadList: function() {
+				var self = this;
+
+				formJSON = self.context.formdata;
+				entityName = dself.context.filename.replace(/\W+/g, "");
 				self.entity = entityName;
+				self.formJSON = formJSON;
 
-				if(self.entityid == undefined) {
-					root.mura.get(
-						root.mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
-					).then(function(resp) {
-						self.data = resp.data;
-						self.renderData();
-					});
+				if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
+					self.ormform = true;
 				}
 				else {
-					root.mura.get(
-						root.mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
-					).then(function(resp) {
-						self.data = resp.data;
-						self.renderData();
-					});
+					mura(self.context.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
+					return;
 				}
-			}
-			else {
-				self.renderData();
-			}
-			/*
-			root.mura.get(
-					root.mura.apiEndpoint + '/content/' + self.context.objectid
-					 + '?fields=body,title,filename,responsemessage&ishuman=true'
+
+				self.getTableData();
+
+				/*
+				mura.get(
+					mura.apiEndpoint + 'content/' + self.context.objectid
+					 + '?fields=body,title,filename,responsemessage'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
-
-						// old forms
-						if(!formJSON.form.pages) {
-							formJSON.form.pages = [];
-							formJSON.form.pages[0] = formJSON.form.fieldorder;
-							formJSON.form.fieldorder = [];
-						}
-
 						entityName = data.data.filename.replace(/\W+/g, "");
 						self.entity = entityName;
 					 	self.formJSON = formJSON;
-					 	self.fields = formJSON.form.fields;
-					 	self.responsemessage = data.data.responsemessage;
-						self.ishuman=data.data.ishuman;
 
 						if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
 							self.ormform = true;
 						}
-
-						for(var i=0;i < self.formJSON.datasets;i++){
-							self.datasets.push(i);
-						}
-
-						if(self.ormform) {
-						 	self.entity = entityName;
-
-						 	if(self.entityid == undefined) {
-								root.mura.get(
-									root.mura.apiEndpoint +'/'+ entityName + '/new?expand=all&ishuman=true'
-								).then(function(resp) {
-									self.data = resp.data;
-									self.renderData();
-								});
-						 	}
-						 	else {
-								root.mura.get(
-									root.mura.apiEndpoint  + '/'+ entityName + '/' + self.entityid + '?expand=all&ishuman=true'
-								).then(function(resp) {
-									self.data = resp.data;
-									self.renderData();
-								});
-							}
-						}
 						else {
-							self.renderData();
-						}
-					 }
-				);
-
-			*/
-		},
-
-		initForm: function() {
-			var self = this;
-			mura(self.context.formEl).empty();
-
-			if(self.context.mode != undefined && self.context.mode == 'nested') {
-				var html = root.mura.templates['nested'](self.context);
-			}
-			else {
-				var html = root.mura.templates['form'](self.context);
-			}
-
-			mura(self.context.formEl).append(html);
-
-			self.currentpage = 0;
-			self.formInit=true;
-		},
-
-		onSubmit: function(){
-			return true;
-		},
-
-		onPageSubmit: function(){
-			return true;
-		},
-
-		submitForm: function() {
-
-			var self = this;
-			var valid = self.setDataValues();
-			mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
-
-			var keepGoing=this.onSubmit.call(this.context.targetEl);
-			if(typeof keepGoing != 'undefined' && !keepGoing){
-				return;
-			}
-
-			delete self.data.isNew;
-
-			mura(self.context.formEl)
-				.find('form')
-				.trigger('formSubmit');
-
-			if(self.ormform) {
-				//console.log('a!');
-				root.mura.getEntity(self.entity)
-				.set(
-					self.data
-				)
-				.save()
-				.then(
-					function( entity ) {
-						if(self.backlink != undefined) {
-							self.getTableData( self.location );
+							mura(self.context.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
 							return;
 						}
 
-						if(typeof resp.data.redirect != 'undefined'){
-							if(resp.data.redirect && resp.data.redirect != location.href){
-								location.href=resp.data.redirect;
-							} else {
-								location.reload(true);
-							}
-						} else {
-							mura(self.context.formEl).html( root.mura.templates['success'](data) );
-						}
-					},
-					function( entity ) {
-						self.showErrors( entity.properties.errors );
-					}
-				);
-			}
-			else {
-				//console.log('b!');
-				var data=mura.deepExtend({},self.context,self.data);
-				data.saveform=true;
-				data.formid=data.objectid;
-				data.siteid=data.siteid || mura.siteid;
+						self.getTableData();
+				});
+				*/
+			},
 
-                root.mura.post(
-                        root.mura.apiEndpoint + '?method=processAsyncObject',
-                        data)
-                        .then(function(resp){
-                            if(typeof resp.data.errors == 'object' && !mura.isEmptyObject(resp.data.errors )){
-								self.showErrors( resp.data.errors );
-							} else if(typeof resp.data.redirect != 'undefined'){
-								if(resp.data.redirect && resp.data.redirect != location.href){
-									location.href=resp.data.redirect;
-								} else {
-									location.reload(true);
-								}
-                            } else {
-								mura(self.context.formEl).html( root.mura.templates['success'](resp.data) );
-							}
-                        });
+			getTableData: function( navlink ) {
+				var self = this;
 
-			}
-
-		},
-
-		showErrors: function( errors ) {
-			var self = this;
-			var frm=root.mura(this.context.formEl);
-			var frmErrors=frm.find(".error-container-" + self.context.objectid);
-
-			frm.find('.mura-response-error').remove();
-
-			console.log(errors);
-
-			//var errorData = {};
-
-			/*
-			for(var i in self.fields) {
-				var field = self.fields[i];
-
-				if( errors[ field.name ] ) {
-					var error = {};
-					error.message = field.validatemessage && field.validatemessage.length ? field.validatemessage : errors[field.name];
-					error.field = field.name;
-					error.label = field.label;
-					errorData[field.name] = error;
-				}
-
-			}
-			*/
-
-			for(var e in errors) {
-				if( typeof self.fields[e] != 'undefined' ) {
-					var field = self.fields[e]
-					var error = {};
-					error.message = field.validatemessage && field.validatemessage.length ? field.validatemessage : errors[field.name];
-					error.field = field.name;
-					error.label = field.label;
-					//errorData[e] = error;
-				} else {
-					var error = {};
-					error.message = errors[e];
-					error.field = '';
-					error.label = '';
-					//errorData[e] = error;
-				}
-
-				if(this.inlineerrors){
-					var label=root.mura(this.context.formEl).find('label[for="' + e + '"]');
-
-					if(label.length){
-						label.node.insertAdjacentHTML('afterend',root.mura.templates['error'](error));
-					} else {
-						frmErrors.append(root.mura.templates['error'](error));
-					}
-				} else {
-					frmErrors.append(root.mura.templates['error'](error));
-				}
-			}
-
-			//var html = root.mura.templates['error'](errorData);
-			//console.log(errorData);
-
-			mura(self.context.formEl).find('.g-recaptcha-container').each(function(el){
-				grecaptcha.reset(el.getAttribute('data-widgetid'));
-			});
-
-			//mura(".error-container-" + self.context.objectid,self.context.formEl).html(html);
-		},
-
-
-// lists
-		getList: function() {
-			var self = this;
-
-			var entityName = '';
-
-			/*
-			if(root.mura.templateList.length) {
-				self.getTemplates();
-			}
-			else {
-			*/
-				self.loadList();
-			//}
-		},
-
-		filterResults: function() {
-			var self = this;
-			var before = "";
-			var after = "";
-
-			self.filters.filterby = mura("#results-filterby",self.context.formEl).val();
-			self.filters.filterkey = mura("#results-keywords",self.context.formEl).val();
-
-			if( mura("#date1",self.context.formEl).length ) {
-				if(mura("#date1",self.context.formEl).val().length) {
-					self.filters.from = mura("#date1",self.context.formEl).val() + " " + mura("#hour1",self.context.formEl).val() + ":00:00";
-					self.filters.fromhour = mura("#hour1",self.context.formEl).val();
-					self.filters.fromdate = mura("#date1",self.context.formEl).val();
-				}
-				else {
-					self.filters.from = "";
-					self.filters.fromhour = 0;
-					self.filters.fromdate = "";
-				}
-
-				if(mura("#date2",self.context.formEl).val().length) {
-					self.filters.to = mura("#date2",self.context.formEl).val() + " " + mura("#hour2",self.context.formEl).val() + ":00:00";
-					self.filters.tohour = mura("#hour2",self.context.formEl).val();
-					self.filters.todate = mura("#date2",self.context.formEl).val();
-				}
-				else {
-					self.filters.to = "";
-					self.filters.tohour = 0;
-					self.filters.todate = "";
-				}
-			}
-
-			self.getTableData();
-		},
-
-		downloadResults: function() {
-			var self = this;
-
-			self.filterResults();
-
-		},
-
-
-		loadList: function() {
-			var self = this;
-
-			formJSON = self.context.formdata;
-			entityName = dself.context.filename.replace(/\W+/g, "");
-			self.entity = entityName;
-			self.formJSON = formJSON;
-
-			if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
-				self.ormform = true;
-			}
-			else {
-				mura(self.context.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
-				return;
-			}
-
-			self.getTableData();
-
-			/*
-			root.mura.get(
-				root.mura.apiEndpoint + 'content/' + self.context.objectid
-				 + '?fields=body,title,filename,responsemessage'
-				).then(function(data) {
-				 	formJSON = JSON.parse( data.data.body );
-					entityName = data.data.filename.replace(/\W+/g, "");
-					self.entity = entityName;
-				 	self.formJSON = formJSON;
-
-					if (formJSON.form.formattributes && formJSON.form.formattributes.muraormentities == 1) {
-						self.ormform = true;
-					}
-					else {
-						mura(self.context.formEl).append("Unsupported for pre-Mura 7.0 MuraORM Forms.");
-						return;
-					}
-
-					self.getTableData();
-			});
-			*/
-		},
-
-		getTableData: function( navlink ) {
-			var self = this;
-
-			root.mura.get(
-				root.mura.apiEndpoint  + self.entity + '/listviewdescriptor'
-			).then(function(resp) {
-					self.columns = resp.data;
-				root.mura.get(
-					root.mura.apiEndpoint + self.entity + '/propertydescriptor/'
+				mura.get(
+					mura.apiEndpoint  + self.entity + '/listviewdescriptor'
 				).then(function(resp) {
-					self.properties = self.cleanProps(resp.data);
-					if( navlink == undefined) {
-						navlink = root.mura.apiEndpoint + self.entity + '?sort=' + self.sortdir + self.sortfield;
-						var fields = [];
-						for(var i = 0;i < self.columns.length;i++) {
-							fields.push(self.columns[i].column);
-						}
-						navlink = navlink + "&fields=" + fields.join(",");
-
-						if (self.filters.filterkey && self.filters.filterkey != '') {
-							navlink = navlink + "&" + self.filters.filterby + "=contains^" + self.filters.filterkey;
-						}
-
-						if (self.filters.from && self.filters.from != '') {
-							navlink = navlink + "&created[1]=gte^" + self.filters.from;
-						}
-						if (self.filters.to && self.filters.to != '') {
-							navlink = navlink + "&created[2]=lte^" + self.filters.to;
-						}
-					}
-
-					root.mura.get(
-						navlink
+						self.columns = resp.data;
+					mura.get(
+						mura.apiEndpoint + self.entity + '/propertydescriptor/'
 					).then(function(resp) {
-						self.data = resp.data;
-						self.location = self.data.links.self;
+						self.properties = self.cleanProps(resp.data);
+						if( navlink == undefined) {
+							navlink = mura.apiEndpoint + self.entity + '?sort=' + self.sortdir + self.sortfield;
+							var fields = [];
+							for(var i = 0;i < self.columns.length;i++) {
+								fields.push(self.columns[i].column);
+							}
+							navlink = navlink + "&fields=" + fields.join(",");
 
-						var tableData = {rows:self.data,columns:self.columns,properties:self.properties,filters:self.filters};
-						self.renderTable( tableData );
+							if (self.filters.filterkey && self.filters.filterkey != '') {
+								navlink = navlink + "&" + self.filters.filterby + "=contains^" + self.filters.filterkey;
+							}
+
+							if (self.filters.from && self.filters.from != '') {
+								navlink = navlink + "&created[1]=gte^" + self.filters.from;
+							}
+							if (self.filters.to && self.filters.to != '') {
+								navlink = navlink + "&created[2]=lte^" + self.filters.to;
+							}
+						}
+
+						mura.get(
+							navlink
+						).then(function(resp) {
+							self.data = resp.data;
+							self.location = self.data.links.self;
+
+							var tableData = {rows:self.data,columns:self.columns,properties:self.properties,filters:self.filters};
+							self.renderTable( tableData );
+						});
+
 					});
-
 				});
-			});
 
-		},
+			},
 
-		renderTable: function( tableData ) {
-			var self = this;
+			renderTable: function( tableData ) {
+				var self = this;
 
-			var html = root.mura.templates['table'](tableData);
-			mura(self.context.formEl).html( html );
+				var html = mura.templates['table'](tableData);
+				mura(self.context.formEl).html( html );
 
-			if (self.context.view == 'list') {
-				mura("#date-filters",self.context.formEl).empty();
-				mura("#btn-results-download",self.context.formEl).remove();
-			}
-			else {
-				if (self.context.render == undefined) {
-					mura(".datepicker", self.context.formEl).datepicker();
-				}
-
-				mura("#btn-results-download",self.context.formEl).click( function() {
-					self.downloadResults();
-				});
-			}
-
-			mura("#btn-results-search",self.context.formEl).click( function() {
-				self.filterResults();
-			});
-
-
-			mura(".data-edit",self.context.formEl).click( function() {
-				self.renderCRUD( mura(this).attr('data-value'),mura(this).attr('data-pos'));
-			});
-			mura(".data-view",self.context.formEl).click( function() {
-				self.loadOverview(mura(this).attr('data-value'),mura(this).attr('data-pos'));
-			});
-			mura(".data-nav",self.context.formEl).click( function() {
-				self.getTableData( mura(this).attr('data-value') );
-			});
-
-			mura(".data-sort").click( function() {
-
-				var sortfield = mura(this).attr('data-value');
-
-				if(sortfield == self.sortfield && self.sortdir == '')
-					self.sortdir = '-';
-				else
-					self.sortdir = '';
-
-				self.sortfield = mura(this).attr('data-value');
-				self.getTableData();
-
-			});
-		},
-
-
-		loadOverview: function(itemid,pos) {
-			var self = this;
-
-			root.mura.get(
-				root.mura.apiEndpoint + entityName + '/' + itemid + '?expand=all'
-				).then(function(resp) {
-					self.item = resp.data;
-
-					self.renderOverview();
-			});
-		},
-
-		renderOverview: function() {
-			var self = this;
-
-			//console.log('ia');
-			//console.log(self.item);
-
-			mura(self.context.formEl).empty();
-
-			var html = root.mura.templates['view'](self.item);
-			mura(self.context.formEl).append(html);
-
-			mura(".nav-back",self.context.formEl).click( function() {
-				self.getTableData( self.location );
-			});
-		},
-
-		renderCRUD: function( itemid,pos ) {
-			var self = this;
-
-			self.formInit = 0;
-			self.initForm();
-
-			self.getForm(itemid,self.data.links.self);
-		},
-
-		cleanProps: function( props ) {
-			var propsOrdered = {};
-			var propsRet = {};
-			var ct = 100000;
-
-			delete props.isnew;
-			delete props.created;
-			delete props.lastUpdate;
-			delete props.errors;
-			delete props.saveErrors;
-			delete props.instance;
-			delete props.instanceid;
-			delete props.frommuracache;
-			delete props[self.entity + "id"];
-
-			for(var i in props) {
-				if( props[i].orderno != undefined) {
-					propsOrdered[props[i].orderno] = props[i];
+				if (self.context.view == 'list') {
+					mura("#date-filters",self.context.formEl).empty();
+					mura("#btn-results-download",self.context.formEl).remove();
 				}
 				else {
-					propsOrdered[ct++] = props[i];
-				}
-			}
-
-			Object.keys(propsOrdered)
-				.sort()
-					.forEach(function(v, i) {
-					propsRet[v] = propsOrdered[v];
-			});
-
-			return propsRet;
-		},
-
-		registerHelpers: function() {
-			var self = this;
-
-			root.mura.Handlebars.registerHelper('eachColRow',function(row, columns, options) {
-				var ret = "";
-				for(var i = 0;i < columns.length;i++) {
-					ret = ret + options.fn(row[columns[i].column]);
-				}
-				return ret;
-			});
-
-			root.mura.Handlebars.registerHelper('eachProp',function(data, options) {
-				var ret = "";
-				var obj = {};
-
-				for(var i in self.properties) {
-					obj.displayName = self.properties[i].displayName;
-					if( self.properties[i].fieldtype == "one-to-one" ) {
-						obj.displayValue = data[ self.properties[i].cfc ].val;
+					if (self.context.render == undefined) {
+						mura(".datepicker", self.context.formEl).datepicker();
 					}
+
+					mura("#btn-results-download",self.context.formEl).click( function() {
+						self.downloadResults();
+					});
+				}
+
+				mura("#btn-results-search",self.context.formEl).click( function() {
+					self.filterResults();
+				});
+
+
+				mura(".data-edit",self.context.formEl).click( function() {
+					self.renderCRUD( mura(this).attr('data-value'),mura(this).attr('data-pos'));
+				});
+				mura(".data-view",self.context.formEl).click( function() {
+					self.loadOverview(mura(this).attr('data-value'),mura(this).attr('data-pos'));
+				});
+				mura(".data-nav",self.context.formEl).click( function() {
+					self.getTableData( mura(this).attr('data-value') );
+				});
+
+				mura(".data-sort").click( function() {
+
+					var sortfield = mura(this).attr('data-value');
+
+					if(sortfield == self.sortfield && self.sortdir == '')
+						self.sortdir = '-';
 					else
-						obj.displayValue = data[ self.properties[i].column ];
+						self.sortdir = '';
 
-					ret = ret + options.fn(obj);
-				}
-				return ret;
-			});
+					self.sortfield = mura(this).attr('data-value');
+					self.getTableData();
 
-			root.mura.Handlebars.registerHelper('eachKey',function(properties, by, options) {
-				var ret = "";
-				var item = "";
-				for(var i in properties) {
-					item = properties[i];
+				});
+			},
 
-					if(item.column == by)
-						item.selected = "Selected";
 
-					if(item.rendertype == 'textfield')
-						ret = ret + options.fn(item);
-				}
+			loadOverview: function(itemid,pos) {
+				var self = this;
 
-				return ret;
-			});
+				mura.get(
+					mura.apiEndpoint + entityName + '/' + itemid + '?expand=all'
+					).then(function(resp) {
+						self.item = resp.data;
 
-			root.mura.Handlebars.registerHelper('eachHour',function(hour, options) {
-				var ret = "";
-				var h = 0;
-				var val = "";
+						self.renderOverview();
+				});
+			},
 
-				for(var i = 0;i < 24;i++) {
+			renderOverview: function() {
+				var self = this;
 
-					if(i == 0 ) {
-						val = {label:"12 AM",num:i};
-					}
-					else if(i <12 ) {
-						h = i;
-						val = {label:h + " AM",num:i};
-					}
-					else if(i == 12 ) {
-						h = i;
-						val = {label:h + " PM",num:i};
+				//console.log('ia');
+				//console.log(self.item);
+
+				mura(self.context.formEl).empty();
+
+				var html = mura.templates['view'](self.item);
+				mura(self.context.formEl).append(html);
+
+				mura(".nav-back",self.context.formEl).click( function() {
+					self.getTableData( self.location );
+				});
+			},
+
+			renderCRUD: function( itemid,pos ) {
+				var self = this;
+
+				self.formInit = 0;
+				self.initForm();
+
+				self.getForm(itemid,self.data.links.self);
+			},
+
+			cleanProps: function( props ) {
+				var propsOrdered = {};
+				var propsRet = {};
+				var ct = 100000;
+
+				delete props.isnew;
+				delete props.created;
+				delete props.lastUpdate;
+				delete props.errors;
+				delete props.saveErrors;
+				delete props.instance;
+				delete props.instanceid;
+				delete props.frommuracache;
+				delete props[self.entity + "id"];
+
+				for(var i in props) {
+					if( props[i].orderno != undefined) {
+						propsOrdered[props[i].orderno] = props[i];
 					}
 					else {
-						h = i-12;
-						val = {label:h + " PM",num:i};
+						propsOrdered[ct++] = props[i];
+					}
+				}
+
+				Object.keys(propsOrdered)
+					.sort()
+						.forEach(function(v, i) {
+						propsRet[v] = propsOrdered[v];
+				});
+
+				return propsRet;
+			},
+
+			registerHelpers: function() {
+				var self = this;
+
+				mura.Handlebars.registerHelper('eachColRow',function(row, columns, options) {
+					var ret = "";
+					for(var i = 0;i < columns.length;i++) {
+						ret = ret + options.fn(row[columns[i].column]);
+					}
+					return ret;
+				});
+
+				mura.Handlebars.registerHelper('eachProp',function(data, options) {
+					var ret = "";
+					var obj = {};
+
+					for(var i in self.properties) {
+						obj.displayName = self.properties[i].displayName;
+						if( self.properties[i].fieldtype == "one-to-one" ) {
+							obj.displayValue = data[ self.properties[i].cfc ].val;
+						}
+						else
+							obj.displayValue = data[ self.properties[i].column ];
+
+						ret = ret + options.fn(obj);
+					}
+					return ret;
+				});
+
+				mura.Handlebars.registerHelper('eachKey',function(properties, by, options) {
+					var ret = "";
+					var item = "";
+					for(var i in properties) {
+						item = properties[i];
+
+						if(item.column == by)
+							item.selected = "Selected";
+
+						if(item.rendertype == 'textfield')
+							ret = ret + options.fn(item);
 					}
 
-					if(hour == i)
-						val.selected = "selected";
+					return ret;
+				});
 
-					ret = ret + options.fn(val);
-				}
-				return ret;
-			});
+				mura.Handlebars.registerHelper('eachHour',function(hour, options) {
+					var ret = "";
+					var h = 0;
+					var val = "";
 
-			root.mura.Handlebars.registerHelper('eachColButton',function(row, options) {
-				var ret = "";
+					for(var i = 0;i < 24;i++) {
 
-				row.label='View';
-				row.type='data-view';
+						if(i == 0 ) {
+							val = {label:"12 AM",num:i};
+						}
+						else if(i <12 ) {
+							h = i;
+							val = {label:h + " AM",num:i};
+						}
+						else if(i == 12 ) {
+							h = i;
+							val = {label:h + " PM",num:i};
+						}
+						else {
+							h = i-12;
+							val = {label:h + " PM",num:i};
+						}
 
-				// only do view if there are more properties than columns
-				if( Object.keys(self.properties).length > self.columns.length) {
-					ret = ret + options.fn(row);
-				}
+						if(hour == i)
+							val.selected = "selected";
 
-				if( self.context.view == 'edit') {
-					row.label='Edit';
-					row.type='data-edit';
+						ret = ret + options.fn(val);
+					}
+					return ret;
+				});
 
-					ret = ret + options.fn(row);
-				}
+				mura.Handlebars.registerHelper('eachColButton',function(row, options) {
+					var ret = "";
 
-				return ret;
-			});
+					row.label='View';
+					row.type='data-view';
 
-			root.mura.Handlebars.registerHelper('eachCheck',function(checks, selected, options) {
-				var ret = "";
+					// only do view if there are more properties than columns
+					if( Object.keys(self.properties).length > self.columns.length) {
+						ret = ret + options.fn(row);
+					}
 
-				for(var i = 0;i < checks.length;i++) {
-					if( selected.indexOf( checks[i].id ) > -1 )
-						checks[i].isselected = 1;
-					else
-					 	checks[i].isselected = 0;
+					if( self.context.view == 'edit') {
+						row.label='Edit';
+						row.type='data-edit';
 
-					ret = ret + options.fn(checks[i]);
-				}
-				return ret;
-			});
+						ret = ret + options.fn(row);
+					}
 
-			root.mura.Handlebars.registerHelper('eachStatic',function(dataset, options) {
-				var ret = "";
+					return ret;
+				});
 
-				for(var i = 0;i < dataset.datarecordorder.length;i++) {
-					ret = ret + options.fn(dataset.datarecords[dataset.datarecordorder[i]]);
-				}
-				return ret;
-			});
+				mura.Handlebars.registerHelper('eachCheck',function(checks, selected, options) {
+					var ret = "";
 
-			root.mura.Handlebars.registerHelper('inputWrapperClass',function() {
-				var escapeExpression=root.mura.Handlebars.escapeExpression;
-				var returnString='mura-control-group';
+					for(var i = 0;i < checks.length;i++) {
+						if( selected.indexOf( checks[i].id ) > -1 )
+							checks[i].isselected = 1;
+						else
+						 	checks[i].isselected = 0;
 
-				if(this.wrappercssclass){
-					returnString += ' ' + escapeExpression(this.wrappercssclass);
-				}
+						ret = ret + options.fn(checks[i]);
+					}
+					return ret;
+				});
 
-				if(this.isrequired){
-					returnString += ' req';
-				}
+				mura.Handlebars.registerHelper('eachStatic',function(dataset, options) {
+					var ret = "";
 
-				return returnString;
-			});
+					for(var i = 0;i < dataset.datarecordorder.length;i++) {
+						ret = ret + options.fn(dataset.datarecords[dataset.datarecordorder[i]]);
+					}
+					return ret;
+				});
 
-			root.mura.Handlebars.registerHelper('formClass',function() {
-				var escapeExpression=root.mura.Handlebars.escapeExpression;
-				var returnString='mura-form';
+				mura.Handlebars.registerHelper('inputWrapperClass',function() {
+					var escapeExpression=mura.Handlebars.escapeExpression;
+					var returnString='mura-control-group';
 
-				if(this['class']){
-					returnString += ' ' + escapeExpression(this['class']);
-				}
+					if(this.wrappercssclass){
+						returnString += ' ' + escapeExpression(this.wrappercssclass);
+					}
 
-				return returnString;
-			});
+					if(this.isrequired){
+						returnString += ' req';
+					}
 
-			root.mura.Handlebars.registerHelper('commonInputAttributes',function() {
-				//id, class, title, size
-				var escapeExpression=root.mura.Handlebars.escapeExpression;
-				var returnString='name="' + escapeExpression(this.name) + '"';
+					return returnString;
+				});
 
-				if(this.cssid){
-					returnString += ' id="' + escapeExpression(this.cssid) + '"';
-				} else {
-					returnString += ' id="field-' + escapeExpression(this.name) + '"';
-				}
+				mura.Handlebars.registerHelper('formClass',function() {
+					var escapeExpression=mura.Handlebars.escapeExpression;
+					var returnString='mura-form';
 
-				if(this.cssclass){
-					returnString += ' class="' + escapeExpression(this.cssclass) + '"';
-				}
+					if(this['class']){
+						returnString += ' ' + escapeExpression(this['class']);
+					}
 
-				if(this.tooltip){
-					returnString += ' title="' + escapeExpression(this.tooltip) + '"';
-				}
+					return returnString;
+				});
 
-				if(this.size){
-					returnString += ' size="' + escapeExpression(this.size) + '"';
-				}
+				mura.Handlebars.registerHelper('commonInputAttributes',function() {
+					//id, class, title, size
+					var escapeExpression=mura.Handlebars.escapeExpression;
+					var returnString='name="' + escapeExpression(this.name) + '"';
 
-				return returnString;
-			});
+					if(this.cssid){
+						returnString += ' id="' + escapeExpression(this.cssid) + '"';
+					} else {
+						returnString += ' id="field-' + escapeExpression(this.name) + '"';
+					}
 
-		}
+					if(this.cssclass){
+						returnString += ' class="' + escapeExpression(this.cssclass) + '"';
+					}
 
-	});
+					if(this.tooltip){
+						returnString += ' title="' + escapeExpression(this.tooltip) + '"';
+					}
 
-})(this);
+					if(this.size){
+						returnString += ' size="' + escapeExpression(this.size) + '"';
+					}
+
+					return returnString;
+				});
+
+			}
+
+		});
+
+	}));
 ;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -8707,12 +8828,25 @@ root.mura.templates['embed']=function(context){
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-;(function(root){
-    root.mura.datacache=new root.mura.cache();
-    root.mura.Handlebars=Handlebars.create();
-    root.mura.templatesLoaded=false;
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        mura=factory(require('mura'),require('Handlebars'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.mura,root.Handlebars);
+    }
+}(this, function (mura,Handlebars) {
+    mura.datacache=new mura.cache();
+    mura.Handlebars=Handlebars.create();
+    mura.templatesLoaded=false;
     Handlebars.noConflict();
-})(this);
+}));
 ;this["mura"] = this["mura"] || {};
 this["mura"]["templates"] = this["mura"]["templates"] || {};
 

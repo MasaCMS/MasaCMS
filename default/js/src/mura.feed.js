@@ -43,147 +43,159 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+	;(function (root, factory) {
+	    if (typeof define === 'function' && define.amd) {
+	        // AMD. Register as an anonymous module.
+	        define(['mura'], factory);
+	    } else if (typeof module === 'object' && module.exports) {
+	        // Node. Does not work with strict CommonJS, but
+	        // only CommonJS-like environments that support module.exports,
+	        // like Node.
+	        factory(require('mura'));
+	    } else {
+	        // Browser globals (root is window)
+	        factory(root.mura);
+	    }
+	}(this, function (mura) {
+		mura.feed=mura.core.extend({
+			init:function(siteid,entityname){
+	            this.queryString= entityname + '/?';
+				this.propIndex=0;
+				this.entityname=entityname;
+	            return this;
+			},
+			fields:function(fields){
+	            this.queryString+='&fields=' + encodeURIComponent(fields);
+	            return this;
+	        },
+	        where:function(property){
+	            if(property){
+	                return this.andProp(property);
+	            }
+	            return this;
+	        },
+	        prop:function(property){
+	            return this.andProp(property);
+	        },
+	        andProp:function(property){
+	            this.queryString+='&' + encodeURIComponent(property) + '[' + this.propIndex + ']=';
+				this.propIndex++;
+	            return this;
+	        },
+	        orProp:function(property){
+	            this.queryString+='&or[' + this.propIndex + ']&';
+				this.propIndex++;
+				this.queryString+= encodeURIComponent(property) + '[' + this.propIndex + ']=';
+				this.propIndex++;
+				return this;
+	        },
+	        isEQ:function(criteria){
+	            this.queryString+=encodeURIComponent(criteria);
+				return this;
+	        },
+	        isNEQ:function(criteria){
+	            this.queryString+='neq^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isLT:function(criteria){
+	            this.queryString+='lt^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isLTE:function(criteria){
+	            this.queryString+='lte^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isGT:function(criteria){
+	            this.queryString+='gt^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isGTE:function(criteria){
+	            this.queryString+='gte^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isIn:function(criteria){
+	            this.queryString+='in^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        isNotIn:function(criteria){
+	            this.queryString+='notin^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        containsValue:function(criteria){
+	            this.queryString+='containsValue^' + encodeURIComponent(criteria);
+				return this;
+	        },
+			contains:function(criteria){
+	            this.queryString+='containsValue^' + encodeURIComponent(criteria);
+				return this;
+	        },
+			beginsWith:function(criteria){
+	            this.queryString+='begins^' + encodeURIComponent(criteria);
+				return this;
+	        },
+			endsWith:function(criteria){
+	            this.queryString+='ends^' + encodeURIComponent(criteria);
+				return this;
+	        },
+	        openGrouping:function(criteria){
+	            this.queryString+='&openGrouping';
+				return this;
+	        },
+	        andOpenGrouping:function(criteria){
+	            this.queryString+='&andOpenGrouping';
+				return this;
+	        },
+	        closeGrouping:function(criteria){
+	            this.queryString+='&closeGrouping:';
+				return this;
+	        },
+			sort:function(property,direction){
+				direction=direction || 'asc';
+				if(direction == 'desc'){
+					this.queryString+='&sort[' + this.propIndex + ']=-' + encodeURIComponent(property);
+				} else {
+					this.queryString+='&sort[' + this.propIndex + ']=+' + encodeURIComponent(property);
+				}
+				this.propIndex++;
+	            return this;
+	        },
+			itemsPerPage:function(itemsPerPage){
+	            this.queryString+='&itemsPerPage=' + encodeURIComponent(itemsPerPage);
+				return this;
+	        },
+			maxItems:function(maxItems){
+	            this.queryString+='&maxItems=' + encodeURIComponent(maxItems);
+				return this;
+	        },
+			innerJoin:function(relatedEntity){
+	            this.queryString+='&innerJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
+				this.propIndex++;
+	            return this;
+	        },
+			leftJoin:function(relatedEntity){
+	            this.queryString+='&leftJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
+				this.propIndex++;
+	            return this;
+	        },
+	        getQuery:function(){
+	            var self=this;
 
-;(function(root){
-	root.mura.feed=root.mura.core.extend({
-		init:function(siteid,entityname){
-            this.queryString= entityname + '/?';
-			this.propIndex=0;
-			this.entityname=entityname;
-            return this;
-		},
-		fields:function(fields){
-            this.queryString+='&fields=' + encodeURIComponent(fields);
-            return this;
-        },
-        where:function(property){
-            if(property){
-                return this.andProp(property);
-            }
-            return this;
-        },
-        prop:function(property){
-            return this.andProp(property);
-        },
-        andProp:function(property){
-            this.queryString+='&' + encodeURIComponent(property) + '[' + this.propIndex + ']=';
-			this.propIndex++;
-            return this;
-        },
-        orProp:function(property){
-            this.queryString+='&or[' + this.propIndex + ']&';
-			this.propIndex++;
-			this.queryString+= encodeURIComponent(property) + '[' + this.propIndex + ']=';
-			this.propIndex++;
-			return this;
-        },
-        isEQ:function(criteria){
-            this.queryString+=encodeURIComponent(criteria);
-			return this;
-        },
-        isNEQ:function(criteria){
-            this.queryString+='neq^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isLT:function(criteria){
-            this.queryString+='lt^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isLTE:function(criteria){
-            this.queryString+='lte^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isGT:function(criteria){
-            this.queryString+='gt^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isGTE:function(criteria){
-            this.queryString+='gte^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isIn:function(criteria){
-            this.queryString+='in^' + encodeURIComponent(criteria);
-			return this;
-        },
-        isNotIn:function(criteria){
-            this.queryString+='notin^' + encodeURIComponent(criteria);
-			return this;
-        },
-        containsValue:function(criteria){
-            this.queryString+='containsValue^' + encodeURIComponent(criteria);
-			return this;
-        },
-		contains:function(criteria){
-            this.queryString+='containsValue^' + encodeURIComponent(criteria);
-			return this;
-        },
-		beginsWith:function(criteria){
-            this.queryString+='begins^' + encodeURIComponent(criteria);
-			return this;
-        },
-		endsWith:function(criteria){
-            this.queryString+='ends^' + encodeURIComponent(criteria);
-			return this;
-        },
-        openGrouping:function(criteria){
-            this.queryString+='&openGrouping';
-			return this;
-        },
-        andOpenGrouping:function(criteria){
-            this.queryString+='&andOpenGrouping';
-			return this;
-        },
-        closeGrouping:function(criteria){
-            this.queryString+='&closeGrouping:';
-			return this;
-        },
-		sort:function(property,direction){
-			direction=direction || 'asc';
-			if(direction == 'desc'){
-				this.queryString+='&sort[' + this.propIndex + ']=-' + encodeURIComponent(property);
-			} else {
-				this.queryString+='&sort[' + this.propIndex + ']=+' + encodeURIComponent(property);
-			}
-			this.propIndex++;
-            return this;
-        },
-		itemsPerPage:function(itemsPerPage){
-            this.queryString+='&itemsPerPage=' + encodeURIComponent(itemsPerPage);
-			return this;
-        },
-		maxItems:function(maxItems){
-            this.queryString+='&maxItems=' + encodeURIComponent(maxItems);
-			return this;
-        },
-		innerJoin:function(relatedEntity){
-            this.queryString+='&innerJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
-			this.propIndex++;
-            return this;
-        },
-		leftJoin:function(relatedEntity){
-            this.queryString+='&leftJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
-			this.propIndex++;
-            return this;
-        },
-        getQuery:function(){
-            var self=this;
+	            return new Promise(function(resolve,reject) {
+					mura.ajax({
+						type:'get',
+						url:mura.apiEndpoint + self.queryString,
+						success:function(resp){
 
-            return new Promise(function(resolve,reject) {
-				root.mura.ajax({
-					type:'get',
-					url:root.mura.apiEndpoint + self.queryString,
-					success:function(resp){
+							var returnObj = new mura.entityCollection(resp.data);
 
-						var returnObj = new root.mura.entityCollection(resp.data);
-
-						if(typeof resolve == 'function'){
-							resolve(returnObj);
-						}
-					},
-					error:reject
+							if(typeof resolve == 'function'){
+								resolve(returnObj);
+							}
+						},
+						error:reject
+					});
 				});
-			});
-        }
-    });
+	        }
+	    });
 
-})(this);
+}));

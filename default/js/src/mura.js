@@ -44,7 +44,20 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(root){
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        root.mura=factory(root);
+    } else {
+        // Browser globals (root is window)
+        root.mura=factory(root);
+    }
+}(this, function (root) {
 
 	function login(username,password,siteid){
 		siteid=siteid || root.mura.siteid;
@@ -2431,5 +2444,5 @@
 	//for some reason this can't be added via extend
 	root.validateForm=validateForm;
 
-
-})(this);
+	return mura;
+}));

@@ -43,9 +43,21 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(root){
-	root.mura.domSelection=root.mura.core.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.mura);
+    }
+}(this, function (mura) {
+	mura.domSelection=mura.core.extend({
 		init:function(selection,origSelector){
 			this.selection=selection;
 			this.origSelector=origSelector;
@@ -68,11 +80,11 @@
 		},
 
 		ajax:function(data){
-			return root.mura.ajax(data);
+			return mura.ajax(data);
 		},
 
 		select:function(selector){
-			return root.mura(selector);
+			return mura(selector);
 		},
 
 		each:function(fn){
@@ -83,13 +95,13 @@
 		},
 
 		filter:function(fn){
-			return root.mura(this.selection.filter( function(el,idx,array){
+			return mura(this.selection.filter( function(el,idx,array){
 				return fn.call(el,el,idx,array);
 			}));
 		},
 
 		map:function(fn){
-			return root.mura(this.selection.map( function(el,idx,array){
+			return mura(this.selection.map( function(el,idx,array){
 				return fn.call(el,el,idx,array);
 			}));
 		},
@@ -100,7 +112,7 @@
 
 		processMarkup:function(){
 			this.each(function(el){
-				root.mura.processMarkup(el);
+				mura.processMarkup(el);
 			});
 			return this;
 		},
@@ -181,7 +193,7 @@
 			} else {
 				this.each(function(el){
 					if(typeof el.submit == 'function'){
-						root.mura.submitForm(el);
+						mura.submitForm(el);
 					}
 				});
 			}
@@ -230,7 +242,7 @@
 			eventDetails=eventDetail || {};
 
 			this.each(function(el){
-				root.mura.trigger(el,eventName,eventDetail);
+				mura.trigger(el,eventName,eventDetail);
 			});
 			return this;
 		},
@@ -239,7 +251,7 @@
 			if(!this.selection.length){
 				return this;
 			}
-			return root.mura(this.selection[0].parentNode);
+			return mura(this.selection[0].parentNode);
 		},
 
 		children:function(selector){
@@ -248,7 +260,7 @@
 			}
 
 			if(this.selection[0].hasChildNodes()){
-				var children=root.mura(this.selection[0].childNodes);
+				var children=mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
 					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
@@ -258,7 +270,7 @@
 
 				return children.filter(filterFn);
 			} else {
-				return root.mura([]);
+				return mura([]);
 			}
 
 		},
@@ -270,19 +282,19 @@
 				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
 					var result=this.selection[0].querySelectorAll(selector);
 				} else if(this.selection[0].nodeType=='9'){
-					var result=root.document.querySelectorAll(selector);
+					var result=document.querySelectorAll(selector);
 				} else {
 					var result=[];
 				}
-				return root.mura(result);
+				return mura(result);
 			} else {
-				return root.mura([]);
+				return mura([]);
 			}
 		},
 
 		selector:function() {
 			var pathes = [];
-			var path, node = root.mura(this.selection[0]);
+			var path, node = mura(this.selection[0]);
 
 			while (node.length) {
 				var realNode = node.get(0), name = realNode.localName;
@@ -326,7 +338,7 @@
 			var el=this.selection[0];
 
 			if(el.hasChildNodes()){
-				var silbings=root.mura(this.selection[0].childNodes);
+				var silbings=mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
 					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
@@ -336,7 +348,7 @@
 
 				return silbings.filter(filterFn);
 			} else {
-				return root.mura([]);
+				return mura([]);
 			}
 		},
 
@@ -358,9 +370,9 @@
 		    for( var parent = el ; parent !== null  && parent.matchesSelector && !parent.matchesSelector(selector) ; parent = el.parentElement ){ el = parent; };
 
 		    if(parent){
-		    	 return root.mura(parent)
+		    	 return mura(parent)
 		    } else {
-		    	 return root.mura([]);
+		    	 return mura([]);
 		    }
 
 		},
@@ -396,11 +408,11 @@
 						el.setAttribute('data-render','server');
 					}
 
-					el.setAttribute('data-instanceid',root.mura.createUUID());
+					el.setAttribute('data-instanceid',mura.createUUID());
 
-					root.mura(this).append(el);
+					mura(this).append(el);
 
-					root.mura.processDisplayObject(el).then(resolve,reject);
+					mura.processDisplayObject(el).then(resolve,reject);
 
 				});
 			});
@@ -426,11 +438,11 @@
 						el.setAttribute('data-render','server');
 					}
 
-					el.setAttribute('data-instanceid',root.mura.createUUID());
+					el.setAttribute('data-instanceid',mura.createUUID());
 
-					root.mura(this).prepend(el);
+					mura(this).prepend(el);
 
-					root.mura.processDisplayObject(el).then(resolve,reject);
+					mura.processDisplayObject(el).then(resolve,reject);
 
 				});
 			});
@@ -440,7 +452,7 @@
 			var self=this;
 			return new Promise(function(resolve,reject){
 				self.each(function(){
-					root.mura.processDisplayObject(this).then(resolve,reject);
+					mura.processDisplayObject(this).then(resolve,reject);
 				});
 			});
 		},
@@ -488,7 +500,7 @@
 
 			this.prepend(el);
 
-			root.mura.processAsyncObject(el);
+			mura.processAsyncObject(el);
 
 			return el;
 		},
@@ -587,7 +599,7 @@
 			}
 
 			this.each(function(el){
-				root.mura.evalScripts(el);
+				mura.evalScripts(el);
 			});
 
 			return this;
@@ -598,7 +610,7 @@
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
 					el.innerHTML=htmlString;
-					root.mura.evalScripts(el);
+					mura.evalScripts(el);
 				});
 				return this;
 			} else {
@@ -616,7 +628,7 @@
 
 			if(typeof ruleName == 'undefined' && typeof value == 'undefined'){
 				try{
-					return root.getComputedStyle(this.selection[0]);
+					return getComputedStyle(this.selection[0]);
 				} catch(e){
 					return {};
 				}
@@ -637,7 +649,7 @@
 				return this;
 			} else{
 				try{
-					return root.getComputedStyle(this.selection[0])[ruleName];
+					return getComputedStyle(this.selection[0])[ruleName];
 				} catch(e){}
 			}
 		},
@@ -692,7 +704,7 @@
 			if(typeof withMargin == 'undefined'){
 				function outerHeight(el) {
 				  var height = el.offsetHeight;
-				  var style = root.getComputedStyle(el);
+				  var style = getComputedStyle(el);
 
 				  height += parseInt(style.marginTop) + parseInt(style.marginBottom);
 				  return height;
@@ -721,7 +733,7 @@
 			//var type=el.constructor.name.toLowerCase();
 
 			if(el === root){
-				return root.innerHeight
+				return innerHeight
 			} else if(el === document){
 				var body = document.body;
 		    	var html = document.documentElement;
@@ -729,7 +741,7 @@
 		                       html.clientHeight, html.scrollHeight, html.offsetHeight )
 			}
 
-			var styles = root.getComputedStyle(el);
+			var styles = getComputedStyle(el);
 			var margin = parseFloat(styles['marginTop']) + parseFloat(styles['marginBottom']);
 
 			return Math.ceil(el.offsetHeight + margin);
@@ -752,7 +764,7 @@
 			//var type=el.constructor.name.toLowerCase();
 
 			if(el === root){
-				return root.innerWidth
+				return innerWidth
 			} else if(el === document){
 				var body = document.body;
 		    	var html = document.documentElement;
@@ -760,7 +772,7 @@
 		                       html.clientWidth, html.scrolWidth, html.offsetWidth )
 			}
 
-		  	return root.getComputedStyle(el).width;
+		  	return getComputedStyle(el).width;
 		},
 
 		offset:function(){
@@ -786,8 +798,8 @@
 			}
 			var box = this.selection[0].getBoundingClientRect();
 			return {
-			  top: box.top  + ( root.pageYOffset || document.scrollTop )  - ( document.clientTop  || 0 ),
-			  left: box.left + ( root.pageXOffset || document.scrollLeft ) - ( document.clientLeft || 0 )
+			  top: box.top  + ( pageYOffset || document.scrollTop )  - ( document.clientTop  || 0 ),
+			  left: box.left + ( pageXOffset || document.scrollLeft ) - ( document.clientLeft || 0 )
 			};
 		},
 
@@ -812,7 +824,7 @@
 			}
 
 			this.each(function(el){
-				root.mura.changeElementType(el,type)
+				mura.changeElementType(el,type)
 
 			});
 			return this;
@@ -854,7 +866,7 @@
 			}
 
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return root.mura.getAttributes(this.selection[0]);
+				return mura.getAttributes(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					if(el.setAttribute){
@@ -887,7 +899,7 @@
 				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return root.mura.getData(this.selection[0]);
+				return mura.getData(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){
@@ -902,7 +914,7 @@
 				});
 				return this;
 			} else if (this.selection[0] && this.selection[0].getAttribute) {
-				return root.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
+				return mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
 			} else {
 				return undefined;
 			}
@@ -913,7 +925,7 @@
 				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return root.mura.getProps(this.selection[0]);
+				return mura.getProps(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){
@@ -928,7 +940,7 @@
 				});
 				return this;
 			} else {
-				return root.mura.parseString(this.selection[0].getAttribute(attributeName));
+				return mura.parseString(this.selection[0].getAttribute(attributeName));
 			}
 		},
 
@@ -977,4 +989,4 @@
 		}
 	});
 
-})(this);
+}));
