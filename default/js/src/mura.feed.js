@@ -54,10 +54,10 @@
 	        factory(require('mura'));
 	    } else {
 	        // Browser globals (root is window)
-	        factory(root.mura);
+	        factory(root.Mura);
 	    }
 	}(this, function (mura) {
-		mura.feed=mura.core.extend({
+		Mura.Feed=Mura.Core.extend({
 			init:function(siteid,entityname){
 	            this.queryString= entityname + '/?';
 				this.propIndex=0;
@@ -181,12 +181,12 @@
 	            var self=this;
 
 	            return new Promise(function(resolve,reject) {
-					mura.ajax({
+					Mura.ajax({
 						type:'get',
-						url:mura.apiEndpoint + self.queryString,
+						url:Mura.apiEndpoint + self.queryString,
 						success:function(resp){
 
-							var returnObj = new mura.entityCollection(resp.data);
+							var returnObj = new Mura.EntityCollection(resp.data);
 
 							if(typeof resolve == 'function'){
 								resolve(returnObj);

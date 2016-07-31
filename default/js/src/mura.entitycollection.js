@@ -54,10 +54,10 @@
         factory(require('mura'));
     } else {
         // Browser globals (root is window)
-        factory(root.mura);
+        factory(root.Mura);
     }
 }(this, function (mura) {
-	mura.entityCollection=mura.entity.extend({
+	Mura.EntityCollection=Mura.Entity.extend({
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -66,10 +66,10 @@
 
 			if(Array.isArray(self.get('items'))){
 				self.set('items',self.get('items').map(function(obj){
-					if(mura.entities[obj.entityname]){
-						return new mura.entities[obj.entityname](obj);
+					if(Mura.entities[obj.entityname]){
+						return new Mura.entities[obj.entityname](obj);
 					} else {
-						return new mura.entity(obj);
+						return new Mura.Entity(obj);
 					}
 				}));
 			}
@@ -88,7 +88,7 @@
 		getAll:function(){
 			var self=this;
 
-			return mura.extend(
+			return Mura.extend(
 				{},
 				self.properties,
 				{
@@ -112,14 +112,14 @@
 		},
 
 		filter:function(fn){
-			var collection=new mura.entityCollection(this.properties);
+			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			var collection=new mura.entityCollection(this.properties);
+			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));

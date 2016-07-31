@@ -55,15 +55,15 @@
         factory(require('mura'));
     } else {
         // Browser globals (root is window)
-        factory(root.mura);
+        factory(root.Mura);
     }
 }(this, function (mura) {
-	mura.cache=mura.core.extend({
+	Mura.Cache=Mura.Core.extend({
 		init:function(){
 			this.cache={};
 		},
         getKey:function(keyName){
-            return mura.hashCode(keyName);
+            return Mura.hashCode(keyName);
         },
 
         get:function(keyName,keyValue){

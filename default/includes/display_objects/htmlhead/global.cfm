@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/dist/mura.js"></script>
 
 <script>
-initMura({
+Mura.init({
 	loginURL:"#variables.$.siteConfig('LoginURL')#",
 	siteid:"#variables.$.event('siteID')#",
 	contentid:"#variables.$.content('contentid')#",

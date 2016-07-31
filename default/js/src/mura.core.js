@@ -54,7 +54,7 @@
         factory(require('mura'));
     } else {
         // Browser globals (root is window)
-        factory(root.mura);
+        factory(root.Mura);
     }
 }(this, function (mura) {
 	function core(){
@@ -81,9 +81,9 @@
 
 	core.extend=function(properties){
 		var self=this;
-		return mura.extend(mura.extendClass(self,properties),{extend:self.extend,handlers:[]});
+		return Mura.extend(Mura.extendClass(self,properties),{extend:self.extend,handlers:[]});
 	};
 
-	mura.core=core;
+	Mura.Core=core;
 
 }));

@@ -54,10 +54,10 @@
         factory(require('mura'));
     } else {
         // Browser globals (root is window)
-        factory(root.mura);
+        factory(root.Mura);
     }
 }(this, function (mura) {
-	mura.ui=mura.core.extend({
+	Mura.UI=Mura.Core.extend({
 		rb:{},
 		context:{},
 		onAfterRender:function(){},
@@ -89,7 +89,7 @@
 		},
 
 		render:function(){
-			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
+			mura(this.context.targetEl).html(Mura.templates[context.object](this.context));
 			this.trigger('afterRender');
 			return this;
 		},

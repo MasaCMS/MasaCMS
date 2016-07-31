@@ -54,10 +54,10 @@
         factory(require('mura'));
     } else {
         // Browser globals (root is window)
-        factory(root.mura);
+        factory(root.Mura);
     }
 }(this, function (mura) {
-	mura.domSelection=mura.core.extend({
+	Mura.DOMSelection=Mura.Core.extend({
 		init:function(selection,origSelector){
 			this.selection=selection;
 			this.origSelector=origSelector;
@@ -80,7 +80,7 @@
 		},
 
 		ajax:function(data){
-			return mura.ajax(data);
+			return Mura.ajax(data);
 		},
 
 		select:function(selector){
@@ -112,7 +112,7 @@
 
 		processMarkup:function(){
 			this.each(function(el){
-				mura.processMarkup(el);
+				Mura.processMarkup(el);
 			});
 			return this;
 		},
@@ -193,7 +193,7 @@
 			} else {
 				this.each(function(el){
 					if(typeof el.submit == 'function'){
-						mura.submitForm(el);
+						Mura.submitForm(el);
 					}
 				});
 			}
@@ -242,7 +242,7 @@
 			eventDetails=eventDetail || {};
 
 			this.each(function(el){
-				mura.trigger(el,eventName,eventDetail);
+				Mura.trigger(el,eventName,eventDetail);
 			});
 			return this;
 		},
@@ -408,11 +408,11 @@
 						el.setAttribute('data-render','server');
 					}
 
-					el.setAttribute('data-instanceid',mura.createUUID());
+					el.setAttribute('data-instanceid',Mura.createUUID());
 
 					mura(this).append(el);
 
-					mura.processDisplayObject(el).then(resolve,reject);
+					Mura.processDisplayObject(el).then(resolve,reject);
 
 				});
 			});
@@ -438,11 +438,11 @@
 						el.setAttribute('data-render','server');
 					}
 
-					el.setAttribute('data-instanceid',mura.createUUID());
+					el.setAttribute('data-instanceid',Mura.createUUID());
 
 					mura(this).prepend(el);
 
-					mura.processDisplayObject(el).then(resolve,reject);
+					Mura.processDisplayObject(el).then(resolve,reject);
 
 				});
 			});
@@ -452,7 +452,7 @@
 			var self=this;
 			return new Promise(function(resolve,reject){
 				self.each(function(){
-					mura.processDisplayObject(this).then(resolve,reject);
+					Mura.processDisplayObject(this).then(resolve,reject);
 				});
 			});
 		},
@@ -500,7 +500,7 @@
 
 			this.prepend(el);
 
-			mura.processAsyncObject(el);
+			Mura.processAsyncObject(el);
 
 			return el;
 		},
@@ -599,7 +599,7 @@
 			}
 
 			this.each(function(el){
-				mura.evalScripts(el);
+				Mura.evalScripts(el);
 			});
 
 			return this;
@@ -610,7 +610,7 @@
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
 					el.innerHTML=htmlString;
-					mura.evalScripts(el);
+					Mura.evalScripts(el);
 				});
 				return this;
 			} else {
@@ -824,7 +824,7 @@
 			}
 
 			this.each(function(el){
-				mura.changeElementType(el,type)
+				Mura.changeElementType(el,type)
 
 			});
 			return this;
@@ -866,7 +866,7 @@
 			}
 
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return mura.getAttributes(this.selection[0]);
+				return Mura.getAttributes(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					if(el.setAttribute){
@@ -899,7 +899,7 @@
 				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return mura.getData(this.selection[0]);
+				return Mura.getData(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){
@@ -914,7 +914,7 @@
 				});
 				return this;
 			} else if (this.selection[0] && this.selection[0].getAttribute) {
-				return mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
+				return Mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
 			} else {
 				return undefined;
 			}
@@ -925,7 +925,7 @@
 				return this;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return mura.getProps(this.selection[0]);
+				return Mura.getProps(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){
@@ -940,7 +940,7 @@
 				});
 				return this;
 			} else {
-				return mura.parseString(this.selection[0].getAttribute(attributeName));
+				return Mura.parseString(this.selection[0].getAttribute(attributeName));
 			}
 		},
 

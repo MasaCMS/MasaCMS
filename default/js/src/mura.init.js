@@ -54,11 +54,11 @@
         mura=factory(require('mura'),require('Handlebars'));
     } else {
         // Browser globals (root is window)
-        factory(root.mura,root.Handlebars);
+        factory(root.Mura,root.Handlebars);
     }
 }(this, function (mura,Handlebars) {
-    mura.datacache=new mura.cache();
-    mura.Handlebars=Handlebars.create();
-    mura.templatesLoaded=false;
+    Mura.datacache=new Mura.Cache();
+    Mura.Handlebars=Handlebars.create();
+    Mura.templatesLoaded=false;
     Handlebars.noConflict();
 }));

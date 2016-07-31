@@ -35,7 +35,7 @@
 	;
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
 
-	if( ! root.mura.ljs ){
+	if( ! root.Mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
 			,header  = D[getElementsByTagName]("head")[0] || D.documentElement
@@ -222,7 +222,7 @@
 			}
 		}
 		//export ljs
-		root.mura.ljs = loader;
+		root.Mura.ljs = loader;
 		// eval inside tag code if any
 	}
 	script && gEval(script);
