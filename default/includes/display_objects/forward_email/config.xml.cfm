@@ -1,1 +1,1 @@
-<displayobject name="Forward Email" legacyobjectfile="dsp_forward_email.cfm" />
+<mura name="Forward Email" legacyobjectfile="dsp_forward_email.cfm" />

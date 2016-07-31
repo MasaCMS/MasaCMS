@@ -1,1 +1,1 @@
-<displayobject name="Embed" contenttypes="*" iconclass="mi-code"/>
+<mura name="Embed" contenttypes="*" iconclass="mi-code"/>
