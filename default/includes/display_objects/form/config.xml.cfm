@@ -1,1 +1,1 @@
-﻿<displayobject name="Form" contenttypes="*" iconclass="mi-toggle-on"/>
+﻿<mura name="Form" contenttypes="*" iconclass="mi-toggle-on"/>

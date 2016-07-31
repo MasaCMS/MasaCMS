@@ -1,1 +1,1 @@
-<displayobject name="Deny" legacyobjectfile="../dsp_deny.cfm" />
+<mura name="Deny" legacyobjectfile="../dsp_deny.cfm" />
