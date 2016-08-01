@@ -73,7 +73,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	param name="session.flatViewArgs" default={};
-		
+
+	if(!len(rc.siteid)){
+		rc.siteid=session.siteid;
+	}
 	session.flatViewArgs["#rc.siteID#"].moduleid=$.event("moduleid");
 	session.flatViewArgs["#rc.siteID#"].sortBy=$.event("sortby");
 	session.flatViewArgs["#rc.siteID#"].sortDirection=$.event("sortdirection");
