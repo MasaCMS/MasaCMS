@@ -119,27 +119,27 @@ $(function() {
 	pagecount = #local.pageCount#;
 </cfoutput>
 
-	if(mura.formdata == undefined) {
-		mura.formdata = {};
+	if(Mura.formdata == undefined) {
+		Mura.formdata = {};
 	}
 
 <cfoutput>
-	if(mura.formdata['#arguments.formID#'] == undefined) {
-		mura.formdata['#arguments.formID#'] = {};
+	if(Mura.formdata['#arguments.formID#'] == undefined) {
+		Mura.formdata['#arguments.formID#'] = {};
 	}
 </cfoutput>
 
 	leRenderPaging(<cfoutput>'#local.frmID#','#arguments.formID#',currentpage</cfoutput> );
 
-	mura("#btn-next").click( function() {
+	Mura("#btn-next").click( function() {
 		leChangePage( <cfoutput>'#local.frmID#','#arguments.formID#'</cfoutput>,currentpage+1 );
 	});
 
-	mura("#btn-back").click( function() {
+	Mura("#btn-back").click( function() {
 		leChangePage( <cfoutput>'#local.frmID#','#arguments.formID#'</cfoutput>,currentpage-1 );
 	});
 
-	mura("#btn-submit").click( function() {
+	Mura("#btn-submit").click( function() {
 		processFields(<cfoutput>'#local.frmID#','#arguments.formID#'</cfoutput>);
 	});
 
@@ -147,7 +147,7 @@ $(function() {
 
 	function leChangePage( formDiv,formid,pageIndex ) {
 		var multi = {};
-		var formdata = mura.formdata[formid];
+		var formdata = Mura.formdata[formid];
 		var forminputs = {};
 
 		$("#"+formDiv+" :input").each( function() {
@@ -180,39 +180,39 @@ $(function() {
 			formdata[ i ] = multi[ i ].join(',');
 		}
 
-		mura.formdata[formid] = formdata;
+		Mura.formdata[formid] = formdata;
 
-		mura( "[data-objectid='" + formid +  "']" ).attr('data-pageIndex',pageIndex);
-		mura.processObject( mura( "[data-objectid='" + formid +  "']" ) );
+		Mura( "[data-objectid='" + formid +  "']" ).attr('data-pageIndex',pageIndex);
+		Mura.processObject( Mura( "[data-objectid='" + formid +  "']" ) );
 	}
 
 	function leRenderPaging(formDiv,formid,pageIndex) {
 		self = this;
-		var formdata = mura.formdata[formid];
+		var formdata = Mura.formdata[formid];
 
-		mura("#" + formDiv + " #btn-next").hide();
-		mura("#" + formDiv + " #btn-back").hide();
-		mura("#" + formDiv + " #btn-submit").hide();
+		Mura("#" + formDiv + " #btn-next").hide();
+		Mura("#" + formDiv + " #btn-back").hide();
+		Mura("#" + formDiv + " #btn-submit").hide();
 
 		if(self.pagecount == 1) {
 			self.pagecount("#" + formDiv + " #btn-next").hide();
-			mura("#" + formDiv + " #btn-back").hide();
-			mura("#" + formDiv + " #btn-submit").show();
+			Mura("#" + formDiv + " #btn-back").hide();
+			Mura("#" + formDiv + " #btn-submit").show();
 		}
 		else {
 			if(self.pagecount == 1) {
-				mura("#" + formDiv + " #btn-next").show();
+				Mura("#" + formDiv + " #btn-next").show();
 			} else {
 
 				if (pageIndex > 1) {
-					mura("#" + formDiv + " #btn-back").show();
+					Mura("#" + formDiv + " #btn-back").show();
 				}
 
 				if(pageIndex < self.pagecount) {
-					mura("#" + formDiv + " #btn-next").show();
+					Mura("#" + formDiv + " #btn-next").show();
 				}
 				else {
-					mura("#" + formDiv + " #btn-submit").show();
+					Mura("#" + formDiv + " #btn-submit").show();
 				}
 			}
 		}
@@ -235,7 +235,7 @@ $(function() {
 
 	function processFields(formDiv,formid) {
 
-		var formdata = mura.formdata[formid];
+		var formdata = Mura.formdata[formid];
 		console.log('go');
 
 		$("#"+formDiv).submit();

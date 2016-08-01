@@ -54,7 +54,7 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject">
+<cfcomponent extends="Mura.cfobject">
 
 	<cffunction name="get" access="remote" output="true">
 		<cfargument name="commentID">
@@ -62,7 +62,7 @@
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var comment = $.getBean("contentManager").getCommentBean()>
 		<cfset var data = comment.setCommentID(arguments.commentID).load().getAllValues()>
-		<cfoutput>#createobject("component","mura.json").encode(data)#</cfoutput>
+		<cfoutput>#createobject("component","Mura.json").encode(data)#</cfoutput>
 	</cffunction>
 
 	<cffunction name="flag" access="remote" output="true">
@@ -79,7 +79,7 @@
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var contentStats = $.getBean('content').loadBy(contentID=arguments.contentID).getStats()>
 		
-		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(new mura.json().jsonencode(contentStats.getAllValues()));</cfscript>
+		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(new Mura.json().jsonencode(contentStats.getAllValues()));</cfscript>
 	</cffunction>
 
 	<cffunction name="renderCommentsPage" access="remote" output="true">
@@ -198,7 +198,7 @@
 								<cfif isEditor>
 								<div class="mura-comment-admin-button-wrapper #renderer.commentAdminButtonWrapperClass#">
 									<cfif isEditor and len(local.commenterEmail)>
-										<a class="mura-comment-user-email #renderer.commentUserEmailClass#" href="javascript:mura.noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+										<a class="mura-comment-user-email #renderer.commentUserEmailClass#" href="javascript:Mura.noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
 									</cfif>
 									<cfif isEditor>
 										<cfif yesnoformat(application.configBean.getValue("editablecomments"))>

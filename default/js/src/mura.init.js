@@ -46,12 +46,12 @@
 ;(function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['mura'], factory);
+        define(['Mura'], factory);
     } else if (typeof module === 'object' && module.exports) {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
-        mura=factory(require('mura'),require('Handlebars'));
+        mura=factory(require('Mura'),require('Handlebars'));
     } else {
         // Browser globals (root is window)
         factory(root.Mura,root.Handlebars);
