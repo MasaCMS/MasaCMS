@@ -340,7 +340,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<ul id="tools-version">
 							<!---
 							<cfif $.content('type') eq 'Variation'>
-							<li id="adminEditPage" class="dropdown"><a onclick="return muraInlineEditor.init();"><i class="mi-pencil"></i></a></li>
+							<li id="adminEditPage" class="dropdown"><a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i></a></li>
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
 							<cfelse>
 							--->
@@ -348,7 +348,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<ul class="dropdown-menu">
 								<cfif this.showInlineEditor>
 									<li id="adminQuickEdit">
-										<a onclick="return muraInlineEditor.init();"><i class="mi-pencil"></i>
+										<a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i>
 										<cfif $.content('type') eq 'Variation'>
 											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
 										<cfelseif useLayoutManager()>

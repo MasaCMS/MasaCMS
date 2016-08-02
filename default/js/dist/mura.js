@@ -3707,7 +3707,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function initShadowBox(el){
-	    if(mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
+	    if(Mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 
 	      loader().load(
 	        [
@@ -3715,7 +3715,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				Mura.assetpath +'/js/external/shadowbox/shadowbox.js'
 	        ],
 	        function(){
-				mura('#shadowbox_overlay,#shadowbox_container').remove();
+				Mura('#shadowbox_overlay,#shadowbox_container').remove();
 				if(root.Shadowbox){
 					root.Shadowbox.init();
 				}
@@ -4188,13 +4188,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		frm=(frm.node) ? frm.node : frm;
 
 	    if(obj){
-	      obj=(obj.node) ? obj : mura(obj);
+	      obj=(obj.node) ? obj : Mura(obj);
 	    } else {
-	      obj=mura(frm).closest('.mura-async-object');
+	      obj=Mura(frm).closest('.mura-async-object');
 	    }
 
 		if(!obj.length){
-			mura(frm).trigger('formSubmit',formToObject(frm));
+			Mura(frm).trigger('formSubmit',formToObject(frm));
 			frm.submit();
 		}
 
@@ -4240,7 +4240,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 
 				if(!('g-recaptcha-response' in data)) {
-					var reCaptchaCheck=mura(frm).find("#g-recaptcha-response");
+					var reCaptchaCheck=Mura(frm).find("#g-recaptcha-response");
 
 					if(reCaptchaCheck.length && typeof reCaptchaCheck.val() != 'undefined'){
 						data['g-recaptcha-response']=eCaptchaCheck.val();
@@ -4264,7 +4264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			self.prevData=obj.data();
 			self.innerHTML=root.Mura.preloaderMarkup;
 
-			mura(frm).trigger('formSubmit',data);
+			Mura(frm).trigger('formSubmit',data);
 
 			ajax(postconfig);
 	}
@@ -4274,7 +4274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function resetAsyncObject(el){
-		var self=mura(el);
+		var self=Mura(el);
 
 		self.removeClass('mura-active');
 		self.removeAttr('data-perm');
@@ -4285,7 +4285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			self.find('.frontEndToolsModal').remove();
 
 			self.find('.mura-object').each(function(){
-				var self=mura(this);
+				var self=Mura(this);
 				self.removeClass('mura-active');
 				self.removeAttr('data-perm');
 				self.removeAttr('data-inited');
@@ -4293,7 +4293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 
 			self.find('.mura-object[data-object="container"]').each(function(){
-				var self=mura(this);
+				var self=Mura(this);
 				var content=self.children('div.mura-object-content');
 
 				if(content.length){
@@ -4315,7 +4315,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function processAsyncObject(el){
-		obj=mura(el);
+		obj=Mura(el);
 		if(obj.data('async')===null){
 			obj.data('async',true);
 		}
@@ -4335,7 +4335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		}
 
-		obj=(obj.node) ? obj : mura(obj);
+		obj=(obj.node) ? obj : Mura(obj);
 		var self=obj.node;
 
 		if(obj.data('class')){
@@ -4443,19 +4443,19 @@ return /******/ (function(modules) { // webpackBootstrap
 			if(obj.hasClass('mura-body-object')){
 				obj.children('.frontEndToolsModal').remove();
 				obj.prepend(layoutmanagertoolbar);
-				muraInlineEditor.setAnchorSaveChecks(obj.node);
+				MuraInlineEditor.setAnchorSaveChecks(obj.node);
 
 				obj
 				.addClass('mura-active')
 				.hover(
 					function(e){
 						//e.stopPropagation();
-						mura('.mura-active-target').removeClass('mura-active-target');
-						mura(this).addClass('mura-active-target');
+						Mura('.mura-active-target').removeClass('mura-active-target');
+						Mura(this).addClass('mura-active-target');
 					},
 					function(e){
 						//e.stopPropagation();
-						mura(this).removeClass('mura-active-target');
+						Mura(this).removeClass('mura-active-target');
 					}
 				);
 			} else {
@@ -4464,26 +4464,26 @@ return /******/ (function(modules) { // webpackBootstrap
 					if(root.MuraInlineEditor && (root.MuraInlineEditor.objectHasConfigurator(obj)  || (!root.Mura.layoutmanager && root.MuraInlineEditor.objectHasEditor(objectParams)) ) ){
 						obj.children('.frontEndToolsModal').remove();
 						obj.prepend(layoutmanagertoolbar);
-						muraInlineEditor.setAnchorSaveChecks(obj.node);
+						MuraInlineEditor.setAnchorSaveChecks(obj.node);
 
 						obj
 							.addClass('mura-active')
 							.hover(
 								function(e){
 									//e.stopPropagation();
-									mura('.mura-active-target').removeClass('mura-active-target');
-									mura(this).addClass('mura-active-target');
+									Mura('.mura-active-target').removeClass('mura-active-target');
+									Mura(this).addClass('mura-active-target');
 								},
 								function(e){
 									//e.stopPropagation();
-									mura(this).removeClass('mura-active-target');
+									Mura(this).removeClass('mura-active-target');
 								}
 							);
 
 						Mura.initDraggableObject(self);
 					}
 				} else {
-					var region=mura(self).closest(".mura-region-local");
+					var region=Mura(self).closest(".mura-region-local");
 					if(region && region.length ){
 						if(region.data('perm')){
 							var objectData=obj.data();
@@ -4491,19 +4491,19 @@ return /******/ (function(modules) { // webpackBootstrap
 							if(root.MuraInlineEditor && (root.MuraInlineEditor.objectHasConfigurator(obj) || (!root.Mura.layoutmanager && root.MuraInlineEditor.objectHasEditor(objectData)) ) ){
 								obj.children('.frontEndToolsModal').remove();
 								obj.prepend(layoutmanagertoolbar);
-								muraInlineEditor.setAnchorSaveChecks(obj.node);
+								MuraInlineEditor.setAnchorSaveChecks(obj.node);
 
 								obj
 									.addClass('mura-active')
 									.hover(
 										function(e){
 											//e.stopPropagation();
-											mura('.mura-active-target').removeClass('mura-active-target');
-											mura(this).addClass('mura-active-target');
+											Mura('.mura-active-target').removeClass('mura-active-target');
+											Mura(this).addClass('mura-active-target');
 										},
 										function(e){
 											//e.stopPropagation();
-											mura(this).removeClass('mura-active-target');
+											Mura(this).removeClass('mura-active-target');
 										}
 									);
 
@@ -4520,7 +4520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		processMarkup(obj.node);
 
 		obj.find('a[href="javascript:history.back();"]').each(function(){
-			mura(this).off("click").on("click",function(e){
+			Mura(this).off("click").on("click",function(e){
 				if(self.prevInnerHTML){
 					e.preventDefault();
 					wireUpObject(obj,self.prevInnerHTML);
@@ -4538,7 +4538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 		obj.find('FORM').each(function(){
-			var form=mura(this);
+			var form=Mura(this);
 			var self=this;
 
 			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !(form.hasData('autowire') && !form.data('autowire')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
@@ -4548,7 +4548,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if(obj.data('nextnid')){
 			obj.find('.mura-next-n a').each(function(){
-				mura(this).on('click',function(e){
+				Mura(this).on('click',function(e){
 					e.preventDefault();
 					var a=this.getAttribute('href').split('?');
 					if(a.length==2){
@@ -4565,7 +4565,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function handleResponse(obj,resp){
 
-		obj=(obj.node) ? obj : mura(obj);
+		obj=(obj.node) ? obj : Mura(obj);
 
 		if(typeof resp.data.redirect != 'undefined'){
 			if(resp.data.redirect && resp.data.redirect != location.href){
@@ -4599,7 +4599,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function processDisplayObject(el,queue,rerender){
 
-		var obj=(el.node) ? el : mura(el);
+		var obj=(el.node) ? el : Mura(el);
 		el =el.node || el;
 		var self=el;
 		var rendered=!rerender && !(obj.hasClass('mura-async-object') || obj.data('render')=='client'|| obj.data('async'));
@@ -4634,7 +4634,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var forms=obj.find('form');
 
 				obj.find('form').each(function(){
-					var form=mura(this);
+					var form=Mura(this);
 
 					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !(form.hasData('autowire') && !form.data('autowire')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
 						form.on('submit',function(e){
@@ -4724,13 +4724,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		if(hash){
 			hashparams=getQueryStringParams(hash);
 			if(hashparams.nextnid){
-				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
-					mura(this).data(hashparams);
+				Mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
+					Mura(this).data(hashparams);
 					processAsyncObject(this);
 				});
 			} else if(hashparams.objectid){
-				mura('.mura-async-object[data-objectid="' + hashparams.objectid +'"]').each(function(){
-					mura(this).data(hashparams);
+				Mura('.mura-async-object[data-objectid="' + hashparams.objectid +'"]').each(function(){
+					Mura(this).data(hashparams);
 					processAsyncObject(this);
 				});
 			}
@@ -4919,7 +4919,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		extend(root.Mura,config);
 
-		mura(function(){
+		Mura(function(){
 
 			var hash=root.location.hash;
 
@@ -4931,20 +4931,20 @@ return /******/ (function(modules) { // webpackBootstrap
 			urlparams=setLowerCaseKeys(getQueryStringParams(root.location.search));
 
 			if(hashparams.nextnid){
-				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
-					mura(this).data(hashparams);
+				Mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
+					Mura(this).data(hashparams);
 				});
 			} else if(hashparams.objectid){
-				mura('.mura-async-object[data-nextnid="' + hashparams.objectid +'"]').each(function(){
-					mura(this).data(hashparams);
+				Mura('.mura-async-object[data-nextnid="' + hashparams.objectid +'"]').each(function(){
+					Mura(this).data(hashparams);
 				});
 			}
 
-			mura(root).on('hashchange',handleHashChange);
+			Mura(root).on('hashchange',handleHashChange);
 
 			processMarkup(document);
 
-			mura(document)
+			Mura(document)
 			.on("keydown", function(event){
 				loginCheck(event.which);
 			});
@@ -4958,7 +4958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			);
 
-			mura('#my-id').addDisplayObject('objectname',{..});
+			Mura('#my-id').addDisplayObject('objectname',{..});
 
 			Mura.login('userame','password')
 				.then(function(data){
@@ -5025,7 +5025,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				});
 			*/
 
-			mura(document).trigger('muraReady');
+			Mura(document).trigger('muraReady');
 
 		});
 
