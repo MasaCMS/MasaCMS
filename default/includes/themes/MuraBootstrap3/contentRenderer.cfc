@@ -69,7 +69,7 @@
 
 
 		// GENERAL
-		this.layoutmanager=false;
+		this.layoutmanager=true;
 		this.legacyobjects=false;
 		this.jsLib = "jquery";
 		this.jsLibLoaded = true;
