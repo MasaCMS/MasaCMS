@@ -118,7 +118,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 	    	var content=getBean('content').loadBy(contenthistid=getValue('contenthistid'),siteid=getValue('siteid'));
 	    	getBean('contentManager').purgeContentCache(contentBean=content);
 
-	    	sendActionMessage(content,'Rejection');
+	    	sendActionMessage(content,getValue('status'));
  		}
 
     	return this;
@@ -129,12 +129,12 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 	    if(getValue('status') eq 'Pending'){
 	    	getBean('approvalAction').loadBy(requestID=getValue('requestID'), groupID=getValue('groupID'))
 		    	.setComments(arguments.comments)
-		    	.setActionType('Cancelation')
+		    	.setActionType('Cancellation')
 		    	.setUserID(getCurrentUser().getUserID())
 		    	.setChainID(getValue('chainID'))
 		    	.save();
 
-			setValue('status','Canceled');
+			setValue('status','Cancelled');
 	    	save();
 	    	var content=getBean('content').loadBy(contenthistid=getValue('contenthistid'),siteid=getValue('siteid'));
 	    	getBean('contentManager').purgeContentCache(contentBean=content);
@@ -163,7 +163,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 		var script=$.siteConfig('Content#Arguments.actionType#Script');
 		var subject="";
 
-		if(script neq '' and listFindNoCase('Approval,Rejection,Pending,Cancel',arguments.actionType) ){
+		if(script neq '' and listFindNoCase('Approval,Rejected,Pending,Cancelled',arguments.actionType) ){
 
 			if(arguments.actionType eq 'Approval'){
 				subject="Your #$.siteConfig('site')# Content Submission has been Approved";
