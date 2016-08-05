@@ -271,6 +271,17 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	delete from tapprovalrequests where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 
+	<cfif len(application.objectMappings.bundleablebeans)>
+		<cfloop list="#application.objectMappings.bundleablebeans#" index="local.b">
+			<cfset local.beanClass=getBean(beanName=local.b)>
+			<cfif local.beanClass.hasProperty('siteid')>
+				<cfquery>
+					delete from #local.beanClass.getTable()#
+					where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+				</cfquery>
+			</cfif>
+		</cfloop>
+	</cfif>
 	</cftransaction>
 
 </cffunction>

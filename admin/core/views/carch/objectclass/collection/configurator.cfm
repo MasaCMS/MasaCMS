@@ -117,23 +117,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input type="hidden" name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">
 				<button class="btn" id="editBtnRelatedContent"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 			</div>
-			<div class="mura-control-group sort-container" style="display:none">
-				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
-				<select name="sortby" class="sort-param">
-					<cfloop list="menutitle,lastupdate,releasedate,displaystart,created,credits,type,subtype,comments,rating" index="s">
-						<option value="#s#"<cfif objectParams.sortby eq s> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.#s#')#</option>
-					</cfloop>
-				</select>
-			</div>
-			<div class="mura-control-group sort-container" style="display:none">
-				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</label>
-				<select name="sortdirection" class="sort-param">
-					<option value="">Select Sort Direction</option>
-					<cfloop list="ASC,DESC" index="s">
-						<option value="#s#"<cfif objectParams.sortdirection eq s> selected</cfif>>#s#</option>
-					</cfloop>
-				</select>
-			</div>
 		</div>
 		<div class="mura-layout-row" id="layoutcontainer">
 		</div>
@@ -216,7 +199,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				$('select[name="source"], ##items').removeClass('objectParam');
 				$('.source-container').hide();
 				$('.sort-container').hide();
-				$('.sort-param').removeClass('objectParam');
 
 				var val=$('select[name="sourcetype"]').val();
 
@@ -232,11 +214,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##selectedRelatedContent').html('');
 					$('##relatedcontentcontainer').show();
 					$('##relatedcontent').addClass('objectParam');
-
-					if($('##relatedcontent').val()=='reverse'){
-						$('.sort-container').show();
-						$('.sort-param').addClass('objectParam');
-					}
 				}
 			}
 

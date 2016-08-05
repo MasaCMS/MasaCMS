@@ -1,1 +1,1 @@
-<displayobject name="Category Summary" legacyobjectfile="../dsp_category_summary.cfm"/>
+<mura name="Category Summary" legacyobjectfile="../dsp_category_summary.cfm"/>

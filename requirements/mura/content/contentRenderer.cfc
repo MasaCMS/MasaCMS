@@ -1334,7 +1334,6 @@ Display Objects
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
-	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and this.layoutmanager and len(arguments.object)>
 
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel+1>
 
@@ -1348,10 +1347,8 @@ Display Objects
 		</cfif>
 	</cfif>
 
-	<cfif this.layoutmanager>
-		<cfset objectParams.async=false>
-		<cfset objectParams.render='server'>
-	</cfif>
+	<cfset objectParams.async=false>
+	<cfset objectParams.render='server'>
 
 	<cfif arguments.object eq 'plugin'>
 		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
@@ -1378,6 +1375,8 @@ Display Objects
 			</cfif>
 		</cfsavecontent>
 	</cfif>
+
+	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
 
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel-1>
 

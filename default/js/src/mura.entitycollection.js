@@ -43,9 +43,21 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(root){
-	root.mura.entityCollection=root.mura.entity.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['Mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('Mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.Mura);
+    }
+}(this, function (mura) {
+	Mura.EntityCollection=Mura.Entity.extend({
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -54,10 +66,10 @@
 
 			if(Array.isArray(self.get('items'))){
 				self.set('items',self.get('items').map(function(obj){
-					if(root.mura.entities[obj.entityname]){
-						return new root.mura.entities[obj.entityname](obj);
+					if(Mura.entities[obj.entityname]){
+						return new Mura.entities[obj.entityname](obj);
 					} else {
-						return new root.mura.entity(obj);
+						return new Mura.Entity(obj);
 					}
 				}));
 			}
@@ -76,7 +88,7 @@
 		getAll:function(){
 			var self=this;
 
-			return mura.extend(
+			return Mura.extend(
 				{},
 				self.properties,
 				{
@@ -100,17 +112,17 @@
 		},
 
 		filter:function(fn){
-			var collection=new root.mura.entityCollection(this.properties);
+			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			var collection=new root.mura.entityCollection(this.properties);
+			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		}
 	});
-})(this);
+}));

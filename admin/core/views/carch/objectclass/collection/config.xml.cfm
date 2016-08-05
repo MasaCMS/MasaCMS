@@ -1,1 +1,1 @@
-<displayobject name="Collection" contenttypes="*" iconclass="mi-th-list"/>
+<mura name="Collection" contenttypes="*" iconclass="mi-th-list"/>

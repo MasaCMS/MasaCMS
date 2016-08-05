@@ -43,7 +43,20 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-;(function(root){
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['Mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('Mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.Mura);
+    }
+}(this, function (mura) {
 	function core(){
 		this.init.apply(this,arguments);
 		return this;
@@ -51,14 +64,26 @@
 
 	core.prototype={
 		init:function(){
-		}
+		},
+		trigger:function(eventName){
+			eventName=eventName.toLowerCase();
+
+			if(typeof this.prototype.handlers[eventName] != 'undefined'){
+				var handlers=this.prototype.handlers[eventName];
+				for(var handler in handlers){
+					handler.call(this);
+				}
+			}
+
+			return this;
+		},
 	};
 
 	core.extend=function(properties){
 		var self=this;
-		return root.mura.extend(root.mura.extendClass(self,properties),{extend:self.extend});
+		return Mura.extend(Mura.extendClass(self,properties),{extend:self.extend,handlers:[]});
 	};
 
-	root.mura.core=core;
+	Mura.Core=core;
 
-})(this);
+}));

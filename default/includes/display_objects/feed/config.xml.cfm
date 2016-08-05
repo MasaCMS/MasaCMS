@@ -1,1 +1,1 @@
-<displayobject name="Feed" legacyobjectfile="../dsp_feed.cfm" />
+<mura name="Feed" legacyobjectfile="../dsp_feed.cfm" />

@@ -136,38 +136,39 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			}
 
 			for(i=1;i lte arrayLen(fieldorder);i=i+1){
+				if(isSimpleValue(fieldorder[i])){
+					prop=formDef.form.fields[fieldorder[i]];
+					rules=[];
 
-				prop=formDef.form.fields[fieldorder[i]];
-				rules=[];
-
-				if( prop.fieldtype.fieldtype eq 'nested' ) {
-					nestedform = getBean('content').loadBy( contentID=prop.formid,siteid=getValue('siteID') );
-					structAppend(validations, getValidations( nestedform,prop.name & "_" ) );
-				}
-				else {
-					if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
-						message=prop.validateMessage;
-					} else {
-						message='';
+					if( prop.fieldtype.fieldtype eq 'nested' ) {
+						nestedform = getBean('content').loadBy( contentID=prop.formid,siteid=getValue('siteID') );
+						structAppend(validations, getValidations( nestedform,prop.name & "_" ) );
 					}
+					else {
+						if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
+							message=prop.validateMessage;
+						} else {
+							message='';
+						}
 
-					if(structkeyExists(prop,'validateRegex') && len(prop.validateRegex)){
-						arrayAppend(rules,{'regex'=prop.validateRegex,message=message});
-					}
+						if(structkeyExists(prop,'validateRegex') && len(prop.validateRegex)){
+							arrayAppend(rules,{'regex'=prop.validateRegex,message=message});
+						}
 
-					if(structkeyExists(prop,'isrequired') &&  prop.isrequired){
-						arrayAppend(rules,{required=true,message=message});
-					}
+						if(structkeyExists(prop,'isrequired') &&  prop.isrequired){
+							arrayAppend(rules,{required=true,message=message});
+						}
 
-					if(structkeyExists(prop,'validateType') && len(prop.validateType)){
-						arrayAppend(rules,{dataType=prop.validateType,message=message});
-					}
+						if(structkeyExists(prop,'validateType') && len(prop.validateType)){
+							arrayAppend(rules,{dataType=prop.validateType,message=message});
+						}
 
-					if(arrayLen(rules)){
-						validations.properties[prop.name]=rules;
+						if(arrayLen(rules)){
+							validations.properties[prop.name]=rules;
+						}
+						variables.formproperties[prop.name]=prop;
+						variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & prop.name);
 					}
-					variables.formproperties[prop.name]=prop;
-					variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & prop.name);
 				}
 			}
 		}
@@ -402,7 +403,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			}
 		}
 
-		if(bean.getDisplayTitle() > 0){
+		if(!$.contentRenderer().useLayoutManager() && bean.getDisplayTitle() > 0){
 			returnStr='<#arguments.$.getHeaderTag('subHead1')#>#HTMLEditFormat(bean.getTitle())#</#arguments.$.getHeaderTag('subHead1')#>';
 		}
 

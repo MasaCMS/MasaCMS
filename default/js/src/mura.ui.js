@@ -43,33 +43,53 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(root){
-
-	root.mura.ui=root.mura.core.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['Mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('Mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.Mura);
+    }
+}(this, function (mura) {
+	Mura.UI=Mura.Core.extend({
 		rb:{},
 		context:{},
-		status:'pending',
-		onBeforeRender:function(){},
 		onAfterRender:function(){},
+		onBeforeRender:function(){},
 		trigger:function(eventName){
+			$eventName=eventName.toLowerCase();
 			if(typeof this.context.targetEl != 'undefined'){
 				var obj=mura(this.context.targetEl).closest('.mura-object');
 				if(obj.length && typeof obj.node != 'undefined'){
-					if(eventName.toLowerCase() == 'beforerender'){
-						this.onBeforeRender.call(obj.node);
-						this.status='rendering';
-					} else if(this.status != 'rendered' && eventName.toLowerCase() == 'afterrender'){
-						this.onAfterRender.call(obj.node);
-						this.status='rendered';
+					if(typeof this.handlers[$eventName] != 'undefined'){
+						var $handlers=this.handlers[$eventName];
+						for(var i=0;i < $handlers.length;i++){
+							$handlers[i].call(obj.node);
+						}
+					}
+
+					if(typeof this[eventName] == 'function'){
+						this[eventName].call(obj.node);
+					}
+					var fnName='on' + eventName.substring(0,1).toUpperCase() + eventName.substring(1,eventName.length);
+
+					if(typeof this[fnName] == 'function'){
+						this[fnName].call(obj.node);
 					}
 				}
 			}
 
 			return this;
 		},
+
 		render:function(){
-			mura(this.context.targetEl).html(mura.templates[context.object](this.context));
+			mura(this.context.targetEl).html(Mura.templates[context.object](this.context));
 			this.trigger('afterRender');
 			return this;
 		},
@@ -77,7 +97,7 @@
 		init:function(args){
 			this.context=args;
 			this.registerHelpers();
-			this.trigger('beforerender');
+			this.trigger('beforeRender');
 			this.render();
 			return this;
 		},
@@ -87,4 +107,4 @@
 		}
 	});
 
-})(this);
+}));

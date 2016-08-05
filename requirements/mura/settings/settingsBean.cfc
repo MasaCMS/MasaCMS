@@ -1217,18 +1217,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
 
-	<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
-		<cfset thelist = listAppend(thelist,"https://#getValue('domain')#")>
+	<cfset theurl = "#getValue('domain')##application.configBean.getServerPort()#">
+	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+		<cfset thelist = listAppend(thelist,theurl)>
+	</cfif>
+	<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+		<cfset thelist = listAppend(thelist,theurl)>
+	</cfif>
+
+	<cfset theurl = "#getValue('domain')#:#cgi.server_port#">
+	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+		<cfset thelist = listAppend(thelist,theurl)>
+	</cfif>
+	<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+		<cfset thelist = listAppend(thelist,theurl)>
 	</cfif>
 
 	<cfif len(application.configBean.getAdminDomain())>
-		<cfset thelist = listAppend(thelist,"http://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
-		<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
+		<cfset theurl="#application.configBean.getAdminDomain()#">
+		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+
+		<cfset theurl="#application.configBean.getAdminDomain()##application.configBean.getServerPort()#">
+		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+
+		<cfset theurl="#application.configBean.getAdminDomain()#:#cgi.server_port#">
+		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+
 	</cfif>
 
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
 			<cfset theurl = "#i##getServerPort()#" />
+			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+				<cfset thelist = listAppend(thelist,"http://#theurl#")>
+			</cfif>
+			<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+				<cfset thelist = listAppend(thelist,"https://#theurl#")>
+			</cfif>
+
+			<cfset theurl = "#i#:#cgi.server_port#" />
 			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
 				<cfset thelist = listAppend(thelist,"http://#theurl#")>
 			</cfif>
@@ -1342,7 +1384,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and tplugins.deployed=1
 		order by tplugins.loadPriority desc
 	</cfquery>
-	
+
 	<cfloop query="rs">
 		<cfset registerContentTypeDir('/' & rs.package & '/content_types')>
 	</cfloop>
@@ -1452,7 +1494,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfif>
 
-            <cfif directoryExists('#rs.directory##rs.name#/model')>
+            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
                 <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
             </cfif>
 

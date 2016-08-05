@@ -221,7 +221,7 @@ CKEDITOR.dialog.add('leaflet', function(editor) {
 
                 else {
                   // Set the default value.
-                  this.setValue('MapQuestOpen.OSM');
+                  this.setValue('OpenStreetMap.Mapnik');
                 }
               },
 

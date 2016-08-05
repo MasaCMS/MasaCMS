@@ -1,1 +1,1 @@
-<displayobject name="Folder" legacyobjectfile="../dsp_folder.cfm">
+<mura name="Folder" legacyobjectfile="../dsp_folder.cfm">
