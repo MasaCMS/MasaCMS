@@ -5,7 +5,7 @@
  * Licensed under an MIT-style license. See https://github.com/allmarkedup/jQuery-URL-Parser/blob/master/LICENSE for details.
  */
 
-;(function(factory) {
+;(function(root,factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['Mura'], factory);
@@ -18,7 +18,7 @@
         // Browser globals (root is window)
         factory(root.Mura);
     }
-})(function(Mura) {
+})(this,function(Mura) {
 
     var tag2attr = {
             a       : 'href',
