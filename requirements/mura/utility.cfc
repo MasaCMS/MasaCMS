@@ -83,7 +83,7 @@
 	<cfif err neq "siteID">
 		<cfset started=true>
 		<cfoutput>#structfind(arguments.error,err)#</cfoutput>
-		<cfif structCount(arguments.error) gt ct><br></cfif>	
+		<cfif structCount(arguments.error) gt ct><br></cfif>
 	</cfif>
 	<cfset ct += 1>
 </cfloop>
@@ -1094,6 +1094,23 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		} else {
 			return NumberFormat(theSize*.001, 9) & 'kb';
 		}
+	}
+
+	function getIsoTimeString(
+			required date datetime,
+			boolean convertToUTC = true
+		) {
+		if ( arguments.convertToUTC ) {
+			arguments.datetime = dateConvert( "local2utc", arguments.datetime );
+		}
+		// When formatting the time, make sure to use "HH" so that the
+		// time is formatted using 24-hour time.
+		return(
+			dateFormat( arguments.datetime, "yyyy-mm-dd" ) &
+			"T" &
+			timeFormat( arguments.datetime, "HH:mm:ss" ) &
+			"Z"
+		);
 	}
 
 	function getEpochTime() {
