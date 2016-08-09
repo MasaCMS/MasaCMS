@@ -118,7 +118,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 	    	var content=getBean('content').loadBy(contenthistid=getValue('contenthistid'),siteid=getValue('siteid'));
 	    	getBean('contentManager').purgeContentCache(contentBean=content);
 
-	    	sendActionMessage(content,'Rejection');
+	    	sendActionMessage(content,getValue('status'));
  		}
 
     	return this;
@@ -160,20 +160,24 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
     function sendActionMessage(contentBean,actionType){
 
 		var $=getBean('$').init(arguments.contentBean.getSiteID());
-		var script=$.siteConfig('Content#Arguments.actionType#Script');
+		var script='';
 		var subject="";
 
-		if(script neq '' and listFindNoCase('Approval,Rejection,Pending,Cancel',arguments.actionType) ){
+		if(actionType == 'Approved'){
+			script=$.siteConfig('ContentApprovalScript');
+			subject="Your #$.siteConfig('site')# Content Submission has been Approved";
+		} else if(actionType == 'Rejected'){
+			script=$.siteConfig('ContentRejectionScript');
+			subject="Your #$.siteConfig('site')# Content Submission has been Rejected";
+		} else if(actionType == 'Canceled'){
+			script=$.siteConfig('ContentCanceledScript');
+			subject="Your #$.siteConfig('site')# Content Submission has been Canceled";
+		} else if(actionType == 'Pending'){
+			script=$.siteConfig('ContentPendingScript');
+			subject="A #$.siteConfig('site')# Content Submission is Pending Group Member Approval";
+		}
 
-			if(arguments.actionType eq 'Approval'){
-				subject="Your #$.siteConfig('site')# Content Submission has been Approved";
-			} else if(arguments.actionType eq 'Rejected'){
-				subject="Your #$.siteConfig('site')# Content Submission has been Rejected";
-			} else if(arguments.actionType eq 'Cancelled'){
-				subject="Your #$.siteConfig('site')# Content Submission has been Cancelled";
-			} else if(arguments.actionType eq 'Pending'){
-				subject="A #$.siteConfig('site')# Content Submission is Pending Group Member Approval";
-			}
+		if(script neq '' and listFindNoCase('Approved,Rejected,Pending,Canceled',arguments.actionType) ){
 
 			$.event('approvalRequest',this);
 			$.event('contentBean',arguments.contentBean);
@@ -197,7 +201,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 				finder=refind('##.+?##',script,1,"true");
 			}
 
-			if(listFindNoCase('Cancelled,Rejected,Approved',arguments.actionType)){
+			if(listFindNoCase('Canceled,Rejected,Approved',arguments.actionType)){
 				//try{
 					getBean('mailer').sendText($.setDynamicContent(script),
 						$.event('requester').getEmail(),

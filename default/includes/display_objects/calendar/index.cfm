@@ -197,7 +197,7 @@
 
 			$('.mura-calender__filters').show();
 
-			mura.loader()
+			Mura.loader()
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})
 				.loadjs(

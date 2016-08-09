@@ -378,27 +378,27 @@ if(len($.siteConfig('customTagGroups'))){
 </cfsilent>
 <cfoutput>
 
-	
+
 <div id="navReportsShowing">
 	<div class="btn-group">
 	<cfif len(trim($.event('report')))>
 
 			<cfif $.event('report') is 'mylockedcontent'>
-	
+
 				<cfif $.siteConfig('hasLockableNodes')>
 					<cfset showingLabel="#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#">
 				<cfelse>
 					<cfset showingLabel="#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#">
 				</cfif>
 
-			<cfelse>			
-				<cfset showingLabel = application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")>			
+			<cfelse>
+				<cfset showingLabel = application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")>
 			</cfif>
 
 	<cfelse>
 		<cfset showingLabel = application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")>
 	</cfif>
-	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#:</span> 
+	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#:</span>
 	<a id="navReportsToggle" class="dropdown-toggle" data-toggle="dropdown">#showingLabel#<i class="mi-chevron-down"></i></a>
 		<ul id="navReports" class="dropdown-menu">
 			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
@@ -422,7 +422,7 @@ if(len($.siteConfig('customTagGroups'))){
 		</ul>
 	</div>
 
-	<cfif iterator.hasNext()>			
+	<cfif iterator.hasNext()>
 		<div class="navSort">
 			<span class="hidden-xs hidden-sm">#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</span>
 			<div class="mura-input-set">
@@ -518,7 +518,7 @@ if(len($.siteConfig('customTagGroups'))){
 			<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 				<div id="mura-list-tree" class="mura-6 mura-control-group category-select">
 					<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</label>
-					<div id="category-select-control"></div>	
+					<div id="category-select-control"></div>
 					<div id="category-select-list">
 						<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 					</div>
@@ -544,7 +544,7 @@ if(len($.siteConfig('customTagGroups'))){
 </div>	<!--- /navFilters --->
 
 	<cfif iterator.hasNext()>
-	
+
 	#pagination#
 
 	<table class="mura-table-grid">
@@ -737,7 +737,7 @@ if(len($.siteConfig('customTagGroups'))){
 		jQuery('##navFilterControls').hide();
 		var toggleNavFilters = function(el){
 			jQuery('##navFilterControls').slideToggle('fast');
-			jQuery(el).find('i').toggleClass('mi-chevron-down').toggleClass('mi-chevron-up');			
+			jQuery(el).find('i').toggleClass('mi-chevron-down').toggleClass('mi-chevron-up');
 		}
 
 		jQuery('##navFiltersToggle').click(function(){

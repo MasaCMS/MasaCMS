@@ -403,7 +403,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			}
 		}
 
-		if(bean.getDisplayTitle() > 0){
+		if(!$.contentRenderer().useLayoutManager() && bean.getDisplayTitle() > 0){
 			returnStr='<#arguments.$.getHeaderTag('subHead1')#>#HTMLEditFormat(bean.getTitle())#</#arguments.$.getHeaderTag('subHead1')#>';
 		}
 

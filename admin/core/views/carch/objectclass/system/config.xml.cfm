@@ -1,1 +1,1 @@
-<displayobject name="System" contenttypes="*" omitcontenttypes="Variation"/>
+<mura name="System" contenttypes="*" omitcontenttypes="Variation"/>

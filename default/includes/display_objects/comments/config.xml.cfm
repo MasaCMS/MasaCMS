@@ -1,1 +1,1 @@
-<displayobject name="Comments" legacyobjectfile="../dsp_comments.cfm" />
+<mura name="Comments" legacyobjectfile="../dsp_comments.cfm" />

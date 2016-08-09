@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      </div>
 	</cfif>
 
-	<cfif rc.type eq 'Form' >
+	<cfif not rc.$.siteConfig().getContentRenderer().useLayoutManager() and rc.type eq 'Form' >
 		<cfif not rc.$.siteConfig('useSSL')>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>

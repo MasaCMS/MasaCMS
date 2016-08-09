@@ -155,7 +155,7 @@ mura.ready(function(){
 	mura('##mura-sidebar-container').show();
 	mura('##mura-objects-legacy-btn').click(function(e){
 		e.preventDefault();
-		muraInlineEditor.sidebarAction('showlegacyobjects');
+		MuraInlineEditor.sidebarAction('showlegacyobjects');
 	});
 
 	mura('##mura-objects-openregions-btn').click(function(e){
@@ -174,7 +174,7 @@ mura.ready(function(){
 
 	mura('.mura-objects-back-btn').click(function(e){
 		e.preventDefault();
-		muraInlineEditor.sidebarAction('showobjects');
+		MuraInlineEditor.sidebarAction('showobjects');
 	});
 
 	//mura('.mura-region.mura-editable').attr('style','clear:both;');

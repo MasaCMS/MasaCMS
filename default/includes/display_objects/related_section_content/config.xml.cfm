@@ -1,1 +1,1 @@
-<displayobject name="Site Map" legacyobjectfile="../dsp_site_map.cfm" />
+<mura name="Site Map" legacyobjectfile="../dsp_site_map.cfm" />

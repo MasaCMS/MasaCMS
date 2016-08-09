@@ -139,7 +139,7 @@
 <cfif not $.event('muraMobileTemplate')>
 <script>
 	$(function(){
-		mura.loader().loadjs("#event.getSite().getAssetPath()#/includes/display_objects/gallery/js/gallery.min.js");
+		Mura.loader().loadjs("#event.getSite().getAssetPath()#/includes/display_objects/gallery/js/gallery.min.js");
 	});
 </script>
 </cfif>

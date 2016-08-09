@@ -43,9 +43,22 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-;(function(root){
-    root.mura.datacache=new root.mura.cache();
-    root.mura.Handlebars=Handlebars.create();
-    root.mura.templatesLoaded=false;
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['Mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        mura=factory(require('Mura'),require('Handlebars'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.Mura,root.Handlebars);
+    }
+}(this, function (mura,Handlebars) {
+    Mura.datacache=new Mura.Cache();
+    Mura.Handlebars=Handlebars.create();
+    Mura.templatesLoaded=false;
     Handlebars.noConflict();
-})(this);
+}));
