@@ -51,10 +51,22 @@
 
 // Typography
 // -------------------------
-@sansFontFamily:        "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@sansFontFamily: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@sansBoldFontFamily: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@flatFontFamily: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 @serifFontFamily:       Georgia, "Times New Roman", Times, serif;
 @monoFontFamily:        Menlo, Monaco, Consolas, "Courier New", monospace;
 
+.bold-font{
+   font-family: @sansBoldFontFamily; 
+}
+.regular-font{
+  font-family: @sansFontFamily;
+}
+/* plain sans font  used for some UI buttons */
+.flat-font{
+  font-family: @flatFontFamily;
+}
 @baseFontSize:          13px;
 @baseFontFamily:        @sansFontFamily;
 @baseLineHeight:        18px;

@@ -462,6 +462,7 @@ form .help-block-inline{
   clear: both;
   color: #646464 !important;
   display:block;
+  font-size: 14px !important;
   font-style: normal !important;
   margin-bottom: 12px;
   padding: 12px !important;
@@ -571,6 +572,10 @@ form .mura-control-group > * + .help-block{
       border-color: #e9e9e9;
       color:#545454;
     }
+}
+
+#main-container #tabArchitectural #arch-mod .btn:not(:first-child){
+  margin-left: -3px !important;
 }
 
 #flatViewContainer .navSort{
@@ -768,6 +773,9 @@ h3,
   margin-bottom: 0;
 }
 
+.popover-title:empty + .popover-content{
+  padding-bottom: 4px !important;
+}
 .side-header{
   min-height: 48px;
 }
@@ -1580,7 +1588,7 @@ body#csetup{
         margin-top: 10px;
       }
 
-      &:not(.alert-error){
+      &:not(.alert-error):not(.alert-warning){
        background-color: #DEDEDE !important;
        border-color: #BCBCBC !important;
       }
