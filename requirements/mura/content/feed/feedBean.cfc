@@ -475,7 +475,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					.maxItems(0)
 					.where()
 					.prop('name')
-					.isIn(argument.criteria)
+					.isIn(arguments.criteria)
 					.getQuery()>
 
 			<cfset arguments.criteria=valueList(rs.categoryid)>
