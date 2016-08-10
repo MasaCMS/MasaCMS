@@ -208,6 +208,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="type" output="false">
+	<cfargument name="type" type="String" />
+	<cfset variables.instance.type = arguments.type />
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setDateCreated" output="false">
 	<cfargument name="dateCreated" type="String" />
 	<cfset variables.instance.dateCreated = parseDateArg(arguments.dateCreated) />
@@ -446,6 +452,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfreturn this>
+</cffunction>
+
+
+<cffunction name="addParam" output="false">
+	<cfargument name="field" hint="You can use 'Column' as an alias to field" type="string" required="true" default="">
+	<cfargument name="relationship" type="string" default="and" required="true">
+	<cfargument name="criteria" type="string" required="true" default="">
+	<cfargument name="condition" type="string" default="EQUALS" required="true">
+	<cfargument name="datatype" type="string"  default="" required="true">
+
+	<cfif isDefined('arguments.column')>
+		<cfset arguments.field=arguments.column>
+	</cfif>
+
+	<cfif arguments.field eq 'category'>
+		<cfset arguments.field='tcontentcategoryassign.categoryid'>
+		<cfif listLen(arguments.criteria) gt 1>
+			<cfset var rs=getBean('category').getFeed()
+					.setSiteID(get('siteid'))
+					.itemsPerPage(0)
+					.maxItems(0)
+					.where()
+					.prop('name')
+					.isIn(argument.criteria)
+					.getQuery()>
+
+			<cfset arguments.criteria=valueList(rs.categoryid)>
+		<cfelse>
+			<cfset arguments.criteria=getBean('category').loadBy(name=arguments.criteria,siteid=get('siteid')).getCategoryID()>
+		</cfif>
+	<cfelseif arguments.field eq 'categoryid'>
+		<cfset arguments.field='tcontentcategoryassign.categoryid'>
+	<cfelseif arguments.field eq 'tag'>
+		<cfset arguments.field='tcontenttags.tag'>
+	</cfif>
+
+	<cfset arguments.column=arguments.field>
+	<cfreturn super.addParam(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="setAdvancedParams" output="false">
