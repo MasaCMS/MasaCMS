@@ -4405,6 +4405,12 @@ return /******/ (function(modules) { // webpackBootstrap
 						obj.prepend(Mura.templates.meta(context));
 						context.targetEl=obj.children('.mura-object-content').node;
 						Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template]( context );
+                    } else if(typeof Mura.templates[template] != 'undefined'){
+						context.html='';
+						obj.html(Mura.templates.content(context));
+						obj.prepend(Mura.templates.meta(context));
+						context.targetEl=obj.children('.mura-object-content').node;
+						Mura.templates[template](context);
 					}	else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -4430,7 +4436,13 @@ return /******/ (function(modules) { // webpackBootstrap
 					obj.prepend(Mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
 					Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template]( context );
-				} else {
+                } else if(typeof Mura.templates[template] != 'undefined'){
+                    context.html='';
+                    obj.html(Mura.templates.content(context));
+                    obj.prepend(Mura.templates.meta(context));
+                    context.targetEl=obj.children('.mura-object-content').node;
+                    Mura.templates[template](context);
+                } else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
 				}
