@@ -40,7 +40,6 @@
 					<cfif $.content('type') neq 'Variation'>
 						<cfif this.legacyobjects>
 							<button id="mura-objects-legacy-btn" class="btn mura-primary"><i class="mi-object-ungroup"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.legacyobjects')#</button>
-							<br/><br/>
 						</cfif>
 						<cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
 							<button id="mura-objects-openregions-btn" class="btn"><i class="mi-columns"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.additionaldisplayregions')#</button>
