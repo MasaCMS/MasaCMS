@@ -14,7 +14,6 @@ allowlocalfiles=false
 assetdir=
 assetpath=
 autodiscoverplugins=false
-autopreviewimages=true
 autoresetpasswords=false
 autoupdatemode=default
 bcryptlogrounds=10
