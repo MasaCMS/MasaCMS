@@ -4405,6 +4405,12 @@ return /******/ (function(modules) { // webpackBootstrap
 						obj.prepend(Mura.templates.meta(context));
 						context.targetEl=obj.children('.mura-object-content').node;
 						Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template]( context );
+                    } else if(typeof Mura.templates[template] != 'undefined'){
+						context.html='';
+						obj.html(Mura.templates.content(context));
+						obj.prepend(Mura.templates.meta(context));
+						context.targetEl=obj.children('.mura-object-content').node;
+						Mura.templates[template](context);
 					}	else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -4430,7 +4436,13 @@ return /******/ (function(modules) { // webpackBootstrap
 					obj.prepend(Mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
 					Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template]( context );
-				} else {
+                } else if(typeof Mura.templates[template] != 'undefined'){
+                    context.html='';
+                    obj.html(Mura.templates.content(context));
+                    obj.prepend(Mura.templates.meta(context));
+                    context.targetEl=obj.children('.mura-object-content').node;
+                    Mura.templates[template](context);
+                } else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
 				}
@@ -5600,17 +5612,17 @@ return /******/ (function(modules) { // webpackBootstrap
 ;(function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['Mura'], factory);
+        define([root,'Mura'], factory);
     } else if (typeof module === 'object' && module.exports) {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
-        factory(require('Mura'));
+        factory(root,require('Mura'));
     } else {
         // Browser globals (root is window)
-        factory(root.Mura);
+        factory(root,root.Mura);
     }
-}(this, function (mura) {
+}(this, function (root,mura) {
 	Mura.DOMSelection=Mura.Core.extend({
 		init:function(selection,origSelector){
 			this.selection=selection;

@@ -46,17 +46,17 @@
 ;(function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define(['Mura'], factory);
+        define([root,'Mura'], factory);
     } else if (typeof module === 'object' && module.exports) {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
-        factory(require('Mura'));
+        factory(root,require('Mura'));
     } else {
         // Browser globals (root is window)
-        factory(root.Mura);
+        factory(root,root.Mura);
     }
-}(this, function (mura) {
+}(this, function (root,mura) {
 	Mura.DOMSelection=Mura.Core.extend({
 		init:function(selection,origSelector){
 			this.selection=selection;

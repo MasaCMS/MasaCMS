@@ -362,11 +362,13 @@
 
 			<cfif rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add")>
 				<cfset arguments.rc.contentBean=arguments.rc.contentBean.save()>
+				<!---
 				<cfif application.configBean.getValue(property='autopreviewimages',defaultValue=true) and not arguments.rc.ajaxrequest and len(request.newImageIDList) and not arguments.rc.murakeepediting>
 					<cfset arguments.rc.fileid=request.newImageIDList>
 					<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
 					<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay,homeID",path="./")>
 				</cfif>
+				--->
 			<cfelse>
 				<cfset arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens'>
 			</cfif>
