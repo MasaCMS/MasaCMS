@@ -12,9 +12,9 @@
 
 	<title>#esapiEncode('html', $.content('HTMLTitle'))# - #esapiEncode('html', $.siteConfig('site'))#</title>
 	<!--- Mura CMS Base Styles--->
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.7.0.min.css">
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.7.0.min.css?v=#$.siteConfig('version')#">
 	<!--- Optional: Mura CMS Skin Styles. Duplicate to your theme to customize, changing 'assetPath' to 'themeAssetPath' below. Don't forget to move, remove or replace sprite.png. --->
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.7.0.skin.css">
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.7.0.skin.css?v=#$.siteConfig('version')#">
 
 	<!--- Bootstrap core CSS --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
