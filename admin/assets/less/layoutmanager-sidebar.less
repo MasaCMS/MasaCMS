@@ -1,6 +1,5 @@
 // use outermost div for higher specificity hook into sidebar objects
 .mura__layout-manager__controls {
-
 	// position styles of sidebar
 	width: 300px;
 	position: fixed;
@@ -56,6 +55,14 @@
 
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
     outline: none !important !important;
+}
+
+.btn-secondary{
+	background-color: #6f6f6f;
+	background-image: none;
+	border-color: transparent;
+	border-radius: 2px;	
+	color: #f3f3f3;
 }
 
 .btn-primary,
@@ -143,6 +150,10 @@ body.configurator-wrapper #mura-content{
 	+ .mura-sidebar__object-group-items{
 	margin-top: 12px;
 	}
+
+	> .btn{
+		float: right;
+	}
 }
 .mura-sidebar__objects-list__object-group-instruction {
 	background-color: #6f6f6f;
@@ -162,11 +173,7 @@ body.configurator-wrapper #mura-content{
 		margin-top: 10px;
 	
 		&:not([class*=btn-]){
-	    background-color: #6f6f6f;
-	    background-image: none;
-	    border-color: transparent;
-	    border-radius: 2px;
-	    color: #f3f3f3;
+			.btn-secondary;
 
 	    i{
     		margin-right: 3px;
