@@ -40,7 +40,6 @@
 					<cfif $.content('type') neq 'Variation'>
 						<cfif this.legacyobjects>
 							<button id="mura-objects-legacy-btn" class="btn mura-primary"><i class="mi-object-ungroup"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.legacyobjects')#</button>
-							<br/><br/>
 						</cfif>
 						<cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
 							<button id="mura-objects-openregions-btn" class="btn"><i class="mi-columns"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.additionaldisplayregions')#</button>
@@ -52,7 +51,7 @@
 			<div id="mura-sidebar-objects-legacy" class="mura-sidebar__objects-list" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<button class="mura-objects-back-btn btn mura-primary">
+						<button class="mura-objects-back-btn btn btn-secondary">
 							<i class="mi-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.back')#
 						</button>
 						<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.legacyobjects')#</h3>
