@@ -899,7 +899,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 						<!--- Join any params that used categoryid --->
 						<cfset categoryLen=categoryLen + listLen(paramCatList)>
-						<cfloop list="#paramCatList#" item="paramCatItem">
+						<cfloop list="#paramCatList#" index="paramCatItem">
 							<cfset categoryList=listAppend(categoryList,paramCatItem)>
 						</cfloop>
 
