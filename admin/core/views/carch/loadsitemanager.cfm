@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <div>
 	   <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#:&nbsp;</label>
 	   <cfif rc.topid neq '00000000000000000000000000000000001'
-			 and (perm eq 'Editor' or 
+			 and (perm eq 'Editor' or
 			 		 (perm eq 'Author' and application.configBean.getSortPermission() eq "author")
 			 			)>
  				<input name="nextN" value="#session.mura.nextN#" type="text" class="text" size="6" maxlength="4" />
@@ -336,7 +336,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <cfelse>
 		 <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
 
-		<cfif perm eq 'editor' and request.hasPublishingTab>
+		<cfif rc.rstop.type neq 'Module' and perm eq 'editor' and request.hasPublishingTab>
 		   <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
 
 	   <cfif rc.rstop.Display eq 1 and rc.rstop.approved >
@@ -359,7 +359,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <cfelse>
 			 <dd class="updated"></dd>
 	   </cfif>
-	   <!--- actions hidden w/ css, copied to actions menu w/ js 
+	   <!--- actions hidden w/ css, copied to actions menu w/ js
 	   do not delete! --->
 	   <dd class="actions">
 		 <ul>
