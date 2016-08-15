@@ -1375,6 +1375,7 @@ Display Objects
 			</cfif>
 		</cfsavecontent>
 	</cfif>
+	
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel-1>
 
 	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
