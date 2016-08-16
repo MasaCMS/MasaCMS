@@ -292,6 +292,22 @@
 			}
 		},
 
+        first:function(){
+            if(this.selection.length){
+				return mura(this.selection[0]);
+			} else {
+				return mura([]);
+			}
+        },
+
+        last:function(){
+            if(this.selection.length){
+				return mura(this.selection[this.selection.length-1]);
+			} else {
+				return mura([]);
+			}
+        },
+
 		selector:function() {
 			var pathes = [];
 			var path, node = mura(this.selection[0]);
