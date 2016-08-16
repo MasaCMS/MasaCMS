@@ -87,10 +87,10 @@
 		<cfparam name="arguments.rc.responseChart" default="0"/>
 		<cfparam name="arguments.rc.parentid" default=""/>
 		<cfparam name="session.moduleid" default="00000000000000000000000000000000000">
-		<cfif not listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004',session.moduleid)>
+		<cfif not listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',session.moduleid)>
 			<cfset session.moduleid='00000000000000000000000000000000000'>
 		</cfif>
-		<cfif len(arguments.rc.moduleid) and listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004',arguments.rc.moduleid)>
+		<cfif len(arguments.rc.moduleid) and listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',arguments.rc.moduleid)>
 			<cfset session.moduleid=arguments.rc.moduleid>
 		</cfif>
 
@@ -362,11 +362,13 @@
 
 			<cfif rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add")>
 				<cfset arguments.rc.contentBean=arguments.rc.contentBean.save()>
+				<!---
 				<cfif application.configBean.getValue(property='autopreviewimages',defaultValue=true) and not arguments.rc.ajaxrequest and len(request.newImageIDList) and not arguments.rc.murakeepediting>
 					<cfset arguments.rc.fileid=request.newImageIDList>
 					<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
 					<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay,homeID",path="./")>
 				</cfif>
+				--->
 			<cfelse>
 				<cfset arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens'>
 			</cfif>

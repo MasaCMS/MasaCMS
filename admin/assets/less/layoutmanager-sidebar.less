@@ -1,6 +1,5 @@
 // use outermost div for higher specificity hook into sidebar objects
 .mura__layout-manager__controls {
-
 	// position styles of sidebar
 	width: 300px;
 	position: fixed;
@@ -26,14 +25,44 @@
 	  -moz-user-select:none;
 	  -khtml-user-drag: element;
 	  cursor: move;
-	}jquercust
-	.btn i{
-		margin-right: 4px;
 	}
-}
+
+	.btn{
+		border: 1px solid transparent !important;
+		box-shadow: none !important;
+		cursor: pointer !important;
+		font-size: 13px !important;
+		height: 32px !important;
+		letter-spacing: normal !important;
+		line-height: 1.42857143 !important;
+		padding: 6px 12px !important;
+		text-align: center !important;
+		text-shadow: none !important;
+		touch-action: manipulation !important;
+		user-select:none !important;
+		-webkit-user-select: none !important;
+		vertical-align: middle !important;
+		white-space: nowrap !important;
+		-webkit-appearance: button !important;
+	
+	 i{
+			margin-right: 4px !important;
+		}
+	
+	}
+
+} /* /.mura__layout-manager__controls */
 
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
-    outline: none !important;
+    outline: none !important !important;
+}
+
+.btn-secondary{
+	background-color: #6f6f6f;
+	background-image: none;
+	border-color: transparent;
+	border-radius: 2px;	
+	color: #f3f3f3;
 }
 
 .btn-primary,
@@ -121,6 +150,10 @@ body.configurator-wrapper #mura-content{
 	+ .mura-sidebar__object-group-items{
 	margin-top: 12px;
 	}
+
+	> .btn{
+		float: right;
+	}
 }
 .mura-sidebar__objects-list__object-group-instruction {
 	background-color: #6f6f6f;
@@ -140,19 +173,20 @@ body.configurator-wrapper #mura-content{
 		margin-top: 10px;
 	
 		&:not([class*=btn-]){
-	    background-color: #6f6f6f;
-	    background-image: none;
-	    border-color: transparent;
-	    border-radius: 2px;
-	    color: #f3f3f3;
+			.btn-secondary;
 
 	    i{
     		margin-right: 3px;
 	    }
 
 	    }
+	
+		+ .btn{
+			margin-top: 10px;
+		}
 
 	}
+
 
 }
 
