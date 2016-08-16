@@ -51,22 +51,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<link href="#variables.$.globalConfig('adminPath')#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 
 		<script>
-			mura(function(){
+			window.Mura=window.Mura || window.mura || {};
+
+			Mura(function(){
 
 				if(!window.CKEDITOR){
-					mura.loader().loadjs(
+					Mura.loader().loadjs(
 						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js'
 					);
+
+					window.CKEDITOR_BASEPATH = '#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/';
 				}
 				<cfif not $.getContentRenderer().useLayoutManager()>
 				if(!window.CKFinder){
-					mura.loader().loadjs(
+					Mura.loader().loadjs(
 						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckfinder/ckfinder.js');
 
 				}
 				</cfif>
 
-				mura.loader().loadjs(
+				Mura.loader().loadjs(
 						'#variables.$.globalConfig().getAdminPath(complete=1)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
 						'#variables.$.globalConfig().getAdminPath(complete=1)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#&contentType=Variation');
 			});
@@ -78,25 +82,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 
 		<script>
-			var hasMuraLoader=(typeof(mura) != 'undefined' && typeof(mura.loader) != 'undefined');
+			var hasMuraLoader=(typeof(Mura) != 'undefined' && typeof(Mura.loader) != 'undefined');
 			if(!window.CKEDITOR){
 				if(hasMuraLoader){
-					mura.loader().loadjs(
+					Mura.loader().loadjs(
 						'#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js',
 						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js'
 					);
 
 				} else {
 					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js');
-					$.getScript('#variables.$.globalConfig("requirementsPath"
-						)#/ckeditor/adapters/jquery.js');
+					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js');
 				}
+
+				window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("requirementsPath")#/ckeditor/';
 			}
 
 			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
-					mura.loader().loadjs(
+					Mura.loader().loadjs(
 						'#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');
 				} else {
 					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');
@@ -105,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			if(hasMuraLoader){
-				mura.loader().loadjs(
+				Mura.loader().loadjs(
 						'#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#');
 			} else {
 				$.getScript('#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#');
