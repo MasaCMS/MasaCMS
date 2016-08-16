@@ -18,7 +18,7 @@
 <cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default="">
 </cfif>
 <cfoutput>(function(window){
-
+	window.Mura=window.Mura || window.mura || {};
 	window.Mura.layoutmanager=#$.getContentRenderer().useLayoutManager()#;
 
 	var utility=(typeof jQuery != 'undefined')?jQuery:Mura;

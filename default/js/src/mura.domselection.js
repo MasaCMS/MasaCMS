@@ -276,7 +276,7 @@
 		},
 
 		find:function(selector){
-			if(this.selection.length){
+			if(this.selection.length && this.selection[0]){
 				var removeId=false;
 
 				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
