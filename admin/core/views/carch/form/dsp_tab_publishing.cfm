@@ -23,7 +23,7 @@
 			<div class="mura-control-group">
 	      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
 	      <input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255">
-	    </div> 
+	    </div>
 
 		<cfif rc.moduleid eq '00000000000000000000000000000000000' and not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<div class="mura-control-group">
@@ -129,9 +129,9 @@
 	      		<label>
 		  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 		  			<span id="mover1" class="text">
-		  				<cfif arrayLen(rc.crumbData)>
-			      					<cfif rc.contentBean.getIsNew()>
-			      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
+		  				<cfif arrayLen(rc.crumbData) gt 1>
+			      			<cfif rc.contentBean.getIsNew()>
+			      				"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
 		  					</cfif>
 		  				</cfif>
 						<button id="selectParent" name="selectParent" class="btn">
@@ -139,7 +139,7 @@
 						</button>
 					</span>
 			    <span id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></span>
-      	</label>
+      			</label>
 				<script>
 					jQuery(document).ready(function(){
 						$('##selectParent').click(function(e){

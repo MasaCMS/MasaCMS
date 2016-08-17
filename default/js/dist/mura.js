@@ -5842,7 +5842,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		find:function(selector){
-			if(this.selection.length){
+			if(this.selection.length && this.selection[0]){
 				var removeId=false;
 
 				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
@@ -5857,6 +5857,22 @@ return /******/ (function(modules) { // webpackBootstrap
 				return mura([]);
 			}
 		},
+
+        first:function(){
+            if(this.selection.length){
+				return mura(this.selection[0]);
+			} else {
+				return mura([]);
+			}
+        },
+
+        last:function(){
+            if(this.selection.length){
+				return mura(this.selection[this.selection.length-1]);
+			} else {
+				return mura([]);
+			}
+        },
 
 		selector:function() {
 			var pathes = [];
