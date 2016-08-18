@@ -92,7 +92,7 @@
 		            .render($)#
 			</cfif>
         <cfelseif listFindNoCase('author,editor',variables.$.event('r').perm)>
-          <p>This Form has not been configured.</p>
+        <p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.objectnotconfigured')#</p>
         <cfelse>
           <cfset request.muraValidObject=false>
         </cfif>

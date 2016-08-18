@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset request.cacheItem=variables.rsTemplate.doCache/>
 	</cfif>
 <cfelseif listFindNoCase('author,editor',variables.$.event('r').perm)>
-	<p>This Component has not been configured.</p>
+	<cfoutput><p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.objectnotconfigured')#</p></cfoutput>
 <cfelse>
 	<cfset request.muraValidObject=false>
 </cfif>
