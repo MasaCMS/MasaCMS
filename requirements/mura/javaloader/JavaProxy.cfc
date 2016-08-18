@@ -64,11 +64,7 @@ Mark Mandel		27/08/2007		Created
 
 		constructor = _resolveMethodByParams("Constructor", _getClass().getConstructors(), arguments);
 
-		if (StructCount(arguments) > 0){
-			   instance = constructor.newInstance(_buildArgumentArray(arguments));
-		} else {
-			   instance = constructor.newInstance(JavaCast("null", 0));
-		}
+		instance = constructor.newInstance(_buildArgumentArray(arguments));
 
 		_setClassInstance(instance);
 
@@ -125,16 +121,16 @@ Mark Mandel		27/08/2007		Created
 </cffunction>
 
 <cffunction name="_buildArgumentArray" hint="builds an argument array out of the arguments" access="private" returntype="array" output="false">
-	<cfargument name="arguments" hint="the arguments passed through" type="struct" required="Yes">
+	<cfargument name="args" hint="the arguments passed through" type="struct" required="Yes">
 	<cfscript>
-		var len = StructCount(arguments);
+		var len = StructCount(arguments.args);
 		var objArray = _getArray().newInstance(_getObjectClass(), len);
 		var counter = 1;
 		var obj = 0;
 
 		for(; counter <= len; counter++)
 		{
-			obj = arguments[counter];
+			obj = arguments.args[counter];
 			_getArray().set(objArray, counter - 1, obj);
 		}
 
