@@ -106,7 +106,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset QuerySetCell(variables.records, arguments.idType, idArray[i])>
 		<cfset QuerySetCell(variables.records, 'siteID',arguments.siteid)>
 	</cfloop>
-
+	
+	<cfset variables._recordcount=variables.records.recordcount>
 	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
 	<cfset variables.recordIndex = 0 />
 	<cfset variables.pageIndex = 1 />
