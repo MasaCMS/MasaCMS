@@ -1,6 +1,6 @@
 	.mura-modal, .modal-backdrop {
 	  background-image: none!important;
-	  background-color: rgba(255,255,255,.8)!important;  
+	  background-color: rgba(255,255,255,.8)!important;
 	}
 
 	#frontEndToolsModalContainer {
@@ -523,4 +523,28 @@
 	.dropdown-submenu:hover > .dropdown-menu,
 	#frontEndTools .dropdown-submenu:hover > .dropdown-menu{
 	    display:block;
+	}
+
+
+	/* strongarm mura admin toolbar - blocks some theme items from bleeding into the toolbar */
+
+	#frontEndTools {
+		> ul > li a.dropdown-toggle {
+			position: static;
+			overflow: hidden;
+			width: auto;
+
+			&::after {
+				content: none;
+			}
+		}
+
+		.dropdown-menu {
+			color: rgba(255,255,255,.7) !important;
+
+			&::before,
+			&::after {
+				content: none !important;
+			}
+		}
 	}
