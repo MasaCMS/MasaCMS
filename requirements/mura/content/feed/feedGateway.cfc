@@ -736,7 +736,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													<cfloop from="1" to="#paramCatLen#" index="c">
 														<cfset paramCatItem=listgetat(param.getCriteria(),c)>
 														tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#paramCatItem#%"/>
-														<cfif c lt categoryLen> or </cfif>
+														<cfif c lt paramCatLen> or </cfif>
 														<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
 													</cfloop>
 												)
