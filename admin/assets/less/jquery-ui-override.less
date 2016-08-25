@@ -23,8 +23,27 @@
   &[aria-describedby=cropper]{
     background-image: none;
   }
+
+  &[aria-describedby=changesetContainer] {
+      width: auto !important;
+      left: 50% !important;
+      transform: translateX(-50%);
+  }
+
+  #changesetContainer td {
+    width: auto;
+
+    &.var-width{
+      max-width: none;
+      text-overflow: clip;
+      overflow: visible;      
+    }
+
+  }
+
 } // ui-dialog
 
+  
 .modal-wrapper .ui-dialog{
   padding: 15px 30px !important;
   background-color: #f5f5f5;
