@@ -832,24 +832,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset arguments.siteid=variables.settingsManager.getSite(arguments.siteid).getFilePoolID()>
 
-	<cfif arguments.complete
-		OR arguments.secure
-		OR isDefined('variables.$')
-		AND len(variables.$.event('siteID'))
-		AND variables.$.event('siteID') neq arguments.siteID
-		AND !isValid('URL', application.configBean.getAssetPath())>
-		<cfif arguments.useProtocol>
-			<cfif arguments.secure>
-				<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
-			<cfelse>
-				<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
-			</cfif>
-		<cfelse>
-			<cfset begin='//#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
-		</cfif>
-	<cfelse>
-		<cfset var begin="">
-	</cfif>
+	<cfset var begin=variables.settingsManager.getSite(arguments.siteid).getWebPath(argumentCollection=arguments)>
 
 	<cfif request.muraExportHtml>
 		<cfset arguments.direct=true>

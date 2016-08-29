@@ -1543,7 +1543,7 @@
 			</cfif>
 		</cfif>
 
-		<cfset var begin=site.getWebPath(argumentCollection=arguments)>
+		<cfset var begin=getBean('settingsManager').getSite(arguments.siteid).getWebPath(argumentCollection=arguments)>
 
 		<cfif len(arguments.querystring)>
 			<cfif not arguments.hashURLS and not left(arguments.querystring,1) eq "?">
