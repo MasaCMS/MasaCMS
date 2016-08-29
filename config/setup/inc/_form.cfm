@@ -154,7 +154,7 @@ to your own modified versions of Mura CMS.
 
 					<div class="mura-control-group">
 						<label>Super Admin Password</label>
-						<input type="text" name="admin_password" value="#FORM.admin_password#" />
+						<input type="password" name="admin_password" value="#FORM.admin_password#" />
 					</div>
 					<div class="mura-control-group">
 						<label>Super Admin Email</label>
