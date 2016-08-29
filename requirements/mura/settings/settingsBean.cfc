@@ -1147,15 +1147,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="domain" default="#getValue('domain')#">
 	<cfargument name="useProtocol" default="1">
 
-	<cfif len(request.muraPreviewDomain) and isValidDomain(domain=request.muraPreviewDomain,mode='complete')>
-		<cfset arguments.domain=request.muraPreviewDomain>
-	</cfif>
-
-	<cfif not isDefined('arguments.domain')>
-		<cfset arguments.domain=getValue('domain')>
-	</cfif>
-
 	<cfif arguments.secure or arguments.complete>
+
+		<cfif len(request.muraPreviewDomain) and isValidDomain(domain=request.muraPreviewDomain,mode='complete')>
+			<cfset arguments.domain=request.muraPreviewDomain>
+		</cfif>
+
+		<cfif not isDefined('arguments.domain')>
+			<cfset arguments.domain=getValue('domain')>
+		</cfif>
+
 		<cfif arguments.useProtocol>
 			<cfif arguments.secure>
 				<cfreturn 'https://' & arguments.domain & getServerPort() & getContext()>

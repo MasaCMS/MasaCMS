@@ -1543,17 +1543,7 @@
 			</cfif>
 		</cfif>
 
-		<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
-
-		<cfif arguments.complete or arguments.secure>
-			<cfif arguments.secure>
-				<cfset var begin='https://#site.getDomain()##site.getServerPort()##site.getContext()#'>
-			<cfelse>
-				<cfset var begin='#site.getScheme()#://#site.getDomain()##site.getServerPort()##site.getContext()#'>
-			</cfif>
-		<cfelse>
-			<cfset var begin=site.getContext()>
-		</cfif>
+		<cfset var begin=site.getWebPath(argumentCollection=arguments)>
 
 		<cfif len(arguments.querystring)>
 			<cfif not arguments.hashURLS and not left(arguments.querystring,1) eq "?">
