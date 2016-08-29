@@ -297,7 +297,8 @@ to your own modified versions of Mura CMS.
              <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
               UPDATE tusers
               SET username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.admin_username#">,
-                password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(form.admin_password)#">
+                password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(form.admin_password)#">,
+                email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_adminemail#">
               where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#adminUserID#">
             </cfquery>
 
