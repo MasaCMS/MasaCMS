@@ -830,7 +830,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.siteID=sessionData.siteID>
 	</cfif>
 
-	<cfset var site=variables.settingsManager.getSite(arguments.siteid)>
+	<cfset arguments.siteid=variables.settingsManager.getSite(arguments.siteid).getFilePoolID()>
+	<cfset var site=site.getAssetPath(argumentCollection=arguments)>
+
+	<cfif isValid('URL', application.configBean.getAssetPath())>
+		<cfset var begin=application.configBean.getAssetPath()">
+	<cfelse>
+		<cfset var begin=site.getAssetPath(argumentCollection=arguments)>
+	</cfif>
 
 	<cfif request.muraExportHtml>
 		<cfset arguments.direct=true>
@@ -838,7 +845,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif arguments.direct and listFindNoCase("fileDir,s3",application.configBean.getFileStore())>
 		<cfif arguments.fileEXT eq 'svg'>
-			<cfset returnURL=site.getAssetPath(argumentCollection=arguments) & "/cache/file/" & arguments.fileID & "." & arguments.fileEXT>
+			<cfset returnURL=begin & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & "." & arguments.fileEXT>
 		<cfelse>
 			<cfif arguments.size eq 'undefined'>
 				<cfif (isNumeric(arguments.width) or isNumeric(arguments.height))>
@@ -875,11 +882,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<cfset imgSuffix="_" & lcase(arguments.size)>
 				</cfif>
-				<cfset returnURL=site.getAssetPath(argumentCollection=arguments) & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
+				<cfset returnURL=begin & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 			<cfelseif arguments.size neq 'custom'>
-				<cfset returnURL = getCustomImage(image="#application.configBean.getFileDir()#/#site.getFilePoolID()#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
+				<cfset returnURL = getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
  				<cfif len(returnURL)>
- 					<cfset returnURL = site.getAssetPath(argumentCollection=arguments) & "/cache/file/" & returnURL>
+ 					<cfset returnURL = begin & "/" & arguments.siteID & "/cache/file/" & returnURL>
  				</cfif>
 			<cfelse>
 				<cfif not len(arguments.width)>
@@ -888,7 +895,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not len(arguments.height)>
 					<cfset arguments.height="auto">
 				</cfif>
-				<cfset returnURL = site.getAssetPath(argumentCollection=arguments) & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#site.getFilePoolID()#/cache/file/#arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
+				<cfset returnURL = begin & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
 			</cfif>
 		</cfif>
 	<cfelse>
