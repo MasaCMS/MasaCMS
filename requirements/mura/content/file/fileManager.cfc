@@ -884,7 +884,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset returnURL=begin & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 
 			<cfelseif arguments.size neq 'custom'>
-				<cfset returnURL = getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=site.getFilePoolID())>
+				<cfset returnURL = getCustomImage(image="#application.configBean.getFileDir()#/#site.getFilePoolID()#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=site.getFilePoolID())>
  				<cfif len(returnURL)>
  					<cfset returnURL = begin & "/cache/file/" & returnURL>
  				</cfif>
