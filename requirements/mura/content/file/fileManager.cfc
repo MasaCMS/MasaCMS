@@ -834,7 +834,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var site=site.getAssetPath(argumentCollection=arguments)>
 
 	<cfif isValid('URL', application.configBean.getAssetPath())>
-		<cfset var begin=application.configBean.getAssetPath()">
+		<cfset var begin=application.configBean.getAssetPath()>
 	<cfelse>
 		<cfset var begin=site.getAssetPath(argumentCollection=arguments)>
 	</cfif>
