@@ -394,6 +394,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset doKids =true />
 			</cfif>
 
+			<cfif arguments.sortby eq 'relevance' and not doKids>
+				<cfparam name="session.mura.mxp" default="#structNew()#">
+				<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
+				<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
+				<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
+
+				<cfif len(session.mura.mxp.trackingProperties.personaid) or len(session.mura.mxp.trackingProperties.stageid)>
+					<cfset var relevanceSort=true>
+				<cfelse>
+					<cfset var relevanceSort=false>
+				</cfif>
+			<cfelse>
+				<cfset var relevanceSort=false>
+			</cfif>
+
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsKids')#">
 				<cfif dbType eq "oracle" and arguments.size>select * from (</cfif>
 				SELECT <cfif dbType eq "mssql" and arguments.size>Top #val(arguments.size)#</cfif>
@@ -401,15 +416,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(altTable)>
 				tcontent.*
 				<cfelse>
-				title, releasedate, menuTitle, tcontent.lastupdate,summary, tags,tcontent.filename, type,subType, tcontent.siteid,
-				tcontent.contentid, tcontent.contentHistID, target, targetParams,
-				restricted, restrictgroups, displaystart, displaystop, orderno,sortBy,sortDirection,
+				tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate,tcontent.summary, tcontent.tags,tcontent.filename, tcontent.type,tcontent.subType, tcontent.siteid,
+				tcontent.contentid, tcontent.contentHistID, tcontent.target, tcontent.targetParams,
+				tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 				tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
-				tfiles.fileSize,tfiles.fileExt, audience, keypoints
+				tfiles.fileSize,tfiles.fileExt, tcontent.audience, tcontent.keypoints
 				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
 				,tcontentstats.comments, '' as parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
 				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
-				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText
+				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText,tcontent.changesetid
+				</cfif>
+
+				<cfif relevanceSort>
+				,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
 				</cfif>
 				FROM <cfif len(altTable)>#alttable#</cfif> tcontent #tableModifier#
 
@@ -419,6 +438,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									    and tcontent.siteid=tcontentstats.siteid)
 					Left Join tcontentfilemetadata #tableModifier# on (tcontent.fileid=tcontentfilemetadata.fileid
 													and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
+				</cfif>
+
+				<cfif relevanceSort>
+					LEFT JOIN mxp_personapoints persona #tableModifier#
+					ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
+
+					LEFT JOIN mxp_stagepoints stage #tableModifier#
+					ON (tcontent.contenthistid=stage.contenthistid and stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">)
+
+					LEFT JOIN mxp_conversiontrack track #tableModifier#
+					ON (tcontent.contentid = track.contentid and track.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"> and track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">)
 				</cfif>
 
 				<cfif isExtendedSort>
@@ -702,25 +732,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				#renderMobileClause()#
 
+				<cfif relevanceSort>
+				Group By
+				tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate,tcontent.summary, tcontent.tags,tcontent.filename, tcontent.type,tcontent.subType, tcontent.siteid,
+				tcontent.contentid, tcontent.contentHistID, tcontent.target, tcontent.targetParams,
+				tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
+				tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
+				tfiles.fileSize,tfiles.fileExt, tcontent.audience, tcontent.keypoints
+				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
+				,tcontentstats.comments,tcontent.path, tcontent.created, tcontent.nextn,
+				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
+				tfiles.filename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText,tcontent.changesetid
+				</cfif>
+
 				order by
 
 				<cfswitch expression="#arguments.sortBy#">
 					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,tcontent.credits,type,subtype">
 						<cfif dbType neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created,displayStart,displayStop",arguments.sortBy)>
-						tcontent.#arguments.sortBy# #arguments.sortDirection#
+						tcontent.#arguments.sortBy# #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
 						<cfelse>
-						lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+						lower(tcontent.#arguments.sortBy#) #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
 						</cfif>
 					</cfcase>
 					<cfcase value="rating">
-						tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
+						tcontentstats.rating #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#, tcontentstats.totalVotes  #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
 					</cfcase>
 					<cfcase value="comments">
-						tcontentstats.comments #arguments.sortDirection#
+						tcontentstats.comments #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
 					</cfcase>
 					<cfdefaultcase>
-						<cfif isExtendedSort>
-							qExtendedSort.extendedSort #arguments.sortDirection#
+						<cfif relevanceSort>
+							total_points #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
+						<cfelseif isExtendedSort>
+							qExtendedSort.extendedSort #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
 						<cfelse>
 							tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
 						</cfif>

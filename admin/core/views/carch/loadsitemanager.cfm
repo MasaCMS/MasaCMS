@@ -154,8 +154,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<option value="menuTitle" <cfif rc.sortBy eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
 						<option value="title" <cfif rc.sortBy eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
 						<option value="rating" <cfif rc.sortBy eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
-						<option value="comments" <cfif rc.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
-						<cfloop query="rsExtend">
+                        <cfif rc.$.getServiceFactory().containsBean('marketingManager')>
+                            <option value="relevance" <cfif rc.sortBy eq 'relevance'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.relevance')#</option>
+                        </cfif>
+                        <cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments()>
+                            <option value="comments" <cfif rc.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
+                        </cfif>
+                        <cfloop query="rsExtend">
 							<cfif listFindNoCase('Base,Page,Folder,Link,File,Gallery,Calendar',rsExtend.Type)>
 							<option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
 							</cfif>

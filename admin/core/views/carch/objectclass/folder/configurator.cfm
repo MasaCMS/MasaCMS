@@ -99,8 +99,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                <option value="menuTitle" <cfif content.getSortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
 	                <option value="title" <cfif content.getSortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
 	                <option value="rating" <cfif content.getSortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
-	                <option value="comments" <cfif content.getSortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
-	                 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
+					<cfif rc.$.getServiceFactory().containsBean('marketingManager')>
+						<option value="relevance" <cfif content.getSortBy() eq 'relevance'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.relevance')#</option>
+					</cfif>
+					<cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments()>
+						<option value="comments" <cfif content.getSortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
+					</cfif>
+					<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
 	                <cfloop query="rsExtend">
 	                  <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif content.getSortBy() eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
 	                </cfloop>

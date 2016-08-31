@@ -193,6 +193,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
+	<cfif (arguments.feedBean.getSortBy() eq 'relevance' or listFirst(arguments.feedBean.getOrderBy(),' ') eq 'relevance' ) and not (arguments.countOnly or doKids)>
+		<cfparam name="session.mura.mxp" default="#structNew()#">
+		<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
+		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
+		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
+
+		<cfif len(session.mura.mxp.trackingProperties.personaid) or len(session.mura.mxp.trackingProperties.stageid)>
+			<cfset var relevanceSort=true>
+		<cfelse>
+			<cfset var relevanceSort=false>
+		</cfif>
+	<cfelse>
+		<cfset var relevanceSort=false>
+	</cfif>
+
 	<cfprocessingdirective suppressWhitespace="true">
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsFeed',blockFactor=blockFactor,cachedWithin=arguments.feedBean.getCachedWithin())#">
 			<cfif not arguments.countOnly and dbType eq "oracle" and arguments.feedBean.getMaxItems()>SELECT * FROM (</cfif>
@@ -214,6 +229,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
 						tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
 						tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText,tcontent.changesetid
+					</cfif>
+
+					<cfif relevanceSort>
+					,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
 					</cfif>
 				<cfelse>
 					count(*) as count
@@ -262,6 +281,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tparent.active=1)
 					Left Join tcontentfilemetadata #tableModifier# on (tcontent.fileid=tcontentfilemetadata.fileid
 						and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
+				</cfif>
+
+				<cfif relevanceSort>
+					LEFT JOIN mxp_personapoints persona #tableModifier#
+					ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
+
+					LEFT JOIN mxp_stagepoints stage #tableModifier#
+					ON (tcontent.contenthistid=stage.contenthistid and stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">)
+
+					LEFT JOIN mxp_conversiontrack track #tableModifier#
+					ON (tcontent.contentid = track.contentid and track.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#"> and track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">)
 				</cfif>
 
 				<cfif not arguments.countOnly and isExtendedSort>
@@ -1020,12 +1050,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 				</cfif>
 
+				<cfif relevanceSort>
+				Group By
+					tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups,
+					tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
+					tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
+					tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
+					tcontent.releaseDate, tcontent.lastupdate,tcontent.summary,
+					tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
+					tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
+					tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
+					tcontentstats.comments, tparent.type,
+					tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
+					tfiles.filename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText,tcontent.changesetid
+				</cfif>
+
 				<cfif not arguments.countOnly>
 					<cfif arguments.feedBean.getSortBy() neq '' or arguments.feedBean.getOrderBy() neq ''>
 						order by
 
 						<cfif len(arguments.feedBean.getOrderBy())>
-							#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\- ]","","all")#
+							<cfif relevanceSort>
+								<cfif listLast(arguments.feedBean.getOrderBy(),' ') eq 'asc'>
+									total_points asc, total_score asc
+								<cfelse>
+									total_points desc, total_score desc
+								</cfif>
+							<cfelse>
+								#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\- ]","","all")#
+							</cfif>
 						<cfelse>
 							<cfswitch expression="#arguments.feedBean.getSortBy()#">
 								<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
@@ -1053,8 +1106,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							    	</cfif>
 								</cfcase>
 								<cfdefaultcase>
-									<cfif isExtendedSort>
-										qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
+									<cfif relevanceSort>
+										total_points #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+									<cfelseif isExtendedSort>
+										qExtendedSort.extendedSort #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 									<cfelse>
 										tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
 									</cfif>
