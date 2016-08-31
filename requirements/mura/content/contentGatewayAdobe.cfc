@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+""<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -2195,6 +2195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getUsage" output="false">
 	<cfargument name="objectID" type="String">
+	<cfargument name="siteid" type="String">
 
 	<cfset var rsUsage= ''/>
 
@@ -2202,11 +2203,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	select tcontent.menutitle, tcontent.type, tcontent.filename, tcontent.lastupdate, tcontent.contentID, tcontent.siteID,
 	tcontent.approved,tcontent.display,tcontent.displayStart,tcontent.displayStop,tcontent.moduleid,tcontent.contenthistID,
 	tcontent.parentID
-	from tcontent inner join tcontentobjects on (tcontent.contentHistID=tcontentobjects.contentHistID)
+	from tcontent
 	where tcontent.active=1
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
 	and
 	<cfif len(arguments.objectID)>
-		objectID like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.objectID#%"/>
+		(
+			tcontent.contentid in (
+				select contentid from tcontentobjects
+				where objectid like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.objectID#%"/>
+			)
+			or
+			tcontent.contentid in (
+				select contentid from tcontent
+				where
+				siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.objectID#%"/>
+
+			)
+		)
 	<cfelse>
 		0=1
 	</cfif>

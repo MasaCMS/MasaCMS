@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-<cfset rsUsage=application.contentGateway.getUsage(rc.contentID) />
+<cfset rsUsage=application.contentGateway.getUsage(rc.contentID,session.siteid) />
 </cfsilent>
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))/>
 <cfset tabList=listAppend(tabList,"tabUsagereport")>
