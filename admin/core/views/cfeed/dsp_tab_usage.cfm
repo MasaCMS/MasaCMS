@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-<cfset rsUsage=application.contentGateway.getUsage(rc.feedID) />
+<cfset rsUsage=application.contentGateway.getUsage(rc.feedID,session.siteid) />
 <cfparam name="rc.homeid" default="">
 </cfsilent><cfoutput>
 <cfset tabLabellist=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'collections.usagereport')) >

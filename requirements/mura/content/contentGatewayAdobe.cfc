@@ -2242,6 +2242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="objectID" type="String">
 	<cfargument name="siteid" type="String">
 
+	<cfdump var="#arguments#" abort=true>
 	<cfset var rsUsage= ''/>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUsage')#">
