@@ -4168,9 +4168,16 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		];
 
-		for(var h=0;h<processors.length;h++){
-			processors[h]();
-		}
+        return new Promise(function(resolve,reject){
+            for(var h=0;h<processors.length;h++){
+    			processors[h]();
+    		}
+
+            if(typeof resolve == 'function'){
+                resolve();
+            }
+        });
+
 	}
 
 	function addEventHandler(eventName,fn){
@@ -5677,10 +5684,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		processMarkup:function(){
-			this.each(function(el){
-				Mura.processMarkup(el);
-			});
-			return this;
+            var self=this;
+            return new Promise(function(resolve,reject){
+                self.each(function(el){
+    				Mura.processMarkup(el);
+    			});
+            });
 		},
 
 		on:function(eventName,selector,fn){

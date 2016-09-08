@@ -1498,9 +1498,16 @@
 			}
 		];
 
-		for(var h=0;h<processors.length;h++){
-			processors[h]();
-		}
+        return new Promise(function(resolve,reject){
+            for(var h=0;h<processors.length;h++){
+    			processors[h]();
+    		}
+
+            if(typeof resolve == 'function'){
+                resolve();
+            }
+        });
+
 	}
 
 	function addEventHandler(eventName,fn){

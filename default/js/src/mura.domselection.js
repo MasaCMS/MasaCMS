@@ -111,10 +111,12 @@
 		},
 
 		processMarkup:function(){
-			this.each(function(el){
-				Mura.processMarkup(el);
-			});
-			return this;
+            var self=this;
+            return new Promise(function(resolve,reject){
+                self.each(function(el){
+    				Mura.processMarkup(el);
+    			});
+            });
 		},
 
 		on:function(eventName,selector,fn){
