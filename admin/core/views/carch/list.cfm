@@ -321,8 +321,8 @@
 						<div id="tags" class="tagSelector">
 							<cfloop list="#$.event('tags')#" index="i">
 								<span class="tag">
-												#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-								<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+									#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+									<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 								</span>
 							</cfloop>
 						</div>
@@ -336,8 +336,8 @@
 								<div id="#g#tags" class="tagSelector">
 									<cfloop list="#$.event('#g#tags')#" index="i">
 										<span class="tag">
-														#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-										<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+											#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+											<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 										</span>
 									</cfloop>
 								</div>
@@ -451,7 +451,9 @@
 
 			<cfif len($.siteConfig('customTagGroups'))>
 				<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-					<cfparam name="rc.#g#tags" default="" />
+					<cfif not structKeyExists(rc,"#g#tags")>
+						<cfset rc["#g#tags"]="">
+					</cfif>
 				</cfloop>
 			</cfif>
 
@@ -746,7 +748,7 @@
 						filtered: '#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].filtered)#'
 						<cfif len($.siteConfig('customTagGroups'))>
 							<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-								,#g#tags:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"]["#g#tags"])#'
+								,"#g#tags":'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"]["#g#tags"])#'
 							</cfloop>
 						</cfif>
 					};
