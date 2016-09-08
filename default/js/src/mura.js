@@ -1671,7 +1671,7 @@
 		if(obj.data('class')){
 			var classes=obj.data('class');
 
-			if(typeof classes != 'array'){
+			if(typeof classes != 'Array'){
 				var classes=classes.split(' ');
 			}
 
@@ -1691,7 +1691,7 @@
 				var classes=classes.split(' ');
 			}
 
-			for(var c in classes){
+            for(var c=0;c<classes.length;c++){
 				if(!obj.hasClass(classes[c])){
 					obj.addClass(classes[c]);
 				}

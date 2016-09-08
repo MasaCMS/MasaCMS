@@ -98,11 +98,11 @@
 					if(item.data('class')){
 						var classes=item.data('class');
 
-						if(typeof classes != 'array'){
+						if(typeof classes != 'Array'){
 							classes=classes.split(' ');
 						}
 
-						for(var c in classes){
+						for(var c=0;c<classes.length;c++){
 							if(item.hasClass(classes[c])){
 								item.removeClass(classes[c]);
 							}
