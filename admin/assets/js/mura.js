@@ -5762,6 +5762,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+        change:function(fn){
+			this.on('change',fn);
+			return this;
+		},
+
 		submit:function(fn){
 			if(fn){
 				this.on('submit',fn);
