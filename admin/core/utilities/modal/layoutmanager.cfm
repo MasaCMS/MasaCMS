@@ -97,7 +97,7 @@
 					</div>
 				</div>
 				--->
-				<iframe src="" data-preloadsrc="#$.siteConfig().getAdminPath(complete=1)#?muraAction=carch.frontendconfigurator&siteid=#$.content('siteid')#&preloadOnly=true&layoutmanager=true&compactDisplay=true" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
+				<iframe src="" data-preloadsrc="#$.siteConfig().getAdminPath(complete=1)#?muraAction=carch.frontendconfigurator&siteid=#$.content('siteid')#&preloadOnly=true&layoutmanager=true&compactDisplay=true&cacheid=#createUUID()#" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
 				</iframe>
 
 			</div>

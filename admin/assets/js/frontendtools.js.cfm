@@ -332,6 +332,8 @@
 					src+='&remoteurl=' + encodeURIComponent(Mura.remoteurl);
 				}
 
+				src+='&cacheid=' + Math.random();
+
 				utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
 				'<div id="frontEndToolsModalBody">' + $tools +
 				'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
@@ -347,6 +349,7 @@
 			Mura('.mura-object-selected').removeClass('mura-object-selected');
 
 			editableObj.addClass('mura-object-selected');
+			src+='&cacheid=' + Math.random();
 			console.log(src)
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			MuraInlineEditor.sidebarAction('showconfigurator');
