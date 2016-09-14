@@ -48,7 +48,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="application.setupComplete" default="false">
 <cfparam name="application.appInitialized" default="false">
 <cfparam name="application.instanceID" default="#createUUID()#" />
-<cfheader name="Generator" value="Mura CMS" />
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfset setEncoding("url", "utf-8")>
 <cfset setEncoding("form", "utf-8")>
@@ -274,3 +273,5 @@ If it has not, set application.appInitialized=false. --->
 		.getResponse()
 		.setHeader('Strict-Transport-Security', 'max-age=1200;includeSubDomains');
 </cfscript>
+
+<cfheader name="Generator" value="Mura CMS #application.serviceFactory.getBean('configBean').getVersion()#" />
