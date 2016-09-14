@@ -721,6 +721,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getResourcePath(argumentCollection=arguments) & "/#variables.instance.displayPoolID#" />
 </cffunction>
 
+<cffunction name="getFileAssetPath" output="false">
+	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="#getValue('domain')#">
+	<cfreturn getResourcePath(argumentCollection=arguments) & "/#variables.instance.filePoolID#" />
+</cffunction>
+
 <cffunction name="getIncludePath" output="false">
 	<cfreturn "/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#" />
 </cffunction>
