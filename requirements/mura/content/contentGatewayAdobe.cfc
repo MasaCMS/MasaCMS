@@ -399,12 +399,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
 				<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 				<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
-
-				<cfif len(session.mura.mxp.trackingProperties.personaid) or len(session.mura.mxp.trackingProperties.stageid)>
-					<cfset var relevanceSort=true>
-				<cfelse>
-					<cfset var relevanceSort=false>
-				</cfif>
+				<cfset var relevanceSort=true>
 			<cfelse>
 				<cfset var relevanceSort=false>
 			</cfif>
