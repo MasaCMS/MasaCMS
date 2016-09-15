@@ -1810,7 +1810,7 @@
 			} else {
 				if(Mura.type == 'Variation'){
 					var objectData=obj.data();
-					if(root.MuraInlineEditor && (root.MuraInlineEditor.objectHasConfigurator(obj)  || (!root.Mura.layoutmanager && root.MuraInlineEditor.objectHasEditor(objectParams)) ) ){
+					if(root.MuraInlineEditor){
 						obj.children('.frontEndToolsModal').remove();
 						obj.prepend(layoutmanagertoolbar);
 						MuraInlineEditor.setAnchorSaveChecks(obj.node);
