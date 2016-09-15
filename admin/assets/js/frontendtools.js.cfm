@@ -972,7 +972,7 @@
 					if(Mura.type =='Variation'){
 						objectParams=item.data();
 
-						if(window.MuraInlineEditor.objectHasConfigurator(item)){
+						//if(window.MuraInlineEditor.objectHasConfigurator(item)){
 							item.children('.frontEndToolsModal').remove();
 							item.prepend(window.Mura.layoutmanagertoolbar );
 
@@ -988,7 +988,7 @@
 							item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
 							item.find('.mura-object').each(initObject);
-						}
+						//}
 					} else {
 						var region=item.closest('.mura-region-local');
 

@@ -835,7 +835,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isValid('URL', application.configBean.getAssetPath())>
 		<cfset var begin=application.configBean.getAssetPath() & "/" & site.getFilePoolID()>
 	<cfelse>
-		<cfset var begin=site.getAssetPath(argumentCollection=arguments)>
+		<cfset var begin=site.getFileAssetPath(argumentCollection=arguments)>
 	</cfif>
 
 	<cfif request.muraExportHtml>
