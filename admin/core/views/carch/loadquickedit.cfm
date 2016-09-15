@@ -469,7 +469,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfoutput>
 <cfelse>
 	<cfoutput>
-	<i class="mi-ban"></i>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftstitle')# </h1>
 	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="mi-close"></i></span>
 		<p id="hasDraftsMessage">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftsmessage')#</p>
