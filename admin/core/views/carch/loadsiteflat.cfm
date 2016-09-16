@@ -666,9 +666,9 @@ if(len($.siteConfig('customTagGroups'))){
 						#esapiEncode('html',item.getMenuTitle())#
 					</cfif>
 				</h2>
-
-				<span class="breadcrumb-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.location")#: </span>#$.dspZoom(crumbData=crumbdata,ajax=true,class="breadcrumb")#
-
+				<cfif arrayLen(crumbdata)>
+					<span class="breadcrumb-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.location")#: </span>#$.dspZoom(crumbData=crumbdata,ajax=true,class="breadcrumb")#
+				</cfif>
 				<ul class="nodeMeta">
 					<cfsilent><cfset args=arrayNew(1)>
 					<cfset args[1]=LSDateformat(item.getLastUpdate(),session.dateKeyFormat)>
