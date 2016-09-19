@@ -44,7 +44,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory",
+			publicMethods="findOne,findMany,findAll,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser",
 			entities={
 				'contentnav'={
 					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
@@ -1282,6 +1282,15 @@ component extends="mura.cfobject" {
 		vals['entityname']=arguments.entityConfigName;
 
 		return vals;
+	}
+
+	function findCurrentUser(entityName,id,siteid,render=false,variation=false,expand=''){
+		return findOne(
+			entityName='user',
+			id=getBean('$').init(arguments.siteid).currentUser('userid'),
+			siteid=arguments.siteid,
+			expand=arguments.expand
+		);
 	}
 
 	function findOne(entityName,id,siteid,render=false,variation=false,expand=''){
