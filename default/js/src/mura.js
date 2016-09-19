@@ -166,6 +166,27 @@
 		return new root.Mura.Feed(Mura.siteid,entityname);
 	}
 
+    function getCurrentUser(){
+        return new Promise(function(resolve,reject) {
+            if(root.Mura.currentUser){
+                return root.Mura.currentUser;
+            } else {
+                root.Mura.ajax({
+    					async:true,
+    					type:'get',
+    					url:root.Mura.apiEndpoint + '/findCurrentUser',
+    					success:function(resp){
+    						if(typeof resolve == 'function'){
+    							root.Mura.currentUser=new root.Mura.Entity();
+    							root.Mura.currentUser.set(resp.data);
+    							resolve(root.Mura.currentUser);
+    						}
+    					}
+    			});
+            }
+        });
+    }
+
 	function findQuery(params){
 
 		params=params || {};
@@ -2433,6 +2454,7 @@
 			unescape:$unescape,
 			getBean:getEntity,
 			getEntity:getEntity,
+            getCurrentUser:getCurrentUser,
 			renderFilename:renderFilename,
 			findQuery:findQuery,
 			getFeed:getFeed,
@@ -2443,6 +2465,7 @@
 			formToObject:formToObject,
 			createUUID:createUUID,
 			processMarkup:processMarkup,
+            getURLParams:getURLParams,
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,
