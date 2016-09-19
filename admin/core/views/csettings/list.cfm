@@ -378,18 +378,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset files=[]>
 		</cfif>
 
-		<p>Your core files have been updated to version
-			<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</p>
-		<p> <strong>Updated Files
-			<cfoutput>(#arrayLen(files)#)</cfoutput>
-			</strong><br/>
-			<cfif arrayLen(files)>
-				<cfoutput>
-				<cfloop from="1" to="#arrayLen(files)#" index="i"> #files[i]#<br/>
-				</cfloop>
-				</cfoutput>
-			</cfif>
-		</p>
+			<div class="block block-constrain">
+				<div class="block block-bordered">
+				  <div class="block-content">
+
+						<p>Your core files have been updated to version
+							<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</p>
+						<p> <strong>Updated Files
+							<cfoutput>(#arrayLen(files)#)</cfoutput>
+							</strong><br/>
+							<cfif arrayLen(files)>
+								<cfoutput>
+								<cfloop from="1" to="#arrayLen(files)#" index="i"> #files[i]#<br/>
+								</cfloop>
+								</cfoutput>
+							</cfif>
+						</p>
+
+					<div class="clearfix"></div>
+				</div> <!-- /.block-content -->
+			</div> <!-- /.block-bordered -->
+		</div> <!-- /.block-constrain -->
+
 		<cfcatch>
 			<h2>An Error has occurred.</h2>
 			<cfdump var="#cfcatch.message#">
