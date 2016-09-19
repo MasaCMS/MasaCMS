@@ -2443,6 +2443,7 @@
 			formToObject:formToObject,
 			createUUID:createUUID,
 			processMarkup:processMarkup,
+            getURLParams:getURLParams,
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,
