@@ -394,14 +394,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset doKids =true />
 			</cfif>
 
-			<cfif arguments.sortby eq 'relevance' and not doKids>
+			<cfif arguments.sortby eq 'mxpRelevance' and not doKids>
 				<cfparam name="session.mura.mxp" default="#structNew()#">
 				<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
 				<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 				<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
-				<cfset var relevanceSort=true>
+				<cfset var mxpRelevanceSort=true>
 			<cfelse>
-				<cfset var relevanceSort=false>
+				<cfset var mxpRelevanceSort=false>
 			</cfif>
 
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsKids')#">
@@ -422,7 +422,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText,tcontent.changesetid
 				</cfif>
 
-				<cfif relevanceSort>
+				<cfif mxpRelevanceSort>
 				,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
 				</cfif>
 				FROM <cfif len(altTable)>#alttable#</cfif> tcontent #tableModifier#
@@ -435,7 +435,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
 				</cfif>
 
-				<cfif relevanceSort>
+				<cfif mxpRelevanceSort>
 					LEFT JOIN mxp_personapoints persona #tableModifier#
 					ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
 
@@ -727,7 +727,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				#renderMobileClause()#
 
-				<cfif relevanceSort>
+				<cfif mxpRelevanceSort>
 				Group By
 				tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate,tcontent.summary, tcontent.tags,tcontent.filename, tcontent.type,tcontent.subType, tcontent.siteid,
 				tcontent.contentid, tcontent.contentHistID, tcontent.target, tcontent.targetParams,
@@ -757,7 +757,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontentstats.comments #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
 					</cfcase>
 					<cfdefaultcase>
-						<cfif relevanceSort>
+						<cfif mxpRelevanceSort>
 							total_points #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
 						<cfelseif isExtendedSort>
 							qExtendedSort.extendedSort #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#

@@ -193,14 +193,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfif (arguments.feedBean.getSortBy() eq 'relevance' or listFirst(arguments.feedBean.getOrderBy(),' ') eq 'relevance' ) and not (arguments.countOnly or doKids)>
+	<cfif (arguments.feedBean.getSortBy() eq 'mxpRelevance' or listFirst(arguments.feedBean.getOrderBy(),' ') eq 'mxpRelevance' ) and not (arguments.countOnly or doKids)>
 		<cfparam name="session.mura.mxp" default="#structNew()#">
 		<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
 		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
-		<cfset var relevanceSort=true>
+		<cfset var mxpRelevanceSort=true>
 	<cfelse>
-		<cfset var relevanceSort=false>
+		<cfset var mxpRelevanceSort=false>
 	</cfif>
 
 	<cfprocessingdirective suppressWhitespace="true">
@@ -226,7 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText,tcontent.changesetid
 					</cfif>
 
-					<cfif relevanceSort>
+					<cfif mxpRelevanceSort>
 					,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
 					</cfif>
 				<cfelse>
@@ -278,7 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
 				</cfif>
 
-				<cfif relevanceSort>
+				<cfif mxpRelevanceSort>
 					LEFT JOIN mxp_personapoints persona #tableModifier#
 					ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
 
@@ -1045,7 +1045,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 				</cfif>
 
-				<cfif relevanceSort>
+				<cfif mxpRelevanceSort>
 				Group By
 					tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups,
 					tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
@@ -1065,7 +1065,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						order by
 
 						<cfif len(arguments.feedBean.getOrderBy())>
-							<cfif relevanceSort>
+							<cfif mxpRelevanceSort>
 								<cfif listLast(arguments.feedBean.getOrderBy(),' ') eq 'asc'>
 									total_points asc, total_score asc
 								<cfelse>
@@ -1101,7 +1101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							    	</cfif>
 								</cfcase>
 								<cfdefaultcase>
-									<cfif relevanceSort>
+									<cfif mxpRelevanceSort>
 										total_points #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 									<cfelseif isExtendedSort>
 										qExtendedSort.extendedSort #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#

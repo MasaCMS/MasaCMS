@@ -1381,8 +1381,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="registerContentTypeDirs" output="false">
 	<cfset var lookupArray=[
-		getIncludePath()  & "/includes/content_types/",
-		getThemeIncludePath(getValue('theme')) & "/content_types/"
+		getIncludePath()  & "/includes/content_types",
+		getThemeIncludePath(getValue('theme')) & "/content_types"
 	]>
 
 	<cfset var dir="">
@@ -1591,10 +1591,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="discoverDisplayObjects" output="false">
 	<cfset var lookupArray=[
-		'/muraWRM/admin/core/views/carch/objectclass/',
-		getIncludePath()  & "/includes/display_objects/",
-		getIncludePath()  & "/includes/display_objects/custom/",
-		getThemeIncludePath(getValue('theme')) & "/display_objects/"
+		'/muraWRM/admin/core/views/carch/objectclass',
+		getIncludePath()  & "/includes/display_objects",
+		getIncludePath()  & "/includes/display_objects/custom",
+		getThemeIncludePath(getValue('theme')) & "/display_objects"
 	]>
 
 	<cfset var dir="">

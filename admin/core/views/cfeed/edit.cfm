@@ -327,7 +327,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<option value="orderno" <cfif rc.feedBean.getsortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.orderno')#</option>
 							<option value="random" <cfif rc.feedBean.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
 							<cfif rc.$.getServiceFactory().containsBean('marketingManager')>
-								<option value="relevance" <cfif rc.feedBean.getsortBy() eq 'relevance'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.relevance')#</option>
+								<option value="mxpRelevance" <cfif rc.feedBean.getsortBy() eq 'mxpRelevance'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.mxpRelevance')#</option>
 							</cfif>
 							<option value="" <cfif rc.feedBean.getsortBy() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.donotapplysort')#</option>
 							<cfloop query="rsExtend">
