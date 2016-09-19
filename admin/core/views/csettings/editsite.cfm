@@ -1300,7 +1300,7 @@ to your own modified versions of Mura CMS.
 				<div class="block block-bordered">
 				  <div class="block-content">
 
-						<p>Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</p>
+						<div class="help-block-inline">Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</div>
 						<p> <strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
 							<cfif arrayLen(files)>
 								<cfoutput>

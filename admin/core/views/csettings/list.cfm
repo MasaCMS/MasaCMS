@@ -382,8 +382,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="block block-bordered">
 				  <div class="block-content">
 
-						<p>Your core files have been updated to version
-							<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</p>
+						<div class="help-block-inline">Your core files have been updated to version
+							<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</div>
 						<p> <strong>Updated Files
 							<cfoutput>(#arrayLen(files)#)</cfoutput>
 							</strong><br/>
