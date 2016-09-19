@@ -1113,6 +1113,7 @@ a.no-link{
 
 // alerts, alert-variants
 
+#mura-content .alert,
 .alert,
 p.alert,
 .content p.alert{
@@ -1154,7 +1155,21 @@ p.alert,
     opacity: .3;
     width: 24px;
     text-shadow:none;
+  }
 
+  ul.breadcrumb{
+    margin-top: 0 !important;
+    >:first-child{
+      margin-left: 0 !important;
+    }
+    li{
+      &+ li{
+        margin-left: 4px;
+      }
+      a > i{
+        width: 16px;
+      }
+    }
   }
 } // /.alert
 
