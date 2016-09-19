@@ -1295,16 +1295,27 @@ to your own modified versions of Mura CMS.
 	<cftry>
 		<cfset updated=application.autoUpdater.update(rc.siteid)>
 		<cfset files=updated.files>
-		<p>Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</p>
-		<p> <strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
-			<cfif arrayLen(files)>
-				<cfoutput>
-					<cfloop from="1" to="#arrayLen(files)#" index="i">
-						#files[i]#<br />
-					</cfloop>
-				</cfoutput>
-			</cfif>
-		</p>
+
+			<div class="block block-constrain">
+				<div class="block block-bordered">
+				  <div class="block-content">
+
+						<div class="help-block-inline">Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</div>
+						<p> <strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
+							<cfif arrayLen(files)>
+								<cfoutput>
+									<cfloop from="1" to="#arrayLen(files)#" index="i">
+										#files[i]#<br />
+									</cfloop>
+								</cfoutput>
+							</cfif>
+						</p>
+
+						<div class="clearfix"></div>
+					</div> <!-- /.block-content -->
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /.block-constrain -->
+
 		<cfcatch>
 			<h2>An Error has occurred.</h2>
 			<cfdump var="#cfcatch.message#">

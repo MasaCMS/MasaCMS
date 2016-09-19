@@ -92,7 +92,7 @@
 					<cfcase value="cArch">
 					<cfswitch expression="#rc.moduleID#">
 					<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
-						<cfset moduleTitle="Content Manager"/>
+						<cfset moduleTitle="Site Content"/>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif rc.originalfuseaction eq "imagedetails">

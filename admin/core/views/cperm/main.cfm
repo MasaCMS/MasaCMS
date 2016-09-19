@@ -134,7 +134,7 @@
 
     <cfset rc.rslist=rc.groups.publicGroups />
     <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>
-    <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')# #application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
+    <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#<br>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
 
       <cfif rc.rslist.recordcount>
           <table class="mura-table-grid<cfif rc.rslist.recordcount lt 2> no-stripe</cfif>">
