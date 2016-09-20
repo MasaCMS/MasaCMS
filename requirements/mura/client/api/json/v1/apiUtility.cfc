@@ -1136,6 +1136,18 @@ component extends="mura.cfobject" {
 
 		var $=getBean('$').init(arguments.siteid);
 
+		if(arguments.entityName=='user'){
+			if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
+				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
+					var vals=$.event().getAllValues();
+					structDelete(vals,'isPublic');
+					structDelete(vals,'s2');
+					structDelete(vals,'type');
+					structDelete(vals,'groupID');
+				}
+			}
+		}
+
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
 		var saveErrors=false;
 		var errors={};
