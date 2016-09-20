@@ -890,7 +890,7 @@ component extends="mura.cfobject" {
             }
 
             //Don't respond with file paths information
-            if(refind('[\\/]',temp['#p#'])){
+            if(structKeyExists(temp,'#p#') && refind('[\\/]',temp['#p#'])){
                 structDelete(temp,'#p#');
             }
         }
