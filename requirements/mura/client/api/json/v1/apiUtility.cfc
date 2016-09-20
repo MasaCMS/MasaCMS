@@ -1285,11 +1285,18 @@ component extends="mura.cfobject" {
 	}
 
 	function findCurrentUser(entityName,id,siteid,render=false,variation=false,expand=''){
+		var $=getBean('$').init(arguments.siteid);
+
+		if(!len($.currentUser('userid'))){
+			$.currentUser('userid',createUUID());
+		}
+		
 		return findOne(
 			entityName='user',
-			id=getBean('$').init(arguments.siteid).currentUser('userid'),
+			id=$.currentUser('userid'),
 			siteid=arguments.siteid,
-			expand=arguments.expand
+			expand=arguments.expand,
+			method='findCurrentUser'
 		);
 	}
 
@@ -1361,12 +1368,14 @@ component extends="mura.cfobject" {
 			entity.loadBy(argumentCollection=loadparams);
 		}
 
-		if(!allowAccess(entity,$)){
-			throw(type="authorization");
-		}
+		if(arguments.method !='findCurrentUser'){
+			if(!allowAccess(entity,$)){
+				throw(type="authorization");
+			}
 
-		if(!entity.allowRead($)){
-			throw(type="authorization");
+			if(!entity.allowRead($)){
+				throw(type="authorization");
+			}
 		}
 
 		var returnStruct=getFilteredValues(entity,true,arguments.entityName);
