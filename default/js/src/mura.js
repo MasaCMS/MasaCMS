@@ -2178,6 +2178,7 @@
 	}
 
 	function getQueryStringParams(queryString) {
+        queryString=queryString || root.location.search;
 	    var params = {};
 	    var e,
 	        a = /\+/g,  // Regex for replacing addition symbol with a space
@@ -2223,10 +2224,6 @@
 	        }
 	    }
 	    return -1;
-	}
-
-	function getURLParams() {
-		return getQueryStringParams(root.location.search);
 	}
 
 	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
@@ -2465,7 +2462,7 @@
 			formToObject:formToObject,
 			createUUID:createUUID,
 			processMarkup:processMarkup,
-            getURLParams:getURLParams,
+            getQueryStringParams:getQueryStringParams,
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,
