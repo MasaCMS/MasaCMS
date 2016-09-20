@@ -209,6 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sinceDate" type="any" default="">
 		<cfargument name="includeUsers" type="boolean" default="false" required="true">
 		<cfargument name="changesetID" default="">
+		<cfargument name="bundleMode" default="">
 
 		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID />
 		<cfset var zipDir	= "" />
@@ -233,7 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		--->
 
-		<cfif len(arguments.siteID)>
+		<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
 			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
@@ -659,6 +660,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="changesetID" default="">
 		<cfargument name="parentID" default="">
 		<cfargument name="doChildrenOnly" default="1">
+		<cfargument name="bundleMode" default="">
 
 		<cfset var rstcontent=""/>
 		<cfset var rstcontentstats=""/>
@@ -768,33 +770,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfdirectory action="create" directory="#variables.backupDir#">
 		</cfif>
 
-		<cfif len(arguments.siteID)>
-			<!---
-			--- Switching to using content path instead ---
-			<cfif len(arguments.parentid)>
-				<cfquery name="rsparentids">
-					select distinct contentid,
-					<cfif variables.configBean.getDBType() eq "MSSQL">
-					len(Cast(path as varchar(1000))) depth, orderno
-					<cfelse>
-					length(path) depth, orderno
-					</cfif>
-					from tcontent
-					where
-					siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-					and
-					path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
-					<cfif arguments.doChildrenOnly>
-					and
-					contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
-					</cfif>
-					and
-					active = 1
-					order by depth, orderno
-				</cfquery>
-			</cfif>
-			--->
-
+		<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
 			<cfquery name="rstcontent">
 				select tcontent.* from tcontent
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -818,9 +794,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 
 			<cfset setValue("rstcontent",rstcontent)>
- 			<!--- <cfif len(arguments.changesetID) or len(arguments.parentid)>
-				<cfset fixAssetPath(arguments.siteid) />
-			</cfif> --->
 
 			<cfquery name="rstcontentobjects">
 				select * from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -901,65 +874,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 
 			<cfset setValue("rstcontenttags",rstcontenttags)>
-
-			<!--- BEGIN ADVERTISING --->
-			<!--- removed until further evaluation
-			<cfquery name="rsSettings">
-				select advertiserUserPoolID from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			</cfquery>
-
-			<cfquery name="rstadcampaigns">
-				select * from tadcampaigns
-				where userID in
-				(select userID from tusers where
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
-			</cfquery>
-
-			<cfset setValue("rstadcampaigns",rstadcampaigns)>
-
-			<cfquery name="rstadcreatives">
-				select * from tadcreatives
-				where userID in
-				(select userID from tusers where
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
-			</cfquery>
-
-			<cfset setValue("rstadcampaigns",rstadcampaigns)>
-
-			<cfquery name="rstadipwhitelist">
-				select * from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			</cfquery>
-
-			<cfset setValue("rstadipwhitelist",rstadipwhitelist)>
-
-			<cfquery name="rstadzones">
-				select * from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			</cfquery>
-
-			<cfset setValue("rstadzones",rstadzones)>
-
-			<cfquery name="rstadplacements">
-				select * from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-			</cfquery>
-
-			<cfset setValue("rstadplacements",rstadplacements)>
-
-			<cfquery name="rstadplacementdetails">
-				select * from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>))
-			</cfquery>
-
-			<cfset setValue("rstadplacementdetails",rstadplacementdetails)>
-
-			<!--- rstadplacementcategories --->
-			<cfquery name="rstadplacementcategories">
-				select * from tadplacementcategoryassign where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>))
-			</cfquery>
-
-			<cfset setValue("rstadplacementcategories",rstadplacementcategories)>
-			--->
-			<!--- END ADVERTISING --->
 
 			<cfif not len(arguments.changesetID) and not len(arguments.parentid)>
 				<!--- tcontentcategoryassign --->
@@ -1670,14 +1584,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset setValue("assetPath",application.configBean.getAssetPath())>
 				<cfset setValue("context",application.configBean.getContext())>
 			</cfif>
+
+			<!--- fix image paths --->
+			<cfif len(arguments.changesetID) or len(arguments.parentid)>
+				<cfset fixAssetPath(arguments.siteid) />
+			</cfif>
 		</cfif>
 
-		<!--- fix image paths --->
-		<cfif len(arguments.changesetID) or len(arguments.parentid)>
-			<cfset fixAssetPath(arguments.siteid) />
-		</cfif>
-
-		<cfif not len(arguments.changesetID) and not len(arguments.parentid)>
+		<cfif arguments.bundleMode eq 'plugin' or (not len(arguments.changesetID) and not len(arguments.parentid))>
 			<!--- BEGIN PLUGINS --->
 			<!--- Modules--->
 			<cfquery name="rstpluginmodules">
@@ -1776,45 +1690,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setValue("rstpluginsettings",rstpluginsettings)>
 			<!--- END PLUGINS --->
 
+			<cfif arguments.bundleMode neq 'plugin' and len(arguments.siteID)>
+				<!--- BEGIN FORM DATA --->
+				<cfif arguments.includeFormData and not isDate(arguments.sinceDate)>
+						<cfquery name="rstformresponsepackets">
+							select * from tformresponsepackets
+							where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+						</cfquery>
 
-			<!--- BEGIN FORM DATA --->
-			<cfif arguments.includeFormData and not isDate(arguments.sinceDate)>
-					<cfquery name="rstformresponsepackets">
-						select * from tformresponsepackets
-						where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					</cfquery>
+						<cfset setValue("rstformresponsepackets",rstformresponsepackets)>
 
-					<cfset setValue("rstformresponsepackets",rstformresponsepackets)>
+						<cfquery name="rstformresponsequestions">
+							select * from tformresponsequestions
+							where formid in (
+											select distinct formID from tformresponsepackets
+											where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+											)
+						</cfquery>
 
-					<cfquery name="rstformresponsequestions">
-						select * from tformresponsequestions
-						where formid in (
-										select distinct formID from tformresponsepackets
-										where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-										)
-					</cfquery>
-
-					<cfset setValue("rstformresponsequestions",rstformresponsequestions)>
-			</cfif>
-
-			<!--- END FORM DATA --->
-
-			<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
-			<cfif len(arguments.siteid)>
-				<cfset setValue("bundleablebeans",application.objectMappings.bundleablebeans)>
-
-				<cfif len(application.objectMappings.bundleablebeans)>
-					<cfloop list="#application.objectMappings.bundleablebeans#" index="local.b">
-						<cfset getBean(beanName=local.b,siteid=arguments.siteid).toBundle(bundle=this,siteid=arguments.siteid,includeVersionHistory=arguments.includeVersionHistory)>
-					</cfloop>
+						<cfset setValue("rstformresponsequestions",rstformresponsequestions)>
 				</cfif>
+				<!--- END FORM DATA --->
+
+				<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
+				<cfif len(arguments.siteid)>
+					<cfset setValue("bundleablebeans",application.objectMappings.bundleablebeans)>
+
+					<cfif len(application.objectMappings.bundleablebeans)>
+						<cfloop list="#application.objectMappings.bundleablebeans#" index="local.b">
+							<cfset getBean(beanName=local.b,siteid=arguments.siteid).toBundle(bundle=this,siteid=arguments.siteid,includeVersionHistory=arguments.includeVersionHistory)>
+						</cfloop>
+					</cfif>
+				</cfif>
+				<!--- END BUNDLEABLE CUSTOM OBJECTS --->
 			</cfif>
-			<!--- END BUNDLEABLE CUSTOM OBJECTS --->
 
 			<cfset setValue("sincedate",arguments.sincedate)>
 			<cfset setValue("bundledate",now())>
 			<cfset BundleFiles( argumentCollection=sArgs ) />
-		<cfelse>
+		<cfelseif arguments.bundleMode neq 'plugin'>
 			<cfquery name="rsthierarchy">
 				select contentid,contenthistid,filename,type,subtype,orderno,path,
 				<cfif variables.configBean.getDBType() eq "MSSQL">
