@@ -810,6 +810,27 @@
 		root.location = locationstring;
 	}
 
+    function isUUID(value){
+        if(
+            typeof value != 'String' &&
+            (
+                value.length==35
+                && value[8]=='-'
+                && value[13]=='-'
+                && value[18]=='-'
+                || value=='00000000000000000000000000000000001'
+                || value=='00000000000000000000000000000000000'
+                || value=='00000000000000000000000000000000003'
+                || value=='00000000000000000000000000000000005'
+                || value=='00000000000000000000000000000000099'
+            )
+        ){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 	function createUUID() {
 	    var s = [], itoh = '0123456789ABCDEF';
 
@@ -2461,6 +2482,7 @@
 			init:init,
 			formToObject:formToObject,
 			createUUID:createUUID,
+            isUUID:isUUID,
 			processMarkup:processMarkup,
             getQueryStringParams:getQueryStringParams,
 			layoutmanagertoolbar:layoutmanagertoolbar,
