@@ -2080,6 +2080,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="reverseContentID"  type="string" />
 	<cfargument name="navOnly" type="boolean" required="yes" default="false" />
 	<cfset var rsRelatedContent ="" />
+	<cfset var dbType=variables.configBean.getDbType() />
+	<cfset var tableModifier="">
+
+	<cfif dbtype eq "MSSQL">
+		<cfset tableModifier="with (nolock)">
+	</cfif>
 
 	<cfif not listFindNoCase('menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype,comments,rating,orderno',arguments.sortby)>
 		<cfset arguments.sortBy='orderno'>
@@ -2098,20 +2104,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.relatedContentSetID='00000000000000000000000000000000000'>
 	</cfif>
 
+	<cfif arguments.sortby eq 'mxpRelevance'>
+		<cfparam name="session.mura.mxp" default="#structNew()#">
+		<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
+		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
+		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
+		<cfset var mxpRelevanceSort=true>
+	<cfelse>
+		<cfset var mxpRelevanceSort=false>
+	</cfif>
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsRelatedContent')#">
 	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.lastupdatebyid, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
 	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
 	tcr.relatedContentSetID, tcr.orderNo
-
+	<cfif mxpRelevanceSort>
+	,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
+	</cfif>
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 
+	<cfif mxpRelevanceSort>
+		LEFT JOIN mxp_personapoints persona #tableModifier#
+		ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
+
+		LEFT JOIN mxp_stagepoints stage #tableModifier#
+		ON (tcontent.contenthistid=stage.contenthistid and stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">)
+
+		LEFT JOIN mxp_conversiontrack track #tableModifier#
+		ON (tcontent.contentid = track.contentid and track.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"> and track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">)
+	</cfif>
+
 	<cfif arguments.reverse>
-		inner join tcontentrelated tcr on (tcontent.contentHistID = tcr.contentHistID)
+		inner join tcontentrelated tcr #tableModifier# on (tcontent.contentHistID = tcr.contentHistID)
 
 		<cfif len(arguments.name)>
-			left join tclassextendrcsets tcrs on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
+			left join tclassextendrcsets tcrs #tableModifier# on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
 		</cfif>
 
 		where tcr.relatedID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.reverseContentID#" list="true"/>)
@@ -2132,10 +2161,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 	<cfelse>
-		inner join tcontentrelated tcr on (tcontent.contentID = tcr.relatedID)
+		inner join tcontentrelated tcr #tableModifier# on (tcontent.contentID = tcr.relatedID)
 
 		<cfif len(arguments.name)>
-			left join tclassextendrcsets tcrs on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
+			left join tclassextendrcsets tcrs #tableModifier# on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
 		</cfif>
 
 		where tcr.contenthistid in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" list="true"/>)
@@ -2199,6 +2228,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	#renderMobileClause()#
 
+	<cfif mxpRelevanceSort>
+	tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.lastupdatebyid, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
+	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
+	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
+	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
+	tcr.relatedContentSetID, tcr.orderNo
+	</cfif>
+
 	order by
 
 	<cfswitch expression="#arguments.sortBy#">
@@ -2223,7 +2260,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			tcontentstats.comments #arguments.sortDirection#
 		</cfcase>
 		<cfdefaultcase>
-			tcontent.orderno asc
+			<cfif mxpRelevanceSort>
+				total_points #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.sortDirection,"[^0-9A-Za-z\._,\- ]","","all")#
+			<cfelse>
+				tcontent.orderno asc
+			</cfif>
 		</cfdefaultcase>
 	</cfswitch>
 
