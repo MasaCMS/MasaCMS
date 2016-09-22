@@ -761,15 +761,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												where
 												<cfif paramCatLen>
 													(
-														0=1
 														<cfloop from="1" to="#paramCatLen#" index="c">
 															<cfset paramCatItem=listgetat(param.getCriteria(),c)>
-															or tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#paramCatItem#%"/>
+															tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#paramCatItem#%"/>
+															<cfif c lt paramCatLen> or </cfif>
 															<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
 														</cfloop>
 													)
 												<cfelse>
-													0=1
+													tcontentcategories.categoryid=''
 												</cfif>
 
 											)
@@ -914,7 +914,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfloop>
 								)
 							<cfelse>
-								0=1
+								tcontentcategories.categoryid=''
 							</cfif>
 						)
 					</cfif>
@@ -1002,7 +1002,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</cfloop>
 										)
 									<cfelse>
-										0=1
+										tcontentcategories.category=''
 									</cfif>
 								AND
 									(
@@ -1188,7 +1188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>)
 	AND siteID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#" />)
 	<cfelse>
-	0=1
+	tcontent.contentid=''
 	</cfif>
 	</cfquery>
 
