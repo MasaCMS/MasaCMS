@@ -395,8 +395,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif arguments.sortby eq 'mxpRelevance' and not doKids>
-				<cfparam name="session.mura.mxp" default="#structNew()#">
-				<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
+				<cfif not isdefiend('session.mura.mxp')>
+					<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
+				</cfif>
 				<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 				<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
 				<cfset var mxpRelevanceSort=true>
@@ -2105,8 +2106,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif arguments.sortby eq 'mxpRelevance'>
-		<cfparam name="session.mura.mxp" default="#structNew()#">
-		<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
+		<cfif not isdefiend('session.mura.mxp')>
+			<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
+		</cfif>
 		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
 		<cfset var mxpRelevanceSort=true>
