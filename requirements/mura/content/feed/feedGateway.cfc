@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfif (arguments.feedBean.getSortBy() eq 'mxpRelevance' or listFirst(arguments.feedBean.getOrderBy(),' ') eq 'mxpRelevance' ) and not (arguments.countOnly or doKids)>
-		<cfif not isdefiend('session.mura.mxp')>
+		<cfif not isdefined('session.mura.mxp')>
 			<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
 		</cfif>
 		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
