@@ -105,10 +105,6 @@
 
 		registerHelpers:function(){
 
-		},
-
-        registerPartials:function(){
-
 		}
 	});
 

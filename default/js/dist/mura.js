@@ -7568,10 +7568,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		registerHelpers:function(){
 
-		},
-
-        registerPartials:function(){
-
 		}
 	});
 
