@@ -39,6 +39,11 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 	}
 	*/
 
+	function setFileSize(fileSize){
+		variables.instance.fileSize=int(arguments.fileSize);
+		return this;
+	}
+
 	function setFileField(fileField){
 		variables.instance.fileField=arguments.fileField;
 		if(isdefined('form') and structKeyExists(form,variables.instance.fileField)){
