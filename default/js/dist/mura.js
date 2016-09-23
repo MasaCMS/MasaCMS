@@ -3482,7 +3482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     function isUUID(value){
         if(
-            typeof value != 'String' &&
+            typeof value == 'string' &&
             (
                 value.length==35
                 && value[8]=='-'
