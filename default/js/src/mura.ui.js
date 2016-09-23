@@ -97,7 +97,6 @@
 		init:function(args){
 			this.context=args;
 			this.registerHelpers();
-            this.registerPartials();
 			this.trigger('beforeRender');
 			this.render();
 			return this;
