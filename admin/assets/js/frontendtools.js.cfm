@@ -24,16 +24,28 @@
 	var utility=(typeof jQuery != 'undefined')?jQuery:Mura;
 
 	var adminProxy;
-	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
-	var adminProtocal=<cfif application.configBean.getAdminSSL() or application.utility.isHTTPS()>"https://";<cfelse>"http://"</cfif>;
-	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/assets/js/porthole/proxy.html";
-	var adminLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/";
-	var frontEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
-
+	<cfif len($.globalConfig('admindomain'))>
+		var adminDomain="#$.globalConfig('admindomain')#";
+		var adminProtocal=<cfif application.configBean.getAdminSSL() or application.utility.isHTTPS()>"https://";<cfelse>"http://"</cfif>;
+		var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/assets/js/porthole/proxy.html";
+		var adminLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/";
+		var frontEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
+	<cfelse>
+		var adminDomain="";
+		var adminProtocal="";
+		var adminProxyLoc="#$.globalConfig('context')#/admin/assets/js/porthole/proxy.html";
+		var adminLoc="#$.globalConfig('context')#/admin/";
+		var frontEndProxyLoc="";
+	</cfif>
 	var onAdminMessage=function(messageEvent){
 
-		if (messageEvent.origin == 'http://' + adminDomain + "#$.globalConfig('serverPort')#"
-			|| messageEvent.origin == 'https://' + adminDomain + "#$.globalConfig('serverPort')#") {
+		if (
+			<cfif len($.globalConfig('admindomain'))>
+				messageEvent.origin == 'http://' + adminDomain + "#$.globalConfig('serverPort')#"
+				|| messageEvent.origin == 'https://' + adminDomain + "#$.globalConfig('serverPort')#"
+			<cfelse>
+				true
+			</cfif>) {
 
 			var parameters=messageEvent.data;
 

@@ -87,9 +87,9 @@ initMuraComments=function(config){
 
 	var handleHash=function() {
 		var hash = window.location.hash;
-
+		
 		//Only do this if there is a valid hash and it's not hash based filenames
-		if (hash.length > 0 && hash.indexOf("#/")==-1) {
+		if (hash.length > 0 && hash.indexOf("#/")==-1 && hash.indexOf("=")==-1) {
 			if (jQuery('' + hash).length != 0) {
 				scrollToID(jQuery(hash));
 			} else {

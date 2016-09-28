@@ -302,12 +302,12 @@ component extends="mura.bean.bean" versioned=false {
 				paramArgs.value=arguments.value;
 			}
 
-			if(columns[arguments.prop.column].datatype eq 'datetime'){
+			if(listFindNoCase('int,tinyint',columns[arguments.prop.column].datatype) && isNumeric(paramArgs.value)){
+				paramArgs.value=int(paramArgs.value);
+			} else if(columns[arguments.prop.column].datatype eq 'datetime'){
 				paramArgs.cfsqltype='cf_sql_timestamp';
 				paramArgs.value=parseDateArg(paramArgs.value);
-			}
-
-			if(listFindNoCase('text,longtext',columns[arguments.prop.column].datatype)){
+			} else if(listFindNoCase('text,longtext',columns[arguments.prop.column].datatype)){
 				paramArgs.cfsqltype='cf_sql_longvarchar';
 			}
 

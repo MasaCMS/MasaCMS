@@ -2844,7 +2844,7 @@ return /******/ (function(modules) { // webpackBootstrap
                 root.Mura.ajax({
     					async:true,
     					type:'get',
-    					url:root.Mura.apiEndpoint + '/findCurrentUser',
+    					url:root.Mura.apiEndpoint + '/findCurrentUser?_cacheid=' + Math.random(),
     					success:function(resp){
     						if(typeof resolve == 'function'){
     							root.Mura.currentUser=new root.Mura.Entity();
@@ -2863,6 +2863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		params.entityname=params.entityname || 'content';
 		params.siteid=params.siteid || Mura.siteid;
 		params.method=params.method || 'findQuery';
+        params['_cacheid']==Math.random();
 
 		return new Promise(function(resolve,reject) {
 
@@ -3166,7 +3167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function generateOauthToken(grant_type,client_id,client_secret){
 		return new Promise(function(resolve,reject) {
-			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret)).then(function(resp){
+			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret) + '&cacheid=' + Math.random()).then(function(resp){
 				if(resp.data != 'undefined'){
 					resolve(resp.data);
 				} else {
@@ -3479,6 +3480,27 @@ return /******/ (function(modules) { // webpackBootstrap
 		locationstring = "mailto:" + user + "@" + domain;
 		root.location = locationstring;
 	}
+
+    function isUUID(value){
+        if(
+            typeof value == 'string' &&
+            (
+                value.length==35
+                && value[8]=='-'
+                && value[13]=='-'
+                && value[18]=='-'
+                || value=='00000000000000000000000000000000001'
+                || value=='00000000000000000000000000000000000'
+                || value=='00000000000000000000000000000000003'
+                || value=='00000000000000000000000000000000005'
+                || value=='00000000000000000000000000000000099'
+            )
+        ){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 	function createUUID() {
 	    var s = [], itoh = '0123456789ABCDEF';
@@ -4848,6 +4870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function getQueryStringParams(queryString) {
+        queryString=queryString || root.location.search;
 	    var params = {};
 	    var e,
 	        a = /\+/g,  // Regex for replacing addition symbol with a space
@@ -4893,10 +4916,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 	    return -1;
-	}
-
-	function getURLParams() {
-		return getQueryStringParams(root.location.search);
 	}
 
 	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
@@ -5134,8 +5153,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			init:init,
 			formToObject:formToObject,
 			createUUID:createUUID,
+            isUUID:isUUID,
 			processMarkup:processMarkup,
-            getURLParams:getURLParams,
+            getQueryStringParams:getQueryStringParams,
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,
@@ -5755,11 +5775,11 @@ return /******/ (function(modules) { // webpackBootstrap
 						eventName,
 						function(event){
 							if(selector){
-								mura(self).find(selector).each(function(){
-									fn.call(this,event);
-								});
+                                if(mura(event.target).is(selector)){
+                                    return fn.call(event.target,event);
+								}
 							} else {
-								fn.call(self,event);
+								return fn.call(self,event);
 							}
 
 						},
@@ -6791,22 +6811,21 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		'new':function(params){
-
+            var self=this;
+            
 			return new Promise(function(resolve,reject){
 				params=Mura.extend(
 					{
 						entityname:self.get('entityname'),
-						method:'findQuery',
-						siteid:self.get('siteid')
+						method:'findNew',
+						siteid:self.get('siteid'),
+                        '_cacheid':Math.random()
 					},
 					params
 				);
 
-				Mura.findNew(params).then(function(collection){
-
-					if(collection.get('items').length){
-						self.set(collection.get('items')[0].getAll());
-					}
+				Mura.get(params).then(function(item){
+					self.set(item.getAll());
 					if(typeof resolve == 'function'){
 						resolve(self);
 					}
@@ -6837,7 +6856,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					{
 						entityname:self.get('entityname'),
 						method:'findQuery',
-						siteid:self.get('siteid')
+						siteid:self.get('siteid'),
+                        '_cacheid':Math.random()
 					},
 					params
 				);
@@ -6979,7 +6999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return new Promise(function(resolve,reject) {
 				Mura.ajax({
-					type:'get',
+					type:'post',
 					url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 					data:{
 						siteid:self.get('siteid'),
@@ -7218,7 +7238,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(this, function (mura) {
 		Mura.Feed=Mura.Core.extend({
 			init:function(siteid,entityname){
-	            this.queryString= entityname + '/?';
+	            this.queryString= entityname + '/?_cacheid=' + Math.random();
 				this.propIndex=0;
 				this.entityname=entityname;
 	            return this;

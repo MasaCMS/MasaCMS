@@ -174,7 +174,7 @@
                 root.Mura.ajax({
     					async:true,
     					type:'get',
-    					url:root.Mura.apiEndpoint + '/findCurrentUser',
+    					url:root.Mura.apiEndpoint + '/findCurrentUser?_cacheid=' + Math.random(),
     					success:function(resp){
     						if(typeof resolve == 'function'){
     							root.Mura.currentUser=new root.Mura.Entity();
@@ -193,6 +193,7 @@
 		params.entityname=params.entityname || 'content';
 		params.siteid=params.siteid || Mura.siteid;
 		params.method=params.method || 'findQuery';
+        params['_cacheid']==Math.random();
 
 		return new Promise(function(resolve,reject) {
 
@@ -496,7 +497,7 @@
 
 	function generateOauthToken(grant_type,client_id,client_secret){
 		return new Promise(function(resolve,reject) {
-			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret)).then(function(resp){
+			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret) + '&cacheid=' + Math.random()).then(function(resp){
 				if(resp.data != 'undefined'){
 					resolve(resp.data);
 				} else {
@@ -809,6 +810,27 @@
 		locationstring = "mailto:" + user + "@" + domain;
 		root.location = locationstring;
 	}
+
+    function isUUID(value){
+        if(
+            typeof value == 'string' &&
+            (
+                value.length==35
+                && value[8]=='-'
+                && value[13]=='-'
+                && value[18]=='-'
+                || value=='00000000000000000000000000000000001'
+                || value=='00000000000000000000000000000000000'
+                || value=='00000000000000000000000000000000003'
+                || value=='00000000000000000000000000000000005'
+                || value=='00000000000000000000000000000000099'
+            )
+        ){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 	function createUUID() {
 	    var s = [], itoh = '0123456789ABCDEF';
@@ -2178,6 +2200,7 @@
 	}
 
 	function getQueryStringParams(queryString) {
+        queryString=queryString || root.location.search;
 	    var params = {};
 	    var e,
 	        a = /\+/g,  // Regex for replacing addition symbol with a space
@@ -2223,10 +2246,6 @@
 	        }
 	    }
 	    return -1;
-	}
-
-	function getURLParams() {
-		return getQueryStringParams(root.location.search);
 	}
 
 	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
@@ -2464,8 +2483,9 @@
 			init:init,
 			formToObject:formToObject,
 			createUUID:createUUID,
+            isUUID:isUUID,
 			processMarkup:processMarkup,
-            getURLParams:getURLParams,
+            getQueryStringParams:getQueryStringParams,
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,

@@ -646,6 +646,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfquery>
 
+			<cfquery datasource="#arguments.toDSN#">
+				update tcontent set menutitle=title
+				where menutitle is null
+				and type='Module'
+				and siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+			</cfquery>
+
 			<cfloop query="rstContent">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontent (Active,Approved,audience,Body,ContentHistID,ContentID,Credits,Display,DisplayStart,DisplayStop,featureStart,featureStop,FileID,Filename,forceSSL,inheritObjects,isFeature,IsLocked,IsNav,keyPoints,

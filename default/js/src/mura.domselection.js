@@ -159,11 +159,11 @@
 						eventName,
 						function(event){
 							if(selector){
-								mura(self).find(selector).each(function(){
-									fn.call(this,event);
-								});
+                                if(mura(event.target).is(selector)){
+                                    return fn.call(event.target,event);
+								}
 							} else {
-								fn.call(self,event);
+								return fn.call(self,event);
 							}
 
 						},

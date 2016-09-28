@@ -275,7 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfelse>
 		   <a class="title" <cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 		 </cfif>
-		<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif>#esapiEncode('html',rc.rsTop.menutitle)#
+		<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif><cfif len(rc.rsTop.menutitle)>#esapiEncode('html',rc.rsTop.menutitle)#<cfelse>#esapiEncode('html',rc.rsTop.title)#</cfif>
 		   </a>
 		 <!--- <div class="mura-title-fade"></div> --->
 	   </dt>

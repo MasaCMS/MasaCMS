@@ -194,8 +194,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfif (arguments.feedBean.getSortBy() eq 'mxpRelevance' or listFirst(arguments.feedBean.getOrderBy(),' ') eq 'mxpRelevance' ) and not (arguments.countOnly or doKids)>
-		<cfparam name="session.mura.mxp" default="#structNew()#">
-		<cfparam name="session.mura.mxp.trackingProperties" default="#structNew()#">
+		<cfif not isdefined('session.mura.mxp')>
+			<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
+		</cfif>
 		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
 		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
 		<cfset var mxpRelevanceSort=true>
@@ -757,14 +758,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 												inner join tcontentcategories #tableModifier#
 												ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-												where (
-													<cfloop from="1" to="#paramCatLen#" index="c">
-														<cfset paramCatItem=listgetat(param.getCriteria(),c)>
-														tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#paramCatItem#%"/>
-														<cfif c lt paramCatLen> or </cfif>
-														<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
-													</cfloop>
-												)
+												where
+												<cfif paramCatLen>
+													(
+														<cfloop from="1" to="#paramCatLen#" index="c">
+															<cfset paramCatItem=listgetat(param.getCriteria(),c)>
+															tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#paramCatItem#%"/>
+															<cfif c lt paramCatLen> or </cfif>
+															<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
+														</cfloop>
+													)
+												<cfelse>
+													tcontentcategories.categoryid=''
+												</cfif>
+
 											)
 										</cfif>
 									<cfelse>
@@ -898,10 +905,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 							inner join tcontentcategories #tableModifier#
 							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-							where (<cfloop from="1" to="#categoryLen#" index="c">
-									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/>
-									<cfif c lt categoryLen> or </cfif>
-									</cfloop>)
+							where
+							<cfif categoryLen>
+								(
+									<cfloop from="1" to="#categoryLen#" index="c">
+										tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/>
+										<cfif c lt categoryLen> or </cfif>
+									</cfloop>
+								)
+							<cfelse>
+								tcontentcategories.categoryid=''
+							</cfif>
 						)
 					</cfif>
 				</cfif>
@@ -979,10 +993,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 								inner join tcontentcategories #tableModifier#
 								ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-								where (<cfloop from="1" to="#categoryLen#" index="c">
-										tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(categoryList,c)#%"/>
-										<cfif c lt categoryLen> or </cfif>
-										</cfloop>)
+								where
+									<cfif categoryLen>
+										(
+											<cfloop from="1" to="#categoryLen#" index="c">
+												tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(categoryList,c)#%"/>
+												<cfif c lt categoryLen> or </cfif>
+											</cfloop>
+										)
+									<cfelse>
+										tcontentcategories.category=''
+									</cfif>
 								AND
 									(
 										tcontentcategoryassign.isFeature = 1
@@ -1167,7 +1188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>)
 	AND siteID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#" />)
 	<cfelse>
-	0=1
+	tcontent.contentid=''
 	</cfif>
 	</cfquery>
 

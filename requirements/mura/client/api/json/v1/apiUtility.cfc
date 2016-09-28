@@ -883,6 +883,7 @@ component extends="mura.cfobject" {
         var temp={};
         structAppend(temp,arguments.params);
         structDelete(temp,'method');
+		structDelete(temp,'_cacheid');
 
         for(var p in temp){
             if(find('[',p)){
@@ -890,7 +891,7 @@ component extends="mura.cfobject" {
             }
 
             //Don't respond with file paths information
-            if(refind('[\\/]',temp['#p#'])){
+            if(structKeyExists(temp,'#p#') && refind('[\\/]',temp['#p#'])){
                 structDelete(temp,'#p#');
             }
         }
@@ -1136,6 +1137,18 @@ component extends="mura.cfobject" {
 
 		var $=getBean('$').init(arguments.siteid);
 
+		if(arguments.entityName=='user'){
+			if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
+				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
+					var vals=$.event().getAllValues();
+					structDelete(vals,'isPublic');
+					structDelete(vals,'s2');
+					structDelete(vals,'type');
+					structDelete(vals,'groupID');
+				}
+			}
+		}
+
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
 		var saveErrors=false;
 		var errors={};
@@ -1285,11 +1298,14 @@ component extends="mura.cfobject" {
 	}
 
 	function findCurrentUser(entityName,id,siteid,render=false,variation=false,expand=''){
+		var $=getBean('$').init(arguments.siteid);
+
 		return findOne(
 			entityName='user',
-			id=getBean('$').init(arguments.siteid).currentUser('userid'),
+			id=$.currentUser('userid'),
 			siteid=arguments.siteid,
-			expand=arguments.expand
+			expand=arguments.expand,
+			method='findCurrentUser'
 		);
 	}
 
@@ -1361,12 +1377,14 @@ component extends="mura.cfobject" {
 			entity.loadBy(argumentCollection=loadparams);
 		}
 
-		if(!allowAccess(entity,$)){
-			throw(type="authorization");
-		}
+		if(arguments.method !='findCurrentUser'){
+			if(!allowAccess(entity,$)){
+				throw(type="authorization");
+			}
 
-		if(!entity.allowRead($)){
-			throw(type="authorization");
+			if(!entity.allowRead($)){
+				throw(type="authorization");
+			}
 		}
 
 		var returnStruct=getFilteredValues(entity,true,arguments.entityName);
