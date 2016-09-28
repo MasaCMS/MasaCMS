@@ -51,8 +51,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="contentSearch" class="form-inline">
 	<div class="mura-input-set">
-	<input id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="Search Content" /> 
-	<input type="button" class="btn" onclick="feedManager.loadSiteParents('#rc.siteid#','#rc.parentid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
+	<input id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="Search Content" onclick="return false;"> 
+	<input type="button" class="btn" onclick="feedManager.loadSiteParents('#rc.siteid#','#rc.parentid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#">
 	</div>
 </div>
 </cfoutput>
