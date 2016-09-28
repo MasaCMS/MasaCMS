@@ -1144,7 +1144,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAdminPath" output="false">
-	<cfreturn getBean('configBean').getAdminPath()>
+	<cfargument name="useProtocol" default="1">
+	<cfreturn getBean('configBean').getAdminPath(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getWebPath" output="false">
