@@ -883,6 +883,7 @@ component extends="mura.cfobject" {
         var temp={};
         structAppend(temp,arguments.params);
         structDelete(temp,'method');
+		structDelete(temp,'_cacheid');
 
         for(var p in temp){
             if(find('[',p)){
