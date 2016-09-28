@@ -324,7 +324,8 @@
 						url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 						data:{
 							siteid:self.get('siteid'),
-							context:context
+							context:context,
+                            '_cacheid':Math.random()
 						},
 						success:function(resp){
 							Mura.ajax({
@@ -372,7 +373,8 @@
 					url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 					data:{
 						siteid:self.get('siteid'),
-						context:self.get('id')
+						context:self.get('id'),
+                        '_cacheid':Math.random()
 					},
 					success:function(resp){
 						Mura.ajax({

@@ -59,7 +59,7 @@
 	}(this, function (mura) {
 		Mura.Feed=Mura.Core.extend({
 			init:function(siteid,entityname){
-	            this.queryString= entityname + '/?';
+	            this.queryString= entityname + '/?_cacheid=' + Math.random();
 				this.propIndex=0;
 				this.entityname=entityname;
 	            return this;

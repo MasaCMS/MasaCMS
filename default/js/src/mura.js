@@ -193,6 +193,7 @@
 		params.entityname=params.entityname || 'content';
 		params.siteid=params.siteid || Mura.siteid;
 		params.method=params.method || 'findQuery';
+        params['_cacheid']==Math.random();
 
 		return new Promise(function(resolve,reject) {
 
@@ -496,7 +497,7 @@
 
 	function generateOauthToken(grant_type,client_id,client_secret){
 		return new Promise(function(resolve,reject) {
-			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret)).then(function(resp){
+			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret) + '&cacheid=' + Math.random()).then(function(resp){
 				if(resp.data != 'undefined'){
 					resolve(resp.data);
 				} else {

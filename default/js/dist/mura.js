@@ -2863,6 +2863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		params.entityname=params.entityname || 'content';
 		params.siteid=params.siteid || Mura.siteid;
 		params.method=params.method || 'findQuery';
+        params['_cacheid']==Math.random();
 
 		return new Promise(function(resolve,reject) {
 
@@ -3166,7 +3167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function generateOauthToken(grant_type,client_id,client_secret){
 		return new Promise(function(resolve,reject) {
-			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret)).then(function(resp){
+			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret) + '&cacheid=' + Math.random()).then(function(resp){
 				if(resp.data != 'undefined'){
 					resolve(resp.data);
 				} else {
@@ -6954,7 +6955,8 @@ return /******/ (function(modules) { // webpackBootstrap
 						url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 						data:{
 							siteid:self.get('siteid'),
-							context:context
+							context:context,
+                            '_cacheid':Math.random()
 						},
 						success:function(resp){
 							Mura.ajax({
@@ -7002,7 +7004,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 					data:{
 						siteid:self.get('siteid'),
-						context:self.get('id')
+						context:self.get('id'),
+                        '_cacheid':Math.random()
 					},
 					success:function(resp){
 						Mura.ajax({
@@ -7237,7 +7240,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(this, function (mura) {
 		Mura.Feed=Mura.Core.extend({
 			init:function(siteid,entityname){
-	            this.queryString= entityname + '/?';
+	            this.queryString= entityname + '/?_cacheid=' + Math.random();
 				this.propIndex=0;
 				this.entityname=entityname;
 	            return this;
