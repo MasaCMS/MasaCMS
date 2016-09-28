@@ -826,50 +826,69 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset started=true>
 								<cfset openGrouping=false />
 							<cfelseif len(param.getField())>
-								<cfset castfield="attributeValue">
-								tcontent.contentHistID IN (
-									SELECT tclassextenddata.baseID
-									FROM tclassextenddata #tableModifier#
+								<cfif not ((param.getCriteria() eq 'null' or param.getCriteria() eq '') and param.getCondition() eq 'is')>
+									<cfset castfield="attributeValue">
+									tcontent.contentHistID IN (
+										SELECT tclassextenddata.baseID
+										FROM tclassextenddata #tableModifier#
 
-									<cfif isNumeric(param.getField())>
-										WHERE
-											tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
-									<cfelse>
-										INNER JOIN tclassextendattributes #tableModifier#
-											ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-										WHERE
-											tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
-											AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-									</cfif>
+										<cfif isNumeric(param.getField())>
+											WHERE
+												tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+										<cfelse>
+											INNER JOIN tclassextendattributes #tableModifier#
+												ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+											WHERE
+												tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+												AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+										</cfif>
 
-										AND
+											AND
 
-											<cfif param.getCriteria() neq 'null'>
-												<cfif param.getCondition() neq "like">
-													<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid(),param.getDatatype())>
-												</cfif>
+												<cfif param.getCriteria() neq 'null'>
+													<cfif param.getCondition() neq "like">
+														<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid(),param.getDatatype())>
+													</cfif>
 
-												<cfif param.getCondition() eq 'like' and variables.configBean.getDbCaseSensitive()>
-													upper(#castfield#)
+													<cfif param.getCondition() eq 'like' and variables.configBean.getDbCaseSensitive()>
+														upper(#castfield#)
+													<cfelse>
+														#castfield#
+													</cfif>
 												<cfelse>
 													#castfield#
 												</cfif>
-											<cfelse>
-												#param.getFieldStatement()#
-											</cfif>
 
-											<cfif param.getCriteria() eq 'null'>
-												#param.getCondition()# NULL
-											<cfelse>
-												#param.getCondition()#
-												<cfif isListParam>(</cfif>
-												<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
-												<cfif isListParam>)</cfif>
-											</cfif>
-								)
-								<cfset openGrouping=false />
+												<cfif param.getCriteria() eq 'null'>
+													#param.getCondition()# NULL
+												<cfelse>
+													#param.getCondition()#
+													<cfif isListParam>(</cfif>
+													<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+													<cfif isListParam>)</cfif>
+												</cfif>
+									)
+									<cfset openGrouping=false />
+								<cfelse>
+									<cfset castfield="attributeValue">
+									tcontent.contentHistID NOT IN (
+										SELECT tclassextenddata.baseID
+										FROM tclassextenddata #tableModifier#
+
+										<cfif isNumeric(param.getField())>
+											WHERE
+												tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+										<cfelse>
+											INNER JOIN tclassextendattributes #tableModifier#
+												ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+											WHERE
+												tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+												AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+										</cfif>
+										)
+									<cfset openGrouping=false />
+								</cfif>
 							</cfif>
-
 						</cfif>
 					</cfloop>
 

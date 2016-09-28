@@ -312,41 +312,62 @@
 						#param.getFieldStatement()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
 						<cfset openGrouping=false />
 					<cfelseif len(param.getField())>
-						<cfset castfield="attributeValue">
-						tusers.userid IN (
-							select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
-							<cfif isNumeric(param.getField())>
-								where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
-							<cfelse>
-								inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
-								where
-								<cfif listLen(userPoolID) gt 1>
-									tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
+						<cfif not ((param.getCriteria() eq 'null' or param.getCriteria() eq '') and param.getCondition() eq 'is')>
+							<cfset castfield="attributeValue">
+							tusers.userid IN (
+								select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
+								<cfif isNumeric(param.getField())>
+									where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 								<cfelse>
-									tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
-								</cfif>
+									inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
+									where
+									<cfif listLen(userPoolID) gt 1>
+										tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
+									<cfelse>
+										tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
+									</cfif>
 
-								and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-							</cfif>
-							and
-							<cfif param.getCondition() neq "like">
-								<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),params.getsiteid())>
-							</cfif>
-							<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
-								upper(#castfield#)
-							<cfelse>
-								#castfield#
-							</cfif>
-							#param.getCondition()#
-							<cfif isListParam>
-								(
-							</cfif>
-							<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
-							<cfif isListParam>
-								)
-							</cfif>
-						)
-						<cfset openGrouping=false />
+									and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+								</cfif>
+								and
+								<cfif param.getCondition() neq "like">
+									<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),params.getsiteid())>
+								</cfif>
+								<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
+									upper(#castfield#)
+								<cfelse>
+									#castfield#
+								</cfif>
+								#param.getCondition()#
+								<cfif isListParam>
+									(
+								</cfif>
+								<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
+								<cfif isListParam>
+									)
+								</cfif>
+							)
+							<cfset openGrouping=false />
+						<cfelse>
+							<cfset castfield="attributeValue">
+							tusers.userid NOT IN (
+								select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
+								<cfif isNumeric(param.getField())>
+									where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+								<cfelse>
+									inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
+									where
+									<cfif listLen(userPoolID) gt 1>
+										tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
+									<cfelse>
+										tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
+									</cfif>
+
+									and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+								</cfif>
+							)
+							<cfset openGrouping=false />
+						</cfif>
 					</cfif>
 				</cfif>
 			</cfloop>
