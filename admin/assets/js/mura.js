@@ -2844,7 +2844,7 @@ return /******/ (function(modules) { // webpackBootstrap
                 root.Mura.ajax({
     					async:true,
     					type:'get',
-    					url:root.Mura.apiEndpoint + '/findCurrentUser',
+    					url:root.Mura.apiEndpoint + '/findCurrentUser?_cacheid=' + Math.random(),
     					success:function(resp){
     						if(typeof resolve == 'function'){
     							root.Mura.currentUser=new root.Mura.Entity();
@@ -6811,22 +6811,21 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		'new':function(params){
-
+            var self=this;
+            
 			return new Promise(function(resolve,reject){
 				params=Mura.extend(
 					{
 						entityname:self.get('entityname'),
-						method:'findQuery',
-						siteid:self.get('siteid')
+						method:'findNew',
+						siteid:self.get('siteid'),
+                        '_cacheid':Math.random()
 					},
 					params
 				);
 
-				Mura.findNew(params).then(function(collection){
-
-					if(collection.get('items').length){
-						self.set(collection.get('items')[0].getAll());
-					}
+				Mura.get(params).then(function(item){
+					self.set(item.getAll());
 					if(typeof resolve == 'function'){
 						resolve(self);
 					}
@@ -6857,7 +6856,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					{
 						entityname:self.get('entityname'),
 						method:'findQuery',
-						siteid:self.get('siteid')
+						siteid:self.get('siteid'),
+                        '_cacheid':Math.random()
 					},
 					params
 				);
@@ -6955,8 +6955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 						data:{
 							siteid:self.get('siteid'),
-							context:context,
-                            '_cacheid':Math.random()
+							context:context
 						},
 						success:function(resp){
 							Mura.ajax({
@@ -7000,12 +6999,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return new Promise(function(resolve,reject) {
 				Mura.ajax({
-					type:'get',
+					type:'post',
 					url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 					data:{
 						siteid:self.get('siteid'),
-						context:self.get('id'),
-                        '_cacheid':Math.random()
+						context:self.get('id')
 					},
 					success:function(resp){
 						Mura.ajax({

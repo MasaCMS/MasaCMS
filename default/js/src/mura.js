@@ -174,7 +174,7 @@
                 root.Mura.ajax({
     					async:true,
     					type:'get',
-    					url:root.Mura.apiEndpoint + '/findCurrentUser',
+    					url:root.Mura.apiEndpoint + '/findCurrentUser?_cacheid=' + Math.random(),
     					success:function(resp){
     						if(typeof resolve == 'function'){
     							root.Mura.currentUser=new root.Mura.Entity();

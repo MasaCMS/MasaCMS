@@ -180,22 +180,21 @@
 		},
 
 		'new':function(params){
-
+            var self=this;
+            
 			return new Promise(function(resolve,reject){
 				params=Mura.extend(
 					{
 						entityname:self.get('entityname'),
-						method:'findQuery',
-						siteid:self.get('siteid')
+						method:'findNew',
+						siteid:self.get('siteid'),
+                        '_cacheid':Math.random()
 					},
 					params
 				);
 
-				Mura.findNew(params).then(function(collection){
-
-					if(collection.get('items').length){
-						self.set(collection.get('items')[0].getAll());
-					}
+				Mura.get(params).then(function(item){
+					self.set(item.getAll());
 					if(typeof resolve == 'function'){
 						resolve(self);
 					}
@@ -226,7 +225,8 @@
 					{
 						entityname:self.get('entityname'),
 						method:'findQuery',
-						siteid:self.get('siteid')
+						siteid:self.get('siteid'),
+                        '_cacheid':Math.random()
 					},
 					params
 				);
@@ -324,8 +324,7 @@
 						url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 						data:{
 							siteid:self.get('siteid'),
-							context:context,
-                            '_cacheid':Math.random()
+							context:context
 						},
 						success:function(resp){
 							Mura.ajax({
@@ -369,12 +368,11 @@
 
 			return new Promise(function(resolve,reject) {
 				Mura.ajax({
-					type:'get',
+					type:'post',
 					url:Mura.apiEndpoint + '?method=generateCSRFTokens',
 					data:{
 						siteid:self.get('siteid'),
-						context:self.get('id'),
-                        '_cacheid':Math.random()
+						context:self.get('id')
 					},
 					success:function(resp){
 						Mura.ajax({
