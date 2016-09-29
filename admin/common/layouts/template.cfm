@@ -330,100 +330,7 @@
 		           	</cfif>
      			</cfif>
 
-						<script>
-							$(document).ready(function(){
-								// persist sidebar selection
-								$('*[data-action=sidebar_mini_toggle]').click(function(){
-									if($('##page-container').hasClass('sidebar-mini')){
-						 			createCookie('ADMINSIDEBAR','off',5);
-									} else {
-						 			createCookie('ADMINSIDEBAR','on',5);
-									}
-								});
 
-								// persist open nav items
-								$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
-
-								// header-search
-								$('##mura-header-search-reveal').click(
-								function(){
-									$(this).hide();
-									$('##mura-header-search').show();
-								});
-
-								// tabdrop: trigger on page load w/ slight delay
-								if ( $( '.mura-tabs').length ) {
-									var triggerTabDrop = function(){
-										setTimeout(function(){
-											$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
-												$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
-												$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');
-										}, 10);
-									}
-									// run on page load
-									triggerTabDrop();
-									// run on resize
-									$(window).on('resize',function(){
-										$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
-											triggerTabDrop();
-									});
-									$('.tabdrop .dropdown-toggle').on('click',function(){
-										$(this).parents('.nav-tabs').css('overflow-y','visible');
-									});
-								}
-								// /tabdrop
-
-								// dismiss alerts
-								$('.alert-dismiss').click(
-									function(){
-										var _alert=this;
-										$.ajax(
-											{
-												url:'./',
-												data:{
-													siteid:'#esapiEncode('javascript',session.siteid)#',
-													alertid:$(_alert).attr('data-alertid'),
-													muraaction:'cdashboard.dismissAlert'
-												},
-												success: function(){
-													$(_alert).parent('.alert').fadeOut();
-													//$('##system-notice').html(data);
-												}
-											}
-										);
-									}
-								);
-
-								// click to close new table actions, category selector filter
-								document.onclick = function(e) {
-								if (jQuery('##newContentMenu').length > 0){
-								  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
-							     	jQuery('##newContentMenu').addClass('hide');
-						    	}
-								};
-
-								if (jQuery('.actions-menu').length > 0){
-							    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
-							       jQuery('.actions-menu').addClass('hide');
-						     	}
-								};
-
-								if(jQuery('##category-select-list').length > 0){
-							    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
-							    	jQuery('##category-select-list').slideUp('fast');
-								    }
-									}
-								};
-								// /click to close
-
-							});
-
-						mura.init({
-						context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
-						themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
-						siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
-						});
-						</script>
          	</cfif>
          		<cfif request.action neq "core:cLogin.main">
          			<div id="mura-content">
@@ -436,6 +343,104 @@
       </div>  <!-- /.content -->
 
       </main>
+
+    <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
+				<script>
+				$(document).ready(function(){
+					// persist sidebar selection
+					$('*[data-action=sidebar_mini_toggle]').click(function(){
+						if($('##page-container').hasClass('sidebar-mini')){
+			 			createCookie('ADMINSIDEBAR','off',5);
+						} else {
+			 			createCookie('ADMINSIDEBAR','on',5);
+						}
+					});
+
+					// persist open nav items
+					$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
+
+					// header-search
+					$('##mura-header-search-reveal').click(
+					function(){
+						$(this).hide();
+						$('##mura-header-search').show();
+					});
+
+					// tabdrop: trigger on page load w/ slight delay
+					if ( $( '.mura-tabs').length ) {
+						var triggerTabDrop = function(){
+							setTimeout(function(){
+								$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+									$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
+									$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');
+							}, 10);
+						}
+						// run on page load
+						triggerTabDrop();
+						// run on resize
+						$(window).on('resize',function(){
+							$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
+								triggerTabDrop();
+						});
+						$('.tabdrop .dropdown-toggle').on('click',function(){
+							$(this).parents('.nav-tabs').css('overflow-y','visible');
+						});
+					}
+					// /tabdrop
+
+					// dismiss alerts
+					$('.alert-dismiss').click(
+						function(){
+							var _alert=this;
+							$.ajax(
+								{
+									url:'./',
+									data:{
+										siteid:'#esapiEncode('javascript',session.siteid)#',
+										alertid:$(_alert).attr('data-alertid'),
+										muraaction:'cdashboard.dismissAlert'
+									},
+									success: function(){
+										$(_alert).parent('.alert').fadeOut();
+										//$('##system-notice').html(data);
+									}
+								}
+							);
+						}
+					);
+
+					// click to close new table actions, category selector filter
+					document.onclick = function(e) {
+					if (jQuery('##newContentMenu').length > 0){
+					  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
+				     	jQuery('##newContentMenu').addClass('hide');
+			    	}
+					};
+
+					if (jQuery('.actions-menu').length > 0){
+				    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
+				       jQuery('.actions-menu').addClass('hide');
+			     	}
+					};
+
+					if(jQuery('##category-select-list').length > 0){
+				    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
+				    	jQuery('##category-select-list').slideUp('fast');
+					    }
+						}
+					};
+					// /click to close
+
+				});
+
+			mura.init({
+			context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
+			themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
+			siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
+			});
+			</script>
+	
+		</cfif>
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 
