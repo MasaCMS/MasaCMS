@@ -177,6 +177,28 @@
 				</cfif>
 				<div class="block-content">
 
+				<!---
+					Group Type
+					** Only allow 'Admin' or Super Users to modify Group Types
+				--->
+				<cfif rc.isAdmin and not rc.userbean.getPerm()>
+					<div class="mura-control-group">
+						<label>
+							#rbKey('user.grouptype')#
+						</label>
+							<label class="radio inline">
+								<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.tempIsPublic>Checked</cfif>>
+								#rbKey('user.membergroup')#
+							</label>
+							<label class="radio inline">
+								<input name="isPublic" type="radio" class="radio inline" value="0" <cfif not rc.tempIsPublic>Checked</cfif>>
+									#rbKey('user.systemgroup')#
+							</label>
+						</div>
+				<cfelse>
+					<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
+				</cfif>
+
 				<cfif rsNonDefault.recordcount>
 					<div class="mura-control-group">
 						<label>
@@ -217,45 +239,19 @@
 
 				<cfif not rc.userbean.getperm()>
 					<div class="mura-control-group">
-
-							<label>
-								#rbKey('user.tablist')#
-							</label>
-								<select name="tablist" multiple="true">
-									<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
-									<cfloop list="#application.contentManager.getTabList()#" index="t">
-										<option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>
-											#rbKey("sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
-										</option>
-									</cfloop>
-								</select>
-							</div>
-						<!---
-							Group Type
-							** Only allow 'Admin' or Super Users to modify Group Types
-						--->
-						<cfif rc.isAdmin>
-							<div class="mura-control-group">
-								<label>
-									#rbKey('user.grouptype')#
-								</label>
-									<label class="radio inline">
-										<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.tempIsPublic>Checked</cfif>>
-										#rbKey('user.membergroup')#
-									</label>
-									<label class="radio inline">
-										<input name="isPublic" type="radio" class="radio inline" value="0" <cfif not rc.tempIsPublic>Checked</cfif>>
-											#rbKey('user.systemgroup')#
-									</label>
-								</div>
-						<cfelse>
-							<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
-						</cfif>
-
-				<cfelse>
-					<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
+					<label>
+						#rbKey('user.tablist')#
+					</label>
+						<select name="tablist" multiple="true">
+							<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
+							<cfloop list="#application.contentManager.getTabList()#" index="t">
+								<option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>
+									#rbKey("sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
+								</option>
+							</cfloop>
+						</select>
+					</div>
 				</cfif>
-
 
 			<span id="extendSetsBasic"></span>
 
