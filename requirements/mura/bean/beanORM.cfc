@@ -760,8 +760,16 @@ component extends="mura.bean.bean" versioned=false {
 			if(cache.has(cacheKey)){
 				try{
 					rs=cache.get(cacheKey);
-					setValue("frommuracache",true);
-					commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: #getEntityName()#, key: #cacheKey#}"));
+					if(isDefined('rs')){
+						setValue("frommuracache",true);
+						commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: #getEntityName()#, key: #cacheKey#}"));
+					} else {
+						rs=qs.execute(sql=sql).getResult();
+						if(rs.recordcount){
+							cache.get(cacheKey,rs);
+						}
+						commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: #getEntityName()#, key: #cacheKey#}"));
+					}
 				} catch(any e){
 					rs=qs.execute(sql=sql).getResult();
 					if(rs.recordcount){
