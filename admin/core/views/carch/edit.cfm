@@ -483,8 +483,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 		<div class="alert alert-info">
 			<span>
-				<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:
-				<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#"><strong>#esapiEncode('html',pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
+				<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:<br>
+				<ul class="alert-list">
+				<cfloop query="pendingChangesets"><li><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#">#esapiEncode('html',pendingChangesets.changesetName)#</a></li></cfloop>
+				</ul>
+				</cfif>
 				<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
 			</span>
 		</div>
