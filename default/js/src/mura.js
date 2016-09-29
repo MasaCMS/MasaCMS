@@ -1997,6 +1997,9 @@
 		if(document.createEvent && queue && !isScrolledIntoView(el)){
             if(!resolveFn){
                 return new Promise(function(resolve,reject) {
+
+                    resolve=resolve || function(){};
+                    
                     setTimeout(
                         function(){
                                 processDisplayObject(el,true,false,resolve);
