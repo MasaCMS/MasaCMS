@@ -1375,7 +1375,7 @@ Display Objects
 			</cfif>
 		</cfsavecontent>
 	</cfif>
-	
+
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel-1>
 
 	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
@@ -2617,7 +2617,11 @@ Display Objects
 	<cfargument name="location">
 	<cfargument name="addToken" required="true" default="false">
 	<cfargument name="statusCode" required="true" default="301">
-	<cflocation url="#arguments.location#" addtoken="#arguments.addToken#" statusCode="#arguments.statusCode#">
+	<cfif request.muraApiRequest>
+		<cfset request.muraJSONRedirectURL=arguments.location>
+	<cfelse>
+		<cflocation url="#arguments.location#" addtoken="#arguments.addToken#" statusCode="#arguments.statusCode#">
+	</cfif>
 </cffunction>
 
 <cffunction name="getPagesQuery" output="false">
