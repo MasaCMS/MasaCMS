@@ -60,12 +60,21 @@ a.text-primary-light:hover,a.text-primary-light:active,a.text-primary-light:focu
   opacity: .75;
 }
 
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  .bold-font;
+}
+
 .mura-header h1,
 .mura-header h1:not([class]) {
-  font-weight: bold;
+  .bold-font;
   font-size: 32px;
   letter-spacing: 0;
   white-space: nowrap;
+}
+
+b,
+strong {
+  .bold-font;
 }
 
 .text-primary-lighter {
