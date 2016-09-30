@@ -32,9 +32,9 @@
 }
 
 .categoryAssignment li {
-	font-weight: bold;
-	position: relative;
+	.bold-font;
 	margin: 0 !important;
+	position: relative;
 }
 
 .categoryAssignment li li {
@@ -149,17 +149,17 @@
 				min-height: 22px;
 				
 				span {
+					.bold-font;
 					.inline-block();
 					color: #444;
 					cursor: default;
 					display: block;
 					float: left;
-					width: 1em;
-					margin: 0 .25em;
-					font-weight: bold;
 					font-size: 13px;
+					margin: 0 .25em;
 					padding: 0 1px;
 					text-shadow: 0px 1px #fff;
+					width: 1em;
 				
 					&:hover, {
 						color: @gray;

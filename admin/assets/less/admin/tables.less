@@ -6,11 +6,11 @@
 	.border-radius(0) !important;
 
 	td, th {
-		font-family: montserratlight,montserratregular,"Helvetica Neue",Helvetica,Arial,sans-serif;
-		font-size: @baseFontSize;
-		.border-radius(0) !important;
-		text-align: center;
+		.regular-font;
+		border-radius:0 !important;
 		color: @grayDarker;
+		font-size: @baseFontSize;
+		text-align: center;
 		vertical-align: middle;
 		
 		&.title {
@@ -19,9 +19,9 @@
 		}
 
 	th, thead th {
+		.bold-font;
 	  color: #7a7a7a;
 	  font-style: normal;
-	  font-weight: bold;
 	  height: 26px;
 	  line-height: 24px;
 	  padding: 0 5px;

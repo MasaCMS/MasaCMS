@@ -122,7 +122,7 @@
 	}
 
 	.button-trash:before{
-			font-family: FontAwesome,"montserratlight","montserratregular","Helvetica Neue",Helvetica,Arial,sans-serif;  
+			font-family: FontAwesome,@sansFontFamily;  
 		  content: "\f057";
 	}
 
@@ -197,8 +197,8 @@
 	}
 	
 	.mura-tb-form .mura-tb-header h2 span {
+		.bold-font;
 		font-size: 15px;
-		font-weight: bold;
 	}
 	
 	#button-trash {
@@ -598,9 +598,9 @@ font-size: 12px;
 	}
 	
 	#mura-tb-fields .selected {
-		color: #646464;
-		font-weight: bold;
+		.bold-font;
 		border: 1px solid #dedede;
+		color: #646464;
 	}
 	
 	#mura-tb-form #mura-tb-fields li.selected .field {
@@ -636,18 +636,18 @@ font-size: 12px;
 	}
 	
 	#mura-tb-form #mura-tb-fields li.field-section {
-		background: transparent;
-		filter: none;
-		margin: 0 0 5px 0;
-		padding: 5px;
-		border: 0;
+		.bold-font;
 		.border-radius(0);
 		-moz-box-shadow: none !important;
 		-webkit-box-shadow: none !important;
-		text-shadow: 0 0 0 !important;
-		font-size: 16px;
+		background: transparent;
+		border: 0;
 		color: #666;
-		font-weight: bold;
+		filter: none;
+		font-size: 16px;
+		margin: 0 0 5px 0;
+		padding: 5px;
+		text-shadow: 0 0 0 !important;
 	}
 	
 	.mura-tb-block {
@@ -702,14 +702,13 @@ font-size: 12px;
 	/* @group Grids for Fields with Options */
 	
 	#mura-tb-grid-table-header {
-		/*border-bottom: 1px solid #a6a6a6;*/
+		.bold-font;
 		background: url('../images/formbuilder/ui-toolbar-bg.jpg') repeat-x left bottom;
-		padding: 0;
-		font-size: 11px;
-		font-weight: bold;
 		clear: both;
-		width: 100%;
+		font-size: 11px;
 		overflow: hidden;
+		padding: 0;
+		width: 100%;
 		
 	}
 	#mura-tb-grid-table-header .nohandle {
