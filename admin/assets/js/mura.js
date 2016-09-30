@@ -2947,7 +2947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      setTimeout(fn,1);
 	    } else {
 	      document.addEventListener('DOMContentLoaded',function(){
-	        fn();
+	        fn(root.Mura);
 	      });
 	    }
 	  }
