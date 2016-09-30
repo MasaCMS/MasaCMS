@@ -4077,148 +4077,144 @@ return /******/ (function(modules) { // webpackBootstrap
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><span class="mura-edit-icon"></span></div>';
 
 	function processMarkup(scope){
-
-		if(!(scope instanceof root.Mura.DOMSelection)){
-			scope=select(scope);
-		}
-
-		var self=scope;
-
-		function find(selector){
-			return scope.find(selector);
-		}
-
-		var processors=[
-
-			function(){
-				find('.mura-object, .mura-async-object').each(function(){
-					processDisplayObject(this,true);
-
-				});
-			},
-
-			function(){
-				find(".htmlEditor").each(function(el){
-					setHTMLEditor(this);
-				});
-			},
-
-			function(){
-				if(find(".cffp_applied  .cffp_mm .cffp_kp").length){
-					var fileref=document.createElement('script')
-				        fileref.setAttribute("type","text/javascript")
-				        fileref.setAttribute("src", root.Mura.requirementspath + '/cfformprotect/js/cffp.js')
-
-					document.getElementsByTagName("head")[0].appendChild(fileref)
-				}
-			},
-
-			function(){
-				if(find(".g-recaptcha" ).length){
-					var fileref=document.createElement('script')
-				        fileref.setAttribute("type","text/javascript")
-				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
-
-					document.getElementsByTagName("head")[0].appendChild(fileref)
-
-				}
-
-				if(find(".g-recaptcha-container" ).length){
-					loader().loadjs(
-						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
-						function(){
-							find(".g-recaptcha-container" ).each(function(el){
-								var self=el;
-								var checkForReCaptcha=function()
-									{
-									   if (typeof grecaptcha == 'object' && !self.innerHTML)
-									   {
-
-									     self.setAttribute(
-											'data-widgetid',
-										 	grecaptcha.render(self.getAttribute('id'), {
-									          'sitekey' : self.getAttribute('data-sitekey'),
-									          'theme' : self.getAttribute('data-theme'),
-									          'type' : self.getAttribute('data-type')
-									        })
-										);
-									   }
-									   else
-									   {
-									      root.setTimeout(function(){checkForReCaptcha();},10);
-									   }
-									}
-
-								checkForReCaptcha();
-
-							});
-						}
-					);
-
-				}
-			},
-
-			function(){
-				if(typeof resizeEditableObject == 'function' ){
-
-					scope.closest('.editableObject').each(function(){
-						resizeEditableObject(this);
-					});
-
-					find(".editableObject").each(function(){
-						resizeEditableObject(this);
-					});
-
-				}
-			},
-
-			function(){
-
-				if(typeof openFrontEndToolsModal == 'function' ){
-					find(".frontEndToolsModal").on(
-						'click',
-						function(event){
-							event.preventDefault();
-							openFrontEndToolsModal(this);
-						}
-					);
-				}
-
-
-				if(root.MuraInlineEditor && root.MuraInlineEditor.checkforImageCroppers){
-					find("img").each(function(){
-						 root.MuraInlineEditor.checkforImageCroppers(this);
-					});
-
-				}
-
-			},
-
-			function(){
-				initShadowBox(scope.node);
-			},
-
-			function(){
-				if(typeof urlparams.Muraadminpreview != 'undefined'){
-					find("a").each(function() {
-						var h=this.getAttribute('href');
-						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
-							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + root.Mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + root.Mura.mobileformat);
-							this.setAttribute('href',h);
-						}
-					});
-				}
-			}
-		];
-
         return new Promise(function(resolve,reject){
+    		if(!(scope instanceof root.Mura.DOMSelection)){
+    			scope=select(scope);
+    		}
+
+    		var self=scope;
+
+    		function find(selector){
+    			return scope.find(selector);
+    		}
+
+    		var processors=[
+
+    			function(){
+    				find('.mura-object, .mura-async-object').each(function(){
+    					processDisplayObject(this,true).then(resolve);
+    				});
+    			},
+
+    			function(){
+    				find(".htmlEditor").each(function(el){
+    					setHTMLEditor(this);
+    				});
+    			},
+
+    			function(){
+    				if(find(".cffp_applied  .cffp_mm .cffp_kp").length){
+    					var fileref=document.createElement('script')
+    				        fileref.setAttribute("type","text/javascript")
+    				        fileref.setAttribute("src", root.Mura.requirementspath + '/cfformprotect/js/cffp.js')
+
+    					document.getElementsByTagName("head")[0].appendChild(fileref)
+    				}
+    			},
+
+    			function(){
+    				if(find(".g-recaptcha" ).length){
+    					var fileref=document.createElement('script')
+    				        fileref.setAttribute("type","text/javascript")
+    				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
+
+    					document.getElementsByTagName("head")[0].appendChild(fileref)
+
+    				}
+
+    				if(find(".g-recaptcha-container" ).length){
+    					loader().loadjs(
+    						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
+    						function(){
+    							find(".g-recaptcha-container" ).each(function(el){
+    								var self=el;
+    								var checkForReCaptcha=function()
+    									{
+    									   if (typeof grecaptcha == 'object' && !self.innerHTML)
+    									   {
+
+    									     self.setAttribute(
+    											'data-widgetid',
+    										 	grecaptcha.render(self.getAttribute('id'), {
+    									          'sitekey' : self.getAttribute('data-sitekey'),
+    									          'theme' : self.getAttribute('data-theme'),
+    									          'type' : self.getAttribute('data-type')
+    									        })
+    										);
+    									   }
+    									   else
+    									   {
+    									      root.setTimeout(function(){checkForReCaptcha();},10);
+    									   }
+    									}
+
+    								checkForReCaptcha();
+
+    							});
+    						}
+    					);
+
+    				}
+    			},
+
+    			function(){
+    				if(typeof resizeEditableObject == 'function' ){
+
+    					scope.closest('.editableObject').each(function(){
+    						resizeEditableObject(this);
+    					});
+
+    					find(".editableObject").each(function(){
+    						resizeEditableObject(this);
+    					});
+
+    				}
+    			},
+
+    			function(){
+
+    				if(typeof openFrontEndToolsModal == 'function' ){
+    					find(".frontEndToolsModal").on(
+    						'click',
+    						function(event){
+    							event.preventDefault();
+    							openFrontEndToolsModal(this);
+    						}
+    					);
+    				}
+
+
+    				if(root.MuraInlineEditor && root.MuraInlineEditor.checkforImageCroppers){
+    					find("img").each(function(){
+    						 root.MuraInlineEditor.checkforImageCroppers(this);
+    					});
+
+    				}
+
+    			},
+
+    			function(){
+    				initShadowBox(scope.node);
+    			},
+
+    			function(){
+    				if(typeof urlparams.Muraadminpreview != 'undefined'){
+    					find("a").each(function() {
+    						var h=this.getAttribute('href');
+    						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
+    							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + root.Mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + root.Mura.mobileformat);
+    							this.setAttribute('href',h);
+    						}
+    					});
+    				}
+    			}
+    		];
+
+
             for(var h=0;h<processors.length;h++){
     			processors[h]();
     		}
 
-            if(typeof resolve == 'function'){
-                resolve();
-            }
         });
 
 	}
@@ -4659,7 +4655,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-	function processDisplayObject(el,queue,rerender){
+	function processDisplayObject(el,queue,rerender,resolveFn){
 
 		var obj=(el.node) ? el : Mura(el);
 		el =el.node || el;
@@ -4669,8 +4665,31 @@ return /******/ (function(modules) { // webpackBootstrap
 		queue=(queue==null || rendered) ? false : queue;
 
 		if(document.createEvent && queue && !isScrolledIntoView(el)){
-			setTimeout(function(){processDisplayObject(el,true)},10);
-			return;
+            if(!resolveFn){
+                return new Promise(function(resolve,reject) {
+
+                    resolve=resolve || function(){};
+
+                    setTimeout(
+                        function(){
+                                processDisplayObject(el,true,false,resolve);
+                            }
+                            ,10
+                        );
+                });
+            } else {
+                setTimeout(
+                    function(){
+                            var resp=processDisplayObject(el,true,false,resolveFn);
+                            if(typeof resp == 'object' && typeof resolveFn == 'function'){
+                                resp.then(resolveFn);
+                            }
+                        }
+                    ,10
+                );
+
+                return;
+            }
 		}
 
 		if(!self.getAttribute('data-instanceid')){
@@ -4743,13 +4762,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			if(obj.data('object')=='container'){
 				wireUpObject(obj);
 				if(typeof resolve == 'function'){
-					resolve(obj);
+					resolve.call(obj.node,obj);
 				}
 			} else {
 				if(!obj.data('async') && obj.data('render')=='client'){
 					wireUpObject(obj);
 					if(typeof resolve == 'function'){
-						resolve(obj);
+						resolve.call(obj.node,obj);
 					}
 				} else {
 					//console.log(data);
@@ -4761,7 +4780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						success:function(resp){
 							handleResponse(obj,resp);
 							if(typeof resolve == 'function'){
-								resolve(obj);
+								resolve.call(obj.node,obj);
 							}
 						}
 					});
