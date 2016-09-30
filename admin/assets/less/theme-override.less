@@ -1,7 +1,7 @@
 
 body {
+  .regular-font;
   background-color: #f5f5f5;
-  font-family: "montserratlight","montserratregular","Helvetica Neue",Helvetica,Arial,sans-serif; 
   font-size: 13px;
 }
 a {
@@ -60,12 +60,21 @@ a.text-primary-light:hover,a.text-primary-light:active,a.text-primary-light:focu
   opacity: .75;
 }
 
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  .bold-font;
+}
+
 .mura-header h1,
 .mura-header h1:not([class]) {
-  font-weight: bold;
+  .bold-font;
   font-size: 32px;
   letter-spacing: 0;
   white-space: nowrap;
+}
+
+b,
+strong {
+  .bold-font;
 }
 
 .text-primary-lighter {
@@ -205,8 +214,7 @@ a.bg-primary-lighter:hover,a.bg-primary-lighter:focus {
 }
 
 label{
-  font-family: "montserratregular","Helvetica Neue",Helvetica,Arial,sans-serif; 
-  font-weight: normal;
+  .regular-font;
 }
 .label-default{
   background-color: #f1f1f1;
@@ -296,8 +304,8 @@ ul.pagination,
 
 .pagination > li > a,
 .pagination > li > span{
+  font-weight: normal;
   padding: 2px 10px;
-  font-weight: 100;
 }
 
 .pagination>li>a:hover,
