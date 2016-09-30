@@ -2092,13 +2092,13 @@
 			if(obj.data('object')=='container'){
 				wireUpObject(obj);
 				if(typeof resolve == 'function'){
-					resolve(obj);
+					resolve.call(obj.node,obj);
 				}
 			} else {
 				if(!obj.data('async') && obj.data('render')=='client'){
 					wireUpObject(obj);
 					if(typeof resolve == 'function'){
-						resolve(obj);
+						resolve.call(obj.node,obj);
 					}
 				} else {
 					//console.log(data);
@@ -2110,7 +2110,7 @@
 						success:function(resp){
 							handleResponse(obj,resp);
 							if(typeof resolve == 'function'){
-								resolve(obj);
+								resolve.call(obj.node,obj);
 							}
 						}
 					});
