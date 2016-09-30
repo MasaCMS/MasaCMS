@@ -1999,7 +1999,7 @@
                 return new Promise(function(resolve,reject) {
 
                     resolve=resolve || function(){};
-                    
+
                     setTimeout(
                         function(){
                                 processDisplayObject(el,true,false,resolve);
@@ -2012,7 +2012,7 @@
                     function(){
                             var resp=processDisplayObject(el,true,false,resolveFn);
                             if(typeof resp == 'object' && typeof resolveFn == 'function'){
-                                resolveFn();
+                                resp.then(resolveFn);
                             }
                         }
                     ,10
