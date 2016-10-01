@@ -6731,6 +6731,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			this.cachePut();
 		},
 
+        exists:function(){
+                return !this.get('isnew');
+        },
+
 		get:function(propertyName,defaultValue){
 			if(typeof this.properties.links != 'undefined'
 				&& typeof this.properties.links[propertyName] != 'undefined'){
@@ -6831,7 +6835,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		'new':function(params){
             var self=this;
-            
+
 			return new Promise(function(resolve,reject){
 				params=Mura.extend(
 					{
