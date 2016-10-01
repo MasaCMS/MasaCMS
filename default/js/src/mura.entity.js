@@ -82,7 +82,7 @@
 		},
 
         exists:function(){
-                return !this.get('isnew');
+                return this.has('isnew') && !this.get('isnew');
         },
 
 		get:function(propertyName,defaultValue){
