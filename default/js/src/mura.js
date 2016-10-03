@@ -274,7 +274,7 @@
 	function ready(fn) {
 	    if(document.readyState != 'loading'){
 	      //IE set the readyState to interative too early
-	      setTimeout(fn,1);
+	      setTimeout(function(){fn(root.Mura);},1);
 	    } else {
 	      document.addEventListener('DOMContentLoaded',function(){
 	        fn(root.Mura);
