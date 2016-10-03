@@ -51,7 +51,7 @@
 		    </div>
 		    --->
 		</div>
-		<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
+		<cfif not listFindNoCase('folder,calendar,gallery',rc.object) and not isdefined('rc.isBody')>
 			<div class="form-actions" style="display:none">
 
 				<cfif rc.sourceFrame eq 'modal'>

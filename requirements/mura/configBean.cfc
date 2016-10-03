@@ -1771,6 +1771,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="registerModelDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="package">
+	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfset registerBeanDir(argumentCollection)>
+</cffunction>
+
 <cffunction name="registerBeanDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="package">

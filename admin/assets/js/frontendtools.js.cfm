@@ -254,6 +254,9 @@
 
 			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + Mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + Mura.contenthistid + '&contentid=' + Mura.contentid + '&parentid=' + Mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  Mura.layoutmanager + '&objectname=' + encodeURIComponent(editableObj.data('objectname')) + '&contenttype=' + Mura.type + '&contentsubtype=' +encodeURIComponent(Mura.subtype) + '&sourceFrame=' + targetFrame + '&objecticonclass=' + encodeURIComponent(editableObj.data('objecticonclass')) ;
 
+			if(editableObj.is(".mura-body-object")){
+				src+='&isbody=true';
+			}
 		}
 
 		if(targetFrame=='modal'){
@@ -362,6 +365,7 @@
 
 			editableObj.addClass('mura-object-selected');
 			src+='&cacheid=' + Math.random();
+			
 			console.log(src)
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			MuraInlineEditor.sidebarAction('showconfigurator');
