@@ -57,7 +57,13 @@
         factory(root.Mura);
     }
 }(this, function (mura) {
-	Mura.UI=Mura.Core.extend({
+    /**
+     * Creates a new Mura.Entity
+     * @class {class} Mura.UI
+     */
+	Mura.UI=Mura.Core.extend(
+    /** @lends Mura.Feed.prototype */
+    {
 		rb:{},
 		context:{},
 		onAfterRender:function(){},

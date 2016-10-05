@@ -44,6 +44,10 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
+/**
+ * Creates a new Mura
+ * @class {class} Mura
+ */
 ;(function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -59,6 +63,15 @@
     }
 }(this, function (root) {
 
+	/**
+	 * login - Logs user into Mura
+	 *
+	 * @param  {string} username Username
+	 * @param  {string} password Password
+	 * @param  {string} siteid   Siteid
+	 * @return {object}          Promise
+     * @memberof Mura
+	 */
 	function login(username,password,siteid){
 		siteid=siteid || root.Mura.siteid;
 
@@ -82,6 +95,13 @@
 	}
 
 
+	/**
+	 * logout - Logs user out
+	 *
+	 * @param  {type} siteid Siteid
+	 * @return {object}        Promise
+     * @memberof Mura
+	 */
 	function logout(siteid){
 		siteid=siteid || root.Mura.siteid;
 
@@ -145,6 +165,15 @@
 		});
 
 	}
+
+	/**
+	 * getEntity - Returns Mura.Entity instance
+	 *
+	 * @param  {string} entityname Entity Name
+	 * @param  {string} siteid     Siteid
+	 * @return {Mura.Entity}
+     * @memberof Mura
+	 */
 	function getEntity(entityname,siteid){
 		if(typeof entityname == 'string'){
 			var properties={entityname:entityname};
@@ -162,10 +191,23 @@
 		}
 	}
 
+	/**
+	 * getFeed - Return new instance of Mura.Feed
+	 *
+	 * @param  {type} entityname Entity name
+	 * @return {Mura.Feed}
+     * @memberof Mura
+	 */
 	function getFeed(entityname){
 		return new root.Mura.Feed(Mura.siteid,entityname);
 	}
 
+    /**
+     * getCurrentUser - Return Mura.Entity for current user
+     *
+     * @return {object}  Promise
+     * @memberof Mura
+     */
     function getCurrentUser(){
         return new Promise(function(resolve,reject) {
             if(root.Mura.currentUser){
@@ -187,6 +229,13 @@
         });
     }
 
+	/**
+	 * findQuery - Returns Mura.EntityCollection with properties that match params
+	 *
+	 * @param  {object} params Object of matching params
+	 * @return {object}        Promise
+     * @memberof Mura
+	 */
 	function findQuery(params){
 
 		params=params || {};
@@ -282,6 +331,14 @@
 	    }
 	  }
 
+	/**
+	 * get - Make GET request
+	 *
+	 * @param  {url} url  URL
+	 * @param  {object} data Data to send to url
+	 * @return {object}      Promise
+     * @memberof Mura
+	 */
 	function get(url,data){
 		return new Promise(function(resolve, reject) {
 			return ajax({
@@ -300,6 +357,14 @@
 
 	}
 
+    /**
+	 * post - Make POST request
+	 *
+	 * @param  {url} url  URL
+	 * @param  {object} data Data to send to url
+	 * @return {object}      Promise
+     * @memberof Mura
+	 */
 	function post(url,data){
 		return new Promise(function(resolve, reject) {
 			return ajax({
@@ -354,6 +419,13 @@
 
 	}
 
+    /**
+	 * ajax - Make ajax request
+	 *
+	 * @param  {object} params
+	 * @return {object}      Promise
+     * @memberof Mura
+	 */
 	function ajax(params){
 
 		//params=params || {};
@@ -495,6 +567,15 @@
 
 	}
 
+	/**
+	 * generateOauthToken - Generate Outh toke for REST API
+	 *
+	 * @param  {string} grant_type  Grant type (Use client_credentials)
+	 * @param  {type} client_id     Client ID
+	 * @param  {type} client_secret Secret Key
+	 * @return {object} Promise
+     * @memberof Mura
+	 */
 	function generateOauthToken(grant_type,client_id,client_secret){
 		return new Promise(function(resolve,reject) {
 			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret) + '&cacheid=' + Math.random()).then(function(resp){
@@ -641,6 +722,13 @@
 	}
 
 
+	/**
+	 * isNumeric - Returns if the value is numeric
+	 *
+	 * @param  {*} val description
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function isNumeric(val) {
 		return Number(parseFloat(val)) == val;
 	}
@@ -684,6 +772,13 @@
 		return data;
 	}
 
+    /**
+	 * formToObject - Returns if the value is numeric
+	 *
+	 * @param  {form} form Form to serialize
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function formToObject(form) {
 	    var field, s = {};
 	    if (typeof form == 'object' && form.nodeName == "FORM") {
@@ -711,6 +806,12 @@
 	}
 
 	//http://youmightnotneedjquery.com/
+    /**
+	 * extend - Extends object one level
+	 *
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function extend(out) {
 	  	out = out || {};
 
@@ -727,6 +828,12 @@
 	  	return out;
 	};
 
+    /**
+     * extend - Extends object to full depth
+     *
+     * @return {object}
+     * @memberof Mura
+     */
 	function deepExtend(out) {
 		out = out || {};
 
@@ -753,6 +860,16 @@
 	  	return out;
 	}
 
+
+	/**
+	 * createCookie - Creates cookie
+	 *
+	 * @param  {string} name  Name
+	 * @param  {*} value Value
+	 * @param  {number} days  Days
+	 * @return {void}
+     * @memberof Mura
+	 */
 	function createCookie(name,value,days) {
 		if (days) {
 			var date = new Date();
@@ -763,6 +880,13 @@
 		document.cookie = name+"="+value+expires+"; path=/";
 	}
 
+	/**
+	 * readCookie - Reads cookie value
+	 *
+	 * @param  {string} name Name
+	 * @return {*}
+     * @memberof Mura
+	 */
 	function readCookie(name) {
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
@@ -774,6 +898,13 @@
 		return "";
 	}
 
+	/**
+	 * eraseCookie - Removes cookie value
+	 *
+	 * @param  {type} name description
+	 * @return {type}      description
+     * @memberof Mura
+	 */
 	function eraseCookie(name) {
 		createCookie(name,"",-1);
 	}
@@ -811,6 +942,13 @@
 		root.location = locationstring;
 	}
 
+    /**
+     * isUUID - description
+     *
+     * @param  {*} value Value
+     * @return {boolean}
+     * @memberof Mura
+     */
     function isUUID(value){
         if(
             typeof value == 'string' &&
@@ -832,6 +970,12 @@
         }
     }
 
+	/**
+	 * createUUID - Create UUID
+	 *
+	 * @return {string}
+     * @memberof Mura
+	 */
 	function createUUID() {
 	    var s = [], itoh = '0123456789ABCDEF';
 
@@ -852,6 +996,12 @@
 	    return s.join('');
 	 }
 
+	/**
+	 * setHTMLEditor - Set Html Editor
+	 *
+	 * @param  {dom.element} el Dom Element
+	 * @return {void}
+	 */
 	function setHTMLEditor(el) {
 
 		function initEditor(){
@@ -952,6 +1102,13 @@
 		}
 	}
 
+	/**
+	 * isInteger - Returns if the value is an integer
+	 *
+	 * @param  {*} s Value to check
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function isInteger(s){
 		var i;
 			for (i = 0; i < s.length; i++){
@@ -1070,6 +1227,13 @@
 		return true;
 	}
 
+    /**
+	 * isEmail - Returns if value is valid email
+	 *
+	 * @param  {string} str String to parse for email
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function isEmail(cur){
 		var string1=cur
 		if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1){
@@ -1097,6 +1261,14 @@
 	  	}
 	}
 
+	/**
+	 * validateForm - Validates Mura form
+	 *
+	 * @param  {type} frm          Form element to validate
+	 * @param  {function} customaction Custom action (optional)
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function validateForm(frm,customaction) {
 
 		function getValidationFieldName(theField){
@@ -1402,7 +1574,14 @@
 
 	}
 
+    /**
+	 * loader - Returns Mura.Loader
+	 *
+	 * @return {Mura.Loader}
+     * @memberof Mura
+	 */
 	function loader(){return root.Mura.ljs;}
+
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><span class="mura-edit-icon"></span></div>';
 
@@ -2148,6 +2327,13 @@
 		}
 	}
 
+	/**
+	 * trim - description
+	 *
+	 * @param  {string} str Trims string
+	 * @return {string}     Trimmed string
+     * @memberof Mura
+	 */
 	function trim(str) {
 	    return str.replace(/^\s+|\s+$/gm,'');
 	}
@@ -2218,6 +2404,14 @@
 		return muraObject;
 	}
 
+
+	/**
+	 * getQueryStringParams - Returns object of params in string
+	 *
+	 * @param  {string} queryString Query String
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function getQueryStringParams(queryString) {
         queryString=queryString || root.location.search;
 	    var params = {};
@@ -2268,7 +2462,15 @@
 	}
 
 	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-	function hashCode(s){
+
+    /**
+     * hashCode - description    
+     *
+     * @param  {string} s String to hash
+     * @return {string}
+     * @memberof Mura
+     */
+    function hashCode(s){
 		var hash = 0, strlen = s.length, i, c;
 
 		if ( strlen === 0 ) {
@@ -2535,3 +2737,8 @@
 
 	return root.Mura;
 }));
+
+/**
+ * A namespace.
+ * @namespace  Mura
+ */

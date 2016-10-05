@@ -57,7 +57,20 @@
         factory(root.Mura);
     }
 }(this, function (mura) {
-	Mura.Entity=Mura.Core.extend({
+    /**
+     * Creates a new Mura.Entity
+     * @class {class} Mura.Entity
+     */
+	Mura.Entity=Mura.Core.extend(
+    /** @lends Mura.Entity.prototype */
+    {
+
+		/**
+		 * init - initiliazes instance
+		 *
+		 * @param  {object} properties Object containing values to set into object
+		 * @return {void}
+		 */
 		init:function(properties){
 			properties=properties || {};
 			properties.entityname = properties.entityname || 'content';
@@ -81,10 +94,25 @@
 			this.cachePut();
 		},
 
+
+        /**
+         * exists - Returns if the entity was previously saved
+         *
+         * @return {boolean}
+         */
         exists:function(){
                 return this.has('isnew') && !this.get('isnew');
         },
 
+
+
+		/**
+		 * get - Retrieves property value from entity
+		 *
+		 * @param  {string} propertyName Property Name
+		 * @param  {*} defaultValue Default Value
+		 * @return {*}              Property Value
+		 */
 		get:function(propertyName,defaultValue){
 			if(typeof this.properties.links != 'undefined'
 				&& typeof this.properties.links[propertyName] != 'undefined'){
@@ -157,6 +185,14 @@
 			}
 		},
 
+
+		/**
+		 * set - Sets property value
+		 *
+		 * @param  {string} propertyName  Property Name
+		 * @param  {*} propertyValue Property Value
+		 * @return {Mura.Entity} Self
+		 */
 		set:function(propertyName,propertyValue){
 
 			if(typeof propertyName == 'object'){
@@ -171,18 +207,44 @@
 
 		},
 
+
+		/**
+		 * has - Returns is the entity has a certain property within it
+		 *
+		 * @param  {string} propertyName Property Name
+		 * @return {type}
+		 */
 		has:function(propertyName){
 			return typeof this.properties[propertyName] != 'undefined' || (typeof this.properties.links != 'undefined' && typeof this.properties.links[propertyName] != 'undefined');
 		},
 
+
+		/**
+		 * getAll - Returns all of the entities properties
+		 *
+		 * @return {object}
+		 */
 		getAll:function(){
 			return this.properties;
 		},
 
+
+		/**
+		 * load - Loads entity from JSON API
+		 *
+		 * @return {object}  Promise
+		 */
 		load:function(){
 			return this.loadBy('id',this.get('id'));
 		},
 
+
+		/**
+		 * new - Loads properties of a new instance from JSON API
+		 *
+		 * @param  {type} params Property values that you would like your new entity to have
+		 * @return {object}        Promise
+		 */
 		'new':function(params){
             var self=this;
 
@@ -206,6 +268,15 @@
 			});
 		},
 
+
+		/**
+		 * loadBy - Loads entity by property and value
+		 *
+		 * @param  {string} propertyName  The primary load property to filter against
+		 * @param  {string|number} propertyValue The value to match the propert against
+		 * @param  {object} params        Addition parameters
+		 * @return {object}               promise
+		 */
 		loadBy:function(propertyName,propertyValue,params){
 
 			propertyName=propertyName || 'id';
@@ -249,6 +320,13 @@
 			});
 		},
 
+
+		/**
+		 * validate - Validates instance
+		 *
+		 * @param  {string} fields List of properties to validate, defaults to all
+		 * @return {object}        Promise
+		 */
 		validate:function(fields){
 			fields=fields || '';
 
@@ -282,13 +360,34 @@
 			});
 
 		},
+
+
+		/**
+		 * hasErrors - Returns if the entity has any errors
+		 *
+		 * @return {boolean}
+		 */
 		hasErrors:function(){
 			var errors=this.get('errors',{});
 			return (typeof errors=='string' && errors !='') || (typeof errors=='object' && !Mura.isEmptyObject(errors));
 		},
+
+
+		/**
+		 * getErrors - Returns entites errors property
+		 *
+		 * @return {object}
+		 */
 		getErrors:function(){
 			return this.get('errors',{});
 		},
+
+
+		/**
+		 * save - Saves entity to JSON API
+		 *
+		 * @return {object}  Promise
+		 */
 		save:function(){
 			var self=this;
 
@@ -366,6 +465,12 @@
 
 		},
 
+
+		/**
+		 * delete - Deletes entity
+		 *
+		 * @return {object}  Promise
+		 */
 		'delete':function(){
 
 			var self=this;
@@ -403,16 +508,34 @@
 
 		},
 
+
+		/**
+		 * getFeed - Returns a Mura.Feed instance of this current entitie's type and siteid
+		 *
+		 * @return {object}
+		 */
 		getFeed:function(){
 			var siteid=get('siteid') || Mura.siteid;
 			return new Mura.Feed(this.get('entityName'));
 		},
 
+
+		/**
+		 * cachePurge - Purges this entity from client cache
+		 *
+		 * @return {object}  Self
+		 */
 		cachePurge:function(){
 			Mura.datacache.purge(this.get('id'));
 			return this;
 		},
 
+
+		/**
+		 * cachePut - Places this entity into client cache
+		 *
+		 * @return {object}  Self
+		 */
 		cachePut:function(){
 			if(!this.get('isnew')){
 				Mura.datacache.set(this.get('id'),this);
