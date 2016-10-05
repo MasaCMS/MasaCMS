@@ -2806,6 +2806,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return child ? child.nodeValue : '';
 	};
 
+	/**
+	 * renderFilename - Returns "Rendered" JSON object of content
+	 *
+	 * @param  {type} filename Mura content filename
+	 * @param  {type} params Object
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function renderFilename(filename,params){
 
 		var query = [];
@@ -5134,7 +5142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
 
     /**
-     * hashCode - description    
+     * hashCode - description
      *
      * @param  {string} s String to hash
      * @return {string}
