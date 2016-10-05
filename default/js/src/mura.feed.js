@@ -361,7 +361,7 @@
 
 			/**
 			 * Query - Return Mura.EntityCollection fetched from JSON API
-			 * @return {object}              Promise
+			 * @return {Promise}
 			 */
 	        getQuery:function(){
 	            var self=this;

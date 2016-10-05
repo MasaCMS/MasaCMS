@@ -232,7 +232,7 @@
 		/**
 		 * load - Loads entity from JSON API
 		 *
-		 * @return {object}  Promise
+		 * @return {Promise}
 		 */
 		load:function(){
 			return this.loadBy('id',this.get('id'));
@@ -243,7 +243,7 @@
 		 * new - Loads properties of a new instance from JSON API
 		 *
 		 * @param  {type} params Property values that you would like your new entity to have
-		 * @return {object}        Promise
+		 * @return {Promise}
 		 */
 		'new':function(params){
             var self=this;
@@ -275,7 +275,7 @@
 		 * @param  {string} propertyName  The primary load property to filter against
 		 * @param  {string|number} propertyValue The value to match the propert against
 		 * @param  {object} params        Addition parameters
-		 * @return {object}               promise
+		 * @return {Promise}
 		 */
 		loadBy:function(propertyName,propertyValue,params){
 
@@ -325,7 +325,7 @@
 		 * validate - Validates instance
 		 *
 		 * @param  {string} fields List of properties to validate, defaults to all
-		 * @return {object}        Promise
+		 * @return {Promise}
 		 */
 		validate:function(fields){
 			fields=fields || '';
@@ -386,7 +386,7 @@
 		/**
 		 * save - Saves entity to JSON API
 		 *
-		 * @return {object}  Promise
+		 * @return {Promise}
 		 */
 		save:function(){
 			var self=this;
@@ -469,7 +469,7 @@
 		/**
 		 * delete - Deletes entity
 		 *
-		 * @return {object}  Promise
+		 * @return {Promise}
 		 */
 		'delete':function(){
 

@@ -69,7 +69,7 @@
 	 * @param  {string} username Username
 	 * @param  {string} password Password
 	 * @param  {string} siteid   Siteid
-	 * @return {object}          Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function login(username,password,siteid){
@@ -99,7 +99,7 @@
 	 * logout - Logs user out
 	 *
 	 * @param  {type} siteid Siteid
-	 * @return {object}        Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function logout(siteid){
@@ -141,7 +141,7 @@
 	 *
 	 * @param  {type} filename Mura content filename
 	 * @param  {type} params Object
-	 * @return {object}
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function renderFilename(filename,params){
@@ -213,7 +213,7 @@
     /**
      * getCurrentUser - Return Mura.Entity for current user
      *
-     * @return {object}  Promise
+     * @return {Promise}
      * @memberof Mura
      */
     function getCurrentUser(){
@@ -241,7 +241,7 @@
 	 * findQuery - Returns Mura.EntityCollection with properties that match params
 	 *
 	 * @param  {object} params Object of matching params
-	 * @return {object}        Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function findQuery(params){
@@ -344,7 +344,7 @@
 	 *
 	 * @param  {url} url  URL
 	 * @param  {object} data Data to send to url
-	 * @return {object}      Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function get(url,data){
@@ -370,7 +370,7 @@
 	 *
 	 * @param  {url} url  URL
 	 * @param  {object} data Data to send to url
-	 * @return {object}      Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function post(url,data){
@@ -431,7 +431,7 @@
 	 * ajax - Make ajax request
 	 *
 	 * @param  {object} params
-	 * @return {object}      Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function ajax(params){
@@ -581,7 +581,7 @@
 	 * @param  {string} grant_type  Grant type (Use client_credentials)
 	 * @param  {type} client_id     Client ID
 	 * @param  {type} client_secret Secret Key
-	 * @return {object} Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function generateOauthToken(grant_type,client_id,client_secret){

@@ -167,7 +167,7 @@
 		/**
 		 * processMarkup - Process Markup of selected dom elements
 		 *
-		 * @return {object}  Promise
+		 * @return {Promise}
 		 */
 		processMarkup:function(){
             var self=this;
@@ -605,7 +605,7 @@
 		 * appendDisplayObject - Appends display object to selected items
 		 *
 		 * @param  {object} data Display objectparams (including object='objectkey')
-		 * @return {object}      Promise
+		 * @return {Promise}
 		 */
 		appendDisplayObject:function(data) {
 			var self=this;
@@ -641,7 +641,7 @@
 		 * prependDisplayObject - Prepends display object to selected items
 		 *
 		 * @param  {object} data Display objectparams (including object='objectkey')
-		 * @return {object}      Promise
+		 * @return {Promise}
 		 */
 		prependDisplayObject:function(data) {
 			var self=this;
@@ -677,7 +677,7 @@
 		 * processDisplayObject - Handles processing of display object params to selection
 		 *
 		 * @param  {object} data Display object params
-		 * @return {object}      Promise
+		 * @return {Promise}
 		 */
 		processDisplayObject:function(data) {
 			var self=this;

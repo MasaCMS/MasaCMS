@@ -2739,7 +2739,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param  {string} username Username
 	 * @param  {string} password Password
 	 * @param  {string} siteid   Siteid
-	 * @return {object}          Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function login(username,password,siteid){
@@ -2769,7 +2769,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * logout - Logs user out
 	 *
 	 * @param  {type} siteid Siteid
-	 * @return {object}        Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function logout(siteid){
@@ -2811,7 +2811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @param  {type} filename Mura content filename
 	 * @param  {type} params Object
-	 * @return {object}
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function renderFilename(filename,params){
@@ -2883,7 +2883,7 @@ return /******/ (function(modules) { // webpackBootstrap
     /**
      * getCurrentUser - Return Mura.Entity for current user
      *
-     * @return {object}  Promise
+     * @return {Promise}
      * @memberof Mura
      */
     function getCurrentUser(){
@@ -2911,7 +2911,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * findQuery - Returns Mura.EntityCollection with properties that match params
 	 *
 	 * @param  {object} params Object of matching params
-	 * @return {object}        Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function findQuery(params){
@@ -3014,7 +3014,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @param  {url} url  URL
 	 * @param  {object} data Data to send to url
-	 * @return {object}      Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function get(url,data){
@@ -3040,7 +3040,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @param  {url} url  URL
 	 * @param  {object} data Data to send to url
-	 * @return {object}      Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function post(url,data){
@@ -3101,7 +3101,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * ajax - Make ajax request
 	 *
 	 * @param  {object} params
-	 * @return {object}      Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function ajax(params){
@@ -3251,7 +3251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param  {string} grant_type  Grant type (Use client_credentials)
 	 * @param  {type} client_id     Client ID
 	 * @param  {type} client_secret Secret Key
-	 * @return {object} Promise
+	 * @return {Promise}
      * @memberof Mura
 	 */
 	function generateOauthToken(grant_type,client_id,client_secret){
@@ -6073,7 +6073,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		/**
 		 * processMarkup - Process Markup of selected dom elements
 		 *
-		 * @return {object}  Promise
+		 * @return {Promise}
 		 */
 		processMarkup:function(){
             var self=this;
@@ -6511,7 +6511,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * appendDisplayObject - Appends display object to selected items
 		 *
 		 * @param  {object} data Display objectparams (including object='objectkey')
-		 * @return {object}      Promise
+		 * @return {Promise}
 		 */
 		appendDisplayObject:function(data) {
 			var self=this;
@@ -6547,7 +6547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * prependDisplayObject - Prepends display object to selected items
 		 *
 		 * @param  {object} data Display objectparams (including object='objectkey')
-		 * @return {object}      Promise
+		 * @return {Promise}
 		 */
 		prependDisplayObject:function(data) {
 			var self=this;
@@ -6583,7 +6583,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * processDisplayObject - Handles processing of display object params to selection
 		 *
 		 * @param  {object} data Display object params
-		 * @return {object}      Promise
+		 * @return {Promise}
 		 */
 		processDisplayObject:function(data) {
 			var self=this;
@@ -7529,7 +7529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		/**
 		 * load - Loads entity from JSON API
 		 *
-		 * @return {object}  Promise
+		 * @return {Promise}
 		 */
 		load:function(){
 			return this.loadBy('id',this.get('id'));
@@ -7540,7 +7540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * new - Loads properties of a new instance from JSON API
 		 *
 		 * @param  {type} params Property values that you would like your new entity to have
-		 * @return {object}        Promise
+		 * @return {Promise}
 		 */
 		'new':function(params){
             var self=this;
@@ -7572,7 +7572,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * @param  {string} propertyName  The primary load property to filter against
 		 * @param  {string|number} propertyValue The value to match the propert against
 		 * @param  {object} params        Addition parameters
-		 * @return {object}               promise
+		 * @return {Promise}
 		 */
 		loadBy:function(propertyName,propertyValue,params){
 
@@ -7622,7 +7622,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * validate - Validates instance
 		 *
 		 * @param  {string} fields List of properties to validate, defaults to all
-		 * @return {object}        Promise
+		 * @return {Promise}
 		 */
 		validate:function(fields){
 			fields=fields || '';
@@ -7683,7 +7683,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		/**
 		 * save - Saves entity to JSON API
 		 *
-		 * @return {object}  Promise
+		 * @return {Promise}
 		 */
 		save:function(){
 			var self=this;
@@ -7766,7 +7766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		/**
 		 * delete - Deletes entity
 		 *
-		 * @return {object}  Promise
+		 * @return {Promise}
 		 */
 		'delete':function(){
 
@@ -8387,7 +8387,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			/**
 			 * Query - Return Mura.EntityCollection fetched from JSON API
-			 * @return {object}              Promise
+			 * @return {Promise}
 			 */
 	        getQuery:function(){
 	            var self=this;
