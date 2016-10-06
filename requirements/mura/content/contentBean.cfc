@@ -859,7 +859,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.displayInterval=arguments.displayInterval.getAllValues()>
 		</cfif>
 
-		<cfif isDefined('arguments.displayInterval.end') and isDefined('arguments.displayInterval.repeats') and arguments.displayInterval.repeats>
+		<cfif isDefined('arguments.displayInterval.end')>
 			<cfif arguments.displayInterval.end eq 'on'
 			and isDefined('arguments.displayInterval.endon')
 			and isDate(arguments.displayInterval.endon)>
