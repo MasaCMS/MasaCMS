@@ -31,9 +31,29 @@
 		<cfif calendar.getType() eq 'Calendar'>
 			<cfset var calendarSettings=calendar.getDisplayInterval().getAllValues()>
 			<cfset var displayInterval=arguments.content.getDisplayInterval().getAllValues()>
+			<cfset var start=content.getDisplayStart()>
+			<cfset var end=content.getDisplayStop()>
 
 			<cfif calendarSettings.detectconflicts and calendarSettings.detectspan>
-				<cfset var events=calendar.getEventsIterator(start=now(),end=dateAdd('m',calendarSettings.detectspan,now()))>
+				<cfif displayInterval.repeats>
+					<cfif listFindNoCase('never,after',displayInterval.end)>
+						<cfset end=dateAdd('m',calendarSettings.detectspan,content.getDisplayStart())>
+					<cfelseif isDate(displayInterval.endon)>
+						<cfset end=displayInterval.endon>
+					<cfelse>
+						<cfset displayInterval.repeats=1>
+						<cfset displayInterval.end="never">
+						<cfset end=dateAdd('m',calendarSettings.detectspan,content.getDisplayStart())>
+					</cfif>
+				<cfelseif not isDate(content.getDisplayStop())>
+					<cfset displayInterval.repeats=1>
+					<cfset displayInterval.end="never">
+					<cfset displayInterval.type="daily">
+					<cfset end=dateAdd('m',calendarSettings.detectspan,content.getDisplayStart())>
+				</cfif>
+
+				<cfset var events=calendar.getEventsIterator(start=start,end=end)>
+
 				<cfset var rsevents=duplicate(events.getQuery())>
 				<cfset var rscheck=''>
 				<cfset var rsresult=''>
@@ -66,7 +86,7 @@
 					'Calendar',
 					rscandidate.recordCount) />
 
-				<cfset rscandidate=apply(query=rscandidate,current=now(),from=now(),to=dateAdd('m',calendarSettings.detectspan,now())) />
+				<cfset rscandidate=apply(query=rscandidate,current=start,from=start,to=end) />
 
 				<cfquery name="rsresult" dbtype="query">
 					select * from rsevents where 0=1
