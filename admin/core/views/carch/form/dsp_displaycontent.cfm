@@ -72,7 +72,7 @@
 </div>
 <div id="editDates" class="mura-control highlight"<cfif rc.contentBean.getdisplay() NEQ 2>style="display: none;"</cfif>>
 	<cfset displayInterval=rc.contentBean.getDisplayInterval().getAllValues()>
-	<!---<cfdump var="#displayInterval#">-->
+
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 		<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">
