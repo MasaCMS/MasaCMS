@@ -250,6 +250,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				daysofweek: getDaysOfWeek()
 			};
 
+			if(!options.repeats && options.allday){
+				$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());
+				$('##mura-datepicker-displayStop').trigger('change');
+				options.endon=$('##mura-datepicker-displayStop').val();
+			}
+			
 			$('##displayInterval').val(JSON.stringify(options));
 		}
 
@@ -439,9 +445,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$('##displayIntervalType').on('change',toggleRepeatOptions);
 		$('##displayIntervalEnd').on('change',setEndOption);
 
-		var repeats=$('input[name="displayIntervalEvery"]').val();
+		var repeats=$('input[name="displayIntervalEvery"]').is(':checked');
 
-		if(!isNaN(repeats) && parseInt(repeats)){
+		if(repeats){
 			$('##displayIntervalRepeats').attr('checked',true);
 		}
 
