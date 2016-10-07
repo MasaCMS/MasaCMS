@@ -320,9 +320,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	// Custom Java library paths with dynamic loading
 	try {
-		variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.context#/requirements/lib'));
+		variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.baseDir#/requirements/lib'));
 	} catch(any e) {
-		variables.loadPaths = ['#variables.context#/requirements/lib'];
+		variables.loadPaths = ['#variables.baseDir#/requirements/lib'];
 	}
 
 	this.javaSettings = {

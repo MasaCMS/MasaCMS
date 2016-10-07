@@ -96,8 +96,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif arrayLen(objectParams.items)>
 					<ul class="configurator-options">
 					<cfloop array="#objectParams.items#" index="i">
-					 	<cfset item=rc.$.getBean('content').loadBy(contentid=i)>
-					 	<li><a href="#item.getURL()#" target="_top">#esapiEncode('html',item.getMenuTitle())#</a></li>
+						<cfif i neq content.getContentID()>
+						 	<cfset item=rc.$.getBean('content').loadBy(contentid=i)>
+						 	<li><a href="#item.getURL()#" target="_top">#esapiEncode('html',item.getMenuTitle())#</a></li>
+						</cfif>
 					</cfloop>
 					</ul>
 					<cfelse>

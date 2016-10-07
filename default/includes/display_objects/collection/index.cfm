@@ -149,7 +149,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						returnFormat='iterator'
 					)>
 				</cfif>
-
 				<cfset iterator.setNextN(objectParams.nextn)>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
 			</cfcase>

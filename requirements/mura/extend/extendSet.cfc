@@ -410,21 +410,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getStyle" ouput="false">
 <cfargument name="memberID" required="true" default=""/>
-<cfset var m=0/>
-<cfif not len(getCategoryID())>
+
 	<cfreturn ""/>
-<cfelse>
-	<cfif len(arguments.memberID)>
-		<cfloop list="#arguments.memberID#" index="m">
-			<cfif listFind(getCategotyID(),m)>
-				<cfreturn ""/>
-			</cfif>
-		</cfloop>
+	<!---
+	<cfset var m=0/>
+	<cfif not len(getCategoryID())>
+		<cfreturn ""/>
+	<cfelse>
+		<cfif len(arguments.memberID)>
+			<cfloop list="#arguments.memberID#" index="m">
+				<cfif listFind(getCategotyID(),m)>
+					<cfreturn ""/>
+				</cfif>
+			</cfloop>
+		</cfif>
+
+		<cfreturn 'style="display:none;"'/>
 	</cfif>
-
-	<cfreturn 'style="display:none;"'/>
-</cfif>
-
+	--->
 </cffunction>
 
 <cffunction name="getAllValues" ouput="false">

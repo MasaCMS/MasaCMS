@@ -825,7 +825,7 @@ if (!Array.prototype.map) {
     }
 
     var lib$es6$promise$promise$$default = lib$es6$promise$promise$$Promise;
-    /**
+    /*
       Promise objects represent the eventual result of an asynchronous operation. The
       primary way of interacting with a promise is through its `then` method, which
       registers callbacks to receive either a promise's eventual value or the reason
@@ -958,7 +958,7 @@ if (!Array.prototype.map) {
     lib$es6$promise$promise$$Promise.prototype = {
       constructor: lib$es6$promise$promise$$Promise,
 
-    /**
+    /*
       The primary way of interacting with a promise is through its `then` method,
       which registers callbacks to receive either a promise's eventual value or the
       reason why the promise cannot be fulfilled.
@@ -1174,7 +1174,7 @@ if (!Array.prototype.map) {
         return child;
       },
 
-    /**
+    /*
       `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
       as the catch block of a try/catch statement.
 
@@ -2714,6 +2714,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
+/**
+ * Creates a new Mura
+ * @class {class} Mura
+ */
 ;(function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -2729,6 +2733,15 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 }(this, function (root) {
 
+	/**
+	 * login - Logs user into Mura
+	 *
+	 * @param  {string} username Username
+	 * @param  {string} password Password
+	 * @param  {string} siteid   Siteid
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function login(username,password,siteid){
 		siteid=siteid || root.Mura.siteid;
 
@@ -2752,6 +2765,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 
+	/**
+	 * logout - Logs user out
+	 *
+	 * @param  {type} siteid Siteid
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function logout(siteid){
 		siteid=siteid || root.Mura.siteid;
 
@@ -2786,6 +2806,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return child ? child.nodeValue : '';
 	};
 
+	/**
+	 * renderFilename - Returns "Rendered" JSON object of content
+	 *
+	 * @param  {type} filename Mura content filename
+	 * @param  {type} params Object
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function renderFilename(filename,params){
 
 		var query = [];
@@ -2815,6 +2843,15 @@ return /******/ (function(modules) { // webpackBootstrap
 		});
 
 	}
+
+	/**
+	 * getEntity - Returns Mura.Entity instance
+	 *
+	 * @param  {string} entityname Entity Name
+	 * @param  {string} siteid     Siteid
+	 * @return {Mura.Entity}
+     * @memberof Mura
+	 */
 	function getEntity(entityname,siteid){
 		if(typeof entityname == 'string'){
 			var properties={entityname:entityname};
@@ -2832,10 +2869,23 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
+	/**
+	 * getFeed - Return new instance of Mura.Feed
+	 *
+	 * @param  {type} entityname Entity name
+	 * @return {Mura.Feed}
+     * @memberof Mura
+	 */
 	function getFeed(entityname){
 		return new root.Mura.Feed(Mura.siteid,entityname);
 	}
 
+    /**
+     * getCurrentUser - Return Mura.Entity for current user
+     *
+     * @return {Promise}
+     * @memberof Mura
+     */
     function getCurrentUser(){
         return new Promise(function(resolve,reject) {
             if(root.Mura.currentUser){
@@ -2857,6 +2907,13 @@ return /******/ (function(modules) { // webpackBootstrap
         });
     }
 
+	/**
+	 * findQuery - Returns Mura.EntityCollection with properties that match params
+	 *
+	 * @param  {object} params Object of matching params
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function findQuery(params){
 
 		params=params || {};
@@ -2944,7 +3001,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function ready(fn) {
 	    if(document.readyState != 'loading'){
 	      //IE set the readyState to interative too early
-	      setTimeout(fn,1);
+	      setTimeout(function(){fn(root.Mura);},1);
 	    } else {
 	      document.addEventListener('DOMContentLoaded',function(){
 	        fn(root.Mura);
@@ -2952,6 +3009,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
+	/**
+	 * get - Make GET request
+	 *
+	 * @param  {url} url  URL
+	 * @param  {object} data Data to send to url
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function get(url,data){
 		return new Promise(function(resolve, reject) {
 			return ajax({
@@ -2970,6 +3035,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	}
 
+    /**
+	 * post - Make POST request
+	 *
+	 * @param  {url} url  URL
+	 * @param  {object} data Data to send to url
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function post(url,data){
 		return new Promise(function(resolve, reject) {
 			return ajax({
@@ -3024,6 +3097,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	}
 
+    /**
+	 * ajax - Make ajax request
+	 *
+	 * @param  {object} params
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function ajax(params){
 
 		//params=params || {};
@@ -3165,6 +3245,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	}
 
+	/**
+	 * generateOauthToken - Generate Outh toke for REST API
+	 *
+	 * @param  {string} grant_type  Grant type (Use client_credentials)
+	 * @param  {type} client_id     Client ID
+	 * @param  {type} client_secret Secret Key
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function generateOauthToken(grant_type,client_id,client_secret){
 		return new Promise(function(resolve,reject) {
 			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret) + '&cacheid=' + Math.random()).then(function(resp){
@@ -3311,6 +3400,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 
+	/**
+	 * isNumeric - Returns if the value is numeric
+	 *
+	 * @param  {*} val description
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function isNumeric(val) {
 		return Number(parseFloat(val)) == val;
 	}
@@ -3354,6 +3450,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		return data;
 	}
 
+    /**
+	 * formToObject - Returns if the value is numeric
+	 *
+	 * @param  {form} form Form to serialize
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function formToObject(form) {
 	    var field, s = {};
 	    if (typeof form == 'object' && form.nodeName == "FORM") {
@@ -3381,6 +3484,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	//http://youmightnotneedjquery.com/
+    /**
+	 * extend - Extends object one level
+	 *
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function extend(out) {
 	  	out = out || {};
 
@@ -3397,6 +3506,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  	return out;
 	};
 
+    /**
+     * extend - Extends object to full depth
+     *
+     * @return {object}
+     * @memberof Mura
+     */
 	function deepExtend(out) {
 		out = out || {};
 
@@ -3423,6 +3538,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  	return out;
 	}
 
+
+	/**
+	 * createCookie - Creates cookie
+	 *
+	 * @param  {string} name  Name
+	 * @param  {*} value Value
+	 * @param  {number} days  Days
+	 * @return {void}
+     * @memberof Mura
+	 */
 	function createCookie(name,value,days) {
 		if (days) {
 			var date = new Date();
@@ -3433,6 +3558,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		document.cookie = name+"="+value+expires+"; path=/";
 	}
 
+	/**
+	 * readCookie - Reads cookie value
+	 *
+	 * @param  {string} name Name
+	 * @return {*}
+     * @memberof Mura
+	 */
 	function readCookie(name) {
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
@@ -3444,6 +3576,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		return "";
 	}
 
+	/**
+	 * eraseCookie - Removes cookie value
+	 *
+	 * @param  {type} name description
+	 * @return {type}      description
+     * @memberof Mura
+	 */
 	function eraseCookie(name) {
 		createCookie(name,"",-1);
 	}
@@ -3481,6 +3620,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		root.location = locationstring;
 	}
 
+    /**
+     * isUUID - description
+     *
+     * @param  {*} value Value
+     * @return {boolean}
+     * @memberof Mura
+     */
     function isUUID(value){
         if(
             typeof value == 'string' &&
@@ -3502,6 +3648,12 @@ return /******/ (function(modules) { // webpackBootstrap
         }
     }
 
+	/**
+	 * createUUID - Create UUID
+	 *
+	 * @return {string}
+     * @memberof Mura
+	 */
 	function createUUID() {
 	    var s = [], itoh = '0123456789ABCDEF';
 
@@ -3522,6 +3674,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return s.join('');
 	 }
 
+	/**
+	 * setHTMLEditor - Set Html Editor
+	 *
+	 * @param  {dom.element} el Dom Element
+	 * @return {void}
+	 */
 	function setHTMLEditor(el) {
 
 		function initEditor(){
@@ -3622,6 +3780,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
+	/**
+	 * isInteger - Returns if the value is an integer
+	 *
+	 * @param  {*} s Value to check
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function isInteger(s){
 		var i;
 			for (i = 0; i < s.length; i++){
@@ -3740,6 +3905,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		return true;
 	}
 
+    /**
+	 * isEmail - Returns if value is valid email
+	 *
+	 * @param  {string} str String to parse for email
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function isEmail(cur){
 		var string1=cur
 		if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1){
@@ -3767,6 +3939,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  	}
 	}
 
+	/**
+	 * validateForm - Validates Mura form
+	 *
+	 * @param  {type} frm          Form element to validate
+	 * @param  {function} customaction Custom action (optional)
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function validateForm(frm,customaction) {
 
 		function getValidationFieldName(theField){
@@ -4072,7 +4252,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	}
 
+    /**
+	 * loader - Returns Mura.Loader
+	 *
+	 * @return {Mura.Loader}
+     * @memberof Mura
+	 */
 	function loader(){return root.Mura.ljs;}
+
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><span class="mura-edit-icon"></span></div>';
 
@@ -4818,6 +5005,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
+	/**
+	 * trim - description
+	 *
+	 * @param  {string} str Trims string
+	 * @return {string}     Trimmed string
+     * @memberof Mura
+	 */
 	function trim(str) {
 	    return str.replace(/^\s+|\s+$/gm,'');
 	}
@@ -4888,6 +5082,14 @@ return /******/ (function(modules) { // webpackBootstrap
 		return muraObject;
 	}
 
+
+	/**
+	 * getQueryStringParams - Returns object of params in string
+	 *
+	 * @param  {string} queryString Query String
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function getQueryStringParams(queryString) {
         queryString=queryString || root.location.search;
 	    var params = {};
@@ -4938,7 +5140,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-	function hashCode(s){
+
+    /**
+     * hashCode - description
+     *
+     * @param  {string} s String to hash
+     * @return {string}
+     * @memberof Mura
+     */
+    function hashCode(s){
 		var hash = 0, strlen = s.length, i, c;
 
 		if ( strlen === 0 ) {
@@ -5205,6 +5415,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	return root.Mura;
 }));
+
+/**
+ * A namespace.
+ * @namespace  Mura
+ */
 ;//https://github.com/malko/l.js
 ;(function(root){
 /*
@@ -5583,14 +5798,40 @@ return /******/ (function(modules) { // webpackBootstrap
         factory(root.Mura);
     }
 }(this, function (mura) {
-	Mura.Cache=Mura.Core.extend({
+    /**
+     * Creates a new Mura.Cache
+     * @class {class} Mura.Cache
+     */
+	Mura.Cache=Mura.Core.extend(
+    /** @lends Mura.Cache.prototype */
+    {
+
+		/**
+		 * init - Initialiazes cache
+		 *
+		 * @return {void}
+		 */
 		init:function(){
 			this.cache={};
 		},
+
+        /**
+         * getKey - Returns Key value associated with key Name
+         *
+         * @param  {string} keyName Key Name
+         * @return {*}         Key Value
+         */
         getKey:function(keyName){
             return Mura.hashCode(keyName);
         },
 
+        /**
+         * get - Returns the value associated with key name
+         *
+         * @param  {string} keyName  description
+         * @param  {*} keyValue Default Value
+         * @return {*}
+         */
         get:function(keyName,keyValue){
             var key=this.getKey(keyName);
 
@@ -5604,25 +5845,55 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+		/**
+		 * set - Sets and returns key value
+		 *
+		 * @param  {string} keyName  Key Name
+		 * @param  {*} keyValue Key Value
+		 * @param  {string} key      Key
+		 * @return {*}
+		 */
 		set:function(keyName,keyValue,key){
             key=key || this.getKey(keyName);
 		    this.cache[key]={name:keyName,value:keyValue};
 			return keyValue;
 		},
 
+		/**
+		 * has - Returns if the key name has a value in the cache
+		 *
+		 * @param  {string} keyName Key Name
+		 * @return {boolean}
+		 */
 		has:function(keyName){
 			return typeof this.cache[getKey(keyName)] != 'undefined';
 		},
 
+		/**
+		 * getAll - Returns object containing all key and key values
+		 *
+		 * @return {object}
+		 */
 		getAll:function(){
 			return this.cache;
 		},
 
+        /**
+         * purgeAll - Purges all key/value pairs from cache
+         *
+         * @return {object}  Self
+         */
         purgeAll:function(){
             this.cache={};
 			return this;
 		},
 
+        /**
+         * purge - Purges specific key name from cache
+         *
+         * @param  {string} keyName Key Name
+         * @return {object}         Self
+         */
         purge:function(keyName){
             var key=this.getKey(keyName)
             if( typeof this.cache[key] != 'undefined')
@@ -5692,7 +5963,20 @@ return /******/ (function(modules) { // webpackBootstrap
         factory(root,root.Mura);
     }
 }(this, function (root,mura) {
-	Mura.DOMSelection=Mura.Core.extend({
+    /**
+     * Creates a new Mura.DOMSelection
+     * @class {class} Mura.DOMSelection
+     */
+	Mura.DOMSelection=Mura.Core.extend(
+    /** @lends Mura.DOMSelection.prototype */
+    {
+
+        /**
+		 * init - initiliazes instance
+		 *
+		 * @param  {object} properties Object containing values to set into object
+		 * @return {void}
+		 */
 		init:function(selection,origSelector){
 			this.selection=selection;
 			this.origSelector=origSelector;
@@ -5710,18 +5994,35 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+
+		/**
+		 * get - Returns element at index of selection
+		 *
+		 * @param  {number} index Index of selection
+		 * @return {*}
+		 */
 		get:function(index){
 			return this.selection[index];
 		},
 
-		ajax:function(data){
-			return Mura.ajax(data);
-		},
 
+		/**
+		 * select - Returns new Mura.DomSelection
+		 *
+		 * @param  {string} selector Selector
+		 * @return {object}
+		 */
 		select:function(selector){
 			return mura(selector);
 		},
 
+
+		/**
+		 * each - Runs function against each item in selection
+		 *
+		 * @param  {function} fn Method
+		 * @return {Mura.DOMSelection} Self
+		 */
 		each:function(fn){
 			this.selection.forEach( function(el,idx,array){
 				fn.call(el,el,idx,array);
@@ -5729,22 +6030,51 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+
+		/**
+		 * filter - Creates a new Mura.DomSelection instance contains selection values that pass filter function by returning true
+		 *
+		 * @param  {function} fn Filter function
+		 * @return {object}    New Mura.DOMSelection
+		 */
 		filter:function(fn){
 			return mura(this.selection.filter( function(el,idx,array){
 				return fn.call(el,el,idx,array);
 			}));
 		},
 
+		/**
+		 * map - Creates a new Mura.DomSelection instance contains selection values that are returned by Map function
+		 *
+		 * @param  {function} fn Map function
+		 * @return {object}    New Mura.DOMSelection
+		 */
 		map:function(fn){
 			return mura(this.selection.map( function(el,idx,array){
 				return fn.call(el,el,idx,array);
 			}));
 		},
 
+
+		/**
+		 * isNumeric - Returns if value is numeric
+		 *
+		 * @param  {*} val Value
+		 * @return {type}     description
+		 */
 		isNumeric:function(val){
+            if(typeof val != 'undefined'){
+                return isNumeric(val);
+            }
 			return isNumeric(this.selection[0]);
 		},
 
+
+		/**
+		 * processMarkup - Process Markup of selected dom elements
+		 *
+		 * @return {Promise}
+		 */
 		processMarkup:function(){
             var self=this;
             return new Promise(function(resolve,reject){
@@ -5754,6 +6084,14 @@ return /******/ (function(modules) { // webpackBootstrap
             });
 		},
 
+		/**
+		 * on - Add event handling method
+		 *
+		 * @param  {string} eventName Event name
+		 * @param  {string} selector  Selector (optional: for use with delegated events)
+		 * @param  {function} fn        description
+		 * @return {Mura.DOMSelection} Self
+		 */
 		on:function(eventName,selector,fn){
 			if(typeof selector == 'function'){
 				fn=selector;
@@ -5810,6 +6148,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * hover - Adds hovering events to selected dom elements
+		 *
+		 * @param  {function} handlerIn  In method
+		 * @param  {function} handlerOut Out method
+		 * @return {object}            Self
+		 */
 		hover:function(handlerIn,handlerOut){
 			this.on('mouseover',handlerIn);
 			this.on('mouseout',handlerOut);
@@ -5819,16 +6164,34 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 
+		/**
+		 * click - Adds onClick event handler to selection
+		 *
+		 * @param  {function} fn Handler function
+		 * @return {Mura.DOMSelection} Self
+		 */
 		click:function(fn){
 			this.on('click',fn);
 			return this;
 		},
 
+        /**
+         * change - Adds onChange event handler to selection
+         *
+         * @param  {function} fn Handler function
+         * @return {Mura.DOMSelection} Self
+         */
         change:function(fn){
 			this.on('change',fn);
 			return this;
 		},
 
+		/**
+		 * submit - Adds onSubmit event handler to selection
+		 *
+		 * @param  {function} fn Handler function
+		 * @return {Mura.DOMSelection} Self
+		 */
 		submit:function(fn){
 			if(fn){
 				this.on('submit',fn);
@@ -5843,11 +6206,24 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * ready - Adds onReady event handler to selection
+		 *
+		 * @param  {function} fn Handler function
+		 * @return {Mura.DOMSelection} Self
+		 */
 		ready:function(fn){
 			this.on('ready',fn);
 			return this;
 		},
 
+		/**
+		 * off - Removes event handler from selection
+		 *
+		 * @param  {string} eventName Event name
+		 * @param  {function} fn      Function to remove  (optional)
+		 * @return {Mura.DOMSelection} Self
+		 */
 		off:function(eventName,fn){
 			this.each(function(el,idx,array){
 				if(typeof eventName != 'undefined'){
@@ -5870,16 +6246,38 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+        /**
+		 * unbind - Removes event handler from selection
+		 *
+		 * @param  {string} eventName Event name
+		 * @param  {function} fn      Function to remove  (optional)
+		 * @return {Mura.DOMSelection} Self
+		 */
 		unbind:function(eventName,fn){
 			this.off(eventName,fn);
 			return this;
 		},
 
+        /**
+		 * bind - Add event handling method
+		 *
+		 * @param  {string} eventName Event name
+		 * @param  {string} selector  Selector (optional: for use with delegated events)
+		 * @param  {function} fn        description
+		 * @return {Mura.DOMSelection}           Self
+		 */
 		bind:function(eventName,fn){
 			this.on(eventName,fn);
 			return this;
 		},
 
+		/**
+		 * trigger - Triggers event on selection
+		 *
+		 * @param  {string} eventName   Event name
+		 * @param  {object} eventDetail Event properties
+		 * @return {Mura.DOMSelection}             Self
+		 */
 		trigger:function(eventName,eventDetail){
 			eventDetails=eventDetail || {};
 
@@ -5889,6 +6287,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * parent - Return new Mura.DOMSelection of the first elements parent
+		 *
+		 * @return {Mura.DOMSelection}
+		 */
 		parent:function(){
 			if(!this.selection.length){
 				return this;
@@ -5896,6 +6299,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return mura(this.selection[0].parentNode);
 		},
 
+		/**
+		 * children - Returns new Mura.DOMSelection or the first elements children
+		 *
+		 * @param  {string} selector Filter (optional)
+		 * @return {Mura.DOMSelection}
+		 */
 		children:function(selector){
 			if(!this.selection.length){
 				return this;
@@ -5917,6 +6326,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+
+		/**
+		 * find - Returns new Mura.DOMSelection matching items under the first selection
+		 *
+		 * @param  {string} selector Selector
+		 * @return {Mura.DOMSelection}
+		 */
 		find:function(selector){
 			if(this.selection.length && this.selection[0]){
 				var removeId=false;
@@ -5934,6 +6350,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+        /**
+         * first - Returns first item in selection
+         *
+         * @return {*}
+         */
         first:function(){
             if(this.selection.length){
 				return mura(this.selection[0]);
@@ -5942,6 +6363,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
         },
 
+        /**
+         * last - Returns last item in selection
+         *
+         * @return {*}
+         */
         last:function(){
             if(this.selection.length){
 				return mura(this.selection[this.selection.length-1]);
@@ -5950,6 +6376,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
         },
 
+		/**
+		 * selector - Returns css selector for first item in selection
+		 *
+		 * @return {string}
+		 */
 		selector:function() {
 			var pathes = [];
 			var path, node = mura(this.selection[0]);
@@ -5989,6 +6420,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		    return pathes.join(',');
 		},
 
+		/**
+		 * siblings - Returns new Mura.DOMSelection of first item's siblings
+		 *
+		 * @param  {string} selector Selector to filter siblings (optional)
+		 * @return {Mura.DOMSelection}
+		 */
 		siblings:function(selector){
 			if(!this.selection.length){
 				return this;
@@ -6010,14 +6447,32 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+		/**
+		 * item - Returns item at selected index
+		 *
+		 * @param  {number} idx Index to return
+		 * @return {*}
+		 */
 		item:function(idx){
 			return this.selection[idx];
 		},
 
+		/**
+		 * index - Returns the index of element
+		 *
+		 * @param  {*} el Element to return index of
+		 * @return {*}
+		 */
 		index:function(el){
 			return this.selection.indexOf(el);
 		},
 
+		/**
+		 * closest - Returns new Mura.DOMSelection of closest parent matching selector
+		 *
+		 * @param  {string} selector Selector
+		 * @return {Mura.DOMSelection}
+		 */
 		closest:function(selector) {
 			if(!this.selection.length){
 				return null;
@@ -6035,6 +6490,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+		/**
+		 * append - Appends element to items in selection
+		 *
+		 * @param  {*} el Element to append
+		 * @return {Mura.DOMSelection} Self
+		 */
 		append:function(el) {
 			this.each(function(){
 				if(typeof el == 'string'){
@@ -6046,6 +6507,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * appendDisplayObject - Appends display object to selected items
+		 *
+		 * @param  {object} data Display objectparams (including object='objectkey')
+		 * @return {Promise}
+		 */
 		appendDisplayObject:function(data) {
 			var self=this;
 
@@ -6076,6 +6543,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 		},
 
+        /**
+		 * prependDisplayObject - Prepends display object to selected items
+		 *
+		 * @param  {object} data Display objectparams (including object='objectkey')
+		 * @return {Promise}
+		 */
 		prependDisplayObject:function(data) {
 			var self=this;
 
@@ -6106,6 +6579,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 		},
 
+		/**
+		 * processDisplayObject - Handles processing of display object params to selection
+		 *
+		 * @param  {object} data Display object params
+		 * @return {Promise}
+		 */
 		processDisplayObject:function(data) {
 			var self=this;
 			return new Promise(function(resolve,reject){
@@ -6115,6 +6594,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 		},
 
+        /**
+		 * prepend - Prepends element to items in selection
+		 *
+		 * @param  {*} el Element to append
+		 * @return {Mura.DOMSelection} Self
+		 */
 		prepend:function(el) {
 			this.each(function(){
 				if(typeof el == 'string'){
@@ -6126,6 +6611,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+        /**
+		 * before - Inserts element before items in selection
+		 *
+		 * @param  {*} el Element to append
+		 * @return {Mura.DOMSelection} Self
+		 */
 		before:function(el) {
 			this.each(function(){
 				if(typeof el == 'string'){
@@ -6137,6 +6628,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+        /**
+		 * after - Inserts element after items in selection
+		 *
+		 * @param  {*} el Element to append
+		 * @return {Mura.DOMSelection} Self
+		 */
 		after:function(el) {
 			this.each(function(){
 				if(typeof el == 'string'){
@@ -6148,21 +6645,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
-		prependMuraObject:function(data) {
-		    var el=createElement('div');
-		    el.setAttribute('class','mura-async-object');
 
-			for(var a in data){
-				el.setAttribute('data-' + a,data[a]);
-			}
-
-			this.prepend(el);
-
-			Mura.processAsyncObject(el);
-
-			return el;
-		},
-
+		/**
+		 * hide - Hides elements in selection
+		 *
+		 * @return {object}  Self
+		 */
 		hide:function(){
 			this.each(function(el){
 				el.style.display = 'none';
@@ -6170,6 +6658,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * show - Shows elements in selection
+		 *
+		 * @return {object}  Self
+		 */
 		show:function(){
 			this.each(function(el){
 				el.style.display = '';
@@ -6177,6 +6670,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * remove - Removes elements in selection
+		 *
+		 * @return {object}  Self
+		 */
 		remove:function(){
 			this.each(function(el){
 				el.parentNode.removeChild(el);
@@ -6184,6 +6682,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * addClass - Adds class to elements in selection
+		 *
+		 * @param  {string} className Name of class
+		 * @return {Mura.DOMSelection} Self
+		 */
 		addClass:function(className){
 			this.each(function(el){
 				if (el.classList){
@@ -6195,10 +6699,22 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * hasClass - Returns if the first element in selection has class
+		 *
+		 * @param  {string} className Class name
+		 * @return {Mura.DOMSelection} Self
+		 */
 		hasClass:function(className){
 			return this.is("." + className);
 		},
 
+		/**
+		 * removeClass - Removes class from elements in selection
+		 *
+		 * @param  {string} className Class name
+		 * @return {Mura.DOMSelection} Self
+		 */
 		removeClass:function(className){
 			this.each(function(el){
 				if (el.classList){
@@ -6210,6 +6726,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * toggleClass - Toggles class on elements in selection
+		 *
+		 * @param  {string} className Class name
+		 * @return {Mura.DOMSelection} Self
+		 */
 		toggleClass:function(className){
 			this.each(function(el){
 				if (el.classList) {
@@ -6229,21 +6751,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
-		after:function(el){
-			this.each(function(){
-				if(type)
-				this.insertAdjacentHTML('afterend', el);
-			});
-			return this;
-		},
-
-		before:function(el){
-			this.each(function(){
-				this.insertAdjacentHTML('beforebegin', el);
-			});
-			return this;
-		},
-
+		/**
+		 * empty - Removes content from elements in selection
+		 *
+		 * @return {object}  Self
+		 */
 		empty:function(){
 			this.each(function(el){
 				el.innerHTML = '';
@@ -6251,6 +6763,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * evalScripts - Evaluates script tags in selection elements
+		 *
+		 * @return {object}  Self
+		 */
 		evalScripts:function(){
 			if(!this.selection.length){
 				return this;
@@ -6264,6 +6781,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+		/**
+		 * html - Returns or sets HTML of elements in selection
+		 *
+		 * @param  {string} htmlString description
+		 * @return {object}            Self
+		 */
 		html:function(htmlString){
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
@@ -6279,6 +6802,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+		/**
+		 * css - Sets css value for elements in selection
+		 *
+		 * @param  {string} ruleName Css rule name
+		 * @param  {string} value    Rule value
+		 * @return {object}          Self
+		 */
 		css:function(ruleName,value){
 			if(!this.selection.length){
 				return this;
@@ -6312,6 +6842,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+		/**
+		 * text - Gets or sets the text content of each element in the selection
+		 *
+		 * @param  {string} textString Text string
+		 * @return {object}            Self
+		 */
 		text:function(textString){
 			if(typeof textString == 'undefined'){
 				this.each(function(el){
@@ -6323,6 +6859,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+		/**
+		 * is - Returns if the first element in the select matches the selector
+		 *
+		 * @param  {string} selector description
+		 * @return {boolean}
+		 */
 		is:function(selector){
 			if(!this.selection.length){
 				return false;
@@ -6330,6 +6872,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
 		},
 
+		/**
+		 * hasAttr - Returns is the first element in the selection has an attribute
+		 *
+		 * @param  {string} attributeName description
+		 * @return {boolean}
+		 */
 		hasAttr:function(attributeName){
 			if(!this.selection.length){
 				return false;
@@ -6338,6 +6886,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return typeof this.selection[0].hasAttribute == 'function' && this.selection[0].hasAttribute(attributeName);
 		},
 
+		/**
+		 * hasData - Returns if the first element in the selection has data attribute
+		 *
+		 * @param  {sting} attributeName Data atttribute name
+		 * @return {boolean}
+		 */
 		hasData:function(attributeName){
 			if(!this.selection.length){
 				return false;
@@ -6347,6 +6901,11 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 
+		/**
+		 * offsetParent - Returns first element in selection's offsetParent
+		 *
+		 * @return {object}  offsetParent
+		 */
 		offsetParent:function(){
 			if(!this.selection.length){
 				return this;
@@ -6355,6 +6914,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return el.offsetParent || el;
 		},
 
+		/**
+		 * outerHeight - Returns first element in selection's outerHeight
+		 *
+		 * @param  {boolean} withMargin Whether to include margin
+		 * @return {number}
+		 */
 		outerHeight:function(withMargin){
 			if(!this.selection.length){
 				return this;
@@ -6374,6 +6939,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+		/**
+		 * height - Returns height of first element in selection or set height for elements in selection
+		 *
+		 * @param  {number} height  Height (option)
+		 * @return {object}        Self
+		 */
 		height:function(height) {
 		 	if(!this.selection.length){
 				return this;
@@ -6405,6 +6976,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return Math.ceil(el.offsetHeight + margin);
 		},
 
+		/**
+		 * width - Returns height of first element in selection or set width for elements in selection
+		 *
+		 * @param  {number} width Width (optional)
+		 * @return {object}       Self
+		 */
 		width:function(width) {
 		  	if(!this.selection.length){
 				return this;
@@ -6433,6 +7010,11 @@ return /******/ (function(modules) { // webpackBootstrap
 		  	return getComputedStyle(el).width;
 		},
 
+		/**
+		 * offset - Returns the offset of the first element in selection
+		 *
+		 * @return {object}
+		 */
 		offset:function(){
 			if(!this.selection.length){
 				return this;
@@ -6446,11 +7028,21 @@ return /******/ (function(modules) { // webpackBootstrap
 			};
 		},
 
+		/**
+		 * scrollTop - Returns the scrollTop of the current document
+		 *
+		 * @return {object}
+		 */
 		scrollTop:function() {
 		  	return document.body.scrollTop;
 		},
 
-		offset:function(attributeName,value){
+		/**
+		 * offset - Returns offset of first element in selection
+		 *
+		 * @return {object}
+		 */
+		offset:function(){
 			if(!this.selection.length){
 				return this;
 			}
@@ -6461,6 +7053,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			};
 		},
 
+		/**
+		 * removeAttr - Removes attribute from elements in selection
+		 *
+		 * @param  {string} attributeName Attribute name
+		 * @return {object}               Self
+		 */
 		removeAttr:function(attributeName){
 			if(!this.selection.length){
 				return this;
@@ -6476,6 +7074,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+		/**
+		 * changeElementType - Changes element type of elements in selection
+		 *
+		 * @param  {string} type Element type to change to
+		 * @return {Mura.DOMSelection} Self
+		 */
 		changeElementType:function(type){
 			if(!this.selection.length){
 				return this;
@@ -6489,6 +7093,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+        /**
+         * val - Set the value of elements in selection
+         *
+         * @param  {*} value Value
+         * @return {Mura.DOMSelection} Self
+         */
         val:function(value){
 			if(!this.selection.length){
 				return this;
@@ -6518,6 +7128,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+		/**
+		 * attr - Returns attribute value of first element in selection or set attribute value for elements in selection
+		 *
+		 * @param  {string} attributeName Attribute name
+		 * @param  {*} value         Value (optional)
+		 * @return {Mura.DOMSelection} Self
+		 */
 		attr:function(attributeName,value){
 			if(!this.selection.length){
 				return this;
@@ -6552,6 +7169,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+        /**
+		 * data - Returns data attribute value of first element in selection or set data attribute value for elements in selection
+		 *
+		 * @param  {string} attributeName Attribute name
+		 * @param  {*} value         Value (optional)
+		 * @return {Mura.DOMSelection} Self
+		 */
 		data:function(attributeName,value){
 			if(!this.selection.length){
 				return this;
@@ -6578,6 +7202,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+        /**
+		 * prop - Returns attribute value of first element in selection or set attribute value for elements in selection
+		 *
+		 * @param  {string} attributeName Attribute name
+		 * @param  {*} value         Value (optional)
+		 * @return {Mura.DOMSelection} Self
+		 */
 		prop:function(attributeName,value){
 			if(!this.selection.length){
 				return this;
@@ -6602,6 +7233,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+		/**
+		 * fadeOut - Fades out elements in selection
+		 *
+		 * @return {Mura.DOMSelection} Self
+		 */
 		fadeOut:function(){
 		  	this.each(function(el){
 			  el.style.opacity = 1;
@@ -6618,6 +7254,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * fadeIn - Fade in elements in selection
+		 *
+		 * @param  {string} display Display value
+		 * @return {Mura.DOMSelection} Self
+		 */
 		fadeIn:function(display){
 		  this.each(function(el){
 			  el.style.opacity = 0;
@@ -6635,6 +7277,11 @@ return /******/ (function(modules) { // webpackBootstrap
 		  return this;
 		},
 
+		/**
+		 * toggle - Toggles display object elements in selection
+		 *
+		 * @return {Mura.DOMSelection} Self
+		 */
 		toggle:function(){
 		 	this.each(function(el){
 				 if(typeof el.style.display == 'undefined' || el.style.display==''){
@@ -6707,7 +7354,20 @@ return /******/ (function(modules) { // webpackBootstrap
         factory(root.Mura);
     }
 }(this, function (mura) {
-	Mura.Entity=Mura.Core.extend({
+    /**
+     * Creates a new Mura.Entity
+     * @class {class} Mura.Entity
+     */
+	Mura.Entity=Mura.Core.extend(
+    /** @lends Mura.Entity.prototype */
+    {
+
+		/**
+		 * init - initiliazes instance
+		 *
+		 * @param  {object} properties Object containing values to set into object
+		 * @return {void}
+		 */
 		init:function(properties){
 			properties=properties || {};
 			properties.entityname = properties.entityname || 'content';
@@ -6731,10 +7391,25 @@ return /******/ (function(modules) { // webpackBootstrap
 			this.cachePut();
 		},
 
+
+        /**
+         * exists - Returns if the entity was previously saved
+         *
+         * @return {boolean}
+         */
         exists:function(){
                 return this.has('isnew') && !this.get('isnew');
         },
 
+
+
+		/**
+		 * get - Retrieves property value from entity
+		 *
+		 * @param  {string} propertyName Property Name
+		 * @param  {*} defaultValue Default Value
+		 * @return {*}              Property Value
+		 */
 		get:function(propertyName,defaultValue){
 			if(typeof this.properties.links != 'undefined'
 				&& typeof this.properties.links[propertyName] != 'undefined'){
@@ -6807,6 +7482,14 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
+
+		/**
+		 * set - Sets property value
+		 *
+		 * @param  {string} propertyName  Property Name
+		 * @param  {*} propertyValue Property Value
+		 * @return {Mura.Entity} Self
+		 */
 		set:function(propertyName,propertyValue){
 
 			if(typeof propertyName == 'object'){
@@ -6821,18 +7504,44 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+
+		/**
+		 * has - Returns is the entity has a certain property within it
+		 *
+		 * @param  {string} propertyName Property Name
+		 * @return {type}
+		 */
 		has:function(propertyName){
 			return typeof this.properties[propertyName] != 'undefined' || (typeof this.properties.links != 'undefined' && typeof this.properties.links[propertyName] != 'undefined');
 		},
 
+
+		/**
+		 * getAll - Returns all of the entities properties
+		 *
+		 * @return {object}
+		 */
 		getAll:function(){
 			return this.properties;
 		},
 
+
+		/**
+		 * load - Loads entity from JSON API
+		 *
+		 * @return {Promise}
+		 */
 		load:function(){
 			return this.loadBy('id',this.get('id'));
 		},
 
+
+		/**
+		 * new - Loads properties of a new instance from JSON API
+		 *
+		 * @param  {type} params Property values that you would like your new entity to have
+		 * @return {Promise}
+		 */
 		'new':function(params){
             var self=this;
 
@@ -6856,6 +7565,15 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 		},
 
+
+		/**
+		 * loadBy - Loads entity by property and value
+		 *
+		 * @param  {string} propertyName  The primary load property to filter against
+		 * @param  {string|number} propertyValue The value to match the propert against
+		 * @param  {object} params        Addition parameters
+		 * @return {Promise}
+		 */
 		loadBy:function(propertyName,propertyValue,params){
 
 			propertyName=propertyName || 'id';
@@ -6899,6 +7617,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 		},
 
+
+		/**
+		 * validate - Validates instance
+		 *
+		 * @param  {string} fields List of properties to validate, defaults to all
+		 * @return {Promise}
+		 */
 		validate:function(fields){
 			fields=fields || '';
 
@@ -6932,13 +7657,34 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 
 		},
+
+
+		/**
+		 * hasErrors - Returns if the entity has any errors
+		 *
+		 * @return {boolean}
+		 */
 		hasErrors:function(){
 			var errors=this.get('errors',{});
 			return (typeof errors=='string' && errors !='') || (typeof errors=='object' && !Mura.isEmptyObject(errors));
 		},
+
+
+		/**
+		 * getErrors - Returns entites errors property
+		 *
+		 * @return {object}
+		 */
 		getErrors:function(){
 			return this.get('errors',{});
 		},
+
+
+		/**
+		 * save - Saves entity to JSON API
+		 *
+		 * @return {Promise}
+		 */
 		save:function(){
 			var self=this;
 
@@ -7016,6 +7762,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+
+		/**
+		 * delete - Deletes entity
+		 *
+		 * @return {Promise}
+		 */
 		'delete':function(){
 
 			var self=this;
@@ -7053,16 +7805,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+
+		/**
+		 * getFeed - Returns a Mura.Feed instance of this current entitie's type and siteid
+		 *
+		 * @return {object}
+		 */
 		getFeed:function(){
 			var siteid=get('siteid') || Mura.siteid;
 			return new Mura.Feed(this.get('entityName'));
 		},
 
+
+		/**
+		 * cachePurge - Purges this entity from client cache
+		 *
+		 * @return {object}  Self
+		 */
 		cachePurge:function(){
 			Mura.datacache.purge(this.get('id'));
 			return this;
 		},
 
+
+		/**
+		 * cachePut - Places this entity into client cache
+		 *
+		 * @return {object}  Self
+		 */
 		cachePut:function(){
 			if(!this.get('isnew')){
 				Mura.datacache.set(this.get('id'),this);
@@ -7131,7 +7901,19 @@ return /******/ (function(modules) { // webpackBootstrap
         factory(root.Mura);
     }
 }(this, function (mura) {
-	Mura.EntityCollection=Mura.Entity.extend({
+    /**
+     * Creates a new Mura.EntityCollection
+     * @class {class} Mura.EntityCollection
+     */
+	Mura.EntityCollection=Mura.Entity.extend(
+    /** @lends Mura.EntityCollection.prototype */
+    {
+        /**
+		 * init - initiliazes instance
+		 *
+		 * @param  {object} properties Object containing values to set into object
+		 * @return {object} Self
+		 */
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -7151,14 +7933,31 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * item - Return entity in collection at index
+		 *
+		 * @param  {nuymber} idx Index
+		 * @return {object}     Mura.Entity
+		 */
 		item:function(idx){
 			return this.properties.items[idx];
 		},
 
+		/**
+		 * index - Returns index of item in collection
+		 *
+		 * @param  {object} item Entity instance
+		 * @return {number}      Index of entity
+		 */
 		index:function(item){
 			return this.properties.items.indexOf(item);
 		},
 
+		/**
+		 * getAll - Returns array of all entities way properties
+		 *
+		 * @return {array}
+		 */
 		getAll:function(){
 			var self=this;
 
@@ -7174,6 +7973,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		},
 
+		/**
+		 * each - Passes each entity in collection through function
+		 *
+		 * @param  {function} fn Function
+		 * @return {object}  Self
+		 */
 		each:function(fn){
 			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
@@ -7181,10 +7986,23 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this;
 		},
 
+		/**
+		 * sort - Sorts collection
+		 *
+		 * @param  {function} fn Sorting function
+		 * @return {object}   Self
+		 */
 		sort:function(fn){
 			this.properties.items.sort(fn);
+            return this;
 		},
 
+		/**
+		 * filter - Returns new Mura.EntityCollection of entities in collection that pass filter
+		 *
+		 * @param  {function} fn Filter function
+		 * @return {Mura.EntityCollection}
+		 */
 		filter:function(fn){
 			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
@@ -7192,6 +8010,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			}));
 		},
 
+        /**
+		 * map - Returns new Mura.EntityCollection of entities in objects returned from map function
+		 *
+		 * @param  {function} fn Filter function
+		 * @return {Mura.EntityCollection}
+		 */
 		map:function(fn){
 			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
@@ -7259,31 +8083,80 @@ return /******/ (function(modules) { // webpackBootstrap
 	        factory(root.Mura);
 	    }
 	}(this, function (mura) {
-		Mura.Feed=Mura.Core.extend({
+		/**
+	     * Creates a new Mura.Feed
+	     * @class {class} Mura.Feed
+	     */
+		Mura.Feed=Mura.Core.extend(
+		/** @lends Mura.Feed.prototype */
+		{
+
+			/**
+			 * init - Initialiazes feed
+			 *
+			 * @param  {string} siteid     Siteid
+			 * @param  {string} entityname Entity name
+			 * @return {Mura.Feed}            Self
+			 */
 			init:function(siteid,entityname){
 	            this.queryString= entityname + '/?_cacheid=' + Math.random();
 				this.propIndex=0;
 				this.entityname=entityname;
 	            return this;
 			},
+
+			/**
+			 * fields - List fields to retrieve from API
+			 *
+			 * @param  {string} fields List of fields
+			 * @return {Mura.Feed}        Self
+			 */
 			fields:function(fields){
 	            this.queryString+='&fields=' + encodeURIComponent(fields);
 	            return this;
 	        },
+
+	        /**
+	         * where - Optional method for starting query chain
+	         *
+	         * @param  {string} property Property name
+	         * @return {Mura.Feed}          Self
+	         */
 	        where:function(property){
 	            if(property){
 	                return this.andProp(property);
 	            }
 	            return this;
 	        },
+
+	        /**
+	         * prop - Add new property value
+	         *
+	         * @param  {string} property Property name
+	         * @return {Mura.Feed}          Self
+	         */
 	        prop:function(property){
 	            return this.andProp(property);
 	        },
+
+	        /**
+	         * andProp - Add new AND property value
+	         *
+			 * @param  {string} property Property name
+	         * @return {Mura.Feed}          Self
+	         */
 	        andProp:function(property){
 	            this.queryString+='&' + encodeURIComponent(property) + '[' + this.propIndex + ']=';
 				this.propIndex++;
 	            return this;
 	        },
+
+			/**
+	         * orProp - Add new OR property value
+	         *
+			 * @param  {string} property Property name
+	         * @return {Mura.Feed}          Self
+	         */
 	        orProp:function(property){
 	            this.queryString+='&or[' + this.propIndex + ']&';
 				this.propIndex++;
@@ -7291,38 +8164,101 @@ return /******/ (function(modules) { // webpackBootstrap
 				this.propIndex++;
 				return this;
 	        },
+
+	        /**
+	         * isEQ - Checks if preceding property value is EQ to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 	        isEQ:function(criteria){
 	            this.queryString+=encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * isNEQ - Checks if preceding property value is NEQ to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 	        isNEQ:function(criteria){
 	            this.queryString+='neq^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * isLT - Checks if preceding property value is LT to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 	        isLT:function(criteria){
 	            this.queryString+='lt^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * isLTE - Checks if preceding property value is LTE to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 	        isLTE:function(criteria){
 	            this.queryString+='lte^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * isGT - Checks if preceding property value is GT to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 	        isGT:function(criteria){
 	            this.queryString+='gt^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * isGTE - Checks if preceding property value is GTE to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 	        isGTE:function(criteria){
 	            this.queryString+='gte^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * isIn - Checks if preceding property value is IN to list of criterias
+	         *
+	         * @param  {*} criteria Criteria List
+	         * @return {Mura.Feed}          Self
+	         */
 	        isIn:function(criteria){
 	            this.queryString+='in^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * isNotIn - Checks if preceding property value is NOT IN to list of criterias
+	         *
+	         * @param  {*} criteria Criteria List
+	         * @return {Mura.Feed}          Self
+	         */
 	        isNotIn:function(criteria){
 	            this.queryString+='notin^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * containsValue - Checks if preceding property value is CONTAINS the value of criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 	        containsValue:function(criteria){
 	            this.queryString+='containsValue^' + encodeURIComponent(criteria);
 				return this;
@@ -7331,26 +8267,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.queryString+='containsValue^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * beginsWith - Checks if preceding property value BEGINS WITH criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 			beginsWith:function(criteria){
 	            this.queryString+='begins^' + encodeURIComponent(criteria);
 				return this;
 	        },
+
+			/**
+	         * endsWith - Checks if preceding property value ENDS WITH criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
 			endsWith:function(criteria){
 	            this.queryString+='ends^' + encodeURIComponent(criteria);
 				return this;
 	        },
-	        openGrouping:function(criteria){
+
+
+	        /**
+	         * openGrouping - Start new logical condition grouping
+	         *
+	         * @return {Mura.Feed}          Self
+	         */
+	        openGrouping:function(){
 	            this.queryString+='&openGrouping';
 				return this;
 	        },
+
+			/**
+	         * openGrouping - Starts new logical condition grouping
+	         *
+	         * @return {Mura.Feed}          Self
+	         */
 	        andOpenGrouping:function(criteria){
 	            this.queryString+='&andOpenGrouping';
 				return this;
 	        },
+
+			/**
+	         * openGrouping - Closes logical condition grouping
+	         *
+	         * @return {Mura.Feed}          Self
+	         */
 	        closeGrouping:function(criteria){
 	            this.queryString+='&closeGrouping:';
 				return this;
 	        },
+
+			/**
+			 * sort - Set desired sort or return collection
+			 *
+			 * @param  {string} property  Property
+			 * @param  {string} direction Sort direction
+			 * @return {Mura.Feed}           Self
+			 */
 			sort:function(property,direction){
 				direction=direction || 'asc';
 				if(direction == 'desc'){
@@ -7361,24 +8338,57 @@ return /******/ (function(modules) { // webpackBootstrap
 				this.propIndex++;
 	            return this;
 	        },
+
+			/**
+			 * itemsPerPage - Sets items per page
+			 *
+			 * @param  {number} itemsPerPage Items per page
+			 * @return {Mura.Feed}              Self
+			 */
 			itemsPerPage:function(itemsPerPage){
 	            this.queryString+='&itemsPerPage=' + encodeURIComponent(itemsPerPage);
 				return this;
 	        },
+
+			/**
+			 * maxItems - Sets max items to return
+			 *
+			 * @param  {number} maxItems Items to return
+			 * @return {Mura.Feed}              Self
+			 */
 			maxItems:function(maxItems){
 	            this.queryString+='&maxItems=' + encodeURIComponent(maxItems);
 				return this;
 	        },
+
+			/**
+			 * innerJoin - Sets entity to INNER JOIN
+			 *
+			 * @param  {string} relatedEntity Related entity
+			 * @return {Mura.Feed}              Self
+			 */
 			innerJoin:function(relatedEntity){
 	            this.queryString+='&innerJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
 				this.propIndex++;
 	            return this;
 	        },
+
+			/**
+			 * leftJoin - Sets entity to LEFT JOIN
+			 *
+			 * @param  {string} relatedEntity Related entity
+			 * @return {Mura.Feed}              Self
+			 */
 			leftJoin:function(relatedEntity){
 	            this.queryString+='&leftJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
 				this.propIndex++;
 	            return this;
 	        },
+
+			/**
+			 * Query - Return Mura.EntityCollection fetched from JSON API
+			 * @return {Promise}
+			 */
 	        getQuery:function(){
 	            var self=this;
 
@@ -7544,7 +8554,13 @@ return /******/ (function(modules) { // webpackBootstrap
         factory(root.Mura);
     }
 }(this, function (mura) {
-	Mura.UI=Mura.Core.extend({
+    /**
+     * Creates a new Mura.Entity
+     * @class {class} Mura.UI
+     */
+	Mura.UI=Mura.Core.extend(
+    /** @lends Mura.Feed.prototype */
+    {
 		rb:{},
 		context:{},
 		onAfterRender:function(){},

@@ -57,7 +57,19 @@
         factory(root.Mura);
     }
 }(this, function (mura) {
-	Mura.EntityCollection=Mura.Entity.extend({
+    /**
+     * Creates a new Mura.EntityCollection
+     * @class {class} Mura.EntityCollection
+     */
+	Mura.EntityCollection=Mura.Entity.extend(
+    /** @lends Mura.EntityCollection.prototype */
+    {
+        /**
+		 * init - initiliazes instance
+		 *
+		 * @param  {object} properties Object containing values to set into object
+		 * @return {object} Self
+		 */
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -77,14 +89,31 @@
 			return this;
 		},
 
+		/**
+		 * item - Return entity in collection at index
+		 *
+		 * @param  {nuymber} idx Index
+		 * @return {object}     Mura.Entity
+		 */
 		item:function(idx){
 			return this.properties.items[idx];
 		},
 
+		/**
+		 * index - Returns index of item in collection
+		 *
+		 * @param  {object} item Entity instance
+		 * @return {number}      Index of entity
+		 */
 		index:function(item){
 			return this.properties.items.indexOf(item);
 		},
 
+		/**
+		 * getAll - Returns array of all entities way properties
+		 *
+		 * @return {array}
+		 */
 		getAll:function(){
 			var self=this;
 
@@ -100,6 +129,12 @@
 
 		},
 
+		/**
+		 * each - Passes each entity in collection through function
+		 *
+		 * @param  {function} fn Function
+		 * @return {object}  Self
+		 */
 		each:function(fn){
 			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
@@ -107,10 +142,23 @@
 			return this;
 		},
 
+		/**
+		 * sort - Sorts collection
+		 *
+		 * @param  {function} fn Sorting function
+		 * @return {object}   Self
+		 */
 		sort:function(fn){
 			this.properties.items.sort(fn);
+            return this;
 		},
 
+		/**
+		 * filter - Returns new Mura.EntityCollection of entities in collection that pass filter
+		 *
+		 * @param  {function} fn Filter function
+		 * @return {Mura.EntityCollection}
+		 */
 		filter:function(fn){
 			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
@@ -118,6 +166,12 @@
 			}));
 		},
 
+        /**
+		 * map - Returns new Mura.EntityCollection of entities in objects returned from map function
+		 *
+		 * @param  {function} fn Filter function
+		 * @return {Mura.EntityCollection}
+		 */
 		map:function(fn){
 			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){

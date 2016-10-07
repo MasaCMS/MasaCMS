@@ -825,7 +825,7 @@ if (!Array.prototype.map) {
     }
 
     var lib$es6$promise$promise$$default = lib$es6$promise$promise$$Promise;
-    /**
+    /*
       Promise objects represent the eventual result of an asynchronous operation. The
       primary way of interacting with a promise is through its `then` method, which
       registers callbacks to receive either a promise's eventual value or the reason
@@ -958,7 +958,7 @@ if (!Array.prototype.map) {
     lib$es6$promise$promise$$Promise.prototype = {
       constructor: lib$es6$promise$promise$$Promise,
 
-    /**
+    /*
       The primary way of interacting with a promise is through its `then` method,
       which registers callbacks to receive either a promise's eventual value or the
       reason why the promise cannot be fulfilled.
@@ -1174,7 +1174,7 @@ if (!Array.prototype.map) {
         return child;
       },
 
-    /**
+    /*
       `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
       as the catch block of a try/catch statement.
 

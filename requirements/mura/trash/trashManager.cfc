@@ -20,10 +20,12 @@
 		<cfset getBean("pluginManager").announceEvent("onBeforeGlobalEmptyTrash",pluginEvent)>
 	</cfif>
 
-	<cftransaction>
+
 	<cfset request.muratransaction=request.muratransaction+1>
 
 	<cfloop query="rs">
+		<cftransaction>
+			
 		<!--- CONTENT --->
 		 <cfquery>
 			delete from tcontentratings
@@ -121,7 +123,7 @@
 			where feedID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
 
-		<!--- ADVERTISING --->
+		<!--- ADVERTISING
 		<cftry>
 			<cfquery>
 				delete from tadplacements
@@ -134,6 +136,7 @@
 			</cfquery>
 			<cfcatch></cfcatch>
 		</cftry>
+		--->
 
 		<!--- EMPTY TRASH TABLE--->
 		<cfquery>
@@ -143,8 +146,11 @@
 
 		<cfset getBean('contentDAO').deleteVersionedObjects(contentID=rs.objectid,siteID=rs.siteid)>
 
+		</cftransaction>
+
 	</cfloop>
 
+	<!---
 	<cftry>
 		<cfquery>
 			delete from tadplacementdetails
@@ -162,7 +168,8 @@
 		</cfquery>
 		<cfcatch></cfcatch>
 	</cftry>
-	</cftransaction>
+	--->
+
 
 	<cfset request.muratransaction=request.muratransaction-1>
 

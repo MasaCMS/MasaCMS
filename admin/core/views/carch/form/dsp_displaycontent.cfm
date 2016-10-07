@@ -72,6 +72,7 @@
 </div>
 <div id="editDates" class="mura-control highlight"<cfif rc.contentBean.getdisplay() NEQ 2>style="display: none;"</cfif>>
 	<cfset displayInterval=rc.contentBean.getDisplayInterval().getAllValues()>
+
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 		<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">
@@ -240,6 +241,12 @@
 				endafter: $('##displayIntervalEndAfter').val(),
 				daysofweek: getDaysOfWeek()
 			};
+
+			if(!options.repeats && options.allday){
+				$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());
+				$('##mura-datepicker-displayStop').trigger('change');
+				options.endon=$('##mura-datepicker-displayStop').val();
+			}
 
 			$('##displayInterval').val(JSON.stringify(options));
 		}
@@ -424,9 +431,9 @@
 		$('##displayIntervalType').on('change',toggleRepeatOptions);
 		$('##displayIntervalEnd').on('change',setEndOption);
 
-		var repeats=$('input[name="displayIntervalEvery"]').val();
+		var repeats=$('input[name="displayIntervalEvery"]').is(':checked');
 
-		if(!isNaN(repeats) && parseInt(repeats)){
+		if(repeats){
 			$('##displayIntervalRepeats').attr('checked',true);
 		}
 
