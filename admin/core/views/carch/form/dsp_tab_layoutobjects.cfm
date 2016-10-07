@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <div class="block block-bordered">
       <!-- block header -->
       <div class="block-header">
-         <h3 class="block-title">Layout &amp; Objects</h3>
+			   <h3 class="block-title">Layout &amp; Objects</h3>
       </div>
       <!-- /block header -->
 
@@ -113,38 +113,48 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       </div>
 
-          <div class="mura-control-group">
-            <label>
-              <span data-toggle="popover" title="" data-placement="right"
-              data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.inheritancerules"))#"
-              data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.inheritancerules"))#">
-                #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')#
-               <i class="mi-question-circle"></i></span>
-            </label>
-       <cfif structKeyExists(request, "inheritedObjects") and len(request.inheritedObjects)>
-          <cfset inheritBean=$.getBean('content').loadBy(contenthistid=request.inheritedObjects)>
-          <cfif inheritBean.getContentID() neq rc.contentBean.getContentID()>
-          <div class="help-block">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.currentinheritance')#:
-          <cfif listFindNoCase("author,editor",application.permUtility.getnodePerm(inheritBean.getCrumbArray()))>
-             <strong><a href='#inheritBean.getEditURL(compactDisplay=yesNoFormat(rc.compactdisplay),tab='tabLayoutObjects')#'>#esapiEncode('html',inheritBean.getMenuTitle())#</a></strong>
-          <cfelse>
-             <strong>#esapiEncode('html',inheritBean.getMenuTitle())#</strong>
-          </cfif>
-
-          </div>
-          </cfif>
-      </cfif>
+      <div class="mura-control-group">
+        <label>
+          <span data-toggle="popover" title="" data-placement="right"
+          data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.inheritancerules"))#"
+          data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.inheritancerules"))#">
+            #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')#
+           <i class="mi-question-circle"></i></span>
+        </label>
+         <cfif structKeyExists(request, "inheritedObjects") and len(request.inheritedObjects)>
+            <cfset inheritBean=$.getBean('content').loadBy(contenthistid=request.inheritedObjects)>
+            <cfif inheritBean.getContentID() neq rc.contentBean.getContentID()>
+            <div class="help-block">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.currentinheritance')#:
+            <cfif listFindNoCase("author,editor",application.permUtility.getnodePerm(inheritBean.getCrumbArray()))>
+              <a href='#inheritBean.getEditURL(compactDisplay=yesNoFormat(rc.compactdisplay),tab='tabLayoutObjects')#'>#esapiEncode('html',inheritBean.getMenuTitle())#</a>
+            <cfelse>
+               #esapiEncode('html',inheritBean.getMenuTitle())#
+            </cfif>
+            </div>
+            </cfif>
+        </cfif>
         <label for="ioi" class="radio inline">
-          <input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>>
-      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#           </label>
+        <input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#
+        </label>
         <label for="ioc" class="radio inline">
-          <input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif rc.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>>
-      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#           </label>
+        <input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif rc.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>>
+        #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#
+        </label>
         <label for="ior" class="radio inline">
-          <input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif rc.contentBean.getinheritObjects() eq 'reject'>checked</cfif>>
-      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#           </label>
+        <input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif rc.contentBean.getinheritObjects() eq 'reject'>checked</cfif>>
+        #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#
+        </label>
       </div>
-        <cfif not rc.$.getContentRenderer().useLayoutManager()>
+  
+        <cfif rc.$.getContentRenderer().useLayoutManager()>
+          <div class="mura-control-group">
+            <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
+            <div class="help-block">
+              <p>To manage content objects, <a href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.contentbean.getfilename())#','#esapiEncode('javascript',rc.contentbean.getTargetParams())#');">preview this content node</a> and select the "Inline Edit" option.</p>
+            </div>
+          </div>
+
+        <cfelse>
           <div class="mura-control-group">
             <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
             <div id="editObjects">
