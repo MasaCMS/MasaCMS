@@ -454,6 +454,7 @@
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
 
+<!---
 		<cfif rc.originalcircuit neq "cLogin">
 			<footer class="mura-footer footer navbar-fixed-bottom clearfix">
 				<div class="credits">
@@ -461,6 +462,7 @@
 				</div>
       </footer>
   	</cfif>
+--->
 
     </div><!-- /.page-container -->
 
