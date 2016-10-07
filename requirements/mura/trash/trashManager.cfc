@@ -20,10 +20,12 @@
 		<cfset getBean("pluginManager").announceEvent("onBeforeGlobalEmptyTrash",pluginEvent)>
 	</cfif>
 
-	<cftransaction>
+
 	<cfset request.muratransaction=request.muratransaction+1>
 
 	<cfloop query="rs">
+		<cftransaction>
+			
 		<!--- CONTENT --->
 		 <cfquery>
 			delete from tcontentratings
@@ -144,7 +146,10 @@
 
 		<cfset getBean('contentDAO').deleteVersionedObjects(contentID=rs.objectid,siteID=rs.siteid)>
 
+		</cftransaction>
+
 	</cfloop>
+
 	<!---
 	<cftry>
 		<cfquery>
@@ -164,7 +169,7 @@
 		<cfcatch></cfcatch>
 	</cftry>
 	--->
-	</cftransaction>
+
 
 	<cfset request.muratransaction=request.muratransaction-1>
 
