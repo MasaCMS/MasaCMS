@@ -1378,7 +1378,7 @@ Display Objects
 
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel-1>
 
-	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
+	<cfset var doLayoutManagerWrapper=arguments.returnFormat neq 'struct' and not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
 
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
