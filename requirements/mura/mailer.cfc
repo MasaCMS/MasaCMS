@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset tmt_mail_body = "">
 		<cfset tmt_cr = Chr(13) & Chr(10)>
-		<cfset tmt_mail_head = "This form was sent at: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')# #tmt_cr#">
+		<cfset tmt_mail_head = "Submitted: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')# #tmt_cr#">
 		<cfloop index="form_element" list="#fields.fieldnames#">
 			<cfif form_element neq 'siteid'
 					and right(form_element,2) neq ".X"
