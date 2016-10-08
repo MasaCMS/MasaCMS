@@ -871,7 +871,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset openGrouping=false />
 								<cfelse>
 									<cfset castfield="attributeValue">
-									tcontent.contentHistID NOT IN (
+									(tcontent.contentHistID NOT IN (
 										SELECT tclassextenddata.baseID
 										FROM tclassextenddata #tableModifier#
 
@@ -885,6 +885,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 												AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 										</cfif>
+										)
+
+										or
+
+										tcontent.contentHistID IN (
+											SELECT tclassextenddata.baseID
+											FROM tclassextenddata #tableModifier#
+
+											<cfif isNumeric(param.getField())>
+												WHERE
+													tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+											<cfelse>
+												INNER JOIN tclassextendattributes #tableModifier#
+													ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+												WHERE
+													tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+													AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+											</cfif>
+
+											AND tclassextenddata.attributeValue is null
+											)
 										)
 									<cfset openGrouping=false />
 								</cfif>
