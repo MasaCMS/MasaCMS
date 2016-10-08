@@ -1252,8 +1252,7 @@ buttons: {
 		setFinders(".tab-content .mura-ckfinder");
 		setToolTips(".tab-content");
 		setFileSelectors();
-
-		$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+		triggerTabDrop();
 	},
 
 	checkExtendSetTargeting: function() {

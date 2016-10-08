@@ -172,7 +172,7 @@
 
 				// tabdrop: trigger on page load w/ slight delay
 				if ( $( '.mura-tabs').length ) {
-					var triggerTabDrop = function(){
+					triggerTabDrop = function(){
 						setTimeout(function(){
 							$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 								$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');

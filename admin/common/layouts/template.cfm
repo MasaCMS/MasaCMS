@@ -368,7 +368,7 @@
 
 					// tabdrop: trigger on page load w/ slight delay
 					if ( $( '.mura-tabs').length ) {
-						var triggerTabDrop = function(){
+						triggerTabDrop = function(){
 							setTimeout(function(){
 								$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 									$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
@@ -439,7 +439,7 @@
 			siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
 			});
 			</script>
-	
+
 		</cfif>
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
