@@ -1488,7 +1488,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var permUtility=getBean('permUtility')>
 	<cfset var privateUserPool=getBean('settingsManager').getSite(getValue('siteid')).getPrivateUserPoolID()>
 
-	<cfif not ( permUtility.isS2() or permUtility.isUserInGroup('admin',privateUserPool,0) )>
+	<cfif not arguments.applyExemptions or not ( permUtility.isS2() or permUtility.isUserInGroup('admin',privateUserPool,0) )>
 		<cfloop condition="crumbs.hasNext()">
 			<cfset crumb=crumbs.next()>
 			<cfif len(crumb.getChainID())>
