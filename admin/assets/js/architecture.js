@@ -1252,7 +1252,8 @@ buttons: {
 		setFinders(".tab-content .mura-ckfinder");
 		setToolTips(".tab-content");
 		setFileSelectors();
-		triggerTabDrop();
+
+		$(window).trigger('resize');
 	},
 
 	checkExtendSetTargeting: function() {
