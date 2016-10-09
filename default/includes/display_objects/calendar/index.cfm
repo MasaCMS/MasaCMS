@@ -91,6 +91,7 @@
 	</cfsilent>
 	<cfif objectParams.format eq 'list'>
 		<cfset objectParams.sourcetype='calendar'>
+		<cfset structDelete(objectParams,'isbodyobject')>
 		#variables.dspObject(object='collection',objectid=variables.$.content('contentid'),params=objectParams)#
 	<cfelse>
 
