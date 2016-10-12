@@ -56,7 +56,7 @@
         // Browser globals (root is window)
         factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
     /**
      * Creates a new Mura.Entity
      * @class {class} Mura.UI

@@ -56,7 +56,7 @@
 	        // Browser globals (root is window)
 	        factory(root.Mura);
 	    }
-	}(this, function (mura) {
+	}(this, function (Mura) {
 		Mura.DisplayObject.Form=Mura.UI.extend({
 			context:{},
 			ormform: false,

@@ -5707,7 +5707,7 @@ return /******/ (function(modules) { // webpackBootstrap
         // Browser globals (root is window)
         factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
 	function core(){
 		this.init.apply(this,arguments);
 		return this;
@@ -5797,7 +5797,7 @@ return /******/ (function(modules) { // webpackBootstrap
         // Browser globals (root is window)
         factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
     /**
      * Creates a new Mura.Cache
      * @class {class} Mura.Cache
@@ -5962,7 +5962,7 @@ return /******/ (function(modules) { // webpackBootstrap
         // Browser globals (root is window)
         factory(root,root.Mura);
     }
-}(this, function (root,mura) {
+}(this, function (root,Mura) {
     /**
      * Creates a new Mura.DOMSelection
      * @class {class} Mura.DOMSelection
@@ -7353,7 +7353,7 @@ return /******/ (function(modules) { // webpackBootstrap
         // Browser globals (root is window)
         factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
     /**
      * Creates a new Mura.Entity
      * @class {class} Mura.Entity
@@ -7900,7 +7900,7 @@ return /******/ (function(modules) { // webpackBootstrap
         // Browser globals (root is window)
         factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
     /**
      * Creates a new Mura.EntityCollection
      * @class {class} Mura.EntityCollection
@@ -8082,7 +8082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Browser globals (root is window)
 	        factory(root.Mura);
 	    }
-	}(this, function (mura) {
+	}(this, function (Mura) {
 		/**
 	     * Creates a new Mura.Feed
 	     * @class {class} Mura.Feed
@@ -8467,9 +8467,9 @@ return /******/ (function(modules) { // webpackBootstrap
         factory(require('Mura'));
     } else {
         // Browser globals (root is window)
-        factory(mura);
+        factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
 	Mura.templates=Mura.templates || {};
 	Mura.templates['meta']=function(context){
 
@@ -8553,7 +8553,7 @@ return /******/ (function(modules) { // webpackBootstrap
         // Browser globals (root is window)
         factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
     /**
      * Creates a new Mura.Entity
      * @class {class} Mura.UI
@@ -8669,7 +8669,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Browser globals (root is window)
 	        factory(root.Mura);
 	    }
-	}(this, function (mura) {
+	}(this, function (Mura) {
 		Mura.DisplayObject.Form=Mura.UI.extend({
 			context:{},
 			ormform: false,
