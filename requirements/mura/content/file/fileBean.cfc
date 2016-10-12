@@ -8,7 +8,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 	property name="contentSubType" datatype="varchar" length=200;
 	property name="fileSize" datatype="int" default=0;
 	property name="fileExt" datatype="varchar" length=50;
-	property name="moduleid" datatype="varchar" default="00000000000000000000000000000000000" length=35;
+	property name="moduleid" datatype="char" default="00000000000000000000000000000000000" length=35;
 	property name="created" datatype="datetime";
 	property name="deleted" datatype="int" default=0;
 	property name="caption" datatype="text";
