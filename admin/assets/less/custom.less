@@ -370,21 +370,21 @@ header .btn i{
   .clearfix(); // Adding clearfix to allow for .pull-right button containers
 
   > .btn{
-    margin-right: 15px;
-    background-color: #DDDEDD;
-    border-color: #BCBCBC;
-    min-width: 60px;
-    border: 0;
-    padding: 4px 10px;
-    font-size: 15px;
     background-color: #DEDEDE;
+    border: 0;
+    border-color: #BCBCBC;
+    font-size: 15px;
+    margin-right: 15px;
+    min-width: 60px;
+    padding: 4px 10px;
 
     &.mura-primary{
-      background-color: #6699CC !important;
+      background-color: #4485f1 !important;
       color:#FFF !important;
 
       > i{
         color:#fff !important;
+        opacity: .7 !important;
       }
 
     }
@@ -425,18 +425,29 @@ header .btn i{
   padding-bottom: 5px;
   padding-top: 25px;
 }
+
+// fixed buttons
+.block-content + .mura-actions{
+  bottom: 30px;
+  position: fixed;
+  padding-bottom: 10px;
+  padding-top: 15px;
+  width: 100%;
+  z-index: 1;
+}
+
 .mura-actions .form-actions{
-  padding-top: 0;
-  padding-bottom: 0;
-  max-width: 1080px;
   margin: 0;
+  max-width: 1080px;
+  padding-bottom: 0;
+  padding-top: 0;
   text-align: center;
   width: 100%;
 
   > .btn{
     background-color: #e4e4e4;
     .border-radius(0);
-    color: #6699CC;
+    color: #848484;
     font-size: 13px;
     height: 35px !important;
     text-transform: uppercase;
@@ -816,9 +827,10 @@ div.cke_editable{
 
 /* fixed width, pre-responsive */
 .block-constrain{
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   /* min-width: 1110px; */
   min-width: 520px;
+  min-height: ~'calc(100% - 100px)';
 }
 
 .mura-header{

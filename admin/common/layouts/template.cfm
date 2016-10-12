@@ -366,6 +366,23 @@
 						$('##mura-header-search').show();
 					});
 
+
+					// min-height for page content area
+					var setBlockHeight = function(){
+
+						var windowH = $(window).height();
+						var headerH = $('.mura-header:first').height();
+						var footerH = $('.mura-actions:first').height();
+						var h = windowH - headerH - footerH -100;
+						$('.block-constrain').css('min-height',h + 'px');
+					};
+					// run on page load
+					setBlockHeight();
+					// run on window resize
+					$(window).on('resize',function(){
+						setBlockHeight();
+					});
+
 					// tabdrop: trigger on page load w/ slight delay
 					if ( $( '.mura-tabs').length ) {
 						var triggerTabDrop = function(){
