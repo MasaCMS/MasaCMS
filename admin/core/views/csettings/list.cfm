@@ -326,7 +326,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<tr>
 					<th class="actions"></th>
 					<th class="var-width">Name</th>
-					<th>Directory</th>
+					<th class="hidden-xs">Directory</th>
 					<th>Category</th>
 					<th>Version</th>
 					<th>Provider</th>
@@ -346,7 +346,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</div>
 						</td>
 						<td class="var-width"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#esapiEncode('html',rc.rsPlugins.name)#</a></td>
-						<td>#esapiEncode('html',rc.rsPlugins.directory)#</td>
+						<td class="hidden-xs">#esapiEncode('html',rc.rsPlugins.directory)#</td>
 						<td>#esapiEncode('html',rc.rsPlugins.category)#</td>
 						<td>#esapiEncode('html',rc.rsPlugins.version)#</td>
 						<td><a class="alt" href="#esapiEncode('url',rc.rsPlugins.providerurl)#" target="_blank">#esapiEncode('html',rc.rsPlugins.provider)#</a></td>
