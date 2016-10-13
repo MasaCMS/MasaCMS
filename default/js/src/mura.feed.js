@@ -56,7 +56,7 @@
 	        // Browser globals (root is window)
 	        factory(root.Mura);
 	    }
-	}(this, function (mura) {
+	}(this, function (Mura) {
 		/**
 	     * Creates a new Mura.Feed
 	     * @class {class} Mura.Feed

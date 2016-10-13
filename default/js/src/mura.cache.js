@@ -57,7 +57,7 @@
         // Browser globals (root is window)
         factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
     /**
      * Creates a new Mura.Cache
      * @class {class} Mura.Cache

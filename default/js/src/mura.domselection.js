@@ -56,7 +56,7 @@
         // Browser globals (root is window)
         factory(root,root.Mura);
     }
-}(this, function (root,mura) {
+}(this, function (root,Mura) {
     /**
      * Creates a new Mura.DOMSelection
      * @class {class} Mura.DOMSelection

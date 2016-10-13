@@ -56,7 +56,7 @@
         // Browser globals (root is window)
         factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
 	function core(){
 		this.init.apply(this,arguments);
 		return this;

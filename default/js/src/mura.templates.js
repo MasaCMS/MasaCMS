@@ -54,9 +54,9 @@
         factory(require('Mura'));
     } else {
         // Browser globals (root is window)
-        factory(mura);
+        factory(root.Mura);
     }
-}(this, function (mura) {
+}(this, function (Mura) {
 	Mura.templates=Mura.templates || {};
 	Mura.templates['meta']=function(context){
 
