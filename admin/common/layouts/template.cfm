@@ -369,11 +369,12 @@
 
 					// min-height for page content area
 					var setBlockHeight = function(){
-
+						var minFooterH = 15;
 						var windowH = $(window).height();
 						var headerH = $('.mura-header:first').height();
 						var footerH = $('.mura-actions:first').height();
-						var h = windowH - headerH - footerH -100;
+						if (footerH <= minFooterH){ footerH = minFooterH;}
+						var h = windowH - headerH - footerH -110;
 						$('.block-constrain').css('min-height',h + 'px');
 					};
 					// run on page load
