@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.throwOnError="yes">
 <cfset variables.userAgent=CGI.http_user_agent>
 
-<cffunction name="setConfigBean" returntype="any" output="false" access="public">
+<cffunction name="setConfigBean" output="false">
 	<cfargument name="configBean">
 	<cfset variables.configBean=arguments.configBean>	
 	<cfreturn this />
@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn LOCAL.Cookies />
 </cffunction>
 
-<cffunction name="get" output="true" returntype="any">
+<cffunction name="get" output="true">
 	<cfargument name="url" default="/">
 	<cfargument name="data" default="#structNew()#">
 	<cfargument name="referer" default="">
@@ -274,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="post" output="true" returntype="any">
+<cffunction name="post" output="true">
 	<cfargument name="url" default="/">
 	<cfargument name="data" default="#structNew()#">
 	<cfargument name="referer" default="">
@@ -294,7 +294,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="callWithOutProxyServer" output="false" returntype="any" access="private">
+<cffunction name="callWithOutProxyServer" output="false" access="private">
 	<cfargument name="url">
 	<cfargument name="data">
 	<cfargument name="httpMethod">
@@ -381,7 +381,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="callWithProxyServer" output="false" returntype="any" access="private">
+<cffunction name="callWithProxyServer" output="false" access="private">
 	<cfargument name="url">
 	<cfargument name="data">
 	<cfargument name="httpMethod">

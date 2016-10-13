@@ -1,22 +1,5 @@
 component extends="mura.cfobject" {
-	/*
-	FindOne: GET /_api/json/v1/:siteid/:entityName/:id => /_api/json/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=:id
-	FindRelatedEntity: GET /_api/json/v1/:siteid/:entityName/:id/:relatedEntity/$ => /_api/json/v1/?method=findQuery&entityName=:relatedEntity&siteid=:siteid&:entityNameFK=:id
-	FinNew: GET /_api/json/v1/:siteid/:entityName/new => /_api/json/v1/?method=findNew&entityName=:entityname&siteid=:siteid
-	FindQuery: GET /_api/json/v1/:siteid/:entityName/$ => /_api/json/v1/?method=findQuery&entityName=:entityname&siteid=:siteid
-	FindMany: GET /_api/json/v1/:siteid/:entityName/:ids/$ => /_api/json/v1/?method=findMany&entityName=:entityname&siteid=:siteid&ids=:ids
-	Save: POST /_api/json/v1/:siteid/:entityName/ => /_api/json/v1/?method=save&entityName=:entityname&siteid=:siteid
-	Delete: DELETE /_api/json/v1/:siteid/:entityName/:id => /_api/json/v1/?method=delete&entityName=:entityname&siteid=:siteid
-
-	200 - OK - Everything went fine.
-	400s - all caused by user interaction
-	400 - Bad Request - The request was malformed or the data supplied by the end user was not valid. This is also used if the user has exceeded their API usage limit.
-	401 - Unauthorized - The user is not authorized to access the requested resource. Additional information is typically supplied within the response to tell the end user (API consumer) how to authorize itself (ie. BASIC Authentication).
-	403 - Forbidden - The user has exceeded their post limit (not bloody likely).
-	404 - Not Found - The requested resource was not found.
-	405 - Method Not Allowed - The user attempted to use a verb (ex. GET, POST) on a resource that had no support for the given verb.
-	*/
-
+	
 	function init(siteid){
 
 		variables.siteid=arguments.siteid;
@@ -44,7 +27,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory",
+			publicMethods="findOne,findMany,findAll,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser",
 			entities={
 				'contentnav'={
 					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
@@ -287,53 +270,118 @@ component extends="mura.cfobject" {
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
 
-			if( structKeyExists( headers, 'X-clientid' )){
-				params['clientid']=headers['X-clientid'];
-			}
-
-			if( structKeyExists( headers, 'X-clientsecret' )){
-				params['clientsecret']=headers['X-clientsecret'];
-			}
-
 			if(!request.muraSessionManagement){
-				if(!(isDefined('params.clientid') && isdefined('params.clientsecret'))){
+				if( structKeyExists( headers, 'X-client_id' )){
+					params['client_id']=headers['X-client_id'];
+				}
+
+				if( structKeyExists( headers, 'X-client_secret' )){
+					params['client_secret']=headers['X-client_secret'];
+				}
+
+				if( structKeyExists( headers, 'X-access_token' )){
+					params['access_token']=headers['X-access_token'];
+				}
+
+				if(isDefined('params.access_token')){
+					var token=getBean('oauthToken').loadBy(token=params.access_token);
+					structDelete(params,'access_token');
+					structDelete(url,'access_token');
+					if(!token.exists() || token.getGrantType() != 'client_credentials'){
+						params.method='Not Available';
+						throw(type='invalidAccessToken');
+					} else if (token.isExpired()){
+						params.method='Not Available';
+						throw(type='accessTokenExpired');
+					} else {
+						if(isJSON(token.getData())){
+							structAppend(getSession(), deserializeJSON(token.getData()), true);
+						} else {
+							var client=token.getClient();
+
+							if(!client.exists()){
+								params.method='undefined';
+								throw(type='invalidAccessToken');
+							} else {
+								var clientAccount=client.getUser();
+
+								if(!clientAccount.exists()){
+									params.method='undefined';
+									throw(type='invalidAccessToken');
+								} else {
+									clientAccount.login();
+									token.setData(serializeJSON(getSession())).save();
+								}
+							}
+						}
+					}
+				} else if(!(isDefined('params.client_id') && isdefined('params.client_secret'))){
 					params.method='Not Available';
-					structDelete(params,'clientid');
-					structDelete(params,'clientsecret');
+					structDelete(params,'client_id');
+					structDelete(params,'client_secret');
 					throw(type='authorization');
 				} else {
-					var credentials=getBean('clientCredentials').loadBy(clientid=params.clientid);
+					var client=getBean('oauthClient').loadBy(clientid=params.client_id);
 
 					//WriteDump(credentials.getAllValues());abort;
-					if(!credentials.exists() || credentials.getClientSecret() != params.clientsecret){
+					if(!client.exists() || client.getClientSecret() != params.client_secret){
 						params.method='Not Available';
-						structDelete(params,'clientid');
-						structDelete(params,'clientsecret');
-						structDelete(url,'clientid');
-						structDelete(url,'clientsecret');
+						structDelete(params,'client_id');
+						structDelete(params,'client_secret');
+						structDelete(url,'client_id');
+						structDelete(url,'client_secret');
 						throw(type='authorization');
 					} else {
-						var clientAccount=credentials.getUser();
-						structDelete(params,'clientid');
-						structDelete(params,'clientsecret');
-						structDelete(url,'clientid');
-						structDelete(url,'clientsecret');
+						var clientAccount=client.getUser();
+						structDelete(url,'client_id');
+						structDelete(url,'client_secret');
 						if(!clientAccount.exists()){
-							params.method='Not Available';
+							params.method='undefined';
+							structDelete(params,'client_id');
+							structDelete(params,'client_secret');
 							throw(type='authorization');
 						} else {
-							clientAccount.login();
+							if(((arrayLen(pathInfo) == 6
+								&& pathInfo[5]=='oauth'
+								&& pathInfo[6]=='token')
+								|| (
+									arrayLen(pathInfo) == 5
+									&& pathInfo[4]=='oauth'
+									&& pathInfo[5]=='token'
+								))
+								&& isdefined('params.grant_type')
+								&& params.grant_type == 'client_credentials'){
+								var token=client.generateToken(granttype='client_credentials');
+								params.method='getOAuthToken';
+								result=getSerializer().serialize(
+									{'apiversion'=getApiVersion(),
+									'method'=params.method,
+									'params'=getParamsWithOutMethod(params),
+									'data'={
+										'access_token'=token.getToken(),
+										'expires_in'=token.getExpiresIn(),
+										'expires_at'=token.getExpiresAt()
+									 }});
+								responseObject.setContentType('application/json; charset=utf-8');
+								responseObject.setStatus(200);
+								return result;
+							} else {
+								structDelete(params,'client_id');
+								structDelete(params,'client_secret');
+								clientAccount.login();
+							}
+
 						}
 					}
 				}
-			}
+			} else {
+				if( structKeyExists( headers, 'X-csrf_token' )){
+				   params['csrf_token']=headers['X-csrf_token'];
+			 	}
 
-			if( structKeyExists( headers, 'X-csrf_token' )){
-				params['csrf_token']=headers['X-csrf_token'];
-			}
-
-			if( structKeyExists( headers, 'X-csrf_token_expires' )){
-				params['csrf_token_expires']=headers['X-csrf_token_expires'];
+			   if( structKeyExists( headers, 'X-csrf_token_expires' )){
+				   params['csrf_token_expires']=headers['X-csrf_token_expires'];
+			   }
 			}
 
 			structAppend(form,params);
@@ -346,8 +394,17 @@ component extends="mura.cfobject" {
 
 			request.returnFormat='JSON';
 
-			if (!isDefined('params.method') && arrayLen(pathInfo) && isValid('variableName',pathInfo[1]) && isDefined('#pathInfo[1]#')){
-				params.method=pathInfo[1];
+			if (!isDefined('params.method') && arrayLen(pathInfo)){
+				if(isValid('variableName',pathInfo[1])){
+					if(pathInfo[1]==variables.siteid){
+						if(arraylen(pathInfo) > 1 && isValid('variableName',pathInfo[2]) && isDefined('#pathInfo[2]#')){
+							params.method=pathInfo[2];
+							arrayDeleteAt(pathInfo,2);
+						}
+					} else if (isDefined('#pathInfo[1]#')){
+						params.method=pathInfo[1];
+					}
+				}
 			}
 
 			if (isDefined('params.method') && isDefined('#params.method#')){
@@ -363,6 +420,8 @@ component extends="mura.cfobject" {
 				if(arrayLen(pathInfo) > 1){
 					parseParamsFromPath(pathInfo,params,2);
 				}
+
+				param name="params.siteid" default=variables.siteid;
 
 				if(isDefined('#params.method#')){
 
@@ -381,7 +440,6 @@ component extends="mura.cfobject" {
 			if(!isDefined('params.method')){
 				params.method="undefined";
 			}
-
 
 			if(arrayLen(pathInfo)){
 				params.siteid=pathInfo[1];
@@ -717,44 +775,62 @@ component extends="mura.cfobject" {
 		catch (authorization e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Insufficient Account Permissions'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Insufficient Account Permissions'}});
+		}
+
+		catch (invalidAccessToken e){
+			responseObject.setContentType('application/json; charset=utf-8');
+			responseObject.setStatus(401);
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Invalid Access Token'}});
+		}
+
+		catch (accessTokenExpired e){
+			responseObject.setContentType('application/json; charset=utf-8');
+			responseObject.setStatus(401);
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Access Token Expired'}});
 		}
 
 		catch (disabled e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'='The JSON API is currently disabled'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='The JSON API disabled'}});
 		}
 
 		catch (invalidParameters e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'='Insufficient parameters'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'='Insufficient parameters'}});
 		}
 
 		catch (invalidMethodCall e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Invalid method call"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid method call"}});
 		}
 
 		catch (badRequest e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Bad Request"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Bad Request"}});
 		}
 
 		catch (invalidTokens e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'="Invalid CSRF tokens"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='invalid_request','message'="Invalid CSRF tokens"}});
 		}
 
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
-			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=500,'message'="Unhandeld Exception",'stacktrace'=e}});
+
+			if(getBean('configBean').getDebuggingEnabled()){
+				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
+			} else {
+				return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception"}});
+			}
+
 		}
 
 	}
@@ -787,17 +863,23 @@ component extends="mura.cfobject" {
 	};
 
 	function getParamsWithOutMethod(params){
-		var temp={};
-		structAppend(temp,arguments.params);
-		structDelete(temp,'method');
+        var temp={};
+        structAppend(temp,arguments.params);
+        structDelete(temp,'method');
+		structDelete(temp,'_cacheid');
 
-		for(var p in temp){
-			if(find('[',p)){
-				structDelete(temp,listFirst(p,'[') & listFirst(listLast(p,'['),']'));
-			}
-		}
-		return temp;
-	}
+        for(var p in temp){
+            if(find('[',p)){
+                structDelete(temp,listFirst(p,'[') & listFirst(listLast(p,'['),']'));
+            }
+
+            //Don't respond with file paths information
+            if(structKeyExists(temp,'#p#') && refind('[\\/]',temp['#p#'])){
+                structDelete(temp,'#p#');
+            }
+        }
+        return temp;
+    }
 
 	function parseParamsFromPath(pathInfo,params,start){
 		var paramsArray=[];
@@ -1038,6 +1120,18 @@ component extends="mura.cfobject" {
 
 		var $=getBean('$').init(arguments.siteid);
 
+		if(arguments.entityName=='user'){
+			if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
+				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
+					var vals=$.event().getAllValues();
+					structDelete(vals,'isPublic');
+					structDelete(vals,'s2');
+					structDelete(vals,'type');
+					structDelete(vals,'groupID');
+				}
+			}
+		}
+
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
 		var saveErrors=false;
 		var errors={};
@@ -1059,7 +1153,7 @@ component extends="mura.cfobject" {
 			var loadByparams={'#pk#'=arguments.id};
 		}
 
-		if($.validateCSRFTokens(context=arguments.id)){
+		if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 			if(arguments.entityName=='content' && $.event('type')=='Variation'){
 				entity.loadBy(argumentCollection=loadByparams).set(
 						$.event().getAllValues()
@@ -1186,6 +1280,18 @@ component extends="mura.cfobject" {
 		return vals;
 	}
 
+	function findCurrentUser(entityName,id,siteid,render=false,variation=false,expand=''){
+		var $=getBean('$').init(arguments.siteid);
+
+		return findOne(
+			entityName='user',
+			id=$.currentUser('userid'),
+			siteid=arguments.siteid,
+			expand=arguments.expand,
+			method='findCurrentUser'
+		);
+	}
+
 	function findOne(entityName,id,siteid,render=false,variation=false,expand=''){
 		var $=getBean('$').init(arguments.siteid);
 
@@ -1254,12 +1360,14 @@ component extends="mura.cfobject" {
 			entity.loadBy(argumentCollection=loadparams);
 		}
 
-		if(!allowAccess(entity,$)){
-			throw(type="authorization");
-		}
+		if(arguments.method !='findCurrentUser'){
+			if(!allowAccess(entity,$)){
+				throw(type="authorization");
+			}
 
-		if(!entity.allowRead($)){
-			throw(type="authorization");
+			if(!entity.allowRead($)){
+				throw(type="authorization");
+			}
 		}
 
 		var returnStruct=getFilteredValues(entity,true,arguments.entityName);
@@ -1965,7 +2073,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-					if($.validateCSRFTokens(context=arguments.id)){
+					if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 						entity.deleteVersion();
 					}
 				}
@@ -1978,7 +2086,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-					if($.validateCSRFTokens(context=arguments.id)){
+					if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 						entity.delete();
 					} else {
 						throw(type="invalidTokens");
@@ -2002,7 +2110,7 @@ component extends="mura.cfobject" {
 						throw(type="authorization");
 					}
 
-				if($.validateCSRFTokens(context=arguments.id)){
+				if(!request.muraSessionManagement || $.validateCSRFTokens(context=arguments.id)){
 					entity.delete();
 				} else {
 					throw(type="invalidTokens");
@@ -2013,13 +2121,13 @@ component extends="mura.cfobject" {
 		return '';
 	}
 
-	function getEndPoint(){
+	function getEndPoint(mode='json'){
 		if(request.muraApiRequest){
 			var configBean=getBean('configBean');
 			if(!isDefined('request.apiEndpoint')){
 
 				if(getBean('configBean').getAdminSSL()){
-					var protocol='http';
+					var protocol='https';
 				} else {
 					var protocol=getBean('utility').getRequestProtocol();
 				}
@@ -2031,7 +2139,11 @@ component extends="mura.cfobject" {
 			return request.apiEndpoint;
 		}
 
-		return variables.endpoint;
+		if(arguments.mode=='json'){
+			return variables.endpoint;
+		} else {
+			return replace(variables.endpoint,'/json/','/rest/');
+		}
 
 	}
 
@@ -2475,6 +2587,14 @@ component extends="mura.cfobject" {
 						for(var u in url){
 							if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
 								args.params['#u#']=url['#u#'];
+							}
+						}
+					}
+
+					if(isDefined('form') && isStruct(form)){
+						for(var f in form){
+							if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',f)){
+								args.params['#f#']=form['#f#'];
 							}
 						}
 					}

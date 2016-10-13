@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="create" access="public" output="false" returntype="void" >
+<cffunction name="create" output="false" >
 	<cfargument name="memberBean" type="any" />
 	<cfset var L=""/>
 	<cfset var currBean=read(arguments.memberBean.getEmail(),arguments.memberBean.getSiteID()) />
@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 </cffunction>
 
-<cffunction name="read" access="public" output="false" returntype="any" >
+<cffunction name="read" output="false">
 	<cfargument name="email" type="string" />
 	<cfargument name="siteID" type="string" />
 	<cfset var memberBean=getBean("mailingListMember") />
@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn memberBean />
 </cffunction>
 
-<cffunction name="update" access="public" output="false" returntype="void" >
+<cffunction name="update" output="false" >
 	<cfargument name="memberBean" type="any" />
 
 	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteAll" access="public" output="false" returntype="void" >
+<cffunction name="deleteAll" output="false" >
 	<cfargument name="memberBean" type="any" />
 
 	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void" >
+<cffunction name="delete" output="false" >
 	<cfargument name="memberBean" type="any" />
 	
 	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>

@@ -182,11 +182,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
-  <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
+  <div class="alert alert-error"><span>#application.utility.displayErrors(rc.feedBean.getErrors())#</span></div>
 </cfif>
 
 <cfif rc.feedBean.exists() and rc.compactDisplay eq "true" and not isObjectInstance>
-<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+	<div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</span></div>
 </cfif>
 
 <!-- This is plugin message targeting --->
@@ -271,14 +271,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- Sections --->
 			<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1,$('##contentPoolID').val());return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1,$('##contentPoolID').val());return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
 				<div class="mura-control justify">
 					<table id="contentFilters" class="mura-table-grid">
 						<thead>
 							<tr>
+								<th class="actions"></th>
 								<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
 								<th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>
-								<th>&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody id="ContentFilters">
@@ -292,16 +292,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfif item.exists()>
 										<cfset started=true>
 										<tr id="c#rc.rslist.contentID#">
+											<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="mi-trash"></i></a></li></ul></td>
 											<td class="var-width">#$.dspZoomNoLinks(item.getCrumbArray())#</td>
 											<td>#rc.rslist.type#</td>
-											<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="mi-trash"></i></a></li></ul></td>
 										</tr>
 									</cfif>
 								</cfloop>
 							</cfif>
 							<cfif not started>
 								<tr>
-									<td class="noResults" colspan="4" id="noFilters"><em>#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</em></td>
+									<td class="noResults" colspan="3" id="noFilters">#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</td>
 								</tr>
 							</cfif>
 						</tbody>
@@ -320,10 +320,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<option value="menuTitle" <cfif rc.feedBean.getsortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.menutitle')#</option>
 							<option value="title" <cfif rc.feedBean.getsortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.longtitle')#</option>
 							<option value="rating" <cfif rc.feedBean.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
-							<option value="comments" <cfif rc.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
+							<cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments()>
+								<option value="comments" <cfif rc.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
+							</cfif>
 							<option value="created" <cfif rc.feedBean.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
 							<option value="orderno" <cfif rc.feedBean.getsortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.orderno')#</option>
 							<option value="random" <cfif rc.feedBean.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
+							<cfif rc.$.getServiceFactory().containsBean('marketingManager')>
+								<option value="mxpRelevance" <cfif rc.feedBean.getsortBy() eq 'mxpRelevance'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.mxpRelevance')#</option>
+							</cfif>
 							<option value="" <cfif rc.feedBean.getsortBy() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.donotapplysort')#</option>
 							<cfloop query="rsExtend">
 								<option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif rc.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
@@ -856,11 +861,11 @@ jQuery(document).ready(function(){
 </div> <!-- /.mura-header -->
 
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
-  <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
+  <div class="alert alert-error"><span>#application.utility.displayErrors(rc.feedBean.getErrors())#</span></div>
 </cfif>
 
 <cfif rc.compactDisplay eq "true">
-	<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+	<div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</span></div>
 </cfif>
 
 <span id="msg">
@@ -896,7 +901,7 @@ jQuery(document).ready(function(){
 			    <label>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
 			  	<input name="channelLink" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#esapiEncode('html_attr',rc.feedBean.getChannelLink())#">
 			</div>
-
+			<cfif not rc.$.getContentRenderer().useLayoutManager()>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#</label>
 				<input name="viewalllink" type="text" value="#esapiEncode('html_attr',rc.feedBean.getViewAllLink())#" maxlength="255">
@@ -905,7 +910,7 @@ jQuery(document).ready(function(){
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#</label>
 				<input name="viewalllabel" type="text" value="#esapiEncode('html_attr',rc.feedBean.getViewAllLabel())#" maxlength="100">
 			</div>
-
+			</cfif>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.isactive')#</label>
 				<label class="radio inline">
@@ -966,11 +971,12 @@ jQuery(document).ready(function(){
 					</select>
 				</cfif>
 	  		</div>
-
+			<cfif not rc.$.getContentRenderer().useLayoutManager()>
 			<div class="mura-control-group">
 			<label>#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#</label>
 			<input name="cssclass"  data-displayobjectparam="cssclass" type="text" value="#esapiEncode('html_attr',rc.feedBean.getCssclass())#" maxlength="255">
 			</div>
+			</cfif>
 
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
@@ -1048,14 +1054,14 @@ jQuery(document).ready(function(){
 		<div class="mura-actions">
 			<div class="form-actions">
 				<cfif rc.feedID eq ''>
-					<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.add')#</button>
+					<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.add')#</button>
 					<input type=hidden name="feedID" value="">
 					<input type="hidden" name="action" value="add">
 				<cfelse>
 					<cfif rc.compactDisplay neq "true">
-						<button class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</button>
+						<button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</button>
 					</cfif>
-					<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
+					<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</button>
 					<cfif rc.compactDisplay eq "true">
 						<input type="hidden" name="homeID" value="#rc.homeID#" />
 					</cfif>

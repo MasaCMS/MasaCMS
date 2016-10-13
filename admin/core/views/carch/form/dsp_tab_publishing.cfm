@@ -17,11 +17,25 @@
 
 	<span id="extendset-container-tabpublishingtop" class="extendset-container"></span>
 
+
   	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
-		<div class="mura-control-group">
+
+			<div class="mura-control-group">
 	      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
 	      <input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255">
-	    </div> <!--- /end mura-control-group --->
+	    </div>
+
+		<cfif rc.moduleid eq '00000000000000000000000000000000000' and not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
+			<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
+			  <textarea name="metadesc" rows="3" id="metadesc">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea>
+				    </div>
+
+			<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
+			  <textarea name="metakeywords" rows="3" id="metakeywords">#esapiEncode('html',rc.contentBean.getMETAKEYWORDS())#</textarea>
+  		</div>
+  	</cfif>
 
 		<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
 			<div class="mura-control-group">
@@ -115,9 +129,9 @@
 	      		<label>
 		  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 		  			<span id="mover1" class="text">
-		  				<cfif arrayLen(rc.crumbData)>
-			      					<cfif rc.contentBean.getIsNew()>
-			      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
+		  				<cfif arrayLen(rc.crumbData) gt 1>
+			      			<cfif rc.contentBean.getIsNew()>
+			      				"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
 		  					</cfif>
 		  				</cfif>
 						<button id="selectParent" name="selectParent" class="btn">
@@ -125,7 +139,7 @@
 						</button>
 					</span>
 			    <span id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></span>
-      	</label>
+      			</label>
 				<script>
 					jQuery(document).ready(function(){
 						$('##selectParent').click(function(e){
@@ -219,7 +233,7 @@
 		<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')#
 		</label>
-		<textarea name="notes" rows="8" id="abstract">#rc.contentBean.getNotes()#</textarea>
+		<textarea name="notes" rows="8" id="abstract"></textarea>
 	</div> <!--- /end mura-control-group --->
 
    <span id="extendset-container-publishing" class="extendset-container"></span>

@@ -71,8 +71,12 @@
 	   <!-- toggle sidebar -->
 	   <li class="hidden-xs hidden-sm">
 	      <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-	      <button class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
-	          <i class="mi-ellipsis-v"></i>
+	      <button id="mura-sidebar-toggle" class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
+	          <i class="mi-navicon"></i>
+	      </button>
+	      	
+	      <button id="mura-sidebar-toggle-open" class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
+	          <i class="mi-navicon"></i>
 	      </button>
 	  </li>
 
@@ -128,7 +132,7 @@
       <li class="js-header-search header-search">
 				<form class="form-horizontal" action="##" novalidate="novalidate" id="globalSearch" name="globalSearch" method="get">
           <div class="form-material form-material-primary input-group remove-margin-t remove-margin-b">
-              <input class="form-control" type="text" id="mura-search-keywords" name="keywords" value="#esapiEncode('html_attr',session.keywords)#" placeholder="Search Content">
+              <input class="form-control" type="text" id="mura-search-keywords" name="keywords" value="#esapiEncode('html_attr',session.keywords)#" placeholder="Search">
               <span onclick="submitForm(document.forms.globalSearch);" class="input-group-addon" id="mura-search-submit"><i class="mi-search"></i></span>
           </div>
 					<input type="hidden" name="muraAction" value="cArch.list">
@@ -148,7 +152,7 @@
 				<cfif local.promptcount>
 					<cfset local.prompttally += local.promptcount>
 					<li>
-					 	<a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=mydrafts&siteID=#session.siteid#&reportSortby=lastupdate&reportSortDirection=desc&refreshFlatview=true"><span class="badge badge-important">#local.promptcount#</span> Drafts</a>
+					 	<a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=mydrafts&siteID=#session.siteid#&reportSortby=lastupdate&reportSortDirection=desc&refreshFlatview=true"><span class="badge">#local.promptcount#</span> Drafts</a>
 					</li>
 				</cfif>
 				<!--- /drafts --->
@@ -158,7 +162,7 @@
 				<cfif local.promptcount>
 					<cfset local.prompttally += local.promptcount>
 					<li>
-					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=mysubmissions&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge badge-important">#local.promptcount#</span> Submissions</a>
+					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=mysubmissions&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge">#local.promptcount#</span> Submissions</a>
 					</li>
 				</cfif>
 				<!--- /submissions --->
@@ -168,7 +172,7 @@
 				<cfif local.promptcount>
 					<cfset local.prompttally += local.promptcount>
 					<li>
-					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myapprovals&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge badge-important">#local.promptcount#</span> Approvals </a>
+					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myapprovals&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge">#local.promptcount#</span> Approvals </a>
 					</li>
 				</cfif>
 				<!--- /approvals --->
@@ -178,7 +182,7 @@
 				<cfif local.promptcount>
 					<cfset local.prompttally += local.promptcount>
 					<li>
-					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myexpires&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge badge-important">#local.promptcount#</span> Expiring</a>
+					 <a href="./?muraAction=cArch.list&moduleid=00000000000000000000000000000000000&activeTab=1&report=myexpires&siteID=#session.siteid#&reportSortby=duedate&reportSortDirection=desc&refreshFlatview=true"><span class="badge">#local.promptcount#</span> Expiring</a>
 					</li>
 				</cfif>
 				<!--- /expiring --->
@@ -205,7 +209,7 @@
 					 <cfif rsChangesets.recordcount and totalpending.totalpending>
 						<cfset local.prompttally += totalpending.totalpending>
 					 	<li>
-						   <a href="./?muraAction=cChangesets.list&siteid=#session.siteid#"><span class="badge badge-important">#totalpending.totalpending#</span> Changesets</a>
+						   <a href="./?muraAction=cChangesets.list&siteid=#session.siteid#"><span class="badge">#totalpending.totalpending#</span> Changesets</a>
 						</li>
 					 </cfif>
 				 </cfif>
@@ -213,13 +217,22 @@
 			</cfsavecontent>
 			<!--- /local.userprompt --->
 
-      <li>
+      <li id="user-tools-selector">
           <div class="btn-group">
-              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">
-                  <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#<cfif local.prompttally> <span class="badge badge-important">#local.prompttally#</span></cfif><span class="caret"></span>
+
+            <a tabindex="-1" class="btn btn-default" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"> <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</a>
+
+              <button type="button" class="btn btn-default dropdown-toggle" id="site-selector-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <cfif local.prompttally> <span class="badge">#local.prompttally#</span></cfif><span class="caret"></span>
               </button>
 
-              <ul class="pull-right dropdown-menu dropdown-menu-right mura-user-tools">
+              <ul class="dropdown-menu dropdown-menu-right mura-user-tools">
+                  <!--- output user prompts --->
+                  <cfif local.prompttally>
+	                  #local.userprompt#
+	                  <li class="divider"></li>
+									</cfif>
+
                   <li>
                       <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"><i class="mi-cog"></i> Edit Profile</a>
                   </li>
@@ -227,11 +240,6 @@
                       <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #rc.$.rbKey("layout.logout")#</a>
                   </li>
 
-                  <!--- output user prompts --->
-                  <cfif local.prompttally>
-	                  <li class="divider"></li>
-	                  #local.userprompt#
-									</cfif>
 
               </ul>
           </div>

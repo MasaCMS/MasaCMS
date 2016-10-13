@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getReminders" returntype="query" output="false" access="public">
+<cffunction name="getReminders" output="false">
 <cfargument name="theTime" default="#now()#" required="yes">
 <cfset var rs=""/>
 
@@ -81,7 +81,7 @@ and isSent=0
 <cfreturn rs />
 </cffunction>
 
-<cffunction name="getRemindersByContentID" returntype="query" output="false" access="public">
+<cffunction name="getRemindersByContentID" output="false">
 <cfargument name="contentid" type="string"/>
 <cfargument name="siteid" type="string"/>
 <cfset var rs=""/>

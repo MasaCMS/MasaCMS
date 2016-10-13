@@ -39,10 +39,10 @@
 		</cfif>
 	<div id="configuratorContainer">
 		<cfif rc.sourceFrame eq 'sidebar'>
-			<a class="btn btn-primary" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-arrow-left"></i> Back</a>
 			<h1 id="configuratorHeader"></h1>
+			<a class="mura-close" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="mi-close"></i></a>
 		</cfif>
-	
+
 		<div class="clearfix">
 		    <div id="configurator"><div class="load-inline"></div></div>
 		   <!---
@@ -51,15 +51,18 @@
 		    </div>
 		    --->
 		</div>
-		<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
-			<div class="form-actions">
-				<a href="##" class="btn" id="deleteObject"><i class="mi-trash"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#</a>
+		<cfif not listFindNoCase('folder,calendar,gallery',rc.object) and not isdefined('rc.isBody')>
+			<div class="form-actions" style="display:none">
+
 				<cfif rc.sourceFrame eq 'modal'>
 					<a href="##" class="btn mura-primary" id="saveConfigDraft"><i class="mi-check"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#</a>
 				</cfif>
+
+				<a href="##" class="btn mura-delete" id="deleteObject"><i class="mi-trash"></i> #esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#</a>
+
 			</div>
 		</cfif>
-	</div>
+	</div><!-- /configuratorContainer -->
 		<cfif rc.sourceFrame eq 'modal'>
 				</div> <!-- /.block-content -->
 			</div> <!-- /.block-bordered -->
@@ -185,7 +188,6 @@
 								</cfdefaultcase>
 							</cfswitch>
 						</cfif>
-
 						//siteManager.loadObjectPreview(configOptions);
 
 					}
@@ -293,18 +295,20 @@
 
 		<cfif yesNoFormat(draftcheck.showdialog) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
 		<p class="alert">
-		#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.contentBean.getModuleID())#&siteID=#esapiEncode('url',rc.contentBean.getSiteID())#&topID=#esapiEncode('url',rc.contentBean.getContentID())#&contentID=#esapiEncode('url',rc.contentBean.getContentID())#&return=#esapiEncode('url',rc.return)#&contentHistID=#draftcheck.historyID#&parentID=#esapiEncode('url',rc.contentBean.getParentID())#&startrow=#esapiEncode('url',rc.startrow)#&compactDisplay=true&homeID=#esapiEncode('html',rc.homeBean.getContentID())#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
+		<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.contentBean.getModuleID())#&siteID=#esapiEncode('url',rc.contentBean.getSiteID())#&topID=#esapiEncode('url',rc.contentBean.getContentID())#&contentID=#esapiEncode('url',rc.contentBean.getContentID())#&return=#esapiEncode('url',rc.return)#&contentHistID=#draftcheck.historyID#&parentID=#esapiEncode('url',rc.contentBean.getParentID())#&startrow=#esapiEncode('url',rc.startrow)#&compactDisplay=true&homeID=#esapiEncode('html',rc.homeBean.getContentID())#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong></span>
 		<p>
 		</cfif>
 		</cfif>
 
 		<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 		<p class="alert">
+		<span>
 		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:
 		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.contentBean.getModuleID())#&siteID=#esapiEncode('url',rc.contentBean.getSiteID())#&topID=#esapiEncode('url',rc.contentBean.getContentID())#&contentID=#esapiEncode('url',rc.contentBean.getContentID())#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.contentBean.getParentID())#&startrow=#esapiEncode('url',rc.startrow)#&compactDisplay=true&homeID=#esapiEncode('html',rc.homeBean.getContentID())#">"#esapiEncode('html_attr',pendingChangesets.changesetName)#"</a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
 		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#esapiEncode('html_attr',currentChangeset.getName())#"</cfif>
 		</p>
 		</cfif>
+		</span>
 		</div>
 		<div id="configurator">
 			<div class="load-inline"></div>

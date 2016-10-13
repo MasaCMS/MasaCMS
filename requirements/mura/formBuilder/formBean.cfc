@@ -56,6 +56,7 @@ to your own modified versions of Mura CMS.
 	<cfproperty name="Fields" type="Struct" default="" required="true" />
 	<cfproperty name="FormAttributes" type="Struct" default="" required="true" />
 	<cfproperty name="FieldOrder" type="Array" default="" required="true" />
+	<cfproperty name="Pages" type="Array" default="" required="true" />
 	<cfproperty name="DeletedFields" type="Struct" default="" required="false" />
 	<cfproperty name="Config" type="Any" default="" required="true" />
 
@@ -63,7 +64,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.fieldsChecked	= false />
 
 	<!--- INIT --->
-	<cffunction name="init" access="public" returntype="FormBean" output="false">
+	<cffunction name="init" returntype="FormBean" output="false">
 		
 		<cfargument name="FormID" type="string" required="false" default="" />
 		<cfargument name="Name" type="string" required="false" default="" />
@@ -80,6 +81,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="FormAttributes" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="Fields" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="FieldOrder" type="Array" required="false" default="#ArrayNew(1)#" />
+		<cfargument name="Pages" type="Array" required="false" default="#ArrayNew(1)#" />
 		<cfargument name="DeletedFields" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="Config" type="Any" required="false" default="#StructNew()#" />
 
@@ -101,6 +103,7 @@ to your own modified versions of Mura CMS.
 		<cfset setFormAttributes( arguments.FormAttributes ) />
 		<cfset setFields( arguments.Fields ) />
 		<cfset setFieldOrder( arguments.FieldOrder ) />
+		<cfset setPages( arguments.Pages ) />
 		<cfset setDeletedFields( arguments.DeletedFields ) />
 		<cfset setConfig( arguments.Config ) />
 
@@ -108,108 +111,108 @@ to your own modified versions of Mura CMS.
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="setAllValues" access="public" returntype="FieldtypeBean" output="false">
+	<cffunction name="setAllValues" returntype="FieldtypeBean" output="false">
 		<cfargument name="values" type="struct" required="yes"/>
 		<cfset variables.instance = arguments.values />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getAllValues" access="public" returntype="struct" output="false" >
+	<cffunction name="getAllValues" returntype="struct" output="false">
 		<cfreturn variables.instance />
 	</cffunction>
 	
-	<cffunction name="setFormID" access="public" returntype="void" output="false">
+	<cffunction name="setFormID" output="false">
 		<cfargument name="FormID" type="string" required="true" />
 		<cfset variables.instance['formid'] = arguments.FormID />
 	</cffunction>
-	<cffunction name="getFormID" access="public" returntype="string" output="false">
+	<cffunction name="getFormID" output="false">
 		<cfreturn variables.instance.FormID />
 	</cffunction>
 	
-	<cffunction name="setName" access="public" returntype="void" output="false">
+	<cffunction name="setName" output="false">
 		<cfargument name="Name" type="string" required="true" />
 		<cfset variables.instance['name'] = arguments.Name />
 	</cffunction>
-	<cffunction name="getName" access="public" returntype="string" output="false">
+	<cffunction name="getName" output="false">
 		<cfreturn variables.instance.Name />
 	</cffunction>
 	
-	<cffunction name="setPackage" access="public" returntype="void" output="false">
+	<cffunction name="setPackage" output="false">
 		<cfargument name="Package" type="string" required="true" />
 		<cfset variables.instance['package'] = arguments.Package />
 	</cffunction>
-	<cffunction name="getPackage" access="public" returntype="string" output="false">
+	<cffunction name="getPackage" output="false">
 		<cfreturn variables.instance.Package />
 	</cffunction>
 	
-	<cffunction name="setIsActive" access="public" returntype="void" output="false">
+	<cffunction name="setIsActive" output="false">
 		<cfargument name="IsActive" type="boolean" required="true" />
 		<cfset variables.instance['isactive'] = arguments.IsActive />
 	</cffunction>
-	<cffunction name="getIsActive" access="public" returntype="boolean" output="false">
+	<cffunction name="getIsActive" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsActive />
 	</cffunction>
 	
-	<cffunction name="setIsCurrent" access="public" returntype="void" output="false">
+	<cffunction name="setIsCurrent" output="false">
 		<cfargument name="IsCurrent" type="boolean" required="true" />
 		<cfset variables.instance['iscurrent'] = arguments.IsCurrent />
 	</cffunction>
-	<cffunction name="getIsCurrent" access="public" returntype="boolean" output="false">
+	<cffunction name="getIsCurrent" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsCurrent />
 	</cffunction>
 	
-	<cffunction name="setStatusCode" access="public" returntype="void" output="false">
+	<cffunction name="setStatusCode" output="false">
 		<cfargument name="StatusCode" type="numeric" required="true" />
 		<cfset variables.instance['statuscode'] = arguments.StatusCode />
 	</cffunction>
-	<cffunction name="getStatusCode" access="public" returntype="numeric" output="false">
+	<cffunction name="getStatusCode" output="false">
 		<cfreturn variables.instance.StatusCode />
 	</cffunction>
 	
-	<cffunction name="setNotes" access="public" returntype="void" output="false">
+	<cffunction name="setNotes" output="false">
 		<cfargument name="Notes" type="string" required="true" />
 		<cfset variables.instance['notes'] = arguments.Notes />
 	</cffunction>
-	<cffunction name="getNotes" access="public" returntype="string" output="false">
+	<cffunction name="getNotes" output="false">
 		<cfreturn variables.instance.Notes />
 	</cffunction>
 	
-	<cffunction name="setSiteID" access="public" returntype="void" output="false">
+	<cffunction name="setSiteID" output="false">
 		<cfargument name="SiteID" type="string" required="true" />
 		<cfset variables.instance['siteid'] = arguments.SiteID />
 	</cffunction>
-	<cffunction name="getSiteID" access="public" returntype="string" output="false">
+	<cffunction name="getSiteID" output="false">
 		<cfreturn variables.instance.SiteID />
 	</cffunction>
 	
-	<cffunction name="setRemoteID" access="public" returntype="void" output="false">
+	<cffunction name="setRemoteID" output="false">
 		<cfargument name="RemoteID" type="string" required="true" />
 		<cfset variables.instance['remoteid'] = arguments.RemoteID />
 	</cffunction>
-	<cffunction name="getRemoteID" access="public" returntype="string" output="false">
+	<cffunction name="getRemoteID" output="false">
 		<cfreturn variables.instance.RemoteID />
 	</cffunction>
 	
-	<cffunction name="setDateCreate" access="public" returntype="void" output="false">
+	<cffunction name="setDateCreate" output="false">
 		<cfargument name="DateCreate" type="string" required="true" />
 		<cfset variables.instance['datecreate'] = arguments.DateCreate />
 	</cffunction>
-	<cffunction name="getDateCreate" access="public" returntype="string" output="false">
+	<cffunction name="getDateCreate" output="false">
 		<cfreturn variables.instance.DateCreate />
 	</cffunction>
 	
-	<cffunction name="setDateLastUpdate" access="public" returntype="void" output="false">
+	<cffunction name="setDateLastUpdate" output="false">
 		<cfargument name="DateLastUpdate" type="string" required="true" />
 		<cfset variables.instance['datelastupdate'] = arguments.DateLastUpdate />
 	</cffunction>
-	<cffunction name="getDateLastUpdate" access="public" returntype="string" output="false">
+	<cffunction name="getDateLastUpdate" output="false">
 		<cfreturn variables.instance.DateLastUpdate />
 	</cffunction>
 	<!--- Services --->
-	<cffunction name="setFormAttributes" access="public" returntype="void" output="false">
+	<cffunction name="setFormAttributes" output="false">
 		<cfargument name="FormAttributes" type="struct" required="true" />
 		<cfset variables.instance['formattributes'] = arguments.FormAttributes />
 	</cffunction>
-	<cffunction name="getFormAttributes" access="public" returntype="struct" output="false">
+	<cffunction name="getFormAttributes" returntype="struct" output="false">
 		<cfif not variables.FormAttributesChecked and not structCount( variables.instance.FormAttributes )>
 			<cfset setFormAttributes( getFormService().getFormAttributeservice().getFormAttributes( formID = getFormID() ) ) />
 			<cfset variables.FormAttributesChecked = true />
@@ -218,11 +221,11 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.instance.FormAttributes />
 	</cffunction>
 	
-	<cffunction name="setFields" access="public" returntype="void" output="false">
+	<cffunction name="setFields" output="false">
 		<cfargument name="Fields" type="struct" required="true" />
 		<cfset variables.instance['fields'] = arguments.Fields />
 	</cffunction>
-	<cffunction name="getFields" access="public" returntype="struct" output="false">
+	<cffunction name="getFields" returntype="struct" output="false">
 		<cfif not variables.fieldsChecked and not structCount( variables.instance.Fields )>
 			<cfset setFields( getFormService().getFieldService().getFields( formID = getFormID() ) ) />
 			<cfset variables.fieldsChecked = true />
@@ -231,7 +234,7 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.instance.Fields />
 	</cffunction>
 	
-	<cffunction name="getField" access="public" returntype="any" output="false">
+	<cffunction name="getField" output="false">
 		<cfargument name="FieldID" type="struct" required="true" />
 
 		<cfif StructKeyExists( variables.instance.Fields,arguments.FieldID )>
@@ -241,7 +244,7 @@ to your own modified versions of Mura CMS.
 		<cfreturn false />
 	</cffunction>
 
-	<cffunction name="getConfig" access="public" returntype="struct" output="false">
+	<cffunction name="getConfig" returntype="struct" output="false">
 		<cfargument name="mode" type="string" required="false" default="json" />
 
 		<cfif arguments.mode eq "object">
@@ -250,7 +253,7 @@ to your own modified versions of Mura CMS.
 			<cfreturn variables.instance.config />
 		</cfif>
 	</cffunction>
-	<cffunction name="setConfig" access="public" returntype="void" output="false">
+	<cffunction name="setConfig" output="false">
 		<cfargument name="Config" type="struct" required="true" />
 		<cfif isJSON( arguments.Config )>
 			<cfset variables.instance['config'] = arguments.config>
@@ -259,19 +262,27 @@ to your own modified versions of Mura CMS.
 		</cfif>		
 	</cffunction>
 
-	<cffunction name="setFieldOrder" access="public" returntype="void" output="false">
+	<cffunction name="setFieldOrder" output="false">
 		<cfargument name="FieldOrder" type="Array" required="true" />
 		<cfset variables.instance['fieldorder'] = arguments.FieldOrder />
 	</cffunction>
-	<cffunction name="getFieldOrder" access="public" returntype="Array" output="false">
+	<cffunction name="getFieldOrder" returntype="Array" output="false">
 		<cfreturn variables.instance.FieldOrder />
 	</cffunction>
 
-	<cffunction name="setDeletedFields" access="public" returntype="void" output="false">
+	<cffunction name="setPages" output="false">
+		<cfargument name="Pages" type="Array" required="true" />
+		<cfset variables.instance['pages'] = arguments.Pages />
+	</cffunction>
+	<cffunction name="getPages" returntype="Array" output="false">
+		<cfreturn variables.instance.pages />
+	</cffunction>
+
+	<cffunction name="setDeletedFields" output="false">
 		<cfargument name="DeletedFields" type="struct" required="true" />
 		<cfset variables.instance['deletedfields'] = arguments.DeletedFields />
 	</cffunction>
-	<cffunction name="getDeletedFields" access="public" returntype="struct" output="false">
+	<cffunction name="getDeletedFields" returntype="struct" output="false">
 		<cfreturn variables.instance.DeletedFields />
 	</cffunction>
 

@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "user">
 </cffunction>
 
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
+<cffunction name="packageRecord" output="false">
 	<cfif NOT isObject(variables.userBean)>
 		<cfset variables.userBean=getBean("user") />
 		<cfset variables.userStructTemplate= structCopy(variables.userBean.getAllValues(autocomplete=false))>
@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.userBean>
 </cffunction>
 
-<cffunction name="buildQueryFromList" output="false" access="public">
+<cffunction name="buildQueryFromList" output="false">
 	<cfargument name="idList">
 	<cfargument name="siteid">
 	<cfset var i="">
@@ -81,7 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset QuerySetCell(variables.records,"userID", idArray[i])>
 		<cfset QuerySetCell(variables.records, 'siteID',arguments.siteid)>
 	</cfloop>
-
+	
+	<cfset variables._recordcount=variables.records.recordcount>
 	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
 	<cfset variables.recordIndex = 0 />
 	<cfset variables.pageIndex = 1 />

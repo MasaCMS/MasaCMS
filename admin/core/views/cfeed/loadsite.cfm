@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="contentSearch" class="form-inline">
 		<!--- <h2>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h2> --->
 		<div class="mura-input-set">
-			<input class="form-control" id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="#application.rbFactory.getKeyValue(session.rb,'collections.search')#">
+			<input class="form-control" id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" onclick="return false;">
 			<button type="button" class="btn btn-default" onclick="feedManager.loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0,$('##contentPoolID').val());"><i class="mi-search"></i></button>
 		</div>	
 	</div>
@@ -67,10 +67,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<table class="mura-table-grid">
 				<thead>
 					<tr> 
+						<th class="actions"></th>
 						<th class="var-width">
 							<cfoutput>#$.getBean('settingsManager').getSite(rc.siteid).getSite()#: #application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput>
 						</th>
-						<th class="actions">&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -81,10 +81,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
 								<cfset counter=counter+1/>
 								<tr <cfif not(counter mod 2)>class="alt"</cfif>>
-									<td class="var-width" id="#esapiEncode('html_attr','mura-opt-#rc.rslist.contentid#')#">#zoomText#</td>
 									<td class="actions">
 										<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript','mura-opt-#rc.rslist.contentid#')#'); return false;"><i class="mi-plus-circle"></i></a></li></ul>
 									</td>
+									<td class="var-width" id="#esapiEncode('html_attr','mura-opt-#rc.rslist.contentid#')#">#zoomText#</td>
 								</tr>
 							</cfif>
 						</cfoutput>

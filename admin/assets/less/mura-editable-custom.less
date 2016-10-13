@@ -18,23 +18,24 @@
 		&.inline { .inline-block() !important; }
 
 		&:hover .mura-editable-label {
-			position: absolute !important;
-			width: auto !important;
-			text-align: left !important;
-			font-size: 11px !important;
-			line-height: 1 !important;
-			color: #fff !important;
-			background: rgba(255,0,0,0.75) !important;
-			padding: 4px !important;
-			margin: 0 !important;
-			top: -20px !important;
-			left: -1px !important;
-			font-weight: normal !important;
-			/* text-shadow: -1px -1px 0 rgba(0,0,0,.2) !important; */
 			.inline-block() !important;
+			background: rgba(255,0,0,0.75) !important;
+			color: #fff !important;
+			font-size: 11px !important;
+			font-weight: normal !important;
+			line-height: 1 !important;
+			margin: 0 !important;
+			padding: 4px !important;
+			position: absolute !important;
+				left: -1px !important;
+				top: -20px !important;
+			text-align: left !important;
+			width: auto !important;
+			z-index: 1001 !important;
 			}
 
-		&.mura-inactive, &.mura-inactive:hover {
+		&.mura-inactive, 
+		&.mura-inactive:hover {
 
 			outline: 0 !important;
 			min-height: 0 !important;
@@ -42,10 +43,13 @@
 			.mura-editable-label { display: none !important; }
 
 			.mura-editable-attribute {
-
 				outline: 0px !important;
 
-				&:hover, &:mura-active, &:focus { outline: 0 !important; }
+				&:hover, 
+				&.mura-active, 
+				&:focus { 
+					outline: 0px !important; 
+					}
 
 				}
 

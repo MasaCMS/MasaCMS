@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
+<cffunction name="packageRecord" output="false">
 	<cfset var favorite=getBean("favoriteBean")>
 	<cfset favorite.set(queryRowToStruct(variables.records,currentIndex()))>
 	<cfset favorite.setIsNew(0)>

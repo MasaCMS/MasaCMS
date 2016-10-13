@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
+<cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
 <cfargument name="MissingMethodArguments" type="struct" required="true" />
 <cfset var prop="">
@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="set" access="public" returntype="any" output="false">
+<cffunction name="set" output="false">
 	<cfargument name="contentStruct">
 	<cfargument name="sourceIterator">
 
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getValue" access="public" returntype="any" output="false">
+<cffunction name="getValue" output="false">
 	<cfargument name="property">
 	<cfif len(arguments.property)>
 
@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setValue" access="public" returntype="any" output="false">
+<cffunction name="setValue" output="false">
 	<cfargument name="property">
 	<cfargument name="propertyValue">
 	<cfif isDefined("this.set#arguments.property#")>
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getContentBean" access="public" returntype="any" output="false">
+<cffunction name="getContentBean" output="false">
 	<cfif NOT isObject(variables.instance.content)>
 		<cfset variables.instance.content=getBean("content")>
 		<cfset variables.instance.content.setIsNew(1)>
@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getParent" output="false" returntype="any">
+<cffunction name="getParent" output="false">
 	<cfset var i="">
 	<cfset var cl=0>
 
@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getKidsQuery" returnType="query" output="false" access="public">
+<cffunction name="getKidsQuery" output="false">
 	<cfargument name="aggregation" required="true" default="false">
 
 	<cfif structKeyExists(variables.instance.struct,"kids") and isNumeric(variables.instance.struct.kids) and not variables.instance.struct.kids>
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getKidsIterator" returnType="any" output="false" access="public">
+<cffunction name="getKidsIterator" output="false">
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q=getKidsQuery(arguments.aggregation) />
@@ -227,13 +227,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it>
 </cffunction>
 
-<cffunction name="getCrumbArray" output="false" returntype="any">
+<cffunction name="getCrumbArray" output="false">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
 	<cfreturn variables.contentManager.getCrumbList(contentID=getValue("contentID"), siteID=getValue("siteID"), setInheritance=arguments.setInheritance, path=getValue("path"), sort=arguments.sort)>
 </cffunction>
 
-<cffunction name="getCrumbIterator" output="false" returntype="any">
+<cffunction name="getCrumbIterator" output="false">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
 	<cfset var a=getCrumbArray(setInheritance=arguments.setInheritance,sort=arguments.sort)>
@@ -268,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getBean('fileMetaData').loadBy(contentid=getValue('contentid'),contentHistID=getValue('contentHistID'),siteID=getValue('siteid'),fileid=getValue(arguments.property))>
 </cffunction>
 
-<cffunction name="getRelatedContentQuery" returnType="query" output="false" access="public">
+<cffunction name="getRelatedContentQuery" output="false">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	<cfargument name="sortBy" type="string" default="orderno">
@@ -280,7 +280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.contentManager.getRelatedContent(getValue('siteID'), getValue('contentHistID'), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getValue('contentID')) />
 </cffunction>
 
-<cffunction name="getRelatedContentIterator" returnType="any" output="false" access="public">
+<cffunction name="getRelatedContentIterator" output="false">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	<cfargument name="sortBy" type="string" default="orderno" >
@@ -300,17 +300,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) or arguments.usePlaceholder and len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgID())>
 </cffunction>
 
-<cffunction name="getExtendedAttributes" returntype="struct" output="false" access="public">
+<cffunction name="getExtendedAttributes" returntype="struct" output="false">
 	<cfargument name="name" default="" hint="Extend Set Name" />
 	<cfreturn getContentBean().getExtendedAttributes(name=arguments.name) />
 </cffunction>
 
- <cffunction name="getExtendedAttributesList" returnType="string" output="false" access="public">
+ <cffunction name="getExtendedAttributesList" output="false">
  	<cfargument name="name" default="" hint="Extend Set Name" />
  	<cfreturn StructKeyList(getExtendedAttributes(name=arguments.name)) />
  </cffunction>
 
- <cffunction name="getExtendedAttributesQuery" returntype="query" output="false" access="public">
+ <cffunction name="getExtendedAttributesQuery" output="false">
 	<cfargument name="name" default="" hint="Extend Set Name" />
 	<cfreturn getContentBean().getExtendedAttributesQuery(name=arguments.name) />
 </cffunction>

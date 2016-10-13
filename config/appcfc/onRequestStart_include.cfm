@@ -48,7 +48,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="application.setupComplete" default="false">
 <cfparam name="application.appInitialized" default="false">
 <cfparam name="application.instanceID" default="#createUUID()#" />
-<cfheader name="Generator" value="Mura CMS" />
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfset setEncoding("url", "utf-8")>
 <cfset setEncoding("form", "utf-8")>
@@ -191,10 +190,11 @@ If it has not, set application.appInitialized=false. --->
 </cftry>
 
 <cftry>
+	<cfparam name="sessionData.muraSessionID" default="#application.utility.getUUID()#">
 	<cfif not structKeyExists(cookie,"originalURLToken")>
-	<cfparam name="session.trackingID" default="#application.utility.getUUID()#">
-	<cfcookie name="originalURLToken" value="#sessionData.trackingID#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+	<cfcookie name="originalURLToken" value="#sessionData.muraSessionID#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
+	<cfparam name="sessionData.muraTrackingID" default="#cookie.originalURLToken#">
 <cfcatch></cfcatch>
 </cftry>
 
@@ -266,3 +266,12 @@ If it has not, set application.appInitialized=false. --->
 </cfif>
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
 <cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
+
+<cfscript>
+// HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+	getPageContext()
+		.getResponse()
+		.setHeader('Strict-Transport-Security', 'max-age=1200;includeSubDomains');
+</cfscript>
+
+<cfheader name="Generator" value="Mura CMS #application.serviceFactory.getBean('configBean').getVersion()#" />

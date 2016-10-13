@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cftry>
 		<cfif not structKeyExists(variables.iniProperties,"encryptionkey") or not len(variables.iniProperties["encryptionkey"])>
-			<cfset variables.iniProperties.encryptionkey=createUUID()>
+			<cfset variables.iniProperties.encryptionkey=generateSecretKey('AES')>
 			<cfset createobject("component","mura.IniFile").init(variables.iniPath).set( variables.iniProperties.mode, "encryptionkey", variables.iniProperties.encryptionkey )>
 		</cfif>
 		<cfcatch></cfcatch>
@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				recurse=true,
 				exclude=["/.","/mura/autoUpdater/global","/mura/bean/beanFactory.cfc"],
 				strict=application.configBean.getStrictFactory(),
-				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility|extendObject)$"
+				transientPattern = "(Iterator|Bean|executor|MuraScope|Event|dbUtility|extendObject)$"
 				});
 
 		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
@@ -275,7 +275,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("variationTargeting","contentVariationTargetingBean");
 		variables.serviceFactory.addAlias("remoteContentPointer","contentRemotePointerBean");
 		variables.serviceFactory.addAlias("contentDisplayInterval","contentDisplayIntervalBean");
-		variables.serviceFactory.addAlias("clientCredentials","clientCredentialsBean");
+		variables.serviceFactory.addAlias("oauthClient","oauthClientBean");
+		variables.serviceFactory.addAlias("oauthToken","oauthTokenBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
@@ -333,7 +334,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			//variables.serviceFactory.getBean('remoteContentPointer');
 			variables.serviceFactory.getBean('contentDisplayInterval');
 			variables.serviceFactory.getBean('variationTargeting');
-			variables.serviceFactory.getBean('clientCredentials');
+			variables.serviceFactory.getBean('oauthClient');
+			variables.serviceFactory.getBean('oauthToken');
 		</cfscript>
 	</cfif>
 
@@ -536,7 +538,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler.getValue('_objectName')#.onApplicationLoad")>
-				<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
+				<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 			</cfif>
 		</cfif>
@@ -562,7 +564,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset variables.themeHandler.setValue("_objectName","#variables.siteBean.getThemeAssetMap()#.eventHandler")>
 				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler.getValue('_objectName')#.onApplicationLoad")>
-				<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
+				<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 			</cfif>
 			<cfset application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID)>

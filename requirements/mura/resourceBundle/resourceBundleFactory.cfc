@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.settingsManager="" />
 <cfset variables.locale="" />
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="parentFactory" type="any" required="true" default="">
 	<cfargument name="resourceDirectory" type="any" required="true" default="">
 	<cfargument name="locale" type="any" required="true" default="en_us">
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getResourceBundle" returntype="any" access="public" output="false">
+<cffunction name="getResourceBundle" output="false">
 	<cfargument name="locale"  type="string" required="true" default="#variables.locale#">
 
 	<cfif not structKeyExists(variables.resourceBundles,"#arguments.locale#")>
@@ -81,12 +81,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.resourceBundles["#arguments.locale#"] />
 </cffunction>
 
-<cffunction name="getUtils" returntype="any" access="public" output="false">
+<cffunction name="getUtils" output="false">
 	<cfargument name="locale"  type="string" required="true" default="#variables.locale#">
 	<cfreturn getResourceBundle(arguments.locale).getUtils().init(arguments.locale) />
 </cffunction>
 
-<cffunction name="getKeyValue" returnType="String" output="false">
+<cffunction name="getKeyStructure" output="false">
+	<cfargument name="locale"  type="string" required="true" default="#variables.locale#">
+	<cfargument name="key">
+	<cfreturn getResourceBundle(arguments.locale).getKeyStructure(arguments.key) />
+</cffunction>	
+
+<cffunction name="getKeyValue" output="false">
 	<cfargument name="locale" required="true" default="#variables.locale#">
 	<cfargument name="key">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false">
@@ -122,12 +128,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getKey" returnType="String" output="false">
+<cffunction name="getKey" output="false">
 	<cfargument name="key">
 	<cfreturn getKeyValue(variables.locale,arguments.key)>
 </cffunction>
 
-<cffunction name="CF2Java" access="public" returnType="string" output="false" hint="Switches Java locale to CF locale (for CF6)">
+<cffunction name="CF2Java" output="false" hint="Switches Java locale to CF locale (for CF6)">
 		<cfargument name="cflocale" type="string" required="false" default="#variables.lang#_#variables.country#">
 		
 		<cfset var testLocale=trim(arguments.cflocale)>
@@ -775,7 +781,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch>
 </cffunction>
 
-<cffunction name="setAdminLocale" returnType="void" output="false">
+<cffunction name="setAdminLocale" output="false">
 	<cfargument name="mySession" required="true" default="#session#">
 	<cfset var utils="">
 	<!--- make sure that a locale and language resouce bundle have been set in the users session --->

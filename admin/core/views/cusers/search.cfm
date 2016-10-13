@@ -69,13 +69,13 @@
 
 			<!--- View Groups --->
 				<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
-					<i class="mi-eye"></i>
+					<i class="mi-users"></i>
 					#rbKey('user.viewgroups')#
 				</a>
 
 			<!--- View Users --->
 				<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
-					<i class="mi-eye"></i>
+					<i class="mi-user"></i>
 					#rbKey('user.viewusers')#
 				</a>
 
@@ -95,7 +95,7 @@
 <!--- Tab Nav (only tabbed for Admin + Super Users) --->
   <cfif rc.isAdmin>
 
-      <ul class="mura-tabs nav-tabs" data-toggle="tabs">
+      <ul class="mura-tab-links nav-tabs">
 
         <!--- Site Members Tab --->
           <li<cfif rc.ispublic eq 1> class="active"</cfif>>

@@ -53,8 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-inline">
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#</h2>
 <div class="mura-input-set">
-	<input id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" maxlength="50"/> 
-	<input type="button" class="btn" onclick="siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#" />
+	<input id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" maxlength="50" onclick="return false;">
+	<input type="button" class="btn" onclick="siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#">
 </div>
 </cfoutput>
 </div>
@@ -67,15 +67,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <table class="mura-table-grid">
     <cfif not parentBean.getIsNew()>
 	<tr>
-      <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewcontentparent')#</cfoutput></th>
-	  <th class="actions">&nbsp;</th>
+	  <th class="actions"></th>
+    <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewcontentparent')#</cfoutput></th>
     </tr>
 	</cfif>
 	<cfif rc.rslist.recordcount>
 		<cfif not parentBean.getIsNew()>
 			<tr class="alt"><cfoutput>
-	         <td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
 			  <td class="actions"><input type="radio" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" checked="checked"></td>
+         <td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
 			</tr></cfoutput>
 			<cfset hasParentID=true />
 		</cfif>
@@ -87,8 +87,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset counter=counter+1/>
 			<cfset hasParentID=true />
 			<tr <cfif not(counter mod 2)>class="alt"</cfif>>
-	          <td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
 			  <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
+        <td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
 			</tr>
 		 	</cfif></cfif>
        </cfoutput>

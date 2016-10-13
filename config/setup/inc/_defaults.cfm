@@ -139,6 +139,6 @@ variables.setupProcessComplete	= false;
 <!--- EncryptionKey --->
 <cfparam name="FORM.production_encryptionkey"	default="#settingsIni.get( "production", "encryptionkey" )#" />
 <cfif not len(FORM.production_encryptionkey)>
-	<cfset FORM.production_encryptionkey=createUUID()>
+	<cfset FORM.production_encryptionkey=generateSecretKey('AES')>
 </cfif>
 <!--- <cfdump var="#form#" abort="true"> --->

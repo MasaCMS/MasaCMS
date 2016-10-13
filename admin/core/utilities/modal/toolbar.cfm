@@ -51,21 +51,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<link href="#variables.$.globalConfig('adminPath')#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 
 		<script>
-			mura(function(){
+			window.Mura=window.Mura || window.mura || {};
+
+			Mura(function(){
 
 				if(!window.CKEDITOR){
-					mura.loader().loadjs(
-							'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js');
+					Mura.loader().loadjs(
+						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js'
+					);
+
+					window.CKEDITOR_BASEPATH = '#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/';
 				}
 				<cfif not $.getContentRenderer().useLayoutManager()>
 				if(!window.CKFinder){
-					mura.loader().loadjs(
+					Mura.loader().loadjs(
 						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckfinder/ckfinder.js');
 
 				}
 				</cfif>
 
-				mura.loader().loadjs(
+				Mura.loader().loadjs(
 						'#variables.$.globalConfig().getAdminPath(complete=1)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
 						'#variables.$.globalConfig().getAdminPath(complete=1)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#&contentType=Variation');
 			});
@@ -77,24 +82,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 
 		<script>
-			var hasMuraLoader=(typeof(mura) != 'undefined' && typeof(mura.loader) != 'undefined');
+			var hasMuraLoader=(typeof(Mura) != 'undefined' && typeof(Mura.loader) != 'undefined');
 			if(!window.CKEDITOR){
 				if(hasMuraLoader){
-					mura.loader().loadjs(
+					Mura.loader().loadjs(
 						'#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js',
-						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js');
+						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js'
+					);
 
 				} else {
 					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js');
-					$.getScript('#variables.$.globalConfig("requirementsPath"
-						)#/ckeditor/adapters/jquery.js');
+					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js');
 				}
+
+				window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("requirementsPath")#/ckeditor/';
 			}
 
 			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
-					mura.loader().loadjs(
+					Mura.loader().loadjs(
 						'#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');
 				} else {
 					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');
@@ -103,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			if(hasMuraLoader){
-				mura.loader().loadjs(
+				Mura.loader().loadjs(
 						'#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#');
 			} else {
 				$.getScript('#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#');
@@ -303,7 +310,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 									<cfif variables.$.siteConfig('HasChangesets') and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) >
 										<li class="dropdown-submenu">
-											<a href=""><i class="mi-list-alt"></i>
+											<a href="##" onclick="return false;"><i class="mi-list-alt"></i>
 											#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#<i class="mi-caret-right"></i></a>
 											<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
 											<cfset changesets=application.changesetManager.getIterator(siteID=variables.$.event('siteid'),published=0,publishdate=now(),publishDateOnly=false)>
@@ -338,39 +345,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<ul id="tools-version">
 							<!---
 							<cfif $.content('type') eq 'Variation'>
-							<li id="adminEditPage" class="dropdown"><a onclick="return muraInlineEditor.init();"><i class="mi-pencil"></i></a></li>
+							<li id="adminEditPage" class="dropdown"><a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i></a></li>
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
 							<cfelse>
 							--->
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="mi-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
+								<cfif this.showInlineEditor>
+									<li id="adminQuickEdit">
+										<a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i>
+										<cfif $.content('type') eq 'Variation'>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
+										<cfelseif useLayoutManager()>
+											<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
+											<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
+											</cfif>
+										<cfelse>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
+										</cfif></a>
+									</li>
 									<li id="adminFullEdit">
 										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
 											<cfif $.content('type') eq 'Variation'>
-												<i class="mi-info"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-metadata')#
+												<i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											<cfelseif useLayoutManager()>
-												<i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
+												<i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
 											<cfelse>
-												 <i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
+												 <i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											</cfif></a>
 									</li>
-									<cfif this.showInlineEditor>
-										<li id="adminQuickEdit">
-											<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
-											<cfif $.content('type') eq 'Variation'>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
-											<cfelseif useLayoutManager()>
-												<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
-												<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
-												</cfif>
-											<cfelse>
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
-											</cfif></a>
-										</li>
 										<cfif request.r.perm eq 'editor' and $.content('type') eq 'Variation'>
 											<li id="adminVariationTargeting"><a id="mura-edit-var-initjs" href="#variables.initJSLink#" #variables.targethook#><i class="mi-code"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-variationtargeting')#</a></li>
 										</cfif>
+									</cfif>
+									<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
+										<cfif request.contentBean.getType() eq 'Variation'>
+											<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
+										<cfelse>
+											<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
+										</cfif>
+
 									</cfif>
 								</ul>
 							</li>
@@ -384,14 +399,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</li>
 							</cfif>
 							<!---</cfif>--->
-							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
-								<cfif request.contentBean.getType() eq 'Variation'>
-									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i></a></li>
-								<cfelse>
-									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-trash"></i></a></li>
-								</cfif>
 
-							</cfif>
+						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-sitemap"></i></a></li>
+
+
 						</ul>
 					</cfif>
 
@@ -438,7 +449,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<cfelse>
 											<li><a onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'changesets.noassignedcontent')#</a></li>
 										</cfif>
-
 										</ul>
 									</cfif>
 								</li>
@@ -466,17 +476,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<li>
 										<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
 											<i class="mi-ban"></i>
-
 										</a>
 									</li>
 								</cfif>
 							</ul>
 						</cfif>
-
-
 					</cfif>
 				</cfif>
-
 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
 					<cfif $.siteConfig().getValue(property='showDashboard',defaultValue=0)>
@@ -484,9 +490,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li><a href="#$.globalConfig('adminPath')#/?muraAction=cDashboard.main&siteid=#esapiEncode('url',$.event('siteid'))#&span=1" title="Dashboard" target="admin"><i class="mi-dashboard"></i> Dashboard</a></li>
 						</ul>
 					</cfif>
-					<ul id="adminSiteManager">
-						<li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li>
-					</ul>
 				</cfif>
 
 				<cfif $.currentUser().isLoggedIn()>
@@ -495,7 +498,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li id="adminWelcome"><i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
 					</ul>
 				</cfif>
-
 
 				<!---
 				<cfif this.layoutmanager and $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>

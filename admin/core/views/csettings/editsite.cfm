@@ -53,11 +53,11 @@ to your own modified versions of Mura CMS.
 	<div class="mura-header">
 		<h1><cfif isDefined('url.addsite')>Add Site<cfelse>Site Settings</cfif></h1>
 	<cfif len(rc.siteid)>
-			<div class="nav-module-specific btn-group"> <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.siteid)#"><i class="mi-trash"></i> Trash Bin</a>
+			<div class="nav-module-specific btn-group">
 			<cfif rc.action eq "updateFiles">
 				<a class="btn" href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
 			<cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
-				<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-bolt"></i> Update Site Files to Latest Version</a>
+				<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-cloud-download"></i> Update Site</a>
 			</cfif>
 			<cfif application.configBean.getJavaEnabled()>
 				<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="mi-gift"></i> Create Site Bundle</a>
@@ -65,6 +65,7 @@ to your own modified versions of Mura CMS.
 			<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
 				<a  class="btn" href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="mi-share"></i> Export Static HTML (BETA)</a>
 			</cfif>
+			<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-list-alt"></i> Class Extensions</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.siteid)#"><i class="mi-trash"></i> Trash Bin</a>
 		</div>
 	</cfif>
 	</div><!--- /.mura-header --->
@@ -278,7 +279,7 @@ to your own modified versions of Mura CMS.
 							<div class="mura-control-group">
 								<label>Static HTML Export Location (BETA)</label>
 						<cfif len(rc.siteBean.getExportLocation()) and not directoryExists(rc.siteBean.getExportLocation())>
-								<p class="alert alert-error help-block">The current value is not a valid directory</p>
+								<p class="help-block">The current value is not a valid directory</p>
 							</cfif>
 								<input name="exportLocation" type="text" value="#esapiEncode('html_attr',rc.siteBean.getExportLocation())#" maxlength="100"/>
 					</div>
@@ -355,7 +356,7 @@ to your own modified versions of Mura CMS.
 
 				<!--- Google reCAPTCHA API Keys --->
 				<cfif not Len(rc.siteBean.getReCAPTCHASiteKey()) or not Len(rc.siteBean.getReCAPTCHASecret())>
-					<div class="alert alert-warning">
+					<div class="help-block-inline">
 						#rc.$.rbKey('siteconfig.recaptcha.message')#
 					</div>
 				</cfif>
@@ -586,7 +587,6 @@ to your own modified versions of Mura CMS.
 					<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
 						<div class="mura-control-group">
 							<label>Advertisement Manager</label>
-									<!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
 									<label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> checked</cfif>>Off</label>
 									<label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> checked</cfif>>On</label>
 
@@ -609,7 +609,6 @@ to your own modified versions of Mura CMS.
 					<cfif application.configBean.getEmailBroadcaster()>
 						<div class="mura-control-group">
 							<label>Email Broadcaster</label>
-							<!--- <p class="alert">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
 							<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="0" <cfif rc.siteBean.getemailbroadcaster() neq 1> checked</cfif>>Off</label>
 							<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="1" <cfif rc.siteBean.getemailbroadcaster()  eq 1> checked</cfif>>On</label>
 						</div>
@@ -832,14 +831,10 @@ to your own modified versions of Mura CMS.
 
 					var editTitle = "Add Custom Image Size";
 
-					var dialogoptions= {
-							Save: function() {
-								saveCustomImageSize();
-								jQuery( this ).dialog( "close" );
-							},
-							Cancel: function() {
-								 jQuery( this ).dialog( "close" );
-							}
+					var dialogoptions= {};
+
+						dialogoptions.Cancel=function() {
+						 jQuery( this ).dialog( "close" );
 						};
 
 						if(sizeid != ''){
@@ -850,14 +845,22 @@ to your own modified versions of Mura CMS.
 							var editTitle = "Edit Custom Image Size";
 						}
 
+						dialogoptions.Save={click: function() {
+								saveCustomImageSize();
+								jQuery(this).dialog('close');
+							}
+							, text: 'Save'
+							, class: 'mura-primary'
+						} // /Save
+
 					jQuery("##custom-image-dialog").dialog({
-						resizable: true,
+						resizable: false,
 						modal: true,
 						width: 400,
 						position: getDialogPosition(),
-						buttons: dialogoptions,
+						buttons:
+						dialogoptions,
 						open: function(){
-
 							jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
 							var url = 'index.cfm';
 							var pars = 'muraAction=cSettings.loadcustomimage&siteid=' + siteid +'&sizeid=' + sizeid  +'&cacheid=' + Math.random();
@@ -868,7 +871,6 @@ to your own modified versions of Mura CMS.
 									$("##custom-image-dialog").dialog("option", "position", "center");
 									}
 								);
-
 						},
 						close: function(){
 							jQuery(this).dialog("destroy");
@@ -1029,7 +1031,8 @@ to your own modified versions of Mura CMS.
 					</div>
 
 				 <div class="mura-control-group">
-				<label>Primary Display Region <span class="help-block">Dynamic System Content such as Login Formsa nd Search Results get displayed here</span></label>
+				<label>Primary Display Region</label>
+				<span class="help-block">Dynamic System Content such as Login Forms and Search Results get displayed here</span>
 						<select name="primaryColumn">
 						<cfloop from="1" to="20" index="i">
 								<option value="#i#" <cfif rc.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option>
@@ -1146,8 +1149,8 @@ to your own modified versions of Mura CMS.
 								<input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">
 								All Plugins</label>
 					</div>
-						<p class="alert help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
-						<p class="alert help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
+						<p class="help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
+						<p class="help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
 					</div>
 				 </cfif>
 				<div class="mura-control-group">
@@ -1162,7 +1165,7 @@ to your own modified versions of Mura CMS.
 								<label class="radio inline">
 							 <input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
 							</cfif>
-							<p class="alert help-block"<cfif listFind(session.mura.memberships,'S2')> style="display:none"</cfif> id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
+							<p class="help-block"<cfif listFind(session.mura.memberships,'S2')> style="display:none"</cfif> id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
 					</div>
 
 				<div class="mura-control-group">
@@ -1175,7 +1178,7 @@ to your own modified versions of Mura CMS.
 						<input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value="">
 						<input type="button" value="Browse Server" class="mura-ckfinder" data-completepath="true" data-resourcetype="root" data-target="serverBundlePath"/>
 					</div>
-						<p class="help-block alert">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
+						<p class="help-block">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
 			</div>
 				<cfif application.configBean.getPostBundles()>
 				<div class="mura-control-group">
@@ -1194,8 +1197,8 @@ to your own modified versions of Mura CMS.
 			<cfelse>
 			<div class="block block-bordered">
 				<div class="mura-control-group">
-					<div class="alert">
-						Java is currently disabled. So this feature is not currently available.
+					<div class="help-block-empty">
+						Java is disabled. This feature is unavailable.
 					</div>
 				</div>
 			</div>
@@ -1292,16 +1295,27 @@ to your own modified versions of Mura CMS.
 	<cftry>
 		<cfset updated=application.autoUpdater.update(rc.siteid)>
 		<cfset files=updated.files>
-		<p>Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</p>
-		<p> <strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
-			<cfif arrayLen(files)>
-				<cfoutput>
-					<cfloop from="1" to="#arrayLen(files)#" index="i">
-						#files[i]#<br />
-					</cfloop>
-				</cfoutput>
-			</cfif>
-		</p>
+
+			<div class="block block-constrain">
+				<div class="block block-bordered">
+				  <div class="block-content">
+
+						<div class="help-block-inline">Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</div>
+						<p> <strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
+							<cfif arrayLen(files)>
+								<cfoutput>
+									<cfloop from="1" to="#arrayLen(files)#" index="i">
+										#files[i]#<br />
+									</cfloop>
+								</cfoutput>
+							</cfif>
+						</p>
+
+						<div class="clearfix"></div>
+					</div> <!-- /.block-content -->
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /.block-constrain -->
+
 		<cfcatch>
 			<h2>An Error has occurred.</h2>
 			<cfdump var="#cfcatch.message#">

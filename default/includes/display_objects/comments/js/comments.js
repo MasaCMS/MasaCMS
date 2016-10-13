@@ -58,7 +58,7 @@ initMuraComments=function(config){
 	config=config || {};
 
 	var $editor = jQuery('#mura-comment-post-comment');
-	var $commentsProxyPath = config.proxyPath || mura.assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
+	var $commentsProxyPath = config.proxyPath || Mura.assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
 	var $newcommentid = jQuery("#mura-comment-post-comment [name=commentid]").val();
 	var $name = jQuery("#mura-comment-post-comment [name=name]").val();
 	var $url = jQuery("#mura-comment-post-comment [name=url]").val();
@@ -72,7 +72,7 @@ initMuraComments=function(config){
 	 var initPage=function() {
 
 		loadPage(params).success(function(data){
-			data=mura.setLowerCaseKeys(data);
+			data=Mura.setLowerCaseKeys(data);
 			if (data.count > 0) {
 				jQuery('#mura-comments-page').html(data.htmloutput);
 				jQuery('#mura-comments-sort').show();
@@ -87,9 +87,9 @@ initMuraComments=function(config){
 
 	var handleHash=function() {
 		var hash = window.location.hash;
-
+		
 		//Only do this if there is a valid hash and it's not hash based filenames
-		if (hash.length > 0 && hash.indexOf("#/")==-1) {
+		if (hash.length > 0 && hash.indexOf("#/")==-1 && hash.indexOf("=")==-1) {
 			if (jQuery('' + hash).length != 0) {
 				scrollToID(jQuery(hash));
 			} else {
@@ -100,7 +100,7 @@ initMuraComments=function(config){
 				};
 
 				loadPage(params).success(function(data){
-					data=mura.setLowerCaseKeys(data);
+					data=Mura.setLowerCaseKeys(data);
 					jQuery("#mura-more-comments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 					bindEvents();
@@ -164,7 +164,7 @@ initMuraComments=function(config){
 				};
 
 				loadPage(params).success(function(data){
-					data=mura.setLowerCaseKeys(data);
+					data=Mura.setLowerCaseKeys(data);
 					jQuery("#mura-more-comments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 					bindEvents();
@@ -204,7 +204,7 @@ initMuraComments=function(config){
 			};
 
 			loadPage(params).success(function(data){
-				data=mura.setLowerCaseKeys(data);
+				data=Mura.setLowerCaseKeys(data);
 				a.parent().remove();
 				jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 				bindEvents();
@@ -219,7 +219,7 @@ initMuraComments=function(config){
 			};
 
 			loadPage(params).success(function(data){
-				data=mura.setLowerCaseKeys(data);
+				data=Mura.setLowerCaseKeys(data);
 				jQuery('#mura-comments-page').html(data.htmloutput);
 				bindEvents();
 			})

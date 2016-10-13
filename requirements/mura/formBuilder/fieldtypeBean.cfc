@@ -57,7 +57,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance = StructNew() />
 
 	<!--- INIT --->
-	<cffunction name="init" access="public" returntype="fieldtypeBean" output="false">
+	<cffunction name="init" returntype="fieldtypeBean" output="false">
 		
 		<cfargument name="FieldTypeID" type="uuid" required="false" default="#CreateUUID()#" />
 		<cfargument name="Label" type="string" required="false" default="" />
@@ -89,108 +89,108 @@ to your own modified versions of Mura CMS.
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="setAllValues" access="public" returntype="FieldtypeBean" output="false">
+	<cffunction name="setAllValues" returntype="FieldtypeBean" output="false">
 		<cfargument name="values" type="struct" required="yes"/>
 		<cfset variables.instance = arguments.values />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getAllValues" access="public" returntype="struct" output="false" >
+	<cffunction name="getAllValues" returntype="struct" output="false">
 		<cfreturn variables.instance />
 	</cffunction>
 	
-	<cffunction name="setFieldTypeID" access="public" returntype="void" output="false">
+	<cffunction name="setFieldTypeID" output="false">
 		<cfargument name="FieldTypeID" type="uuid" required="true" />
 		<cfset variables.instance['fieldtypeid'] = arguments.FieldTypeID />
 	</cffunction>
-	<cffunction name="getFieldTypeID" access="public" returntype="uuid" output="false">
+	<cffunction name="getFieldTypeID" returntype="uuid" output="false">
 		<cfreturn variables.instance.FieldTypeID />
 	</cffunction>
 	
-	<cffunction name="setLabel" access="public" returntype="void" output="false">
+	<cffunction name="setLabel" output="false">
 		<cfargument name="Label" type="string" required="true" />
 		<cfset variables.instance['label'] = arguments.Label />
 	</cffunction>
-	<cffunction name="getLabel" access="public" returntype="string" output="false">
+	<cffunction name="getLabel" output="false">
 		<cfreturn variables.instance.Label />
 	</cffunction>
 	
-	<cffunction name="setRbLabel" access="public" returntype="void" output="false">
+	<cffunction name="setRbLabel" output="false">
 		<cfargument name="RbLabel" type="string" required="true" />
 		<cfset variables.instance['rblabel'] = arguments.RbLabel />
 	</cffunction>
-	<cffunction name="getRbLabel" access="public" returntype="string" output="false">
+	<cffunction name="getRbLabel" output="false">
 		<cfreturn variables.instance.RbLabel />
 	</cffunction>
 	
-	<cffunction name="setFieldtype" access="public" returntype="void" output="false">
+	<cffunction name="setFieldtype" output="false">
 		<cfargument name="Fieldtype" type="string" required="true" />
 		<cfset variables.instance['fieldtype'] = arguments.Fieldtype />
 	</cffunction>
-	<cffunction name="getFieldtype" access="public" returntype="string" output="false">
+	<cffunction name="getFieldtype" output="false">
 		<cfreturn variables.instance.Fieldtype />
 	</cffunction>
 	
-	<cffunction name="setBean" access="public" returntype="void" output="false">
+	<cffunction name="setBean" output="false">
 		<cfargument name="Bean" type="string" required="true" />
 		<cfset variables.instance['bean'] = arguments.Bean />
 	</cffunction>
-	<cffunction name="getBean" access="public" returntype="string" output="false">
+	<cffunction name="getBean" output="false">
 		<cfreturn variables.instance.Bean />
 	</cffunction>
 	
-	<cffunction name="setIsData" access="public" returntype="void" output="false">
+	<cffunction name="setIsData" output="false">
 		<cfargument name="IsData" type="boolean" required="true" />
 		<cfset variables.instance['isdata'] = arguments.IsData />
 	</cffunction>
-	<cffunction name="getIsData" access="public" returntype="boolean" output="false">
+	<cffunction name="getIsData" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsData />
 	</cffunction>
 	
-	<cffunction name="setIsLong" access="public" returntype="void" output="false">
+	<cffunction name="setIsLong" output="false">
 		<cfargument name="IsLong" type="boolean" required="true" />
 		<cfset variables.instance['islong'] = arguments.IsLong />
 	</cffunction>
-	<cffunction name="getIsLong" access="public" returntype="boolean" output="false">
+	<cffunction name="getIsLong" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsLong />
 	</cffunction>
 	
-	<cffunction name="setIsMultiSelect" access="public" returntype="void" output="false">
+	<cffunction name="setIsMultiSelect" output="false">
 		<cfargument name="IsMultiSelect" type="boolean" required="true" />
 		<cfset variables.instance['IsMultiSelect'] = arguments.IsMultiSelect />
 	</cffunction>
-	<cffunction name="getIsMultiSelect" access="public" returntype="boolean" output="false">
+	<cffunction name="getIsMultiSelect" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsMultiSelect />
 	</cffunction>
 	
-	<cffunction name="setModuleID" access="public" returntype="void" output="false">
+	<cffunction name="setModuleID" output="false">
 		<cfargument name="ModuleID" type="string" required="true" />
 		<cfset variables.instance['moduleid'] = arguments.ModuleID />
 	</cffunction>
-	<cffunction name="getModuleID" access="public" returntype="string" output="false">
+	<cffunction name="getModuleID" output="false">
 		<cfreturn variables.instance.ModuleID />
 	</cffunction>
 	
-	<cffunction name="setDateCreate" access="public" returntype="void" output="false">
+	<cffunction name="setDateCreate" output="false">
 		<cfargument name="DateCreate" type="string" required="true" />
 		<cfset variables.instance['datecreate'] = arguments.DateCreate />
 	</cffunction>
-	<cffunction name="getDateCreate" access="public" returntype="string" output="false">
+	<cffunction name="getDateCreate" output="false">
 		<cfreturn variables.instance.DateCreate />
 	</cffunction>
 	
-	<cffunction name="setDateLastUpdate" access="public" returntype="void" output="false">
+	<cffunction name="setDateLastUpdate" output="false">
 		<cfargument name="DateLastUpdate" type="string" required="true" />
 		<cfset variables.instance['datelastupdate'] = arguments.DateLastUpdate />
 	</cffunction>
-	<cffunction name="getDateLastUpdate" access="public" returntype="string" output="false">
+	<cffunction name="getDateLastUpdate" output="false">
 		<cfreturn variables.instance.DateLastUpdate />
 	</cffunction>
 	
-	<cffunction name="setDisplaytype" access="public" returntype="void" output="false">
+	<cffunction name="setDisplaytype" output="false">
 		<cfargument name="Displaytype" type="string" required="true" />
 		<cfset variables.instance['displaytype'] = arguments.Displaytype />
 	</cffunction>
-	<cffunction name="getDisplaytype" access="public" returntype="string" output="false">
+	<cffunction name="getDisplaytype" output="false">
 		<cfreturn variables.instance.Displaytype />
 	</cffunction>
 </cfcomponent>	

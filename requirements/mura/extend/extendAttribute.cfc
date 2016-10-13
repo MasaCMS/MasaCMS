@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.isNew=1/>
 <cfset variables.instance.errors=structnew() />
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfargument name="configBean">
 	<cfargument name="contentRenderer">
 
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="set" output="false" access="public">
+<cffunction name="set" output="false">
 		<cfargument name="property" required="true">
 		<cfargument name="propertyValue">
 
@@ -129,70 +129,70 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn this>
 </cffunction>
 
-<cffunction name="validate" access="public" output="false">
+<cffunction name="validate" output="false">
 	<cfset variables.instance.errors=structnew() />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
+<cffunction name="getErrors" returnType="struct" output="false">
     <cfreturn variables.instance.errors />
 </cffunction>
 
-<cffunction name="getAttributeID" returntype="numeric" access="public" output="false">
+<cffunction name="getAttributeID" output="false">
 	<cfreturn variables.instance.attributeID />
 </cffunction>
 
-<cffunction name="setAttributeID" access="public" output="false">
+<cffunction name="setAttributeID" output="false">
 	<cfargument name="AttributeID" type="numeric" />
 	<cfset variables.instance.AttributeID =arguments.AttributeID />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getSiteID" returntype="String" access="public" output="false">
+<cffunction name="getSiteID" output="false">
 	<cfreturn variables.instance.siteID />
 </cffunction>
 
-<cffunction name="setSiteID" access="public" output="false">
+<cffunction name="setSiteID" output="false">
 	<cfargument name="siteID" type="String" />
 	<cfset variables.instance.siteID = trim(arguments.siteID) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getExtendSetID" returntype="String" access="public" output="false">
+<cffunction name="getExtendSetID" output="false">
 	<cfreturn variables.instance.ExtendSetID />
 </cffunction>
 
-<cffunction name="setExtendSetID" access="public" output="false">
+<cffunction name="setExtendSetID" output="false">
 	<cfargument name="ExtendSetID" type="String" />
 	<cfset variables.instance.ExtendSetID = trim(arguments.ExtendSetID) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getName" returntype="String" access="public" output="false">
+<cffunction name="getName" output="false">
 	<cfreturn variables.instance.name />
 </cffunction>
 
-<cffunction name="setName" access="public" output="false">
+<cffunction name="setName" output="false">
 	<cfargument name="name" type="String" />
 	<cfset variables.instance.name = trim(arguments.name) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getHint" returntype="String" access="public" output="false">
+<cffunction name="getHint" output="false">
 	<cfreturn variables.instance.Hint />
 </cffunction>
 
-<cffunction name="setHint" access="public" output="false">
+<cffunction name="setHint" output="false">
 	<cfargument name="Hint" type="String" />
 	<cfset variables.instance.Hint = trim(arguments.Hint) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getType" returntype="String" access="public" output="false">
+<cffunction name="getType" output="false">
 	<cfreturn variables.instance.Type />
 </cffunction>
 
-<cffunction name="setType" access="public" output="false">
+<cffunction name="setType" output="false">
 	<cfargument name="Type" type="String" />
 	<cfset variables.instance.Type = trim(arguments.Type) />
 	<cfif variables.instance.Type eq "text">
@@ -201,11 +201,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getOrderNo" returntype="numeric" access="public" output="false">
+<cffunction name="getOrderNo" output="false">
 	<cfreturn variables.instance.OrderNo />
 </cffunction>
 
-<cffunction name="setOrderNo" access="public" output="false">
+<cffunction name="setOrderNo" output="false">
 	<cfargument name="OrderNo" />
 	<cfif isNumeric(arguments.OrderNo)>
 	<cfset variables.instance.OrderNo = arguments.OrderNo />
@@ -213,11 +213,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAdminOnly" returntype="numeric" access="public" output="false">
+<cffunction name="getAdminOnly" output="false">
 	<cfreturn variables.instance.adminonly />
 </cffunction>
 
-<cffunction name="setAdminOnly" access="public" output="false">
+<cffunction name="setAdminOnly" output="false">
 	<cfargument name="adminonly" />
 	<cfif isNumeric(arguments.adminonly)>
 	<cfset variables.instance.adminonly = arguments.adminonly />
@@ -225,11 +225,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getIsActive" returntype="numeric" access="public" output="false">
+<cffunction name="getIsActive" output="false">
 	<cfreturn variables.instance.IsActive />
 </cffunction>
 
-<cffunction name="setIsActive" access="public" output="false">
+<cffunction name="setIsActive" output="false">
 	<cfargument name="IsActive" />
 	<cfif isBoolean(arguments.IsActive)>
 		<cfif arguments.IsActive>
@@ -241,49 +241,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getRequired" returntype="String" access="public" output="false">
+<cffunction name="getRequired" output="false">
 	<cfreturn variables.instance.Required />
 </cffunction>
 
-<cffunction name="setRequired" access="public" output="false">
+<cffunction name="setRequired" output="false">
 	<cfargument name="Required" type="String" />
 	<cfset variables.instance.Required = trim(arguments.Required) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getValidation" returntype="String" access="public" output="false">
+<cffunction name="getValidation" output="false">
 	<cfreturn variables.instance.validation />
 </cffunction>
 
-<cffunction name="setValidation" access="public" output="false">
+<cffunction name="setValidation" output="false">
 	<cfargument name="validation" type="String" />
 	<cfset variables.instance.validation = trim(arguments.validation) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getRegex" returntype="String" access="public" output="false">
+<cffunction name="getRegex" output="false">
 	<cfreturn variables.instance.Regex />
 </cffunction>
 
-<cffunction name="setRegex" access="public" output="false">
+<cffunction name="setRegex" output="false">
 	<cfargument name="Regex" type="String" />
 	<cfset variables.instance.Regex = trim(arguments.Regex) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMessage" returntype="String" access="public" output="false">
+<cffunction name="getMessage" output="false">
 
 	<cfreturn variables.instance.Message />
 
 </cffunction>
 
-<cffunction name="setMessage" access="public" output="false">
+<cffunction name="setMessage" output="false">
 	<cfargument name="Message" type="String" />
 	<cfset variables.instance.Message = trim(arguments.Message) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getLabel" returntype="String" access="public" output="false">
+<cffunction name="getLabel" output="false">
 	<cfif len(variables.instance.Label)>
 	<cfreturn variables.instance.Label />
 	<cfelse>
@@ -291,36 +291,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setLabel" access="public" output="false">
+<cffunction name="setLabel" output="false">
 	<cfargument name="Label" type="String" />
 	<cfset variables.instance.Label = trim(arguments.Label) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDefaultValue" returntype="String" access="public" output="false">
+<cffunction name="getDefaultValue" output="false">
 	<cfreturn variables.instance.DefaultValue />
 </cffunction>
 
-<cffunction name="setDefaultValue" access="public" output="false">
+<cffunction name="setDefaultValue" output="false">
 	<cfargument name="DefaultValue" type="String" />
 	<cfset variables.instance.DefaultValue = trim(arguments.DefaultValue) />
 </cffunction>
 
-<cffunction name="getOptionList" returntype="String" access="public" output="false">
+<cffunction name="getOptionList" output="false">
 	<cfreturn variables.instance.optionList />
 </cffunction>
 
-<cffunction name="setOptionList" access="public" output="false">
+<cffunction name="setOptionList" output="false">
 	<cfargument name="OptionList" type="String" />
 	<cfset variables.instance.OptionList = trim(arguments.OptionList) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getOptionLabelList" returntype="String" access="public" output="false">
+<cffunction name="getOptionLabelList" output="false">
 	<cfreturn variables.instance.OptionLabelList />
 </cffunction>
 
-<cffunction name="setOptionLabelList" access="public" output="false">
+<cffunction name="setOptionLabelList" output="false">
 	<cfargument name="OptionLabelList" type="String" />
 	<cfset variables.instance.OptionLabelList = trim(arguments.OptionLabelList) />
 	<cfreturn this>
@@ -336,7 +336,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="load"  access="public" output="false">
+<cffunction name="exists" output="false">
+	<cfreturn not variables.instance.isNew>
+</cffunction>
+
+<cffunction name="load"  output="false">
 <cfset var rs=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select * from tclassextendattributes where
@@ -355,7 +359,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false">
+<cffunction name="save"  output="false">
 <cfset var rs=""/>
 
 
@@ -423,7 +427,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- <cfset saveOptions() /> --->
 </cffunction>
 
-<cffunction name="delete" access="public">
+<cffunction name="delete">
 <cfset var fileManager=getBean("fileManager") />
 <cfset var rs =""/>
 
@@ -469,7 +473,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
 </cffunction>
 
-<cffunction name="renderAttribute" output="false" returntype="string">
+<cffunction name="renderAttribute" output="false">
 <cfargument name="theValue" required="true" default="useMuraDefault"/>
 <cfargument name="bean" default=""/>
 <cfargument name="compactDisplay" default="false">

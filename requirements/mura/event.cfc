@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.event=structNew()>
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
 	<cfargument name="$">
 
@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setValue" returntype="any" access="public" output="false">
+<cffunction name="setValue" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
 
@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn setValue(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getValue" returntype="any" access="public" output="false">
+<cffunction name="getValue" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
 
@@ -114,26 +114,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getValue(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="valueExists" returntype="any" access="public" output="false">
+<cffunction name="valueExists" output="false">
 	<cfargument name="property" type="string" required="true">
 		<cfreturn structKeyExists(variables.event,arguments.property) />
 </cffunction>
 
-<cffunction name="removeValue" access="public" output="false">
+<cffunction name="removeValue" output="false">
 	<cfargument name="property" type="string" required="true"/>
 		<cfset structDelete(variables.event,arguments.property) />
 		<cfreturn this>
 </cffunction>
 
-<cffunction name="getValues" returntype="any" access="public" output="false">
+<cffunction name="getValues" output="false">
 		<cfreturn variables.event />
 </cffunction>
 
-<cffunction name="getAllValues" returntype="any" access="public" output="false">
+<cffunction name="getAllValues" output="false">
 		<cfreturn variables.event />
 </cffunction>
 
-<cffunction name="getHandler" returntype="any" access="public" output="false">
+<cffunction name="getHandler" output="false">
 	<cfargument name="handler">
 	<cfif isObject(getValue('HandlerFactory'))>
 		<cfreturn getValue('HandlerFactory').get(arguments.handler & "Handler",getValue("localHandler")) />
@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getValidator" returntype="any" access="public" output="false">
+<cffunction name="getValidator" output="false">
 	<cfargument name="validation">
 	<cfif isObject(getValue('ValidatorFactory'))>
 		<cfreturn getValue('ValidatorFactory').get(arguments.validation & "Validator",getValue("localHandler")) />
@@ -152,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTranslator" returntype="any" access="public" output="false">
+<cffunction name="getTranslator" output="false">
 	<cfargument name="translator">
 	<cfif isObject(getValue('TranslatorFactory'))>
 		<cfreturn getValue('TranslatorFactory').get(arguments.translator & "Translator",getValue("localHandler")) />
@@ -161,17 +161,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getContentRenderer" returntype="any" access="public" output="false">
+<cffunction name="getContentRenderer" output="false">
 	<cfset var renderer=getValue('contentRenderer')>
 	<cfreturn getValue('contentRenderer')>
 	<cfreturn renderer />
 </cffunction>
 
-<cffunction name="getThemeRenderer" returntype="any" access="public" output="false" hint="deprecated: use getContentRenderer()">
+<cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
 	<cfreturn getContentRenderer() />
 </cffunction>
 
-<cffunction name="getSite" returntype="any" access="public" output="false">
+<cffunction name="getSite" output="false">
 	<cfif len(getValue('siteid'))>
 		<cfreturn getBean('settingsManager').getSite(getValue('siteid')) />
 	<cfelse>
@@ -179,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getServiceFactory" returntype="any" access="public" output="false">
+<cffunction name="getServiceFactory" output="false">
 	<cfif isDefined('application') and structKeyExists(application,'serviceFactory')>
 		<cfreturn application.serviceFactory />
 	<cfelseif structKeyExists(variables,'applicationScope')><!--- in case this is called in the onRequestEnd() --->
@@ -188,11 +188,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getMuraScope" returntype="any" access="public" output="false">
+<cffunction name="getMuraScope" output="false">
 	<cfreturn getValue("MuraScope") />
 </cffunction>
 
-<cffunction name="getBean" returntype="any" access="public" output="false">
+<cffunction name="getBean" output="false">
 	<cfargument name="beanName">
 	<cfargument name="siteID" required="false">
 
@@ -203,11 +203,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="throwSiteIDError" returntype="any" access="public" output="false">
+<cffunction name="throwSiteIDError" output="false">
 	<cfthrow type="custom" message="The 'SITEID' was not defined for this event">
 </cffunction>
 
-<cffunction name="loadSiteRelatedObjects" returntype="any" access="public" output="false">
+<cffunction name="loadSiteRelatedObjects" output="false">
 
 	<cfif not isObject(getValue("HandlerFactory"))>
 		<cfset setValue('HandlerFactory',getBean('pluginManager').getStandardEventFactory(getValue('siteid')))>

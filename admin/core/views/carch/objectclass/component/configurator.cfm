@@ -56,12 +56,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-control-group">
 		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</label>
 		<select id="availableObjectSelector">
-			<option value="{object:'component',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component'))#',objectid:'unconfigured'}">
+			<option value="{object:'component',objectid:'unconfigured'}">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#
 			</option>`
 			<cfloop query="rc.rsComponents">
 				<cfset title=rc.rsComponents.menutitle>
-				<option <cfif rc.objectid eq rc.rsComponents.contentid and rc.object eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'component',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsComponents.contentid#'}">
+				<option <cfif rc.objectid eq rc.rsComponents.contentid and rc.object eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'component',objectid:'#rc.rsComponents.contentid#'}">
 					#esapiEncode('html',title)#
 				</option>
 			</cfloop>

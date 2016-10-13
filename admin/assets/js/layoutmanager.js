@@ -24,16 +24,16 @@
 			elDropHandled=false;
 			newMuraObject=false;
 			muraLooseDropTarget=null;
-			muraInlineEditor.sidebarAction('showobjects');
-			mura('.mura-object-selected').removeClass('mura-object-selected');
-			mura(this).addClass('mura-object-selected');
+			MuraInlineEditor.sidebarAction('showobjects');
+			Mura('.mura-object-selected').removeClass('mura-object-selected');
+			Mura(this).addClass('mura-object-selected');
 		}
 
 		function initDraggableObject_dragend(){
 			dragEl=null;
 			elDropHandled=false;
 			newMuraObject=false;
-			mura('.mura-object-selected').removeClass('mura-object-selected');
+			Mura('.mura-object-selected').removeClass('mura-object-selected');
 		}
 
 		function initDraggableObject_dragover(e){
@@ -41,7 +41,7 @@
 			e.dataTransfer.dropEffect = 'copy';
 
 			if(dragEl || newMuraObject){
-				var prev=mura('.mura-drop-target');
+				var prev=Mura('.mura-drop-target');
 				muraLooseDropTarget=this;
 
 				if(prev.length){
@@ -55,7 +55,7 @@
 					}
 				}
 
-				mura(this)
+				Mura(this)
 					.addClass('mura-drop-target')
 					.addClass('mura-' + getDropDirection(e,this));
 
@@ -63,14 +63,14 @@
 		}
 
 		function initDraggableObject_dragleave(e){
-			mura(this)
+			Mura(this)
 				.removeClass('mura-drop-target')
 				.removeClass('mura-append')
 				.removeClass('mura-prepend');
 
 			muraLooseDropTarget=null;
-			if(!mura(this).attr('class')){
-				mura(this).removeAttr('class');
+			if(!Mura(this).attr('class')){
+				Mura(this).removeAttr('class');
 			}
 		}
 
@@ -90,7 +90,7 @@
 
 		function initDraggableObject_drop(e){
 
-		    var target=mura('.mura-drop-target').node;
+		    var target=Mura('.mura-drop-target').node;
 
 		    if(target){
 			    if(dragEl || newMuraObject){
@@ -99,7 +99,7 @@
 						var dropDirection=getDropDirection(e,target);
 
 						if(target.getAttribute('data-object')=='container'){
-							var container=mura(target).children('.mura-object-content');
+							var container=Mura(target).children('.mura-object-content');
 							if(container.length){
 								if(!container.node.childNodes.length){
 									container.append(dragEl);
@@ -116,9 +116,9 @@
 								target.parentNode.insertBefore(dragEl,target);
 							}
 						}
-				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
-						mura('#adminSave').show();
-						mura(target).closest('.mura-region-local').data('dirty',true);
+				    	//dragEl.setAttribute('data-droptarget',Mura(this).getSelector());
+						Mura('#adminSave').show();
+						Mura(target).closest('.mura-region-local').data('dirty',true);
 						elDropHandled=true;
 						disabledEventPropagation(e);
 					} else if (dragEl==target){
@@ -132,7 +132,7 @@
 			}
 
 
-		    mura('.mura-drop-target')
+		    Mura('.mura-drop-target')
 		    	.removeClass('mura-drop-target')
 				.removeClass('mura-append')
 				.removeClass('mura-prepend');
@@ -140,15 +140,15 @@
 			muraLooseDropTarget=null;
 			newMuraObject=false;
 
-			if(!mura(target).attr('class')){
-				mura(target).removeAttr('class');
+			if(!Mura(target).attr('class')){
+				Mura(target).removeAttr('class');
 			}
 
 		}
 
 	    function initDraggableObject(item){
 
-			mura(item)
+			Mura(item)
 			.off('dragenter',initDraggableObject_dragstart)
 			.off('dragover',initDraggableObject_dragover)
 			.off('drop',initDraggableObject_drop)
@@ -161,18 +161,35 @@
 			.hover(
 				function(e){
 					//e.stopPropagation();
-					mura('.mura-active-target').removeClass('mura-active-target');
-					var self=mura(this);
+					Mura('.mura-active-target').removeClass('mura-active-target');
+					var self=Mura(this);
 					if(!self.hasClass('mura-object-selected')){
-						mura(this).addClass('mura-active-target');
+						Mura(this).addClass('mura-active-target');
 					}
 				},
 				function(e){
 					//e.stopPropagation();
 
-					mura(this).removeClass('mura-active-target');
+					Mura(this).removeClass('mura-active-target');
 				}
 			);
+		}
+
+		function applyObjectTargetClass(item,e,This){
+			if(item.closest('.mura-region').length){
+				var parentObj=item.parent().closest('.mura-object');
+
+				while(parentObj.length && parentObj.data('object')!='container'){
+					item=parentObj;
+					parentObj=parentObj.parent().closest('.mura-object');
+				}
+
+				if(item.length){
+					item
+						.addClass('mura-drop-target')
+						.addClass('mura-' + getDropDirection(e,This));
+				}
+			}
 		}
 
 		function initLooseDropTarget_dragenter(e){
@@ -180,14 +197,14 @@
 			//disabledEventPropagation(e)
 			e.dataTransfer.dropEffect = 'copy';
 
-			if(!mura('.mura-drop-target').length && (dragEl || newMuraObject)){
+			if(!Mura('.mura-drop-target').length && (dragEl || newMuraObject)){
 
-				var item=mura(this).closest(".mura-object");
+				var item=Mura(this).closest(".mura-object");
 
 				if(item.length){
-					item.addClass('mura-drop-target');
+					applyObjectTargetClass(item,e,this);
 				} else {
-					mura(this)
+					Mura(this)
 						.addClass('mura-drop-target')
 						.addClass('mura-' + getDropDirection(e,this));
 				}
@@ -202,7 +219,7 @@
 			e.preventDefault();
 
 			if(dragEl || newMuraObject){
-				var prev=mura('.mura-drop-target');
+				var prev=Mura('.mura-drop-target');
 				muraLooseDropTarget=this;
 
 				if(prev.length){
@@ -216,21 +233,19 @@
 					}
 				}
 
-				var item=mura(this).closest('.mura-object');
+				var item=Mura(this).closest('.mura-object');
 
 				if(item.length){
-					item
-						.addClass('mura-drop-target')
-						.addClass('mura-' + getDropDirection(e,this));
+					applyObjectTargetClass(item,e,this);
 				} else {
-					item=mura(this).closest('.mura-object');
+					item=Mura(this).closest('.mura-object');
 
 					if(item.length){
 						item
 							.addClass('mura-drop-target')
 							.addClass('mura-' + getDropDirection(e,this));
 					} else {
-						mura(this)
+						Mura(this)
 							.addClass('mura-drop-target')
 							.addClass('mura-' + getDropDirection(e,this));;
 					}
@@ -240,14 +255,14 @@
 		}
 
 		function initLooseDropTarget_dragleave(e){
-			mura(this)
+			Mura(this)
 				.removeClass('mura-drop-target')
 				.removeClass('mura-append')
 				.removeClass('mura-prepend');
 
 			muraLooseDropTarget=null;
-			if(!mura(this).attr('class')){
-				mura(this).removeAttr('class');
+			if(!Mura(this).attr('class')){
+				Mura(this).removeAttr('class');
 			}
 		}
 
@@ -256,7 +271,7 @@
 
 		    if(dragEl || newMuraObject){
 
-		    	var target=mura('.mura-drop-target').node;
+		    	var target=Mura('.mura-drop-target').node;
 
 		    	if(target){
 
@@ -264,7 +279,7 @@
 				    	var dropDirection=getDropDirection(e,target);
 
 				    	if(target.getAttribute('data-object')=='container'){
-							var container=mura(target).children('.mura-object-content');
+							var container=Mura(target).children('.mura-object-content');
 							if(!container.node.childNodes.length){
 								container.append(dragEl);
 							} else {
@@ -280,15 +295,15 @@
 							} catch(e){};
 						}
 
-				    	var mDragEl=mura(dragEl);
-						mura('#adminSave').show();
+				    	var mDragEl=Mura(dragEl);
+						Mura('#adminSave').show();
 						mDragEl.addClass('mura-async-object');
 
 						if(!(mDragEl.data('object')=='text' && mDragEl.data('render')=='client' && mDragEl.data('async')=='false')){
 							mDragEl.data('async',true);
 						}
 
-						mura(target).closest('.mura-region-local').data('dirty',true);
+						Mura(target).closest('.mura-region-local').data('dirty',true);
 
 						initDraggableObject(target);
 						elDropHandled=true;
@@ -305,7 +320,7 @@
 
 			}
 
-			mura('.mura-drop-target')
+			Mura('.mura-drop-target')
 				.removeClass('mura-drop-target')
 				.removeClass('mura-append')
 				.removeClass('mura-prepend');
@@ -313,13 +328,13 @@
 			muraLooseDropTarget=null;
 			newMuraObject=false;
 
-			if(!mura(this).attr('class')){
-				mura(this).removeAttr('class');
+			if(!Mura(this).attr('class')){
+				Mura(this).removeAttr('class');
 			}
 		}
 
 		function initLooseDropTarget(item){
-			mura(item)
+			Mura(item)
 			.off('dragenter',initLooseDropTarget_dragenter)
 			.off('dragover',initLooseDropTarget_dragover)
 			.off('drop',initLooseDropTarget_drop)
@@ -331,8 +346,8 @@
 		}
 
 	    function initClassObjects(){
-	    	mura(".mura-objectclass").each(function(){
-				var item=mura(this);
+	    	Mura(".mura-objectclass").each(function(){
+				var item=Mura(this);
 
 				if(!item.data('inited')){
 					item.attr('draggable',true);
@@ -342,17 +357,17 @@
 						elDropHandled=false;
 						newMuraObject=true;
 						muraLooseDropTarget=null;
-						mura('#dragtype').html(item.data('object'));
-						mura('.mura-sidebar').addClass('mura-sidebar--dragging');
+						Mura('#dragtype').html(item.data('object'));
+						Mura('.mura-sidebar').addClass('mura-sidebar--dragging');
 
 						e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:item.data('objectname'),objectid:item.data('objectid'),objecticonclass:item.data('objecticonclass'),}));
 					})
 					.on('dragend',function(){
-						mura('#dragtype').html('');
+						Mura('#dragtype').html('');
 						dragEl=null;
 						elDropHandled=false;
 						newMuraObject=false;
-						mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
+						Mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
 					});
 
 					item.data('inited',true);
@@ -386,16 +401,16 @@
 				displayObject.setAttribute('data-objecticonclass',object.objecticonclass);
 				displayObject.setAttribute('data-async',true);
 				displayObject.setAttribute('data-perm','author');
-				displayObject.setAttribute('data-instanceid',mura.createUUID());
+				displayObject.setAttribute('data-instanceid',Mura.createUUID());
 				displayObject.setAttribute('class','mura-async-object mura-object mura-active');
 
 				if(object.objectid){
 					displayObject.setAttribute('data-objectid',object.objectid);
 				} else {
-					displayObject.setAttribute('data-objectid',mura.createUUID());
+					displayObject.setAttribute('data-objectid',Mura.createUUID());
 				}
 
-		        var target=mura(this);
+		        var target=Mura(this);
 
 		        var dropDirection=getDropDirection(e,this);
 
@@ -425,18 +440,12 @@
 		        }
 
 		        initDraggableObject(displayObject);
+		        openFrontEndToolsModal(displayObject);
+		        Mura.processAsyncObject(displayObject);
 
-		        var objectData=mura(displayObject).data();
-
-		        if(muraInlineEditor.objectHasConfigurator(objectData)){
-		        	openFrontEndToolsModal(displayObject);
-		    	}
-
-		        mura.processAsyncObject(displayObject);
-
-		        mura(displayObject).closest('.mura-region-local').data('dirty',true);
-		        mura(displayObject).on('dragover',function(){})
-		        mura('#adminSave').show();
+		        Mura(displayObject).closest('.mura-region-local').data('dirty',true);
+		        Mura(displayObject).on('dragover',function(){})
+		        Mura('#adminSave').show();
 				disabledEventPropagation(e);
 
 		    }
@@ -447,17 +456,17 @@
 			var pars = 'muraAction=cArch.loadclass&compactDisplay=true&layoutmanager=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
 
 			if(classid == 'plugins'){
-				var d = mura('#pluginList');
+				var d = Mura('#pluginList');
 			} else {
-				var d = mura('#classList');
+				var d = Mura('#classList');
 
-				mura('#classListContainer').show();
+				Mura('#classListContainer').show();
 			}
 
-			d.html(mura.preloaderMarkup);
+			d.html(Mura.preloaderMarkup);
 
-			mura.ajax({
-				url:mura.adminpath + "?" + pars,
+			Mura.ajax({
+				url:Mura.adminpath + "?" + pars,
 				success:function(data) {
 					d.html(data);
 					initClassObjects();
@@ -469,116 +478,120 @@
 
 		 function initLayoutManager(el){
 
-		 	if(el){
-			 	var obj=(el.node) ? el : mura(el);
-				el =el.node || el;
-			} else {
-				var obj=mura('body');
-				el= obj.node;
+			Mura.loader().loadjs(
+				Mura.adminpath + '/assets/js/ios-drag-drop.js',
+				function(){
+				if(el){
+				 	var obj=(el.node) ? el : Mura(el);
+					el =el.node || el;
+				} else {
+					var obj=Mura('body');
+					el= obj.node;
 
-				initClassObjects();
+					initClassObjects();
 
-				mura('body')
-				.removeClass('mura-sidebar-state__hidden--right')
-				.addClass('mura-sidebar-state__pushed--right');
-			}
-
-			var iframe=mura('#frontEndToolsSidebariframe');
-
-			iframe.attr('src',iframe.data('preloadsrc'));
-
-			obj.find('.mxp-editable').each(function(){
-				var item=mura(this);
-
-				if(!item.hasClass('mura-region-local')){
-					item.addClass('mura-region-local');
-					item.data('inited',false);
-					item.data('loose',true);
+					Mura('body')
+					.removeClass('mura-sidebar-state__hidden--right')
+					.addClass('mura-sidebar-state__pushed--right');
 				}
-			});
 
-			obj.find('.mura-region-local[data-inited="false"]').each(function(){
+				var iframe=Mura('#frontEndToolsSidebariframe');
 
-				var region=mura(this);
+				iframe.attr('src',iframe.data('preloadsrc'));
 
-				if(!region.data('loose') || (region.data('loose') && (region.html() == '<p></p>') || mura.trim(region.html()) =='' )){
-					region.on('drop',function(e) {
-					    var dropParent, dropIndex, dragIndex;
+				obj.find('.mxp-editable').each(function(){
+					var item=Mura(this);
 
-					    e.preventDefault();
-
-					    if(mura(this).find('.mura-object').length){
-					    	return;
-					    }
-
-					    if (e.stopPropagation) {
-					        e.stopPropagation();
-					    }
-
-					    if (dragEl && dragEl !== this) {
-						    dropParent = this.parentNode;
-						    dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);
-					        dropIndex = slice(this.parentNode.children).indexOf(this);
-					        if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex){
-					            dropParent.insertBefore(dragEl, this.nextSibling);
-					        } else {
-					        	this.appendChild(dragEl);
-					        }
-
-					        mura('#adminSave').show();
-					        mura(dragEl).data('async',true);
-					        mura(dragEl).addClass('mura-async-object');
-					        mura(this).data('dirty',true);
-					        elDropHandled=true;
-					        disabledEventPropagation(e);
-					    } else if (dragEl==this){
-					    	elDropHandled=true;
-					    	disabledEventPropagation(e);
-					    }
-
-				      	checkForNew.call(this,e);
-
-				      	muraLooseDropTarget=null;
-				      	mura('.mura-drop-target')
-				      		.removeClass('mura-drop-target')
-							.removeClass('mura-append')
-							.removeClass('mura-prepend');
-
-				      	return true;
-		   			})
-					.on('dragover',function(e){
-						e.preventDefault();
-						e.dataTransfer.dropEffect = 'copy';
-					}).data('inited','true');
-
-				}
-			});
-
-			obj.find('.mura-region-local .mura-object').each(function(){ initDraggableObject(this)});
-
-			obj.find('.mura-object[data-object="container"], .mura-region-local div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
-
-			obj.find('.mura-body-object,.mura-object[data-object="folder"],.mura-object[data-object="calendar"],.mura-object[data-object="gallery"]')
-			.hover(
-				function(e){
-					//e.stopPropagation();
-					mura('.mura-active-target').removeClass('mura-active-target');
-					var self=mura(this);
-					if(!self.hasClass('mura-object-selected')){
-						mura(this).addClass('mura-active-target');
+					if(!item.hasClass('mura-region-local')){
+						item.addClass('mura-region-local');
+						item.data('inited',false);
+						item.data('loose',true);
 					}
-				},
-				function(e){
-					//e.stopPropagation();
-					mura(this).removeClass('mura-active-target');
-				}
-			);
+				});
+
+				obj.find('.mura-region-local[data-inited="false"]').each(function(){
+
+					var region=Mura(this);
+
+					if(!region.data('loose') || (region.data('loose') && (region.html() == '<p></p>') || Mura.trim(region.html()) =='' )){
+						region.on('drop',function(e) {
+						    var dropParent, dropIndex, dragIndex;
+
+						    e.preventDefault();
+
+						    if(Mura(this).find('.mura-object').length){
+						    	return;
+						    }
+
+						    if (e.stopPropagation) {
+						        e.stopPropagation();
+						    }
+
+						    if (dragEl && dragEl !== this) {
+							    dropParent = this.parentNode;
+							    dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);
+						        dropIndex = slice(this.parentNode.children).indexOf(this);
+						        if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex){
+						            dropParent.insertBefore(dragEl, this.nextSibling);
+						        } else {
+						        	this.appendChild(dragEl);
+						        }
+
+						        Mura('#adminSave').show();
+						        Mura(dragEl).data('async',true);
+						        Mura(dragEl).addClass('mura-async-object');
+						        Mura(this).data('dirty',true);
+						        elDropHandled=true;
+						        disabledEventPropagation(e);
+						    } else if (dragEl==this){
+						    	elDropHandled=true;
+						    	disabledEventPropagation(e);
+						    }
+
+					      	checkForNew.call(this,e);
+
+					      	muraLooseDropTarget=null;
+					      	Mura('.mura-drop-target')
+					      		.removeClass('mura-drop-target')
+								.removeClass('mura-append')
+								.removeClass('mura-prepend');
+
+					      	return true;
+			   			})
+						.on('dragover',function(e){
+							e.preventDefault();
+							e.dataTransfer.dropEffect = 'copy';
+						}).data('inited','true');
+
+					}
+				});
+
+				obj.find('.mura-region-local .mura-object').each(function(){ initDraggableObject(this)});
+
+				obj.find('.mura-object[data-object="container"], .mura-region-local div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
+
+				obj.find('.mura-body-object')
+				.hover(
+					function(e){
+						//e.stopPropagation();
+						Mura('.mura-active-target').removeClass('mura-active-target');
+						var self=Mura(this);
+						if(!self.hasClass('mura-object-selected')){
+							Mura(this).addClass('mura-active-target');
+						}
+					},
+					function(e){
+						//e.stopPropagation();
+						Mura(this).removeClass('mura-active-target');
+					}
+				);
+			});
 
 	    }
 
-		mura.initLayoutManager=initLayoutManager;
-		mura.loadObjectClass=loadObjectClass;
-		mura.initLooseDropTarget=initLooseDropTarget;
-		mura.initDraggableObject=initDraggableObject;
+		Mura.initLayoutManager=initLayoutManager;
+		Mura.loadObjectClass=loadObjectClass;
+		Mura.initLooseDropTarget=initLooseDropTarget;
+		Mura.initDraggableObject=initDraggableObject;
 
 	})(window);

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 
 <cfset variables.datasource=arguments.configBean.getDatasource() />
@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 </cffunction>
 
-<cffunction name="clearOldData" returnType="void" access="public">
+<cffunction name="clearOldData">
 	<cfset var requestTime=now()>
 	
 	<cfif variables.clearHistory
@@ -196,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="deleteSession" access="public" returntype="void">
+<cffunction name="deleteSession">
 	<cfargument name="URLToken" type="string" required="yes"/>
 	<cfquery>
 	delete from tsessiontracking 

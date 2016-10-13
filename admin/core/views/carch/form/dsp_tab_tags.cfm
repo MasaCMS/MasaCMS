@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfloop list="#rc.contentBean.getTags()#" index="i">
 						<span class="tag">
 							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-						<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+						    <input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 						</span>
 					</cfloop>
 				</cfif>

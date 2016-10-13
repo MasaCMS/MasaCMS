@@ -64,7 +64,7 @@ $(function(){
 		}
 
 		frontEndProxy.addEventListener(onFrontEndMessage);
-		frontEndProxy.post({cmd:'setWidth',width:'standard'});
+		frontEndProxy.post({cmd:'setWidth',width:800});
 		frontEndProxy.post({
 			cmd:'requestObjectParams',
 			instanceid:'#esapiEncode("javascript",rc.instanceid)#',

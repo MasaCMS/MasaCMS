@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "">
 </cffunction>
 
-<cffunction name="setType" output="false" access="public">
+<cffunction name="setType" output="false">
 		<cfargument name="Type" type="string" required="true">
 		<cfset arguments.Type=trim(arguments.Type)>
 
@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSubType" output="false" access="public">
+<cffunction name="setSubType" output="false">
 		<cfargument name="SubType" type="string" required="true">
 	<cfset arguments.subType=trim(arguments.subType)>
 	<cfif len(arguments.subType) and variables.instance.SubType neq arguments.SubType>
@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSiteID" output="false" access="public">
+<cffunction name="setSiteID" output="false">
 		<cfargument name="SiteID" type="string" required="true">
 	<cfif len(arguments.siteID) and trim(arguments.siteID) neq variables.instance.siteID>
 		<cfset variables.instance.SiteID = trim(arguments.SiteID) />
@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getExtendedData" returntype="any" output="false" access="public">
+<cffunction name="getExtendedData" output="false">
 	<cfif not isObject(variables.instance.extendData)>
 		<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(
 				baseID=getExtendBaseID()
@@ -127,20 +127,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.extendData />
 </cffunction>
 
-<cffunction name="purgeExtendedData" output="false" access="public">
+<cffunction name="purgeExtendedData" output="false">
 	<cfset variables.instance.extendData=""/>
 	<cfset variables.instance.extendAutoComplete = true />
 	<cfset variables.instance.sourceIterator = "" />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
+<cffunction name="getExtendedAttribute" output="false">
 	<cfargument name="key" type="string" required="true">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false">
 		<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
 </cffunction>
 
-<cffunction name="appendMissingAttributes" returnType="string" output="false" access="public">
+<cffunction name="appendMissingAttributes" output="false">
 	<cfif not variables.missingDefaultAppended>
 		<cfset getBean('configBean')
 		.getClassExtensionManager()
@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getExtendedAttributes" returnType="struct" output="false" access="public">
+<cffunction name="getExtendedAttributes" returnType="struct" output="false">
 	<cfargument name="name" default="" hint="Extend Set Name" />
 
 	<cfset var extendSetData = getExtendedData().getAllExtendSetData() />
@@ -177,12 +177,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn extendSetData />
 </cffunction>
 
-<cffunction name="getExtendedAttributesList" returnType="string" output="false" access="public">
+<cffunction name="getExtendedAttributesList" output="false">
 	<cfargument name="name" default="" hint="Extend Set Name" />
 	<cfreturn StructKeyList(getExtendedAttributes(name=arguments.name)) />
 </cffunction>
 
-<cffunction name="getExtendedAttributesQuery" returnType="any" output="false" access="public">
+<cffunction name="getExtendedAttributesQuery" output="false">
 	<cfargument name="name" default="" hint="Extend Set Name" />
 
 	<cfscript>
@@ -213,7 +213,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsAttributes />
 </cffunction>
 
-<cffunction name="setValue" returntype="any" access="public" output="false">
+<cffunction name="setValue" output="false">
 	<cfargument name="property"  type="string" required="true">
 	<cfargument name="propertyValue" default="" >
 
@@ -234,7 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getValue" returntype="any" access="public" output="false">
+<cffunction name="getValue" output="false">
 	<cfargument name="property" type="string" required="true">
 	<cfargument name="defaultValue">
 	<cfset var tempValue="">
@@ -272,7 +272,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+<cffunction name="getAllValues" returntype="struct" output="false">
 	<cfargument name="autocomplete" required="true" default="#variables.instance.extendAutoComplete#">
 	<cfset var i="">
 	<cfset var extData="">

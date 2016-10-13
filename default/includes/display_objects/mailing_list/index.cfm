@@ -98,7 +98,7 @@
 		<cfelse>
 
 			<!--- THE FORM --->
-			<form role="form" class="#this.mailingListFormClass#" name="frmMailingList" action="?nocache=1" method="post" onsubmit="return mura.validateForm(this);" novalidate="novalidate" >
+			<form role="form" class="#this.mailingListFormClass#" name="frmMailingList" action="?nocache=1" method="post" onsubmit="return Mura.validateForm(this);" novalidate="novalidate" >
 				<fieldset>
 					<legend>#HTMLEditFormat(variables.rslist.name)#</legend>
 

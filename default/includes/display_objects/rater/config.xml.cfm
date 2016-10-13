@@ -1,1 +1,1 @@
-<displayobject name="Rater" />
+<mura name="Rater" />

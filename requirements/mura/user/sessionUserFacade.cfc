@@ -2,7 +2,7 @@
 
 <cfset variables.userBean="">
 
-<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
+<cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
 <cfargument name="MissingMethodArguments" type="struct" required="true" />
 <cfset var prop="">
@@ -44,12 +44,12 @@
 
 </cffunction>
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 	<cfset variables.sessionData=getSession()>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getValue" access="public" returntype="any" output="false">
+<cffunction name="getValue" output="false">
 	<cfargument name="property">
 	<cfset var theValue="">
 
@@ -67,7 +67,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="setValue" access="public" returntype="any" output="false">
+<cffunction name="setValue" output="false">
 	<cfargument name="property">
 	<cfargument name="propertyValue">
 
@@ -76,7 +76,23 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getUserBean" access="public" returntype="any" output="false">
+<cffunction name="set" output="false">
+	<cfargument name="property">
+	<cfargument name="propertyValue">
+	<cfset setValue(argumentCollection=arguments)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="get" output="false">
+	<cfargument name="property">
+	<cfreturn getValue(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="getAll" output="false">
+	<cfreturn getAllValues()>
+</cffunction>
+
+<cffunction name="getUserBean" output="false">
 	<cfif isObject(variables.userBean) >
 		<cfreturn variables.userBean>
 	<cfelse>
@@ -88,7 +104,7 @@
 	<cfreturn variables.userBean>
 </cffunction>
 
-<cffunction name="getFullName" access="public" returntype="any" output="false">
+<cffunction name="getFullName" output="false">
 	<cfif hasSession()>
 		<cfreturn trim("#variables.sessionData.mura.fname# #variables.sessionData.mura.lname#")>
 	<cfelse>
@@ -96,7 +112,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isInGroup" access="public" returntype="boolean" output="false">
+<cffunction name="isInGroup" returntype="boolean" output="false">
 	<cfargument name="group">
 	<cfargument name="isPublic" hint="optional">
 	<cfset var siteid=variables.sessionData.mura.siteID>
@@ -130,7 +146,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isPrivateUser" access="public" returntype="boolean" output="false">
+<cffunction name="isPrivateUser" returntype="boolean" output="false">
 	<cfset var siteid=variables.sessionData.mura.siteID>
 
 	<cfif hasSession()>
@@ -146,7 +162,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isSuperUser" access="public" returntype="boolean" output="false">
+<cffunction name="isSuperUser" returntype="boolean" output="false">
 	<cfif hasSession()>
 		<cfreturn application.permUtility.isS2() />
 	<cfelse>
@@ -154,7 +170,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isAdminUser" access="public" returntype="boolean" output="false">
+<cffunction name="isAdminUser" returntype="boolean" output="false">
 	<cfif hasSession()>
 		<cfreturn isInGroup('Admin',0) />
 	<cfelse>
@@ -162,7 +178,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isLoggedIn" access="public" returntype="boolean" output="false">
+<cffunction name="isLoggedIn" returntype="boolean" output="false">
 	<cfif hasSession()>
 		<cfreturn variables.sessionData.mura.isLoggedIn>
 	<cfelse>
@@ -170,7 +186,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isPassedLockdown" access="public" returntype="boolean" output="false">
+<cffunction name="isPassedLockdown" returntype="boolean" output="false">
 	<cfif not structKeyExists(cookie, "passedLockdown")>
 		<cfcookie name="passedLockdown" value="false" expires="never" httpOnly="true" secure="#application.configBean.getValue('secureCookies')#">
 	</cfif>
@@ -181,7 +197,7 @@
 	<cfreturn isDefined("variables.sessionData.mura")>
 </cffunction>
 
-<cffunction name="logout" access="public" returntype="any" output="false">
+<cffunction name="logout" output="false">
 	<cfset getBean('loginManager').logout()>
 	<cfreturn this>
 </cffunction>

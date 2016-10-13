@@ -91,6 +91,7 @@
 	</cfsilent>
 	<cfif objectParams.format eq 'list'>
 		<cfset objectParams.sourcetype='calendar'>
+		<cfset structDelete(objectParams,'isbodyobject')>
 		#variables.dspObject(object='collection',objectid=variables.$.content('contentid'),params=objectParams)#
 	<cfelse>
 
@@ -197,7 +198,7 @@
 
 			$('.mura-calender__filters').show();
 
-			mura.loader()
+			Mura.loader()
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})
 				.loadjs(
@@ -296,7 +297,6 @@
 <cfsilent>
 <!-- delete params that we don't want to persist --->
 <cfset structDelete(objectParams,'dateparams')>
-<cfset structDelete(objectParams,'items')>
 <cfset structDelete(objectParams,'categoryid')>
 <cfset structDelete(objectParams,'tag')>
 <cfset structDelete(objectParams,'sortyby')>

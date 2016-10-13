@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       handlebars: {
           all: {
               files: {
-                  'src/templates/compiled.js': 'src/templates/*.hb'
+                  'src/templates/compiled.js': ['src/templates/*.hb','src/templates/*.hbs']
               },
               options: {
                    namespace: 'mura.templates',
@@ -41,6 +41,8 @@ module.exports = function(grunt) {
           'external/polyfill.js',
           'external/handlebars.runtime-v4.0.5.js',
           'src/mura.js',
+          //'src/mura.purl.js',
+          //'src/mura.ua-parser.js',
           'src/mura.loader.js',
           'src/mura.core.js',
           'src/mura.cache.js',
@@ -48,10 +50,9 @@ module.exports = function(grunt) {
           'src/mura.entity.js',
           'src/mura.entitycollection.js',
           'src/mura.feed.js',
-          'src/mura.render.js',
           'src/mura.templates.js',
           'src/mura.ui.js',
-          'src/mura.ui.form.js',
+          'src/mura.displayobject.form.js',
           'src/mura.init.js',
           'src/templates/compiled.js'
           ],

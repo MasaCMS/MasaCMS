@@ -326,7 +326,9 @@
 					var pagefields = _formData.pages.splice( pageblockid-1,1 );
 
 					if (pagefields && pagefields[0].length) {
-						_formData.pages[pageblockid - 2].push(pagefields[0]);
+						for(var f=0;f < pagefields[0].length;f++){
+							_formData.pages[pageblockid - 2].push(pagefields[0][f]);
+						}
 					}
 
 					setActivePage( pageblockid-1 );

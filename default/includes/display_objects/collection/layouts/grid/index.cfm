@@ -45,31 +45,31 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfparam name="arguments.objectParams.gridstyle" default="mura-grid-two">
-	<cfparam name="arguments.objectParams.imageSize" default="medium">
-	<cfparam name="arguments.objectParams.imageHeight" default="AUTO">
-	<cfparam name="arguments.objectParams.imageWidth" default="AUTO">
-	<cfparam name="arguments.objectParams.modalimages" default="false">
+	<cfparam name="objectParams.gridstyle" default="mura-grid-two">
+	<cfparam name="objectParams.imageSize" default="medium">
+	<cfparam name="objectParams.imageHeight" default="AUTO">
+	<cfparam name="objectParams.imageWidth" default="AUTO">
+	<cfparam name="objectParams.modalimages" default="false">
 
 	<cfset imageSizeArgs={
-		size=arguments.objectParams.imageSize,
-		height=arguments.objectParams.imageHeight,
-		width=arguments.objectParams.imageWidth
+		size=objectParams.imageSize,
+		height=objectParams.imageHeight,
+		width=objectParams.imageWidth
 	}>
 </cfsilent>
 <cfoutput>
-<div class="mura-collection #arguments.objectParams.gridstyle#">
+<div class="mura-collection #objectParams.gridstyle#">
 	<cfloop condition="iterator.hasNext()">
 	<cfsilent>
-		<cfset item=arguments.iterator.next()>
+		<cfset item=iterator.next()>
 	</cfsilent>
 	<div class="mura-collection-item">
 
 		<div class="mura-collection-item__holder">
-			<cfif listFindNoCase(arguments.objectParams.displaylist,'Image')>
+			<cfif listFindNoCase(objectParams.displaylist,'Image')>
 			<div class="mura-item-content">
 				<cfif item.hasImage()>
-					<cfif arguments.objectparams.modalimages>
+					<cfif objectparams.modalimages>
 						<a href="#item.getImageURL(size='large')#" title="#esapiEncode('html_attr',item.getValue('title'))#" data-rel="shadowbox[gallery]" class="#this.contentListItemImageLinkClass#"><img src="#item.getImageURL(argumentCollection=imageSizeArgs)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
 					<cfelse>
 						<a href="#item.getURL()#"><img src="#item.getImageURL(argumentCollection=imageSizeArgs)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
@@ -77,24 +77,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</div>
 			</cfif>
-			#variables.$.dspObject_include(
+			#m.dspObject_include(
 				theFile='collection/includes/dsp_meta_list.cfm',
 				item=item,
-				fields=arguments.objectParams.displaylist
+				fields=objectParams.displaylist
 			)#
 		</div>
 	</div>
 	</cfloop>
 </div>
 
-#variables.$.dspObject_include(
+#m.dspObject_include(
 	theFile='collection/includes/dsp_pagination.cfm',
 	iterator=iterator,
 	nextN=iterator.getNextN(),
-	source=arguments.objectParams.source
+	source=objectParams.source
 )#
 
-<cfif len(arguments.objectParams.viewalllink)>
-	<a class="view-all" href="#arguments.objectParams.viewalllink#">#HTMLEditFormat(arguments.objectParams.viewalllabel)#</a>
+<cfif len(objectParams.viewalllink)>
+	<a class="view-all" href="#objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
 </cfif>
 </cfoutput>

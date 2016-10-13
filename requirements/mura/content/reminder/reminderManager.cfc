@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="reminderGateway" type="any" required="yes"/>
 <cfargument name="reminderDAO" type="any" required="yes"/>
@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 	
-<cffunction name="sendReminders" returntype="void" access="public" output="false">
+<cffunction name="sendReminders" output="false">
 	<cfargument name="theTime" default="#now()#" required="yes">
 	<cfset var rs=variables.instance.gateway.getReminders(arguments.theTime) />
 	
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="setReminder" returntype="void" access="public" output="false">
+<cffunction name="setReminder" output="false">
  <cfargument name="contentid" type="string">
  <cfargument name="siteid" type="string">
  <cfargument name="email" type="string">
@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="updateReminders" returntype="void" access="public" output="false">
+<cffunction name="updateReminders" output="false">
 <cfargument name="contentid" type="string">
 <cfargument name="siteid" type="string">
 <cfargument name="displaystart" type="string">
@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteReminders" returntype="void" access="public" output="false">
+<cffunction name="deleteReminders" output="false">
 <cfargument name="contentid" type="string">
 <cfargument name="siteid" type="string">
 

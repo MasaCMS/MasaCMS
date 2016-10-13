@@ -72,6 +72,7 @@
 </div>
 <div id="editDates" class="mura-control highlight"<cfif rc.contentBean.getdisplay() NEQ 2>style="display: none;"</cfif>>
 	<cfset displayInterval=rc.contentBean.getDisplayInterval().getAllValues()>
+
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 		<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">
@@ -79,7 +80,7 @@
 		<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
 	</div>
 	<cfif len(rc.$.globalConfig('tzRegex'))>
-	<div id="mura-tz-container mura-control-group" style="display:none">
+	<div id="mura-tz-container" class="mura-control-group" style="display:none">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
 		<cfset tz=CreateObject("java", "java.util.TimeZone")>
 		<cfset defaultTZ=tz.getDefault().getID()>
@@ -241,6 +242,12 @@
 				daysofweek: getDaysOfWeek()
 			};
 
+			if(!options.repeats && options.allday){
+				$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());
+				$('##mura-datepicker-displayStop').trigger('change');
+				options.endon=$('##mura-datepicker-displayStop').val();
+			}
+
 			$('##displayInterval').val(JSON.stringify(options));
 		}
 
@@ -379,6 +386,7 @@
 				$('##mura-displayStopMinute').show();
 				$('##mura-displayStopDayPart').show();
 				$('##displayIntervalToLabel').show();
+				$('##mura-tz-container').show();
 			}
 
 			updateDisplayInterval();
@@ -423,9 +431,9 @@
 		$('##displayIntervalType').on('change',toggleRepeatOptions);
 		$('##displayIntervalEnd').on('change',setEndOption);
 
-		var repeats=$('input[name="displayIntervalEvery"]').val();
+		var repeats=$('input[name="displayIntervalEvery"]').is(':checked');
 
-		if(!isNaN(repeats) && parseInt(repeats)){
+		if(repeats){
 			$('##displayIntervalRepeats').attr('checked',true);
 		}
 

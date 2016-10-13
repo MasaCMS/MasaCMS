@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.primaryKey = 'mlid'>
 <cfset variables.entityName = 'mailinglist'>
 
-<cffunction name="Init" access="public" returntype="any" output="false">
+<cffunction name="Init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.mlid="" />
@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLastUpdate" returnType="void" output="false" access="public">
+<cffunction name="setLastUpdate" output="false">
     <cfargument name="LastUpdate" type="string" required="true">
 	<cfif isDate(arguments.LastUpdate)>
     <cfset variables.instance.LastUpdate = parseDateTime(arguments.LastUpdate) />
@@ -97,14 +97,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getMLID" returnType="string" output="false" access="public">
+<cffunction name="getMLID" output="false">
     <cfif not len(variables.instance.MLID)>
 		<cfset variables.instance.MLID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.MLID />
 </cffunction>
  
-<cffunction name="setLastUpdateBy" returnType="void" output="false" access="public">
+<cffunction name="setLastUpdateBy" output="false">
     <cfargument name="LastUpdateBy" type="string" required="true">
     <cfset variables.instance.LastUpdateBy = left(trim(arguments.LastUpdateBy),50) />
 </cffunction>
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.mailinglistManager.delete(getMLID(),getSiteID())>
 </cffunction>
 
-<cffunction name="loadBy" returnType="any" output="false" access="public">
+<cffunction name="loadBy" output="false">
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=getSiteID()>
 	</cfif>

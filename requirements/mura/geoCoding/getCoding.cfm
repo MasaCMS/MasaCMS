@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfdump var="#qry#">
 </cfif>
 
-<cffunction name="getPerimeterMatches" hint="Returns all Records that match a certain radius from a given location" returntype="query">
+<cffunction name="getPerimeterMatches" hint="Returns all Records that match a certain radius from a given location">
 	<cfargument name="centerLongitude" type="numeric" required="Yes">
 	<cfargument name="centerLatitude" type="numeric" required="Yes">
 	<cfargument name="radius" type="numeric" required="Yes">

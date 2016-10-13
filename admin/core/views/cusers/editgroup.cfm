@@ -1,4 +1,4 @@
-<!--- 
+<!---
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -13,17 +13,17 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,12 +37,12 @@
 	 /index.cfm
 	 /MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#" />
@@ -105,11 +105,11 @@
 			<h1>#rbKey('user.groupform')#</h1>
 			<div class="nav-module-specific btn-group">
 				<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
-						<i class="mi-arrow-circle-left"></i> 
+						<i class="mi-arrow-circle-left"></i>
 					#rbKey('sitemanager.back')#
 				</a>
 				<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
-						<i class="mi-eye"></i>
+						<i class="mi-users"></i>
 					#rbKey('user.viewallgroups')#
 				</a>
 				<cfif !rc.userBean.getIsNew()>
@@ -119,13 +119,13 @@
 					</a>
 				</cfif>
 			</div>
-	</div> <!-- /.mura-header -->		
+	</div> <!-- /.mura-header -->
 </cfoutput>
 
 <!--- Edit Form --->
 	<cfoutput>
 		<cfif not structIsEmpty(rc.userBean.getErrors())>
-			<p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
+			<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
 		</cfif>
 
 		<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#')#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return userManager.submitForm(this);">
@@ -173,9 +173,31 @@
 				<!-- block header -->
 				<div class="block-header">
 					<h3 class="block-title">Basic Settings</h3>
-				</div> <!-- /.block header -->	
-				</cfif>					
+				</div> <!-- /.block header -->
+				</cfif>
 				<div class="block-content">
+
+				<!---
+					Group Type
+					** Only allow 'Admin' or Super Users to modify Group Types
+				--->
+				<cfif rc.isAdmin and not rc.userbean.getPerm()>
+					<div class="mura-control-group">
+						<label>
+							#rbKey('user.grouptype')#
+						</label>
+							<label class="radio inline">
+								<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.tempIsPublic>Checked</cfif>>
+								#rbKey('user.membergroup')#
+							</label>
+							<label class="radio inline">
+								<input name="isPublic" type="radio" class="radio inline" value="0" <cfif not rc.tempIsPublic>Checked</cfif>>
+									#rbKey('user.systemgroup')#
+							</label>
+						</div>
+				<cfelse>
+					<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
+				</cfif>
 
 				<cfif rsNonDefault.recordcount>
 					<div class="mura-control-group">
@@ -205,9 +227,9 @@
 				<div class="mura-control-group">
 						<label>
 
-					<span data-toggle="popover" title="" data-placement="right" 
-				  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"user.groupemailmessage"))#" 
-				  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"user.groupemail"))#">	
+					<span data-toggle="popover" title="" data-placement="right"
+				  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"user.groupemailmessage"))#"
+				  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"user.groupemail"))#">
 								#rbKey('user.groupemail')#
 								<i class="mi-question-circle"></i>
 							</span>
@@ -217,45 +239,19 @@
 
 				<cfif not rc.userbean.getperm()>
 					<div class="mura-control-group">
-
-							<label>
-								#rbKey('user.tablist')#
-							</label>
-								<select name="tablist" multiple="true">
-									<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
-									<cfloop list="#application.contentManager.getTabList()#" index="t">
-										<option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>
-											#rbKey("sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
-										</option>
-									</cfloop>
-								</select>
-							</div>
-						<!--- 
-							Group Type
-							** Only allow 'Admin' or Super Users to modify Group Types
-						--->
-						<cfif rc.isAdmin>
-							<div class="mura-control-group">
-								<label>
-									#rbKey('user.grouptype')#
-								</label>
-									<label class="radio inline">
-										<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.tempIsPublic>Checked</cfif>>
-										#rbKey('user.membergroup')#
-									</label>
-									<label class="radio inline">
-										<input name="isPublic" type="radio" class="radio inline" value="0" <cfif not rc.tempIsPublic>Checked</cfif>>
-											#rbKey('user.systemgroup')#
-									</label>
-								</div>
-						<cfelse>
-							<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
-						</cfif>
-
-				<cfelse>
-					<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
+					<label>
+						#rbKey('user.tablist')#
+					</label>
+						<select name="tablist" multiple="true">
+							<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
+							<cfloop list="#application.contentManager.getTabList()#" index="t">
+								<option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>
+									#rbKey("sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
+								</option>
+							</cfloop>
+						</select>
+					</div>
 				</cfif>
-
 
 			<span id="extendSetsBasic"></span>
 
@@ -273,8 +269,8 @@
 						<!-- block header -->
 						<div class="block-header">
 								<h3 class="block-title">Extended Attributes</h3>
-						</div> <!-- /.block header -->						
-						<div class="block-content">					
+						</div> <!-- /.block header -->
+						<div class="block-content">
 					<span id="extendSetsDefault"></span>
 						</div> <!-- /.block-content -->
 					</div> <!-- /.block-bordered -->
@@ -293,12 +289,12 @@
 							<!-- block header -->
 							<div class="block-header">
 						<h3 class="block-title">Plugin Events</h3>
-							</div> <!-- /.block header -->						
-							<div class="block-content">							
+							</div> <!-- /.block header -->
+							<div class="block-content">
 							#$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)#
 									</div> <!-- /.block-content -->
 								</div> <!-- /.block-bordered -->
-							</div> <!-- /.tab-pane -->							
+							</div> <!-- /.tab-pane -->
 					</cfloop>
 				</cfoutput>
 			</cfif>
@@ -323,14 +319,14 @@
 							<input type="hidden" name="subtype" value="Default"/>
 						</cfif>
 						#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
-					</div> 
-				</div> 
+					</div>
+				</div>
 
 				</div> <!-- /.block-content.tab-content -->
-						
+
 				<cfif rsSubTypes.recordcount>
 					<script type="text/javascript">
-						userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#'); 
+						userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
 					</script>
 				</cfif>
 			</cfoutput>
@@ -339,10 +335,10 @@
 				<div class="mura-actions">
 					<div class="form-actions">
 						<cfif rc.userid eq ''>
-							<button class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
+							<button type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
 						<cfelse>
-							<button class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
-							<button class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
+							<button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
+							<button type="button" class="btn mura-primary" onclick="userManager.submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
 						</cfif>
 						<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
 						<input type="hidden" name="action" value="#tempAction#">

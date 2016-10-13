@@ -80,8 +80,9 @@
 
   <form novalidate="novalidate" method="post" name="form1" action="./?muraAction=cPerm.update&contentid=#esapiEncode('url',rc.contentid)#&parentid=#esapiEncode('url',rc.parentid)#">
     <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
-<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),rc.rscontent.title)#</p>
+    <p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),rc.rscontent.title)#</p>
 
+    <cfif chains.hasNext() or rc.rslist.recordcount>
     <table class="mura-table-grid<cfif rc.rslist.recordcount lt 2> no-stripe</cfif>">
       <tr>
         <cfif chains.hasNext()>
@@ -96,7 +97,6 @@
         <th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
         <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
       </tr>
-
 
       <cfif chains.hasNext()>
         <tr>
@@ -123,31 +123,30 @@
             <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
             <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
             <td nowrap class="var-width">#esapiEncode('html',rc.rslist.GroupName)#</td>
-        </tr>
+            </tr>
         </cfloop>
-    <cfelse>
-     <tr>
-      <td class="noResults" colspan="#colspan#">
-        #application.rbFactory.getKeyValue(session.rb,'permissions.nogroups')#
-      </td>
-      </tr>
     </cfif>
     </table>
+    <cfelse>
+        <div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'permissions.nogroups')#</div>
+    </cfif>
+
 
     <cfset rc.rslist=rc.groups.publicGroups />
     <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>
-    <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')# #application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
-    <table class="mura-table-grid<cfif rc.rslist.recordcount lt 2> no-stripe</cfif>">
-      <tr>
-      <cfif chains.hasNext()><th>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchainexempt')#</th></cfif>
-            <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
-            <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
-      <th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th>
-      <cfif rc.moduleID eq '00000000000000000000000000000000000'><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
-      <th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
-            <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
-          </tr>
+    <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#<br>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
+
       <cfif rc.rslist.recordcount>
+          <table class="mura-table-grid<cfif rc.rslist.recordcount lt 2> no-stripe</cfif>">
+            <tr>
+            <cfif chains.hasNext()><th>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchainexempt')#</th></cfif>
+                  <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
+                  <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
+            <th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th>
+            <cfif rc.moduleID eq '00000000000000000000000000000000000'><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
+            <th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
+                  <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
+                </tr>
           <cfloop query="rc.rslist">
        <cfset perm=application.permUtility.getGroupPerm(rc.rslist.userid,rc.contentid,rc.siteid)/>
             <tr>
@@ -159,14 +158,11 @@
         <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
     <td nowrap class="var-width">#esapiEncode('html',rc.rslist.GroupName)#</td>
             </tr></cfloop>
-    <cfelse>
-     <tr>
-              <td class="noResults" colspan="#colspan#">
-      #application.rbFactory.getKeyValue(session.rb,'permissions.nogroups')#
-        </td>
-            </tr>
-    </cfif>
     </table>
+    <cfelse>
+        <div class="help-block-empty"> #application.rbFactory.getKeyValue(session.rb,'permissions.nogroups')#</div>
+    </cfif>
+
 
   <cfif chains.hasNext()>
   <h2>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchain')#</h2>

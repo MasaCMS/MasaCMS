@@ -49,7 +49,7 @@
 
 	<cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName, tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.ContactForm, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
 
-	<cffunction name="init" returntype="any" access="public" output="false">
+	<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
@@ -58,7 +58,7 @@
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="getUserGroups" returntype="query" access="public" output="false">
+	<cffunction name="getUserGroups" output="false">
 		<cfargument name="siteid" type="string" default="" />
 		<cfargument name="isPublic" type="numeric" default="0" />
 		<cfset var rsUserGroups = "" />
@@ -89,7 +89,7 @@
 		<cfreturn rsUserGroups />
 	</cffunction>
 
-	<cffunction name="getSearch" returntype="query" access="public" output="false">
+	<cffunction name="getSearch" output="false">
 		<cfargument name="search" type="string" default="" />
 		<cfargument name="siteid" type="string" default="" />
 		<cfargument name="isPublic" type="numeric" default="0" />
@@ -129,7 +129,7 @@
 		<cfreturn rsUserSearch />
 	</cffunction>
 
-	<cffunction name="getAdvancedSearch" returntype="query" access="public" output="false">
+	<cffunction name="getAdvancedSearch" output="false">
 		<cfargument name="data" type="any" default="" hint="This can be a struct or an instance of userFeedBean."/>
 		<cfargument name="siteid" type="any" hint="deprecated, use userFeedBean.setSiteID()" default=""/>
 		<cfargument name="isPublic" type="any" hint="deprecated, use userFeedBean.setIsPublic()" default=""/>
@@ -215,23 +215,33 @@
 		from tusers
 		left join tfiles on tusers.photofileID=tfiles.fileID
 
+		<cfset local.specifiedjoins=params.getJoins()>
+
+		<!--- Join to implied tables based on field prefix --->
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
 
 			<cfif arrayLen(params.getJoins())>
-				<cfset local.specifiedjoins=params.getJoins()>
 				<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
 					<cfif local.specifiedjoins[local.i].table eq jointable>
 						<cfset started=true>
-						#local.specifiedjoins[local.i].jointype# join #jointable# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
+						<!--- has explicit join clause--->
 						<cfbreak>
 					</cfif>
 				</cfloop>
 			</cfif>
 			<cfif not started>
-				inner join #jointable# on (tusers.userid=#jointable#.userid)
+				inner join #jointable# #tableModifier# on (tusers.userid=#jointable#.userid)
 			</cfif>
 		</cfloop>
+
+		<!--- Join to explicit tables based on join clauses --->
+		<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
+			<cfif len(local.specifiedjoins[local.i].clause)>
+				#local.specifiedjoins[local.i].jointype# join #local.specifiedjoins[local.i].table# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
+			</cfif>
+		</cfloop>
+
 
 		<cfif not arguments.countOnly and isExtendedSort>
 		left Join (select
@@ -302,41 +312,84 @@
 						#param.getFieldStatement()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
 						<cfset openGrouping=false />
 					<cfelseif len(param.getField())>
-						<cfset castfield="attributeValue">
-						tusers.userid IN (
-							select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
-							<cfif isNumeric(param.getField())>
-								where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
-							<cfelse>
-								inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
-								where
-								<cfif listLen(userPoolID) gt 1>
-									tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
+						<cfif not ((param.getCriteria() eq 'null' or param.getCriteria() eq '') and param.getCondition() eq 'is')>
+							<cfset castfield="attributeValue">
+							tusers.userid IN (
+								select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
+								<cfif isNumeric(param.getField())>
+									where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 								<cfelse>
-									tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
-								</cfif>
+									inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
+									where
+									<cfif listLen(userPoolID) gt 1>
+										tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
+									<cfelse>
+										tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
+									</cfif>
 
-								and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-							</cfif>
-							and
-							<cfif param.getCondition() neq "like">
-								<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),params.getsiteid())>
-							</cfif>
-							<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
-								upper(#castfield#)
-							<cfelse>
-								#castfield#
-							</cfif>
-							#param.getCondition()#
-							<cfif isListParam>
-								(
-							</cfif>
-							<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
-							<cfif isListParam>
+									and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+								</cfif>
+								and
+								<cfif param.getCondition() neq "like">
+									<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),params.getsiteid())>
+								</cfif>
+								<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
+									upper(#castfield#)
+								<cfelse>
+									#castfield#
+								</cfif>
+								#param.getCondition()#
+								<cfif isListParam>
+									(
+								</cfif>
+								<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
+								<cfif isListParam>
+									)
+								</cfif>
+							)
+							<cfset openGrouping=false />
+						<cfelse>
+							<cfset castfield="attributeValue">
+							(
+								tusers.userid NOT IN (
+									select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
+									<cfif isNumeric(param.getField())>
+										where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+									<cfelse>
+										inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
+										where
+										<cfif listLen(userPoolID) gt 1>
+											tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
+										<cfelse>
+											tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
+										</cfif>
+
+										and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+									</cfif>
 								)
-							</cfif>
-						)
-						<cfset openGrouping=false />
+
+								or
+
+								tusers.userid IN (
+									select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
+									<cfif isNumeric(param.getField())>
+										where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+									<cfelse>
+										inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
+										where
+										<cfif listLen(userPoolID) gt 1>
+											tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
+										<cfelse>
+											tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
+										</cfif>
+
+										and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+									</cfif>
+									AND tclassextenddatauseractivity.attributeValue is null
+								)
+							)
+							<cfset openGrouping=false />
+						</cfif>
 					</cfif>
 				</cfif>
 			</cfloop>
@@ -415,7 +468,7 @@
 		<cfreturn rsAdvancedUserSearch />
 	</cffunction>
 
-	<cffunction name="getPrivateGroups" returntype="query" access="public" output="false">
+	<cffunction name="getPrivateGroups" output="false">
 		<cfargument name="siteid" type="string" default="" />
 		<cfset var rsPrivateGroups = "" />
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPrivateGroups')#">
@@ -430,7 +483,7 @@
 		<cfreturn rsPrivateGroups />
 	</cffunction>
 
-	<cffunction name="getPublicGroups" returntype="query" access="public" output="false">
+	<cffunction name="getPublicGroups" output="false">
 		<cfargument name="siteid" type="string" default="" />
 		<cfset var rsPublicGroups = "" />
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPublicGroups')#">
@@ -445,7 +498,7 @@
 		<cfreturn rsPublicGroups />
 	</cffunction>
 
-	<cffunction name="getCreatedMembers" returntype="numeric" access="public" output="false">
+	<cffunction name="getCreatedMembers" output="false">
 		<cfargument name="siteid" type="string" default="" />
 		<cfargument name="startDate" type="string" required="true" default="">
 		<cfargument name="stopDate" type="string" required="true" default="">
@@ -468,7 +521,7 @@
 		<cfreturn rsCreatedMembers.theCount />
 	</cffunction>
 
-	<cffunction name="getTotalMembers" returntype="numeric" access="public" output="false">
+	<cffunction name="getTotalMembers" output="false">
 		<cfargument name="siteid" type="string" default="" />
 
 
@@ -484,7 +537,7 @@
 		<cfreturn rsTotalMembers.theCount />
 	</cffunction>
 
-	<cffunction name="getTotalAdministrators" returntype="numeric" access="public" output="false">
+	<cffunction name="getTotalAdministrators" output="false">
 		<cfargument name="siteid" type="string" default="" />
 
 
@@ -500,7 +553,7 @@
 		<cfreturn rsTotalAdministrators.theCount />
 	</cffunction>
 
-	<cffunction name="getUsers" returntype="query" access="public" output="false">
+	<cffunction name="getUsers" output="false">
 		<cfargument name="siteid" default="" />
 		<cfargument name="ispublic" default="" />
 		<cfargument name="isunassigned" default="" />
@@ -539,7 +592,7 @@
 		<cfreturn rsUsers />
 	</cffunction>
 
-	<cffunction name="getUsersMemb" returntype="query" access="public" output="false">
+	<cffunction name="getUsersMemb" output="false">
 		<cfset var rsUsersMemb = '' />
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUsersMemb')#">
 			SELECT UserID, GroupID

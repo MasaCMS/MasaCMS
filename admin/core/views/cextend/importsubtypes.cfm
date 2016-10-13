@@ -90,10 +90,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						resizable: false,
 						modal: true,
 						buttons: {
-							'#rc.$.rbKey('sitemanager.extension.ok')#': function() {
-								$(this).dialog('close');
-							}
-						}
+							#rc.$.rbKey('sitemanager.extension.ok')#: 
+								{click: function() {
+										$(this).dialog('close');
+									}
+								, text: 'OK'
+								, class: 'mura-primary'
+								} // /ok
+							}		
+
+
 					});
 
 				} else {

@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSortDirection" access="public" output="false">
+<cffunction name="setSortDirection" output="false">
 	<cfargument name="sortDirection" type="any" />
 	<cfif listFindNoCase('desc,asc',arguments.sortDirection)>
 	<cfset variables.instance.sortDirection = arguments.sortDirection />
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setItemsPerPage" access="public" output="false">
+<cffunction name="setItemsPerPage" output="false">
 	<cfargument name="itemsPerPage">
 	<cfset setNextN(nextN=arguments.itemsPerPage)>
 	<cfreturn this>
@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.NextN>
 </cffunction>
 
-<cffunction name="setNextN" access="public" output="false">
+<cffunction name="setNextN" output="false">
 	<cfargument name="NextN" type="any" />
 	<cfif isNumeric(arguments.nextN)>
 	<cfset variables.instance.NextN = arguments.NextN />
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMaxItems" access="public" output="false">
+<cffunction name="setMaxItems" output="false">
 	<cfargument name="maxItems" type="any" />
 	<cfif isNumeric(arguments.maxItems)>
 	<cfset variables.instance.maxItems = arguments.maxItems />
@@ -196,12 +196,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setAdvancedParams" access="public" output="false">
+<cffunction name="setAdvancedParams" output="false">
 	<cfargument name="params" type="any" required="true">
 	<cfreturn setParams(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="setParams" access="public" output="false">
+<cffunction name="setParams" output="false">
 	<cfargument name="params" type="any" required="true">
 
 		<cfset var rows=0/>
@@ -252,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn this>
 </cffunction>
 
-<cffunction name="addParam" access="public" output="false">
+<cffunction name="addParam" output="false">
 	<cfargument name="field" hint="You can use 'Column' as an alias to field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
@@ -301,7 +301,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="addAdvancedParam" access="public" output="false">
+<cffunction name="addAdvancedParam" output="false">
 	<cfargument name="field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
@@ -328,7 +328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn clearAdvancedParams()>
 </cffunction>
 
-<cffunction name="addJoin" access="public" output="false">
+<cffunction name="addJoin" output="false">
 	<cfargument name="joinType" type="string" required="true" default="inner">
 	<cfargument name="table" type="string" required="true" default="">
 	<cfargument name="clause" type="string" required="true" default="">
@@ -406,7 +406,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn super.getQueryService(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getQuery" returntype="query" output="false">
+<cffunction name="getQuery" output="false">
 	<cfargument name="countOnly" default="false">
 	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
 
@@ -569,7 +569,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs>
 </cffunction>
 
-<cffunction name="getIterator" returntype="any" output="false">
+<cffunction name="getIterator" output="false">
 	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfset var it=''>
@@ -705,8 +705,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="containsValue" output="false">
+	<cfargument name="criteria">
+
+	<cfset variables.instance.pendingParam.condition='contains'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="contains" output="false">
 	<cfargument name="criteria">
+
 	<cfset variables.instance.pendingParam.condition='contains'>
 	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
 	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
@@ -823,7 +834,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="caseInsensitiveOrderBy" access="private" returntype="string" output="false">
+<cffunction name="caseInsensitiveOrderBy" access="private" output="false">
 	<cfargument name="orderBy" required="true">
 	<cfset var orderByList = "">
 	<cfset var orderByValue = "">

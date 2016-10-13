@@ -11,17 +11,17 @@
 <cfset variables.instance.dataTable="tclassextenddata">
 <cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 
-<cffunction name="setConfigBean" returntype="any" output="false">
+<cffunction name="setConfigBean" output="false">
 <cfargument name="configBean">
 <cfset variables.configBean=arguments.configBean>
 <cfreturn this>
 </cffunction>
 
-<cffunction name="getParams" returntype="query" access="public" output="false">
+<cffunction name="getParams" output="false">
 	<cfreturn variables.instance.params />
 </cffunction>
 
-<cffunction name="setParams" access="public" output="false">
+<cffunction name="setParams" output="false">
 	<cfargument name="params" type="any" required="true">
 		
 		<cfset var rows=0/>
@@ -87,7 +87,7 @@
 		<cfreturn this>
 </cffunction>
 
-<cffunction name="addParam" access="public" output="false">
+<cffunction name="addParam" output="false">
 	<cfargument name="field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
@@ -106,7 +106,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="addAdvancedParam" access="public" output="false">
+<cffunction name="addAdvancedParam" output="false">
 	<cfargument name="field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
@@ -121,14 +121,14 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getIterator" returntype="any" output="false">
+<cffunction name="getIterator" output="false">
 	<cfset var rs=getQuery()>
 	<cfset var it=getBean("extendObjectIterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
 </cffunction>
 
-<cffunction name="getSiteID" returntype="any" output="false">
+<cffunction name="getSiteID" output="false">
 	<cfreturn variables.instance.siteID>
 </cffunction>
 
@@ -138,7 +138,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getType" returntype="any" output="false">
+<cffunction name="getType" output="false">
 	<cfreturn variables.instance.type>
 </cffunction>
 
@@ -148,7 +148,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getSubType" returntype="any" output="false">
+<cffunction name="getSubType" output="false">
 	<cfreturn variables.instance.subtype>
 </cffunction>
 
@@ -158,41 +158,41 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMaxItems" returntype="numeric" access="public" output="false">
+<cffunction name="getMaxItems" output="false">
 	<cfreturn variables.instance.MaxItems />
 </cffunction>
 
-<cffunction name="setMaxItems" access="public" output="false">
+<cffunction name="setMaxItems" output="false">
 	<cfargument name="MaxItems" type="numeric" />
 	<cfset variables.instance.MaxItems = arguments.MaxItems />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getSortBy" returntype="String" access="public" output="false">
+<cffunction name="getSortBy" output="false">
 	<cfreturn variables.instance.sortBy />
 </cffunction>
 
-<cffunction name="setSortBy" access="public" output="false">
+<cffunction name="setSortBy" output="false">
 	<cfargument name="sortBy" type="String" />
 	<cfset variables.instance.sortBy = trim(arguments.sortBy) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getSortDirection" returntype="String" access="public" output="false">
+<cffunction name="getSortDirection" output="false">
 	<cfreturn variables.instance.sortDirection />
 </cffunction>
 
-<cffunction name="setSortDirection" access="public" output="false">
+<cffunction name="setSortDirection" output="false">
 	<cfargument name="sortDirection" type="String" />
 	<cfset variables.instance.sortDirection = trim(arguments.sortDirection) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getNextN" returntype="numeric" access="public" output="false">
+<cffunction name="getNextN" output="false">
 	<cfreturn variables.instance.NextN />
 </cffunction>
 
-<cffunction name="setNextN" access="public" output="false">
+<cffunction name="setNextN" output="false">
 	<cfargument name="NextN" type="any" />
 	<cfif isNumeric(arguments.nextN)>
 	<cfset variables.instance.NextN = arguments.NextN />
@@ -200,17 +200,17 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDataTable" returntype="String" access="public" output="false">
+<cffunction name="getDataTable" output="false">
 	<cfreturn variables.instance.dataTable />
 </cffunction>
 
-<cffunction name="setDataTable" access="public" output="false">
+<cffunction name="setDataTable" output="false">
 	<cfargument name="dataTable" type="String" />
 	<cfset variables.instance.dataTable = trim(arguments.dataTable) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getQuery" access="public" output="false" returntype="query">
+<cffunction name="getQuery" output="false">
 	<cfset var c ="" />
 	<cfset var rs ="" />
 	<cfset var baseIDList="''">

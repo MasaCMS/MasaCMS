@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="utility" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
@@ -60,14 +60,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setMailer" returntype="any" access="public" output="false">
+<cffunction name="setMailer" output="false">
 <cfargument name="mailer"  required="true">
 
 	<cfset variables.mailer=arguments.mailer />
 
 </cffunction>
 
-<cffunction name="getUserData" returntype="query" access="public">
+<cffunction name="getUserData">
 	<cfargument name="userid" type="string" default="#getSession().mura.userID#">
 	<cfset var rsuser=""/>
 	<cfquery name="rsuser" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
@@ -349,7 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setUserStruct(rsuser,rolelist,listAppend(valueList(RsGetRoles.userID),rsuser.userid))>
 </cffunction>
 
-<cffunction name="getUserByEmail" returntype="query" output="false">
+<cffunction name="getUserByEmail" output="false">
 	<cfargument name="email" type="string">
 	<cfargument name="siteid" type="string" required="yes" default="">
 	<cfset var rsCheck=""/>
@@ -370,7 +370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsCheck>
 	</cffunction>
 
-<cffunction name="sendLoginByEmail" output="false" returntype="string"  access="public">
+<cffunction name="sendLoginByEmail" output="false" >
 	<cfargument name="email" type="string">
 	<cfargument name="siteid" type="string" required="yes" default="">
 	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
@@ -418,7 +418,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn msg>
 	</cffunction>
 
-<cffunction name="sendLoginByUser" output="false" returntype="boolean"  access="public">
+<cffunction name="sendLoginByUser" output="false" returntype="boolean" >
 	<cfargument name="userBean" type="any">
 	<cfargument name="siteid" type="string" required="yes" default="" >
 	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
@@ -456,7 +456,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn true/>
 </cffunction>
 
-<cffunction name="sendLogin" returntype="void" output="false">
+<cffunction name="sendLogin" output="false">
 <cfargument name="args" type="struct" default="#structnew()#">
 <cfargument name="sendto" type="string" default="">
 <cfargument name="from" type="string" default="">
@@ -615,7 +615,7 @@ Thanks for using #contactName#</cfoutput>
 
 </cffunction>
 
-<cffunction name="sendActivationNotification" returntype="void" output="false">
+<cffunction name="sendActivationNotification" output="false">
 <cfargument name="userBean" type="any">
 
 <cfset var accountactivationscript=""/>
@@ -663,7 +663,7 @@ Thanks for using #contactName#</cfoutput>
 
 </cffunction>
 
-<cffunction name="getRandomPassword" access="public" returntype="string" output="false">
+<cffunction name="getRandomPassword" output="false">
 	<cfargument name="Length" default="6" required="yes" type="numeric">
 	<cfargument name="CharSet" default="Alpha" required="yes" type="string">
 	<cfargument name="Ucase" default="no" required="yes" type="string">
@@ -716,7 +716,7 @@ Thanks for using #contactName#</cfoutput>
 	<cfreturn replace(ThisPass," ","","ALL") />
 </cffunction>
 
-<cffunction name="setUserStruct" output="false" access="public" returntype="void">
+<cffunction name="setUserStruct" output="false">
 <cfargument name="user">
 <cfargument name="memberships" required="true" default="">
 <cfargument name="membershipids" required="true" default="">

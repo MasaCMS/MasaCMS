@@ -43,143 +43,345 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+	;(function (root, factory) {
+	    if (typeof define === 'function' && define.amd) {
+	        // AMD. Register as an anonymous module.
+	        define(['Mura'], factory);
+	    } else if (typeof module === 'object' && module.exports) {
+	        // Node. Does not work with strict CommonJS, but
+	        // only CommonJS-like environments that support module.exports,
+	        // like Node.
+	        factory(require('Mura'));
+	    } else {
+	        // Browser globals (root is window)
+	        factory(root.Mura);
+	    }
+	}(this, function (Mura) {
+		/**
+	     * Creates a new Mura.Feed
+	     * @class {class} Mura.Feed
+	     */
+		Mura.Feed=Mura.Core.extend(
+		/** @lends Mura.Feed.prototype */
+		{
 
-;(function(root){
-	root.mura.Feed=root.mura.Core.extend({
-		init:function(siteid,entityname){
-            this.queryString= entityname + '/?';
-			this.propIndex=0;
-			this.entityname=entityname;
-            return this;
-		},
-		fields:function(fields){
-            this.queryString+='&fields=' + fields;
-            return this;
-        },
-        where:function(property){
-            if(property){
-                return this.andProp(property);
-            }
-            return this;
-        },
-        prop:function(property){
-            return this.andProp(property);
-        },
-        andProp:function(property){
-            this.queryString+='&' + property + '[' + this.propIndex + ']=';
-			this.propIndex++;
-            return this;
-        },
-        orProp:function(property){
-            this.queryString+='&or[' + this.propIndex + ']&';
-			this.propIndex++;
-			this.queryString+= property + '[' + this.propIndex + ']=';
-			this.propIndex++;
-			return this;
-        },
-        isEQ:function(criteria){
-            this.queryString+=criteria;
-			return this;
-        },
-        isNEQ:function(criteria){
-            this.queryString+='neq^' + criteria;
-			return this;
-        },
-        isLT:function(criteria){
-            this.queryString+='lt^' + criteria;
-			return this;
-        },
-        isLTE:function(criteria){
-            this.queryString+='lte^' + criteria;
-			return this;
-        },
-        isGT:function(criteria){
-            this.queryString+='gt^' + criteria;
-			return this;
-        },
-        isGTE:function(criteria){
-            this.queryString+='gte^' + criteria;
-			return this;
-        },
-        isIn:function(criteria){
-            this.queryString+='in^' + criteria;
-			return this;
-        },
-        isNotIn:function(criteria){
-            this.queryString+='notin^' + criteria;
-			return this;
-        },
-        contains:function(criteria){
-            this.queryString+='contains^' + criteria;
-			return this;
-        },
-		beginsWith:function(criteria){
-            this.queryString+='begins^' + criteria;
-			return this;
-        },
-		endsWith:function(criteria){
-            this.queryString+='ends^' + criteria;
-			return this;
-        },
-        openGrouping:function(criteria){
-            this.queryString+='&openGrouping';
-			return this;
-        },
-        andOpenGrouping:function(criteria){
-            this.queryString+='&andOpenGrouping';
-			return this;
-        },
-        closeGrouping:function(criteria){
-            this.queryString+='&closeGrouping:';
-			return this;
-        },
-		sort:function(property,direction){
-			direction=direction || 'asc';
-			if(direction == 'desc'){
-				this.queryString+='&sort[' + this.propIndex + ']=-' + property;
-			} else {
-				this.queryString+='&sort[' + this.propIndex + ']=+' + property;
-			}
-			this.propIndex++;
-            return this;
-        },
-		itemsPerPage:function(itemsPerPage){
-            this.queryString+='&itemsPerPage=' + itemsPerPage;
-			return this;
-        },
-		maxItems:function(maxItems){
-            this.queryString+='&maxItems=' + maxItems;
-			return this;
-        },
-		innerJoin:function(relatedEntity){
-            this.queryString+='&innerJoin[' + this.propIndex + ']=' + relatedEntity;
-			this.propIndex++;
-            return this;
-        },
-		leftJoin:function(relatedEntity){
-            this.queryString+='&leftJoin[' + this.propIndex + ']=' + relatedEntity;
-			this.propIndex++;
-            return this;
-        },
-        getQuery:function(){
-            var self=this;
+			/**
+			 * init - Initialiazes feed
+			 *
+			 * @param  {string} siteid     Siteid
+			 * @param  {string} entityname Entity name
+			 * @return {Mura.Feed}            Self
+			 */
+			init:function(siteid,entityname){
+	            this.queryString= entityname + '/?_cacheid=' + Math.random();
+				this.propIndex=0;
+				this.entityname=entityname;
+	            return this;
+			},
 
-            return new Promise(function(resolve,reject) {
-				root.mura.ajax({
-					type:'get',
-					url:root.mura.apiEndpoint + self.queryString,
-					success:function(resp){
+			/**
+			 * fields - List fields to retrieve from API
+			 *
+			 * @param  {string} fields List of fields
+			 * @return {Mura.Feed}        Self
+			 */
+			fields:function(fields){
+	            this.queryString+='&fields=' + encodeURIComponent(fields);
+	            return this;
+	        },
 
-						var returnObj = new root.mura.EntityCollection(resp.data);
+	        /**
+	         * where - Optional method for starting query chain
+	         *
+	         * @param  {string} property Property name
+	         * @return {Mura.Feed}          Self
+	         */
+	        where:function(property){
+	            if(property){
+	                return this.andProp(property);
+	            }
+	            return this;
+	        },
 
-						if(typeof resolve == 'function'){
-							resolve(returnObj);
-						}
-					},
-					error:reject
+	        /**
+	         * prop - Add new property value
+	         *
+	         * @param  {string} property Property name
+	         * @return {Mura.Feed}          Self
+	         */
+	        prop:function(property){
+	            return this.andProp(property);
+	        },
+
+	        /**
+	         * andProp - Add new AND property value
+	         *
+			 * @param  {string} property Property name
+	         * @return {Mura.Feed}          Self
+	         */
+	        andProp:function(property){
+	            this.queryString+='&' + encodeURIComponent(property) + '[' + this.propIndex + ']=';
+				this.propIndex++;
+	            return this;
+	        },
+
+			/**
+	         * orProp - Add new OR property value
+	         *
+			 * @param  {string} property Property name
+	         * @return {Mura.Feed}          Self
+	         */
+	        orProp:function(property){
+	            this.queryString+='&or[' + this.propIndex + ']&';
+				this.propIndex++;
+				this.queryString+= encodeURIComponent(property) + '[' + this.propIndex + ']=';
+				this.propIndex++;
+				return this;
+	        },
+
+	        /**
+	         * isEQ - Checks if preceding property value is EQ to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+	        isEQ:function(criteria){
+	            this.queryString+=encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * isNEQ - Checks if preceding property value is NEQ to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+	        isNEQ:function(criteria){
+	            this.queryString+='neq^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * isLT - Checks if preceding property value is LT to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+	        isLT:function(criteria){
+	            this.queryString+='lt^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * isLTE - Checks if preceding property value is LTE to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+	        isLTE:function(criteria){
+	            this.queryString+='lte^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * isGT - Checks if preceding property value is GT to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+	        isGT:function(criteria){
+	            this.queryString+='gt^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * isGTE - Checks if preceding property value is GTE to criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+	        isGTE:function(criteria){
+	            this.queryString+='gte^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * isIn - Checks if preceding property value is IN to list of criterias
+	         *
+	         * @param  {*} criteria Criteria List
+	         * @return {Mura.Feed}          Self
+	         */
+	        isIn:function(criteria){
+	            this.queryString+='in^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * isNotIn - Checks if preceding property value is NOT IN to list of criterias
+	         *
+	         * @param  {*} criteria Criteria List
+	         * @return {Mura.Feed}          Self
+	         */
+	        isNotIn:function(criteria){
+	            this.queryString+='notin^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * containsValue - Checks if preceding property value is CONTAINS the value of criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+	        containsValue:function(criteria){
+	            this.queryString+='containsValue^' + encodeURIComponent(criteria);
+				return this;
+	        },
+			contains:function(criteria){
+	            this.queryString+='containsValue^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * beginsWith - Checks if preceding property value BEGINS WITH criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+			beginsWith:function(criteria){
+	            this.queryString+='begins^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+			/**
+	         * endsWith - Checks if preceding property value ENDS WITH criteria
+	         *
+	         * @param  {*} criteria Criteria
+	         * @return {Mura.Feed}          Self
+	         */
+			endsWith:function(criteria){
+	            this.queryString+='ends^' + encodeURIComponent(criteria);
+				return this;
+	        },
+
+
+	        /**
+	         * openGrouping - Start new logical condition grouping
+	         *
+	         * @return {Mura.Feed}          Self
+	         */
+	        openGrouping:function(){
+	            this.queryString+='&openGrouping';
+				return this;
+	        },
+
+			/**
+	         * openGrouping - Starts new logical condition grouping
+	         *
+	         * @return {Mura.Feed}          Self
+	         */
+	        andOpenGrouping:function(criteria){
+	            this.queryString+='&andOpenGrouping';
+				return this;
+	        },
+
+			/**
+	         * openGrouping - Closes logical condition grouping
+	         *
+	         * @return {Mura.Feed}          Self
+	         */
+	        closeGrouping:function(criteria){
+	            this.queryString+='&closeGrouping:';
+				return this;
+	        },
+
+			/**
+			 * sort - Set desired sort or return collection
+			 *
+			 * @param  {string} property  Property
+			 * @param  {string} direction Sort direction
+			 * @return {Mura.Feed}           Self
+			 */
+			sort:function(property,direction){
+				direction=direction || 'asc';
+				if(direction == 'desc'){
+					this.queryString+='&sort[' + this.propIndex + ']=-' + encodeURIComponent(property);
+				} else {
+					this.queryString+='&sort[' + this.propIndex + ']=+' + encodeURIComponent(property);
+				}
+				this.propIndex++;
+	            return this;
+	        },
+
+			/**
+			 * itemsPerPage - Sets items per page
+			 *
+			 * @param  {number} itemsPerPage Items per page
+			 * @return {Mura.Feed}              Self
+			 */
+			itemsPerPage:function(itemsPerPage){
+	            this.queryString+='&itemsPerPage=' + encodeURIComponent(itemsPerPage);
+				return this;
+	        },
+
+			/**
+			 * maxItems - Sets max items to return
+			 *
+			 * @param  {number} maxItems Items to return
+			 * @return {Mura.Feed}              Self
+			 */
+			maxItems:function(maxItems){
+	            this.queryString+='&maxItems=' + encodeURIComponent(maxItems);
+				return this;
+	        },
+
+			/**
+			 * innerJoin - Sets entity to INNER JOIN
+			 *
+			 * @param  {string} relatedEntity Related entity
+			 * @return {Mura.Feed}              Self
+			 */
+			innerJoin:function(relatedEntity){
+	            this.queryString+='&innerJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
+				this.propIndex++;
+	            return this;
+	        },
+
+			/**
+			 * leftJoin - Sets entity to LEFT JOIN
+			 *
+			 * @param  {string} relatedEntity Related entity
+			 * @return {Mura.Feed}              Self
+			 */
+			leftJoin:function(relatedEntity){
+	            this.queryString+='&leftJoin[' + this.propIndex + ']=' + encodeURIComponent(relatedEntity);
+				this.propIndex++;
+	            return this;
+	        },
+
+			/**
+			 * Query - Return Mura.EntityCollection fetched from JSON API
+			 * @return {Promise}
+			 */
+	        getQuery:function(){
+	            var self=this;
+
+	            return new Promise(function(resolve,reject) {
+					Mura.ajax({
+						type:'get',
+						url:Mura.apiEndpoint + self.queryString,
+						success:function(resp){
+
+							var returnObj = new Mura.EntityCollection(resp.data);
+
+							if(typeof resolve == 'function'){
+								resolve(returnObj);
+							}
+						},
+						error:reject
+					});
 				});
-			});
-        }
-    });
+	        }
+	    });
 
-})(this);
+}));

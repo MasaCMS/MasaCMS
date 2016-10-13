@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent output="false" extends="mura.cfobject" hint="This file has been deprecated">
 <cfset msg="">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="event">
 	
 	<cfset variables.event=arguments.event>

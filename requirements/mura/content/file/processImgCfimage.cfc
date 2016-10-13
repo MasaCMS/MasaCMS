@@ -56,7 +56,7 @@
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-	<cffunction name="init" returntype="any">
+	<cffunction name="init">
 		<cfargument name="configBean">
 		<cfargument name="settingsManager">
 

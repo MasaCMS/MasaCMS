@@ -35,7 +35,7 @@
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="dateLocaleFormat"  returnType="string" output="false" hint="locale version of dateFormat">
+	<cffunction name="dateLocaleFormat"  output="false" hint="locale version of dateFormat">
 		<cfargument name="date" type="date" required="true">
 		<cfargument name="style" type="string" required="false" default="LONG">
 		<cfscript>
@@ -50,7 +50,7 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="getAvailableLocales" access="public" returnType="array" output="false"
+	<cffunction name="getAvailableLocales" returnType="array" output="false"
 				hint="Returns an array of locales.">
 		<cfscript>
 		var i=0;
@@ -66,7 +66,7 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="getLocalizedDays" access="public" returnType="array" output="false"
+	<cffunction name="getLocalizedDays" returnType="array" output="false"
 				hint="Returns localized days">
 		<cfscript>
 		var localizedShortDays="";
@@ -100,7 +100,7 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="getLocalizedMonth" access="public" returnType="string" output="false"
+	<cffunction name="getLocalizedMonth" output="false"
 				hint="Returns localized month">
 		<cfargument name="month" type="numeric" required="true">
 		<cfscript>
@@ -110,17 +110,17 @@
 
 	</cffunction>
 
-	<cffunction name="getLocalizedName" access="public" returnType="string" output="false"
+	<cffunction name="getLocalizedName" output="false"
 				hint="Returns current locale name">
 		<cfreturn variables.localeName>
 	</cffunction>
 
-	<cffunction name="getCurrentLocale" access="public" returnType="string" output="false"
+	<cffunction name="getCurrentLocale" output="false"
 				hint="Returns current locale">
 		<cfreturn variables.thisLocale>
 	</cffunction>
 
-	<cffunction name="getLocalizedYear" access="public" returnType="string" output="false"
+	<cffunction name="getLocalizedYear" output="false"
 				hint="Returns localized year, probably only useful for BE calendars like in thailand, etc.">
 		<cfargument name="thisYear" type="numeric" required="true">
 		<cfscript>
@@ -129,11 +129,11 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="isBIDI" access="public" returnType="boolean" output="false">
+	<cffunction name="isBIDI" returnType="boolean" output="false">
 		<cfreturn listFind(variables.BIDILanguages,variables.lang)>
 	</cffunction>
 
-	<cffunction name="loadLocale" access="public" returnType="void" output="false"
+	<cffunction name="loadLocale" output="false"
 				hint="Loads a locale.">
 
 		<cfset variables.lang = listFirst(variables.locale,"_")>
@@ -149,7 +149,7 @@
 		<cfset setJSDateKeys()>
 	</cffunction>
 
-	<cffunction name="timeLocaleFormat" access="public" returnType="string" output="false"
+	<cffunction name="timeLocaleFormat" output="false"
 				hint="locale version of timeFormat">
 		<cfargument name="date" type="date" required="true">
 		<cfargument name="style" type="string" required="false" default="SHORT">
@@ -165,7 +165,7 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="datetimeLocaleFormat" access="public" returnType="string" output="false"
+	<cffunction name="datetimeLocaleFormat" output="false"
 				hint="locale date/time format">
 		<cfargument name="date" type="date" required="true">
 		<cfargument name="dateStyle" type="string" required="false" default="SHORT">
@@ -182,7 +182,7 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="isValidLocale" access="public" returnType="boolean" output="false">
+	<cffunction name="isValidLocale" returnType="boolean" output="false">
 		<cfargument name="thisLocale" type="string" required="true">
 		<cfscript>
 		    var locales=arrayToList(getAvailableLocales());
@@ -190,14 +190,14 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="weekStarts" access="public" returnType="string" output="false"
+	<cffunction name="weekStarts" output="false"
 				hint="Determines the first DOW">
 		<cfscript>
 		return variables.aCalendar.getFirstDayOfWeek();
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="java2CF" access="public" returnType="string" output="false" hint="Switches Java locale to CF locale (for CF6)">
+	<cffunction name="java2CF" output="false" hint="Switches Java locale to CF locale (for CF6)">
 
 		<cfswitch expression="#variables.locale#">
 
@@ -325,7 +325,7 @@
 		</cfswitch>
 	</cffunction>
 
-	<cffunction name="setJSDateKeys" output="false" returntype="any">
+	<cffunction name="setJSDateKeys" output="false">
 	<!--- make sure that a locale and language resouce bundle have been set in the users session --->
 	<cfset var f="">
 	<cfset var dtCh="">
@@ -392,19 +392,19 @@
 
 	</cffunction>
 
-	<cffunction name="getJsDateKeyObjInc" output="false" returntype="any">
+	<cffunction name="getJsDateKeyObjInc" output="false">
 	<cfreturn variables.jsDateKeyObjInc>
 	</cffunction>
 
-	<cffunction name="getJSDateKey" output="false" returntype="any">
+	<cffunction name="getJSDateKey" output="false">
 	<cfreturn variables.JSDateKey>
 	</cffunction>
 
-	<cffunction name="getJSDateKeyFormat" output="false" returntype="any">
+	<cffunction name="getJSDateKeyFormat" output="false">
 	<cfreturn variables.datekeyFormat>
 	</cffunction>
 
-	<cffunction name="getJSDateKeyExample" output="false" returntype="any">
+	<cffunction name="getJSDateKeyExample" output="false">
 	<cfreturn variables.datekeyExample>
 	</cffunction>
 </cfcomponent>

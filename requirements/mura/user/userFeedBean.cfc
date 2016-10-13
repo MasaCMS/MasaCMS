@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this/>
 </cffunction>
 
-<cffunction name="setParams" access="public" output="false">
+<cffunction name="setParams" output="false">
 	<cfargument name="params" type="any" required="true">
 		
 		<cfset var rows=0/>
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn this>
 </cffunction>
 
-<cffunction name="getQuery" returntype="query" output="false">
+<cffunction name="getQuery" output="false">
 	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
 	<cfset variables.instance.cachedWithin=arguments.cachedWithin>
 	<cfif not len(variables.instance.siteID)>
@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getBean('userManager').getAdvancedSearchQuery(userFeedBean=this)>
 </cffunction>
 
-<cffunction name="getIterator" returntype="any" output="false">
+<cffunction name="getIterator" output="false">
 	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfset var it=getBean("userIterator")>
@@ -191,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setGroupID" access="public" output="false">
+<cffunction name="setGroupID" output="false">
 <cfargument name="groupID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">
@@ -208,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
   
-<cffunction name="setCategoryID" access="public" output="false">
+<cffunction name="setCategoryID" output="false">
 <cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">

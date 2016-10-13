@@ -56,24 +56,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 </cfscript>
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setValue" returntype="any" access="public" output="false">
+<cffunction name="setValue" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
 	<cfset variables["#arguments.property#"]=arguments.propertyValue />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="set" returntype="any" access="public" output="false">
+<cffunction name="set" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
 	<cfreturn setValue(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getValue" returntype="any" access="public" output="false">
+<cffunction name="getValue" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
 
@@ -88,32 +88,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="get" returntype="any" access="public" output="false">
+<cffunction name="get" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
 	<cfreturn getValue(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="valueExists" returntype="any" access="public" output="false">
+<cffunction name="valueExists" output="false">
 	<cfargument name="property" type="string" required="true">
 		<cfreturn structKeyExists(variables,arguments.property) />
 </cffunction>
 
-<cffunction name="removeValue" access="public" output="false">
+<cffunction name="removeValue" output="false">
 	<cfargument name="property" type="string" required="true"/>
 		<cfset structDelete(variables,arguments.property) />
 		<cfreturn this>
 </cffunction>
 
-<cffunction name="getConfigBean" returntype="any" access="public" output="false">
+<cffunction name="getConfigBean" output="false">
 	<cfreturn application.configBean />
 </cffunction>
 
-<cffunction name="getServiceFactory" returntype="any" access="public" output="false">
+<cffunction name="getServiceFactory" output="false">
 	<cfreturn application.serviceFactory />
 </cffunction>
 
-<cffunction name="getBean" returntype="any" access="public" output="false">
+<cffunction name="getBean" output="false">
 	<cfargument name="beanName">
 	<cfargument name="siteID" default="">
 	<cfset var bean="">
@@ -132,22 +132,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getPluginManager" returntype="any" access="public" output="false">
+<cffunction name="getPluginManager" output="false">
 	<cfreturn application.pluginManager />
 </cffunction>
 
-<cffunction name="getEventManager" returntype="any" access="public" output="false" hint="The eventManager is the same as the pluginManager.">
+<cffunction name="getEventManager" output="false" hint="The eventManager is the same as the pluginManager.">
 	<cfreturn application.eventManager />
 </cffunction>
 
-<cffunction name="getCurrentUser" returntype="any" access="public" output="false">
+<cffunction name="getCurrentUser" output="false">
 	<cfif not structKeyExists(request,"currentUser")>
 		<cfset request.currentUser=createObject("component","mura.user.sessionUserFacade").init() />
 	</cfif>
 	<cfreturn request.currentUser>
 </cffunction>
 
-<cffunction name="getPlugin" returntype="any" access="public" output="false">
+<cffunction name="getPlugin" output="false">
 	<cfargument name="ID">
 	<cfargument name="siteID" required="true" default="">
 	<cfargument name="cache" required="true" default="true">
@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache) />
 </cffunction>
 
-<cffunction name="injectMethod" access="public" output="false" deprecated="Use inject method">
+<cffunction name="injectMethod" output="false" deprecated="Use inject method">
 	<cfargument name="toObjectMethod" type="string" required="true" />
 	<cfargument name="fromObjectMethod" type="any" required="true" />
 	<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="inject" access="public" output="false">
+<cffunction name="inject" output="false">
 	<cfargument name="property" type="string" required="true" />
 	<cfargument name="propertValue" type="any" required="true" />
 	<cfset this[ arguments.property ] =  arguments.propertValue  />
@@ -171,18 +171,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="deleteMethod" access="public" output="false">
+<cffunction name="deleteMethod" output="false">
 	<cfargument name="methodName" type="any" required="true" />
 	<cfset StructDelete(this,arguments.methodName)>
 	<cfset StructDelete(variables,arguments.methodName)>
 </cffunction>
 
-<cffunction name="getAsJSON" access="public" output="false" returntype="String" >
+<cffunction name="getAsJSON" output="false" >
 	<cfset var data = getAsStruct() />
 	<cfreturn serializeJSON( data ) />
 </cffunction>
 
-<cffunction name="getAsStruct" access="public" output="false" returntype="struct">
+<cffunction name="getAsStruct" output="false" returntype="struct">
 	<cfset var data			= "">
 	<cfset var iiX			= "">
 	<cfset var subBeans		= StructNew()>

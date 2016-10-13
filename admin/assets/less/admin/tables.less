@@ -1,5 +1,4 @@
 .mura-table-grid {
-  font-family: HelveticaNeue,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	.table;
 	.table-bordered;
 	.table-condensed;
@@ -7,10 +6,11 @@
 	.border-radius(0) !important;
 
 	td, th {
-		font-size: @baseFontSize;
-		.border-radius(0) !important;
-		text-align: center;
+		.regular-font;
+		border-radius:0 !important;
 		color: @grayDarker;
+		font-size: @baseFontSize;
+		text-align: center;
 		vertical-align: middle;
 		
 		&.title {
@@ -19,13 +19,15 @@
 		}
 
 	th, thead th {
-		background-color:#f7f7f7;
-		color: #646464;
-		text-transform: none;
-		font-weight: bold;
-		white-space: nowrap;
-		vertical-align: middle;
-		
+		.bold-font;
+	  color: #7a7a7a;
+	  font-style: normal;
+	  height: 26px;
+	  line-height: 24px;
+	  padding: 0 5px;
+	  text-align: center;
+	  white-space: nowrap;
+
 		.btn {
 			padding: 2px 6px;
 			font-weight: normal;
@@ -64,21 +66,21 @@
 } // End .mura-table-grid
 
 #draft-prompt {
-
-	.alert {
-		font-size: 12px !important;
-		}
 	
 	.mura-table-grid {
 		
 		th,td {
-			padding: .5em 1em;
+			padding: 6px 8px;
 			text-align: left;
 			}
 			
 		th {
 			font-size: 13px;
+
+			i{
+				margin-right: 3px;
 			}
+		}
 			
 		i {
 			font-size: 16px;

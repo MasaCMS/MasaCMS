@@ -54,24 +54,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div> <!-- /.mura-header -->
 
 
-      <div class="block-content">
-
       <cfset csrftokens=rc.$.renderCSRFTokens(context=rc.changesetid,format='url')>
       <cfif rc.changeset.getPublished()>
-      <div class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</div>
+      <div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</span></div>
       <cfelse>
   <cfset hasPendingApprovals=rc.changeset.hasPendingApprovals()>
   <cfif hasPendingApprovals>
-    <div class="alert alert-error">
-        #application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')#
-    </div>
+    <div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')#</span></div>
   </cfif>
       </cfif>
 
       <cfif not rc.changeset.getPublished() and isDate(rc.changeset.getCloseDate())>
-   <div class="alert">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.hasclosedate"),LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat))#
-    </div>
+        <div class="alert alert-info"><span>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.hasclosedate"),LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat))#</span></div>
       </cfif>
+
+
+      <div class="block-content">
 
       <div class="block block-constrain">
           <div class="block block-bordered">
@@ -100,9 +98,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.sitearchitecture')#</h3>
  <table class="mura-table-grid">
     <tr>
+      <th class="actions"></th>
       <th class="var-width"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
       <th> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
-      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.siteAssignments.hasNext()>
      <cfloop condition="rc.siteAssignments.hasNext()">
@@ -112,6 +110,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 		</cfsilent>
         <tr>
+     		  <td class="actions">
+            <a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+            <div class="actions-menu hide">
+          		<ul class="actions-list">
+                <cfif verdict neq 'none'>
+                  <li class="edit"><a href="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#esapiEncode('javascript',item.gettype())#&parentid=#item.getparentID()#&topid=#esapiEncode('url',item.getcontentID())#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets"> <i class="mi-pencil"></i>Edit</a></li>
+                	 <li class="preview"><a href="##" onclick="return preview('#item.getURL(complete=1,queryString="previewid=#item.getContentHistID()#")#');"><i class="mi-globe"></i>Preview</a></li>
+                   <li class="version-history"><a href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#item.getmoduleID()#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-history"></i>Version History</a></li>
+                <cfelse>
+                  <!--- <li class="edit disabled"><i class="mi-edit"></i></li> --->
+                  <li class="preview"><a href="##" onclick="return preview('#item.getURL(complete=1,queryString="previewid=#item.getContentHistID()#")#');"><i class="mi-globe"></i></a></li>
+                  <li class="version-history disabled"><i class="mi-history"></i>Preview</li>
+                </cfif>
+            		<li class="delete"><a href="./?muraAction=cChangesets.removeItem&contentHistId=#item.getcontentHistID()#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',item.getchangesetID())#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),item.getmenutitle()))#',this.href)"><i class="mi-trash"></i>Delete</a></li>
+        		</ul>
+         </div> 
+  		  </td>
           <td class="title var-width">#$.dspZoom(crumbdata)#</td>
            <td>
             <cfif len(item.getapprovalStatus())>
@@ -124,25 +139,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.queued')#
             </cfif>
           </td>
- 		  <td class="actions">
-		<ul>
-		<cfif verdict neq 'none'>
-            <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#esapiEncode('javascript',item.gettype())#&parentid=#item.getparentID()#&topid=#esapiEncode('url',item.getcontentID())#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets"> <i class="mi-pencil"></i></a></li>
-      			 <li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1,queryString="previewid=#item.getContentHistID()#")#');"><i class="mi-globe"></i></a></li>
-      		   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#item.getmoduleID()#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-history"></i></a></li>
-          <cfelse>
-            <li class="edit disabled"><i class="mi-edit"></i></li>
-            <li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1,queryString="previewid=#item.getContentHistID()#")#');"><i class="mi-globe"></i></a></li>
-      		  <li class="version-history disabled"><i class="mi-history"></i></li>
-    </cfif>
-      		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#item.getcontentHistID()#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',item.getchangesetID())#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),item.getmenutitle()))#',this.href)"><i class="mi-trash"></i></a></li>
-		</ul>
-		</td>
-		</tr>
+  		</tr>
    		</cfloop>
       <cfelse>
       <tr>
-        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="3" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
       </table>
@@ -152,18 +153,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.components')#</h3>
  <table class="mura-table-grid">
     <tr>
+      <th class="actions"></th>
       <th class="var-width"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
       <th> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
-      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.rslist.recordcount>
      <cfloop query="rc.rslist">
-		<cfsilent>
-			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
-			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+    <cfsilent>
+      <cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
+      <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
       <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets">
-		</cfsilent>
+    </cfsilent>
         <tr>
+ 		     <td class="actions">
+          <a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+          <div class="actions-menu hide">
+        		<ul class="actions-list">
+        		<cfif verdict neq 'none'>
+                    <li class="edit"><a href="#editlink#"><i class="mi-pencil"></i>Edit</a></li>
+              		  <li class="version-history"><a href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-history"></i>Version History</a></li>
+<!---             <cfelse>
+              	   <li class="edit disabled"><i class="mi-pencil"></i></li>
+                    <li class="version-history disabled"><a><i class="mi-history"></i></a></li> --->
+            </cfif>
+              		<li class="delete"><a href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="mi-trash"></i>Delete</a></li>
+        		</ul>
+          </div>
+      	</td>
           <td class="title var-width">#$.dspZoom(crumbdata)#</td>
           <td>
             <cfif len(rc.rslist.approvalStatus)>
@@ -176,23 +192,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.queued')#
             </cfif>
           </td>
- 		     <td class="actions">
-      		<ul>
-      		<cfif verdict neq 'none'>
-                  <li class="edit"><a title="Edit" href="#editlink#"><i class="mi-pencil"></i></a></li>
-            		  <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-history"></i></a></li>
-          <cfelse>
-            	   <li class="edit disabled"><i class="mi-pencil"></i></li>
-                  <li class="version-history disabled"><a><i class="mi-history"></i></a></li>
-          </cfif>
-            		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="mi-trash"></i></a></li>
-      		</ul>
-      	</td>
 		    </tr>
    		</cfloop>
       <cfelse>
       <tr>
-        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="3" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
       </table>
@@ -202,9 +206,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.forms')#</h3>
  <table class="mura-table-grid">
     <tr>
+      <th class="actions"></th>
       <th class="var-width"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
       <th> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
-      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.rslist.recordcount>
      <cfloop query="rc.rslist">
@@ -214,6 +218,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets">
     </cfsilent>
         <tr>
+           <td class="actions">
+            <a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+            <div class="actions-menu hide">
+            <ul class="actions-list">
+              <cfif verdict neq 'none'>
+              <li class="edit"><a href="#editlink#"><i class="mi-pencil"></i>Edit</a></li>
+              <li class="version-history"><a href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-history"></i>Version History</a></li>
+<!---               <cfelse>
+                <li class="edit disabled"><i class="mi-pencil"></i></li>
+               <li class="version-history disabled"><a><i class="mi-history"></i></a></li> --->
+              </cfif>
+              <li class="delete"><a href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="mi-trash"></i>Delete</a></li>
+              </ul>
+            </div>
+          </td>
           <td class="title var-width">#$.dspZoom(crumbdata)#</td>
            <td>
             <cfif len(rc.rslist.approvalStatus)>
@@ -227,23 +246,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </cfif>
            </td>
 
-           <td class="actions">
-            <ul>
-            <cfif verdict neq 'none'>
-                    <li class="edit"><a title="Edit" href="#editlink#"><i class="mi-pencil"></i></a></li>
-                    <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-history"></i></a></li>
-            <cfelse>
-                      <li class="edit disabled"><i class="mi-pencil"></i></li>
-                     <li class="version-history disabled"><a><i class="mi-history"></i></a></li>
-            </cfif>
-                  <li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="mi-trash"></i></a></li>
-            </ul>
-          </td>
         </tr>
       </cfloop>
       <cfelse>
       <tr>
-        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="3" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
       </table>
@@ -253,9 +260,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.variations')#</h3>
  <table class="mura-table-grid">
     <tr>
+      <th class="actions"></th>
       <th class="var-width"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
       <th> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
-      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.rslist.recordcount>
      <cfloop query="rc.rslist">
@@ -265,6 +272,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets">
     </cfsilent>
         <tr>
+           <td class="actions">
+            <a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+            <div class="actions-menu hide">
+              <ul class="actions-list">
+              <cfif verdict neq 'none'>
+                <li class="edit"><a title="Edit" href="#editlink#"><i class="mi-pencil"></i></a></li>
+                <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-history"></i></a></li>
+                 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rslist.remoteurl#?previewid=#rc.rslist.contenthistid#');"><i class="mi-globe"></i></a></li>
+                <cfelse>
+<!---                   <li class="edit disabled"><i class="mi-pencil"></i></li> --->
+                  <cfif rc.rstop.type eq 'Variation'>
+                     <li class="preview"><a href="##" onclick="return preview('#rc.rslist.remoteurl#?previewid=#rc.rslist.contenthistid#');"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#</a></li>
+                   </cfif>
+<!---                    <li class="version-history disabled"><a><i class="mi-history"></i></a></li> --->
+                  </cfif>
+                    <li class="delete"><a href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="mi-trash"></i>Delete</a></li>
+              </ul>
+             </div>   
+          </td>
           <td class="title var-width"><a href="#editlink#">#$.dspZoom(crumbdata)#</a></td>
            <td>
             <cfif len(rc.rslist.approvalStatus)>
@@ -278,27 +304,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </cfif>
            </td>
 
-           <td class="actions">
-            <ul>
-            <cfif verdict neq 'none'>
-                    <li class="edit"><a title="Edit" href="#editlink#"><i class="mi-pencil"></i></a></li>
-                    <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-history"></i></a></li>
-                     <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rslist.remoteurl#?previewid=#rc.rslist.contenthistid#');"><i class="mi-globe"></i></a></li>
-            <cfelse>
-                      <li class="edit disabled"><i class="mi-pencil"></i></li>
-                <cfif rc.rstop.type eq 'Variation'>
-                      <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rslist.remoteurl#?previewid=#rc.rslist.contenthistid#');"><i class="mi-globe"></i></a></li>
-              </cfif>
-                     <li class="version-history disabled"><a><i class="mi-history"></i></a></li>
-            </cfif>
-                  <li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="mi-trash"></i></a></li>
-            </ul>
-          </td>
         </tr>
       </cfloop>
       <cfelse>
       <tr>
-        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+        <td colspan="3" class="results">Your search returned no results.</td>
       </tr>
     </cfif>
       </table>

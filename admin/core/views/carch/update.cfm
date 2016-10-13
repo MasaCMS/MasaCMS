@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
@@ -49,11 +49,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>{success:true}</cfoutput>
 <cfabort>
 <cfelseif rc.ajaxrequest>
+<cfif StructIsEmpty(rc.contentBean.getErrors())>
 <cfoutput>{success:true,location:<cfif rc.contentBean.getActive()>
 	'#esapiEncode('javascript',rc.contentBean.getURL())#'
 <cfelse>
 	'#esapiEncode('javascript',rc.contentBean.getURL(queryString="previewid=" & rc.contentBean.getContentHistID()))#'
 </cfif>}</cfoutput>
+<cfelse>
+<cfset csrfTokens=$.generateCSRFTokens(context=rc.contentBean.getContentHistID() & 'add')>
+<cfoutput>{success:false,
+		errors:#serializeJSON(rc.contentBean.getErrors())#,
+		csrf_token: '#csrfTokens.token#',
+		csrf_token_expires: '#csrfTokens.expires#'
+}</cfoutput><cfabort>
+</cfif>
 <cfelseif rc.action eq 'multiFileUpload'>
 <cfoutput>success</cfoutput>
 <cfabort>
@@ -73,12 +82,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   	<cfset rc.rsRestrictGroups=application.contentUtility.getRestrictGroups(rc.siteid) />
   	<cfset rc.rsTemplates=application.contentUtility.getTemplates(rc.siteid,rc.type) />
 
-	<cfif not rc.contentBean.getIsNew()> 
+	<cfif not rc.contentBean.getIsNew()>
   		<cfset rc.crumbData=application.contentManager.getCrumbList(rc.contentID,rc.siteid)/>
   	<cfelse>
   		<cfset rc.crumbData=application.contentManager.getCrumbList(rc.parentID,rc.siteid)/>
   	</cfif>
-  	
+
   	<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contenthistID) />
 
   	<cfset rsCategories=application.categoryManager.getCategoriesBySiteID(rc.siteid) />
@@ -129,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						"isFeature",
 						0,
 						rc.rsCategoryAssign.recordcount
-					)>	
+					)>
 
 			<cfif currentValue eq 1>
 				<cfset querySetCell(
@@ -137,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						"isFeature",
 						1,
 						rc.rsCategoryAssign.recordcount
-					)>	
+					)>
 			<cfelseif currentValue eq 2 >
 				<cfset schedule.featureStart=rc.contentBean.getValue('featureStart#catTrim#') />
 				<cfset schedule.starthour=rc.contentBean.getValue('starthour#catTrim#') />
@@ -152,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif isDate(schedule.featureStart)>
 					<cfif schedule.startdaypart eq "PM">
 						<cfset schedule.starthour = schedule.starthour + 12>
-						
+
 						<cfif schedule.starthour eq 24>
 							<cfset schedule.starthour = 12>
 						</cfif>
@@ -161,7 +170,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset schedule.starthour = 0>
 						</cfif>
 					</cfif>
-					
+
 					<cfset schedule.featureStart = createDateTime(year(schedule.featureStart), month(schedule.featureStart), day(schedule.featureStart),schedule.starthour, schedule.startMinute, "0")>
 
 					<cfset querySetCell(
@@ -185,11 +194,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						rc.rsCategoryAssign.recordcount
 					)>
 				</cfif>
-				
+
 				<cfif isDate(schedule.featurestop)>
 					<cfif schedule.stopdaypart eq "PM">
 						<cfset schedule.stophour = schedule.stophour + 12>
-						
+
 						<cfif schedule.stophour eq 24>
 							<cfset schedule.stophour = 12>
 						</cfif>
@@ -198,7 +207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset schedule.stophour = 0>
 						</cfif>
 					</cfif>
-					
+
 					<cfset schedule.featurestop = createDateTime(year(schedule.featurestop), month(schedule.featurestop), day(schedule.featurestop),schedule.stophour, schedule.stopMinute, "0")>
 					<cfset querySetCell(
 						rc.rsCategoryAssign,
@@ -208,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)>
 				</cfif>
 			</cfif>
-		</cfif>	
+		</cfif>
 	</cfloop>
 
 	<cfif rc.moduleID eq '00000000000000000000000000000000000'>

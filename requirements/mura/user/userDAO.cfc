@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName,tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.ContactForm, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="read" access="public" returntype="any" output="false">
+<cffunction name="read" output="false">
 		<cfargument name="userid" type="string" required="yes" />
 		<cfargument name="userBean" type="any" default=""/>
 		<cfset var rsuser = 0 />
@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="readByUsername" access="public" returntype="any" output="false">
+<cffunction name="readByUsername" output="false">
 		<cfargument name="username" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
 		<cfargument name="userBean" type="any" default=""/>
@@ -144,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="readByGroupName" access="public" returntype="any" output="false">
+<cffunction name="readByGroupName" output="false">
 		<cfargument name="groupname" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
 		<cfargument name="isPublic" type="string" required="yes" default="both"/>
@@ -214,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="readByRemoteID" access="public" returntype="any" output="false">
+<cffunction name="readByRemoteID" output="false">
 		<cfargument name="remoteid" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
 		<cfargument name="userBean" type="any" default=""/>
@@ -268,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn bean />
 </cffunction>
 
-<cffunction name="create" returntype="void" access="public" output="false">
+<cffunction name="create" output="false">
 <cfargument name="userBean" type="any" />
 
  <cfquery>
@@ -325,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void">
+<cffunction name="delete" output="false">
 		<cfargument name="UserID" type="String" />
 		<cfargument name="Type" type="String" />
 
@@ -338,7 +338,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteUserFavorites" returntype="void" output="false" access="public">
+<cffunction name="deleteUserFavorites" output="false">
 	<cfargument name="userid" type="string" />
 
 	<cfquery>
@@ -347,13 +347,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteExtendData" returntype="void" output="false" access="public">
+<cffunction name="deleteExtendData" output="false">
 	<cfargument name="userid" type="string" />
 
 	<cfset variables.configBean.getClassExtensionManager().deleteExtendedData(arguments.userID,'tclassextenddatauseractivity')/>
 </cffunction>
 
-<cffunction name="deleteUserRatings" returntype="void" output="false" access="public">
+<cffunction name="deleteUserRatings" output="false">
 	<cfargument name="userid" type="string" />
 
 	<cfquery>
@@ -362,7 +362,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="update" returntype="void" access="public" output="false">
+<cffunction name="update" output="false">
 	<cfargument name="userBean" type="any" />
 	<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
 	<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
@@ -439,7 +439,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteUserMemberships" returntype="void" output="false" access="public">
+<cffunction name="deleteUserMemberships" output="false">
 	<cfargument name="userid" type="string" />
 	<cfargument name="originID" type="string" required="yes" default=""/>
 
@@ -454,7 +454,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteGroupMemberships" returntype="void" output="false" access="public">
+<cffunction name="deleteGroupMemberships" output="false">
 	<cfargument name="groupid" type="string" />
 
 	<cfquery>
@@ -463,7 +463,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteGroupPermissions" returntype="void" output="false" access="public">
+<cffunction name="deleteGroupPermissions" output="false">
 	<cfargument name="groupid" type="string" />
 
 	<cfquery>
@@ -472,7 +472,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteUserFromGroup" returntype="void" output="false" access="public">
+<cffunction name="deleteUserFromGroup" output="false">
 	<cfargument name="userid" type="string" />
 	<cfargument name="groupid" type="string" />
 
@@ -482,7 +482,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="createUserInGroup" returntype="void" output="false" access="public">
+<cffunction name="createUserInGroup" output="false">
 	<cfargument name="userid" type="string" />
 	<cfargument name="groupid" type="string" />
 	<cfset var checkmemb=""/>
@@ -498,7 +498,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="createUserMemberships" returntype="void" output="false" access="public">
+<cffunction name="createUserMemberships" output="false">
 	<cfargument name="userid" type="string" />
 	<cfargument name="groupid" type="string" />
 	<cfset var I=""/>
@@ -520,7 +520,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteUserInterests" returntype="void" output="false" access="public">
+<cffunction name="deleteUserInterests" output="false">
 	<cfargument name="userid" type="string" />
 	<cfargument name="originID" type="string" required="yes" default="" />
 
@@ -533,7 +533,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="createUserInterests" returntype="void" output="false" access="public">
+<cffunction name="createUserInterests" output="false">
 	<cfargument name="userid" type="string" />
 	<cfargument name="categoryid" type="string" />
 	<cfset var I=""/>
@@ -555,7 +555,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="readMemberships" returntype="query" output="false" access="public">
+<cffunction name="readMemberships" output="false">
 	<cfargument name="userid" type="string" />
 	<cfset var rsMemberships =""/>
 
@@ -569,7 +569,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsMemberships />
 </cffunction>
 
-<cffunction name="readMembershipIDs" returntype="query" output="false" access="public">
+<cffunction name="readMembershipIDs" output="false">
 	<cfargument name="userid" type="string" />
 	<cfset var rsMembershipIDs =""/>
 
@@ -583,7 +583,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsMembershipIDs />
 </cffunction>
 
-<cffunction name="readGroupMemberships" returntype="query" output="false" access="public">
+<cffunction name="readGroupMemberships" output="false">
 	<cfargument name="userid" type="string" />
 	<cfset var rsGroupMemberships =""/>
 	<cfset var sessionData=getSession()>
@@ -599,7 +599,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsGroupMemberships />
 	</cffunction>
 
-<cffunction name="readInterestGroups" returntype="query" access="public" output="false">
+<cffunction name="readInterestGroups" output="false">
 	<cfargument name="userid" type="string" default="" />
 
 	<cfset var rsInterestGroups = "" />
@@ -611,7 +611,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsInterestGroups />
 </cffunction>
 
-<cffunction name="readInterestGroupIDs" returntype="query" access="public" output="false">
+<cffunction name="readInterestGroupIDs" output="false">
 	<cfargument name="userid" type="string" default="" />
 
 	<cfset var rsInterestGroupIDs = "" />
@@ -630,7 +630,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="savePassword" returntype="void" output="false" access="public">
+<cffunction name="savePassword" output="false">
 	<cfargument name="userid" type="string" />
 	<cfargument name="password" type="string" />
 
@@ -642,7 +642,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    </CFQUERY>
 </cffunction>
 
-<cffunction name="readUserHash" returntype="query" output="false" access="public">
+<cffunction name="readUserHash" output="false">
 	<cfargument name="userid" type="string" />
 	<cfset var rsUserHash="">
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUserHash')#">
@@ -657,7 +657,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsUserHash/>
 </cffunction>
 
-<cffunction name="readAddress" access="public" returntype="any" output="false">
+<cffunction name="readAddress" output="false">
 		<cfargument name="addressid" type="string" required="yes" />
 		<cfargument name="addressBean" />
 		<cfset var rs = getAddressByID(arguments.addressID) />
@@ -673,7 +673,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn addressBean />
 </cffunction>
 
-<cffunction name="getAddressByID" access="public" returntype="any" output="false">
+<cffunction name="getAddressByID" output="false">
 		<cfargument name="addressid" type="string" required="yes" />
 		<cfset var rsAddressByID = 0 />
 
@@ -686,7 +686,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsAddressByID />
 </cffunction>
 
-<cffunction name="updateAddress" returntype="void" access="public" output="false">
+<cffunction name="updateAddress" output="false">
 	<cfargument name="addressBean" type="any" />
 
  <cfquery>
@@ -713,7 +713,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="createAddress" returntype="void" access="public" output="false">
+<cffunction name="createAddress" output="false">
 <cfargument name="addressBean" type="any" />
 
  <cfquery>
@@ -747,7 +747,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteAddress" access="public" output="false" returntype="void">
+<cffunction name="deleteAddress" output="false">
 		<cfargument name="addressID" type="String" />
 
 	<cfquery>
@@ -763,7 +763,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="deleteUserAddresses" access="public" output="false" returntype="void">
+<cffunction name="deleteUserAddresses" output="false">
 		<cfargument name="userID" type="String" />
 
 	<cfset var rsUserAddresses=""/>
@@ -786,7 +786,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 </cffunction>
 
-<cffunction name="setPrimaryAddress" access="public" output="false" returntype="void">
+<cffunction name="setPrimaryAddress" output="false">
 		<cfargument name="userID" type="String" />
 		<cfargument name="addressID" type="String" />
 
@@ -799,7 +799,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getAddresses" access="public" output="false" returntype="query">
+<cffunction name="getAddresses" output="false">
 		<cfargument name="userID" type="String" />
 		<cfset var rsAddresses ="" />
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAddresses')#">
@@ -810,7 +810,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn  rsAddresses />
 </cffunction>
 
-<cffunction name="clearBadMemberships" access="public" output="false" returntype="void">
+<cffunction name="clearBadMemberships" output="false">
 		<cfargument name="userBean" type="any" />
 
 	<cfif not arguments.userBean.getS2() and  arguments.userBean.getIsPublic()>
@@ -832,7 +832,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="createTags" access="public" returntype="void" output="false">
+<cffunction name="createTags" output="false">
 	<cfargument name="userBean" type="any" />
 	<cfset var taglist  = "" />
 	<cfset var t = "" />
@@ -853,7 +853,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 </cffunction>
 
-<cffunction name="deleteTags" access="public" returntype="void" output="false">
+<cffunction name="deleteTags" output="false">
 	<cfargument name="userID"  type="string" />
 
 	<cfquery>
@@ -861,7 +861,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 </cffunction>
 
-<cffunction name="setUserBeanMetaData" output="false" returntype="any">
+<cffunction name="setUserBeanMetaData" output="false">
 	<cfargument name="userBean">
 	<cfset var rsmembs=readMembershipIDs(userBean.getUserId()) />
 	<cfset var rsInterests=readInterestGroupIDs(userBean.getUserId()) />

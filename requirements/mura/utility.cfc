@@ -57,7 +57,7 @@
 
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="fileWriter" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
@@ -74,19 +74,22 @@
 </cffunction>
 
 
-<cffunction name="displayErrors" access="public" output="true">
+<cffunction name="displayErrors" output="true">
 <cfargument name="error" type="struct" required="yes" default="#structnew()#"/>
 <cfset var err=""/>
 <cfset var started=false>
+<cfset var ct = 1>
 <cfloop collection="#arguments.error#" item="err">
-<cfif err neq "siteID">
-<cfset started=true>
-<cfoutput><strong>#structfind(arguments.error,err)#</strong><br/></cfoutput>
-</cfif>
+	<cfif err neq "siteID">
+		<cfset started=true>
+		<cfoutput>#structfind(arguments.error,err)#</cfoutput>
+		<cfif structCount(arguments.error) gt ct><br></cfif>
+	</cfif>
+	<cfset ct += 1>
 </cfloop>
 </cffunction>
 
-<cffunction name="getNextN" returntype="struct" access="public" output="false">
+<cffunction name="getNextN" returntype="struct" output="false">
 	<cfargument name="data" />
 	<cfargument name="RecordsPerPage" type="numeric" />
 	<cfargument name="startRow" type="numeric" />
@@ -140,7 +143,7 @@
 	<cfreturn nextn />
 </cffunction>
 
-<cffunction name="filterArgs" access="public" returntype="struct" output="true">
+<cffunction name="filterArgs" returntype="struct" output="true">
 <cfargument name="args" type="struct">
 <cfargument name="badwords" type="string">
 <cfset var str=structCopy(arguments.args)/>
@@ -157,7 +160,7 @@
 <cfreturn str />
 </cffunction>
 
-<cffunction name="createRequiredSiteDirectories" returntype="void" output="false" access="public">
+<cffunction name="createRequiredSiteDirectories" output="false">
 <cfargument name="siteid" type="string" default="" required="yes"/>
 <cfargument name="displaypoolid" type="string" default="" required="yes"/>
 	<cfset var webroot=expandPath('/muraWRM')>
@@ -219,7 +222,7 @@
 
 </cffunction>
 
-<cffunction name="logEvent" returntype="void" output="false" access="public">
+<cffunction name="logEvent" output="false">
 <cfargument name="text" type="string" default="" required="yes"/>
 <cfargument name="file" type="string" default="" required="yes"/>
 <cfargument name="type" type="string" default="Information" required="yes"/>
@@ -245,7 +248,7 @@
 </cfif>
 </cffunction>
 
-<cffunction name="backUp" access="public" output="false" returntype="void">
+<cffunction name="backUp" output="false">
 
 	<cfif cgi.HTTP_REFERER neq ''>
 		<cflocation url="#cgi.HTTP_REFERER#" addtoken="no">
@@ -255,7 +258,7 @@
 
 </cffunction>
 
-<cffunction name="copyDir" returnType="any" output="false">
+<cffunction name="copyDir" output="false">
 	<cfargument name="baseDir" default="" required="true" />
 	<cfargument name="destDir" default="" required="true" />
 	<cfargument name="excludeList" default="" required="true" />
@@ -271,7 +274,7 @@
 
 </cffunction>
 
-<cffunction name="arrayFind" returntype="numeric">
+<cffunction name="arrayFind">
 	<cfargument name="array" required="yes" type="array">
 	<cfargument name="stringa" required="yes" type="string">
 		<cfset var i=0>
@@ -289,7 +292,7 @@
 	<cfreturn i>
 </cffunction>
 
-<cffunction name="joinArrays" returntype="any" output="false">
+<cffunction name="joinArrays" output="false">
 	<cfargument name="array1">
 	<cfargument name="array2">
 	<cfset var i="">
@@ -301,7 +304,7 @@
 	<cfreturn array1 />
 </cffunction>
 
-<cffunction name="createRedirectID" access="public" returntype="string" output="false">
+<cffunction name="createRedirectID" output="false">
 	<cfargument name="theLink" required="true">
 	<cfset var redirectID= createUUID() />
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -317,11 +320,11 @@
 
 
 <!--- deprecated, just user createUUID() --->
-<cffunction name="getUUID" output="false" returntype="string">
+<cffunction name="getUUID" output="false">
 	<cfreturn createUUID() />
 </cffunction>
 
-<cffunction name="fixLineBreaks" output="false" returntype="string">
+<cffunction name="fixLineBreaks" output="false">
 <cfargument name="str">
 	<cfset arguments.str=replace(arguments.str,chr(13),"","all")>
 	<cfset arguments.str=replace(arguments.str,chr(10),chr(13) & chr(10),"all")>
@@ -372,7 +375,7 @@
 	</cftry>
 </cffunction>
 
-<cffunction name="listFix" output="false" returntype="any">
+<cffunction name="listFix" output="false">
 <cfargument name="list">
 <cfscript>
 /**
@@ -417,7 +420,7 @@ return list;
 </cfscript>
 </cffunction>
 
-<cffunction name="cfformprotect" output="false" returntype="any">
+<cffunction name="cfformprotect" output="false">
 	<cfargument name="event">
 	<cfset var cffp=CreateObject("component","cfformprotect.cffpVerify").init()>
 	<cfset var result=false>
@@ -432,7 +435,7 @@ return list;
 	<cfreturn cffp.testSubmission(event.getAllValues())>
 </cffunction>
 
-<cffunction name="arrayToQuery" access="public" returntype="query" output="false">
+<cffunction name="arrayToQuery" output="false">
 <cfargument name="array" type="array" required="yes"/>
 <cfscript>
 var r = 0;
@@ -503,7 +506,7 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 	}
 </cfscript>
 
-<cffunction name="queryRowToStruct" access="public" output="false" returntype="struct">
+<cffunction name="queryRowToStruct" output="false" returntype="struct">
 	<cfargument name="qry" type="query" required="true">
 
 		<cfscript>
@@ -539,7 +542,7 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 <!---
 Author: John Mason, mason@fusionlink.com
 Blog: www.codfusion.com--->
-<cffunction name="isValidCFVariableName" output="false" access="public" returntype="Any">
+<cffunction name="isValidCFVariableName" output="false">
 	<cfargument name="text" required="true" type="String">
 	<cfset var local = StructNew()/>
 	<cfset local.result = true/>
@@ -595,7 +598,7 @@ Blog: www.codfusion.com--->
 
 <!---
 Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
-<cffunction name="SetCookie" hint="Replacement for cfcookie that handles httponly cookies" output="false" returntype="void">
+<cffunction name="SetCookie" hint="Replacement for cfcookie that handles httponly cookies" output="false">
     <cfargument name="name" type="string" required="true">
     <cfargument name="value" type="string" required="true">
     <cfargument name="expires" type="any" default="" hint="''=session only|now|never|[date]|[number of days]">
@@ -660,7 +663,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfreturn rsDir>
 </cffunction>
 
-<cffunction name="getCryptoSalt" returntype="string" output="false">
+<cffunction name="getCryptoSalt" output="false">
     <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
     <cfargument name="reseedFrequency" default="#variables.configBean.getBCryptReseedFrequency()#" hint="How often to re-seed." >
     <cfif structKeyExists(variables, "cryptoSaltSct") >
@@ -687,7 +690,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 
 </cffunction>
 
-<cffunction name="setCryptoSalt" returntype="void" output="true" >
+<cffunction name="setCryptoSalt" output="true" >
         <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
         <cfset variables.cryptoSaltSct.salt =
                 getBCrypt().gensalt(JavaCast('int',arguments.logRounds))
@@ -769,7 +772,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfreturn arguments.rs>
 </cffunction>
 
- <cffunction name="textPreview" access="public" returntype="string" output="false">
+ <cffunction name="textPreview" output="false">
 		<cfargument name="str" type="string" required="true">
 		<cfargument name="maxlen" type="numeric" required="false" default="100" hint="Maximum length">
 		<cfargument name="finishlist" type="string" required="false" default=".|?|!" hint="List of finish symbols">
@@ -811,7 +814,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		<cfsetting showdebugoutput="no">
 	</cffunction>
 
-	<cffunction name="queryAppend" access="public" returntype="void" output="false"
+	<cffunction name="queryAppend" output="false"
 		hint="This takes two queries and appends the second one to the first one. This actually updates the first query and does not return anything.">
 		<cfargument name="QueryOne" type="query" required="true" />
 		<cfargument name="QueryTwo" type="query" required="true" />
@@ -1092,6 +1095,87 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			return NumberFormat(theSize*.001, 9) & 'kb';
 		}
 	}
+
+	function getIsoTimeString(
+			required date datetime,
+			boolean convertToUTC = true
+		) {
+		if ( arguments.convertToUTC ) {
+			arguments.datetime = dateConvert( "local2utc", arguments.datetime );
+		}
+		// When formatting the time, make sure to use "HH" so that the
+		// time is formatted using 24-hour time.
+		return(
+			dateFormat( arguments.datetime, "yyyy-mm-dd" ) &
+			"T" &
+			timeFormat( arguments.datetime, "HH:mm:ss" ) &
+			"Z"
+		);
+	}
+
+	function getEpochTime() {
+	  var datetime = 0;
+	  if (ArrayLen(Arguments) is 0) {
+		datetime = Now();
+	  }
+	  else {
+		if (IsDate(Arguments[1])) {
+		  datetime = Arguments[1];
+		} else {
+		  return arguments[1];
+		}
+	  }
+	  return DateDiff("s", "January 1 1970 00:00", datetime);
+	}
+
+	function getStringBytesLength(str) {
+
+	    return arrayLen(CreateObject(
+	    "java",
+	    "java.lang.String"
+	    ).Init(
+	        JavaCast(
+	            "string",
+	            arguments.str
+	            )
+	        ).getBytes()
+	    );
+	}
+
+	function leftTrimByBytes(str='',len=255){
+	    /*
+	      The java.text.StringCharacterIterator respects unicode characters.
+	      So it iterates over the characters until the resulting string's byte array length reaches the arguments.len value
+	    */
+	    var characterIterator = CreateObject(
+	        "java",
+	        "java.text.StringCharacterIterator"
+	        ).Init(
+	            arguments.str
+	        );
+	    var returnStr='';
+	    var stageStr='';
+	    while(characterIterator.Current() != characterIterator.DONE){
+	        stageStr = stageStr & characterIterator.Current();
+	        if(getStringBytesLength(stageStr) <= arguments.len){
+	            returnStr=stageStr;
+	        } else {
+	            return returnStr;
+	        }
+	        characterIterator.Next();
+	    }
+
+	    return returnStr;
+	}
+
+	function trimVarchar(str,len){
+		if(variables.configBean.getDbType() eq 'Oracle'){
+			return leftTrimByBytes(arguments.str,arguments.len);
+		} else {
+			return left(arguments.str,arguments.len);
+		}
+	}
+
 </cfscript>
 
 </cfcomponent>

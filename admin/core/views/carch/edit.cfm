@@ -159,24 +159,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		document.contentForm.approved.value=0;
 		jQuery("#alertDialog").html(msg);
 		jQuery("#alertDialog").dialog({
+				dialogClass: "dialog-info",
+				title:"<cfoutput>#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.savedraft'))#</cfoutput>",
+				width: 400,
 				resizable: false,
 				modal: true,
 				position: getDialogPosition(),
 				buttons: {
-					'Yes': function() {
-						jQuery(this).dialog('close');
-						if(siteManager.ckContent()){
-							document.getElementById('contentForm').returnURL.value=siteManager.requestedURL;
-							submitForm(document.contentForm,'add');
-							}
-							return false;
-						},
 					'No': function() {
 						jQuery(this).dialog('close');
 						location.href=siteManager.requestedURL;
 						siteManager.requestedURL="";
-					}
+					},
+					Yes:
+						{click: function() {
+							jQuery(this).dialog('close');
+							if(siteManager.ckContent()){
+								document.getElementById('contentForm').returnURL.value=siteManager.requestedURL;
+								submitForm(document.contentForm,'add');
+							}
+							return false;
+							}
+						, text: 'Yes'
+						, class: 'mura-primary'
+						} // /yes
 				}
+
 			});
 
 			return false;
@@ -319,76 +327,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="form-actions">
 
 			 <button type="button" class="btn" onclick="return saveDraftPrompt();"><i class="mi-edit"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
-			 <script>
 
-					saveDraftPrompt=function(){
-						confirmDialog(
-							'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
-							function(){
-								if(siteManager.ckContent(draftremovalnotice,true)){
-									document.contentForm.approved.value=0;
-									document.contentForm.preview.value=0;
-									document.contentForm.murakeepediting.value=true;
-									submitForm(document.contentForm,'add');
-								}
-							},
-							function(){
-								if(siteManager.ckContent(draftremovalnotice,true)){
-									document.contentForm.approved.value=0;
-									document.contentForm.preview.value=0;
-									document.contentForm.murakeepediting.value=false;
-									submitForm(document.contentForm,'add');
-								}
-							}
-
-						);
-					}
-
-	 				var shifted=false;
-	 				var lockedbysomeonelse=false;
-
-	 				checkForSave=function(e) {
-					  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-					    	e.preventDefault();
-						   	if(!lockedbysomeonelse){
-						   		if(e.altKey){
-									document.contentForm.approved.value=1;
-								} else {
-									document.contentForm.approved.value=0;
-								}
-
-								if(e.shiftKey){
-									document.contentForm.preview.value=1;
-								} else {
-									document.contentForm.preview.value=0;
-								}
-
-								<cfif rc.compactDisplay neq 'true'>
-								document.contentForm.murakeepediting.value=true;
-								</cfif>
-
-							    if(siteManager.ckContent(draftremovalnotice,true)){
-									submitForm(document.contentForm,'add');
-								} else {
-									document.contentForm.approved.value=0;
-									document.contentForm.murakeepediting.value=false;
-									document.contentForm.preview.value=0;
-									document.contentForm.approved.value=0;
-								}
-
-							}
-						}
-					}
-
-					//try{
-						window.top.document.addEventListener("keydown", checkForSave , false);
-					//} catch (e){};
-			</script>
 			<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
 			<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="mi-eye"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 			</cfif>
 			<cfif assignChangesets>
-				<button type="button" class="btn" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;">
+				<button type="button" class="btn<cfif len(rc.contentBean.getChangesetID())> mura-primary</cfif>" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;">
 					<cfif requiresApproval>
 						<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangesetandsendforapproval"))#
 					<cfelse>
@@ -409,7 +353,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				--->
 			</cfif>
 			<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
-				<button type="button" class="btn mura-primary" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
+				<button type="button" class="btn<cfif not len(rc.contentBean.getChangesetID())> mura-primary</cfif>" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
 					<cfif requiresApproval>
 						<i class="mi-share-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
 					<cfelse>
@@ -521,6 +465,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 </div> <!-- /.mura-header -->
+
+<cfinclude template="dsp_status.cfm">
+
+	<cfif not rc.contentBean.getIsNew()>
+
+
+		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
+
+		<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
+			<div class="alert alert-info">
+				<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong></span>
+			</div>
+		</cfif>
+	</cfif>
+
+	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
+		<div class="alert alert-info">
+			<span>
+				<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:<br>
+				<ul class="alert-list">
+				<cfloop query="pendingChangesets"><li><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#">#esapiEncode('html',pendingChangesets.changesetName)#</a></li></cfloop>
+				</ul>
+				</cfif>
+				<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
+			</span>
+		</div>
+	</cfif>
+
+	<cfif len(rc.contentBean.getNotes())>
+		<div class="alert alert-info">
+			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</span>
+		</div>
+	</cfif>
+
+	<!--- This is plugin message targeting --->
+	<span id="msg">
+	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
+	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
+	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
+	</span>
+
 	</cfoutput>
 
 	<cfset tabLabelList=""/>
@@ -541,16 +526,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
-		<cfif rc.moduleid eq '00000000000000000000000000000000000' and listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
-			<cfinclude template="form/dsp_tab_seo.cfm">
-			</cfif>
-			<!---
-			<cfif  not len(tabAssignments) or listFindNocase(tabAssignments,'Mobile')>
-				<cfinclude template="form/dsp_tab_mobile.cfm">
-			</cfif>
-			--->
-		</cfif>
+	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
+		<cfinclude template="form/dsp_tab_publishing.cfm">
+	<cfelse>
+		<input type="hidden" name="ommitPublishingTab" value="true">
+		<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
+	</cfif>
 
 		<cfif rc.moduleid eq '00000000000000000000000000000000000' and (not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')))>
 			<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
@@ -690,22 +671,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</cfoutput>
 	</cfif>
-	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
-		<cfinclude template="form/dsp_tab_publishing.cfm">
-	<cfelse>
-		<input type="hidden" name="ommitPublishingTab" value="true">
-		<cfoutput><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></cfoutput>
-	</cfif>
+
 	</cfsavecontent>
 	<!--- /tabcontent --->
 
 	<cfoutput>
 		<cfif rc.contentBean.exists() and rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
-			<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+			<div class="alert alert-info">
+				<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</span>
+			</div>
 		</cfif>
 
 		<cfif not structIsEmpty(rc.contentBean.getErrors())>
-			<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
+			<div class="alert alert-error"><span>#application.utility.displayErrors(rc.contentBean.getErrors())#</span></div>
 		</cfif>
 	</cfoutput>
 
@@ -714,37 +692,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- start output --->
 	<cfoutput>
 
-	<cfif not rc.contentBean.getIsNew()>
-
-		<cfinclude template="dsp_status.cfm">
-
-		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
-
-		<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
-			<p class="alert">
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
-			<p>
-		</cfif>
-	</cfif>
-
-	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
-		<p class="alert">
-		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:
-		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#"><strong>#esapiEncode('html',pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
-		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
-		</p>
-	</cfif>
-
-	<cfif len(rc.contentBean.getNotes())>
-		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</p>
-	</cfif>
-
-	<!--- This is plugin message targeting --->
-	<span id="msg">
-	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
-	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
-	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
-	</span>
 
 
 	<div class="block block-constrain">
@@ -783,13 +730,77 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
 
-	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
-		<script type="text/javascript">
-		siteManager.tablist='#esapiEncode('javascript',lcase(tabList))#';
-		siteManager.loadExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
-		</script>
-	</cfif>
 
+<script type="text/javascript">
+
+<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
+	siteManager.tablist='#esapiEncode('javascript',lcase(tabList))#';
+	siteManager.loadExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
+</cfif>
+
+saveDraftPrompt=function(){
+	confirmDialog(
+		'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
+		function(){
+			if(siteManager.ckContent(draftremovalnotice,true)){
+				document.contentForm.approved.value=0;
+				document.contentForm.preview.value=0;
+				document.contentForm.murakeepediting.value=true;
+				submitForm(document.contentForm,'add');
+			}
+		},
+		function(){
+			if(siteManager.ckContent(draftremovalnotice,true)){
+				document.contentForm.approved.value=0;
+				document.contentForm.preview.value=0;
+				document.contentForm.murakeepediting.value=false;
+				submitForm(document.contentForm,'add');
+			}
+		},
+		'','','Yes','No'
+	);
+}
+
+	var shifted=false;
+	var lockedbysomeonelse=false;
+
+	checkForSave=function(e) {
+  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+    	e.preventDefault();
+	   	if(!lockedbysomeonelse){
+	   		if(e.altKey){
+				document.contentForm.approved.value=1;
+			} else {
+				document.contentForm.approved.value=0;
+			}
+
+			if(e.shiftKey){
+				document.contentForm.preview.value=1;
+			} else {
+				document.contentForm.preview.value=0;
+			}
+
+			<cfif rc.compactDisplay neq 'true'>
+			document.contentForm.murakeepediting.value=true;
+			</cfif>
+
+		    if(siteManager.ckContent(draftremovalnotice,true)){
+				submitForm(document.contentForm,'add');
+			} else {
+				document.contentForm.approved.value=0;
+				document.contentForm.murakeepediting.value=false;
+				document.contentForm.preview.value=0;
+				document.contentForm.approved.value=0;
+			}
+
+		}
+	}
+}
+
+//try{
+	window.top.document.addEventListener("keydown", checkForSave , false);
+//} catch (e){};
+</script>
 	<input name="approved" type="hidden" value="0">
 	<input name="muraPreviouslyApproved" type="hidden" value="#rc.contentBean.getApproved()#">
 	<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">

@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
 	<cfargument name="categoryGateway" type="any" required="yes"/>
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="updateGlobalMaterializedPath" returntype="any" output="false">
+<cffunction name="updateGlobalMaterializedPath" output="false">
 <cfargument name="siteID">
 <cfargument name="parentID" required="true" default="">
 <cfargument name="path" required="true" default=""/>

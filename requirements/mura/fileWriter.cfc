@@ -58,7 +58,7 @@
 
 	<cfset variables.useMode=true>
 
-	<cffunction name="init" output="false" returntype="any">
+	<cffunction name="init" output="false">
 		<cfargument name="useMode" required="true" default="">
 		<cfargument name="tempDir" required="true" default="#application.configBean.getTempDir()#">
 
@@ -245,7 +245,7 @@
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="copyDir" returnType="any" output="false">
+	<cffunction name="copyDir" output="false">
 		<cfargument name="baseDir" default="" required="true" />
 		<cfargument name="destDir" default="" required="true" />
 		<cfargument name="excludeList" default="" required="true" />
@@ -391,7 +391,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="PathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
+	<cffunction name="PathFormat" access="private" output="no" hint="Convert path into Windows or Unix format.">
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
 		<cfreturn arguments.path>

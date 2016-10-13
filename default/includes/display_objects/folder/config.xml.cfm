@@ -1,1 +1,1 @@
-<displayobject name="Folder" iconclass="mi-th-list" legacyobjectfile="../dsp_folder.cfm"/>
+<mura name="Folder" iconclass="mi-th-list" legacyobjectfile="../dsp_folder.cfm"/>

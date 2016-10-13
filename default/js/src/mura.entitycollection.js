@@ -43,9 +43,33 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(root){
-	root.mura.EntityCollection=root.mura.Entity.extend({
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['Mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        factory(require('Mura'));
+    } else {
+        // Browser globals (root is window)
+        factory(root.Mura);
+    }
+}(this, function (Mura) {
+    /**
+     * Creates a new Mura.EntityCollection
+     * @class {class} Mura.EntityCollection
+     */
+	Mura.EntityCollection=Mura.Entity.extend(
+    /** @lends Mura.EntityCollection.prototype */
+    {
+        /**
+		 * init - initiliazes instance
+		 *
+		 * @param  {object} properties Object containing values to set into object
+		 * @return {object} Self
+		 */
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
@@ -54,10 +78,10 @@
 
 			if(Array.isArray(self.get('items'))){
 				self.set('items',self.get('items').map(function(obj){
-					if(root.mura.entities[obj.entityname]){
-						return new root.mura.entities[obj.entityname](obj);
+					if(Mura.entities[obj.entityname]){
+						return new Mura.entities[obj.entityname](obj);
 					} else {
-						return new root.mura.Entity(obj);
+						return new Mura.Entity(obj);
 					}
 				}));
 			}
@@ -65,18 +89,35 @@
 			return this;
 		},
 
+		/**
+		 * item - Return entity in collection at index
+		 *
+		 * @param  {nuymber} idx Index
+		 * @return {object}     Mura.Entity
+		 */
 		item:function(idx){
 			return this.properties.items[idx];
 		},
 
+		/**
+		 * index - Returns index of item in collection
+		 *
+		 * @param  {object} item Entity instance
+		 * @return {number}      Index of entity
+		 */
 		index:function(item){
 			return this.properties.items.indexOf(item);
 		},
 
+		/**
+		 * getAll - Returns array of all entities way properties
+		 *
+		 * @return {array}
+		 */
 		getAll:function(){
 			var self=this;
 
-			return mura.extend(
+			return Mura.extend(
 				{},
 				self.properties,
 				{
@@ -88,6 +129,12 @@
 
 		},
 
+		/**
+		 * each - Passes each entity in collection through function
+		 *
+		 * @param  {function} fn Function
+		 * @return {object}  Self
+		 */
 		each:function(fn){
 			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
@@ -95,22 +142,41 @@
 			return this;
 		},
 
+		/**
+		 * sort - Sorts collection
+		 *
+		 * @param  {function} fn Sorting function
+		 * @return {object}   Self
+		 */
 		sort:function(fn){
 			this.properties.items.sort(fn);
+            return this;
 		},
 
+		/**
+		 * filter - Returns new Mura.EntityCollection of entities in collection that pass filter
+		 *
+		 * @param  {function} fn Filter function
+		 * @return {Mura.EntityCollection}
+		 */
 		filter:function(fn){
-			var collection=new root.mura.EntityCollection(this.properties);
+			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
+        /**
+		 * map - Returns new Mura.EntityCollection of entities in objects returned from map function
+		 *
+		 * @param  {function} fn Filter function
+		 * @return {Mura.EntityCollection}
+		 */
 		map:function(fn){
-			var collection=new root.mura.EntityCollection(this.properties);
+			var collection=new Mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		}
 	});
-})(this);
+}));

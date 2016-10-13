@@ -98,6 +98,8 @@
 					<div class="block block-bordered">
 					  <div class="block-content">
 							<div id="main">
+
+				<cfif rc.rstop.recordcount>
 				<table class="mura-table-grid">
 					<cfoutput>
 						<thead>
@@ -124,7 +126,6 @@
 					</cfoutput>
 
 					<tbody>
-						<cfif rc.rstop.recordcount>
 							<cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
 								<cfsilent>
 									<cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
@@ -244,17 +245,15 @@
 									<!--- /Actions --->
 								</tr>
 							</cfoutput>
-						<cfelse>
-							<tr>
-								<td colspan="7" class="noResults">
-									<cfoutput>
-										#application.rbFactory.getKeyValue(session.rb,'sitemanager.noitemsinsection')#
-									</cfoutput>
-								</td>
-							</tr>
-						</cfif>
 					</tbody>
 				</table>
+				<cfelse>
+					<div class="help-block-empty">
+						<cfoutput>
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.noitemsinsection')#
+						</cfoutput>
+					</div>
+				</cfif>
 
 				<cfif rc.nextn.numberofpages gt 1>
 					<cfoutput>
@@ -271,7 +270,7 @@
 
 										<li>
 											<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">
-												&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#
+												<i class="mi-angle-right"></i>
 											</a>
 										</li>
 									 </cfif>
@@ -289,7 +288,7 @@
 									</cfloop>
 						<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 							<li>
-								<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+								<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#"><i class="mi-angle-right"></i></a>
 							</li>
 						</cfif>
 						</ul>
@@ -322,8 +321,8 @@
 						<div id="tags" class="tagSelector">
 							<cfloop list="#$.event('tags')#" index="i">
 								<span class="tag">
-												#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-								<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+									#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+									<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 								</span>
 							</cfloop>
 						</div>
@@ -337,8 +336,8 @@
 								<div id="#g#tags" class="tagSelector">
 									<cfloop list="#$.event('#g#tags')#" index="i">
 										<span class="tag">
-														#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-										<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+											#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+											<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 										</span>
 									</cfloop>
 								</div>
@@ -358,8 +357,8 @@
 						<cfif len($.event('categoryID') & $.event('tags') & $.event('searchString'))>
 						<input type="button" class="btn" name="removeFilter" id="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
 						</cfif>
-					</div><!-- /.sidebar-buttons -->	
-						
+					</div><!-- /.sidebar-buttons -->
+
 				 </form>
 
 				 <script>
@@ -448,10 +447,13 @@
 			<cfparam name="rc.type" default="" />
 			<cfparam name="rc.page" default="1" />
 			<cfparam name="rc.subtype" default="" />
+			<cfparam name="session.moduleid" default="#rc.moduleid#" />
 
 			<cfif len($.siteConfig('customTagGroups'))>
 				<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-					<cfparam name="rc.#g#tags" default="" />
+					<cfif not structKeyExists(rc,"#g#tags")>
+						<cfset rc["#g#tags"]="">
+					</cfif>
 				</cfloop>
 			</cfif>
 
@@ -610,9 +612,10 @@
 		<cfoutput>
 			<script>
 				siteID='#session.siteID#';
-				<cfif session.copySiteID eq rc.siteID>
+				<cfif session.copySiteID eq rc.siteID and isdefined('session.copyModuleID')>
 				siteManager.copyContentID = '#esapiEncode("javascript",session.copyContentID)#';
 				siteManager.copySiteID = '#esapiEncode("javascript",session.copySiteID)#';
+				siteManager.copyModuleID = '#esapiEncode("javascript",session.copyModuleID)#';
 				siteManager.copyAll = '#esapiEncode("javascript",session.copyAll)#';
 				<cfelse>
 				siteManager.copyContentID = '';
@@ -645,46 +648,48 @@
 			  		OR application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)
 			  		OR application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
 
-							  <ul id="arch-mod" class="navTask nav nav-pills pull-left">
+							  <div id="arch-mod" class="mura-input-set">
 
-  								  <li>
-  									  <a data-moduleid="00000000000000000000000000000000000" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.sitetree"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000000"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000001','00000000000000000000000000000000000','','','Page',1)});">
+  									  <a class="site-manager-mod btn<cfif rc.moduleid eq "00000000000000000000000000000000000"> active</cfif>" data-moduleid="00000000000000000000000000000000000" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.sitetree"))#" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','','00000000000000000000000000000000000','','','Page',1)});">
   										  <i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitetree")#
   									  </a>
-  								  </li>
+
 
   								  <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
-  								  <li>
-  									  <a data-moduleid="00000000000000000000000000000000003" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.components"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000003"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000003','00000000000000000000000000000000003','','','Component',1)});">
+
+  									  <a class="site-manager-mod btn<cfif rc.moduleid eq "00000000000000000000000000000000003"> active</cfif>" data-moduleid="00000000000000000000000000000000003" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.components"))#" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','','00000000000000000000000000000000003','','','Component',1)});">
   										  <i class="mi-align-justify"></i> #application.rbFactory.getKeyValue(session.rb,"layout.components")#
   									  </a>
-  								  </li>
+
   								  </cfif>
   								  <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
-  								  <li>
-  									  <a data-moduleid="00000000000000000000000000000000004" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.forms"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000004"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000004','00000000000000000000000000000000004','','','Form',1)});">
+
+  									  <a class="site-manager-mod btn<cfif rc.moduleid eq "00000000000000000000000000000000004"> active</cfif>" data-moduleid="00000000000000000000000000000000004" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.forms"))#" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','','00000000000000000000000000000000004','','','Form',1)});">
   										<i class="mi-toggle-on"></i> #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
   									  </a>
-  								  </li>
+
   								  </cfif>
   								  <cfif application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
-  								  <li>
-  									  <a data-moduleid="00000000000000000000000000000000099" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.variations"))#" class="site-manager-mod <cfif rc.moduleid eq "00000000000000000000000000000000099"> active</cfif>" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','00000000000000000000000000000000099','00000000000000000000000000000000099','','','Variation',1)});">
+
+  									  <a class="site-manager-mod btn<cfif rc.moduleid eq "00000000000000000000000000000000099"> active</cfif>" data-moduleid="00000000000000000000000000000000099" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.variations"))#" href="##" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteid)#','','00000000000000000000000000000000099','','','Variation',1)});">
   										  <i class="mi-cloud"></i> #application.rbFactory.getKeyValue(session.rb,"layout.variations")#
   									  </a>
-  								  </li>
+
   								  </cfif>
-  							  </ul>
-				  		</cfif>	
+  							  </div>
+				  		</cfif>
 
 								<script>
 									$(function(){
 										$("##arch-mod  a").click(function(){
+											// persist content nav selection
+											var navSelection = jQuery(this).attr('data-moduleid');
+
 											$(".site-manager-mod").removeClass('active');
-											$('a[data-moduleid=' + $(this).data('moduleid') +']').removeClass('active');
+											$('a[data-moduleid=' + navSelection +']').removeClass('active');
 											$("##arch-mod  a.active").removeClass('active');
-											$('a[data-moduleid=' + $(this).data('moduleid') +']').addClass('active');
-											if($(this).data('moduleid')=='00000000000000000000000000000000000'){
+											$('a[data-moduleid=' + navSelection +']').addClass('active');
+											if(navSelection=='00000000000000000000000000000000000'){
 												$('##gridContainer').addClass('site-tree');
 											} else {
 												$('##gridContainer').removeClass('site-tree');
@@ -693,7 +698,7 @@
 									});
 								</script>
 
-						  		<!--- site manager architectural view container --->
+			  		<!--- site manager architectural view container --->
 						<div id="gridContainer"<cfif rc.moduleid eq "00000000000000000000000000000000000"> class="site-tree"</cfif>>
 
 						</div>
@@ -729,7 +734,7 @@
 					return {
 						siteid:'#esapiEncode('javascript',session.siteID)#',
 						moduleid:'#esapiEncode('javascript',$.event("moduleid"))#',
-						topid:'#esapiEncode('javascript',session.topid)#',
+						topid:'#esapiEncode('javascript',session["#$.event("moduleid")#"].topid)#',
 						sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#',
 						sortdirection:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortdirection)#',
 						page:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].page)#',
@@ -743,7 +748,7 @@
 						filtered: '#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].filtered)#'
 						<cfif len($.siteConfig('customTagGroups'))>
 							<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-								,#g#tags:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"]["#g#tags"])#'
+								,"#g#tags":'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"]["#g#tags"])#'
 							</cfloop>
 						</cfif>
 					};
@@ -784,13 +789,13 @@
 					}
 				}
 
-
 				jQuery(document).ready(function(){
 					<cfif isdefined('url.moduleid') and not isdefined('url.activetab')>
 						initSiteManagerTabContent(0);
 					<cfelse>
 						initSiteManagerTabContent(#rc.activeTab#);
 					</cfif>
+
 				});
 			</script>
 		</cfoutput>

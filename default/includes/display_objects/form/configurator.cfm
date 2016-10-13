@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<select id="availableObjectSelector">
 			<option
 				data-value='unconfigured'
-				value="{object:'form',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform'))#',objectid:'unconfigured'}">
+				value="{object:'form',objectid:'unconfigured'}">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform')#
 			</option>
 			<cfloop query="rc.rsForms">
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<option
 					<cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form'>selected </cfif>
 					title="#esapiEncode('html_attr',title)#"
-					value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#'}">
+					value="{object:'form',objectid:'#rc.rsForms.contentid#'}">
 					#esapiEncode('html',title)#
 				</option>
 			</cfloop>
@@ -107,9 +107,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var selector=$('##availableObjectSelector');
 			var val=eval('(' + selector.val() + ')').objectid;
 			if(val && val !='unconfigured'){
-		 		$('##editBtn').html('Edit');
+		 		$('##editBtn').html('<i class="mi-pencil"></i>Edit');
 		 	} else {
-		 		$('##editBtn').html('Create New');
+		 		$('##editBtn').html('<i class="mi-plus-circle"></i> Create New');
 		 	}
 
 			/*

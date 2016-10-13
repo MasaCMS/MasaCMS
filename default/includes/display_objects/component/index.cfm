@@ -62,10 +62,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and listFind(variables.rsTemplate.moduleAssign,'00000000000000000000000000000000000')>
 </cfsilent>
 <cfif not bean.getIsNew()>
+	<cfset objectparams.objectid=bean.getContentID()>
+
 	<cfif variables.rsTemplate.isOnDisplay>
 		<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
+		<cfset safesubtype=REReplace(bean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 		<cfif not len(variables.componentOutput)>
-			<cfset variables.componentOutput=$.dspObject_include(theFile='extensions/dsp_Component_' & REReplace(bean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL") & ".cfm",throwError=false)>
+			<cfset variables.componentOutput=$.dspObject_include(theFile='extensions/dsp_Component_' & safesubtype & ".cfm",throwError=false)>
+		</cfif>
+		<cfif not len(variables.componentOutput)>
+			<cfset filePath=$.siteConfig().lookupContentTypeFilePath('component/index.cfm')>
+			<cfif len(filePath)>
+				<cfsavecontent variable="variables.componentOutput">
+					<cfinclude template="#filepath#">
+				</cfsavecontent>
+				<cfset variables.componentOutput=trim(variables.componentOutput)>
+			</cfif>
+		</cfif>
+		<cfif not len(variables.componentOutput)>
+			<cfset filePath=$.siteConfig().lookupContentTypeFilePath(lcase('component_#safesubtype#/index.cfm'))>
+			<cfif len(filePath)>
+				<cfsavecontent variable="variables.componentOutput">
+					<cfinclude template="#filepath#">
+				</cfsavecontent>
+				<cfset variables.componentOutput=trim(variables.componentOutput)>
+			</cfif>
 		</cfif>
 		<cfif len(variables.componentOutput)>
 			<cfoutput>#variables.componentOutput#</cfoutput>
@@ -82,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset request.cacheItem=variables.rsTemplate.doCache/>
 	</cfif>
 <cfelseif listFindNoCase('author,editor',variables.$.event('r').perm)>
-	<p>This Component has not been configured.</p>
+	<cfoutput><p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.objectnotconfigured')#</p></cfoutput>
 <cfelse>
 	<cfset request.muraValidObject=false>
 </cfif>

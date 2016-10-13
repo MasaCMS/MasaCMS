@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 		<cfargument name="contentDAO" type="any" required="yes"/>
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="permUtility" type="any" required="yes"/>
@@ -71,14 +71,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="setMailer" returntype="any" access="public" output="false">
+<cffunction name="setMailer" output="false">
 <cfargument name="mailer"  required="true">
 
 	<cfset variables.mailer=arguments.mailer />
 
 </cffunction>
 
-	<cffunction name="deployPartialBundle" returntype="any" access="public" output="false">
+	<cffunction name="deployPartialBundle" output="false">
 		<cfargument name="bundleFile">
 		<cfargument name="serverBundlePath">
 		<cfargument name="siteID">
@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 
-<cffunction name="getNotify" returntype="query" access="public" output="false">
+<cffunction name="getNotify" output="false">
 <cfargument name="crumbData" type="array" />
 	<cfset var rs = "">
 	<cfset var rsprenotify = "">
@@ -246,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs />
 </cffunction>
 
-<cffunction name="getMailingLists" returntype="query" access="public" output="false">
+<cffunction name="getMailingLists" output="false">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs = "">
 
@@ -258,19 +258,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rs />
 </cffunction>
 
-<cffunction name="getTemplates" returntype="query" access="public" output="false">
+<cffunction name="getTemplates" output="false">
 	<cfargument name="siteid" type="string" required="true">
 	<cfargument name="type" type="string" required="true" default="">
 	<cfreturn variables.settingsManager.getSite(arguments.siteID).getTemplates(arguments.type) />
 </cffunction>
 
-<cffunction name="getLayouts" returntype="query" access="public" output="false">
+<cffunction name="getLayouts" output="false">
 	<cfargument name="siteid" type="string" required="true">
 	<cfargument name="type" type="string" required="true" default="collection/layouts">
 	<cfreturn variables.settingsManager.getSite(arguments.siteID).getLayouts(arguments.type) />
 </cffunction>
 
-<cffunction name="getRestrictGroups" returntype="query" access="public" output="false">
+<cffunction name="getRestrictGroups" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfset var rs = "">
 
@@ -287,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs />
 </cffunction>
 
-<cffunction name="doesFileExist" returntype="boolean" access="public" output="false">
+<cffunction name="doesFileExist" returntype="boolean" output="false">
 		<cfargument name="siteid" type="string" required="true">
 		<cfargument name="filename" type="string" required="true">
 		<cfargument name="contentid" type="string" required="true">
@@ -307,7 +307,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 </cffunction>
 
-<cffunction name="doesLoadKeyExist" returntype="boolean" access="public" output="false">
+<cffunction name="doesLoadKeyExist" returntype="boolean" output="false">
 		<cfargument name="contentBean">
 		<cfargument name="field">
 		<cfargument name="fieldValue">
@@ -347,7 +347,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 </cffunction>
 
-<cffunction name="deleteFile" returntype="void" access="public" output="false">
+<cffunction name="deleteFile" output="false">
 <cfargument name="contentBean" type="any"/>
 <cfset var tempfile= ""/>
 <cfset var pass = 0 />
@@ -430,7 +430,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="move" returntype="void" output="false" access="public">
+<cffunction name="move" output="false">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="filename" type="string" />
 	<cfargument name="oldfilename" type="string" />
@@ -461,7 +461,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="movelink" returntype="void" output="false" access="public">
+<cffunction name="movelink" output="false">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="filename" type="string" />
 	<cfargument name="oldfilename" type="string" />
@@ -515,7 +515,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="sendNotices" returntype="void" output="false" access="public">
+<cffunction name="sendNotices" output="false">
 	<cfargument name="data" type="struct" />
 	<cfargument name="contentBean" type="any" />
 
@@ -663,7 +663,7 @@ VERSION LINK:
 
 </cffunction>
 
-<cffunction name="formatFilename" returntype="any" output="false" access="public">
+<cffunction name="formatFilename" output="false">
 	<cfargument name="filename" type="any" />
 	<cfset var wordDelim=variables.configBean.getURLTitleDelim()>
 
@@ -693,7 +693,7 @@ VERSION LINK:
 
 </cffunction>
 
-<cffunction name="setUniqueFilename" returntype="void" output="false" access="public">
+<cffunction name="setUniqueFilename" output="false">
 	<cfargument name="contentBean" type="any" />
 	<cfset var parentBean=variables.contentDAO.readActive(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID()) />
 	<cfset var pass =0 />
@@ -737,7 +737,7 @@ VERSION LINK:
 	</cfif>
 </cffunction>
 
-<cffunction name="setUniqueURLTitle" returntype="void" output="false" access="public">
+<cffunction name="setUniqueURLTitle" output="false">
 	<cfargument name="contentBean" type="any" />
 	<cfset var pass =0 />
 	<cfset var tempValue = "">
@@ -754,7 +754,7 @@ VERSION LINK:
 	</cfif>
 </cffunction>
 
-<cffunction name="setUniqueTitle" returntype="void" output="false" access="public">
+<cffunction name="setUniqueTitle" output="false">
 	<cfargument name="contentBean" type="any" />
 	<cfset var pass =0 />
 	<cfset var tempValue = "">
@@ -771,7 +771,7 @@ VERSION LINK:
 	</cfif>
 </cffunction>
 
-<cffunction name="isOnDisplay" returntype="numeric" output="false" access="public">
+<cffunction name="isOnDisplay" output="false">
 			<cfargument name="display"  type="numeric">
 			<cfargument name="displaystart"  type="string">
 			<cfargument name="displaystop"  type="string">
@@ -809,7 +809,7 @@ VERSION LINK:
 			<cfreturn isOn>
 </cffunction>
 
-<cffunction name="setApprovalQue" access="public" returntype="void" output="false">
+<cffunction name="setApprovalQue" output="false">
 <cfargument name="contentBean" type="any">
 <cfargument name="email" type="string">
 
@@ -831,7 +831,7 @@ VERSION LINK:
 				</cfquery>
 </cffunction>
 
-<cffunction name="checkApprovalQue" access="public" returntype="void" output="false">
+<cffunction name="checkApprovalQue" output="false">
 <cfargument name="contentBean" type="any">
 <cfargument name="parentBean" type="any">
 
@@ -918,7 +918,7 @@ Sincerely,
 
 </cffunction>
 
-<cffunction name="copy" returntype="any" output="true" access="public">
+<cffunction name="copy" output="true">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="contentID" type="string" />
 	<cfargument name="parentID" type="string" />
@@ -970,8 +970,10 @@ Sincerely,
 		<cfset contentBean.setDisplay(0)>
 	</cfif>
 
-	<cfif listFindNoCase("Page,Folder,Gallery,Calendar",contentBean.getType())>
+	<cfif listFindNoCase("Page,Folder,Gallery,Calendar,Link,File",contentBean.getType())>
 		<cfset setUniqueFilename(contentBean)>
+	<cfelse>
+		<cfset setUniqueTitle(contentBean)>
 	</cfif>
 
 	<cfif not structKeyExists(arguments,"path")>
@@ -984,6 +986,7 @@ Sincerely,
 
 	<cfset contentBean.setCreated(now())>
 	<cfset contentBean.save()>
+	
 	<cfset newContentHistID=contentBean.getContentHistID()>
 	<cfset newContentID=contentBean.getContentID()>
 
@@ -1055,7 +1058,7 @@ Sincerely,
 	<cfreturn contentBean>
 </cffunction>
 
-<cffunction name="updateGlobalMaterializedPath" returntype="any" output="false">
+<cffunction name="updateGlobalMaterializedPath" output="false">
 <cfargument name="siteID">
 <cfargument name="parentID" required="true" default="00000000000000000000000000000000END">
 <cfargument name="path" required="true" default=""/>
@@ -1092,7 +1095,7 @@ and active=1
 
 </cffunction>
 
-<cffunction name="updateGlobalCommentsMaterializedPath" returntype="any" output="false">
+<cffunction name="updateGlobalCommentsMaterializedPath" output="false">
 <cfargument name="siteID">
 <cfargument name="parentID" required="true" default="">
 <cfargument name="path" required="true" default=""/>
@@ -1132,7 +1135,7 @@ and parentID is null
 
 </cffunction>
 
-<cffunction name="findAndReplace" returntype="void" output="false">
+<cffunction name="findAndReplace" output="false">
 	<cfargument name="find" type="string" default="" required="true">
 	<cfargument name="replace" type="string" default="" required="true">
 	<cfargument name="siteID" type="string" default="" required="true">
@@ -1206,7 +1209,7 @@ and parentID is null
 	</cfif>
 </cffunction>
 
-<cffunction name="removeUnicode" returntype="string" output="false">
+<cffunction name="removeUnicode" output="false">
 	<cfargument name="str">
 
 		<cfset var unicodeArray=arrayNew(2) />
@@ -1511,7 +1514,7 @@ and parentID is null
 </cffunction>
 
 
-	<cffunction name="duplicateExternalContent" returntype="any" output="true" >
+	<cffunction name="duplicateExternalContent" output="true" >
 		<cfargument name="contentID">
 		<cfargument name="destinationSiteID">
 		<cfargument name="sourceSiteID">
@@ -1723,7 +1726,7 @@ and parentID is null
 		<cfreturn sResponse />
 	</cffunction>
 
-	<cffunction name="duplicateExternalFeed" returntype="void">
+	<cffunction name="duplicateExternalFeed">
 		<cfargument name="feedID">
 		<cfargument name="destinationSiteID">
 		<cfargument name="sourceSiteID">
@@ -1758,7 +1761,7 @@ and parentID is null
 		<cfset newFeedBean.save() />
 	</cffunction>
 
-	<cffunction name="updateRelatedContent" returntype="void">
+	<cffunction name="updateRelatedContent">
 		<cfargument name="contentID">
 		<cfargument name="destinationSiteID">
 		<cfargument name="sourceSiteID">
@@ -1803,7 +1806,7 @@ and parentID is null
 		</cfloop>
 	</cffunction>
 
-	<cffunction name="duplicateExternalSortOrder" returntype="void">
+	<cffunction name="duplicateExternalSortOrder">
         <cfargument name="destinationSiteID">
         <cfargument name="sourceSiteID">
 
@@ -1844,7 +1847,7 @@ and parentID is null
     </cffunction>
 
 
-	<cffunction name="getExtendFileIDs" returntype="query">
+	<cffunction name="getExtendFileIDs">
 		<cfargument name="contentExtendData">
 		<cfargument name="siteID">
 
@@ -1876,7 +1879,7 @@ and parentID is null
 		<cfreturn rsFileIDs />
 	</cffunction>
 
-	<cffunction name="duplicateExternalCategories" returntype="any">
+	<cffunction name="duplicateExternalCategories">
 		<cfargument name="destinationSiteID">
 		<cfargument name="sourceSiteID">
 		<cfargument name="categoryID" default="">
@@ -1943,7 +1946,7 @@ and parentID is null
 		</cfloop>
 	</cffunction>
 
-	<cffunction name="setCategoriesFromExternalAssignments" returntype="any">
+	<cffunction name="setCategoriesFromExternalAssignments">
 		<cfargument name="sourceContentBean">
 		<cfargument name="newContentBean">
 

@@ -67,36 +67,72 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery,File,Link">
-				<div class="mura-control-group">
-				    <label>
-				    	<span data-toggle="popover" title="" data-placement="right"
-				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle"))#"
-				    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title"))#"
-				    	>
-				    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="mi-question-circle"></i></span>
+			<div class="mura-control-group">
+				<label>
+			    	<span data-toggle="popover" title="" data-placement="right"
+			    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle"))#"
+			    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title"))#"
+			    	>
+			    	#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="mi-question-circle"></i></span>
 			    </label>
-			   	<cfset hasSEOTab=not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
-				     	<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
-				     <div id="alertTitleSuccess" class="alert alert-success" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# <button type="button" class="close" data-dismiss="alert"><i class="mi-times-circle"></i></button></div>
-			     </div>
-			<div class="mura-control-group" id="editAdditionalTitles" style="display:none;">
-				<div class="alert help-block">
-					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
-					<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
+			   	<cfset hasSEOTab=rc.moduleid eq '00000000000000000000000000000000000' and (not len(tabAssignments) or listFindNocase(tabAssignments,'SEO'))>
+				<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
+				<div class="mura-control justify">
+					<button type="button" id="showTitles" name="showTitles" class="btn">Show Additional Content Titles</button>
 				</div>
+				<div id="alertTitleSuccess" class="help-block" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# </div>
 
-				<script>
-					jQuery(document).ready(function(){
-						$('##resetTitles').click(function(e){
-							e.preventDefault();
-							$('##menuTitle,##urlTitle,##htmlTitle').val('');
-							$('##editAdditionalTitles').hide();
-							$('##alertTitleSuccess').fadeIn();
-							return true;
-						});
-					});
-				</script>
-			</div>
+				<cfif hasSEOTab>
+					<div class="help-block" id="editAdditionalTitles" style="display:none;">
+						<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
+						<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
+					</div>
+				</cfif>
+
+			 </div>
+
+			<cfif hasSEOTab>
+
+				<div id="mura-seo-titles">
+					<div class="mura-control-group">
+						<label>
+					  	<span data-toggle="popover" title="" data-placement="right"
+					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle"))#"
+					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle"))#"
+					    	>
+					    				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#
+						 <i class="mi-question-circle"></i>
+						</label>
+						<input type="text" id="menuTitle" name="menuTitle" value="#esapiEncode('html_attr',rc.contentBean.getmenuTitle())#"  maxlength="255">
+					</div>
+
+					<div class="mura-control-group">
+						<label>
+					  	<span data-toggle="popover" title="" data-placement="right"
+					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle"))#"
+					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle"))#"
+					    	>
+					    				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#
+							 <i class="mi-question-circle"></i>
+						</label>
+						<input type="text" id="urlTitle" name="urlTitle" value="#esapiEncode('html_attr',rc.contentBean.getURLTitle())#"  maxlength="255">
+					</div>
+
+					<div class="mura-control-group">
+						<label>
+					  	<span data-toggle="popover" title="" data-placement="right"
+					    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#"
+					    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle"))#"
+					    	>
+					    				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
+							 <i class="mi-question-circle"></i>
+						</label>
+						<input type="text" id="htmlTitle" name="htmlTitle" value="#esapiEncode('html_attr',rc.contentBean.getHTMLTitle())#"  maxlength="255">
+					</div>
+
+				</div><!-- /mura-seo-titles -->
+
+			</cfif>
 		</cfcase>
 		<cfdefaultcase>
 			<div class="mura-control-group">
@@ -177,7 +213,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</cfif>
 	--->
-	
+
 	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>
 		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
 		<div id="bodyContainer" class="body-container mura-control-group" style="display:none;">
@@ -331,7 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.componentassign')#
 	      	</label>
 			<label for="m1" class="checkbox inline">
-				<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sitemanager')#
+				<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.content')#
 			</label>
 
 			<label for="m2" class="checkbox inline">
@@ -353,12 +389,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif rc.type eq 'Form'>
+		<!---
 		<div class="mura-control-group body-container" style="display:none">
 			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 			<label for="rc" class="checkbox">
       			<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
       		</label>
 		</div>
+		--->
 		<div class="mura-control-group body-container" style="display:none">
 			<label>
 			 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
@@ -384,5 +422,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> <!--- /.block-content --->
 	</div> <!--- /.block --->
 </div> <!--- /.tab-pane --->
+
+	<script>
+		jQuery(document).ready(function(){
+
+			$('##mura-seo-titles').hide();
+			$('##showTitles').click(function(e){
+				$(this).parents('div.mura-control').hide();
+				$('##alertTitleSuccess').hide();
+				$('##mura-seo-titles').fadeIn();
+			})
+
+			$('##resetTitles').click(function(e){
+				e.preventDefault();
+				 $('##menuTitle,##urlTitle,##htmlTitle').val('');
+				$('##editAdditionalTitles').hide();
+				$('##alertTitleSuccess').fadeIn();
+				return true;
+			});
+		});
+	</script>
 
 </cfoutput>

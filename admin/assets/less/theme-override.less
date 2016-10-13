@@ -1,11 +1,11 @@
 
 body {
+  .regular-font;
   background-color: #f5f5f5;
-  font-family: "Source Sans Pro","Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif; 
+  font-size: 13px;
 }
-
 a {
-  color: #6498cb;
+  color: #69C;
 }
 
 a.link-effect:before {
@@ -17,19 +17,19 @@ a:hover {
 }
 
 a:active{
-  color: #6498cb !important;
+  color: #69C !important;
 }
 
 a:focus {
-  color: #6498cb;
+  color: #69C;
 }
 
 .text-primary {
-  color: #6498cb;
+  color: #69C;
 }
 
 a.text-primary:hover,a.text-primary:active,a.text-primary:focus,button.text-primary:hover,button.text-primary:active,button.text-primary:focus {
-  color: #6498cb;
+  color: #69C;
   opacity: .75;
 }
 
@@ -60,12 +60,21 @@ a.text-primary-light:hover,a.text-primary-light:active,a.text-primary-light:focu
   opacity: .75;
 }
 
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  .bold-font;
+}
+
 .mura-header h1,
 .mura-header h1:not([class]) {
-  font-weight: 600;
-  font-size: 34px;
-  letter-spacing: -1px;
+  .bold-font;
+  font-size: 32px;
+  letter-spacing: 0;
   white-space: nowrap;
+}
+
+b,
+strong {
+  .bold-font;
 }
 
 .text-primary-lighter {
@@ -199,12 +208,14 @@ a.bg-primary-lighter:hover,a.bg-primary-lighter:focus {
   color: #ff3405;
   background-color: #fff;
 }
-
 .nav-module-specific * > .badge{ 
     background-color: #c0c0c0;
     margin-left: 8px;
 }
 
+label{
+  .regular-font;
+}
 .label-default{
   background-color: #f1f1f1;
 }
@@ -235,6 +246,7 @@ a.bg-primary-lighter:hover,a.bg-primary-lighter:focus {
 .nav-pills > li > a{
   border: 1px solid #eee; 
   background-color: #fff;
+  font-weight: normal;
 }
 
 .nav-pills > li > a + a{
@@ -292,6 +304,7 @@ ul.pagination,
 
 .pagination > li > a,
 .pagination > li > span{
+  font-weight: normal;
   padding: 2px 10px;
 }
 
@@ -299,9 +312,10 @@ ul.pagination,
 .pagination>li>span:hover,
 .pagination>li>a:focus,
 .pagination>li>span:focus {
-  color: #ff3405;
-  -webkit-box-shadow: 0 2px #ff3405;
-  box-shadow: 0 2px #ff3405;
+  background-color:#f5f5f5;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  color: #646464;
 }
 
 .pagination>.active>a,
@@ -310,9 +324,10 @@ ul.pagination,
 .pagination>.active>span:hover,
 .pagination>.active>a:focus,
 .pagination>.active>span:focus {
-  color: #ff3405;
-  -webkit-box-shadow: 0 2px #ff3405;
-  box-shadow: 0 2px #ff3405;
+  background-color: #ebebeb;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  color: #646464;
 }
 
 .pager li>a:hover,
@@ -379,8 +394,15 @@ a.list-group-item:hover,a.list-group-item:focus {
 .mura-table-grid>tfoot>tr>th,
 .mura-table-grid>thead>tr>td,
 .mura-table-grid>thead>tr>th {
-  border: 1px solid #dbdbdb !important;
+  border: none;
 }
+.mura-table-grid>tbody>tr:first-child>th,
+.mura-table-grid>thead>tr>th {
+  background-color: #f4f3f3;
+  background-clip: padding-box;
+  border-bottom: 1px solid #dbdbdb !important;
+}
+
 .panel-primary {
   border-color: hsla(210, 50%, 60%, 0.80);
 }
@@ -424,10 +446,15 @@ a.list-group-item:hover,a.list-group-item:focus {
 .header-navbar-fixed #main-container,
 #main-container {
   background-color: #f5f5f5;
+  overflow: visible;
   padding-top: 45px;
-  padding-bottom: 45px;
+  padding-bottom: 0;
 }
 
+.nav-main{
+  font-size:15px;
+  padding-bottom: 15px;
+}
 .nav-main-header {
   background-color: #333;
 }
@@ -441,28 +468,28 @@ a.list-group-item:hover,a.list-group-item:focus {
   }
 }
 .form-material.form-material-primary>.form-control:focus {
-  -webkit-box-shadow: 0 2px 0 #ff3405;
-  box-shadow: 0 2px 0 #ff3405;
+  -webkit-box-shadow: 0 2px 0 #b1b1b1;
+  box-shadow: 0 2px 0 #b1b1b1;
 }
 
 .form-material.form-material-primary>.form-control:focus+label {
-  color: #ff3405;
+  color: #b1b1b1;
 }
 
 .form-material.form-material-primary>.form-control:focus~.input-group-addon {
-  color: #ff3405;
-  -webkit-box-shadow: 0 2px 0 #ff3405;
-  box-shadow: 0 2px 0 #ff3405;
+  color: #b1b1b1;
+  -webkit-box-shadow: 0 2px 0 #b1b1b1;
+  box-shadow: 0 2px 0 #b1b1b1;
 }
 
 .css-checkbox-primary input:checked+span {
-  background-color: #ff3405;
-  border-color: #ff3405;
+  background-color: #b1b1b1;
+  border-color: #b1b1b1;
 }
 
 .css-radio-primary input:checked+span:after,
 .switch-primary input:checked+span {
-  background-color: #6498cb;
+  background-color: #69C;
 }
 
 .block > .nav-tabs > li.tabdrop > a:hover,
@@ -484,6 +511,8 @@ a.list-group-item:hover,a.list-group-item:focus {
 
 .block > .nav-tabs > li  a{
   text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight:normal !important;
 }
 
 .block > .nav-tabs > li.active > a,

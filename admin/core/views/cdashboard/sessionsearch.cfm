@@ -300,12 +300,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="mura-table-grid">
 <thead>
 <tr>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lastrequest")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.views")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lengthofvisit")#</th>
-<th>&nbsp;</th>
+	<th class="actions"></th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lastrequest")#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.views")#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lengthofvisit")#</th>
 </tr>
 </thead>
 <tbody>
@@ -314,12 +314,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset endrow=(rc.startrow+rc.nextN.recordsperpage)-1/>
 <cfloop query="rc.rslist" startrow="#rc.startRow#" endrow="#endRow#">
 <tr>
-<td><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="./?muraAction=cDashboard.viewSession&urlToken=#esapiEncode('url',rc.rslist.urlToken)#&siteid=#esapiEncode('url',rc.siteid)#"><cfif rc.rslist.fname eq ''>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.anonymous")#<cfelse>#esapiEncode('html',rc.rslist.fname)# #esapiEncode('html',rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#esapiEncode('html',rc.rslist.company)#)</cfif></cfif></a></td>
-<td>#esapiEncode('html',rc.rslist.locale)#</td>
-<td>#LSDateFormat(rc.rslist.lastRequest,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.lastRequest,"short")#</td>
-<td>#rc.rslist.views#</td>
-<td>#application.dashboardManager.getTimespan(rc.rslist.firstRequest,rc.rslist.lastRequest)#</td>
-<td class="actions"><ul><li class="viewDetails"><a title="View Details" href="./?muraAction=cDashboard.viewSession&urlToken=#esapiEncode('url',rc.rslist.urlToken)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a></li></ul></td>
+	<td class="actions">
+		<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+		<div class="actions-menu hide">			
+			<ul class="actions-list">
+				<li class="viewDetails"><a href="./?muraAction=cDashboard.viewSession&urlToken=#esapiEncode('url',rc.rslist.urlToken)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i>View Details</a></li>
+			</ul>
+		</div>	
+	</td>
+	<td><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="./?muraAction=cDashboard.viewSession&urlToken=#esapiEncode('url',rc.rslist.urlToken)#&siteid=#esapiEncode('url',rc.siteid)#"><cfif rc.rslist.fname eq ''>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.anonymous")#<cfelse>#esapiEncode('html',rc.rslist.fname)# #esapiEncode('html',rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#esapiEncode('html',rc.rslist.company)#)</cfif></cfif></a></td>
+	<td>#esapiEncode('html',rc.rslist.locale)#</td>
+	<td>#LSDateFormat(rc.rslist.lastRequest,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.lastRequest,"short")#</td>
+	<td>#rc.rslist.views#</td>
+	<td>#application.dashboardManager.getTimespan(rc.rslist.firstRequest,rc.rslist.lastRequest)#</td>
 </tr></cfloop>
 <cfelse>
 <tr>
@@ -342,7 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <ul class="moreResults pagination">
 		  <cfif rc.nextN.currentpagenumber gt 1>
 		  	<li>
-		  	<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
+		  	<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#"><i class="mi-angle-left"></i></a>
 		  	</li>
 		  </cfif>
 		  <cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
@@ -356,7 +363,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     </cfloop>
 		 <cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 		 	<li>
-		 		<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+		 		<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#"><i class="mi-angle-right"></i></a>
 		 	</li>
 		 </cfif>
 		</ul>

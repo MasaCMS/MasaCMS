@@ -116,7 +116,7 @@
 								}
 							</cfscript>
 							<li class="#local.prevClass#">
-								<a hre="##" data-pageno="#local.prevNo#">&laquo;</a>
+								<a hre="##" data-pageno="#local.prevNo#"><i class="mi-angle-left"></i></a>
 							</li>
 							<!--- LINKS --->
 							<cfloop from="#rc.startPage#" to="#rc.endPage#" index="p">
@@ -141,7 +141,7 @@
 								}
 							</cfscript>
 							<li class="#rc.nextClass#">
-								<a href="##" data-pageno="#rc.prevNo#">&raquo;</a>
+								<a href="##" data-pageno="#rc.prevNo#"><i class="mi-angle-right"></i></a>
 							</li>
 						</ul>
 					</div>
@@ -153,6 +153,7 @@
 				<table class="mura-table-grid">
 					<thead>
 						<tr>
+							<th class="actions"></th>
 							<th>
 								<a id="checkall" href="##" title="#rbKey('comments.selectall')#"><i class="mi-check"></i></a>
 							</th>
@@ -170,7 +171,6 @@
 							<th>
 								<a class="sort" data-sortby="flagCount" data-sortdirection="#rc.sortdirlink#" href="##">Flag Count</a>
 							</th>
-							<th>&nbsp;</th>
 						</tr>
 					</thead>
 
@@ -190,7 +190,7 @@
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="mi-times-circle"></i></button>
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="mi-close"></i></button>
 
 											<p>
 												<!--- <strong>#esapiEncode('html',local.item.getName())#</strong> <em>#rbKey('comments.commentedon')#:</em><br /> --->
@@ -235,6 +235,23 @@
 							<!--- /@END MODAL --->
 
 							<tr>
+								<!--- ACTIONS --->
+								<td class="actions">
+									<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+									<div class="actions-menu hide">	
+										<ul class="actions-list">
+											<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal"><i class="mi-comments"></i>Comments</a></li>
+											<cfif IsValid('url', local.item.getURL())>
+												<li><a href="#esapiEncode('html_attr',local.item.getURL())#" title="#esapiEncode('html_attr',local.item.getURL())#" target="_blank"><i class="mi-link"></i>View</a></li>
+											<!--- 
+											<cfelse>
+												<li class="disabled"><i class="mi-link"></i></li>
+											 --->	
+											</cfif>
+											<li><a href="mailto:#esapiEncode('html',local.item.getEmail())#"><i class="mi-envelope"></i>#application.rbFactory.getKeyValue(session.rb,'user.email')#</a></li>
+										</ul>
+									</div>	
+								</td>
 								<!--- BULK ACTION CHECKBOX --->
 								<td>
 									<input type="checkbox" name="ckUpdate" class="checkall" value="#local.item.getCommentID()#" />
@@ -290,19 +307,6 @@
 
 								<td>
 									#esapiEncode('html',local.item.getFlagCount())#
-								</td>
-
-								<!--- ACTIONS --->
-								<td class="actions">
-								<ul>
-									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="mi-comments"></i></a></li>
-									<cfif IsValid('url', local.item.getURL())>
-										<li><a href="#esapiEncode('html_attr',local.item.getURL())#" title="#esapiEncode('html_attr',local.item.getURL())#" target="_blank"><i class="mi-link"></i></a></li>
-									<cfelse>
-										<li class="disabled"><i class="mi-link"></i></li>
-									</cfif>
-									<li><a href="mailto:#esapiEncode('html',local.item.getEmail())#" title="#esapiEncode('html_attr',local.item.getEmail())#"><i class="mi-envelope"></i></a></li>
-								</ul>
 								</td>
 							</tr>
 						</cfloop>
@@ -391,9 +395,7 @@
 		<cfelse>
 			<div class="mura-layout-row">
 				<div>
-					<div class="alert alert-info">
-						<p>No #$.event('commentStatus')# comments found.</p>
-					</div>
+					<div class="help-block-empty">No #$.event('commentStatus')# comments found.</div>
 				</div>
 			</div>
 		</cfif>

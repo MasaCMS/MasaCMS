@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.wired=structNew() />
 <cfset variables.pluginConfig="" />
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
 	
 	<cfset variables.properties=arguments.data />
@@ -58,14 +58,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setPluginConfig" returntype="any" access="public" output="false">
+<cffunction name="setPluginConfig" output="false">
 <cfargument name="pluginConfig" >
 
 	<cfset variables.pluginConfig=arguments.pluginConfig />
 
 </cffunction>
 
-<cffunction name="setValue" returntype="any" access="public" output="false">
+<cffunction name="setValue" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" required="true">
 <cfargument name="autowire" default="false" required="true">
@@ -183,7 +183,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cffunction>
 
-<cffunction name="getValue" returntype="any" access="public" output="false">
+<cffunction name="getValue" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue" default="" required="true">
 <cfargument name="autowire" default="true" required="true" >
@@ -203,28 +203,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn returnValue>
 </cffunction>
 
-<cffunction name="getAllValues" returntype="any" access="public" output="false">
+<cffunction name="getAllValues" output="false">
 		<cfreturn variables.properties />
 </cffunction>
 
-<cffunction name="valueExists" returntype="any" access="public" output="false">
+<cffunction name="valueExists" output="false">
 	<cfargument name="property" type="string" required="true">
 		<cfreturn structKeyExists(variables.properties,arguments.property) />
 </cffunction>
 
-<cffunction name="removeValue" returntype="void" access="public" output="false">
+<cffunction name="removeValue" output="false">
 	<cfargument name="property" type="string" required="true"/>
 		<cfset structDelete(variables.properties,arguments.property) />
 		<cfset structDelete(variables.wired,arguments.property) />
 </cffunction>
 
-<cffunction name="containsBean" returntype="any" access="public" output="false" hint="This is for fw1 autowiring">
+<cffunction name="containsBean" output="false" hint="This is for fw1 autowiring">
 	<cfargument name="property" type="string" required="true">
 	<cfreturn (structKeyExists(variables.properties,arguments.property) and isObject(variables.properties[arguments.property]))
 	 or getServiceFactory().containsBean(arguments.property) or arguments.property eq "pluginConfig">		
 </cffunction>
 
-<cffunction name="getBean" returntype="any" access="public" output="false" hint="This is for fw1 autowiring">
+<cffunction name="getBean" output="false" hint="This is for fw1 autowiring">
 	<cfargument name="property" type="string" required="true">	
 	<cfif arguments.property eq "pluginConfig">
 		<cfreturn variables.pluginConfig>

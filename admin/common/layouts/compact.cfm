@@ -151,7 +151,6 @@
 		<!-- Utilities to support iframe communication -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<script type="text/javascript">
 		var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
@@ -177,7 +176,8 @@
 						setTimeout(function(){
 							$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
 								$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
-						}, 10);							
+								$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');
+						}, 10);
 					}
 					// run on page load
 					triggerTabDrop();
@@ -196,9 +196,9 @@
 
 					function getHeight(){
 						if(document.all){
-							return Math.max(document.body.scrollHeight, document.body.offsetHeight);
+							return Math.max(document.body.scrollHeight, document.body.offsetHeight,160);
 						} else {
-							return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+							return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight,160);
 						}
 					}
 
@@ -222,6 +222,7 @@
 
 			mura.init({
 				context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
+				themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
 				siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
 			});
 		</script>
@@ -236,7 +237,7 @@
 	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact <cfif rc.sourceFrame eq 'modal'>modal-wrapper<cfelse>configurator-wrapper</cfif>">
 		<div id="mura-content">
 		<cfif rc.sourceFrame eq 'modal'>
-			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-times-circle"></i></a>
+			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-close"></i></a>
 			<cfinclude template="includes/dialog.cfm">
 		</cfif>
 

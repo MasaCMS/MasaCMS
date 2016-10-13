@@ -57,15 +57,19 @@ function submitBundle(){
 			resizable: false,
 			modal: true,
 			buttons: {
-				'YES': function() {
+				'No': function() {
 					jQuery(this).dialog('close');
-					//jQuery(".form-actions").hide();
-					//jQuery("##actionIndicator").show();
-					document.pluginSelectFrm.submit();
-					},
-				'NO': function() {
-					jQuery(this).dialog('close');
-				}
+				},
+        Yes: 
+          {click: function() {
+            jQuery(this).dialog('close');
+            //jQuery(".form-actions").hide();
+            //jQuery("##actionIndicator").show();
+            document.pluginSelectFrm.submit();
+            }
+          , text: 'Yes'
+          , class: 'mura-primary'
+        } // /Yes
 			}
 		});
 
@@ -107,7 +111,7 @@ function checkAll (form) {
     <div class="mura-control-group">
       <label>Include in Site Bundle:</label>
 
-  <p class="alert alert-info">A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </p>
+  <div class="help-block">A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </div>
   
       <label class="checkbox"><input type="checkbox" name="includeTrash" value="true">
             Items in Trash Bin</label>
@@ -133,8 +137,8 @@ function checkAll (form) {
     <div class="mura-control-group">
       <label>Also include selected Plugins:</label>
       <div class="mura-control justify">
-      <cfif rc.rsplugins.recordcount>
-          <p class="help-block"><a href="##" onclick="checkAll('pluginSelectFrm'); return false;"><i class="mi-check"></i> Select All</a></p>
+      <cfif rc.rsplugins.recordcount gt 1>
+          <a class="btn" href="##" onclick="checkAll('pluginSelectFrm'); return false;"><i class="mi-check"></i> Select All</a>
       </cfif>
         <cfif rc.rsplugins.recordcount>
           <cfloop query="rc.rsplugins">
@@ -143,7 +147,7 @@ function checkAll (form) {
                 #esapiEncode('html',rc.rsplugins.name)#</label>
           </cfloop>
           <cfelse>
-          <p class="alert">This site currently has no plugins assigned to it.</p>
+              <div class="help-block-empty">This site currently has no plugins assigned to it.</p>
         </cfif>
         </div>
     </div>
@@ -153,20 +157,18 @@ function checkAll (form) {
         Server Directory <span>(Optional)</span></label>
       <div class="mura-control justify">
         <p class="help-block">
-          You can set the complete server path to the directory where you would like the bundle to be created.<br />If left blank the bundle file will immediately download from your browser after creation.
-        </p>
-         <p class="help-block">Current Working Directory:#application.configBean.getWebRoot()#/admin/temp</p>
+          Set the complete server path to the directory where the bundle .zip file is created.
+          <br>If left blank, the bundle file will immediately download in the browser after creation.
+        <br><br>
+        Current Working Directory: #replace(application.configBean.getWebRoot(),"\","/","all")#/admin/temp</p>
       </div>   
       <div class="mura-control justify">
-          <input type="button" class="btn" onclick="jQuery('##saveFileDir').val('#esapiEncode('javascript','#application.configBean.getWebRoot()#/admin/temp')#');" value="Select this Directory">
-        <input class="text" type="text" name="saveFileDir" id="saveFileDir">
+        <div class="mura-input-set">
+          <input type="button" class="btn" onclick="jQuery('##saveFileDir').val('#esapiEncode('javascript','#replace(application.configBean.getWebRoot(),"\","/","all")#/admin/temp')#');" value="Select Working Directory">
+          <input class="text" type="text" name="saveFileDir" id="saveFileDir">
+        </div>
       </div>
     </div>
-    
-    <!--- <cfif application.settingsManager.getSite(rc.siteid).getAdManager()> --->
-	    <p class="alert"><strong>Note:</strong> The Email Broadcaster is not included in Mura Bundles.</p>
-    <!--- </cfif>  --->
-  
   
         </div> <!--- /.block-content --->  
       </div> <!--- /.block.block-bordered --->  

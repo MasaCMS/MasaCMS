@@ -4,7 +4,7 @@
 	2) Reload Application
 	3) That's it!
 -->
-<theme>
+<mura>
 
 	<imagesizes>
 		<imagesize name="carouselimage" width="1200" height="500" />
@@ -14,7 +14,7 @@
 		<!--
 		<extension type="Base" subType="Default">
 			<attributeset name="Mobile Options" container="Basic">
-				<attribute 
+				<attribute
 					name="hasMobileBody"
 					label="Has Mobile Content?"
 					hint="If you have mobile-specific content, select Yes."
@@ -26,7 +26,7 @@
 					message=""
 					optionList="true^false"
 					optionLabelList="Yes^No" />
-				<attribute 
+				<attribute
 					name="mobileBody"
 					label="Mobile Content"
 					hint="Enter any mobile-specific content here."
@@ -43,4 +43,4 @@
 		-->
 	</extensions>
 
-</theme>
+</mura>

@@ -9,25 +9,25 @@ Version: 1.9 February 20, 2008
 --->
 
 <cfcomponent displayname="JSON" output="No">
-	<cffunction name="init" returntype="any" output="false">
+	<cffunction name="init" output="false">
 	<cfreturn this>
 	</cffunction>
 	
-	<cffunction name="jsonencode" access="remote" returntype="any" output="no"
+	<cffunction name="jsonencode" access="remote" output="no"
 			hint="Converts data frm JSON to CF format">
 		<cfargument name="data" type="any" required="Yes" />
 		
 		<cfreturn encode(arguments.data)>
 	</cffunction>	
 	
-	<cffunction name="jsondecode" access="remote" returntype="any" output="no"
+	<cffunction name="jsondecode" access="remote" output="no"
 			hint="Converts data frm JSON to CF format">
 		<cfargument name="data" type="string" required="Yes" />
 		
 		<cfreturn decode(arguments.data)>
 	</cffunction>
 	
-	<cffunction name="decode" access="remote" returntype="any" output="no"
+	<cffunction name="decode" access="remote" output="no"
 			hint="Converts data frm JSON to CF format">
 		<cfargument name="data" type="string" required="Yes" />
 		
@@ -231,7 +231,7 @@ Version: 1.9 February 20, 2008
 	
 	
 	<!--- CONVERTS DATA FROM CF TO JSON FORMAT --->
-	<cffunction name="encode" access="public" output="false" returntype="string">
+	<cffunction name="encode" output="false">
 	<cfargument name="arg" default="" required="yes" type="any"/>
 	<cfscript>
 	    var i=0;

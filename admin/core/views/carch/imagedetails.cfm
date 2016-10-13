@@ -74,11 +74,13 @@
 		</div> <!-- /label-group -->
 	</div> <!-- /metadata -->
 	</cfif>
+
+	<cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
+		#$.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="breadcrumb")#
+	</cfif>
+
 </div>
 <!--- /mura-header --->
-<cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
-	#$.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="breadcrumb")#
-</cfif>
 
 <div class="block block-constrain">
 <div id="image-details">
@@ -259,7 +261,7 @@
 		var instanceid='#esapiEncode("javascript",rc.instanceid)#';
 
 		$('body').addClass('no-constrain');
-		
+
 		function reloadImg(id) {
 		   var obj = document.getElementById(id);
 		   var src = obj.src;
@@ -413,9 +415,9 @@
 	    		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
 	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> ';
 	    			$dialogHTML+='<input type="hidden" name="coords" value="" id="coords">';
-	    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
-	    			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
-	    			$dialogHTML+='</div></div>';
+					$dialogHTML+='<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"><div class="ui-dialog-buttonset"><button type="button" class="mura-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" onclick="$(this).closest(\'.ui-dialog-content\').dialog(\'close\');"><span class="ui-button-text">Cancel</span></button><button type="button" class="mura-primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" onclick="applyCropping();"><span class="ui-button-text">Apply Cropping</span></button></div></div>';
+
+					$dialogHTML+='</div></div>';
 
 		        var $dialog = $($dialogHTML);
 		        var title=$(this).attr('data-filename');
@@ -437,8 +439,9 @@
 					            modal: true,
 					            title: title,
 					            close: function(){ $dialog.remove(); },
-					            width: jcrop_api.getWidgetSize()[0]+30,
+					            width: jcrop_api.getWidgetSize()[0]+68,
 					            resizable: false,
+					            class: "cropper"
 					        });
 					        $('##action-modal').remove();
 		    			});
@@ -531,7 +534,7 @@
 	</div>
 </div>
 <cfelse>
-	<p class="alert">This content does not have any image attached to it.</p>
+	<div class="help-block-empty">This content does not have any image attached to it.</div>
 </cfif>
 
 <cfif isDefined("secondarynav")>

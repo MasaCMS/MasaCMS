@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="head_formbuilder.cfm">
@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<h3 class="block-title">Form Builder</h3>
 	    </div>
 	    <!-- /block header -->
-			
+
 			<!-- block content -->
 			<div class="block-content">
 
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label>
 			<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
-					 <i class="mi-question-circle"></i></a> 
+					 <i class="mi-question-circle"></i></a>
 			<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
 				[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
 			</a>
@@ -93,22 +93,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
 		</label>
 				<div id="bodyContainer" class="mura-control justify">
-			<cfinclude template="dsp_formbuilder.cfm">		
+			<cfinclude template="dsp_formbuilder.cfm">
 		</div>
 	</div>
 
 		<span id="extendSetsBasic"></span>
 
 		<cfif rc.type eq 'Form'>
+			<!---
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 				<div class="mura-control justify">
-			<label for="rc" class="checkbox inline">
-						<input name="responseChart" id="rc" type="checkbox" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> 
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
-			</label>
-		</div>
-	</div> 
+					<label for="rc" class="checkbox inline">
+								<input name="responseChart" id="rc" type="checkbox" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
+					</label>
+				</div>
+			</div>
+			--->
 			<div class="mura-control-group">
 				<label>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
@@ -119,12 +121,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 		</label>
 			<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#">
-		</div> 
+		</div>
 		</cfif>
 
 		<span id="extendset-container-basic" class="extendset-container"></span>
 		<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
 
 		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->		
+	</div> <!--- /.block --->
 </div> <!--- /.tab-pane ---></cfoutput>

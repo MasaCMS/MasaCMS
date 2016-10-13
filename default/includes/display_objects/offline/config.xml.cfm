@@ -1,1 +1,1 @@
-<displayobject name="Offline" legacyobjectfile="../dsp_offline.cfm" />
+<mura name="Offline" legacyobjectfile="../dsp_offline.cfm" />

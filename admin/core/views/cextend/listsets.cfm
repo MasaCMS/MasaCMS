@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</ul>
 	<cfelse>
-		<p class="alert">#rc.$.rbKey('sitemanager.extension.noattributesets')#</p>
+		<div class="help-block-empty">#rc.$.rbKey('sitemanager.extension.noattributesets')#</div>
 	</cfif>
 
 	<cfif showRelatedContentSets>
@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</ul>
 		<cfelse>
-			<p class="alert">#rc.$.rbKey('sitemanager.extension.norelatedcontentsets')#</p>
+			<div class="help-block-empty">#rc.$.rbKey('sitemanager.extension.norelatedcontentsets')#</div>
 		</cfif>
 	</cfif>
 			</div> <!-- /.block-content -->

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="userGateway" type="any" required="yes"/>
 <cfargument name="contentGateway" type="any" required="yes"/>
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="getSiteSessionCount" access="public" returntype="numeric" output="false">
+<cffunction name="getSiteSessionCount" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
 	<cfargument name="visitorStatus" type="string" required="true" default="false">
@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getSiteSessionCount(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.span,arguments.spanType) />
 </cffunction>
 
-<cffunction name="getCreatedMembers" access="public" returntype="numeric" output="false">
+<cffunction name="getCreatedMembers" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
@@ -86,21 +86,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.userGateway.getCreatedMembers(arguments.siteID,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getTotalMembers" access="public" returntype="numeric" output="false">
+<cffunction name="getTotalMembers" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 
 	
 	<cfreturn variables.userGateway.getTotalMembers(arguments.siteID) />
 </cffunction>
 
-<cffunction name="getTotalAdministrators" access="public" returntype="numeric" output="false">
+<cffunction name="getTotalAdministrators" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 
 	
 	<cfreturn variables.userGateway.getTotalAdministrators(arguments.siteID) />
 </cffunction>
 
-<cffunction name="getTopContent" access="public" returntype="query" output="false">
+<cffunction name="getTopContent" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="10">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getTopContent(arguments.siteID,arguments.limit,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate,arguments.excludeHome) />
 </cffunction>
 
-<cffunction name="getSiteSessions" access="public" returntype="query" output="false">
+<cffunction name="getSiteSessions" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="contentID" type="String" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getSiteSessions(arguments.siteID,arguments.contentID,arguments.membersOnly,arguments.visitorStatus,arguments.span,arguments.spanType) />
 </cffunction>
 
-<cffunction name="getSessionHistory" access="public" returntype="query">
+<cffunction name="getSessionHistory">
 	<cfargument name="urlToken" type="string" default="">
 	<cfargument name="siteID" type="string" default="">
 
@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTopKeywords" access="public" returntype="query" output="false">
+<cffunction name="getTopKeywords" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="10">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getTopKeywords(arguments.siteID,arguments.limit,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getTotalKeywords" access="public" returntype="query" output="false">
+<cffunction name="getTotalKeywords" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
 	<cfargument name="visitorStatus" type="string" required="true" default="false">
@@ -152,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getTotalKeywords(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getTotalHits" access="public" returntype="query" output="false">
+<cffunction name="getTotalHits" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
 	<cfargument name="visitorStatus" type="string" required="true" default="false">
@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getTotalHits(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getTotalSessions" access="public" returntype="query" output="false">
+<cffunction name="getTotalSessions" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
 	<cfargument name="visitorStatus" type="string" required="true" default="false">
@@ -172,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getTotalSessions(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getTopReferers" access="public" returntype="query" output="false">
+<cffunction name="getTopReferers" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="10">
 	<cfargument name="startDate" type="string" required="true" default="">
@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getTopReferers(arguments.siteID,arguments.limit,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getTotalReferers" access="public" returntype="query" output="false">
+<cffunction name="getTotalReferers" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
@@ -189,14 +189,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getTotalReferers(arguments.siteID,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getcontentTypeCount" access="public" returntype="query" output="false">
+<cffunction name="getcontentTypeCount" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="type" type="string" required="true" default="">
 	
 	<cfreturn variables.contentGateway.getTypeCount(arguments.siteID,arguments.type) />
 </cffunction>
 
-<cffunction name="getRecentUpdates" access="public" returntype="query" output="false">
+<cffunction name="getRecentUpdates" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="5">
 	<cfargument name="startDate" type="string" required="true" default="">
@@ -205,14 +205,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.contentGateway.getRecentUpdates(arguments.siteID,arguments.limit,arguments.startdate,arguments.stopdate) />
 </cffunction>
 
-<cffunction name="getRecentFormActivity" access="public" returntype="query" output="false">
+<cffunction name="getRecentFormActivity" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="5">
 	
 	<cfreturn variables.contentGateway.getRecentFormActivity(arguments.siteID,arguments.limit) />
 </cffunction>
 
-<cffunction name="getDraftList" returntype="query" access="public" output="false">
+<cffunction name="getDraftList" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="userID"  type="string"  required="true" default="#listFirst(session.mura.isLoggedIn,'^')#"/>
 	<cfargument name="limit" type="numeric" required="true" default="100000000">
@@ -224,7 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.contentGateway.getDraftList(arguments.siteID,arguments.userID,arguments.limit,arguments.startDate,arguments.stopDate,arguments.sortBy,arguments.sortDirection) />
 </cffunction>
 
-<cffunction name="getTopRated" access="public" output="true" returntype="query">
+<cffunction name="getTopRated" output="true">
 	<cfargument name="siteID" type="string" default="" required="yes"/>
 	<cfargument name="threshold" type="numeric" default="1" required="yes"/>
 	<cfargument name="limit" type="numeric" default="0" required="yes"/>
@@ -234,14 +234,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.raterManager.getTopRated(arguments.siteID,arguments.threshold,arguments.limit,arguments.startDate,arguments.stopDate)>
 </cffunction>
 
-<cffunction name="getFeedTypeCount" access="public" returntype="query" output="false">
+<cffunction name="getFeedTypeCount" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="type" type="string" required="true" default="">
 	
 	<cfreturn variables.feedGateway.getTypeCount(arguments.siteID,arguments.type) />
 </cffunction>
 
-<cffunction name="getSessionSearch" access="public" returntype="query" output="false">
+<cffunction name="getSessionSearch" output="false">
 	<cfargument name="params" type="array" required="true" >
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
@@ -252,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.sessionTrackingGateway.getSessionSearch(arguments.params,arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getEmailActivity" access="public" returntype="query" output="false">
+<cffunction name="getEmailActivity" output="false">
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="5">
 	<cfargument name="startDate" type="string" required="true" default="">
@@ -261,7 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.emailGateway.getSessionSearch(arguments.siteID,arguments.limit,arguments.startDate,arguments.stopDate) />
 </cffunction>
 
-<cffunction name="getTimeSpan" access="public" returntype="String" output="false">
+<cffunction name="getTimeSpan" output="false">
 	<cfargument name="firstRequest">
 	<cfargument name="lastRequest">
 	<cfargument name="format" required="true" default="#session.dateKeyFormat#">
@@ -323,7 +323,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getLastSessionDate" access="public" returntype="String">
+<cffunction name="getLastSessionDate">
 	<cfargument name="urlToken"/>
 	<cfargument name="originalUrlToken"/>
 	<cfargument name="beforeDate"/>
@@ -344,7 +344,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getUserFromSessionQuery" access="public" returntype="String">
+<cffunction name="getUserFromSessionQuery">
 	<cfargument name="rsSession"/>
 	
 	<cfset var rs = "" />
@@ -360,7 +360,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getUserAgentFromSessionQuery" access="public" returntype="String">
+<cffunction name="getUserAgentFromSessionQuery">
 	<cfargument name="rsSession"/>
 	
 	<cfset var rs = "" />

@@ -78,7 +78,7 @@
 	<cfoutput>
 		<script>
 			$(function(){
-				mura.loader()
+				Mura.loader()
 					.loadcss("#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/css/rater.min.css")
 					.loadjs("#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/js/rater-jquery.min.js"
 							,"#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/js/rater.min.js",

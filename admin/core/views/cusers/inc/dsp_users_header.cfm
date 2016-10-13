@@ -69,7 +69,7 @@
 
 			<!--- View Groups --->
 				<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
-					<i class="mi-eye"></i>
+					<i class="mi-group"></i>
 					#rbKey('user.viewgroups')#
 				</a>
 
@@ -77,7 +77,7 @@
 
 			<!--- View Users --->
 				<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
-					<i class="mi-eye"></i>
+					<i class="mi-user"></i>
 					#rbKey('user.viewusers')#
 				</a>
 

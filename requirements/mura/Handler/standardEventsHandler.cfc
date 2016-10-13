@@ -57,14 +57,14 @@
 <cfcomponent extends="mura.cfobject" output="false">
 
 <!---- HANDLERS --->
-<cffunction name="standardEnableLockdownHandler" output="false" returnType="any">
+<cffunction name="standardEnableLockdownHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfinclude template="/muraWRM/config/lockdown.cfm">
 
 </cffunction>
 
-<cffunction name="standardWrongDomainHandler" output="false" returnType="any">
+<cffunction name="standardWrongDomainHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfset var $=arguments.event.getValue('muraScope')>
 
@@ -75,7 +75,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardTranslationHandler" output="false" returnType="any">
+<cffunction name="standardTranslationHandler" output="false">
 	<cfargument name="$" required="true">
 	<cfscript>
 		param name="request.returnFormat" default="HTML";
@@ -88,14 +88,14 @@
 	</cfscript>
 </cffunction>
 
-<cffunction name="standardTrackSessionHandler" output="false" returnType="any">
+<cffunction name="standardTrackSessionHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset application.sessionTrackingManager.trackRequest(arguments.event.getValue('siteID'),arguments.event.getValue('path'),arguments.event.getValue('keywords'),arguments.event.getValue('contentBean').getcontentID()) />
 
 </cffunction>
 
-<cffunction name="standardSetPreviewHandler" output="false" returnType="any">
+<cffunction name="standardSetPreviewHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset arguments.event.setValue('track',0)>
@@ -104,7 +104,7 @@
 
 </cffunction>
 
-<cffunction name="standardSetPermissionsHandler" output="false" returnType="any">
+<cffunction name="standardSetPermissionsHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset getBean("userUtility").returnLoginCheck(arguments.event.getValue("MuraScope"))>
@@ -117,13 +117,13 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardSetCommentPermissionsHandler" output="false" returnType="any">
+<cffunction name="standardSetCommentPermissionsHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset arguments.event.setValue('muraAllowComments', 1)>
 </cffunction>
 
-<cffunction name="standardSetCommenterHandler" output="false" returnType="any">
+<cffunction name="standardSetCommenterHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfset var remoteID = "">
 	<cfset var commenter = event.getValue('commenterBean')>
@@ -150,7 +150,7 @@
 	<cfset comment.setUserID(commenter.getCommenterID())>
 </cffunction>
 
-<cffunction name="standardGetCommenterHandler" output="false" returnType="any">
+<cffunction name="standardGetCommenterHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfset var commenter = event.getValue('commenterBean')>
 	<cfset var comment = event.getValue('commentBean')>
@@ -158,7 +158,7 @@
 	<cfset commenter.loadBy(commenterID=comment.getUserID())>
 </cffunction>
 
-<cffunction name="standardSetLocaleHandler" output="false" returnType="any">
+<cffunction name="standardSetLocaleHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfset var sessionData=getSession()>
 	<cfparam name="sessionData.siteID" default="">
@@ -171,7 +171,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardSetIsOnDisplayHandler" output="false" returnType="any">
+<cffunction name="standardSetIsOnDisplayHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfset var crumbdata="">
 	<cfset var previewData=getCurrentUser().getValue("ChangesetPreviewData")>
@@ -198,12 +198,12 @@
 
 </cffunction>
 
-<cffunction name="standardSetContentRendererHandler" output="false" returnType="any">
+<cffunction name="standardSetContentRendererHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfset arguments.event.getValue("muraScope").getContentRenderer()>
 </cffunction>
 
-<cffunction name="standardSetContentHandler" output="false" returnType="any">
+<cffunction name="standardSetContentHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset var renderer=arguments.event.getValue("contentRenderer")>
@@ -256,7 +256,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardSetAdTrackingHandler" output="false" returnType="any">
+<cffunction name="standardSetAdTrackingHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfif arguments.event.getValue('trackSession')>
@@ -267,7 +267,7 @@
 
 </cffunction>
 
-<cffunction name="standardRequireLoginHandler" output="false" returnType="any">
+<cffunction name="standardRequireLoginHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset var loginURL = "" />
@@ -289,7 +289,7 @@
 
 </cffunction>
 
-<cffunction name="standardPostLogoutHandler" output="false" returnType="any">
+<cffunction name="standardPostLogoutHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfif request.returnFormat eq 'JSON'>
 		<cfset request.muraJSONRedirectURL=arguments.event.getValue('contentRenderer').getCurrentURL()>
@@ -298,7 +298,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardMobileHandler" output="false" returnType="any">
+<cffunction name="standardMobileHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfset var renderer=arguments.event.getValue("contentRenderer")>
 
@@ -313,7 +313,7 @@
 
 </cffunction>
 
-<cffunction name="standardWrongFilenameHandler" output="false" returnType="any">
+<cffunction name="standardWrongFilenameHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfset var currentFilename=arguments.event.getValue('currentFilename')>
 	<cfset var currentFilenameAdjusted=arguments.event.getValue('currentFilenameAdjusted')>
@@ -333,13 +333,13 @@
 	<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL(complete=true)#" addtoken="false" statuscode="301">
 </cffunction>
 
-<cffunction name="standardLinkTranslationHandler" output="false" returnType="any">
+<cffunction name="standardLinkTranslationHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset arguments.event.getTranslator('standardLink').translate(arguments.event) />
 </cffunction>
 
-<cffunction name="standardForceSSLHandler" output="false" returnType="any">
+<cffunction name="standardForceSSLHandler" output="false">
 	<cfargument name="$" required="true">
 
 	<cfif request.returnFormat eq 'JSON'>
@@ -353,13 +353,13 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardFileTranslationHandler" output="false" returnType="any">
+<cffunction name="standardFileTranslationHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset arguments.event.getTranslator('standardFile').translate(arguments.event) />
 </cffunction>
 
-<cffunction name="standardDoResponseHandler" output="false" returnType="any">
+<cffunction name="standardDoResponseHandler" output="false">
 	<cfargument name="event" required="true">
 
 	<cfset var showMeta=0>
@@ -367,6 +367,12 @@
 	<cfset var translator="">
 
 	<cfset arguments.event.getValidator('standardForceSSL').validate(arguments.event)>
+
+	<!---
+	<cfif listFindNoCase('author,editor',arguments.event.getValue('r').perm) and arguments.event.getValue('showMeta') neq 2>
+		<cfset arguments.event.setValue('showMeta',1)>
+	</cfif>
+	--->
 
 	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 
@@ -384,7 +390,7 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="File">
-						<cfif not renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or arguments.event.getValue('showMeta') eq 2 or listFindNoCase('attachment,inline',arguments.event.getValue('method'))>
+						<cfif not (renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or renderer.showItemMeta('File') ) or arguments.event.getValue('showMeta') eq 2 or listFindNoCase('attachment,inline',arguments.event.getValue('method'))>
 							<!---<cftry>--->
 							<cfset translator=arguments.event.getHandler('standardFileTranslation')>
 							<!---
@@ -416,7 +422,7 @@
 	<cfset application.pluginManager.announceEvent('onRenderEnd', arguments.event)/>
 </cffunction>
 
-<cffunction name="standard404Handler" output="false" returnType="any">
+<cffunction name="standard404Handler" output="false">
 	<cfargument name="event" required="true">
 	<cfargument name="$" required="true">
 
@@ -478,7 +484,7 @@
 
 </cffunction>
 
-<cffunction name="standardDoActionsHandler" output="false" returnType="any">
+<cffunction name="standardDoActionsHandler" output="false">
 	<cfargument name="event" required="true">
 	<cfargument name="$" />
 
@@ -626,7 +632,7 @@
 </cffunction>
 
 <!--- VALIDATORS --->
-<cffunction name="standardEnableLockdownValidator" output="false" returnType="any">
+<cffunction name="standardEnableLockdownValidator" output="false">
 	<cfargument name="event" required="true">
 	<cfset var valid = false>
 	<cfset var enableLockdown = application.settingsManager.getSite(request.siteID).getEnableLockdown()>
@@ -649,7 +655,7 @@
 
 </cffunction>
 
-<cffunction name="standardWrongDomainValidator" output="false" returnType="any">
+<cffunction name="standardWrongDomainValidator" output="false">
 	<cfargument name="event" required="true">
 
 	<cfif request.returnFormat eq 'HTML' and not len(arguments.event.getValue("previewID")) and (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
@@ -659,7 +665,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardTrackSessionValidator" output="false" returnType="any">
+<cffunction name="standardTrackSessionValidator" output="false">
 	<cfargument name="$" required="true">
 
 	<cfif arguments.event.getValue('trackSession')
@@ -672,7 +678,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardRequireLoginValidator" output="false" returnType="any">
+<cffunction name="standardRequireLoginValidator" output="false">
 	<cfargument name="event" required="true">
 
 	<cfif request.returnFormat eq 'HTML' and arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict
@@ -682,7 +688,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardMobileValidator" output="false" returnType="any">
+<cffunction name="standardMobileValidator" output="false">
 	<cfargument name="event" required="true">
 	<cfif not isBoolean(request.muraMobileRequest)>
 		<cfset request.muraMobileRequest=false>
@@ -692,7 +698,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardWrongFilenameValidator" output="false" returnType="any">
+<cffunction name="standardWrongFilenameValidator" output="false">
 	<cfargument name="event" required="true">
 	<cfset var requestedfilename=arguments.event.getValue('currentFilenameAdjusted')>
 	<cfset var contentFilename=arguments.event.getValue('contentBean').getFilename()>
@@ -702,7 +708,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standardForceSSLValidator" output="false" returnType="any">
+<cffunction name="standardForceSSLValidator" output="false">
 	<cfargument name="event" required="true">
 	<cfset var isHTTPS=application.utility.isHTTPS()>
 
@@ -725,7 +731,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="standard404Validator" output="false" returnType="any">
+<cffunction name="standard404Validator" output="false">
 	<cfargument name="event" required="true">
 
 	<cfif arguments.event.getValue('contentBean').getIsNew() eq 1>
@@ -734,7 +740,7 @@
 </cffunction>
 
 <!--- TRANSLATORS --->
-<cffunction name="standardFileTranslator" output="false" returnType="any">
+<cffunction name="standardFileTranslator" output="false">
 	<cfargument name="$" required="true">
 
 	<cfif request.returnFormat eq 'JSON'>
@@ -747,7 +753,7 @@
 
 </cffunction>
 
-<cffunction name="standardLinkTranslator" output="false" returnType="any">
+<cffunction name="standardLinkTranslator" output="false">
 	<cfargument name="$" required="true">
 	<cfset var theLink=$.getContentRenderer().setDynamicContent($.content('body'))>
 

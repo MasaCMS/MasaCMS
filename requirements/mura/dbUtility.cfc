@@ -1100,7 +1100,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="transformIndexName" access="public">
+<cffunction name="transformIndexName">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var length = 64>

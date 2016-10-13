@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
 	<cfargument name="contentRenderer" type="any" required="yes"/>
@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="send" returntype="void" output="false">
+<cffunction name="send" output="false">
 	<cfargument name="args" type="struct" default="#structNew()#">
 	<cfargument name="sendto" type="string" default="">
 	<cfargument name="from" type="string" default="">
@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset tmt_mail_body = "">
 		<cfset tmt_cr = Chr(13) & Chr(10)>
-		<cfset tmt_mail_head = "This form was sent at: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')# #tmt_cr#">
+		<cfset tmt_mail_head = "Submitted: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')# #tmt_cr#">
 		<cfloop index="form_element" list="#fields.fieldnames#">
 			<cfif form_element neq 'siteid'
 					and right(form_element,2) neq ".X"
@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="sendText" returntype="void" output="false">
+<cffunction name="sendText" output="false">
 	<cfargument name="text" type="string" default="">
 	<cfargument name="sendto" type="string" default="">
 	<cfargument name="from" type="string" default="">
@@ -288,7 +288,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="sendHTML" returntype="void" output="false">
+<cffunction name="sendHTML" output="false">
 	<cfargument name="html" type="string" default="">
 	<cfargument name="sendto" type="string" default="">
 	<cfargument name="from" type="string" default="">
@@ -376,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="sendTextAndHTML" returntype="void" output="false">
+<cffunction name="sendTextAndHTML" output="false">
 	<cfargument name="text" type="string" default="">
 	<cfargument name="html" type="string" default="">
 	<cfargument name="sendto" type="string" default="">

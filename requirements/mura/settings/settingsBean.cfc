@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.entityName = 'site'>
 <cfset variables.instanceName= 'site'>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 
 	<cfset super.init(argumentCollection=arguments)>
 
@@ -251,6 +251,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.RemotePort=80/>
 	<cfset variables.instance.resourceSSL=0/>
 	<cfset variables.instance.resourceDomain=""/>
+	<cfset variables.instance.contentTypeFilePathLookup={}>
+	<cfset variables.instance.contentTypeLoopUpArray=[]>
 	<cfset variables.instance.displayObjectLookup={}/>
 	<cfset variables.instance.displayObjectFilePathLookup={}/>
 	<cfset variables.instance.displayObjectLoopUpArray=[]>
@@ -259,7 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="validate" access="public" output="false">
+<cffunction name="validate" output="false">
 	<cfset variables.instance.errors=structnew() />
 
 	<cfif variables.instance.siteID eq "">
@@ -278,7 +280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="set" output="false" access="public">
+<cffunction name="set" output="false">
 	<cfargument name="property" required="true">
     <cfargument name="propertyValue">
 
@@ -358,7 +360,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getDomain" returntype="String" access="public" output="false">
+<cffunction name="getDomain" output="false">
 	<cfargument name="mode" type="String" required="true" default="" />
 	<cfset var temp="">
 
@@ -373,7 +375,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setEnforcePrimaryDomain" access="public" output="false">
+<cffunction name="setEnforcePrimaryDomain" output="false">
 	<cfargument name="enforcePrimaryDomain" />
 	<cfif isNumeric(arguments.enforcePrimaryDomain)>
 	<cfset variables.instance.enforcePrimaryDomain = arguments.enforcePrimaryDomain />
@@ -389,7 +391,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setEnforceChangesets" access="public" output="false">
+<cffunction name="setEnforceChangesets" output="false">
 	<cfargument name="enforceChangesets" />
 	<cfif isNumeric(arguments.enforceChangesets)>
 		<cfset variables.instance.enforceChangesets = arguments.enforceChangesets />
@@ -407,7 +409,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.feedManager>
 </cffunction>
 
-<cffunction name="setExportLocation" access="public" output="false">
+<cffunction name="setExportLocation" output="false">
 	<cfargument name="ExportLocation" type="String" />
 	<cfif arguments.ExportLocation neq "export1">
 	<cfset variables.instance.ExportLocation = arguments.ExportLocation />
@@ -439,7 +441,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setMailServerUsernameEmail" access="public" output="false">
+<cffunction name="setMailServerUsernameEmail" output="false">
 	<cfargument name="MailServerUsernameEmail" type="String" />
 
 	<cfif find("@",arguments.MailServerUsernameEmail)>
@@ -454,7 +456,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerUsername" returntype="String" access="public" output="false">
+<cffunction name="getMailServerUsername" output="false">
 	<cfargument name="forLogin" default="false" required="true">
 	<cfif not arguments.forLogin or len(variables.instance.mailServerPassword)>
 		<cfreturn variables.instance.mailServerUsername />
@@ -463,14 +465,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setMailServerUsername" access="public" output="false">
+<cffunction name="setMailServerUsername" output="false">
 	<cfargument name="MailServerUsername" type="String" />
 	<cfset setMailServerUsernameEmail(arguments.MailServerUsername) />
 	<cfset variables.instance.mailServerUsername = arguments.MailServerUsername />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setCacheCapacity" access="public" output="false">
+<cffunction name="setCacheCapacity" output="false">
 	<cfargument name="cacheCapacity" />
 	<cfif isNumeric(arguments.cacheCapacity)>
 	<cfset variables.instance.cacheCapacity = arguments.cacheCapacity />
@@ -478,7 +480,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setCacheFreeMemoryThreshold" access="public" output="false">
+<cffunction name="setCacheFreeMemoryThreshold" output="false">
 	<cfargument name="cacheFreeMemoryThreshold" />
 	<cfif isNumeric(arguments.cacheFreeMemoryThreshold) and arguments.cacheFreeMemoryThreshold>
 	<cfset variables.instance.cacheFreeMemoryThreshold = arguments.cacheFreeMemoryThreshold />
@@ -486,7 +488,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSmallImageWidth" access="public" output="true">
+<cffunction name="setSmallImageWidth" output="true">
 	<cfargument name="smallImageWidth" type="any" required="yes" default="0" />
 	<cfif isNumeric(arguments.smallImageWidth) and arguments.smallImageWidth or arguments.smallImageWidth eq 'AUTO'>
 		<cfset variables.instance.smallImageWidth = arguments.smallImageWidth />
@@ -494,7 +496,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSmallImageHeight" access="public" output="true">
+<cffunction name="setSmallImageHeight" output="true">
 	<cfargument name="smallImageHeight" type="any" required="yes" default="0" />
 	<cfif isNumeric(arguments.smallImageHeight) and arguments.smallImageHeight or arguments.smallImageHeight eq 'AUTO'>
 		<cfset variables.instance.smallImageHeight = arguments.smallImageHeight />
@@ -502,7 +504,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMediumImageWidth" access="public" output="true">
+<cffunction name="setMediumImageWidth" output="true">
 	<cfargument name="mediumImageWidth" type="any" required="yes" default="0" />
 	<cfif isNumeric(arguments.mediumImageWidth) and arguments.mediumImageWidth or arguments.mediumImageWidth eq 'AUTO'>
 		<cfset variables.instance.mediumImageWidth = arguments.mediumImageWidth />
@@ -510,7 +512,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMediumImageHeight" access="public" output="true">
+<cffunction name="setMediumImageHeight" output="true">
 	<cfargument name="mediumImageHeight" type="any" required="yes" default="0" />
 	<cfif isNumeric(arguments.mediumImageHeight) and arguments.mediumImageHeight or arguments.mediumImageHeight eq 'AUTO'>
 		<cfset variables.instance.mediumImageHeight = arguments.mediumImageHeight />
@@ -518,7 +520,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLargeImageWidth" access="public" output="true">
+<cffunction name="setLargeImageWidth" output="true">
 	<cfargument name="largeImageWidth" type="any" required="yes" default="0" />
 	<cfif isNumeric(arguments.largeImageWidth) and  arguments.largeImageWidth or arguments.largeImageWidth eq 'AUTO'>
 		<cfset variables.instance.largeImageWidth = arguments.largeImageWidth />
@@ -526,7 +528,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLargeImageHeight" access="public" output="true">
+<cffunction name="setLargeImageHeight" output="true">
 	<cfargument name="largeImageHeight" type="any" required="yes" default="0" />
 	<cfif isNumeric(arguments.largeImageHeight) and  arguments.largeImageHeight or arguments.largeImageHeight eq 'AUTO'>
 		<cfset variables.instance.largeImageHeight = arguments.largeImageHeight />
@@ -546,7 +548,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.largeImageWidth>
 </cffunction>
 
-<cffunction name="getLoginURL" returntype="String" access="public" output="false">
+<cffunction name="getLoginURL" output="false">
 	<cfargument name="parseMuraTag" default="true">
 
 	<cfif variables.instance.loginURL neq ''>
@@ -560,7 +562,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getEditProfileURL" returntype="String" access="public" output="false">
+<cffunction name="getEditProfileURL" output="false">
 	<cfargument name="parseMuraTag" default="true">
 	<cfif variables.instance.EditProfileURL neq ''>
 		<cfif arguments.parseMuraTag>
@@ -573,13 +575,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setLastDeployment" access="public" output="false">
+<cffunction name="setLastDeployment" output="false">
 	<cfargument name="LastDeployment" type="String" />
 	<cfset variables.instance.LastDeployment = parseDateArg(arguments.LastDeployment)/>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setHasComments" access="public" output="false">
+<cffunction name="setHasComments" output="false">
 	<cfargument name="hasComments"  />
 	<cfif isNumeric(arguments.hasComments)>
 		<cfset variables.instance.hasComments = arguments.hasComments />
@@ -587,7 +589,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setUseDefaultSMTPServer" access="public" output="false">
+<cffunction name="setUseDefaultSMTPServer" output="false">
 	<cfargument name="UseDefaultSMTPServer"  />
 	<cfif isNumeric(arguments.UseDefaultSMTPServer)>
 		<cfset variables.instance.UseDefaultSMTPServer = arguments.UseDefaultSMTPServer />
@@ -595,7 +597,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMailServerSMTPPort" access="public" output="false">
+<cffunction name="setMailServerSMTPPort" output="false">
 	<cfargument name="MailServerSMTPPort" type="String" />
 	<cfif isNumeric(arguments.MailServerSMTPPort)>
 	<cfset variables.instance.mailServerSMTPPort = arguments.MailServerSMTPPort />
@@ -603,7 +605,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMailServerPOPPort" access="public" output="false">
+<cffunction name="setMailServerPOPPort" output="false">
 	<cfargument name="MailServerPOPPort" type="String" />
 	<cfif isNumeric(arguments.MailServerPOPPort)>
 	<cfset variables.instance.mailServerPOPPort = arguments.MailServerPOPPort />
@@ -611,7 +613,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMailServerTLS" access="public" output="false">
+<cffunction name="setMailServerTLS" output="false">
 	<cfargument name="mailServerTLS" type="String" />
 	<cfif isBoolean(arguments.mailServerTLS)>
 	<cfset variables.instance.mailServerTLS = arguments.mailServerTLS />
@@ -619,7 +621,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMailServerSSL" access="public" output="false">
+<cffunction name="setMailServerSSL" output="false">
 	<cfargument name="mailServerSSL" type="String" />
 	<cfif isBoolean(arguments.mailServerSSL)>
 	<cfset variables.instance.mailServerSSL = arguments.mailServerSSL />
@@ -627,7 +629,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getCacheFactory" returntype="any" access="public" output="false">
+<cffunction name="getCacheFactory" output="false">
 	<cfargument name="name"default="output" hint="data or output">
 
 	<cfif not isDefined("arguments.name")>
@@ -653,7 +655,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="purgeCache" access="public" output="false">
+<cffunction name="purgeCache" output="false">
 	<cfargument name="name" default="output" hint="data, output or both">
 	<cfargument name="broadcast" default="true">
 	<cfset getCacheFactory(name=arguments.name).purgeAll()>
@@ -663,7 +665,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getJavaLocale" returntype="String" access="public" output="false">
+<cffunction name="getJavaLocale" output="false">
 	<cfif len(variables.instance.siteLocale)>
 		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.instance.siteLocale)>
 	<cfelse>
@@ -672,7 +674,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.javaLocale />
 </cffunction>
 
-<cffunction name="getRBFactory" returntype="any" access="public" output="false">
+<cffunction name="getRBFactory" output="false">
 	<cfset var tmpFactory="">
 	<cfset var themeRBDir="">
 	<cfif not isObject(variables.instance.rbFactory)>
@@ -687,7 +689,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.rbFactory />
 </cffunction>
 
-<cffunction name="setRBFactory" returntype="any" access="public" output="false">
+<cffunction name="setRBFactory" output="false">
 	<cfargument name="rbFactory">
 	<cfif not isObject(arguments.rbFactory)>
 		<cfset variables.instance.rbFactory=arguments.rbFactory />
@@ -695,39 +697,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getJSDateKey" returntype="String" access="public" output="false">
+<cffunction name="getJSDateKey" output="false">
 	<cfif not len(variables.instance.jsDateKey)>
 		<cfset variables.instance.jsDateKey=getLocaleUtils().getJSDateKey()>
 	</cfif>
 	<cfreturn variables.instance.jsDateKey />
 </cffunction>
 
-<cffunction name="getJSDateKeyObjInc" returntype="String" access="public" output="false">
+<cffunction name="getJSDateKeyObjInc" output="false">
 	<cfif not len(variables.instance.jsDateKeyObjInc)>
 		<cfset variables.instance.jsDateKeyObjInc=getLocaleUtils().getJsDateKeyObjInc()>
 	</cfif>
 	<cfreturn variables.instance.jsDateKeyObjInc />
 </cffunction>
 
-<cffunction name="getLocaleUtils" returntype="any" access="public" output="false">
+<cffunction name="getLocaleUtils" output="false">
 	<cfreturn getRBFactory().getUtils() />
 </cffunction>
 
-<cffunction name="getAssetPath" returntype="any" access="public" output="false">
+<cffunction name="getAssetPath" output="false">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
 	<cfreturn getResourcePath(argumentCollection=arguments) & "/#variables.instance.displayPoolID#" />
 </cffunction>
 
-<cffunction name="getIncludePath" returntype="any" access="public" output="false">
+<cffunction name="getFileAssetPath" output="false">
+	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="#getValue('domain')#">
+	<cfreturn getResourcePath(argumentCollection=arguments) & "/#variables.instance.filePoolID#" />
+</cffunction>
+
+<cffunction name="getIncludePath" output="false">
 	<cfreturn "/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
-<cffunction name="getAssetMap" returntype="any" access="public" output="false">
+<cffunction name="getAssetMap" output="false">
 	<cfreturn "#variables.configBean.getWebRootMap()#.#variables.instance.displayPoolID#" />
 </cffunction>
 
-<cffunction name="getThemeAssetPath" returntype="any" access="public" output="false">
+<cffunction name="getThemeAssetPath" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
@@ -741,7 +749,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getThemeIncludePath" returntype="any" access="public" output="false">
+<cffunction name="getThemeIncludePath" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
@@ -753,7 +761,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getThemeAssetMap" returntype="any" access="public" output="false">
+<cffunction name="getThemeAssetMap" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
@@ -765,7 +773,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getTemplateIncludePath" returntype="any" access="public" output="false">
+<cffunction name="getTemplateIncludePath" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
@@ -777,11 +785,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="hasNonThemeTemplates" returntype="any" access="public" output="false">
+<cffunction name="hasNonThemeTemplates" output="false">
 	<cfreturn directoryExists(expandPath("#getIncludePath()#/includes/templates")) />
 </cffunction>
 
-<cffunction name="getTemplateIncludeDir" returntype="any" access="public" output="false">
+<cffunction name="getTemplateIncludeDir" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 
 	<cfif len(arguments.theme)>
@@ -793,7 +801,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getThemes" returntype="query" access="public" output="false">
+<cffunction name="getThemes" output="false">
 	<cfset var rs = "">
 	<cfset var themeDir="">
 
@@ -812,7 +820,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs />
 </cffunction>
 
-<cffunction name="getTemplates" returntype="query" access="public" output="false">
+<cffunction name="getTemplates" output="false">
 	<cfargument name="type" required="true" default="">
 	<cfset var rs = "">
 	<cfset var dir="">
@@ -843,7 +851,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs />
 </cffunction>
 
-<cffunction name="getLayouts" access="public" output="false">
+<cffunction name="getLayouts" output="false">
 	<cfargument name="type" required="true" default="collection/layouts">
 
 	<cfparam name="variables.instance.collectionLayouts" default="">
@@ -968,7 +976,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="save" returnType="any" output="false" access="public">
+<cffunction name="save" output="false">
 	<cfset setAllValues(application.settingsManager.save(this).getAllValues())>
 	<cfreturn this />
 </cffunction>
@@ -990,12 +998,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!---
 	Not sure I want to expose this.
-<cffunction name="delete" output="false" access="public">
+<cffunction name="delete" output="false">
 	<cfset application.settingsManager.delete(variables.instance.siteID) />
 </cffunction>
 --->
 
-<cffunction name="loadBy" returnType="any" output="false" access="public">
+<cffunction name="loadBy" output="false">
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
@@ -1005,11 +1013,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.settingsManager.read(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getScheme" returntype="string" output="false">
+<cffunction name="getScheme" output="false">
 	<cfreturn YesNoFormat(getValue('useSSL')) ? 'https' : 'http' />
 </cffunction>
 
-<cffunction name="getProtocol" returntype="string" output="false">
+<cffunction name="getProtocol" output="false">
 	<cfreturn UCase(getScheme()) />
 </cffunction>
 
@@ -1046,7 +1054,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.hasSharedFilePool>
 </cffunction>
 
-<cffunction name="setHasLockableNodes" access="public" output="false">
+<cffunction name="setHasLockableNodes" output="false">
 	<cfargument name="hasLockableNodes" type="String" />
 	<cfif isNumeric(arguments.hasLockableNodes)>
 	<cfset variables.instance.hasLockableNodes = arguments.hasLockableNodes />
@@ -1054,7 +1062,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setJSONApi" access="public" output="false">
+<cffunction name="setJSONApi" output="false">
 	<cfargument name="JSONApi" type="String" />
 	<cfif isNumeric(arguments.JSONApi)>
 	<cfset variables.instance.JSONApi = arguments.JSONApi />
@@ -1062,7 +1070,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setIsRemote" access="public" output="false">
+<cffunction name="setIsRemote" output="false">
 	<cfargument name="isRemote" type="String" />
 	<cfif isNumeric(arguments.isRemote)>
 	<cfset variables.instance.isRemote = arguments.isRemote />
@@ -1070,7 +1078,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setResourceSSL" access="public" output="false">
+<cffunction name="setResourceSSL" output="false">
 	<cfargument name="resourceSSL" type="String" />
 	<cfif isNumeric(arguments.resourceSSL)>
 	<cfset variables.instance.resourceSSL = arguments.resourceSSL />
@@ -1078,7 +1086,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setRemotePort" access="public" output="false">
+<cffunction name="setRemotePort" output="false">
 	<cfargument name="RemotePort" type="String" />
 	<cfif isNumeric(arguments.RemotePort)>
 	<cfset variables.instance.RemotePort = arguments.RemotePort />
@@ -1136,7 +1144,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAdminPath" output="false">
-	<cfreturn getBean('configBean').getAdminPath()>
+	<cfargument name="useProtocol" default="1">
+	<cfreturn getBean('configBean').getAdminPath(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getWebPath" output="false">
@@ -1145,11 +1154,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="domain" default="#getValue('domain')#">
 	<cfargument name="useProtocol" default="1">
 
-	<cfif not isDefined('arguments.domain')>
-		<cfset arguments.domain=getValue('domain')>
-	</cfif>
-
 	<cfif arguments.secure or arguments.complete>
+
+		<cfif len(request.muraPreviewDomain) and isValidDomain(domain=request.muraPreviewDomain,mode='complete')>
+			<cfset arguments.domain=request.muraPreviewDomain>
+		</cfif>
+
+		<cfif not isDefined('arguments.domain')>
+			<cfset arguments.domain=getValue('domain')>
+		</cfif>
+
 		<cfif arguments.useProtocol>
 			<cfif arguments.secure>
 				<cfreturn 'https://' & arguments.domain & getServerPort() & getContext()>
@@ -1170,6 +1184,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
 	<cfargument name="useProtocol" default="1">
+
+	<cfif len(request.muraPreviewDomain) and isValidDomain(domain=request.muraPreviewDomain,mode='complete')>
+		<cfset arguments.domain=request.muraPreviewDomain>
+	</cfif>
 
 	<cfif not isDefined('arguments.domain')>
 		<cfset arguments.domain=getValue('domain')>
@@ -1215,18 +1233,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
 
-	<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
-		<cfset thelist = listAppend(thelist,"https://#getValue('domain')#")>
+	<cfset theurl = "#getValue('domain')##application.configBean.getServerPort()#">
+	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+		<cfset thelist = listAppend(thelist,theurl)>
+	</cfif>
+	<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+		<cfset thelist = listAppend(thelist,theurl)>
+	</cfif>
+
+	<cfset theurl = "#getValue('domain')#:#cgi.server_port#">
+	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+		<cfset thelist = listAppend(thelist,theurl)>
+	</cfif>
+	<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+		<cfset thelist = listAppend(thelist,theurl)>
 	</cfif>
 
 	<cfif len(application.configBean.getAdminDomain())>
-		<cfset thelist = listAppend(thelist,"http://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
-		<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
+		<cfset theurl="#application.configBean.getAdminDomain()#">
+		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+
+		<cfset theurl="#application.configBean.getAdminDomain()##application.configBean.getServerPort()#">
+		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+
+		<cfset theurl="#application.configBean.getAdminDomain()#:#cgi.server_port#">
+		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+			<cfset thelist = listAppend(thelist,theurl)>
+		</cfif>
+
 	</cfif>
 
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
 			<cfset theurl = "#i##getServerPort()#" />
+			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
+				<cfset thelist = listAppend(thelist,"http://#theurl#")>
+			</cfif>
+			<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
+				<cfset thelist = listAppend(thelist,"https://#theurl#")>
+			</cfif>
+
+			<cfset theurl = "#i#:#cgi.server_port#" />
 			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
 				<cfset thelist = listAppend(thelist,"http://#theurl#")>
 			</cfif>
@@ -1262,8 +1322,214 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="clearFilePaths" output="false">
+	<cfset variables.instance.displayObjectFilePathLookup=structNew()>
+	<cfset variables.instance.contentTypeFilePathLookup=structNew()>
+</cffunction>
+
+<cffunction name="lookupContentTypeFilePath" output="false">
+	<cfargument name="filePath">
+	<cfargument name="customOnly" default="false">
+	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
+
+	<cfif len(request.altTheme)>
+		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/content_types/" & arguments.filePath>
+		<cfif fileExists(expandPath(altThemePath))>
+			<cfreturn altThemePath>
+		</cfif>
+	</cfif>
+
+	<cfif hasContentTypeFilePath(arguments.filePath)>
+		<cfreturn getContentTypeFilePath(arguments.filePath)>
+	</cfif>
+
+	<cfset var dir="">
+	<cfset var result="">
+	<cfset var coreIndex=arrayLen(variables.instance.contentTypeLoopUpArray)-2>
+	<cfset var dirIndex=0>
+
+	<cfloop array="#variables.instance.contentTypeLoopUpArray#" index="dir">
+		<cfset dirIndex=dirIndex+1>
+		<cfif not arguments.customonly or dirIndex lt coreIndex>
+			<cfset result=dir & arguments.filePath>
+			<cfif fileExists(expandPath(result))>
+				<cfset setContentTypeFilePath(arguments.filePath,result)>
+				<cfreturn result>
+			</cfif>
+		</cfif>
+	</cfloop>
+
+	<cfset setContentTypeFilePath(arguments.filePath,"")>
+	<cfreturn "">
+</cffunction>
+
+<cffunction name="hasContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfreturn structKeyExists(variables.instance.contentTypeFilePathLookup,'#arguments.filepath#')>
+</cffunction>
+
+<cffunction name="getContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfreturn variables.instance.contentTypeFilePathLookup['#arguments.filepath#']>
+</cffunction>
+
+<cffunction name="setContentTypeFilePath" output="false">
+	<cfargument name="filepath">
+	<cfargument name="result">
+	<cfset variables.instance.contentTypeFilePathLookup['#arguments.filepath#']=arguments.result>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerContentTypeDirs" output="false">
+	<cfset var lookupArray=[
+		getIncludePath()  & "/includes/content_types",
+		getThemeIncludePath(getValue('theme')) & "/content_types"
+	]>
+
+	<cfset var dir="">
+	<cfloop array="#lookupArray#" index="dir">
+		<cfset registerContentTypeDir(dir=dir)>
+	</cfloop>
+
+	<cfset var rs="">
+
+	<cfquery name="rs">
+		select tplugins.package
+		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
+		where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getValue('siteid')#">
+		and tplugins.deployed=1
+		order by tplugins.loadPriority desc
+	</cfquery>
+
+	<cfloop query="rs">
+		<cfset registerContentTypeDir('/' & rs.package & '/content_types')>
+	</cfloop>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerContentTypeDir" output="false">
+	<cfargument name="dir">
+
+	<cfset var rs="">
+	<cfset var config="">
+	<cfset var expandedDir=expandPath(arguments.dir)>
+
+	<cfif directoryExists(expandedDir)>
+		<cfdirectory name="rs" directory="#expandedDir#" action="list" type="dir">
+		<cfloop query="rs">
+
+			<cfif fileExists('#expandedDir#/#rs.name#/config.xml.cfm')>
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">--->
+			<cfelseif fileExists('#expandedDir#/#rs.name#/config.xml')>
+				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
+			<cfelse>
+				<cfset config="">
+			</cfif>
+
+			<cfif isXML(config)>
+				<cfset config=xmlParse(config)>
+				<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
+			</cfif>
+
+            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
+                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'))>
+            </cfif>
+
+		</cfloop>
+
+		<cfif not listFind('/,\',right(arguments.dir,1))>
+			<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
+		</cfif>
+		<cfset arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir)>
+	</cfif>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerDisplayObjectDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="conditional" default="true">
+    <cfargument name="package" default="">
+	<cfargument name="custom" default="true">
+	<cfset var rs="">
+	<cfset var config="">
+	<cfset var objectArgs={}>
+	<cfset var o="">
+	<cfset var objectfound=(arguments.conditional) ? false : true>
+	<cfset var expandedDir=expandPath(arguments.dir)>
+
+	<cfif directoryExists(expandedDir)>
+		<cfdirectory name="rs" directory="#expandedDir#" action="list" type="dir">
+		<cfloop query="rs">
+			<cfif fileExists('#expandedDir#/#rs.name#/config.xml.cfm')>
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">---->
+			<cfelseif fileExists('#expandedDir#/#rs.name#/config.xml')>
+				<cffile action="read" file="#expandedDir#/#rs.name#/config.xml" variable="config">
+			<cfelse>
+				<cfset config="">
+			</cfif>
+
+			<cfif isXML(config)>
+
+				<cfset config=xmlParse(config)>
+
+				<cfif isDefined('config.displayobject.xmlAttributes.name') or isDefined('config.mura.xmlAttributes.name')>
+					<cfset objectArgs={
+						object=rs.name,
+						custom=arguments.custom
+						}>
+					<cfif isDefined('config.displayobject.xmlAttributes.name')>
+						<cfset var baseXML=config.displayobject>
+					<cfelse>
+						<cfset var baseXML=config.mura>
+					</cfif>
+                    <cfif isDefined('baseXML.xmlAttributes.legacyObjectFile')>
+    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & baseXML.xmlAttributes.legacyObjectFile>
+                    </cfif>
+					<cfif isDefined('baseXML.xmlAttributes.displayObjectFile')>
+						<cfset objectArgs.displayObjectFile=rs.name & "/" & baseXML.xmlAttributes.displayObjectFile>
+					<cfelseif isDefined('baseXML.xmlAttributes.component')>
+						<cfset objectArgs.displayObjectFile=baseXML.xmlAttributes.component>
+					<cfelse>
+						<cfset objectArgs.displayObjectFile=rs.name & "/index.cfm">
+					</cfif>
+					<cfloop collection="#baseXML.xmlAttributes#" item="o">
+                        <cfif not structKeyExists(objectArgs,o)>
+					       <cfset objectArgs[o]=baseXML.xmlAttributes[o]>
+                        </cfif>
+					</cfloop>
+					<cfset registerDisplayObject(
+						argumentCollection=objectArgs
+					)>
+					<cfset objectfound=true>
+					<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
+				</cfif>
+
+			</cfif>
+
+            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
+                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
+            </cfif>
+
+		</cfloop>
+
+		<cfif objectfound>
+			<cfif not listFind('/,\',right(arguments.dir,1))>
+				<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
+			</cfif>
+			<cfset arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir)>
+		</cfif>
+
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="lookupDisplayObjectFilePath" output="false">
 	<cfargument name="filePath">
+	<cfargument name="customOnly" default="false">
 	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
 
 	<cfif len(request.altTheme)>
@@ -1284,19 +1550,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop array="#variables.instance.displayObjectLoopUpArray#" index="dir">
 		<cfset dirIndex=dirIndex+1>
-		<cfset result=dir & arguments.filePath>
-		<cfif fileExists(expandPath(result))>
-			<cfset setDisplayObjectFilePath(arguments.filePath,result)>
-			<cfreturn result>
-		<!---
-		<cfelseif dirIndex lt coreIndex>
-			<!--- For legacy support --->
-			<cfset result=dir & replace(arguments.filePath,'../','','all')>
+		<cfif not arguments.customonly or dirIndex lt coreIndex>
+			<cfset result=dir & arguments.filePath>
 			<cfif fileExists(expandPath(result))>
 				<cfset setDisplayObjectFilePath(arguments.filePath,result)>
 				<cfreturn result>
 			</cfif>
-		--->
 		</cfif>
 	</cfloop>
 
@@ -1333,10 +1592,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="discoverDisplayObjects" output="false">
 	<cfset var lookupArray=[
-		'/muraWRM/admin/core/views/carch/objectclass/',
-		getIncludePath()  & "/includes/display_objects/",
-		getIncludePath()  & "/includes/display_objects/custom/",
-		getThemeIncludePath(getValue('theme')) & "/display_objects/"
+		'/muraWRM/admin/core/views/carch/objectclass',
+		getIncludePath()  & "/includes/display_objects",
+		getIncludePath()  & "/includes/display_objects/custom",
+		getThemeIncludePath(getValue('theme')) & "/display_objects"
 	]>
 
 	<cfset var dir="">
@@ -1352,7 +1611,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs="">
 
 	<cfquery name="rs">
-		select tplugins.directory
+		select tplugins.package
 		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
 		where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getValue('siteid')#">
 		and tplugins.deployed=1
@@ -1360,82 +1619,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfloop query="rs">
-		<cfset registerDisplayObjectDir(getBean('configBean').getPluginDir() & '/' & rs.directory & '/display_objects/',true)>
+		<cfset registerDisplayObjectDir('/' & rs.package & '/display_objects',true)>
 	</cfloop>
 
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="registerDisplayObjectDir" output="false">
-	<cfargument name="dir">
-	<cfargument name="conditional" default="true">
-    <cfargument name="package" default="">
-	<cfargument name="custom" default="true">
-	<cfset var rs="">
-	<cfset var config="">
-	<cfset var objectArgs={}>
-	<cfset var o="">
-	<cfset var objectfound=(arguments.conditional) ? false : true>
-
-	<cfif directoryExists(expandPath(arguments.dir))>
-		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" type="dir">
-		<cfloop query="rs">
-
-			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
-				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">
-			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
-				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
-			<cfelse>
-				<cfset config="">
-			</cfif>
-
-			<cfif isXML(config)>
-
-				<cfset config=xmlParse(config)>
-
-				<cfif isDefined('config.displayobject.xmlAttributes.name')>
-					<cfset objectArgs={
-						object=rs.name,
-						custom=arguments.custom
-						}>
-                    <cfif isDefined('config.displayobject.xmlAttributes.legacyObjectFile')>
-    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.legacyObjectFile>
-                    </cfif>
-					<cfif isDefined('config.displayobject.xmlAttributes.displayObjectFile')>
-						<cfset objectArgs.displayObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.displayObjectFile>
-					<cfelseif isDefined('config.displayobject.xmlAttributes.component')>
-						<cfset objectArgs.displayObjectFile=config.displayobject.xmlAttributes.component>
-					<cfelse>
-						<cfset objectArgs.displayObjectFile=rs.name & "/index.cfm">
-					</cfif>
-					<cfloop collection="#config.displayobject.xmlAttributes#" item="o">
-                        <cfif not structKeyExists(objectArgs,o)>
-					       <cfset objectArgs[o]=config.displayobject.xmlAttributes[o]>
-                        </cfif>
-					</cfloop>
-					<cfset registerDisplayObject(
-						argumentCollection=objectArgs
-					)>
-					<cfset objectfound=true>
-					<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
-				</cfif>
-
-			</cfif>
-
-            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
-                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
-            </cfif>
-
-		</cfloop>
-
-		<cfif objectfound>
-			<cfif not listFind('/,\',right(arguments.dir,1))>
-				<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
-			</cfif>
-			<cfset arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir)>
-		</cfif>
-
-	</cfif>
 	<cfreturn this>
 </cffunction>
 

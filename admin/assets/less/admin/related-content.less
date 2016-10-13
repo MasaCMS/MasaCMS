@@ -16,7 +16,7 @@
 	}
 	
 #mura-rc-quickedit {
-	width: 190px;
+	width: 210px;
 	color: @gray;
 	position: absolute;
 	left: 335px;
@@ -38,6 +38,7 @@
 				> i{
 					color: @gray;
 					font-size: 1.4em;
+					margin-right: -4px;
 				}
 			}
 			
@@ -86,21 +87,21 @@
 	}	
 	
 	.list-table-content-set {
-		color: #000;
-		font-weight: bold;
+		.bold-font;
 		background: #f0f0f0;
+		color: #000;
 		padding: 8px 5px;		
 		}
 	
 	/* header of list */
 	.list-table-header {
-		color: #000;
+		.bold-font;
 		background: #eaf4fd;
 		background-image: linear-gradient(to bottom,#fffefe,#f5f5f5);
-		padding: 4px 5px;
+		color: #000;
 		line-height: 18px;
-		font-weight: bold;
-		}
+		padding: 4px 5px;
+	}
 	
 	/* list holder - similar to tbody */
 	.list-table-items {

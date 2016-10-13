@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="contentRenderer"  output="false">
 
-<cffunction name="createHREF" returntype="string" output="false" access="public">
+<cffunction name="createHREF" output="false">
 	<cfargument name="type" required="true">
 	<cfargument name="filename" required="true">
 	<cfargument name="siteid" required="true">
@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn href />
 </cffunction>
 
-<cffunction name="addlink" output="false" returntype="string">
+<cffunction name="addlink" output="false">
 			<cfargument name="type" required="true">
 			<cfargument name="filename" required="true">
 			<cfargument name="title" required="true">

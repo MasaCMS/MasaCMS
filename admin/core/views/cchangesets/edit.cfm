@@ -56,19 +56,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
       <cfif not structIsEmpty(rc.changeset.getErrors())>
-          <div class="alert alert-error">#application.utility.displayErrors(rc.changeset.getErrors())#</div>
+          <div class="alert alert-error"><span>#application.utility.displayErrors(rc.changeset.getErrors())#</span></div>
       </cfif>
 
       <cfif rc.changeset.getPublished()>
-      <div class="alert alert-info">
-       #application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#
-     </div>
+      <div class="alert alert-info"><span>#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</span></div>
       <cfelse>
       <cfset hasPendingApprovals=rc.changeset.hasPendingApprovals()>
       <cfif hasPendingApprovals>
-        <div class="alert alert-error">
-            #application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')#
-        </div>
+        <div class="alert alert-error"><span>#application.rbFactory.getKeyValue(session.rb,'changesets.haspendingapprovals')#</span></div>
       </cfif>
       </cfif>
 
@@ -77,14 +73,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
 <div class="block block-constrain">
       <cfset tablist="tabBasic">
-      <cfset tablabellist="Basic">
+      <cfset tablabellist=application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic")>
       <cfset hasCategories=application.categoryManager.getCategoryCount(rc.siteid)>
       <cfif hasCategories>
     <cfset tablist=listAppend(tablist,'tabCategorization')>
-    <cfset tablabellist=listAppend(tablabellist,'Categorization')>
+    <cfset tablabellist=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))>
       </cfif>
       <cfset tablist=listAppend(tablist,'tabTags')>
-      <cfset tablabellist=listAppend(tablabellist,'Tags')>
+      <cfset tablabellist=listAppend(tablabellist,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.tags"))>
       <ul class="mura-tabs nav-tabs" data-toggle="tabs">
         <cfloop from="1" to="#listlen(tabList)#" index="t">
              <li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
@@ -215,16 +211,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <div class="mura-actions">
       <div class="form-actions">
         <cfif rc.changesetID eq ''>
-          <button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.add')#</button>
+          <button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.add')#</button>
           <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
         <cfelse>
-          <button class="btn" type="button" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#</button>
+          <button class="btn" type="button" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.delete')#</button>
           <button class="btn" type="button" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.update')#</button>
           <cfif not rc.changeset.getPublished() and not hasPendingApprovals>
-            <button class="btn mura-primary" type="button" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','./?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-check-circle"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#</button>
+            <button class="btn mura-primary" type="button" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','./?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-check-circle"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#</button>
           </cfif>
           <cfif rc.changeset.getPublished()>
-            <button class="btn" type="button" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.rollbackconfirm'))#','./?muraAction=cChangesets.rollback&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')">#application.rbFactory.getKeyValue(session.rb,'changesets.rollback')#</button>
+            <button class="btn" type="button" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.rollbackconfirm'))#','./?muraAction=cChangesets.rollback&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())##csrfTokens#')"><i class="mi-history"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.rollback')#</button>
           </cfif>
            <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
         </cfif>

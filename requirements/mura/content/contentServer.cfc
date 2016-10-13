@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="forcePathDirectoryStructure" output="false" returntype="any" access="remote">
+<cffunction name="forcePathDirectoryStructure" output="false" access="remote">
 <cfargument name="cgi_path">
 <cfargument name="siteID">
 <cfset var qstring="">
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cffunction>
 
-<cffunction name="setCGIPath" output="false" returntype="any" access="remote">
+<cffunction name="setCGIPath" output="false" access="remote">
 	<cfargument name="siteID"/>
 	<cfset var cgi_path="">
 	<cfset var parsed_path_info = cgi.path_info>
@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn cgi_path>
 </cffunction>
 
-<cffunction name="bindToDomain" output="false" returntype="any" access="remote">
+<cffunction name="bindToDomain" output="false" access="remote">
 	<cfargument name="isAdmin" required="true" default="false">
 	<cfargument name="domain" required="true" default="">
 	<cfset var siteID= "" />
@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="parseURL" output="false" returntype="any" access="remote">
+<cffunction name="parseURL" output="false" access="remote">
 	<cfset var last="">
 	<cfset var theStart=0>
 	<cfset var trimLen=0>
@@ -266,7 +266,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="parseURLLocal" output="false" returntype="any" access="remote">
+<cffunction name="parseURLLocal" output="false" access="remote">
 	<cfset var siteID="">
 	<cfset var cgi_path="">
 	<cfparam name="url.path" default="" />
@@ -291,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn parseURL()>
 </cffunction>
 
-<cffunction name="parseURLRoot" output="false" returntype="any" access="remote">
+<cffunction name="parseURLRoot" output="false" access="remote">
 	<cfset var cgi_path="">
 	<cfset var siteid=bindToDomain()>
 
@@ -311,7 +311,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn parseURL()>
 </cffunction>
 
-<cffunction name="parseURLRootStub" output="false" returntype="any" access="remote">
+<cffunction name="parseURLRootStub" output="false" access="remote">
 	<cfset var urlStem="">
 	<cfset var last="">
 	<cfset var siteid=bindToDomain()>
@@ -359,7 +359,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn parseURL()>
 </cffunction>
 
-<cffunction name="Redirect" output="false" returntype="any">
+<cffunction name="Redirect" output="false">
 
 	<cfset var rsSites=application.settingsManager.getList(sortBy="orderno") />
 	<cfset var site="">
@@ -382,7 +382,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="renderFilename" output="true" access="public">
+<cffunction name="renderFilename" output="true">
 	<cfargument name="filename" default="">
 	<cfargument name="validateDomain" default="true">
 	<cfargument name="parseURL" default="true">
@@ -418,7 +418,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="render404" output="true" access="public">
+<cffunction name="render404" output="true">
 	<cfheader statuscode="404" statustext="Content Not Found" />
 	<!--- Must reset the linkservID to prevent recursive 404s --->
 	<cfset request.linkServID="">
@@ -736,7 +736,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="doRequest" output="false" returntype="any">
+<cffunction name="doRequest" output="false">
 <cfargument name="event">
 	<cfset var response=""/>
 	<cfset var servlet = "" />
@@ -825,7 +825,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getURLStem" access="public" output="false" returntype="string">
+<cffunction name="getURLStem" output="false">
 	<cfargument name="siteID">
 	<cfargument name="filename">
 	<cfargument name="siteidinurls" default="#application.configBean.getSiteIDInURLS()#">

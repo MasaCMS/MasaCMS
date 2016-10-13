@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes" />
 	<cfargument name="contentIntervalManager" type="any" required="yes" />
 	<cfargument name="permUtility" type="any" required="yes" />
@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getFeeds" access="public" output="false" returntype="query">
+<cffunction name="getFeeds" output="false">
 	<cfargument name="siteID" type="String">
 	<cfargument name="type" type="String">
 	<cfargument name="publicOnly" type="boolean" required="true" default="false">
@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsFeeds />
 </cffunction>
 
-<cffunction name="getDefaultFeeds" access="public" output="false" returntype="query">
+<cffunction name="getDefaultFeeds" output="false">
 	<cfargument name="siteID" type="String">
 
 	<cfset var rsDefaultFeeds ="" />
@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsDefaultFeeds />
 </cffunction>
 
-<cffunction name="getFeed" access="public" output="false" returntype="query">
+<cffunction name="getFeed" output="false">
 	<cfargument name="feedBean" type="any">
 	<cfargument name="tag" required="true" default="">
 	<cfargument name="aggregation" required="true" type="boolean" default="false">
@@ -112,6 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsFeed ="" />
 	<cfset var contentLen =listLen(arguments.feedBean.getcontentID()) />
 	<cfset var categoryLen =listLen(arguments.feedBean.getCategoryID()) />
+	<cfset var categoryList=arguments.feedBean.getCategoryID()>
 	<cfset var rsParams=arguments.feedBean.getAdvancedParams() />
 	<cfset var started =false />
 	<cfset var isNullVal=false>
@@ -135,6 +136,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var castfield="attributeValue">
 	<cfset var palias="">
 	<cfset var talias="">
+	<cfset var paramCatLen=0>
+	<cfset var paramCatList="">
+	<cfset var paramCatItem="">
 
 	<cfif not len(altTable) and len(variables.configBean.getContentGatewayTable())>
 		<cfset altTable=variables.configBean.getContentGatewayTable()>
@@ -183,11 +187,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rsParams">
 		<cfif listLen(rsParams.field,".") eq 2>
 			<cfset jointable=listFirst(rsParams.field,".") >
-			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent,tcontentcategoryassign",jointable) and not listFind(jointables,jointable)>
+			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent,tcontentcategoryassign,tcontenttags",jointable) and not listFind(jointables,jointable)>
 				<cfset jointables=listAppend(jointables,jointable)>
 			</cfif>
 		</cfif>
 	</cfloop>
+
+	<cfif (arguments.feedBean.getSortBy() eq 'mxpRelevance' or listFirst(arguments.feedBean.getOrderBy(),' ') eq 'mxpRelevance' ) and not (arguments.countOnly or doKids)>
+		<cfif not isdefined('session.mura.mxp')>
+			<cfset session.mura.mxp=getBean('marketingManager').getDefaults()>
+		</cfif>
+		<cfparam name="session.mura.mxp.trackingProperties.personaid" default=''>
+		<cfparam name="session.mura.mxp.trackingProperties.stageid" default=''>
+		<cfset var mxpRelevanceSort=true>
+	<cfelse>
+		<cfset var mxpRelevanceSort=false>
+	</cfif>
 
 	<cfprocessingdirective suppressWhitespace="true">
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsFeed',blockFactor=blockFactor,cachedWithin=arguments.feedBean.getCachedWithin())#">
@@ -210,6 +225,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
 						tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
 						tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText,tcontent.changesetid
+					</cfif>
+
+					<cfif mxpRelevanceSort>
+					,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
 					</cfif>
 				<cfelse>
 					count(*) as count
@@ -258,6 +277,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tparent.active=1)
 					Left Join tcontentfilemetadata #tableModifier# on (tcontent.fileid=tcontentfilemetadata.fileid
 						and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
+				</cfif>
+
+				<cfif mxpRelevanceSort>
+					LEFT JOIN mxp_personapoints persona #tableModifier#
+					ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
+
+					LEFT JOIN mxp_stagepoints stage #tableModifier#
+					ON (tcontent.contenthistid=stage.contenthistid and stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">)
+
+					LEFT JOIN mxp_conversiontrack track #tableModifier#
+					ON (tcontent.contentid = track.contentid and track.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#"> and track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">)
 				</cfif>
 
 				<cfif not arguments.countOnly and isExtendedSort>
@@ -488,9 +518,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												OR
 												(
 													tcontent.isFeature = 2
-													AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+													AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 													AND (
-														tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+														tcontent.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 														OR tcontent.FeatureStop is null
 													)
 												)
@@ -518,9 +548,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 																				#talias#.isFeature = 1
 																				OR (
 																					#talias#.isFeature = 2
-																					AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																					AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																					AND (
-																						#talias#.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																						#talias#.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																						OR #talias#.FeatureStop is null
 																					)
 																				)
@@ -535,9 +565,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 															a.isFeature = 1
 															OR (
 																a.isFeature = 2
-																AND a.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																AND a.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																AND (
-																	a.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																	a.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																	or a.FeatureStop is null
 																)
 															)
@@ -558,9 +588,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														tcontentcategoryassign.isFeature = 1
 														OR (
 															tcontentcategoryassign.isFeature = 2
-															AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+															AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 															AND (
-																tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+																tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 																or tcontentcategoryassign.FeatureStop is null
 															)
 														)
@@ -578,9 +608,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											tcontent.Display = 2
 											AND (
 												(
-													tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+													tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 													AND (
-														tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+														tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 														OR tcontent.DisplayStop is null
 													)
 												)
@@ -591,7 +621,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														WHERE
 															type='Calendar'
 															#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
-															AND siteid  in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+															AND siteid  in (<cfqueryparam cfsqltype="#renderDateTimeParamType()#" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 													)
 											)
 										)
@@ -601,9 +631,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											TKids.Display = 2
 											AND (
 												(
-													TKids.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+													TKids.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 													AND (
-														TKids.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+														TKids.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
 														OR TKids.DisplayStop is null
 													)
 												) OR
@@ -704,21 +734,71 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset started=true>
 
 							<cfif listLen(param.getField(),".") gt 1>
-								<cfif listFirst(param.getField(),".") neq "tcontentcategoryassign">
-									#param.getFieldStatement()#
+								<cfif listFirst(param.getField(),".") eq "tcontentcategoryassign">
+									<cfif listLast(param.getField(),".") eq 'categoryid'>
+										<cfset paramCatLen=listLen(param.getCriteria())>
+										<cfif arguments.feedBean.getUseCategoryIntersect()>
+											tcontent.contentHistID in (
+												select a.contentHistID from tcontentcategoryassign a #tableModifier#
+												<cfif paramCatLen gt 1>
+													<cfloop from="2" to="#paramCatLen#" index="c">
+														<cfset palias = listGetAt(alpha,c-1)>
+														<cfset talias = listGetAt(alpha,c)>
+														<cfset paramCatItem=listgetat(param.getCriteria(),c)>
+														inner join tcontentcategoryassign #talias# #tableModifier# on 	#palias#.contentHistID = #talias#.contentHistID and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#paramCatItem#">
+														<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
+													</cfloop>
+												</cfif>
+												<cfset paramCatItem=listgetat(param.getCriteria(),1)>
+												<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
+												where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#paramCatItem#"/>
+											)
+										<cfelse>
+											tcontent.contenthistID in (
+												select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+												inner join tcontentcategories #tableModifier#
+												ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
+												where
+												<cfif paramCatLen>
+													(
+														<cfloop from="1" to="#paramCatLen#" index="c">
+															<cfset paramCatItem=listgetat(param.getCriteria(),c)>
+															tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#paramCatItem#%"/>
+															<cfif c lt paramCatLen> or </cfif>
+															<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
+														</cfloop>
+													)
+												<cfelse>
+													tcontentcategories.categoryid=''
+												</cfif>
 
-									<cfif param.getCriteria() eq 'null'>
-										#param.getCondition()# NULL
+											)
+										</cfif>
 									<cfelse>
-										#param.getCondition()#
-										<cfif isListParam>(</cfif>
-										<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
-										<cfif isListParam>)</cfif>
+										tcontent.contenthistid IN (
+											SELECT DISTINCT contenthistid
+											FROM tcontentcategoryassign #tableModifier#
+											WHERE
+												#param.getFieldStatement()#
+
+												<cfif param.getCriteria() eq 'null'>
+													#param.getCondition()# NULL
+												<cfelse>
+													#param.getCondition()#
+													<cfif isListParam>(</cfif>
+													<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+													<cfif isListParam>)</cfif>
+
+													<cfloop list="#param.getCriteria()#" index="paramCatItem">
+														<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
+													</cfloop>
+												</cfif>
+										)
 									</cfif>
-								<cfelse>
+								<cfelseif listFirst(param.getField(),".") eq "tcontenttags">
 									tcontent.contenthistid IN (
 										SELECT DISTINCT contenthistid
-										FROM tcontentcategoryassign #tableModifier#
+										FROM tcontenttags #tableModifier#
 										WHERE
 											#param.getFieldStatement()#
 
@@ -731,54 +811,105 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												<cfif isListParam>)</cfif>
 											</cfif>
 									)
+								<cfelse>
+										#param.getFieldStatement()#
+
+										<cfif param.getCriteria() eq 'null'>
+											#param.getCondition()# NULL
+										<cfelse>
+											#param.getCondition()#
+											<cfif isListParam>(</cfif>
+											<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
+											<cfif isListParam>)</cfif>
+										</cfif>
 								</cfif>
 								<cfset started=true>
 								<cfset openGrouping=false />
 							<cfelseif len(param.getField())>
-								<cfset castfield="attributeValue">
-								tcontent.contentHistID IN (
-									SELECT tclassextenddata.baseID
-									FROM tclassextenddata #tableModifier#
+								<cfif not ((param.getCriteria() eq 'null' or param.getCriteria() eq '') and param.getCondition() eq 'is')>
+									<cfset castfield="attributeValue">
+									tcontent.contentHistID IN (
+										SELECT tclassextenddata.baseID
+										FROM tclassextenddata #tableModifier#
 
-									<cfif isNumeric(param.getField())>
-										WHERE
-											tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
-									<cfelse>
-										INNER JOIN tclassextendattributes #tableModifier#
-											ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-										WHERE
-											tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
-											AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-									</cfif>
+										<cfif isNumeric(param.getField())>
+											WHERE
+												tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+										<cfelse>
+											INNER JOIN tclassextendattributes #tableModifier#
+												ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+											WHERE
+												tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+												AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+										</cfif>
 
-										AND
+											AND
 
-											<cfif param.getCriteria() neq 'null'>
-												<cfif param.getCondition() neq "like">
-													<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid(),param.getDatatype())>
-												</cfif>
+												<cfif param.getCriteria() neq 'null'>
+													<cfif param.getCondition() neq "like">
+														<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid(),param.getDatatype())>
+													</cfif>
 
-												<cfif param.getCondition() eq 'like' and variables.configBean.getDbCaseSensitive()>
-													upper(#castfield#)
+													<cfif param.getCondition() eq 'like' and variables.configBean.getDbCaseSensitive()>
+														upper(#castfield#)
+													<cfelse>
+														#castfield#
+													</cfif>
 												<cfelse>
 													#castfield#
 												</cfif>
+
+												<cfif param.getCriteria() eq 'null'>
+													#param.getCondition()# NULL
+												<cfelse>
+													#param.getCondition()#
+													<cfif isListParam>(</cfif>
+													<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+													<cfif isListParam>)</cfif>
+												</cfif>
+									)
+									<cfset openGrouping=false />
+								<cfelse>
+									<cfset castfield="attributeValue">
+									(tcontent.contentHistID NOT IN (
+										SELECT tclassextenddata.baseID
+										FROM tclassextenddata #tableModifier#
+
+										<cfif isNumeric(param.getField())>
+											WHERE
+												tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+										<cfelse>
+											INNER JOIN tclassextendattributes #tableModifier#
+												ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+											WHERE
+												tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+												AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+										</cfif>
+										)
+
+										or
+
+										tcontent.contentHistID IN (
+											SELECT tclassextenddata.baseID
+											FROM tclassextenddata #tableModifier#
+
+											<cfif isNumeric(param.getField())>
+												WHERE
+													tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 											<cfelse>
-												#param.getFieldStatement()#
+												INNER JOIN tclassextendattributes #tableModifier#
+													ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+												WHERE
+													tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+													AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											</cfif>
 
-											<cfif param.getCriteria() eq 'null'>
-												#param.getCondition()# NULL
-											<cfelse>
-												#param.getCondition()#
-												<cfif isListParam>(</cfif>
-												<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
-												<cfif isListParam>)</cfif>
-											</cfif>
-								)
-								<cfset openGrouping=false />
+											AND tclassextenddata.attributeValue is null
+											)
+										)
+									<cfset openGrouping=false />
+								</cfif>
 							</cfif>
-
 						</cfif>
 					</cfloop>
 
@@ -814,10 +945,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 							inner join tcontentcategories #tableModifier#
 							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-							where (<cfloop from="1" to="#categoryLen#" index="c">
-									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/>
-									<cfif c lt categoryLen> or </cfif>
-									</cfloop>)
+							where
+							<cfif categoryLen>
+								(
+									<cfloop from="1" to="#categoryLen#" index="c">
+										tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/>
+										<cfif c lt categoryLen> or </cfif>
+									</cfloop>
+								)
+							<cfelse>
+								tcontentcategories.categoryid=''
+							</cfif>
 						)
 					</cfif>
 				</cfif>
@@ -832,11 +970,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							OR
 
 							(	tcontent.isFeature = 2
-								AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-								AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
+								AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+								AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
 							)
 						)
 						</cfif>
+
+						<!--- Join any params that used categoryid --->
+						<cfset categoryLen=categoryLen + listLen(paramCatList)>
+						<cfloop list="#paramCatList#" index="paramCatItem">
+							<cfset categoryList=listAppend(categoryList,paramCatItem)>
+						</cfloop>
+
 						<cfif listFindNoCase('either,category',arguments.feedBean.getFeatureType()) and categoryLen>
 							<cfif arguments.feedBean.getFeatureType() eq 'either'>
 								OR
@@ -851,7 +996,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										inner join tcontentcategoryassign #talias# #tableModifier# on
 											(
 												#palias#.contentHistID = #talias#.contentHistID
-												and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.feedBean.getCategoryID(),c)#"/>
+												and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(categoryList,c)#"/>
 												<cfif arguments.hasFeatures>
 												AND
 													(
@@ -859,8 +1004,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													OR
 
 														(	#talias#.isFeature = 2
-															AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-															AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or #talias#.FeatureStop is null)
+															AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+															AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or #talias#.FeatureStop is null)
 														)
 
 													)
@@ -868,7 +1013,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											)
 									</cfloop>
 								</cfif>
-								where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.feedBean.getCategoryID(),1)#"/>
+								where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(categoryList,1)#"/>
 
 
 								AND
@@ -877,8 +1022,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									OR
 
 										(	a.isFeature = 2
-											AND a.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-											AND (a.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or a.FeatureStop is null)
+											AND a.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+											AND (a.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or a.FeatureStop is null)
 										)
 
 									)
@@ -888,18 +1033,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 								inner join tcontentcategories #tableModifier#
 								ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-								where (<cfloop from="1" to="#categoryLen#" index="c">
-										tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/>
-										<cfif c lt categoryLen> or </cfif>
-										</cfloop>)
+								where
+									<cfif categoryLen>
+										(
+											<cfloop from="1" to="#categoryLen#" index="c">
+												tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(categoryList,c)#%"/>
+												<cfif c lt categoryLen> or </cfif>
+											</cfloop>
+										)
+									<cfelse>
+										tcontentcategories.category=''
+									</cfif>
 								AND
 									(
 										tcontentcategoryassign.isFeature = 1
 									OR
 
 										(	tcontentcategoryassign.isFeature = 2
-											AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-											AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)
+											AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+											AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)
 										)
 
 									)
@@ -926,8 +1078,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											tparent.type!='Calendar'
 										</cfif>
 
-										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
+										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#">
+										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
 									) OR (
 										<cfif len(altTable)>
 											tcontent.parentType='Calendar'
@@ -935,8 +1087,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											tparent.type='Calendar'
 										</cfif>
 
-										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.to#">
-										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.from#"> or tcontent.DisplayStop is null)
+										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.to#">
+										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#arguments.from#"> or tcontent.DisplayStop is null)
 									)
 								)
 							)
@@ -954,12 +1106,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 				</cfif>
 
+				<cfif mxpRelevanceSort>
+				Group By
+					tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups,
+					tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
+					tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
+					tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
+					tcontent.releaseDate, tcontent.lastupdate,tcontent.summary,
+					tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
+					tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
+					tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
+					tcontentstats.comments, tparent.type,
+					tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
+					tfiles.filename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText,tcontent.changesetid
+				</cfif>
+
 				<cfif not arguments.countOnly>
 					<cfif arguments.feedBean.getSortBy() neq '' or arguments.feedBean.getOrderBy() neq ''>
 						order by
 
 						<cfif len(arguments.feedBean.getOrderBy())>
-							#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\- ]","","all")#
+							<cfif mxpRelevanceSort>
+								<cfif listLast(arguments.feedBean.getOrderBy(),' ') eq 'asc'>
+									total_points asc, total_score asc
+								<cfelse>
+									total_points desc, total_score desc
+								</cfif>
+							<cfelse>
+								#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\- ]","","all")#
+							</cfif>
 						<cfelse>
 							<cfswitch expression="#arguments.feedBean.getSortBy()#">
 								<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
@@ -987,8 +1162,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							    	</cfif>
 								</cfcase>
 								<cfdefaultcase>
-									<cfif isExtendedSort>
-										qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
+									<cfif mxpRelevanceSort>
+										total_points #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+									<cfelseif isExtendedSort>
+										qExtendedSort.extendedSort #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 									<cfelse>
 										tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
 									</cfif>
@@ -1034,7 +1211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn arguments.feedBean.getSortBy() eq 'displayStart' ? getBean('contentCalendarUtilityBean').filterCalendarItems(data=rsFeed,maxitems=0,sortDirection=arguments.feedBean.getSortDirection()) : rsFeed />
 </cffunction>
 
-<cffunction name="getcontentItems" access="public" output="false" returntype="query">
+<cffunction name="getcontentItems" output="false">
 	<cfargument name="feedBean">
 
 	<cfset var rsFeedItems ="" />
@@ -1051,14 +1228,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>)
 	AND siteID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#" />)
 	<cfelse>
-	0=1
+	tcontent.contentid=''
 	</cfif>
 	</cfquery>
 
 	<cfreturn rsFeedItems />
 </cffunction>
 
-<cffunction name="getFeedsByCategoryID" returntype="query" access="public" output="false">
+<cffunction name="getFeedsByCategoryID" output="false">
 	<cfargument name="categoryID" type="string" />
 	<cfargument name="siteID" type="string" />
 
@@ -1083,7 +1260,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsFeedByCategory />
 </cffunction>
 
-<cffunction name="getTypeCount" access="public" output="false" returntype="query">
+<cffunction name="getTypeCount" output="false">
 	<cfargument name="siteID" type="String" required="true" default="">
 	<cfargument name="type" type="String" required="true" default="">
 
@@ -1136,4 +1313,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfoutput>
 </cffunction>
+
+<cffunction name="renderDateTimeParamType">
+	<cfif variables.configBean.getDBType() eq 'Oracle'>
+		<cfreturn "cf_sql_date">
+	<cfelse>
+		<cfreturn "cf_sql_timestamp">
+	</cfif>
+</cffunction>
+
 </cfcomponent>

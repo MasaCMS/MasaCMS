@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset variables.isSoft=true>
 
-	<cffunction name="init" access="public" output="false" returntype="any" hint="Constructor">
+	<cffunction name="init" output="false" hint="Constructor">
 		<cfargument name="isSoft" type="boolean" required="true" default="true"/>
 		<cfargument name="freeMemoryThreshold" type="numeric" required="true" default="0"/>
 		<cfscript>
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="set" access="public" returntype="any" output="false">
+	<cffunction name="set" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="context" type="any" required="false" />
 		<cfargument name="isSoft" type="boolean" required="false" default="#variables.isSoft#">
@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="get" access="public" returntype="any" output="false">
+	<cffunction name="get" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="context" type="any" required="false" />
 		<cfargument name="isSoft" type="boolean" required="false" default="#variables.isSoft#">
@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
-	<cffunction name="getPercentFreeMemory" returntype="numeric" output="false">
+	<cffunction name="getPercentFreeMemory" output="false">
 		<cfset var runtime = "">
 
 		<cfif not structKeyExists(request,"percentFreeMemory")>
@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn request.percentFreeMemory>
 	</cffunction>
 
-	<cffunction name="getJavaRuntime" returntype="any" output="false">
+	<cffunction name="getJavaRuntime" output="false">
 		<cfif not structKeyExists(application,"javaRuntime")>
 			<cfset application.javaRuntime=createObject("java","java.lang.Runtime").getRuntime() >
 		</cfif>

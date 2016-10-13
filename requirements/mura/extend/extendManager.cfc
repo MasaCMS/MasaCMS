@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.definitionsQuery="">
 <cfset variables.iconlookup={}>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfargument name="configBean">
 
 	<cfset variables.configBean=arguments.configBean />
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getIconClass" returntype="String" access="public" output="false">
+<cffunction name="getIconClass" output="false">
 	<cfargument name="type">
 	<cfargument name="subtype">
 	<cfargument name="siteid">
@@ -247,17 +247,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.definitionsQuery="">
 </cffunction>
 
-<cffunction name="setConfigBean" access="public" returntype="void">
+<cffunction name="setConfigBean">
 <cfargument name="configBean">
 <cfset variables.configBean=arguments.configBean />
 </cffunction>
 
-<cffunction name="getSubTypeBean" returnType="any">
+<cffunction name="getSubTypeBean">
 <cfset var subtype=createObject("component","mura.extend.extendSubType").init(variables.configBean) />
 <cfreturn subtype />
 </cffunction>
 
-<cffunction name="getSubTypeByName" access="public" returntype="any">
+<cffunction name="getSubTypeByName">
 <cfargument name="type">
 <cfargument name="subtype">
 <cfargument name="siteid">
@@ -270,7 +270,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn _subtype />
 </cffunction>
 
-<cffunction name="getSubTypeByID" access="public" returntype="any">
+<cffunction name="getSubTypeByID">
 <cfargument name="subTypeID">
 
 	<cfset var subtype=getSubTypeBean() />
@@ -280,14 +280,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn subtype />
 </cffunction>
 
-<cffunction name="deleteSubType" access="public" returntype="array">
+<cffunction name="deleteSubType" returntype="array">
 <cfargument name="subTypeID">
 	<cfset var subtype=getSubTypeBean() />
 	<cfset subtype.setSubTypeID(arguments.subtypeID)/>
 	<cfset subType.delete() />
 </cffunction>
 
-<cffunction name="getExtendedData" access="public" returntype="any">
+<cffunction name="getExtendedData">
 	<cfargument name="baseID">
 	<cfargument name="dataTable" required="true" default="tclassextenddata"/>
 	<cfargument name="type">
@@ -315,7 +315,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="validateExtendedData" returntype="any" output="false">
+<cffunction name="validateExtendedData" output="false">
 <cfargument name="data">
 
 <cfset var setLen=0/>
@@ -392,7 +392,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfreturn errors>
 </cffunction>
 
-<cffunction name="saveExtendedData" access="public" returntype="void">
+<cffunction name="saveExtendedData">
 <cfargument name="baseID">
 <cfargument name="data">
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
@@ -413,6 +413,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var tempFile=""/>
 <cfset var remoteID=""/>
 <cfset var saveEmptyExtendedValues=variables.configBean.getValue(property='saveEmptyExtendedValues',default=true)>
+<cfset var utility=getBean('utility')>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
@@ -487,7 +488,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
 				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#utility.trimVarchar(theValue,250)#">,
 				<cfif not len(theValue)>
 					null,
 					null,
@@ -571,24 +572,29 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfelse>
 				<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
 			</cfif>
-
-			<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
-			<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+			<cfif not StructIsEmpty(tempFile)>
+				<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
+				<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+			<cfelse>
+				<cfset fileID="">
+			</cfif>
 		<cfelse>
 			<cfset fileID=arguments.data[formField]>
 		</cfif>
 
-		<cfquery >
-			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
-			values (
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
-			<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
-			)
-		</cfquery>
+		<cfif len(fileid)>
+			<cfquery >
+				insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
+				values (
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
+				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
+				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
+				)
+			</cfquery>
+		</cfif>
 
 	</cfif>
 
@@ -599,7 +605,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 </cffunction>
 
-<cffunction name="preserveExtendedData" access="public" returntype="void">
+<cffunction name="preserveExtendedData">
 <cfargument name="baseID">
 <cfargument name="preserveID" required="true" default="">
 <cfargument name="data">
@@ -615,6 +621,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var s=0/>
 <cfset var hasExtendSets=isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset var remoteID="">
+<cfset var utility=getBean('utility')>
 <cfif isdefined("arguments.data.remoteID")>
 	<cfset remoteID=left(arguments.data.remoteID,35)>
 </cfif>
@@ -691,7 +698,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 			null
 		</cfif>,
 		<cfif len(rs.stringvalue)>
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(rs.stringvalue,250)#">
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#utility.trimVarchar(rs.stringvalue,250)#">
 		<cfelse>
 			null
 		</cfif>,
@@ -862,7 +869,7 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
-<cffunction name="getTypeAsString" returntype="string">
+<cffunction name="getTypeAsString">
 <cfargument name="type">
 
 <cfif isNumeric(arguments.type)>
@@ -877,7 +884,7 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
-<cffunction name="getSubTypes" returntype="query">
+<cffunction name="getSubTypes">
 <cfargument name="siteid">
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
@@ -894,7 +901,7 @@ and tclassextendattributes.type='File'
 <cfreturn rs />
 </cffunction>
 
-<cffunction name="getSubTypesByType" returntype="query">
+<cffunction name="getSubTypesByType">
 <cfargument name="type">
 <cfargument name="siteid">
 <cfargument name="activeOnly" default="false">
@@ -913,7 +920,7 @@ and tclassextendattributes.type='File'
 <cfreturn rs />
 </cffunction>
 
-<cffunction name="saveAttributeSort" returntype="void">
+<cffunction name="saveAttributeSort">
 <cfargument name="attributeID">
 <cfset var rs = ""/>
 <cfset var a=0/>
@@ -928,7 +935,7 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
-<cffunction name="saveExtendSetSort" returntype="void">
+<cffunction name="saveExtendSetSort">
 <cfargument name="extendSetID">
 <cfset var rs = ""/>
 <cfset var s=0/>
@@ -943,7 +950,7 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
-<cffunction name="saveRelatedSetSort" returntype="void">
+<cffunction name="saveRelatedSetSort">
 <cfargument name="relatedContentSetID">
 <cfset var rs = ""/>
 <cfset var s=0/>
@@ -958,7 +965,7 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
-<cffunction name="getAttribute" returnType="string" output="false">
+<cffunction name="getAttribute" output="false">
 <cfargument name="baseID" required="true" default=""/>
 <cfargument name="key" required="true" default=""/>
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
@@ -998,7 +1005,7 @@ and tclassextendattributes.type='File'
 	</cfif>
 </cffunction>
 
-<cffunction name="deleteExtendedData" output="false" returntype="void">
+<cffunction name="deleteExtendedData" output="false">
 <cfargument name="baseid">
 <cfargument name="dataTable" required="true" default="tclassextenddata">
 	<cfset var rsFiles="">
@@ -1030,7 +1037,7 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
-<cffunction name="getExtendedAttributeList" output="false" returntype="query">
+<cffunction name="getExtendedAttributeList" output="false">
 <cfargument name="siteID">
 <cfargument name="baseTable" required="true" default="tcontent">
 <cfargument name="activeOnly" required="true" default="false">
@@ -1664,7 +1671,7 @@ and tclassextendattributes.type='File'
 	<cfreturn indentXml(toString(documentXML),"	") />
 </cffunction>
 
-<cffunction name="indentXml" output="false" returntype="string">
+<cffunction name="indentXml" output="false">
 	<cfargument name="xml" type="string" required="true" />
 	<cfargument name="indent" type="string" default="  " />
 
@@ -1738,6 +1745,8 @@ and tclassextendattributes.type='File'
 		<cfset baseElement="mura">
 	<cfelseif isDefined("arguments.configXML.displayobject")>
 		<cfset baseElement="displayobject">
+	<cfelseif isDefined("arguments.configXML.contenttype")>
+		<cfset baseElement="contenttype">
 	</cfif>
 
 	<cfif len(baseElement)
@@ -1758,7 +1767,7 @@ and tclassextendattributes.type='File'
 
 			for(var subtypetype in subtypeArray){
 
-				subType = application.classExtensionManager.getSubTypeBean();
+				subType = getSubTypeBean();
 
 				if(subtypetype eq 'User'){
 					subType.setType( 2 );

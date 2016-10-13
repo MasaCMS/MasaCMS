@@ -72,28 +72,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<table class="mura-table-grid"> 
 			<tr>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
-			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.requesttime")#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.keywords")#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>
-			<th>&nbsp;</th>
+				<th class="actions"></th>
+				<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
+				<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
+				<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.requesttime")#</th>
+				<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.keywords")#</th>
+				<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>
 			</tr>
 			<cfloop query="rc.rslist">
 			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 			<tr>
-			<td><cfif rc.rslist.fname eq ''>Anonymous<cfelse>#esapiEncode('html',rc.rslist.fname)# #esapiEncode('html',rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#esapiEncode('html',rc.rslist.company)#)</cfif></cfif></td>
-			<td class="var-width">#$.dspZoom(crumbdata)#</td>
+				<td class="actions">
+					<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+					<div class="actions-menu hide">	
+						<ul class="actions-list">
+							<li class="preview">
+								<a href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsList.filename)#');"><i class="mi-globe"></i>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a>
+							</li>
+						</ul>
+					</div>	
+				</td>
+				<td><cfif rc.rslist.fname eq ''>Anonymous<cfelse>#esapiEncode('html',rc.rslist.fname)# #esapiEncode('html',rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#esapiEncode('html',rc.rslist.company)#)</cfif></cfif></td>
+				<td class="var-width">#$.dspZoom(crumbdata)#</td>
 
-			<td>#LSDateFormat(rc.rslist.entered,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.entered,"short")#</td>
-			<td><cfif rc.rslist.keywords neq ''>#esapiEncode('html',rc.rslist.keywords)#<cfelse>&mdash;</cfif></td>
-			<td>#esapiEncode('html',rc.rslist.locale)#</td>
-			<td class="actions">
-				<ul>
-				<li class="preview">
-					<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.rsList.filename)#');"><i class="mi-globe"></i></a>
-				</li>
-			</ul></td>
+				<td>#LSDateFormat(rc.rslist.entered,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.entered,"short")#</td>
+				<td><cfif rc.rslist.keywords neq ''>#esapiEncode('html',rc.rslist.keywords)#<cfelse>&mdash;</cfif></td>
+				<td>#esapiEncode('html',rc.rslist.locale)#</td>
 			</tr></cfloop>
 
 			</table>

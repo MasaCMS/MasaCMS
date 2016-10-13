@@ -71,12 +71,9 @@ select * from rsSubTypes where subType <> 'Default'
 	<h1>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h1>
 </div> <!-- /.mura-header -->
 
-
-	<cfif not structIsEmpty(rc.userBean.getErrors())>
-		<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
-	</cfif>
-
-	<p class="alert">(*Required, **Required to login to Site)<p>
+<cfif not structIsEmpty(rc.userBean.getErrors())>
+	<div class="alert alert-error"><span>#application.utility.displayErrors(rc.userBean.getErrors())#</span></div>
+</cfif>
 
 <div class="block block-constrain">
 
@@ -85,6 +82,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 	</cfloop>
 	</ul> <!-- /.mura-tabs -->
+
 
 		  <div class="block-content tab-content">
 
@@ -96,7 +94,9 @@ select * from rsSubTypes where subType <> 'Default'
 							</div> <!-- /.block header -->
 							<div class="block-content">
 
+
 								<cfif rsNonDefault.recordcount>
+								<div class="help-block-inline">#rbKey('user.requiredtext')#</div>
 								<div class="mura-control-group">
 				      		<label>#application.rbFactory.getKeyValue(session.rb,'user.type')#</label>
 							     	 <select name="subtype"  onchange="resetExtendedAttributes('#rc.userBean.getUserID()#','2',this.value,'#application.settingsManager.getSite(rc.userBean.getSiteID()).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.userBean.getSiteID()).getThemeAssetPath()#');">
@@ -109,6 +109,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 								<cfelse>
 									<input type="hidden" name="subtype" value="Default"/>
+									<div class="help-block-inline">#rbKey('user.requiredtext')#</div>
 								</cfif>
 
 								<div class="mura-control-group">
@@ -204,12 +205,12 @@ select * from rsSubTypes where subType <> 'Default'
 										<cfif rsAddresses.addressEmail neq ''>#application.rbFactory.getKeyValue(session.rb,'user.email')#: <a href="mailto:#rsAddresses.addressEmail#">#rsAddresses.addressEmail#</a></cfif>
 										</td>
 										<td nowrap class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#"><i class="mi-pencil"></i></a></li>
-										<cfif rsAddresses.isPrimary neq 1><li class="mi-trash"><a title="Delete" href="./?muraAction=cusers.updateAddress&userID=#session.mura.userID#&action=delete&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#',this.href);"><i class="mi-trash"></i></a></li><cfelse><i class="mi-trash"></i></cfif></ul></td>
+										<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="./?muraAction=cusers.updateAddress&userID=#session.mura.userID#&action=delete&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#',this.href);"><i class="mi-trash"></i></a></li><cfelse><i class="mi-trash"></i></cfif></ul></td>
 									</tr>
 									</cfloop>
 									</table>
 									<cfelse>
-									<p class="alert">#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</p>
+									<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</div>
 									</cfif>
 							    </div>
 

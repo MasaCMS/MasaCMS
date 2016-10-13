@@ -156,14 +156,12 @@
 							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>
 							#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 								#variables.$.getContentListLabel(arguments.field)#
-								<cfif variables.$.globalConfig('advancedScheduling')>
-									#item.getDisplayIntervalDesc()#
+								<cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>
+									#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#
 								<cfelse>
-									<cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#
-									</cfif>
+									#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#
 								</cfif>
-
-							#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
+								#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 							</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 						<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
 							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>

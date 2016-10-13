@@ -1,3 +1,8 @@
+	.mura-modal, .modal-backdrop {
+	  background-image: none!important;
+	  background-color: rgba(255,255,255,.8)!important;
+	}
+
 	#frontEndToolsModalContainer {
 	 /* position: [Set in dialog.js]; */
 	  /*height: [Set in dialog.js];*/
@@ -6,8 +11,10 @@
 	  top: 0;
 	  left: 0;
 	  text-align: center; /* centers in quirks and IE */
-	  .mura-modal();
+		.mura-modal;
 	}
+
+
 
 	#frontEndToolsModalBody {
 	  position: relative;
@@ -112,7 +119,6 @@
 
 	#frontEndTools {
 		background: #333;
-		/* #gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd); */
 		filter: none !important;
 		height: 32px !important;
 		position: fixed !important;
@@ -122,10 +128,8 @@
 		z-index: 499999 !important;
 		text-align: left !important;
 		font-weight: normal !important;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 		overflow: visible !important;
-	/*	.box-shadow(0 1px 5px rgba(0,0,0,.6)) !important; */
-
+		.regular-font;
 	}
 
 	#frontEndTools > ul {
@@ -145,31 +149,32 @@
 			float: right !important;
 			border-right: 0 !important;
 		}
-	}
 
 
-	#frontEndTools > ul li#adminSiteManager,
-	#frontEndTools > ul > li#adminSiteManager404 {
-		border-right: 0 !important;
+			&> ul > li#adminSiteManager404 {
+				border-right: 0 !important;
+			}
+
+
 	}
 
 	#frontEndTools > ul > li {
 
+		background: none !important;
+		box-sizing: border-box !important;
 		color: rgba(255,255,255,.7) !important;
 		float: left !important;
-		line-height: 32px !important;
 		height: 32px !important;
-		margin: 0 !important;
-		padding: 0 !important;
-		list-style: none !important;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 		font-weight: normal !important;
-		font-style: normal !important;
 		font-size: 12px !important;
-		background: none !important;
-		/* text-shadow: 0 -1px 0 rgba(0,0,0,1) !important; */
+		font-style: normal !important;
+		line-height: 32px !important;
+		list-style: none !important;
+		margin: 0 !important;
 		overflow: visible !important;
-		box-sizing: border-box !important;
+		padding: 0 !important;
+		text-align:center;
+		.regular-font;
 
 		&:first-child {
 			border-left: 0 !important;
@@ -193,19 +198,18 @@
 		font-weight: normal !important;
 		font-style: normal !important;
 		outline: 0 !important;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 		border: 0 !important;
 		.border-radius(0) !important;
-
+		.regular-font;
 			> i {
 			color: rgba(255,255,255,.7) !important;
-			font-size: 13px !important;
+			font-size: 14px !important;
 			position: relative !important;
 			top: 1px !important;
-			width: 1em !important;
+			overflow: visible !important;
 			padding-top: 0 !important;
 			padding-bottom: 0 !important;
-			overflow: visible !important;
+			width: auto;
 
 				&.mi-mobile {
 					font-size: 16px !important;
@@ -258,11 +262,16 @@
 		}
 
 	#frontEndTools > ul#tools-version {
+			margin-left: 22px !important;
 
 		> li {
 
 			&#adminEditPage {
 				padding-right: 0 !important;
+
+				a.dropdown-toggle{
+					padding-right: 3px !important;
+				}
 
 				.caret {
 					margin-left: 0 !important;
@@ -276,6 +285,7 @@
 	#frontEndTools > ul#tools-changesets {
 
 			float: left !important;
+			margin-left: 22px !important;
 
 			li {
 				cursor: pointer !important;
@@ -285,20 +295,18 @@
 			padding-right: 4px !important;
 
 			& > i {
+			.bold-font;
+			.border-radius(0) !important;
 			background: @grayDarker !important;
 			background: rgba(0,0,0,.35) !important;
 			font-size: 10px !important;
-			font-weight: bold !important;
 			font-style: normal !important;
-			text-align: center !important;
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-			position: relative !important;
-			//top: 0px !important;
-			padding: 3px 4px 3px 3px !important;
 			line-height: .8 !important;
-			overflow: visible !important;
-			.border-radius(0) !important;
 			margin-right: 4px !important;
+			overflow: visible !important;
+			padding: 3px 4px 3px 3px !important;
+			position: relative !important;
+			text-align: center !important;
 
 				&.list-alt {
 					top: 2px !important;
@@ -308,8 +316,7 @@
 		}
 	}
 
-	#frontEndTools > #adminDashboard,
-	#frontEndTools > #adminSiteManager  {
+	#frontEndTools > #adminDashboard {
 
 		border-right: 0 !important;
 
@@ -318,7 +325,6 @@
 
 				> a > i {
 					margin-right: 4px !important;
-					font-size: 11px !important;
 
 					&.mi-dashboard {
 						top: -1px !important;
@@ -330,6 +336,7 @@
 		}
 
 	#frontEndTools > #tools-status > li > a i {
+		margin-left: 3px !important;
 		margin-right: 2px !important;
 	}
 
@@ -461,8 +468,9 @@
 
 		i {
 			//color: @grayDark !important;
-			top: 2px !important;
+			top: 1px !important;
 			//font-size: 16px !important;
+			margin-left: 3px !important;
 			margin-right: 2px !important;
 			display: inline-block !important;
 			text-align: center !important;
@@ -488,8 +496,6 @@
 		}
 
 		a {
-		max-width: 180px !important;
-		.text-overflow();
 
 			&:after {
 			border-left-color: @grayLight !important;
@@ -508,4 +514,28 @@
 	.dropdown-submenu:hover > .dropdown-menu,
 	#frontEndTools .dropdown-submenu:hover > .dropdown-menu{
 	    display:block;
+	}
+
+
+	/* strongarm mura admin toolbar - blocks some theme items from bleeding into the toolbar */
+
+	#frontEndTools {
+		> ul > li a.dropdown-toggle {
+			position: static;
+			overflow: hidden;
+			width: auto;
+
+			&::after {
+				content: none;
+			}
+		}
+
+		.dropdown-menu {
+			color: rgba(255,255,255,.7) !important;
+
+			&::before,
+			&::after {
+				content: none !important;
+			}
+		}
 	}

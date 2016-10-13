@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.hasCustomSettingsDir=false />
 <cfset variables.CFStatic=structNew()>
 
-<cffunction name="initSettings" returntype="any" access="public" output="false">
+<cffunction name="initSettings" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
 	<cfset var appcfcStr="">
 	<cfset variables.settings=arguments.data />
@@ -71,112 +71,112 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getModuleID" returntype="String" access="public" output="false">
+<cffunction name="getModuleID" output="false">
 	<cfreturn variables.moduleID />
 </cffunction>
 
-<cffunction name="setModuleID" access="public" output="false">
+<cffunction name="setModuleID" output="false">
 	<cfargument name="moduleID" type="String" />
 	<cfset variables.moduleID = trim(arguments.moduleID) />
 </cffunction>
 
-<cffunction name="setPluginID" access="public" output="false">
+<cffunction name="setPluginID" output="false">
 	<cfargument name="pluginID" />
 	<cfif isnumeric(arguments.pluginID)>
 	<cfset variables.pluginID = arguments.pluginID />
 	</cfif>
 </cffunction>
 
-<cffunction name="getPluginID" returntype="numeric" access="public" output="false">
+<cffunction name="getPluginID" output="false">
 	<cfreturn variables.pluginID />
 </cffunction>
 
-<cffunction name="setName" access="public" output="false">
+<cffunction name="setName" output="false">
 	<cfargument name="name" type="String" />
 	<cfset variables.name = trim(arguments.name) />
 </cffunction>
 
-<cffunction name="getName" returntype="String" access="public" output="false">
+<cffunction name="getName" output="false">
 	<cfreturn variables.name />
 </cffunction>
 
-<cffunction name="setProvider" access="public" output="false">
+<cffunction name="setProvider" output="false">
 	<cfargument name="provider" type="String" />
 	<cfset variables.provider = trim(arguments.provider) />
 </cffunction>
 
-<cffunction name="getProvider" returntype="String" access="public" output="false">
+<cffunction name="getProvider" output="false">
 	<cfreturn variables.provider />
 </cffunction>
 
-<cffunction name="setProviderURL" access="public" output="false">
+<cffunction name="setProviderURL" output="false">
 	<cfargument name="providerURL" type="String" />
 	<cfset variables.providerURL = trim(arguments.providerURL) />
 </cffunction>
 
-<cffunction name="getProviderURL" returntype="String" access="public" output="false">
+<cffunction name="getProviderURL" output="false">
 	<cfreturn variables.providerURL />
 </cffunction>
 
-<cffunction name="setLoadPriority" access="public" output="false">
+<cffunction name="setLoadPriority" output="false">
 	<cfargument name="loadPriority" />
 	<cfif isNumeric(arguments.loadPriority)>
 		<cfset variables.loadPriority = arguments.loadPriority >
 	</cfif>
 </cffunction>
 
-<cffunction name="getLoadPriority" access="public" output="false">
+<cffunction name="getLoadPriority" output="false">
 	<cfreturn variables.loadPriority />
 </cffunction>
 
-<cffunction name="setCategory" access="public" output="false">
+<cffunction name="setCategory" output="false">
 	<cfargument name="category" type="String" />
 	<cfset variables.category = trim(arguments.category) />
 </cffunction>
 
-<cffunction name="getCategory" returntype="String" access="public" output="false">
+<cffunction name="getCategory" output="false">
 	<cfreturn variables.category />
 </cffunction>
 
-<cffunction name="setCreated" access="public" output="false">
+<cffunction name="setCreated" output="false">
 	<cfargument name="created" type="String" />
 	<cfset variables.created = trim(arguments.created) />
 </cffunction>
 
-<cffunction name="getCreated" returntype="String" access="public" output="false">
+<cffunction name="getCreated" output="false">
 	<cfreturn variables.created />
 </cffunction>
 
-<cffunction name="setDeployed" access="public" output="false">
+<cffunction name="setDeployed" output="false">
 	<cfargument name="deployed" />
 	<cfif isNumeric(arguments.deployed)>
 	<cfset variables.deployed = arguments.deployed />
 	</cfif>
 </cffunction>
 
-<cffunction name="getDeployed" returntype="numeric" access="public" output="false">
+<cffunction name="getDeployed" output="false">
 	<cfreturn variables.deployed />
 </cffunction>
 
-<cffunction name="setVersion" access="public" output="false">
+<cffunction name="setVersion" output="false">
 	<cfargument name="version" type="String" />
 	<cfset variables.version = trim(arguments.version) />
 </cffunction>
 
-<cffunction name="getVersion" returntype="String" access="public" output="false">
+<cffunction name="getVersion" output="false">
 	<cfreturn variables.version />
 </cffunction>
 
-<cffunction name="setPackage" access="public" output="false">
+<cffunction name="setPackage" output="false">
 	<cfargument name="package" type="String" />
 	<cfset variables.package = trim(arguments.package) />
 </cffunction>
 
-<cffunction name="getPackage" returntype="String" access="public" output="false">
+<cffunction name="getPackage" output="false">
 	<cfreturn variables.package />
 </cffunction>
 
-<cffunction name="setDirectory" access="public" output="false">
+<cffunction name="setDirectory" output="false">
 	<cfargument name="directory" type="String" />
 
 	<cfif arguments.directory neq variables.directory>
@@ -185,11 +185,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getDirectory" returntype="String" access="public" output="false">
+<cffunction name="getDirectory" output="false">
 	<cfreturn variables.directory />
 </cffunction>
 
-<cffunction name="setSetting" returntype="any" access="public" output="false">
+<cffunction name="setSetting" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
 
@@ -197,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getSetting" returntype="any" access="public" output="false">
+<cffunction name="getSetting" output="false">
 <cfargument name="property"  type="string" required="true">
 
 	<cfif structKeyExists(variables.settings,"#arguments.property#")>
@@ -208,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getSettings" returntype="any" access="public" output="false">
+<cffunction name="getSettings" output="false">
 		<cfreturn variables.settings />
 </cffunction>
 
@@ -223,7 +223,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var sessionData=super.getSession()>
 
 <cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
-	<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
+	<cfif findNoCase("<script",arguments.text) or findNoCase("<link",arguments.text)>
+		<cfset request.contentRenderer.addtoHTMLHeadQueue(arguments.text) />
+	<cfelse>
+		<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
+	</cfif>
 <cfelse>
 <cfif structKeyExists(request,"servletEvent")>
 	<cfset event=request.servletEvent>
@@ -250,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cffunction>
 
-<cffunction name="getApplication" returntype="any" access="public" output="false">
+<cffunction name="getApplication" output="false">
 <cfargument name="purge" default="false">
 
 		<cfif not structKeyExists(application,"plugins")>
@@ -269,7 +273,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn application.plugins["p#getPluginID()#"] />
 </cffunction>
 
-<cffunction name="getSession" returntype="any" access="public" output="false">
+<cffunction name="getSession" output="false">
 <cfargument name="purge" default="false">
 	<cfset var sessionData=super.getSession()>
 	<cfif not structKeyExists(sessionData,"plugins")>
@@ -340,6 +344,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfreturn this>
 </cffunction>
 
+<cffunction name="registerContentTypeDir" output="false">
+	<cfargument name="dir">
+	<cfset var settingsManager=getBean('settingsManager')>
+    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
+
+	<cfif listFind('/,\',left(arguments.dir,1) )>
+		<cfset arguments.dir='/' & getPackage() & arguments.dir>
+	<cfelse>
+		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
+	</cfif>
+
+    <cfloop query="rsSites">
+    <cfset settingsManager.getSite(rssites.siteid).registerContentTypeDir(argumentCollection=arguments)>
+    </cfloop>
+    <cfreturn this>
+</cffunction>
+
 <cffunction name="registerBeanDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="package">
@@ -355,11 +376,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAssignedSites" output="false" returntype="any">
+<cffunction name="getAssignedSites" output="false">
     <cfreturn getPluginManager().getAssignedSites(getModuleID())>
 </cffunction>
 
-<cffunction name="deleteCustomSetting" returntype="any" output="false">
+<cffunction name="deleteCustomSetting" output="false">
 	<cfargument name="name" type="string" required="true">
 	<cfset var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm">
 
@@ -371,7 +392,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getCustomSetting" returntype="any" output="false">
+<cffunction name="getCustomSetting" output="false">
 	<cfargument name="name" type="string" required="true">
 	<cfargument name="default">
 	<cfset var customValue="">
@@ -398,7 +419,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setCustomSetting" returntype="void">
+<cffunction name="setCustomSetting">
 	<cfargument name="name" type="string" required="true">
 	<cfargument name="value" type="any" required="true">
 	<cfset var temp="">
@@ -465,7 +486,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.configBean.getPluginDir() & "/" & getDirectory()>
 </cffunction>
 
-<cffunction name="renderAdminTemplate" returntype="any" output="false">
+<cffunction name="renderAdminTemplate" output="false">
 <cfargument name="body">
 <cfargument name="pageTitle" default="#getName()#">
 <cfargument name="jsLib" required="true" default="jquery">

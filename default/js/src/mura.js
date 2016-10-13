@@ -44,16 +44,42 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-;(function(root){
+/**
+ * Creates a new Mura
+ * @class {class} Mura
+ */
+;(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['Mura'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        root.Mura=factory(root);
+    } else {
+        // Browser globals (root is window)
+        root.Mura=factory(root);
+    }
+}(this, function (root) {
 
+	/**
+	 * login - Logs user into Mura
+	 *
+	 * @param  {string} username Username
+	 * @param  {string} password Password
+	 * @param  {string} siteid   Siteid
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function login(username,password,siteid){
-		siteid=siteid || root.mura.siteid;
+		siteid=siteid || root.Mura.siteid;
 
 		return new Promise(function(resolve,reject) {
-			root.mura.ajax({
+			root.Mura.ajax({
 					async:true,
 					type:'post',
-					url:root.mura.apiEndpoint,
+					url:root.Mura.apiEndpoint,
 					data:{
 						siteid:siteid,
 						username:username,
@@ -69,14 +95,21 @@
 	}
 
 
+	/**
+	 * logout - Logs user out
+	 *
+	 * @param  {type} siteid Siteid
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function logout(siteid){
-		siteid=siteid || root.mura.siteid;
+		siteid=siteid || root.Mura.siteid;
 
 		return new Promise(function(resolve,reject) {
-			root.mura.ajax({
+			root.Mura.ajax({
 					async:true,
 					type:'post',
-					url:root.mura.apiEndpoint,
+					url:root.Mura.apiEndpoint,
 					data:{
 						siteid:siteid,
 						method:'logout'
@@ -103,12 +136,20 @@
 	    return child ? child.nodeValue : '';
 	};
 
+	/**
+	 * renderFilename - Returns "Rendered" JSON object of content
+	 *
+	 * @param  {type} filename Mura content filename
+	 * @param  {type} params Object
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function renderFilename(filename,params){
 
 		var query = [];
 		params = params || {};
 		params.filename= params.filename || '';
-		params.siteid= params.siteid || root.mura.siteid;
+		params.siteid= params.siteid || root.Mura.siteid;
 
 	    for (var key in params) {
 	    	if(key != 'entityname' && key != 'filename' && key != 'siteid' && key != 'method'){
@@ -117,13 +158,13 @@
 	    }
 
 		return new Promise(function(resolve,reject) {
-			root.mura.ajax({
+			root.Mura.ajax({
 					async:true,
 					type:'get',
-					url:root.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
+					url:root.Mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
 					success:function(resp){
 						if(typeof resolve == 'function'){
-							var item=new root.mura.Entity();
+							var item=new root.Mura.Entity();
 							item.set(resp.data);
 							resolve(item);
 						}
@@ -132,42 +173,93 @@
 		});
 
 	}
+
+	/**
+	 * getEntity - Returns Mura.Entity instance
+	 *
+	 * @param  {string} entityname Entity Name
+	 * @param  {string} siteid     Siteid
+	 * @return {Mura.Entity}
+     * @memberof Mura
+	 */
 	function getEntity(entityname,siteid){
 		if(typeof entityname == 'string'){
 			var properties={entityname:entityname};
-			properties.siteid = siteid || root.mura.siteid;
+			properties.siteid = siteid || root.Mura.siteid;
 		} else {
 			properties=entityname;
 			properties.entityname=properties.entityname || 'content';
-			properties.siteid=properties.siteid || root.mura.siteid;
+			properties.siteid=properties.siteid || root.Mura.siteid;
 		}
 
-		if(root.mura.entities[properties.entityname]){
-			return new root.mura.entities[properties.entityname](properties);
+		if(root.Mura.entities[properties.entityname]){
+			return new root.Mura.entities[properties.entityname](properties);
 		} else {
-			return new root.mura.Entity(properties);
+			return new root.Mura.Entity(properties);
 		}
 	}
 
+	/**
+	 * getFeed - Return new instance of Mura.Feed
+	 *
+	 * @param  {type} entityname Entity name
+	 * @return {Mura.Feed}
+     * @memberof Mura
+	 */
 	function getFeed(entityname){
-		return new root.mura.Feed(mura.siteid,entityname);
+		return new root.Mura.Feed(Mura.siteid,entityname);
 	}
 
+    /**
+     * getCurrentUser - Return Mura.Entity for current user
+     *
+     * @return {Promise}
+     * @memberof Mura
+     */
+    function getCurrentUser(){
+        return new Promise(function(resolve,reject) {
+            if(root.Mura.currentUser){
+                return root.Mura.currentUser;
+            } else {
+                root.Mura.ajax({
+    					async:true,
+    					type:'get',
+    					url:root.Mura.apiEndpoint + '/findCurrentUser?_cacheid=' + Math.random(),
+    					success:function(resp){
+    						if(typeof resolve == 'function'){
+    							root.Mura.currentUser=new root.Mura.Entity();
+    							root.Mura.currentUser.set(resp.data);
+    							resolve(root.Mura.currentUser);
+    						}
+    					}
+    			});
+            }
+        });
+    }
+
+	/**
+	 * findQuery - Returns Mura.EntityCollection with properties that match params
+	 *
+	 * @param  {object} params Object of matching params
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function findQuery(params){
 
 		params=params || {};
 		params.entityname=params.entityname || 'content';
-		params.siteid=params.siteid || mura.siteid;
+		params.siteid=params.siteid || Mura.siteid;
 		params.method=params.method || 'findQuery';
+        params['_cacheid']==Math.random();
 
 		return new Promise(function(resolve,reject) {
 
-			root.mura.ajax({
+			root.Mura.ajax({
 					type:'get',
-					url:root.mura.apiEndpoint,
+					url:root.Mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=new root.mura.EntityCollection(resp.data)
+							var collection=new root.Mura.EntityCollection(resp.data)
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -239,14 +331,22 @@
 	function ready(fn) {
 	    if(document.readyState != 'loading'){
 	      //IE set the readyState to interative too early
-	      setTimeout(fn,1);
+	      setTimeout(function(){fn(root.Mura);},1);
 	    } else {
 	      document.addEventListener('DOMContentLoaded',function(){
-	        fn();
+	        fn(root.Mura);
 	      });
 	    }
 	  }
 
+	/**
+	 * get - Make GET request
+	 *
+	 * @param  {url} url  URL
+	 * @param  {object} data Data to send to url
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function get(url,data){
 		return new Promise(function(resolve, reject) {
 			return ajax({
@@ -265,6 +365,14 @@
 
 	}
 
+    /**
+	 * post - Make POST request
+	 *
+	 * @param  {url} url  URL
+	 * @param  {object} data Data to send to url
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function post(url,data){
 		return new Promise(function(resolve, reject) {
 			return ajax({
@@ -319,6 +427,13 @@
 
 	}
 
+    /**
+	 * ajax - Make ajax request
+	 *
+	 * @param  {object} params
+	 * @return {Promise}
+     * @memberof Mura
+	 */
 	function ajax(params){
 
 		//params=params || {};
@@ -339,11 +454,13 @@
 			params.data={};
 		}
 
-		params.data=mura.deepExtend({},params.data);
+		if(!(typeof FormData != 'undefined' && params.data instanceof FormData)){
+			params.data=Mura.deepExtend({},params.data);
 
-		for(var p in params.data){
-			if(typeof params.data[p] == 'object'){
-				params.data[p]=JSON.stringify(params.data[p]);
+			for(var p in params.data){
+				if(typeof params.data[p] == 'object'){
+					params.data[p]=JSON.stringify(params.data[p]);
+				}
 			}
 		}
 
@@ -458,13 +575,36 @@
 
 	}
 
+	/**
+	 * generateOauthToken - Generate Outh toke for REST API
+	 *
+	 * @param  {string} grant_type  Grant type (Use client_credentials)
+	 * @param  {type} client_id     Client ID
+	 * @param  {type} client_secret Secret Key
+	 * @return {Promise}
+     * @memberof Mura
+	 */
+	function generateOauthToken(grant_type,client_id,client_secret){
+		return new Promise(function(resolve,reject) {
+			get(Mura.apiEndpoint.replace('/json/','/rest/') + 'oauth/token?grant_type=' + encodeURIComponent(grant_type) + '&client_id=' + encodeURIComponent(client_id) + '&client_secret=' + encodeURIComponent(client_secret) + '&cacheid=' + Math.random()).then(function(resp){
+				if(resp.data != 'undefined'){
+					resolve(resp.data);
+				} else {
+					if(typeof reject=='function'){
+						reject(resp);
+					}
+				}
+			})
+		});
+	}
+
 	function each(selector,fn){
 		select(selector).each(fn);
 	}
 
 	function on(el,eventName,fn){
 		if(eventName=='ready'){
-			mura.ready(fn);
+			Mura.ready(fn);
 		} else {
 			if(typeof el.addEventListener == 'function'){
 				el.addEventListener(
@@ -558,7 +698,7 @@
 	}
 
 	function select(selector){
-		return new root.mura.DOMSelection(parseSelection(selector),selector);
+		return new root.Mura.DOMSelection(parseSelection(selector),selector);
 	}
 
 	function parseHTML(str) {
@@ -589,6 +729,18 @@
 		return data;
 	}
 
+
+	/**
+	 * isNumeric - Returns if the value is numeric
+	 *
+	 * @param  {*} val description
+	 * @return {boolean}
+     * @memberof Mura
+	 */
+	function isNumeric(val) {
+		return Number(parseFloat(val)) == val;
+	}
+
 	function parseString(val){
 		if(typeof val == 'string'){
 			var lcaseVal=val.toLowerCase();
@@ -598,7 +750,7 @@
 			} else if (lcaseVal=='true'){
 				return true;
 			} else {
-				if(val.length != 35){
+				if(!(typeof val == 'string' && val.length==35) && isNumeric(val)){
 					var numVal=parseFloat(val);
 					if(numVal==0 || !isNaN(1/numVal)){
 						return numVal;
@@ -628,6 +780,13 @@
 		return data;
 	}
 
+    /**
+	 * formToObject - Returns if the value is numeric
+	 *
+	 * @param  {form} form Form to serialize
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function formToObject(form) {
 	    var field, s = {};
 	    if (typeof form == 'object' && form.nodeName == "FORM") {
@@ -641,7 +800,12 @@
 	                            s[s.name] = field.options[j].value;
 	                    }
 	                } else if ((field.type != 'checkbox' && field.type != 'radio') || field.checked) {
-	                    s[field.name ] =field.value;
+						if(typeof s[field.name ] == 'undefined'){
+							s[field.name ] =field.value;
+						} else {
+							s[field.name ] = s[field.name ] + ',' + field.value;
+						}
+
 	                }
 	            }
 	        }
@@ -650,6 +814,12 @@
 	}
 
 	//http://youmightnotneedjquery.com/
+    /**
+	 * extend - Extends object one level
+	 *
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function extend(out) {
 	  	out = out || {};
 
@@ -666,6 +836,12 @@
 	  	return out;
 	};
 
+    /**
+     * extend - Extends object to full depth
+     *
+     * @return {object}
+     * @memberof Mura
+     */
 	function deepExtend(out) {
 		out = out || {};
 
@@ -692,6 +868,16 @@
 	  	return out;
 	}
 
+
+	/**
+	 * createCookie - Creates cookie
+	 *
+	 * @param  {string} name  Name
+	 * @param  {*} value Value
+	 * @param  {number} days  Days
+	 * @return {void}
+     * @memberof Mura
+	 */
 	function createCookie(name,value,days) {
 		if (days) {
 			var date = new Date();
@@ -702,6 +888,13 @@
 		document.cookie = name+"="+value+expires+"; path=/";
 	}
 
+	/**
+	 * readCookie - Reads cookie value
+	 *
+	 * @param  {string} name Name
+	 * @return {*}
+     * @memberof Mura
+	 */
 	function readCookie(name) {
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
@@ -713,6 +906,13 @@
 		return "";
 	}
 
+	/**
+	 * eraseCookie - Removes cookie value
+	 *
+	 * @param  {type} name description
+	 * @return {type}      description
+     * @memberof Mura
+	 */
 	function eraseCookie(name) {
 		createCookie(name,"",-1);
 	}
@@ -750,6 +950,40 @@
 		root.location = locationstring;
 	}
 
+    /**
+     * isUUID - description
+     *
+     * @param  {*} value Value
+     * @return {boolean}
+     * @memberof Mura
+     */
+    function isUUID(value){
+        if(
+            typeof value == 'string' &&
+            (
+                value.length==35
+                && value[8]=='-'
+                && value[13]=='-'
+                && value[18]=='-'
+                || value=='00000000000000000000000000000000001'
+                || value=='00000000000000000000000000000000000'
+                || value=='00000000000000000000000000000000003'
+                || value=='00000000000000000000000000000000005'
+                || value=='00000000000000000000000000000000099'
+            )
+        ){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+	/**
+	 * createUUID - Create UUID
+	 *
+	 * @return {string}
+     * @memberof Mura
+	 */
 	function createUUID() {
 	    var s = [], itoh = '0123456789ABCDEF';
 
@@ -770,6 +1004,12 @@
 	    return s.join('');
 	 }
 
+	/**
+	 * setHTMLEditor - Set Html Editor
+	 *
+	 * @param  {dom.element} el Dom Element
+	 * @return {void}
+	 */
 	function setHTMLEditor(el) {
 
 		function initEditor(){
@@ -811,7 +1051,7 @@
 		}
 
 		loader().loadjs(
-			root.mura.requirementspath + '/ckeditor/ckeditor.js'
+			root.Mura.requirementspath + '/ckeditor/ckeditor.js'
 			,
 			function(){
 				initEditor();
@@ -843,18 +1083,18 @@
 
 			if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
 
-				if(typeof(root.mura.loginURL) != "undefined"){
-					lu=root.mura.loginURL;
-				} else if(typeof(root.mura.loginurl) != "undefined"){
-					lu=root.mura.loginurl;
+				if(typeof(root.Mura.loginURL) != "undefined"){
+					lu=root.Mura.loginURL;
+				} else if(typeof(root.Mura.loginurl) != "undefined"){
+					lu=root.Mura.loginurl;
 				} else{
 					lu="?display=login";
 				}
 
-				if(typeof(root.mura.returnURL) != "undefined"){
-					ru=root.mura.returnURL;
-				} else if(typeof(root.mura.returnurl) != "undefined"){
-					ru=root.mura.returnURL;
+				if(typeof(root.Mura.returnURL) != "undefined"){
+					ru=root.Mura.returnURL;
+				} else if(typeof(root.Mura.returnurl) != "undefined"){
+					ru=root.Mura.returnURL;
 				} else{
 					ru=location.href;
 				}
@@ -870,6 +1110,13 @@
 		}
 	}
 
+	/**
+	 * isInteger - Returns if the value is an integer
+	 *
+	 * @param  {*} s Value to check
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function isInteger(s){
 		var i;
 			for (i = 0; i < s.length; i++){
@@ -941,15 +1188,15 @@
 
 	function isDate(dtStr,fldName){
 		var daysInMonth = DaysArray(12);
-		var dtArray= dtStr.split(root.mura.dtCh);
+		var dtArray= dtStr.split(root.Mura.dtCh);
 
 		if (dtArray.length != 3){
 			//alert("The date format for the "+fldName+" field should be : short")
 			return false
 		}
-		var strMonth=dtArray[root.mura.dtFormat[0]];
-		var strDay=dtArray[root.mura.dtFormat[1]];
-		var strYear=dtArray[root.mura.dtFormat[2]];
+		var strMonth=dtArray[root.Mura.dtFormat[0]];
+		var strDay=dtArray[root.Mura.dtFormat[1]];
+		var strYear=dtArray[root.Mura.dtFormat[2]];
 
 		/*
 		if(strYear.length == 2){
@@ -976,11 +1223,11 @@
 			//alert("Please enter a valid day  in the "+fldName+" field")
 			return false
 		}
-		if (strYear.length != 4 || year==0 || year<root.mura.minYear || year>root.mura.maxYear){
-			//alert("Please enter a valid 4 digit year between "+root.mura.minYear+" and "+root.mura.maxYear +" in the "+fldName+" field")
+		if (strYear.length != 4 || year==0 || year<root.Mura.minYear || year>root.Mura.maxYear){
+			//alert("Please enter a valid 4 digit year between "+root.Mura.minYear+" and "+root.Mura.maxYear +" in the "+fldName+" field")
 			return false
 		}
-		if (isInteger(stripCharsInBag(dtStr, root.mura.dtCh))==false){
+		if (isInteger(stripCharsInBag(dtStr, root.Mura.dtCh))==false){
 			//alert("Please enter a valid date in the "+fldName+" field")
 			return false
 		}
@@ -988,6 +1235,13 @@
 		return true;
 	}
 
+    /**
+	 * isEmail - Returns if value is valid email
+	 *
+	 * @param  {string} str String to parse for email
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function isEmail(cur){
 		var string1=cur
 		if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1){
@@ -998,15 +1252,15 @@
 	}
 
 	function initShadowBox(el){
-	    if(mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
+	    if(Mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 
 	      loader().load(
 	        [
-	          	mura.assetpath +'/css/shadowbox.min.css',
-				mura.assetpath +'/js/external/shadowbox/shadowbox.js'
+	          	Mura.assetpath +'/css/shadowbox.min.css',
+				Mura.assetpath +'/js/external/shadowbox/shadowbox.js'
 	        ],
 	        function(){
-				mura('#shadowbox_overlay,#shadowbox_container').remove();
+				Mura('#shadowbox_overlay,#shadowbox_container').remove();
 				if(root.Shadowbox){
 					root.Shadowbox.init();
 				}
@@ -1015,6 +1269,14 @@
 	  	}
 	}
 
+	/**
+	 * validateForm - Validates Mura form
+	 *
+	 * @param  {type} frm          Form element to validate
+	 * @param  {function} customaction Custom action (optional)
+	 * @return {boolean}
+     * @memberof Mura
+	 */
 	function validateForm(frm,customaction) {
 
 		function getValidationFieldName(theField){
@@ -1247,7 +1509,7 @@
 			ajax(
 				{
 					type: 'post',
-					url: root.mura.apiEndpoint + '?method=validate',
+					url: root.Mura.apiEndpoint + '?method=validate',
 					data: {
 							data: encodeURIComponent(JSON.stringify(data)),
 							validations: encodeURIComponent(JSON.stringify(validations)),
@@ -1320,144 +1582,158 @@
 
 	}
 
-	function loader(){return root.mura.ljs;}
+    /**
+	 * loader - Returns Mura.Loader
+	 *
+	 * @return {Mura.Loader}
+     * @memberof Mura
+	 */
+	function loader(){return root.Mura.ljs;}
+
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><span class="mura-edit-icon"></span></div>';
 
 	function processMarkup(scope){
+        return new Promise(function(resolve,reject){
+    		if(!(scope instanceof root.Mura.DOMSelection)){
+    			scope=select(scope);
+    		}
 
-		if(!(scope instanceof root.mura.DOMSelection)){
-			scope=select(scope);
-		}
+    		var self=scope;
 
-		var self=scope;
+    		function find(selector){
+    			return scope.find(selector);
+    		}
 
-		function find(selector){
-			return scope.find(selector);
-		}
+    		var processors=[
 
-		var processors=[
+    			function(){
+    				find('.mura-object, .mura-async-object').each(function(){
+    					processDisplayObject(this,true).then(resolve);
+    				});
+    			},
 
-			function(){
-				find('.mura-object[data-async="true"], .mura-object[data-render="client"], .mura-async-object').each(function(){
-					processObject(this,true);
-				});
-			},
+    			function(){
+    				find(".htmlEditor").each(function(el){
+    					setHTMLEditor(this);
+    				});
+    			},
 
-			function(){
-				find(".htmlEditor").each(function(el){
-					setHTMLEditor(this);
-				});
-			},
+    			function(){
+    				if(find(".cffp_applied  .cffp_mm .cffp_kp").length){
+    					var fileref=document.createElement('script')
+    				        fileref.setAttribute("type","text/javascript")
+    				        fileref.setAttribute("src", root.Mura.requirementspath + '/cfformprotect/js/cffp.js')
 
-			function(){
-				if(find(".cffp_applied  .cffp_mm .cffp_kp").length){
-					var fileref=document.createElement('script')
-				        fileref.setAttribute("type","text/javascript")
-				        fileref.setAttribute("src", root.mura.requirementspath + '/cfformprotect/js/cffp.js')
+    					document.getElementsByTagName("head")[0].appendChild(fileref)
+    				}
+    			},
 
-					document.getElementsByTagName("head")[0].appendChild(fileref)
-				}
-			},
+    			function(){
+    				if(find(".g-recaptcha" ).length){
+    					var fileref=document.createElement('script')
+    				        fileref.setAttribute("type","text/javascript")
+    				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
 
-			function(){
-				if(find(".g-recaptcha" ).length){
-					var fileref=document.createElement('script')
-				        fileref.setAttribute("type","text/javascript")
-				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
+    					document.getElementsByTagName("head")[0].appendChild(fileref)
 
-					document.getElementsByTagName("head")[0].appendChild(fileref)
+    				}
 
-				}
+    				if(find(".g-recaptcha-container" ).length){
+    					loader().loadjs(
+    						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
+    						function(){
+    							find(".g-recaptcha-container" ).each(function(el){
+    								var self=el;
+    								var checkForReCaptcha=function()
+    									{
+    									   if (typeof grecaptcha == 'object' && !self.innerHTML)
+    									   {
 
-				if(find(".g-recaptcha-container" ).length){
-					loader().loadjs(
-						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
-						function(){
-							find(".g-recaptcha-container" ).each(function(el){
-								var self=el;
-								var checkForReCaptcha=function()
-									{
-									   if (typeof grecaptcha == 'object' && self)
-									   {
-									   	//console.log(self)
-									     grecaptcha.render(self.getAttribute('id'), {
-									          'sitekey' : self.getAttribute('data-sitekey'),
-									          'theme' : self.getAttribute('data-theme'),
-									          'type' : self.getAttribute('data-type')
-									        });
-									   }
-									   else
-									   {
-									      root.setTimeout(function(){checkForReCaptcha();},10);
-									   }
-									}
+    									     self.setAttribute(
+    											'data-widgetid',
+    										 	grecaptcha.render(self.getAttribute('id'), {
+    									          'sitekey' : self.getAttribute('data-sitekey'),
+    									          'theme' : self.getAttribute('data-theme'),
+    									          'type' : self.getAttribute('data-type')
+    									        })
+    										);
+    									   }
+    									   else
+    									   {
+    									      root.setTimeout(function(){checkForReCaptcha();},10);
+    									   }
+    									}
 
-								checkForReCaptcha();
+    								checkForReCaptcha();
 
-							});
-						}
-					);
+    							});
+    						}
+    					);
 
-				}
-			},
+    				}
+    			},
 
-			function(){
-				if(typeof resizeEditableObject == 'function' ){
+    			function(){
+    				if(typeof resizeEditableObject == 'function' ){
 
-					scope.closest('.editableObject').each(function(){
-						resizeEditableObject(this);
-					});
+    					scope.closest('.editableObject').each(function(){
+    						resizeEditableObject(this);
+    					});
 
-					find(".editableObject").each(function(){
-						resizeEditableObject(this);
-					});
+    					find(".editableObject").each(function(){
+    						resizeEditableObject(this);
+    					});
 
-				}
-			},
+    				}
+    			},
 
-			function(){
+    			function(){
 
-				if(typeof openFrontEndToolsModal == 'function' ){
-					find(".frontEndToolsModal").on(
-						'click',
-						function(event){
-							event.preventDefault();
-							openFrontEndToolsModal(this);
-						}
-					);
-				}
+    				if(typeof openFrontEndToolsModal == 'function' ){
+    					find(".frontEndToolsModal").on(
+    						'click',
+    						function(event){
+    							event.preventDefault();
+    							openFrontEndToolsModal(this);
+    						}
+    					);
+    				}
 
 
-				if(root.muraInlineEditor && root.muraInlineEditor.checkforImageCroppers){
-					find("img").each(function(){
-						 root.muraInlineEditor.checkforImageCroppers(this);
-					});
+    				if(root.MuraInlineEditor && root.MuraInlineEditor.checkforImageCroppers){
+    					find("img").each(function(){
+    						 root.MuraInlineEditor.checkforImageCroppers(this);
+    					});
 
-				}
+    				}
 
-			},
+    			},
 
-			function(){
-				initShadowBox(scope.node);
-			},
+    			function(){
+    				initShadowBox(scope.node);
+    			},
 
-			function(){
-				if(typeof urlparams.muraadminpreview != 'undefined'){
-					find("a").each(function() {
-						var h=this.getAttribute('href');
-						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
-							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + root.mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + root.mura.mobileformat);
-							this.setAttribute('href',h);
-						}
-					});
-				}
-			}
-		];
+    			function(){
+    				if(typeof urlparams.Muraadminpreview != 'undefined'){
+    					find("a").each(function() {
+    						var h=this.getAttribute('href');
+    						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
+    							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + root.Mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + root.Mura.mobileformat);
+    							this.setAttribute('href',h);
+    						}
+    					});
+    				}
+    			}
+    		];
 
-		for(var h=0;h<processors.length;h++){
-			processors[h]();
-		}
+
+            for(var h=0;h<processors.length;h++){
+    			processors[h]();
+    		}
+
+        });
+
 	}
 
 	function addEventHandler(eventName,fn){
@@ -1475,13 +1751,13 @@
 		frm=(frm.node) ? frm.node : frm;
 
 	    if(obj){
-	      obj=(obj.node) ? obj : mura(obj);
+	      obj=(obj.node) ? obj : Mura(obj);
 	    } else {
-	      obj=mura(frm).closest('.mura-async-object');
+	      obj=Mura(frm).closest('.mura-async-object');
 	    }
 
 		if(!obj.length){
-			mura(frm).trigger('formSubmit',formToObject(frm));
+			Mura(frm).trigger('formSubmit',formToObject(frm));
 			frm.submit();
 		}
 
@@ -1489,7 +1765,7 @@
 
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys(formToObject(frm));
-				var keys=deepExtend(setLowerCaseKeys(obj.data()),urlparams,{siteid:root.mura.siteid,contentid:root.mura.contentid,contenthistid:root.mura.contenthistid,nocache:1});
+				var keys=deepExtend(setLowerCaseKeys(obj.data()),urlparams,{siteid:root.Mura.siteid,contentid:root.Mura.contentid,contenthistid:root.Mura.contenthistid,nocache:1});
 
 				for(var k in keys){
 					if(!(k in checkdata)){
@@ -1505,26 +1781,33 @@
 					data.append('nocache',1);
 				}
 
+				/*
 				if(data.object=='container' && data.content){
 					delete data.content;
 				}
+				*/
 
 				var postconfig={
-							url:  root.mura.apiEndpoint + '?method=processAsyncObject',
+							url:  root.Mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'POST',
 							data: data,
 							success:function(resp){handleResponse(obj,resp);}
 						}
 
 			} else {
-				var data=deepExtend(setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:root.mura.siteid,contentid:root.mura.contentid,contenthistid:root.mura.contenthistid,nocache:1});
+
+				var data=deepExtend(setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:root.Mura.siteid,contentid:root.Mura.contentid,contenthistid:root.Mura.contenthistid,nocache:1});
 
 				if(data.object=='container' && data.content){
 					delete data.content;
 				}
 
-				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
-					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
+				if(!('g-recaptcha-response' in data)) {
+					var reCaptchaCheck=Mura(frm).find("#g-recaptcha-response");
+
+					if(reCaptchaCheck.length && typeof reCaptchaCheck.val() != 'undefined'){
+						data['g-recaptcha-response']=eCaptchaCheck.val();
+					}
 				}
 
 				if('objectparams' in data){
@@ -1532,7 +1815,7 @@
 				}
 
 				var postconfig={
-							url: root.mura.apiEndpoint + '?method=processAsyncObject',
+							url: root.Mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'POST',
 							data: data,
 							success:function(resp){handleResponse(obj,resp);}
@@ -1542,15 +1825,19 @@
 			var self=obj.node;
 			self.prevInnerHTML=self.innerHTML;
 			self.prevData=obj.data();
-			self.innerHTML=root.mura.preloaderMarkup;
+			self.innerHTML=root.Mura.preloaderMarkup;
 
-			mura(frm).trigger('formSubmit',data);
+			Mura(frm).trigger('formSubmit',data);
 
 			ajax(postconfig);
 	}
 
+	function firstToUpperCase( str ) {
+	    return str.substr(0, 1).toUpperCase() + str.substr(1);
+	}
+
 	function resetAsyncObject(el){
-		var self=mura(el);
+		var self=Mura(el);
 
 		self.removeClass('mura-active');
 		self.removeAttr('data-perm');
@@ -1561,7 +1848,7 @@
 			self.find('.frontEndToolsModal').remove();
 
 			self.find('.mura-object').each(function(){
-				var self=mura(this);
+				var self=Mura(this);
 				self.removeClass('mura-active');
 				self.removeAttr('data-perm');
 				self.removeAttr('data-inited');
@@ -1569,7 +1856,7 @@
 			});
 
 			self.find('.mura-object[data-object="container"]').each(function(){
-				var self=mura(this);
+				var self=Mura(this);
 				var content=self.children('div.mura-object-content');
 
 				if(content.length){
@@ -1591,11 +1878,11 @@
 	}
 
 	function processAsyncObject(el){
-		obj=mura(el);
+		obj=Mura(el);
 		if(obj.data('async')===null){
 			obj.data('async',true);
 		}
-		return processObject(obj);
+		return processDisplayObject(obj,false,true);
 	}
 
 	function wireUpObject(obj,response){
@@ -1611,13 +1898,13 @@
 
 		}
 
-		obj=(obj.node) ? obj : mura(obj);
+		obj=(obj.node) ? obj : Mura(obj);
 		var self=obj.node;
 
 		if(obj.data('class')){
 			var classes=obj.data('class');
 
-			if(typeof classes != 'array'){
+			if(typeof classes != 'Array'){
 				var classes=classes.split(' ');
 			}
 
@@ -1637,7 +1924,7 @@
 				var classes=classes.split(' ');
 			}
 
-			for(var c in classes){
+            for(var c=0;c<classes.length;c++){
 				if(!obj.hasClass(classes[c])){
 					obj.addClass(classes[c]);
 				}
@@ -1653,60 +1940,72 @@
 				if(obj.data('object')=='container'){
 					var context=deepExtend(obj.data(),response);
 					context.targetEl=obj.node;
-					obj.prepend(mura.templates.meta(context));
+					obj.prepend(Mura.templates.meta(context));
 				} else {
+                    var context=deepExtend(obj.data(),response);
 					var template=obj.data('clienttemplate') || obj.data('object');
+                    var properNameCheck=firstToUpperCase(template);
 
-						var context=deepExtend(obj.data(),response);
+                    if(typeof Mura.DisplayObject[properNameCheck] != 'undefined'){
+						template=properNameCheck;
+					}
 
-						if(typeof context.async != 'undefined'){
-							obj.data('async',context.async);
-						}
+					if(typeof context.async != 'undefined'){
+						obj.data('async',context.async);
+					}
 
-						if(typeof context.render != 'undefined'){
-							obj.data('render',context.render);
-						}
+					if(typeof context.render != 'undefined'){
+						obj.data('render',context.render);
+					}
 
-						if(typeof context.rendertemplate != 'undefined'){
-							obj.data('rendertemplate',context.rendertemplate);
-						}
+					if(typeof context.rendertemplate != 'undefined'){
+						obj.data('rendertemplate',context.rendertemplate);
+					}
 
-						if(typeof mura.render[template] == 'function'){
-							context.html='';
-							obj.html(mura.templates.content(context));
-							obj.prepend(mura.templates.meta(context));
-							context.targetEl=obj.children('.mura-object-content').node;
-							mura.render[template](context);
-
-						} else if(typeof mura.templates[template] == 'function'){
-							context.html=mura.templates[template](context);
-							obj.html(mura.templates.content(context));
-							obj.prepend(mura.templates.meta(context));
-						}	else {
-							console.log('Missing Client Template for:');
-							console.log(obj.data());
-						}
+					if(typeof Mura.DisplayObject[template] != 'undefined'){
+						context.html='';
+						obj.html(Mura.templates.content(context));
+						obj.prepend(Mura.templates.meta(context));
+						context.targetEl=obj.children('.mura-object-content').node;
+						Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template]( context );
+                    } else if(typeof Mura.templates[template] != 'undefined'){
+						context.html='';
+						obj.html(Mura.templates.content(context));
+						obj.prepend(Mura.templates.meta(context));
+						context.targetEl=obj.children('.mura-object-content').node;
+						Mura.templates[template](context);
+					}	else {
+						console.log('Missing Client Template for:');
+						console.log(obj.data());
+					}
 				}
 			}
 		} else {
 			var context=obj.data();
 
 			if(obj.data('object')=='container'){
-				obj.prepend(mura.templates.meta(context));
+				obj.prepend(Mura.templates.meta(context));
 			} else {
-				var template=obj.data('clienttemplate') || obj.data('object');
+                var template=obj.data('clienttemplate') || obj.data('object');
+                var properNameCheck=firstToUpperCase(template);
 
-				if(typeof mura.render[template] == 'function'){
+                if(typeof Mura.DisplayObject[properNameCheck] != 'undefined'){
+                    template=properNameCheck;
+                }
+
+				if(typeof Mura.DisplayObject[template] == 'function'){
 					context.html='';
-					obj.html(mura.templates.content(context));
-					obj.prepend(mura.templates.meta(context));
+					obj.html(Mura.templates.content(context));
+					obj.prepend(Mura.templates.meta(context));
 					context.targetEl=obj.children('.mura-object-content').node;
-					mura.render[template](context);
-				} else if(typeof mura.templates[template] == 'function'){
-					context.html=mura.templates[template](context);
-					obj.html(mura.templates.content(context));
-					obj.prepend(mura.templates.meta(context));
-				} else {
+					Mura.displayObjectInstances[obj.data('instanceid')]=new Mura.DisplayObject[template]( context );
+                } else if(typeof Mura.templates[template] != 'undefined'){
+                    context.html='';
+                    obj.html(Mura.templates.content(context));
+                    obj.prepend(Mura.templates.meta(context));
+                    context.targetEl=obj.children('.mura-object-content').node;
+                    Mura.templates[template](context);
+                } else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
 				}
@@ -1715,75 +2014,75 @@
 
 		//obj.hide().show();
 
-		if(mura.layoutmanager && mura.editing){
-			if(obj.hasClass('mura-body-object') || obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
+		if(Mura.layoutmanager && Mura.editing){
+			if(obj.hasClass('mura-body-object')){
 				obj.children('.frontEndToolsModal').remove();
 				obj.prepend(layoutmanagertoolbar);
-				muraInlineEditor.setAnchorSaveChecks(obj.node);
+				MuraInlineEditor.setAnchorSaveChecks(obj.node);
 
 				obj
 				.addClass('mura-active')
 				.hover(
 					function(e){
 						//e.stopPropagation();
-						mura('.mura-active-target').removeClass('mura-active-target');
-						mura(this).addClass('mura-active-target');
+						Mura('.mura-active-target').removeClass('mura-active-target');
+						Mura(this).addClass('mura-active-target');
 					},
 					function(e){
 						//e.stopPropagation();
-						mura(this).removeClass('mura-active-target');
+						Mura(this).removeClass('mura-active-target');
 					}
 				);
 			} else {
-				if(mura.type == 'Variation'){
+				if(Mura.type == 'Variation'){
 					var objectData=obj.data();
-					if(root.muraInlineEditor && (root.muraInlineEditor.objectHasConfigurator(objectData) || root.muraInlineEditor.objectHasEditor(objectData))){
+					if(root.MuraInlineEditor && (root.MuraInlineEditor.objectHasConfigurator(obj)  || (!root.Mura.layoutmanager && root.MuraInlineEditor.objectHasEditor(objectParams)) ) ){
 						obj.children('.frontEndToolsModal').remove();
 						obj.prepend(layoutmanagertoolbar);
-						muraInlineEditor.setAnchorSaveChecks(obj.node);
+						MuraInlineEditor.setAnchorSaveChecks(obj.node);
 
 						obj
 							.addClass('mura-active')
 							.hover(
 								function(e){
 									//e.stopPropagation();
-									mura('.mura-active-target').removeClass('mura-active-target');
-									mura(this).addClass('mura-active-target');
+									Mura('.mura-active-target').removeClass('mura-active-target');
+									Mura(this).addClass('mura-active-target');
 								},
 								function(e){
 									//e.stopPropagation();
-									mura(this).removeClass('mura-active-target');
+									Mura(this).removeClass('mura-active-target');
 								}
 							);
 
-						mura.initDraggableObject(self);
+						Mura.initDraggableObject(self);
 					}
 				} else {
-					var region=mura(self).closest(".mura-region-local");
+					var region=Mura(self).closest(".mura-region-local");
 					if(region && region.length ){
 						if(region.data('perm')){
 							var objectData=obj.data();
 
-							if(root.muraInlineEditor && (root.muraInlineEditor.objectHasConfigurator(objectData) || root.muraInlineEditor.objectHasEditor(objectData))){
+							if(root.MuraInlineEditor && (root.MuraInlineEditor.objectHasConfigurator(obj) || (!root.Mura.layoutmanager && root.MuraInlineEditor.objectHasEditor(objectData)) ) ){
 								obj.children('.frontEndToolsModal').remove();
 								obj.prepend(layoutmanagertoolbar);
-								muraInlineEditor.setAnchorSaveChecks(obj.node);
+								MuraInlineEditor.setAnchorSaveChecks(obj.node);
 
 								obj
 									.addClass('mura-active')
 									.hover(
 										function(e){
 											//e.stopPropagation();
-											mura('.mura-active-target').removeClass('mura-active-target');
-											mura(this).addClass('mura-active-target');
+											Mura('.mura-active-target').removeClass('mura-active-target');
+											Mura(this).addClass('mura-active-target');
 										},
 										function(e){
 											//e.stopPropagation();
-											mura(this).removeClass('mura-active-target');
+											Mura(this).removeClass('mura-active-target');
 										}
 									);
 
-								mura.initDraggableObject(self);
+								Mura.initDraggableObject(self);
 							}
 						}
 					}
@@ -1796,7 +2095,7 @@
 		processMarkup(obj.node);
 
 		obj.find('a[href="javascript:history.back();"]').each(function(){
-			mura(this).off("click").on("click",function(e){
+			Mura(this).off("click").on("click",function(e){
 				if(self.prevInnerHTML){
 					e.preventDefault();
 					wireUpObject(obj,self.prevInnerHTML);
@@ -1812,15 +2111,19 @@
 			});
 		});
 
-		each(self.getElementsByTagName('FORM'),function(el,i){
-			if(!el.onsubmit){
-				el.onsubmit=function(){return validateFormAjax(this);};
+
+		obj.find('FORM').each(function(){
+			var form=Mura(this);
+			var self=this;
+
+			if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !(form.hasData('autowire') && !form.data('autowire')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+				self.onsubmit=function(){return validateFormAjax(this);};
 			}
 		});
 
 		if(obj.data('nextnid')){
 			obj.find('.mura-next-n a').each(function(){
-				mura(this).on('click',function(e){
+				Mura(this).on('click',function(e){
 					e.preventDefault();
 					var a=this.getAttribute('href').split('?');
 					if(a.length==2){
@@ -1837,7 +2140,7 @@
 
 	function handleResponse(obj,resp){
 
-		obj=(obj.node) ? obj : mura(obj);
+		obj=(obj.node) ? obj : Mura(obj);
 
 		if(typeof resp.data.redirect != 'undefined'){
 			if(resp.data.redirect && resp.data.redirect != location.href){
@@ -1869,42 +2172,93 @@
 		}
 	}
 
-	function processObject(el,queue){
+	function processDisplayObject(el,queue,rerender,resolveFn){
 
-		var obj=(el.node) ? el : mura(el);
+		var obj=(el.node) ? el : Mura(el);
 		el =el.node || el;
 		var self=el;
+		var rendered=!rerender && !(obj.hasClass('mura-async-object') || obj.data('render')=='client'|| obj.data('async'));
 
-		queue=(queue==null) ? false : queue;
-
+		queue=(queue==null || rendered) ? false : queue;
 
 		if(document.createEvent && queue && !isScrolledIntoView(el)){
-			setTimeout(function(){processObject(el,true)},10);
-			return;
+            if(!resolveFn){
+                return new Promise(function(resolve,reject) {
+
+                    resolve=resolve || function(){};
+
+                    setTimeout(
+                        function(){
+                                processDisplayObject(el,true,false,resolve);
+                            }
+                            ,10
+                        );
+                });
+            } else {
+                setTimeout(
+                    function(){
+                            var resp=processDisplayObject(el,true,false,resolveFn);
+                            if(typeof resp == 'object' && typeof resolveFn == 'function'){
+                                resp.then(resolveFn);
+                            }
+                        }
+                    ,10
+                );
+
+                return;
+            }
 		}
 
+		if(!self.getAttribute('data-instanceid')){
+			self.setAttribute('data-instanceid',createUUID());
+		}
 
-		return new Promise(function(resolve,reject) {
+		//if(obj.data('async')){
+			obj.addClass("mura-async-object");
+		//}
 
-			if(!self.getAttribute('data-instanceid')){
-				self.setAttribute('data-instanceid',createUUID());
-			}
+		if(obj.data('object')=='container'){
 
-			if(obj.data('async')){
-				obj.addClass("mura-async-object");
-			}
+			obj.html(Mura.templates.content(obj.data()));
 
-			if(obj.data('object')=='container'){
+			obj.find('.mura-object').each(function(){
+				this.setAttribute('data-instanceid',createUUID());
+			});
 
-				obj.html(mura.templates.content(obj.data()));
+		}
 
-				obj.find('.mura-object').each(function(){
-					this.setAttribute('data-instanceid',createUUID());
+		if(rendered){
+			return new Promise(function(resolve,reject) {
+				var forms=obj.find('form');
+
+				obj.find('form').each(function(){
+					var form=Mura(this);
+
+					if(form.data('async') || !(form.hasData('async') && !form.data('async')) && !(form.hasData('autowire') && !form.data('autowire')) && !form.attr('action') && !form.attr('onsubmit') && !form.attr('onSubmit')){
+						form.on('submit',function(e){
+							e.preventDefault();
+							validateForm(this,
+								function(frm){
+									submitForm(frm,obj);
+								}
+							);
+
+							return false;
+						});
+					}
+
+
 				});
 
-			}
+				if(typeof resolve == 'function'){
+					resolve(obj);
+				}
 
-			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:root.mura.siteid,contentid:root.mura.contentid,contenthistid:root.mura.contenthistid});
+			});
+		}
+
+		return new Promise(function(resolve,reject) {
+			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:root.Mura.siteid,contentid:root.Mura.contentid,contenthistid:root.Mura.contenthistid});
 
 			delete data.inited;
 
@@ -1925,25 +2279,25 @@
 			if(obj.data('object')=='container'){
 				wireUpObject(obj);
 				if(typeof resolve == 'function'){
-					resolve(obj);
+					resolve.call(obj.node,obj);
 				}
 			} else {
 				if(!obj.data('async') && obj.data('render')=='client'){
 					wireUpObject(obj);
 					if(typeof resolve == 'function'){
-						resolve(obj);
+						resolve.call(obj.node,obj);
 					}
 				} else {
 					//console.log(data);
-					self.innerHTML=root.mura.preloaderMarkup;
+					self.innerHTML=root.Mura.preloaderMarkup;
 					ajax({
-						url:root.mura.apiEndpoint + '?method=processAsyncObject',
+						url:root.Mura.apiEndpoint + '?method=processAsyncObject',
 						type:'get',
 						data:data,
 						success:function(resp){
 							handleResponse(obj,resp);
 							if(typeof resolve == 'function'){
-								resolve(obj);
+								resolve.call(obj.node,obj);
 							}
 						}
 					});
@@ -1968,19 +2322,26 @@
 		if(hash){
 			hashparams=getQueryStringParams(hash);
 			if(hashparams.nextnid){
-				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
-					mura(this).data(hashparams);
+				Mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
+					Mura(this).data(hashparams);
 					processAsyncObject(this);
 				});
 			} else if(hashparams.objectid){
-				mura('.mura-async-object[data-objectid="' + hashparams.objectid +'"]').each(function(){
-					mura(this).data(hashparams);
+				Mura('.mura-async-object[data-objectid="' + hashparams.objectid +'"]').each(function(){
+					Mura(this).data(hashparams);
 					processAsyncObject(this);
 				});
 			}
 		}
 	}
 
+	/**
+	 * trim - description
+	 *
+	 * @param  {string} str Trims string
+	 * @return {string}     Trimmed string
+     * @memberof Mura
+	 */
 	function trim(str) {
 	    return str.replace(/^\s+|\s+$/gm,'');
 	}
@@ -1993,13 +2354,74 @@
 
 		muraObject.prototype = Object.create(baseClass.prototype);
 		muraObject.prototype.constructor = muraObject;
+		muraObject.prototype.handlers={};
 
-		root.mura.extend(muraObject.prototype,subClass);
+		muraObject.reopen=function(subClass){
+				root.Mura.extend(muraObject.prototype,subClass);
+			};
+
+		muraObject.reopenClass=function(subClass){
+				root.Mura.extend(muraObject,subClass);
+			};
+
+		muraObject.on=function(eventName,fn){
+			eventName=eventName.toLowerCase();
+
+			if(typeof muraObject.prototype.handlers[eventName] == 'undefined'){
+				muraObject.prototype.handlers[eventName]=[];
+			}
+
+			if(!fn){
+				return muraObject;
+			}
+
+			for(var i=0;i < muraObject.prototype.handlers[eventName].length;i++){
+				if(muraObject.prototype.handlers[eventName][i]==handler){
+					return muraObject;
+				}
+			}
+
+
+			muraObject.prototype.handlers[eventName].push(fn);
+			return muraObject;
+		};
+
+		muraObject.off=function(eventName,fn){
+			eventName=eventName.toLowerCase();
+
+			if(typeof muraObject.prototype.handlers[eventName] == 'undefined'){
+				muraObject.prototype.handlers[eventName]=[];
+			}
+
+			if(!fn){
+				muraObject.prototype.handlers[eventName]=[];
+				return muraObject;
+			}
+
+			for(var i=0;i < muraObject.prototype.handlers[eventName].length;i++){
+				if(muraObject.prototype.handlers[eventName][i]==handler){
+					muraObject.prototype.handlers[eventName].splice(i,1);
+				}
+			}
+			return muraObject;
+		}
+
+
+		root.Mura.extend(muraObject.prototype,subClass);
 
 		return muraObject;
 	}
 
+
+	/**
+	 * getQueryStringParams - Returns object of params in string
+	 *
+	 * @param  {string} queryString Query String
+	 * @return {object}
+     * @memberof Mura
+	 */
 	function getQueryStringParams(queryString) {
+        queryString=queryString || root.location.search;
 	    var params = {};
 	    var e,
 	        a = /\+/g,  // Regex for replacing addition symbol with a space
@@ -2047,12 +2469,16 @@
 	    return -1;
 	}
 
-	function getURLParams() {
-		return getQueryStringParams(root.location.search);
-	}
-
 	//http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-	function hashCode(s){
+
+    /**
+     * hashCode - description
+     *
+     * @param  {string} s String to hash
+     * @return {string}
+     * @memberof Mura
+     */
+    function hashCode(s){
 		var hash = 0, strlen = s.length, i, c;
 
 		if ( strlen === 0 ) {
@@ -2107,11 +2533,11 @@
 			root.document.domain=config.rootdocumentdomain;
 		}
 
-		mura.editing;
+		Mura.editing;
 
-		extend(root.mura,config);
+		extend(root.Mura,config);
 
-		mura(function(){
+		Mura(function(){
 
 			var hash=root.location.hash;
 
@@ -2123,26 +2549,26 @@
 			urlparams=setLowerCaseKeys(getQueryStringParams(root.location.search));
 
 			if(hashparams.nextnid){
-				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
-					mura(this).data(hashparams);
+				Mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
+					Mura(this).data(hashparams);
 				});
 			} else if(hashparams.objectid){
-				mura('.mura-async-object[data-nextnid="' + hashparams.objectid +'"]').each(function(){
-					mura(this).data(hashparams);
+				Mura('.mura-async-object[data-nextnid="' + hashparams.objectid +'"]').each(function(){
+					Mura(this).data(hashparams);
 				});
 			}
 
-			mura(root).on('hashchange',handleHashChange);
+			Mura(root).on('hashchange',handleHashChange);
 
 			processMarkup(document);
 
-			mura(document)
+			Mura(document)
 			.on("keydown", function(event){
 				loginCheck(event.which);
 			});
 
 			/*
-			mura.addEventHandler(
+			Mura.addEventHandler(
 				{
 					asyncObjectRendered:function(event){
 						alert(this.innerHTML);
@@ -2150,43 +2576,43 @@
 				}
 			);
 
-			mura('#my-id').addDisplayObject('objectname',{..});
+			Mura('#my-id').addDisplayObject('objectname',{..});
 
-			mura.login('userame','password')
+			Mura.login('userame','password')
 				.then(function(data){
 					alert(data.success);
 				});
 
-			mura.logout())
+			Mura.logout())
 				.then(function(data){
 					alert('you have logged out!');
 				});
 
-			mura.renderFilename('')
+			Mura.renderFilename('')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			mura.getEntity('content').loadBy('contentid','00000000000000000000000000000000001')
+			Mura.getEntity('content').loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			mura.getEntity('content').loadBy('contentid','00000000000000000000000000000000001')
+			Mura.getEntity('content').loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					item.get('kids').then(function(kids){
 						alert(kids.get('items').length);
 					});
 				});
 
-			mura.getEntity('content').loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
+			Mura.getEntity('content').loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
 				.then(function(item){
 					item.get('parent').then(function(parent){
 						alert(parent.get('title'));
 					});
 				});
 
-			mura.getEntity('content').
+			Mura.getEntity('content').
 				.set('parentid''1C2AD93E-E39C-C758-A005942E1399F4D6')
 				.set('approved',1)
 				.set('title','test 5')
@@ -2195,7 +2621,7 @@
 					alert(item.get('title'));
 				});
 
-			mura.getEntity('content').
+			Mura.getEntity('content').
 				.set(
 					{
 						parentid:'1C2AD93E-E39C-C758-A005942E1399F4D6',
@@ -2208,7 +2634,7 @@
 						alert(item.get('title'));
 					});
 
-			mura.findQuery({
+			Mura.findQuery({
 					entityname:'content',
 					title:'Home'
 				})
@@ -2217,30 +2643,35 @@
 				});
 			*/
 
-			mura(document).trigger('muraReady');
+			Mura(document).trigger('muraReady');
 
 		});
 
-	    return root.mura
+	    return root.Mura
 	}
 
 	extend(root,{
-		mura:extend(
-			function(selector){
+		Mura:extend(
+			function(selector,context){
 				if(typeof selector == 'function'){
-					mura.ready(selector);
+					Mura.ready(selector);
 					return this;
 				} else {
-					return select(selector);
+					if(typeof context == 'undefined'){
+						return select(selector);
+					} else {
+						return select(context).find(selector);
+					}
 				}
 			},
 			{
 			rb:{},
+			generateOAuthToken:generateOauthToken,
 			entities:{},
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,
-			processObject:processObject,
+			processDisplayObject:processDisplayObject,
 			processAsyncObject:processAsyncObject,
 			resetAsyncObject:resetAsyncObject,
 			setLowerCaseKeys:setLowerCaseKeys,
@@ -2254,6 +2685,7 @@
 			off:off,
 			extend:extend,
 			inArray:inArray,
+			isNumeric:isNumeric,
 			post:post,
 			get:get,
 			deepExtend:deepExtend,
@@ -2270,6 +2702,7 @@
 			unescape:$unescape,
 			getBean:getEntity,
 			getEntity:getEntity,
+            getCurrentUser:getCurrentUser,
 			renderFilename:renderFilename,
 			findQuery:findQuery,
 			getFeed:getFeed,
@@ -2279,13 +2712,17 @@
 			init:init,
 			formToObject:formToObject,
 			createUUID:createUUID,
+            isUUID:isUUID,
 			processMarkup:processMarkup,
+            getQueryStringParams:getQueryStringParams,
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,
 			readCookie:readCookie,
 			trim:trim,
-			hashCode:hashCode
+			hashCode:hashCode,
+			DisplayObject:{},
+			displayObjectInstances:{}
 			}
 		),
 		//these are here for legacy support
@@ -2298,10 +2735,18 @@
 		initMura:init
 	});
 
-	root.m=root.m || root.mura;
+    //Legacy for early adopter backwords support
+	root.mura=root.Mura
+	root.m=root.Mura;
+    root.Mura.displayObject=root.Mura.DisplayObject;
 
 	//for some reason this can't be added via extend
 	root.validateForm=validateForm;
 
+	return root.Mura;
+}));
 
-})(this);
+/**
+ * A namespace.
+ * @namespace  Mura
+ */

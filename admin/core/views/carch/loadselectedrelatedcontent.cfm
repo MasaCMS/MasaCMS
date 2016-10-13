@@ -20,9 +20,10 @@
 				</cfif>
 			</cfloop>
 		</cfif>
-		
+
 	</cfif>
 </cfsilent>
+
 <cfoutput>
 	<div id="mura-rc-quickedit" style="display:none;">
 		<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.relatedcontentsets')#</h3>
@@ -47,36 +48,40 @@
 				</cfif>
 				<cfif not isArray(rc.relateditems)>
 					<cfset rc.relateditems=listToArray(rc.relateditems)>
-				</cfif>	
+				</cfif>
 			</cfif>
-		
+
 			<cfloop from="1" to="#arrayLen(rc.relateditems)#" index="i">
 				<cfset item=rc.relateditems[i]>
 				<cfif isSimpleValue(item)>
 					<cfset itemBean=rc.$.getBean('content').loadBy(contentid=item)>
 					<cfif itemBean.exists()>
-						<cfset queryAddRow(rcsRs,1)>
-						<cfloop list="#rcsRs.columnlist#" index="c">
-							<cfset querySetCell(rcsRs, lcase(c), itemBean.getValue(c), rcsRs.recordcount)>
-						</cfloop>
+						<cfif itemBean.getContentID() neq rc.contentBean.getContentID()>
+							<cfset queryAddRow(rcsRs,1)>
+							<cfloop list="#rcsRs.columnlist#" index="c">
+								<cfset querySetCell(rcsRs, lcase(c), itemBean.getValue(c), rcsRs.recordcount)>
+							</cfloop>
+						</cfif>
 					</cfif>
 				<cfelse>
-					<cfset queryAddRow(rcsRs,1)>
-					<cfloop list="contentid,url,title" index="c">
-						<cfset querySetCell(rcsRs, lcase(c),item[c], rcsRs.recordcount)>
-					</cfloop>
-					<cfset querySetCell(rcsRs, '', 0, rcsRs.recordcount)>
-					<cfset querySetCell(rcsRs, 'type', 'Link', rcsRs.recordcount)>
-					<cfset querySetCell(rcsRs, 'subtype', 'Default', rcsRs.recordcount)>
+					<cfif item.contentid neq rc.contentBean.getContentID()>
+	 					<cfset queryAddRow(rcsRs,1)>
+						<cfloop list="contentid,url,title" index="c">
+							<cfset querySetCell(rcsRs, lcase(c),item[c], rcsRs.recordcount)>
+						</cfloop>
+						<cfset querySetCell(rcsRs, '', 0, rcsRs.recordcount)>
+						<cfset querySetCell(rcsRs, 'type', 'Link', rcsRs.recordcount)>
+						<cfset querySetCell(rcsRs, 'subtype', 'Default', rcsRs.recordcount)>
+					</cfif>
 				</cfif>
 			</cfloop>
 		</cfif>
 		<cfset emptyClass = "item empty">
 		<cfoutput>
 			<div id="rcGroup-#rcsBean.getRelatedContentSetID()#" class="list-table">
-				<div class="list-table-content-set">#esapiEncode('html',rcsBean.getName())# 
+				<div class="list-table-content-set">#esapiEncode('html',rcsBean.getName())#
 					<cfif len(rcsBean.getAvailableSubTypes()) gt 0>
-						<span class="content-type">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.restrictedmessage')#: 
+						<span class="content-type">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.restrictedmessage')#:
 							<cfloop list="#rcsBean.getAvailableSubTypes()#" index="i">
 								<cfset st = application.classExtensionManager.getSubTypeByName(listFirst(i, "/"), listLast(i, "/"), rc.contentBean.getSiteID())>
 								<a href="##" rel="tooltip" data-original-title="#i#"><i class="#st.getIconClass(includeDefault=true)#"></i></a>
@@ -84,7 +89,7 @@
 						</span>
 					</cfif>
 				</div>
-				<ul id="rcSortable-#rcsBean.getRelatedContentSetID()#" class="list-table-items rcSortable" data-accept="#rcsBean.getAvailableSubTypes()#" data-relatedcontentsetid="#rcsBean.getRelatedContentSetID()#"> 
+				<ul id="rcSortable-#rcsBean.getRelatedContentSetID()#" class="list-table-items rcSortable" data-accept="#rcsBean.getAvailableSubTypes()#" data-relatedcontentsetid="#rcsBean.getRelatedContentSetID()#">
 					<cfif rcsRS.recordCount>
 						<cfset emptyClass = emptyClass & " noShow">
 						<cfloop query="rcsRs">

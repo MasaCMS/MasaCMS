@@ -9,7 +9,7 @@
 			<div id="mura-sidebar-objects" class="mura-sidebar__objects-list">
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<h3>Content Objects</h3>
+						<div class="mura-sidebar__objects-list__object-group-instruction">#application.rbFactory.getKeyValue(session.rb,'sitemanager.dragtopage')#:</div>
 					</div>
 					<div class="mura-sidebar__objects-list__object-group-items">
 						<cfset contentRendererUtility=$.getBean('contentRendererUtility')>
@@ -39,11 +39,10 @@
 
 					<cfif $.content('type') neq 'Variation'>
 						<cfif this.legacyobjects>
-							<button id="mura-objects-legacy-btn" class="btn btn-primary"><i class="mi-object-ungroup"></i> Legacy Objects</button>
-							<br/><br/>
+							<button id="mura-objects-legacy-btn" class="btn mura-primary"><i class="mi-object-ungroup"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.legacyobjects')#</button>
 						</cfif>
 						<cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
-							<button id="mura-objects-openregions-btn" class="btn btn-primary"><i class="mi-object-group"></i> Additional Display Regions</button>
+							<button id="mura-objects-openregions-btn" class="btn"><i class="mi-columns"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.additionaldisplayregions')#</button>
 						</cfif>
 					</cfif>
 				</div>
@@ -52,10 +51,10 @@
 			<div id="mura-sidebar-objects-legacy" class="mura-sidebar__objects-list" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<button class="mura-objects-back-btn btn btn-primary">
-							<i class="mi-arrow-left"></i> Back
+						<button class="mura-objects-back-btn btn btn-secondary">
+							<i class="mi-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.back')#
 						</button>
-						<h3>Legacy Objects</h3>
+						<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.legacyobjects')#</h3>
 					</div>
 					<div class="mura-sidebar__objects-list__object-group-items controls">
 						<select name="classSelector" onchange="mura.loadObjectClass('#esapiEncode("Javascript",$.content('siteid'))#',this.value,'','#$.content('contenthistid')#','#$.content('parentid')#','#$.content('contenthistid')#',0);">
@@ -70,7 +69,6 @@
 		                <option value="folder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.Folders')#</option>
 		                <option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
 		                <option value="gallery">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.galleries')#</option>
-		                <option value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#</option>
 		                <cfif application.settingsManager.getSite($.event('siteid')).getHasfeedManager()>
 		                  <option value="localFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexes')#</option>
 		                  <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
@@ -83,7 +81,7 @@
 
 				<div id="classListContainer" class="mura-sidebar__objects-list__object-group" style="display:none">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						Select Object
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.selectobject')#
 					</div>
 					<div class="mura-sidebar__object-group-items" id="classList"></div>
 				</div>
@@ -95,11 +93,11 @@
 				<!---
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-					<a href="##" class="mura-objects-back-btn" class="btn btn-primary"><i class="mi-arrow-left"></i> Back</a>
+					<a href="##" class="mura-objects-back-btn" class="btn mura-primary"><i class="mi-arrow-left"></i> Back</a>
 					</div>
 				</div>
 				--->
-				<iframe src="" data-preloadsrc="#$.siteConfig().getAdminPath(complete=1)#?muraAction=carch.frontendconfigurator&siteid=#$.content('siteid')#&preloadOnly=true&layoutmanager=true&compactDisplay=true" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
+				<iframe src="" data-preloadsrc="#$.siteConfig().getAdminPath(complete=1)#?muraAction=carch.frontendconfigurator&siteid=#$.content('siteid')#&preloadOnly=true&layoutmanager=true&compactDisplay=true&cacheid=#createUUID()#" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
 				</iframe>
 
 			</div>
@@ -107,14 +105,14 @@
 			<div id="mura-sidebar-editor" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<h3>Editing Content</h3>
-						<button class="mura-objects-back-btn btn btn-primary" id="mura-deactivate-editors"><i class="mi-check"></i> Done Editing</button>
+						<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.editingcontent')#</h3>
+						<button class="mura-objects-back-btn btn mura-primary" id="mura-deactivate-editors"><i class="mi-check"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.doneediting')#</button>
 					</div>
 				</div>
 
 				<div id="classListContainer" class="mura-sidebar__objects-list__object-group" style="display:none">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						Select Object
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.selectobject')#
 					</div>
 					<div class="mura-sidebar__object-group-items" id="classList"></div>
 				</div>
@@ -127,7 +125,7 @@
 <cfif listLen(request.muraActiveRegions) lt $.siteConfig('columnCount')>
 	<div class="mura__layout-manager__display-regions">
 		<div class="mura__layout-manager__display-regions__X">
-			<p><button id="mura-objects-closeregions-btn" class="btn btn-primary">Close <i class="mi-arrow-right"></i></button><p>
+			<p><button id="mura-objects-closeregions-btn" class="btn mura-primary">Close <i class="mi-angle-right"></i></button><p>
 			<h3>Additional Display Regions</h3>
 
 			<cfset regionNames=$.siteConfig('columnNames')>
@@ -156,7 +154,7 @@ mura.ready(function(){
 	mura('##mura-sidebar-container').show();
 	mura('##mura-objects-legacy-btn').click(function(e){
 		e.preventDefault();
-		muraInlineEditor.sidebarAction('showlegacyobjects');
+		MuraInlineEditor.sidebarAction('showlegacyobjects');
 	});
 
 	mura('##mura-objects-openregions-btn').click(function(e){
@@ -175,7 +173,7 @@ mura.ready(function(){
 
 	mura('.mura-objects-back-btn').click(function(e){
 		e.preventDefault();
-		muraInlineEditor.sidebarAction('showobjects');
+		MuraInlineEditor.sidebarAction('showobjects');
 	});
 
 	//mura('.mura-region.mura-editable').attr('style','clear:both;');

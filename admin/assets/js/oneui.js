@@ -1,5 +1,5 @@
 /*!
- * OneUI - v1.2.0 - Auto-compiled on 2015-09-01 - Copyright 2015 
+ * OneUI - v1.2.0 - Auto-compiled on 2015-09-01 - Copyright 2015
  * @author pixelcave
  */
 if (! function(a, b) {
@@ -3474,7 +3474,7 @@ if (! function(a, b) {
             var b = document.documentElement.getBoundingClientRect();
             a = b.right - Math.abs(b.left)
         }
-        this.bodyIsOverflowing = document.body.clientWidth < a, this.scrollbarWidth = this.measureScrollbar()
+        this.bodyIsOverflowing = ((document.body.clientWidth != null && document.body.clientWidth) || 1) < a, this.scrollbarWidth = this.measureScrollbar()
     }, c.prototype.setScrollbar = function() {
         var a = parseInt(this.$body.css("padding-right") || 0, 10);
         this.originalBodyPad = document.body.style.paddingRight || "", this.bodyIsOverflowing && this.$body.css("padding-right", a + this.scrollbarWidth)
@@ -4454,7 +4454,7 @@ var App = function() {
                 c.hasClass("header-navbar-fixed") ? i.css("min-height", a - d) : i.css("min-height", a - (b + d))
             },
             n = function(a) {
-                var b = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                var b = window.innerWidth || document.documentElement.clientWidth || (document.body.clientWidth != null && document.body.clientWidth) || 1 ;
                 if ("init" === a) {
                     n();
                     var h;
@@ -4488,7 +4488,7 @@ var App = function() {
                 }), g.attr("style", "")))
             },
             o = function(a) {
-                var b = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                var b = window.innerWidth || document.documentElement.clientWidth || (document.body.clientWidth != null && document.body.clientWidth) || 1;
                 switch (a) {
                     case "sidebar_pos_toggle":
                         c.toggleClass("sidebar-l sidebar-r");
@@ -4710,7 +4710,7 @@ var App = function() {
             },
             B = function() {
                 jQuery('[data-toggle="appear"]').each(function() {
-                    var b = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+                    var b = window.innerWidth || document.documentElement.clientWidth || (document.body.clientWidth != null && document.body.clientWidth) || 1,
                         c = jQuery(this),
                         d = c.data("class") ? c.data("class") : "animated fadeIn",
                         e = c.data("offset") ? c.data("offset") : 0,

@@ -107,6 +107,7 @@ main > .content > :first-child:not(.alert){
 .mura-control-group > label + * + select:not([class*="time"]):not([class*="mura-constrain"]){
   .form-control;
   .make-sm-column(9);
+  font-size: 13px;
 }
 
 // constrain width elements
@@ -127,7 +128,7 @@ main > .content > :first-child:not(.alert){
 .mura-control-group > label + textarea.mura-constrain.mura-numeric,
 .mura-control-group > label + * + textarea.mura-constrain.mura-numeric{
   .make-sm-column(1);
-  min-width: 80px !important;
+  min-width: 60px !important;
 }
 
 .mura-control-group .mura-constrain + .mura-constrain{
@@ -148,14 +149,6 @@ main > .content > :first-child:not(.alert){
   padding: 4px 8px;
   height: 2em;
   .make-sm-column(12);
-}
-
-.mura-control-group > label + textarea[rows],
-select[multiple],
-select[size],
-.mura-control-group > label + select[multiple], 
-.mura-control-group > label + select[size] {
-    height: auto !important;
 }
 
 .mura-control-group > label + .datepicker{
@@ -353,6 +346,7 @@ h1:not([class]){
 // bs3 buttons
 
 // default to btn-default
+.btn.btn-small,
 .btn:not([class*="btn-"]){
   .btn-default;
 }

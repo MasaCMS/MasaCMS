@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-<cffunction name="init" access="public" output="yes">
+<cffunction name="init" output="yes">
 	<cfargument name="mimeType" default="" required="yes" type="string">
 	<cfargument name="file" default="" required="yes" type="any">
 		

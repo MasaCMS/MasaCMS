@@ -1,0 +1,206 @@
+.ui-dialog{
+ background-position: left bottom;
+ background-repeat: no-repeat;
+ background-size: 240px 240px;
+ box-shadow: 0px 20px 50px 0px rgba(0,0,0,0.30);
+ padding: 26px;
+ /* spinner #action-modal z-index is 1040 */
+ z-index: 1039 !important;
+
+ &.dialog-confirm{
+  background-image:url(../images/dialog-confirm-bg@2x.png);
+ }
+ &.dialog-info{
+  background-image:url(../images/dialog-info-bg@2x.png);
+ }
+ &.dialog-warning{
+  background-image:url(../images/dialog-warning-bg@2x.png);
+ }
+ &.dialog-nobg{
+  background-image:none !important;
+ }
+
+  &[aria-describedby=cropper]{
+    background-image: none;
+  }
+
+  &[aria-describedby=changesetContainer] {
+      width: auto !important;
+      left: 50% !important;
+      transform: translateX(-50%);
+  }
+  &[aria-describedby="newContentMenuContainer"] {
+      max-height: ~'calc(100% - 84px)' !important;
+      overflow-y:auto !important;
+  }
+
+  #changesetContainer td {
+    width: auto;
+
+    &.var-width{
+      max-width: none;
+      text-overflow: clip;
+      overflow: visible;      
+    }
+
+  }
+
+} // ui-dialog
+
+  
+.modal-wrapper .ui-dialog{
+  padding: 15px 30px !important;
+  background-color: #f5f5f5;
+  background-image: none !important;
+  height: 100%;
+}
+
+.ui-dialog-title,
+.modal-wrapper .ui-dialog-title{
+  .bold-font;
+  color: #545454;
+  display: block;
+  float: left; 
+  font-size: 24px;
+  line-height: 1.2;
+  padding: 0;
+}
+
+.ui-dialog #draft-prompt>p:first-child {
+    font-size: auto;
+}
+.modal-wrapper .ui-dialog-content{
+  background-color: #fff;
+  border-radius:2px;
+}
+
+#changesetContainer{
+  background-color: #fff;
+  padding: 0;
+  .border-radius(0);
+}
+
+.ui-dialog .ui-dialog-content{
+  margin-top: 0 !important;
+  overflow: visible !important;
+  padding: 12px 0;
+  background: none;
+  background-color: transparent;
+
+  &#newFileMetaContainer{
+    padding-top: 0;
+    background-color:transparent;
+
+    .block{
+      margin-bottom:-20px;
+    }
+  }
+} // ui-dialog-content
+
+.ui-dialog .ui-dialog-buttonpane{
+  margin: 26px 0 8px;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{
+  float:right;
+  text-align: right;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button{
+  float:none;
+  margin-left: 13px;
+  background-image: linear-gradient(0deg, #C2C2C2 0%, #B6B6B6 100%) !important;
+  background-position: 0 0 !important;
+  border-radius: 1px !important;
+
+
+  &.mura-primary{
+   background-image: linear-gradient(0deg, #3E7CE2 0%, #4F8DF3 100%) !important;
+   color: #fff !important;
+   }
+
+}
+
+.ui-dialog-buttonset .ui-button-text-only .ui-button-text {
+  font-weight: normal;
+  color: #fff;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button{
+  background-color: #EEE;
+  border: none;
+  color: #fff;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button.ui-state-hover{
+  background-color: #DDDEDD;
+  background-position: 0 0;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button .ui-state-hover{
+  background-color:#FFF;
+}
+
+.ui-dialog .ui-dialog-titlebar-close,
+.ui-dialog .ui-dialog-titlebar-close:focus,
+.ui-dialog .ui-dialog-titlebar-close:hover,
+.ui-dialog .ui-dialog-titlebar-close:before,
+.ui-dialog .ui-dialog-titlebar-close:hover:before{
+  color:#949494 !important;
+  opacity: .65 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:before{
+  font-size: 18px;
+}
+#cropper .jcrop-holder{
+  margin-left: 8px;
+}
+
+#ui-datepicker-div{
+  .border-radius(0) !important;
+  z-index: 555 !important;
+}
+
+.ui-widget-overlay { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background-image:none !important;
+  background-color: #fff !important;
+  opacity: .7 !important;
+}
+
+.modal-backdrop{
+  background-image:none !important;
+  background-color: #fff !important;
+  opacity: .7 !important;
+}
+
+.modal-wrapper{
+
+  .ui-dialog .ui-dialog-titlebar-close,
+  .ui-dialog .ui-dialog-titlebar-close:focus,
+  .ui-dialog .ui-dialog-titlebar-close:hover{
+  top: 2px;
+  right: 0px !important;
+  height: 18px;
+  width: 16px;
+  opacity: .65;
+  }
+  .ui-dialog .ui-dialog-titlebar-close:before{
+    font-size: 18px;
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    top: 2px;
+    right: 0;
+  }
+   .ui-dialog .ui-dialog-titlebar-close,
+  .ui-dialog .ui-dialog-titlebar-close:before,
+  .ui-dialog .ui-dialog-titlebar-close:focus,
+  .ui-dialog .ui-dialog-titlebar-close:hover,
+  .ui-dialog .ui-dialog-titlebar-close:hover:before{
+    color: #545454 !important;
+  }
+}

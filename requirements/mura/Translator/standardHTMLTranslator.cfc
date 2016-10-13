@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="translate" output="false" returnType="any">
+<cffunction name="translate" output="false">
 	<cfargument name="event" required="true">
 	<cfset var page = "" />
 	<cfset var themePath=arguments.event.getSite().getThemeAssetPath()  />

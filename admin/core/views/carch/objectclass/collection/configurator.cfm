@@ -49,6 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.items" default="#arrayNew(1)#">
 	<cfparam name="objectParams.layout" default="default">
+	<cfparam name="objectParams.forcelayout" default="false">
+	<cfparam name="objectParams.sortby" default="Title">
+	<cfparam name="objectParams.sortdirection" default="ASC">
 	<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
 </cfsilent>
 <cfsavecontent variable="data.html">
@@ -58,7 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="availableObjectParams"
 		data-object="collection"
 		data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#"
-		data-objectid="none">
+		data-objectid="none"
+		data-forcelayout="#esapiEncode('html_attr',objectParams.forcelayout)#">
 
 		<div class="mura-layout-row">
 			<div class="mura-control-group">
@@ -103,24 +107,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset subtype = application.classExtensionManager.getSubTypeByName(rc.contenttype, rc.contentsubtype,rc.siteid)>
 				<cfset relatedContentSets = subtype.getRelatedContentSets()>
 				<select name="source" id="relatedcontent">
-					<option value="">Select Related Content</option>
 					<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 						<cfset rcsBean = relatedContentSets[s]/>
 						<option value="#rcsBean.getRelatedContentSetId()#"<cfif objectParams.source eq rcsBean.getRelatedContentSetId()> selected</cfif>>#rcsBean.getName()#</option>
 					</cfloop>
 					<option value="custom"<cfif objectParams.source eq 'custom'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.custom')#</option>
+					<option value="reverse"<cfif objectParams.source eq 'reverse'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.reverse')#</option>
 				</select>
 				<input type="hidden" name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">
 				<button class="btn" id="editBtnRelatedContent"><i class="mi-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
-				<!---
-				<cfif rc.configuratormode neq 'backend'>
-				<div id="relatedContentContainer">
-					<div id="selectRelatedContent"></div>
-					<div id="selectedRelatedContent" class="control-group"></div>
-				</div>
-				<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />
-				</cfif>
-				--->
 			</div>
 		</div>
 		<div class="mura-layout-row" id="layoutcontainer">
@@ -203,6 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				$('select[name="source"], ##items').removeClass('objectParam');
 				$('.source-container').hide();
+				$('.sort-container').hide();
 
 				var val=$('select[name="sourcetype"]').val();
 
@@ -218,28 +214,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##selectedRelatedContent').html('');
 					$('##relatedcontentcontainer').show();
 					$('##relatedcontent').addClass('objectParam');
-					<!---
-					<cfif rc.configuratormode neq 'backend'>
-
-					var source=$('##relatedcontent').val();
-
-					if(source){
-						$('##relatedContentContainer').show();
-						siteManager
-							.loadRelatedContentSets(
-								getContentID(),
-								getContentHistID(),
-								getType(),
-								getSubType(),
-								getSiteID(),
-								source
-							);
-					} else {
-						$('##relatedContentContainer').hide();
-					}
-
-					</cfif>
-					--->
 				}
 			}
 

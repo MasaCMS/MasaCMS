@@ -1,4 +1,4 @@
-<displayobject
+<mura
 	name="Component"
 	contenttypes="*"
 	iconclass="mi-clone"

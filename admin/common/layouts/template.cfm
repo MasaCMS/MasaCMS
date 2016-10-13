@@ -92,7 +92,7 @@
 					<cfcase value="cArch">
 					<cfswitch expression="#rc.moduleID#">
 					<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
-						<cfset moduleTitle="Content Manager"/>
+						<cfset moduleTitle="Site Content"/>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif rc.originalfuseaction eq "imagedetails">
@@ -215,8 +215,6 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 
-		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-
 		<!-- Mura js --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
@@ -301,7 +299,9 @@
      				<cfloop collection="#alerts#" item="alert">
      					<cfif not listFindNoCase('defaultpasswordnotice,cachenotice',alert)>
      						<div<cfif len(alerts['#alert#'].type)> class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#"<cfelse> class="alert alert-error"</cfif>>
-				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+	     						<span>
+				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
+  	   						</span>
 		            </div>
 		     				#alerts['#alert#'].text#
 		     			</cfif>
@@ -311,83 +311,26 @@
      			<cfif rc.renderMuraAlerts>
      				<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
      					<div class="alert alert-error">
-			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+     						<span>
+			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
      						#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
+     						</span>
 							</div>
 	     			</cfif>
 
-	     			<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown()) 
-	     						and not application.settingsManager.getSite(session.siteID).getCache() 
+	     			<cfif not len(application.settingsManager.getSite(session.siteID).getEnableLockdown())
+	     						and not application.settingsManager.getSite(session.siteID).getCache()
 	     						and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
-			           	<div class="alert">
-			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+			           	<div class="alert alert-warning">
+		     						<span>
+					           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-close"></i></a>
 			           		#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
+		     						</span>
 			           </div>
 		           	</cfif>
      			</cfif>
 
-						<script>
-							$(document).ready(function(){
-								// persist sidebar selection
-								$('*[data-action=sidebar_mini_toggle]').click(function(){
-									if($('##page-container').hasClass('sidebar-mini')){
-						 			createCookie('ADMINSIDEBAR','off',5);
-									} else {
-						 			createCookie('ADMINSIDEBAR','on',5);
-									}
-								});
 
-								// persist open nav items
-								$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
-
-								// tabdrop: trigger on page load w/ slight delay
-								if ( $( '.mura-tabs').length ) {
-									var triggerTabDrop = function(){
-										setTimeout(function(){
-											$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
-												$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
-										}, 10);							
-									}
-									// run on page load
-									triggerTabDrop();
-									// run on resize
-									$(window).on('resize',function(){
-										$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
-											triggerTabDrop();
-									});
-									$('.tabdrop .dropdown-toggle').on('click',function(){
-										$(this).parents('.nav-tabs').css('overflow-y','visible');
-									});
-								}
-								// /tabdrop
-
-								// dismiss alerts
-								$('.alert-dismiss').click(
-									function(){
-										var _alert=this;
-										$.ajax(
-											{
-												url:'./',
-												data:{
-													siteid:'#esapiEncode('javascript',session.siteid)#',
-													alertid:$(_alert).attr('data-alertid'),
-													muraaction:'cdashboard.dismissAlert'
-												},
-												success: function(){
-													$(_alert).parent('.alert').fadeOut();
-													//$('##system-notice').html(data);
-												}
-											}
-										);
-									}
-								);
-							});
-
-						mura.init({
-						context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
-						siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
-						});
-						</script>
          	</cfif>
          		<cfif request.action neq "core:cLogin.main">
          			<div id="mura-content">
@@ -401,6 +344,104 @@
 
       </main>
 
+    <cfif request.action neq "core:cLogin.main" and isDefined("session.siteid")>
+				<script>
+				$(document).ready(function(){
+					// persist sidebar selection
+					$('*[data-action=sidebar_mini_toggle]').click(function(){
+						if($('##page-container').hasClass('sidebar-mini')){
+			 			createCookie('ADMINSIDEBAR','off',5);
+						} else {
+			 			createCookie('ADMINSIDEBAR','on',5);
+						}
+					});
+
+					// persist open nav items
+					$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
+
+					// header-search
+					$('##mura-header-search-reveal').click(
+					function(){
+						$(this).hide();
+						$('##mura-header-search').show();
+					});
+
+					// tabdrop: trigger on page load w/ slight delay
+					if ( $( '.mura-tabs').length ) {
+						var triggerTabDrop = function(){
+							setTimeout(function(){
+								$('.mura-tabs').tabdrop({text: '<i class="mi-chevron-down"></i>'});
+								$('.tabdrop .dropdown-toggle').parents('.nav-tabs').css('overflow-y','visible');
+								$('.tabdrop a.dropdown-toggle .display-tab').html('<i class="mi-chevron-down"></i>');
+							}, 10);
+						}
+						// run on page load
+						triggerTabDrop();
+						// run on resize
+						$(window).on('resize',function(){
+							$('.nav-tabs').css('overflow-y','hidden').find('li.tabdrop').removeClass('open').find('.dropdown-backdrop').remove();
+								triggerTabDrop();
+						});
+						$('.tabdrop .dropdown-toggle').on('click',function(){
+							$(this).parents('.nav-tabs').css('overflow-y','visible');
+						});
+					}
+					// /tabdrop
+
+					// dismiss alerts
+					$('.alert-dismiss').click(
+						function(){
+							var _alert=this;
+							$.ajax(
+								{
+									url:'./',
+									data:{
+										siteid:'#esapiEncode('javascript',session.siteid)#',
+										alertid:$(_alert).attr('data-alertid'),
+										muraaction:'cdashboard.dismissAlert'
+									},
+									success: function(){
+										$(_alert).parent('.alert').fadeOut();
+										//$('##system-notice').html(data);
+									}
+								}
+							);
+						}
+					);
+
+					// click to close new table actions, category selector filter
+					document.onclick = function(e) {
+					if (jQuery('##newContentMenu').length > 0){
+					  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
+				     	jQuery('##newContentMenu').addClass('hide');
+			    	}
+					};
+
+					if (jQuery('.actions-menu').length > 0){
+				    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
+				       jQuery('.actions-menu').addClass('hide');
+			     	}
+					};
+
+					if(jQuery('##category-select-list').length > 0){
+				    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
+				    	jQuery('##category-select-list').slideUp('fast');
+					    }
+						}
+					};
+					// /click to close
+
+				});
+
+			mura.init({
+			context:'#esapiEncode("javascript",rc.$.globalConfig('context'))#',
+			themepath:'#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#',
+			siteid:<cfif isDefined('session.siteid') and len(session.siteid)>'#esapiEncode("javascript",session.siteid)#'<cfelse>'default'</cfif>
+			});
+			</script>
+
+		</cfif>
+
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/bootstrap-tabdrop.js"></script>
@@ -413,6 +454,7 @@
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
 
+<!---
 		<cfif rc.originalcircuit neq "cLogin">
 			<footer class="mura-footer footer navbar-fixed-bottom clearfix">
 				<div class="credits">
@@ -420,6 +462,7 @@
 				</div>
       </footer>
   	</cfif>
+--->
 
     </div><!-- /.page-container -->
 

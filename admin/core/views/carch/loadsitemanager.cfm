@@ -119,18 +119,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset session.flatViewArgs["#rc.siteID#"].tab=0>
 
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
 </cfsilent>
 
 <cfsavecontent variable="data.html">
 <cfoutput>
-<cfif rc.type neq 'Component' and rc.type neq 'Creative'  and rc.type neq 'Form'>
-   #$.dspZoom(crumbdata=crumbdata,ajax=true,class="breadcrumb")#
-</cfif>
- <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
-
  <form novalidate="novalidate" class="viewUpdate clearfix" name="viewUpdate" method="post" action="./index.cfm?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteID)#&moduleid=#esapiEncode('url',rc.moduleID)#&topid=#esapiEncode('url',rc.topID)#">
 
- <div class="btn-group" id="sm-modify-view">
+ 	<!--- sm-modify-view --->
+	<div class="btn-group" id="sm-modify-view">
    <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
 	 #application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#
 	 <span class="caret"></span>
@@ -140,52 +137,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <div>
 	   <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#:&nbsp;</label>
 	   <cfif rc.topid neq '00000000000000000000000000000000001'
-			 and (
-				 perm eq 'Editor'
-			   or
-			 (perm eq 'Author' and application.configBean.getSortPermission() eq "author")
-			 )>
-		   <input name="nextN" value="#session.mura.nextN#" type="text" class="text" size="6" maxlength="4" />
-	   </div>
-	   <div>
-		   <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#:&nbsp;</label>
-			 <select name="sortBy"  onchange="siteManager.setAsSorted();">
-                 <cfif rc.moduleid eq '00000000000000000000000000000000000'>
-                   <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
-    			   <option value="releaseDate" <cfif rc.sortBy eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
-    			   <option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
-    			   <option value="created" <cfif rc.sortBy eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
-    			   <option value="menuTitle" <cfif rc.sortBy eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
-    			   <option value="title" <cfif rc.sortBy eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
-    			   <option value="rating" <cfif rc.sortBy eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
-    			   <option value="comments" <cfif rc.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
-    			   <cfloop query="rsExtend">
-                    <cfif listFindNoCase('Base,Page,Folder,Link,File,Gallery,Calendar',rsExtend.Type)>
-    				    <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
-                    </cfif>
-                   </cfloop>
-                  <cfelse>
-                      <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
-                      <option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
-                      <option value="created" <cfif rc.sortBy eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
-                      <option value="title" <cfif rc.sortBy eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
-                      <cfsilent>
-                          <cfif rc.moduleid eq '00000000000000000000000000000000003'>
-                              <cfset typefilter='Component'>
-                          <cfelseif rc.moduleid eq '00000000000000000000000000000000004'>
-                              <cfset typefilter='Form'>
-                          <cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
-                              <cfset typefilter='Variation'>
-                          <cfelse>
-                              <cfset typefilter='undefined'>
-                          </cfif>
-                      </cfsilent>
-                      <cfloop query="rsExtend">
-                          <cfif rsExtend.Type eq typefilter>
-                              <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
-                          </cfif>
-                      </cfloop>
-                  </cfif>
+			 and (perm eq 'Editor' or
+			 		 (perm eq 'Author' and application.configBean.getSortPermission() eq "author")
+			 			)>
+ 				<input name="nextN" value="#session.mura.nextN#" type="text" class="text" size="6" maxlength="4" />
+				</div>
+				<div>
+
+				<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#:&nbsp;</label>
+				<select name="sortBy"  onchange="siteManager.setAsSorted();">
+					<cfif rc.moduleid eq '00000000000000000000000000000000000'>
+					 	<option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
+						<option value="releaseDate" <cfif rc.sortBy eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
+						<option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
+						<option value="created" <cfif rc.sortBy eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
+						<option value="menuTitle" <cfif rc.sortBy eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
+						<option value="title" <cfif rc.sortBy eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
+						<option value="rating" <cfif rc.sortBy eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
+                        <cfif rc.$.getServiceFactory().containsBean('marketingManager')>
+                            <option value="mxpRelevance" <cfif rc.sortBy eq 'mxpRelevance'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.mxpRelevance')#</option>
+                        </cfif>
+                        <cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments()>
+                            <option value="comments" <cfif rc.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
+                        </cfif>
+                        <cfloop query="rsExtend">
+							<cfif listFindNoCase('Base,Page,Folder,Link,File,Gallery,Calendar',rsExtend.Type)>
+							<option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
+							</cfif>
+						</cfloop>
+					<cfelse>
+						<option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
+						<option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
+						<option value="created" <cfif rc.sortBy eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
+						<option value="title" <cfif rc.sortBy eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
+						<cfsilent>
+						  <cfif rc.moduleid eq '00000000000000000000000000000000003'>
+						      <cfset typefilter='Component'>
+						  <cfelseif rc.moduleid eq '00000000000000000000000000000000004'>
+						      <cfset typefilter='Form'>
+						  <cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
+						      <cfset typefilter='Variation'>
+						  <cfelse>
+						      <cfset typefilter='undefined'>
+						  </cfif>
+						</cfsilent>
+						<cfloop query="rsExtend">
+						  <cfif rsExtend.Type eq typefilter>
+						      <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
+						  </cfif>
+						</cfloop>
+					</cfif>
 			 </select>
 			 <select name="sortDirection"  onchange="siteManager.setAsSorted();">
 			   <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
@@ -205,7 +206,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <input type="hidden" id="sorted" name="sorted" value="false">
    </div>
  </div>
-
+<!--- /sm-modify-view --->
+<cfif rc.type neq 'Component' and rc.type neq 'Creative'  and rc.type neq 'Form'>
+   #$.dspZoom(crumbdata=crumbdata,ajax=true,class="breadcrumb")#
+</cfif>
  <script>
    $(document).ready(function(){
 	 $('##sm-modify-view .dropdown-menu').click(function(e) {
@@ -215,8 +219,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  </script>
 
  <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.sortBy eq 'orderno'>
-   <div class="alert" id="sitemgr-reorder" style="display:none">
-   Click "Update" to save content order: <input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
+   <div class="help-block" id="sitemgr-reorder" style="display:none">
+   <i class="mi-warning"></i> Click "Update" to save content order: <input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
    </div>
  </cfif>
 
@@ -250,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <dl id="top-node">
 	   <dt>
 
-		<a class="add" href="javascript:;" ontouchstart="this.onmouseover();" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#','#rc.rstop.moduleid#');"><i class="mi-plus-circle"></i></a>
+		<a class="add" href="javascript:;" ontouchstart="this.onclick();" onclick="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#','#rc.rstop.moduleid#');"><i class="mi-ellipsis-v"></i></a>
 
 		 <cfif hasKids>
 		 <span class="hasChildren open" onclick="siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteID)#','#esapiEncode('javascript',rc.topid)#','#esapiEncode('javascript',rc.moduleid)#','#esapiEncode('javascript',rc.sortby)#','#esapiEncode('javascript',rc.sortdirection)#','#esapiEncode('javascript',rc.rstop.type)#',1);"></span>
@@ -271,7 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfelse>
 		   <a class="title" <cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 		 </cfif>
-		<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif>#esapiEncode('html',rc.rsTop.menutitle)#
+		<cfif not isFileIcon><i class="#lcase(icon)#"></i> </cfif><cfif len(rc.rsTop.menutitle)>#esapiEncode('html',rc.rsTop.menutitle)#<cfelse>#esapiEncode('html',rc.rsTop.title)#</cfif>
 		   </a>
 		 <!--- <div class="mura-title-fade"></div> --->
 	   </dt>
@@ -337,7 +341,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <cfelse>
 		 <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
 
-		<cfif perm eq 'editor' and request.hasPublishingTab>
+		<cfif rc.rstop.type neq 'Module' and perm eq 'editor' and request.hasPublishingTab>
 		   <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
 
 	   <cfif rc.rstop.Display eq 1 and rc.rstop.approved >
@@ -355,11 +359,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <!--- <i class="mi-calendar"></i> --->
 	 </dd>
 	  </cfif>
-	   <dd class="updated"><cfif isDate(rc.rstop.lastupdate)>
-		 #LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"medium")#
+	   	<cfif isDate(rc.rstop.lastupdate)>
+		   <dd class="updated" title="#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"short")#">#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)#</dd>
 	   <cfelse>
-		 N/A
-	   </cfif></dd>
+			 <dd class="updated"></dd>
+	   </cfif>
+	   <!--- actions hidden w/ css, copied to actions menu w/ js
+	   do not delete! --->
 	   <dd class="actions">
 		 <ul>
 		   <cfif rc.rstop.type neq 'Module' and not listFindNoCase('none,read',perm)>

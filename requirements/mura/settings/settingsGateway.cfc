@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-	<cffunction name="init" access="public" returntype="any" output="false">
+	<cffunction name="init" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="getList" access="public" output="false" returntype="query">
+	<cffunction name="getList" output="false">
 		<cfargument name="sortBy" default="orderno">
 		<cfargument name="sortDirection" default="asc">
 		<cfargument name="cached" default="true" />

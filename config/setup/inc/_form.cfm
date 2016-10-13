@@ -154,12 +154,12 @@ to your own modified versions of Mura CMS.
 
 					<div class="mura-control-group">
 						<label>Super Admin Password</label>
-						<input type="text" name="admin_password" value="#FORM.admin_password#" />
+						<input type="password" name="admin_password" value="#FORM.admin_password#" />
 					</div>
 					<div class="mura-control-group">
 						<label>Super Admin Email</label>
 						<input type="text" name="production_adminemail" value="#FORM.production_adminemail#" />
-						<p class="help-block">Required: Enter a valid email addressed.</p>
+						<p class="help-block">Required: Enter a valid email address.</p>
 					</div>
 
 			</div>
@@ -206,7 +206,7 @@ to your own modified versions of Mura CMS.
 		</div>
 		<div class="clear-both"></div>
 
-		<input type="text" name="production_encryptionkey" value="#FORM.production_encryptionkey#" />
+		<input type="hidden" name="production_encryptionkey" value="#FORM.production_encryptionkey#" />
 	</form><!-- END Form -->
 </div>
 <!-- END Simple Classic Progress Wizard -->

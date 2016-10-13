@@ -309,6 +309,9 @@ function openDisplay(id, close) {
 	if(document.getElementById(id).style.display == 'none') {
 
 		$("#" + id).slideDown();
+		if(id == 'editAdditionalTitles'){
+			$('#alertTitleSuccess').hide();
+		}
 		if(document.getElementById(id + 'Link')) {
 			var theLink = document.getElementById(id + 'Link');
 			theLink.innerHTML = '[' + close + ']';
@@ -588,7 +591,7 @@ function validateForm(theForm) {
 			modal: true,
 			position: getDialogPosition(),
 			buttons: {
-				Ok: function() {
+				Ok: {click: function() {
 					$(this).dialog('close');
 					if(firstErrorNode == "input") {
 						frmInputs[startAt].focus();
@@ -598,7 +601,10 @@ function validateForm(theForm) {
 						frmSelects[startAt].focus();
 					}
 				}
-			}
+				, text: 'OK'
+				, class: 'mura-primary'
+				} // /OK
+				}
 		});
 
 		return false;
@@ -628,18 +634,24 @@ function submitForm(frm, action, msg) {
 			$("#alertDialog").dialog({
 				modal: true,
 				position: getDialogPosition(),
+				resizable: false,
+				dialogClass: 'dialog-warning',
+				width: 400,
 				buttons: {
-					'Yes': function() {
-						$(this).dialog('close');
-						var frmInputs = currentFrm.getElementsByTagName("input");
-						for(f = 0; f < frmInputs.length; f++) {
-							if(frmInputs[f].getAttribute('name') == 'action') {
-								frmInputs[f].setAttribute('value', action);
+					Yes: {click: function() {
+							$(this).dialog('close');
+							var frmInputs = currentFrm.getElementsByTagName("input");
+							for(f = 0; f < frmInputs.length; f++) {
+								if(frmInputs[f].getAttribute('name') == 'action') {
+									frmInputs[f].setAttribute('value', action);
+								}
 							}
+							currentFrm.submit();				
 						}
-						currentFrm.submit();
-					},
-					'No': function() {
+						, text: 'Yes'
+						, class: 'mura-primary'
+						} // /Yes
+					, 'No': function() {
 						$(this).dialog('close');
 					}
 				}
@@ -942,29 +954,27 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 			title: 'Edit Image Properties',
 			position: getDialogPosition(),
 			buttons: {
-				Save:function(){
-					var fileData={exifpartial:{}};
-
-					$('.filemeta').each(function(){
-						fileData[$(this).attr('data-property')]=$(this).val();
-					});
-
-					$('.exif').each(function(){
-						fileData.exifpartial[$(this).attr('data-property')]=$(this).val();
-					});
-
-					fileData.setasdefault=$('#filemeta-setasdefault').is(':checked');
-
-					fileMetaDataAssign[property]=fileData;
-					$('#filemetadataassign').val(JSON.stringify(fileMetaDataAssign));
-					//alert($('#filemetadataassign').val());
-					$(this).dialog( "close" );
-
-				},
 				Cancel: function(){
 					 $(this).dialog( "close" );
-				}
+				},
 
+				Save: {click: function() {
+						var fileData={exifpartial:{}};
+						$('.filemeta').each(function(){
+							fileData[$(this).attr('data-property')]=$(this).val();
+						});
+						$('.exif').each(function(){
+							fileData.exifpartial[$(this).attr('data-property')]=$(this).val();
+						});
+						fileData.setasdefault=$('#filemeta-setasdefault').is(':checked');
+						fileMetaDataAssign[property]=fileData;
+						$('#filemetadataassign').val(JSON.stringify(fileMetaDataAssign));
+						//alert($('#filemetadataassign').val());
+						$(this).dialog( "close" );
+						}
+					, text: 'Save'
+					, class: 'mura-primary'
+					} // /Save
 
 			},
 			open: function() {
@@ -1135,7 +1145,9 @@ function setFileSelectors() {
 	$('.mura-file-selector').fileselector();
 }
 
-function alertDialog(message,okAction,title,width) {
+function alertDialog(message,okAction,title,width,dialogClass) {
+
+	var width = width || 450;
 
 	if(typeof message == 'object'){
 		var config=message;
@@ -1146,23 +1158,28 @@ function alertDialog(message,okAction,title,width) {
 	}
 
 	title= title || 'Alert';
-	width= width || null;
+	dialogClass= dialogClass || 'dialog-warning';
 
 	var dialogConfig={
+		dialogClass: dialogClass,
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
-			Ok: function() {
-				$(this).dialog('close');
-				if(okAction){
-					if(typeof(okAction) == 'function') {
-						okAction();
-					} else if (typeof(_okAction) == 'string'){
-						actionModal(okAction);
+			Ok: {click: function() {
+						$(this).dialog('close');
+						if(okAction){
+							if(typeof(okAction) == 'function') {
+								okAction();
+							} else if (typeof(okAction) == 'string' && okAction != ''){
+								actionModal(okAction);
+							}
+						}
 					}
-				}
-			}
+				, text: 'OK'
+				, class: 'mura-primary'
+				} // /ok
+
 		}
 	};
 
@@ -1177,7 +1194,9 @@ function alertDialog(message,okAction,title,width) {
 	return false;
 }
 
-function confirmDialog(message, yesAction, noAction,title,width) {
+function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noButtonText,dialogClass) {
+
+	var width = width || 450;
 
 	if(typeof message == 'object'){
 		var config=message;
@@ -1197,32 +1216,46 @@ function confirmDialog(message, yesAction, noAction,title,width) {
 
 	title= title || 'Alert';
 
+	yesButtonText = yesButtonText || 'OK';
+	noButtonText = noButtonText || 'Cancel';
+	dialogClass = dialogClass || 'dialog-confirm';
+
 	var dialogConfig={
+		dialogClass: dialogClass,
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
-			'Yes': function() {
-				$(this).dialog('close');
-				if(typeof(yesAction) == 'function') {
-					yesAction();
-				} else {
-					actionModal(yesAction);
-				}
-
-			},
-			'No': function() {
-				if(typeof(noAction) != 'undefined') {
+			'No': { click: function() {
+				if(typeof(noAction) != 'undefined' && noAction != '') {
 					if(typeof(noAction) == 'function') {
 						noAction();
 					} else {
 						actionModal(noAction);
 					}
 				} else {
-					$(this).dialog('close');
+					$(this).dialog('destroy');
 				}
 			}
-		}
+			,text: noButtonText
+			,class: 'mura-cancel'
+			} // /no
+			
+			,'Yes': {	click: function() {
+					$(this).dialog('close');
+					if(typeof(yesAction) == 'function') {
+						yesAction();
+					} else if(yesAction != ''){
+						actionModal(yesAction);
+					}
+				}
+				,text: yesButtonText
+				,class: 'mura-primary'
+			} // /yes
+		} // /buttons
+		, close: function (event, ui) {
+        $(this).dialog('destroy');
+      } // /close
 	};
 
 	if(width){
@@ -1405,7 +1438,7 @@ var spinnerArgs = {
 	// Corner roundness (0..1)
 	rotate: 0,
 	// The rotation offset
-	color: '#fff',
+	color: '#696969',
 	// #rgb or #rrggbb
 	speed: 0.9,
 	// Rounds per second
@@ -1437,7 +1470,7 @@ var spinnerArgs2 = {
 	// Corner roundness (0..1)
 	rotate: 0,
 	// The rotation offset
-	color: '#000',
+	color: '#696969',
 	// #rgb or #rrggbb
 	speed: 0.9,
 	// Rounds per second
@@ -1471,7 +1504,7 @@ var spinnerArgs3 = {
 	// Corner roundness (0..1)
 	rotate: 0,
 	// The rotation offset
-	color: '#fff',
+	color: '#696969',
 	// #rgb or #rrggbb
 	speed: 0.9,
 	// Rounds per second
@@ -1636,3 +1669,10 @@ $(function(){
 	setFileSelectors();
 
 });
+
+// table actions menu
+function showTableControls(el){
+	var optionsList = $(el).next('.actions-menu');
+	$('td.actions div.actions-menu').not('.hide').addClass('hide');
+	$(optionsList).removeClass('hide');
+};

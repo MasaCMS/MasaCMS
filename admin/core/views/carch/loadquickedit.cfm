@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not content.hasDrafts()>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit#rc.attribute#')#</h1>
-	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="mi-times-circle"></i></span>
+	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="mi-close"></i></span>
 
 	<cfif rc.attribute eq "isnav">
 		<select id="mura-quickEdit-isnav">
@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cf_datetimeselector name="displayStop" datetime="#content.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
 			</div>
 			<cfif len(rc.$.globalConfig('tzRegex'))>
-			<div id="mura-tz-container mura-control-group" style="display:none">
+			<div id="mura-tz-container" class="mura-control-group" style="display:none">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
 				<cfset tz=CreateObject("java", "java.util.TimeZone")>
 				<cfset defaultTZ=tz.getDefault().getID()>
@@ -250,6 +250,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				daysofweek: getDaysOfWeek()
 			};
 
+			if(!options.repeats && options.allday){
+				$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());
+				$('##mura-datepicker-displayStop').trigger('change');
+				options.endon=$('##mura-datepicker-displayStop').val();
+			}
+			
 			$('##displayInterval').val(JSON.stringify(options));
 		}
 
@@ -388,6 +394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				$('##mura-displayStopMinute').show();
 				$('##mura-displayStopDayPart').show();
 				$('##displayIntervalToLabel').show();
+				$('##mura-tz-container').show();
 			}
 
 			updateDisplayInterval();
@@ -438,9 +445,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$('##displayIntervalType').on('change',toggleRepeatOptions);
 		$('##displayIntervalEnd').on('change',setEndOption);
 
-		var repeats=$('input[name="displayIntervalEvery"]').val();
+		var repeats=$('input[name="displayIntervalEvery"]').is(':checked');
 
-		if(!isNaN(repeats) && parseInt(repeats)){
+		if(repeats){
 			$('##displayIntervalRepeats').attr('checked',true);
 		}
 
@@ -468,9 +475,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfoutput>
 <cfelse>
 	<cfoutput>
-	<i class="mi-ban"></i>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftstitle')# </h1>
-	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="mi-times-circle"></i></span>
+	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="mi-close"></i></span>
 		<p id="hasDraftsMessage">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftsmessage')#</p>
 	</cfoutput>
 </cfif>

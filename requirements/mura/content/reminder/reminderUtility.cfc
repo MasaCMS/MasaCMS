@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
 	<cfargument name="contentRenderer" type="any" required="yes"/>
@@ -58,14 +58,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setMailer" returntype="any" access="public" output="false">
+<cffunction name="setMailer" output="false">
 <cfargument name="mailer"  required="true">
 
 	<cfset variables.instance.mailer=arguments.mailer />
 
 </cffunction>
 
-<cffunction name="sendReminders" returntype="void" access="public" output="false">
+<cffunction name="sendReminders" output="false">
 <cfargument name="rsReminders" type="query">
 
 <cfset var returnURL=""/>

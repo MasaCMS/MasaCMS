@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.eventName="">
 <cfset variables.objectName="">
 
-<cffunction name="init" output="false" returntype="any">
+<cffunction name="init" output="false">
 <cfargument name="eventHandler">
 <cfargument name="eventName">
 
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this>
 </cffunction>
 
-<cffunction name="splitContexts" output="false" returntype="any">
+<cffunction name="splitContexts" output="false">
 <cfargument name="context">
 	<cfset var contexts=structNew()>
 	

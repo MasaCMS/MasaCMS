@@ -53,14 +53,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "content">
 </cffunction>
 
-<cffunction name="init" access="public" output="false" returntype="any">
+<cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	<cfset variables.content=getBean("contentNavBean")>
 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
+<cffunction name="packageRecord" output="false">
 	<cfset var item="">
 
 	<cfif isQuery(variables.records)>
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.content>
 </cffunction>
 
-<cffunction name="getRecordIdField" access="public" output="false" returntype="any">
+<cffunction name="getRecordIdField" output="false">
 	<cfif isArray(variables.records)>
 		<cfif arrayLen(variables.records) and structKeyExists(variables.records[1],'contenthistid')>
 			<cfreturn "contenthistid">
@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="buildQueryFromList" output="false" access="public">
+<cffunction name="buildQueryFromList" output="false">
 	<cfargument name="idList">
 	<cfargument name="siteid">
 	<cfargument name="idType" required="true" default="contentID">
@@ -106,7 +106,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset QuerySetCell(variables.records, arguments.idType, idArray[i])>
 		<cfset QuerySetCell(variables.records, 'siteID',arguments.siteid)>
 	</cfloop>
-
+	
+	<cfset variables._recordcount=variables.records.recordcount>
 	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
 	<cfset variables.recordIndex = 0 />
 	<cfset variables.pageIndex = 1 />

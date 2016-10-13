@@ -45,7 +45,9 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+<div class="mura-header">
 <h1>Edit Content</h1>
+</div>
 <div class="alert alert-error">
 This site has reached it's maximum number of pages allowed. If you are a Super Admin, this can be changed in Site Settings.</div> 
 </cfoutput>

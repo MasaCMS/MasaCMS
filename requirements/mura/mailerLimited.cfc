@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="contentRenderer" type="any" required="yes"/>
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="send" returntype="void" output="false">
+<cffunction name="send" output="false">
 <cfargument name="args" type="struct" default="#structNew()#">
 <cfargument name="sendto" type="string" default="">
 <cfargument name="from" type="string" default="">
@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cffunction>
 
-<cffunction name="sendText" returntype="void" output="false">
+<cffunction name="sendText" output="false">
 <cfargument name="text" type="string" default="">
 <cfargument name="sendto" type="string" default="">
 <cfargument name="from" type="string" default="">
@@ -258,7 +258,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cffunction>
 
-<cffunction name="sendHTML" returntype="void" output="false">
+<cffunction name="sendHTML" output="false">
 <cfargument name="html" type="string" default="">
 <cfargument name="sendto" type="string" default="">
 <cfargument name="from" type="string" default="">
@@ -331,7 +331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cffunction>
 
-<cffunction name="sendTextAndHTML" returntype="void" output="false">
+<cffunction name="sendTextAndHTML" output="false">
 <cfargument name="text" type="string" default="">
 <cfargument name="html" type="string" default="">
 <cfargument name="sendto" type="string" default="">

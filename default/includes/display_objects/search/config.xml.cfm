@@ -1,1 +1,1 @@
-<displayobject name="Site Search" legacyobjectfile="../dsp_search_results.cfm" />
+<mura name="Site Search" legacyobjectfile="../dsp_search_results.cfm" />

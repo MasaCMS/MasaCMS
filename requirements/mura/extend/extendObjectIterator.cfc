@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.configBean="">
 <cfset variables.manager="">
 
-<cffunction name="init" access="public" output="false" returntype="any">
+<cffunction name="init" output="false">
 	<cfargument name="configBean" default="">
 	<!---<cfargument name="manager" default="">--->
 	<cfset super.init(argumentCollection=arguments)>
@@ -64,19 +64,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setConfigBean" output="false" access="public">
+<cffunction name="setConfigBean" output="false">
 	<cfargument name="configBean">
 	<cfset variables.configBean=arguments.configBean>
 	<cfreturn this>
 </cffunction>	
 
-<cffunction name="setManager" output="false" access="public">
+<cffunction name="setManager" output="false">
 	<cfargument name="manager">
 	<cfset variables.manager=arguments.manager>
 	<cfreturn this>
 </cffunction>	
 
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
+<cffunction name="packageRecord" output="false">
 	<cfset var extendObject="">
 
 	<cfset extendObject=createObject("component","extendObject").init(

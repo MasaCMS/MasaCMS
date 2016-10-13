@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="create" returntype="void" access="public" output="false">
+<cffunction name="create" output="false">
 <cfargument name="reminderBean" type="any" />
  
  <cfquery>
@@ -71,7 +71,7 @@ values (
 
 </cffunction> 
 
-<cffunction name="read" returntype="any" access="public" output="false">
+<cffunction name="read" output="false">
  <cfargument name="contentid" type="string">
  <cfargument name="siteid" type="string">
  <cfargument name="email" type="string">
@@ -99,7 +99,7 @@ values (
 
 </cffunction> 
 
-<cffunction name="update" returntype="void" access="public" output="false">
+<cffunction name="update" output="false">
 <cfargument name="reminderBean" type="any" />
  
  <cfquery>

@@ -58,9 +58,6 @@
 </cfsilent>
 <script src="assets/js/comment.js?coreversion=<cfoutput>#application.coreversion#</cfoutput>" type="text/javascript"></script>
 <style>
-#frmSearch div.full>div {
-	width: 940px !important;
-}
 </style>
 <script>
 	$(document).ready(function(){
@@ -86,22 +83,25 @@
 
 	</div> <!-- /.mura-header -->
 	
+	<!--- MESSAGING --->
+	<!--- uses alert-success, alert-error --->
+	<cfif StructKeyExists(rc, 'processed') and IsBoolean(rc.processed)>
+		<cfset local.class = rc.processed ? 'success' : 'error'>
+		<div id="feedback" class="alert alert-#local.class#"><span>
+			<button type="button" class="close" data-dismiss="alert"><i class="mi-close"></i></button>
+			<cfif rc.processed>
+				#rbKey('comments.message.confirmation')#
+			<cfelse>
+				#rbKey('comments.message.error')#
+			</cfif>
+		</span>
+		</div>
+	</cfif>
+
 	<div class="block block-constrain">
 		<div class="block block-bordered">
 			<div class="block-content">
 
-				<!--- MESSAGING --->
-				<cfif StructKeyExists(rc, 'processed') and IsBoolean(rc.processed)>
-					<cfset local.class = rc.processed ? 'success' : 'error'>
-					<div id="feedback" class="alert alert-#local.class#">
-						<button type="button" class="close" data-dismiss="alert">&times;</button>
-						<cfif rc.processed>
-							#rbKey('comments.message.confirmation')#
-						<cfelse>
-							#rbKey('comments.message.error')#
-						</cfif>
-					</div>
-				</cfif>
 
 				<form id="frmSearch" action="index.cfm">
 					<div class="tabs-left mura-ui full">

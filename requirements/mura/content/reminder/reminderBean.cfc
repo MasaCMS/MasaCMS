@@ -57,11 +57,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.isNew=1/>
 <cfset variables.instance.RemindInterval=0/>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfreturn this />
 	</cffunction>
 
- 	<cffunction name="set" returnType="void" output="false" access="public">
+ 	<cffunction name="set" output="false">
 		<cfargument name="property" required="true">
     <cfargument name="propertyValue">
     
@@ -99,11 +99,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	 </cffunction>
 	
-	<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+	<cffunction name="getAllValues" returntype="struct" output="false">
 		<cfreturn variables.instance />
   	</cffunction>
 		
-	<cffunction name="validate" access="public" output="false" returntype="void">
+	<cffunction name="validate" output="false">
 		<cfset variables.instance.errors=structnew() /> 
 		
 		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}",variables.instance.email) neq 0>
@@ -112,84 +112,84 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
      </cffunction>
 
-	<cffunction name="setcontentId" returnType="void" output="false" access="public">
+	<cffunction name="setcontentId" output="false">
     <cfargument name="ContentId" type="string" required="true">
     <cfset variables.instance.ContentId = trim(arguments.ContentId) />
   	</cffunction>
 
-  	<cffunction name="getcontentId" returnType="string" output="false" access="public">
+  	<cffunction name="getcontentId" output="false">
     <cfreturn variables.instance.ContentId />
   	</cffunction>
 	
-	<cffunction name="setEmail" returnType="void" output="false" access="public">
+	<cffunction name="setEmail" output="false">
     <cfargument name="Email" type="string" required="true">
     <cfset variables.instance.Email = trim(arguments.Email) />
   	</cffunction>
 
-  	<cffunction name="getEmail" returnType="string" output="false" access="public">
+  	<cffunction name="getEmail" output="false">
     <cfreturn variables.instance.Email />
   	</cffunction>
 
-	<cffunction name="setIsSent" returnType="void" output="false" access="public">
+	<cffunction name="setIsSent" output="false">
     <cfargument name="IsSent" type="numeric" required="true">
     <cfset variables.instance.IsSent =arguments.IsSent />
   	</cffunction>
 
-  	<cffunction name="getIsSent" returnType="numeric" output="false" access="public">
+  	<cffunction name="getIsSent" output="false">
     <cfreturn variables.instance.IsSent />
   	</cffunction>
 	
-	<cffunction name="setRemindDate" returnType="void" output="false" access="public">
+	<cffunction name="setRemindDate" output="false">
     <cfargument name="RemindDat" type="string" required="true">
     <cfset variables.instance.RemindDat = trim(arguments.RemindDat) />
   	</cffunction>
 
-  	<cffunction name="getRemindDate" returnType="string" output="false" access="public">
+  	<cffunction name="getRemindDate" output="false">
     <cfreturn variables.instance.RemindDat />
   	</cffunction>
 	
-	<cffunction name="setRemindHour" returnType="void" output="false" access="public">
+	<cffunction name="setRemindHour" output="false">
     <cfargument name="RemindHour" type="numeric" required="true">
     <cfset variables.instance.RemindHour =arguments.RemindHour />
   	</cffunction>
 
-  	<cffunction name="getRemindHour" returnType="numeric" output="false" access="public">
+  	<cffunction name="getRemindHour" output="false">
     <cfreturn variables.instance.RemindHour />
   	</cffunction>
 	
-	<cffunction name="setRemindMinute" returnType="void" output="false" access="public">
+	<cffunction name="setRemindMinute" output="false">
     <cfargument name="RemindMinute" type="numeric" required="true">
     <cfset variables.instance.RemindMinute =arguments.RemindMinute />
   	</cffunction>
 
-  	<cffunction name="getRemindMinute" returnType="numeric" output="false" access="public">
+  	<cffunction name="getRemindMinute" output="false">
     <cfreturn variables.instance.RemindMinute />
   	</cffunction>
 	
-		<cffunction name="setSiteID" returnType="void" output="false" access="public">
+		<cffunction name="setSiteID" output="false">
     <cfargument name="SiteID" type="string" required="true">
     <cfset variables.instance.SiteID = trim(arguments.SiteID) />
   	</cffunction>
 
-  	<cffunction name="getSiteID" returnType="string" output="false" access="public">
+  	<cffunction name="getSiteID" output="false">
     <cfreturn variables.instance.SiteID />
   	</cffunction>
 	
-	     <cffunction name="setIsNew" returnType="void" output="false" access="public">
+	     <cffunction name="setIsNew" output="false">
     <cfargument name="IsNew" type="numeric" required="true">
     <cfset variables.instance.IsNew = arguments.IsNew />
   </cffunction>
 
-  <cffunction name="getIsNew" returnType="numeric" output="false" access="public">
+  <cffunction name="getIsNew" output="false">
     <cfreturn variables.instance.IsNew />
   </cffunction>
   
-  <cffunction name="setRemindInterval" returnType="void" output="false" access="public">
+  <cffunction name="setRemindInterval" output="false">
     <cfargument name="RemindInterval" type="numeric" required="true">
     <cfset variables.instance.RemindInterval = arguments.RemindInterval />
   </cffunction>
 
-  <cffunction name="getRemindInterval" returnType="numeric" output="false" access="public">
+  <cffunction name="getRemindInterval" output="false">
     <cfreturn variables.instance.RemindInterval />
   </cffunction>
 	

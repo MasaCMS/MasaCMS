@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance = StructNew() />
 
 	<!--- INIT --->
-	<cffunction name="init" access="public" returntype="DataRecordBean" output="false">
+	<cffunction name="init" returntype="DataRecordBean" output="false">
 		
 		<cfargument name="DataRecordID" type="uuid" required="false" default="#CreateUUID()#" />
 		<cfargument name="DatasetID" type="string" required="false" default="" />
@@ -83,84 +83,84 @@ to your own modified versions of Mura CMS.
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="setAllValues" access="public" returntype="DatasetBean" output="false">
+	<cffunction name="setAllValues" returntype="DatasetBean" output="false">
 		<cfargument name="AllValues" type="struct" required="yes"/>
 		<cfset variables.instance = arguments.AllValues />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getAllValues" access="public" returntype="struct" output="false" >
+	<cffunction name="getAllValues" returntype="struct" output="false">
 		<cfreturn variables.instance />
 	</cffunction>
 	
-	<cffunction name="setDataRecordID" access="public" returntype="void" output="false">
+	<cffunction name="setDataRecordID" output="false">
 		<cfargument name="DataRecordID" type="uuid" required="true" />
 		<cfset variables.instance['datarecordid'] = arguments.DataRecordID />
 	</cffunction>
-	<cffunction name="getDataRecordID" access="public" returntype="uuid" output="false">
+	<cffunction name="getDataRecordID" returntype="uuid" output="false">
 		<cfreturn variables.instance.DataRecordID />
 	</cffunction>
 	
-	<cffunction name="setDatasetID" access="public" returntype="void" output="false">
+	<cffunction name="setDatasetID" output="false">
 		<cfargument name="DatasetID" type="string" required="true" />
 		<cfset variables.instance['datasetid'] = arguments.DatasetID />
 	</cffunction>
-	<cffunction name="getDatasetID" access="public" returntype="string" output="false">
+	<cffunction name="getDatasetID" output="false">
 		<cfreturn variables.instance.DatasetID />
 	</cffunction>
 	
-	<cffunction name="setLabel" access="public" returntype="void" output="false">
+	<cffunction name="setLabel" output="false">
 		<cfargument name="Label" type="string" required="true" />
 		<cfset variables.instance['label'] = arguments.Label />
 	</cffunction>
-	<cffunction name="getLabel" access="public" returntype="string" output="false">
+	<cffunction name="getLabel" output="false">
 		<cfreturn variables.instance.Label />
 	</cffunction>
 	
-	<cffunction name="setValue" access="public" returntype="void" output="false">
+	<cffunction name="setValue" output="false">
 		<cfargument name="Value" type="string" required="true" />
 		<cfset variables.instance['value'] = arguments.Value />
 	</cffunction>
-	<cffunction name="getValue" access="public" returntype="string" output="false">
+	<cffunction name="getValue" output="false">
 		<cfreturn variables.instance.Value />
 	</cffunction>
 	
-	<cffunction name="setOrderNo" access="public" returntype="void" output="false">
+	<cffunction name="setOrderNo" output="false">
 		<cfargument name="OrderNo" type="numeric" required="true" />
 		<cfset variables.instance['orderno'] = arguments.OrderNo />
 	</cffunction>
-	<cffunction name="getOrderNo" access="public" returntype="numeric" output="false">
+	<cffunction name="getOrderNo" output="false">
 		<cfreturn variables.instance.OrderNo />
 	</cffunction>
 	
-	<cffunction name="setIsSelected" access="public" returntype="void" output="false">
+	<cffunction name="setIsSelected" output="false">
 		<cfargument name="IsSelected" type="numeric" required="true" />
 		<cfset variables.instance['isselected'] = arguments.IsSelected />
 	</cffunction>
-	<cffunction name="getIsSelected" access="public" returntype="numeric" output="false">
+	<cffunction name="getIsSelected" output="false">
 		<cfreturn variables.instance.IsSelected />
 	</cffunction>
 	
-	<cffunction name="setRemoteID" access="public" returntype="void" output="false">
+	<cffunction name="setRemoteID" output="false">
 		<cfargument name="RemoteID" type="string" required="true" />
 		<cfset variables.instance['remoteid'] = arguments.RemoteID />
 	</cffunction>
-	<cffunction name="getRemoteID" access="public" returntype="string" output="false">
+	<cffunction name="getRemoteID" output="false">
 		<cfreturn variables.instance.RemoteID />
 	</cffunction>
 	
-	<cffunction name="setDateCreate" access="public" returntype="void" output="false">
+	<cffunction name="setDateCreate" output="false">
 		<cfargument name="DateCreate" type="string" required="true" />
 		<cfset variables.instance['datecreate'] = arguments.DateCreate />
 	</cffunction>
-	<cffunction name="getDateCreate" access="public" returntype="string" output="false">
+	<cffunction name="getDateCreate" output="false">
 		<cfreturn variables.instance.DateCreate />
 	</cffunction>
 	
-	<cffunction name="setDateLastUpdate" access="public" returntype="void" output="false">
+	<cffunction name="setDateLastUpdate" output="false">
 		<cfargument name="DateLastUpdate" type="string" required="true" />
 		<cfset variables.instance['datelastupdate'] = arguments.DateLastUpdate />
 	</cffunction>
-	<cffunction name="getDateLastUpdate" access="public" returntype="string" output="false">
+	<cffunction name="getDateLastUpdate" output="false">
 		<cfreturn variables.instance.DateLastUpdate />
 	</cffunction>
 </cfcomponent>	

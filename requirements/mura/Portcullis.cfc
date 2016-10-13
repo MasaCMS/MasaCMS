@@ -60,7 +60,7 @@
 		<cfset variables.internal.iplog = QueryNew("IP, Attempts, Blocked, DateBlocked", "VarChar, Integer, Bit, Date")/>
 	</cfif>
 
-	<cffunction name="init" output="false" access="public" returntype="Portcullis">
+	<cffunction name="init" output="false" returntype="Portcullis">
 		<cfargument name="settings" required="false" type="Struct"/>
 		<cfif structkeyexists(arguments,"settings")>
 			<cfset setSettings(arguments.settings)/>
@@ -68,7 +68,7 @@
 		<cfreturn this/>
 	</cffunction>
 
-	<cffunction name="setSettings" output="false" access="public" returntype="Any">
+	<cffunction name="setSettings" output="false">
 		<cfargument name="settings" required="true" type="Struct"/>
 		<cfset var local = StructNew()/>
 		<cfloop collection="#arguments.settings#" item="local.item">
@@ -76,11 +76,11 @@
 		</cfloop>
 	</cffunction>
 
-	<cffunction name="getSettings" output="false" access="public" returntype="Any">
+	<cffunction name="getSettings" output="false">
 		<cfreturn variables.instance/>
 	</cffunction>
 
-	<cffunction name="scan" output="false" access="public" returntype="Void">
+	<cffunction name="scan" output="false">
 		<cfargument name="object" required="true" type="Struct"/>
 		<cfargument name="objectname" required="true" type="String"/>
 		<cfargument name="ipAddress" required="true" type="String"/>
@@ -222,7 +222,7 @@
 
 	</cffunction>
 
-	<cffunction name="setlog" output="false" access="public" returntype="Void">
+	<cffunction name="setlog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfif isLogged(request.remoteAddr) eq 1>
 			<cfset updateLog(arguments.ipAddress)/>
@@ -232,11 +232,11 @@
 
 	</cffunction>
 
-	<cffunction name="getLog" output="false" access="public" returntype="Any">
+	<cffunction name="getLog" output="false">
 		<cfreturn variables.internal.iplog/>
 	</cffunction>
 
-	<cffunction name="isLogged" output="false" access="public" returntype="Any">
+	<cffunction name="isLogged" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfset var find = ""/>
 
@@ -248,7 +248,7 @@
 		<cfreturn YesNoFormat(find.recordcount)/>
 	</cffunction>
 
-	<cffunction name="isBlocked" output="false" access="public" returntype="Any">
+	<cffunction name="isBlocked" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfset var blocked = false/>
 		<cfset var find = ""/>
@@ -269,7 +269,7 @@
 		<cfreturn blocked/>
 	</cffunction>
 
-	<cffunction name="cleanLog" output="false" access="public" returntype="Any">
+	<cffunction name="cleanLog" output="false">
 		<cfset var cutoff = 0 - variables.instance.blockTime/>
 
 		<cfquery dbtype="query" name="variables.internal.iplog">
@@ -281,7 +281,7 @@
 		<cfreturn true/>
 	</cffunction>
 
-	<cffunction name="updateLog" output="false" access="public" returntype="Any">
+	<cffunction name="updateLog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 		<cfset var attempts = 0/>
 		<cfset var find = ""/>
@@ -310,7 +310,7 @@
 		<cfreturn true/>
 	</cffunction>
 
-	<cffunction name="removeIPfromLog" output="false" access="public" returntype="Any">
+	<cffunction name="removeIPfromLog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 
 		<cfquery dbtype="query" name="variables.internal.iplog">
@@ -322,7 +322,7 @@
 		<cfreturn true/>
 	</cffunction>
 
-	<cffunction name="insertLog" output="false" access="public" returntype="Any">
+	<cffunction name="insertLog" output="false">
 		<cfargument name="ipAddress" required="true" type="String">
 
 		<cfset QueryAddRow(variables.internal.iplog, 1)>
@@ -334,7 +334,7 @@
 		<cfreturn true/>
 	</cffunction>
 
-	<cffunction name="filterTags" output="false" access="public" returntype="Any">
+	<cffunction name="filterTags" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = StructNew()/>
 		<cfset var tag = ""/>
@@ -369,7 +369,7 @@
 		<cfreturn result/>
 	</cffunction>
 
-	<cffunction name="filterWords" output="false" access="public" returntype="Any">
+	<cffunction name="filterWords" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = StructNew()/>
 		<cfset result.detected = true/>
@@ -389,7 +389,7 @@
 		<cfreturn result/>
 	</cffunction>
 
-	<cffunction name="filterSQL" output="false" access="public" returntype="Any">
+	<cffunction name="filterSQL" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = StructNew()/>
 		<cfset var sqlcmdword = ""/>
@@ -430,7 +430,7 @@
 	</cffunction>
 
 	<!--- Some SQL command words are commonly used in everyday language like update and alter - this method determines if the context appears malign--->
-	<cffunction name="badSQLContext" output="false" access="public" returntype="Any">
+	<cffunction name="badSQLContext" output="false">
 		<cfargument name="sqlcmdword" required="true" type="String">
 		<cfargument name="text" required="true" type="String">
 		<cfset var local = StructNew()/>
@@ -466,7 +466,7 @@
 		<cfreturn local.result/>
 	</cffunction>
 
-	<cffunction name="filterCRLF" output="false" access="public" returntype="Any">
+	<cffunction name="filterCRLF" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = StructNew()/>
 		<cfset result.detected = true/>
@@ -483,7 +483,7 @@
 	</cffunction>
 
 	<!---HTMLEditFormat and XMLFormat simply don't do enough, so we do far more here--->
-	<cffunction name="escapeChars" output="false" access="public" returntype="Any">
+	<cffunction name="escapeChars" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = arguments.text/>
 
@@ -500,7 +500,7 @@
 		<cfreturn result/>
 	</cffunction>
 
-	<cffunction name="isSafeReferer" output="false" access="public" returntype="Any">
+	<cffunction name="isSafeReferer" output="false">
 		<cfset var thisserver = lcase(CGI.SERVER_NAME)/>
 		<cfset var thisreferer = "none"/>
 		<cfset var isSafe = false/> <!---We assume false until it's verified--->
@@ -525,7 +525,7 @@
 	</cffunction>
 
 	<!---Sometimes submitted variable names which are valid in other languages are not usable in CF due to its Variable naming rules--->
-	<cffunction name="isValidCFVariableName" output="false" access="public" returntype="Any">
+	<cffunction name="isValidCFVariableName" output="false">
 		<cfargument name="text" required="true" type="String">
 		<cfset var local = StructNew()/>
 		<cfset local.result = true/>
@@ -543,11 +543,11 @@
 		<cfreturn local.result/>
 	</cffunction>
 
-	<cffunction name="isDetected" output="false" access="public" returntype="Any">
+	<cffunction name="isDetected" output="false">
 		<cfreturn variables.internal.detected/>
 	</cffunction>
 
-	<cffunction name="removeNullChars" access="private" output="false" returntype="string">
+	<cffunction name="removeNullChars" access="private" output="false">
 		<cfargument name="theString" type="string" required="true" />
 		<cfreturn urldecode(replace(urlEncodedFormat(arguments.theString),"%00","","all"))>
 	</cffunction>
