@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<th>SubType</th>
 				<th>SiteID</th>
 				<th>Date Deleted</th>
-				<th>Date By</th>
+				<th class="hidden-xs">Deleted By</th>
 			</tr>
 			<cfset rc.trashIterator.setPage(rc.pageNum)>
 			<cfloop condition="rc.trashIterator.hasNext()">
@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>#esapiEncode('html',trashItem.getObjectSubType())#</td>
 				<td>#esapiEncode('html',trashItem.getSiteID())#</td>
 				<td>#LSDateFormat(trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(trashItem.getDeletedDate(),"short")#</td>
-				<td>#esapiEncode('html',trashItem.getDeletedBy())#</td>
+				<td class="hidden-xs">#esapiEncode('html',trashItem.getDeletedBy())#</td>
 				</tr>
 			</cfloop>
 			</table>

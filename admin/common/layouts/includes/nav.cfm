@@ -273,10 +273,7 @@
                             </li>
                             <cfloop query="rc.rsplugins">
                                <li>
-                                <a<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif> href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/">
-                                  <i class="mi-plug"></i>
-                                  #esapiEncode('html',rc.rsplugins.name)#
-                                </a>
+                                <a<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif> href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="mi-plug"></i>#esapiEncode('html',rc.rsplugins.name)#</a>
                               </li>
                             </cfloop>
 

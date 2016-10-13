@@ -60,7 +60,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="block block-constrain">
 		<div class="block block-bordered">
 		  <div class="block-content">
-
 			<ul class="metadata">
 			<li><strong>Label:</strong> #esapiEncode('html',rc.trashItem.getObjectLabel())#</li>
 			<li><strong>Type:</strong> #esapiEncode('html',rc.trashItem.getObjectType())#</li>
@@ -75,6 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul>
 
 			<cfif not listFindNoCase("Page,Folder,File,Link,Gallery,Calender,Form,Component,Variation",rc.trashItem.getObjectType())>
+				</div> <!-- /.block-content -->
 				<div class="mura-actions">
 				<div class="clearfix form-actions">
 					<button class="btn mura-primary" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');"><i class="mi-cogs"></i>Restore Item</button>
@@ -100,6 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</span>
 			</label>
 		</div>
+		</div> <!-- /.block-content -->
 		<div class="mura-actions">
 			<div class="clearfix form-actions">
 			<button class="btn mura-primary" onclick="restoreItem();"><i class="mi-cogs"></i>Restore Item</button>
@@ -159,7 +160,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
 			</cfif>
 
-		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.block-constrain -->
 </cfoutput>

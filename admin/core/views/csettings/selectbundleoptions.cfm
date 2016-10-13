@@ -171,16 +171,16 @@ function checkAll (form) {
     </div>
   
         </div> <!--- /.block-content --->  
-      </div> <!--- /.block.block-bordered --->  
   
       <div class="mura-actions">
         <div class="clearfix form-actions">
         <button class="btn mura-primary" onClick="return submitBundle();"><i class="mi-check-circle"></i>Create Bundle</button>
+        <input type="hidden" name="muraAction" value="cSettings.createBundle">
+        <input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteID)#">
         </div>
       </div>
   
-    <input type="hidden" name="muraAction" value="cSettings.createBundle">
-    <input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteID)#">
+      </div> <!--- /.block.block-bordered --->  
 
   </form>
 
