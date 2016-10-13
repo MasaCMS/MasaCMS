@@ -107,7 +107,8 @@
 					<cfset calendars=$.getBean('contentManager')
 						.findMany(
 							contentids=objectParams.items,
-							siteid=$.event('siteid')
+							siteid=$.event('siteid'),
+							showNavOnly=0
 						)>
 				</cfsilent>
 				<div class="mura-calender__filters" style="display:none;">
@@ -211,7 +212,9 @@
 							, defaultDate: defaultDate
 							, buttonText: {
 								day: '#variables.$.rbKey('calendar.day')#'
+								, agendaDay: '#variables.$.rbKey('calendar.agendaday')#'
 								, week: '#variables.$.rbKey('calendar.week')#'
+								, agendaWeek: '#variables.$.rbKey('calendar.agendaweek')#'
 								, month: '#variables.$.rbKey('calendar.month')#'
 								, today: '#variables.$.rbKey('calendar.today')#'
 							}
