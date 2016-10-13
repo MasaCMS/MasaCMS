@@ -46,7 +46,7 @@
   }
   .mura-header .nav-module-specific{
     text-align:left;
-    padding-top:12px;
+    padding-top:6px;
     .btn{
       margin-left: 0;
       margin-right: 8px;
@@ -74,6 +74,13 @@
     #tabArchitectural #gridContainer dl dt:first-child {
       width: ~'calc(100% - 100px)' !important; 
     }
+
+    .block-constrain{
+      padding-bottom: 15px !important;
+    }
+    .block-constrain>.content {
+      padding: 15px!important;
+    }
   }
 
 
@@ -88,7 +95,7 @@
   #tabArchitectural #gridContainer.site-tree dl dt:first-child {
     width: ~'calc(100% - 340px)' !important;
   }
-  
+
 }
 
 /* MAX WIDTH, LARGE & MEDIUM */
@@ -108,6 +115,17 @@
 
   .sidebar-mini .mura-footer .credits{
     margin-left: 83px;
+  }
+
+  .block-content + .mura-actions, 
+  .block-content form > .mura-actions,
+  form .block-content .mura-actions{
+    width: ~'calc(100% - 285px)';
+  }
+  .sidebar-mini .block-content + .mura-actions, 
+  .sidebar-mini .block-content form > .mura-actions,
+  .sidebar-mini .block-content + .mura-actions{
+    width: ~'calc(100% - 100px)';
   }
 
 }
