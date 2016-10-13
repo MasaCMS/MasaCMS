@@ -379,7 +379,7 @@ header .btn i{
     padding: 4px 10px;
 
     &.mura-primary{
-      background-color: #4485f1 !important;
+      background-color: @mura-blue !important;
       color:#FFF !important;
 
       > i{
@@ -664,8 +664,9 @@ form .mura-control-group > * + .help-block{
   color: rgba(255, 255, 255, 0.8);
 }
 
-.nav-main a:hover{
-  color: @white;
+.nav-main a:hover,
+.nav-main a:focus{
+  color: @white !important;
 }
 
 .nav-main li a{
