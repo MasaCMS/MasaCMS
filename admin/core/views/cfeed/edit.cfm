@@ -773,7 +773,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="hidden" name="action" value="update">
 	</cfif>
 	<input type="hidden" name="type" value="Local"><input name="isActive" type="hidden" value="1" />
+	<input type="hidden" id="instanceParams" value='#rc.feedBean.getInstanceParams()#' name="instanceParams" />
+	<input type="hidden" name="assignmentID" value="#esapiEncode('html_attr',rc.assignmentID)#" />
+	<input type="hidden" name="orderno" value="#esapiEncode('html_attr',rc.orderno)#" />
+	<input type="hidden" name="regionid" value="#esapiEncode('html_attr',rc.regionID)#" />
+	<input type=hidden name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#">
+	<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
+	#rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
 	</div>
+
+
+
 </div>
 </cfoutput>
 </cfsavecontent>
@@ -793,13 +803,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#tabContent#
 </cfif>
 
-<input type="hidden" id="instanceParams" value='#rc.feedBean.getInstanceParams()#' name="instanceParams" />
-<input type="hidden" name="assignmentID" value="#esapiEncode('html_attr',rc.assignmentID)#" />
-<input type="hidden" name="orderno" value="#esapiEncode('html_attr',rc.orderno)#" />
-<input type="hidden" name="regionid" value="#esapiEncode('html_attr',rc.regionID)#" />
-<input type=hidden name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#">
-<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
-#rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
 
 			#actionButtons#
 </div> <!-- /.block-constrain -->
