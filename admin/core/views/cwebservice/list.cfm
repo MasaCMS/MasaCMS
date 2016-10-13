@@ -58,7 +58,7 @@
 </div> <!-- /.mura-header -->
 
 <cfif not rc.$.siteConfig('useSSL')>
-   <div class="alert alert-error"><span>IMPORTANT: When using web services in production thes site should be set to use SSL (HTTPS).</span></div>
+   <div class="alert alert-error"><span>When using web services in production, this site should be set to use SSL (HTTPS).</span></div>
 </cfif>
 
 <div class="block block-constrain">
