@@ -17,7 +17,7 @@
 <cfproperty name="tags" type="string" default="" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 <cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="changesetCategoryAssignment">
-<cfproperty name="contentAssigments" fieldtype="one-to-many" cfc="content">
+<cfproperty name="contentAssignments" fieldtype="one-to-many" cfc="content">
 
 <cfset variables.primaryKey = 'changesetID'>
 <cfset variables.entityName = 'changeset'>
@@ -202,6 +202,14 @@
 </cffunction>
 
 <cffunction name="getAssignmentsQuery" output="false">
+		<cfreturn variables.changesetManager.getAssignmentsQuery(getValue('changesetID'))>
+</cffunction>
+
+<cffunction name="getContentAssignmentsIterator" output="false">
+		<cfreturn variables.changesetManager.getAssignmentsIterator(getValue('changesetID'))>
+</cffunction>
+
+<cffunction name="getContentAssignmentsQuery" output="false">
 		<cfreturn variables.changesetManager.getAssignmentsQuery(getValue('changesetID'))>
 </cffunction>
 

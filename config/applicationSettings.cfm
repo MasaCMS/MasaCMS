@@ -328,7 +328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	this.javaSettings = {
 		loadPaths=variables.loadPaths
 		, loadColdFusionClassPath = evalSetting(getINIProperty('javaSettingsLoadColdFusionClassPath',true))
-		, reloadOnChange=evalSetting(getINIProperty('javaSettingsReloadOnChange',false))
+		, reloadOnChange=true
 		, watchInterval=evalSetting(getINIProperty('javaSettingsWatchInterval',60))
 		, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
 	};

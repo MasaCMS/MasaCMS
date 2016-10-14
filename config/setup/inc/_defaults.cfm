@@ -122,6 +122,8 @@ variables.setupProcessComplete	= false;
 <cfparam name="FORM.production_dbtablespace"		default="#settingsIni.get( "production", "dbtablespace" )#" />
 <cfparam name="FORM.production_databaseserver"		default="localhost" />
 <cfparam name="FORM.production_databasename"		default="#application.applicationName#" />
+<cfparam name="FORM.production_context"				default="#context#" />
+<cfparam name="FORM.production_assetpath"			default="#context#" />
 <cfparam name="FORM.auto_create"					default="0" />
 <!--- admin account tab --->
 <cfparam name="FORM.production_adminemail"			default="#settingsIni.get( "production", "adminemail" )#" />

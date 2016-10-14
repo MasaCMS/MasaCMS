@@ -98,6 +98,7 @@
 		<cfargument name="groupname" type="string" default=""/>
 		<cfargument name="isPublic" type="string" default="1"/>
 		<cfargument name="userBean" type="any" default=""/>
+		<cfargument name="groupid" type="string" default=""/>
 		<cfset var key= "" />
 		<cfset var site=""/>
 		<cfset var cacheFactory="">
@@ -116,6 +117,10 @@
 			<cfelseif len(arguments.remoteID)>
 				<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 			</cfif>
+		</cfif>
+
+		<cfif len(arguments.groupid)>
+			<cfset arguments.userid=arguments.groupid>
 		</cfif>
 
 		<cfset key= "user" & arguments.siteid & arguments.userID />

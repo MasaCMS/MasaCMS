@@ -245,7 +245,7 @@
 		</cfif>
 	</cfif>
 
-	<cfif not arguments.event.valueExists('crumbdata')>
+	<cfif not isArray(arguments.event.getValue('crumbdata'))>
 		<cfset arguments.event.setValue('crumbdata',arguments.event.getValue('contentBean').getCrumbArray(setInheritance=true)) />
 	</cfif>
 
