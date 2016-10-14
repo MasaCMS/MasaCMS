@@ -497,7 +497,7 @@
 
 				var iframe=Mura('#frontEndToolsSidebariframe');
 
-				iframe.attr('src',iframe.data('preloadsrc'));
+				//iframe.attr('src',iframe.data('preloadsrc'));
 
 				obj.find('.mxp-editable').each(function(){
 					var item=Mura(this);
