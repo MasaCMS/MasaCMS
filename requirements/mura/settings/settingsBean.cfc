@@ -1235,18 +1235,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset theurl = "#getValue('domain')##application.configBean.getServerPort()#">
 	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-		<cfset thelist = listAppend(thelist,theurl)>
+		<cfset thelist = listAppend(thelist,'http://#theurl#')>
 	</cfif>
 	<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-		<cfset thelist = listAppend(thelist,theurl)>
+		<cfset thelist = listAppend(thelist,'https://#theurl#')>
 	</cfif>
 
 	<cfset theurl = "#getValue('domain')#:#cgi.server_port#">
 	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-		<cfset thelist = listAppend(thelist,theurl)>
+		<cfset thelist = listAppend(thelist,'http://#theurl#')>
 	</cfif>
 	<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-		<cfset thelist = listAppend(thelist,theurl)>
+		<cfset thelist = listAppend(thelist,'https://#theurl#')>
 	</cfif>
 
 	<cfif len(application.configBean.getAdminDomain())>
