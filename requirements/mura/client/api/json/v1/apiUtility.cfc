@@ -1528,7 +1528,7 @@ component extends="mura.cfobject" {
 		if(arguments.entityName=='content'){
 			var pk="contentid";
 		} else if(arguments.entityName=='feed'){
-			var pk="feedid";
+			throw(type="invalidParameters");
 		} else {
 			var pk=entity.getPrimaryKey();
 		}
