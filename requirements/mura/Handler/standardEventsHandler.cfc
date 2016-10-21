@@ -348,7 +348,7 @@
 		</cfif>
 	<cfelse>
 		<cfif not application.utility.isHTTPS()>
-			<cflocation addtoken="no" url="https://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
+			<cflocation statuscode="301" addtoken="no" url="https://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
 		</cfif>
 	</cfif>
 </cffunction>
