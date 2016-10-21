@@ -38,7 +38,7 @@
 					case 'javascript' :
 						encodedString = encoder.encodeForJavascript(JavaCast("string", arguments.inputString));
 						break;
-					case 'ldap' : 
+					case 'ldap' :
 						encodedString = encoder.encodeForLDAP(JavaCast("string", arguments.inputString));
 						break;
 					case 'url' :
@@ -79,7 +79,7 @@
 					case 'javascript' :
 						encodedString = JSStringFormat(arguments.inputString);
 						break;
-					case 'ldap' : 
+					case 'ldap' :
 						encodedString = arguments.inputString;
 						break;
 					case 'url' :
@@ -104,8 +104,7 @@
 						 );
 				}
 			}
-			
+
 			return encodedString;
 	</cfscript>
 </cffunction>
-
