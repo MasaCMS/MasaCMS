@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.addAlias("contentGateway","contentGatewayLucee");
 		}
 
-		if(getINIProperty("javaEnabled",true)){
+		if(getINIProperty("javaEnabled",true) && getINIProperty("legacyJavaLoader",true)){
 			variables.serviceFactory.addBean('javaLoader',
 					new mura.javaloader.JavaLoader(
 						loadPaths=[

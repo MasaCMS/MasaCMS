@@ -836,11 +836,6 @@ component extends="mura.cfobject" {
 	}
 
 	function serializeResponse(response){
-		if(getBean('configBean').getValue(property='shunter',defaultValue=false)){
-			if(isDefined('arguments.response.data.layout')){
-				arguments.response.layout=arguments.response.data.layout;
-			}
-		}
 		return getSerializer().serialize(arguments.response);
 	}
 
