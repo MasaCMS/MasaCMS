@@ -875,6 +875,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		</cfif>
+
+		<cfif isDefined('arguments.displayInterval.end') and arguments.displayInterval.end eq 'on'
+			and (!isDefined('arguments.displayInterval.endon') or !isDate(arguments.displayInterval.endon))>
+			<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
+			<cfset arguments.displayInterval.endon='never'>
+		</cfif>
+		
 		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
 	</cfif>
 
