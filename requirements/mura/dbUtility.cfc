@@ -344,7 +344,7 @@
 				<cfif not arguments.autoincrement>
 					<cfif not(not arguments.nullable and arguments.default eq 'null')>
 						DEFAULT
-						<cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>
+						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,smallint',arguments.datatype)>
 							#arguments.default#
 						<cfelse>
 							'#arguments.default#'
@@ -534,7 +534,7 @@
 					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET NOT NULL;
 					</cfif>
 					<cfif not arguments.autoincrement and not(not arguments.nullable and arguments.default eq 'null')>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
+					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,smallint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
 					</cfif>
 				</cfquery>
 			</cfcase>
@@ -672,7 +672,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="transformDataType" access="private">
+<cffunction name="transformDataType" access="private" hint="Translates to DB datatype">
 	<cfargument name="datatype" default="varchar">
 	<cfargument name="length" default="50">
 	<cfset var MSSQLversion=0>
@@ -691,6 +691,9 @@
 				</cfcase>
 				<cfcase value="tinyint">
 					<cfreturn "tinyint">
+				</cfcase>
+				<cfcase value="smallint">
+					<cfreturn "smallint">
 				</cfcase>
 				<cfcase value="boolean">
 					<cfreturn "bit">
@@ -756,6 +759,9 @@
 				<cfcase value="tinyint">
 					<cfreturn "tinyint">
 				</cfcase>
+				<cfcase value="smallint">
+					<cfreturn "smallint">
+				</cfcase>
 				<cfcase value="boolean">
 					<cfreturn "tinyint(1)">
 				</cfcase>
@@ -790,7 +796,7 @@
 				<cfcase value="int,integer,int4">
 					<cfreturn "integer">
 				</cfcase>
-				<cfcase value="tinyint,int2">
+				<cfcase value="tinyint,smallint,int2">
 					<cfreturn "smallint">
 				</cfcase>
 				<cfcase value="date,datetime,timestamp">
@@ -824,7 +830,7 @@
 				<cfcase value="int,integer">
 					<cfreturn "integer">
 				</cfcase>
-				<cfcase value="tinyint">
+				<cfcase value="tinyint,smallint">
 					<cfreturn "smallint">
 				</cfcase>
 				<cfcase value="date,datetime,timestamp">
@@ -896,7 +902,7 @@
 
 </cffunction>
 
-<cffunction name="transformColumnMetaData" access="private" output="false">
+<cffunction name="transformColumnMetaData" access="private" output="false" hint="Translates from db to Mura">
 <cfargument name="rs">
 <cfargument name="table">
 	<cfset var columnsStruct={}>
@@ -929,8 +935,11 @@
 					<cfset columnArgs.datatype="int">
 				</cfif>
 			</cfcase>
-			<cfcase value="tinyint,smallint,int2">
+			<cfcase value="tinyint,int2">
 				<cfset columnArgs.datatype="tinyint">
+			</cfcase>
+			<cfcase value="smallint">
+				<cfset columnArgs.datatype="smallint">
 			</cfcase>
 			<cfcase value="date,datetime,timestamp,timestamp without time zone,timestamp with time zone">
 				<cfset columnArgs.datatype="datetime">
@@ -963,7 +972,7 @@
 		</cfif>
 
 		<cfif len(columnArgs.default)
-			and listFindNoCase("tinyint,int,float,double",columnArgs.datatype)
+			and listFindNoCase("tinyint,int,smallint,float,double",columnArgs.datatype)
 			and not (
 						isNumeric(columnArgs.default)
 						and columnArgs.default neq "null")
