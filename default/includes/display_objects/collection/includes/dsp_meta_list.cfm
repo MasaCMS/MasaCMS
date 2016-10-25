@@ -13,22 +13,22 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes 
-	the preparation of a derivative work based on Mura CMS. Thus, the terms 
-	and conditions of the GNU General Public License version 2 ("GPL") cover 
+	Linking Mura CMS statically or dynamically with other modules constitutes
+	the preparation of a derivative work based on Mura CMS. Thus, the terms
+	and conditions of the GNU General Public License version 2 ("GPL") cover
 	the entire combined work.
 
-	However, as a special exception, the copyright holders of Mura CMS grant 
-	you permission to combine Mura CMS with programs or libraries that are 
+	However, as a special exception, the copyright holders of Mura CMS grant
+	you permission to combine Mura CMS with programs or libraries that are
 	released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS 
-	grant you permission to combine Mura CMS with independent software modules 
-	(plugins, themes and bundles), and to distribute these plugins, themes and 
-	bundles without Mura CMS under the license of your choice, provided that 
-	you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS
+	grant you permission to combine Mura CMS with independent software modules
+	(plugins, themes and bundles), and to distribute these plugins, themes and
+	bundles without Mura CMS under the license of your choice, provided that
+	you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -42,20 +42,20 @@
 		/index.cfm
 		/MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
-	meets the above guidelines as a combined work under the terms of GPL for 
-	Mura CMS, provided that you include the source code of that other code when 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that
+	meets the above guidelines as a combined work under the terms of GPL for
+	Mura CMS, provided that you include the source code of that other code when
 	and as the GNU GPL requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not 
-	obligated to grant this special exception for your modified version; it is 
-	your choice whether to do so, or to make such modified version available 
-	under the GNU General Public License version 2 without this exception.  You 
-	may, if you choose, apply this exception to your own modified versions of 
+	For clarity, if you create a modified version of Mura CMS, you are not
+	obligated to grant this special exception for your modified version; it is
+	your choice whether to do so, or to make such modified version available
+	under the GNU General Public License version 2 without this exception.  You
+	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
 --->
 <cfsilent>
-	
+
 	<cfset arguments.propertyMapFinal={
 		itemEl={tag="div",class="mura-item-meta"},
 		labelEl={tag="span"},
@@ -68,14 +68,14 @@
 	<cfif isDefined('arguments.propertyMap')>
 		<cfset structAppend(arguments.propertyMapFinal, arguments.propertyMap, true)>
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments,"type")>
 		<cfset arguments.type="Feed">
 	</cfif>
 	<cfif not structKeyExists(arguments,"fields")>
 		<cfset arguments.fields="Date,Title,Summary,Credits,Tags">
 	</cfif>
-</cfsilent>	
+</cfsilent>
 <cfoutput>
 	#variables.$.getContentListPropertyValue('itemEl','openingOuterMarkUp',arguments.propertyMapFinal)#
 	<#variables.$.getContentListPropertyValue('itemEl','tag',arguments.propertyMapFinal)# class="mura-item-meta">
@@ -107,15 +107,7 @@
 						<#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)# class="mura-item-meta__date">
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 							#variables.$.getContentListLabel(arguments.field,arguments.propertyMapFinal)#
-							<cfif variables.$.globalConfig('advancedScheduling')>
-									#item.getDisplayIntervalDesc()#
-							<cfelse>
-								<cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>
-									<time>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#</time>
-								<cfelse>
-									<time>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</time>
-								</cfif>
-							</cfif>
+							#arguments.item.getDisplayIntervalDesc()#
 						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp",arguments.propertyMapFinal)#
 						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 					<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
@@ -124,7 +116,7 @@
 							#variables.$.getContentListLabel(arguments.field,arguments.propertyMapFinal)#
 							<time>#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</time>
 						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp",arguments.propertyMapFinal)#
-						</#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)#>		
+						</#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)#>
 					</cfif>
 				</cfcase>
 				<cfcase value="Title">
@@ -198,7 +190,7 @@
 						<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
 						<#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)# class="mura-item-meta__tags">
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp",arguments.propertyMapFinal)#
-							#variables.$.getContentListLabel(arguments.field)# 
+							#variables.$.getContentListLabel(arguments.field)#
 							<cfloop from="1" to="#arguments.tagLen#" index="t">
 							<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
 							<span><a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#esapiEncode('html',arguments.tag)#</a></span>
@@ -211,10 +203,10 @@
 					<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT'))))>
 					 	<#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)# class="mura-item-meta__rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">
 					 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp",arguments.propertyMapFinal)#
-					 		#variables.$.getContentListLabel(arguments.field,arguments.propertyMapFinal)# 
+					 		#variables.$.getContentListLabel(arguments.field,arguments.propertyMapFinal)#
 					 		<span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span>
 					 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp",arguments.propertyMapFinal)#
-					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)#>	 	
+					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)#>
 					</cfif>
 				</cfcase>
 				<cfdefaultcase>
@@ -229,7 +221,7 @@
 					 			 	#esapiEncode("html",arguments.item.getValue(arguments.field))#
 					 			 </cfif>
 					 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp",arguments.propertyMapFinal)#
-					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)#>	 	
+					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)#>
 					</cfif>
 				</cfdefaultcase>
 			</cfswitch>
@@ -240,5 +232,3 @@
 	</#variables.$.getContentListPropertyValue('itemEl',"tag",arguments.propertyMapFinal)#>
 	#variables.$.getContentListPropertyValue('itemEl',"closingOuterMarkUp",arguments.propertyMapFinal)#
 </cfoutput>
-
-
