@@ -281,13 +281,21 @@ component extends="mura.bean.bean" versioned=false {
 		return super.getQueryService(argumentCollection=arguments);
 	}
 
+	private function getQueryParamType(datatype){
+		if(arguments.datatype=='int'){
+			return "cf_sql_integer";
+		} else {
+			return "cf_sql_" & arguments.datatype;
+		}
+	}
+
 	private function addQueryParam(qs,prop,value){
 		var paramArgs={};
 		var columns=getColumns();
 
 		if(arguments.prop.persistent){
 
-			paramArgs={name=arguments.prop.column,cfsqltype="cf_sql_" & columns[arguments.prop.column].datatype};
+			paramArgs={name=arguments.prop.column,cfsqltype=getQueryParamType(columns[arguments.prop.column].datatype)};
 
 			if(structKeyExists(arguments,'value')){
 				paramArgs.null=arguments.prop.nullable and (not len(arguments.value) or arguments.value eq "null");
