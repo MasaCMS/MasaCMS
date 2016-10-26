@@ -1,7 +1,7 @@
 component extends="mura.Factory" output="false" {
 
 	public any function init(name,siteid) {
-		lock name="creatingCache#arguments.name##siteid#" type="exclusive" timeout=10{
+		lock name="creatingCache#arguments.name##arguments.siteid#" type="exclusive" timeout=10{
 			if ( ListFindNoCase('Railo,Lucee',  server.coldfusion.productname) ) {
 				variables.collection=new provider.cacheLucee(argumentCollection=arguments);
 			} else {
@@ -18,7 +18,7 @@ component extends="mura.Factory" output="false" {
 
 	}
 
-	public any function get(key,context,timespan=1,idleTime=1) {
+	public any function get(key,context,timespan= CreateTimeSpan(1,0,0,0) ,idleTime=CreateTimeSpan(1,0,0,0)) {
 
 		if ( !has( arguments.key ) && isDefined("arguments.context") ) {
 			set( arguments.key, arguments.context,arguments.timespan,arguments.idleTime );

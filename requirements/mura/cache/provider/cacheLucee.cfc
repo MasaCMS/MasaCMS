@@ -52,7 +52,7 @@ component extends="mura.cfobject" output="false" {
 		default="data"
 		hint="The name of the cache.";
 
-	public any function init(){
+	public any function init(name,siteid){
 
 		variables.cacheName=arguments.siteID & "-" & arguments.name;
 
@@ -74,11 +74,15 @@ component extends="mura.cfobject" output="false" {
 	public any function put(key,value,timespan=1,idleTime=1){
 
 		if(arguments.timespan eq ""){
-			arguments.timespan=1;
+			arguments.timespan=CreateTimeSpan(1,0,0,0);
+		} else if (arguments.timespan < 1000){
+			arguments.timespan=CreateTimeSpan(arguments.timespan,0,0,0);
 		}
 
 		if(arguments.idleTime eq ""){
-			arguments.idleTime=1;
+			arguments.idleTime=CreateTimeSpan(1,0,0,0);
+		} else if (arguments.idleTime < 1000){
+			arguments.idleTime=CreateTimeSpan(arguments.idleTime,0,0,0);
 		}
 
 		cachePut(id=arguments.key,
