@@ -1,12 +1,14 @@
 component extends="mura.Factory" output="false" {
 
 	public any function init(name,siteid) {
-		if ( ListFindNoCase('Railo,Lucee',  server.coldfusion.productname) ) {
-			variables.collection=new provider.cacheLucee(argumentCollection=arguments);
-		} else {
-			variables.collection=new provider.cacheAdobe(argumentCollection=arguments);
+		lock name="creatingCache#arguments.name##siteid#" type="exclusive" timeout=10{
+			if ( ListFindNoCase('Railo,Lucee',  server.coldfusion.productname) ) {
+				variables.collection=new provider.cacheLucee(argumentCollection=arguments);
+			} else {
+				variables.collection=new provider.cacheAdobe(argumentCollection=arguments);
+			}
+			variables.map=variables.collection;
 		}
-		variables.map=variables.collection;
 		return this;
 	}
 
