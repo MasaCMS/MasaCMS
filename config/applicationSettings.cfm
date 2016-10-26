@@ -267,44 +267,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif this.ormenabled>
-	<cfset ormSettingsCheck=evalSetting(getINIProperty('ormSettings',''))>
-
-	<cfif not isSimpleValue(ormSettingsCheck)>
-		<cfset this.ormSettings=ormSettingsCheck>
-	<cfelse>
-		<cfswitch expression="#evalSetting(getINIProperty('dbtype',''))#">
-			<cfcase value="mssql">
-				<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
-			</cfcase>
-			<cfcase value="mysql">
-				<cfset this.ormSettings.dialect = "MySQL" />
-			</cfcase>
-			<cfcase value="postgresql">
-				<cfset this.ormSettings.dialect = "PostgreSQL" />
-			</cfcase>
-			<cfcase value="oracle">
-				<cfset this.ormSettings.dialect = "Oracle10g" />
-			</cfcase>
-			<cfcase value="nuodb">
-				<cfset this.ormSettings.dialect = "nuodb" />
-			</cfcase>
-		</cfswitch>
-		<cfset this.ormSettings.dbcreate =evalSetting(getINIProperty("ormdbcreate","update")) />
-		<cfif len(getINIProperty("ormcfclocation",""))>
-			<cfset arrayAppend(this.ormSettings.cfclocation,evalSetting(getINIProperty("ormcfclocation"))) />
-		</cfif>
-		<cfif len(getINIProperty("ormdatasource",""))>
-				<cfset this.ormSettings.datasource = evalSetting(getINIProperty("ormdatasource","")) />
-		</cfif>
-		<cfset this.ormSettings.flushAtRequestEnd = evalSetting(getINIProperty("ormflushAtRequestEnd","false")) />
-		<cfset this.ormsettings.eventhandling = evalSetting(getINIProperty("ormeventhandling","true")) />
-		<cfset this.ormSettings.automanageSession =evalSetting( getINIProperty("ormautomanageSession","false")) />
-		<cfset this.ormSettings.savemapping= evalSetting(getINIProperty("ormsavemapping","false")) />
-		<cfset this.ormSettings.skipCFCwitherror= evalSetting(getINIProperty("ormskipCFCwitherror","false")) />
-		<cfset this.ormSettings.useDBforMapping= evalSetting(getINIProperty("ormuseDBforMapping","true")) />
-		<cfset this.ormSettings.autogenmap= evalSetting(getINIProperty("ormautogenmap","true")) />
-		<cfset this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false")) />
+	<cfswitch expression="#evalSetting(getINIProperty('dbtype',''))#">
+		<cfcase value="mssql">
+			<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
+		</cfcase>
+		<cfcase value="mysql">
+			<cfset this.ormSettings.dialect = "MySQL" />
+		</cfcase>
+		<cfcase value="postgresql">
+			<cfset this.ormSettings.dialect = "PostgreSQL" />
+		</cfcase>
+		<cfcase value="oracle">
+			<cfset this.ormSettings.dialect = "Oracle10g" />
+		</cfcase>
+		<cfcase value="nuodb">
+			<cfset this.ormSettings.dialect = "nuodb" />
+		</cfcase>
+	</cfswitch>
+	<cfset this.ormSettings.dbcreate =evalSetting(getINIProperty("ormdbcreate","update")) />
+	<cfif len(getINIProperty("ormcfclocation",""))>
+		<cfset arrayAppend(this.ormSettings.cfclocation,evalSetting(getINIProperty("ormcfclocation"))) />
 	</cfif>
+	<cfif len(getINIProperty("ormdatasource",""))>
+			<cfset this.ormSettings.datasource = evalSetting(getINIProperty("ormdatasource","")) />
+	</cfif>
+	<cfset this.ormSettings.flushAtRequestEnd = evalSetting(getINIProperty("ormflushAtRequestEnd","false")) />
+	<cfset this.ormsettings.eventhandling = evalSetting(getINIProperty("ormeventhandling","true")) />
+	<cfset this.ormSettings.automanageSession =evalSetting( getINIProperty("ormautomanageSession","false")) />
+	<cfset this.ormSettings.savemapping= evalSetting(getINIProperty("ormsavemapping","false")) />
+	<cfset this.ormSettings.skipCFCwitherror= evalSetting(getINIProperty("ormskipCFCwitherror","false")) />
+	<cfset this.ormSettings.useDBforMapping= evalSetting(getINIProperty("ormuseDBforMapping","true")) />
+	<cfset this.ormSettings.autogenmap= evalSetting(getINIProperty("ormautogenmap","true")) />
+	<cfset this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false")) />
 </cfif>
 
 <cftry>
@@ -321,6 +315,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfscript>
+	//This is use to interact with Lucee admin settings.s
 	this.webadminpassword=evalSetting(getINIProperty('webadminpassword',''));
 
 	// if true, CF converts form fields as an array instead of a list (not recommended)
@@ -333,19 +328,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.loadPaths = ['#variables.baseDir#/requirements/lib'];
 	}
 
-	javaSettingsCheck=evalSetting(getINIProperty('javaSettings',''));
-
-	if(!isSimpleValue(javaSettingsCheck)){
-		this.javaSettings=javaSettingsCheck;
-	} else {
-		this.javaSettings = {
-			loadPaths=variables.loadPaths
-			, loadColdFusionClassPath = evalSetting(getINIProperty('javaSettingsLoadColdFusionClassPath',true))
-			, reloadOnChange=true
-			, watchInterval=evalSetting(getINIProperty('javaSettingsWatchInterval',60))
-			, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
-		};
-	}
+	this.javaSettings = {
+		loadPaths=variables.loadPaths
+		, loadColdFusionClassPath = evalSetting(getINIProperty('javaSettingsLoadColdFusionClassPath',true))
+		, reloadOnChange=true
+		, watchInterval=evalSetting(getINIProperty('javaSettingsWatchInterval',60))
+		, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
+	};
 
 	// Amazon S3 Credentials
 	try {
@@ -354,9 +343,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	} catch(any e) {
 		// not supported
 	}
-
-	this.datasources=evalSetting(getINIProperty('datasources','{}'));
-	this.caches=evalSetting(getINIProperty('caches','{}'));
 </cfscript>
 
 <cffunction name="initINI" output="false">
@@ -410,18 +396,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif left(arguments.value,2) eq "${"
 		and right(arguments.value,1) eq "}">
 		<cfset arguments.value=mid(arguments.value,3,len(arguments.value)-3)>
-		<cfset arguments.value=evaluate(arguments.value)>
+		<cfreturn evaluate(arguments.value)>
 	<cfelseif left(arguments.value,2) eq "{{"
 		and right(arguments.value,2) eq "}}">
 		<cfset arguments.value=mid(arguments.value,3,len(arguments.value)-4)>
-		<cfset arguments.valuee=valuate(arguments.value)>
+		<cfreturn evaluate(arguments.value)>
+	<cfelse>
+		<cfreturn arguments.value>
 	</cfif>
-
-	<cfif isJSON(arguments.value)>
-		<cfset arguments.value=deserializeJSON(arguments.value)>
-	</cfif>
-
-	<cfreturn arguments.value>
 </cffunction>
 
 <cffunction name="setINIProperty" output="false">
