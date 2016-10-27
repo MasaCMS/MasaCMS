@@ -953,6 +953,10 @@
 			<cfset openingDiv=openingDiv & " mura-async-object">
 		</cfif>
 
+		<cfif structKeyExists(arguments.objectParams,'cssClass') and len(arguments.objectParams.cssClass)>
+			<cfset openingDiv=openingDiv & " " & arguments.objectParams.cssClass>
+		</cfif>
+
 		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#createUUID()#"'>
 
 		<cfloop collection="# arguments.objectparams#" item="local.i">
