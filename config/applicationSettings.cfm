@@ -315,6 +315,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfscript>
+	//This is use to interact with Lucee admin settings.s
+	this.webadminpassword=evalSetting(getINIProperty('webadminpassword',''));
+
 	// if true, CF converts form fields as an array instead of a list (not recommended)
 	this.sameformfieldsasarray=evalSetting(getINIProperty('sameformfieldsasarray',false));
 
@@ -328,7 +331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	this.javaSettings = {
 		loadPaths=variables.loadPaths
 		, loadColdFusionClassPath = evalSetting(getINIProperty('javaSettingsLoadColdFusionClassPath',true))
-		, reloadOnChange=evalSetting(getINIProperty('javaSettingsReloadOnChange',false))
+		, reloadOnChange=true
 		, watchInterval=evalSetting(getINIProperty('javaSettingsWatchInterval',60))
 		, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
 	};

@@ -56,7 +56,7 @@
         // Browser globals (root is window)
         factory(root.Mura,root.Handlebars);
     }
-}(this, function (mura,Handlebars) {
+}(this, function (Mura,Handlebars) {
     Mura.datacache=new Mura.Cache();
     Mura.Handlebars=Handlebars.create();
     Mura.templatesLoaded=false;

@@ -257,7 +257,7 @@
 
 
 			</div> <!-- /.block-content -->
-		</div> <!-- /.block-bordered -->
+
 		</cfoutput>
 
 		<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
@@ -300,6 +300,7 @@
 			</cfif>
 
 			<cfoutput>
+				</div> <!-- /.block-content.tab-content -->
 				<div class="mura-actions">
 					<div class="form-actions">
 						<cfif rc.userid eq ''>
@@ -322,7 +323,6 @@
 					</div>
 				</div>
 
-				</div> <!-- /.block-content.tab-content -->
 
 				<cfif rsSubTypes.recordcount>
 					<script type="text/javascript">
@@ -355,6 +355,7 @@
 			</cfoutput>
 		</cfif>
 
+		</div> <!-- /.block-bordered -->
 	</div> <!-- /.block-constrain -->
 	</form>
 <!--- /Edit Form --->

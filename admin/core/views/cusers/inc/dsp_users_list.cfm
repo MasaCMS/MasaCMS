@@ -62,13 +62,13 @@
 						<th>
 							#rbKey('user.email')#
 						</th>
-						<th>
+						<th class="hidden-xs">
 							#rbKey('user.datelastupdate')#
 						</th>
-						<th>
+						<th class="hidden-xs hidden-sm">
 							#rbKey('user.timelastupdate')#
 						</th>
-						<th>
+						<th class="hidden-xs">
 							#rbKey('user.lastupdatedby')#
 						</th>
 					</tr>
@@ -186,17 +186,17 @@
 									</td>
 
 								<!--- Date Lastupdate --->
-									<td>
+									<td class="hidden-xs">
 										#LSDateFormat(local.item.getValue('lastupdate'), session.dateKeyFormat)#
 									</td>
 
 								<!--- Time Lastupdate --->
-									<td>
+									<td class="hidden-xs hidden-sm">
 										#LSTimeFormat(local.item.getValue('lastupdate'), 'short')#
 									</td>
 
 								<!--- Last Update By --->
-									<td>
+									<td class="hidden-xs">
 										#esapiEncode('html', local.item.getValue('lastupdateby'))#
 									</td>
 

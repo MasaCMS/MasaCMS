@@ -680,16 +680,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="createCacheFactory" output="false">
-	<cfargument name="capacity" required="true" default="0">
 	<cfargument name="freeMemoryThreshold" required="true" default="60">
-
-	<!---<cfif not arguments.capacity>--->
-		<cfreturn createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=arguments.freeMemoryThreshold)>
-	<!---
+	<cfargument name="name" required="true" default="output">
+	<cfargument name="siteid" required="true">
+	<cfif variables.configBean.getValue(property='advancedCaching',defaultValue=false)>
+		<cfreturn createObject("component","mura.cache.cacheAdvanced").init(name=arguments.name,siteid=arguments.siteid)>
 	<cfelse>
-		<cfreturn createObject("component","mura.cache.cacheFactoryLRU").init(capacity=arguments.capacity, freeMemoryThreshold=arguments.freeMemoryThreshold)>
+		<cfreturn createObject("component","mura.cache.cacheSimple").init(freeMemoryThreshold=arguments.freeMemoryThreshold)>
 	</cfif>
-	--->
 </cffunction>
 
 <cffunction name="save" output="false">

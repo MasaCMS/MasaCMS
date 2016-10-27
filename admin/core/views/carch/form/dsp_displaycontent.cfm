@@ -48,6 +48,7 @@
 <cfset rc.ptype=rc.contentBean.getParent().getType()>
 
 <cfif rc.contentBean.getIsNew() and rc.parentBean.getType() eq 'Calendar'>
+	<cfset rc.ptype='Calendar'>
 	<cfset rc.contentBean.setDisplay(2)>
 </cfif>
 
@@ -72,7 +73,10 @@
 </div>
 <div id="editDates" class="mura-control highlight"<cfif rc.contentBean.getdisplay() NEQ 2>style="display: none;"</cfif>>
 	<cfset displayInterval=rc.contentBean.getDisplayInterval().getAllValues()>
-
+	<cfif rc.ptype eq 'Calendar' and not rc.contentBean.exists()>
+		<cfset displayInterval.repeats=0>
+		<cfset displayInterval.allday=0>
+	</cfif>
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 		<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">

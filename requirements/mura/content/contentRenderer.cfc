@@ -1412,6 +1412,24 @@ Display Objects
 	</cfif>
 </cffunction>
 
+<cffunction name="getBodyDisplayStatus" output="false">
+	<cfif $.event('display') eq 'search'>
+		<cfreturn "search">
+	<cfelseif $.event('display') eq 'editprofile'>
+		<cfreturn "editprofile">
+	<cfelseif $.event('display') eq 'login'>
+		<cfreturn "login">
+	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and $.event('r').loggedIn and not $.event('r').allow >
+		<cfreturn "deny">
+	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and not $.event('r').loggedIn>
+		<cfreturn "login">
+	<cfelseif not $.event('isOnDisplay')>
+		<cfreturn "offline">
+	<cfelse>
+		<cfreturn 'default'>
+	</cfif>
+</cffunction>
+
 <cffunction name="dspBody"  output="false">
 	<cfargument name="body" type="string" default="#$.content('body')#">
 	<cfargument name="pagetitle" type="string" default="">
@@ -1598,9 +1616,10 @@ Display Objects
 <cffunction name="dspContentTypeBody" output="false">
 	<cfargument name="params" default="#structNew()#">
 	<cfargument name="renderKids" default="true">
+	<cfset var status=getBodyDisplayStatus()>
 	<cfsavecontent variable="eventOutput">
 	<cfoutput>
-	<cfif $.event('isOnDisplay') and $.event('r').restrict and $.event('r').loggedIn and not $.event('r').allow >
+	<cfif status eq 'deny' >
 		<cfset $.noIndex()>
 		<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",$)>
 		<cfif len(eventOutput)>
@@ -1608,7 +1627,7 @@ Display Objects
 		<cfelse>
 			<cfoutput>#$.dspObject('deny')#</cfoutput>
 		</cfif>
-	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and not $.event('r').loggedIn>
+	<cfelseif status eq 'login'>
 		<cfset $.noIndex()>
 		<cfset $.event('noCache',1)>
 		<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",$)>
@@ -1617,7 +1636,7 @@ Display Objects
 		<cfelse>
 		<cfoutput>#$.dspObject('login')#</cfoutput>
 		</cfif>
-	<cfelseif not $.event('isOnDisplay')>
+	<cfelseif status eq 'offline'>
 		<cfset $.noIndex()>
 		<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",$)>
 		<cfheader statuscode="404" statustext="Content Not Found" />

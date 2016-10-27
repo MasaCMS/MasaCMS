@@ -62,8 +62,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<tr>
 		<th class="actions"></th>
 		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.index')#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</th>
+		<th class="hidden-xs">#application.rbFactory.getKeyValue(session.rb,'collections.language')#</th>
+		<th class="hidden-xs">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'collections.featuresonly')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'collections.restricted')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'collections.active')#</th>
@@ -81,8 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</td>
 			<td class="var-width"><a title="Edit" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
-			<td>#rc.rsLocal.lang#</td>
-			<td>#rc.rsLocal.maxItems#</td>
+			<td class="hidden-xs">#rc.rsLocal.lang#</td>
+			<td class="hidden-xs">#rc.rsLocal.maxItems#</td>
 			<td>
 				<cfif rc.rsLocal.isFeaturesOnly>
 								<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<tr>
 	<th class="actions"></th>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.feed')#</th>
-	<th class="url">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</th>
+	<th class="url var-width">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'collections.active')#</th>
 	</tr>
 	<cfloop query="rc.rsRemote">
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		</td>
 		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
-		<td class="url">#left(rc.rsRemote.channelLink,70)#</td>
+		<td class="url var-width">#left(rc.rsRemote.channelLink,70)#</td>
 		<td>#yesnoFormat(rc.rsRemote.isactive)#</td>
 	</tr></cfloop>
 	</table>

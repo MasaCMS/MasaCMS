@@ -268,7 +268,7 @@
 	</cfif>
   </head>
   <!--- use class no-constrain to remove fixed-width on inner containers --->
-  <body id="#rc.originalcircuit#" class="header-navbar-fixed<!--- no-constrain--->">
+  <body id="#rc.originalcircuit#" class="mura-admin header-navbar-fixed<!-- no-constrain-->">
 
     <!-- Page Container -->
     <div id="page-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
@@ -364,6 +364,24 @@
 					function(){
 						$(this).hide();
 						$('##mura-header-search').show();
+					});
+
+
+					// min-height for page content area
+					var setBlockHeight = function(){
+						var minFooterH = 15;
+						var windowH = $(window).height();
+						var headerH = $('.mura-header:first').height();
+						var footerH = $('.mura-actions:first').height();
+						if (footerH <= minFooterH){ footerH = minFooterH;}
+						var h = windowH - headerH - footerH -110;
+						$('.block-constrain').css('min-height',h + 'px');
+					};
+					// run on page load
+					setBlockHeight();
+					// run on window resize
+					$(window).on('resize',function(){
+						setBlockHeight();
 					});
 
 					// tabdrop: trigger on page load w/ slight delay

@@ -71,7 +71,7 @@
 .mura-search{
   display: block;
   background-color: #FFF;
-  padding: 0 7px;
+  padding: 0 7px 4px;
   margin-top: 10px;
 
   button,
@@ -370,21 +370,21 @@ header .btn i{
   .clearfix(); // Adding clearfix to allow for .pull-right button containers
 
   > .btn{
-    margin-right: 15px;
-    background-color: #DDDEDD;
-    border-color: #BCBCBC;
-    min-width: 60px;
-    border: 0;
-    padding: 4px 10px;
-    font-size: 15px;
     background-color: #DEDEDE;
+    border: 0;
+    border-color: #BCBCBC;
+    font-size: 15px;
+    margin-right: 15px;
+    min-width: 60px;
+    padding: 4px 10px;
 
     &.mura-primary{
-      background-color: #6699CC !important;
+      background-color: @mura-blue !important;
       color:#FFF !important;
 
       > i{
         color:#fff !important;
+        opacity: .7 !important;
       }
 
     }
@@ -417,26 +417,46 @@ header .btn i{
   padding: 10px 13px;
 }
 
-// admin form-actions
 .mura-actions{
-  background-color: #f5f5f5;
-  min-height: 55px;
-  margin: 5px -25px -30px !important;
-  padding-bottom: 5px;
-  padding-top: 25px;
+  padding-bottom: 20px;
 }
+
+// fixed buttons
+body.mura-admin{
+
+  // admin form-actions
+  .mura-actions{
+    background-color: #f5f5f5;
+    min-height: 55px;
+    padding-bottom: 5px;
+    padding-top: 15px;
+  }
+  .mura-actions.primary-actions,
+  .block-content form .mura-actions,
+  form .block-content .mura-actions,
+  .block-content + .mura-actions{
+
+    bottom: 30px;
+    margin: 5px -25px -30px!important;
+    position: fixed;
+    padding-bottom: 10px;
+    width: 100%;
+    z-index: 1;
+  }
+}
+
 .mura-actions .form-actions{
-  padding-top: 0;
-  padding-bottom: 0;
-  max-width: 1080px;
   margin: 0;
+  max-width: 1080px;
+  padding-bottom: 0;
+  padding-top: 0;
   text-align: center;
   width: 100%;
 
   > .btn{
     background-color: #e4e4e4;
     .border-radius(0);
-    color: #6699CC;
+    color: #848484;
     font-size: 13px;
     height: 35px !important;
     text-transform: uppercase;
@@ -644,8 +664,9 @@ form .mura-control-group > * + .help-block{
   color: rgba(255, 255, 255, 0.8);
 }
 
-.nav-main a:hover{
-  color: @white;
+.nav-main a:hover,
+.nav-main a:focus{
+  color: @white !important;
 }
 
 .nav-main li a{
@@ -815,22 +836,29 @@ div.cke_editable{
 /* custom styles */
 
 /* fixed width, pre-responsive */
-.block-constrain{
-  padding-bottom: 20px;
-  /* min-width: 1110px; */
-  min-width: 520px;
-}
 
-.mura-header{
- /* min-width: 1140px; */
- min-width: 550px;
- padding-bottom: 10px;
-}
+body.mura-admin{ 
 
-.header-navbar-fixed #header-navbar{
-  min-width: 520px;
-  padding-right: 0px;
+  .block-constrain{
+    padding-bottom: 15px;
+    /* min-width: 1110px; */
+    min-width: 520px;
+    min-height: ~'calc(100% - 100px)';
+  }
+
+  .mura-header{
+   /* min-width: 1140px; */
+   min-width: 550px;
+   padding-bottom: 10px;
+  }
+
+  .header-navbar-fixed #header-navbar{
+    min-width: 520px;
+    padding-right: 0px;
+  }
+
 }
+// /body.admin
 
 .block-constrain > *{
   max-width: 1140px;
@@ -969,6 +997,12 @@ a.no-link{
     border-color: #69C !important;
     color: #FFF!important;
   }
+
+  &:active{
+    color: #545454 !important;
+    background-color: #e1e1e1 !important;
+    border-color: #cacaca !important;
+  }
 }
 
 .mura-header .mura-nav-group .btn{
@@ -979,17 +1013,6 @@ a.no-link{
   padding-top: 2px;
   border: 1px solid #EEE;
 }
-
-.mura-header .nav-module-specific .btn:visited,
-.mura-header .nav-module-specific .btn:hover,
-.mura-header .nav-module-specific .btn:active,
-.sidebar-buttons .btn:visted,
-.sidebar-buttons .btn:hover,
-.sidebar-buttons .btn:active{
-    color: #545454;
-    background-color: #f5f5f5 !important;
-    border-color: #e9e9e9 !important;
- }
 
 .mura-header .label,
 .mura-item-metadata .metadata-horizontal li,
@@ -1044,7 +1067,7 @@ a.no-link{
 
 .block-content{
   display: block;
-  padding: 5px 0px 1px;
+  padding: 5px 0px 13px;
 }
 
 .block-content + .block-content{
@@ -1520,6 +1543,11 @@ select[size],
   width:auto;
   padding-left: 30px;
   margin-top: 0;
+}
+
+#mura-content form label.radio.inline,
+.mura-control-group label.radio.inline{
+  padding-left: 22px;
 }
 
 #mura-content form .radio,

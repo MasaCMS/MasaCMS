@@ -245,7 +245,7 @@
 		</cfif>
 	</cfif>
 
-	<cfif not arguments.event.valueExists('crumbdata')>
+	<cfif not isArray(arguments.event.getValue('crumbdata'))>
 		<cfset arguments.event.setValue('crumbdata',arguments.event.getValue('contentBean').getCrumbArray(setInheritance=true)) />
 	</cfif>
 
@@ -348,7 +348,7 @@
 		</cfif>
 	<cfelse>
 		<cfif not application.utility.isHTTPS()>
-			<cflocation addtoken="no" url="https://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
+			<cflocation statuscode="301" addtoken="no" url="https://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
 		</cfif>
 	</cfif>
 </cffunction>
@@ -891,12 +891,12 @@
 				result.initjs=$.content().getVariationTargeting().getInitJS();
 			}
 
-			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data=result}));
+			$.event('__MuraResponse__',apiUtility.serializeResponse({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'={filename=result.filename,siteid=result.siteid,rendered=true},data=result}));
 
 		} catch (any e){
 			result.error = e;
 			$.announceEvent('onapierror');
-			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error=result.error.stacktrace}));
+			$.event('__MuraResponse__',apiUtility.serializeResponse({error=result.error.stacktrace}));
 		}
 
 	</cfscript>

@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
+			<th class="hidden-xs">#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
 			<!--- <th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th> --->
 			<th>Plugin ID</th>
 			</tr>
@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<td>#esapiEncode('html',rscategorylist.directory)#</td>
 			<td>#esapiEncode('html',rscategorylist.category)#</td>
 			<td>#esapiEncode('html',rscategorylist.version)#</td>
-			<td><a class="alt" href="#rscategorylist.providerurl#" target="_blank">#esapiEncode('html',rscategorylist.provider)#</a></td>
+			<td class="hidden-xs"><a class="alt" href="#rscategorylist.providerurl#" target="_blank">#esapiEncode('html',rscategorylist.provider)#</a></td>
 			<td>#rscategorylist.pluginID#</td>
 			</tr>
 			<cfset started=true>
