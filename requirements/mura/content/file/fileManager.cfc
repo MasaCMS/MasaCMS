@@ -763,7 +763,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfset deleteCustomImageCache(arguments.siteID)>
+	<cfif not len(arguments.size)>
+		<cfset deleteCustomImageCache(arguments.siteID)>
+	</cfif>
 </cffunction>
 
 <cffunction name="streamFile" output="false">
