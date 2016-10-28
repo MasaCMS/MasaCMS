@@ -315,10 +315,12 @@ order by tformresponsepackets.entered asc
 	$(function(){
 		var frm=$('###frmID#');
 		var action=frm.attr('action');
-
-		if(typeof action != 'undefined'){
+		if(typeof action != 'undefined'){		
 			action=action.split('?');
-			action='?nocache=1&' + action[action.length-1];
+			action=action[0] + '?nocache=1';
+			if (action.length > 1){
+				action=action + '&' = action[1];
+			}
 		} else {
 			action='?nocache=1';
 		}
