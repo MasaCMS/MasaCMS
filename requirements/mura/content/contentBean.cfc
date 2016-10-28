@@ -890,8 +890,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayIntervalDesc" output="false">
-	<cfargument name="calendarTitle" default="true">
-	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(content=this,calendarTitle=arguments.calendarTitle)>
+	<cfargument name="showTitle" default="true">
+	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(content=this,showTitle=arguments.showTitle)>
 </cffunction>
 
 <cffunction name="getDisplayInterval" output="false">

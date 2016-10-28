@@ -1825,7 +1825,7 @@
 	<cffunction name="renderIntervalDesc" output="false">
 		<cfargument name="content">
 		<cfargument name="renderer">
-		<cfargument name="calendarTitle" default="true">
+		<cfargument name="showTitle" default="true">
 
 		<cfset var displayInterval=arguments.content.getDisplayInterval().getAllValues()>
 		<cfset var returnstring=''>
@@ -1833,7 +1833,7 @@
 
 		<cfif not isDate(arguments.content.getdisplayStart())>
 			<cfreturn ''>
-		<cfelseif arguments.calendarTitle and content.hasParent()>
+		<cfelseif arguments.showTitle and content.hasParent()>
 			<cfset returnstring=esapiEncode('html',UCase(arguments.content.getParent().getMenuTitle())) & ': '>
 		</cfif>
 

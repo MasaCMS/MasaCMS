@@ -156,7 +156,7 @@
 							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>
 							#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 								#variables.$.getContentListLabel(arguments.field)#
-								#arguments.item.getDisplayIntervalDesc(calendarTitle=this.showCalendarTitleInDesc)#
+								#arguments.item.getDisplayIntervalDesc(showTitle=this.calendarTitleInDesc)#
 								#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 							</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 						<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
