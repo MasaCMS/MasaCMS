@@ -2765,6 +2765,7 @@ Display Objects
 
 <cffunction name="renderIntervalDesc" output="false">
 	<cfargument name="content">
+	<cfargument name="calendarTitle" default="true">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.renderIntervalDesc(argumentCollection=arguments)>
 </cffunction>
