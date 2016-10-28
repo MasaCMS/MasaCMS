@@ -881,7 +881,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
 			<cfset arguments.displayInterval.endon='never'>
 		</cfif>
-		
+
 		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
 	</cfif>
 
@@ -890,7 +890,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayIntervalDesc" output="false">
-	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(this)>
+	<cfargument name="calendarTitle" default="true">
+	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(content=this,calendarTitle=arguments.calendarTitle)>
 </cffunction>
 
 <cffunction name="getDisplayInterval" output="false">

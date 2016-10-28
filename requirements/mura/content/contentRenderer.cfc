@@ -170,6 +170,8 @@ Display Objects
 <cfset this.calendarTableClass="table table-bordered">
 <cfset this.calendarTableHeaderClass="">
 
+<cfset this.showCalendarTitleInDesc=true>
+
 <!--- calendar/dspList.cfm --->
 <cfset this.calendarListWrapperClass="svCalendar">
 
