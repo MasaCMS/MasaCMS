@@ -187,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rsParams">
 		<cfif listLen(rsParams.field,".") eq 2>
 			<cfset jointable=listFirst(rsParams.field,".") >
-			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent,tcontentcategoryassign,tcontenttags",jointable) and not listFind(jointables,jointable)>
+			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent,tcontentcategoryassign,tcontenttags,tcontentcategories",jointable) and not listFind(jointables,jointable)>
 				<cfset jointables=listAppend(jointables,jointable)>
 			</cfif>
 		</cfif>
@@ -734,67 +734,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset started=true>
 
 							<cfif listLen(param.getField(),".") gt 1>
-								<cfif listFirst(param.getField(),".") eq "tcontentcategoryassign">
-									<cfif listLast(param.getField(),".") eq 'categoryid'>
-										<cfset paramCatLen=listLen(param.getCriteria())>
-										<cfif arguments.feedBean.getUseCategoryIntersect()>
-											tcontent.contentHistID in (
-												select a.contentHistID from tcontentcategoryassign a #tableModifier#
-												<cfif paramCatLen gt 1>
-													<cfloop from="2" to="#paramCatLen#" index="c">
-														<cfset palias = listGetAt(alpha,c-1)>
-														<cfset talias = listGetAt(alpha,c)>
-														<cfset paramCatItem=listgetat(param.getCriteria(),c)>
-														inner join tcontentcategoryassign #talias# #tableModifier# on 	#palias#.contentHistID = #talias#.contentHistID and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#paramCatItem#">
-														<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
-													</cfloop>
-												</cfif>
-												<cfset paramCatItem=listgetat(param.getCriteria(),1)>
-												<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
-												where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#paramCatItem#"/>
-											)
-										<cfelse>
-											tcontent.contenthistID in (
-												select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
-												inner join tcontentcategories #tableModifier#
-												ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-												where
-												<cfif paramCatLen>
-													(
-														<cfloop from="1" to="#paramCatLen#" index="c">
-															<cfset paramCatItem=listgetat(param.getCriteria(),c)>
-															tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#paramCatItem#%"/>
-															<cfif c lt paramCatLen> or </cfif>
-															<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
-														</cfloop>
-													)
-												<cfelse>
-													tcontentcategories.categoryid=''
-												</cfif>
-
-											)
+								<cfif listFind('tcontentcategoryassign,tcontentcategories',listFirst(param.getField(),"."))>	
+									tcontent.contenthistid IN (
+										SELECT DISTINCT contenthistid
+										FROM tcontentcategoryassign #tableModifier#
+										<cfif listFirst(param.getField(),'.') eq 'tcontentcategories'>
+											inner join tcontentcategories #tableModifier#
+											ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
 										</cfif>
-									<cfelse>
-										tcontent.contenthistid IN (
-											SELECT DISTINCT contenthistid
-											FROM tcontentcategoryassign #tableModifier#
-											WHERE
-												#param.getFieldStatement()#
+										WHERE
+											#param.getFieldStatement()#
 
-												<cfif param.getCriteria() eq 'null'>
-													#param.getCondition()# NULL
-												<cfelse>
-													#param.getCondition()#
-													<cfif isListParam>(</cfif>
-													<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
-													<cfif isListParam>)</cfif>
+											<cfif param.getCriteria() eq 'null'>
+												#param.getCondition()# NULL
+											<cfelse>
+												#param.getCondition()#
+												<cfif isListParam>(</cfif>
+												<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+												<cfif isListParam>)</cfif>
 
+												<cfif  listFindNoCase('tcontentcategoryassign.categoryid,tcontentcategories.path',param.getField())>
 													<cfloop list="#param.getCriteria()#" index="paramCatItem">
 														<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
 													</cfloop>
 												</cfif>
-										)
-									</cfif>
+											</cfif>
+									)
 								<cfelseif listFirst(param.getField(),".") eq "tcontenttags">
 									tcontent.contenthistid IN (
 										SELECT DISTINCT contenthistid
