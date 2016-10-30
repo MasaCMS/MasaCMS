@@ -361,20 +361,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfif rsParams.recordcount>
 									<cfset started=false>
 									<cfset openGrouping=false />
+
 									<cfloop query="rsParams">
 										<cfset param=createObject("component","mura.queryParam").init(
 											relationship=rsParams.relationship,
 											field=rsParams.field,
-											dataType=rsParams.dataType,
+											datatype=rsParams.datatype,
 											condition=rsParams.condition,
 											criteria=rsParams.criteria
 										) />
 
-										<cfif param.getIsValid() and (param.isGroupingParam() or listLen(param.getField(),".") gt 1)>
+										<cfif param.getIsValid()>
+											<cfset isNullVal = param.getCriteria() eq 'null' ? true : false />
+
 											<cfif not started>
 												<cfset openGrouping=true />
 												and (
 											</cfif>
+
 											<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
 												<cfif not openGrouping>and</cfif> (
 												<cfset openGrouping=true />
@@ -397,26 +401,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												#param.getRelationship()#
 											</cfif>
 
-											<cfset started=true>
 											<cfset isListParam=param.isListParam()>
+											<cfset started=true>
 
-											<cfif  listLen(param.getField(),".") gt 1>
-												<cfif listFirst(param.getField(),".") neq "tcontentcategoryassign">
-													#param.getFieldStatement()#
+											<cfif listLen(param.getField(),".") gt 1>
+												<cfif listFind('tcontentcategoryassign,tcontentcategories',listFirst(param.getField(),"."))>
+													tcontent.contenthistid IN (
+														SELECT DISTINCT contenthistid
+														FROM tcontentcategoryassign #tableModifier#
+														<cfif listFirst(param.getField(),'.') eq 'tcontentcategories'>
+															inner join tcontentcategories #tableModifier#
+															ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
+														</cfif>
+														WHERE
+															#param.getFieldStatement()#
 
-													<cfif param.getCriteria() eq 'null'>
-														#param.getCondition()# NULL
-													<cfelse>
-														#param.getCondition()#
-														<cfif isListParam> (</cfif>
-														<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
-														<cfif isListParam>)</cfif>
-													</cfif>
-												<cfelse>
-													tcontent.contenthistid in (
-														select distinct contenthistid
-														from tcontentcategoryassign #tableModifier#
-														where
+															<cfif param.getCriteria() eq 'null'>
+																#param.getCondition()# NULL
+															<cfelse>
+																#param.getCondition()#
+																<cfif isListParam>(</cfif>
+																<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+																<cfif isListParam>)</cfif>
+
+																<cfif  listFindNoCase('tcontentcategoryassign.categoryid,tcontentcategories.path',param.getField())>
+																	<cfloop list="#param.getCriteria()#" index="paramCatItem">
+																		<cfset paramCatList=listAppend(paramCatList,paramCatItem)>
+																	</cfloop>
+																</cfif>
+															</cfif>
+													)
+												<cfelseif listFirst(param.getField(),".") eq "tcontenttags">
+													tcontent.contenthistid IN (
+														SELECT DISTINCT contenthistid
+														FROM tcontenttags #tableModifier#
+														WHERE
 															#param.getFieldStatement()#
 
 															<cfif param.getCriteria() eq 'null'>
@@ -428,47 +447,111 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 																<cfif isListParam>)</cfif>
 															</cfif>
 													)
-												</cfif>
-												<cfset openGrouping=false />
-											<cfelseif len(param.getField())>
-												<cfset castfield="attributeValue">
-												tcontent.contentHistID IN (
-													select tclassextenddata.baseID
-													from tclassextenddata #tableModifier#
-														<cfif isNumeric(param.getField())>
-															where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
-														<cfelse>
-															inner join tclassextendattributes #tableModifier#
-																on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-															where tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
-																and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-														</cfif>
-
-														AND
-
-														<cfif param.getCondition() neq "like">
-															<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid(),param.getDatatype())>
-														</cfif>
-														<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
-															upper(#castfield#)
-														<cfelse>
-															#castfield#
-														</cfif>
+												<cfelse>
+														#param.getFieldStatement()#
 
 														<cfif param.getCriteria() eq 'null'>
 															#param.getCondition()# NULL
 														<cfelse>
 															#param.getCondition()#
-															<cfif isListParam> (</cfif>
-																<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+															<cfif isListParam>(</cfif>
+															<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
 															<cfif isListParam>)</cfif>
 														</cfif>
-												) <cfset openGrouping=false />
+												</cfif>
+												<cfset started=true>
+												<cfset openGrouping=false />
+											<cfelseif len(param.getField())>
+												<cfif not ((param.getCriteria() eq 'null' or param.getCriteria() eq '') and param.getCondition() eq 'is')>
+													<cfset castfield="attributeValue">
+													tcontent.contentHistID IN (
+														SELECT tclassextenddata.baseID
+														FROM tclassextenddata #tableModifier#
+
+														<cfif isNumeric(param.getField())>
+															WHERE
+																tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+														<cfelse>
+															INNER JOIN tclassextendattributes #tableModifier#
+																ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+															WHERE
+																tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+																AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+														</cfif>
+
+															AND
+
+																<cfif param.getCriteria() neq 'null'>
+																	<cfif param.getCondition() neq "like">
+																		<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid(),param.getDatatype())>
+																	</cfif>
+
+																	<cfif param.getCondition() eq 'like' and variables.configBean.getDbCaseSensitive()>
+																		upper(#castfield#)
+																	<cfelse>
+																		#castfield#
+																	</cfif>
+																<cfelse>
+																	#castfield#
+																</cfif>
+
+																<cfif param.getCriteria() eq 'null'>
+																	#param.getCondition()# NULL
+																<cfelse>
+																	#param.getCondition()#
+																	<cfif isListParam>(</cfif>
+																	<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+																	<cfif isListParam>)</cfif>
+																</cfif>
+													)
+													<cfset openGrouping=false />
+												<cfelse>
+													<cfset castfield="attributeValue">
+													(tcontent.contentHistID NOT IN (
+														SELECT tclassextenddata.baseID
+														FROM tclassextenddata #tableModifier#
+
+														<cfif isNumeric(param.getField())>
+															WHERE
+																tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+														<cfelse>
+															INNER JOIN tclassextendattributes #tableModifier#
+																ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+															WHERE
+																tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+																AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+														</cfif>
+														)
+
+														or
+
+														tcontent.contentHistID IN (
+															SELECT tclassextenddata.baseID
+															FROM tclassextenddata #tableModifier#
+
+															<cfif isNumeric(param.getField())>
+																WHERE
+																	tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+															<cfelse>
+																INNER JOIN tclassextendattributes #tableModifier#
+																	ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+																WHERE
+																	tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
+																	AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+															</cfif>
+
+															AND tclassextenddata.attributeValue is null
+															)
+														)
+													<cfset openGrouping=false />
+												</cfif>
 											</cfif>
 										</cfif>
 									</cfloop>
+
 									<cfif started>)</cfif>
-								</cfif><!--- /rsParams.recordcount --->
+								</cfif><!--- /if rsParams.recordcount --->
+
 
 								<cfset started=false>
 
@@ -734,7 +817,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset started=true>
 
 							<cfif listLen(param.getField(),".") gt 1>
-								<cfif listFind('tcontentcategoryassign,tcontentcategories',listFirst(param.getField(),"."))>	
+								<cfif listFind('tcontentcategoryassign,tcontentcategories',listFirst(param.getField(),"."))>
 									tcontent.contenthistid IN (
 										SELECT DISTINCT contenthistid
 										FROM tcontentcategoryassign #tableModifier#
