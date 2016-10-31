@@ -466,24 +466,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.field=arguments.column>
 	</cfif>
 
-	<cfif arguments.field eq 'category'>
+	<cfif listFindNoCase('tcontentcategories.categoryid,categoryid,category',arguments.field)>
 		<cfset arguments.field='tcontentcategoryassign.categoryid'>
-		<cfif listLen(arguments.criteria) gt 1>
-			<cfset var rs=getBean('category').getFeed()
-					.setSiteID(get('siteid'))
-					.itemsPerPage(0)
-					.maxItems(0)
-					.where()
-					.prop('name')
-					.isIn(arguments.criteria)
-					.getQuery()>
+	<cfelseif arguments.field eq 'categorypathid'>
+		<cfset arguments.field='tcontentcategories.path'>
+	</cfif>
 
-			<cfset arguments.criteria=valueList(rs.categoryid)>
+	<cfif len(arguments.criteria) and ListFindNoCase('tcontentcategories.path,tcontentcategoryassign.categoryid,tcontentcategories.parentid',arguments.field) and not IsValid('uuid',listFirst(arguments.criteria))>
+		<cfif listLast(arguments.field,'.') eq 'categoryid'>
+			<cfset arguments.field='tcontentcategories.name'>
 		<cfelse>
-			<cfset arguments.criteria=getBean('category').loadBy(name=arguments.criteria,siteid=get('siteid')).getCategoryID()>
+			<cfif listLen(arguments.criteria) gt 1>
+				<cfset var rs=getBean('category').getFeed()
+						.setSiteID(get('siteid'))
+						.itemsPerPage(0)
+						.maxItems(0)
+						.where()
+						.prop('name')
+						.isIn(arguments.criteria)
+						.getQuery()>
+
+				<cfset arguments.criteria=valueList(rs.categoryid)>
+			<cfelse>
+				<cfset arguments.criteria=getBean('category').loadBy(name=arguments.criteria,siteid=get('siteid')).getCategoryID()>
+			</cfif>
 		</cfif>
-	<cfelseif arguments.field eq 'categoryid'>
-		<cfset arguments.field='tcontentcategoryassign.categoryid'>
 	<cfelseif arguments.field eq 'tag'>
 		<cfset arguments.field='tcontenttags.tag'>
 	</cfif>

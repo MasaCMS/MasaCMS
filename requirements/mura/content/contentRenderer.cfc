@@ -170,6 +170,8 @@ Display Objects
 <cfset this.calendarTableClass="table table-bordered">
 <cfset this.calendarTableHeaderClass="">
 
+<cfset this.calendarTitleInDesc=true>
+
 <!--- calendar/dspList.cfm --->
 <cfset this.calendarListWrapperClass="svCalendar">
 
@@ -2765,6 +2767,7 @@ Display Objects
 
 <cffunction name="renderIntervalDesc" output="false">
 	<cfargument name="content">
+	<cfargument name="showTitle" default="true">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.renderIntervalDesc(argumentCollection=arguments)>
 </cffunction>

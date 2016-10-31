@@ -631,7 +631,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCacheFactory" output="false">
 	<cfargument name="name"default="output" hint="data or output">
-
+	
 	<cfif not isDefined("arguments.name")>
 		<cfset arguments.name="output">
 	</cfif>

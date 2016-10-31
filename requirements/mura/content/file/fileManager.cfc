@@ -684,66 +684,88 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="rebuildImageCache" output="false">
+<cffunction name="getImageFilesQuery" returntype="query" output="false" hint="Retrieves all image file data for a single site.">
+	<cfargument name="siteID" type="string" required="true">
+	<cfargument name="fields" type="string" required="true" default="fileID, fileEXT">
+
+	<cfset var rsDB="">
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDB')#">
+		select #arguments.fields# from tfiles
+		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+		and fileEXT in ('jpg','jpeg','png','gif')
+	</cfquery>
+
+	<cfreturn rsDB />
+</cffunction>
+
+
+<cffunction name="deleteCustomImageCache" output="false" hint="Deletes custom cached images from the image cache based on age.">
+<cfargument name="siteID">
+<cfargument name="threshold" type="numeric" default="1" hint="How old in days the image must be before it is removed.">
+
+	<cfset var cacheFilePath=application.configBean.getFileDir() & "/" & arguments.siteID & "/cache/file/">
+	<cfset var check = "">
+	<cfset var rsDir="">
+	<cfset var rsCustomImages="">
+	<cfset var thresholdDate = dateAdd("d", -arguments.threshold, now())>
+
+	<cfdirectory action="list" name="rsDIR" directory="#cacheFilePath#">
+
+	<cfquery name="rsCustomImages" dbType="query">
+		select * from rsDIR where name like '%_H%' and dateLastModified < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#thresholdDate#">
+	</cfquery>
+
+	<cfloop query="rsCustomImages">
+		<cfif isNumeric(replaceNoCase(listGetAt(rsCustomImages.name, 2, "_"), "w", "", "one"))>
+			<cffile action="delete" file="#cacheFilePath##rsCustomImages.name#">
+		</cfif>
+	</cfloop>
+</cffunction>
+
+
+<cffunction name="rebuildImageCache" output="false" hint="Rebuilds either the entire image cache or a specific image size for a single site.">
 <cfargument name="siteID">
 <cfargument name="size" default="">
 
 	<cfset arguments.siteid=variables.settingsManager.getSite(arguments.siteid).getFilePoolID()>
 
-	<cfset var rsDB="">
-	<cfset var rsCheck="">
-	<cfset var rsDir="">
+	<cfset var cacheFilePath=application.configBean.getFileDir() & "/" & arguments.siteID & "/cache/file/">
 	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
-	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
-	<cfset var check="">
 	<cfset var currentSource="">
-	<cfset var i="">
+	<cfset var imageSize="">
+	<cfset var rsDB=getImageFilesQuery(arguments.siteid)>
+	<cfset var rsImageSizes="">
+	<cfset var sizeList=arguments.size>
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDB')#">
-	select fileID,fileEXT from tfiles
-	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-	and fileEXT in ('jpg','jpeg','png','gif')
-	</cfquery>
 
-	<cfif len(arguments.size)>
-		<cfset sizeList=arguments.size>
-	<cfelse>
-		<cfset var sizeList="small,medium,large">
-		<cfset var rsSize=currentSite.getCustomImageSizeQuery()>
-
-		<cfloop query="rsSize">
-			<cfset sizeList=listAppend(sizeList,rsSize.name)>
-		</cfloop>
+	<!--- Size not provided, rebuild all image sizes for site. --->
+	<cfif not len(sizeList)>
+		<cfset rsImageSizes=currentSite.getCustomImageSizeQuery()>
+		<cfset sizeList=listAppend("small,medium,large", valueList(rsImageSizes.name))>
 	</cfif>
 
+
+	<!--- Determine source file and rebuild image file cache. --->
 	<cfloop query="rsDB">
-		<cfset currentSource=filepath & rsDB.fileID & "_source." & rsDB.fileEXT>
+		<cfset currentSource=cacheFilePath & rsDB.fileID & "_source." & rsDB.fileEXT>
+
+		<!--- Source file is missing, use large file. --->
 		<cfif not fileExists(currentSource)>
-			<cfset currentSource=filepath & rsDB.fileID & "." & rsDB.fileEXT>
+			<cfset currentSource=cacheFilePath & rsDB.fileID & "." & rsDB.fileEXT>
 		</cfif>
-		<cfif FileExists(currentSource)>
-			<cfloop list="#sizeList#" index="i">
-				<cfset cropAndScale(fileID=rsDB.fileID,size=i,siteid=arguments.siteid)>
+
+
+		<cfif fileExists(currentSource)>
+			<cfloop list="#sizeList#" index="imageSize">
+				<cfset cropAndScale(fileID=rsDB.fileID,size=imageSize,siteid=arguments.siteid)>
 			</cfloop>
 		</cfif>
 	</cfloop>
 
-	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
-
-	<cfquery name="rsCheck" dbType="query">
-		select * from rsDIR where name like '%_H%'
-	</cfquery>
-
-	<cfif rsCheck.recordcount>
-		<cfset check=listGetAt(rsCheck.name,2,"_")>
-		<cfif len(check) gt 1>
-			<cfset check=mid(check,2,1)>
-			<cfif isNumeric(check)>
-				<cffile action="delete" file="#filepath##rsCheck.name#">
-			</cfif>
-		</cfif>
+	<cfif not len(arguments.size)>
+		<cfset deleteCustomImageCache(arguments.siteID)>
 	</cfif>
-
 </cffunction>
 
 <cffunction name="streamFile" output="false">

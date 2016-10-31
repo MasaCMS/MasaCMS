@@ -615,7 +615,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="property">
 	<cfif listLen(arguments.property,'.') eq 2>
 		<cfset var propArray=listToArray(arguments.property,'.')>
-		<cfset arguments.property=application.objectMapping[propArray[1]].table & '.' & propArray[2]>
+		<cfset arguments.property=application.objectMappings[propArray[1]].table & '.' & propArray[2]>
 	</cfif>
 	<cfset variables.instance.pendingParam.relationship='and'>
 	<cfset variables.instance.pendingParam.column=arguments.property>

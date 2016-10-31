@@ -107,7 +107,7 @@
 						<#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMapFinal)# class="mura-item-meta__date">
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 							#variables.$.getContentListLabel(arguments.field,arguments.propertyMapFinal)#
-							#arguments.item.getDisplayIntervalDesc()#
+							#arguments.item.getDisplayIntervalDesc(showTitle=this.calendarTitleInDesc)#
 						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp",arguments.propertyMapFinal)#
 						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 					<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>

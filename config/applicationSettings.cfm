@@ -83,6 +83,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
 <cfset this.setClientCookies = true>
 
+<cfparam name="this.sessioncookies" default="#structNew()#">
+<cfset this.sessioncookies.disableupdate = false>
+
 <cfset this.searchImplicitScopes=false>
 
 <!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
@@ -315,6 +318,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfscript>
+	//This is use to interact with Lucee admin settings.s
+	this.webadminpassword=evalSetting(getINIProperty('webadminpassword',''));
+
 	// if true, CF converts form fields as an array instead of a list (not recommended)
 	this.sameformfieldsasarray=evalSetting(getINIProperty('sameformfieldsasarray',false));
 
