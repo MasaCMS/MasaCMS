@@ -3027,9 +3027,14 @@ buttons: {
 				if(niceSelects.niceSelect){
 					niceSelects.niceSelect();
 				}
+
+
 				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
 				if(siteManager.configuratorMode=='frontEnd'){
+
+					wireupExterndalUIWidgets();
+
 					//if(siteManager.layoutmanager){
 						if(config.title.indexOf("<i class=") > -1){
 							$("#configuratorHeader").html(config.title);
