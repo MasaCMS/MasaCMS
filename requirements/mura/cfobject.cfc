@@ -412,7 +412,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	function mixin(obj){
 		for(var key in obj){
-			this.inject('#key#',arguments.obj[key])
+			this.inject('#key#',arguments.obj[key]);
 		}
 
 		return this;

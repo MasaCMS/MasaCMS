@@ -3186,8 +3186,12 @@ buttons: {
 			}
 		});
 	},
-	updateDisplayObjectFromModal:function(params){
+	updateDisplayObjectParams:function(params){
+		params=params || {};
+
 		var url=Mura.getQueryStringParams(location.search);
+
+		params=Mura.extend({},siteManager.availableObject.params,params)
 
 		$(function(){
 			if($("#ProxyIFrame").length){
@@ -3217,8 +3221,30 @@ buttons: {
 
 	requestDisplayObjectParams:function(fn){
 
-		siteManager.frontEndProxyListeners.push({cmd:'setObjectParams',fn:fn});
-		var self =this;
+		siteManager.frontEndProxyListeners.push(
+			{cmd:'setObjectParams',
+			fn:function(params){
+					$(".objectParam").each(function(){
+						var item=$(this);
+
+						var p=item.attr('name').toLowerCase();
+
+						if(typeof params[p] != 'undefined'){
+							item.val(params[p]);
+							if(item.attr('id') && typeof CKEDITOR.instances[item.attr('id')] != 'undefined'){
+								CKEDITOR.instances[item.attr('id')].updateElement();
+							}
+						}
+
+					});
+
+					siteManager.initConfiguratorParams();
+					fn(params);
+				}
+
+			}
+		);
+
 		var url=Mura.getQueryStringParams(location.search);
 
 		$(function(){
@@ -3248,7 +3274,7 @@ buttons: {
 	frontEndProxyListener:function(messageEvent){
 		var parameters=messageEvent.data;
 		var listeners=siteManager.frontEndProxyListeners;
-		
+
 		for (var i=0; i < listeners.length; i++){
 			if(listeners[i].cmd=parameters.cmd){
 				if(parameters.params){
