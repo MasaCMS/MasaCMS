@@ -771,7 +771,8 @@ function htmlEditorOnComplete(editorInstance) {
 	if(typeof CKFinder != 'undefined'){
 		CKFinder.setupCKEditor(
 			instance, {
-			basePath: context + '/requirements/ckfinder/'
+				basePath: context + '/requirements/ckfinder/',
+				rememberLastFolder: true
 			}
 		);
 	}
