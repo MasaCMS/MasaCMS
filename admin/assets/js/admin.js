@@ -646,7 +646,7 @@ function submitForm(frm, action, msg) {
 									frmInputs[f].setAttribute('value', action);
 								}
 							}
-							currentFrm.submit();				
+							currentFrm.submit();
 						}
 						, text: 'Yes'
 						, class: 'mura-primary'
@@ -1240,7 +1240,7 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 			,text: noButtonText
 			,class: 'mura-cancel'
 			} // /no
-			
+
 			,'Yes': {	click: function() {
 					$(this).dialog('close');
 					if(typeof(yesAction) == 'function') {
@@ -1650,8 +1650,8 @@ function setFinders(selector){
 	});
 }
 
-$(function(){
 
+function wireupExterndalUIWidgets(){
 	setFinders(".mura-ckfinder");
 	if(typeof dtLocale != 'undefined'){
 		setDatePickers(".datepicker",dtLocale);
@@ -1667,8 +1667,7 @@ $(function(){
 	setColorPickers(".colorpicker");
 	setToolTips(".container");
 	setFileSelectors();
-
-});
+}
 
 // table actions menu
 function showTableControls(el){
@@ -1676,3 +1675,7 @@ function showTableControls(el){
 	$('td.actions div.actions-menu').not('.hide').addClass('hide');
 	$(optionsList).removeClass('hide');
 };
+
+$(function(){
+	wireupExterndalUIWidgets();
+});
