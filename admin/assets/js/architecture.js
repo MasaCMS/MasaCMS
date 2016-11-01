@@ -3189,44 +3189,80 @@ buttons: {
 	updateDisplayObjectFromModal:function(params){
 		var url=Mura.getQueryStringParams(location.search);
 
-		frontEndProxy.post({
-			cmd:'setObjectParams',
-			reinit:true,
-			instanceid:url.instanceid,
-			params:params
-			});
+		$(function(){
+			if($("#ProxyIFrame").length){
+				$("#ProxyIFrame").load(
+					function(){
+						frontEndProxy.post({
+							cmd:'setObjectParams',
+							reinit:true,
+							instanceid:url.instanceid,
+							params:params
+							});
+					}
+				);
+			} else {
+				frontEndProxy.post({
+					cmd:'setObjectParams',
+					reinit:true,
+					instanceid:url.instanceid,
+					params:params
+					});
+			}
+		});
+
+
+
 	},
 
 	requestDisplayObjectParams:function(fn){
 
-		this.frontEndProxyListenerListeners.push({cmd:'setObjectParams',fn:fn});
-
+		siteManager.frontEndProxyListeners.push({cmd:'setObjectParams',fn:fn});
+		var self =this;
 		var url=Mura.getQueryStringParams(location.search);
 
-		frontEndProxy.post({
-			cmd:'requestObjectParams',
-			instanceid:url.instanceid,
-			targetFrame:'modal'
+		$(function(){
+			if($("#ProxyIFrame").length){
+				$("#ProxyIFrame").load(
+					function(){
+						frontEndProxy.post({
+							cmd:'requestObjectParams',
+							instanceid:url.instanceid,
+							targetFrame:'modal'
+							}
+						);
+					}
+				);
+			} else {
+				frontEndProxy.post({
+					cmd:'requestObjectParams',
+					instanceid:url.instanceid,
+					targetFrame:'modal'
+					}
+				);
 			}
-		);
+		});
 
 	},
 
 	frontEndProxyListener:function(messageEvent){
-
 		var parameters=messageEvent.data;
-		var listeners=this.frontEndProxyListenerListeners.length;
-
+		var listeners=siteManager.frontEndProxyListeners;
+		
 		for (var i=0; i < listeners.length; i++){
 			if(listeners[i].cmd=parameters.cmd){
-				listeners[i].fn(parameters);
+				if(parameters.params){
+					listeners[i].fn(parameters.params);
+				} else {
+					listeners[i].fn(parameters);
+				}
 				listeners[i].cmd='void';
 			}
 		}
 
 	},
-	
-	frontEndProxyListenerListeners:[]
+
+	frontEndProxyListeners:[]
 
 };
 
