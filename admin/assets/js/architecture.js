@@ -3150,7 +3150,84 @@ buttons: {
 		});
 
 		return false;
-	}
+	},
+	openDisplayObjectModal:function(view,params){
+		params=params || {};
+
+		var $params=Mura.getQueryStringParams(location.search);
+		Mura.deepExtend(Mura.setLowerCaseKeys($params),Mura.setLowerCaseKeys(params));
+		$params.sourceframe='modal';
+		$params.muraaction="carch.displayobjectmodal";
+		$params.view=view;
+		//console.log($params);
+		var src='?';
+
+		for(var p in $params){
+			src=src + "&" + p + "=" + encodeURIComponent($params[p]);
+		}
+
+		frontEndProxy.post({
+			cmd:'openModal',
+			src:src
+			}
+		);
+	},
+	setDisplayObjectModalWidth:function(width){
+		width=width || 'standard';
+		$(function(){
+			if($("#ProxyIFrame").length){
+				$("#ProxyIFrame").load(
+					function(){
+						frontEndProxy.post({cmd:'setWidth',width:width});
+					}
+				);
+			} else {
+				frontEndProxy.post({cmd:'setWidth',width:width});
+			}
+		});
+	},
+	updateDisplayObjectFromModal:function(params){
+		var url=Mura.getQueryStringParams(location.search);
+
+		frontEndProxy.post({
+			cmd:'setObjectParams',
+			reinit:true,
+			instanceid:url.instanceid,
+			params:params
+			});
+	},
+
+	requestDisplayObjectParams:function(fn){
+
+		this.frontEndProxyListenerListeners.push({cmd:'setObjectParams',fn:fn});
+
+		var url=Mura.getQueryStringParams(location.search);
+
+		frontEndProxy.post({
+			cmd:'requestObjectParams',
+			instanceid:url.instanceid,
+			targetFrame:'modal'
+			}
+		);
+
+	},
+
+	frontEndProxyListener:function(messageEvent){
+
+		var parameters=messageEvent.data;
+		var listeners=this.frontEndProxyListenerListeners.length;
+
+		for (var i=0; i < listeners.length; i++){
+			if(listeners[i].cmd=parameters.cmd){
+				listeners[i].fn(parameters);
+				listeners[i].cmd='void';
+			}
+		}
+
+	},
+	
+	frontEndProxyListenerListeners:[]
+
 };
 
 

@@ -66,6 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset filefound=false>
 	<cfset $=rc.$>
 	<cfset m=rc.$>
+	<cfset Mura=rc.$>
 
 	<cfset $.event('contentBean',$.getBean('content').loadBy(contehistid=rc.contenthistid))>
 
