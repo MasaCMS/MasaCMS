@@ -249,7 +249,7 @@ component extends="mura.bean.bean" versioned=false {
 					getDbUtility().addColumn(argumentCollection=props[prop]);
 
 					if(structKeyExists(props[prop],"fieldtype")){
-						if(props[prop].fieldtype eq "id" && (!getIsHistorical() || p=='histid')){
+						if(props[prop].fieldtype eq "id" && (!getIsHistorical() || props[prop].name=='histid')){
 							getDbUtility().addPrimaryKey(argumentCollection=props[prop]);
 						} else if ( listFindNoCase('one-to-one,one-to-many,many-to-one,index,id',props[prop].fieldtype) ){
 							getDbUtility().addIndex(argumentCollection=props[prop]);
@@ -737,18 +737,20 @@ component extends="mura.bean.bean" versioned=false {
 			if(getIsHistorical()){
 				writeOutput("
 					inner join (
-						select #getPrimaryKey()# primarykey, max(created) createdLimit from #getTable()#
+						select #getPrimaryKey()# pkey, max(lastupdate) lastupdatemax from #getTable()#
 						where
-						created <= :pointInTime
+						lastupdate <= :pointInTime
 						and deleted=0
 						group by #getPrimaryKey()#
 
+
 					) activeTable
 					 on (
-						#getTable()#.#primaryKey#=activeTable.primarykey
-						and #getTable()#.created=activeTable.createdLimit
+						#getTable()#.#getPrimaryKey()#=activeTable.pkey
+						and #getTable()#.lastupdate=activeTable.lastupdatemax
 					 )"
 				 );
+
 			}
 
 			for(var arg in arguments){
