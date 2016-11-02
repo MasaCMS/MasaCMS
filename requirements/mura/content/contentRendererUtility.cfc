@@ -1445,7 +1445,7 @@
 		<cfif (event.getValue('isOnDisplay')
 				and ((not event.getValue('r').restrict)
 					or (event.getValue('r').restrict and event.getValue('r').allow)))
-						and not (event.getValue('display') neq '' and arguments.renderer.getSite().getPrimaryColumn() eq arguments.columnid)>
+						and not (listFindNoCase('search,editprofile,login',event.getValue('display')) and arguments.renderer.getSite().getPrimaryColumn() eq arguments.columnid)>
 
 			<cfif arguments.allowInheritance and event.getValue('contentBean').getinheritObjects() eq 'inherit'
 				and event.getValue('inheritedObjects') neq ''
