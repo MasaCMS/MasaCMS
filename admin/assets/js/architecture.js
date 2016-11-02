@@ -3150,7 +3150,146 @@ buttons: {
 		});
 
 		return false;
-	}
+	},
+	openDisplayObjectModal:function(view,params){
+		params=params || {};
+
+		var $params=Mura.getQueryStringParams(location.search);
+		Mura.deepExtend(Mura.setLowerCaseKeys($params),Mura.setLowerCaseKeys(params));
+		$params.sourceframe='modal';
+		$params.muraaction="carch.displayobjectmodal";
+		$params.view=view;
+		//console.log($params);
+		var src='?';
+
+		for(var p in $params){
+			src=src + "&" + p + "=" + encodeURIComponent($params[p]);
+		}
+
+		frontEndProxy.post({
+			cmd:'openModal',
+			src:src
+			}
+		);
+	},
+	setDisplayObjectModalWidth:function(width){
+		width=width || 'standard';
+		$(function(){
+			if($("#ProxyIFrame").length){
+				$("#ProxyIFrame").load(
+					function(){
+						frontEndProxy.post({cmd:'setWidth',width:width});
+					}
+				);
+			} else {
+				frontEndProxy.post({cmd:'setWidth',width:width});
+			}
+		});
+	},
+	updateDisplayObjectParams:function(params){
+		params=params || {};
+
+		var url=Mura.setLowerCaseKeys(Mura.getQueryStringParams(location.search));
+
+		params=Mura.extend({},siteManager.availableObject.params,params)
+
+		$(function(){
+			if($("#ProxyIFrame").length){
+				$("#ProxyIFrame").load(
+					function(){
+						frontEndProxy.post({
+							cmd:'setObjectParams',
+							reinit:(url.sourceframe=='sidebar') ? false :true,
+							instanceid:url.instanceid,
+							params:params
+							});
+					}
+				);
+			} else {
+				frontEndProxy.post({
+					cmd:'setObjectParams',
+					reinit:(url.sourceframe=='sidebar') ? false :true,
+					instanceid:url.instanceid,
+					params:params
+					});
+			}
+		});
+
+
+
+	},
+
+	requestDisplayObjectParams:function(fn){
+
+		siteManager.frontEndProxyListeners.push(
+			{cmd:'setObjectParams',
+			fn:function(params){
+					$(".objectParam").each(function(){
+						var item=$(this);
+
+						var p=item.attr('name').toLowerCase();
+
+						if(typeof params[p] != 'undefined'){
+							item.val(params[p]);
+							if(item.attr('id') && typeof CKEDITOR.instances[item.attr('id')] != 'undefined'){
+								CKEDITOR.instances[item.attr('id')].updateElement();
+							}
+						}
+
+					});
+
+					siteManager.initConfiguratorParams();
+					fn(params);
+				}
+
+			}
+		);
+
+		var url=Mura.getQueryStringParams(location.search);
+
+		$(function(){
+			if($("#ProxyIFrame").length){
+				$("#ProxyIFrame").load(
+					function(){
+						frontEndProxy.post({
+							cmd:'requestObjectParams',
+							instanceid:url.instanceid,
+							targetFrame:'modal'
+							}
+						);
+					}
+				);
+			} else {
+				frontEndProxy.post({
+					cmd:'requestObjectParams',
+					instanceid:url.instanceid,
+					targetFrame:'modal'
+					}
+				);
+			}
+		});
+
+	},
+
+	frontEndProxyListener:function(messageEvent){
+		var parameters=messageEvent.data;
+		var listeners=siteManager.frontEndProxyListeners;
+
+		for (var i=0; i < listeners.length; i++){
+			if(listeners[i].cmd=parameters.cmd){
+				if(parameters.params){
+					listeners[i].fn(parameters.params);
+				} else {
+					listeners[i].fn(parameters);
+				}
+				listeners[i].cmd='void';
+			}
+		}
+
+	},
+
+	frontEndProxyListeners:[]
+
 };
 
 

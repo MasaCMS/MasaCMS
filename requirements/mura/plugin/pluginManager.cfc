@@ -2409,8 +2409,8 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="renderAdminTemplate" output="false">
 <cfargument name="body">
 <cfargument name="pageTitle">
-<cfargument name="jsLib" required="true" default="prototype">
-<cfargument name="jsLibLoaded" required="true" default="false">
+<cfargument name="jsLib" required="true" default="jquery">
+<cfargument name="jsLibLoaded" required="true" default="true">
 <cfargument name="compactDisplay" required="false" default="false" />
 <cfargument name="moduleid" required="false" default="#request.muraMostRecentPluginModuleID#" />
 <cfset var sessionData=getSession()>

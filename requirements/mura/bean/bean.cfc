@@ -523,6 +523,11 @@ component extends="mura.cfobject" output="false" {
 		return this;
 	}
 
+	function getIsHistorical(){
+		param name="application.objectMappings.#variables.entityName#.historical" default=false;
+		return application.objectMappings[variables.entityName].historical;
+	}
+
 	function getPrimaryKey(){
 		return variables.primarykey;
 	}
@@ -566,7 +571,8 @@ component extends="mura.cfobject" output="false" {
 					var pname='';
 					var i='';
 					var prop={};
-					var md=duplicate(getMetaData(this));
+					var omd=duplicate(getMetaData(this));
+					var md=omd;
 					var loadKey="";
 					var dottedPath=md.fullname;
 					var synthArgs={};
@@ -579,7 +585,6 @@ component extends="mura.cfobject" output="false" {
 
 					application.objectMappings[variables.entityName].properties={};
 					application.objectMappings[variables.entityName].primarykey="";
-
 
 					if(structKeyExists(md,'versioned') && md.versioned){
 						application.objectMappings[variables.entityName].versioned=true;
@@ -651,6 +656,12 @@ component extends="mura.cfobject" output="false" {
 						application.objectMappings[variables.entityName].readonly=false;
 					}
 
+					if(structKeyExists(md,'historical')){
+						application.objectMappings[variables.entityName].historical=md.historical;
+					} else {
+						application.objectMappings[variables.entityName].historical=false;
+					}
+
 					if(structKeyExists(md,'manageschema')){
 						application.objectMappings[variables.entityName].manageschema=md.manageschema;
 					} else {
@@ -663,11 +674,36 @@ component extends="mura.cfobject" output="false" {
 						application.objectMappings[variables.entityName].usetrash=false;
 					}
 
+					//Need to set top level historcal entity level property based on property check before fully parsing properties
+
 					for (md;
 					    structKeyExists(md, "extends");
 					    md = md.extends)
 					  {
 
+					    if (structKeyExists(md, "properties"))
+					    {
+					      for (i = 1;
+					           i <= arrayLen(md.properties);
+					           i++)
+					      {
+
+							  if(structKeyExists(md.properties[i],'historical') && isBoolean(md.properties[i].historical) && md.properties[i].historical){
+								  application.objectMappings[variables.entityName].historical=true;
+								  break;
+							  }
+
+						  }
+					  }
+				    }
+
+					//reset to original component metadata
+					md=omd;
+
+					for (md;
+					    structKeyExists(md, "extends");
+					    md = md.extends)
+					  {
 					    if (structKeyExists(md, "properties"))
 					    {
 					      for (i = 1;
@@ -699,9 +735,10 @@ component extends="mura.cfobject" output="false" {
 					       	 	}
 
 					       	 	if(prop.fieldtype eq 'id'){
-					       	 		application.objectMappings[variables.entityName].primaryKey=prop.name;
-					       	 		setPropAsIDColumn(prop);
-					       	 		//writeDump(var=prop,abort=true);
+									setPropAsIDColumn(prop);
+									if(!getIsHistorical() || prop.name !='histid'){
+										application.objectMappings[variables.entityName].primaryKey=prop.name;
+									}
 					       	 	}
 
 					       	 	if(!structKeyExists(prop,"dataType")){

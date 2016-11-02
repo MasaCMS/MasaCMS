@@ -103,6 +103,7 @@
 				MuraInlineEditor.sidebarAction('showobjects');
 			} else if (parameters["cmd"]=="setObjectParams"){
 				var item=Mura('[data-instanceid="' + parameters.instanceid + '"]');
+
 				if(typeof parameters.params == 'object'){
 
 					delete parameters.params.params;
@@ -365,7 +366,7 @@
 
 			editableObj.addClass('mura-object-selected');
 			src+='&cacheid=' + Math.random();
-			
+
 			console.log(src)
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			MuraInlineEditor.sidebarAction('showconfigurator');

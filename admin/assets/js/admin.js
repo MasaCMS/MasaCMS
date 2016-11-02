@@ -771,7 +771,8 @@ function htmlEditorOnComplete(editorInstance) {
 	if(typeof CKFinder != 'undefined'){
 		CKFinder.setupCKEditor(
 			instance, {
-			basePath: context + '/requirements/ckfinder/'
+				basePath: context + '/requirements/ckfinder/',
+				rememberLastFolder: true
 			}
 		);
 	}
@@ -1629,11 +1630,15 @@ function setFinders(selector){
 
 		if(completepath.toLowerCase() == 'true'){
 			finder.selectActionFunction = function(fileUrl) {
-				jQuery('input[name="' + target + '"]').val(webroot + fileDelim + fileUrl);
+				var fs=jQuery('input[name="' + target + '"]');
+				fs.val(webroot + fileDelim + fileUrl);
+				fs.trigger('change');
 			};
 		} else {
 			finder.selectActionFunction = function(fileUrl) {
-				jQuery('input[name="' + target + '"]').val(fileUrl);
+				var fs=jQuery('input[name="' + target + '"]');
+				fs.val(fileUrl);
+				fs.trigger('change');
 			};
 		}
 
