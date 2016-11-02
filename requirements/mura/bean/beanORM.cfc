@@ -740,7 +740,6 @@ component extends="mura.bean.bean" versioned=false {
 						select #getPrimaryKey()# pkey, max(lastupdate) lastupdatemax from #getTable()#
 						where
 						lastupdate <= :pointInTime
-						and deleted=0
 						group by #getPrimaryKey()#
 
 

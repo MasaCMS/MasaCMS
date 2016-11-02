@@ -464,7 +464,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfelse>
 								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 							</cfif>
-				and deleted=0
 				group by #primaryKey#
 
 			) activeTable
