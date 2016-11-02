@@ -1462,7 +1462,7 @@ Display Objects
 		<cfif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
 			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not sessionData.mura.isLoggedIn)
 			or (variables.event.getValue('display') eq 'editprofile' and sessionData.mura.isLoggedIn)>
-			<cfif variables.event.getValue('display') neq ''>
+			<cfif listFindNoCase('search,editprofile,login',variables.event.getValue('display'))>
 				<cfswitch expression="#variables.event.getValue('display')#">
 					<cfcase value="editprofile">
 						<cfset variables.$.noIndex()>
