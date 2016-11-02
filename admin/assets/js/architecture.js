@@ -3189,7 +3189,7 @@ buttons: {
 	updateDisplayObjectParams:function(params){
 		params=params || {};
 
-		var url=Mura.getQueryStringParams(location.search);
+		var url=Mura.setLowerCaseKeys(Mura.getQueryStringParams(location.search));
 
 		params=Mura.extend({},siteManager.availableObject.params,params)
 
@@ -3199,7 +3199,7 @@ buttons: {
 					function(){
 						frontEndProxy.post({
 							cmd:'setObjectParams',
-							reinit:true,
+							reinit:(url.sourceframe=='sidebar') ? false :true,
 							instanceid:url.instanceid,
 							params:params
 							});
@@ -3208,7 +3208,7 @@ buttons: {
 			} else {
 				frontEndProxy.post({
 					cmd:'setObjectParams',
-					reinit:true,
+					reinit:(url.sourceframe=='sidebar') ? false :true,
 					instanceid:url.instanceid,
 					params:params
 					});

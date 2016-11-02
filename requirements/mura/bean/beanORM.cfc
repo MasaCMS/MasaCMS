@@ -249,9 +249,9 @@ component extends="mura.bean.bean" versioned=false {
 					getDbUtility().addColumn(argumentCollection=props[prop]);
 
 					if(structKeyExists(props[prop],"fieldtype")){
-						if(props[prop].fieldtype eq "id"){
+						if(props[prop].fieldtype eq "id" && (!getIsHistorical() || p=='histid')){
 							getDbUtility().addPrimaryKey(argumentCollection=props[prop]);
-						} else if ( listFindNoCase('one-to-one,one-to-many,many-to-one,index',props[prop].fieldtype) ){
+						} else if ( listFindNoCase('one-to-one,one-to-many,many-to-one,index,id',props[prop].fieldtype) ){
 							getDbUtility().addIndex(argumentCollection=props[prop]);
 						}
 					}
@@ -343,6 +343,10 @@ component extends="mura.bean.bean" versioned=false {
 		var pluginManager=getBean('pluginManager');
 		var event=new mura.event({siteID=getValue('siteid'),bean=this});
 
+		if(getIsHistorical()){
+			set('histid',createUUID());
+		}
+
 		validate();
 
 		if(getReadOnly()){
@@ -380,7 +384,7 @@ component extends="mura.bean.bean" versioned=false {
 
 			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
 
-			if(qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
+			if(!getIsHistorical() && qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
 
 				pluginManager.announceEvent('onBefore#variables.entityName#Update',event);
 
@@ -438,10 +442,17 @@ component extends="mura.bean.bean" versioned=false {
 
 			} else{
 
-				pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
-
-				preCreate();
-				preInsert();
+				//Historical saves always insert, if deleted then events are fired within delete method
+				if(!(getIsHistorical() && get('deleted')==1)){
+					if(exists()){
+						preUpdate();
+						pluginManager.announceEvent('onBefore#variables.entityName#Update',event);
+					} else {
+						preCreate();
+						preInsert();
+						pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
+					}
+				}
 
 				for (prop in props){
 					if(props[prop].persistent){
@@ -489,20 +500,33 @@ component extends="mura.bean.bean" versioned=false {
 					qs.execute(sql=sql);
 					purgeCache();
 
+					var doesExist=exists();
+
 					variables.instance.isnew=0;
 					variables.instance.addObjects=[];
 					variables.instance.removeObjects=[];
 
-					postCreate();
-					postInsert();
+					//Historical saves always insert, if deleted then events are fired within delete method
+					if(!(getIsHistorical() && get('deleted')==1)){
+						if(doesExist){
+							postUpdate();
 
-					pluginManager.announceEvent('onAfter#variables.entityName#Create',event);
+							pluginManager.announceEvent('onAfter#variables.entityName#Update',event);
+						} else{
+							postCreate();
+							postInsert();
 
+							pluginManager.announceEvent('onAfter#variables.entityName#Create',event);
+						}
+					}
 				}
 			}
 
-			pluginManager.announceEvent('onAfter#variables.entityName#Save',event);
-			pluginManager.announceEvent('on#variables.entityName#Save',event);
+			//if historical and deleted then events are fired within delete method
+			if(!(getIsHistorical() && get('deleted')==1)){
+				pluginManager.announceEvent('onAfter#variables.entityName#Save',event);
+				pluginManager.announceEvent('on#variables.entityName#Save',event);
+			}
 
 		/*
 		} else {
@@ -657,9 +681,15 @@ component extends="mura.bean.bean" versioned=false {
 			}
 		}
 
-		var qs=getQueryService();
-		qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
-		qs.execute(sql='delete from #getTable()# where #getPrimaryKey()# = :primarykey');
+		if(getIsHistorical()){
+			set('deleted',1);
+			save(argumentCollection=arguments);
+		} else {
+			var qs=getQueryService();
+			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
+			qs.execute(sql='delete from #getTable()# where #getPrimaryKey()# = :primarykey');
+		}
+
 		purgeCache();
 
 		postDelete();
@@ -693,8 +723,33 @@ component extends="mura.bean.bean" versioned=false {
 			arguments.siteid=getValue('siteID');
 		}
 
+		if(getIsHistorical()){
+			if(isDate(request.muraPointInTime)){
+				qs.addParam(name="pointInTime",cfsqltype="cf_sql_timestamp",value=request.muraPointInTime);
+			} else {
+				qs.addParam(name="pointInTime",cfsqltype="cf_sql_timestamp",value=now());
+			}
+		}
+
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL() & " ");
+
+			if(getIsHistorical()){
+				writeOutput("
+					inner join (
+						select #getPrimaryKey()# primarykey, max(created) createdLimit from #getTable()#
+						where
+						created <= :pointInTime
+						and deleted=0
+						group by #getPrimaryKey()#
+
+					) activeTable
+					 on (
+						#getTable()#.#primaryKey#=activeTable.primarykey
+						and #getTable()#.created=activeTable.createdLimit
+					 )"
+				 );
+			}
 
 			for(var arg in arguments){
 				hasArg=false;
@@ -753,6 +808,17 @@ component extends="mura.bean.bean" versioned=false {
 					}
 
 					writeOutput(" #getTable()#.#discriminatorColumn#= :#getDiscriminatorValue()# ");
+				}
+
+				if(getIsHistorical()){
+					if(not started){
+						writeOutput("where ");
+						started=true;
+					} else {
+						writeOutput("and ");
+					}
+
+					writeOutput(" #getTable()#.deleted= 0 ");
 				}
 			}
 

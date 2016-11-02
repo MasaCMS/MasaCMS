@@ -378,6 +378,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn isDefined("application.objectMappings.#getValue('entityName')#.discriminatorColumn") and len(application.objectMappings[getValue('entityName')].discriminatorColumn)>
 </cffunction>
 
+<cffunction name="getIsHistorical" output="false">
+	<cfreturn isDefined("application.objectMappings.#getValue('entityName')#.historical") and IsBoolean(application.objectMappings[getValue('entityName')].historical) and application.objectMappings[getValue('entityName')].historical>
+</cffunction>
+
 <cffunction name="getDiscriminatorColumn" output="false">
 	<cfreturn application.objectMappings[getValue('entityName')].discriminatorColumn>
 </cffunction>
@@ -449,6 +453,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		from #variables.instance.table#
 
+		<cfif getIsHistorical()>
+			<cfset var primaryKey=getEntity().getPrimaryKey()>
+
+			inner join (
+				select #primaryKey# primarykey, max(created) createdLimit from #variables.instance.table#
+				where
+			  	created <= <cfif isDate(request.muraPointInTime)>
+								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#request.muraPointInTime#">
+							<cfelse>
+								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+							</cfif>
+				and deleted=0
+				group by #primaryKey#
+
+			) activeTable
+			 on (
+			 	#variables.instance.table#.#primaryKey#=activeTable.primarykey
+				and #variables.instance.table#.created=activeTable.createdLimit
+			 )
+		</cfif>
 		<!--- Join to implied tables based on field prefix --->
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
@@ -536,6 +560,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 		<cfif started>)</cfif>
+	</cfif>
+
+	<cfif getIsHistorical()>
+		and #variables.instance.table#.deleted=0
 	</cfif>
 
 	<cfif not arguments.countOnly>
