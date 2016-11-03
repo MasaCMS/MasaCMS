@@ -457,20 +457,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var primaryKey=getEntity().getPrimaryKey()>
 
 			inner join (
-				select #primaryKey# primarykey, max(created) createdLimit from #variables.instance.table#
+				select #primaryKey# primarykey, max(lastupdate) lastupdatemax from #variables.instance.table#
 				where
-			  	created <= <cfif isDate(request.muraPointInTime)>
+			  	lastupdate <= <cfif isDate(request.muraPointInTime)>
 								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#request.muraPointInTime#">
 							<cfelse>
 								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 							</cfif>
-				and deleted=0
 				group by #primaryKey#
 
 			) activeTable
 			 on (
 			 	#variables.instance.table#.#primaryKey#=activeTable.primarykey
-				and #variables.instance.table#.created=activeTable.createdLimit
+				and #variables.instance.table#.lastupdate=activeTable.lastupdatemax
 			 )
 		</cfif>
 		<!--- Join to implied tables based on field prefix --->

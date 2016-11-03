@@ -47,7 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="mura.bean.beanORM" historical=true bundleable=true{
 	property name="histid" fieldtype="id" historical=true;
-	property name="created" fieldtype="index" datatype="datetime" default="now()";
+	property name="created" fieldtype="index" datatype="datetime";
+	property name="lastupdate" fieldtype="index" datatype="datetime";
 	property name="deleted" fieldtype="index" datatype="tinyint" default=0;
 
 }
