@@ -364,7 +364,7 @@ If you did not request a new authorization, contact #contactEmail#.
 					linkServID=arguments.data.linkServID,
 					isAdminLogin=arguments.data.isAdminLogin,
 					compactDisplay=arguments.data.compactDisplay,
-					deviceid=cookie.originalurltoken}>
+					deviceid=cookie.mxp_trackingid}>
 
 				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
 				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
