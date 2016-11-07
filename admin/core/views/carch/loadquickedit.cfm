@@ -255,7 +255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				$('##mura-datepicker-displayStop').trigger('change');
 				options.endon=$('##mura-datepicker-displayStop').val();
 			}
-			
+
 			$('##displayInterval').val(JSON.stringify(options));
 		}
 
@@ -288,37 +288,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		function setEndOption(){
-			var type=$('##displayIntervalEnd').val();
 
-			$('.mura-interval-end').hide();
-			//alert(type)
-			if(type=='after'){
-				$('##mura-interval-end-after').show();
-				pushDisplayStopOut();
-			} else if(type=='on'){
-				$('##mura-interval-end-on').show();
+			if($('##displayIntervalRepeats').is(':checked')){
+				var type=$('##displayIntervalEnd').val();
 
+				$('.mura-interval-end').hide();
+				//alert(type)
+				if(type=='after'){
+					$('##mura-interval-end-after').show();
+					pushDisplayStopOut();
+				} else if(type=='on'){
+					$('##mura-interval-end-on').show();
+
+					var start=$('##mura-datepicker-displayStart');
+					var stop=$('##mura-datepicker-displayStop');
+					var endon=$('##displayIntervalEndOn');
+
+					if(!stop.val() && endon.val()){
+						stop.val(endon.val()).trigger('change');
+					}
+
+					if(!endon.val()){
+						endon.val(stop.val())
+					}
+
+					if(!endon.val()){
+						endon.val(start.val());
+						stop.val(start.val()).trigger('change');
+					}
+				} else if(type=='never'){
+					pushDisplayStopOut();
+				}
+			} else {
 				var start=$('##mura-datepicker-displayStart');
 				var stop=$('##mura-datepicker-displayStop');
-				var endon=$('##displayIntervalEndOn');
-
-				if(!stop.val() && endon.val()){
-					stop.val(endon.val()).trigger('change');
-				}
-
-				if(!endon.val()){
-					endon.val(stop.val())
-				}
-
-				if(!endon.val()){
-					endon.val(start.val());
-					stop.val(start.val()).trigger('change');
-				}
-			} else if(type=='never'){
-				pushDisplayStopOut();
+				stop.val(start.val()).trigger('change');
+				$('##displayIntervalEnd').val('on');
+				$('##displayIntervalEndOn').val(start.val());
 			}
 
 		}
+
 		function setIntervalUnitLabel(){
 			var type=$('##displayIntervalType').val();
 			//alert(type)
@@ -444,6 +454,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$('##displayIntervalDetectConflicts').click(toggleDetectConflicts);
 		$('##displayIntervalType').on('change',toggleRepeatOptions);
 		$('##displayIntervalEnd').on('change',setEndOption);
+		$('##mura-datepicker-displayStart').change(setEndOption);
 
 		var repeats=$('input[name="displayIntervalEvery"]').is(':checked');
 
