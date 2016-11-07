@@ -110,6 +110,10 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 
 	}
 
+	function getURL(complete=false,secure=false,method="inline"){
+		return this.getSite().getWebPath(argumentCollection=arguments) & "/index.cfm/render/?fileid=#get('fileid')#&siteid=#get('siteid')#&method=#arguments.method#";
+	}
+
 	function setRemotePubDate(remotePubDate){
 		variables.remotepubdate=parseDateArg(arguments.remotePubDate);
 		return this;
