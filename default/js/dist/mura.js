@@ -4812,6 +4812,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		obj=(obj.node) ? obj : Mura(obj);
 
+		// handle HTML response
+		resp=(!resp.data) ? { data: resp } : resp;
+		
 		if(typeof resp.data.redirect != 'undefined'){
 			if(resp.data.redirect && resp.data.redirect != location.href){
 				location.href=resp.data.redirect;
