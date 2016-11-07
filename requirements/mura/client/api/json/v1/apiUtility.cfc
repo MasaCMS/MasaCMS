@@ -805,6 +805,14 @@ component extends="mura.cfobject" {
 				responseObject.setStatus(200);
 			}
 		} catch (Any e){}
+		
+		if(isDefined('arguments.response.data.shunter') && arguments.response.data.shunter){
+			if(isDefined('arguments.response.data.layout')){
+				responseObject.setContentType('application/x-shunter+json; charset=utf-8');
+				arguments.response.layout=arguments.response.data.layout;
+			}
+		}
+		
 		return getSerializer().serialize(arguments.response);
 	}
 
