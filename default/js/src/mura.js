@@ -2143,8 +2143,8 @@
 		obj=(obj.node) ? obj : Mura(obj);
 
 		// handle HTML response
-		resp=(!resp.data) ? { data: resp } : resp;
-		
+		resp=(!resp.data) ? { data: (typeof resp=='string') ? {html:resp}: resp } : resp;
+
 		if(typeof resp.data.redirect != 'undefined'){
 			if(resp.data.redirect && resp.data.redirect != location.href){
 				location.href=resp.data.redirect;
