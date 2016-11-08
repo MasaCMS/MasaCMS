@@ -206,9 +206,9 @@ this["mura"]["templates"]["form"] = this.mura.Handlebars.template({"compiler":[7
     + alias4(((helper = (helper = helpers.objectid || (depth0 != null ? depth0.objectid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"objectid","hash":{},"data":data}) : helper)))
     + "\">\n</div>\n<div class=\"paging-container-"
     + alias4(((helper = (helper = helpers.objectid || (depth0 != null ? depth0.objectid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"objectid","hash":{},"data":data}) : helper)))
-    + "\">\n</div>\n	<input type=\"hidden\" name=\"formid\" class=\""
+    + "\">\n</div>\n	<input type=\"hidden\" name=\"formid\" value=\""
     + alias4(((helper = (helper = helpers.objectid || (depth0 != null ? depth0.objectid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"objectid","hash":{},"data":data}) : helper)))
-    + "\" value=\"1025\">\n</form>\n";
+    + "\">\n</form>\n";
 },"useData":true});
 
 this["mura"]["templates"]["hidden"] = this.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {

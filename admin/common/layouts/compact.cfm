@@ -215,7 +215,10 @@
 											'targetFrame': '#esapiEncode("javascript",rc.sourceFrame)#'
 										});
 					});
-					frontEndProxy.addEventListener(siteManager.frontEndProxyListener);
+
+					if(typeof siteManager != 'undefined'){
+						frontEndProxy.addEventListener(siteManager.frontEndProxyListener);
+					}
 				};
 
 

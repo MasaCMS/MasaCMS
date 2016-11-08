@@ -191,10 +191,16 @@ If it has not, set application.appInitialized=false. --->
 
 <cftry>
 	<cfparam name="sessionData.muraSessionID" default="#application.utility.getUUID()#">
-	<cfif not structKeyExists(cookie,"originalURLToken")>
-	<cfcookie name="originalURLToken" value="#sessionData.muraSessionID#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+	<cfif not structKeyExists(cookie,"MXP_TRACKINGID")>
+		<cfif structKeyExists(cookie,"originalURLToken")>
+			<cfcookie name="MXP_TRACKINGID" value="#cookie.originalURLToken#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+			<cfset StructDelete(cookie, 'originalURLToken')>
+		<cfelse>
+			<cfcookie name="MXP_TRACKINGID" value="#sessionData.muraSessionID#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+		</cfif>
+
 	</cfif>
-	<cfparam name="sessionData.muraTrackingID" default="#cookie.originalURLToken#">
+	<cfparam name="sessionData.muraTrackingID" default="#cookie.MXP_TRACKINGID#">
 <cfcatch></cfcatch>
 </cftry>
 
