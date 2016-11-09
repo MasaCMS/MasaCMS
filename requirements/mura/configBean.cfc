@@ -176,6 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.securecookies=false/>
 <cfset variables.instance.sessioncookiesexpires="never"/>
 <cfset variables.instance.cookiedomain=""/>
+<cfset variables.instance.cookiepath=""/>
 <cfset variables.instance.javaEnabled=true/>
 <cfset variables.instance.bCryptPasswords=true/>
 <cfset variables.instance.allowQueryCaching=true/>

@@ -422,7 +422,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		return getBean(argumentCollection=arguments).getFeed();
 	}
 
-	function getCookieAttrs(path="/",expires="never",httpOnly=true){
+	function getCookieAttrs(expires="never",httpOnly=true){
 		var config=getBean('configBean');
 
 		if(config.getSecureCookies()){
@@ -431,6 +431,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		if(len(config.getCookieDomain())){
 			arguments.domain=config.getCookieDomain();
+		}
+
+		if(len(config.getCookiePath()) && len(config.getCookieDomain())){
+			arguments.path=config.getCookiePath();
 		}
 
         return arguments;

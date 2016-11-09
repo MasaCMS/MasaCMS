@@ -238,7 +238,7 @@ If it has not, set application.appInitialized=false. --->
 					)>
 					<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="mobileFormat",value=true)#"/>
 			<cfelse>
-			<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="mobileFormat",value=false)#"/>
+				<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="mobileFormat",value=false)#"/>
 			</cfif>
 		</cfif>
 	</cfif>

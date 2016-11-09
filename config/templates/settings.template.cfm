@@ -24,6 +24,7 @@ clientstorage=
 confirmsaveasdraft=true
 context=
 cookiedomain=
+cookiepath=
 customtagpaths=
 dashboardcomments=true
 datacollection=true
