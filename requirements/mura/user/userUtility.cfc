@@ -178,10 +178,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfswitch expression="#arguments.lockdownExpries#">
 					<cfcase value="1,7,30,10950">
-						<cfcookie name="passedLockdown" value="true" expires="#arguments.lockdownExpries#" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
+						<cfcookie name="passedLockdown" value="true" domain="#application.configBean.getCookieDomain()#" expires="#arguments.lockdownExpries#" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
 					</cfcase>
 					<cfcase value="session">
-						<cfcookie name="passedLockdown" value="true" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
+						<cfcookie name="passedLockdown" value="true" domain="#application.configBean.getCookieDomain()#" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
 					</cfcase>
 				</cfswitch>
 			</cfif>

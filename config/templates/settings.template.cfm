@@ -23,6 +23,7 @@ clientmanagement=false
 clientstorage=
 confirmsaveasdraft=true
 context=
+cookiedomain=
 customtagpaths=
 dashboardcomments=true
 datacollection=true

@@ -479,7 +479,7 @@
 		<cfreturn sessionData.mura.userID />
 		<cfelse>
 		<cfif not structKeyExists(cookie,"pid")>
-		<cfcookie name="pid" expires="never" value="#application.utility.getUUID()#" httpOnly="true" secure="#arguments.renderer.getMuraScope().globalConfig('secureCookies')#">
+		<cfcookie name="pid" expires="never" value="#application.utility.getUUID()#" domain="#application.configBean.getCookieDomain()#" httpOnly="true" secure="#arguments.renderer.getMuraScope().globalConfig('secureCookies')#">
 		</cfif>
 		<cfreturn cookie.pid />
 		</cfif>

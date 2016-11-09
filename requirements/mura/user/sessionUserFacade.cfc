@@ -188,7 +188,7 @@
 
 <cffunction name="isPassedLockdown" returntype="boolean" output="false">
 	<cfif not structKeyExists(cookie, "passedLockdown")>
-		<cfcookie name="passedLockdown" value="false" expires="never" httpOnly="true" secure="#application.configBean.getValue('secureCookies')#">
+		<cfcookie name="passedLockdown" value="false" expires="never" domain="#application.configBean.getCookieDomain()#" httpOnly="true" secure="#application.configBean.getValue('secureCookies')#">
 	</cfif>
 	<cfreturn cookie.passedLockdown>
 </cffunction>

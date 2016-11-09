@@ -162,8 +162,8 @@ If it has not, set application.appInitialized=false. --->
 --->
 <cftry>
 	<cfif (not isdefined('cookie.userid') or cookie.userid eq '') and structKeyExists(sessionData,"rememberMe") and session.rememberMe eq 1 and sessionData.mura.isLoggedIn>
-	<cfcookie name="userid" value="#sessionData.mura.userID#" expires="never" httponly="true" secure="#application.configBean.getValue(property='secureCookies',defaultValue=false)#"/>
-	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+	<cfcookie name="userid" value="#sessionData.mura.userID#" domain="#application.configBean.getCookieDomain()#" expires="never" httponly="true" secure="#application.configBean.getValue(property='secureCookies',defaultValue=false)#"/>
+	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" domain="#application.configBean.getCookieDomain()#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 <cfcatch>
 	<cfset structDelete(cookie,"userid")>
@@ -193,10 +193,10 @@ If it has not, set application.appInitialized=false. --->
 	<cfparam name="sessionData.muraSessionID" default="#application.utility.getUUID()#">
 	<cfif not structKeyExists(cookie,"MXP_TRACKINGID")>
 		<cfif structKeyExists(cookie,"originalURLToken")>
-			<cfcookie name="MXP_TRACKINGID" value="#cookie.originalURLToken#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+			<cfcookie name="MXP_TRACKINGID" value="#cookie.originalURLToken#" domain="#application.configBean.getCookieDomain()#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 			<cfset StructDelete(cookie, 'originalURLToken')>
 		<cfelse>
-			<cfcookie name="MXP_TRACKINGID" value="#sessionData.muraSessionID#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+			<cfcookie name="MXP_TRACKINGID" value="#sessionData.muraSessionID#" domain="#application.configBean.getCookieDomain()#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 		</cfif>
 
 	</cfif>
@@ -221,9 +221,9 @@ If it has not, set application.appInitialized=false. --->
 
 <cfif not isdefined('url.muraadminpreview')>
 	<cfif isDefined("form.mobileFormat") and isBoolean(form.mobileFormat)>
-		<cfcookie name="mobileFormat" value="#form.mobileFormat#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+		<cfcookie name="mobileFormat" value="#form.mobileFormat#" domain="#application.configBean.getCookieDomain()#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	<cfelseif isDefined("url.mobileFormat") and isBoolean(url.mobileFormat)>
-		<cfcookie name="mobileFormat" value="#url.mobileFormat#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+		<cfcookie name="mobileFormat" value="#url.mobileFormat#" domain="#application.configBean.getCookieDomain()#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 
 	<cfif not isdefined("cookie.mobileFormat")>
@@ -237,15 +237,15 @@ If it has not, set application.appInitialized=false. --->
 						findNoCase("mobile",CGI.HTTP_USER_AGENT)
 						and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
 					)>
-				<cfcookie name="mobileFormat" value="true" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+				<cfcookie name="mobileFormat" value="true" httponly="true" domain="#application.configBean.getCookieDomain()#" secure="#application.configBean.getSecureCookies()#"/>
 			<cfelse>
-				<cfcookie name="mobileFormat" value="false" httponly="true" secure="#application.configBean.getSecureCookies()#" />
+				<cfcookie name="mobileFormat" value="false" httponly="true" domain="#application.configBean.getCookieDomain()#" secure="#application.configBean.getSecureCookies()#" />
 			</cfif>
 		</cfif>
 	</cfif>
 
 	<cfif not isBoolean(cookie.mobileFormat)>
-		<cfcookie name="mobileFormat" value="false" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
+		<cfcookie name="mobileFormat" value="false" domain="#application.configBean.getCookieDomain()#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 
 	<cfset request.muraMobileRequest=cookie.mobileFormat>
