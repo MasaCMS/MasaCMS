@@ -421,6 +421,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function getFeed(beanName,siteid=""){
 		return getBean(argumentCollection=arguments).getFeed();
 	}
+
+	function getCookieAttrs(path="/",expires="never",httpOnly=true){
+		var config=getBean('configBean');
+
+		if(config.getSecureCookies()){
+			arguments.secure=true;
+		}
+
+		if(len(config.getCookieDomain())){
+			arguments.domain=config.getCookieDomain();
+		}
+
+        return arguments;
+   }
+
 </cfscript>
 
 </cfcomponent>

@@ -580,19 +580,19 @@ Blog: www.codfusion.com--->
 					</cfif>
 				<cfelse>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-						<cfcookie name="CFID" value="#sessionData.CFID#" domain="#application.configBean.getCookieDomain()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
-						<cfcookie name="CFTOKEN" value="#sessionData.CFTOKEN#" domain="#application.configBean.getCookieDomain()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+						<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="CFID", value=sessionData.CFID)#" />
+						<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="CFTOKEN", value=sessionData.CFTOKEN)#" />
 					<cfelse>
-						<cfcookie name="CFID" value="#sessionData.CFID#" domain="#application.configBean.getCookieDomain()#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
-						<cfcookie name="CFTOKEN" value="#sessionData.CFTOKEN#" domain="#application.configBean.getCookieDomain()#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+						<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="CFID", value=sessionData.CFID, expires=application.configBean.getSessionCookiesExpires())#" />
+						<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="CFTOKEN", value=sessionData.CFTOKEN, expires=application.configBean.getSessionCookiesExpires())#" />
 					</cfif>
 				</cfif>
 			</cfif>
 			<cfif isdefined('sessionData.jsessionid')>
 				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-					<cfcookie name="JSESSIONID" value="#sessionData.jsessionid#" domain="#application.configBean.getCookieDomain()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+					<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="JSESSIONID", value=sessionData.jsessionid)#" />
 				<cfelse>
-					<cfcookie name="JSESSIONID" value="#sessionData.jsessionid#" domain="#application.configBean.getCookieDomain()#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+					<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="JSESSIONID", value=sessionData.jsessionid, expires=application.configBean.getSessionCookiesExpires())#" />
 				</cfif>
 			</cfif>
 		<cfcatch></cfcatch>
