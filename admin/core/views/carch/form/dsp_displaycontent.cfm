@@ -75,7 +75,7 @@
 	<cfset displayInterval=rc.contentBean.getDisplayInterval().getAllValues()>
 	<cfif rc.ptype eq 'Calendar' and not rc.contentBean.exists()>
 		<cfset displayInterval.repeats=0>
-		<cfset displayInterval.allday=0>
+		<cfset displayInterval.allday=1>
 	</cfif>
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
