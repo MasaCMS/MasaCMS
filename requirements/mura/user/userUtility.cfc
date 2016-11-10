@@ -178,10 +178,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfswitch expression="#arguments.lockdownExpries#">
 					<cfcase value="1,7,30,10950">
-						<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="passedLockdown", value=true, expires=arguments.lockdownExpries)#">
+						<cfset application.utility.setCookie(name="passedLockdown", value=true, expires=arguments.lockdownExpries)>
 					</cfcase>
 					<cfcase value="session">
-						<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="passedLockdown", value=true, expires="session")#">
+						<cfset application.utility.setCookie(name="passedLockdown", value=true, expires="session")>
 					</cfcase>
 				</cfswitch>
 			</cfif>

@@ -188,7 +188,7 @@
 
 <cffunction name="isPassedLockdown" returntype="boolean" output="false">
 	<cfif not structKeyExists(cookie, "passedLockdown")>
-		<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="passedLockdown", value="false")#">
+		<cfset application.utility.setCookie(name="passedLockdown", value="false")>
 	</cfif>
 	<cfreturn cookie.passedLockdown>
 </cffunction>

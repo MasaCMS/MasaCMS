@@ -479,7 +479,7 @@
 		<cfreturn sessionData.mura.userID />
 		<cfelse>
 		<cfif not structKeyExists(cookie,"pid")>
-			<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="pid", value=application.utility.getUUID())#">
+			<cfset application.utility.setCookie(name="pid", value=application.utility.getUUID()) >
 		</cfif>
 			<cfreturn cookie.pid />
 		</cfif>

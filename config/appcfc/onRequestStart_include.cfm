@@ -162,8 +162,8 @@ If it has not, set application.appInitialized=false. --->
 --->
 <cftry>
 	<cfif (not isdefined('cookie.userid') or cookie.userid eq '') and structKeyExists(sessionData,"rememberMe") and session.rememberMe eq 1 and sessionData.mura.isLoggedIn>
-		<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="userid",value=sessionData.mura.userID)#"/>
-		<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="userHash",value=encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex'))#"/>
+		<cfset application.utility.setCookie(name="userid",value=sessionData.mura.userID)/>
+		<cfset application.utility.setCookie(name="userHash",value=encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')) />
 	</cfif>
 <cfcatch>
 	<cfset structDelete(cookie,"userid")>
@@ -193,10 +193,10 @@ If it has not, set application.appInitialized=false. --->
 	<cfparam name="sessionData.muraSessionID" default="#application.utility.getUUID()#">
 	<cfif not structKeyExists(cookie,"MXP_TRACKINGID")>
 		<cfif structKeyExists(cookie,"originalURLToken")>
-			<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="MXP_TRACKINGID", value=cookie.originalURLToken)#"/>
+			<cfset application.utility.setCookie(name="MXP_TRACKINGID", value=cookie.originalURLToken) />
 			<cfset StructDelete(cookie, 'originalURLToken')>
 		<cfelse>
-			<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="MXP_TRACKINGID", value=sessionData.muraSessionID)#"/>
+			<cfset application.utility.setCookie(name="MXP_TRACKINGID", value=sessionData.muraSessionID) />
 		</cfif>
 	</cfif>
 	<cfparam name="sessionData.muraTrackingID" default="#cookie.MXP_TRACKINGID#">
@@ -220,9 +220,9 @@ If it has not, set application.appInitialized=false. --->
 
 <cfif not isdefined('url.muraadminpreview')>
 	<cfif isDefined("form.mobileFormat") and isBoolean(form.mobileFormat)>
-		<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="mobileFormat",value=form.mobileFormat)#"/>
+		<cfset application.utility.setCookie(name="mobileFormat",value=form.mobileFormat)/>
 	<cfelseif isDefined("url.mobileFormat") and isBoolean(url.mobileFormat)>
-			<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="mobileFormat",value=url.mobileFormat)#"/>
+		<cfset application.utility.setCookie(name="mobileFormat",value=url.mobileFormat)/>
 	</cfif>
 
 	<cfif not isdefined("cookie.mobileFormat")>
@@ -236,15 +236,15 @@ If it has not, set application.appInitialized=false. --->
 						findNoCase("mobile",CGI.HTTP_USER_AGENT)
 						and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
 					)>
-					<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="mobileFormat",value=true)#"/>
+					<cfset application.utility.setCookie(name="mobileFormat",value=true)/>
 			<cfelse>
-				<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="mobileFormat",value=false)#"/>
+				<cfset application.utility.setCookie(name="mobileFormat",value=false)/>
 			</cfif>
 		</cfif>
 	</cfif>
 
 	<cfif not isBoolean(cookie.mobileFormat)>
-		<cfcookie attributeCollection="#application.utility.getCookieAttrs(name="mobileFormat",value=false)#"/>
+		<cfset application.utility.setCookie(name="mobileFormat",value=false)/>
 	</cfif>
 
 	<cfset request.muraMobileRequest=cookie.mobileFormat>
