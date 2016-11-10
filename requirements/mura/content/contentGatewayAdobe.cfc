@@ -2189,14 +2189,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> --->
 	and tcontent.siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
-	and tcontent.active=1
-
-
 	<cfif arguments.navOnly>
 		and tcontent.isnav=1
 	</cfif>
 
 	<cfif arguments.liveOnly>
+		#renderActiveClause("tcontent",arguments.siteID)#
+
 		AND tcontent.approved=1
 	 	AND (
 			(
@@ -2226,6 +2225,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   		tcontent.Display = 1
 		   	)
 		)
+	<cfelse>
+			and tcontent.active=1
 	</cfif>
 
 	#renderMobileClause()#
