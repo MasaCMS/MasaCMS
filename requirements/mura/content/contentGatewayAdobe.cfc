@@ -2083,6 +2083,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsRelatedContent ="" />
 	<cfset var dbType=variables.configBean.getDbType() />
 	<cfset var tableModifier="">
+	<cfset var nowAdjusted="">
+
+	<cfif request.muraChangesetPreview and isStruct(getCurrentUser().getValue("ChangesetPreviewData"))>
+		<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
+	</cfif>
+
+	<cfif not isdate(nowAdjusted)>
+		<cfset nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+	</cfif>
 
 	<cfif dbtype eq "MSSQL">
 		<cfset tableModifier="with (nolock)">
@@ -2121,7 +2130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
 	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
-	tcr.relatedContentSetID, tcr.orderNo
+	tcr.relatedContentSetID, tcr.orderNo, tcontent.displayInterval, tcontent.display
 	<cfif mxpRelevanceSort>
 	,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
 	</cfif>
@@ -2236,7 +2245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
 	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
-	tcr.relatedContentSetID, tcr.orderNo
+	tcr.relatedContentSetID, tcr.orderNo, tcontent.displayInterval, tcontent.display
 	</cfif>
 
 	order by
@@ -2273,7 +2282,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cfquery>
 
-	<cfreturn rsRelatedContent />
+	<cfif arguments.liveOnly>
+		<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsRelatedContent,menuType="default",menuDate=nowAdjusted)>
+	<cfelse>
+		<cfreturn rsRelatedContent />
+	</cfif>
 
 </cffunction>
 
