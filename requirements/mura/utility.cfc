@@ -565,18 +565,35 @@ Blog: www.codfusion.com--->
 </cffunction>
 
 <cffunction name="setSessionCookies">
-	<cfif application.configBean.getSecureCookies() or len(application.configBean.getSessionCookiesExpires()) or len(application.configBean.getCookieDomain())>
-		<cftry>
+	<cfif application.configBean.getSecureCookies() or application.configBean.getSessionCookiesExpires() neq 'never' or len(application.configBean.getCookieDomain())>
+		<!---<cftry>--->
 			<cfset var sessionData=getSession()>
-			<cfif isdefined('sessionData.CFID')>
+
+			<cftry>
+				<cfset var hasURLToken=len(sessionData.urlToken)>
+				<cfcatch>
+					<cfset var hasURLToken=false>
+				</cfcatch>
+			</cftry>
+
+			<cfif hasURLToken>
+				<cfloop list="#sessionData.urlToken#" item="local.item" delimiters="&">
+					<cfset local.key=listFirst(local.item,"=")>
+					<cfif not structKeyExists(sessionData,"#local.key#")>
+						<cfset sessionData["#local.key#"]=listLast(local.item,"=")>
+					</cfif>
+				</cfloop>
+			</cfif>
+
+			<cfif isDefined('sessionData.cfid')>
 				<!--- Lucee uses lowercase cookies the setCookie method allows it to maintain case--->
 				<cfif server.coldfusion.productname neq 'Coldfusion Server'>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-						<cfset setCookie('cfid', sessionData.CFID,"", application.configBean.getCookieDomain(), "/", application.configBean.getSecureCookies(), true, true)>
-						<cfset setCookie('cftoken', sessionData.CFTOKEN, "", application.configBean.getCookieDomain(), "/", application.configBean.getSecureCookies(), true, true)>
+						<cfset setCookie(name='cfid', value=sessionData.CFID )>
+						<cfset setCookie(name='cftoken', value=sessionData.CFTOKEN )>
 					<cfelse>
-						<cfset setCookie('cfid', sessionData.CFID, application.configBean.getSessionCookiesExpires(), application.configBean.getCookieDomain(), "/", application.configBean.getSecureCookies(), true, true)>
-						<cfset setCookie('cftoken', sessionData.CFTOKEN, application.configBean.getSessionCookiesExpires(), application.configBean.getCookieDomain(), "/", application.configBean.getSecureCookies(), true, true)>
+						<cfset setCookie(name='cfid', value=sessionData.CFID, expires=application.configBean.getSessionCookiesExpires())>
+						<cfset setCookie(name='cftoken', value=sessionData.CFTOKEN, expires=application.configBean.getSessionCookiesExpires())>
 					</cfif>
 				<cfelse>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
@@ -588,15 +605,16 @@ Blog: www.codfusion.com--->
 					</cfif>
 				</cfif>
 			</cfif>
-			<cfif isdefined('sessionData.jsessionid')>
+
+			<cfif  isDefined('sessionData.jsessionid')>
 				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
 					<cfset setCookie(name="JSESSIONID", value=sessionData.jsessionid) />
 				<cfelse>
 					<cfset setCookie(name="JSESSIONID", value=sessionData.jsessionid, expires=application.configBean.getSessionCookiesExpires()) />
 				</cfif>
 			</cfif>
-		<cfcatch></cfcatch>
-		</cftry>
+		<!---<cfcatch></cfcatch>
+		</cftry>--->
 	</cfif>
 </cffunction>
 
@@ -605,6 +623,7 @@ Blog: www.codfusion.com--->
     <cfargument name="value" type="string" required="true">
 	<cfargument name="expires" type="string" default="never">
     <cfargument name="maintainCase" type="boolean" default="true">
+	<cfargument name="httpOnly" type="boolean" default="true">
 
 	<cfif variables.configBean.getSecureCookies()>
 		<cfset arguments.secure=true>
