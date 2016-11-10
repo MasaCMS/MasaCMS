@@ -857,6 +857,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif isValid('component',arguments.displayInterval)>
 			<cfset arguments.displayInterval=arguments.displayInterval.getAllValues()>
+		<cfelseif isdefined('arguments.displayInterval.endon')>
+			<cfset arguments.displayInterval.endon=parseDateArg(arguments.displayInterval.endon)>
 		</cfif>
 
 		<cfif isDefined('arguments.displayInterval.end')>
