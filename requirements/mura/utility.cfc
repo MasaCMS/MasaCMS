@@ -577,7 +577,7 @@ Blog: www.codfusion.com--->
 			</cftry>
 
 			<cfif hasURLToken>
-				<cfloop list="#sessionData.urlToken#" item="local.item" delimiters="&">
+				<cfloop list="#sessionData.urlToken#" index="local.item" delimiters="&">
 					<cfset local.key=listFirst(local.item,"=")>
 					<cfif not structKeyExists(sessionData,"#local.key#")>
 						<cfset sessionData["#local.key#"]=listLast(local.item,"=")>
