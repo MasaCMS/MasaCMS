@@ -248,6 +248,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcatch>
 </cftry>
 
+<cfif len(evalSetting(getINIProperty("cookiedomain","")))>
+	<cfset this.setClientCookies=false>
+</cfif>
+
 <cfif len(getINIProperty("datasource",""))>
 
 	<!--- You can't depend on 9 supporting datasource as struct --->

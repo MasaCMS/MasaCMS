@@ -68,6 +68,11 @@ component extends="mura.bean.bean" {
         return this;
     }
 
+    function setEndOn(endOn){
+        variables.instance.endOn=parseDateArg(arguments.endOn);
+        return this;
+    }
+
     function endAfter(endAfter){
         set('end','after');
         set('endafter',arguments.endAfter);

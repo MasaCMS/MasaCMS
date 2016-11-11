@@ -421,6 +421,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function getFeed(beanName,siteid=""){
 		return getBean(argumentCollection=arguments).getFeed();
 	}
+
+	function parseDateArg(String arg){
+
+ 		//fix so that date's like 2015-06-23T14:22:35 can be parsed
+ 		if(refind('(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d)',arguments.arg)){
+ 			arguments.arg=replace(arguments.arg,'T',' ');
+ 		}
+
+		if(lsisDate(arguments.arg)){
+			try{
+				return lsparseDateTime(arguments.arg);
+			} catch(any e){
+				return arguments.arg;
+			}
+
+		} else if(isDate(arguments.arg)){
+			try{
+				return parseDateTime(arguments.arg);
+			} catch(any e){
+				return arguments.arg;
+			}
+		} else {
+			return "";
+		}
+	}
 </cfscript>
 
 </cfcomponent>

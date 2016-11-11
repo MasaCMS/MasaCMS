@@ -1118,7 +1118,7 @@ component extends="mura.cfobject" output="false" {
 		} else {
 			var feed=getBean('beanFeed');
 		}
-		
+
 		feed.setEntityName(variables.entityName).setTable(getTable());
 
 		if(hasProperty('siteid')){
