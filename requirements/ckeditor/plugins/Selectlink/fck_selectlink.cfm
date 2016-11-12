@@ -31,13 +31,15 @@ StructAppend(attributes, form, "no");
 </cfoutput>
 <body id="mura-select-link">
 <cfoutput>
-<h2>Keyword Search</h2>
-<form id="mura-link-search" name="siteSearch" method="post">
- <input id="keywords" name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="span4" maxlength="50"/>
-	<input type="hidden" name="fuseaction" value="cArch.search">
-	<input type="hidden" name="siteid" value="#session.siteid#">
-	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
-	<input class="btn" type="submit" onClick="return submitForm(document.forms.siteSearch);" value="Search">
+<h4>Keyword Search</h4>
+<form id="mura-link-search" class="form-inline" name="siteSearch" method="post">
+  <div class="mura-input-set">
+   <input id="keywords" name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="span4" maxlength="50"/>
+    <input class="btn" type="submit" onClick="return submitForm(document.forms.siteSearch);" value="Search">
+  </div>
+  	<input type="hidden" name="fuseaction" value="cArch.search">
+  	<input type="hidden" name="siteid" value="#session.siteid#">
+  	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
 </form>
 
 </cfoutput>

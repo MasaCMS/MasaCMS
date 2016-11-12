@@ -156,15 +156,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cffile file="#licenseFile#" action="read" variable="license">
 						<div class="mura-control-group" id="plugin-license">
 							<label>End User License Agreement</label>
-								<textarea readonly="true" rows="16">
-									#license#
-								</textarea>
-
-								<select name="licenseStatus" required="true" message="You Must Accept the End User License Agreement in Order to Proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainer').style.display='block';}else{document.getElementById('settingsContainer').style.display='none';}">
+								<textarea readonly="true" rows="12">#license#</textarea>
+								<select name="licenseStatus" required="true" message="You must accept the End User License Agreement in order to proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainer').style.display='block';}else{document.getElementById('settingsContainer').style.display='none';}">
 									<option value="">I Do Not Accept</option>
 									<option value="accept">I Accept</option>
 								</select>
-
 						</div>
 						<span id="settingsContainer" style="display:none">
 					</cfif>

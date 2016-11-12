@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" output="false">
+<cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
 	<cfargument name="fileManager" type="any" required="yes"/>
@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="update" returntype="struct" output="true">
+<cffunction name="update" returntype="struct" access="public" output="true">
 <cfargument name="data" type="struct">
 	<cfset var responseid="">
 	<cfset var action="create">
@@ -166,7 +166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn info />
 </cffunction>
 
-<cffunction name="delete" output="true">
+<cffunction name="delete" returntype="void" output="true" access="public">
 <cfargument name="responseID" type="string">
 <cfargument name="deleteFiles" type="boolean" default="true">
 <cfset var rs = ''/>
@@ -197,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="read" output="true">
+<cffunction name="read" returntype="query" output="true" access="public">
 <cfargument name="responseID" type="string">
 
 <cfset var rs=""/>
@@ -210,7 +210,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn rs/>
 </cffunction>
 
-<cffunction name="getCurrentFieldList" output="true">
+<cffunction name="getCurrentFieldList" returntype="string" output="true" access="public">
 <cfargument name="formID" type="string">
 
 <cfset var rs=""/>
@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn valueList(rs.formField) />
 </cffunction>
 
-<cffunction name="getData" output="false">
+<cffunction name="getData" returntype="query" access="public" output="false">
 <cfargument name="data" type="struct">
 
 <cfset var rs=""/>
@@ -272,7 +272,7 @@ order by tformresponsepackets.entered asc
 <cfreturn rs/>
 </cffunction>
 
-<cffunction name="renderForm" output="false">
+<cffunction name="renderForm" access="public" output="false" returntype="string">
 <cfargument name="formid" type="string">
 <cfargument name="siteid" type="string">
 <cfargument name="preBody" type="string">
@@ -346,7 +346,7 @@ order by tformresponsepackets.entered asc
 <cfreturn trim(frm) />
 </cffunction>
 
-<cffunction name="setDisplay" output="false">
+<cffunction name="setDisplay" output="false" returntype="void" access="public">
 <cfargument name="contentBean" type="any" >
 
 	<cfquery>

@@ -494,6 +494,18 @@ form .help-block-inline{
    }
 }
 
+.help-block-error{
+  background-color: #FFF!important;
+  border: 1px dotted #d94a48!important;
+  color: #d94a48!important;
+}
+
+.help-block-success{
+  background-color: hsla(150,100%,39%,.08)!important;
+  border: 1px dotted #33d383!important;
+  color: #00c964!important;
+}
+
 p + .help-block, 
 p + .help-block-empty,
 p + .help-block-inline{
@@ -814,6 +826,60 @@ div.cke_editable{
   padding: 10px 16px;
 }
 
+body#mura-select-link{
+  padding: 12px 17px;
+  h4{
+    margin-bottom: 12px;
+  }
+}
+
+.cke_dialog_contents_body{
+  padding: 6px 10px;
+}
+
+a.cke_dialog_ui_button,
+a.cke_dialog_ui_button:focus,
+a.cke_dialog_ui_button:hover,
+a.cke_dialog_ui_button:active{
+  .btn;
+  background-image: none !important;
+  box-shadow: none !important;
+  border:none !important;
+}
+
+a.cke_dialog_ui_button:not(.cke_dialog_ui_button_ok),
+a.cke_dialog_ui_button:not(.cke_dialog_ui_button_ok):focus,
+a.cke_dialog_ui_button:not(.cke_dialog_ui_button_ok):hover,
+a.cke_dialog_ui_button:not(.cke_dialog_ui_button_ok):active{
+  .btn-default;
+  background-color: #e4e4e4 !important;
+  color: #848484 !important;
+}
+
+a.cke_dialog_ui_button_ok,
+a.cke_dialog_ui_button_ok:focus,
+a.cke_dialog_ui_button_ok:hover,
+a.cke_dialog_ui_button_ok:active{
+    .btn;
+    .mura-primary;
+    background-image: none;
+    box-shadow: none;
+}
+a.cke_dialog_ui_button span,
+a.cke_dialog_ui_button_ok span {
+    text-shadow: none !important;
+}
+
+.cke_dialog_footer,
+.cke_dialog_title{
+  background:none !important;
+  background-color: #f5f5f5 !important;
+  border:none !important;
+}
+
+.mura-link-search-result{
+  padding-top: 15px;
+}
 .tagSelector .tag{
   height: 26px;
 }
@@ -1492,6 +1558,12 @@ label #selectFilter{
   margin-top: 4px;
   border: none;
   outline: 0;
+}
+
+label.form-heading {
+  .bold-font;
+  font-size: 14px;
+  margin-bottom: 0 !important;
 }
 
 select[multiple],

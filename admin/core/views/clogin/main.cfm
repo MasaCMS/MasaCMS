@@ -169,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						  	</div>
 							<cfelse>
 								<div class="mura-control-group half" id="remember-me">
-				          <label class="css-input switch switch-sm switch-default">
+				          <label class="css-input switch switch-sm switch-primary">
 				              <input type="checkbox" id="rememberMe" name="rememberMe" value="1" ><span></span> #application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
 				          </label>
 								</div>
