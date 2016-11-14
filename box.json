@@ -19,30 +19,45 @@
     "instructions":"",
     "changelog":"",
     "type":"cms",
-    "keywords":[ "mura", "cms", "cfml", "content management system", "content", "management", "system" ],
+    "keywords":[
+        "mura",
+        "cms",
+        "cfml",
+        "content management system",
+        "content",
+        "management",
+        "system"
+    ],
     "private":false,
     "engines":[
-        { "type" : "railo", "version" : ">=4.0.x" },
-        { "type" : "lucee", "version" : ">=4.5.x" },
-        { "type" : "adobe", "version" : ">=9.0.0" }
+        {
+            "type":"lucee",
+            "version":">=4.5.x"
+        },
+        {
+            "type":"adobe",
+            "version":">=10.0.0"
+        }
     ],
     "defaultEngine":"lucee",
     "defaultPort":0,
     "projectURL":"",
     "license":[
-        { "type" : "GPL-2.0 with execptions", "URL" : "https://github.com/blueriver/MuraCMS/blob/develop/license.txt" }
+        {
+            "type":"GPL-2.0 with execptions",
+            "URL":"https://github.com/blueriver/MuraCMS/blob/develop/license.txt"
+        }
     ],
     "contributors":[
 
     ],
     "dependencies":{
-
     },
     "devDependencies":{
-
+        "testbox":"^2.3.0+00044"
     },
     "installPaths":{
-
+        "testbox":"requirements/testbox"
     },
     "ignore":[
         ".git/*",
@@ -54,7 +69,10 @@
     "testbox":{
         "runner":[
             {
-                "default":""
+                "adobe":"http://localhost:53644/requirements/tests/runner.cfm"
+            },
+            {
+                "lucee":"http://localhost:53645/requirements/tests/runner.cfm"
             }
         ],
         "labels":[
@@ -66,7 +84,7 @@
             ""
         ],
         "directory":{
-            "mapping":"",
+            "mapping":"testing.specs",
             "recurse":true
         },
         "watchers":[
