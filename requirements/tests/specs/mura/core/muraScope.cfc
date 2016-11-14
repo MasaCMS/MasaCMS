@@ -76,16 +76,17 @@ component extends="testbox.system.BaseSpec"{
 
 
 			//This obviously won't pass if you are not logged into Mura
-			it(
-		 		title="Should be able to access the current user variables through CURRENTUSER scope",
-			 	body=function(data) {
-				 	expect( len(arguments.data.$.currentUser('username')) ).toBeTrue();
-				},
-				data={
-					$=$
-				}
-			);
-
+			if($.currentUser().isLoggedIn()){
+				it(
+			 		title="Should be able to access the current user variables through CURRENTUSER scope",
+				 	body=function(data) {
+					 	expect( len(arguments.data.$.currentUser('username')) ).toBeTrue();
+					},
+					data={
+						$=$
+					}
+				);
+			}
 			it(
 		 		title="Should be able to access the rendering methods",
 			 	body=function(data) {
