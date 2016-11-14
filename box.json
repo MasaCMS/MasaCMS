@@ -64,7 +64,8 @@
         ".gitignore",
         "**/.*",
         "test",
-        "tests"
+        "tests",
+        "requirements/tests"
     ],
     "testbox":{
         "runner":[
