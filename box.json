@@ -85,7 +85,7 @@
             ""
         ],
         "directory":{
-            "mapping":"testing.specs",
+            "mapping":"murawrm.requirements.tests.specs",
             "recurse":true
         },
         "watchers":[
