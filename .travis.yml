@@ -14,7 +14,7 @@ install:
 before_script:
 before_script:
 - mysql -u root -e 'create database muradb;'
-- box server start cfengine=luce port=53644
+- box server start cfengine=lucee port=53644
 script: >
   cp  requirements/tests/resources/cfapplication.cfm config/cfapplication.cfm
   curl -X POST -F 'production_domain=localhost' -F 'production_dbtype=mysql' -F 'production_datasource=muraMySQLdb' -F 'production_adminemail=matt.levine@blueriver.com'  -F 'production_username=admin'  -F 'production_password=admin' http://localhost:53644/
