@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsetting requestTimeout = "7200">
 <cfset var sessionData=getSession()>
-	
+
 <cfif listFind(sessionData.mura.memberships,'S2')>
 	<cfif updateVersion gt currentVersion>
 		<cflock type="exclusive" name="autoUpdate#arguments.siteid##application.instanceID#" timeout="600">
@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#templates%'
 				</cfquery>
 				<cfloop query="rs">
-					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc,.gitignore",listLast(rs.entry,variables.fileDelim))>
+					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc,.gitignore,.travis.yml",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
 						<cftry>
 							<cfif fileExists(destination)>

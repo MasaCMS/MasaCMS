@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,29 +43,10 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cftry>
-	<cffile action="write" file="#variables.baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true" mode="775">
-	<cfcatch>
-		<cfset canWriteMode="false">
-		<cftry>
-			<cffile action="write" file="#variables.baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true">
-			<cfcatch>
-				<cfset canWriteMappings=false>
-			</cfcatch>
-		</cftry>
-	</cfcatch>
-</cftry>
-
-<cfdirectory action="list" directory="#variables.baseDir#/requirements/" name="rsRequirements">
-
-<cfloop query="rsRequirements">
-	<cfif rsRequirements.type eq "dir" and not listFindNoCase('.svn,.git,tests',rsRequirements.name)>
-		<cfif canWriteMode>
-			<cffile action="append" file="#variables.baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = variables.BaseDir & "/requirements/#rsRequirements.name#">' mode="775">
-		<cfelseif canWriteMappings>
-			<cffile action="append" file="#variables.baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = variables.BaseDir & "/requirements/#rsRequirements.name#">'>
-		</cfif>
-		<cfset this.mappings["/#rsRequirements.name#"] = rsRequirements.directory & "/" & rsRequirements.name>
-	</cfif>
-</cfloop>
+*/
+component {
+	function onRequestStart(){
+		writeOutput('Access Restricted.');
+		abort;
+	}
+}
