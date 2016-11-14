@@ -12,7 +12,6 @@ install:
 - sudo apt-get update && sudo apt-get --assume-yes install commandbox
 - box install
 before_script:
-before_script:
 - mysql -u root -e 'create database muradb;'
 - box server start cfengine=lucee port=53644
 script: >
