@@ -137,74 +137,76 @@ component extends="testbox.system.BaseSpec"{
 
 			});
 
-			describe("Cache Tests", function() {
-				it(
-					title="Should be able to load by contentid from cache",
-			 		body=function() {
-						var loadArgs={
-							contentid=config.contentid
-						};
+			if(application.mura.getBean('settingsManager').getSite('default').getCache()){
+				describe("Cache Tests", function() {
+					it(
+						title="Should be able to load by contentid from cache",
+				 		body=function() {
+							var loadArgs={
+								contentid=config.contentid
+							};
 
-				 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
-					 	expect( bean.getFromMuraCache() ).toBeTrue();
-					}
-				);
+					 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
+						 	expect( bean.getFromMuraCache() ).toBeTrue();
+						}
+					);
 
-				it(
-					title="Should be able to load by remoteid from cache",
-			 		body=function() {
-						var loadArgs={
-							remoteid=config.remoteid
-						};
+					it(
+						title="Should be able to load by remoteid from cache",
+				 		body=function() {
+							var loadArgs={
+								remoteid=config.remoteid
+							};
 
-				 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
-					 	expect( bean.getFromMuraCache() ).toBeTrue();
+					 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
+						 	expect( bean.getFromMuraCache() ).toBeTrue();
 
-					}
-				);
+						}
+					);
 
-				it(
-					title="Should be able to load by filename from cache",
-			 		body=function() {
-						var loadArgs={
-							filename=config.filename
-						};
+					it(
+						title="Should be able to load by filename from cache",
+				 		body=function() {
+							var loadArgs={
+								filename=config.filename
+							};
 
-				 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
-					 	expect( bean.getFromMuraCache() ).toBeTrue();
+					 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
+						 	expect( bean.getFromMuraCache() ).toBeTrue();
 
-					}
-				);
+						}
+					);
 
-				it(
-					title="Should be able to load by title from cache",
-			 		body=function() {
-						var loadArgs={
-							title=config.title
-						};
+					it(
+						title="Should be able to load by title from cache",
+				 		body=function() {
+							var loadArgs={
+								title=config.title
+							};
 
-				 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
-					 	expect( bean.getFromMuraCache() ).toBeTrue();
-					}
-				);
+					 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
+						 	expect( bean.getFromMuraCache() ).toBeTrue();
+						}
+					);
 
-				it(
-					title="Should be able to load by urltitle from cache",
-			 		body=function() {
-						var loadArgs={
-							urltitle=config.urltitle
-						};
+					it(
+						title="Should be able to load by urltitle from cache",
+				 		body=function() {
+							var loadArgs={
+								urltitle=config.urltitle
+							};
 
-				 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
-					 	expect( bean.getFromMuraCache() ).toBeTrue();
+					 		var bean=$.getBean(entityName).loadBy(argumentCollection=loadArgs);
+						 	expect( bean.getFromMuraCache() ).toBeTrue();
 
 
-					}
-				);
-			});
+						}
+					);
+				});
+			}
 
 		});
 
 	}
-	
+
 }
