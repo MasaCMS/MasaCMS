@@ -14,10 +14,10 @@ install:
 before_script:
 before_script:
 - mysql -u root -e 'create database muradb;'
-- cp  requirements/tests/resources/cfapplication.cfm config/cfapplication.cfm
 - box server start cfengine=luce port=53644
-- curl -X POST -F 'production_domain=localhost' -F 'production_dbtype=mysql' -F 'production_datasource=muraMySQLdb' -F 'production_adminemail=matt.levine@blueriver.com'  -F 'production_username=admin'  -F 'production_password=admin' http://localhost:53644/
 script: >
+  cp  requirements/tests/resources/cfapplication.cfm config/cfapplication.cfm
+  curl -X POST -F 'production_domain=localhost' -F 'production_dbtype=mysql' -F 'production_datasource=muraMySQLdb' -F 'production_adminemail=matt.levine@blueriver.com'  -F 'production_username=admin'  -F 'production_password=admin' http://localhost:53644/
   testResults="$(box testbox run runner='http://localhost:53644/requirements/tests/runner.cfm' )";
   echo "$testResults";
   if grep -i "\[(Failures|Errors): [1-9][0-9]\?[0-9]\?\]\|\[Errors: [1-9][0-9]\?[0-9]\?\]\|<t[^>]*>\|<b[^>]*>" <<< $testResults;  then exit 1; fi
