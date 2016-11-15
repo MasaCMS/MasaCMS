@@ -593,7 +593,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	inner join  tusersmemb on tusers.userid=tusersmemb.userid
 	left join tfiles on tusers.photoFileId=tfiles.fileid
 	where tusersmemb.groupid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
-	<cfif not listFind(sessionData.mura.memberships,'S2')>and tusers.s2 =0</cfif>
+	<cfif not isDefined('sessionData.mura.memberships') or not listFind(sessionData.mura.memberships,'S2')>and tusers.s2 =0</cfif>
 	order by lname</cfquery>
 
 	<cfreturn rsGroupMemberships />
