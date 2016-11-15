@@ -82,8 +82,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<!---
 								<cfelse>
 									<li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</li>
-									<li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</li></cfif>
+									<li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</li>
 									 --->
+									</cfif>
 							</ul>
 						</div>
 					</td>
