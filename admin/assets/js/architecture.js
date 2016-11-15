@@ -3025,7 +3025,13 @@ buttons: {
 	      		niceSelects=$('.mura #configurator select');;
 
 				if(niceSelects.niceSelect){
-					niceSelects.niceSelect();
+					niceSelects.each(function(){
+						var self=$(this);
+						if(typeof self.data('niceselect') == 'undefined' || self.data('niceselect')){
+							self.niceSelect();
+						}
+					})
+
 				}
 
 
