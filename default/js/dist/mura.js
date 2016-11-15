@@ -4300,10 +4300,12 @@ return /******/ (function(modules) { // webpackBootstrap
     			},
 
     			function(){
+                    mura.reCAPTCHALanguage=mura.reCAPTCHALanguage || 'en';
+                    
     				if(find(".g-recaptcha" ).length){
     					var fileref=document.createElement('script')
     				        fileref.setAttribute("type","text/javascript")
-    				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
+    				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit&hl=" + mura.reCAPTCHALanguage)
 
     					document.getElementsByTagName("head")[0].appendChild(fileref)
 
@@ -4311,7 +4313,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     				if(find(".g-recaptcha-container" ).length){
     					loader().loadjs(
-    						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
+    						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit&hl=" + mura.reCAPTCHALanguage,
     						function(){
     							find(".g-recaptcha-container" ).each(function(el){
     								var self=el;
