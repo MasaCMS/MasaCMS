@@ -774,7 +774,7 @@
 		<cfargument name="userBean" type="any" default="" required="yes"/>
 		<cfset var sessionData=getSession()>
 
-		<cfif sessionData.mura.isLoggedIn>
+		<cfif isDefined('sessionData.mura.isLoggedIn') and sessionData.mura.isLoggedIn>
 			<cfset arguments.userBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50))/>
 			<cfset arguments.userBean.setLastUpdateByID(sessionData.mura.userID)/>
 		<cfelse>
