@@ -19,6 +19,6 @@ before_script:
 script: >
   testResults="$(box testbox run runner='http://localhost:53644/requirements/tests/runner.cfm?appreload&applydbupdates' )";
   echo "$testResults";
-  if grep -v -i -e "Global Stats" -i -e "\[(Failures|Errors): [1-9][0-9]\?[0-9]\?\]\|\[Errors: [1-9][0-9]\?[0-9]\?\]\|<t[^>]*>\|<b[^>]*>" <<< $testResults;  then exit 1; fi
+  if grep -i "\[(Failures|Errors): [1-9][0-9]\?[0-9]\?\]\|\[Errors: [1-9][0-9]\?[0-9]\?\]\|<t[^>]*>\|<b[^>]*>" <<< $testResults;  then exit 1; fi
 notifications:
     email: false
