@@ -1028,7 +1028,7 @@ var initMura=function(config){
         if($(scope).find(".g-recaptcha" ).length){
             var fileref=document.createElement('script')
                 fileref.setAttribute("type","text/javascript")
-                fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
+                fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit&hl=" + window.mura.reCAPTCHALanguage)
 
             document.getElementsByTagName("head")[0].appendChild(fileref)
 
@@ -1036,7 +1036,7 @@ var initMura=function(config){
 
         if($(scope).find( ".g-recaptcha-container" ).length){
           loader().loadjs(
-            'https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit',
+            'https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit&hl=' + window.mura.reCAPTCHALanguage,
             function(){
               $(scope).find( ".g-recaptcha-container" ).each(function(){
                 var self=this;
