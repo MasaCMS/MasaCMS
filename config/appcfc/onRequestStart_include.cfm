@@ -265,10 +265,12 @@ If it has not, set application.appInitialized=false. --->
 <cfparam name="sessionData.mura.csrfsecretkey" default="#createUUID()#">
 <cfparam name="sessionData.mura.csrfusedtokens" default="#structNew()#">
 
-<cfif request.muraSessionManagement and structKeyExists(request,"doMuraGlobalSessionStart")>
+<cfif request.muraSessionManagement
+	and (structKeyExists(request,"doMuraGlobalSessionStart"))>
 	<cfset application.utility.setSessionCookies()>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>
+
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
 <cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
 
