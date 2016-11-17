@@ -9155,15 +9155,12 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 				}
 
-				if(typeof self.FormData != 'undefined'){
+				if(typeof FormData != 'undefined'){
 					var frm=document.getElementById('frm' + self.context.objectid);
-
 					for(var p in currentPage){
 						if(currentPage.hasOwnProperty(p) && typeof self.data[p] != 'undefined'){
 							if(p.indexOf("_attachment") > -1 && typeof frm[p] != 'undefined'){
-								self.FormData.set(p,frm[p].files[0]);
-							} else {
-								self.FormData.set(p,self.data[p]);
+								self.attachments[p]=frm[p].files[0];
 							}
 						}
 					}
@@ -9343,11 +9340,8 @@ return /******/ (function(modules) { // webpackBootstrap
 				mura(self.context.formEl).append(html);
 
 				self.currentpage = 0;
+				self.attachments={};
 				self.formInit=true;
-
-				if(typeof FormData != 'undefined'){
-					self.FormData=new FormData();
-				}
 			},
 
 			onSubmit: function(){
@@ -9407,25 +9401,32 @@ return /******/ (function(modules) { // webpackBootstrap
 				else {
 					//console.log('b!');
 
-					if(typeof self.FormData == 'undefined'){
+					if(typeof FormData == 'undefined'){
 						var data=Mura.deepExtend({},self.context,self.data);
 						data.saveform=true;
 						data.formid=data.objectid;
 						data.siteid=data.siteid || Mura.siteid;
 					} else {
-						var data=self.FormData;
+						var rawdata=Mura.deepExtend({},self.context,self.data);
 
-						for(var p in self.context){
-							if(self.context.hasOwnProperty(p)){
-								if(!data.has(p)){
-									data.set(p,self.context[p]);
+						var data=new FormData();
+
+						for(var p in rawdata){
+							if(rawdata.hasOwnProperty(p)){
+								if(typeof self.attachments[p] != 'undefined'){
+									data.append(p,self.attachments[p]);
+								} else {
+									data.append(p,rawdata[p]);
 								}
 							}
 						}
 
-						data.set('saveform',true);
-						data.set('formid',self.context.objectid);
-						data.set('siteid',data.siteid || Mura.siteid);
+						data.append('saveform',true);
+						data.append('formid',rawdata.objectid);
+
+						if(!data.has('siteid')){
+							data.append('siteid',rawdata.siteid || Mura.siteid);
+						}
 					}
 
 	                Mura.post(
@@ -9930,7 +9931,12 @@ return /******/ (function(modules) { // webpackBootstrap
 				Mura.Handlebars.registerHelper('commonInputAttributes',function() {
 					//id, class, title, size
 					var escapeExpression=Mura.Handlebars.escapeExpression;
-					var returnString='name="' + escapeExpression(this.name) + '"';
+
+					if(typeof this.fieldtype != 'undefined' && this.fieldtype.fieldtype=='file'){
+						var returnString='name="' + escapeExpression(this.name) + '_attachment"';
+					} else {
+						var returnString='name="' + escapeExpression(this.name) + '"';
+					}
 
 					if(this.cssid){
 						returnString += ' id="' + escapeExpression(this.cssid) + '"';
