@@ -56,6 +56,7 @@ javasettingsloadcoldfusionclasspath=true
 javasettingsreloadonchage=true
 javasettingswatchextensions=jar,class
 javasettingswatchinterval=60
+legacyJavaLoader=false
 locale=Server
 logevents=0
 loginStrikes=4
