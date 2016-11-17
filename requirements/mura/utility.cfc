@@ -641,6 +641,14 @@ Blog: www.codfusion.com--->
 
 	<cfset arguments.preserveCase=arguments.maintainCase>
 
+	<cfif not (
+			isDate(arguments.expires)
+			or isNumeric(arguments.expires)
+			or listFindNoCase('session only,now,never',arguments.expires)
+		)>
+		<cfset structDelete(arguments,'expires')>
+	</cfif>
+
 	<cfif application.cfversion gt 9>
 		<cfcookie attributeCollection="#arguments#" />
 	<cfelse>
