@@ -218,7 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    })
  </script>
 
- <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.sortBy eq 'orderno'>
+ <cfif rc.sortBy eq 'orderno'>
    <div class="help-block" id="sitemgr-reorder" style="display:none">
    <i class="mi-warning"></i> Click "Update" to save content order: <input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
    </div>
