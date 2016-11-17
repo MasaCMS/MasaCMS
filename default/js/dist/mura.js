@@ -4301,7 +4301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     			function(){
                     mura.reCAPTCHALanguage=mura.reCAPTCHALanguage || 'en';
-                    
+
     				if(find(".g-recaptcha" ).length){
     					var fileref=document.createElement('script')
     				        fileref.setAttribute("type","text/javascript")
@@ -9106,8 +9106,11 @@ return /******/ (function(modules) { // webpackBootstrap
 				var multi = {};
 				var item = {};
 				var valid = [];
+				var currentPage = {};
 
 				mura(".field-container-" + self.context.objectid + " input, .field-container-" + self.context.objectid + " select, .field-container-" + self.context.objectid + " textarea").each( function() {
+
+					currentPage[mura(this).attr('name')]=true;
 
 					if( mura(this).is('[type="checkbox"]')) {
 						if ( multi[mura(this).attr('name')] == undefined )
@@ -9149,6 +9152,20 @@ return /******/ (function(modules) { // webpackBootstrap
 					else {
 						self.data[ i ] = multi[i].join(",");
 						valid[ i ] = multi[i].join(",");
+					}
+				}
+
+				if(typeof self.FormData != 'undefined'){
+					var frm=document.getElementById('frm' + self.context.objectid);
+
+					for(var p in currentPage){
+						if(currentPage.hasOwnProperty(p) && typeof self.data[p] != 'undefined'){
+							if(p.indexOf("_attachment") > -1 && typeof frm[p] != 'undefined'){
+								self.FormData.set(p,frm[p].files[0]);
+							} else {
+								self.FormData.set(p,self.data[p]);
+							}
+						}
 					}
 				}
 
@@ -9327,6 +9344,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				self.currentpage = 0;
 				self.formInit=true;
+
+				if(typeof FormData != 'undefined'){
+					self.FormData=new FormData();
+				}
 			},
 
 			onSubmit: function(){
@@ -9385,10 +9406,27 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 				else {
 					//console.log('b!');
-					var data=Mura.deepExtend({},self.context,self.data);
-					data.saveform=true;
-					data.formid=data.objectid;
-					data.siteid=data.siteid || Mura.siteid;
+
+					if(typeof self.FormData == 'undefined'){
+						var data=Mura.deepExtend({},self.context,self.data);
+						data.saveform=true;
+						data.formid=data.objectid;
+						data.siteid=data.siteid || Mura.siteid;
+					} else {
+						var data=self.FormData;
+
+						for(var p in self.context){
+							if(self.context.hasOwnProperty(p)){
+								if(!data.has(p)){
+									data.set(p,self.context[p]);
+								}
+							}
+						}
+
+						data.set('saveform',true);
+						data.set('formid',self.context.objectid);
+						data.set('siteid',data.siteid || Mura.siteid);
+					}
 
 	                Mura.post(
 	                        Mura.apiEndpoint + '?method=processAsyncObject',
@@ -10189,7 +10227,7 @@ this["mura"]["templates"]["form"] = this.mura.Handlebars.template({"compiler":[7
     + alias4(((helper = (helper = helpers.objectid || (depth0 != null ? depth0.objectid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"objectid","hash":{},"data":data}) : helper)))
     + "\" class=\""
     + ((stack1 = ((helper = (helper = helpers.formClass || (depth0 != null ? depth0.formClass : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"formClass","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\" novalidate=\"novalidate\" enctype='multipart/form-data'>\n<div class=\"error-container-"
+    + "\" novalidate=\"novalidate\" enctype=\"multipart/form-data\">\n<div class=\"error-container-"
     + alias4(((helper = (helper = helpers.objectid || (depth0 != null ? depth0.objectid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"objectid","hash":{},"data":data}) : helper)))
     + "\">\n</div>\n<div class=\"field-container-"
     + alias4(((helper = (helper = helpers.objectid || (depth0 != null ? depth0.objectid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"objectid","hash":{},"data":data}) : helper)))
