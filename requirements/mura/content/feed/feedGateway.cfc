@@ -228,7 +228,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 
 					<cfif mxpRelevanceSort>
-					,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
+					,tracktotal.track_total_score as total_score, (stagetotal.stage_points + personatotal.persona_points) as total_points
 					</cfif>
 				<cfelse>
 					count(*) as count
@@ -280,14 +280,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif mxpRelevanceSort>
-					LEFT JOIN mxp_personapoints persona #tableModifier#
-					ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
+					left join (
+						select sum(persona.points) persona_points, persona.contenthistid
+						from mxp_personapoints persona
+						where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">
+						group by persona.contenthistid
+					) personatotal on (tcontent.contenthistid = personatotal.contenthistid)
 
-					LEFT JOIN mxp_stagepoints stage #tableModifier#
-					ON (tcontent.contenthistid=stage.contenthistid and stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">)
+					left join (
+						select sum(stage.points) stage_points, stage.contenthistid
+						from mxp_stagepoints stage
+						where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">
+						group by stage.contenthistid
+					) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
 
-					LEFT JOIN mxp_conversiontrack track #tableModifier#
-					ON (tcontent.contentid = track.contentid and track.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#"> and track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">)
+					left join (
+						select sum(track.points) track_total_score, track.contentid
+						from mxp_conversiontrack track
+						where track.created >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',-1,nowAdjusted)#">
+						group by track.contentid
+					) tracktotal on (tcontent.contentid=tracktotal.contentid)
 				</cfif>
 
 				<cfif not arguments.countOnly and isExtendedSort>
@@ -1152,21 +1164,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							tcontent.mobileExclude in (0,1)
 						</cfif>
 					)
-				</cfif>
-
-				<cfif mxpRelevanceSort>
-				Group By
-					tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups,
-					tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
-					tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
-					tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
-					tcontent.releaseDate, tcontent.lastupdate,tcontent.summary,
-					tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
-					tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
-					tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-					tcontentstats.comments, tparent.type,
-					tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
-					tfiles.filename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText,tcontent.changesetid
 				</cfif>
 
 				<cfif not arguments.countOnly>
