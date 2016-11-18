@@ -18,5 +18,9 @@
         .addColumn(column="contentCanceledScript",dataType="longtext")
         .addColumn(column="showDashboard",dataType="integer",default=0)
         .addColumn(column="placeholderImgID",dataType="varchar",length=35)
-        .addColumn(column="placeholderImgExt",dataType="varchar",length=10);;
+        .addColumn(column="placeholderImgExt",dataType="varchar",length=10);
+
+    dbUtility.setTable("tcontent").addIndex('SiteID,Active,Approved,IsNav,ModuleID,searchExclude,ContentID,Type,subType,Display,DisplayStart,DisplayStop,mobileExclude');
+    dbUtility.setTable("tcontentrelated").addIndex('relatedID').addIndex('contentHistID');
+    dbUtility.setTable("tclassextendrcsets").addIndex('name');
 </cfscript>
