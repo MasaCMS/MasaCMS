@@ -70,6 +70,8 @@
 			<cfset variables.instance.imageInterpolation="bicubic">
 		</cfif>
 
+		<cfset variables.imageFileLookup={}>
+
 		<cfreturn this />
 	</cffunction>
 
@@ -89,12 +91,49 @@
 		<cfreturn this />
 	</cffunction>
 
+	<cffunction name="doesImageFileExist" output="false">
+		<cfargument name="filePath">
+		<cfargument name="attempt" default="1">
+
+		<cfif variables.configBean.getValue(property="cacheImageFileLookups", defaultValue=false)>
+			<cfparam name="variables.imageFileLookup" default="#structNew()#">
+
+			<cftry>
+				<cfif arguments.attempt neq 1>
+					<cfset structDelete(variables.imageFileLookup,'#arguments.filepath#')>
+				</cfif>
+
+				<cfif not structKeyExists(variables.imageFileLookup,'#arguments.filepath#')>
+					<cfif fileExists(arguments.filePath)>
+						<cfset variables.imageFileLookup['#arguments.filepath#']=true>
+						<cfreturn true>
+					<cfelse>
+						<cfreturn false>
+					</cfif>
+				<cfelse>
+					<cfreturn true>
+				</cfif>
+				<cfcatch>
+					<cfreturn fileExists(arguments.filePath)>
+				</cfcatch>
+			</cftry>
+		<cfelse>
+			<cfreturn fileExists(arguments.filePath)>
+		</cfif>
+
+	</cffunction>
+
+	<cffunction name="resetImageFileLookUp" output="false">
+		<cfset variables.imageFileLookup={}>
+	</cffunction>
+
 	<cffunction name="getCustomImage" output="false">
 		<cfargument name="Image" required="true" />
 		<cfargument name="Height" default="AUTO" />
 		<cfargument name="Width" default="AUTO" />
 		<cfargument name="size" default="" />
 		<cfargument name="siteID" default="" />
+		<cfargument name="attempt" default="1" />
 
 		<cfset var NewImageSource = "">
 		<cfset var NewImageLocal = "">
@@ -110,7 +149,7 @@
 			<cfreturn "">
 		</cfif>
 
-		<cfif not fileExists(OriginalImageFile)>
+		<cfif not doesImageFileExist(OriginalImageFile,arguments.attempt)>
 			<cfset OriginalImageFile = expandPath(OriginalImageFile) />
 			<cfset OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
 		</cfif>
@@ -135,16 +174,16 @@
 
 		<cfset NewImageLocal = listLast(replace(NewImageLocal,"\","/","all"),'/')>
 
-		<cfif not FileExists(NewImageSource)>
+		<cfif not doesImageFileExist(NewImageSource,arguments.attempt)>
 
 			<cfset OriginalImageFile = Replace(OriginalImageFile, ".#OriginalImageType#", "_source.#OriginalImageType#", "all") />
 
-			<cfif not fileExists(OriginalImageFile)>
+			<cfif not doesImageFileExist(OriginalImageFile)>
 				<cfset OriginalImageFile = Replace(OriginalImageFile, "_source.#OriginalImageType#", ".#OriginalImageType#", "all") />
 			</cfif>
 
 			<!--- If the original file does not exist then it can't create the custom image.--->
-			<cfif not fileExists(OriginalImageFile)>
+			<cfif not doesImageFileExist(OriginalImageFile)>
 				<cfreturn NewImageLocal>
 			</cfif>
 
@@ -159,13 +198,24 @@
 				<cfreturn "">
 			</cfif>
 
-			<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
-
-			<cfset resizeImage(height=arguments.height,width=arguments.width,image=NewImageSource)>
-
-			<cfif not fileExists(NewImageSource)>
+			<cftry>
 				<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
-			</cfif>
+
+				<cfset resizeImage(height=arguments.height,width=arguments.width,image=NewImageSource)>
+
+				<cfif not doesImageFileExist(NewImageSource,arguments.attempt)>
+					<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
+				</cfif>
+
+				<cfcatch>
+					<cfif arguments.attempt eq 1>
+						<cfset arguments.attempt=2>
+						<cfset getCustomImage(argumentCollection=arguments)>
+					<cfelse>
+						<cfrethrow>
+					</cfif>
+				</cfcatch>
+			</cftry>
 		</cfif>
 
 		<cfreturn NewImageLocal />
