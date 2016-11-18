@@ -178,12 +178,12 @@
 
 			<cfset OriginalImageFile = Replace(OriginalImageFile, ".#OriginalImageType#", "_source.#OriginalImageType#", "all") />
 
-			<cfif not doesImageFileExist(OriginalImageFile)>
+			<cfif not doesImageFileExist(OriginalImageFile,arguments.attempt)>
 				<cfset OriginalImageFile = Replace(OriginalImageFile, "_source.#OriginalImageType#", ".#OriginalImageType#", "all") />
 			</cfif>
 
 			<!--- If the original file does not exist then it can't create the custom image.--->
-			<cfif not doesImageFileExist(OriginalImageFile)>
+			<cfif not doesImageFileExist(OriginalImageFile,arguments.attempt)>
 				<cfreturn NewImageLocal>
 			</cfif>
 
