@@ -564,7 +564,9 @@ Blog: www.codfusion.com--->
 	<cfreturn local.result/>
 </cffunction>
 
-<cffunction name="setSessionCookies">
+<cffunction name="setSessionCookies" output="false">
+	<cfargument name="reset" default="true">
+
 	<cfif application.configBean.getSecureCookies() or application.configBean.getSessionCookiesExpires() neq 'never' or len(application.configBean.getCookieDomain())>
 		<!---<cftry>--->
 			<cfset var sessionData=getSession()>
@@ -587,7 +589,7 @@ Blog: www.codfusion.com--->
 				<cfreturn>
 			</cfif>
 
-			<cfif isDefined('sessionTokens.cfid')>
+			<cfif isDefined('sessionTokens.cfid') and (arguments.reset or not isDefined('cookie.cfid'))>
 				<!--- Lucee uses lowercase cookies the setCookie method allows it to maintain case--->
 				<cfif server.coldfusion.productname neq 'Coldfusion Server'>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
@@ -608,7 +610,7 @@ Blog: www.codfusion.com--->
 				</cfif>
 			</cfif>
 
-			<cfif  isDefined('sessionTokens.jsessionid')>
+			<cfif  isDefined('sessionTokens.jsessionid') and (arguments.reset or not isDefined('cookie.jsessionid'))>
 				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
 					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid) />
 				<cfelse>

@@ -362,6 +362,7 @@
 			}
 
 			setIntervalUnitLabel();
+
 		}
 
 		function toggleAllDayOptions(){
@@ -407,6 +408,7 @@
 		}
 
 		function toggleRepeatOptionsContainer(){
+
 			var input=$('input[name="displayIntervalEvery"]');
 
 			if($('##displayIntervalRepeats').is(':checked')){
@@ -420,11 +422,9 @@
 				} else {
 					$('##displayIntervalEnd').val('never');
 				}
-
-				setEndOption();
 				toggleRepeatOptions();
 			}
-
+			setEndOption();
 			setIntervalUnitLabel();
 		}
 

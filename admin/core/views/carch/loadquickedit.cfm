@@ -428,11 +428,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##displayIntervalEnd').val('never');
 				}
 
-				setEndOption();
 				toggleRepeatOptions();
-				//input.val(0);
 			}
-
+			setEndOption();
 			setIntervalUnitLabel();
 		}
 
