@@ -766,7 +766,7 @@ if(len($.siteConfig('customTagGroups'))){
 					filtered:false
 					<cfif len($.siteConfig('customTagGroups'))>
 					<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-					,#g#tags:''
+					,"#g#tags":''
 					</cfloop>
 					</cfif>
 
