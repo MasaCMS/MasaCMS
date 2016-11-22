@@ -309,14 +309,9 @@
 					<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>
 
 					<cfif listLen(param.getField(),".") gt 1>
-						#param.getFieldStatement()# 
+						#param.getFieldStatement()#
 						<cfif param.getCriteria() eq 'null'>
-							#param.getCondition()#
-							<cfif param.getCondition() eq 'NEQ'>
-								IS NOT NULL
-							<cfelse>
-								IS NULL
-							</cfif>
+							#param.getCondition()# NULL
 						<cfelse>
 							#param.getCondition()#
 							<cfif isListParam>(</cfif>

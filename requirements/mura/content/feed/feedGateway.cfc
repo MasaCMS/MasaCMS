@@ -428,12 +428,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														WHERE
 															#param.getFieldStatement()#
 															<cfif param.getCriteria() eq 'null'>
-																#param.getCondition()#
-																<cfif param.getCondition() eq 'NEQ'>
-																	IS NOT NULL
-																<cfelse>
-																	IS NULL
-																</cfif>
+																#param.getCondition()# NULL
 															<cfelse>
 																#param.getCondition()#
 																<cfif isListParam>(</cfif>
