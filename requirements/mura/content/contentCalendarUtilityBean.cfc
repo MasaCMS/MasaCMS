@@ -20,13 +20,13 @@ component extends='mura.cfobject' {
         .asUTCDate('start')
         .asUTCDate('end');
     }
-    
+
 
     var qoq = new Query();
     qoq.setDBType('query');
     qoq.setAttributes(rs=arguments.data);
     qoq.setSQL('
-      SELECT 
+      SELECT
         url as [url]
         , contentid as [id]
         , menutitle as [title]
@@ -55,10 +55,10 @@ component extends='mura.cfobject' {
 
     for(var i in listToArray(arguments.calendarid)){
       local.contentBean = variables.$.getBean('content').loadBy(contentid=i, siteid=arguments.siteid);
-      
-      local.applyPermFilter = variables.$.siteConfig('extranet') == 1 
+
+      local.applyPermFilter = variables.$.siteConfig('extranet') == 1
         && variables.$.getBean('permUtility').setRestriction(local.contentBean.getCrumbArray()).restrict == 1;
-      
+
       if ( !(local.contentBean.getIsNew() || local.contentBean.getType() != 'Calendar') ) {
           arrayAppend(allowable,i);
       }
@@ -81,7 +81,7 @@ component extends='mura.cfobject' {
     // start and end dates
     local.displaystart = DateFormat(arguments.start, 'yyyy-mm-dd');
     local.displaystop = DateFormat(arguments.end, 'yyyy-mm-dd');
-    
+
 
     // the calendar feed
     local.feed = variables.$.getBean('feed')
@@ -102,7 +102,7 @@ component extends='mura.cfobject' {
         ,criteria=local.displaystop
       )
       // OPEN GROUPING
-        // filter records with a displayStop date that occurs after the displayStart date 
+        // filter records with a displayStop date that occurs after the displayStart date
         // OR doesn't have one at all
         .addParam(relationship='andOpenGrouping')
           .addParam(
@@ -140,7 +140,7 @@ component extends='mura.cfobject' {
     QueryAddColumn(local.rs, 'url', []);
     for ( local.i=1; local.i<=local.rs.recordcount; local.i++ ) {
       // add URL to rs
-      local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i]);
+      local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i],complete=1);
       // convert dates to UTC, then use browser's local tz settings to output the dates/times
       /*
       local.tempstart = DateConvert('local2utc', local.rs['displaystart'][i]);
