@@ -309,8 +309,20 @@
 					<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>
 
 					<cfif listLen(param.getField(),".") gt 1>
-						#param.getFieldStatement()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
-						<cfset openGrouping=false />
+						#param.getFieldStatement()# 
+						<cfif param.getCriteria() eq 'null'>
+							#param.getCondition()#
+							<cfif param.getCondition() eq 'NEQ'>
+								IS NOT NULL
+							<cfelse>
+								IS NULL
+							</cfif>
+						<cfelse>
+							#param.getCondition()#
+							<cfif isListParam>(</cfif>
+							<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+							<cfif isListParam>)</cfif>
+						</cfif>
 					<cfelseif len(param.getField())>
 						<cfif not ((param.getCriteria() eq 'null' or param.getCriteria() eq '') and param.getCondition() eq 'is')>
 							<cfset castfield="attributeValue">

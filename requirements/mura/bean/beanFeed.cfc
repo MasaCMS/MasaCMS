@@ -550,7 +550,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(param.getField())>
 					#param.getFieldStatement()#
 					<cfif param.getCriteria() eq 'null'>
-						IS NULL
+						<cfif param.getCondition() eq 'NEQ'>
+							IS NOT NULL
+						<cfelse>
+							IS NULL
+						</cfif>
 					<cfelse>
 						#param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
 					</cfif>
