@@ -209,7 +209,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<span class="mura-interval-end" id="mura-interval-end-on" style="display:none">
 						<input type="text" id="displayIntervalEndOn" name="displayIntervalEndOn" class="mura-repeat-option datepicker mura-datepickerdisplayIntervalEndOn" value="#LSDateFormat(displayInterval.endon,session.dateKeyFormat)#" maxlength="12"/>
 						<cfif rc.ptype neq 'Calendar'>
-							<label id="displayIntervalToLabel" class="time">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</label>
 							<cf_datetimeselector name="displayStop" datetime="#content.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
 						</cfif>
 					</span>
