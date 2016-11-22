@@ -946,21 +946,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="removeCategory" output="false">
-	<cfargument name="categoryID"  required="true" default=""/>
+	<cfargument name="categoryID"  required="true" default="" hint="only use when not using name"/>
+	<cfargument name="name"  required="true" default="" hint="only use when not using categoryid"/>
 	<cfset setCategory(arguments.categoryid,'')>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setCategory" output="false">
-	<cfargument name="categoryID"  required="true" default=""/>
+	<cfargument name="categoryID"  required="true" default="" hint="only use when not using name"/>
 	<cfargument name="membership"  required="true" default="0"/>
 	<cfargument name="featureStart"  required="true" default=""/>
 	<cfargument name="featureStop"  required="true" default=""/>
+	<cfargument name="name"  required="true" default="" hint="only use when not using categoryid"/>
 
-	<cfif not isValid('uuid',arguments.categoryid)>
+	<cfif len(arguments.name)>
+		<cfset arguments.categoryid=getBean('category').loadBy(name=arguments.name,siteid=getValue('siteid')).getCategoryID()>
+	<cfelseif len(arguments.categoryid) and not isValid('uuid',arguments.categoryid)>
 		<cfset arguments.categoryid=getBean('category').loadBy(name=arguments.categoryid,siteid=getValue('siteid')).getCategoryID()>
 	</cfif>
-	
+
 	<cfif isDefined('arguments.isFeature')>
 		<cfset arguments.membership=arguments.isFeature>
 	</cfif>
