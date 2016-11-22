@@ -76,12 +76,17 @@
 	<cfif rc.ptype eq 'Calendar' and not rc.contentBean.exists()>
 		<cfset displayInterval.repeats=0>
 		<cfset displayInterval.allday=1>
+	<cfelseif rc.ptype neq 'Calendar'>
+		<cfset displayInterval.repeats=1>
+		<cfset displayInterval.allday=0>
 	</cfif>
 	<div class="mura-control-group">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 		<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#">
+		<cfif rc.ptype eq 'Calendar'>
 		<label id="displayIntervalToLabel" class="time">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</label>
 		<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
+		</cfif>
 	</div>
 	<cfif len(rc.$.globalConfig('tzRegex'))>
 	<div id="mura-tz-container" class="mura-control-group span4" style="display:none">
@@ -110,15 +115,20 @@
 	<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval(serialize=true))#">
 	<input name="convertDisplayTimeZone" type="hidden" value="true">
 
-	<div class="mura-control-group">
-		<label class="checkbox" for="displayIntervalAllDay">
-			<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
-		</label>
-		<label for="displayIntervalRepeats" class="checkbox">
-			<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
-		</label>
-	</div>
-	<div class="mura-repeat-options mura-control-group" style="display:none">
+	<cfif rc.ptype eq 'Calendar'>
+		<div class="mura-control-group">
+			<label class="checkbox" for="displayIntervalAllDay">
+				<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
+			</label>
+			<label for="displayIntervalRepeats" class="checkbox">
+				<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
+			</label>
+		</div>
+	<cfelse>
+		<input type="hidden" id="displayIntervalAllDay" name="displayIntervalllDay" value="0"/>
+		<input type="hidden" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats">
+	</cfif>
+	<div class="mura-repeat-options mura-control-group" <cfif rc.ptype eq 'Calendar'>style="display:none"</cfif>>
 		<div class="mura-control-inline">
 			<select id="displayIntervalType" name="displayIntervalType" class="mura-repeat-option">
 				<cfloop list="daily,weekly,bi-weekly,monthly,weekdays,weekends,week1,week2,week3,week4,weeklast,yearly" index="i">
@@ -168,6 +178,9 @@
 			</span>
 			<span class="mura-interval-end" id="mura-interval-end-on" style="display:none">
 				<input type="text" id="displayIntervalEndOn" name="displayIntervalEndOn" class="mura-repeat-option datepicker mura-datepickerdisplayIntervalEndOn" value="#LSDateFormat(displayInterval.endon,session.dateKeyFormat)#" maxlength="12"/>
+				<cfif rc.ptype neq 'Calendar'>
+				<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59">
+				</cfif>
 			</span>
 	</div>
 </div>
@@ -195,6 +208,11 @@
 <div>
 	<script>
 	$(function(){
+		<cfif rc.ptype eq 'Calendar'>
+			var isCalendar=true;
+		<cfelse>
+			var isCalendar=false;
+		</cfif>
 		function pushDisplayStopOut(){
 			$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());
 			$('##mura-datepicker-displayStop').trigger('change');
@@ -222,6 +240,7 @@
 			}
 
 			$('##mura-displayStop').val("{ts '2100-01-01 " + stopHour + ":" + stopMinute + ":00'}");
+			$('##displayIntervalEndOn').val('');
 		}
 
 		function updateDisplayInterval(){
@@ -233,10 +252,10 @@
 			}
 
 			var options={
-				repeats: $('##displayIntervalRepeats').is(':checked') ? 1 : 0,
+				repeats: (!isCalendar || isCalendar && $('##displayIntervalRepeats').is(':checked')) ? 1 : 0,
 				detectconflicts: $('##displayIntervalDetectConflicts').is(':checked') ? 1 : 0,
 				detectspan: $('##mura-detectspan').val(),
-				allday: $('##displayIntervalAllDay').is(':checked') ? 1 : 0,
+				allday:  (isCalendar && $('##displayIntervalAllDay').is(':checked')) ? 1 : 0,
 				timezone: $('##displayIntervalTZ').val(),
 				every: $('##displayIntervalEvery').val() || 0,
 				type: $('##displayIntervalType').val(),
@@ -285,7 +304,7 @@
 
 		function setEndOption(){
 
-			if($('##displayIntervalRepeats').is(':checked')){
+			if(!isCalendar || isCalendar && $('##displayIntervalRepeats').is(':checked')){
 				var type=$('##displayIntervalEnd').val();
 
 				$('.mura-interval-end').hide();
@@ -366,7 +385,8 @@
 		}
 
 		function toggleAllDayOptions(){
-			if($('##displayIntervalAllDay').is(':checked')){
+
+			if(!isCalendar && $('##displayIntervalAllDay').is(':checked')){
 				$('##mura-displayStartHour').hide();
 				$('##mura-displayStartMinute').hide();
 				$('##mura-displayStartDayPart').hide();
@@ -411,7 +431,7 @@
 
 			var input=$('input[name="displayIntervalEvery"]');
 
-			if($('##displayIntervalRepeats').is(':checked')){
+			if(!isCalendar || isCalendar && $('##displayIntervalRepeats').is(':checked')){
 				$('.mura-repeat-options').show();
 				setDaysOfWeekDefault();
 			} else {
@@ -424,6 +444,7 @@
 				}
 				toggleRepeatOptions();
 			}
+
 			setEndOption();
 			setIntervalUnitLabel();
 		}

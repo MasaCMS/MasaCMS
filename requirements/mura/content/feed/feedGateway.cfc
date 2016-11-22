@@ -1360,7 +1360,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="renderDateTimeParamType">
 	<cfif variables.configBean.getDBType() eq 'Oracle'>
-		<cfreturn "cf_sql_date">
+		<!--- This was cf_sql_date,but it was loosing precision.  Looking for better solution--->
+		<cfreturn "cf_sql_timestamp">
 	<cfelse>
 		<cfreturn "cf_sql_timestamp">
 	</cfif>
