@@ -945,21 +945,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn returnList>
 </cffunction>
 
+<cffunction name="removeCategory" output="false">
+	<cfargument name="categoryID"  required="true" default=""/>
+	<cfset setCategory(arguments.categoryid,'')>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setCategory" output="false">
 	<cfargument name="categoryID"  required="true" default=""/>
-	<cfargument name="isFeature"  required="true" default="0"/>
+	<cfargument name="membership"  required="true" default="0"/>
 	<cfargument name="featureStart"  required="true" default=""/>
 	<cfargument name="featureStop"  required="true" default=""/>
 
-	<cfset var catTrim=replace(arguments.categoryID,'-','','ALL')>
-
-	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.isFeature />
-
-	<cfif not listFind(variables.instance.categoryID,arguments.categoryID)>
-		<cfset variables.instance.categoryID=listAppend(variables.instance.categoryID,arguments.categoryID)>
+	<cfif not isValid('uuid',arguments.categoryid)>
+		<cfset arguments.categoryid=getBean('category').loadBy(name=arguments.categoryid,siteid=getValue('siteid')).getCategoryID()>
+	</cfif>
+	
+	<cfif isDefined('arguments.isFeature')>
+		<cfset arguments.membership=arguments.isFeature>
 	</cfif>
 
-	<cfif arguments.isFeature eq "2">
+	<cfset var catTrim=replace(arguments.categoryID,'-','','ALL')>
+
+	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.membership />
+
+	<cfif isNumeric(arguments.membership)>
+		<cfif not listFind(variables.instance.categoryID,arguments.categoryID)>
+			<cfset variables.instance.categoryID=listAppend(variables.instance.categoryID,arguments.categoryID)>
+		</cfif>
+	<cfelse>
+		<cfset var catPOS=listFind(variables.instance.categoryID,arguments.categoryID)>
+		<cfif catPOS>
+			<cfset variables.instance.categoryID=listDeleteAt(variables.instance.categoryID,catPOS)>
+		</cfif>
+	</cfif>
+
+	<cfif arguments.membership eq "2">
 		<cfif isdate(arguments.featureStart)>
 			<cfset variables.instance['featureStart#catTrim#']=arguments.featureStart />
 			<cfset variables.instance['startDayPart#catTrim#']=timeFormat(arguments.featureStart,"tt") />
