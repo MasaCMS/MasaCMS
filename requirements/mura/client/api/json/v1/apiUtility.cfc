@@ -70,12 +70,12 @@ component extends="mura.cfobject" {
 		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('group',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('address',{public=false,moduleid='00000000000000000000000000000000008'});
-		registerEntity('changeset',{public=true,moduleid='00000000000000000000000000000000014'});
-		registerEntity('feed',{public=true,moduleid='00000000000000000000000000000000011'});
+		registerEntity('changeset',{public=false,moduleid='00000000000000000000000000000000014'});
+		registerEntity('feed',{public=false,moduleid='00000000000000000000000000000000011'});
 		registerEntity('category',{public=true,moduleid='00000000000000000000000000000000010'});
 		registerEntity('contentCategoryAssign',{public=true,moduleid='00000000000000000000000000000000000'});
-		registerEntity('file',{public=true,moduleid='00000000000000000000000000000000000'});
-		registerEntity('fileMetaData',{public=true,moduleid='00000000000000000000000000000000000'});
+		registerEntity('file',{public=false,moduleid='00000000000000000000000000000000000'});
+		registerEntity('fileMetaData',{public=false,moduleid='00000000000000000000000000000000000'});
 		registerEntity('changesetCategoryAssignment',{public=true,moduleid='00000000000000000000000000000000000'});
 		registerEntity('comment',{public=true,moduleid='00000000000000000000000000000000015'});
 		registerEntity('stats',{public=true,moduleid='00000000000000000000000000000000000'});
@@ -805,14 +805,14 @@ component extends="mura.cfobject" {
 				responseObject.setStatus(200);
 			}
 		} catch (Any e){}
-		
+
 		if(isDefined('arguments.response.data.shunter') && arguments.response.data.shunter){
 			if(isDefined('arguments.response.data.layout')){
 				responseObject.setContentType('application/x-shunter+json; charset=utf-8');
 				arguments.response.layout=arguments.response.data.layout;
 			}
 		}
-		
+
 		return getSerializer().serialize(arguments.response);
 	}
 
@@ -2173,7 +2173,7 @@ component extends="mura.cfobject" {
 				links[p.name]="#baseurl#/#p.cfc#?#entity.translatePropKey(p.loadkey)#=#entity.getValue(entity.translatePropKey(p.column))#";
 				//links[p.name]="#links['self']#/#p.name#";
 			}
-			} catch(any e){writeDump(var=p,abort=true);}
+		} catch(any e){/*writeDump(var=p,abort=true);*/}
 		}
 
 		if(arrayLen(entity.getHasOnePropArray())){

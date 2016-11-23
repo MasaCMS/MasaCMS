@@ -818,7 +818,7 @@
 							expandParams['#entity.translatePropKey(p.loadkey)#']=entity.getValue(entity.translatePropKey(p.column));
 							try{
 								result[p.name]=apiUtility.findQuery(entityName=p.cfc,siteid=$.event('siteid'),params=expandParams);
-							} catch(any e){WriteDump(p); abort;}
+							} catch(any e){/*WriteDump(p); abort;*/}
 						}
 					}
 				}
@@ -832,7 +832,7 @@
 								} else {
 									result[p.name]=apiUtility.findOne(entityName=p.cfc,id=entity.getValue(entity.translatePropKey(p.column)),siteid=$.event('siteid'),render=false,variation=false,expand=false);
 								}
-							} catch(any e){WriteDump(p); abort;}
+							} catch(any e){/*WriteDump(p); abort;*/}
 						}
 					}
 				}
