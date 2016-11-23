@@ -78,7 +78,7 @@ component extends="mura.cfobject" {
 		registerEntity('fileMetaData',{public=false,moduleid='00000000000000000000000000000000000'});
 		registerEntity('changesetCategoryAssignment',{public=false,moduleid='00000000000000000000000000000000000'});
 		registerEntity('comment',{public=true,moduleid='00000000000000000000000000000000015'});
-		registerEntity('stats',{public=true,moduleid='00000000000000000000000000000000000'});
+		registerEntity('stats',{public=false,moduleid='00000000000000000000000000000000000'});
 
 		return this;
 	}
