@@ -386,7 +386,7 @@
 
 		function toggleAllDayOptions(){
 
-			if(!isCalendar && $('##displayIntervalAllDay').is(':checked')){
+			if(isCalendar && $('##displayIntervalAllDay').is(':checked')){
 				$('##mura-displayStartHour').hide();
 				$('##mura-displayStartMinute').hide();
 				$('##mura-displayStartDayPart').hide();
