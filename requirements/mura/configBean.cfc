@@ -1776,15 +1776,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="registerModelDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="package">
-	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
-	<cfset registerBeanDir(argumentCollection)>
+	<cfset registerBeanDir(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="registerBeanDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="package">
-	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfset var rs="">
 	<cfif directoryExists(expandPath(arguments.dir))>
@@ -1809,7 +1809,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="registerBean" output="false">
 	<cfargument name="componentPath">
-	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfset var ioc=getServiceFactory()>
 	<cfset var checkSchema=isDefined('url.applydbupdates')>
@@ -1840,8 +1840,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 	<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
 	<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
-		<cfset beanName=metadata.entityname>
 		<cfset ioc.addAlias(metadata.entityname,beanName)>
+		<cfset beanName=metadata.entityname>
 	</cfif>
 
 	<cfset entity=ioc.getBean(beanName)>
