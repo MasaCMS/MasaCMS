@@ -133,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.contentBean.getDisplay() eq 2>
 	<div class="alert alert-info" >
 		<span>
-			<strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#
+			<strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc(showTitle=false)#
 		</span>
 	</div>
 </cfif>
@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 				</p>
 			</cfloop>
-		</span>	
+		</span>
 	</div>
 </cfif>
 
