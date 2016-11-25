@@ -390,6 +390,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="eventName">
 	<cfargument name="index" default="0">
 	<cfset getEventManager().announceEvent(eventToAnnounce=arguments.eventName,currentEventObject=this,index=arguments.index)>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="renderEvent" output="false">
