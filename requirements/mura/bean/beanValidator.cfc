@@ -251,7 +251,7 @@ component output="false" accessors="true" extends="mura.cfobject" {
 		//Translate from db types to CF types
 		if(arguments.constraintValue=='datetime'){
 			arguments.constraintValue='date';
-		} else if (listFindNoCase('varchar,char,text',arguments.constraintValue)){
+		} else if (listFindNoCase('varchar,char,text,longtext,mediumtext,clob,nvarchar',arguments.constraintValue)){
 			arguments.constraintValue='string';
 		} else if (listFindNoCase('tinyint,int,smallint',arguments.constraintValue)){
 			arguments.constraintValue='integer';
