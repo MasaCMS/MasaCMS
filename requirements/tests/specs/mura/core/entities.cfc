@@ -217,7 +217,7 @@ component extends="testbox.system.BaseSpec"{
 					expect( widget.hasErrors() ).toBeTrue();
 
 					expect( StructKeyExists(widget.getErrors(), "name") ).toBeTrue();
-					expect( StructKeyExists(widget.setName('Example WIdget').validate().getErrors(), "name") ).toBeFalse();
+					expect( StructKeyExists(widget.setName('Example Widget').validate().getErrors(), "name") ).toBeFalse();
 
 					expect( StructKeyExists(widget.getErrors(), "email") ).toBeTrue();
 					expect( StructKeyExists(widget.setEmail('email@example.com').validate().getErrors(), "email") ).toBeFalse();
