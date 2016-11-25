@@ -270,6 +270,10 @@ component extends="testbox.system.BaseSpec"{
 
 					expect(widget.getOptionsQuery().recordcount).toBe(0);
 
+					queryExecute("drop table #widget.getTable()#");
+					queryExecute("drop table #option.getTable()#");
+
+
 				}
 			);
 		});
