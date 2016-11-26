@@ -157,10 +157,10 @@ component extends="testbox.system.BaseSpec"{
 											expect( (arguments.data.columns[arguments.data.prop].datatype=='longtext') ).toBeTrue();
 										} else if (columnType=='char'){
 											expect( (arguments.data.columns[arguments.data.prop].datatype=='char') ).toBeTrue();
-										} else if ( listFindNoCase('int,integer,number',arguments.data.columns[arguments.data.prop].datatype) ){
-											expect( listFindNoCase('int,integer,number',arguments.data.columns[arguments.data.prop].datatype) ).toBeTrue();
+										} else if ( listFindNoCase('int,smallint,integer,number',arguments.data.columns[arguments.data.prop].datatype) ){
+											expect( listFindNoCase('int,smallint,integer,number',arguments.data.columns[arguments.data.prop].datatype) ).toBeTrue();
 										} else if (columnType=='tinyint'){
-											expect( listFindNoCase('tiny,number',arguments.data.columns[arguments.data.prop].datatype) ).toBeTrue();
+											expect( listFindNoCase('tinyint,number',arguments.data.columns[arguments.data.prop].datatype) ).toBeTrue();
 										} else if (columnType=='double'){
 											expect( (arguments.data.columns[arguments.data.prop].datatype=='double') ).toBeTrue();
 										} else if (columnType=='float'){
