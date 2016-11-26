@@ -16,6 +16,310 @@ component extends="testbox.system.BaseSpec"{
 	function run(){
 		variables.data={};
 
+		describe("Testing Entity Schema Creation and Persistence", function() {
+			application.serviceFactory.getBean('configBean').registerModelDir(dir="/muraWRM/requirements/tests/resources/model",siteid="default");
+
+			var $=application.serviceFactory.getBean('$').init('default');
+			var ioc=$.getServiceFactory();
+
+			it(
+				title="Widget should exist in bean factory",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=ioc.containsBean('testWidget') }
+			);
+
+			it(
+				title="Widget should not be singleton",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=ioc.isSingleton('testWidget')  }
+			);
+
+			it(
+				title="Option should exist in bean factory",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=ioc.containsBean('testWidget') }
+			);
+
+			it(
+				title="Option should not be singleton",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=ioc.isSingleton('optionWidget')  }
+			);
+
+			it(
+				title="Service should be singleton",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=ioc.isSingleton('testService')  }
+			);
+
+			it(
+				title="Service should be able to call method",
+				body=function( data ){
+					expect( arguments.data.value).toBe('hello');
+				},
+				data={value=$.getBean('testService').sayHello()   }
+			);
+
+			var widget=$.getBean('testWidget');
+			var option=$.getBean('testOption');
+
+			widget.checkSchema();
+			widget.validate();
+
+			it(
+				title="Widget should have errors",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=widget.hasErrors()   }
+			);
+
+			it(
+				title="Widget 'Name' should have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.getErrors(), "name") }
+			);
+
+			it(
+				title="Widget 'Name' should not have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=StructKeyExists(widget.setName('Example Widget').validate().getErrors(),'name') }
+			);
+
+			it(
+				title="Widget 'Email' should have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.getErrors(), "email") }
+			);
+
+			it(
+				title="Widget 'Email' should not have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=StructKeyExists(widget.setEmail('example@example.com').validate().getErrors(),'email') }
+			);
+
+			it(
+				title="Widget 'Description' should have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.getErrors(), "description") }
+			);
+
+			it(
+				title="Widget 'Description' should not have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=StructKeyExists(widget.setDescription('This is my widget').validate().getErrors(),'description') }
+			);
+
+			it(
+				title="Widget 'intVar' should have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.getErrors(), "intVar") }
+			);
+
+			it(
+				title="Widget 'intVar' should still have error with invalid datatype",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.setIntVar('This is my int Var').validate().getErrors(), "intVar") }
+			);
+
+			it(
+				title="Widget 'intVar' should not have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=StructKeyExists(widget.setIntVar(1).validate().getErrors(), "intVar") }
+			);
+
+			it(
+				title="Widget 'smallIntVar' should have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.getErrors(), "smallIntVar") }
+			);
+
+			it(
+				title="Widget 'smallIntVar' should still have error with invalid datatype",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.setSmallIntVar('This is my small int Var').validate().getErrors(), "smallIntVar") }
+			);
+
+			it(
+				title="Widget 'smallIntVar' should not have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=StructKeyExists(widget.setSmallIntVar(1).validate().getErrors(), "smallIntVar") }
+			);
+
+			it(
+				title="Widget 'floatVar' should have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.getErrors(), "floatVar") }
+			);
+
+			it(
+				title="Widget 'floatVar' should still have error with invalid datatype",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.setfloatVar('This is my float Var').validate().getErrors(), "floatVar") }
+			);
+
+			it(
+				title="Widget 'floatVar' should not have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=StructKeyExists(widget.setfloatVar(1).validate().getErrors(), "floatVar") }
+			);
+
+			it(
+				title="Widget 'doubleVar' should have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.getErrors(), "doubleVar") }
+			);
+
+			it(
+				title="Widget 'doubleVar' should still have error with invalid datatype",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.setDoubleVar('This is my double Var').validate().getErrors(), "doubleVar") }
+			);
+
+			it(
+				title="Widget 'doubleVar' should not have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=StructKeyExists(widget.setDoubleVar(1).validate().getErrors(), "doubleVar") }
+			);
+
+			it(
+				title="Widget 'dateVar' should have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.getErrors(), "dateVar") }
+			);
+
+			it(
+				title="Widget 'dateVar' should still have error with invalid datatype",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=StructKeyExists(widget.setDateVar('This is my date Var').validate().getErrors(), "dateVar") }
+			);
+
+			it(
+				title="Widget 'dateVar' should not have error",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=StructKeyExists(widget.setDateVar(now()).validate().getErrors(), "dateVar") }
+			);
+
+			it(
+				title="Widget should not have errors",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=widget.validate().hasErrors() }
+			);
+
+			option.checkSchema();
+
+			widget.addOption(option);
+
+			it(
+				title="Widget should see errors in invalid option",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value=widget.validate().hasErrors() }
+			);
+
+			option.set({
+					name="My Option",
+					description="This is my description"
+			});
+
+			it(
+				title="Widget should not have errors",
+				body=function( data ){
+					expect( arguments.data.value).toBeFalse();
+				},
+				data={value=widget.validate().hasErrors()  }
+			);
+
+			widget.save();
+
+			it(
+				title="Widget should now exist",
+				body=function( data ){
+					expect( arguments.data.value).toBeTrue();
+				},
+				data={value= widget.exists()  }
+			);
+
+
+			it(
+				title="Widget should be able to access it's saved option",
+				body=function( data ){
+					expect( arguments.data.value).toBe(1);
+				},
+				data={value= widget.getOptionQuery().recordcount  }
+			);
+
+			widget.delete();
+
+			it(
+				title="Deleted Widget should not have any saved options",
+				body=function( data ){
+					expect( arguments.data.value).toBe(0);
+				},
+				data={value= widget.getOptionQuery().recordcount  }
+			);
+
+			//queryExecute("drop table #widget.getTable()#");
+			//queryExecute("drop table #option.getTable()#");
+
+
+			});
+
 		for(entityName in application.objectMappings){
 
 			if(listFindNoCase('bundleableBeans,versionedbeans',entityName)){
@@ -187,96 +491,7 @@ component extends="testbox.system.BaseSpec"{
 				}
 			);
 
-
-
 		}
-
-		describe("Testing Entity Schema Creation and Persistence", function() {
-			application.serviceFactory.getBean('configBean').registerModelDir(dir="/muraWRM/requirements/tests/resources/model",siteid="default");
-
-			it(
-		 		title="Should be able to register and manage new entities",
-			 	body=function() {
-					var $=application.serviceFactory.getBean('$').init('default');
-					var ioc=$.getServiceFactory();
-					expect( ioc.containsBean('testWidget') ).toBeTrue();
-					expect( ioc.isSingleton('testWidget') ).toBeFalse();
-					expect( ioc.containsBean('testOption') ).toBeTrue();
-					expect( ioc.isSingleton('testOption') ).toBeFalse();
-
-					expect( ioc.isSingleton('testService') ).toBeTrue();
-
-					expect( $.getBean('testService').sayHello() ).toBe('hello');
-
-					var widget=$.getBean('testWidget');
-					var option=$.getBean('testOption');
-
-					widget.checkSchema();
-					widget.validate();
-
-					expect( widget.hasErrors() ).toBeTrue();
-
-					expect( StructKeyExists(widget.getErrors(), "name") ).toBeTrue();
-					expect( StructKeyExists(widget.setName('Example Widget').validate().getErrors(), "name") ).toBeFalse();
-
-					expect( StructKeyExists(widget.getErrors(), "email") ).toBeTrue();
-					expect( StructKeyExists(widget.setEmail('email@example.com').validate().getErrors(), "email") ).toBeFalse();
-
-					expect( StructKeyExists(widget.getErrors(), "description") ).toBeTrue();
-					expect( StructKeyExists(widget.setDescription('This is my widget').validate().getErrors(), "description") ).toBeFalse();
-
-					expect( StructKeyExists(widget.getErrors(), "intVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setIntVar('This is my int Var').validate().getErrors(), "IntVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setIntVar(1).validate().getErrors(), "IntVar") ).toBeFalse();
-
-					expect( StructKeyExists(widget.getErrors(), "smallintVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setSmallIntVar('This is my small int Var').validate().getErrors(), "smallIntVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setSmallIntVar(1).validate().getErrors(), "smallIntVar") ).toBeFalse();
-
-					expect( StructKeyExists(widget.getErrors(), "floatVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setFloatVar('This is my float Var').validate().getErrors(), "floatVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setFloatVar(1).validate().getErrors(), "floatVar") ).toBeFalse();
-
-					expect( StructKeyExists(widget.getErrors(), "doubleVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setDoubleVar('This is my double Var').validate().getErrors(), "doubleVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setDoubleVar(1).validate().getErrors(), "doubleVar") ).toBeFalse();
-
-					expect( StructKeyExists(widget.getErrors(), "dateVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setDateVar('This is my date Var').validate().getErrors(), "dateVar") ).toBeTrue();
-					expect( StructKeyExists(widget.setDateVar(now()).validate().getErrors(), "dateVar") ).toBeFalse();
-
-					expect( widget.hasErrors() ).toBeFalse();
-
-					option.checkSchema();
-
-					widget.addOption(option);
-
-					expect( widget.validate().hasErrors() ).toBeTrue();
-
-					option.set({
-							name="My Option",
-							description="This is my description"
-					});
-
-					expect( widget.validate().hasErrors() ).toBeFalse();
-
-					widget.save();
-
-					expect( widget.exists() ).toBeTrue();
-
-					expect(widget.getOptionQuery().recordcount).toBe(1);
-
-					widget.delete();
-
-					expect(widget.getOptionsQuery().recordcount).toBe(0);
-
-					//queryExecute("drop table #widget.getTable()#");
-					//queryExecute("drop table #option.getTable()#");
-
-
-				}
-			);
-		});
 
 	}
 
