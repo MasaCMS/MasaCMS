@@ -21,7 +21,7 @@ component extends="testbox.system.BaseSpec"{
 
 			var $=application.serviceFactory.getBean('$').init('default');
 			var ioc=$.getServiceFactory();
-
+			
 			it(
 				title="Widget should exist in bean factory",
 				body=function( data ){
