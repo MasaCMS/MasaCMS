@@ -537,7 +537,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset getBean('userRedirect').set(
 	{
 		redirectid=returnID,
-		url=returnURL,
+		url=editProfileURL,
 		userid=arguments.args.userID,
 		siteid=arguments.args.siteid,
 		created=now()
