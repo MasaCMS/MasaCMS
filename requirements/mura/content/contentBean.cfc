@@ -853,6 +853,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDisplayInterval" output="false">
 	<cfargument name="displayInterval">
 
+	<cfif isJSON(arguments.displayInterval)>
+		<cfset arguments.displayInterval=deserializeJSON(arguments.displayInterval)>
+	</cfif>
+
 	<cfif not isSimpleValue(arguments.displayInterval)>
 
 		<cfif isValid('component',arguments.displayInterval)>
@@ -870,17 +874,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and isDefined('arguments.displayInterval.endafter')
 				and isNumeric(arguments.displayInterval.endafter)
 				or arguments.displayInterval.end eq 'never'>
-				<cfif isDate(getValue('displayStop'))>
-					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStop')))>
-				<cfelse>
-					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
-				</cfif>
+				<cfset setValue('displayStop',dateAdd('yyyy',100,now()))>
 			</cfif>
 		</cfif>
 
 		<cfif isDefined('arguments.displayInterval.end') and arguments.displayInterval.end eq 'on'
 			and (!isDefined('arguments.displayInterval.endon') or !isDate(arguments.displayInterval.endon))>
-			<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
+			<cfdump var="#getValue('displayStart')#">
+			<cfdump var="#arguments#">
+			<cfset setValue('displayStop',dateAdd('yyyy',100,now()))>
 			<cfset arguments.displayInterval.endon='never'>
 		</cfif>
 
