@@ -468,7 +468,7 @@ component extends="framework" output="false" {
 				page='#cgi.script_name#?#cgi.QUERY_STRING#';
 			}
 
-			location(addtoken="false", url="https://#listFirst(cgi.http_host,":")##page#");
+			location(addtoken="false", url="https://" & listFirst(cgi.http_host,':') & page);
 		}
 
 
