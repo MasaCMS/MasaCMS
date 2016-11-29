@@ -783,7 +783,10 @@ Thanks for using #contactName#</cfoutput>
 		<cfif redirect.exists()
 			and redirect.getCreated() gte dateAdd("d",-1,now())
 			and $.event('returnUserID') eq redirect.getUserID()>
-			<cfset redirect.getUser().login()>
+			<cfset var user=redirect.getUser()>
+			<cfif user.exists()>
+				<cfset user.login()>
+			</cfif>
 			<cfset structDelete(session,"siteArray")>
 		</cfif>
 	</cfif>
