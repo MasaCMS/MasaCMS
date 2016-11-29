@@ -2046,7 +2046,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				#renderMobileClause()#
 
-	ORDER BY supersort, priority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
+	ORDER BY supersort, priority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc, title
 	</cfquery>
 
 	<cfreturn rsPublicSearch />
