@@ -209,12 +209,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif isValid("UUID",last)>
-			<cfquery name="rsRedirect" datasource="#application.configBean.getReadOnlyDatasource()#"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
-			select * from tredirects where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#last#">
-			</cfquery>
+			<cfset var redirect=getBean('userRedirect').loadBy(redirectid=last)>
 
-			<cfif rsRedirect.url neq ''>
-				<cflocation url="#rsRedirect.url#" addtoken="false">
+			<cfif redirect.exists() and len(redirect.getURL())>
+				<cfset redirect.apply()>
 			</cfif>
 		</cfif>
 

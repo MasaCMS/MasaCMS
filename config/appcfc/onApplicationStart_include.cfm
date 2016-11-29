@@ -239,6 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("mailingList","mailingListBean");
 		variables.serviceFactory.addAlias("mailingListMember","memberBean");
 		variables.serviceFactory.addAlias("groupDAO","userDAO");
+		variables.serviceFactory.addAlias("userRedirect","userRedirectBean");
 
 		//The ad manager has been removed, but may be there in certain legacy conditions
 		if(variables.serviceFactory.containsBean('placementBean')){
@@ -331,6 +332,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.getBean('contentFilenameArchive');
 			variables.serviceFactory.getBean('commenter');
 			variables.serviceFactory.getBean('userDevice');
+			variables.serviceFactory.getBean('userRedirect');
 			//variables.serviceFactory.getBean('remoteContentPointer');
 			variables.serviceFactory.getBean('contentDisplayInterval');
 			variables.serviceFactory.getBean('variationTargeting');
