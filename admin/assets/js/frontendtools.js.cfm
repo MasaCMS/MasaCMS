@@ -128,7 +128,7 @@
 						}
 					}
 
-					if(item.data('trim-params')){
+					if(item.data('trim-params') || item.data('trimparams')){
 						var currentdata=item.data();
 
 						for(var p in currentdata){
@@ -141,6 +141,7 @@
 					}
 
 					item.removeAttr('data-trim-params');
+					item.removeAttr('data-trimparams');
 
 					MuraInlineEditor.isDirty=true;
 				}
