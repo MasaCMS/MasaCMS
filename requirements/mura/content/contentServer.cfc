@@ -196,6 +196,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset last=listLast(url.path,"/") />
 
+		<cfif isValid("UUID",last)>
+			<cfset var redirect=getBean('userRedirect').loadBy(redirectid=last)>
+
+			<cfif redirect.exists() and len(redirect.getURL())>
+				<cfset redirect.apply()>
+			</cfif>
+		</cfif>
+
 		<cfif not structKeyExists(request,"preformated")>
 			<cfif find(".",last)>
 				<cfif last eq 'index.json'>
@@ -205,16 +213,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif last neq indexFile and right(url.path,1) neq "/">
 				<cfset getBean('contentRenderer').redirect("#url.path#/")>
-			</cfif>
-		</cfif>
-
-		<cfif isValid("UUID",last)>
-			<cfquery name="rsRedirect" datasource="#application.configBean.getReadOnlyDatasource()#"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
-			select * from tredirects where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#last#">
-			</cfquery>
-
-			<cfif rsRedirect.url neq ''>
-				<cflocation url="#rsRedirect.url#" addtoken="false">
 			</cfif>
 		</cfif>
 

@@ -1837,7 +1837,7 @@
 			<cfset returnstring=esapiEncode('html',UCase(arguments.content.getParent().getMenuTitle())) & ': '>
 		</cfif>
 
-		<cfset var allday=variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
+		<cfset var allday=displayInterval.allday or variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
 
 		<cfif isDate(arguments.content.getdisplayStart()) and isDate(arguments.content.getdisplayStop())
 			and month(arguments.content.getdisplayStart()) eq month(arguments.content.getdisplayStop())

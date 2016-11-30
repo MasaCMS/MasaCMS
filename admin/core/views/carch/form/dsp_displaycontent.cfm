@@ -386,7 +386,7 @@
 
 		function toggleAllDayOptions(){
 
-			if(!isCalendar && $('##displayIntervalAllDay').is(':checked')){
+			if(isCalendar && $('##displayIntervalAllDay').is(':checked')){
 				$('##mura-displayStartHour').hide();
 				$('##mura-displayStartMinute').hide();
 				$('##mura-displayStartDayPart').hide();
@@ -412,7 +412,7 @@
 					$('##mura-displayStopMinute').val('59');
 				</cfif>
 
-			} else {
+			} else if(isCalendar) {
 				$('##mura-tz-container').show();
 				$('##mura-displayStartHour').show();
 				$('##mura-displayStartMinute').show();
@@ -420,6 +420,16 @@
 				$('##mura-displayStopHour').show();
 				$('##mura-displayStopMinute').show();
 				$('##mura-displayStopDayPart').show();
+				$('##displayIntervalToLabel').show();
+				$('##mura-tz-container').show();
+			} else {
+				$('##mura-tz-container').show();
+				$('##mura-displayStartHour').show();
+				$('##mura-displayStartMinute').show();
+				$('##mura-displayStartDayPart').show();
+				$('##mura-displayStopHour').hide();
+				$('##mura-displayStopMinute').hide();
+				$('##mura-displayStopDayPart').hide();
 				$('##displayIntervalToLabel').show();
 				$('##mura-tz-container').show();
 			}

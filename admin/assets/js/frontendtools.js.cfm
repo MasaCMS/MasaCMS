@@ -123,8 +123,25 @@
 					}
 
 					for(var p in parameters.params){
-						item.data(p,parameters.params[p]);
+						if(parameters.params.hasOwnProperty(p)){
+							item.data(p,parameters.params[p]);
+						}
 					}
+
+					if(item.data('trim-params') || item.data('trimparams')){
+						var currentdata=item.data();
+
+						for(var p in currentdata){
+							if(currentdata.hasOwnProperty(p)){
+								if(!(p=='inited' || p=='objecticonclass' || p=='async' || p=='instanceid' || p=='object' || p=='objectname' || p=='objectid' ) && typeof parameters.params[p] == 'undefined' ){
+									item.removeAttr('data-' + p);
+								}
+							}
+						}
+					}
+
+					item.removeAttr('data-trim-params');
+					item.removeAttr('data-trimparams');
 
 					MuraInlineEditor.isDirty=true;
 				}

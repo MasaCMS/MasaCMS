@@ -19,9 +19,7 @@
 *            - 2012-04-19 - add addAliases method
 * @note coding style is implied by the target usage of this script not my habbits
 */
-	/** gEval credits goes to my javascript idol John Resig, this is a simplified jQuery.globalEval */
-	var gEval = function(js){ ( root.execScript || function(js){ root[ "eval" ].call(root,js);} )(js); }
-		, isA =  function(a,b){ return a instanceof (b || Array);}
+	var isA =  function(a,b){ return a instanceof (b || Array);}
 		//-- some minifier optimisation
 		, D = document
 		, getElementsByTagName = 'getElementsByTagName'
@@ -33,8 +31,8 @@
 		, scriptTag = scripts[scripts[length]-1]
 		, script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
 	;
-	//avoid multiple inclusion to override current loader but allow tag content evaluation
 
+	//avoid multiple inclusion to override current loader but allow tag content evaluation
 	if( ! root.Mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
@@ -225,5 +223,5 @@
 		root.Mura.ljs = loader;
 		// eval inside tag code if any
 	}
-	script && gEval(script);
+	scriptTag.src && script && appendElmt('script', {innerHTML: script});
 })(this);

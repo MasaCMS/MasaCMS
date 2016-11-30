@@ -248,8 +248,15 @@ component output="false" accessors="true" extends="mura.cfobject" {
 
 		var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
 
+		//Translate from db types to CF types
 		if(arguments.constraintValue=='datetime'){
 			arguments.constraintValue='date';
+		} else if (listFindNoCase('varchar,char,text,longtext,mediumtext,clob,nvarchar',arguments.constraintValue)){
+			arguments.constraintValue='string';
+		} else if (listFindNoCase('tinyint,int,smallint',arguments.constraintValue)){
+			arguments.constraintValue='integer';
+		} else if (arguments.constraintValue=='double'){
+			arguments.constraintValue='float';
 		}
 
 		if(listFindNoCase("any,array,binary,boolean,component,creditCard,date,time,email,eurodate,float,numeric,guid,integer,query,range,ssn,social_security_number,string,telephone,url,uuid,usdate,zipcode",arguments.constraintValue)) {

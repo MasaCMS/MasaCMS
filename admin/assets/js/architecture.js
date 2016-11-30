@@ -1552,7 +1552,10 @@ buttons: {
 				url:'?muraAction=carch.loadtagarray&siteid=' + siteid,
 				dataType: 'text',
 				success:function(data){
-					var tagArray=eval('(' + data + ')');
+					var tagArray=[];
+					if(data){
+						var tagArray=eval('(' + data + ')');
+					}
 					$('#tags').tagSelector(tagArray, 'tags');
 				}
 			});

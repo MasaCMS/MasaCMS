@@ -23,4 +23,9 @@
     dbUtility.setTable("tcontent").addIndex('SiteID,Active,Approved,IsNav,ModuleID,searchExclude,ContentID,Type,subType,Display,DisplayStart,DisplayStop,mobileExclude');
     dbUtility.setTable("tcontentrelated").addIndex('relatedID').addIndex('contentHistID');
     dbUtility.setTable("tclassextendrcsets").addIndex('name');
+    dbUtility.setTable("tredirects")
+        .addColumn(column="userid",dataType="char",length=35)
+        .addIndex('userid')
+        .addColumn(column="siteid",dataType="varchar",length=25)
+        .addIndex('siteid');
 </cfscript>

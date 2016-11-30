@@ -403,11 +403,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	function getSession(){
 		if(request.muraSessionManagement && isdefined('session')){
-			return session;
+			var sessionData=session;
 		} else {
 			param name="request.muraSessionPlaceholder" default={};
-			return request.muraSessionPlaceholder;
+			var sessionData=request.muraSessionPlaceholder;
 		}
+
+		if(!structKeyExists(sessionData,'mura')){
+			sessionData.mura={};
+			sessionData.mura.isLoggedIn=false;
+			sessionData.mura.userID="";
+			sessionData.mura.siteID="";
+			sessionData.mura.subtype="Default";
+			sessionData.mura.username="";
+			sessionData.mura.password="";
+			sessionData.mura.fname="";
+			sessionData.mura.lname="";
+			sessionData.mura.company="";
+			sessionData.mura.lastlogin="";
+			sessionData.mura.passwordCreated="";
+			sessionData.mura.email="";
+			sessionData.mura.remoteID="";
+			sessionData.mura.memberships="";
+			sessionData.mura.membershipids="";
+			sessionData.mura.showTrace=false;
+		}
+
+		return sessionData;
+
 	}
 
 	function mixin(obj){
