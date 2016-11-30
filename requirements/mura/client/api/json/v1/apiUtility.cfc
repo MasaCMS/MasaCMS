@@ -787,6 +787,8 @@ component extends="mura.cfobject" {
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 
+			param name="params.method" default="undefined";
+
 			if(getBean('configBean').getDebuggingEnabled()){
 				return serializeResponse(statusCode=500,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code='server_error','message'="Unhandeld Exception",'stacktrace'=e}});
 			} else {
