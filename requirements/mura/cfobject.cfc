@@ -409,8 +409,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var sessionData=request.muraSessionPlaceholder;
 		}
 
-		if(!structKeyExists(sessionData,'mura')){
-			param name="sessionData.mura" default={};
+		if(!isDefined('sessionData.mura')){
+			sessionData.mura={};
 			sessionData.mura.isLoggedIn=false;
 			sessionData.mura.userID="";
 			sessionData.mura.siteID="";
