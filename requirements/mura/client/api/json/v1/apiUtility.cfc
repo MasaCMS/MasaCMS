@@ -1654,7 +1654,7 @@ component extends="mura.cfobject" {
 		if(arguments.entityName=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
 			var entity=$.getBean(arguments.entityName);
-		} else if(arguments.entityName=='"content' && len($.event('feedname'))){
+		} else if(arguments.entityName=='content' && len($.event('feedname'))){
 			var feed=$.getBean('feed').loadBy(name=$.event('feedname'));
 			var entity=$.getBean(arguments.entityName);
 		} else {
