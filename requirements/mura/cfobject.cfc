@@ -409,7 +409,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var sessionData=request.muraSessionPlaceholder;
 		}
 
-		if(!isDefined('sessionData.mura')){
+		if(!structKeyExists(sessionData,'mura')){
 			sessionData.mura={};
 			sessionData.mura.isLoggedIn=false;
 			sessionData.mura.userID="";
@@ -429,6 +429,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			sessionData.mura.showTrace=false;
 		}
 
+		param name="sessionData.siteid" defaut="default";
+		
 		return sessionData;
 
 	}
