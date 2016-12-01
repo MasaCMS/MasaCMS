@@ -747,16 +747,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					var origin='';
 
 					for(var site in sites){
-						if(sites[site].getJSONApi()){
-							originArray=listToArray(sites[site].getAccessControlOriginList());
-							if(arrayLen(originArray)){
-								for(origin in originArray){
-									if(!listFind(variables.AccessControlOriginList,origin)){
-										variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,origin);
-									}
+						originArray=listToArray(sites[site].getAccessControlOriginList());
+						if(arrayLen(originArray)){
+							for(origin in originArray){
+								if(!listFind(variables.AccessControlOriginList,origin)){
+									variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,origin);
 								}
 							}
 						}
+
 					}
 				}
 			}

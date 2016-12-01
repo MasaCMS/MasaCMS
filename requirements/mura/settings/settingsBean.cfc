@@ -631,7 +631,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCacheFactory" output="false">
 	<cfargument name="name"default="output" hint="data or output">
-	
+
 	<cfif not isDefined("arguments.name")>
 		<cfset arguments.name="output">
 	</cfif>
@@ -1151,7 +1151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getWebPath" output="false">
 	<cfargument name="secure" default="#getValue('useSSL')#">
 	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="#getValue('domain')#">
+	<cfargument name="domain" default="">
 	<cfargument name="useProtocol" default="1">
 
 	<cfif arguments.secure or arguments.complete>
@@ -1160,8 +1160,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.domain=request.muraPreviewDomain>
 		</cfif>
 
-		<cfif not isDefined('arguments.domain')>
-			<cfset arguments.domain=getValue('domain')>
+		<cfif not isDefined('arguments.domain') or not len(arguments.domain)>
+			<cfif len(cgi.server_name) and isValidDomain(domain=cgi.server_name,mode='complete')>
+				<cfset arguments.domain=cgi.server_name>
+			<cfelse>
+				<cfset arguments.domain=getValue('domain')>
+			</cfif>
 		</cfif>
 
 		<cfif arguments.useProtocol>
@@ -1182,15 +1186,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getResourcePath" output="false">
 	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="#getValue('domain')#">
+	<cfargument name="domain" default="">
 	<cfargument name="useProtocol" default="1">
 
 	<cfif len(request.muraPreviewDomain) and isValidDomain(domain=request.muraPreviewDomain,mode='complete')>
 		<cfset arguments.domain=request.muraPreviewDomain>
 	</cfif>
 
-	<cfif not isDefined('arguments.domain')>
-		<cfset arguments.domain=getValue('domain')>
+	<cfif not isDefined('arguments.domain') or not len(arguments.domain)>
+		<cfif len(cgi.server_name) and isValidDomain(domain=cgi.server_name,mode='complete')>
+			<cfset arguments.domain=cgi.server_name>
+		<cfelse>
+			<cfset arguments.domain=getValue('domain')>
+		</cfif>
 	</cfif>
 
 	<cfif getValue('isRemote') and len(getValue('resourceDomain'))>
