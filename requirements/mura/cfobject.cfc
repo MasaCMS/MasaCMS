@@ -410,7 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		if(!structKeyExists(sessionData,'mura')){
-			sessionData.mura={};
+			param name="sessionData.mura" default={};
 			sessionData.mura.isLoggedIn=false;
 			sessionData.mura.userID="";
 			sessionData.mura.siteID="";
