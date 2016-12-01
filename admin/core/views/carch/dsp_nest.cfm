@@ -268,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 <cfelse>
 		 <dd class="updated"></dd>
 	 </cfif>
-	   <!--- actions hidden w/ css, copied to actions menu w/ js 
+	   <!--- actions hidden w/ css, copied to actions menu w/ js
 	   do not delete! --->
     <dd class="actions">
     <ul>
@@ -344,8 +344,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    viewdepth="#attributes.viewDepth#"
    nextn="#attributes.nextN#"
    startrow="#attributes.startrow#"
-   sortBy="#attributes.sortBy#"
-   sortDirection="#attributes.sortDirection#"
+   sortBy="#rsnest.sortBy#"
+   sortDirection="#rsnest.sortDirection#"
    pluginEvent="#attributes.pluginEvent#"
    muraScope="#attributes.muraScope#">
    </cfif>
