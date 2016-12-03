@@ -1109,6 +1109,7 @@
 						.on('dblclick',
 							function(){
 								MuraInlineEditor.initEditableAttribute.call(this);
+								Mura(this).focus();
 							}
 						);
 					}
