@@ -938,6 +938,7 @@
 							if(editingVariations){
 								editAction();
 							}
+							Mura(this).focus();
 					});
 
 					Mura(Mura.editableSelector + ' a, ' + Mura.editableSelector + ' button').each(

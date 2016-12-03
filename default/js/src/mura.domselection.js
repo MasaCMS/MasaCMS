@@ -1400,6 +1400,21 @@
 				 }
 		  	});
 		  	return this;
+		},
+
+        /**
+		 * focus - sets focus of the first select element
+		 *
+		 * @return {self}
+		 */
+		focus:function(){
+			if(!this.selection.length){
+				return this;
+			}
+
+			this.selection[0].focus();
+
+            return this;
 		}
 	});
 
