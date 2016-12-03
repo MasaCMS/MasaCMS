@@ -89,6 +89,15 @@
 			return this;
 		},
 
+        /**
+		 * length - Returns length entity collection
+		 *
+		 * @return {number}     integer
+		 */
+		length:function(){
+			return this.properties.items.length;
+		},
+
 		/**
 		 * item - Return entity in collection at index
 		 *

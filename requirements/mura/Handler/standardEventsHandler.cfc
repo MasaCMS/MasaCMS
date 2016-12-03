@@ -888,7 +888,9 @@
 			structDelete(result,'extendAutoComplete');
 
 			if($.content('type')=='Variation'){
-				result.initjs=$.content().getVariationTargeting().getInitJS();
+				var variationTargeting=$.content().getVariationTargeting();
+				result.initjs=variationTargeting.getInitJS();
+				result.targetingjs=variationTargeting.getTargetingJS();
 			}
 
 			$.event('__MuraResponse__',apiUtility.serializeResponse({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'={filename=result.filename,siteid=result.siteid,rendered=true},data=result}));

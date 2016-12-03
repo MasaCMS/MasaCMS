@@ -289,7 +289,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<a href="" data-toggle="dropdown" class="dropdown-toggle btn btn-primary" onclick="return false;"><i class="mi-floppy-o"></i> Save</a>
 								<ul class="dropdown-menu">
 									<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')>
-										<li>
+										<li class="mura-edit-toolbar-content">
 											<a class="mura-#edittype#-save" data-approved="1" data-changesetid="">
 											<i class="mi-check"></i>
 											<cfif $.content().requiresApproval()>
@@ -299,9 +299,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</cfif>
 											</a>
 										</li>
+
+									</cfif>
+									<cfif $.content('type') eq 'Variation' and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2'))>
+										<li class="mura-edit-toolbar-vartargeting"><a class="mura-#edittype#-updatetargeting"><i class="mi-check"></i> Update</a></li>
 									</cfif>
 									<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
-										<li>
+										<li class="mura-edit-toolbar-content">
 											<a class="mura-#edittype#-save" data-approved="0" data-changesetid="">
 												<i class="mi-edit"></i>
 												#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#
@@ -309,7 +313,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										</li>
 									</cfif>
 									<cfif variables.$.siteConfig('HasChangesets') and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) >
-										<li class="dropdown-submenu">
+										<li class="dropdown-submenu mura-edit-toolbar-content">
 											<a href="##" onclick="return false;"><i class="mi-list-alt"></i>
 											#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#<i class="mi-caret-right"></i></a>
 											<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
@@ -330,8 +334,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</ul>
 										</li>
 									</cfif>
+
 									<cfif $.content('type') eq 'Variation'>
-									<li><a class="mura-#edittype#-undo"><i class="mi-undo"></i> Undo</a></li>
+										<li><a class="mura-#edittype#-undo mura-edit-toolbar-content"><i class="mi-undo"></i> Undo</a></li>
 									</cfif>
 									<li><a class="mura-#edittype#-cancel"><i class="mi-ban"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.cancel"))#</a></li>
 								</ul>
@@ -355,7 +360,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<li id="adminQuickEdit">
 										<a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i>
 										<cfif $.content('type') eq 'Variation'>
-											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
+											Edit Content
+											<!---#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#--->
 										<cfelseif useLayoutManager()>
 											<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
 											<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
@@ -368,16 +374,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<li id="adminFullEdit">
 										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
 											<cfif $.content('type') eq 'Variation'>
-												<i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
+												<i class="mi-edit"></i> Edit Metadata <!--#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#--->
 											<cfelseif useLayoutManager()>
 												<i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
 											<cfelse>
 												 <i class="mi-edit"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
 											</cfif></a>
 									</li>
-										<cfif request.r.perm eq 'editor' and $.content('type') eq 'Variation'>
-											<li id="adminVariationTargeting"><a id="mura-edit-var-initjs" href="#variables.initJSLink#" #variables.targethook#><i class="mi-code"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-variationtargeting')#</a></li>
-										</cfif>
+									</cfif>
+									<cfif request.r.perm eq 'editor' and $.content('type') eq 'Variation'>
+										<li id="clientVariationTargeting"><a id="mura-edit-var-targetingjs"><i class="mi-bullseye"></i> Edit Targeting<!--#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-variationtargeting')#---></a></li>
+										<li id="adminVariationTargeting"><a id="mura-edit-var-initjs" href="#variables.initJSLink#" #variables.targethook#><i class="mi-code"></i> Edit Custom JS<!---#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-initjs')#---></a></li>
 									</cfif>
 									<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 										<cfif request.contentBean.getType() eq 'Variation'>

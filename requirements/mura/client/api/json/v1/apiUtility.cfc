@@ -80,6 +80,9 @@ component extends="mura.cfobject" {
 		registerEntity('comment',{public=true,moduleid='00000000000000000000000000000000015'});
 		registerEntity('stats',{public=false,moduleid='00000000000000000000000000000000000'});
 
+		if(getBean('configBean').getValue(property='variations',defaultValue=false)){
+			registerEntity('variationTargeting',{public=false,moduleid='00000000000000000000000000000000000'});
+		}
 		return this;
 	}
 
@@ -407,7 +410,6 @@ component extends="mura.cfobject" {
 			}
 
 			if (isDefined('params.method') && isDefined('#params.method#')){
-
 				if(!listFindNoCase(variables.config.publicMethods, params.method) ){
 					throw(type="invalidMethodCall");
 				}

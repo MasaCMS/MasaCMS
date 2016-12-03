@@ -84,7 +84,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					url: '?muraAction=carch.loadtagarray&siteid=' + siteid,
 					dataType: 'text',
 					success:function(data){
-						var tagArray=eval('(' + data + ')');
+                        var tagArray=[];
+                        if(data){
+					       tagArray=eval('(' + data + ')');
+                        }
 						$('##tags').tagSelector(tagArray, 'tags');
 					}
 				});

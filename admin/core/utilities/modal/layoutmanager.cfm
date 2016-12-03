@@ -148,6 +148,9 @@ mura.ready(function(){
 	<cfif $.content('type') eq 'Variation'>
 	if(!Mura('.mxp-editable').length){
 		Mura('##adminQuickEdit').remove();
+		//Mura('##adminQuickEdit').css('text-decoration','line-through');
+	} else {
+		//Mura('##mura-edit-var-targetingjs-text').html('Re-Select Editable Content')
 	}
 	</cfif>
 	Mura('body').addClass('mura-sidebar-state__hidden--right');

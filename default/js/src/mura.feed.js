@@ -75,7 +75,6 @@
 			init:function(siteid,entityname){
 	            this.queryString= entityname + '/?_cacheid=' + Math.random();
 				this.propIndex=0;
-				this.entityname=entityname;
 	            return this;
 			},
 
@@ -367,9 +366,14 @@
 	            var self=this;
 
 	            return new Promise(function(resolve,reject) {
+					if(Mura.apiEndpoint.charAt(Mura.apiEndpoint.length-1)=="/"){
+						var apiEndpoint=Mura.apiEndpoint;
+					} else {
+						var apiEndpoint=Mura.apiEndpoint + '/';
+					}
 					Mura.ajax({
 						type:'get',
-						url:Mura.apiEndpoint + self.queryString,
+						url:apiEndpoint + self.queryString,
 						success:function(resp){
 
 							var returnObj = new Mura.EntityCollection(resp.data);

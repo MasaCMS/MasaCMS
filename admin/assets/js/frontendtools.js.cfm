@@ -575,9 +575,23 @@
 
 	<cfif not node.getIsNew()>
 	<cfoutput>
+
+	editingVariations=false;
+	targetingVariations=false;
+
 	var MuraInlineEditor={
 		inited: false,
 		init: function(){
+
+			<cfif node.getType() eq 'Variation'>
+			if(!Mura('.mxp-editable').length){
+				return false;
+			}
+			</cfif>
+
+			if(targetingVariations){
+				return false;
+			}
 
 			<cfif $.siteConfig('hasLockableNodes')>
 				<cfset stats=node.getStats()>
@@ -586,9 +600,13 @@
 					return false;
 				</cfif>
 			</cfif>
+
 			if(MuraInlineEditor.inited){
 				return false;
 			}
+
+			Mura('##clientVariationTargeting').css('text-decoration','line-through');
+			Mura('.mura-edit-toolbar-vartargeting').remove();
 
 			CKEDITOR.disableAutoInline=true;
 			MuraInlineEditor.inited=true;
@@ -602,6 +620,7 @@
 			});
 
 			<cfif node.getType() eq 'Variation'>
+
 				Mura.finalVariations=[]
 
 				Mura('.mxp-editable').each(function(){
@@ -975,7 +994,11 @@
 				editVariations();
 				displayVariations();
 
-				var styles='<style type="text/css">.mura-var-current {';
+				var styles='<style type="text/css">';
+					styles+='.mxp-editable {';
+					styles+='    outline: ##ccc dotted 1px;';
+					styles+='}';
+					styles+='.mura-var-current {';
 					styles+='	outline-width: 1px;';
 					styles+='	outline-style: dotted;';
 					styles+='   outline-color: red;';
@@ -984,7 +1007,8 @@
 					styles+='    outline-width: 1px;';
 					styles+='    outline-style: dotted;';
 					styles+='    outline-color: blue;';
-					styles+='}</style>';
+					styles+='}';
+					styles+='</style>';
 
 				document.head.innerHTML += styles;
 			</cfif>
@@ -998,31 +1022,27 @@
 
 				function initObject(){
 					var item=Mura(this);
-
 					var objectParams;
 
 					item.addClass("mura-active");
 
 					if(Mura.type =='Variation'){
 						objectParams=item.data();
+						item.children('.frontEndToolsModal').remove();
+						item.prepend(window.Mura.layoutmanagertoolbar );
 
-						if(window.MuraInlineEditor.objectHasConfigurator(item)){
-							item.children('.frontEndToolsModal').remove();
-							item.prepend(window.Mura.layoutmanagertoolbar );
-
-							item.find(".frontEndToolsModal").on(
-								'click',
-								function(event){
-									event.preventDefault();
-									openFrontEndToolsModal(this);
-								}
-							);
+						item.find(".frontEndToolsModal").on(
+							'click',
+							function(event){
+								event.preventDefault();
+								openFrontEndToolsModal(this);
+							}
+						);
 
 
-							item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
+						item.find("img").each(function(){MuraInlineEditor.checkforImageCroppers(this);});
 
-							item.find('.mura-object').each(initObject);
-						}
+						item.find('.mura-object').each(initObject);
 					} else {
 						var region=item.closest('.mura-region-local');
 
@@ -1325,7 +1345,7 @@
 						}
 
 						utility('.mxp-editable').each(function(){
-							if(mura && Mura.resetAsyncObject){
+							if(Mura && Mura.resetAsyncObject){
 								Mura(this)
 									.find('.mura-object')
 									.each(function()
@@ -2074,4 +2094,144 @@
 	window.openFrontEndToolsModal=openFrontEndToolsModal;
 	window.themepath=window.themepath || Mura.themepath;
 	window.muraInlineEditor=window.MuraInlineEditor;
+
+	<cfif url.contenttype eq 'Variation'>
+		Mura('#mura-edit-var-targetingjs').click(function(e){
+			e.preventDefault();
+
+			if(editingVariations){
+				return;
+			}
+
+			Mura('#adminQuickEdit').css('text-decoration','line-through');
+			Mura('.mura-edit-toolbar-content').remove();
+			Mura('#adminStatus').hide();
+			Mura('#adminSave').show();
+			Mura('.mura-inline-cancel').click(function(){
+				location.reload();
+			});
+
+			editingVariations=false;
+			window.muraInlineEditor.resetEditableAttributes();
+
+			while(Mura.variations.length){
+				var last=Mura.variations.length-1;
+				Mura(Mura.variations[last].selector).html(Mura.variations[last].original);
+				Mura.variations.pop();
+			}
+
+			Mura('.mxp-dynamic-id').each(function(){
+				var item=Mura(this);
+				item.removeAttr('id');
+				item.removeClass('mxp-dynamic-id');
+			});
+
+
+			if(targetingVariations){
+				return;
+			}
+
+			targetingVariations=true;
+
+			styles='<style type="text/css">.mxp-editable,  .mxp-editable.mxp-editable-target {';
+			styles+='	outline-width: 2px;';
+			styles+='	outline-style: solid;';
+			styles+='   outline-color: red;';
+			styles+='}';
+			styles+='.mxp-editable-target {';
+			styles+='    outline-width: 2px;';
+			styles+='    outline-style: solid;';
+			styles+='    outline-color: blue;';
+			styles+='}</style>';
+
+			document.head.innerHTML += styles;
+
+			Mura(function(){
+				selectors=[];
+
+				Mura('p,div,td,h1,h2,h3,h4,h5,article,footer').hover(
+					function(e){
+						if(!editingVariations){
+							var target=Mura(e.target);
+							if(!target.closest('.mura').length && !target.closest(".mura-object").length){
+								target.addClass('mxp-editable-target');
+							}
+						}
+					},
+					function(e){
+						Mura(e.target).removeClass('mxp-editable-target');
+					}
+				)
+
+			});
+
+			Mura(document).click(function(e){
+
+				if(!Mura(e.target).closest(".mura").length && !editingVariations){
+					var item=Mura('.mxp-editable-target');
+
+					if(item.length && !item.closest(".mura").length && !item.closest(".mura-object").length){
+						if(item.hasClass('mxp-editable')){
+							item.removeClass('mxp-editable');
+						} else {
+							var container=item.closest('.mxp-editable');
+
+							if(container.length){
+								container.removeClass('mxp-editable');
+							}
+
+							item.find('.mxp-editable').each(function(){
+								Mura(this).removeClass('mxp-editable');
+							});
+
+							item.addClass('mxp-editable');
+						}
+
+					}
+				}
+			});
+
+			Mura(document).on('click','a',function(e){
+				if(!editingVariations){
+					if(!Mura(this).closest(".mura").length){
+						e.preventDefault();
+					}
+				}
+			});
+
+			Mura('.mura-inline-updatetargeting').click(function(){
+				var selectors=[];
+
+				Mura('.mxp-editable').each(function(){
+					var item=Mura(this);
+					selectors.push(item.selector());
+				});
+
+				Mura.getFeed('variationTargeting')
+					.where()
+					.prop('contentid')
+					.isEQ(Mura.contentid)
+					.getQuery().then(function(collection){
+						if(collection.length()){
+							collection
+								.item(0)
+								.set('targetingjs',JSON.stringify(selectors))
+								.save()
+								.then(function(){
+									location.reload();
+								});
+						} else {
+							Mura.getEntity('variationTargeting')
+								.set('targetingjs',JSON.stringify(selectors))
+								.set('contentid',Mura.contentid)
+								.save()
+								.then(function(){
+									location.reload();
+								});
+						}
+					})
+				console.log(selectors);
+			})
+		});
+	</cfif>
 })(window);

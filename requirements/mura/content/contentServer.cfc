@@ -511,6 +511,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fileendpoint="/_api/render/">
 	<cfset var emailendpoint="/_api/email/trackopen">
 	<cfset var sitemonitorendpoint="/_api/sitemonitor">
+	<cfset var variationendpoint="/_api/resource/variation">
 
 	<cfset var legacyfeedendpoint="/tasks/feed">
 	<cfset var legacyfileendpoint="/tasks/render/">
@@ -539,7 +540,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfreturn getBean('settingsManager').getSite('default').getApi('json','v1').processRequest(arguments.path)>
 		</cfif>
-	<cfelseif isDefined('url.feedid') and (left(arguments.path,len(feedendpoint)) eq feedendpoint or left(arguments.path,len(legacyfeedendpoint)) eq legacyfeedendpoint)>
+	<cfelseif isDefined('url.siteid') and (left(arguments.path,len(feedendpoint)) eq feedendpoint or left(arguments.path,len(legacyfeedendpoint)) eq legacyfeedendpoint)>
 		<cfif listLen(arguments.path,'/') gte 4>
 			<cfreturn getBean('settingsManager').getSite(listGetAt(arguments.path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>
 		<cfelseif isDefined('form.siteid')>
@@ -549,6 +550,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfreturn getBean('settingsManager').getSite('default').getApi('feed','v1').processRequest(arguments.path)>
 		</cfif>
+	<cfelseif left(arguments.path,len(variationendpoint)) eq variationendpoint and getBean('configBean').getValue(property='variations',defaultValue=false)>
+		<cfreturn new mura.executor().execute('/mura/client/api/resource/variation.js.cfm')>
 	<cfelseif isDefined('url.emailid') and left(path,len(emailendpoint)) eq emailendpoint>
 		<cfset application.emailManager.track(url.emailid,url.email,'emailOpen')>
 		<cfcontent type="image/gif" variable="#toBinary('R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')#" reset="yes">
