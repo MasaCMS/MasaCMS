@@ -799,9 +799,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="setInheritance" required="true" type="boolean" default="false">
 		<cfargument name="path" required="true" default="">
 		<cfargument name="sort" required="true" default="asc">
+		<cfargument name="usecache" required="true" default="true">
 		<cfset var array ="" />
 
-		<cfset array=variables.contentGateway.getCrumbList(arguments.contentid,arguments.siteid, arguments.setInheritance, arguments.path) />
+		<cfset array=variables.contentGateway.getCrumbList(argumentCollection=arguments) />
 
 		<cfif arguments.sort eq "desc">
 			<cfset createObject("java", "java.util.Collections").reverse(array)>

@@ -74,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.hasLayoutObjectsTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Layout & Objects')>
 <cfset request.rowNum=0>
 <cfset request.menulist=rc.topid>
-<cfset crumbdata=application.contentManager.getCrumbList(rc.topid,rc.siteid)>
+<cfset crumbdata=application.contentManager.getCrumbList(contentid=rc.topid,siteid=rc.siteid,usecache=false)>
 <cfset perm=application.permUtility.getnodePerm(crumbdata)>
 <cfset r=application.permUtility.setRestriction(crumbdata).restrict>
 <cfset hasKids=application.contentManager.getKidsCount(rc.rstop.contentid,rc.rstop.siteid,false)>

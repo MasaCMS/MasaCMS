@@ -2207,30 +2207,55 @@
 					selectors.push(item.selector());
 				});
 
-				Mura.getFeed('variationTargeting')
-					.where()
-					.prop('contentid')
-					.isEQ(Mura.contentid)
-					.getQuery().then(function(collection){
-						if(collection.length()){
-							collection
-								.item(0)
-								.set('targetingjs',JSON.stringify(selectors))
-								.save()
-								.then(function(){
-									location.reload();
-								});
-						} else {
-							Mura.getEntity('variationTargeting')
-								.set('targetingjs',JSON.stringify(selectors))
-								.set('contentid',Mura.contentid)
-								.save()
-								.then(function(){
-									location.reload();
-								});
-						}
-					})
-				console.log(selectors);
+				function saveSelectors(){
+					Mura.getFeed('variationTargeting')
+						.where()
+						.prop('contentid')
+						.isEQ(Mura.contentid)
+						.getQuery().then(function(collection){
+							if(collection.length()){
+								collection
+									.item(0)
+									.set('targetingjs',JSON.stringify(selectors))
+									.save()
+									.then(function(){
+										location.reload();
+									});
+							} else {
+								Mura.getEntity('variationTargeting')
+									.set('targetingjs',JSON.stringify(selectors))
+									.set('contentid',Mura.contentid)
+									.save()
+									.then(function(){
+										location.reload();
+									});
+							}
+						})
+				}
+
+				var content=Mura.getEntity('content').loadBy('remoteid',Mura.contentid).then(function(entity){
+					if(entity.exists()){
+						saveSelectors();
+					} else {
+						entity.set(
+						<cfoutput>	{
+							remoteid:Mura.remoteid,
+							title:Mura.title,
+							remoteurl:Mura.remoteurl,
+							type: Mura.type,
+							siteid: '#esapiEncode('javascript',node.getSiteID())#',
+							contenthistid: '#esapiEncode('javascript',node.getContentHistID())#',
+							contentid: '#esapiEncode('javascript',node.getContentID())#',
+							parentid: '#esapiEncode('javascript',node.getParentID())#',
+							moduleid: '#esapiEncode('javascript',node.getModuleID())#'
+
+						}</cfoutput>
+						).save().then(function(){
+							saveSelectors();
+						})
+					}
+				})
+
 			})
 		});
 	</cfif>

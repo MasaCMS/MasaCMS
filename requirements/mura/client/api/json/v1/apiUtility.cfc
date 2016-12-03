@@ -1132,7 +1132,11 @@ component extends="mura.cfobject" {
 		if(arguments.entityName=='content' && len($.event('contenthistid'))){
 			var loadByparams={contenthistid=$.event('contenthistid')};
 			if($.event('type')=='Variation'){
-				$.event('body',urlDecode($.event('body')));
+				try{
+					$.event('body',urlDecode($.event('body')));
+				} catch (any e){
+					$.event('body','');
+				}
 			}
 		} else {
 			var loadByparams={'#pk#'=arguments.id};

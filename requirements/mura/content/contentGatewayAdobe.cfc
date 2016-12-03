@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" required="true" default="">
 		<cfargument name="setInheritance" required="true" type="boolean" default="false">
 		<cfargument name="path" required="true" default="">
+		<cfargument name="useCache" required="true" default="true">
 
 		<cfset var I=0>
 		<cfset var crumbdata="">
@@ -79,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 
-			<cfif NOT cacheFactory.has( key )>
+			<cfif NOT arguments.useCache or NOT cacheFactory.has( key )>
 				<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path) />
 				<cfif arrayLen(crumbdata) and arrayLen(crumbdata) lt 50>
 					<cfset crumbdata=cacheFactory.get( key, crumbdata ) />
