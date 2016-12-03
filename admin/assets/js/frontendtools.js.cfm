@@ -2238,18 +2238,17 @@
 						saveSelectors();
 					} else {
 						entity.set(
-						<cfoutput>	{
+						{
 							remoteid:Mura.remoteid,
 							title:Mura.title,
 							remoteurl:Mura.remoteurl,
 							type: Mura.type,
-							siteid: '#esapiEncode('javascript',node.getSiteID())#',
-							contenthistid: '#esapiEncode('javascript',node.getContentHistID())#',
-							contentid: '#esapiEncode('javascript',node.getContentID())#',
-							parentid: '#esapiEncode('javascript',node.getParentID())#',
-							moduleid: '#esapiEncode('javascript',node.getModuleID())#'
-
-						}</cfoutput>
+							siteid: Mura.siteid,
+							contenthistid: Mura.contenthistid,
+							contentid: Mura.contentid,
+							parentid: Mura.parentid,
+							moduleid: Mura.moduleid
+						}
 						).save().then(function(){
 							saveSelectors();
 						})

@@ -112,6 +112,7 @@
     				contentid:content.contentid,
     				contenthistid:content.contenthistid,
     				moduleid:content.moduleid,
+                    parentid:content.parentid,
     				type:content.type,
     				subtype:content.subtype,
     				preloaderMarkup:'',
