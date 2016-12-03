@@ -1385,6 +1385,21 @@
 				 }
 		  	});
 		  	return this;
+		},
+        /**
+		 * slideToggle - Place holder
+		 *
+		 * @return {Mura.DOMSelection} Self
+		 */
+		slideToggle:function(){
+		 	this.each(function(el){
+				 if(typeof el.style.display == 'undefined' || el.style.display==''){
+				 	el.style.display='none';
+				 } else {
+				 	el.style.display='';
+				 }
+		  	});
+		  	return this;
 		}
 	});
 
