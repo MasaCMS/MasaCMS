@@ -3686,9 +3686,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var instance=root.CKEDITOR.instances[el.getAttribute('id')];
 			var conf={height:200,width:'70%'};
 
-			if(el.getAttribute('data-editorconfig')){
-				extend(conf,el.getAttribute('data-editorconfig'));
-			}
+    		extend(conf,Mura(el).data());
 
 			if (instance) {
 				instance.destroy();
@@ -3699,11 +3697,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		function htmlEditorOnComplete( editorInstance ) {
-			//var instance=jQuery(editorInstance).ckeditorGet();
-			//instance.resetDirty();
 			editorInstance.resetDirty();
 			var totalIntances=root.CKEDITOR.instances;
-			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;
 		}
 
 		function getHTMLEditorConfig(customConfig) {
