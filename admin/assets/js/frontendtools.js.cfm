@@ -2151,7 +2151,7 @@
 			Mura(function(){
 				selectors=[];
 
-				Mura('p,div,td,h1,h2,h3,h4,h5,article,footer').hover(
+				Mura('p,div,td,h1,h2,h3,h4,h5,article,footer,a,li,ul,ol,dl,dd,dt').hover(
 					function(e){
 						if(!editingVariations){
 							var target=Mura(e.target);
