@@ -639,6 +639,8 @@ Blog: www.codfusion.com--->
 
 	<cfif len(variables.configBean.getCookiePath()) and len(variables.configBean.getCookieDomain())>
 		<cfset arguments.path=variables.configBean.getCookiePath()>
+	<cfelse>
+		<cfset arguments.path="/">
 	</cfif>
 
 	<cfset arguments.preserveCase=arguments.maintainCase>
