@@ -166,8 +166,8 @@ If it has not, set application.appInitialized=false. --->
 		<cfset application.utility.setCookie(name="userHash",value=encrypt(application.userManager.readUserHash(sessionData.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')) />
 	</cfif>
 <cfcatch>
-	<cfset structDelete(cookie,"userid")>
-	<cfset structDelete(cookie,"userhash")>
+	<cfset application.utility.deleteCookie(name="userHash")>
+	<cfset application.utility.deleteCookie(name="userid")>
 </cfcatch>
 </cftry>
 
@@ -180,12 +180,12 @@ If it has not, set application.appInitialized=false. --->
 
 <cftry>
 	<cfif isDefined('cookie.userid') and cookie.userid neq '' and structKeyExists(sessionData,"rememberMe") and sessionData.rememberMe eq 0 and sessionData.mura.isLoggedIn>
-	<cfset structDelete(cookie,"userid")>
-	<cfset structDelete(cookie,"userhash")>
+		<cfset application.utility.deleteCookie(name="userHash")>
+		<cfset application.utility.deleteCookie(name="userid")>
 	</cfif>
 <cfcatch>
-	<cfset structDelete(cookie,"userid")>
-	<cfset structDelete(cookie,"userhash")>
+	<cfset application.utility.deleteCookie(name="userHash")>
+	<cfset application.utility.deleteCookie(name="userid")>
 </cfcatch>
 </cftry>
 

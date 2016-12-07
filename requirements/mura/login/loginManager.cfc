@@ -77,8 +77,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset sessionData.rememberMe=1>
 		<cfreturn true />
 	<cfelse>
-		<cfset structDelete(cookie,"userid")>
-		<cfset structDelete(cookie,"userhash")>
+		<cfset variables.globalUtility.deleteCookie(name="userHash")>
+		<cfset variables.globalUtility.deleteCookie(name="userid")>
 		<cfset sessionData.rememberMe=0>
 		<cfreturn false />
 	</cfif>
@@ -531,8 +531,8 @@ If you did not request a new authorization, contact #contactEmail#.
 	</cfif>
 
 	<cfset structclear(session) />
-	<cfset structDelete(cookie,"userid")>
-	<cfset structDelete(cookie,"userhash")>
+	<cfset variables.globalUtility.deleteCookie(name="userHash")>
+	<cfset variables.globalUtility.deleteCookie(name="userid")>
 	<cfset variables.userUtility.setUserStruct()/>
 	<cfset getBean('changesetManager').removeSessionPreviewData()>
 
