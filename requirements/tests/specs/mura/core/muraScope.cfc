@@ -27,25 +27,25 @@ component extends="testbox.system.BaseSpec"{
 				testFormVar="fromform"
 			});
 
-			$=application.serviceFactory.getBean('$').init();
+			var $=application.serviceFactory.getBean('$').init('default');
 
 			it(
 		 		title="Should be able to access url variables through EVENT scope",
 			 	body=function(data) {
-				 	expect( (arguments.data.$.event('testURLVar')=='fromurl') ).toBeTrue();
+				 	expect(arguments.data.testURLVar).toBe('fromurl');
 				},
 				data={
-					$=$
+					testURLVar=$.event('testURLVar')
 				}
 			);
 
 			it(
 		 		title="Should be able to access form variables through EVENT scope",
 			 	body=function(data) {
-				 	expect( (arguments.data.$.event('testFormVar')=='fromform') ).toBeTrue();
+				 	expect(arguments.data.testFormVar).toBe('fromform');
 				},
 				data={
-					$=$
+					testFormVar=$.event('testFormVar')
 				}
 			);
 
