@@ -639,7 +639,7 @@ Blog: www.codfusion.com--->
 
 	<cfif len(variables.configBean.getCookiePath()) and len(variables.configBean.getCookieDomain())>
 		<cfset arguments.path=variables.configBean.getCookiePath()>
-	<cfelse>
+	<cfelseif len(variables.configBean.getCookieDomain())>
 		<cfset arguments.path="/">
 	</cfif>
 
