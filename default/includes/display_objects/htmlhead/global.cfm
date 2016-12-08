@@ -61,11 +61,12 @@ Mura.init({
 	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
 	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
 	preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
-	mobileformat: "#esapiEncode('javascript',$.event('muraMobileRequest'))#",
+	mobileformat: #esapiEncode('javascript',$.event('muraMobileRequest'))#,
 	windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
-	layoutmanager:"#variables.$.getContentRenderer().useLayoutManager()#",
+	layoutmanager:#variables.$.getContentRenderer().useLayoutManager()#,
 	type:"#esapiEncode('javascript',variables.$.content('type'))#",
 	subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
+	queueObjects: #esapiEncode('javascript',this.queueObjects)#,
 	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 });
 </script>
