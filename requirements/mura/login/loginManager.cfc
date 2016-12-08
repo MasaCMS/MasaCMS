@@ -533,6 +533,7 @@ If you did not request a new authorization, contact #contactEmail#.
 	<cfset structclear(session) />
 	<cfset structDelete(cookie,"userid")>
 	<cfset structDelete(cookie,"userhash")>
+	<cfset structDelete(cookie,"jsessionid")>
 	<cfset variables.userUtility.setUserStruct()/>
 	<cfset getBean('changesetManager').removeSessionPreviewData()>
 
