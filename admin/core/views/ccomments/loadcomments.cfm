@@ -95,7 +95,7 @@
 									<li><a href="##" class="nextN" data-nextn="100">100</a></li>
 									<li><a href="##" class="nextN" data-nextn="250">250</a></li>
 									<li><a href="##" class="nextN" data-nextn="500">500</a></li>
-									<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
+									<li><a href="##" class="nextN" data-nextn="1000">1000</a></li>
 									<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
 								</ul>
 							</div>
@@ -340,7 +340,7 @@
 						<li><a href="##" class="nextN" data-nextn="100">100</a></li>
 						<li><a href="##" class="nextN" data-nextn="250">250</a></li>
 						<li><a href="##" class="nextN" data-nextn="500">500</a></li>
-						<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
+						<li><a href="##" class="nextN" data-nextn="1000">1000</a></li>
 						<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
 					</ul>
 				</div>

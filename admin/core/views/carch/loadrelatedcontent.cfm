@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.setShowNavOnly(0);
 			feed.setSortBy("lastupdate");
 			feed.setSortDirection("desc");
-			feed.setContentPoolID(arguments.siteid);
+			feed.setContentPoolID($.siteConfig('contentpoolid'));
 
 			feed.addParam(field="active", criteria=1, condition="eq");
 			feed.addParam(field="contentid", criteria=$.event('contentid'), condition="neq");

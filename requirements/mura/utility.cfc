@@ -622,6 +622,16 @@ Blog: www.codfusion.com--->
 	</cfif>
 </cffunction>
 
+<cffunction name="deleteCookie" output="false">
+	<cfargument name="name" type="string" required="true">
+	<cfargument name="maintainCase" type="boolean" default="true">
+	<cfset structDelete(cookie,arguments.name)>
+	<cfset arguments.expires="0">
+	<cfset arguments.value="">
+	<cfset setCookieLegacy(argumentCollection=arguments)>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setCookie" output="false">
     <cfargument name="name" type="string" required="true">
     <cfargument name="value" type="string" required="true">
@@ -639,6 +649,8 @@ Blog: www.codfusion.com--->
 
 	<cfif len(variables.configBean.getCookiePath()) and len(variables.configBean.getCookieDomain())>
 		<cfset arguments.path=variables.configBean.getCookiePath()>
+	<cfelseif len(variables.configBean.getCookieDomain())>
+		<cfset arguments.path="/">
 	</cfif>
 
 	<cfset arguments.preserveCase=arguments.maintainCase>
@@ -671,6 +683,20 @@ Blog: www.codfusion.com--->
     <cfargument name="maintainCase" type="boolean" default="false">
     <cfset var c = "">
     <cfset var expDate = "">
+
+	<cfif variables.configBean.getSecureCookies()>
+		<cfset arguments.secure=true>
+	</cfif>
+
+	<cfif len(variables.configBean.getCookieDomain())>
+		<cfset arguments.domain=variables.configBean.getCookieDomain()>
+	</cfif>
+
+	<cfif len(variables.configBean.getCookiePath()) and len(variables.configBean.getCookieDomain())>
+		<cfset arguments.path=variables.configBean.getCookiePath()>
+	<cfelseif len(variables.configBean.getCookieDomain())>
+		<cfset arguments.path="/">
+	</cfif>
 
 	<cfif arguments.maintainCase>
 		<cfset c = "#name#=#value#;">
