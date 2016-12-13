@@ -66,38 +66,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.fileArray=listToArray(cgi.script_name,"/")>
 	<cfset local.filename="">
 
-		<cfif len(application.configBean.getValue('context'))>
-			<cfset local.contextArray=listToArray(application.configBean.getValue('context'),"/")>
-			<cfset local.contextArrayLen=arrayLen(local.contextArray)>
-			<cfloop from="1" to="#local.contextArrayLen#" index="local.i">
-				<cfset arrayDeleteAt(local.contextArray, 1)>
-			</cfloop>
-		</cfif>
-		<cfif application.configBean.getValue('siteidinurls') eq 1 >
-			<cfif local.fileArray[1] neq 'index.cfm'>
-				<cfset siteid=local.fileArray[1]>
-			<cfelse>
-				<cfset siteid=application.contentServer.bindToDomain()>
-			</cfif>
+	<cfif len(application.configBean.getValue('context'))>
+		<cfset local.contextArray=listToArray(application.configBean.getValue('context'),"/")>
+		<cfset local.contextArrayLen=arrayLen(local.contextArray)>
+		<cfloop from="1" to="#local.contextArrayLen#" index="local.i">
+			<cfset arrayDeleteAt(local.contextArray, 1)>
+		</cfloop>
+	</cfif>
+	<cfif application.configBean.getValue('siteidinurls') eq 1 >
+		<cfif local.fileArray[1] neq 'index.cfm'>
+			<cfset siteid=local.fileArray[1]>
 		<cfelse>
 			<cfset siteid=application.contentServer.bindToDomain()>
 		</cfif>
-		
-		<cfloop from="1" to="#arrayLen(local.fileArray)#" index="local.i">
-			<cfif find(".",local.fileArray[local.i]) and local.i lt arrayLen(local.fileArray)>
-				<cfset local.filename="">
-			<cfelseif not find(".",local.fileArray[local.i])>
-				<cfset local.filename=listAppend(local.filename,local.fileArray[local.i] , "/")>
-			</cfif>
-		</cfloop>
+	<cfelse>
+		<cfset siteid=application.contentServer.bindToDomain()>
+	</cfif>
 
-		<cfset firstItem=listFirst(local.filename,'/')>
-		<cfif listFind('_api,tasks',firstItem)>
-			<cfoutput>#application.contentServer.handleAPIRequest('/' & local.filename)#</cfoutput>
-			<cfabort>
-		<cfelse>
-			<cfset application.contentServer.renderFilename(filename=local.filename,siteid=siteid)>
+	<cfloop from="1" to="#arrayLen(local.fileArray)#" index="local.i">
+		<cfif find(".",local.fileArray[local.i]) and local.i lt arrayLen(local.fileArray)>
+			<cfset local.filename="">
+		<cfelseif not find(".",local.fileArray[local.i])>
+			<cfset local.filename=listAppend(local.filename,local.fileArray[local.i] , "/")>
 		</cfif>
+	</cfloop>
+
+	<cfset firstItem=listFirst(local.filename,'/')>
+	<cfif listFind('_api,tasks',firstItem)>
+		<cfoutput>#application.contentServer.handleAPIRequest('/' & local.filename)#</cfoutput>
+		<cfabort>
+	<cfelse>
+		<cfset application.contentServer.renderFilename(filename=local.filename,siteid=siteid)>
+	</cfif>
 
 	<cfreturn true>
 </cfif>
