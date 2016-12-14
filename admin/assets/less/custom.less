@@ -534,8 +534,7 @@ td.noResults{
 .mura-table-grid:not(.no-stripe)>tbody>tr td.noResults,
 .mura-table-grid:not(.no-stripe)>tbody>tr:hover td.noResults{
   background-color: #FFF !important;
-  border: 1px dottedh0leinthebucket
-   #A7A7A7 !important;
+  border: 1px dotted #A7A7A7 !important;
 }
 
 .nav-pills + .help-block-empty,
@@ -826,6 +825,7 @@ div.cke_editable{
   padding: 10px 16px;
 }
 
+body#mura-select-component,
 body#mura-select-link{
   padding: 12px 17px;
   h4{
@@ -835,6 +835,11 @@ body#mura-select-link{
 
 .cke_dialog_contents_body{
   padding: 6px 10px;
+
+  label{
+  font: normal normal normal 12px Arial,Helvetica,Tahoma,Verdana,Sans-Serif !important;
+  }
+
 }
 
 a.cke_dialog_ui_button,
@@ -877,8 +882,21 @@ a.cke_dialog_ui_button_ok span {
   border:none !important;
 }
 
+.cke_dialog_tabs a:active,
+.cke_dialog_tabs a:hover,
+.cke_dialog_tabs a:focus{
+  color: #595959 !important;
+}
+
 .mura-link-search-result{
   padding-top: 15px;
+
+ th.actions, 
+ td.actions{
+    max-width: 30px;
+    padding-left: 12px !important;
+    width: 30px;
+  }
 }
 .tagSelector .tag{
   height: 26px;
