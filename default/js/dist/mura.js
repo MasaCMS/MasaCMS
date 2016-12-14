@@ -4274,7 +4274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     			function(){
     				find('.mura-object, .mura-async-object').each(function(){
-    					processDisplayObject(this,true).then(resolve);
+    					processDisplayObject(this,Mura.queueObjects).then(resolve);
     				});
     			},
 
@@ -4845,6 +4845,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	function processDisplayObject(el,queue,rerender,resolveFn){
 
 		var obj=(el.node) ? el : Mura(el);
+
+        if(obj.data('queue') != null){
+            queue=obj.data('queue');
+        }
+
 		el =el.node || el;
 		var self=el;
 		var rendered=!rerender && !(obj.hasClass('mura-async-object') || obj.data('render')=='client'|| obj.data('async'));
@@ -5197,6 +5202,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		if(typeof config.mobileformat == 'undefined'){
 			config.mobileformat=false;
+		}
+
+        if(typeof config.queueObjects == 'undefined'){
+			config.queueObjects=true;
 		}
 
 		if(typeof config.rootdocumentdomain != 'undefined' && config.rootdocumentdomain != ''){

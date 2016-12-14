@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test Page of CKEditor Leaflet Maps</title>
+        <script src="http://cdn.ckeditor.com/4.5.10/standard-all/ckeditor.js"></script>
+        <style>
+            #cke_my_editor {
+                max-width: 1000px;
+            }
+
+            h4, h5 {
+                font-family: sans-serif;
+            }
+
+            h4 {
+                color: rgb(117, 117, 117);
+            }
+
+            h5 {
+                color: rgb(212, 78, 211);
+                margin-bottom: 0px;
+                margin-top: -10px;
+            }
+
+            #languages {
+              margin-bottom: 20px;
+              margin-top: 3px;
+            }
+
+            #github-banner {
+                height: 149px;
+                width: 149px;
+                overflow: hidden;
+                padding: 0;
+                margin: 0;
+                position: fixed;
+                top: 0;
+                right: 0;
+                z-index: 99999;
+            }
+
+            #github-banner a {
+                display: block;
+                width: 190px;
+                font-size: 14px;
+                font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT",
+                    "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma,
+                    Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+                background-color: #333;
+                color: #FFF;
+                word-spacing: 2px;
+                text-decoration: none;
+                padding: 5px 15px 5px 25px;
+
+                position:relative;
+                left: 20px;
+                top: -37px;
+                text-align: center;
+
+                -moz-transform-origin: 0 0 ;
+                -moz-transform:rotate(45deg);
+                -moz-box-shadow: 1px 1px 5px 1px #666;
+
+                -webkit-transform-origin: 0 0 ;
+                -webkit-transform:rotate(45deg);
+                -webkit-box-shadow: 1px 1px 5px 1px #666;
+
+                -ms-transform-origin: 0 0 ;
+                -ms-transform:rotate(45deg);
+                -ms-box-shadow: 1px 1px 5px 1px #666;
+
+                transform-origin: 0 0 ;
+                transform:rotate(45deg);
+                box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);
+
+                background-image: linear-gradient(bottom, #534E41 3%, #9E9B96 5%, #64625A 7%, #5C5A55 93%, #9E9B96 95%, #534E41 97%);
+                background-image: -o-linear-gradient(bottom, #534E41 3%, #9E9B96 5%, #64625A 7%, #5C5A55 93%, #9E9B96 95%, #534E41 97%);
+                background-image: -moz-linear-gradient(bottom, #534E41 3%, #9E9B96 5%, #64625A 7%, #5C5A55 93%, #9E9B96 95%, #534E41 97%);
+                background-image: -webkit-linear-gradient(bottom, #534E41 3%, #9E9B96 5%, #64625A 7%, #5C5A55 93%, #9E9B96 95%, #534E41 97%);
+                background-image: -ms-linear-gradient(bottom, #534E41 3%, #9E9B96 5%, #64625A 7%, #5C5A55 93%, #9E9B96 95%, #534E41 97%);
+
+                background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.03, #534E41), color-stop(0.05, #9E9B96), color-stop(0.07, #64625A), color-stop(0.93, #5C5A55), color-stop(0.95, #9E9B96), color-stop(0.97, #534E41) );
+            }
+        </style>
+        <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+
+    </head>
+    <body>
+        <div id="github-banner"><a href="https://github.com/ranelpadon/ckeditor-leaflet" target="_blank">Fork me on GitHub</a></div>
+        <form>
+            <h4>CKEditor Leaflet Maps Demo (scroll down the page to see the various examples)</h4>
+
+            <h5>Choose the language/translation to be used by the toolbar/plugins:</h5>
+
+            <script type="text/javascript">
+                CKEDITOR_LANGS = [
+                    {
+                      code: 'eu',
+                      name: 'Basque'
+                    },
+                    {
+                      code: 'en',
+                      name: 'English'
+                    },
+                    {
+                      code: 'de',
+                      name: 'German'
+                    },
+                    {
+                      code: 'ru',
+                      name: 'Russian'
+                    },
+                ];
+
+                document.write('<select disabled="disabled" id="languages" onchange="createEditor(this.value);">');
+
+                // Get the language list from the languages.js file.
+                for (var i = 0; i < CKEDITOR_LANGS.length; i++) {
+                    document.write(
+                        '<option value="' + CKEDITOR_LANGS[i].code + '">' + CKEDITOR_LANGS[i].name + '</option>'
+                    );
+                }
+
+                document.write('</select>');
+            </script>
+
+            <div>
+            <textarea name="my_editor" id="my_editor" rows="5" cols="20">
+                <p>This is the <strong>House of Maps</strong> powered by <strong>CKEditor</strong>.</p>
+                <div id="leaflet_div-1" class="leaflet_div align-left" data-lat="14.6496465" data-lon="121.0474325" data-width="600" data-height="600" data-zoom="15" data-tile="OpenStreetMap.HOT" data-minimap="on" data-alignment="left" data-popup-text="Eye of Quezon Circle" data-responsive="">
+                    <iframe scrolling="no" id="leaflet_iframe-1" class="leaflet_iframe" width="600px" height="600px" frameborder="0" allowtransparency="true" src="../scripts/mapParser.html?lat=14.6508560&lon=121.0491228&zoom=15&tile=OpenStreetMap.HOT&minimap=on&text=Eye%20of%20Quezon%20Circle">
+                    </iframe>
+                </div>
+
+                <p>If you <strong>hover</strong> the mouse on the map, you will see the map's handle bar (cross hair) in the <strong>upper left corner</strong>
+                    and you could double-click that to view or edit the map properties.</p>
+                <div id="leaflet_div-2" class="leaflet_div cke_widget_element align-left" data-lat="16.4023332" data-lon="120.5960071" data-width="300" data-height="300" data-zoom="7" data-tile="Esri.WorldTopoMap" data-minimap="off" data-alignment="left" data-popup-text="" data-responsive="">
+                    <iframe scrolling="no" id="leaflet_iframe-2" class="leaflet_iframe" width="300px" height="300px" frameborder="0" allowtransparency="true" src="../scripts/mapParser.html?lat=16.4023332&amp;lon=120.5960071&amp;width=300&amp;height=300&amp;zoom=7&amp;tile=Esri.WorldTopoMap&amp;minimap=off&text="></iframe>
+                </div>
+
+                <p><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />A sample of Aerial Map Tile, aligned to the right.</p>
+                <div id="leaflet_div-3" class="leaflet_div cke_widget_element align-right" data-lat="-25.274398" data-lon="133.775136" data-width="190" data-height="200" data-zoom="2" data-tile="MapQuestOpen.Aerial" data-minimap="off" data-alignment="right" data-popup-text="" data-responsive="">
+                    <iframe scrolling="no" id="leaflet_iframe-3" class="leaflet_iframe" width="190px" height="200px" frameborder="0" allowtransparency="true" src="../scripts/mapParser.html?lat=-25.274398&amp;lon=133.775136&amp;width=200&amp;height=200&amp;zoom=2&amp;tile=MapQuestOpen.Aerial&amp;minimap=off&amp;text="></iframe>
+                </div>
+
+                <p>Words in the middle of nowhere.<br /><br /><br /><br /><br /><br /><br /><br /></p>
+
+                <br />
+                <p>A sample of a centered map.</p>
+                <div id="leaflet_div-1399746577201" class="leaflet_div cke_widget_element align-center" data-lat="29.646923" data-lon="91.117212" data-width="800" data-height="400" data-zoom="6" data-tile="Esri.NatGeoWorldMap" data-minimap="off" data-alignment="center" data-popup-text="" data-responsive="">
+                    <iframe scrolling="no" id="leaflet_iframe-1399746577201" class="leaflet_iframe" width="800px" height="400px" frameborder="0" allowtransparency="true" src="../scripts/mapParser.html?lat=29.646923&amp;lon=91.117212&amp;width=800&amp;height=400&amp;zoom=6&amp;tile=Esri.NatGeoWorldMap&amp;minimap=off&amp;text=">
+                    </iframe>
+                </div>
+
+                <br />
+
+                <p>A sample of a left-justified map. By default, a map will float to the left.</p>
+                <div id="leaflet_div-1399747688186" class="leaflet_div cke_widget_element align-left" data-lat="9.8349493" data-lon="118.7383615" data-width="300" data-height="420" data-zoom="7" data-tile="Stamen.Watercolor" data-minimap="off" data-popup-text="" data-responsive="">
+                    <iframe scrolling="no" id="leaflet_iframe-1399747688186" class="leaflet_iframe" width="300px" height="420px" frameborder="0" allowtransparency="true" src="../scripts/mapParser.html?lat=9.8349493&amp;lon=118.7383615&amp;width=300&amp;height=420&amp;zoom=7&amp;tile=Stamen.Watercolor&amp;minimap=off&amp;text=">
+                    </iframe>
+                </div>
+
+                <p> <strong>Lateralus</strong> by Tool <br /><br />
+
+                    Black then white are all I see in my infancy.
+                    red and yellow then came to be, reaching out to me.
+                    lets me see there is so much more
+                    and beckons me to look through to these infinite possibilities.
+                    As below, so above and beyond, I imagine
+                    drawn outside the lines of reason.
+                    Push the envelope. Watch it bend.<br /><br />
+
+                    Over thinking, over analyzing separates the body from the mind.
+                    Withering my intuition leaving all these opportunities behind.<br /><br />
+
+                    Feed my will to feel this moment urging me to cross the line.
+                    Reaching out to embrace the random.
+                    Reaching out to embrace whatever may come.<br /><br />
+
+                    I embrace my desire to
+                    feel the rhythm, to feel connected
+                    enough to step aside and weep like a widow
+                    to feel inspired, to fathom the power,
+                    to witness the beauty, to bathe in the fountain,
+                    to swing on the spiral
+                    of our divinity and still be a human.<br /><br />
+                </p>
+
+                <br><br><p>&nbsp;</p><p>&nbsp;</p><p>A Responsive Map (try to decrease the browser window width by 50%)</p><div id="leaflet_div-1451082032544" class="leaflet_div responsive-map align-left" data-lat="40.46366700000001" data-lon="-3.74922" data-width="400" data-height="400" data-zoom="16" data-popup-text="In The Heart of Spain" data-tile="Thunderforest.OpenCycleMap" data-minimap="on" data-alignment="left" data-responsive="on"><iframe scrolling="no" id="leaflet_iframe-1451082032544" class="leaflet_iframe responsive-map-iframe" width="400px" height="400px" frameborder="0" allowtransparency="true" src="../scripts/mapParser.html?lat=40.46366700000001&lon=-3.74922&width=400&height=400&zoom=16&text=In%20The%20Heart%20of%20Spain&tile=Thunderforest.OpenCycleMap&minimap=on&responsive=on"></iframe></div>
+            </textarea>
+            </div>
+
+            <script>
+                var leaflet = 'leaflet';
+                var relativePath = location.pathname;            
+                var leafletIndex = relativePath.indexOf(leaflet);
+                var leafletPluginFolderRelativePath = relativePath.substring(0, leafletIndex);
+
+                // Load a local plugin in the CDN-hosted CKEditor.js core.
+                CKEDITOR.plugins.addExternal(leaflet, leafletPluginFolderRelativePath + leaflet + '/');
+
+                var config = CKEDITOR.config;
+
+                // Specify the custom key.
+                // Here's using my personal Google API key, it's the default value also.
+                // but not recommended for Production use.
+                // It's advised that you create your own key in your Google account.
+                config.leaflet_maps_google_api_key = 'AIzaSyA9ySM6msnGm0qQB1L1cLTMBdKEUKPySmQ';
+                
+                // Activate the plugins.
+                config.extraPlugins = 'lineutils,widget,leaflet,sourcearea';
+
+                var editor;
+
+                function createEditor(languageCode) {
+                    if (editor)
+                        editor.destroy();
+
+                    // Replace the <textarea id="my_editor"> with an CKEditor
+                    // instance, using specified configurations.
+                    editor = CKEDITOR.replace('my_editor', {
+                        toolbar :
+                            [
+                                ['Source'],
+                                ['Bold','Italic'],
+                                ['leaflet']
+                            ],
+                        width: '100%',
+                        height: 2350,
+
+                        language: languageCode,
+
+                        on: {
+                            instanceReady: function() {
+                                // Wait for the editor to be ready to set
+                                // the language drop-down list.
+                                var languages = document.getElementById('languages');
+                                languages.value = this.langCode;
+                                languages.disabled = false;
+                            }
+                        }
+                    });
+                }
+
+                // At page startup, load the default language:
+                createEditor('');
+            </script>
+
+        </form>
+    </body>
+</html>

@@ -101,8 +101,8 @@
 		this.ulNestedCustomString = "";
 		this.liNestedClass = "";
 
-		//With asyncObjects set to true some display objects are loaded via ajax
-		//this.asyncObjects = true;
+		//Queue async display objects to render when scrolled into view
+		//this.queueObjects=true;
 
 		// pagination vars
 		this.ulPaginationClass = "pagination";

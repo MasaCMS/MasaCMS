@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.hasEditableObjects=false>
 <cfset this.asyncObjects=true>
 <cfset this.asyncRender=false>
+<cfset this.queueObjects=true>
 <cfset this.layoutmanager=false>
 <cfset this.legacyobjects=true>
 
