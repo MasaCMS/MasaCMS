@@ -100,6 +100,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.secureJSONPrefix = "">
 <!--- Used to help CF work with missing files and dir indexes --->
 <cfset this.welcomeFileList = "">
+<!--- Compile cfml in all cfincluded files --->
+<cfset this.compileextforinclude="*">
 
 <cfset baseDir= left(this.configPath,len(this.configPath)-8) />
 <cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
