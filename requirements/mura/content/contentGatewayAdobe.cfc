@@ -1041,7 +1041,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortBy" type="string" required="true" default="lastUpdate">
 	<cfargument name="sortDirection" type="string" required="true" default="desc">
 	<cfset var rsDraftList = "">
-	<cfset var rsDraftList = "">
 	<cfset var rsDraftList1 = "">
 	<cfset var rsDraftList2 = "">
 	<cfset var rsDraftList3 = "">
