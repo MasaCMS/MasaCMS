@@ -790,7 +790,10 @@
 						data.siteid=data.siteid || Mura.siteid;
 					} else {
 						var rawdata=Mura.deepExtend({},self.context,self.data);
-
+						rawdata.saveform=true;
+						rawdata.formid=rawdata.objectid;
+						rawdata.siteid=rawdata.siteid || Mura.siteid;
+						
 						var data=new FormData();
 
 						for(var p in rawdata){
@@ -801,13 +804,6 @@
 									data.append(p,rawdata[p]);
 								}
 							}
-						}
-
-						data.append('saveform',true);
-						data.append('formid',rawdata.objectid);
-
-						if(!data.has('siteid')){
-							data.append('siteid',rawdata.siteid || Mura.siteid);
 						}
 					}
 
