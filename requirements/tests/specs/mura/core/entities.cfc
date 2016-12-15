@@ -21,7 +21,7 @@ component extends="testbox.system.BaseSpec"{
 
 			var $=application.serviceFactory.getBean('$').init('default');
 			var ioc=$.getServiceFactory();
-			
+
 			it(
 				title="Widget should exist in bean factory",
 				body=function( data ){
@@ -302,6 +302,14 @@ component extends="testbox.system.BaseSpec"{
 					expect( arguments.data.value).toBe(1);
 				},
 				data={value= widget.getOptionQuery().recordcount  }
+			);
+
+			it(
+				title="Widget should be able to accessed from option option",
+				body=function( data ){
+					expect( arguments.data.value).toBe('Example Widget');
+				},
+				data={value= widget.getOptionIterator().next().getWidget().getName()}
 			);
 
 			widget.delete();
