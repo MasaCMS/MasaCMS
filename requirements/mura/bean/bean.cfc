@@ -802,7 +802,7 @@ component extends="mura.cfobject" output="false" {
 
 							       	 	if(structKeyExists(prop,"singularname")){
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
-											application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator'];
+											//application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator'];
 											application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Query']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#'];
