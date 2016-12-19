@@ -414,12 +414,12 @@
 						date is NOT in the middle of the bi-week
 						period. Therefore, subtract the mod of
 						the day difference over 14 days.
-
+					--->
 					<cfset LOCAL.From = (
 						LOCAL.From -
 						((LOCAL.From - LOCAL.DisplayStart) MOD 14)
 						) />
-					--->
+
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "bi-weekly" />
 					<cfset LOCAL.LoopIncrement = 8 />
