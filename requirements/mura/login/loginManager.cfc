@@ -529,7 +529,7 @@ If you did not request a new authorization, contact #contactEmail#.
 	</cfif>
 
 	<cfloop collection="#session#" item="local.i">
-		<cfif not listFindNoCase('cfid,cftoken,sessionid,urltoken',local.i)>
+		<cfif not listFindNoCase('cfid,cftoken,sessionid,urltoken,jsessionid',local.i)>
 			<cfset structDelete(session,local.i)>
 		</cfif>
 	</cfloop>
