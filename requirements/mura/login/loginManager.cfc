@@ -524,13 +524,20 @@ If you did not request a new authorization, contact #contactEmail#.
 		<cfset getPluginManager().announceEvent('onBeforeGlobalLogout',pluginEvent)/>
 	</cfif>
 
-	<cflogout>
+	<cfif yesNoFormat(getBean('configBean').getValue("useLegacySessions"))>
+		<cflogout>
+	</cfif>
+
+	<cfloop collection="#session#" item="local.i">
+		<cfif not listFindNoCase('cfid,cftoken,sessionid,urltoken',local.i)>
+			<cfset structDelete(session,local.i)>
+		</cfif>
+	</cfloop>
 
 	<cfif getBean('configBean').getValue(property='rotateSessions',defaultValue='false')>
 		<cfset sessionInvalidate()>
 	</cfif>
 
-	<cfset structclear(session) />
 	<cfset structDelete(cookie,"userid")>
 	<cfset structDelete(cookie,"userhash")>
 	<cfset variables.userUtility.setUserStruct()/>
