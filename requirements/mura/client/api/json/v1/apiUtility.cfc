@@ -1268,7 +1268,7 @@ component extends="mura.cfobject" {
 				vals.images=setImageURLS(entity);
 			}
 			if(!arrayLen(fields) || arrayFind(fields,'url')){
-				vals.url=entity.getURL();
+				vals.url=entity.getURL(complete=true);
 			}
 		}
 
