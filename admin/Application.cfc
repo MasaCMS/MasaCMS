@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component extends="framework" output="false" {
+component extends="framework.one" output="false" {
 
 	include "../config/applicationSettings.cfm";
 
@@ -126,6 +126,8 @@ component extends="framework" output="false" {
 	variables.framework.usingSubsystems=true;
 	variables.framework.applicationKey="muraAdmin";
 	variables.framework.siteWideLayoutSubsystem='common';
+	variables.framework.diEngine='mura';
+
 
 	if(structKeyExists(form,"fuseaction")){
 		form.muraAction=form.fuseaction;
@@ -517,5 +519,13 @@ component extends="framework" output="false" {
 	function rbKey(key){
 		return application.rbFactory.getKeyValue(session.rb,arguments.key);
 	}
+
+	public struct function getSubsystemConfig( string subsystem ) {
+        if ( structKeyExists( variables.framework.subsystems, subsystem ) && isStruct(variables.framework.subsystems[subsystem])) {
+            // return a copy to make it read only from outside the framework:
+            return structCopy( variables.framework.subsystems[ subsystem ] );
+        }
+        return { };
+    }
 
 }

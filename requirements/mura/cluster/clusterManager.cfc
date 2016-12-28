@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rsCommands">
 		<cftry>
 			<cfset evaluate("#rsCommands.command#")>
-			<cfcatch>	
+			<cfcatch>
 				<cfif isDefined('cfcatch')>
 					<cflog
 						type="error"

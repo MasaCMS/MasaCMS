@@ -756,6 +756,10 @@ component extends="mura.cfobject" output="false" {
 					       	 		prop.dataType='datetime';
 					       	 	}
 
+								if(structKeyExists(prop,'relatesTo')){
+									prop.cfc=prop.relatesTo;
+								}
+								
 					       	 	if(structKeyExists(prop,'cfc')){
 
 					       	 		param name="prop.fkcolumn" default="primaryKey";

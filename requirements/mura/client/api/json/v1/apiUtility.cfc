@@ -27,7 +27,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser",
+			publicMethods="findOne,findMany,findAll,findFieldDescriptor,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser",
 			entities={
 				'contentnav'={
 					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
@@ -643,7 +643,7 @@ component extends="mura.cfobject" {
 								method=httpRequestData.method;
 							}
 						}
-					} else if(listFind('new,propertydescriptor,listviewdescriptor',pathInfo[3])){
+					} else if(listFind('new,fielddescriptor,propertydescriptor,listviewdescriptor',pathInfo[3])){
 						params.id=pathInfo[3];
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
@@ -715,6 +715,9 @@ component extends="mura.cfobject" {
 						} else if(params.id=='propertydescriptor') {
 								params.method='findPropertyDescriptor';
 								result=findPropertyDescriptor(argumentCollection=params);
+						} else if(params.id=='fielddescriptor') {
+								params.method='findFieldDescriptor';
+								result=findFieldDescriptor(argumentCollection=params);
 						} else if(params.id=='listviewdescriptor') {
 								params.method='findListViewDescriptor';
 								result=findListViewDescriptor(argumentCollection=params);
@@ -824,8 +827,47 @@ component extends="mura.cfobject" {
 		return 'v1';
 	}
 
+	function findFieldDescriptor(entityname,fields=''){
+		return findPropertyDescriptor(arguments.entityname,arguments.fields);
+	}
+
+	function applyPropertyFormat(prop){
+		arguments.prop=structCopy(prop);
+		structDelete(arguments.prop,'table');
+		structDelete(arguments.prop,'column');
+		structDelete(arguments.prop,'nested');
+		structDelete(arguments.prop,'comparable');
+		structDelete(arguments.prop,'ormtype');
+		structDelete(arguments.prop,'persistent');
+		if(structKeyExists(arguments.prop,'cfc')){
+			arguments.prop.relatesto=prop.cfc;
+			structDelete(arguments.prop,'cfc');
+		}
+
+		return arguments.prop;
+	}
+
 	function findPropertyDescriptor(entityname,properties=''){
-		return getBean(arguments.entityname).getProperties();
+		var props=getBean(arguments.entityname).getProperties();
+		var propArray=listToArray(arguments.properties);
+		var returnArray=[];
+		var prop='';
+
+		if(arrayLen(propArray)){
+			for(var p in propArray){
+				if(props[p].persistent){
+					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				}
+			}
+		} else {
+			for(var p in props){
+				if(props[p].persistent){
+					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				}
+			}
+		}
+
+		return returnArray;
 	};
 
 	function findListViewDescriptor(entityname){
@@ -833,14 +875,19 @@ component extends="mura.cfobject" {
 		var listViewArray=listToArray(sample.getListView());
 		var returnArray=[];
 		var props=sample.getProperties();
+		var prop='';
 
 		if(arrayLen(listViewArray)){
 			for(var p in listViewArray){
-				arrayAppend(returnArray,props[p]);
+				if(props[p].persistent){
+					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				}
 			}
 		} else {
 			for(var p in props){
-				arrayAppend(returnArray,props[p]);
+				if(props[p].persistent){
+					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				}
 			}
 		}
 

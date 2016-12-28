@@ -7,8 +7,8 @@ component extends="mura.bean.beanORM" table="tremotepointer" bundleable=true {
 
     function getLocalObject(){
         var localObject= getBean(get('entityType'));
-        var loadArgs={'#localObject.getPrimaryKey()#'=get('localid')}
-        localObject.loadBy(argumentCollection);
+        var loadArgs={'#localObject.getPrimaryKey()#'=get('localid')};
+        localObject.loadBy(argumentCollection=loadArgs);
         return localObject;
     }
 

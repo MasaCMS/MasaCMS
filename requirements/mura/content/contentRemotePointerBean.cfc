@@ -4,6 +4,6 @@ component extends="mura.bean.beanORM" table="tcontentremotepointer" entityname="
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";
     property name="remoteid" fieldtype="index";
     property name="remoteurl" datatype="varchar" length="250";
-    property name="created" ormtype="timestamp";
-    
+    property name="created" dataype="timestamp";
+
 }

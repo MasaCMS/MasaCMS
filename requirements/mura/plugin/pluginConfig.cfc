@@ -376,6 +376,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="registerModelDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="package">
+	<cfreturn registerBeanDir(argumentcollection=arguments)>
+</cffunction>
+
 <cffunction name="getAssignedSites" output="false">
     <cfreturn getPluginManager().getAssignedSites(getModuleID())>
 </cffunction>
