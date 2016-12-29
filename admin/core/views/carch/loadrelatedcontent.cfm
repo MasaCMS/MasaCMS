@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.addParam(field="active", criteria=1, condition="eq");
 			feed.addParam(field="contentid", criteria=$.event('contentid'), condition="neq");
 
-			if(rc.relatedcontentsetid=='calendar'){
+			if(isDefined('rc.relatedcontentsetid') && rc.relatedcontentsetid=='calendar'){
 				feed.addParam(field="tcontent.type",criteria='Calendar',condition="eq");
 			} else {
 				if (len($.event("searchTypeSelector"))) {
