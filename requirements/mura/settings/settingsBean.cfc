@@ -1338,7 +1338,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="lookupContentTypeFilePath" output="false">
 	<cfargument name="filePath">
 	<cfargument name="customOnly" default="false">
-	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
+
+	<cfset arguments.filePath=REReplace(listFirst(Replace(arguments.filePath, "\", "/", "ALL"),"/"), "[^a-zA-Z0-9_]", "", "ALL") & "/index.cfm">
 
 	<cfif len(request.altTheme)>
 		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/content_types/" & arguments.filePath>
