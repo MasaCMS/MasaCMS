@@ -379,14 +379,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset session.paramCircuit=listLast(listFirst(request.context.muraAction,'.'),':') />
 				<cfloop from="1" to="#listLen(request.context.param)#" index="i">
 					<cfset theParam=listGetAt(request.context.param,i) />
-					<cfif evaluate('request.context.paramField#theParam#') neq 'Select Field'
-					and evaluate('request.context.paramField#theParam#') neq ''
-					and evaluate('request.context.paramCriteria#theParam#') neq ''>
+					<cfif request.context['paramField#theParam#'] neq 'Select Field'
+					and request.context['paramField#theParam#'] neq ''
+					and request.context['paramCriteria#theParam#'] neq ''>
 					<cfset temp=structNew() />
-					<cfset temp.Field=evaluate('request.context.paramField#theParam#') />
-					<cfset temp.Relationship=evaluate('request.context.paramRelationship#theParam#') />
-					<cfset temp.Criteria=evaluate('request.context.paramCriteria#theParam#') />
-					<cfset temp.Condition=evaluate('request.context.paramCondition#theParam#') />
+					<cfset temp.Field=request.context['paramField#theParam#'] />
+					<cfset temp.Relationship=request.context['paramRelationship#theParam#'] />
+					<cfset temp.Criteria=request.context['paramCriteria#theParam#'] />
+					<cfset temp.Condition=request.context['paramCondition#theParam#'] />
 					<cfset arrayAppend(session.paramArray,temp) />
 					</cfif>
 				</cfloop>
