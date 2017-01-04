@@ -61,7 +61,8 @@ CKEDITOR.editorConfig = function( config )
 		config.format_h4 = { element : '#renderer.getHeaderTag('subHead4')#' };
 	</cfif>
 	</cfoutput>
-
+	
+	config.disableNativeSpellChecker = false;
 	config.startupFocus = false;
 	config.skin = 'moono'; // 'bootstrapck'
 	config.allowedContent = {
@@ -94,12 +95,12 @@ CKEDITOR.editorConfig = function( config )
 	<!--- Toolbars --->
 
 		config.toolbar_Default = [
-			{name: 'group1', items:['Source']},
+			{name: 'group1', items:['A11ychecker','Source']},
 			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items:['BidiLtr','BidiRtl']},
 			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
-			{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+			{name: 'group6', items:['NumberedList','BulletedList','Outdent','Indent','-','Blockquote','CreateDiv']},
 			{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 			{name: 'group8', items:['Link','Unlink','Anchor']},'/',
 			{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
@@ -107,12 +108,12 @@ CKEDITOR.editorConfig = function( config )
 		];
 
 		config.toolbar_QuickEdit = [
-			{name: 'group1', items:['Sourcedialog']},
+			{name: 'group1', items:['A11ychecker','Sourcedialog']},
 			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items:['BidiLtr','BidiRtl']},'/',
 			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
-			{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+			{name: 'group6', items:['NumberedList','BulletedList','Outdent','Indent','-','Blockquote','CreateDiv']},
 			{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 			{name: 'group8', items:['Link','Unlink','Anchor']},'/',
 			{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
@@ -120,12 +121,12 @@ CKEDITOR.editorConfig = function( config )
 		];
 
 		config.toolbar_Summary = [
-			{name: 'group1', items: ['Source']},
+			{name: 'group1', items: ['A11ychecker','Source']},
 			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items: ['BidiLtr','BidiRtl']},
 			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
-			{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+			{name: 'group6', items: ['NumberedList','BulletedList','Outdent','Indent','-','Blockquote','CreateDiv']},
 			{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 			{name: 'group8', items: ['Link','Unlink','Anchor']},'/',
 			{name: 'group9', items: ['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
@@ -133,12 +134,12 @@ CKEDITOR.editorConfig = function( config )
 		];
 
 		config.toolbar_Form = [
-			{name: 'group1', items: ['Source']},
+			{name: 'group1', items: ['A11ychecker','Source']},
 			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items: ['BidiLtr','BidiRtl']},
 			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
-			{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+			{name: 'group6', items: ['NumberedList','BulletedList','Outdent','Indent','-','Blockquote','CreateDiv']},
 			{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 			{name: 'group8', items: ['Link','Unlink','Anchor']},
 			{name: 'group9', items: ['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
@@ -151,12 +152,12 @@ CKEDITOR.editorConfig = function( config )
 		];
 
 		config.toolbar_FormBuilder = [
-			{name: 'group1', items: ['Source']},
+			{name: 'group1', items: ['A11ychecker','Source']},
 			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
 		];
 
 		config.toolbar_htmlEditor = [
-			{name: 'group0', items: ['Source']},
+			{name: 'group0', items: ['A11ychecker','Source']},
 			{name: 'group1', items: ['Cut','Copy','Paste','PasteText','PasteFromWord']},
 			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']},
 			{name: 'group3', items: ['Selectlink','SelectComponent','Templates']},
@@ -168,7 +169,7 @@ CKEDITOR.editorConfig = function( config )
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser,balloonpanel,a11ychecker';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
