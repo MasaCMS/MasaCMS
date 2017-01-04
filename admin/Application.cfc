@@ -49,12 +49,16 @@ component extends="framework" output="false" {
 	include "../config/applicationSettings.cfm";
 
 	
-	if(structKeyExists(server,'railo')){
+	if(server.coldfusion.productname != 'ColdFusion Server'){
 		backportdir='';
-		include "../requirements/mura/backport/backport.cfm";
+		if(fileExists(ExpandPath('../requirements/mura/backport/backport.cfm'))){
+			include "../requirements/mura/backport/backport.cfm";
+		}
 	} else {
-		backportdir='../requirements/mura/backport/';
-		include "#backportdir#backport.cfm";
+		if(directoryExists(ExpandPath('../requirements/mura/backport/'))){
+			backportdir='../requirements/mura/backport/';
+			include "#backportdir#backport.cfm";
+		}
 	}
 	
 	if(not hasMainMappings){
