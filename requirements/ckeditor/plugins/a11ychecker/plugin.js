@@ -1397,6 +1397,7 @@
                                                     },
                                                     error: function(jqXHR,textStatus,errorThrown) {
                                                         console.log(textStatus);
+                                                        console.log(errorThrown);
                                                         throw new Error("Tests could not be loaded")
                                                     }
                                                 })
