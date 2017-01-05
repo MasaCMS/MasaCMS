@@ -1395,7 +1395,8 @@
                                                     success: function(t) {
                                                         "object" == typeof t && (i(e, t, n), s.call(e))
                                                     },
-                                                    error: function() {
+                                                    error: function(jqXHR,textStatus,errorThrown) {
+                                                        console.log(textStatus);
                                                         throw new Error("Tests could not be loaded")
                                                     }
                                                 })
