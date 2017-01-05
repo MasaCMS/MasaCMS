@@ -318,7 +318,7 @@ component extends="framework" output="false" {
 			param name="cookie.rb" default='';
 		}
 		
-		var utility=application.serviceFactory.getBean('utility').suppressDebugging();
+		var utility=application.serviceFactory.getBean('utility');
 		
 		if(isDefined('utility.suppressDebugging')){
 			utility.suppressDebugging();
