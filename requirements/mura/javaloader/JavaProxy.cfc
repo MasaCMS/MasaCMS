@@ -27,7 +27,7 @@ Mark Mandel		27/08/2007		Created
 	calls
  --->
 
-<cffunction name="_init" hint="Constructor" access="public" returntype="JavaProxy" output="false">
+<cffunction name="_init" hint="Constructor" returntype="JavaProxy" output="false">
 	<cfargument name="class" hint="the java.lang.Class object this represents" type="any" required="Yes">
 	<cfscript>
 		var classLoader = createObject("java", "java.lang.ClassLoader").getSystemClassLoader();
@@ -51,7 +51,7 @@ Mark Mandel		27/08/2007		Created
 	</cfscript>
 </cffunction>
 
-<cffunction name="init" hint="create an instance of this object" access="public" returntype="any" output="false">
+<cffunction name="init" hint="create an instance of this object" output="false">
 	<cfscript>
 		var constructor = 0;
 		var instance = 0;
@@ -64,11 +64,7 @@ Mark Mandel		27/08/2007		Created
 
 		constructor = _resolveMethodByParams("Constructor", _getClass().getConstructors(), arguments);
 
-		if (StructCount(arguments) > 0){
-			   instance = constructor.newInstance(_buildArgumentArray(arguments));
-		} else {
-			   instance = constructor.newInstance(JavaCast("null", 0));
-		}
+		instance = constructor.newInstance(_buildArgumentArray(arguments));
 
 		_setClassInstance(instance);
 
@@ -76,7 +72,7 @@ Mark Mandel		27/08/2007		Created
 	</cfscript>
 </cffunction>
 
-<cffunction	name="onMissingMethod" access="public" returntype="any" output="false" hint="wires the coldfusion invocation to the Java Object">
+<cffunction	name="onMissingMethod" output="false" hint="wires the coldfusion invocation to the Java Object">
 	<cfargument	name="missingMethodName" type="string"	required="true"	hint=""	/>
 	<cfargument	name="missingMethodArguments" type="struct" required="true"	hint=""/>
 
@@ -106,7 +102,7 @@ Mark Mandel		27/08/2007		Created
 
 <!------------------------------------------- PRIVATE ------------------------------------------->
 
-<cffunction name="_setStaticFields" hint="loops around all the fields and sets the static one to this scope" access="private" returntype="void" output="false">
+<cffunction name="_setStaticFields" hint="loops around all the fields and sets the static one to this scope" access="private" output="false">
 	<cfscript>
 		var fields = _getClass().getFields();
 		var counter = 1;
@@ -125,16 +121,16 @@ Mark Mandel		27/08/2007		Created
 </cffunction>
 
 <cffunction name="_buildArgumentArray" hint="builds an argument array out of the arguments" access="private" returntype="array" output="false">
-	<cfargument name="arguments" hint="the arguments passed through" type="struct" required="Yes">
+	<cfargument name="args" hint="the arguments passed through" type="struct" required="Yes">
 	<cfscript>
-		var len = StructCount(arguments);
+		var len = StructCount(arguments.args);
 		var objArray = _getArray().newInstance(_getObjectClass(), len);
 		var counter = 1;
 		var obj = 0;
 
 		for(; counter <= len; counter++)
 		{
-			obj = arguments[counter];
+			obj = arguments.args[counter];
 			_getArray().set(objArray, counter - 1, obj);
 		}
 
@@ -142,7 +138,7 @@ Mark Mandel		27/08/2007		Created
 	</cfscript>
 </cffunction>
 
-<cffunction name="_findMethod" hint="finds the method that closest matches the signature" access="public" returntype="any" output="false">
+<cffunction name="_findMethod" hint="finds the method that closest matches the signature" output="false">
 	<cfargument name="methodName" hint="the name of the method" type="string" required="Yes">
 	<cfargument name="methodArgs" hint="the arguments to look for" type="struct" required="Yes">
 	<cfscript>
@@ -167,7 +163,7 @@ Mark Mandel		27/08/2007		Created
 	</cfscript>
 </cffunction>
 
-<cffunction name="_resolveMethodByParams" hint="resolves the method to use by the parameters provided" access="private" returntype="any" output="false">
+<cffunction name="_resolveMethodByParams" hint="resolves the method to use by the parameters provided" access="private" output="false">
 	<cfargument name="methodName" hint="the name of the method" type="string" required="Yes">
 	<cfargument name="decision" hint="the array of methods to decide from" type="array" required="Yes">
 	<cfargument name="methodArgs" hint="the arguments to look for" type="struct" required="Yes">
@@ -258,7 +254,7 @@ Mark Mandel		27/08/2007		Created
 	</cfscript>
 </cffunction>
 
-<cffunction name="_initMethodCollection" hint="creates a method collection of all the methods that are available on the class (this may be cached externally later)" access="private" returntype="void" output="false">
+<cffunction name="_initMethodCollection" hint="creates a method collection of all the methods that are available on the class (this may be cached externally later)" access="private" output="false">
 	<cfscript>
 		var methods = _getClass().getMethods();
 		var len = ArrayLen(methods);
@@ -285,7 +281,7 @@ Mark Mandel		27/08/2007		Created
 	<cfreturn instance.MethodCollection />
 </cffunction>
 
-<cffunction name="_setMethodCollection" access="private" returntype="void" output="false">
+<cffunction name="_setMethodCollection" access="private" output="false">
 	<cfargument name="MethodCollection" type="struct" required="true">
 	<cfset instance.MethodCollection = arguments.MethodCollection />
 </cffunction>
@@ -294,56 +290,56 @@ Mark Mandel		27/08/2007		Created
 	<cfreturn StructKeyExists(instance, "ClassInstance") />
 </cffunction>
 
-<cffunction name="_getClassInstance" access="private" returntype="any" output="false">
+<cffunction name="_getClassInstance" access="private" output="false">
 	<cfreturn instance.ClassInstance />
 </cffunction>
 
-<cffunction name="_setClassInstance" access="private" returntype="void" output="false">
+<cffunction name="_setClassInstance" access="private" output="false">
 	<cfargument name="ClassInstance" type="any" required="true">
 	<cfset instance.ClassInstance = arguments.ClassInstance />
 </cffunction>
 
-<cffunction name="_getObjectClass" access="private" returntype="any" output="false">
+<cffunction name="_getObjectClass" access="private" output="false">
 	<cfreturn instance.ObjectClass />
 </cffunction>
 
-<cffunction name="_setObjectClass" access="private" returntype="void" output="false">
+<cffunction name="_setObjectClass" access="private" output="false">
 	<cfargument name="ObjectClass" type="any" required="true">
 	<cfset instance.ObjectClass = arguments.ObjectClass />
 </cffunction>
 
-<cffunction name="_getArray" access="private" returntype="any" output="false">
+<cffunction name="_getArray" access="private" output="false">
 	<cfreturn instance.Array />
 </cffunction>
 
-<cffunction name="_setArray" access="private" returntype="void" output="false">
+<cffunction name="_setArray" access="private" output="false">
 	<cfargument name="Array" type="any" required="true">
 	<cfset instance.Array = arguments.Array />
 </cffunction>
 
-<cffunction name="_getClassMethod" access="private" returntype="any" output="false">
+<cffunction name="_getClassMethod" access="private" output="false">
 	<cfreturn instance.ClassMethod />
 </cffunction>
 
-<cffunction name="_setClassMethod" access="private" returntype="void" output="false">
+<cffunction name="_setClassMethod" access="private" output="false">
 	<cfargument name="ClassMethod" type="any" required="true">
 	<cfset instance.ClassMethod = arguments.ClassMethod />
 </cffunction>
 
-<cffunction name="_getClass" access="private" returntype="any" output="false">
+<cffunction name="_getClass" access="private" output="false">
 	<cfreturn instance.Class />
 </cffunction>
 
-<cffunction name="_setClass" access="private" returntype="void" output="false">
+<cffunction name="_setClass" access="private" output="false">
 	<cfargument name="Class" type="any" required="true">
 	<cfset instance.Class = arguments.Class />
 </cffunction>
 
-<cffunction name="_getModifier" access="private" returntype="any" output="false">
+<cffunction name="_getModifier" access="private" output="false">
 	<cfreturn instance.Modifier />
 </cffunction>
 
-<cffunction name="_setModifier" access="private" returntype="void" output="false">
+<cffunction name="_setModifier" access="private" output="false">
 	<cfargument name="Modifier" type="any" required="true">
 	<cfset instance.Modifier = arguments.Modifier />
 </cffunction>
