@@ -313,7 +313,7 @@ component extends="framework" output="false" {
 		param name="session.alerts" default=structNew();
 
 		if(ListFirst(server.coldfusion.productVersion) >= 10){
-			param name="cookie.rb" default={value='',expires='never',httponly=true,secure=application.configBean.getSecureCookies()};
+			param name="cookie.rb" default={value='',expires='never',httponly=true,secure=application.configBean.getValue(property='SecureCookies',defaultValue=false)};
 		} else {
 			param name="cookie.rb" default='';
 		}
