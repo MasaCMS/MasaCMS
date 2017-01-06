@@ -489,6 +489,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</ul>
 						</cfif>
 					</cfif>
+					<!--- Render additional toolbar menu items --->
+					<cfset afterMenu=variables.$.renderEvent('onAfterToolbarRender')>
+
+						<cfif len(afterMenu)>
+							#afterMenu#
+						</cfif>
+
 				</cfif>
 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
