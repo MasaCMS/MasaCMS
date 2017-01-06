@@ -490,11 +490,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfif>
 					<!--- Render additional toolbar menu items --->
-					<cfset afterMenu=variables.$.renderEvent('onAfterToolbarRender')>
-
-						<cfif len(afterMenu)>
-							#afterMenu#
-						</cfif>
+					<cfset afterMenu=variables.$.renderEvent('onFEToolbarExtensionRender')>
+					<cfif len(afterMenu)>
+						#afterMenu#
+					</cfif>
 
 				</cfif>
 
