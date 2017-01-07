@@ -133,14 +133,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfsilent>
 			<tr data-contenthistid="#rc.item.getContentHistID()#" data-siteid="#rc.item.getSiteID()#">
 				<td class="actions">
-					<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
-					<div class="actions-menu hide">	
+					<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+					<div class="actions-menu hide">
 						<ul class="actions-list">
 						<cfif not isLockedBySomeoneElse or poweruser>
 							<li class="edit">
 							<a href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&return=hist&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" class="draftprompt" data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a>
 						</li>
-						<!--- 				
+						<!---
 						<cfelse>
 							<li class="edit disabled"><i class="mi-pencil"></i></li>
 							--->
@@ -169,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#
 								</a>
 							</li>
-						<!--- 
+						<!---
 						<cfelse>
 							<li class="delete disabled"><span><i class="mi-trash"></i></span></li> --->
 						</cfif>
@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td class="notes">
 					<cfif rc.item.getnotes() neq ''>
 						<span data-toggle="popover" title="" data-placement="right" data-content="#esapiEncode('html_attr',rc.item.getnotes())#" data-original-title="Notes">View&nbsp;Notes</span>
-					</cfif>	
+					</cfif>
 				</td>
 				<cfif hasChangesets>
 					<td class="changeset">

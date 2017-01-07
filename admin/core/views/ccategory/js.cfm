@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="newContentMenu" class="addNew hide">
   <ul id="newCategoryOptions">
-    <li id="newPage"><a href="" id="newCategoryLink" ontouchstart="this.onclick();"><i class="mi-plus"></i> <cfoutput>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addsubcategory')#</cfoutput></a></li>
+    <li id="newPage"><a href="" id="newCategoryLink" <!---ontouchstart="this.onclick();"--->><i class="mi-plus"></i> <cfoutput>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addsubcategory')#</cfoutput></a></li>
  </ul>
 </div>
 </cfoutput>

@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <dl id="top-node">
 	   <dt>
 
-		<a class="add" href="javascript:;" ontouchstart="this.onclick();" onclick="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#','#rc.rstop.moduleid#');"><i class="mi-ellipsis-v"></i></a>
+		<a class="add" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#','#rc.rstop.moduleid#');"><i class="mi-ellipsis-v"></i></a>
 
 		 <cfif hasKids>
 		 <span class="hasChildren open" onclick="siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteID)#','#esapiEncode('javascript',rc.topid)#','#esapiEncode('javascript',rc.moduleid)#','#esapiEncode('javascript',rc.sortby)#','#esapiEncode('javascript',rc.sortdirection)#','#esapiEncode('javascript',rc.rstop.type)#',1);"></span>

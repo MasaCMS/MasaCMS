@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!---<cfif (rsnest.type eq 'Page') or  (rsnest.type eq 'Folder')  or  (rsnest.type eq 'Calendar') or (rsnest.type eq 'Gallery')>--->
 
 
-	<a class="add" href="javascript:;" ontouchstart="this.onclick();" onclick="siteManager.showMenu('newContentMenu','#esapiEncode('javascript',newcontent)#',this,'#rsnest.contentid#','#esapiEncode('javascript',attributes.topid)#','#rsnest.parentid#','#esapiEncode('javascript',attributes.siteid)#','#rsnest.type#','#esapiEncode('javascript',rsnest.moduleid)#');"><i class="mi-ellipsis-v"></i></a>
+	<a class="add" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="siteManager.showMenu('newContentMenu','#esapiEncode('javascript',newcontent)#',this,'#rsnest.contentid#','#esapiEncode('javascript',attributes.topid)#','#rsnest.parentid#','#esapiEncode('javascript',attributes.siteid)#','#rsnest.type#','#esapiEncode('javascript',rsnest.moduleid)#');"><i class="mi-ellipsis-v"></i></a>
 
 	<cfif isNumeric(attributes.hasKids) and attributes.hasKids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
