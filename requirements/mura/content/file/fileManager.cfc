@@ -532,7 +532,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfscript>
 		var tempext='';
 		var allowedExtensions=variables.configBean.getFMAllowedExtensions();
-
+		var classExtensionManager=getBean('configBean').getClassExtensionManager();
+		
 		if(!len(allowedExtensions)){
 			return false;
 		}
@@ -554,6 +555,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 
 				if(isValid('url',arguments.scope['#i#']) && right(arguments.scope['#i#'],1) != '/'){
+
+					if(i neq 'newfile' && !classExtensionManager.isFileAttribute(i)){
+						break;
+					}
+
 					tempText=arguments.scope['#i#'];
 
 					//if it contains a protocol
