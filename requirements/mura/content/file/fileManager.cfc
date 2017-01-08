@@ -542,6 +542,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return false;
 		}
 
+		if(structKeyExists(arguments.scope,'siteid')){
+			var siteid=arguments.scope.siteid;
+		} else {
+			var siteid=getSession().siteid;
+		}
+
 		if(isdefined('arguments.scope.type') && arguments.scope.type=='Link'){
 			arguments.scope=structCopy(arguments.scope);
 			structDelete(arguments.scope,'body');
@@ -560,10 +566,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				if(isValid('url',arguments.scope['#i#']) && right(arguments.scope['#i#'],1) != '/'){
 
-					if(i neq 'newfile' && !classExtensionManager.isFileAttribute(i)){
+					if(i neq 'newfile' && !classExtensionManager.isFileAttribute(i,siteid)){
 						break;
 					}
-					
+
 					tempText=arguments.scope['#i#'];
 
 					//if it contains a protocol

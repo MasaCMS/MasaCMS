@@ -209,10 +209,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="isFileAttribute" output="false">
 	<cfargument name="name">
-	<cfset var rs="">
+	<cfargument name="siteid">
+	<cfset var rs=getDefinitionsQuery()>
 
 	<cfquery name="rs" dbtype="query">
-		select attributeName where attributeName=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#"> and inputtype='File'
+		select attributeName from rs
+		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
+		and attributeName=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">
+		and inputtype='File'
 	</cfquery>
 
 	<cfreturn rs.recordcount>
