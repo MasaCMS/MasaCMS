@@ -533,9 +533,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var tempext='';
 		var allowedExtensions=variables.configBean.getFMAllowedExtensions();
 		var classExtensionManager=getBean('configBean').getClassExtensionManager();
-		
+		var siteid=session.siteid;
+
 		if(!len(allowedExtensions)){
 			return false;
+		}
+
+		if(structKeyExists(arguments.scope,'siteid')){
+			var siteid=arguments.scope.siteid;
+		} else {
+			var siteid=session.siteid;
 		}
 
 		if(isdefined('arguments.scope.type') && arguments.scope.type=='Link'){
@@ -545,7 +552,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		for (var i in arguments.scope){
 			if(structKeyExists(arguments.scope,'#i#') && isSimpleValue(arguments.scope['#i#']) ){
-				if(isPostedFile(i)){
+				if(isPostedFile(i,siteid)){
 
 					temptext=listLast(getPostedClientFileName(i),'.');
 
