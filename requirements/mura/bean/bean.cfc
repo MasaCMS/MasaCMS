@@ -1138,7 +1138,7 @@ component extends="mura.cfobject" output="false" {
 
 	function exists() {
 		param name="variables.instance.isNew" default=1;
-		return variables.instance.isNew;
+		return !variables.instance.isNew;
 	}
 
 	function clone(){
