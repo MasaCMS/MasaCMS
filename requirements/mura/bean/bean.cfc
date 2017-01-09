@@ -759,7 +759,7 @@ component extends="mura.cfobject" output="false" {
 								if(structKeyExists(prop,'relatesTo')){
 									prop.cfc=prop.relatesTo;
 								}
-								
+
 					       	 	if(structKeyExists(prop,'cfc')){
 
 					       	 		param name="prop.fkcolumn" default="primaryKey";
@@ -1137,7 +1137,8 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function exists() {
-		return !variables.instance.isNew;
+		param name="variables.instance.isNew" default=1;
+		return variables.instance.isNew;
 	}
 
 	function clone(){
