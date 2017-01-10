@@ -1073,19 +1073,23 @@ and tclassextendattributes.type='File'
 		inner join tclassextend #tableModifier# on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
 
-		<cfif len(arguments.type)>
-			and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
-		</cfif>
-
-		<cfif len(arguments.subtype)>
-			and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.subtype#">
-		</cfif>
 		and (
-			tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
-			<cfif arguments.baseTable eq 'tcontent'>
-			or tclassextend.type = 'Base'
+			tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+			<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",arguments.type)>
+					or tclassextend.type='Base'
 			</cfif>
 		)
+
+		and (
+			<cfif arguments.subtype neq "Default">
+				tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+				or
+			</cfif>
+			tclassextend.subtype='Default'
+		)
+
+		and tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
+
 		<cfif arguments.activeOnly>
 			and tclassextend.isActive=1
 		</cfif>
