@@ -29,3 +29,7 @@
         .addColumn(column="siteid",dataType="varchar",length=25)
         .addIndex('siteid');
 </cfscript>
+
+<cfquery>
+    update tsystemobjects set name='Comment Form' where name='Accept Comments'
+</cfquery>
