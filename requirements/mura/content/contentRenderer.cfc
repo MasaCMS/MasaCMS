@@ -2469,6 +2469,7 @@ Display Objects
 	<cfset var displayPoolID=application.settingsManager.getSite(variables.event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=(len(request.altTheme) ? request.altTheme : application.settingsManager.getSite(variables.event.getValue('siteID')).getTheme())>
 	<cfset var tracePoint=0>
+	<cfset var item = "" />
 
 	<cfif getRenderHTMLQueues()>
 
