@@ -1067,7 +1067,7 @@ and tclassextendattributes.type='File'
 	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name AS attribute
+		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name AS attribute, tclassextendattributes.label AS label
 		from tclassextendattributes #tableModifier#
 		inner join tclassextendsets #tableModifier# on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
 		inner join tclassextend #tableModifier# on (tclassextendsets.subTypeID=tclassextend.subTypeID)
