@@ -533,12 +533,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="requestHasRestrictedFiles" output="false">
 	<cfargument name="scope" default="#form#">
+	<cfargument name="allowedExtensions" default="#getBean('configBean').getFMAllowedExtensions()#">
 	<cfscript>
 		var tempext='';
-		var allowedExtensions=variables.configBean.getFMAllowedExtensions();
 		var classExtensionManager=getBean('configBean').getClassExtensionManager();
 
-		if(!len(allowedExtensions)){
+		if(!len(arguments.allowedExtensions)){
 			return false;
 		}
 
@@ -559,7 +559,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					temptext=listLast(getPostedClientFileName(i),'.');
 
-					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
+					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(arguments.allowedExtensions,temptext)){
 						return true;
 					}
 				}
@@ -594,7 +594,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}
 					*/
 
-					if(len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
+					if(len(tempText) < 5 && !listFindNoCase(arguments.allowedExtensions,temptext)){
 						return true;
 					}
 				}

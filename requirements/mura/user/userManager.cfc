@@ -432,6 +432,11 @@
 			<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>
 		</cfif>
 
+		<cfif variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues())>
+			<cfset errors=userBean.getErrors()>
+			<cfset errors.requestHasRestrictedFiles=variables.settingsManager.getSite(userBean.getSiteID()).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles')>
+		</cfif>
+
 		<cfif structIsEmpty(userBean.getErrors())>
 
 			<!--- Reset extended data internal ids --->
@@ -579,6 +584,11 @@
 			<cfset variables.pluginManager.announceEvent("onBeforeUserSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Create",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>
+		</cfif>
+
+		<cfif variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues())>
+			<cfset errors=userBean.getErrors()>
+			<cfset errors.requestHasRestrictedFiles=variables.settingsManager.getSite(userBean.getSiteID()).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles')>
 		</cfif>
 
 		<cfif structIsEmpty(userBean.getErrors())>
