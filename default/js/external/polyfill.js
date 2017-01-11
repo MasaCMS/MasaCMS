@@ -957,7 +957,7 @@ if (!Array.prototype.map) {
 
     lib$es6$promise$promise$$Promise.prototype = {
       constructor: lib$es6$promise$promise$$Promise,
-
+      catchAlias: 'catch',
     /*
       The primary way of interacting with a promise is through its `then` method,
       which registers callbacks to receive either a promise's eventual value or the
@@ -1172,8 +1172,8 @@ if (!Array.prototype.map) {
         }
 
         return child;
-      },
-
+      }
+    };
     /*
       `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
       as the catch block of a try/catch statement.
@@ -1201,10 +1201,11 @@ if (!Array.prototype.map) {
       Useful for tooling.
       @return {Promise}
     */
-      'catch': function(onRejection) {
+    
+      lib$es6$promise$promise$$Promise.prototype['catch']= function(onRejection) {
         return this.then(null, onRejection);
       }
-    };
+
     function lib$es6$promise$polyfill$$polyfill() {
       var local;
 
