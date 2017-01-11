@@ -8396,6 +8396,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 
 			/**
+			 * pageIndex - Sets items per page
+			 *
+			 * @param  {number} pageIndex page to start at
+			 */
+			pageIndex:function(pageIndex){
+	            this.queryString+='&pageIndex=' + encodeURIComponent(pageIndex);
+				return this;
+	        },
+
+			/**
 			 * maxItems - Sets max items to return
 			 *
 			 * @param  {number} maxItems Items to return
