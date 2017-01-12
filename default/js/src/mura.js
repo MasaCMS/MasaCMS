@@ -2498,16 +2498,17 @@
 	}
 
 	function init(config){
-		if(!config.context){
+
+        if(config.endpoint){
+            config.context=config.endpoint;
+        }
+
+        if(!config.context){
 			config.context='';
 		}
 
 		if(!config.assetpath){
 			config.assetpath=config.context + "/" + config.siteid;
-		}
-
-        if(config.endpoint){
-			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/' + config.siteid + '/';;
 		}
 
 		if(!config.apiEndpoint){
