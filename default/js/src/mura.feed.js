@@ -145,7 +145,7 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isEQ:function(criteria){
-				if(typeof criteria == 'undefined' || criteria==''){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
 					criteria='null';
 				}
 	            this.queryString+=encodeURIComponent(criteria);
@@ -159,7 +159,7 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isNEQ:function(criteria){
-				if(typeof criteria == 'undefined' || criteria==''){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
 					criteria='null';
 				}
 	            this.queryString+='neq^' + encodeURIComponent(criteria);
@@ -173,7 +173,7 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLT:function(criteria){
-				if(typeof criteria == 'undefined' || criteria==''){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
 					criteria='null';
 				}
 	            this.queryString+='lt^' + encodeURIComponent(criteria);
@@ -187,7 +187,7 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLTE:function(criteria){
-				if(typeof criteria == 'undefined' || criteria==''){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
 					criteria='null';
 				}
 	            this.queryString+='lte^' + encodeURIComponent(criteria);
@@ -201,7 +201,7 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGT:function(criteria){
-				if(typeof criteria == 'undefined' || criteria==''){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
 					criteria='null';
 				}
 	            this.queryString+='gt^' + encodeURIComponent(criteria);
@@ -215,7 +215,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGTE:function(criteria){
-				criteria=criteria || 'null';
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='gte^' + encodeURIComponent(criteria);
 				return this;
 	        },
