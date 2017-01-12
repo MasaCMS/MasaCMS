@@ -91,8 +91,7 @@ if (!Object.keys) {
 // Reference: http://es5.github.io/#x15.4.4.21
 // https://tc39.github.io/ecma262/#sec-array.prototype.reduce
 if (!Array.prototype.reduce) {
-  Object.defineProperty(Array.prototype, 'reduce', {
-    value: function(callback /*, initialValue*/) {
+  Array.prototype.reduce=function(callback) {
       if (this === null) {
         throw new TypeError('Array.prototype.reduce called on null or undefined');
       }
@@ -141,8 +140,7 @@ if (!Array.prototype.reduce) {
 
       // 9. Return accumulator.
       return value;
-    }
-  });
+  }
 }
 
 if (!Array.prototype.forEach) {
