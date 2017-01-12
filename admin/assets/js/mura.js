@@ -7673,7 +7673,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		loadBy:function(propertyName,propertyValue,params){
 
 			propertyName=propertyName || 'id';
-			propertyValue=propertyValue || this.get(propertyName);
+			propertyValue=propertyValue || this.get(propertyName) || 'null';
 
 			var self=this;
 
@@ -8136,7 +8136,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * @return {accumulator}
 		 */
 		reduce:function(fn,initialValue){
-			return this.properties.reduce(
+            initialValue=initialValue||0;
+			return this.properties.items.reduce(
                 function(accumulator,item,idx,array){
     				return fn.call(item,accumulator,item,idx,array);
     			},
@@ -8292,6 +8293,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isEQ:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+=encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8303,6 +8307,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isNEQ:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+='neq^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8314,6 +8321,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLT:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+='lt^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8325,6 +8335,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLTE:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+='lte^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8336,6 +8349,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGT:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+='gt^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8347,6 +8363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGTE:function(criteria){
+				criteria=criteria || 'null';
 	            this.queryString+='gte^' + encodeURIComponent(criteria);
 				return this;
 	        },

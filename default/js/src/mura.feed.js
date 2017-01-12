@@ -145,6 +145,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isEQ:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+=encodeURIComponent(criteria);
 				return this;
 	        },
@@ -156,6 +159,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isNEQ:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+='neq^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -167,6 +173,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLT:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+='lt^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -178,6 +187,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLTE:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+='lte^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -189,6 +201,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGT:function(criteria){
+				if(typeof criteria == 'undefined' || criteria==''){
+					criteria='null';
+				}
 	            this.queryString+='gt^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -200,6 +215,7 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGTE:function(criteria){
+				criteria=criteria || 'null';
 	            this.queryString+='gte^' + encodeURIComponent(criteria);
 				return this;
 	        },

@@ -280,7 +280,7 @@
 		loadBy:function(propertyName,propertyValue,params){
 
 			propertyName=propertyName || 'id';
-			propertyValue=propertyValue || this.get(propertyName);
+			propertyValue=propertyValue || this.get(propertyName) || 'null';
 
 			var self=this;
 

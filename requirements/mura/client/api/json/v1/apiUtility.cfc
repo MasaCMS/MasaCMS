@@ -1913,6 +1913,8 @@ component extends="mura.cfobject" {
 
   		}
 
+		//arguments.feed.setIncludeHomePage(1);
+
 		if(isDefined('arguments.params.sortby') && len(arguments.params.sortby)){
 			arguments.feed.setSortBy(arguments.params.sortby);
 		}

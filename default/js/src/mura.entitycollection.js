@@ -196,7 +196,8 @@
 		 * @return {accumulator}
 		 */
 		reduce:function(fn,initialValue){
-			return this.properties.reduce(
+            initialValue=initialValue||0;
+			return this.properties.items.reduce(
                 function(accumulator,item,idx,array){
     				return fn.call(item,accumulator,item,idx,array);
     			},
