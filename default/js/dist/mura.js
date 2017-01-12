@@ -5235,6 +5235,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			config.assetpath=config.context + "/" + config.siteid;
 		}
 
+        if(config.endpoint){
+			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/' + config.siteid + '/';;
+		}
+
 		if(!config.apiEndpoint){
 			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/' + config.siteid + '/';
 		}
