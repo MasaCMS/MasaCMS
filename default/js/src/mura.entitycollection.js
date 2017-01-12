@@ -186,6 +186,22 @@
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
+		},
+
+        /**
+		 * reduce - Returns value from  reduce function
+		 *
+		 * @param  {function} fn Reduce function
+         * @param  {any} initialValue Starting accumulator value
+		 * @return {accumulator}
+		 */
+		reduce:function(fn,initialValue){
+			return this.properties.reduce(
+                function(accumulator,item,idx,array){
+    				return fn.call(item,accumulator,item,idx,array);
+    			},
+                initialValue
+            );
 		}
 	});
 }));
