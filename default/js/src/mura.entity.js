@@ -298,15 +298,20 @@
 			return new Promise(function(resolve,reject){
 				params=Mura.extend(
 					{
-						entityname:self.get('entityname'),
+						entityname:self.get('entityname').toLowerCase(),
 						method:'findQuery',
 						siteid:self.get('siteid'),
-                        '_cacheid':Math.random()
+                        '_cacheid':Math.random(),
 					},
 					params
 				);
 
+                if(params.entityname=='content' || params.entityname=='contentnav'){
+                    params.includeHomePage=1;
+                }
+
 				params[propertyName]=propertyValue;
+
 
 				Mura.findQuery(params).then(function(collection){
 
