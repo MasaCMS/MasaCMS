@@ -432,7 +432,7 @@
 			<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>
 		</cfif>
 
-		<cfif variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues())>
+		<cfif variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues(),allowedExtensions=variables.configBean.getFMPublicAllowedExtensions())>
 			<cfset errors=userBean.getErrors()>
 			<cfset errors.requestHasRestrictedFiles=variables.settingsManager.getSite(userBean.getSiteID()).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles')>
 		</cfif>

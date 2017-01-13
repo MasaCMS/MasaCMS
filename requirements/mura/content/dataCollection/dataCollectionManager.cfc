@@ -77,6 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var f = "" />
 	<cfset var theXml = "" />
 	<cfset var ignoreList = 'INSTANCEID,OBJECTID,PERM,OBJECT,OBJECTNAME,OBJECTICONCLASS,VIEW,INITED,LABEL,ASYNC,REPONSECHART,ISCONFIGURATOR,CONTENTID,CONTENTHISTID,NOCACHE,DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,useProtect,linkservid,useReCAPTCHA,g-recaptcha-response,grecaptcharesponse' />
+	<cfset var scopeCheck=structNew()>
 
 	<cfparam name="info.fieldnames" default=""/>
 
@@ -98,71 +99,67 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset info['responseid'] = responseid />
 
 	<cfloop list="#fieldlist#" index="f">
-	<cfif Not ListFindNoCase(ignoreList, f)>
-
-		<cfif action eq 'create' and right(f,8) eq '_default'>
-			<cfset rf=left(f,len(f)-8)>
-			<cfif not listFindNoCase(arguments.data.fieldnames,rf)>
-				<cfset arguments.data['#rf#']=arguments.data['#f#']>
-				<cfset thefield=rf>
-				<cfset info.fieldnames=listappend(info.fieldnames,thefield)>
+		<cfif Not ListFindNoCase(ignoreList, f)>
+			<cfif action eq 'create' and right(f,8) eq '_default'>
+				<cfset rf=left(f,len(f)-8)>
+				<cfif not listFindNoCase(arguments.data.fieldnames,rf)>
+					<cfset arguments.data['#rf#']=arguments.data['#f#']>
+					<cfset thefield=rf>
+					<cfset info.fieldnames=listappend(info.fieldnames,thefield)>
+				<cfelse>
+					<cfset thefield=''>
+				</cfif>
 			<cfelse>
-				<cfset thefield=''>
+				<cfset thefield=f>
+				<cfset info.fieldnames=listappend(info.fieldnames,thefield)>
 			</cfif>
-		<cfelse>
-			<cfset thefield=f>
-			<cfset info.fieldnames=listappend(info.fieldnames,thefield)>
-		</cfif>
 
 			<cfif thefield neq '' and structkeyexists(arguments.data, thefield)>
-
 				<cfif findNoCase('attachment',theField) and arguments.data['#thefield#'] neq ''>
-					<cftry>
-					<cffile action="upload" filefield="#thefield#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-					<cfset theFileStruct=variables.fileManager.process(file,siteID) />
-					<cfset arguments.data['#thefield#']=variables.fileManager.create(theFileStruct.fileObj,formid,siteID,file.ClientFile,file.ContentType,file.ContentSubType,file.FileSize,'00000000000000000000000000000000004',file.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
-					<cfcatch></cfcatch>
-					</cftry>
-					<cfset info['#thefield#']=arguments.data['#thefield#']>
+					<cfset scopeCheck={test=arguments.data['#thefield#']}>
+					<cfif not variables.fileManager.requestHasRestrictedFiles(scope=scopeCheck,allowedExtensions=variables.configBean.getFMPublicAllowedExtensions())>
+						<cftry>
+						<cffile action="upload" filefield="#thefield#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+						<cfset theFileStruct=variables.fileManager.process(file,siteID) />
+						<cfset arguments.data['#thefield#']=variables.fileManager.create(theFileStruct.fileObj,formid,siteID,file.ClientFile,file.ContentType,file.ContentSubType,file.FileSize,'00000000000000000000000000000000004',file.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+						<cfcatch></cfcatch>
+						</cftry>
+						<cfset info['#thefield#']=arguments.data['#thefield#']>
+					<cfelse>
+						<cfset info['#thefield#']="">
+					</cfif>
 				</cfif>
 
-					<cfset info['#thefield#']=trim(arguments.data['#thefield#'])>
-					<cfset info['#thefield#']=REREplaceNoCase(info['#thefield#'], "<script|<form",  "<noscript" ,  "ALL")/>
-					<cfset info['#thefield#']=REREplaceNoCase(info['#thefield#'], "script>|form>",  "noscript>" ,  "ALL")/>
+				<cfset info['#thefield#']=trim(arguments.data['#thefield#'])>
+				<cfset info['#thefield#']=REREplaceNoCase(info['#thefield#'], "<script|<form",  "<noscript" ,  "ALL")/>
+				<cfset info['#thefield#']=REREplaceNoCase(info['#thefield#'], "script>|form>",  "noscript>" ,  "ALL")/>
 
-					<cfquery>
-						insert into tformresponsequestions (responseid,formid,formField,formValue,pollValue)
-						values(
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#responseID#"/>,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#formID#"/>,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#thefield#">,
-						<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#info['#thefield#']#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(info['#thefield#'],255)#">)
-					</cfquery>
-
+				<cfquery>
+					insert into tformresponsequestions (responseid,formid,formField,formValue,pollValue)
+					values(
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#responseID#"/>,
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#formID#"/>,
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#thefield#">,
+					<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#info['#thefield#']#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(info['#thefield#'],255)#">)
+				</cfquery>
 			</cfif>
-	</cfif>
-
-	</cfloop>
-
-
-	<cfif not StructIsEmpty(info)>
-
-		<cfwddx action="cfml2wddx" input="#info#" output="theXml">
-
-			<cfquery>
-				insert into tformresponsepackets (responseid,formid,siteid,entered,Data,fieldlist)
-				values(
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#responseID#"/>,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#formID#"/>,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteID#"/>,
-				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#entered#">,
-				<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#theXML#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#info.fieldnames#">)
-			</cfquery>
-
 		</cfif>
-
+	</cfloop>
+	
+	<cfif not StructIsEmpty(info)>
+		<cfwddx action="cfml2wddx" input="#info#" output="theXml">
+		<cfquery>
+			insert into tformresponsepackets (responseid,formid,siteid,entered,Data,fieldlist)
+			values(
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#responseID#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#formID#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteID#"/>,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#entered#">,
+			<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#theXML#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#info.fieldnames#">)
+		</cfquery>
+	</cfif>
 	<cfreturn info />
 </cffunction>
 
