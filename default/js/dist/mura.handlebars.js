@@ -11064,12 +11064,17 @@ return /******/ (function(modules) { // webpackBootstrap
 						entityname:self.get('entityname'),
 						method:'findQuery',
 						siteid:self.get('siteid'),
-                        '_cacheid':Math.random()
+                        '_cacheid':Math.random(),
 					},
 					params
 				);
 
+                if(self.get('entityname').toLowerCase()=='content' || self.get('entityname').toLowerCase()=='contentnav'){
+                    params.includeHomePage=1;
+                }
+
 				params[propertyName]=propertyValue;
+
 
 				Mura.findQuery(params).then(function(collection){
 
