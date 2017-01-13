@@ -235,6 +235,10 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 		super.validate(fields=arguments.fields);
 
+		if(getBean('fileManager').requestHasRestrictedFiles(scope=getAllValues(),allowedExtensions=getBean('configBean').getFMPublicAllowedExtensions())){
+			getErrors().requestHasRestrictedFiles=$.siteConfig().getRBFactory().getKey('sitemanager.requestHasRestrictedFiles');
+		}
+
 		if(!len(arguments.fields)){
 
 			setValue('acceptData',structIsEmpty(getErrors()));
