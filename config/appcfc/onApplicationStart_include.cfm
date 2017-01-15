@@ -278,6 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("contentDisplayInterval","contentDisplayIntervalBean");
 		variables.serviceFactory.addAlias("oauthClient","oauthClientBean");
 		variables.serviceFactory.addAlias("oauthToken","oauthTokenBean");
+		variables.serviceFactory.addAlias("dataCollection","dataCollectionBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
