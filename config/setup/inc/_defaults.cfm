@@ -69,7 +69,7 @@ message			= "";
 
 // grab current settings
 settingsPath	= variables.baseDir & "/config/settings.ini.cfm";
-settingsini		= createobject("component","mura.utilties.IniFile").init(settingsPath);
+settingsini		= createobject("component","mura.utilities.IniFile").init(settingsPath);
 
 // get  and cleanup current web root
 currentFile		= getFileFromPath( getBaseTemplatePath() );
