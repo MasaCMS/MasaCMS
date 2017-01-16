@@ -280,7 +280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rsAttributes.recordcount>
 
-		<cfset tempArray=createObject("component","mura.queryTool").init(rsAttributes).toArray() />
+		<cfset tempArray=createObject("component","mura.utilities.queryTool").init(rsAttributes).toArray() />
 
 		<cfloop from="1" to="#rsAttributes.recordcount#" index="a">
 			<cfset attribute=createObject("component","mura.extend.extendAttribute").init(variables.configBean,variables.contentRenderer) />
