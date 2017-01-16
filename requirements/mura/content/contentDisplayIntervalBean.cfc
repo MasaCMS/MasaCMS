@@ -1,4 +1,4 @@
-component extends="mura.bean.bean" {
+component extends="mura.bean.bean" hint="This provides content display interval functionality" {
 
     property name="type" datatype="string" default="daily";
     property name="every" datatype="integer" default="1";

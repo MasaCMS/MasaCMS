@@ -1,7 +1,8 @@
 component extends="mura.bean.beanORM"
 	table="tcontentvariationtargeting"
 	entityName="variationTargeting"
-	bundleable=true  {
+	bundleable=true
+	hint="This provides content variation targeting functionality"{
 
 	property name="targetingid" fieldType="id";
 	property name="content" fieldtype="one-to-one" cfc="content" fkcolumn="contentid";

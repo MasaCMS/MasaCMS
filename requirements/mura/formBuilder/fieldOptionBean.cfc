@@ -1,4 +1,4 @@
-﻿component extends="mura.bean.beanORM" displayName="fieldOptionBean" orderby="val" {
+﻿component extends="mura.bean.beanORM" displayName="fieldOptionBean" orderby="val" hint="This provides fieldOptionBean functionality" {
 
 	property name="site" fieldtype="one-to-one" cfc="site" fkcolumn="siteid";
 

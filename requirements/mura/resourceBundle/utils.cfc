@@ -17,7 +17,7 @@
 
 				   To Do - handle converting from UTC to local time, modded by user pref TZ
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides resource bundle utility methods">
 <cfset variables.locale = "en_US">
 
 	<cffunction name="init" return="any" output="false">

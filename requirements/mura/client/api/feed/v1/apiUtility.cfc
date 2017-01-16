@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides feed RSS functionality">
 	<cfscript>
 
 	/*

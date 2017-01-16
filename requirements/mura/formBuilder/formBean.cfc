@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+the preparation of a derivative work based on Mura CMS. Thus, the terms and
 conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
@@ -40,8 +40,8 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfcomponent displayname="formBean" output="false" extends="mura.cfobject">
-	
+<cfcomponent displayname="formBean" output="false" extends="mura.cfobject" hint="This provides formBean functionality">
+
 	<cfproperty name="FormID" type="uuid" default="" required="true" maxlength="35" />
 	<cfproperty name="Name" type="string" default="" maxlength="150" />
 	<cfproperty name="Package" type="string" default="" maxlength="50" />
@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 
 	<!--- INIT --->
 	<cffunction name="init" returntype="FormBean" output="false">
-		
+
 		<cfargument name="FormID" type="string" required="false" default="" />
 		<cfargument name="Name" type="string" required="false" default="" />
 		<cfargument name="Package" type="string" required="false" default="" />
@@ -77,7 +77,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="RemoteID" type="string" required="false" default="" />
 		<cfargument name="DateCreate" type="string" required="false" default="" />
 		<cfargument name="DateLastUpdate" type="string" required="false" default="" />
-		
+
 		<cfargument name="FormAttributes" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="Fields" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="FieldOrder" type="Array" required="false" default="#ArrayNew(1)#" />
@@ -87,7 +87,7 @@ to your own modified versions of Mura CMS.
 
 		<cfset super.init( argumentcollection=arguments ) />
 
-		
+
 		<cfset setFormID( arguments.FormID ) />
 		<cfset setName( arguments.Name ) />
 		<cfset setPackage( arguments.Package ) />
@@ -107,7 +107,7 @@ to your own modified versions of Mura CMS.
 		<cfset setDeletedFields( arguments.DeletedFields ) />
 		<cfset setConfig( arguments.Config ) />
 
-		
+
 		<cfreturn this />
 	</cffunction>
 
@@ -119,7 +119,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getAllValues" returntype="struct" output="false">
 		<cfreturn variables.instance />
 	</cffunction>
-	
+
 	<cffunction name="setFormID" output="false">
 		<cfargument name="FormID" type="string" required="true" />
 		<cfset variables.instance['formid'] = arguments.FormID />
@@ -127,7 +127,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getFormID" output="false">
 		<cfreturn variables.instance.FormID />
 	</cffunction>
-	
+
 	<cffunction name="setName" output="false">
 		<cfargument name="Name" type="string" required="true" />
 		<cfset variables.instance['name'] = arguments.Name />
@@ -135,7 +135,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getName" output="false">
 		<cfreturn variables.instance.Name />
 	</cffunction>
-	
+
 	<cffunction name="setPackage" output="false">
 		<cfargument name="Package" type="string" required="true" />
 		<cfset variables.instance['package'] = arguments.Package />
@@ -143,7 +143,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getPackage" output="false">
 		<cfreturn variables.instance.Package />
 	</cffunction>
-	
+
 	<cffunction name="setIsActive" output="false">
 		<cfargument name="IsActive" type="boolean" required="true" />
 		<cfset variables.instance['isactive'] = arguments.IsActive />
@@ -151,7 +151,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getIsActive" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsActive />
 	</cffunction>
-	
+
 	<cffunction name="setIsCurrent" output="false">
 		<cfargument name="IsCurrent" type="boolean" required="true" />
 		<cfset variables.instance['iscurrent'] = arguments.IsCurrent />
@@ -159,7 +159,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getIsCurrent" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsCurrent />
 	</cffunction>
-	
+
 	<cffunction name="setStatusCode" output="false">
 		<cfargument name="StatusCode" type="numeric" required="true" />
 		<cfset variables.instance['statuscode'] = arguments.StatusCode />
@@ -167,7 +167,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getStatusCode" output="false">
 		<cfreturn variables.instance.StatusCode />
 	</cffunction>
-	
+
 	<cffunction name="setNotes" output="false">
 		<cfargument name="Notes" type="string" required="true" />
 		<cfset variables.instance['notes'] = arguments.Notes />
@@ -175,7 +175,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getNotes" output="false">
 		<cfreturn variables.instance.Notes />
 	</cffunction>
-	
+
 	<cffunction name="setSiteID" output="false">
 		<cfargument name="SiteID" type="string" required="true" />
 		<cfset variables.instance['siteid'] = arguments.SiteID />
@@ -183,7 +183,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getSiteID" output="false">
 		<cfreturn variables.instance.SiteID />
 	</cffunction>
-	
+
 	<cffunction name="setRemoteID" output="false">
 		<cfargument name="RemoteID" type="string" required="true" />
 		<cfset variables.instance['remoteid'] = arguments.RemoteID />
@@ -191,7 +191,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getRemoteID" output="false">
 		<cfreturn variables.instance.RemoteID />
 	</cffunction>
-	
+
 	<cffunction name="setDateCreate" output="false">
 		<cfargument name="DateCreate" type="string" required="true" />
 		<cfset variables.instance['datecreate'] = arguments.DateCreate />
@@ -199,7 +199,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getDateCreate" output="false">
 		<cfreturn variables.instance.DateCreate />
 	</cffunction>
-	
+
 	<cffunction name="setDateLastUpdate" output="false">
 		<cfargument name="DateLastUpdate" type="string" required="true" />
 		<cfset variables.instance['datelastupdate'] = arguments.DateLastUpdate />
@@ -220,7 +220,7 @@ to your own modified versions of Mura CMS.
 
 		<cfreturn variables.instance.FormAttributes />
 	</cffunction>
-	
+
 	<cffunction name="setFields" output="false">
 		<cfargument name="Fields" type="struct" required="true" />
 		<cfset variables.instance['fields'] = arguments.Fields />
@@ -233,14 +233,14 @@ to your own modified versions of Mura CMS.
 
 		<cfreturn variables.instance.Fields />
 	</cffunction>
-	
+
 	<cffunction name="getField" output="false">
 		<cfargument name="FieldID" type="struct" required="true" />
 
 		<cfif StructKeyExists( variables.instance.Fields,arguments.FieldID )>
 			<cfreturn variables.instance.Fields[arguments.FieldID] />
 		</cfif>
-		
+
 		<cfreturn false />
 	</cffunction>
 
@@ -259,7 +259,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.instance['config'] = arguments.config>
 		<cfelse>
 			<cfset variables.instance['config'] = serializeJSON( arguments.config )>
-		</cfif>		
+		</cfif>
 	</cffunction>
 
 	<cffunction name="setFieldOrder" output="false">
@@ -287,9 +287,4 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 
 
-</cfcomponent>	
-
-
-
-
-
+</cfcomponent>

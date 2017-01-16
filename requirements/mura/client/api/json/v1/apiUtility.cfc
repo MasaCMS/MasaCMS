@@ -1,4 +1,4 @@
-component extends="mura.cfobject" {
+component extends="mura.cfobject" hint="This provides JSON/REST API functionality" {
 
 	function init(siteid){
 

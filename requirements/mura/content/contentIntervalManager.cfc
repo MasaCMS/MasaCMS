@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content interval service level logic functionality">
 
 <!--- Heavily borrowed from http://www.bennadel.com/projects/kinky-calendar.htm --->
 

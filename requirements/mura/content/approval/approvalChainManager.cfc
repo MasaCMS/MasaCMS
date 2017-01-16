@@ -1,5 +1,5 @@
-component extends="mura.cfobject" {
-	
+component extends="mura.cfobject"  hint="This provides approval chain service level logic functionality"{
+
 	function getRequestFeed(siteID){
 		return getBean('beanFeed').setEntityName('approvalRequest').setTable('tapprovalrequests').setSiteID(arguments.siteID);
 	}
@@ -15,5 +15,5 @@ component extends="mura.cfobject" {
 	function getMembershipFeed(siteID){
 		return getBean('beanFeed').setEntityName('approvalMembership').setTable('tapprovalmemberships').setSiteID(arguments.siteID);
 	}
-	
+
 }

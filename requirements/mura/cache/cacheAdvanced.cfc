@@ -1,4 +1,4 @@
-component extends="mura.cache.cacheAbstract" output="false" {
+component extends="mura.cache.cacheAbstract" hint="This allows Mura to use core CFML caching" output="false" {
 
 	public any function init(name,siteid) {
 		lock name="creatingCache#arguments.name##arguments.siteid#" type="exclusive" timeout=10{

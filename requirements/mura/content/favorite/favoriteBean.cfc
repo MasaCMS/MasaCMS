@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,15 +36,15 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" entityName="favorite" table="tusersfavorites" output="false">
+<cfcomponent extends="mura.bean.bean" entityName="favorite" table="tusersfavorites" output="false" hint="This provides user favorites persistence">
 
 <cfproperty name="favoriteID" fieldtype="id" type="string" default="" required="true" />
 <cfproperty name="userID" type="string" default="" required="true" />
@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.favoriteID="" />
 	<cfset variables.instance.userID=""/>
 	<cfset variables.instance.favoriteName=""/>
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.rowNumber=0/>
 	<cfset variables.instance.maxRSSItems=0/>
 	<cfset variables.instance.isNew=1/>
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -130,15 +130,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="loadBy" output="false">
 	<cfset var response="">
-	
+
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments,"userID")>
 		<cfset arguments.userID=variables.instance.userID>
 	</cfif>
-	
+
 	<cfset load(argumentCollection=arguments)>
 	<cfreturn this>
 </cffunction>
@@ -146,8 +146,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getQuery"  output="false">
 	<cfset var rs=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select * from tusersfavorites 
-	where 
+	select * from tusersfavorites
+	where
 	<cfif structKeyExists(arguments,"favoriteID")>
 	favoriteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.favoriteID#">
 	<cfelseif structKeyExists(arguments,"favorite")>
@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	favoriteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getFavoriteID()#">
 	</cfif>
 	</cfquery>
-	
+
 	<cfreturn rs/>
 </cffunction>
 
@@ -177,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs=""/>
 
 	<cfif getQuery().recordcount>
-		
+
 		<cfquery>
 		update tusersfavorites set
 		favoriteName=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.favoriteName neq '',de('no'),de('yes'))#" value="#variables.instance.favoriteName#">,
@@ -190,9 +190,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		dateCreated=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.dateCreated#">
 		where favoriteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getFavoriteID()#">
 		</cfquery>
-		
+
 	<cfelse>
-	
+
 		<cfquery>
 		insert into tusersfavorites (favoriteID,userID,favoriteName,favorite,type,siteID,columnNumber,rowNumber,maxRSSItems,dateCreated)
 		values(
@@ -208,9 +208,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.dateCreated#">
 		)
 		</cfquery>
-		
+
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="getFavoritesByUser" output="false">

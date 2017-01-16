@@ -45,7 +45,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component extends="mura.bean.bean" versioned=false {
+component extends="mura.bean.bean" versioned=false hint="This provides dynamic CRUD functionality"{
 
 	property name="saveErrors" type="boolean" persistent="false" comparable="false" default=false;
 

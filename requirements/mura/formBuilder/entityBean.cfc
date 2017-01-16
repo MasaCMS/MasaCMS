@@ -1,4 +1,4 @@
-﻿component extends="mura.bean.beanORM" displayName="entityBean" orderby="val" {
+﻿component extends="mura.bean.beanORM" displayName="entityBean" orderby="val" hint="This provides form created entity functionality"{
 
 	property name="site" fieldtype="one-to-one" cfc="site" fkcolumn="siteid";
 	property name="created" displayName="created" rendertype="none" datatype="timestamp" fieldtype="none";
