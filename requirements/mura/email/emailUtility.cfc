@@ -130,7 +130,7 @@
 			<cfif rsemail.grouplist neq '' and (rsemail.bodyhtml neq '' or rsemail.bodytext neq '')>
 				<cfset prevEmail=""/>
 				<cfset counter=0/>
-				<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+				<cfset request.servletEvent = createObject("component","mura.utilities.servletEvent").init() />
 				<cfset request.servletEvent.setValue("siteID",rsemail.siteID)/>
 				<cfset rsAddresses=getAddresses(rsEmail.groupList,rsEmail.siteid) />
 
@@ -301,7 +301,7 @@
 			and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')	
 		</cfquery>
 		
-		<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+		<cfset request.servletEvent = createObject("component","mura.utilities.servletEvent").init() />
 		<cfset request.servletEvent.setValue("siteID",rsemail.siteID)/>
 		
 		<cfif rsEmail.format neq "Text">

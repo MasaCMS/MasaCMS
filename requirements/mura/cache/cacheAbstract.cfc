@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.utility="">
 	<!--- default variables --->
 
-	<cffunction name="init" returntype="mura.Factory" output="false">
+	<cffunction name="init" output="false">
 
 		<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
 		<cfset variables.collection = "" />
@@ -81,11 +81,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 	<cffunction name="setParent" output="false">
-		<cfargument name="parent" type="mura.Factory" required="true" />
+		<cfargument name="parent" required="true" />
 		<cfset variables.parent = arguments.parent />
 	</cffunction>
 
-	<cffunction name="getParent" returntype="mura.Factory" output="false">
+	<cffunction name="getParent" output="false">
 		<cfreturn variables.parent />
 	</cffunction>
 	<cffunction name="hasParent" returntype="boolean" output="false">

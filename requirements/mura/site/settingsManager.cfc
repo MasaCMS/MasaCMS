@@ -220,7 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" output="false">
 	<cfargument name="data" type="struct" />
 	<cfset var bean=variables.DAO.read(arguments.data.SiteID) />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 
 	<cfset bean.set(arguments.data) />
 	<cfset pluginEvent.setValue('settingsBean',bean)>
@@ -278,7 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" />
 
 	<cfset var bean=read(arguments.siteid) />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event") />
 	<cfset var data={sited=arguments.siteid,settingsBean=bean}>
 	<cfset pluginEvent.init(data)>
 
@@ -310,7 +310,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="data" type="struct" />
 	<cfset var rs=""/>
 	<cfset var bean=getBean("settingsBean") />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 
 	<cfset bean.set(arguments.data) />
 	<cfset pluginEvent.setValue('settingsBean',bean)>
@@ -586,7 +586,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var config 			= application.configBean />
 	<cfset var Bundle			= getBean("bundle") />
 	<cfset var publisher 		= getBean("publisher") />
-	<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
+	<cfset var keyFactory		= createObject("component","mura.utilities.publisherKeys").init(arguments.keyMode,application.utility)>
 	<cfsetting requestTimeout = "7200">
 
 	<cfset Bundle.restore( arguments.BundleFile)>
@@ -664,7 +664,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="isBundle" output="false">
 	<cfargument name="BundleFile">
-	<cfset var rs=createObject("component","mura.Zip").List(zipFilePath="#arguments.BundleFile#")>
+	<cfset var rs=createObject("component","mura.utilities.Zip").List(zipFilePath="#arguments.BundleFile#")>
 
 	<cfquery name="rs" dbType="query">
 		select entry from rs where entry in ('sitefiles.zip','pluginfiles.zip','filefiles.zip','pluginfiles.zip')
@@ -674,7 +674,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="isPartialBundle" output="false">
 	<cfargument name="BundleFile">
-	<cfset var rs=createObject("component","mura.Zip").List(zipFilePath="#arguments.BundleFile#")>
+	<cfset var rs=createObject("component","mura.utilities.Zip").List(zipFilePath="#arguments.BundleFile#")>
 
 	<cfquery name="rs" dbType="query">
 		select entry from rs where entry in ('assetfiles.zip')

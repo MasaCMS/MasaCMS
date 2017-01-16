@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif structKeyExists(request,"event")>
 		<cfset local.pluginEvent=request.event>
 	<cfelse>
-		<cfset local.pluginEvent=createObject("component","mura.event")>
+		<cfset local.pluginEvent=createObject("component","mura.utilities.event")>
 	</cfif>
 	<cfset local.pluginEvent.setValue("targetPage",arguments.targetPage)>
 	<cfif len(local.pluginEvent.getValue("siteID"))>

@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rsPluginScripts=application.pluginManager.getScripts("onHTMLEditHeader",rc.siteID)>
 <cfif rsPluginScripts.recordcount>
-	<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+	<cfset variables.pluginEvent=createObject("component","mura.utilities.event").init(event.getAllValues())/>
 	<cfoutput>#application.pluginManager.renderScripts("onHTMLEditHeader",rc.siteid,pluginEvent,rsPluginScripts)#</cfoutput>
 <cfelse>
 <cfoutput>

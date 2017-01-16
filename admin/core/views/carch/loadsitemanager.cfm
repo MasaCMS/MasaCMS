@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset session.flatViewArgs["#rc.siteID#"].tab=0>
 
-<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+<cfset variables.pluginEvent=createObject("component","mura.utilities.event").init(event.getAllValues())/>
 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
 </cfsilent>
 
@@ -443,4 +443,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsavecontent>
 <cfset data.perm=perm>
 <cfset data.sortBy=rc.sortBy>
-<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput><cfabort>
+<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#createObject("component","mura.utilities.json").encode(data)#</cfoutput><cfabort>

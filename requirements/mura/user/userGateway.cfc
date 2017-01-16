@@ -137,7 +137,7 @@
 
 		<cfset var i = 1 />
 		<cfset var params=""  />
-		<cfset var param=createObject("component","mura.queryParam") />
+		<cfset var param=createObject("component","mura.utilities.queryParam") />
 		<cfset var paramNum=0 />
 		<cfset var started=false />
 		<cfset var jointables="" />

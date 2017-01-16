@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset variables.data		= StructNew() />
 		<cfset variables.Bundle	= "" />
-		<cfset variables.zipTool	= createObject("component","mura.Zip") />
+		<cfset variables.zipTool	= createObject("component","mura.utilities.Zip") />
 		<cfset variables.fileWriter	= getBean("fileWriter")>
 		<cfset variables.utility	= application.utility.getBean("utility")>
 		<cfset variables.dirName	= "Bundle_#createUUID()#" />

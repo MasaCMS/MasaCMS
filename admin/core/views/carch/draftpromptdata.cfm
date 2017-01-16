@@ -193,5 +193,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset structDelete(draftprompdata,'yourapprovals')>
 <cfset structDelete(draftprompdata,'pendingchangesets')>
 <cfcontent type="application/json; charset=utf-8" reset="true">
-<cfoutput>#createObject("component","mura.json").encode(draftprompdata)#</cfoutput>
+<cfoutput>#createObject("component","mura.utilities.json").encode(draftprompdata)#</cfoutput>
 <cfabort>

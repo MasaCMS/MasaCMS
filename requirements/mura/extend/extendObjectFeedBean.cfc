@@ -263,7 +263,7 @@
 		<cfif rsParams.recordcount>	
 		<cfset started = false />	
 		<cfloop query="rsParams">
-			<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
+			<cfset param=createObject("component","mura.utilities.queryParam").init(rsParams.relationship,
 					rsParams.field,
 					rsParams.dataType,
 					rsParams.condition,

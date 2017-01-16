@@ -248,7 +248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset request.currentFilename=left(request.currentFilename,len(request.currentFilename)-1)/>
 		</cfif>
 
-		<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+		<cfset request.servletEvent = createObject("component","mura.utilities.servletEvent").init() />
 
 		<cfset loadLocalEventHandler(request.servletEvent)>
 
@@ -398,7 +398,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	</cfif>
 
 	<cfset request.siteid =arguments.siteid>
-	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+	<cfset request.servletEvent = createObject("component","mura.utilities.servletEvent").init() />
 	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
 	<cfset request.servletEvent.setValue("currentfilename",arguments.filename)>
 	<cfset request.servletEvent.setValue("currentfilenameadjusted",arguments.filename)>
@@ -551,7 +551,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn getBean('settingsManager').getSite('default').getApi('feed','v1').processRequest(arguments.path)>
 		</cfif>
 	<cfelseif isDefined('url.siteid') and left(arguments.path,len(variationendpoint)) eq variationendpoint and getBean('configBean').getValue(property='variations',defaultValue=false)>
-		<cfreturn new mura.executor().execute('/mura/client/api/resource/variation.js.cfm')>
+		<cfreturn new mura.utilities.executor().execute('/mura/client/api/resource/variation.js.cfm')>
 	<cfelseif isDefined('url.emailid') and left(path,len(emailendpoint)) eq emailendpoint>
 		<cfset application.emailManager.track(url.emailid,url.email,'emailOpen')>
 		<cfcontent type="image/gif" variable="#toBinary('R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')#" reset="yes">

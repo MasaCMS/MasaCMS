@@ -37,7 +37,7 @@ component extends="mura.cfobject" {
 
 		variables.userUtility=getBean('userUtility');
 
-		variables.serializer = new mura.jsonSerializer()
+		variables.serializer = new mura.utilities.jsonSerializer()
 	      .asString('csrf_token_expires')
 	      .asString('csrf_token')
 	      .asString('id')
@@ -2346,7 +2346,7 @@ component extends="mura.cfobject" {
 		}
 
 		request.siteid=arguments.siteid;
-		request.servletEvent=new mura.servletEvent();
+		request.servletEvent=new mura.utilities.servletEvent();
 
 		if(isDefined('form.alttheme')){
 			request.alttheme=form.alttheme;

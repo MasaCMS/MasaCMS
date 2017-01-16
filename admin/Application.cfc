@@ -368,7 +368,7 @@ component extends="framework" output="false" {
 			request.context.siteid=session.siteid;
 		}
 
-		request.event=createObject("component", "mura.event").init(request.context);
+		request.event=createObject("component", "mura.utilities.event").init(request.context);
 		request.context.$=request.event.getValue('MuraScope');
 		request.muraScope=request.context.$;
 		request.m=request.context.$;

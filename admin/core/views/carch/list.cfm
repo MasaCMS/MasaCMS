@@ -567,7 +567,7 @@
 						</cfif>
 						<cfset current.setSortBy(rc.sortBy)>
 						<cfset current.setSortDirection(rc.sortDirection)>
-						<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+						<cfset variables.pluginEvent=createObject("component","mura.utilities.event").init(event.getAllValues())/>
 						<cfset variables.pluginEvent.setValue("contentBean")>
 						<cfset application.pluginManager.announceEvent("onBeforeContentSort",pluginEvent)>
 					</cfif>

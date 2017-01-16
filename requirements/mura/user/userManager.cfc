@@ -378,7 +378,7 @@
 		<cfset var error =""/>
 		<cfset var addressBean =""/>
 		<cfset var userBean="" />
-		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var pluginEvent = createObject("component","mura.utilities.event") />
 
 		<cfif isObject(arguments.data)>
 			<cfset arguments.data=arguments.data.getAllValues() />
@@ -525,7 +525,7 @@
 
 		<cfset var addressBean = "" />
 		<cfset var userBean= getBean("user") />
-		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var pluginEvent = createObject("component","mura.utilities.event") />
 
 		<cfif isObject(arguments.data)>
 			<cfset arguments.data=arguments.data.getAllValues() />
@@ -658,7 +658,7 @@
 		<cfargument name="type" type="numeric" default="2"/>
 
 		<cfset var userBean=read(arguments.userid) />
-		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments) />
 		<cfset var addresses="">
 		<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
 

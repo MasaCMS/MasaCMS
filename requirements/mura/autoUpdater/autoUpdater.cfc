@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var versionFileContents="">
 <cfset var svnUpdateDir="/trunk/www">
 <cfset var zipFileName="global">
-<cfset var zipUtil=createObject("component","mura.Zip")>
+<cfset var zipUtil=createObject("component","mura.utilities.Zip")>
 <cfset var rs=queryNew("empty")>
 <cfset var trimLen=len(svnUpdateDir)-1>
 <cfset var fileItem="">
@@ -275,7 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfhttp attributeCollection='#getHTTPAttrs(url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#&coreversion=#variables.configBean.getValue('version')#",result="diff",getasbinary="no")#'>
 
 	<cftry>
-	<cfreturn createObject("component","mura.json").decode(diff.filecontent)>
+	<cfreturn createObject("component","mura.utilities.json").decode(diff.filecontent)>
 	<cfcatch>
 		<cfthrow message="The current production version data is currently not available. Please try again later.">
 	</cfcatch>

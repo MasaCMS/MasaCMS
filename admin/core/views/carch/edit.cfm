@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset event=request.event>
 <cfinclude template="js.cfm">
-<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+<cfset variables.pluginEvent=createObject("component","mura.utilities.event").init(event.getAllValues())/>
 <cfif rc.contentBean.getType() eq 'Gallery'>
 	<cfset pageLevelList="Page,Folder,Calendar,Gallery"/>
 	<cfset extendedList="Page,Folder,Calendar,Gallery,Link,File,Component,Form"/>

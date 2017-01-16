@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="exif" type="string" required="yes" default=""/>
 
 		<cfset var ct=arguments.contentType & "/" & arguments.contentSubType />
-		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments) />
 		<cfset var fileBean=getBean('file')>
 
 		<cfset arguments.fileExt=lcase(arguments.fileExt)>
@@ -353,7 +353,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="deleteCachedFile">
 <cfargument name="fileID" type="string" required="yes"/>
 		<cfset var rsFile=readMeta(arguments.fileID) />
-		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var pluginEvent = createObject("component","mura.utilities.event") />
 		<cfset var data=arguments />
 		<cfset var filePath="#application.configBean.getFileDir()#/#rsfile.siteID#/cache/file/"/>
 		<cfset var rsDir=""/>

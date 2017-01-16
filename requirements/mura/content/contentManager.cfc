@@ -1731,7 +1731,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fileList=""/>
 	<cfset var newPath=""/>
 	<cfset var currentPath=""/>
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 	<cfset var rs ="">
 	<cfset var subContent = structNew() />
 
@@ -1838,7 +1838,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var versionBean=""/>
 		<cfset var fileList=""/>
 		<cfset var currentBean=getActiveContent(arguments.data.contentid,arguments.data.siteid)/>
-		<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+		<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 		<cfset var historyIterator=getBean("contentIterator")>
 		<cfset var rsPendingChangesets=""/>
 		<cfset var deleteFileList="">
@@ -1920,7 +1920,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var currentBean=""/>
 		<cfset var fileList=""/>
 		<cfset var rsHist = "" />
-		<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+		<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 
 		<cfset pluginEvent.setValue("contentBean",versionBean)/>
 
@@ -2505,7 +2505,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset structAppend(local.returnStr,local.extraParams)>
-				<cfoutput>#createObject("component","mura.json").encode(local.returnStr)#</cfoutput>
+				<cfoutput>#createObject("component","mura.utilities.json").encode(local.returnStr)#</cfoutput>
 				<cfif f lt arrayLen(form.files)><cfoutput>,</cfoutput></cfif>
 			</cfloop>
 			<cfoutput>]}</cfoutput>
@@ -2593,7 +2593,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  }>
 				</cfif>
 				<cfset structAppend(local.returnStr,local.extraParams)>
-				<cfoutput>#createObject("component","mura.json").encode(local.returnStr)#</cfoutput>
+				<cfoutput>#createObject("component","mura.utilities.json").encode(local.returnStr)#</cfoutput>
 			<!---</cfloop>--->
 			<cfoutput>]}</cfoutput>
 			<cfabort>

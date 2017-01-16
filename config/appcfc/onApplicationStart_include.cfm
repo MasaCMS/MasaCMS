@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cftry>
 		<cfif not structKeyExists(variables.iniProperties,"encryptionkey") or not len(variables.iniProperties["encryptionkey"])>
 			<cfset variables.iniProperties.encryptionkey=generateSecretKey('AES')>
-			<cfset createobject("component","mura.IniFile").init(variables.iniPath).set( variables.iniProperties.mode, "encryptionkey", variables.iniProperties.encryptionkey )>
+			<cfset createobject("component","mura.utilties.IniFile").init(variables.iniPath).set( variables.iniProperties.mode, "encryptionkey", variables.iniProperties.encryptionkey )>
 		</cfif>
 		<cfcatch></cfcatch>
 	</cftry>
@@ -175,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    	fileDelete(expandPath("/mura/content/file/image.cfc"));
 	    }
 
-		application.configBean=new mura.configBean().set(variables.iniProperties);
+		application.configBean=new mura.global.configBean().set(variables.iniProperties);
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		variables.serviceFactory.addBean("fileWriter",
-			new mura.fileWriter()
+			new mura.utilities.fileWriter()
 		);
 
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
@@ -474,7 +474,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset application.pluginstemp=application.plugins>
 	<cfset application.plugins=structNew()>
-	<cfset variables.pluginEvent=createObject("component","mura.event").init()>
+	<cfset variables.pluginEvent=createObject("component","mura.utilities.event").init()>
 
 	<!---
 	<cfset application.pluginManager.discoverBeans()>

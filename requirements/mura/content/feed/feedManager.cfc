@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="data" type="struct" default="#structnew()#"/>
 
 	<cfset var feedBean=getBean("feed") />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 	<cfset var sessionData=getSession()>
 
 	<cfset feedBean.set(arguments.data) />
@@ -356,7 +356,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="data" type="struct" default="#structnew()#"/>
 
 	<cfset var feedBean=variables.feedDAO.read(arguments.data.feedID) />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 	<cfset var sessionData=getSession()>
 	<cfset feedBean.set(arguments.data) />
 	<cfset feedBean.validate()>
@@ -415,7 +415,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedID" type="String" />
 
 	<cfset var feedBean=read(arguments.feedID) />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments) />
 
 	<cfif not feedBean.getIsLocked()>
 		<cfset pluginEvent.setValue("feedBean",feedBean)>

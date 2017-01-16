@@ -63,7 +63,7 @@
 		q.setSQL('SELECT * FROM rs WHERE subtype <> :subType');
 		rsNonDefault = q.execute().getResult();
 
-		variables.pluginEvent = CreateObject("component","mura.event").init(event.getAllValues());
+		variables.pluginEvent = CreateObject("component","mura.utilities.event").init(event.getAllValues());
 		pluginEventMappings = Duplicate(rc.$.getBean('pluginManager').getEventMappings(eventName='onGroupEdit', siteid=rc.siteid));
 
 		if ( ArrayLen(pluginEventMappings) ) {

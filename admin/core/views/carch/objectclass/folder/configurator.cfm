@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	</cf_objectconfigurator>
 	</cfsavecontent>
-	<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
+	<cfoutput>#createObject("component","mura.utilities.json").encode(data)#</cfoutput>
 	<cfabort>
 <cfelse>
 	<cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
@@ -233,6 +233,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	</cfoutput>
 	</cfsavecontent>
-	<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
+	<cfoutput>#createObject("component","mura.utilities.json").encode(data)#</cfoutput>
 	<cfabort>
 </cfif>

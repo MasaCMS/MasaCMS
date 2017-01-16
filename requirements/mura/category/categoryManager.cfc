@@ -229,7 +229,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="data" type="struct" default="#structnew()#"/>
 
 	<cfset var categoryBean=getBean("categoryBean") />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 	<cfset var parentBean="">
 	<cfset var sessionData=getSession()>
 
@@ -660,7 +660,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var currentParentID= "" />
 	<cfset var currentURLTitle= "" />
 	<cfset var currentPath= "" />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments.data) />
 	<cfset var currentFilename="">
 	<cfset var parentBean="">
 	<cfset var sessionData=getSession()>
@@ -764,7 +764,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset pluginStruct.siteID=categoryBean.getSiteID()>
 	<cfset pluginStruct.categoryID=arguments.categoryID>
 
-	<cfset pluginEvent=createObject("component","mura.event").init(pluginStruct)>
+	<cfset pluginEvent=createObject("component","mura.utilities.event").init(pluginStruct)>
 
 	<cfset variables.pluginManager.announceEvent("onBeforeCategoryDelete",pluginEvent)>
 

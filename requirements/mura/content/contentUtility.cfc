@@ -133,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var config 			= application.configBean />
 		<cfset var Bundle			= getBean("bundle") />
 		<cfset var publisher 		= getBean("publisher") />
-		<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
+		<cfset var keyFactory		= createObject("component","mura.utilities.publisherKeys").init(arguments.keyMode,application.utility)>
 		<cfset var changeSetBean 	= "" />
 		<cfset var isApproved	 	= 0 />
 
@@ -986,7 +986,7 @@ Sincerely,
 
 	<cfset contentBean.setCreated(now())>
 	<cfset contentBean.save()>
-	
+
 	<cfset newContentHistID=contentBean.getContentHistID()>
 	<cfset newContentID=contentBean.getContentID()>
 

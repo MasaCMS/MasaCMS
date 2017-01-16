@@ -456,7 +456,7 @@ Display Objects
 	<cfif isObject(arguments.event)>
 		<cfset variables.event=arguments.event>
 	<cfelse>
-		<cfset variables.event=createObject("component","mura.servletEvent")>
+		<cfset variables.event=createObject("component","mura.utilities.servletEvent")>
 	</cfif>
 
 	<cfset variables.$=variables.event.getValue("muraScope")>
@@ -2279,7 +2279,7 @@ Display Objects
 
 <cffunction name="jsonencode" output="false">
 	<cfargument name="arg" default="" required="yes" type="any"/>
-	<cfreturn createObject("component","mura.json").init().jsonencode(arguments.arg)>
+	<cfreturn createObject("component","mura.utilities.json").init().jsonencode(arguments.arg)>
 </cffunction>
 
 <cffunction name="getCurrentURL" output="false">

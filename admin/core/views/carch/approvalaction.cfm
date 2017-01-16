@@ -13,6 +13,6 @@
 
 	<cfset data={contenthistid=approvalRequest.getContentHistID(),previewurl=content.getURL(querystring="previewid=#approvalRequest.getContentHistID()#")}>
 	<cfcontent type="application/json">
-	<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
+	<cfoutput>#createObject("component","mura.utilities.json").encode(data)#</cfoutput>
 </cfif>
 <cfabort>

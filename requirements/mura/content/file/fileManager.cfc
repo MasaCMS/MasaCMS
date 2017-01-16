@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
 	<cfset var pluginManager=getBean("pluginManager")>
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.utilities.event") />
 	<cfset var fileCheck="" />
 
 	<cfif not len(arguments.method)>
