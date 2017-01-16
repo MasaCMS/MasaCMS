@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content gateway queries">
 
 <cffunction name="init" output="true">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -1075,7 +1075,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
-	
+
 	<!--- Versions that have been assigned to you by someone else and the assigned version is the active version --->
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList2')#">
 	SELECT DISTINCT draft.contenthistid,module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,

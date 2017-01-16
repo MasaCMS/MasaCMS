@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="approvalChain" bundleable=true {
+component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="approvalChain" bundleable=true hint="This provides approval chain functionality"{
 
 	property name="chainID" fieldtype="id";
     property name="name" type="string" length="100";

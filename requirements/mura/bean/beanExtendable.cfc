@@ -20,7 +20,7 @@ or libraries that are released under the GNU Lesser General Public License versi
 
 In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
 independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
 Your custom code
 
@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" output="false" hint="This provides functionality for beans that are extended via the class extension manager">
 
 <cfproperty name="extendData" type="any" default="" comparable="false"/>
 <cfproperty name="extendSetID" type="string" default="" comparable="false"/>

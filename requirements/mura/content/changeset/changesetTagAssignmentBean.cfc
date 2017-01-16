@@ -1,5 +1,5 @@
-component extends="mura.bean.beanORM" 
-	entityName='changesetTagAssignment' table="tchangesettagassign" bundleable=true {
+component extends="mura.bean.beanORM"
+	entityName='changesetTagAssignment' table="tchangesettagassign" bundleable=true hint="This provides changeset tag assignment functionality"{
 
 	property name="assignmentid" fieldtype="id";
 	property name="changeset" fieldtype="many-to-one" cfc="changeset" fkcolumn="changesetid";

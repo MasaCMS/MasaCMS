@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.bean.beanExtendable" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" output="false" hint="This provides legacy custom extended object bean functionality">
 
 <cfproperty name="type" type="string" default="" required="true" />
 <cfproperty name="subType" type="string" default="" required="true" />
@@ -26,7 +26,7 @@
 	<cfset super.init(argumentCollection=arguments)>
 
 	<cfset variables.instance.ID = "">
-	
+
 	<cfset setType(arguments.type)>
 	<cfset setSubType(arguments.subType)>
 	<cfset setSiteID(arguments.siteID)>
@@ -35,7 +35,7 @@
 	<cfset setID(arguments.ID)>
 	<cfset variables.instance.remoteID=arguments.remoteID>
 	<cfset variables.instance.sourceIterator=arguments.sourceIterator>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -87,12 +87,12 @@
 <cffunction name="setType" output="false">
    <cfargument name="Type" type="string" required="true">
    <cfset arguments.Type=trim(arguments.Type)>
-	
+
 	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type>
 		<cfset variables.instance.Type = arguments.Type />
 		<cfset purgeExtendedData()>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -108,17 +108,17 @@
 
 <cffunction name="validate" output="false">
 		<cfset var extErrors=structNew() />
-	
+
 		<cfif len(variables.instance.siteID)>
 			<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 		</cfif>
-		
+
 		<cfset variables.instance.errors=structnew() />
-		
+
 		<cfif not structIsEmpty(extErrors)>
 			<cfset structAppend(variables.instance.errors,extErrors)>
 		</cfif>
-		<cfreturn this>	
+		<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtendBaseID" output="false">
@@ -184,7 +184,7 @@
 			</cfif>
 		</cfif>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 

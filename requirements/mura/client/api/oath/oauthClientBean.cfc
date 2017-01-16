@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclients" bundleable="true"{
+component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclients" bundleable="true" hint="This provides OAuth Client Crendential CRUD functionality" {
     property name="clientid" fieldtype="id";
     property name="clientsecret" datatype="varchar" length=100;
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteid" required=true;

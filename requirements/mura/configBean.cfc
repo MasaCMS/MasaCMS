@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides access the global configuration">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
 <cfset variables.instance.version="7.0"/>
@@ -808,7 +808,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="applyDbUpdates" output="false">
-
 	<cfset var rsCheck ="" />
 	<cfset var rsSubCheck ="" />
 	<cfset var rsUpdates ="" />

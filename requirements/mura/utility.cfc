@@ -55,7 +55,7 @@
   Mura CMS.
 --->
 
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides global utility methods">
 
 <cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -930,7 +930,7 @@ Blog: www.codfusion.com--->
 			var secret = $.siteConfig('reCAPTCHASecret');
 
 			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
-				var reCaptcha = new mura.reCAPTCHA(secret);
+				var reCaptcha = new mura.reCaptcha(secret);
 				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=cgi.remote_addr);
 			}
 

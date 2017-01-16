@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --->
-<cfcomponent output="false">
+<cfcomponent output="false" hint="deprecated, use app cfc level fileDir mapping">
 
 	<cffunction name="init" output="false">
 		<cfargument name="awsKey" type="string" required="true" />
@@ -34,7 +34,7 @@ limitations under the License.
 		</cfif>
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="s3Url" output="false">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />

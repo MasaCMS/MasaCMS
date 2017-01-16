@@ -1,4 +1,4 @@
-<cfcomponent output="false">
+<cfcomponent output="false" hint="This provides a utility to prevent injection attacks">
 
 	<!---
 		Portcullis is a CFC based url,form,cookie filter to help protect against

@@ -1258,7 +1258,7 @@ if (!Array.prototype.map) {
       @return {Promise}
     */
 
-      lib$es6$promise$promise$$Promise.prototype['catch']= function(onRejection) {
+      lib$es6$promise$promise$$Promise.prototype[lib$es6$promise$promise$$Promise.prototype.catchAlias]= function(onRejection) {
         return this.then(null, onRejection);
       }
 
@@ -7693,7 +7693,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			return new Promise(function(resolve,reject){
 				params=Mura.extend(
 					{
-						entityname:self.get('entityname'),
+						entityname:self.get('entityname').toLowerCase(),
 						method:'findQuery',
 						siteid:self.get('siteid'),
                         '_cacheid':Math.random(),
@@ -7701,7 +7701,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					params
 				);
 
-                if(self.get('entityname').toLowerCase()=='content' || self.get('entityname').toLowerCase()=='contentnav'){
+                if(params.entityname=='content' || params.entityname=='contentnav'){
                     params.includeHomePage=1;
                 }
 

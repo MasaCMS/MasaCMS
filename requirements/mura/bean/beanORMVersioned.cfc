@@ -45,7 +45,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component extends="mura.bean.beanORM" versioned=true bundleable=true{
+component extends="mura.bean.beanORM" versioned=true bundleable=true hint="This provides the ability to have entities that are versioned in sync with a tree level content node"{
 	property name="activeContent" fieldtype="many-to-one" cfc="content" fkcolumn="contentid";
 	property name="content" fieldtype="many-to-one" cfc="content" fkcolumn="contenthistid" comparable=false;
 	property name="site" fieldtype="one-to-one" cfc="site" fkcolumn="siteID";

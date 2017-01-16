@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="Trash item bean">
 
 <cfset variables.trashManager="">
 

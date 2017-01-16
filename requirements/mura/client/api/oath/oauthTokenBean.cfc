@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtokens"{
+component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtokens" hint="This provides OAuth Token functionality" {
     property name="token" fieldtype="id";
     property name="granttype" datatype="varchar" default="client_credentials";
     property name="client" fieldtype="many-to-one" cfc="oauthClient" fkcolumn="clientid" required=true;

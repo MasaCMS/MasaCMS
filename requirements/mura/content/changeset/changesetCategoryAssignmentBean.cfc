@@ -1,5 +1,5 @@
 component extends="mura.bean.beanORM"
-	entityName='changesetCategoryAssignment' table="tchangesetcategoryassign" bundleable=true {
+	entityName='changesetCategoryAssignment' table="tchangesetcategoryassign" bundleable=true hint="This provides changeset assignment functionality"{
 
 	property name="assignmentid" fieldtype="id";
 	property name="changeset" fieldtype="many-to-one" cfc="changeset" fkcolumn="changesetid";

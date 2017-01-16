@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,15 +36,15 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content feed CRUD functionality">
 
 <cfset variables.fieldList="feedID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,altName,lang,maxitems,isActive,isPublic,isDefault,description,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,channelLink,type,sortBy,sortDirection,nextn,displayName,displayRatings,displayComments,parentID,remoteID,remoteSourceURL,remotePubDate,imageSize,imageHeight,imageWidth,displayList,showNavOnly,showExcludeSearch,viewalllink,viewalllabel,autoimport,isLocked,CssClass,useCategoryIntersect,contentpoolid,authtype">
 
@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="create" output="false">
 	<cfargument name="feedBean" type="any" />
-	 
+
 	<cfquery>
 	insert into tcontentfeeds (feedID,siteid,dateCreated,lastupdate,lastupdateBy,name, altName, description,
 	isActive,isPublic,isDefault,lang,maxItems,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,
@@ -111,30 +111,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAuthType() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAuthType()#">
 	)
 	</cfquery>
-	
+
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getcontentID(),'contentID') />
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getCategoryID(),'categoryID') />
 	<cfset createAdvancedParams(arguments.feedBean.getfeedID(),arguments.feedBean.getAdvancedParams()) />
-	
-</cffunction> 
+
+</cffunction>
 
 <cffunction name="read" output="false">
 	<cfargument name="feedID" type="string" />
 	<cfargument name="feedBean" default="" />
 	<cfset var rs ="" />
 	<cfset var bean=arguments.feedBean />
-	
+
 	<cfif not isObject(bean)>
 		<cfset bean=getBean("feed") />
 	</cfif>
-	
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	Select
 	#variables.fieldList#
-	from tcontentfeeds where 
+	from tcontentfeeds where
 	feedID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
 	<cfset bean.set(rs) />
 	<cfset bean.setcontentID(readItems(rs.feedID,"contentID")) />
@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
 	<cfset bean.setIsNew(0)>
 	</cfif>
-	
+
 	<cfreturn bean />
 </cffunction>
 
@@ -153,19 +153,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var bean=arguments.feedBean />
-	
+
 	<cfif not isObject(bean)>
 		<cfset bean=getBean("feed") />
 	</cfif>
-	
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	Select 
+	Select
 	#variables.fieldList#
-	from tcontentfeeds where 
+	from tcontentfeeds where
 	name= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.name#">
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount gt 1>
 		<cfloop query="rs">
 			<cfset bean=getBean("feed").set(variables.utility.queryRowToStruct(rs,rs.currentrow))>
@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 			<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
 			<cfset bean.setIsNew(0)>
-			<cfset arrayAppend(beanArray,feedBean)>	
+			<cfset arrayAppend(beanArray,feedBean)>
 		</cfloop>
 		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
-	
+
 	<cfreturn bean />
 </cffunction>
 
@@ -196,19 +196,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var bean=arguments.feedBean />
-	
+
 	<cfif not isObject(bean)>
 		<cfset bean=getBean("feed") />
 	</cfif>
-		
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	Select 
+	Select
 	#variables.fieldList#
-	from tcontentfeeds where 
+	from tcontentfeeds where
 	remoteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.remoteID#">
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount gt 1>
 		<cfloop query="rs">
 			<cfset bean=getBean("feed").set(variables.utility.queryRowToStruct(rs,rs.currentrow))>
@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 			<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
 			<cfset bean.setIsNew(0)>
-			<cfset arrayAppend(beanArray,bean)>		
+			<cfset arrayAppend(beanArray,bean)>
 		</cfloop>
 		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
@@ -228,13 +228,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
-	
+
 	<cfreturn bean />
 </cffunction>
 
 <cffunction name="update" output="false" >
 	<cfargument name="feedBean" type="any" />
-	
+
 	<cfquery>
 	update tcontentfeeds set
 	lastUpdate = <cfif isDate(arguments.feedBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.feedBean.getLastUpdate()#"><cfelse>null</cfif>,
@@ -280,29 +280,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	authtype=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAuthType() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAuthType()#">
 	where feedID =<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">
 	</cfquery>
-	
+
 	<cfset deleteItems(arguments.feedBean.getfeedID()) />
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getcontentID(),'contentID') />
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getCategoryID(),'categoryID') />
 	<cfset createAdvancedParams(arguments.feedBean.getfeedID(),arguments.feedBean.getAdvancedParams()) />
-	
+
 </cffunction>
 
 <cffunction name="delete" output="false" >
 	<cfargument name="feedID" type="String" />
-	
+
 	<cfquery>
 	delete from tcontentfeeds
 	where feedID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
 	</cfquery>
-	
+
 </cffunction>
 
 <cffunction name="createItems" output="false">
 	<cfargument name="feedID" type="string" required="yes" default="" />
 	<cfargument name="itemList" type="string" required="yes" default="" />
 	<cfargument name="type" type="string" required="yes" default="" />
-	 
+
 	<cfset var I = ""/>
 
 	 <cfloop list="#arguments.itemList#" index="I">
@@ -316,13 +316,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 	</cfloop>
 
-</cffunction> 
+</cffunction>
 
 <cffunction name="deleteItems" output="false" >
 	<cfargument name="feedID" type="String" />
-	
+
 	<cfquery>
-	delete from tcontentfeeditems 
+	delete from tcontentfeeditems
 	where feedID =<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
 	</cfquery>
 
@@ -331,9 +331,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="deleteItem" output="false" >
 	<cfargument name="feedID" type="String" />
 	<cfargument name="itemID" type="String" />
-	
+
 	<cfquery>
-	delete from tcontentfeeditems 
+	delete from tcontentfeeditems
 	where feedID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#"> and itemID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.itemID#">
 	</cfquery>
 
@@ -342,45 +342,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="readItems" output="false">
 	<cfargument name="feedID" type="string" required="yes" default="" />
 	<cfargument name="type" type="string" required="yes" default="" />
-	
+
 	 <cfset var rs =""/>
 	 <cfset var ItemList =""/>
-	
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select itemID from tcontentfeeditems
 		where feedID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#"> and type = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
 	</cfquery>
-	
+
 	<cfset ItemList=valueList(rs.itemID) />
-	
+
 	<cfreturn ItemList />
-	
-</cffunction> 
+
+</cffunction>
 
 <cffunction name="readAdvancedParams" output="false">
 	<cfargument name="feedID" type="string" required="yes" default="" />
-	
+
 	 <cfset var rs =""/>
-	
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select * from tcontentfeedadvancedparams
 		where feedID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#"> order by param
 	</cfquery>
-	
+
 	<cfreturn rs />
-	
-</cffunction> 
+
+</cffunction>
 
 <cffunction name="createAdvancedParams" output="false">
 	<cfargument name="feedID" type="any" required="yes" default="" />
 	<cfargument name="params" type="any" required="yes" default="" />
-	
+
 	<cfset deleteAdvancedParams(arguments.feedID) />
-	
-	<cfif arguments.params.recordcount>	
+
+	<cfif arguments.params.recordcount>
 		<cfloop query="arguments.params">
 			<cfquery>
-			insert into tcontentfeedadvancedparams (feedID,paramID,param,relationship,field,dataType,<cfif variables.configBean.getDbType() eq "mysql">`condition`<cfelse>condition</cfif>,criteria) 
+			insert into tcontentfeedadvancedparams (feedID,paramID,param,relationship,field,dataType,<cfif variables.configBean.getDbType() eq "mysql">`condition`<cfelse>condition</cfif>,criteria)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#createUUID()#">,
@@ -389,17 +389,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.params.field#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.params.dataType#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.params.condition#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.params.criteria#"> 
-			)	 
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.params.criteria#">
+			)
 			</cfquery>
 		</cfloop>
 	</cfif>
 
-</cffunction> 
+</cffunction>
 
 <cffunction name="deleteAdvancedParams" output="false" >
 	<cfargument name="feedID" type="String" />
-	
+
 	<cfquery>
 	delete from tcontentfeedadvancedparams
 	where feedID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
