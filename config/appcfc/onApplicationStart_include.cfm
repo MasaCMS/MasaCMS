@@ -175,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    	fileDelete(expandPath("/mura/content/file/image.cfc"));
 	    }
 
-		application.configBean=new mura.global.configBean().set(variables.iniProperties);
+		application.configBean=new mura.configBean().set(variables.iniProperties);
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
