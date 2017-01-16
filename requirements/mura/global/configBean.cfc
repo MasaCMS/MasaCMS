@@ -808,7 +808,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="applyDbUpdates" output="false">
-
 	<cfset var rsCheck ="" />
 	<cfset var rsSubCheck ="" />
 	<cfset var rsUpdates ="" />
@@ -852,10 +851,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 	</cfif>
 
-	<cfdirectory action="list" directory="#getDirectoryFromPath(getCurrentTemplatePath())#dbUpdates" name="rsUpdates" filter="*.cfm" sort="name asc">
+	<cfdirectory action="list" directory="#expandPath('/mura/dbUpdates')#" name="rsUpdates" filter="*.cfm" sort="name asc">
 
 	<cfloop query="rsUpdates">
-		<cfinclude template="dbUpdates/#rsUpdates.name#">
+		<cfinclude template="../dbUpdates/#rsUpdates.name#">
 	</cfloop>
 	<cfreturn this>
 </cffunction>

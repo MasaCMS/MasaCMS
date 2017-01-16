@@ -3,7 +3,7 @@ component extends="mura.bean.beanORMVersioned"
 	entityName="fileMetaData"
 	bundleable=true
 	versioned=true
-	hint="This provides content file metadata functionality" {
+	hint="This provides content file metadata functionalityss" {
 
 	property name="metaID" fieldType="id";
 	property name="file" fieldType="many-to-one" cfc="file" fkcolumn="fileid";
