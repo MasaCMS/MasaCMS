@@ -2507,6 +2507,7 @@ Display Objects
 				<cfset i=HTMLQueue[item]>
 
 				<cfif refind('[<>]',i)>
+					<!--- If we got just an in-line block of HTML markup and not a "real" file, render accordingly --->
 						<cfset itemStr=i>
 				<cfelse>
 					<cfset itemStr=""/>
