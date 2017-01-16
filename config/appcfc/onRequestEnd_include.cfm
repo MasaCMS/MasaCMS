@@ -51,6 +51,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif isDefined("request.event")>
 		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",request.event)>
 	<cfelse>
-		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.utilities.event").init())>
+		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.event").init())>
 	</cfif>
 </cfif>

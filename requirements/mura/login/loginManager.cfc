@@ -513,7 +513,7 @@ If you did not request a new authorization, contact #contactEmail#.
 	<cfelseif structKeyExists(request,"event")>
 		<cfset pluginEvent=request.event>
 	<cfelse>
-		<cfset pluginEvent = new mura.utilities.event() />
+		<cfset pluginEvent = new mura.event() />
 	</cfif>
 
 	<cfif len(pluginEvent.getValue("siteID"))>

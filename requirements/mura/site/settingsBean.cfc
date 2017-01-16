@@ -1429,7 +1429,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 
 			<cfif fileExists('#expandedDir#/#rs.name#/config.xml.cfm')>
-				<cfset config=new mura.utilities.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
 				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">--->
 			<cfelseif fileExists('#expandedDir#/#rs.name#/config.xml')>
 				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
@@ -1473,7 +1473,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfdirectory name="rs" directory="#expandedDir#" action="list" type="dir">
 		<cfloop query="rs">
 			<cfif fileExists('#expandedDir#/#rs.name#/config.xml.cfm')>
-				<cfset config=new mura.utilities.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
+				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
 				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">---->
 			<cfelseif fileExists('#expandedDir#/#rs.name#/config.xml')>
 				<cffile action="read" file="#expandedDir#/#rs.name#/config.xml" variable="config">

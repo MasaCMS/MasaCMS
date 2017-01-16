@@ -235,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(sessionData,"siteid")>
 		<cfset eventData.siteID=sessionData.siteid>
 	</cfif>
-	<cfset event=createObject("component","mura.utilities.event").init(eventData)>
+	<cfset event=createObject("component","mura.event").init(eventData)>
 </cfif>
 <cfset pluginPath= application.configBean.getContext() & "/plugins/" & getDirectory() & "/" >
 <cfsavecontent variable="headerStr">

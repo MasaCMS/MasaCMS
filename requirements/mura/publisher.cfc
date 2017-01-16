@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif not structKeyExists(arguments,"keyFactory")>
-			<cfset arguments.keyFactory=createObject("component" ,"mura.utilities.publisherKeys").init(arguments.keyMode,application.utility)>
+			<cfset arguments.keyFactory=createObject("component" ,"mura.publisherKeys").init(arguments.keyMode,application.utility)>
 		</cfif>
 
 		<cfif structKeyExists(arguments,"Bundle") and arguments.pluginMode eq "all">
@@ -3774,8 +3774,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var p=""/>
 		<cfset var fileDelim=application.configBean.getFileDelim() />
 		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.siteid)>
-		<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments) />
-		<cfset var keys=createObject("component","mura.utilities.publisherKeys").init('publish',application.utility)>
+		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		<cfset var keys=createObject("component","mura.publisherKeys").init('publish',application.utility)>
 		<cfset var fileWriter=getBean("fileWriter")>
 		<cfset var errors=arrayNew(1)>
 		<cfset var itemErrors=arrayNew(1)>
@@ -3876,7 +3876,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var j=""/>
 		<cfset var k=""/>
 		<cfset var p=""/>
-		<cfset var pluginEvent = createObject("component","mura.utilities.event") />
+		<cfset var pluginEvent = createObject("component","mura.event") />
 		<cfset var fileDelim="/"/>
 		<cfset var rsplugins=""/>
 		<cfset var keys=""/>
@@ -3891,7 +3891,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset fileDelim=application.configBean.getFileDelim() />
 		<cfset rsPlugins=application.pluginManager.getSitePlugins(arguments.fromsiteid)>
-		<cfset keys=createObject("component","mura.utilities.publisherKeys").init('copy',application.utility)>
+		<cfset keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
 
 
 		<!---<cfthread action="run" name="thread0">--->

@@ -778,4 +778,4 @@ if(len($.siteConfig('customTagGroups'))){
 <!---<cfdump var="#rc.test#">--->
 </cfoutput>
 <!---</cfsavecontent>
-<cfoutput>#createObject("component","mura.utilities.json").encode(data)#</cfoutput>--->
+<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>--->

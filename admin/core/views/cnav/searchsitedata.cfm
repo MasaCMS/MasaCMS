@@ -7,5 +7,5 @@
 	<cfset arrayAppend(data, tmp) />
 </cfloop>
 
-<cfoutput>#createObject("component","mura.utilities.json").encode(data)#</cfoutput>
+<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
 <cfabort>

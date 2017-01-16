@@ -159,4 +159,4 @@
 </cfoutput>
 </cfsavecontent>
 <cfset returnsets.basic=trim(returnsets.basic)>
-<cfoutput>#createObject("component","mura.utilities.json").encode(returnsets)#</cfoutput>
+<cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>

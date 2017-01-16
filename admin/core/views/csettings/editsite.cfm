@@ -41,7 +41,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 <cfset rsThemes=rc.siteBean.getThemes() />
-<cfset variables.pluginEvent=createObject("component","mura.utilities.event").init(request.event.getAllValues())/>
+<cfset variables.pluginEvent=createObject("component","mura.event").init(request.event.getAllValues())/>
 <cfset rsSites=application.settingsManager.getList() />
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Site","Default",rc.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 <cfparam name="rc.action" default="">

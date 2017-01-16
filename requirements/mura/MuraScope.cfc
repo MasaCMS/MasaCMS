@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset initArgs.siteID=arguments.data>
 			</cfif>
 			<cfset initArgs.muraScope=this>
-			<cfset setEvent(createObject("component","mura.utilities.event").init(initArgs).setValue('MuraScope',this))>
+			<cfset setEvent(createObject("component","mura.event").init(initArgs).setValue('MuraScope',this))>
 		</cfif>
 	</cfif>
 
@@ -188,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif structKeyExists(request,"event")>
 			<cfset variables.instance.event=request.event>
 		<cfelse>
-			<cfset variables.instance.event=createObject("component","mura.utilities.event").init($=this)>
+			<cfset variables.instance.event=createObject("component","mura.event").init($=this)>
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.event>
@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isdefined("sessionData.siteid")>
 			<cfset temp.siteID=sessionData.siteID>
 		</cfif>
-		<cfset request.muraGlobalEvent=createObject("component","mura.utilities.event").init(temp)>
+		<cfset request.muraGlobalEvent=createObject("component","mura.event").init(temp)>
 		<cfreturn request.muraGlobalEvent>
 	</cfif>
 </cffunction>

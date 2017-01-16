@@ -341,7 +341,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 
 	function save(){
 		var pluginManager=getBean('pluginManager');
-		var event=new mura.utilities.event({siteID=getValue('siteid'),bean=this});
+		var event=new mura.event({siteID=getValue('siteid'),bean=this});
 
 		if(getIsHistorical()){
 			set('histid',createUUID());
@@ -656,7 +656,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 	function delete(){
 		var props=getProperties();
 		var pluginManager=getBean('pluginManager');
-		var event=new mura.utilities.event({siteID=getValue('siteid'),bean=this});
+		var event=new mura.event({siteID=getValue('siteid'),bean=this});
 		var subitem="";
 
 		preDelete();

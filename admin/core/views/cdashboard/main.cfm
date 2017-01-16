@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfset started=false>
 <cfparam name="application.sessionTrackingThrottle" default="false">
-<cfset variables.pluginEvent=createObject("component","mura.utilities.event").init(event.getAllValues())/>
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfset dashboardReplacemanent=$.renderEvent('onDashboardReplacement')>
 
 <cfif len(dashboardReplacemanent)>

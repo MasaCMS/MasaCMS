@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsParams=arguments.feedBean.getAdvancedParams() />
 	<cfset var started =false />
 	<cfset var isNullVal=false>
-	<cfset var param =createObject("component","mura.utilities.queryParam")/>
+	<cfset var param =createObject("component","mura.queryParam")/>
 	<cfset var doKids =false />
 	<cfset var doTags =false />
 	<cfset var openGrouping =false />
@@ -375,7 +375,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset openGrouping=false />
 
 									<cfloop query="rsParams">
-										<cfset param=createObject("component","mura.utilities.queryParam").init(
+										<cfset param=createObject("component","mura.queryParam").init(
 											relationship=rsParams.relationship,
 											field=rsParams.field,
 											datatype=rsParams.datatype,
@@ -786,7 +786,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset openGrouping=false />
 
 					<cfloop query="rsParams">
-						<cfset param=createObject("component","mura.utilities.queryParam").init(
+						<cfset param=createObject("component","mura.queryParam").init(
 							relationship=rsParams.relationship,
 							field=rsParams.field,
 							datatype=rsParams.datatype,

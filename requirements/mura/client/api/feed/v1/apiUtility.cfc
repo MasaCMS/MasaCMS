@@ -310,7 +310,7 @@
 			<cfloop condition="arguments.iterator.hasNext()">
 			<cfsilent>
 				<cfset item=arguments.iterator.next()>
-				<cfset request.servletEvent = createObject("component","mura.utilities.servletEvent").init() />
+				<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 				<cfset $=request.servletEvent.getValue('MuraScope')>
 				<!---
 				<cfset request.currentFilename=item.getFilename()>

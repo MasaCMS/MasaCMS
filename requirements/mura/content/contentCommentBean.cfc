@@ -256,7 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="delete">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.utilities.event")>
+	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
@@ -276,7 +276,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="undelete">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.utilities.event")>
+	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
@@ -296,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="flag">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.utilities.event")>
+	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
@@ -316,7 +316,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="markAsSpam" output="false">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.utilities.event")>
+	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
@@ -336,7 +336,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="unMarkAsSpam" output="false">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.utilities.event")>
+	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
@@ -362,7 +362,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rslist=""/>
 	<cfset var path=""/>
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.utilities.event")>
+	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
@@ -690,7 +690,7 @@ To Unsubscribe Click Here:
 </cffunction>
 
 <cffunction name="setCommenter" output="false">
-	<cfset var pluginEvent=createObject("component","mura.utilities.event")>
+	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 	<cfset var commenter=getBean('commenter')>
 
@@ -704,7 +704,7 @@ To Unsubscribe Click Here:
 </cffunction>
 
 <cffunction name="getCommenter" output="false">
-	<cfset var pluginEvent=createObject("component","mura.utilities.event")>
+	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 	<cfset var commenter=getBean('commenter')>
 

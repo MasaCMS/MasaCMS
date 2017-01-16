@@ -6,7 +6,7 @@ component extends='mura.cfobject' hint="This provides content calendar utility m
   }
 
   public any function fullCalendarFormat(required query data) {
-    var serializer = new mura.utilities.jsonSerializer()
+    var serializer = new mura.jsonSerializer()
       .asString('id')
       .asString('url')
       .asBoolean('allDay')

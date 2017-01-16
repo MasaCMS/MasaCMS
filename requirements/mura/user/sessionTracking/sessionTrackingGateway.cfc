@@ -602,7 +602,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var stop= ""/>
 	<cfif paramLen>
 		<cfloop from="1" to="#paramLen#" index="i">
-		 		<cfset param=createObject("component","mura.utilities.queryParam").init(
+		 		<cfset param=createObject("component","mura.queryParam").init(
 		 					arguments.params[i].Relationship,
 		 					listFirst(arguments.params[i].Field,'^'),
 		 					listLast(arguments.params[i].Field,'^'),

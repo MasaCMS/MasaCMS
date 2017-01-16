@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.sortdirection=rc.rstop.sortdirection>
 </cfif>
 
-<cfset variables.pluginEvent=createObject("component","mura.utilities.event").init(event.getAllValues())/>
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfset request.tabAssignments=$.getBean("user").loadBy(userID=session.mura.userID, siteID=session.mura.siteID).getContentTabAssignments()>
 <cfset request.hasPublishingTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Publishing')>
 <cfset request.hasLayoutObjectsTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Layout & Objects')>	
@@ -77,5 +77,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cf_dsp_nest topid="#rc.contentID#" parentid="#rc.contentID#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#rc.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#rc.startrow#" sortBy="#rc.sortBy#" sortDirection="#rc.sortDirection#" pluginEvent="#pluginEvent#" muraScope="#rc.$#" isSectionRequest="true">
 </cfsavecontent>
 
-<cfoutput>#createObject("component","mura.utilities.json").encode(data)#</cfoutput>
+<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
 

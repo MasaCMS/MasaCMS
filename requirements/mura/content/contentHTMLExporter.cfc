@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset request.currentFilenameAdjusted=request.currentFilename>
 			<cfset request.contentBean=arguments.contentBean>
 
-			<cfset request.servletEvent = createObject("component","mura.utilities.servletEvent").init() />
+			<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 			<cfset structDelete(request.servletEvent.getAllValues(),"crumbdata")>
 			<cfset fileOutput=variables.contentServer.doRequest(request.servletEvent)>
 
@@ -236,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfloop from="2" to="#nextN.numberofpages#" index="i">
 					<cfset request.currentFilename = arguments.contentBean.getFilename()>
-					<cfset request.servletEvent = createObject("component","mura.utilities.servletEvent").init() />
+					<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 					<cfset request.servletEvent.setValue("startrow",(i*nextN.recordsperpage)-nextN.recordsperpage+1)>
 					<cfset request.servletEvent.setValue("nextNID",arguments.contentBean.getContentID())>
 

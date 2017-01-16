@@ -214,7 +214,7 @@ Mura CMS.
 		<cfelseif structKeyExists(request,"event")>
 			<cfset pluginEvent=request.event>
 		<cfelse>
-			<cfset pluginEvent = new mura.utilities.event() />
+			<cfset pluginEvent = new mura.event() />
 		</cfif>
 
 		<cfset getPluginManager().announceEvent('onBeforeEmailForward',pluginEvent)/>

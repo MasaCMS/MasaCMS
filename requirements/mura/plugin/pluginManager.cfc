@@ -74,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.fileWriter=arguments.fileWriter>
 
 	<cfif variables.configBean.getJavaEnabled()>
-		<cfset variables.zipTool=createObject("component","mura.utilities.Zip")>
+		<cfset variables.zipTool=createObject("component","mura.Zip")>
 	</cfif>
 
 	<cfif isdefined("url.safemode") and isDefined("sessionData.mura.memberships") and listFindNoCase(sessionData.mura.memberships,"S2")>
@@ -761,7 +761,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfset fileDelete(item)>
 				<cfelse>
 					<cfset item="#baseDir#/#rsRequirements.name#">
-					<cfset rsCheckDiscoveredPlugin=createObject("component","mura.utilities.Zip").list(item)>
+					<cfset rsCheckDiscoveredPlugin=createObject("component","mura.Zip").list(item)>
 
 					<cfquery name="rsCheckDiscoveredPlugin" dbtype="query">
 						select * from rsCheckDiscoveredPlugin
@@ -1359,12 +1359,12 @@ select * from tplugins order by #arguments.orderby#
 		<cftry>
 			<cfif not isObject(arguments.event)>
 				<cfif isStruct(arguments.event)>
-					<cfset arguments.event=createObject("component","mura.utilities.event").init(arguments.event)/>
+					<cfset arguments.event=createObject("component","mura.event").init(arguments.event)/>
 				<cfelse>
 					<cfif structKeyExists(request,"servletEvent")>
 						<cfset arguments.event=request.servletEvent />
 					<cfelse>
-						<cfset arguments.event=createObject("component","mura.utilities.event").init()/>
+						<cfset arguments.event=createObject("component","mura.event").init()/>
 					</cfif>
 				</cfif>
 			</cfif>
@@ -1508,12 +1508,12 @@ select * from tplugins order by #arguments.orderby#
 
 		<cfif not isObject(arguments.event)>
 			<cfif isStruct(arguments.event)>
-				<cfset arguments.event=createObject("component","mura.utilities.event").init(arguments.event)/>
+				<cfset arguments.event=createObject("component","mura.event").init(arguments.event)/>
 			<cfelse>
 				<cfif structKeyExists(request,"servletEvent")>
 					<cfset arguments.event=request.servletEvent />
 				<cfelse>
-					<cfset arguments.event=createObject("component","mura.utilities.event").init()/>
+					<cfset arguments.event=createObject("component","mura.event").init()/>
 				</cfif>
 			</cfif>
 		</cfif>
@@ -1718,12 +1718,12 @@ select * from tplugins order by #arguments.orderby#
 
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
-			<cfset arguments.event=createObject("component","mura.utilities.event").init(arguments.event)/>
+			<cfset arguments.event=createObject("component","mura.event").init(arguments.event)/>
 		<cfelse>
 			<cfif structKeyExists(request,"servletEvent")>
 				<cfset arguments.event=request.servletEvent />
 			<cfelse>
-				<cfset arguments.event=createObject("component","mura.utilities.event").init()/>
+				<cfset arguments.event=createObject("component","mura.event").init()/>
 			</cfif>
 		</cfif>
 	</cfif>
@@ -1915,12 +1915,12 @@ select * from tplugins order by #arguments.orderby#
 
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
-			<cfset arguments.event=createObject("component","mura.utilities.event").init(arguments.event)/>
+			<cfset arguments.event=createObject("component","mura.event").init(arguments.event)/>
 		<cfelse>
 			<cfif structKeyExists(request,"servletEvent")>
 				<cfset arguments.event=request.servletEvent />
 			<cfelse>
-				<cfset arguments.event=createObject("component","mura.utilities.event").init()/>
+				<cfset arguments.event=createObject("component","mura.event").init()/>
 			</cfif>
 		</cfif>
 	</cfif>

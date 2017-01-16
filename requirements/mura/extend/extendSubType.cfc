@@ -458,7 +458,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter,arguments.container,arguments.activeOnly)/>
 
 	<cfif rsSets.recordcount>
-		<cfset tempArray=createObject("component","mura.utilities.queryTool").init(rsSets).toArray() />
+		<cfset tempArray=createObject("component","mura.queryTool").init(rsSets).toArray() />
 
 		<cfloop from="1" to="#rsSets.recordcount#" index="s">
 
@@ -523,7 +523,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch>
 
 		<cfif process and rsSets.recordcount>
-			<cfset tempArray=createObject("component","mura.utilities.queryTool").init(rsSets).toArray() />
+			<cfset tempArray=createObject("component","mura.queryTool").init(rsSets).toArray() />
 
 			<cfloop from="1" to="#rsSets.recordcount#" index="s">
 

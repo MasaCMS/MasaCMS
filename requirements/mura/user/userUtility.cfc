@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var user = "" />
 	<cfset var group = "" />
 	<cfset var lastLogin = now() />
-	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments) />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
 	<cfset var sessionData=getSession()>
 
@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var user = "" />
 	<cfset var group = "" />
 	<cfset var lastLogin = now() />
-	<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments) />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
 	<cfset var sessionData=getSession()>
 	<cfset var rsUser=lookupByCredentials(argumentCollection=arguments)>
@@ -231,7 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var user = "" />
 		<cfset var group = "" />
 		<cfset var lastLogin = now() />
-		<cfset var pluginEvent = createObject("component","mura.utilities.event").init(arguments) />
+		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
 		SELECT * FROM tusers WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2

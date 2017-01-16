@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset session=arguments.SessionScope>
 	<cfset application=arguments.ApplicationScope>
 	<cftry>
-		<cfset local.pluginEvent=createObject("component","mura.utilities.event").init()>
+		<cfset local.pluginEvent=createObject("component","mura.event").init()>
 		<cfset local.pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope)>	 
 		<cfset local.pluginEvent.setValue("SessionScope",arguments.SessionScope)>
 

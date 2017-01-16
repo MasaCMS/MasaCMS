@@ -203,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not isObject(arguments.args)>
-		<cfset event=createObject("component","mura.utilities.event")>
+		<cfset event=createObject("component","mura.event")>
 		<cfset event.init(args)>
 		<cfset event.setValue("proxy",this)>
 	<cfelse>

@@ -510,7 +510,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif variables.instance.params.recordcount>
 		<cfset started = false />
 		<cfloop query="variables.instance.params">
-			<cfset param=createObject("component","mura.utilities.queryParam").init(variables.instance.params.relationship,
+			<cfset param=createObject("component","mura.queryParam").init(variables.instance.params.relationship,
 					variables.instance.params.field,
 					variables.instance.params.dataType,
 					variables.instance.params.condition,
