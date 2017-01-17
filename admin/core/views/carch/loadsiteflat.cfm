@@ -606,7 +606,7 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfif not listFindNoCase('none,read',verdict) or $.event('report') eq 'mydrafts'>
 
 					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" class="draftprompt" href="#editLink#"><i class="mi-pencil"></i></a></li>
-
+						<cfif item.getmoduleid() eq '00000000000000000000000000000000000' or (item.getmoduleid() eq '00000000000000000000000000000000099' and item.getType() eq 'Variation')>
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="File">
 							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="mi-download"></i></a></li>
@@ -615,7 +615,7 @@ if(len($.siteConfig('customTagGroups'))){
 							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
 							</cfdefaultcase>
 						</cfswitch>
-
+						</cfif>
 						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-history"></i></a></li>
 
 					    <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
@@ -633,7 +633,9 @@ if(len($.siteConfig('customTagGroups'))){
 
 					<cfelse>
 					    <li class="edit disabled"><i class="mi-pencil"></i></li>
+						<cfif item.getmoduleid() eq '00000000000000000000000000000000000' or (item.getmoduleid() eq '00000000000000000000000000000000099' and item.getType() eq 'Variation')>
 						<li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
+						</cfif>
 						<li class="version-history disabled"><a><i class="mi-history"></i></a></li>
 						<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 						<li class="delete disabled"><a><i class="mi-trash"></i></a></li>
