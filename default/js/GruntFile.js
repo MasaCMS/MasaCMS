@@ -88,10 +88,8 @@ module.exports = function(grunt) {
                  properties:false
              }
           },
-          my_target: {
-            files: {
+          files: {
               'build/mura.min.js': ['build/mura.js'],
-            }
           }
         }
     },
@@ -109,7 +107,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
-  grunt.registerTask('default',['handlebars','replace','concat:build','uglify','concat:dist','copy']);
+  grunt.registerTask('default',['handlebars','replace','concat:build','uglify:build','concat:dist','copy']);
 
 
 };
