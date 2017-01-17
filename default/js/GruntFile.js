@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
       handlebars: {
-          all: {
+          build: {
               files: {
                   'build/templates.js': ['src/templates/*.hb','src/templates/*.hbs']
               },
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
           }
       },
       replace: {
-        prevent_templates_example: {
+        build: {
                 src: ['build/templates.js'],
                 dest: 'build/templates.js',
                 options: {
@@ -107,7 +107,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
-  grunt.registerTask('default',['handlebars','replace','concat:build','uglify:build','concat:dist','copy']);
+  grunt.registerTask('default',['handlebars:build','replace:build','concat:build','uglify:build','concat:dist','copy']);
 
 
 };
