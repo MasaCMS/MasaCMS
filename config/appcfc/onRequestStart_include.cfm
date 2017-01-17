@@ -243,7 +243,7 @@ If it has not, set application.appInitialized=false. --->
 		</cfif>
 	</cfif>
 
-	<cfif not isBoolean(cookie.mobileFormat)>
+	<cfif not isDefined('cookie.mobileFormat') or not isBoolean(cookie.mobileFormat)>
 		<cfset application.utility.setCookie(name="mobileFormat",value=false)/>
 	</cfif>
 
