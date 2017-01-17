@@ -219,9 +219,13 @@ If it has not, set application.appInitialized=false. --->
 </cfif>
 
 <cfif not isdefined('url.muraadminpreview')>
+	<cfset request.muraMobileRequest=false>
+
 	<cfif isDefined("form.mobileFormat") and isBoolean(form.mobileFormat)>
+		<cfset request.muraMobileRequest=form.mobileFormat>
 		<cfset application.utility.setCookie(name="mobileFormat",value=form.mobileFormat)/>
 	<cfelseif isDefined("url.mobileFormat") and isBoolean(url.mobileFormat)>
+		<cfset request.muraMobileRequest=url.mobileFormat>
 		<cfset application.utility.setCookie(name="mobileFormat",value=url.mobileFormat)/>
 	</cfif>
 
@@ -237,17 +241,19 @@ If it has not, set application.appInitialized=false. --->
 						and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
 					)>
 					<cfset application.utility.setCookie(name="mobileFormat",value=true)/>
+					<cfset request.muraMobileRequest=true>
 			<cfelse>
 				<cfset application.utility.setCookie(name="mobileFormat",value=false)/>
+				<cfset request.muraMobileRequest=false>
 			</cfif>
 		</cfif>
 	</cfif>
 
-	<cfif not isBoolean(cookie.mobileFormat)>
+	<cfif not isBoolean(request.muraMobileRequest)>
+		<cfset request.muraMobileRequest=false>
 		<cfset application.utility.setCookie(name="mobileFormat",value=false)/>
 	</cfif>
 
-	<cfset request.muraMobileRequest=cookie.mobileFormat>
 <cfelse>
 	<cfparam name="url.mobileFormat" default="false">
 	<cfset request.muraMobileRequest=url.mobileFormat>
