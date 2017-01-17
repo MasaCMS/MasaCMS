@@ -79,6 +79,12 @@ module.exports = function(grunt) {
         },
     },
     uglify: {
+      options: {
+        mangle : {
+             supportIE8: true,
+             screwIE8:false
+          }
+      },
       my_target: {
         files: {
           'dist/mura.min.js': ['dist/mura.js'],
