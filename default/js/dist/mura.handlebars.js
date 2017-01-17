@@ -1256,7 +1256,6 @@ if (!Array.prototype.map) {
       Useful for tooling.
       @return {Promise}
     */
-      lib$es6$promise$promise$$Promise.prototype.catchAlias='catch';
       lib$es6$promise$promise$$Promise.prototype[lib$es6$promise$promise$$Promise.prototype.catchAlias]=function(onRejection) {
         return this.then(null, onRejection);
       }

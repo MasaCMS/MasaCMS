@@ -80,10 +80,10 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        mangle : {
-             supportIE8: true,
-             screwIE8:false
-          }
+         screwIE8:false,
+         compress: {
+             properties:false
+         }
       },
       my_target: {
         files: {
