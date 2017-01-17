@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       handlebars: {
           all: {
               files: {
-                  'src/templates/compiled.js': ['src/templates/*.hb','src/templates/*.hbs']
+                  'build/templates.js': ['src/templates/*.hb','src/templates/*.hbs']
               },
               options: {
                    namespace: 'mura.templates',
@@ -19,8 +19,8 @@ module.exports = function(grunt) {
       },
       replace: {
         prevent_templates_example: {
-                src: ['src/templates/compiled.js'],
-                dest: 'src/templates/compiled.js',
+                src: ['build/templates.js'],
+                dest: 'build/templates.js',
                 options: {
                   processTemplates: false
                 },
@@ -33,64 +33,67 @@ module.exports = function(grunt) {
             }
         },
       concat: {
-        options: {
-          separator: ';',
+          build:{
+            options: {
+              separator: ';',
+            },
+            files:{
+              'build/mura.js': [
+                  'external/polyfill.js',
+                  'src/mura.js',
+                  'src/mura.loader.js',
+                  'src/mura.core.js',
+                  'src/mura.cache.js',
+                  'src/mura.domselection.js',
+                  'src/mura.entity.js',
+                  'src/mura.entitycollection.js',
+                  'src/mura.feed.js',
+                  'src/mura.templates.js',
+                  'src/mura.ui.js',
+                  'src/mura.displayobject.form.js',
+                  'src/mura.init.js',
+                  'build/templates.js'
+              ]
+           }
         },
-        dist: {
-          files:{
-          'dist/mura.js': [
-              'external/polyfill.js',
-              'external/handlebars.runtime-v4.0.5.js',
-              'src/mura.js',
-              //'src/mura.purl.js',
-              //'src/mura.ua-parser.js',
-              'src/mura.loader.js',
-              'src/mura.core.js',
-              'src/mura.cache.js',
-              'src/mura.domselection.js',
-              'src/mura.entity.js',
-              'src/mura.entitycollection.js',
-              'src/mura.feed.js',
-              'src/mura.templates.js',
-              'src/mura.ui.js',
-              'src/mura.displayobject.form.js',
-              'src/mura.init.js',
-              'src/templates/compiled.js'
-          ],
-          'dist/mura.handlebars.js': [
-              'external/polyfill.js',
-              'external/handlebars-v4.0.5.js',
-              'src/mura.js',
-              //'src/mura.purl.js',
-              //'src/mura.ua-parser.js',
-              'src/mura.loader.js',
-              'src/mura.core.js',
-              'src/mura.cache.js',
-              'src/mura.domselection.js',
-              'src/mura.entity.js',
-              'src/mura.entitycollection.js',
-              'src/mura.feed.js',
-              'src/mura.templates.js',
-              'src/mura.ui.js',
-              'src/mura.displayobject.form.js',
-              'src/mura.init.js',
-              'src/templates/compiled.js'
-            ]}
-        },
+      dist:{
+            options: {
+                separator: ';',
+            },
+            files:{
+                'dist/mura.js': [
+                    'external/handlebars.runtime-v4.0.5.js',
+                    'build/mura.js'
+                ],
+                'dist/mura.handlebars.js': [
+                    'external/handlebars-v4.0.5.js',
+                    'build/mura.js'
+                ],
+                'dist/mura.min.js': [
+                    'external/handlebars.runtime-v4.0.5.min.js',
+                    'build/mura.min.js'
+                ],
+                'dist/mura.handlebars.min.js': [
+                    'external/handlebars-v4.0.5.min.js',
+                    'build/mura.min.js'
+                ]
+            }
+        }
     },
     uglify: {
-      options: {
-         screwIE8:false,
-         compress: {
-             properties:false
-         }
-      },
-      my_target: {
-        files: {
-          'dist/mura.min.js': ['dist/mura.js'],
-          'dist/mura.handlebars.min.js': ['dist/mura.handlebars.js']
+        build:{
+          options: {
+             screwIE8:false,
+             compress: {
+                 properties:false
+             }
+          },
+          my_target: {
+            files: {
+              'build/mura.min.js': ['build/mura.js'],
+            }
+          }
         }
-      }
     },
     copy: {
       main: {
@@ -106,7 +109,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
-  grunt.registerTask('default',['handlebars','replace','concat','uglify','copy']);
+  grunt.registerTask('default',['handlebars','replace','concat:build','uglify','concat:dist','copy']);
 
 
 };
