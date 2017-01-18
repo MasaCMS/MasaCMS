@@ -321,6 +321,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 		validate(arguments.$);
 		arguments.$.event('formDataBean',this);
+		arguments.$.event('formBean',getFormBean());
 		arguments.$.event('acceptData',getValue('acceptData'));
 		arguments.$.event('sendto','');
 		arguments.$.announceEvent('onBeforeFormSubmitSave');
