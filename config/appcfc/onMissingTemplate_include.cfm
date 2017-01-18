@@ -56,9 +56,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset local.pluginEvent.setValue("targetPage",arguments.targetPage)>
 	<cfif len(local.pluginEvent.getValue("siteID"))>
-		<cfset application.pluginManager.announceEvent("onSiteMissingTemplate",local.pluginEvent)>
+		<cfset local.response=application.pluginManager.renderEvent("onSiteMissingTemplate",local.pluginEvent)>
+		<cfif len(local.response)>
+			<cfoutput>#local.response#</cfoutput>
+			<cfreturn true>
+		</cfif>
+		<cfif structKeyExists(request.muraHandledEvents,'onSiteMissingTemplate')>
+			<cfset structKeyDelete(request.muraHandledEvents,'onSiteMissingTemplate')>
+			<cfreturn true>
+		</cfif>
 	</cfif>
-	<cfset application.pluginManager.announceEvent("onGlobalMissingTemplate",local.pluginEvent)>
+	<cfset local.response=application.pluginManager.renderEvent("onGlobalMissingTemplate",local.pluginEvent)>
+	<cfif len(local.response)>
+		<cfoutput>#local.response#</cfoutput>
+		<cfreturn true>
+	</cfif>
+	<cfif structKeyExists(request.muraHandledEvents,'onGlobalMissingTemplate')>
+		<cfset structKeyDelete(request.muraHandledEvents,'onGlobalMissingTemplate')>
+		<cfreturn true>
+	</cfif>
 </cfif>
 <cfif isDefined("application.contentServer")>
 	<cfset request.muraTemplateMissing=true>
