@@ -1228,7 +1228,6 @@ if (!Array.prototype.map) {
 
         return child;
     },
-    };
     /*
       `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
       as the catch block of a try/catch statement.
@@ -1256,9 +1255,10 @@ if (!Array.prototype.map) {
       Useful for tooling.
       @return {Promise}
     */
-      lib$es6$promise$promise$$Promise.prototype[lib$es6$promise$promise$$Promise.prototype.catchAlias]=function(onRejection) {
+      'catch':function(onRejection) {
         return this.then(null, onRejection);
       }
+  };
 
 
     function lib$es6$promise$polyfill$$polyfill() {

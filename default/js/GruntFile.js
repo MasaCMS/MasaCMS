@@ -38,8 +38,26 @@ module.exports = function(grunt) {
               separator: ';',
             },
             files:{
-              'build/mura.js': [
+              'dist/mura.js': [
                   'external/polyfill.js',
+                  'external/handlebars.runtime-v4.0.5.js',
+                  'src/mura.js',
+                  'src/mura.loader.js',
+                  'src/mura.core.js',
+                  'src/mura.cache.js',
+                  'src/mura.domselection.js',
+                  'src/mura.entity.js',
+                  'src/mura.entitycollection.js',
+                  'src/mura.feed.js',
+                  'src/mura.templates.js',
+                  'src/mura.ui.js',
+                  'src/mura.displayobject.form.js',
+                  'src/mura.init.js',
+                  'build/templates.js'
+              ],
+              'dist/mura.handlebars.js': [
+                  'external/polyfill.js',
+                  'external/handlebars-v4.0.5.js',
                   'src/mura.js',
                   'src/mura.loader.js',
                   'src/mura.core.js',
@@ -56,45 +74,26 @@ module.exports = function(grunt) {
               ]
            }
         },
-      dist:{
-            options: {
-                separator: ';',
-            },
-            files:{
-                'dist/mura.js': [
-                    'external/handlebars.runtime-v4.0.5.js',
-                    'build/mura.js'
-                ],
-                'dist/mura.handlebars.js': [
-                    'external/handlebars-v4.0.5.js',
-                    'build/mura.js'
-                ],
-                'dist/mura.min.js': [
-                    'external/handlebars.runtime-v4.0.5.min.js',
-                    'build/mura.min.js'
-                ],
-                'dist/mura.handlebars.min.js': [
-                    'external/handlebars-v4.0.5.min.js',
-                    'build/mura.min.js'
-                ]
-            }
-        }
     },
     uglify: {
-        build:{
+        dist:{
           options: {
+             beautify:{
+              keep_quoted_props:true
+             },
              screwIE8:false,
              compress: {
                  properties:false
              }
           },
           files: {
-              'build/mura.min.js': ['build/mura.js'],
+              'dist/mura.min.js': ['dist/mura.js'],
+              'dist/mura.handlebars.min.js': ['dist/mura.handlebars.js'],
           }
         }
     },
     copy: {
-      main: {
+      dist: {
         files:[
              {expand: true, flatten: true,src: ['dist/mura.js','dist/mura.min.js'], dest: '../../admin/assets/js'}
         ],
@@ -107,7 +106,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
-  grunt.registerTask('default',['handlebars:build','replace:build','concat:build','uglify:build','concat:dist','copy']);
+  grunt.registerTask('default',['handlebars:build','replace:build','concat:build','uglify:dist','copy:dist']);
 
 
 };
