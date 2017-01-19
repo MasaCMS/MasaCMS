@@ -1703,15 +1703,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var started=false;
 
 			for(var p in arguments.params){
-				feed.addParam(column=p,criteria=arguments.params[p]);
+				if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection',p)){
+					feed.addParam(column=p,criteria=arguments.params[p]);
 
-				if(started){
-					baseURL=baseURL & '&';
+					if(started){
+						baseURL=baseURL & '&';
+					}
+
+					baseURL=baseURL & p & '=' & arguments.params[p];
+					started=true;
 				}
-
-				baseURL=baseURL & p & '=' & arguments.params[p];
-				started=true;
-
 			}
 
 		} else {
@@ -1743,42 +1744,44 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 
 				if(structKeyExists(params,p)){
-					if(started){
-						baseURL=baseURL & '&' & p;
-					} else {
-						baseURL=baseURL & p;
-						started=true;
-					}
+					if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection',p)){
+						if(started){
+							baseURL=baseURL & '&' & p;
+						} else {
+							baseURL=baseURL & p;
+							started=true;
+						}
 
-					if(len(params[p])){
-						baseURL=baseURL & '=' & params[p];
-					}
-					if(!(entity.getEntityName()=='user' && propName=='isPublic')){
-						if(entity.getEnityName()=='user' && propName=='groupid'){
-							feed.setGroupID(arguments.params[p]);
-						} else if(entity.valueExists(propName)){
-							var condition="eq";
-							var criteria=arguments.params[p];
+						if(len(params[p])){
+							baseURL=baseURL & '=' & params[p];
+						}
+						if(!(entity.getEntityName()=='user' && propName=='isPublic')){
+							if(entity.getEnityName()=='user' && propName=='groupid'){
+								feed.setGroupID(arguments.params[p]);
+							} else if(entity.valueExists(propName)){
+								var condition="eq";
+								var criteria=arguments.params[p];
 
-							if(listLen(criteria,"^") > 1){
-								condition=listFirst(criteria,'^');
-								criteria=listGetAt(criteria,2,'^');
-							} else if(find('*',criteria)){
-								condition="like";
-								criteria=replace(criteria,'*','%','all');
+								if(listLen(criteria,"^") > 1){
+									condition=listFirst(criteria,'^');
+									criteria=listGetAt(criteria,2,'^');
+								} else if(find('*',criteria)){
+									condition="like";
+									criteria=replace(criteria,'*','%','all');
+								}
+
+								feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
+								relationship='and';
+							} else if(propName=='or'){
+								relationship='or';
+							} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
+								feed.addParam(relationship=p);
+								relationship='and';
+							} else if(propname=='innerJoin'){
+								feed.innerJoin(relatedEntity=params[p]);
+							} else if(propname=='leftJoin'){
+								feed.leftJoin(relatedEntity=params[p]);
 							}
-
-							feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
-							relationship='and';
-						} else if(propName=='or'){
-							relationship='or';
-						} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
-							feed.addParam(relationship=p);
-							relationship='and';
-						} else if(propname=='innerJoin'){
-							feed.innerJoin(relatedEntity=params[p]);
-						} else if(propname=='leftJoin'){
-							feed.leftJoin(relatedEntity=params[p]);
 						}
 					}
 				}
