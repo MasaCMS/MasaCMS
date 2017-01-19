@@ -529,20 +529,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="requestHasRestrictedFiles" output="false">
 	<cfargument name="scope" default="#form#">
+	<cfargument name="allowedExtensions" default="#getBean('configBean').getFMAllowedExtensions()#">
 	<cfscript>
 		var tempext='';
-		var allowedExtensions=variables.configBean.getFMAllowedExtensions();
 		var classExtensionManager=getBean('configBean').getClassExtensionManager();
-		var siteid=session.siteid;
 
-		if(!len(allowedExtensions)){
+		if(!len(arguments.allowedExtensions)){
 			return false;
 		}
 
 		if(structKeyExists(arguments.scope,'siteid')){
 			var siteid=arguments.scope.siteid;
 		} else {
-			var siteid=session.siteid;
+			var siteid=getSession().siteid;
 		}
 
 		if(isdefined('arguments.scope.type') && arguments.scope.type=='Link'){
@@ -552,18 +551,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		for (var i in arguments.scope){
 			if(structKeyExists(arguments.scope,'#i#') && isSimpleValue(arguments.scope['#i#']) ){
-				if(isPostedFile(i,siteid)){
+				if(isPostedFile(i)){
 
 					temptext=listLast(getPostedClientFileName(i),'.');
 
-					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
+					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(arguments.allowedExtensions,temptext)){
 						return true;
 					}
 				}
 
 				if(isValid('url',arguments.scope['#i#']) && right(arguments.scope['#i#'],1) != '/'){
 
-					if(i neq 'newfile' && !classExtensionManager.isFileAttribute(i)){
+					if(i neq 'newfile' && !classExtensionManager.isFileAttribute(i,siteid)){
 						break;
 					}
 
@@ -591,7 +590,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}
 					*/
 
-					if(len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
+					if(len(tempText) < 5 && !listFindNoCase(arguments.allowedExtensions,temptext)){
 						return true;
 					}
 				}
