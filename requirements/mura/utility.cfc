@@ -593,11 +593,11 @@ Blog: www.codfusion.com--->
 				<!--- Lucee uses lowercase cookies the setCookie method allows it to maintain case--->
 				<cfif server.coldfusion.productname neq 'Coldfusion Server'>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-						<cfset setCookie(name='cfid', value=sessionTokens.CFID )>
-						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN )>
+						<cfset setCookie(name='cfid', value=sessionTokens.CFID, encodevalue=false )>
+						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN, encodevalue=false )>
 					<cfelse>
-						<cfset setCookie(name='cfid', value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires())>
-						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires())>
+						<cfset setCookie(name='cfid', value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false)>
+						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false)>
 					</cfif>
 				<cfelse>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
