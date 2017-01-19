@@ -601,20 +601,20 @@ Blog: www.codfusion.com--->
 					</cfif>
 				<cfelse>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-						<cfset setCookie(name="CFID", value=sessionTokens.CFID) />
-						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN)/>
+						<cfset setCookie(name="CFID", value=sessionTokens.CFID, encodevalue=false) />
+						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN, encodevalue=false)/>
 					<cfelse>
-						<cfset setCookie(name="CFID", value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires()) />
-						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires()) />
+						<cfset setCookie(name="CFID", value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
+						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
 					</cfif>
 				</cfif>
 			</cfif>
 
-			<cfif  isDefined('sessionTokens.jsessionid') and (arguments.reset or not isDefined('cookie.jsessionid'))>
+			<cfif isDefined('sessionTokens.jsessionid') and (arguments.reset or not isDefined('cookie.jsessionid'))>
 				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid) />
+					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid, encodevalue=false) />
 				<cfelse>
-					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid, expires=application.configBean.getSessionCookiesExpires()) />
+					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
 				</cfif>
 			</cfif>
 		<!---<cfcatch></cfcatch>
