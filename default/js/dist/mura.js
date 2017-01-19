@@ -6063,7 +6063,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 		/**
-		 * get - Returns element at index of selection
+		 * get - Deprecated: Returns element at index of selection, use item()
 		 *
 		 * @param  {number} index Index of selection
 		 * @return {*}
@@ -6120,6 +6120,23 @@ return /******/ (function(modules) { // webpackBootstrap
 			return mura(this.selection.map( function(el,idx,array){
 				return fn.call(el,el,idx,array);
 			}));
+		},
+
+        /**
+		 * reduce - Returns value from  reduce function
+		 *
+		 * @param  {function} fn Reduce function
+         * @param  {any} initialValue Starting accumulator value
+		 * @return {accumulator}
+		 */
+		reduce:function(fn,initialValue){
+            initialValue=initialValue||0;
+			return this.selection.reduce(
+                function(accumulator,item,idx,array){
+    				return fn.call(item,accumulator,item,idx,array);
+    			},
+                initialValue
+            );
 		},
 
 
@@ -7075,24 +7092,6 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 		  	return getComputedStyle(el).width;
-		},
-
-		/**
-		 * offset - Returns the offset of the first element in selection
-		 *
-		 * @return {object}
-		 */
-		offset:function(){
-			if(!this.selection.length){
-				return this;
-			}
-			var el=this.selection[0];
-			var rect = el.getBoundingClientRect()
-
-			return {
-			  top: rect.top + document.body.scrollTop,
-			  left: rect.left + document.body.scrollLeft
-			};
 		},
 
 		/**

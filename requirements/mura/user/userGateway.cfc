@@ -278,11 +278,14 @@
 						rsParams.criteria
 					) />
 
-				<cfif param.getIsValid()>
-					<cfif not started >
+				<cfif param.getIsValid() and param.getField() neq 'tusers.siteid'>
+					<cfset isNullVal = param.getCriteria() eq 'null' ? true : false />
+
+					<cfif not started>
 						<cfset openGrouping=true />
 						and (
 					</cfif>
+
 					<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
 						<cfif not openGrouping>and</cfif> (
 						<cfset openGrouping=true />
@@ -305,8 +308,8 @@
 						#param.getRelationship()#
 					</cfif>
 
-					<cfset started = true />
-					<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>
+					<cfset isListParam=param.isListParam()>
+					<cfset started=true>
 
 					<cfif listLen(param.getField(),".") gt 1>
 						#param.getFieldStatement()#
@@ -318,6 +321,8 @@
 							<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
 							<cfif isListParam>)</cfif>
 						</cfif>
+						<cfset started=true>
+						<cfset openGrouping=false />
 					<cfelseif len(param.getField())>
 						<cfif not ((param.getCriteria() eq 'null' or param.getCriteria() eq '') and param.getCondition() eq 'is')>
 							<cfset castfield="attributeValue">
