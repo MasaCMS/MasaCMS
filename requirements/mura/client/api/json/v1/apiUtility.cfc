@@ -976,11 +976,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(!structKeyExists(variables.config.entities,entityName)){
 			return false;
 		} else if (
-				listFind('address,user',entityName)
+				listFind('address,user,group',entityName)
 				&& !(
 					$.currentUser().isAdminUser()
 					|| $.currentUser().isSuperUser()
 					|| $.event('id') == $.currentUser().getUserID()
+					|| getBean('permUtility').getModulePerm(variables.config.entities['#entityName#'].moduleid,variables.siteid)
 				)
 			){
 			return false;
