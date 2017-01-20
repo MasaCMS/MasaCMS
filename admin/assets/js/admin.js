@@ -80,7 +80,7 @@ function loadObject(url, target, message) {
 //content scheduling
 var dtCh = "/";
 var minYear = 1800;
-var maxYear = 2100;
+var maxYear = 2200;
 var dtFormat = [0, 1, 2];
 var dtExample = "12/31/2016";
 
