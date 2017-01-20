@@ -259,8 +259,8 @@
 					params
 				);
 
-				Mura.get(params).then(function(item){
-					self.set(item.getAll());
+				Mura.get(params).then(function(resp){
+					self.set(resp.data);
 					if(typeof resolve == 'function'){
 						resolve(self);
 					}
