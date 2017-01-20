@@ -348,6 +348,7 @@
      * @memberof Mura
 	 */
 	function get(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'get',
@@ -374,6 +375,7 @@
      * @memberof Mura
 	 */
 	function post(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'post',

@@ -6442,6 +6442,7 @@ return /******/ (function(modules) { // webpackBootstrap
      * @memberof Mura
 	 */
 	function get(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'get',
@@ -6468,6 +6469,7 @@ return /******/ (function(modules) { // webpackBootstrap
      * @memberof Mura
 	 */
 	function post(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'post',
@@ -11011,7 +11013,7 @@ return /******/ (function(modules) { // webpackBootstrap
             var self=this;
 
 			return new Promise(function(resolve,reject){
-				params=Mura.extend(
+                params=Mura.extend(
 					{
 						entityname:self.get('entityname'),
 						method:'findNew',
@@ -11021,7 +11023,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					params
 				);
 
-				Mura.get(params).then(function(resp){
+				Mura.get(Mura.apiEndpoint,params).then(function(resp){
 					self.set(resp.data);
 					if(typeof resolve == 'function'){
 						resolve(self);

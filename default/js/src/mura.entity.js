@@ -249,7 +249,7 @@
             var self=this;
 
 			return new Promise(function(resolve,reject){
-				params=Mura.extend(
+                params=Mura.extend(
 					{
 						entityname:self.get('entityname'),
 						method:'findNew',
@@ -259,7 +259,7 @@
 					params
 				);
 
-				Mura.get(params).then(function(resp){
+				Mura.get(Mura.apiEndpoint,params).then(function(resp){
 					self.set(resp.data);
 					if(typeof resolve == 'function'){
 						resolve(self);
