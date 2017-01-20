@@ -53,16 +53,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<a class="dropdown-toggle mura-quickEditItem"<cfif rc.categoryAssignment eq '2'> rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
 			<cfswitch expression="#rc.categoryAssignment#">		
 				<cfcase value="0">
-					<i class="icon-ban-circle" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#</span>
+					<i class="mi-ban" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#</span>
 				</cfcase>
 				<cfcase value="1">
-					<i class="icon-ok" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#"></i><span>#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#</span>
+					<i class="mi-check" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#"></i><span>#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#</span>
 				</cfcase>
 				<cfcase value="2">
-					<i class="icon-calendar" title="#esapiEncode('html_attr',LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"></i> 
+					<i class="mi-calendar" title="#esapiEncode('html_attr',LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"></i> 
 				</cfcase>
 				<cfdefaultcase>
-					<i class="icon-ban-circle" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#</span>
+					<i class="mi-ban" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#</span>
 				</cfdefaultcase>
 			</cfswitch>
 		</a>

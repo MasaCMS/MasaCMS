@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://cksource.com/ckfinder
- * Copyright (C) 2007-2014, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2015, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -220,7 +220,13 @@ hint="check if foldername is valid">
 
 <cffunction name="getFileMimeType" returntype="string" output="no">
 	<cfargument name="filePath" type="string" required="yes">
-	<cfreturn getPageContext().getServletContext().getMimeType(arguments.filePath)>
+	<cfscript>
+		var mimeType = getPageContext().getServletContext().getMimeType(arguments.filePath);
+		if ( not isDefined("mimeType")) {
+			mimeType = getPageContext().getServletContext().getMimeType(LCase(arguments.filePath));
+		}
+	</cfscript>
+	<cfreturn mimeType>
 </cffunction>
 
 <cffunction name="getLastModifiedStamp">

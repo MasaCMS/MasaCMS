@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,15 +36,15 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" output="false" hint="This is provides base feed functionality for all entities">
 
 	<cfproperty name="entityName" type="string" default="" />
 	<cfproperty name="table" type="string" default="" />
@@ -57,10 +57,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="orderby" type="string" default=""/>
 	<cfproperty name="additionalColumns" type="string" default="" />
 	<cfproperty name="sortTable" type="string" default="" />
-	<cfproperty name="page" type="numeric" default="0" />
-	
+	<cfproperty name="pageIndex" type="numeric" default="1" />
+
 <cffunction name="init" output="false">
-	
+
 	<cfset variables.instance={}>
 	<cfset variables.instance.isNew=1>
 	<cfset variables.instance.errors={}>
@@ -81,14 +81,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.tableFieldlist=""/>
 	<cfset variables.instance.nextN=0>
 	<cfset variables.instance.maxItems=0>
-	<cfset variables.instance.page=0>
+	<cfset variables.instance.pageIndex=1>
 	<cfset variables.instance.additionalColumns=""/>
 	<cfset variables.instance.sortTable=""/>
 	<cfset variables.instance.fieldAliases={}/>
 	<cfset variables.instance.cachedWithin=createTimeSpan(0,0,0,0)/>
-	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfset variables.instance.joins=arrayNew(1)  />
+	<cfset variables.instance.pendingParam={}>
 	<cfreturn this/>
 </cffunction>
 
@@ -112,7 +112,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setNextN" access="public" output="false">
+<cffunction name="getSort" output="false">
+	<cfreturn variables.instance.orderby>
+</cffunction>
+
+<cffunction name="setSort" output="false">
+	<cfargument name="sort">
+	<cfset setOrderBy(orderby=arguments.sort)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setSortDirection" output="false">
+	<cfargument name="sortDirection" type="any" />
+	<cfif listFindNoCase('desc,asc',arguments.sortDirection)>
+	<cfset variables.instance.sortDirection = arguments.sortDirection />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setItemsPerPage" output="false">
+	<cfargument name="itemsPerPage">
+	<cfset setNextN(nextN=arguments.itemsPerPage)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getItemsPerPage" output="false">
+	<cfreturn variables.instance.NextN>
+</cffunction>
+
+<cffunction name="setNextN" output="false">
 	<cfargument name="NextN" type="any" />
 	<cfif isNumeric(arguments.nextN)>
 	<cfset variables.instance.NextN = arguments.NextN />
@@ -120,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMaxItems" access="public" output="false">
+<cffunction name="setMaxItems" output="false">
 	<cfargument name="maxItems" type="any" />
 	<cfif isNumeric(arguments.maxItems)>
 	<cfset variables.instance.maxItems = arguments.maxItems />
@@ -168,26 +196,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setAdvancedParams" access="public" output="false">
+<cffunction name="setAdvancedParams" output="false">
 	<cfargument name="params" type="any" required="true">
 	<cfreturn setParams(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="setParams" access="public" output="false">
+<cffunction name="setParams" output="false">
 	<cfargument name="params" type="any" required="true">
-		
+
 		<cfset var rows=0/>
 		<cfset var I = 0 />
-		
+
 		<cfif isquery(arguments.params)>
-			
+
 		<cfset variables.instance.params=arguments.params />
-			
+
 		<cfelseif isdefined('arguments.params.param')>
-		
+
 			<cfset clearparams() />
 			<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
-				
+
 				<cfset addParam(
 						listFirst(arguments.params['paramField#i#'],'^'),
 						arguments.params['paramRelationship#i#'],
@@ -195,14 +223,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						arguments.params['paramCondition#i#'],
 						listLast(arguments.params['params.paramField#i#'],'^')
 						) />
-	
+
 			</cfloop>
-			
+
 		<cfelseif isdefined('arguments.params.paramarray') and isArray(arguments.params.paramarray)>
-		
+
 			<cfset clearparams() />
 			<cfloop from="1" to="#arrayLen(arguments.params.paramarray)#" index="i">
-				
+
 				<cfset addParam(
 						listFirst(arguments.params.paramarray[i].field,'^'),
 						arguments.params.paramarray[i].relationship,
@@ -210,21 +238,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						arguments.params.paramarray[i].condition,
 						listLast(arguments.params.paramarray[i].field,'^')
 						) />
-	
+
 			</cfloop>
-					
+
 		</cfif>
-		
+
 		<cfif isStruct(arguments.params)>
 			<cfif structKeyExists(arguments.params,"siteid")>
 				<cfset setSiteID(arguments.params.siteid)>
-			</cfif>	
+			</cfif>
 		</cfif>
 
 		<cfreturn this>
 </cffunction>
 
-<cffunction name="addParam" access="public" output="false">
+<cffunction name="addParam" output="false">
 	<cfargument name="field" hint="You can use 'Column' as an alias to field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
@@ -240,11 +268,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.field=arguments.name>
 		</cfif>
 
+		<cfif structKeyExists(arguments,'value')>
+			<cfset arguments.criteria=arguments.value>
+		</cfif>
+
 		<cfif structKeyExists(variables.instance.fieldAliases,arguments.field)>
 			<cfset arguments.datatype=variables.instance.fieldAliases[arguments.field].datatype>
 			<cfset arguments.field=variables.instance.fieldAliases[arguments.field].field>
 		</cfif>
-		
+
 		<cfif not len(arguments.dataType)>
 			<cfset loadTableMetaData()>
 			<cfif not structKeyExists(variables, "dbUtility")>
@@ -269,13 +301,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="addAdvancedParam" access="public" output="false">
+<cffunction name="addAdvancedParam" output="false">
 	<cfargument name="field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
 	<cfargument name="datatype" type="string"  default="" required="true">
-		
+
 	<cfreturn addParam(argumentCollection=arguments)>
 </cffunction>
 
@@ -296,11 +328,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn clearAdvancedParams()>
 </cffunction>
 
-<cffunction name="addJoin" access="public" output="false">
+<cffunction name="addJoin" output="false">
 	<cfargument name="joinType" type="string" required="true" default="inner">
 	<cfargument name="table" type="string" required="true" default="">
 	<cfargument name="clause" type="string" required="true" default="">
-	
+
 	<cfif not hasJoin(arguments.table)>
 		<cfset arrayAppend(variables.instance.joins, arguments)>
 	</cfif>
@@ -319,13 +351,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="hasJoin">
 	<cfargument name="table">
 	<cfset var join = "">
-	
+
 	<cfloop array="#getJoins()#" index="join">
 		<cfif arguments.table eq join.table>
 			<cfreturn true>
 		</cfif>
 	</cfloop>
-	
+
 	<cfreturn false>
 </cffunction>
 
@@ -344,6 +376,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="hasDiscriminatorColumn" output="false">
 	<cfreturn isDefined("application.objectMappings.#getValue('entityName')#.discriminatorColumn") and len(application.objectMappings[getValue('entityName')].discriminatorColumn)>
+</cffunction>
+
+<cffunction name="getIsHistorical" output="false">
+	<cfreturn isDefined("application.objectMappings.#getValue('entityName')#.historical") and IsBoolean(application.objectMappings[getValue('entityName')].historical) and application.objectMappings[getValue('entityName')].historical>
 </cffunction>
 
 <cffunction name="getDiscriminatorColumn" output="false">
@@ -374,7 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn super.getQueryService(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getQuery" returntype="query" output="false">
+<cffunction name="getQuery" output="false">
 	<cfargument name="countOnly" default="false">
 	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
 
@@ -386,11 +422,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var jointable="">
 	<cfset var jointableS="">
 	<cfset var dbType=getDbType()>
+	<cfset var tableModifier="">
+
+	<cfif getDbType() eq "MSSQL">
+		<cfset tableModifier="with (nolock)">
+	</cfif>
 
 	<cfif hasDiscriminatorColumn()>
 		<cfset addParam(column=hasDiscriminatorColumn(),criteria=hasDiscriminatorValue())>
 	</cfif>
- 
+
 	<cfloop query="variables.instance.params">
 		<cfif listLen(variables.instance.params.field,".") eq 2>
 			<cfset jointable=listFirst(variables.instance.params.field,".") >
@@ -403,22 +444,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#getQueryAttrs(name='rs',cachedWithin=arguments.cachedWithin)#">
 		<cfif not arguments.countOnly and dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>
 		select <cfif not arguments.countOnly and dbtype eq "mssql" and variables.instance.maxItems>top #val(variables.instance.maxItems)#</cfif>
-		
+
 		<cfif not arguments.countOnly>
-			#getTableFieldList()# 
+			#getTableFieldList()#
 		<cfelse>
 			count(*) as count
 		</cfif>
-		
+
 		from #variables.instance.table#
-		
+
+		<cfif getIsHistorical()>
+			<cfset var primaryKey=getEntity().getPrimaryKey()>
+
+			inner join (
+				select #primaryKey# primarykey, max(lastupdate) lastupdatemax from #variables.instance.table#
+				where
+			  	lastupdate <= <cfif isDate(request.muraPointInTime)>
+								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#request.muraPointInTime#">
+							<cfelse>
+								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+							</cfif>
+				group by #primaryKey#
+
+			) activeTable
+			 on (
+			 	#variables.instance.table#.#primaryKey#=activeTable.primarykey
+				and #variables.instance.table#.lastupdate=activeTable.lastupdatemax
+			 )
+		</cfif>
+		<!--- Join to implied tables based on field prefix --->
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
 			<cfif arrayLen(variables.instance.jointables)>
-				<cfloop from="1" to="#arrayLen(variables.instance.jointables)#" index="local.i">
-					<cfif variables.instance.jointables[local.i].table eq jointable>
+				<cfloop from="1" to="#arrayLen(variables.instance.joins)#" index="local.i">
+					<cfif variables.instance.joins[local.i].table eq jointable>
 						<cfset started=true>
-						#variables.instance.jointables[local.i].jointype# join #jointable# #tableModifier# on (#variables.instance.jointables[local.i].clause#)
+						<!--- has explicit join clause--->
 						<cfbreak>
 					</cfif>
 				</cfloop>
@@ -428,11 +489,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 
+		<!--- Join to explicit tables based on join clauses --->
+		<cfloop from="1" to="#arrayLen(variables.instance.joins)#" index="local.i">
+			<cfif len(variables.instance.joins[local.i].clause)>
+				#variables.instance.joins[local.i].jointype# join #variables.instance.joins[local.i].table# #tableModifier# on (#variables.instance.joins[local.i].clause#)
+			</cfif>
+		</cfloop>
+
 		where
 
-		<cfif 
+		<cfif
 			(not isDefined('application.objectMappings.#getValue('entityName')#.columns') and len(variables.instance.siteID))
-			or 
+			or
 			 (hasColumn('siteid') and len(variables.instance.siteID))>
 			siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>
 		<cfelse>
@@ -448,10 +516,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					variables.instance.params.condition,
 					variables.instance.params.criteria
 				) />
-								 
+
 			<cfif param.getIsValid()>
 				<cfif not started >
-					<cfset openGrouping=true />	
+					<cfset openGrouping=true />
 					and (
 				</cfif>
 				<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
@@ -463,33 +531,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
 					<cfif not openGrouping>and</cfif> (
 					<cfset openGrouping=true />
+				<cfelseif listFindNoCase("and not (",param.getRelationship())>
+					<cfif not openGrouping>and</cfif> not (
+					<cfset openGrouping=true />
+				<cfelseif listFindNoCase("or not (",param.getRelationship())>
+				 	<cfif not openGrouping>or</cfif> not (
+					<cfset openGrouping=true />
 				<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 					)
 					<cfset openGrouping=false />
 				<cfelseif not openGrouping>
 					#param.getRelationship()#
 				</cfif>
-				
+
 				<cfset started = true />
 
-				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>					
+				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>
 				<cfif len(param.getField())>
-					#param.getFieldStatement()# 
+					#param.getFieldStatement()#
 					<cfif param.getCriteria() eq 'null'>
-						IS NULL
+						#param.getCondition()# NULL
 					<cfelse>
-						#param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+						#param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
 					</cfif>
 					<cfset openGrouping=false />
 				</cfif>
-			</cfif>						
+			</cfif>
 		</cfloop>
 		<cfif started>)</cfif>
-	</cfif> 
+	</cfif>
+
+	<cfif getIsHistorical()>
+		and #variables.instance.table#.deleted=0
+	</cfif>
 
 	<cfif not arguments.countOnly>
 		<cfif len(variables.instance.orderby)>
-			order by #REReplace(variables.instance.orderby,"[^0-9A-Za-z\._,\- ]","","all")#
+			order by #caseInsensitiveOrderBy(REReplace(variables.instance.orderby,"[^0-9A-Za-z\._,\- ]","","all"))#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif lcase(listLast(variables.instance.orderby, " ")) eq "asc">
 					NULLS FIRST
@@ -498,7 +576,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		<cfelseif len(variables.instance.sortBy)>
-			order by #variables.instance.table#.#REReplace(variables.instance.sortby,"[^0-9A-Za-z\._,\- ]","","all")#  #variables.instance.sortDirection#
+			order by #caseInsensitiveOrderBy(variables.instance.table & "." & REReplace(variables.instance.sortby,"[^0-9A-Za-z\._\- ]","","all"))#  #variables.instance.sortDirection#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif variables.instance.sortDirection eq "asc">
 					NULLS FIRST
@@ -518,7 +596,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs>
 </cffunction>
 
-<cffunction name="getIterator" returntype="any" output="false">
+<cffunction name="getIterator" output="false">
 	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfset var it=''>
@@ -530,17 +608,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset it.setEntityName(getValue('entityName'))>
+	<cfset it.setQuery(rs)>
+	<cfset it.setFeed('feed',this)>
+	<cfset it.setPageIndex(getValue('pageIndex'))>
+	<cfset it.setItemsPerPage(getItemsPerPage())>
 
-	<cfset it.setQuery(rs,variables.instance.nextN)>
 	<cfreturn it>
-</cffunction>
-
-<cffunction name="setSortDirection" access="public" output="false">
-	<cfargument name="sortDirection" type="any" />
-	<cfif listFindNoCase('desc,asc',arguments.sortDirection)>
-	<cfset variables.instance.sortDirection = arguments.sortDirection />
-	</cfif>
-	<cfreturn this>
 </cffunction>
 
 <cffunction name="getAvailableCount" output="false">
@@ -551,6 +624,266 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getBean("beanFeed").setAllValues(structCopy(getAllValues()))>
 </cffunction>
 
+<cffunction name="where" output="false">
+	<cfargument name="property">
+	<cfif isDefined('arguments.propery')>
+		<cfset andProp(argumentCollection=arguments)>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="prop" output="false">
+	<cfargument name="property">
+	<cfset andProp(argumentCollection=arguments)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="andProp" output="false">
+	<cfargument name="property">
+	<cfif listLen(arguments.property,'.') eq 2>
+		<cfset var propArray=listToArray(arguments.property,'.')>
+		<cfset arguments.property=application.objectMappings[propArray[1]].table & '.' & propArray[2]>
+	</cfif>
+	<cfset variables.instance.pendingParam.relationship='and'>
+	<cfset variables.instance.pendingParam.column=arguments.property>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="orProp" output="false">
+	<cfargument name="property">
+	<cfif listLen(arguments.property,'.') eq 2>
+		<cfset var propArray=listToArray(arguments.property,'.')>
+		<cfset arguments.property=application.objectMapping[propArray[1]].table & '.' & propArray[2]>
+	</cfif>
+	<cfset variables.instance.pendingParam.relationship='or'>
+	<cfset variables.instance.pendingParam.column=arguments.property>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="isEQ" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='eq'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="isNEQ" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='neq'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="isGT" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='gt'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="isGTE" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='gte'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="isLT" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='lt'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="isLTE" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='lte'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="isIn" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='in'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="isNotIn" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='notin'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="containsValue" output="false">
+	<cfargument name="criteria">
+
+	<cfset variables.instance.pendingParam.condition='contains'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="contains" output="false">
+	<cfargument name="criteria">
+
+	<cfset variables.instance.pendingParam.condition='contains'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="beginsWith" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='begins'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="endsWith" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='ends'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="null" output="false">
+	<cfset variables.instance.pendingParam.condition='='>
+	<cfset variables.instance.pendingParam.column='null'>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="openGrouping" output="false">
+	<cfset addParam(relationship='andOpenGrouping')>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="orOpenGrouping" output="false">
+	<cfset addParam(relationship='orOpenGrouping')>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="closeGrouping" output="false">
+	<cfset addParam(relationship='closeGrouping')>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="sort" output="false">
+	<cfargument name="property">
+	<cfargument name="direction" default="asc">
+	<cfset variables.instance.orderby=listAppend(variables.instance.orderby,arguments.property & ' ' & arguments.direction)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="itemsPerPage" output="false">
+	<cfargument name="itemsPerPage">
+	<cfset setNextN(arguments.itemsPerPage)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="maxItems" output="false">
+	<cfargument name="maxItems">
+	<cfset setMaxItems(arguments.maxItems)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getEntity" output="false">
+	<cfif not isdefined('variables.sampleEntity')>
+		<cfset variables.sampleEntity=getBean(getEntityName())>
+	</cfif>
+	<cfreturn variables.sampleEntity>
+</cffunction>
+
+<cffunction name="innerJoin" output="false">
+	<cfargument name="relatedEntity">
+	<cfset var entity=getEntity()>
+	<cfset var p="">
+
+	<cfloop array="#entity.getHasManyPropArray()#" index="p">
+		<cfif p.cfc eq arguments.relatedEntity>
+			<cfset addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.translatePropKey(p.column)#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfreturn this>
+		</cfif>
+	</cfloop>
+	<cfloop array="#entity.getHasOnePropArray()#" index="p">
+		<cfif p.cfc eq arguments.relatedEntity>
+			<cfset addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.translatePropKey(p.column)#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfreturn this>
+		</cfif>
+	</cfloop>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="leftJoin" output="false">
+	<cfargument name="entityName">
+	<cfset var entity=getEntity()>
+	<cfset var p="">
+	<cfloop array="#entity.getHasManyPropArray()#" index="p">
+		<cfif p.cfc eq arguments.relatedEntity>
+			<cfset addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfreturn this>
+		</cfif>
+	</cfloop>
+	<cfloop array="#entity.getHasOnePropArray()#" index="p">
+		<cfif p.cfc eq arguments.relatedEntity>
+			<cfset addJoin('inner',application.objectMappings[arguments.relatedEntity].table,'#entity.getTable()#.#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfreturn this>
+		</cfif>
+	</cfloop>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="caseInsensitiveOrderBy" access="private" output="false">
+	<cfargument name="orderBy" required="true">
+	<cfset var orderByList = "">
+	<cfset var orderByValue = "">
+	<cfset var table = "">
+	<cfset var column = "">
+
+	<cfloop list="#arguments.orderBy#" index="orderByValue">
+		<cfset table = variables.instance.entityName>
+		<cfset column = listfirst(orderByValue, " ")>
+		<cfif listlen(column, ".") eq 2>
+			<cfset table = listfirst(column, ".")>
+			<cfset column = listrest(column, ".")>
+		</cfif>
+		<cfif structkeyexists(application.objectMappings, table) and structkeyexists(application.objectMappings[table]["columns"], column) and listfindnocase("char,varchar", application.objectMappings[table]["columns"][column]["dataType"])>
+			<cfset orderByList = listappend(orderByList, "lower(" & column & ") " & listrest(orderByValue, " ")) />
+		<cfelse>
+			<cfset orderByList = listappend(orderByList, orderByValue) />
+		</cfif>
+	</cfloop>
+	<cfreturn orderByList />
+</cffunction>
+
 <!---
 <cffunction name="sanitizedValue" output="false">
 	<cfargument name="property">
@@ -558,7 +891,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getOffset" output="false">
-	<cfreturn (getValue('page')-1) * getValue('nextN')>
+	<cfreturn (getValue('pageIndex')-1) * getValue('nextN')>
 </cffunction>
 
 <cffunction name="getFetch" output="false">

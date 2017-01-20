@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="mailinglistDAO" type="any" required="yes"/>
 <cfargument name="mailinglistGateway" type="any" required="yes"/>
@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
  </cffunction>
 
-<cffunction name="update" access="public" output="false" returntype="void" >
+<cffunction name="update" output="false" >
 	<cfargument name="data" type="struct"  />
 	
 	<cfset var listBean=getBean("mailinglist") />
@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
 </cffunction>
 
-<cffunction name="create" access="public" output="false" returntype="any" >
+<cffunction name="create" output="false">
 	<cfargument name="data" type="struct"  />
 	
 	<cfset var listBean=getBean("mailinglist") />
@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn listBean />
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void" >
+<cffunction name="delete" output="false" >
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 	
@@ -140,28 +140,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="deleteMember" access="public" output="false" returntype="void" >
+<cffunction name="deleteMember" output="false" >
 	<cfargument name="data" type="struct" />
 	
 	<cfset variables.memberManager.delete(arguments.data) />
 	
 </cffunction>
 
-<cffunction name="deleteMemberAll" access="public" output="false" returntype="void" >
+<cffunction name="deleteMemberAll" output="false" >
 	<cfargument name="data" type="struct" />
 	
 	<cfset variables.memberManager.deleteAll(arguments.data) />
 	
 </cffunction>
 
-<cffunction name="createMember" access="public" output="false" returntype="void" >
+<cffunction name="createMember" output="false" >
 	<cfargument name="data" type="struct" />
 	
 	<cfset variables.memberManager.create(arguments.data,this) />
 	
 </cffunction>
 
-<cffunction name="read" access="public" output="false" returntype="any" >
+<cffunction name="read" output="false">
 	<cfargument name="mlid" type="string" default=""/>
 	<cfargument name="siteid" type="string"/>
 	<cfargument name="name" required="true" default=""/>
@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="readMember" access="public" output="false" returntype="any" >
+<cffunction name="readMember" output="false">
 	<cfargument name="data" type="struct" />
 	
 	<cfset var memberBean = variables.memberManager.read(arguments.data) />
@@ -183,7 +183,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="getListMembers" access="public" output="false" returntype="query" >
+<cffunction name="getListMembers" output="false" >
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 	
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="deleteMembers" access="public" output="false" returntype="void" >
+<cffunction name="deleteMembers" output="false" >
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 	
@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="getList" access="public" output="false" returntype="query" >
+<cffunction name="getList" output="false" >
 	<cfargument name="siteid" type="string" />
 	
 	<cfset var rs = variables.mailinglistGateway.getList(arguments.siteid) />
@@ -210,14 +210,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="masterSubscribe" access="public" output="false" returntype="void" >
+<cffunction name="masterSubscribe" output="false" >
 	<cfargument name="data" type="struct" />
 
 	<cfset variables.memberManager.masterSubscribe(arguments.data,this) />
 
 </cffunction>
 
-<cffunction name="validateMember" access="public" output="false" returntype="void" >
+<cffunction name="validateMember" output="false" >
 	<cfargument name="data" type="struct" />
 
 	<cfset variables.memberManager.validateMember(arguments.data) />

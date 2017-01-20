@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.bean.beanExtendable" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" output="false" hint="This provides legacy custom extended object bean functionality">
 
 <cfproperty name="type" type="string" default="" required="true" />
 <cfproperty name="subType" type="string" default="" required="true" />
@@ -26,7 +26,7 @@
 	<cfset super.init(argumentCollection=arguments)>
 
 	<cfset variables.instance.ID = "">
-	
+
 	<cfset setType(arguments.type)>
 	<cfset setSubType(arguments.subType)>
 	<cfset setSiteID(arguments.siteID)>
@@ -35,11 +35,11 @@
 	<cfset setID(arguments.ID)>
 	<cfset variables.instance.remoteID=arguments.remoteID>
 	<cfset variables.instance.sourceIterator=arguments.sourceIterator>
-	
+
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setID" output="false" access="public">
+<cffunction name="setID" output="false">
    <cfargument name="ID" type="string" required="true">
 	<cfset arguments.ID=trim(arguments.ID)>
 	<cfif len(arguments.ID)>
@@ -48,34 +48,34 @@
 	<cfreturn this>
  </cffunction>
 
-<cffunction name="getID" returnType="string" output="false" access="public">
+<cffunction name="getID" output="false">
     <cfif not len(variables.instance.ID)>
 		<cfset variables.instance.ID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.ID />
 </cffunction>
 
-<cffunction name="setManager" output="false" access="public">
+<cffunction name="setManager" output="false">
    <cfargument name="manager">
    <cfset variables.manager =arguments.manager />
 	<cfreturn this>
  </cffunction>
 
-<cffunction name="getManager" output="false" access="public">
+<cffunction name="getManager" output="false">
 	<cfreturn variables.manager />
 </cffunction>
 
-<cffunction name="setConfigBean" output="false" access="public">
+<cffunction name="setConfigBean" output="false">
    <cfargument name="ConfigBean">
    <cfset variables.configBean=arguments.configBean />
 	<cfreturn this>
  </cffunction>
 
-<cffunction name="getConfigBean" output="false" access="public">
+<cffunction name="getConfigBean" output="false">
 	<cfreturn variables.configBean />
 </cffunction>
 
-<cffunction name="setSiteID" output="false" access="public">
+<cffunction name="setSiteID" output="false">
     <cfargument name="SiteID" type="string" required="true">
 	<cfif len(arguments.siteID) and trim(arguments.siteID) neq variables.instance.siteID>
     <cfset variables.instance.SiteID = trim(arguments.SiteID) />
@@ -84,19 +84,19 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setType" output="false" access="public">
+<cffunction name="setType" output="false">
    <cfargument name="Type" type="string" required="true">
    <cfset arguments.Type=trim(arguments.Type)>
-	
+
 	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type>
 		<cfset variables.instance.Type = arguments.Type />
 		<cfset purgeExtendedData()>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
- <cffunction name="setSubType" output="false" access="public">
+ <cffunction name="setSubType" output="false">
    <cfargument name="SubType" type="string" required="true">
 	<cfset arguments.subType=trim(arguments.subType)>
 	<cfif len(arguments.subType) and variables.instance.SubType neq arguments.SubType>
@@ -106,19 +106,19 @@
 	<cfreturn this>
  </cffunction>
 
-<cffunction name="validate" access="public" output="false">
+<cffunction name="validate" output="false">
 		<cfset var extErrors=structNew() />
-	
+
 		<cfif len(variables.instance.siteID)>
 			<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 		</cfif>
-		
+
 		<cfset variables.instance.errors=structnew() />
-		
+
 		<cfif not structIsEmpty(extErrors)>
 			<cfset structAppend(variables.instance.errors,extErrors)>
 		</cfif>
-		<cfreturn this>	
+		<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtendBaseID" output="false">
@@ -184,7 +184,7 @@
 			</cfif>
 		</cfif>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 

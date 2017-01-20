@@ -24,24 +24,24 @@ width:#rc.width#<br/>
 <cfif images.hasNext()>
 <table class="mura-table-grid">
 <tr>
+<th class="actions"></th>
 <th >Name</th>
 <th>Height</th>
 <th>Width</th>
-<th class="actions"></th>
 </tr>
 <cfloop condition="images.hasNext()">
 <cfset image=images.next()>
 <tr>
-<td class="var-width">#esapiEncode('html',image.getName())#</td>
+<td class="actions"><ul>
+	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#esapiEncode('javascript',image.getSiteID())#');"><i class="mi-pencil"></i></a></li>
+</ul></td>
+<td class="var-width"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#esapiEncode('javascript',image.getSiteID())#');">#esapiEncode('html',image.getName())#</a></td>
 <td>#esapiEncode('html',image.getHeight())#</td>
 <td>#esapiEncode('html',image.getWidth())#</td>
-<td class="actions"><ul>
-	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#esapiEncode('javascript',image.getSiteID())#');"><i class="icon-pencil"></i></a></li>
-</ul></td>
 </tr>
 </cfloop>
 </table>
 <cfelse>
-	<p class="alert">There are currently no custom image sizes.</p>
+	<div class="help-block-empty">There are currently no custom image sizes.</div>
 </cfif>
 </cfoutput>

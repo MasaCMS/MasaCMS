@@ -67,9 +67,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <!-- JSON -->
 <script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/admin.js"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/admin.min.js"></script>
 <link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
-<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 function toggleAdminToolbar(){
@@ -80,13 +80,13 @@ function toggleAdminToolbar(){
 	}
 </script>
 
-	<img src="#application.configBean.getContext()#/admin/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+	<img src="#application.configBean.getContext()#/admin/assets/images/mura-logo-fe@2x.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 	<div id="frontEndTools" class="pluginHdr" style="display: #Cookie.fetDisplay#">
 			<ul>
-				<li id="adminPlugIns"><a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
-				<li id="adminSiteManager"><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001"><i class="icon-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
-				<li id="adminDashboard"><a href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="icon-dashboard"></i> #application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
-				<li id="adminLogOut"><a href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="icon-signout"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
+				<li id="adminPlugIns"><a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="mi-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
+				<li id="adminSiteManager"><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001"><i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
+				<li id="adminDashboard"><a href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="mi-dashboard"></i> #application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
+				<li id="adminLogOut"><a href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
 				<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#.</li>
 			</ul>
 		</div>

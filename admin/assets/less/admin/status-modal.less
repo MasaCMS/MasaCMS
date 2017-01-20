@@ -1,0 +1,221 @@
+// Used in Status Modal Only as Now (Approval Chains); Move when used for anything else
+.mura-list-grid {
+
+	vertical-align: top;
+	
+	dl {
+		.inline-block();
+		background: @gray;
+		width: 46%;
+		min-height: 100px;
+		.box-sizing(border-box);
+		margin: @baseLineHeight/2 2%;
+		.border-radius(2px);
+		vertical-align: top;
+		
+		&:nth-child(even) {
+			margin-right: 0;
+			}
+			
+		&:nth-child(5) {
+			width: 97%;
+			}
+			
+		&.created-on {
+			p { 
+				padding: 6px 0 0;
+				line-height: 18px;
+				}
+			}
+		
+		&.ac-comments > dl > dd > p {
+			font-size: 13px;
+			line-height: 1.2;
+			font-weight: normal;
+			padding: 0;
+			margin: 0;
+			
+			+ em {
+				font-size: 13px;
+				line-height: 1.2;
+				padding: 0;
+				font-weight: normal;
+				}		
+			}
+		
+		dt {
+			background: lighten(@grayDarker,25%);
+			margin: 0;
+			color: @grayLighter;
+			line-height: 1;
+			padding: 8px 1em;
+			text-transform: uppercase;
+			font-size: 13px;
+			text-align: left;
+			font-weight: normal;
+			.border-top-radius(2px);
+			}
+		
+		dd {
+			.bold-font;
+			color: lighten(@grayDarker,25%);
+			font-size: 16px;
+			line-height: 24px;
+			padding: 1em;
+			text-shadow: 0 1px 0 rgba(255,255,255,.75);
+			text-align: left;
+			
+			i {
+				font-size: 45px;
+				float: left;
+				margin: 0 @baseFontSize 0 0;
+				vertical-align: middle;
+				
+				&.icon-calendar,
+				&.icon-list {
+					font-size: 42px;
+					}
+				}
+				
+			p {
+				padding: 14px 0;
+				line-height: 1;
+				margin: 0;
+				}
+			
+			label + p {
+				font-size: 13px;
+				padding: 10px 0;
+				}
+				
+			textarea {
+				.box-sizing(border-box);
+				width: 100%;
+				margin-bottom: @baseLineHeight/2;
+				}
+			
+			}
+			
+		&.approval-status 
+		
+		em {
+			font-size: 13px;
+			font-weight: normal;
+			margin: 0 0 -6px;
+			
+			+ p {
+				padding: 0;
+				margin-top: -3px;
+				}	 
+			
+			}
+			
+		&.approval-action-form {
+		
+		.radio.inline {
+			padding-top: 0;
+			}
+	
+		.form-actions{
+			text-align:center;
+			margin: 0 auto;
+		}		
+
+			}
+		}		
+	}
+
+// status-modal-specific
+#status-modal.mura-list-grid {
+
+	.status-locked i {
+		color: @errorBorder;
+	}
+	
+	.approval-chain-comments,
+	.approval-action-form {	
+		float: none;
+		width: 97%;
+		min-height: 0;
+		}
+		
+	.approval-chain-comments {
+	
+		> dd {
+			padding: @baseLineHeight/2 1em;
+			margin: @baseLineHeight/2 0;
+			border-top: 1px solid @grayLight;
+		
+			&:first-of-type {
+				//padding-top: 0;
+				margin-top: 0;
+				border: 0;
+				}
+				
+			> strong {
+				background: lighten(@grayDarker,25%);
+				padding: 4px 8px;
+				margin: 9px 0 0 0;
+				font-size: 11px;
+				//letter-spacing: 1px;
+				line-height: 14px;
+				font-weight: normal;
+				color: @white;
+				text-shadow: none;
+				.inline-block();
+				.border-radius(2px);
+				text-transform: uppercase;
+				
+				> i {
+					font-size: 14px;
+					margin-right: .2em;
+					}
+					
+				&.approved {
+					background: green;
+					}
+				
+				&.rejected {
+					background: red;
+					}
+					
+				&.canceled {
+					background: darken(@gray,20%);
+					}
+				
+				}
+					
+			> em {
+				.bold-font;
+				.inline-block();
+				font-size: 13px;
+				}
+		
+			> i {
+				font-size: 20px;
+				line-height: 36px;
+				}
+			
+			> p {
+				line-height: 1.4;
+				font-size: 13px;
+				font-weight: normal;
+				padding: @baseLineHeight/2 0 0;
+				margin-bottom: 0;
+				}
+				
+			
+			}
+		}
+	
+		.approval-action-form {
+			margin-bottom: 9px;
+			
+			.btn {
+				color: @white !important;
+				font-size: 13px;
+				font-weight: normal;
+			}
+			
+		}
+	}

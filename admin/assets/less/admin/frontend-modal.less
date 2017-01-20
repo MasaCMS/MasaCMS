@@ -1,0 +1,113 @@
+/* for styling of iframe itself, see admin-frontend.less */
+body.modal-wrapper{	
+
+	.regular-font;
+	
+	.mura-header{
+		padding-bottom: 12px;
+	}
+	#frontEndToolsModalClose{
+		float: right;
+		font-size: 18px;
+		color: #545454;
+		line-height:1em;
+		margin-top: 2px;
+		opacity: .65;
+		&> i{
+			opacity: .65;
+		}
+	}
+
+	#mura-content{
+		padding: 15px !important;
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+
+	.block-bordered{
+		border:none;
+	}
+
+	/* allow for (x) icon on modal */
+	.mura-header h1{
+		margin-right: 24px;
+	}
+
+	// secondary nav 
+
+	.nav-module-specific{
+	  .make-sm-column(12);
+	  text-align:left;
+	  padding-left: 0;
+	  padding-right: 0;
+	  margin-left: 0;
+	  margin-right: 0;
+	  margin-top: 8px;
+
+		 .btn{
+
+		  float:none !important;
+		  font-size: 92%;
+		  line-height: 1;
+		  font-weight: normal;
+		  margin-left: 0;
+		  margin-right: 8px;
+		  margin-bottom: 0;
+		  min-height: 2.3em;
+		  padding-top: 8px;
+		  background-color: #FFF;
+		  border: 1px solid #e9e9e9;
+
+		  .badge{
+		    border: 0 solid #ffffff;
+		    background-color: #b3b3b3;
+		    color: #ffffff;
+		    opacity: .8;
+		  }
+		}
+
+		ul.dropdown-menu{
+			margin: 0;
+		}
+
+
+	}
+
+
+	/* hide h2 not used in front end modal*/
+	#configurator > div > h2{
+		display:none;
+	}
+
+	.nav-pills > li > a{
+	.btn;
+	.btn-default; 
+	margin: 4px 8px 12px 0;
+	}
+
+	.form-actions{
+	
+			.btn {
+				font-size: 12px;
+				padding: 6px 12px;
+				-webkit-border-radius: 2px;
+				-moz-border-radius: 2px;
+				border-radius: 2px;
+				-webkit-box-shadow: none;
+				-moz-box-shadow: none;
+				box-shadow: none;	
+				text-shadow:none;
+		    color: #545454;
+    		background-color: #E4E4E4;
+    		border-color: #E9E9E9;
+			}
+			.btn-primary {
+			  color: #ffffff;
+			  background-color: @mura-blue;
+			  border-color: #4882cc;
+			  background-image:none !important;
+			}
+
+		}
+
+}

@@ -67,7 +67,7 @@
 	<cfoutput query="rslist" group="site">
 
 		<cfif attributes.nestlevel eq 0>
-			<label class="control-label">
+			<label>
 				#esapiEncode('html',rslist.site)#
 			</label>
 		</cfif>
@@ -99,8 +99,6 @@
 	</cfoutput>
 <cfelseif attributes.parentID eq ''>
 	<cfoutput>
-		<p class="alert">
-			#request.context.$.rbKey('user.nointerestcategories')#
-		</p>
+<div class="help-block-empty">#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</div>
 	</cfoutput>
 </cfif> 

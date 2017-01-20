@@ -1,0 +1,106 @@
+{
+    "name":"Mura CMS",
+    "version":"0.0.0",
+    "author":"Blue River Interactive Group, Inc.",
+    "location":"https://github.com/blueriver/MuraCMS/archive/master.zip",
+    "directory":"",
+    "createPackageDirectory":false,
+    "packageDirectory":"",
+    "homepage":"http://www.getmura.com/",
+    "documentation":"http://docs.getmura.com/",
+    "repository":{
+        "type":"Git",
+        "URL":"https://github.com/blueriver/MuraCMS"
+    },
+    "bugs":"",
+    "slug":"muracms",
+    "shortDescription":"A sweet package",
+    "description":"Mura CMS is an open source content management system for CFML, created by Blue River Interactive Group. Mura has been designed to be used by marketing departments, web designers and developers.",
+    "instructions":"",
+    "changelog":"",
+    "type":"cms",
+    "keywords":[
+        "mura",
+        "cms",
+        "cfml",
+        "content management system",
+        "content",
+        "management",
+        "system"
+    ],
+    "private":false,
+    "engines":[
+        {
+            "type":"lucee",
+            "version":">=4.5.x"
+        },
+        {
+            "type":"adobe",
+            "version":">=10.0.0"
+        }
+    ],
+    "defaultEngine":"lucee",
+    "defaultPort":0,
+    "projectURL":"",
+    "license":[
+        {
+            "type":"GPL-2.0 with execptions",
+            "URL":"https://github.com/blueriver/MuraCMS/blob/develop/license.txt"
+        }
+    ],
+    "contributors":[
+        
+    ],
+    "dependencies":{
+        "docbox":"2.0.7",
+        "testbox":"2.4.0+80"
+    },
+    "devDependencies":{
+        "testbox":"^2.3.0+00044",
+        "docbox":"^2.0.7+00005"
+    },
+    "installPaths":{
+        "testbox":"requirements/testbox",
+        "docbox":"requirements/docbox"
+    },
+    "scripts":{
+        
+    },
+    "ignore":[
+        "**/.*",
+        "test",
+        "tests"
+    ],
+    "testbox":{
+        "runner":[
+            {
+                "adobe":"http://localhost:53644/requirements/tests/runner.cfm"
+            },
+            {
+                "lucee":"http://localhost:53645/requirements/tests/runner.cfm"
+            }
+        ],
+        "labels":[
+            
+        ],
+        "reporter":"",
+        "reporterResults":"",
+        "bundles":[
+            ""
+        ],
+        "directory":{
+            "mapping":"murawrm.requirements.tests.specs",
+            "recurse":true
+        },
+        "watchers":[
+            
+        ],
+        "notify":{
+            "emails":[
+                
+            ],
+            "growl":"",
+            "URL":""
+        }
+    }
+}

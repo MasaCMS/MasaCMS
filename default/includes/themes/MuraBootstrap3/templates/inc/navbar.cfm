@@ -3,7 +3,7 @@
 	<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#$.createHREF(filename='')#">#HTMLEditFormat($.siteConfig('site'))#</a>
+				<a class="navbar-brand" href="#$.createHREF(filename='')#">#esapiEncode('html', $.siteConfig('site'))#</a>
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -14,7 +14,7 @@
 				<div class="row">
 					<div class="col-md-7">
 						<cf_CacheOMatic key="dspPrimaryNav">
-							<!--- 
+							<!---
 								For information on dspPrimaryNav(), visit:
 								http://docs.getmura.com/v6/front-end/template-variables/document-body/
 							--->
@@ -23,7 +23,7 @@
 								, id='navPrimary'
 								, class='nav navbar-nav'
 								, displayHome='always'
-								, closeFolders=false 
+								, closeFolders=false
 								, showCurrentChildrenOnly=false
 								, liHasKidsClass='dropdown'
 								, liHasKidsAttributes=''
@@ -53,7 +53,7 @@
 					<div class="col-md-3 pull-right">
 						<form id="searchForm" class="navbar-form navbar-right" role="search">
 							<div class="input-group">
-								<input type="text" name="Keywords" id="navKeywords" class="form-control" value="#HTMLEditFormat($.event('keywords'))#" placeholder="#$.rbKey('search.search')#">
+								<input type="text" name="Keywords" id="navKeywords" class="form-control" value="#esapiEncode('html', $.event('keywords'))#" placeholder="#$.rbKey('search.search')#">
 								<span class="input-group-btn">
 									<button type="submit" class="btn btn-default">
 										<i class="fa fa-search"></i>

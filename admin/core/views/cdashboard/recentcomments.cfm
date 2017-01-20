@@ -59,9 +59,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="mura-table-grid">
 <thead>
 <tr>
+	<th class="actions"></th>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
 	<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>
-	<th class="actions">&nbsp;</th>
 </tr>
 </thead>
 <tbody>
@@ -79,13 +79,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset args=arrayNew(1)>
 		<cfset args[1]="<strong>#esapiEncode('html',comment.getName())#</strong>">
 		<cfset args[2]="<strong>#esapiEncode('html',content.getMenuTitle())#</strong>">
+		<td class="actions">
+			<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+			<div class="actions-menu hide">	
+				<ul class="actions-list">
+					<li class="preview"><a href="##" onclick="return preview('#esapiEncode('javascript',content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');"><i class="mi-globe"></i></a>#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</li>
+				</ul>
+			</div>
+		</td>
 		<td class="var-width">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
 		<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
-		<td class="actions">
-		<ul>
-			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#esapiEncode('javascript',content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');"><i class="icon-globe"></i></a></li>
-		</ul>
-		</td>
 	</tr>
 	</cfloop>
 <cfelse>
@@ -97,10 +100,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <cfif comments.recordCount() and comments.pageCount() gt 1>
-	<div class="pagination">
-	<ul>
+	<ul class="pagination">
 		<cfif comments.getPageIndex() gt 1> 
-			<a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#esapiEncode('url',rc.siteid)#"><li>&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></li>
+			<a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#esapiEncode('url',rc.siteid)#"><li><i class="mi-angle-left"></i></a></li>
 			</cfif>
 		<cfloop from="1"  to="#comments.pageCount()#" index="i">
 			<cfif comments.getPageIndex() eq i>
@@ -111,10 +113,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 		<cfif comments.getPageIndex() lt comments.pageCount()>
-			<li><a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></li>
+			<li><a href="./?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-angle-right"></i></a></li>
 		</cfif>
 	</ul>
-	</div>
 </cfif>	
 </cfoutput>
 

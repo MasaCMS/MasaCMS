@@ -63,7 +63,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.redirect" default=""/>
 	<cfparam name="arguments.rc.parentid" default=""/>
 	<cfparam name="arguments.rc.siteid" default=""/>
-	<cfparam name="arguments.rc.status" default=""/>
 </cffunction>
 
 <cffunction name="main" output="false">
@@ -77,7 +76,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="login" output="false">
 	<cfargument name="rc">
 	<cfif rc.$.validateCSRFTokens()>
-		<cfset application.loginManager.login(arguments.rc)>	
+		<cfset var loginManager=rc.$.getBean('loginManager')>
+		<cfif isBoolean(rc.$.event('attemptChallenge')) and rc.$.event('attemptChallenge')>
+			<cfif loginManager.handleChallengeAttempt(rc.$)>
+				<cfset loginManager.completedChallenge(rc.$)>
+			</cfif>
+		<cfelse>
+			<cfset loginManager.login(arguments.rc)>	
+		</cfif>
 	<cfelse>
 		<cfset variables.fw.redirect(action="clogin.main",path="./")>
 	</cfif>

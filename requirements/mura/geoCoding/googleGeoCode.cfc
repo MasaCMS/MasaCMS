@@ -101,7 +101,7 @@
 	<cfreturn result>
 </cffunction>
 
-<cffunction name="translateAccuracy" access="private" output="false" returnType="string"
+<cffunction name="translateAccuracy" access="private" output="false"
 			hint="Translates an accuracy code to a string.">
 	<cfargument name="accuracy" type="numeric" required="true">
 	
@@ -141,7 +141,7 @@
 
 </cffunction>
 
-<cffunction name="translateStatuscode" access="private" output="false" returnType="string"
+<cffunction name="translateStatuscode" access="private" output="false"
 			hint="Translates a status code to a string.">
 	<cfargument name="status" type="numeric" required="true">
 	

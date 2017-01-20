@@ -47,70 +47,99 @@
 --->
 <cfoutput>
 
-	<!--- User Search --->
-		<cfinclude template="inc/dsp_search_form.cfm" />
 
 	<!--- Page Title --->
-		<h1>#rbKey('user.usersearchresults')#</h1>
+<div class="mura-header">
+	<h1>#rbKey('user.usersearchresults')#</h1>
 
 	<!--- Buttons --->
-		<div id="nav-module-specific" class="btn-group">
+		<div class="nav-module-specific btn-group">
 
 			<!--- Add User --->
 				<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
-					<i class="icon-plus-sign"></i> 
+					<i class="mi-plus-circle"></i> 
 					#rbKey('user.adduser')#
 				</a>
 
 		  <!--- Add Group --->
 				<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
-					<i class="icon-plus-sign"></i> 
+					<i class="mi-plus-circle"></i> 
 					#rbKey('user.addgroup')#
 				</a>
 
 			<!--- View Groups --->
 				<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
-					<i class="icon-eye-open"></i>
+					<i class="mi-users"></i>
 					#rbKey('user.viewgroups')#
 				</a>
 
 			<!--- View Users --->
 				<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
-					<i class="icon-eye-open"></i>
+					<i class="mi-user"></i>
 					#rbKey('user.viewusers')#
 				</a>
 
 		</div>
 	<!--- /Buttons --->
 
+	<div class="mura-item-metadata">
 
-	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
-    <cfif rc.isAdmin>
+	<!--- User Search --->
+	<cfinclude template="inc/dsp_search_form.cfm" />
 
-        <ul class="nav nav-tabs">
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.mura-header -->
 
-          <!--- Site Members Tab --->
-	          <li<cfif rc.ispublic eq 1> class="active"</cfif>>
-	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=1&search=#esapiEncode('url',rc.search)#')#">
-	              #rbKey('user.sitemembers')#
-	            </a>
-	          </li>
+<div class="block block-constrain">
 
-          <!--- System Users Tab --->
-	          <li<cfif rc.ispublic eq 0> class="active"</cfif>>
-	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=0&search=#esapiEncode('url',rc.search)#')#">
-	              #rbKey('user.systemusers')#
-	            </a>
-	          </li>
+<!--- Tab Nav (only tabbed for Admin + Super Users) --->
+  <cfif rc.isAdmin>
 
-        </ul>
+      <ul class="mura-tab-links nav-tabs">
 
-    <cfelse>
+        <!--- Site Members Tab --->
+          <li<cfif rc.ispublic eq 1> class="active"</cfif>>
+            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=1&search=#esapiEncode('url',rc.search)#')#">
+              #rbKey('user.sitemembers')#
+            </a>
+          </li>
 
-      <h3>#rbKey('user.sitemembers')#</h3>
+        <!--- System Users Tab --->
+          <li<cfif rc.ispublic eq 0> class="active"</cfif>>
+            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=0&search=#esapiEncode('url',rc.search)#')#">
+              #rbKey('user.systemusers')#
+            </a>
+          </li>
 
-    </cfif>
-  <!--- /Tab Nav --->
+      </ul>
+			<div class="block-content tab-content">
 
-	<cfinclude template="inc/dsp_users_list.cfm" />
+			<!-- start tab -->
+			<div id="tab1" class="tab-pane active">
+				<div class="block block-bordered">
+					<!-- block header -->					
+					<div class="block-header">
+						<h3 class="block-title"><cfif rc.ispublic eq 1>#rbKey('user.sitemembers')#<cfelse>#rbKey('user.systemusers')#</cfif></h3>
+					</div> <!-- /.block header -->						
+					<div class="block-content">
+						  	
+						<cfinclude template="inc/dsp_users_list.cfm" />
+
+					</div> <!-- /.block-content -->
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /.tab-pane -->
+
+		</div> <!-- /.block-content.tab-content -->
+  <cfelse>
+		<div class="block block-bordered">
+		  <div class="block-content">
+		    <h3>#rbKey('user.sitemembers')#</h3>
+				<cfinclude template="inc/dsp_users_list.cfm" />
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+  </cfif>
+<!--- /Tab Nav --->
+
+
+</div> <!-- /.block-constrain -->
 </cfoutput>

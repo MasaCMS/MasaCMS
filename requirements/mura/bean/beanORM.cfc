@@ -13,17 +13,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -37,20 +37,23 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component extends="mura.bean.bean" versioned=false {
+component extends="mura.bean.bean" versioned=false hint="This provides dynamic CRUD functionality"{
+
+	property name="saveErrors" type="boolean" persistent="false" comparable="false" default=false;
 
 	function init(){
 		super.init();
 		variables.dbUtility="";
 		variables.entityName="";
+		variables.loadSQLHasWhereClause=false;
 
 		var props=getProperties();
 
@@ -68,7 +71,7 @@ component extends="mura.bean.bean" versioned=false {
 
 					if(structKeyExists(prop,"fieldType") and prop.fieldType eq "id"){
 						variables.instance[prop.column]=createUUID();
-					} else if (listFindNoCase('created,lastupdate',prop.column) and listFindNoCase("date,datetime,timestamp",prop.datatype) and !(structKeyExists(prop,"default") and prop.default != 'null')){
+					} else if (listFindNoCase('created,lastupdate',prop.column) && (listFindNoCase('datetime,timestamp',prop.datatype) && !(structKeyExists(prop,"default") && prop.default != 'null') || structKeyExists(prop,"default") && prop.default=='now()') ){
 						variables.instance[prop.column]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
@@ -76,25 +79,25 @@ component extends="mura.bean.bean" versioned=false {
 						} else {
 							variables.instance[prop.column]='';
 						}
-					} 
+					}
 
 					if (prop.name eq 'lastupdateby'){
-						if(isDefined("session.mura") and session.mura.isLoggedIn){
-							variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50);
+						if(isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn){
+							variables.instance.LastUpdateBy = left(variables.sessionData.mura.fname & " " & variables.sessionData.mura.lname,50);
 						} else {
 							variables.instance.LastUpdateBy='';
 						}
 					} else if (prop.name eq 'lastupdatebyid'){
-						if(isDefined("session.mura") and session.mura.isLoggedIn){
-							variables.instance.LastUpdateById = session.mura.userID;
+						if(isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn){
+							variables.instance.LastUpdateById = variables.sessionData.mura.userID;
 						} else {
 							variables.instance.LastUpdateById='';
 						}
 					}
 
-				} 
+				}
 				else {
-					if(listFindNoCase('created,lastupdate',prop.column) and listFindNoCase("date,datetime,timestamp",prop.datatype) and !(structKeyExists(prop,"default") and prop.default != 'null')){
+					if(listFindNoCase('created,lastupdate',prop.column) && prop.datatype=='datetime' && !(structKeyExists(prop,"default") && prop.default != 'null')){
 						variables.instance[prop.column]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
@@ -102,7 +105,7 @@ component extends="mura.bean.bean" versioned=false {
 						} else {
 							variables.instance[prop.column]='';
 						}
-					} 
+					}
 				}
 			}
 		}
@@ -114,15 +117,15 @@ component extends="mura.bean.bean" versioned=false {
 
 	private function setPropAsIDColumn(prop,isPrimaryKey=true){
 		super.setPropAsIDColumn(argumentCollection=arguments);
-	
+
 		if(arguments.isPrimaryKey){
 			arguments.prop.required=true;
 			arguments.prop.nullable=false;
 		}
 	}
-	
+
 	function set(property,propertyValue){
-		
+
 		if(!isDefined('arguments.data') ){
 			if(isSimpleValue(arguments.property)){
 				return setValue(argumentCollection=arguments);
@@ -131,7 +134,7 @@ component extends="mura.bean.bean" versioned=false {
 			//process complex object
 			arguments.data=property;
 		}
-		
+
 		preLoad();
 
 		super.set(argumentCollection=arguments);
@@ -151,16 +154,30 @@ component extends="mura.bean.bean" versioned=false {
 			variables.dbUtility=getBean('dbUtility');
 			variables.dbUtility.setTable(getTable());
 			if(hasCustomDatasource() ){
-				variables.dbUtility.setValue('datasource',getsCustomDatasource());
+				variables.dbUtility.setValue('datasource',getCustomDatasource());
 				variables.dbUtility.setValue('DbUsername','');
 				variables.dbUtility.setValue('DbPassword','');
 
 				if(structKeyExists(application.objectMappings[variables.entityName],'dbtype') ){
 					variables.dbUtility.setDbType(application.objectMappings[variables.entityName].dbtype);
 				}
-			}	
+			}
 		}
 		return variables.dbUtility;
+	}
+
+	function setSaveErrors(saveErrors){
+		if(isBoolean(arguments.saveErrors)){
+			variables.instance.saveErrors=arguments.saveErrors;
+		}
+		return this;
+	}
+
+	function getSaveErrors(){
+		if(!isBoolean(variables.instance.saveErrors)){
+			variables.instance.saveErrors=false;
+		}
+		return variables.instance.saveErrors;
 	}
 
 	function getDbType(){
@@ -232,16 +249,16 @@ component extends="mura.bean.bean" versioned=false {
 					getDbUtility().addColumn(argumentCollection=props[prop]);
 
 					if(structKeyExists(props[prop],"fieldtype")){
-						if(props[prop].fieldtype eq "id"){
+						if(props[prop].fieldtype eq "id" && (!getIsHistorical() || props[prop].name=='histid')){
 							getDbUtility().addPrimaryKey(argumentCollection=props[prop]);
-						} else if ( listFindNoCase('one-to-many,many-to-one,index',props[prop].fieldtype) ){
+						} else if ( listFindNoCase('one-to-one,one-to-many,many-to-one,index,id',props[prop].fieldtype) ){
 							getDbUtility().addIndex(argumentCollection=props[prop]);
 						}
 					}
 				}
 			}
 		}
-		
+
 		param name="application.objectMappings.#variables.entityName#" default={};
 		application.objectMappings[variables.entityName].columns=getColumns();
 
@@ -264,20 +281,28 @@ component extends="mura.bean.bean" versioned=false {
 		return super.getQueryService(argumentCollection=arguments);
 	}
 
+	private function getQueryParamType(datatype){
+		if(arguments.datatype=='int'){
+			return "cf_sql_integer";
+		} else {
+			return "cf_sql_" & arguments.datatype;
+		}
+	}
+
 	private function addQueryParam(qs,prop,value){
 		var paramArgs={};
 		var columns=getColumns();
 
 		if(arguments.prop.persistent){
-			
-			paramArgs={name=arguments.prop.column,cfsqltype="cf_sql_" & columns[arguments.prop.column].datatype};
-						
+
+			paramArgs={name=arguments.prop.column,cfsqltype=getQueryParamType(columns[arguments.prop.column].datatype)};
+
 			if(structKeyExists(arguments,'value')){
 				paramArgs.null=arguments.prop.nullable and (not len(arguments.value) or arguments.value eq "null");
 			}	else {
 				arguments.value='null';
-				paramArgs.null=arguments.prop.nullable and (not len(variables.instance[arguments.prop.column]) or variables.instance[arguments.prop.column] eq "null");			
-			} 
+				paramArgs.null=arguments.prop.nullable and (not len(variables.instance[arguments.prop.column]) or variables.instance[arguments.prop.column] eq "null");
+			}
 
 			if(arguments.prop.column == getDiscriminatorColumn()){
 				paramArgs.value=getDiscriminatorValue();
@@ -285,12 +310,12 @@ component extends="mura.bean.bean" versioned=false {
 				paramArgs.value=arguments.value;
 			}
 
-			if(columns[arguments.prop.column].datatype eq 'datetime'){
+			if(listFindNoCase('int,smalllint,tinyint',columns[arguments.prop.column].datatype) && isNumeric(paramArgs.value)){
+				paramArgs.value=int(paramArgs.value);
+			} else if(columns[arguments.prop.column].datatype eq 'datetime'){
 				paramArgs.cfsqltype='cf_sql_timestamp';
 				paramArgs.value=parseDateArg(paramArgs.value);
-			}
-
-			if(listFindNoCase('text,longtext',columns[arguments.prop.column].datatype)){
+			} else if(listFindNoCase('text,longtext',columns[arguments.prop.column].datatype)){
 				paramArgs.cfsqltype='cf_sql_longvarchar';
 			}
 
@@ -318,6 +343,10 @@ component extends="mura.bean.bean" versioned=false {
 		var pluginManager=getBean('pluginManager');
 		var event=new mura.event({siteID=getValue('siteid'),bean=this});
 
+		if(getIsHistorical()){
+			set('histid',createUUID());
+		}
+
 		validate();
 
 		if(getReadOnly()){
@@ -326,7 +355,7 @@ component extends="mura.bean.bean" versioned=false {
 
 		pluginManager.announceEvent('onBefore#variables.entityName#Save',event);
 
-		if(!hasErrors()){
+		if(!hasErrors() || getSaveErrors()){
 			var props=getProperties();
 			var columns=getColumns();
 			var prop={};
@@ -334,21 +363,40 @@ component extends="mura.bean.bean" versioned=false {
 			var sql='';
 			var qs=getQueryService();
 
-			for (prop in props){
-				if(props[prop].persistent){
-					addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+			// Set lastupdate columns if defined
+			if (structkeyexists(props, "lastupdate") && listFindNoCase('datetime,timestamp',props.lastupdate.datatype)) {
+				variables.instance.lastupdate = now();
+			}
+			if (structkeyexists(props, "lastupdateby")) {
+				if(isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn){
+					variables.instance.LastUpdateBy = left(variables.sessionData.mura.fname & " " & variables.sessionData.mura.lname,50);
+				} else {
+					variables.instance.LastUpdateBy='';
+				}
+			}
+			if (structkeyexists(props, "lastupdatebyid")) {
+				if(isDefined("variables.sessionData.mura") and variables.sessionData.mura.isLoggedIn){
+					variables.instance.LastUpdateById = variables.sessionData.mura.userID;
+				} else {
+					variables.instance.LastUpdateById='';
 				}
 			}
 
 			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
 
-			if(qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
-				
-				preUpdate();
-			
+			if(!getIsHistorical() && qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
+
 				pluginManager.announceEvent('onBefore#variables.entityName#Update',event);
 
-				if(!hasErrors()){
+				preUpdate();
+
+				for (prop in props){
+					if(props[prop].persistent){
+						addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+					}
+				}
+
+				if(!hasErrors() || getSaveErrors()){
 
 					savecontent variable="sql" {
 						writeOutput('update #getTable()# set ');
@@ -363,24 +411,24 @@ component extends="mura.bean.bean" versioned=false {
 						}
 
 						writeOutput(" where #getPrimaryKey()# = :primarykey");
-						
+
 					}
 
 
 					var obj='';
 
 					if(arrayLen(variables.instance.removeObjects)){
-						for(obj in variables.instance.removeObjects){	
+						for(obj in variables.instance.removeObjects){
 							obj.delete();
 						}
 					}
 
 					if(arrayLen(variables.instance.addObjects)){
-						for(obj in variables.instance.addObjects){	
+						for(obj in variables.instance.addObjects){
 							obj.save();
 						}
 					}
-						
+
 					qs.execute(sql=sql);
 					purgeCache();
 					postUpdate();
@@ -391,16 +439,28 @@ component extends="mura.bean.bean" versioned=false {
 					variables.instance.addObjects=[];
 					variables.instance.removeObjects=[];
 				}
-				
+
 			} else{
 
-				preCreate();
-				preInsert();
-				
+				//Historical saves always insert, if deleted then events are fired within delete method
+				if(!(getIsHistorical() && get('deleted')==1)){
+					if(exists()){
+						preUpdate();
+						pluginManager.announceEvent('onBefore#variables.entityName#Update',event);
+					} else {
+						preCreate();
+						preInsert();
+						pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
+					}
+				}
 
-				pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
+				for (prop in props){
+					if(props[prop].persistent){
+						addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+					}
+				}
 
-				if(!hasErrors()){
+				if(!hasErrors() || getSaveErrors()){
 
 					savecontent variable="sql" {
 						writeOutput('insert into #getTable()# (');
@@ -428,11 +488,11 @@ component extends="mura.bean.bean" versioned=false {
 						}
 
 						writeOutput(")");
-						
+
 					}
-				
+
 					if(arrayLen(variables.instance.addObjects)){
-						for(var obj in variables.instance.addObjects){	
+						for(var obj in variables.instance.addObjects){
 							obj.save();
 						}
 					}
@@ -440,21 +500,34 @@ component extends="mura.bean.bean" versioned=false {
 					qs.execute(sql=sql);
 					purgeCache();
 
+					var doesExist=exists();
+
 					variables.instance.isnew=0;
 					variables.instance.addObjects=[];
 					variables.instance.removeObjects=[];
 
-					postCreate();
-					postInsert();
+					//Historical saves always insert, if deleted then events are fired within delete method
+					if(!(getIsHistorical() && get('deleted')==1)){
+						if(doesExist){
+							postUpdate();
 
-					pluginManager.announceEvent('onAfter#variables.entityName#Create',event);
+							pluginManager.announceEvent('onAfter#variables.entityName#Update',event);
+						} else{
+							postCreate();
+							postInsert();
 
+							pluginManager.announceEvent('onAfter#variables.entityName#Create',event);
+						}
+					}
 				}
 			}
 
-			pluginManager.announceEvent('onAfter#variables.entityName#Save',event);
-			pluginManager.announceEvent('on#variables.entityName#Save',event);
-		
+			//if historical and deleted then events are fired within delete method
+			if(!(getIsHistorical() && get('deleted')==1)){
+				pluginManager.announceEvent('onAfter#variables.entityName#Save',event);
+				pluginManager.announceEvent('on#variables.entityName#Save',event);
+			}
+
 		/*
 		} else {
 			request.muratransaction=request.muratransaction-1;
@@ -482,8 +555,8 @@ component extends="mura.bean.bean" versioned=false {
 		var isMappingEntity=false;
 
 		for(var prop in props){
-			if(structKeyExists(props[prop],'cfc') 
-				&& props[prop].fieldtype eq 'one-to-many' 
+			if(structKeyExists(props[prop],'cfc')
+				&& props[prop].fieldtype eq 'one-to-many'
 				&& structKeyExists(props[prop],'keycolumn') ){
 
 				if( valueExist(props[prop].keycolumn) ){
@@ -557,7 +630,7 @@ component extends="mura.bean.bean" versioned=false {
 			request.muraORMtransaction=false;
 		}
 	}
-		
+
 	function delete(){
 		if(request.muraORMtransaction){
 			_delete();
@@ -571,7 +644,7 @@ component extends="mura.bean.bean" versioned=false {
 					} else {
 						transactionRollback();
 					}
-				} 
+				}
 				catch(any err){
 					transactionRollback();
 				}
@@ -579,13 +652,13 @@ component extends="mura.bean.bean" versioned=false {
 			request.muraORMtransaction=false;
 		}
 	}*/
-	
+
 	function delete(){
 		var props=getProperties();
 		var pluginManager=getBean('pluginManager');
 		var event=new mura.event({siteID=getValue('siteid'),bean=this});
 		var subitem="";
-		
+
 		preDelete();
 
 		pluginManager.announceEvent('onBefore#variables.entityName#Delete',event);
@@ -608,9 +681,15 @@ component extends="mura.bean.bean" versioned=false {
 			}
 		}
 
-		var qs=getQueryService();
-		qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
-		qs.execute(sql='delete from #getTable()# where #getPrimaryKey()# = :primarykey');
+		if(getIsHistorical()){
+			set('deleted',1);
+			save(argumentCollection=arguments);
+		} else {
+			var qs=getQueryService();
+			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
+			qs.execute(sql='delete from #getTable()# where #getPrimaryKey()# = :primarykey');
+		}
+
 		purgeCache();
 
 		postDelete();
@@ -630,7 +709,7 @@ component extends="mura.bean.bean" versioned=false {
 		var props=getProperties();
 		var prop="";
 		var columns=getColumns();
-		var started=false;
+		var started=variables.loadSQLHasWhereClause;
 		var rs="";
 		var hasArg=false;
 		var hasdiscriminator=len(getDiscriminatorColumn());
@@ -644,8 +723,35 @@ component extends="mura.bean.bean" versioned=false {
 			arguments.siteid=getValue('siteID');
 		}
 
+		if(getIsHistorical()){
+			if(isDate(request.muraPointInTime)){
+				qs.addParam(name="pointInTime",cfsqltype="cf_sql_timestamp",value=request.muraPointInTime);
+			} else {
+				qs.addParam(name="pointInTime",cfsqltype="cf_sql_timestamp",value=now());
+			}
+		}
+
 		savecontent variable="sql"{
-			writeOutput(getLoadSQL());
+			writeOutput(getLoadSQL() & " ");
+
+			if(getIsHistorical()){
+				writeOutput("
+					inner join (
+						select #getPrimaryKey()# pkey, max(lastupdate) lastupdatemax from #getTable()#
+						where
+						lastupdate <= :pointInTime
+						group by #getPrimaryKey()#
+
+
+					) activeTable
+					 on (
+						#getTable()#.#getPrimaryKey()#=activeTable.pkey
+						and #getTable()#.lastupdate=activeTable.lastupdatemax
+					 )"
+				 );
+
+			}
+
 			for(var arg in arguments){
 				hasArg=false;
 				prop=arg;
@@ -668,7 +774,7 @@ component extends="mura.bean.bean" versioned=false {
 					}
 
 					if(
-						arg != getPrimaryKey() 
+						arg != getPrimaryKey()
 						&& arg != 'siteid'
 						&& !(hasDiscriminator && arg==discriminatorColumn)
 					){
@@ -703,25 +809,44 @@ component extends="mura.bean.bean" versioned=false {
 					}
 
 					writeOutput(" #getTable()#.#discriminatorColumn#= :#getDiscriminatorValue()# ");
-				}	
+				}
+
+				if(getIsHistorical()){
+					if(not started){
+						writeOutput("where ");
+						started=true;
+					} else {
+						writeOutput("and ");
+					}
+
+					writeOutput(" #getTable()#.deleted= 0 ");
+				}
 			}
 
 			if(structKeyExists(arguments,'orderby') && len(arguments.orderby)){
-				writeOutput("order by #arguments.orderby# ");	
+				writeOutput("order by #arguments.orderby# ");
 			} else if(len(getOrderBy())){
 				writeOutput("order by #getOrderBy()# ");
 			}
 		}
-		
+
 		if(primaryFound && primaryOnly && getUseCache()){
 			var cache=getCache();
 			var cacheKey=getCacheKey(primarykeyargvalue);
-			
+
 			if(cache.has(cacheKey)){
 				try{
 					rs=cache.get(cacheKey);
-					setValue("frommuracache",true);
-					commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: #getEntityName()#, key: #cacheKey#}"));
+					if(isDefined('rs')){
+						setValue("frommuracache",true);
+						commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: #getEntityName()#, key: #cacheKey#}"));
+					} else {
+						rs=qs.execute(sql=sql).getResult();
+						if(rs.recordcount){
+							cache.get(cacheKey,rs);
+						}
+						commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: #getEntityName()#, key: #cacheKey#}"));
+					}
 				} catch(any e){
 					rs=qs.execute(sql=sql).getResult();
 					if(rs.recordcount){
@@ -748,24 +873,24 @@ component extends="mura.bean.bean" versioned=false {
 
 		if(arguments.returnFormat eq 'query'){
 			return rs;
-		} else if( arguments.returnFormat eq 'iterator'){	
+		} else if( arguments.returnFormat eq 'iterator'){
 			return getBean('beanIterator').setEntityName(variables.entityName).setQuery(rs);
 		} else {
 			return this;
 		}
 	}
 
-	private function getLoadSQL(){
+	function getLoadSQL(){
 		return "select * from #getTable()# ";
 	}
 
 	function clone(){
-		return getBean(variables.entityName).setAllValues(structCopy(getAllValues()));
+		return getBean(variables.entityName).setAllValues(duplicate(getAllValues()));
 	}
 
-	function getFeed(){		
+	function getFeed(){
 		var feed=getBean('beanFeed').setEntityName(variables.entityName).setTable(getTable());
-	
+
 		if(hasProperty('siteid')){
 			feed.setSiteID(getValue('siteID'));
 		}
@@ -774,18 +899,18 @@ component extends="mura.bean.bean" versioned=false {
 			feed.setOrderBy(getOrderBy());
 		}
 
-		return feed;	
+		return feed;
 	}
 
 	//BUNDLE METHODS
-	
-	function getIterator(){		
+
+	function getIterator(){
 		return getBean('beanIterator').setEntityName(variables.entityName);
 	}
 
 	function toBundle(bundle,siteid){
 		var qs=getQueryService(readOnly=true);
-		
+
 		if(hasColumn('siteid') && structKeyExists(arguments,'siteid')){
 			qs.setSQL("select * from #getTable()# where siteid = :siteid");
 			qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=arguments.siteid);
@@ -812,14 +937,14 @@ component extends="mura.bean.bean" versioned=false {
 				}
 
 				for(prop in getProperties()){
-					if(isValid('uuid',item.getValue(prop))){
+					if(isSimpleValue(item.getValue(prop)) && isValid('uuid',item.getValue(prop)) ){
 						item.setValue(prop,arguments.keyFactory.get(item.getValue(prop)));
 					}
 
 				}
 
 				item.save();
-			
+
 			}
 
 
@@ -858,8 +983,8 @@ component extends="mura.bean.bean" versioned=false {
 		if(len(getValue('siteid'))){
 			return getValue('siteid');
 		} else {
-			param name="session.siteid" default="default";
-			return session.siteid;
+			param name="variables.sessionData.siteid" default="default";
+			return variables.sessionData.siteid;
 		}
 	}
 

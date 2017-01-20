@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,18 +36,18 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent name="queryTool" hint="Transforms a query into other data types." output="false">
+<cfcomponent name="queryTool" hint="This provides the ability to transforms a query into other data types." output="false">
 
 <!--- Public queryTool init() --->
-<cffunction output="false" access="public" returnType="any" name="init">
+<cffunction output="false" name="init">
   <cfargument name="inQuery" type="query" required="true" hint="The query to transform."/>
   <cfset variables.instance = structNew() />
   <cfset variables.instance.inQuery = arguments.inQuery>
@@ -55,11 +55,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <!--- Public Array toArray(query inQuery) --->
-<cffunction output="false" access="public" returnType="array" name="toArray" hint="Transforms a query into an array of structures.">
+<cffunction output="false" returnType="array" name="toArray" hint="Transforms a query into an array of structures.">
   <cfset var result = arrayNew(1) />
   <cfset var row = structNew() />
   <cfset var i = "" />
-  
+
   <cfloop query="variables.instance.inQuery">
     <cfset row = structNew() />
     <cfloop list="#variables.instance.inQuery.columnList#" index="i">
@@ -67,22 +67,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </cfloop>
     <cfset arrayAppend(result, row) />
   </cfloop>
-  
+
   <cfreturn result />
 </cffunction>
 
 <!--- Public Struct toStruct(query inQuery, string primaryKey) --->
-<cffunction output="false" access="public" returnType="struct" name="toStruct" hint="Transforms a query into a structure, using a designated column as the key.">
+<cffunction output="false" returnType="struct" name="toStruct" hint="Transforms a query into a structure, using a designated column as the key.">
   <cfargument name="primaryKey" type="string" required="true" hint="The name of the column to be used as the key for the structure.  Should be a unique identifier or rows will be lost!"/>
-  
+
   <cfset var result = structNew() />
   <cfset var row = structNew() />
   <cfset var i = "" />
-  
+
   <cfif not listFindNoCase(variables.instance.inQuery.columnList, arguments.primaryKey)>
     <cfthrow message="The primary key passed to toStruct() is not present in your query." />
   </cfif>
-  
+
   <cfloop query="variables.instance.inQuery">
     <cfset row = structNew() />
     <cfloop list="#variables.instance.inQuery.columnList#" index="i">
@@ -90,12 +90,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </cfloop>
     <cfset result[variables.instance.inQuery[arguments.primaryKey][variables.instance.inQuery.currentRow]] = row />
   </cfloop>
-  
+
   <cfreturn result />
 </cffunction>
 
 <!--- Public XML toXml(query inQuery) --->
-<cffunction output="false" access="public" returnType="any" name="toXml" hint="Transforms a query into an XML recordset.">
+<cffunction output="false" name="toXml" hint="Transforms a query into an XML recordset.">
   <cfset var result = "">
   <cfset var i=""/>
   <cfxml variable="result">
@@ -109,12 +109,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </cfloop>
 </recordset>
   </cfxml>
-  
+
   <cfreturn result>
 </cffunction>
 
 <!--- Public XML toDelimited(query inQuery) --->
-<cffunction output="false" access="public" returnType="string" name="toDelimited" hint="Transforms a query into a delimited string using the given delimiter and linefeed characters.">
+<cffunction output="false" name="toDelimited" hint="Transforms a query into a delimited string using the given delimiter and linefeed characters.">
   <cfargument name="delimiter" type="string" default="#chr(9)#" hint="Default column delimiter (default is TAB)."/>
   <cfargument name="linefeed" type="string" default="#chr(10)#" hint="Default linefeed (default is chr(10))."/>
 
@@ -142,14 +142,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 
-<cffunction name="QueryAppend" access="public" returntype="void" output="false"
+<cffunction name="QueryAppend" output="false"
 	hint="This takes two queries and appends the second one to the first one. This actually updates the first query and does not return anything.">
 
 	<!--- Define arguments. --->
 	<cfargument name="QueryOne" type="query" required="yes" />
 	<cfargument name="QueryTwo" type="query" required="yes" />
 	<cfargument name="Filter" type="string" required="yes" default="page">
-	
+
 	<!--- Define the local scope. --->
 	<cfset var local = StructNew() />
 
@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.QueryOne[ local.ColumnName ][ arguments.QueryOne.RecordCount ] = arguments.QueryTwo[ local.ColumnName ][ arguments.QueryTwo.CurrentRow ] />
 
 		</cfloop>
-		
+
 	</cfloop>
 
 	<!--- Return out. --->
@@ -181,4 +181,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 </cfcomponent>
-

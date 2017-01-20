@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,24 +36,24 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides class extension manager service level logic functionality">
 
 <cfset variables.definitionsQuery="">
 <cfset variables.iconlookup={}>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="init" output="false">
 	<cfargument name="configBean">
-	
+
 	<cfset variables.configBean=arguments.configBean />
-	
+
 	<cfset buildIconClassLookup()>
 
 	<cfreturn this />
@@ -72,59 +72,59 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getIconClass" returntype="String" access="public" output="false">
+<cffunction name="getIconClass" output="false">
 	<cfargument name="type">
 	<cfargument name="subtype">
 	<cfargument name="siteid">
 	<cfset var returnVar = getCustomIconClass(argumentCollection=arguments)>
-	
+
 	<cfif not len(returnVar)>
 		<cfswitch expression="#arguments.type#">
 			<cfcase value="page">
-				<cfset returnVar = "icon-file">
+				<cfset returnVar = "mi-file">
 			</cfcase>
 			<cfcase value="folder">
-				<cfset returnVar = "icon-folder-open-alt">
+				<cfset returnVar = "mi-folder-open-o">
 			</cfcase>
 			<cfcase value="file">
-				<cfset returnVar = "icon-file-text-alt">
+				<cfset returnVar = "mi-file-text-o">
 			</cfcase>
 			<cfcase value="link">
-				<cfset returnVar = "icon-link">
+				<cfset returnVar = "mi-link">
 			</cfcase>
 			<cfcase value="calendar">
-				<cfset returnVar = "icon-calendar">
+				<cfset returnVar = "mi-calendar">
 			</cfcase>
 			<cfcase value="gallery">
-				<cfset returnVar = "icon-th">
+				<cfset returnVar = "mi-th">
 			</cfcase>
 			<cfcase value="form">
-				<cfset returnVar = "icon-list-alt">
+				<cfset returnVar = "mi-toggle-on">
 			</cfcase>
 			<cfcase value="component">
-				<cfset returnVar = "icon-align-justify">
+				<cfset returnVar = "mi-align-justify">
 			</cfcase>
 			<cfcase value="variation">
-				<cfset returnVar = "icon-cloud">
+				<cfset returnVar = "mi-cloud">
 			</cfcase>
 			<cfcase value="1">
-				<cfset returnVar = "icon-group">
+				<cfset returnVar = "mi-group">
 			</cfcase>
 			<cfcase value="2">
-				<cfset returnVar = "icon-user">
+				<cfset returnVar = "mi-user">
 			</cfcase>
 			<cfdefaultcase>
-				<cfset returnVar = "icon-cog">
+				<cfset returnVar = "mi-cog">
 			</cfdefaultcase>
-		</cfswitch> 
+		</cfswitch>
 	</cfif>
-	
+
 	<cfreturn returnVar>
 </cffunction>
 
-<cffunction name="buildIconClassLookup" output="false">	
+<cffunction name="buildIconClassLookup" output="false">
 	<cfset var rs="">
-	
+
 	<cfquery name="rs">
 		select siteID,type,subtype,iconclass from tclassextend
 	</cfquery>
@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 </cffunction>
 
-<cffunction name="setIconClass" output="false">	
+<cffunction name="setIconClass" output="false">
 	<cfargument name="type">
 	<cfargument name="subtype">
 	<cfargument name="siteid">
@@ -146,10 +146,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					variables.iconlookup['#arguments.siteid#']={};
 				}
 
-				variables.iconlookup['#arguments.siteid#']['#arguments.type##arguments.subtype#']=arguments.iconclass;
+				variables.iconlookup['#arguments.siteid#']['#arguments.type##arguments.subtype#']=replace(arguments.iconclass,'icon-','mi-');
 			}
 		</cfscript>
-	
+
 </cffunction>
 
 <cffunction name="getIconClassLookUp" output="false">
@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="dbUsername" required="true" default="#application.configBean.getDbUsername()#">
 <cfargument name="dbPassword" required="true" default="#application.configBean.getDbPassword()#">
 	<cfset var rs="">
-	
+
 	<cfif arguments.datasource neq variables.configBean.getDatasource()>
 		<cfset arguments.dbUsername="">
 		<cfset arguments.dbPassword="">
@@ -174,18 +174,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type, 
-	tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname, 
-	tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename, 
+	select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type,
+	tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname,
+	tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename,
 	<cfif variables.configBean.getDBType() eq "oracle">
 		to_char(tclassextendattributes.label) as label
 	<cfelse>
 		tclassextendattributes.label
-	</cfif>, 
-	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required, 
-	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist, 
+	</cfif>,
+	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required,
+	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist,
 	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue,
-	tclassextend.hasSummary,tclassextend.hasBody,
+	tclassextend.hasSummary,tclassextend.hasBody,tclassextendattributes.adminonly,
 	<cfif variables.configBean.getDBType() eq "oracle">
 		to_char(tclassextend.description) as description
 	<cfelse>
@@ -200,11 +200,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	from tclassextend #tableModifier#
 	inner join tclassextendsets #tableModifier# on (tclassextend.subtypeid=tclassextendsets.subtypeid)
 	inner join tclassextendattributes #tableModifier# on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
-	order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno 
+	order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno
 	</cfquery>
 
 	<cfreturn rs>
 
+</cffunction>
+
+<cffunction name="isFileAttribute" output="false">
+	<cfargument name="name">
+	<cfargument name="siteid">
+	<cfset var rs=getDefinitionsQuery()>
+
+	<cfquery name="rs" dbtype="query">
+		select attributeName from rs
+		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
+		and attributeName=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">
+		and inputtype='File'
+	</cfquery>
+
+	<cfreturn rs.recordcount>
 </cffunction>
 
 <cffunction name="getDefinitionsQuery" output="false">
@@ -214,21 +229,50 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.definitionsQuery>
 </cffunction>
 
+<cffunction name="appendMissingAttributes" output="false">
+	<cfargument name="instance">
+
+	<cfset var rs=getDefinitionsQuery()>
+	<cfset var renderer=getBean('settingsManager').getSite(arguments.instance.siteid).getContentRenderer()>
+
+	<cfquery name="rs" dbtype="query">
+		select attributename, defaultvalue from rs
+		where subtype=<cfqueryparam value="#arguments.instance.subtype#" cfsqltype="cf_sql_varchar">
+		and type=<cfqueryparam value="#arguments.instance.type#" cfsqltype="cf_sql_varchar">
+		and siteid=<cfqueryparam value="#arguments.instance.siteid#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+
+	<cfloop query="rs">
+		<cfif not structKeyExists(arguments.instance,'#rs.attributeName#')>
+			<cfif len(rs.defaultValue)>
+				<cftry>
+					<cfreturn renderer.setDynamicContent(rs.defaultValue)>
+					<cfcatch>
+						<cfset arguments.instance['#rs.attributeName#']=''>
+					</cfcatch>
+				</cftry>
+			<cfelse>
+				<cfset arguments.instance['#attributeName#']=''>
+			</cfif>
+		</cfif>
+	</cfloop>
+</cffunction>
+
 <cffunction name="purgeDefinitionsQuery" output="false">
 	<cfset variables.definitionsQuery="">
 </cffunction>
 
-<cffunction name="setConfigBean" access="public" returntype="void">
+<cffunction name="setConfigBean">
 <cfargument name="configBean">
 <cfset variables.configBean=arguments.configBean />
 </cffunction>
 
-<cffunction name="getSubTypeBean" returnType="any">
+<cffunction name="getSubTypeBean">
 <cfset var subtype=createObject("component","mura.extend.extendSubType").init(variables.configBean) />
 <cfreturn subtype />
 </cffunction>
 
-<cffunction name="getSubTypeByName" access="public" returntype="any">
+<cffunction name="getSubTypeByName">
 <cfargument name="type">
 <cfargument name="subtype">
 <cfargument name="siteid">
@@ -241,31 +285,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn _subtype />
 </cffunction>
 
-<cffunction name="getSubTypeByID" access="public" returntype="any">
+<cffunction name="getSubTypeByID">
 <cfargument name="subTypeID">
 
 	<cfset var subtype=getSubTypeBean() />
 	<cfset subtype.setSubTypeID(arguments.SubTypeID)/>
 	<cfset subtype.load() />
-	
+
 	<cfreturn subtype />
 </cffunction>
 
-<cffunction name="deleteSubType" access="public" returntype="array">
+<cffunction name="deleteSubType" returntype="array">
 <cfargument name="subTypeID">
 	<cfset var subtype=getSubTypeBean() />
-	<cfset subtype.setSubTypeID(arguments.subtypeID)/> 
-	<cfset subType.delete() />		
+	<cfset subtype.setSubTypeID(arguments.subtypeID)/>
+	<cfset subType.delete() />
 </cffunction>
 
-<cffunction name="getExtendedData" access="public" returntype="any">
+<cffunction name="getExtendedData">
 	<cfargument name="baseID">
 	<cfargument name="dataTable" required="true" default="tclassextenddata"/>
 	<cfargument name="type">
 	<cfargument name="subtype">
 	<cfargument name="siteid">
 	<cfargument name="sourceIterator" default="">
-	
+
 	<cfif structKeyExists(arguments,"type") and  structKeyExists(arguments,"subtype") and  structKeyExists(arguments,"siteID")>
 		<cfreturn createObject("component","mura.extend.extendData").init(
 			configBean=variables.configBean,
@@ -275,7 +319,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			subType=arguments.subType,
 			siteID=arguments.siteID,
 			sourceIterator=arguments.sourceIterator
-			) />	
+			) />
 	<cfelse>
 		<cfreturn createObject("component","mura.extend.extendData").init(
 			configBean=variables.configBean,
@@ -286,7 +330,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="validateExtendedData" returntype="any" output="false">
+<cffunction name="validateExtendedData" output="false">
 <cfargument name="data">
 
 <cfset var setLen=0/>
@@ -306,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- process non-file attributes --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select attributeID,name,validation,message,type from tclassextendattributes where 
+select attributeID,name,validation,message,type from tclassextendattributes where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -315,10 +359,10 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <cfloop query="rs">
 	<cfset key="ext#rs.attributeID#"/>
-	
+
 	<cfif structKeyExists(arguments.data,key)
 		or structKeyExists(arguments.data,rs.name)>
-		
+
 		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
 			<cfset theValue=arguments.data[key]>
 		<cfelseif structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])>
@@ -356,14 +400,14 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 				<cfset errors['#rs.name#encoding']="The field '#rs.name#' contains invalid characters.">
 			</cfif>
 		</cfif>
-			
+
 	</cfif>
 </cfloop>
 </cfif>
 <cfreturn errors>
 </cffunction>
 
-<cffunction name="saveExtendedData" access="public" returntype="void">
+<cffunction name="saveExtendedData">
 <cfargument name="baseID">
 <cfargument name="data">
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
@@ -383,6 +427,8 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var tempDate=""/>
 <cfset var tempFile=""/>
 <cfset var remoteID=""/>
+<cfset var saveEmptyExtendedValues=variables.configBean.getValue(property='saveEmptyExtendedValues',default=true)>
+<cfset var utility=getBean('utility')>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
@@ -403,7 +449,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <!--- process non-file attributes --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select attributeID,name,validation,message from tclassextendattributes #tableModifier# where 
+select attributeID,name,validation,message from tclassextendattributes #tableModifier# where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -412,10 +458,10 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <cfloop query="rs">
 	<cfset key="ext#rs.attributeID#"/>
-	
+
 	<cfif structKeyExists(arguments.data,key)
 		or structKeyExists(arguments.data,rs.name)>
-		
+
 		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
 			<cfset theValue=arguments.data[key]>
 		<cfelseif structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])>
@@ -423,7 +469,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		<cfelse>
 			<cfset theValue="">
 		</cfif>
-		
+
 		<cfif len(theValue)>
 			<cfif listFindNoCase("Date,DateTime",rs.validation)>
 				<cfif lsisDate(theValue)>
@@ -433,7 +479,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 						<cfset theValue = parseDateTime(theValue) />
 					</cfcatch>
 					</cftry>
-				<cfelseif isDate(theValue)>	
+				<cfelseif isDate(theValue)>
 					<cfset theValue = parseDateTime(theValue) />
 				</cfif>
 			<cfelseif rs.validation eq "Numeric">
@@ -444,12 +490,12 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		</cfif>
 
 		<cfquery>
-			delete from #arguments.dataTable# 
+			delete from #arguments.dataTable#
 			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 		</cfquery>
-		
-		<cfif len(theValue)>
+
+		<cfif len(theValue) or saveEmptyExtendedValues>
 			<cfquery>
 				insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
 				)
@@ -457,11 +503,15 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
 				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
-				<cfif listFindNoCase("Date,DateTime",rs.validation)>
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#utility.trimVarchar(theValue,250)#">,
+				<cfif not len(theValue)>
+					null,
+					null,
+					null
+				<cfelseif listFindNoCase("Date,DateTime",rs.validation)>
 					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-					null						
+					null
 				<cfelseif rs.validation eq "Numeric">
 					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 					null,
@@ -470,7 +520,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 					null,
 					null
-				</cfif>	
+				</cfif>
 				,
 				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
 				)
@@ -481,7 +531,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <!--- process file attributes --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select attributeID,name from tclassextendattributes #tableModifier# where 
+select attributeID,name from tclassextendattributes #tableModifier# where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -492,43 +542,43 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset key="ext#rs.attributeID#"/>
 	<cfset deletekey1="extDelete#rs.attributeID#"/>
 	<cfset deletekey2="extDelete#rs.name#"/>
-	
+
 	<!--- if a new file has been submitted or a delete key exists, delete any existing file --->
 	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
 		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))
-		or structKeyExists(arguments.data,deletekey1) 
+		or structKeyExists(arguments.data,deletekey1)
 		or structKeyExists(arguments.data,deletekey2)>
-	
-	
+
+
 		<cfset fileID=getAttribute(arguments.baseID,rs.attributeID,arguments.dataTable)/>
-		
+
 		<cfif len(fileID)>
-			
+
 			<cfset fileManager.deleteIfNotUsed(fileID,arguments.baseID)/>
-			
+
 			<cfquery>
-			delete from #arguments.dataTable# 
+			delete from #arguments.dataTable#
 			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 		 	</cfquery>
-		 	
+
 		 	<cfset fileID=""/>
-		</cfif>	
+		</cfif>
 
 	</cfif>
-		
+
 	<!--- if a new file has been submitted , save it --->
 	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
 		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])) and not
-		(structKeyExists(arguments.data,deletekey1) 
+		(structKeyExists(arguments.data,deletekey1)
 		or structKeyExists(arguments.data,deletekey2))>
-		
+
 		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
 			<cfset formField=key />
 		<cfelse>
 			<cfset formField=rs.name />
 		</cfif>
-		
+
 		<!--- Check to see if it's a posted binary file--->
 		<cfif not isValid('UUID',arguments.data[formField])>
 			<cfif fileManager.isPostedFile(arguments.data[formField])>
@@ -537,25 +587,30 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfelse>
 				<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
 			</cfif>
-		
-			<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
-			<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+			<cfif not StructIsEmpty(tempFile)>
+				<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
+				<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
+			<cfelse>
+				<cfset fileID="">
+			</cfif>
 		<cfelse>
 			<cfset fileID=arguments.data[formField]>
-		</cfif>	
-		
-		<cfquery >
-			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
-			values (
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
-			<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">	
-			)
-		</cfquery>
-					
+		</cfif>
+
+		<cfif len(fileid)>
+			<cfquery >
+				insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
+				values (
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
+				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
+				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
+				)
+			</cfquery>
+		</cfif>
+
 	</cfif>
 
 </cfloop>
@@ -565,7 +620,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 </cffunction>
 
-<cffunction name="preserveExtendedData" access="public" returntype="void">
+<cffunction name="preserveExtendedData">
 <cfargument name="baseID">
 <cfargument name="preserveID" required="true" default="">
 <cfargument name="data">
@@ -581,6 +636,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var s=0/>
 <cfset var hasExtendSets=isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset var remoteID="">
+<cfset var utility=getBean('utility')>
 <cfif isdefined("arguments.data.remoteID")>
 	<cfset remoteID=left(arguments.data.remoteID,35)>
 </cfif>
@@ -593,15 +649,15 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <!--- preserve data from extendsets that were'nt submitted --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
+select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue,
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable# #tableModifier#
 inner join tclassextendattributes #tableModifier# on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
- where 
+ where
 <!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and 
+and
 	(
 		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
 		<cfif arguments.subType neq "Default">
@@ -631,7 +687,7 @@ and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveI
 and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-</cfif>		
+</cfif>
 </cfquery>
 
 <cfloop query="rs">
@@ -642,22 +698,22 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 		<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
 		<cfif len(rs.attributeValue)>
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">
 		<cfelse>
 			null
 		</cfif>,
 		<cfif len(rs.datetimevalue)>
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">	
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">
 		<cfelse>
 			null
 		</cfif>,
 		<cfif len(rs.numericvalue)>
-			<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">	
+			<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">
 		<cfelse>
 			null
 		</cfif>,
 		<cfif len(rs.stringvalue)>
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(rs.stringvalue,250)#">	
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#utility.trimVarchar(rs.stringvalue,250)#">
 		<cfelse>
 			null
 		</cfif>,
@@ -668,15 +724,15 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 
 <!--- preserve get non file attributes that were'nt submitted along with extendedset  --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
+select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue,
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name  from #arguments.dataTable# #tableModifier#
 inner join tclassextendattributes #tableModifier# on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
- where 
+ where
  <!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and 
+and
 	(
 		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
 		<cfif arguments.subType neq "Default">
@@ -706,7 +762,7 @@ and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveI
 and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-</cfif>		
+</cfif>
 and tclassextendattributes.type<>'File'
 </cfquery>
 
@@ -714,7 +770,7 @@ and tclassextendattributes.type<>'File'
 <cfset key="ext#rs.attributeID#"/>
 <cfif not structKeyExists(arguments.data,key)
 	and not structKeyExists(arguments.data,rs.name)>
-		
+
 		<cfquery>
 			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
 				values (
@@ -722,43 +778,43 @@ and tclassextendattributes.type<>'File'
 				<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
 				<cfif len(rs.attributeValue)>
-				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">
 				<cfelse>
 				null
 				</cfif>,
 				<cfif len(rs.datetimevalue)>
-					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">	
+					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">
 				<cfelse>
 					null
 				</cfif>,
 				<cfif len(rs.numericvalue)>
-					<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">	
+					<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">
 				<cfelse>
 					null
 				</cfif>,
 				<cfif len(rs.stringvalue)>
-					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">
 				<cfelse>
 					null
 				</cfif>,
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#remoteID#">
 				)
 			</cfquery>
-		
+
 	</cfif>
-</cfloop>	
+</cfloop>
 
 <!--- preserve  Files from submitted extendset and make sure that is they were'nt newly submitted that the fileID is carried forward--->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
+select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue,
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable# #tableModifier#
 inner join tclassextendattributes #tableModifier# on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
- where 
+ where
  <!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and 
+and
 	(
 		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
 		<cfif arguments.subType neq "Default">
@@ -787,22 +843,22 @@ and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveI
 and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-</cfif>		
+</cfif>
 and tclassextendattributes.type='File'
 </cfquery>
 
 <cfloop query="rs">
 		<cfset key="ext#rs.attributeID#"/>
 		<cfset deletekey1="extDelete#rs.attributeID#"/>
-		<cfset deletekey2="extDelete#rs.name#"/> 
-		
+		<cfset deletekey2="extDelete#rs.name#"/>
+
 		<cfif not((structKeyExists(arguments.data,key) and len(arguments.data[key]))
 			or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))
-			or structKeyExists(arguments.data,deletekey1) 
+			or structKeyExists(arguments.data,deletekey1)
 			or structKeyExists(arguments.data,deletekey2))
 			and len(rs.attributeValue)>
-		
-		
+
+
 						<cfquery>
 						insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
 						values (
@@ -810,12 +866,12 @@ and tclassextendattributes.type='File'
 						<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
 						<cfif len(rs.attributeValue)>
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
+						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">
 						<cfelse>
 						null
 						</cfif>,
 						<cfif len(rs.stringvalue)>
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
+						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">
 						<cfelse>
 						null
 						</cfif>,
@@ -828,7 +884,7 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
-<cffunction name="getTypeAsString" returntype="string">
+<cffunction name="getTypeAsString">
 <cfargument name="type">
 
 <cfif isNumeric(arguments.type)>
@@ -843,13 +899,13 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
-<cffunction name="getSubTypes" returntype="query">
+<cffunction name="getSubTypes">
 <cfargument name="siteid">
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select * from tclassextend 
-	where 
+	select * from tclassextend
+	where
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	<cfif arguments.activeOnly>
 		and isActive=1
@@ -860,14 +916,14 @@ and tclassextendattributes.type='File'
 <cfreturn rs />
 </cffunction>
 
-<cffunction name="getSubTypesByType" returntype="query">
+<cffunction name="getSubTypesByType">
 <cfargument name="type">
 <cfargument name="siteid">
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select * from tclassextend 
-	where 
+	select * from tclassextend
+	where
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	and	type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
 	<cfif arguments.activeOnly>
@@ -879,7 +935,7 @@ and tclassextendattributes.type='File'
 <cfreturn rs />
 </cffunction>
 
-<cffunction name="saveAttributeSort" returntype="void">
+<cffunction name="saveAttributeSort">
 <cfargument name="attributeID">
 <cfset var rs = ""/>
 <cfset var a=0/>
@@ -887,14 +943,14 @@ and tclassextendattributes.type='File'
 	<cfquery>
 	update tclassextendattributes
 	set orderno=#a#
-	where 
+	where
 	attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#listGetAt(arguments.attributeID,a)#">
 	</cfquery>
 </cfloop>
 
 </cffunction>
 
-<cffunction name="saveExtendSetSort" returntype="void">
+<cffunction name="saveExtendSetSort">
 <cfargument name="extendSetID">
 <cfset var rs = ""/>
 <cfset var s=0/>
@@ -902,14 +958,14 @@ and tclassextendattributes.type='File'
 	<cfquery>
 	update tclassextendsets
 	set orderno=#s#
-	where 
+	where
 	extendSetID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#listGetAt(arguments.extendSetID,s)#">
 	</cfquery>
 </cfloop>
 
 </cffunction>
 
-<cffunction name="saveRelatedSetSort" returntype="void">
+<cffunction name="saveRelatedSetSort">
 <cfargument name="relatedContentSetID">
 <cfset var rs = ""/>
 <cfset var s=0/>
@@ -917,14 +973,14 @@ and tclassextendattributes.type='File'
 	<cfquery>
 		update tclassextendrcsets
 		set orderno=#s#
-		where 
+		where
 		relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#listGetAt(arguments.relatedContentSetID,s)#">
 	</cfquery>
 </cfloop>
 
 </cffunction>
 
-<cffunction name="getAttribute" returnType="string" output="false">
+<cffunction name="getAttribute" output="false">
 <cfargument name="baseID" required="true" default=""/>
 <cfargument name="key" required="true" default=""/>
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
@@ -940,7 +996,7 @@ and tclassextendattributes.type='File'
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select #arguments.dataTable#.attributeValue,tclassextendattributes.defaultValue,#arguments.dataTable#.attributeID,tclassextendattributes.validation from tclassextendattributes #tableModifier#
 	left join #arguments.dataTable# #tableModifier# ON (tclassextendattributes.attributeID=#arguments.dataTable#.attributeID)
-	where 
+	where
 	#arguments.dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 	and (
 		<cfif isNumeric(arguments.key)>
@@ -948,7 +1004,7 @@ and tclassextendattributes.type='File'
 		or</cfif>
 		 tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.key#">)
 	</cfquery>
-	
+
 	<cfif len(rs.attributeID)>
 		<cfif listFindNoCase("Date,DateTime",rs.validation)>
 			<cfset tempDate=rs.attributeValue>
@@ -964,12 +1020,12 @@ and tclassextendattributes.type='File'
 	</cfif>
 </cffunction>
 
-<cffunction name="deleteExtendedData" output="false" returntype="void">
+<cffunction name="deleteExtendedData" output="false">
 <cfargument name="baseid">
 <cfargument name="dataTable" required="true" default="tclassextenddata">
 	<cfset var rsFiles="">
 	<cfset var fileManager=getBean("fileManager") />
-	
+
 	<cfif variables.configBean.getDBType() eq 'MSSQL'>
 		<cfset var tableModifier="with (nolock)">
 	<cfelse>
@@ -979,29 +1035,31 @@ and tclassextendattributes.type='File'
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsFiles')#">
 		select attributeValue from #arguments.dataTable# #tableModifier#
 		inner join tclassextendattributes on (#arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
-		where 
+		where
 		tclassextendattributes.type='File'
 		and #arguments.dataTable#.baseid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseid#"/>
 		and #arguments.dataTable#.attributeValue is not null
 	</cfquery>
-		
+
 	<cfloop query="rsFiles">
 		<cfset fileManager.deleteIfNotUsed(rsFiles.attributeValue,arguments.baseID)/>
 	</cfloop>
 
 	<cfquery>
-		delete from #arguments.dataTable# where 
+		delete from #arguments.dataTable# where
 	    baseid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseid#"/>
-	</cfquery>		
-		
+	</cfquery>
+
 </cffunction>
 
-<cffunction name="getExtendedAttributeList" output="false" returntype="query">
+<cffunction name="getExtendedAttributeList" output="false">
 <cfargument name="siteID">
 <cfargument name="baseTable" required="true" default="tcontent">
 <cfargument name="activeOnly" required="true" default="false">
+<cfargument name="type" required="true" default="">
+<cfargument name="subtype" required="true" default="">
 	<cfset var rs="">
-	
+
 	<cfif variables.configBean.getDBType() eq 'MSSQL'>
 		<cfset var tableModifier="with (nolock)">
 	<cfelse>
@@ -1009,23 +1067,39 @@ and tclassextendattributes.type='File'
 	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name AS attribute
-		from tclassextendattributes #tableModifier#  
+		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name AS attribute, tclassextendattributes.label AS label
+		from tclassextendattributes #tableModifier#
 		inner join tclassextendsets #tableModifier# on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
 		inner join tclassextend #tableModifier# on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
+
 		and (
-			tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
-			<cfif arguments.baseTable eq 'tcontent'>
-			or tclassextend.type = 'Base'	
+			tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+			<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",arguments.type)>
+					or tclassextend.type='Base'
 			</cfif>
 		)
+
+		and (
+			<cfif arguments.subtype neq "Default">
+				tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+				or
+			</cfif>
+			tclassextend.subtype='Default'
+		)
+
+		and tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
+
 		<cfif arguments.activeOnly>
 			and tclassextend.isActive=1
 		</cfif>
+
+		and (tclassextend.adminonly!=1 or tclassextend.adminonly is null)
+		and (tclassextendattributes.adminonly!=1 or tclassextendattributes.adminonly is null)
+
 		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
 	</cfquery>
-	
+
 	<cfreturn rs>
 </cffunction>
 
@@ -1037,8 +1111,8 @@ and tclassextendattributes.type='File'
 <cfif variables.configBean.getStrictExtendedData()>
 	<cfif not structKeyExists(arguments,"datatype")>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-				select validation from tclassextendattributes 
-				where 
+				select validation from tclassextendattributes
+				where
 				<cfif isNumeric(arguments.attribute)>
 					attributeID=<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.attribute#">
 				<cfelse>
@@ -1081,12 +1155,12 @@ and tclassextendattributes.type='File'
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddata
-				
+
 				set datetimevalue=null,
 					numericvalue=null,
 					stringvalue=null
-				
-				from tclassextenddata 
+
+				from tclassextenddata
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
 				where attributeValue is not null
@@ -1104,22 +1178,22 @@ and tclassextendattributes.type='File'
 					and attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
-				update tclassextenddata 				
+				update tclassextenddata
 				set datetimevalue=null,
 					numericvalue=null,
 					stringvalue=null
-				where dataID in (Select 
+				where dataID in (Select
 						dataID
-						from tclassextenddata 
+						from tclassextenddata
 						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 												and tcontent.active=1)
 						where attributeValue is not null
-					) 
-				
+					)
+
 				</cfcase>
 				</cfswitch>
 			</cfquery>
-			
+
 			<cfquery>
 			<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
@@ -1131,13 +1205,13 @@ and tclassextendattributes.type='File'
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddata
-				
+
 				set stringvalue=left(attributeValue,255)
-					
+
 				from tclassextenddata
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				where attributeValue is not null							
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="postgresql">
 				update tclassextenddata
@@ -1150,20 +1224,20 @@ and tclassextendattributes.type='File'
 					and attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
-				update tclassextenddata 				
+				update tclassextenddata
 				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,255,1)
-				where dataID in (Select 
+				where dataID in (Select
 						dataID
-						from tclassextenddata 
+						from tclassextenddata
 						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 												and tcontent.active=1)
 						where attributeValue is not null
-					) 
-										
+					)
+
 				</cfcase>
 				</cfswitch>
 			</cfquery>
-			
+
 			<cfif variables.configBean.getStrictExtendedData()>
 				<cfquery>
 					<cfswitch expression="#variables.configBean.getDBType()#">
@@ -1178,10 +1252,10 @@ and tclassextendattributes.type='File'
 					</cfcase>
 					<cfcase value="mssql">
 					update tclassextenddata
-					
+
 					set datetimevalue=cast(subString(stringvalue,6,19) as dateTime)
-					
-					from tclassextenddata 
+
+					from tclassextenddata
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 														and  (tclassextendattributes.validation='date' or tclassextendattributes.validation='datetime'))
 					inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
@@ -1202,21 +1276,21 @@ and tclassextendattributes.type='File'
 						and subString(stringvalue from 6 for 19) ~ '^[12][0-9]{3}\-(0[1-9]|1[0-2])\-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$'
 					</cfcase>
 					<cfcase value="oracle">
-					update tclassextenddata 				
+					update tclassextenddata
 					set datetimevalue=to_date(subStr(stringvalue,6,19), 'YYYY-MM-DD HH24:MI:SS')
-					where dataID in (Select 
+					where dataID in (Select
 							dataID
-							from tclassextenddata 
+							from tclassextenddata
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 																and (lower(tclassextendattributes.validation)='date' or lower(tclassextendattributes.validation)='datetime'))
 							inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 													and tcontent.active=1)
 							where attributeValue is not null
-						) 
+						)
 					</cfcase>
 					</cfswitch>
 				</cfquery>
-				
+
 				<!--- Make sure MySQL does not have any values set to '0000-00-00 00:00:00' --->
 				<cfif variables.configBean.getDBType() eq "MYSQL">
 					<cfquery>
@@ -1229,7 +1303,7 @@ and tclassextendattributes.type='File'
 					where datetimevalue = '0000-00-00 00:00:00'
 					</cfquery>
 				</cfif>
-				
+
 				<cfquery>
 					<cfswitch expression="#variables.configBean.getDBType()#">
 					<cfcase value="mysql">
@@ -1243,10 +1317,10 @@ and tclassextendattributes.type='File'
 					</cfcase>
 					<cfcase value="mssql">
 					update tclassextenddata
-					
+
 					set numericvalue=cast(stringvalue as FLOAT)
-					
-					from tclassextenddata 
+
+					from tclassextenddata
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 														and  tclassextendattributes.validation='numeric')
 					inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
@@ -1267,27 +1341,27 @@ and tclassextendattributes.type='File'
 						and stringvalue ~ '^[-]?([0-9]+[.]?[0-9]*|[.][0-9]+)$'
 					</cfcase>
 					<cfcase value="oracle">
-					update tclassextenddata 				
+					update tclassextenddata
 					set numericvalue=cast(stringvalue as NUMBER)
-					where dataID in (Select 
+					where dataID in (Select
 							dataID
-							from tclassextenddata 
+							from tclassextenddata
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 																and lower(tclassextendattributes.validation)='numeric')
 							inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 													and tcontent.active=1)
 							where attributeValue is not null
 							and LENGTH(TRIM(TRANSLATE(stringvalue, ' +-.0123456789', ' '))) is null
-						) 
+						)
 					</cfcase>
 					</cfswitch>
 				</cfquery>
 			</cfif>
-			
+
 		</cfif>
-		
+
 		<cfif arguments.type eq "Both" or arguments.type eq "User">
-			
+
 			<cfquery>
 			<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
@@ -1320,7 +1394,7 @@ and tclassextendattributes.type='File'
 				</cfcase>
 				</cfswitch>
 			</cfquery>
-			
+
 			<cfquery>
 			<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
@@ -1345,7 +1419,7 @@ and tclassextendattributes.type='File'
 				</cfcase>
 				</cfswitch>
 			</cfquery>
-			
+
 			<cfif variables.configBean.getStrictExtendedData()>
 				<cfquery>
 					<cfswitch expression="#variables.configBean.getDBType()#">
@@ -1358,10 +1432,10 @@ and tclassextendattributes.type='File'
 					</cfcase>
 					<cfcase value="mssql">
 					update tclassextenddatauseractivity
-					
+
 					set datetimevalue=cast(subString(stringvalue,6,19) as dateTime)
-					
-					from tclassextenddatauseractivity 
+
+					from tclassextenddatauseractivity
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 														and  tclassextendattributes.validation='date')
 					where isDate(subString(stringvalue,6,19))=1
@@ -1377,19 +1451,19 @@ and tclassextendattributes.type='File'
 						and subString(stringvalue from 6 for 19) ~ '^[12][0-9]{3}\-(0[1-9]|1[0-2])\-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$'
 					</cfcase>
 					<cfcase value="oracle">
-					update tclassextenddatauseractivity 				
+					update tclassextenddatauseractivity
 					set datetimevalue=to_date(subStr(to_char(stringvalue),6,19), 'YYYY-MM-DD HH24:MI:SS')
-					where dataID in (Select 
+					where dataID in (Select
 							dataID
-							from tclassextenddatauseractivity 
+							from tclassextenddatauseractivity
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 																and lower(tclassextendattributes.validation)='date')
 							where attributeValue is not null
-						) 
+						)
 					</cfcase>
 					</cfswitch>
 				</cfquery>
-				
+
 				<!--- Make sure MySQL does not have any values set to '0000-00-00 00:00:00' --->
 				<cfif variables.configBean.getDBType() eq "MYSQL">
 					<cfquery>
@@ -1400,7 +1474,7 @@ and tclassextendattributes.type='File'
 					where datetimevalue = '0000-00-00 00:00:00'
 					</cfquery>
 				</cfif>
-				
+
 				<cfquery>
 					<cfswitch expression="#variables.configBean.getDBType()#">
 					<cfcase value="mysql">
@@ -1412,10 +1486,10 @@ and tclassextendattributes.type='File'
 					</cfcase>
 					<cfcase value="mssql">
 					update tclassextenddatauseractivity
-					
+
 					set numericvalue=cast(stringvalue as FLOAT)
-					
-					from tclassextenddatauseractivity 
+
+					from tclassextenddatauseractivity
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 														and  tclassextendattributes.validation='numeric')
 					where isNumeric(stringvalue)=1
@@ -1431,29 +1505,29 @@ and tclassextendattributes.type='File'
 						and stringvalue ~ '^[-]?([0-9]+[.]?[0-9]*|[.][0-9]+)$'
 					</cfcase>
 					<cfcase value="oracle">
-					update tclassextenddatauseractivity 				
+					update tclassextenddatauseractivity
 					set numericvalue=cast(stringvalue as NUMBER)
-					where dataID in (Select 
+					where dataID in (Select
 							dataID
-							from tclassextenddatauseractivity 
+							from tclassextenddatauseractivity
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 																and lower(tclassextendattributes.validation)='numeric')
 							where attributeValue is not null
 							and LENGTH(TRIM(TRANSLATE(stringvalue, ' +-.0123456789', ' '))) is null
-						) 
+						)
 					</cfcase>
 					</cfswitch>
 				</cfquery>
 			</cfif>
 		</cfif>
-	
+
 </cffunction>
 
 <cffunction name="syncDefinitions" output="false">
 <cfargument name="fromSiteID" default="">
 <cfargument name="toSiteID" default="">
 <cfargument name="type" default="">
-<cfargument name="subType" default="">	
+<cfargument name="subType" default="">
 
 <cfset var rsSubTypes=getSubTypes(arguments.fromSiteID)>
 <cfset var extendSets="">
@@ -1472,18 +1546,18 @@ and tclassextendattributes.type='File'
 <cfset var destRelatedSet="">
 
 <cfif len(arguments.type)>
-	<cfquery name="rsSubTypes" dbtype="query">	
+	<cfquery name="rsSubTypes" dbtype="query">
 		select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
 		<cfif len(arguments.subType)>
 		and subtype=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.subtype#">
-		</cfif> 
+		</cfif>
 	</cfquery>
 </cfif>
 
 <cfloop query="rsSubTypes">
 	<cfset sourceSubType=getSubTypeByID(rsSubTypes.subTypeID)>
 	<cfset destSubType=getSubTypeByName(rsSubTypes.type,rsSubTypes.subType,arguments.toSiteID)>
-	
+
 	<cfset destSubType.setDataTable(sourceSubType.getDataTable())>
 	<cfset destSubType.setBaseTable(sourceSubType.getBaseTable())>
 	<cfset destSubType.setBaseKeyField(sourceSubType.getBaseKeyField())>
@@ -1495,10 +1569,11 @@ and tclassextendattributes.type='File'
 	<cfset destSubType.setDescription(sourceSubType.getDescription())>
 	<cfset destSubType.setAvailableSubTypes(sourceSubType.getAvailableSubTypes())>
 	<cfset destSubType.setIconClass(sourceSubType.getIconClass())>
+	<cfset destSubType.setAdminOnly(sourceSubType.getAdminOnly())>
 	<cfset destSubType.save()>
-	
+
 	<cfset extendSets=sourceSubType.getExtendSets(activeOnly=false)>
-	
+
 	<cfif arrayLen(extendSets)>
 		<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
 			<cfset sourceExtendSet=extendSets[s]>
@@ -1507,19 +1582,20 @@ and tclassextendattributes.type='File'
 			<cfset destExtendSet.setIsActive(sourceExtendSet.getIsActive())>
 			<cfset destExtendSet.setOrderNo(sourceExtendSet.getOrderNo())>
 			<cfset destExtendSet.save()>
-			
+
 			<cfset attributes=sourceExtendSet.getAttributes()>
-			
+
 			<cfif arrayLen(attributes)>
 				<cfloop from="1" to="#arrayLen(attributes)#" index="a">
 					<cfset sourceAttribute=attributes[a]>
 					<cfset destAttribute=destExtendSet.getAttributeByName(sourceAttribute.getName())>
-					
+
 					<cfset destAttribute.setName(sourceAttribute.getName())>
 					<cfset destAttribute.setHint(sourceAttribute.getHint())>
 					<cfset destAttribute.setType(sourceAttribute.getType())>
 					<cfset destAttribute.setOrderNo(sourceAttribute.getOrderNo())>
 					<cfset destAttribute.setIsActive(sourceAttribute.getIsActive())>
+					<cfset destAttribute.setAdminOnly(sourceAttribute.getAdminOnly())>
 					<cfset destAttribute.setRequired(sourceAttribute.getRequired())>
 					<cfset destAttribute.setValidation(sourceAttribute.getValidation())>
 					<cfset destAttribute.setRegex(sourceAttribute.getRegex())>
@@ -1531,7 +1607,7 @@ and tclassextendattributes.type='File'
 					<cfset destAttribute.save()>
 				</cfloop>
 			</cfif>
-			
+
 		</cfloop>
 	</cfif>
 
@@ -1553,7 +1629,7 @@ and tclassextendattributes.type='File'
 	<cfargument name="subtype">
 	<cfargument name="siteid">
 	<cfargument name="includeIDs" type="boolean" default="false" >
-	
+
 	<cfset var documentXML = xmlNew(false) />
 	<cfset var extension = getSubTypeByName( argumentCollection=arguments) />
 	<cfset var extensionXML = "" />
@@ -1577,7 +1653,7 @@ and tclassextendattributes.type='File'
 <cffunction name="getSubTypesAsXML">
 	<cfargument name="subTypes" type="array" >
 	<cfargument name="includeIDs" type="boolean" default="false" >
-	
+
 	<cfset var documentXML = xmlNew(false) />
 	<cfset var extensionXML = "" />
 	<cfset var i = 0 />
@@ -1594,7 +1670,7 @@ and tclassextendattributes.type='File'
 
 		<!--- if is an id, get the bean --->
 		<cfif isSimpleValue( subType ) and len(subType) eq 35>
-			<cfset subType = getSubTypeByID( subType ) /> 
+			<cfset subType = getSubTypeByID( subType ) />
 		</cfif>
 
 		<cfif not subType.getIsNew()>
@@ -1610,11 +1686,11 @@ and tclassextendattributes.type='File'
 		xmlRoot.XmlChildren,
 		xmlNode
 		) />
-	
+
 	<cfreturn indentXml(toString(documentXML),"	") />
 </cffunction>
 
-<cffunction name="indentXml" output="false" returntype="string">
+<cffunction name="indentXml" output="false">
 	<cfargument name="xml" type="string" required="true" />
 	<cfargument name="indent" type="string" default="  " />
 
@@ -1625,7 +1701,7 @@ and tclassextendattributes.type='File'
 	  <cfset var isCDATAEnd = "" />
 	  <cfset var isEndTag = "" />
 	  <cfset var isSelfClose = "" />
-	  
+
 	  <cfset xml = trim(REReplace(xml, "(^|>)\s*(<|$)", "\1#chr(10)#\2", "all")) />
 	  <cfset lines = listToArray(xml, chr(10)) />
 	  <cfset depth = 0 />
@@ -1661,6 +1737,8 @@ and tclassextendattributes.type='File'
 	<cfset var documentXML="">
 	<cfset var ext="">
 	<cfset var subtype="">
+	<cfset var subtypeArray=[]>
+	<cfset var subtypetype="">
 	<cfset var extset="">
 	<cfset var relset="">
 	<cfset var at="">
@@ -1684,171 +1762,186 @@ and tclassextendattributes.type='File'
 		<cfset baseElement="theme">
 	<cfelseif isDefined("arguments.configXML.mura")>
 		<cfset baseElement="mura">
-	</cfif>	
+	<cfelseif isDefined("arguments.configXML.displayobject")>
+		<cfset baseElement="displayobject">
+	<cfelseif isDefined("arguments.configXML.contenttype")>
+		<cfset baseElement="contenttype">
+	</cfif>
 
-	<cfif len(baseElement) 
+	<cfif len(baseElement)
 		and (
-			isDefined("arguments.configXML.#baseElement#.extensions") 
+			isDefined("arguments.configXML.#baseElement#.extensions")
 			and arraylen(arguments.configXML[baseElement].extensions)
 		)>
 	<cfscript>
 		for(ext=1;ext lte arraylen(arguments.configXML[baseElement].extensions.xmlChildren); ext=ext+1){
-						
+
 			documentXML=arguments.configXML[baseElement].extensions.extension[ext];
 
-			subType = application.classExtensionManager.getSubTypeBean();
-			
-
 			if(isDefined("documentXML.xmlAttributes.type")){
-				if(documentXML.xmlAttributes.type eq 'User'){
+				subtypeArray=listToArray(documentXML.xmlAttributes.type,'^');
+			} else {
+				break;
+			}
+
+			for(var subtypetype in subtypeArray){
+
+				subType = getSubTypeBean();
+
+				if(subtypetype eq 'User'){
 					subType.setType( 2 );
-				} else if(documentXML.xmlAttributes.type eq 'Group'){
+				} else if(subtypetype eq 'Group'){
 					subType.setType( 1);
 				} else {
-					subType.setType( documentXML.xmlAttributes.type );
-				}
-			}
-						
-			if(isDefined("documentXML.xmlAttributes.subtype")){
-				subType.setSubType( documentXML.xmlAttributes.subtype );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.description")){
-				subType.setDescription( documentXML.xmlAttributes.description );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.availableSubTypes")){
-				subType.setAvailableSubTypes( documentXML.xmlAttributes.availableSubTypes );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.hassummary")){
-				subType.setHasSummary( documentXML.xmlAttributes.hassummary );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.hasassocfile")){
-				subType.setHasAssocfile( documentXML.xmlAttributes.hasassocfile );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.hasconfigurator")){
-				subType.setHasConfigurator( documentXML.xmlAttributes.hasconfigurator );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.hasbody")){
-				subType.setHasBody( documentXML.xmlAttributes.hasbody );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.isactive")){
-				subType.setIsActive( documentXML.xmlAttributes.isactive );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.iconClass")){
-				subType.setIconClass( documentXML.xmlAttributes.iconClass );
-			}
-				      	
-			subType.setSiteID( arguments.siteID );
-			subType.load();
-
-			if(subtype.getIsNew()){
-				if(subtype.getType() eq "Site"){
-			  		subType.setBaseTable( "tsettings" );
-					subType.setBaseKeyField( "baseID" );
-				} else if(listFindNoCase("1,2,Group,User",subtype.getType())){
-					subType.setBaseTable( "tusers" );
-					subType.setBaseKeyField( "userid" );
-					subType.setDataTable("tclassextenddatauseractivity");
-				} else if(subtype.getType() eq "Address"){
-			  		subType.setBaseTable( "tusersaddresses" );
-			  		subType.setDataTable("tclassextenddatauseractivity");
-					subType.setBaseKeyField( "addressid" );	
+					subType.setType( subtypetype );
 				}
 
-				subType.save();
-			}
+				if(isDefined("documentXML.xmlAttributes.subtype")){
+					subType.setSubType( documentXML.xmlAttributes.subtype );
+				}
 
-			for(extset=1;extset lte arraylen(documentXML.xmlChildren); extset=extset+1){
-				      	
-				extendSetXML=documentXML.xmlChildren[extset];
+				if(isDefined("documentXML.xmlAttributes.description")){
+					subType.setDescription( documentXML.xmlAttributes.description );
+				}
 
-				if(extendSetXML.xmlName == 'attributeset' && isdefined('extendSetXML.xmlAttributes.name')){
-					extsetorder=extsetorder+1;
+				if(isDefined("documentXML.xmlAttributes.availableSubTypes")){
+					subType.setAvailableSubTypes( documentXML.xmlAttributes.availableSubTypes );
+				}
 
-					extendset= subType.getExtendSetByName(  extendSetXML.xmlAttributes.name );
+				if(isDefined("documentXML.xmlAttributes.hassummary")){
+					subType.setHasSummary( documentXML.xmlAttributes.hassummary );
+				}
 
-					if(isDefined("extendSetXML.xmlAttributes.container")){
-						extendset.setContainer( extendSetXML.xmlAttributes.container );
+				if(isDefined("documentXML.xmlAttributes.adminonly")){
+					subType.setAdminOnly( documentXML.xmlAttributes.adminonly );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.hasassocfile")){
+					subType.setHasAssocfile( documentXML.xmlAttributes.hasassocfile );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.hasconfigurator")){
+					subType.setHasConfigurator( documentXML.xmlAttributes.hasconfigurator );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.hasbody")){
+					subType.setHasBody( documentXML.xmlAttributes.hasbody );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.isactive")){
+					subType.setIsActive( documentXML.xmlAttributes.isactive );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.iconClass")){
+					subType.setIconClass( documentXML.xmlAttributes.iconClass );
+				}
+
+				subType.setSiteID( arguments.siteID );
+				subType.load();
+
+				if(subtype.getIsNew()){
+					if(subtype.getType() eq "Site"){
+				  		subType.setBaseTable( "tsettings" );
+						subType.setBaseKeyField( "baseID" );
+					} else if(listFindNoCase("1,2,Group,User",subtype.getType())){
+						subType.setBaseTable( "tusers" );
+						subType.setBaseKeyField( "userid" );
+						subType.setDataTable("tclassextenddatauseractivity");
+					} else if(subtype.getType() eq "Address"){
+				  		subType.setBaseTable( "tusersaddresses" );
+				  		subType.setDataTable("tclassextenddatauseractivity");
+						subType.setBaseKeyField( "addressid" );
 					}
-								
-					if(extendSet.getIsNew()){
-						extendSet.setOrderNo(extsetorder);
-						extendSet.save();
-					}
 
-					for(at=1;at lte arraylen(extendSetXML.xmlChildren); at=at+1){
-						      		
-						attributeXML=extendSetXML.xmlChildren[at];
+					subType.save();
+				}
 
-						if(structKeyExists(attributeXML,"name")){
-							attribute = extendSet.getAttributeByName(attributeXML.name.xmlText);
-						} else {
-							attribute = extendSet.getAttributeByName(attributeXML.xmlAttributes.name);
+				for(extset=1;extset lte arraylen(documentXML.xmlChildren); extset=extset+1){
+
+					extendSetXML=documentXML.xmlChildren[extset];
+
+					if(extendSetXML.xmlName == 'attributeset' && isdefined('extendSetXML.xmlAttributes.name')){
+						extsetorder=extsetorder+1;
+
+						extendset= subType.getExtendSetByName(  extendSetXML.xmlAttributes.name );
+
+						if(isDefined("extendSetXML.xmlAttributes.container")){
+							extendset.setContainer( extendSetXML.xmlAttributes.container );
 						}
-						if(attribute.getIsNew()){
-							attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex";
-							
-							for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
-							      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
-							    if(structKeyExists(attributeXML,attrbuteKeyName)){
-									evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
-								}else if(structKeyExists(attributeXML.xmlAttributes,attrbuteKeyName)) {
-									evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");
-								}
+
+						if(extendSet.getIsNew()){
+							extendSet.setOrderNo(extsetorder);
+							extendSet.save();
+						}
+
+						for(at=1;at lte arraylen(extendSetXML.xmlChildren); at=at+1){
+
+							attributeXML=extendSetXML.xmlChildren[at];
+
+							if(structKeyExists(attributeXML,"name")){
+								attribute = extendSet.getAttributeByName(attributeXML.name.xmlText);
+							} else {
+								attribute = extendSet.getAttributeByName(attributeXML.xmlAttributes.name);
 							}
+							if(attribute.getIsNew()){
+								attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex,adminonly";
 
-							attribute.setOrderNo(at);
-							attribute.save();
-						}			
-					}
-				} else if(extendSetXML.xmlName == 'relatedcontentset' && isDefined("extendSetXML.xmlAttributes.name")){
-					relsetorder=relsetorder+1;
-					relset=getBean('extendRelatedContentSetBean').loadBy(siteID=subtype.getSiteID(),subTypeID=subType.getSubTypeID(),name=extendSetXML.xmlAttributes.name);
-					if(isDefined("extendSetXML.xmlAttributes.AvailableSubTypes")){
-						relset.setAvailableSubTypes(extendSetXML.xmlAttributes.AvailableSubTypes);
-					}
+								for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
+								      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
+								    if(structKeyExists(attributeXML,attrbuteKeyName)){
+										evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
+									}else if(structKeyExists(attributeXML.xmlAttributes,attrbuteKeyName)) {
+										evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");
+									}
+								}
 
-					relset.setOrderNo(relsetorder);
-					relset.save();
+								attribute.setOrderNo(at);
+								attribute.save();
+							}
+						}
+					} else if(extendSetXML.xmlName == 'relatedcontentset' && isDefined("extendSetXML.xmlAttributes.name")){
+						relsetorder=relsetorder+1;
+						relset=getBean('extendRelatedContentSetBean').loadBy(siteID=subtype.getSiteID(),subTypeID=subType.getSubTypeID(),name=extendSetXML.xmlAttributes.name);
+						if(isDefined("extendSetXML.xmlAttributes.AvailableSubTypes")){
+							relset.setAvailableSubTypes(extendSetXML.xmlAttributes.AvailableSubTypes);
+						}
+
+						relset.setOrderNo(relsetorder);
+						relset.save();
+					}
 				}
+
 			}
 		}
 	</cfscript>
 	</cfif>
 
-	<cfif len(baseElement) 
+	<cfif len(baseElement)
 		and (
-			isDefined("arguments.configXML.#baseElement#.imagesizes") 
+			isDefined("arguments.configXML.#baseElement#.imagesizes")
 			and arraylen(arguments.configXML[baseElement].imagesizes)
 		)>
 		<cfscript>
 		for(ext=1;ext lte arraylen(arguments.configXML[baseElement].imagesizes.xmlChildren); ext=ext+1){
 			imagesizeXML=arguments.configXML[baseElement].imagesizes.imagesize[ext];
-			
+
 			if(isDefined("imagesizeXML.xmlAttributes.name")){
 				if(listFindNoCase('small,medium,large',imagesizeXML.xmlAttributes.name)){
 					if(isDefined("imagesizeXML.xmlAttributes.height")
 						and (isnumeric(imagesizeXML.xmlAttributes.height) or imagesizeXML.xmlAttributes.height eq "AUTO")
-						and imagesizeXML.xmlAttributes.height neq evaluate('site.get#imagesizeXML.xmlAttributes.name#ImageHeight()')){	
+						and imagesizeXML.xmlAttributes.height neq evaluate('site.get#imagesizeXML.xmlAttributes.name#ImageHeight()')){
 						evaluate('site.set#imagesizeXML.xmlAttributes.name#ImageHeight(imagesizeXML.xmlAttributes.height)');
 						dirty=true;
 					}
 
 					if(isDefined("imagesizeXML.xmlAttributes.width")
 						and (isnumeric(imagesizeXML.xmlAttributes.width) or imagesizeXML.xmlAttributes.width eq "AUTO")
-						and imagesizeXML.xmlAttributes.width neq evaluate('site.get#imagesizeXML.xmlAttributes.name#ImageWidth()')){						
+						and imagesizeXML.xmlAttributes.width neq evaluate('site.get#imagesizeXML.xmlAttributes.name#ImageWidth()')){
 						evaluate('site.set#imagesizeXML.xmlAttributes.name#ImageWidth(imagesizeXML.xmlAttributes.width)');
 						dirty=true;
 					}
 
-				} else{ 
+				} else{
 					imagesize=getBean('imagesize').loadBy(name=imagesizeXML.xmlAttributes.name,siteid=arguments.siteid);
 					imagesize.setName(imagesizeXML.xmlAttributes.name);
 					if(isDefined("imagesizeXML.xmlAttributes.height")){
@@ -1862,7 +1955,7 @@ and tclassextendattributes.type='File'
 					imagesize.save();
 				}
 			}
-			
+
 			if(dirty){
 				site.save();
 			}

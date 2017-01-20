@@ -19,15 +19,15 @@
 	if(getDbType() == 'MySQL'  && dbUtility.version().database_productname=='MySQL'){
 		if(!dbUtility.columnExists('caption')){
 			new Query().execute(sql="ALTER TABLE tfiles
-				ADD COLUMN caption text DEFAULT null,
-				ADD COLUMN credits varchar(255) DEFAULT null,
-				ADD COLUMN alttext varchar(255) DEFAULT null,
-				ADD COLUMN remoteID varchar(255) DEFAULT null,
-				ADD COLUMN remoteURL varchar(255) DEFAULT null,
-				ADD COLUMN remotePubDate datetime DEFAULT null,
-				ADD COLUMN remoteSource varchar(255) DEFAULT null,
-				ADD COLUMN remoteSourceURL varchar(255) DEFAULT null,
-				ADD COLUMN exif text DEFAULT null,
+				ADD COLUMN caption text,
+				ADD COLUMN credits varchar(255),
+				ADD COLUMN alttext varchar(255),
+				ADD COLUMN remoteID varchar(255),
+				ADD COLUMN remoteURL varchar(255),
+				ADD COLUMN remotePubDate datetime,
+				ADD COLUMN remoteSource varchar(255),
+				ADD COLUMN remoteSourceURL varchar(255),
+				ADD COLUMN exif text,
 				ADD INDEX #dbUtility.transformIndexName('siteid')# (siteID),
 				ADD INDEX #dbUtility.transformIndexName('contentid')# (contentID),
 				ADD INDEX #dbUtility.transformIndexName('remoteid')# (remoteID),
@@ -37,10 +37,10 @@
 		try{
 			if(!dbUtility.columnExists('exif')){
 				new Query().execute(sql="ALTER TABLE tfiles
-					ADD COLUMN exif text DEFAULT null");
+					ADD COLUMN exif text");
 			}
 		} catch(Any e){}
-		
+
 	} else {
 		dbUtility.addColumn(column="caption",dataType="text")
 		.addColumn(column="credits",dataType="varchar",length="255")
@@ -79,14 +79,14 @@
 	.addIndex('title')
 	.addIndex('subtype')
 	.addIndex('isnav');
-	
+
 	// drop primary key before adding relatedContentID
 	if (!dbUtility.setTable("tcontentrelated").columnExists("relatedContentID")) {
 		try{
 			dbUtility.setTable("tcontentrelated").dropPrimaryKey();
 		} catch (any e){}
 	}
-	
+
 	dbUtility.setTable("tcontentrelated")
 	.addColumn(column="relatedContentSetID",dataType="varchar",length="35")
 	.addColumn(column="orderNo",dataType="int");
@@ -108,14 +108,14 @@
 	.addIndex('urltitle')
 	.addIndex('parentid')
 	.addIndex('filename');
-	
+
 	//writeDump(var=dbUtility.setTable("tsettings").columns(),abort=true);
 
 	dbUtility.setTable("tsettings")
 	.addColumn(column="enableLockdown",datatype="varchar",length=255)
 	.addColumn(column="ExtranetPublicRegNotify",datatype="varchar",length=255)
 	.addColumn(column="customTagGroups",datatype="varchar",length=255);
-	
+
 	if(getDbType() neq 'nuodb'){
 		dbUtility.setTable("tsettings")
 		.addColumn(column="siteid",datatype="varchar",length=25,nullable=false,default='')
@@ -181,7 +181,7 @@ select siteID from tsettings where siteid not in(
 <cfif rsCheck.recordcount>
 	<cfloop query="rsCheck">
 		<cfquery>
-		INSERT INTO tcontent 
+		INSERT INTO tcontent
 		(
 			SiteID
 			,ModuleID

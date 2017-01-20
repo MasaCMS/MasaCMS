@@ -19,7 +19,7 @@ EXEC sp_rename 'tcontentcomments.[comment]', 'comments', 'COLUMN'
 	<cfcatch>
 			<!--- H2 --->
 			<cfquery>
-			ALTER TABLE tcontentcomments ALTER COLUMN comment RENAME TO comments 
+			ALTER TABLE tcontentcomments ALTER COLUMN comment RENAME TO comments
 			</cfquery>
 		</cfcatch>
 	</cftry>
@@ -62,7 +62,7 @@ EXEC sp_rename 'tclassextendattributes.[validate]', 'validation', 'COLUMN'
 	<cfcatch>
 		<!--- H2 --->
 		<cfquery>
-		ALTER TABLE tclassextendattributes ALTER COLUMN validate RENAME TO validation 
+		ALTER TABLE tclassextendattributes ALTER COLUMN validate RENAME TO validation
 		</cfquery>
 	</cfcatch>
 </cftry>

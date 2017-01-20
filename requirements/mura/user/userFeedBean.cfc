@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,15 +36,15 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanFeed" entityName="user" output="false">
+<cfcomponent extends="mura.bean.beanFeed" entityName="user" output="false" hint="This provides user feed functionality">
 
 	<cfproperty name="inActive" type="numeric" default="0" required="true" />
 	<cfproperty name="isPublic" type="numeric" default="1" required="true" />
@@ -55,12 +55,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="sortBy" type="string" default="lname" required="true" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
 	<cfproperty name="bean" type="string" default="user" required="true" />
-	
+
 	<cfset variables.entityName="user">
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.inactive="">
 	<cfset variables.instance.isPublic=1>
 	<cfset variables.instance.groupID="">
@@ -73,26 +73,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.entityName="user">
 	<cfset variables.instance.fieldAliases={'tag'={field='tuserstags.tag',datatype='varchar'}}/>
 	<cfset variables.instance.cachedWithin=createTimeSpan(0,0,0,0)/>
-	
+
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this/>
 </cffunction>
 
-<cffunction name="setParams" access="public" output="false">
+<cffunction name="setParams" output="false">
 	<cfargument name="params" type="any" required="true">
-		
+
 		<cfset var rows=0/>
 		<cfset var I = 0 />
-		
+
 		<cfif isquery(arguments.params)>
-			
+
 		<cfset variables.instance.params=arguments.params />
-			
+
 		<cfelseif isdefined('arguments.params.param')>
-		
+
 			<cfset clearparams() />
 			<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
-				
+
 				<cfset addParam(
 						listFirst(arguments.params['paramField#i#'],'^'),
 						arguments.params['paramRelationship#i#'],
@@ -100,14 +100,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						arguments.params['paramCondition#i#'],
 						listLast(arguments.params['paramField#i#'],'^')
 						) />
-	
+
 			</cfloop>
-			
+
 		<cfelseif isdefined('arguments.params.paramarray') and isArray(arguments.params.paramarray)>
-		
+
 			<cfset clearparams() />
 			<cfloop from="1" to="#arrayLen(arguments.params.paramarray)#" index="i">
-				
+
 				<cfset addParam(
 						listFirst(arguments.params.paramarray[i].field,'^'),
 						arguments.params.paramarray[i].relationship,
@@ -115,16 +115,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						arguments.params.paramarray[i].condition,
 						listLast(arguments.params.paramarray[i].field,'^')
 						) />
-	
+
 			</cfloop>
-					
+
 		</cfif>
-		
+
 		<cfif isStruct(arguments.params)>
 			<cfif structKeyExists(arguments.params,"inactive")>
 				<cfset setInActive(arguments.params.inactive)>
 			</cfif>
-			
+
 			<cfif structKeyExists(arguments.params,"ispublic")>
 				<cfset setIsPublic(arguments.params.ispublic)>
 			</cfif>
@@ -132,15 +132,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif structKeyExists(arguments.params,"type")>
 				<cfset setType(arguments.params.type)>
 			</cfif>
-			
+
 			<cfif structKeyExists(arguments.params,"siteid")>
 				<cfset setValue('siteid',arguments.params.siteid)>
 			</cfif>
-			
+
 			<cfif structKeyExists(arguments.params,"categoryID")>
 				<cfset setCategoryID(arguments.params.categoryID)>
 			</cfif>
-			
+
 			<cfif structKeyExists(arguments.params,"groupID")>
 				<cfset setGroupID(arguments.params.groupID)>
 			</cfif>
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn this>
 </cffunction>
 
-<cffunction name="getQuery" returntype="query" output="false">
+<cffunction name="getQuery" output="false">
 	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
 	<cfset variables.instance.cachedWithin=arguments.cachedWithin>
 	<cfif not len(variables.instance.siteID)>
@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getBean('userManager').getAdvancedSearchQuery(userFeedBean=this)>
 </cffunction>
 
-<cffunction name="getIterator" returntype="any" output="false">
+<cffunction name="getIterator" output="false">
 	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfset var it=getBean("userIterator")>
@@ -191,11 +191,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setGroupID" access="public" output="false">
+<cffunction name="setGroupID" output="false">
 <cfargument name="groupID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">
-	
+
     <cfif not arguments.append>
 		<cfset variables.instance.groupID = trim(arguments.groupID) />
 	<cfelse>
@@ -203,16 +203,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not listFindNoCase(variables.instance.groupID,trim(i))>
 	    	<cfset variables.instance.groupID = listAppend(variables.instance.groupID,trim(i)) />
 	    </cfif>
-	    </cfloop> 
+	    </cfloop>
 	</cfif>
 	<cfreturn this>
 </cffunction>
-  
-<cffunction name="setCategoryID" access="public" output="false">
+
+<cffunction name="setCategoryID" output="false">
 <cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">
-	
+
     <cfif not arguments.append>
 		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
 	<cfelse>
@@ -220,7 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
 	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
 	    </cfif>
-	    </cfloop> 
+	    </cfloop>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -232,5 +232,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="clone" output="false">
 	<cfreturn getBean("userFeed").setAllValues(structCopy(getAllValues()))>
 </cffunction>
- 
+
 </cfcomponent>

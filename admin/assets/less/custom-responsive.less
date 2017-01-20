@@ -1,0 +1,164 @@
+/* MAX WIDTH */
+/* MAX WIDTH */
+/* MAX WIDTH */
+@media (min-width: (@screen-lg-min+220)) {
+ #tabArchitectural #gridContainer .overflow-wrap{
+  overflow-x:visible;
+  overflow-y:visible;
+ } 
+}
+
+
+/* SM: SMALL WIDTH */
+/* SM: SMALL WIDTH */
+/* SM: SMALL WIDTH */
+
+@media (min-width: @screen-sm-min) and (max-width: (@screen-md-min - 1)) {
+
+  #mura-nodes{
+    li .title { max-width: 75%; }
+    li li .title { max-width: 75%; }
+    li li li .title { max-width: 75%; }
+    li li li li .title { max-width: 75%; }
+    li li li li li .title { max-width: 72%; }
+    li li li li li li .title { max-width: 70%; }
+    li li li li li li li .title { max-width: 66%; }
+    li li li li li li li li .title { max-width: 63%; }
+    li li li li li li li li li .title { max-width: 60%; }
+    li li li li li li li li li li .title { max-width: 57.5%; }
+    li li li li li li li li li li li .title { max-width: 55.5%; }
+    li li li li li li li li li li li li .title { max-width: 53%; }
+    li li li li li li li li li li li li li .title { max-width: 51%; }
+   }
+
+  dd.display, dd.nav, dd.objects, dd.template {
+    display: block;
+  }
+
+}
+
+/* XS: EXTRA SMALL WIDTH */
+/* XS: EXTRA SMALL WIDTH */
+/* XS: EXTRA SMALL WIDTH */
+@media (max-width: (@screen-sm-min - 1)) {
+  .mura-item-metadata{
+    text-align: left !important;
+  }
+  .mura-header .nav-module-specific{
+    text-align:left;
+    padding-top:6px;
+    .btn{
+      margin-left: 0;
+      margin-right: 8px;
+    }
+  }
+  #sm-modify-view {
+    float: left !important;
+    margin-top: 12px !important;
+  }
+  #mura-nodes{
+    li .title { max-width: 83%; }
+    li li .title { max-width: 78%; }
+    li li li .title { max-width: 73%; }
+    li li li li .title { max-width: 67%; }
+    li li li li li .title { max-width: 62%; }
+    li li li li li li .title { max-width: 55%; }
+    li li li li li li li .title { max-width: 49%; }
+    li li li li li li li li .title { max-width: 43%; }
+    li li li li li li li li li .title { max-width: 37%; }
+    li li li li li li li li li li .title { max-width: 31%; }
+    li li li li li li li li li li li .title { max-width: 25%; }
+    li li li li li li li li li li li li .title { max-width: 20%; }
+    li li li li li li li li li li li li li .title { max-width: 15%; }
+     }
+    #tabArchitectural #gridContainer dl dt:first-child {
+      width: ~'calc(100% - 100px)' !important; 
+    }
+
+    .block-constrain{
+      padding-bottom: 15px !important;
+    }
+    .block-constrain>.content {
+      padding: 15px!important;
+    }
+  }
+
+
+/* SMALL OR LARGER */
+/* SMALL OR LARGER */
+/* SMALL OR LARGER */
+@media (min-width: @screen-sm-min){
+
+ dd.display, dd.nav, dd.objects, dd.template {
+    display: block;
+  }
+  #tabArchitectural #gridContainer.site-tree dl dt:first-child {
+    width: ~'calc(100% - 340px)' !important;
+  }
+
+}
+
+/* MAX WIDTH, LARGE & MEDIUM */
+/* MAX WIDTH, LARGE & MEDIUM */
+/* MAX WIDTH, LARGE & MEDIUM */
+@media (min-width: @screen-md-min){
+  
+  .nav-module-specific .btn-group .dropdown-menu{
+    right: 0;
+    left: auto;
+  }
+
+  .mura-footer .credits{
+    margin-left: 248px;
+    font-weight: normal;
+  }
+
+  .sidebar-mini .mura-footer .credits{
+    margin-left: 83px;
+  }
+
+  body.mura-admin{
+    .block-content + .mura-actions, 
+    .block-content form > .mura-actions,
+    form .block-content .mura-actions{
+      width: ~'calc(100% - 285px)';
+    }
+    .sidebar-mini .block-content + .mura-actions, 
+    .sidebar-mini .block-content form > .mura-actions,
+    .sidebar-mini .block-content + .mura-actions{
+      width: ~'calc(100% - 100px)';
+    }
+  }
+
+}
+
+/* MEDIUM, SMALL & EXTRA SMALL */
+/* MEDIUM, SMALL & EXTRA SMALL */
+/* MEDIUM, SMALL & EXTRA SMALL */
+@media (max-width: (@screen-lg-min - 1)) {
+  #userActivity table + table,
+  #popularContent table + table {
+    margin-top: 10px !important;
+  }
+}
+
+
+/* SMALL & EXTRA SMALL */
+/* SMALL & EXTRA SMALL */
+/* SMALL & EXTRA SMALL */
+
+@media (max-width: (@screen-md-min - 1)) {
+  #cdashboard #main + .sidebar,
+  #mura-content #main + .sidebar{
+    padding-left: 0 !important;
+    clear: both;
+  }
+  .nav-module-specific .btn-group .dropdown-menu{
+    right: auto;
+    left: -10px;
+  }
+  .block-constrain > .content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}

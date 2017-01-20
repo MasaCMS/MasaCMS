@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,28 +36,28 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides site settings CRUD functionality">
 
 <cfsavecontent variable="variables.fieldlist"><cfoutput>siteid,pagelimit,domain,domainAlias,enforcePrimaryDomain,contact,locking,site,mailserverip,mailserverusername,mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,
 cache, cacheCapacity, cacheFreeMemoryThreshold, viewdepth,nextn,dataCollection,ExportLocation,
 columnCount,primaryColumn,publicSubmission,adManager,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
 publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,filePoolID,categoryPoolID,contentPoolID,orderno,feedManager,
 largeImageHeight, largeImageWidth, smallImageHeight, smallImageWidth, mediumImageHeight, mediumImageWidth,
-sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
+sendLoginScript, sendAuthCodeScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
 loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
 googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort,
-mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentApprovalScript,contentRejectionScript,enableLockdown,customTagGroups,
-hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,JSONApi,useSSL,isRemote,remotecontext,remoteport,resourceSSL,resourceDomain</cfoutput></cfsavecontent>
+mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentPendingScript,contentApprovalScript,contentRejectionScript,contentCanceledScript,enableLockdown,customTagGroups,
+hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,JSONApi,useSSL,isRemote,remotecontext,remoteport,resourceSSL,resourceDomain,showDashboard,placeholderImgID,placeholderImgExt</cfoutput></cfsavecontent>
 
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
 	<cfset variables.configBean=arguments.configBean />
@@ -65,12 +65,12 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="read" access="public" output="false" returntype="any">
+<cffunction name="read" output="false">
 <cfargument name="siteid" type="string" />
 <cfargument name="settingsBean" default="" />
 	<cfset var rs ="" />
 	<cfset var bean=arguments.settingsBean />
-	
+
 	<cfif not isObject(bean)>
 		<cfset bean=getBean("site")>
 	</cfif>
@@ -78,17 +78,17 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select #variables.fieldlist#, lastdeployment from tsettings where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
 		<cfset bean.set(rs) />
 		<cfset bean.setIsNew(0)>
 	</cfif>
-	
+
 	<cfreturn bean />
-	
+
 </cffunction>
 
-<cffunction name="delete" access="public" output="false" returntype="void">
+<cffunction name="delete" output="false">
 <cfargument name="siteid" type="string" />
 
 	<cftransaction>
@@ -111,19 +111,19 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	<cfquery>
 	delete from tusersmemb where groupID in (select userID from tusers where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> and type=1 )
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tuseraddresses where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tusers where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tmailinglist where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tmailinglistmembers where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
@@ -137,12 +137,12 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	</cfquery>
 
 	<cfquery>
-	delete from tformresponsequestions where 
+	delete from tformresponsequestions where
 	formID in (select contentID from tcontent
 				where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				and type ='Form')
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
@@ -150,11 +150,11 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	<cfquery>
 	delete from tcontentcomments where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tsystemobjects where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tcontentobjects where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
@@ -186,7 +186,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	<cfquery>
 	delete from tcontentcategoryassign where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tcontentcategories where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
@@ -210,43 +210,43 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	<cfquery>
 	delete from tsessiontracking where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	update tsettings set PrivateUserPoolID=siteid where PrivateUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	update tsettings set PublicUserPoolID=siteid where PublicUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tcontenttags where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tclassextenddata where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tclassextendattributes where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tclassextendsets where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tclassextend where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tfiles where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from ttrash where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
 	<cfquery>
 	delete from tchangesets where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
@@ -270,12 +270,23 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	<cfquery>
 	delete from tapprovalrequests where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
-	
+
+	<cfif len(application.objectMappings.bundleablebeans)>
+		<cfloop list="#application.objectMappings.bundleablebeans#" index="local.b">
+			<cfset local.beanClass=getBean(beanName=local.b)>
+			<cfif local.beanClass.hasProperty('siteid')>
+				<cfquery>
+					delete from #local.beanClass.getTable()#
+					where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+				</cfquery>
+			</cfif>
+		</cfloop>
+	</cfif>
 	</cftransaction>
-	
+
 </cffunction>
 
-<cffunction name="update" access="public" output="false" returntype="void">
+<cffunction name="update" output="false">
 <cfargument name="bean" type="any" />
 
 <cfquery>
@@ -322,21 +333,22 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		 categoryPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getCategoryPoolID()#" />,
 		 contentPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getContentPoolID()#" />,
 		 feedManager=#arguments.bean.getHasfeedManager()#,
-		 
+
 		largeImageHeight = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLargeImageHeight()#" />,
 		largeImageWidth = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLargeImageWidth()#" />,
 		smallImageHeight = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getSmallImageHeight()#" />,
 		smallImageWidth = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getSmallImageWidth()#" />,
 		mediumImageHeight = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getMediumImageHeight()#" />,
 		mediumImageWidth = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getMediumImageWidth()#" />,
-		
+
 		 sendLoginScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getSendLoginScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getSendLoginScript()#" />,
+		 sendAuthCodeScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getSendAuthCodeScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getSendAuthCodeScript()#" />,
 		 mailingListConfirmScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getMailingListConfirmScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailingListConfirmScript()#" />,
 		 publicSubmissionApprovalScript=<cfqueryparam  null="#iif(arguments.bean.getPublicSubmissionApprovalScript() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getPublicSubmissionApprovalScript()#" />,
 		 reminderScript = <cfqueryparam  null="#iif(arguments.bean.getreminderScript() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getreminderScript()#" />,
-		
+
 		 ExtranetPublicRegNotify=<cfqueryparam  null="#iif(arguments.bean.getExtranetPublicRegNotify() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getExtranetPublicRegNotify()#" />,
-		 loginURL=<cfqueryparam  null="#iif(arguments.bean.getloginURL() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_varchar" value="#arguments.bean.getloginURL(parseMuraTag=false)#" />, 
+		 loginURL=<cfqueryparam  null="#iif(arguments.bean.getloginURL() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_varchar" value="#arguments.bean.getloginURL(parseMuraTag=false)#" />,
 		 editProfileURL=<cfqueryparam  null="#iif(arguments.bean.getEditProfileURL() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_varchar" value="#arguments.bean.getEditProfileURL(parseMuraTag=false)#" />,
 		 CommentApprovalDefault = #arguments.bean.getCommentApprovalDefault()#,
  		 accountActivationScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getAccountActivationScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getAccountActivationScript()#" />,
@@ -352,8 +364,10 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	 	 hasChangesets=#arguments.bean.getHasChangesets()#,
 	 	 baseID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getBaseID()#" />,
 	 	 EnforceChangesets=#arguments.bean.getEnforceChangesets()#,
+		 contentPendingScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentPendingScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentPendingScript()#" />,
 	 	 contentApprovalScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentApprovalScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentApprovalScript()#" />,
 	 	 contentRejectionScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentRejectionScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentRejectionScript()#" />,
+		 contentCanceledScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentCanceledScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentCanceledScript()#" />,
 		 enableLockdown=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getEnableLockdown()#" />,
 		 customTagGroups=<cfif arguments.bean.getCustomTagGroups() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getCustomTagGroups())#" /><cfelse>null</cfif>,
 		 hasComments=#arguments.bean.getHasComments()#,
@@ -367,15 +381,18 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		 resourceSSL=#arguments.bean.getResourceSSL()#,
 		 resourceDomain=<cfif Len(Trim(arguments.bean.getResourceDomain()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getResourceDomain())#" /><cfelse>null</cfif>,
 		 RemoteContext=<cfif Len(Trim(arguments.bean.getRemoteContext()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getRemoteContext())#" /><cfelse>null</cfif>,
-		 RemotePort=#arguments.bean.getRemotePort()#
+		 RemotePort=#arguments.bean.getRemotePort()#,
+		 showDashboard=#arguments.bean.getShowDashboard()#,
+		 placeholderImgID=<cfif Len(Trim(arguments.bean.getPlaceholderImgID()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgID())#" /><cfelse>null</cfif>,
+		 placeholderImgExt=<cfif Len(Trim(arguments.bean.getPlaceholderImgExt()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgExt())#" /><cfelse>null</cfif>
 
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">
    </cfquery>
-   
-	
+
+
 </cffunction>
 
-<cffunction name="create" access="public" output="false" returntype="void">
+<cffunction name="create" output="false">
 <cfargument name="bean" type="any" />
 
 <cfset var rssites="">
@@ -443,9 +460,10 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getMediumImageHeight()#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getMediumImageWidth()#" />,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getSendLoginScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getSendLoginScript()#" />,
+		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getSendAuthCodeScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getSendAuthCodeScript()#" />,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getMailingListConfirmScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailingListConfirmScript()#" />,
 		<cfqueryparam  null="#iif(arguments.bean.getPublicSubmissionApprovalScript() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getPublicSubmissionApprovalScript()#" />,
-		<cfqueryparam  null="#iif(arguments.bean.getreminderScript() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getreminderScript()#" />, 
+		<cfqueryparam  null="#iif(arguments.bean.getreminderScript() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getreminderScript()#" />,
 		<cfqueryparam  null="#iif(arguments.bean.getExtranetPublicRegNotify() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getExtranetPublicRegNotify()#" />,
 		<cfqueryparam  null="#iif(arguments.bean.getloginURL() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_varchar" value="#arguments.bean.getloginURL(parseMuraTag=false)#" />,
 		<cfqueryparam  null="#iif(arguments.bean.getEditProfileURL() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_varchar" value="#arguments.bean.getEditProfileURL(parseMuraTag=false)#" />,
@@ -464,8 +482,10 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	 	#arguments.bean.getHasChangesets()#,
 	 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getBaseID()#" />,
 	 	#arguments.bean.getEnforceChangesets()#,
+		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentPendingScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentPendingScript()#" />,
 	 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentApprovalScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentApprovalScript()#" />,
 	 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentRejectionScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentRejectionScript()#" />,
+		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentCanceledScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentCanceledScript()#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getEnableLockdown()#" />,
 		<cfif arguments.bean.getCustomTagGroups() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getCustomTagGroups())#" /><cfelse>null</cfif>,
 		#arguments.bean.getHasComments()#,
@@ -479,12 +499,15 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		<cfif Len(Trim(arguments.bean.getRemoteContext()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getRemoteContext())#" /><cfelse>null</cfif>,
 		 #arguments.bean.getRemotePort()#,
 		 #arguments.bean.getResourceSSL()#,
-		<cfif Len(Trim(arguments.bean.getResourceDomain()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getResourceDomain())#" /><cfelse>null</cfif>
+		<cfif Len(Trim(arguments.bean.getResourceDomain()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getResourceDomain())#" /><cfelse>null</cfif>,
+		#arguments.bean.getShowDashboard()#,
+		<cfif Len(Trim(arguments.bean.getPlaceholderImgID()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgID())#" /><cfelse>null</cfif>,
+		<cfif Len(Trim(arguments.bean.getPlaceholderImgExt()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getPlaceholderImgExt())#" /><cfelse>null</cfif>
 		)
    </cfquery>
- 
+
    <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav,forceSSL)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav,forceSSL)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000003',
@@ -494,7 +517,8 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Module',
 	  'Default',
 	  1,
-	  'Component Manager',
+	  'Components',
+	  'Components',
 	  1,
 	  1,
 	  1,
@@ -502,7 +526,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	)
    </cfquery>
       <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000004',
@@ -512,7 +536,8 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Module',
 	  'Default',
 	  1,
-	  'Forms Manager',
+	  'Forms',
+	  'Forms',
 	  1,
 	  1,
 	  1,
@@ -557,7 +582,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	)
    </cfquery>
-   
+
       <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
@@ -578,7 +603,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  0
 	)
    </cfquery>
-   
+
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
@@ -620,8 +645,8 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  0
 	)
    </cfquery>
-	
-	   
+
+
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav,forceSSL,searchExclude )
 	  values(
@@ -642,7 +667,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  0
 	)
    </cfquery>
-   
+
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
@@ -684,7 +709,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  0
 	)
    </cfquery>
-   
+
       <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav,forceSSL,searchExclude )
 	  values(
@@ -705,8 +730,8 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  0
 	)
    </cfquery>
-   
-   
+
+
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
@@ -781,8 +806,8 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Module',
 	  'Default',
 	  1,
-	  'Variations Manager',
-	  'Variations Manager',
+	  'Remote Variations',
+	  'Remote Variations',
 	  1,
 	  1,
 	  1,
@@ -794,7 +819,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    <cfquery name="rsSystemObject">
       select * from tsystemobjects where siteid = 'default'
    	</cfquery>
-	
+
 	<cfloop query="rsSystemObject">
 		<cfquery>
 		  Insert into tsystemobjects (object,siteid,name,orderno)
@@ -806,7 +831,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		  )
 		</cfquery>
 	</cfloop>
-	
+
 	<cfquery>
       Insert into tmailinglist (mlid,name,lastupdate,siteid,ispurge,ispublic)
 	  values(
@@ -824,12 +849,12 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		company,jobtitle,subscribe,siteid,website,notes,keepPrivate,created)
      VALUES(
          '#createUUID()#',
-		 0, 
+		 0,
 		 null,
-		 null, 
+		 null,
          null,
 		 null,
-         'Admin', 
+         'Admin',
          1,
 		'Default',
         null,
@@ -841,18 +866,18 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		  1,
 		 0,
 		  null,
-		  null, 
+		  null,
 		  0,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 		  null,
 		  null,
 		  0,
 		  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)
-		 
+
    </cfquery>
 
   </cftransaction>
-  	
+
 </cffunction>
 
 </cfcomponent>

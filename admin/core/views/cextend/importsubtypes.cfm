@@ -90,10 +90,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						resizable: false,
 						modal: true,
 						buttons: {
-							'#rc.$.rbKey('sitemanager.extension.ok')#': function() {
-								$(this).dialog('close');
-							}
-						}
+							#rc.$.rbKey('sitemanager.extension.ok')#: 
+								{click: function() {
+										$(this).dialog('close');
+									}
+								, text: 'OK'
+								, class: 'mura-primary'
+								} // /ok
+							}		
+
+
 					});
 
 				} else {
@@ -103,31 +109,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		});
 	</script>
-
-
+<div class="mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.importclassextensions')#</h1>
 
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
-			<i class="icon-circle-arrow-left"></i> 
+					<i class="mi-arrow-circle-left"></i> 
 			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>
 	</div>
 
-	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);"  enctype="multipart/form-data">
-		<div class="fieldset">
-			<div class="control-group">
-				<label class="control-label">
+</div> <!-- /.mura-header -->
+
+<div class="block block-constrain">
+		<div class="block block-bordered">
+		  <div class="block-content">
+
+					<form novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);"  enctype="multipart/form-data">
+						<div class="mura-control-group">
+							<label>
 					#rc.$.rbKey('sitemanager.extension.uploadfile')#
 				</label>
-				<div class="controls">
 					<input type="file" name="newFile">
 				</div>
-			</div>
-		</div>
 
-		<div class="form-actions">
-			<input id="frmSubmit" type="button" class="btn" value="#rc.$.rbKey('sitemanager.extension.import')#" />
+		<div class="mura-actions">
+			<div class="form-actions">
+				<button id="frmSubmit" class="btn mura-primary"><i class="mi-sign-in"></i>#rc.$.rbKey('sitemanager.extension.import')#</button>
+			</div>
 		</div>
 
 		<input type="hidden" name="action" value="import">
@@ -135,4 +144,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
 		#rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
 	</form>
+
+				</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.block-constrain -->
 </cfoutput>

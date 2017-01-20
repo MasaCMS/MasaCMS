@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,17 +36,17 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject">
+<cfcomponent extends="mura.cfobject" hint="This provides communication between Mura instances within a cluster">
 
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.broadcastCachePurges=variables.configBean.getValue("broadcastCachePurges")>
@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="purgeCache" returntype="void" access="public" output="false">
+<cffunction name="purgeCache" output="false">
 	<cfargument name="siteid" required="true" default="">
 	<cfargument name="name" required="true" default="both" hint="data, output or both">
 
@@ -66,35 +66,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='output',broadcast=false)")>
 			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='data',broadcast=false)")>
 		</cfif>
-		
+
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeUserCache" returntype="void" access="public" output="false">
+<cffunction name="purgeUserCache" output="false">
 	<cfargument name="userID" required="true" default="">
-	
+
 	<cfif variables.broadcastCachePurges>
 		<cfset broadcastCommand("getBean('userManager').purgeUserCache(userID='#arguments.userID#',broadcast=false)")>
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeFeedCache" returntype="void" access="public" output="false">
+<cffunction name="purgeFeedCache" output="false">
 	<cfargument name="feedID" required="true" default="">
-	
+
 	<cfif variables.broadcastCachePurges>
 		<cfset broadcastCommand("getBean('feedManager').purgeFeedCache(feedID='#arguments.feedID#',broadcast=false)")>
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeCategoryCache" returntype="void" access="public" output="false">
+<cffunction name="purgeCategoryCache" output="false">
 	<cfargument name="categoryID" required="true" default="">
-	
+
 	<cfif variables.broadcastCachePurges>
 		<cfset broadcastCommand("getBean('categoryManager').purgeCategoryCache(categoryID='#arguments.categoryID#',broadcast=false)")>
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeCategoryDescendentsCache" returntype="void" access="public" output="false">
+<cffunction name="purgeCategoryDescendentsCache" output="false">
 	<cfargument name="categoryID" required="true" default="">
 
 	<cfif variables.broadcastCachePurges>
@@ -102,26 +102,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeContentCache" returntype="void" access="public" output="false">
+<cffunction name="purgeContentCache" output="false">
 	<cfargument name="contentID" required="true" default="">
 	<cfargument name="siteID" required="true" default="">
-	
+
 	<cfif variables.broadcastCachePurges>
 		<cfset broadcastCommand("getBean('contentManager').purgeContentCache(contentID='#arguments.contentID#',siteID='#arguments.siteID#',broadcast=false)")>
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeCacheKey" returntype="void" access="public" output="false">
+<cffunction name="purgeCacheKey" output="false">
 	<cfargument name="cacheName" required="true" default="data">
 	<cfargument name="cacheKey" required="true" default="">
 	<cfargument name="siteid" required="true" default="">
-	
+
 	<cfif variables.broadcastCachePurges>
 		<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteid#').getCacheFactory(name='#arguments.cacheName#').purge(key='#arguments.cacheKey#')")>
 	</cfif>
 </cffunction>
 
-<cffunction name="purgeContentDescendentsCache" returntype="void" access="public" output="false">
+<cffunction name="purgeContentDescendentsCache" output="false">
 	<cfargument name="contentID" required="true" default="">
 	<cfargument name="siteID" required="true" default="">
 
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="runCommands" output="false">	
+<cffunction name="runCommands" output="false">
 	<cfset var rsCommands="">
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommands')#">
@@ -141,26 +141,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cftry>
 			<cfset evaluate("#rsCommands.command#")>
 			<cfcatch>
-				<cflog 
-					type="error"
-					file="exception"
-					text="Cluster Communication Error -- Command: #rsCommands.command#">
+				<cfif isDefined('cfcatch')>
+					<cflog
+						type="error"
+						file="exception"
+						text="Cluster Communication Error -- Command: #rsCommands.command#: #serializeJSON(cfcatch)#">
+				<cfelse>
+					<cflog
+						type="error"
+						file="exception"
+						text="Cluster Communication Error -- Command: #rsCommands.command#">
+				</cfif>
 			</cfcatch>
 		</cftry>
 		<cfquery>
 			delete from tclustercommands where commandID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsCommands.commandID#">
 		</cfquery>
 	</cfloop>
-</cffunction>	
+</cffunction>
 
-<cffunction name="broadcastCommand" returntype="void" access="public" output="false">
+<cffunction name="broadcastCommand" output="false">
 	<cfargument name="command" required="true" default="">
 	<cfset var rsPeers=getPeers()>
 
 	<cfif rsPeers.recordcount>
 		<cfloop query="rsPeers">
 			<cfquery>
-				insert into tclustercommands (commandID,instanceID,command,created) 
+				insert into tclustercommands (commandID,instanceID,command,created)
 					values(
 					'#createUUID()#',
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPeers.instanceID#">,
@@ -170,14 +177,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 		</cfloop>
 	</cfif>
-	
+
 </cffunction>
 
-<cffunction name="reload" output="false" returntype="void">	
+<cffunction name="reload" output="false">
 	<cfargument name="broadcast" default="true">
 
 	<cfset touchInstance()>
-	
+
 	<cfif arguments.broadcast and variables.broadcastAppreloads>
 		<cfset broadcastCommand("getBean('settingsManager').remoteReload()")>
 		<cfquery>
@@ -186,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		<cfquery>
 			delete from tclusterpeers where instanceid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
-		</cfquery>	
+		</cfquery>
 	</cfif>
 
 </cffunction>
@@ -207,10 +214,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery>
 		delete from tclustercommands where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 	</cfquery>
-	
+
 </cffunction>
 
-<cffunction name="hasInstance" output="false">	
+<cffunction name="hasInstance" output="false">
 	<cfset var rsInstance="">
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsInstance')#">
@@ -218,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfreturn rsInstance.recordcount>
-</cffunction>		
+</cffunction>
 
 <cffunction name="getPeers" output="false">
 	<cfset var rsPeers="">
@@ -232,15 +239,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="clearOldCommands" output="false">
 	<cfquery>
-		delete from tclusterpeers 
-		where instanceid in (select instanceid from 
-							tclustercommands 
+		delete from tclusterpeers
+		where instanceid in (select instanceid from
+							tclustercommands
 							where created <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
 							)
 	</cfquery>
 
 	<cfquery>
-		delete from tclustercommands 
+		delete from tclustercommands
 		where created <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
 	</cfquery>
 </cffunction>

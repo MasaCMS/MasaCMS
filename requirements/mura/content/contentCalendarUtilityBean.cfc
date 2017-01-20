@@ -1,4 +1,4 @@
-component extends='mura.cfobject' {
+component extends='mura.cfobject' hint="This provides content calendar utility methods" {
 
   public any function setMuraScope(required muraScope) {
     variables.$ = arguments.muraScope;
@@ -9,20 +9,24 @@ component extends='mura.cfobject' {
     var serializer = new mura.jsonSerializer()
       .asString('id')
       .asString('url')
-      .asDate('start')
-      .asDate('end')
-      .asString('title');
+      .asBoolean('allDay')
+      .asString('title')
+      .asUTCDate('start')
+      .asUTCDate('end');
+
+
 
     var qoq = new Query();
     qoq.setDBType('query');
     qoq.setAttributes(rs=arguments.data);
     qoq.setSQL('
-      SELECT 
+      SELECT
         url as [url]
         , contentid as [id]
         , menutitle as [title]
         , displaystart as [start]
         , displaystop as [end]
+        , allday as [allday]
       FROM rs
     ');
 
@@ -42,13 +46,20 @@ component extends='mura.cfobject' {
   ) {
     var tp = variables.$.initTracePoint('mura.content.contentCalendarUtilityBean.getCalendarItems');
     var local = {};
+    var allowable=[];
 
-    local.contentBean = variables.$.getBean('content').loadBy(contentid=arguments.calendarid, siteid=arguments.siteid);
+    for(var i in listToArray(arguments.calendarid)){
+      local.contentBean = variables.$.getBean('content').loadBy(contentid=i, siteid=arguments.siteid);
 
-    local.applyPermFilter = variables.$.siteConfig('extranet') == 1 
-      && variables.$.getBean('permUtility').setRestriction(local.contentBean.getCrumbArray()).restrict == 1;
+      local.applyPermFilter = variables.$.siteConfig('extranet') == 1
+        && variables.$.getBean('permUtility').setRestriction(local.contentBean.getCrumbArray()).restrict == 1;
 
-    if ( local.contentBean.getIsNew() || local.contentBean.getType() != 'Calendar' ) {
+      if ( !(local.contentBean.getIsNew() || local.contentBean.getType() != 'Calendar') ) {
+          arrayAppend(allowable,i);
+      }
+    }
+
+    if ( !arrayLen(allowable) ) {
       return QueryNew('url,contentid,menutitle,displaystart,displaystop');
     }
 
@@ -66,6 +77,7 @@ component extends='mura.cfobject' {
     local.displaystart = DateFormat(arguments.start, 'yyyy-mm-dd');
     local.displaystop = DateFormat(arguments.end, 'yyyy-mm-dd');
 
+
     // the calendar feed
     local.feed = variables.$.getBean('feed')
       .setMaxItems(0) // get all records
@@ -74,8 +86,8 @@ component extends='mura.cfobject' {
       .addParam(
         relationship='AND'
         ,field='tcontent.parentid'
-        ,condition='EQ'
-        ,criteria=local.contentBean.getContentID()
+        ,condition=(arrayLen(allowable) > 1) ? 'IN': 'EQ'
+        ,criteria=arrayToList(allowable)
       )
       // filter records with a displayStart date that is before the displayStop date
       .addParam(
@@ -85,7 +97,7 @@ component extends='mura.cfobject' {
         ,criteria=local.displaystop
       )
       // OPEN GROUPING
-        // filter records with a displayStop date that occurs after the displayStart date 
+        // filter records with a displayStop date that occurs after the displayStart date
         // OR doesn't have one at all
         .addParam(relationship='andOpenGrouping')
           .addParam(
@@ -121,9 +133,11 @@ component extends='mura.cfobject' {
 
     // prepare to add URL column
     QueryAddColumn(local.rs, 'url', []);
+    QueryAddColumn(local.rs, 'allday', []);
+
     for ( local.i=1; local.i<=local.rs.recordcount; local.i++ ) {
       // add URL to rs
-      local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i]);
+      local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i],complete=1);
       // convert dates to UTC, then use browser's local tz settings to output the dates/times
       /*
       local.tempstart = DateConvert('local2utc', local.rs['displaystart'][i]);
@@ -131,6 +145,22 @@ component extends='mura.cfobject' {
       local.rs['displaystart'][i] = isoDateTimeFormat(local.rs['displaystart'][i]);
       local.rs['displaystop'][i] = isoDateTimeFormat(local.rs['displaystop'][i]);
       */
+
+      if(isDate(local.rs['displaystart'][i])
+        && hour(local.rs['displaystart'][i])==0
+        && minute(hour(local.rs['displaystart'][i]))==0
+        && (
+            !isDate(isDate(local.rs['displaystop'][i]))
+            || (
+                hour(local.rs['displaystart'][i])==23
+                && minute(hour(local.rs['displaystart'][i]))==59
+                )
+            )
+        ){
+            local.rs['allday'][i]=1;
+        } else {
+            local.rs['allday'][i]=0;
+        }
     }
 
     local.rs = filterCalendarItems(data=local.rs, maxItems=0);
@@ -162,7 +192,13 @@ component extends='mura.cfobject' {
     return defaultDate;
   }
 
-  public any function filterCalendarItems(required query data, numeric maxItems=1000) {
+   public any function hasCustomDateParams() {
+    return (isdefined('url.year') || isdefined('form.year'))
+      || (isdefined('url.month') || isdefined('form.month'))
+      || (isdefined('url.day') || isdefined('form.day'));
+  }
+
+  public any function filterCalendarItems(required query data, numeric maxItems=1000, string sortDirection='ASC') {
     var maxRows = !arguments.maxItems ? 100000 : arguments.maxItems;
     var qoq = new Query();
     qoq.setDBType('query');
@@ -170,7 +206,7 @@ component extends='mura.cfobject' {
     qoq.setSQL('
       SELECT *
       FROM rs
-      ORDER BY displaystart ASC
+      ORDER BY displaystart #arguments.sortDirection#
     ');
     return qoq.execute().getResult();
   }

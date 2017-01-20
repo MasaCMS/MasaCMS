@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-<cffunction name="init" returntype="any" access="public" output="false">
+<cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="getSessionHistory" access="public" returntype="query">
+<cffunction name="getSessionHistory">
 	<cfargument name="urlToken" type="string" default="">
 	<cfargument name="siteID" type="string" default="">
 	
@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTopContent" access="public" returntype="query">
+<cffunction name="getTopContent">
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="10">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="isUserOnLine" access="public" returntype="numeric">
+<cffunction name="isUserOnLine">
 	<cfargument name="userID" type="string" required="true" default="">
 	
 	<cfset var rs = ""/>
@@ -180,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getSiteSessions" access="public" returntype="query" output="false">
+<cffunction name="getSiteSessions" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="contentID" type="string" required="yes" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
@@ -238,7 +238,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getSiteSessionCount" access="public" returntype="numeric" output="false">
+<cffunction name="getSiteSessionCount" output="false">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
 	<cfargument name="visitorStatus" type="string" required="true" default="false">
@@ -287,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTopKeywords" access="public" returntype="query">
+<cffunction name="getTopKeywords">
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="10">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
@@ -352,7 +352,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTotalKeywords" access="public" returntype="query">
+<cffunction name="getTotalKeywords">
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
 	<cfargument name="visitorStatus" type="string" required="true" default="false">
@@ -387,7 +387,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTopReferers" access="public" returntype="query">
+<cffunction name="getTopReferers">
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="limit" type="numeric" required="true" default="10">
 	<cfargument name="startDate" type="string" required="true" default="">
@@ -441,7 +441,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTotalReferers" access="public" returntype="query">
+<cffunction name="getTotalReferers">
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
@@ -485,7 +485,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTotalHits" access="public" returntype="query">
+<cffunction name="getTotalHits">
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
 	<cfargument name="visitorStatus" type="string" required="true" default="false">
@@ -542,7 +542,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getTotalSessions" access="public" returntype="query">
+<cffunction name="getTotalSessions">
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">
 	<cfargument name="visitorStatus" type="string" required="true" default="false">
@@ -578,7 +578,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getSessionSearch" access="public" returntype="query">
+<cffunction name="getSessionSearch">
 	<cfargument name="params" type="array" required="true" >
 	<cfargument name="siteid" type="string" required="true" default="">
 	<cfargument name="membersOnly" type="boolean" required="true" default="false">

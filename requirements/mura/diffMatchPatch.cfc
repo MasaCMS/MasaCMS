@@ -1,22 +1,26 @@
-component {
-	
+component extends="mura.cfobject" hint="This provides a utilty to compare values"{
+
 	function init(){
-		variables.diff_match_patch = application.serviceFactory.getBean('javaLoader').create("name.fraser.neil.plaintext.diff_match_patch");
+		if(getBean('configBean').getValue(property='legacyJavaLoader',defaultValue=true)){
+			variables.diff_match_patch = application.serviceFactory.getBean('javaLoader').create("name.fraser.neil.plaintext.diff_match_patch");
+		} else {
+			variables.diff_match_patch = createObject("java","name.fraser.neil.plaintext.diff_match_patch");
+		}
 		return this;
 	}
 
 	function compute(String text1, String text2, type ="diff_main") {
 		var diffOb = evaluate('variables.diff_match_patch.#type#(arguments.text1,arguments.text2)');
-		
+
 		variables.diff_match_patch.diff_cleanupSemantic(diffOb);
-		
+
 		var returnStruct = {
 			diff = diffOb,
 			html =  variables.diff_match_patch.diff_prettyHTML(diffOb),
 			text1 = variables.diff_match_patch.diff_text1(diffOb),
 			text2 = variables.diff_match_patch.diff_text2(diffOb)
 		};
-			
+
 		return returnStruct;
 	}
 
@@ -24,7 +28,7 @@ component {
 	private function prettyText(diffs) {
 	   var html = '';
 	    for (var diff in arguments.diffs) {
-	     
+
 	      switch (diff.operation) {
 		      case 'INSERT':
 		        html=html & '<ins style="background:##e6ffe6;">' & diff.text & '</ins>';

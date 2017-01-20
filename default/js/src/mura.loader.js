@@ -1,5 +1,5 @@
 //https://github.com/malko/l.js
-;(function(window){
+;(function(root){
 /*
 * script for js/css parallel loading with dependancies management
 * @author Jonathan Gotti < jgotti at jgotti dot net >
@@ -19,9 +19,7 @@
 *            - 2012-04-19 - add addAliases method
 * @note coding style is implied by the target usage of this script not my habbits
 */
-	/** gEval credits goes to my javascript idol John Resig, this is a simplified jQuery.globalEval */
-	var gEval = function(js){ ( window.execScript || function(js){ window[ "eval" ].call(window,js);} )(js); }
-		, isA =  function(a,b){ return a instanceof (b || Array);}
+	var isA =  function(a,b){ return a instanceof (b || Array);}
 		//-- some minifier optimisation
 		, D = document
 		, getElementsByTagName = 'getElementsByTagName'
@@ -33,9 +31,9 @@
 		, scriptTag = scripts[scripts[length]-1]
 		, script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
 	;
+
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
-	
-	if( ! window.ljs ){
+	if( ! root.Mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
 			,header  = D[getElementsByTagName]("head")[0] || D.documentElement
@@ -109,16 +107,16 @@
 						attrs={};
 					}
 
-					var parts = urlParse(url);  
+					var parts = urlParse(url);
 					var partToAttrs=[['i','id'],['f','fallback'],['u','src']];
-					
+
 					for(var i=0;i<partToAttrs.length;i++){
 						var part=partToAttrs[i];
 						if(!(part[1] in attrs) && (part[0] in parts)){
 							attrs[part[1]]=parts[part[0]];
 						}
 					}
-				
+
 					if(typeof attrs.type === 'undefined'){
 						attrs.type='text/javascript';
 					}
@@ -130,7 +128,7 @@
 							finalAttrs[a]=attrs[a];
 						}
 					}
-					
+
 					finalAttrs.onerror=function(error){
 						if( attrs.fallback ){
 							var c = error.currentTarget;
@@ -139,7 +137,7 @@
 							appendElmt('script',attrs,cb);
 						}
 					};
-					
+
 
 					if( loaded[finalAttrs.src] === true ){ // already loaded exec cb if any
 						cb && cb();
@@ -178,7 +176,7 @@
 					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
 						return loader.load.apply(this, arguments);
 					}
-					
+
 					var parts = urlParse(url);
 					parts={type:'text/css',rel:'stylesheet',href:url,id:parts.i}
 
@@ -222,8 +220,8 @@
 			}
 		}
 		//export ljs
-		window.mura.ljs = loader;
+		root.Mura.ljs = loader;
 		// eval inside tag code if any
 	}
-	script && gEval(script);
-})(window);
+	scriptTag.src && script && appendElmt('script', {innerHTML: script});
+})(this);

@@ -70,7 +70,7 @@
 				<cfset omitIndex = true />
 			</cfif>
 		</cfif>
-		
+
 		<cfif find( '?', arguments.action ) and arguments.queryString is ''>
 			<!--- shorthand for action/queryString pairing --->
 			<cfset arguments.queryString = listRest( arguments.action, '?' ) />
@@ -114,7 +114,7 @@
 				<cfset extraArgs = listChangeDelims( extraArgs, '/', '&=' ) />
 			</cfif>
 		</cfif>
-		
+
 		<cfif ses>
 			<cfif isHomeAction and extraArgs is ''>
 				<cfset basePath = arguments.path />
@@ -133,7 +133,7 @@
 				<cfset basePath = arguments.path & initialDelim & variables.framework.action & equalDelim & cosmeticAction />
 			</cfif>
 		</cfif>
-		
+
 		<cfif extraArgs is not ''>
 			<cfset basePath = basePath & curDelim & extraArgs />
 			<cfset curDelim = varDelim />
@@ -148,7 +148,7 @@
 		<cfif anchor is not ''>
 			<cfset basePath = basePath & '##' & anchor />
 		</cfif>
-		
+
 		<cfreturn basePath />
 
 	</cffunction>
@@ -630,10 +630,10 @@
 		request.context[variables.framework.action] = request.action;
 
 		// allow configured extensions and paths to pass through to the requested template.
-		// NOTE: for unhandledPaths, we make the list into an escaped regular expression so we match on subdirectories.  
-		// Meaning /myexcludepath will match "/myexcludepath" and all subdirectories  
-		if ( listFindNoCase( framework.unhandledExtensions, listLast( arguments.targetPath, "." ) ) or 
-				REFindNoCase( "^(" & framework.unhandledPathRegex & ")", arguments.targetPath ) ) {		
+		// NOTE: for unhandledPaths, we make the list into an escaped regular expression so we match on subdirectories.
+		// Meaning /myexcludepath will match "/myexcludepath" and all subdirectories
+		if ( listFindNoCase( framework.unhandledExtensions, listLast( arguments.targetPath, "." ) ) or
+				REFindNoCase( "^(" & framework.unhandledPathRegex & ")", arguments.targetPath ) ) {
 			structDelete(this, 'onRequest');
 			structDelete(variables, 'onRequest');
 		}
@@ -712,7 +712,7 @@
 				</cfif>
 			</cfloop>
 		</cfif>
-		
+
 		<cfreturn arguments.cfc />
 
 	</cffunction>
@@ -752,7 +752,7 @@
 				</cfloop>
 			</cfif>
 		</cfif>
-		
+
 		<cfif baseQueryString is not ''>
 			<cfif arguments.queryString is not ''>
 				<cfif left( arguments.queryString, 1 ) is '?' or left( arguments.queryString, 1 ) is '##'>
@@ -871,7 +871,7 @@
 	 * you do not need to call super.setupSubsystem( subsystem )
 	 */
 	function setupSubsystem( subsystem ) { }
-	
+
 	/*
 	 * use this to override the default view
 	 */
@@ -895,7 +895,7 @@
 	<cffunction name="view" returntype="string" access="public" output="false">
 		<cfargument name="path" type="string" required="true" />
 		<cfargument name="args" type="struct" default="#structNew()#" />
-		
+
 		<cfset var viewPath = parseViewOrLayoutPath( arguments.path, 'view' ) />
 		<cfreturn internalView( viewPath, arguments.args ) />
 	</cffunction>
@@ -912,7 +912,7 @@
 		var section = request.section;
 		var item = request.item;
 		var subsystembase = '';
-		
+
 		// has view been overridden?
 		if ( structKeyExists( request, 'overrideViewAction' ) ) {
 			subsystem = getSubsystem( request.overrideViewAction );
@@ -1049,7 +1049,7 @@
 </cfscript><cfsilent>
 
 	<cffunction name="setupApplicationWrapper" returntype="void" access="private" output="false">
-	
+
 		<!---
 			since this can be called on a reload, we need to lock it to prevent other threads
 			trying to reload the app at the same time since we're messing with the main application
@@ -1073,19 +1073,19 @@
 				<cfset isReload = false />
 				<cfset framework.cache = frameworkCache />
 				<cfset framework.subsystems = structNew() />
-				<cfset framework.subsystemFactories = structNew() /> 
+				<cfset framework.subsystemFactories = structNew() />
 				<cfset application[variables.framework.applicationKey] = framework />
 			</cfif>
 		</cflock>
-		
+
 		<!--- this will recreate the main bean factory on a reload: --->
 		<cfset setupApplication() />
-		
+
 		<cfif isReload>
 			<!---
 				it's possible that the cache got populated by another thread between resetting the cache above
 				and the factory getting recreated by the user code in setupApplication() so we flush the cache
-				again here to be safe / paranoid! 
+				again here to be safe / paranoid!
 			--->
 			<cfset frameworkCache = structNew() />
 			<cfset frameworkCache.lastReload = now() />
@@ -1095,7 +1095,7 @@
 			<cfset application[variables.framework.applicationKey].cache = frameworkCache />
 			<cfset application[variables.framework.applicationKey].subsystems = structNew() />
 		</cfif>
-	
+
 	</cffunction>
 
 </cfsilent><cfscript>
@@ -1185,7 +1185,7 @@
 		// NOTE: you can provide a comma delimited list of paths.  Since comma is the delim, it can not be part of your path URL to exclude
 		if ( not structKeyExists(variables.framework, 'unhandledPaths') ) {
 			variables.framework.unhandledPaths = '/flex2gateway';
-		}				
+		}
 		// convert unhandledPaths to regex:
 		variables.framework.unhandledPathRegex = replaceNoCase(
 			REReplace( variables.framework.unhandledPaths, '(\+|\*|\?|\.|\[|\^|\$|\(|\)|\{|\||\\)', '\\\1', 'all' ),
@@ -1214,7 +1214,7 @@
 		request.section = getSection( request.action );
 		request.item = getItem( request.action );
 		request.services = arrayNew(1);
-		
+
 		if ( runSetup ) {
 			rc = request.context;
 			setupSubsystemWrapper( request.subsystem );
@@ -1268,7 +1268,7 @@
 		</cfloop>
 
 	</cffunction>
-	
+
 	<cffunction name="cachedFileExists" returntype="boolean" access="private" output="false">
 		<cfargument name="filePath" />
 		<cfset var cache = application[variables.framework.applicationKey].cache />
@@ -1277,7 +1277,7 @@
 		</cfif>
 		<cfparam name="cache.fileExists" default="#structNew()#" />
 		<cfif not structKeyExists( cache.fileExists, arguments.filePath )>
-			<cfset cache.fileExists[arguments.filePath] = fileExists( arguments.filePath ) /> 
+			<cfset cache.fileExists[arguments.filePath] = fileExists( arguments.filePath ) />
 		</cfif>
 		<cfreturn cache.fileExists[arguments.filePath] />
 	</cffunction>
@@ -1286,13 +1286,13 @@
 		<cfargument name="dottedPath" />
 
 		<cfif arguments.dottedPath eq '' >
-		
+
 			<cfreturn "/" />
-			
+
 		<cfelse>
-		
+
 			<cfreturn '/' & replace( arguments.dottedPath, '.', '/', 'all' ) & '/' />
-		
+
 		</cfif>
 
 	</cffunction>
@@ -1447,7 +1447,7 @@
 			</cflock>
 			<cfset oldKeyToPurge = '' />
 		</cfif>
-		
+
 		<cfif structKeyExists( session, getPreserveKeySessionKey( oldKeyToPurge ) )>
 			<cfset structDelete( session, getPreserveKeySessionKey( oldKeyToPurge ) ) />
 		</cfif>
@@ -1477,7 +1477,7 @@
 
 	<cffunction name="injectFramework" access="private" output="false" hint="Injects FW/1 if appropriate setter declared.">
 		<cfargument name="cfc" required="true" />
-		
+
 		<cfset var args = structNew() />
 		<cfif structKeyExists( arguments.cfc, 'setFramework' )>
 			<cfset args.framework = this />
@@ -1486,8 +1486,8 @@
 			<cfset args.fw1 = this />
 			<cfinvoke component="#arguments.cfc#" method="setFramework" argumentCollection="#args#" />
 		</cfif>
-		 
-	</cffunction>	
+
+	</cffunction>
 
 	<cffunction name="internalLayout" access="private" output="false" hint="Returns the UI generated by the named layout.">
 		<cfargument name="layoutPath" />
@@ -1497,10 +1497,11 @@
 		<cfset var response = '' />
 		<cfset var local = structNew() />
 		<cfset var $ = structNew() />
-		
+
 		<!--- integration point with Mura --->
 		<cfif structKeyExists( rc, '$' )>
 			<cfset $ = rc.$ />
+			<cfset m = rc.$ />
 		</cfif>
 
 		<cfif not structKeyExists( request, "controllerExecutionComplete" ) >
@@ -1521,12 +1522,12 @@
 		<cfset var response = '' />
 		<cfset var local = structNew() />
 		<cfset var $ = structNew() />
-		
+
 		<!--- integration point with Mura --->
 		<cfif structKeyExists( rc, '$' )>
 			<cfset $ = rc.$ />
 		</cfif>
-		
+
 		<cfset structAppend( local, arguments.args ) />
 
 		<cfif not structKeyExists( request, "controllerExecutionComplete" ) >

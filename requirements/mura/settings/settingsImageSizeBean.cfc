@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,16 +36,16 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
- 
+<cfcomponent extends="mura.bean.bean" output="false" entityName="imageSize" table="timagesizes" hint="Site custom inage size bean">
+
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="sizeID" type="string" default="" required="true" />
 <cfproperty name="name" type="string" default="" required="true" />
@@ -53,10 +53,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="width" type="string" default="AUT0" required="true" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
-<cffunction name="init" returntype="any" output="false" access="public">
-	
+<cffunction name="init" output="false">
+
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.siteID=""/>
 	<cfset variables.instance.name=""/>
 	<cfset variables.instance.sizeID=createUUID()/>
@@ -97,15 +97,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="loadBy" access="public" output="false">
+<cffunction name="loadBy" output="false">
 	<cfargument name="sizeID">
 	<cfargument name="name">
 	<cfargument name="siteID" default="#variables.instance.siteID#">
-	
+
 	<cfif isDefined('arguments.name')>
 		<cfset arguments.name=getBean('contentUtility').formatFilename(arguments.name)>
 	</cfif>
-	
+
 	<cfset variables.instance.isNew=1/>
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 
@@ -117,32 +117,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getQuery" access="public" output="false" returntype="query">
+<cffunction name="getQuery" output="false">
 
 	<cfset var rs=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs',cachedwithin=createTimeSpan(0, 0, 0, 1))#">
-	select * from timagesizes 
+	select * from timagesizes
 	where
 	<cfif structKeyExists(arguments,'sizeid')>
 	sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sizeID#">
 	<cfelseif structKeyExists(arguments,"name") and structKeyExists(arguments,"siteid")>
 	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">
-	and 
+	and
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	<cfelse>
 	sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
 	</cfif>
-	
+
 	</cfquery>
-	
+
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false">
+<cffunction name="save"  output="false">
 	<cfset var rs=""/>
 
 	<cfif getQuery().recordcount>
-		
+
 		<cfquery>
 		update timagesizes set
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
@@ -151,9 +151,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		width=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">
 		where sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
 		</cfquery>
-		
+
 	<cfelse>
-		
+
 		<cfquery>
 		insert into timagesizes (sizeid,siteid,name,height,width) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">,
@@ -171,16 +171,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="delete"  access="public" output="false">
+<cffunction name="delete"  output="false">
 
 	<cfquery>
-		delete from timagesizes 
+		delete from timagesizes
 		where sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
 	</cfquery>
-	
+
 	<cfset variables.instance.isNew=1/>
 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="parseName" output="false">
+	<cfset var param=listFirst(getValue('name'),'-')>
+	<cfif left(param,1) eq 'H'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('height',param)>
+		</cfif>
+	<cfelseif left(param,1) eq 'W'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('width',param)>
+		</cfif>
+	</cfif>
+
+	<cfset param=listLast(getValue('name'),'-')>
+
+	<cfif left(param,1) eq 'H'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('height',param)>
+		</cfif>
+	<cfelseif left(param,1) eq 'W'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('width',param)>
+		</cfif>
+	</cfif>
+</cffunction>
 </cfcomponent>

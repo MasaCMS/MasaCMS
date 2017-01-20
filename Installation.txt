@@ -1,7 +1,7 @@
 REQUIREMENTS
-- Must have ColdFusion 9.0.1+, Lucee 4.5.1.000+, or Railo 4.1+ installed
-- Access to a MySQL 4+, PostgreSQL 8+, Microsoft SQL 2000+ or Oracle 10g+ database server and the ability to add a new database
-- Ability to add a Datasource (DSN) to ColdFusion, Lucee, or Railo Administrator
+- Must have ColdFusion 10+, Lucee 4.5.1.000+, installed
+- Access to a MySQL 5+, PostgreSQL 8+, Microsoft SQL 2000+ or Oracle 10g+ database server and the ability to add a new database
+- Ability to add a Datasource (DSN) to ColdFusion, Lucee, Administrator
 
 INSTALLATION
 Installing Mura couldn't be easier. Follow the instructions below and you'll be up and running in minutes.
@@ -21,7 +21,7 @@ Installing Mura couldn't be easier. Follow the instructions below and you'll be 
 
 6. Login to the Mura admin using the username and password chosen in the Mura Set Up page. It is highly recommended you utilize a complex password.
 
-7. If you would like to send scheduled emails or have scheduled content publishing when caching is turned on (caching is highly recommended for increased performance) you must change the "Ping" attribute in the \config\setting.ini.cfm to 1. On start up, Mura will attempt to create a scheduled task to check for event reminders, scheduled emails and to flush its cache for scheduled content. 
+7. If you would like to send scheduled emails or have scheduled content publishing when caching is turned on (caching is highly recommended for increased performance) you must change the "Ping" attribute in the \config\setting.ini.cfm to 1. On start up, Mura will attempt to create a scheduled task to check for event reminders, scheduled emails and to flush its cache for scheduled content.
   1. NOTE: Enabling this scheduled task may cause performance problems in some shared hosting environments.
 
 8. You're done installing Mura. Enjoy!

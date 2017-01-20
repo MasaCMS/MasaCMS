@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides a CRUD utility manage database schemas">
 	<cfset variables.table="">
 
 	<cfset variables.tableLookUp=structNew()>
@@ -149,7 +149,7 @@
 			</cfquery>
 			</cfcase>
 			--->
-			<cfcase value="mssql">
+			<cfcase value="mssql,postgresql">
 			<cfquery
 				name="rs">
 					select column_name,
@@ -158,7 +158,7 @@
 					column_default column_default_value,
 					is_nullable,
 					numeric_precision data_precision
-					from INFORMATION_SCHEMA.COLUMNS
+					from information_schema.columns
 					where TABLE_NAME='#arguments.table#'
 			</cfquery>
 			</cfcase>
@@ -302,7 +302,7 @@
 				<cfelse>
 					#transformDataType(arguments.datatype,arguments.length)#
 					<cfif not arguments.nullable> not null </cfif>
-					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+					<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null'>
 						default
 						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 							#arguments.default#
@@ -334,27 +334,26 @@
 			<cfquery>
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
-						#arguments.column#
-						<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif> <cfif not arguments.nullable>NOT NULL</cfif>
-						<cfif not arguments.autoincrement>
-							<cfif not(not arguments.nullable and arguments.default eq 'null')>
-								DEFAULT
-								<cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>
-									#arguments.default#
-								<cfelse>
-									'#arguments.default#'
-								</cfif>
-							</cfif>
-						</cfif>
-					)
 				<cfelse>
-					ALTER TABLE #arguments.table# ADD COLUMN #arguments.column# <cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif>;
-					<cfif not arguments.nullable>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET NOT NULL;
+					ALTER TABLE #arguments.table# ADD COLUMN
+				</cfif>
+
+				#arguments.column#
+				<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif>
+				<cfif not arguments.nullable>NOT NULL</cfif>
+				<cfif not arguments.autoincrement>
+					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+						DEFAULT
+						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,smallint',arguments.datatype)>
+							#arguments.default#
+						<cfelse>
+							'#arguments.default#'
+						</cfif>
 					</cfif>
-					<cfif not arguments.autoincrement>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
-					</cfif>
+				</cfif>
+
+				<cfif not hasTable>
+					)
 				</cfif>
 			</cfquery>
 		</cfcase>
@@ -517,7 +516,7 @@
 					<cfelse>
 						#transformDataType(arguments.datatype,arguments.length)#
 						<cfif not arguments.nullable> not null </cfif>
-						<cfif not(not arguments.nullable and arguments.default eq 'null')>
+						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null'>
 							default
 							<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 								#arguments.default#
@@ -535,7 +534,7 @@
 					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET NOT NULL;
 					</cfif>
 					<cfif not arguments.autoincrement and not(not arguments.nullable and arguments.default eq 'null')>
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
+					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# SET DEFAULT <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint,smallint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>;
 					</cfif>
 				</cfquery>
 			</cfcase>
@@ -673,7 +672,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="transformDataType" access="private">
+<cffunction name="transformDataType" access="private" hint="Translates to DB datatype">
 	<cfargument name="datatype" default="varchar">
 	<cfargument name="length" default="50">
 	<cfset var MSSQLversion=0>
@@ -693,9 +692,12 @@
 				<cfcase value="tinyint">
 					<cfreturn "tinyint">
 				</cfcase>
+				<cfcase value="smallint">
+					<cfreturn "smallint">
+				</cfcase>
 				<cfcase value="boolean">
-+					<cfreturn "bit">
-+				</cfcase>
+					<cfreturn "bit">
+				</cfcase>
 				<cfcase value="date,datetime,timestamp">
 					<cfreturn "datetime">
 				</cfcase>
@@ -708,24 +710,29 @@
 						<cfcatch></cfcatch>
 					</cftry>
 
-					<cfif not MSSQLversion>
-						<cfquery name="MSSQLversion">
-							EXEC sp_MSgetversion
-						</cfquery>
+					<cftry>
+						<cfif not MSSQLversion>
+							<cfquery name="MSSQLversion">
+								EXEC sp_MSgetversion
+							</cfquery>
 
-						<cftry>
-							<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-							<cfcatch>
-								<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-							</cfcatch>
-						</cftry>
-					</cfif>
+							<cftry>
+								<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+								<cfcatch>
+									<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
+								</cfcatch>
+							</cftry>
+						</cfif>
 
-					<cfif MSSQLversion neq 8>
-						<cfreturn "[nvarchar](max)">
-					<cfelse>
-						<cfreturn "[ntext]">
-					</cfif>
+						<cfif MSSQLversion neq 8>
+							<cfreturn "[nvarchar](max)">
+						<cfelse>
+							<cfreturn "[ntext]">
+						</cfif>
+						<cfcatch>
+							<cfreturn "[nvarchar](max)">
+						</cfcatch>
+					</cftry>
 				</cfcase>
 				<cfcase value="float,numeric">
 					<cfreturn "float">
@@ -751,6 +758,9 @@
 				</cfcase>
 				<cfcase value="tinyint">
 					<cfreturn "tinyint">
+				</cfcase>
+				<cfcase value="smallint">
+					<cfreturn "smallint">
 				</cfcase>
 				<cfcase value="boolean">
 					<cfreturn "tinyint(1)">
@@ -786,7 +796,7 @@
 				<cfcase value="int,integer,int4">
 					<cfreturn "integer">
 				</cfcase>
-				<cfcase value="tinyint,int2">
+				<cfcase value="tinyint,smallint,int2">
 					<cfreturn "smallint">
 				</cfcase>
 				<cfcase value="date,datetime,timestamp">
@@ -820,7 +830,7 @@
 				<cfcase value="int,integer">
 					<cfreturn "integer">
 				</cfcase>
-				<cfcase value="tinyint">
+				<cfcase value="tinyint,smallint">
 					<cfreturn "smallint">
 				</cfcase>
 				<cfcase value="date,datetime,timestamp">
@@ -892,7 +902,7 @@
 
 </cffunction>
 
-<cffunction name="transformColumnMetaData" access="private" output="false">
+<cffunction name="transformColumnMetaData" access="private" output="false" hint="Translates from db to Mura">
 <cfargument name="rs">
 <cfargument name="table">
 	<cfset var columnsStruct={}>
@@ -906,12 +916,12 @@
 		<cfset columnArgs.table=arguments.table>
 
 		<cfswitch expression="#arguments.rs.type_name#">
-			<cfcase value="varchar,nvarchar,varchar2">
+			<cfcase value="varchar,nvarchar,varchar2,character varying">
 				<!--- Add MSSQL nvarchar(max)--->
 				<cfset columnArgs.datatype="varchar">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
-			<cfcase value="char,bpchar">
+			<cfcase value="char,bpchar,character">
 				<cfset columnArgs.datatype="char">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
@@ -925,10 +935,13 @@
 					<cfset columnArgs.datatype="int">
 				</cfif>
 			</cfcase>
-			<cfcase value="tinyint,smallint,int2">
+			<cfcase value="tinyint,int2">
 				<cfset columnArgs.datatype="tinyint">
 			</cfcase>
-			<cfcase value="date,datetime,timestamp">
+			<cfcase value="smallint">
+				<cfset columnArgs.datatype="smallint">
+			</cfcase>
+			<cfcase value="date,datetime,timestamp,timestamp without time zone,timestamp with time zone">
 				<cfset columnArgs.datatype="datetime">
 			</cfcase>
 			<cfcase value="ntext,longtext,clob,nclob">
@@ -937,10 +950,10 @@
 			<cfcase value="text">
 				<cfset columnArgs.datatype="text">
 			</cfcase>
-			<cfcase value="float,binary_float">
+			<cfcase value="float,binary_float,real">
 				<cfset columnArgs.datatype="float">
 			</cfcase>
-			<cfcase value="double,decimal,binary_double">
+			<cfcase value="double,decimal,binary_double,double precision">
 				<cfset columnArgs.datatype="double">
 			</cfcase>
 			<cfcase value="blob,longblob,bytea,varbinary">
@@ -959,7 +972,7 @@
 		</cfif>
 
 		<cfif len(columnArgs.default)
-			and listFindNoCase("tinyint,int,float,double",columnArgs.datatype)
+			and listFindNoCase("tinyint,int,smallint,float,double",columnArgs.datatype)
 			and not (
 						isNumeric(columnArgs.default)
 						and columnArgs.default neq "null")
@@ -1096,17 +1109,19 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="transformIndexName" access="public">
+<cffunction name="transformIndexName">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
+	<cfset var length = 64>
 	<cfswitch expression="#variables.dbtype#">
-			<cfcase value="mssql,mysql,postgresql,nuodb">
-				<cfreturn rereplace(replace("IX_#arguments.table#_#arguments.column#",",","ALL"),"[[:space:]]","","All")>
-			</cfcase>
-			<cfcase value="oracle">
-				<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",30),",","ALL"),"[[:space:]]","","All")>
-			</cfcase>
-		</cfswitch>
+		<cfcase value="mssql">
+			<cfset length = 128>
+		</cfcase>
+		<cfcase value="oracle">
+			<cfset length = 30>
+		</cfcase>
+	</cfswitch>
+	<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",length),",","_","ALL"),"[[:space:]]","","All")>
 </cffunction>
 
 <cffunction name="indexes" output="false">
@@ -1154,7 +1169,7 @@
 	<cfset var i="">
 	<cfif arrayLen(indexArray)>
 		<cfloop from="1" to="#arrayLen(indexArray)#" index="i">
-			<cfif indexArray[i].column eq arguments.column>
+			<cfif indexArray[i].column eq arguments.column or indexArray[i].name eq transformIndexName(argumentCollection=arguments)>
 				<cfreturn true>
 			</cfif>
 		</cfloop>
@@ -1432,7 +1447,7 @@
 		table="#qualifySchema(arguments.table)#"
 		type="foreignKeys">
 
-	<cfreturn buildForeignKeyMetaData(	
+	<cfreturn buildForeignKeyMetaData(
 		rs = rsCheck,
 		table = arguments.table
 	)>
@@ -1470,14 +1485,14 @@ function _parseInt(String){
 	<cfargument name="paramType">
 
 	<cfswitch expression="#arguments.paramType#">
-		<cfcase value="varchar,nvarchar,varchar2,char">
+		<cfcase value="varchar,nvarchar,varchar2,char,character,character varying">
 			<!--- Add MSSQL nvarchar(max)--->
 			<cfreturn "varchar">
 		</cfcase>
-		<cfcase value="int,number,tinyint">
+		<cfcase value="int,number,tinyint,smallint,integer,numeric">
 			<cfreturn "numeric">
 		</cfcase>
-		<cfcase value="datetime,timestamp">
+		<cfcase value="datetime,timestamp,timestamp without time zone,timestamp with time zone">
 			<cfreturn "timestamp">
 		</cfcase>
 		<cfcase value="date">
@@ -1486,10 +1501,10 @@ function _parseInt(String){
 		<cfcase value="ntext,longtext,clob,text">
 			<cfreturn "longvarchar">
 		</cfcase>
-		<cfcase value="float,binary_float">
+		<cfcase value="float,binary_float,real">
 			<cfreturn "float">
 		</cfcase>
-		<cfcase value="double,decimal,binary_double">
+		<cfcase value="double,decimal,binary_double,double precision">
 			<cfreturn "double">
 		</cfcase>
 		<cfdefaultcase>

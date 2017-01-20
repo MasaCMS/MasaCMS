@@ -1,0 +1,131 @@
+@iconColor: lighten(@grayDark,18%);
+
+.icon-font(@font) {
+	font-family: @font;
+	font-weight: normal;
+	font-style: normal;
+	display: inline-block;
+	text-decoration: inherit;
+	}
+
+/*
+i {			
+		&.icon-twitter,
+		&.icon-twitter-sign {
+			color: #00aced !important;
+			}
+			
+		&.icon-facebook,
+		&.icon-facebook-sign {
+			color: #3b5998 !important;
+			}
+		
+		&.icon-linkedin,
+		&.icon-linkedin-sign {
+			color: #007bb6 !important;
+			}
+				
+		}
+*/
+
+// Exceptions
+.actions li.edit + li.delete { margin-left: 2px; }
+.actions li.edit + li.view-report { margin-left: 3px; }
+
+.actions li.rss + li.import { margin-left: -2px; }
+
+
+// Many styles overlap with .mura-grid styles for these, need to combine
+.navZoom li, .navZoom.alt li {
+			margin: 0;
+			padding: 2px 0 !important;
+			
+			&:before {
+				font-family: FontAwesome !important;
+				font-size: 18px;
+				position: relative;
+				top: 2px;
+				color: @iconColor;
+			}
+			
+			&.file {
+					
+					padding-left: 30px !important;
+					position: relative;
+					
+					&:before {
+					position: absolute;
+					top: 1px;
+					left: 0px;
+					content: attr(data-filetype);
+					font-family: 'SilkscreenNormal' !important;
+					font-size: 8px;
+					line-height: 1;
+					.inline-block;
+					color: @white;
+					background: @iconColor;
+					padding: 4px 4px 3px;
+					.border-radius(2px);
+					overflow: hidden;
+					text-shadow: none !important;				
+					}
+				
+					&.gif,
+					&.png,
+					&.jpg,
+					&.jpeg {
+						padding-left: 0 !important;
+						//font-family: 'FontAwesome' !important;
+						
+						&:before {
+							position: relative;
+							left: 0;
+							color: @iconColor !important;
+						}
+					}
+				
+				}
+
+				
+			&.link:before { content: '\f0c1'; }
+			&.folder:before { content: '\f114'; }
+			&.gallery:before { content: '\f00a'; }
+			&.calendar:before { content: '\f073'; font-size: 18px; top: 1px; }
+			
+			&.jpg:before,
+			&.jpeg:before,
+			&.png:before,
+			&.gif:before {
+				font-family: 'FontAwesome' !important; 
+				background: transparent;
+				padding: 0;
+				color: @grayDark;
+				content: "\f03e" !important;
+				font-size: 19px;
+				top: 3px;
+				}
+			
+			&.page:before { 
+				.icon-font('FontAwesome');
+				content: "\f016";
+				font-size: 18px;
+				}
+				
+			&.gallery {
+				
+				+ .file.jpg:before,
+				+ .file.jpeg:before,
+				+ .file.png:before,
+				+ .file.gif:before {
+					.icon-font(FontAwesome);
+					position: relative;
+					content: "\f03e";
+					font-size: 19px;
+					top: 3px;
+					background: transparent;
+					padding: 0 !important;
+					color: @iconColor;
+					}
+			}
+
+}

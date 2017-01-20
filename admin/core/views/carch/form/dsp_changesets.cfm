@@ -1,9 +1,4 @@
 <cfoutput>
-<!---
-<cfif not currentChangeset.getIsNew()>
-<p class="alert alert-notice">fff#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
-</cfif>
---->
 <script>
 <cfif not currentChangeset.getIsNew() and not rc.contentBean.getApproved()>
 var currentChangesetSelection="#rc.contentBean.getChangesetID()#";
@@ -26,6 +21,8 @@ function removeChangesetPrompt(changesetID){
 	currentChangesetSelection=changesetID;
 }
 
+var assigningChangeset=false;
+
 function saveToChangeset(changesetid,siteid,keywords){
 	
 	var url = 'index.cfm';
@@ -39,30 +36,29 @@ function saveToChangeset(changesetid,siteid,keywords){
 			jQuery('##changesetContainer').html(data);
 			stripe('stripe');
 			});
-		
+
 		jQuery("##changesetContainer").dialog({
 			resizable: false,
 			modal: true,
+			close: function( event, ui ) { siteManager.assigningChangeset=false;},
 			buttons: {
-				'#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#': function() {
-					jQuery(this).dialog('close');
-					if (siteManager.configuratorMode == 'backEnd') {
-						if(siteManager.ckContent()){
-							jQuery("##changesetID").val(currentChangesetSelection);
-							jQuery("##removePreviousChangeset").val(document.getElementById("_removePreviousChangeset").checked);
-							if(currentChangesetSelection=='other'){
-								jQuery("##changesetname").val(jQuery("##_changesetname").val());
-							} else {
-								jQuery("##changesetname").val('');
+				#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#: 
+					{click: function() {
+							jQuery(this).dialog('close');
+						if(siteManager.configuratorMode == 'backEnd') {
+							siteManager.assigningChangeset=true;
+							if(siteManager.ckContent()){
+								//submitForm(document.contentForm, 'add');
 							}
-							submitForm(document.contentForm, 'add');
+						} else {
+							siteManager.saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
 						}
-					} else {
-						siteManager.saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
-					}
-						
-						return false;
-					}
+							
+							return false;						
+						}
+					, text: '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#'
+					, class: 'mura-primary'
+					} // /Save
 			}
 		});
 	

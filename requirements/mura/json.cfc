@@ -8,29 +8,29 @@ Authors: Jehiah Czebotar (jehiah@gmail.com)
 Version: 1.9 February 20, 2008
 --->
 
-<cfcomponent displayname="JSON" output="No">
-	<cffunction name="init" returntype="any" output="false">
+<cfcomponent displayname="JSON" output="No" hint="deprecated">
+	<cffunction name="init" output="false">
 	<cfreturn this>
 	</cffunction>
-	
-	<cffunction name="jsonencode" access="remote" returntype="any" output="no"
+
+	<cffunction name="jsonencode" access="remote" output="no"
 			hint="Converts data frm JSON to CF format">
 		<cfargument name="data" type="any" required="Yes" />
-		
+
 		<cfreturn encode(arguments.data)>
-	</cffunction>	
-	
-	<cffunction name="jsondecode" access="remote" returntype="any" output="no"
+	</cffunction>
+
+	<cffunction name="jsondecode" access="remote" output="no"
 			hint="Converts data frm JSON to CF format">
 		<cfargument name="data" type="string" required="Yes" />
-		
+
 		<cfreturn decode(arguments.data)>
 	</cffunction>
-	
-	<cffunction name="decode" access="remote" returntype="any" output="no"
+
+	<cffunction name="decode" access="remote" output="no"
 			hint="Converts data frm JSON to CF format">
 		<cfargument name="data" type="string" required="Yes" />
-		
+
 		<!--- DECLARE VARIABLES --->
 		<cfset var ar = ArrayNew(1) />
 		<cfset var st = StructNew() />
@@ -60,23 +60,23 @@ Version: 1.9 February 20, 2008
 		<cfset var dJSONString = "" />
 		<cfset var pos=0>
 		<cfset var _data = Trim(arguments.data) />
-		
+
 		<!--- NUMBER --->
 		<cfif IsNumeric(_data)>
 			<cfreturn _data />
-		
+
 		<!--- NULL --->
 		<cfelseif _data EQ "null">
 			<cfreturn "" />
-		
+
 		<!--- BOOLEAN --->
 		<cfelseif ListFindNoCase("true,false", _data)>
 			<cfreturn _data />
-		
+
 		<!--- EMPTY STRING --->
 		<cfelseif _data EQ "''" OR _data EQ '""'>
 			<cfreturn "" />
-		
+
 		<!--- STRING --->
 		<cfelseif ReFind('^"[^\\"]*(?:\\.[^\\"]*)*"$', _data) EQ 1 OR ReFind("^'[^\\']*(?:\\.[^\\']*)*'$", _data) EQ 1>
 			<cfset _data = mid(_data, 2, Len(_data)-2) />
@@ -106,16 +106,16 @@ Version: 1.9 February 20, 2008
 						</cfif>
 					</cfif>
 				</cfloop>
-				
+
 				<cfreturn dJSONString.toString() />
 			<cfelse>
 				<cfreturn ReplaceList(_data, unescapeVals, unescapeToVals) />
 			</cfif>
-		
+
 		<!--- ARRAY, STRUCT, OR QUERY --->
 		<cfelseif ( Left(_data, 1) EQ "[" AND Right(_data, 1) EQ "]" )
 			OR ( Left(_data, 1) EQ "{" AND Right(_data, 1) EQ "}" )>
-			
+
 			<!--- Store the data type we're dealing with --->
 			<cfif Left(_data, 1) EQ "[" AND Right(_data, 1) EQ "]">
 				<cfset dataType = "array" />
@@ -124,10 +124,10 @@ Version: 1.9 February 20, 2008
 			<cfelse>
 				<cfset dataType = "struct" />
 			</cfif>
-			
+
 			<!--- Remove the brackets --->
 			<cfset _data = Trim( Mid(_data, 2, Len(_data)-2) ) />
-			
+
 			<!--- Deal with empty array/struct --->
 			<cfif Len(_data) EQ 0>
 				<cfif dataType EQ "array">
@@ -136,14 +136,14 @@ Version: 1.9 February 20, 2008
 					<cfreturn st />
 				</cfif>
 			</cfif>
-			
+
 			<!--- Loop through the string characters --->
 			<cfset dataSize = Len(_data) + 1 />
 			<cfloop condition="#i# LTE #dataSize#">
 				<cfset skipIncrement = false />
 				<!--- Save current character --->
 				<cfset char = Mid(_data, i, 1) />
-				
+
 				<!--- If char is a quote, switch the quote status --->
 				<cfif char EQ '"'>
 					<cfset inQuotes = NOT inQuotes />
@@ -154,7 +154,7 @@ Version: 1.9 February 20, 2008
 				<!--- If char is a comma and is not in quotes, or if end of string, deal with data --->
 				<cfelseif (char EQ "," AND NOT inQuotes AND nestingLevel EQ 0) OR i EQ Len(_data)+1>
 					<cfset dataStr = Mid(_data, startPos, i-startPos) />
-					
+
 					<!--- If data type is array, append data to the array --->
 					<cfif dataType EQ "array">
 						<cfset arrayappend( ar, decode(dataStr) ) />
@@ -163,23 +163,23 @@ Version: 1.9 February 20, 2008
 						<cfset dataStr = Mid(_data, startPos, i-startPos) />
 						<cfset colonPos = Find('":', dataStr) />
 						<cfif colonPos>
-							<cfset colonPos = colonPos + 1 />	
+							<cfset colonPos = colonPos + 1 />
 						<cfelse>
-							<cfset colonPos = Find(":", dataStr) />	
+							<cfset colonPos = Find(":", dataStr) />
 						</cfif>
 						<cfset structKey = Trim( Mid(dataStr, 1, colonPos-1) ) />
-						
+
 						<!--- If needed, remove quotes from keys --->
 						<cfif Left(structKey, 1) EQ "'" OR Left(structKey, 1) EQ '"'>
 							<cfset structKey = Mid( structKey, 2, Len(structKey)-2 ) />
 						</cfif>
-						
+
 						<cfset structVal = Mid( dataStr, colonPos+1, Len(dataStr)-colonPos ) />
-						
+
 						<!--- If struct, add to the structure --->
 						<cfif dataType EQ "struct">
 							<cfset StructInsert( st, structKey, decode(structVal) ) />
-						
+
 						<!--- If query, build the query --->
 						<cfelse>
 							<cfif structKey EQ "recordcount">
@@ -201,7 +201,7 @@ Version: 1.9 February 20, 2008
 							</cfif>
 						</cfif>
 					</cfif>
-					
+
 					<cfset startPos = i + 1 />
 				<!--- If starting a new array or struct, add to nesting level --->
 				<cfelseif "{[" CONTAINS char AND NOT inQuotes>
@@ -210,28 +210,28 @@ Version: 1.9 February 20, 2008
 				<cfelseif "]}" CONTAINS char AND NOT inQuotes>
 					<cfset nestingLevel = nestingLevel - 1 />
 				</cfif>
-				
+
 				<cfif NOT skipIncrement>
 					<cfset i = i + 1 />
 				</cfif>
 			</cfloop>
-			
+
 			<!--- Return appropriate value based on data type --->
 			<cfif dataType EQ "array">
 				<cfreturn ar />
 			<cfelse>
 				<cfreturn st />
 			</cfif>
-		
+
 		<!--- INVALID JSON --->
 		<cfelse>
 			<cfthrow message="Invalid JSON" detail="The document you are trying to decode is not in valid JSON format" />
 		</cfif>
 	</cffunction>
-	
-	
+
+
 	<!--- CONVERTS DATA FROM CF TO JSON FORMAT --->
-	<cffunction name="encode" access="public" output="false" returntype="string">
+	<cffunction name="encode" output="false">
 	<cfargument name="arg" default="" required="yes" type="any"/>
 	<cfscript>
 	    var i=0;
@@ -272,7 +272,7 @@ Version: 1.9 February 20, 2008
 					o = o & ",";
 				}
 				o = o & '"'& lcase(z[i]) & '":' & v;
-			} 
+			}
 			return '{' & o & '}';
 		}
 		if (isobject(arg)){
@@ -317,44 +317,44 @@ Version: 1.9 February 20, 2008
 	</cfscript>
 
 	</cffunction>
-	
+
 	<cffunction name="validate" access="remote" output="yes" returntype="boolean"
 			hint="I validate a JSON document against a JSON schema">
 		<cfargument name="doc" type="string" required="No" />
 		<cfargument name="schema" type="string" required="No" />
 		<cfargument name="errorVar" type="string" required="No" default="jsonSchemaErrors" />
 		<cfargument name="stopOnError" type="boolean" required="No" default=true />
-		
+
 		<!--- These arguments are for internal use only --->
 		<cfargument name="_doc" type="any" required="No" />
 		<cfargument name="_schema" type="any" required="No" />
 		<cfargument name="_item" type="string" required="No" default="root" />
-    	
+
 		<cfset var schemaRules = "" />
 		<cfset var jsonDoc = "" />
 		<cfset var i = 0 />
 		<cfset var key = "" />
 		<cfset var isValid = true />
 		<cfset var msg = "" />
-		
+
 		<cfif StructKeyExists(arguments, "doc")>
 			<cfif FileExists(arguments.doc)>
 				<cffile action="READ" file="#arguments.doc#" variable="arguments.doc" />
 			</cfif>
-			
+
 			<cfif FileExists(arguments.schema)>
 				<cffile action="READ" file="#arguments.schema#" variable="arguments.schema" />
 			</cfif>
-			
+
 			<cfset jsonDoc = decode(arguments.doc) />
 			<cfset schemaRules = decode(arguments.schema) />
-		
+
 			<cfset request[arguments.errorVar] = ArrayNew(1) />
 		<cfelseif StructKeyExists(arguments, "_doc")>
 			<cfset jsonDoc = arguments._doc />
 			<cfset schemaRules = arguments._schema />
 		</cfif>
-		
+
 		<!--- See if the document matches the rules from the schema --->
 		<cfif schemaRules.type EQ "struct">
 			<cfif NOT IsStruct(jsonDoc)>
@@ -374,7 +374,7 @@ Version: 1.9 February 20, 2008
 						</cfif>
 					</cfloop>
 				</cfif>
-				
+
 				<!--- Loop over all the keys for the structure and see if they are valid (if items key is specified) by recursing the validate function --->
 				<cfif StructKeyExists(schemaRules, "items")>
 					<cfloop collection="#jsonDoc#" item="key">
@@ -396,7 +396,7 @@ Version: 1.9 February 20, 2008
 			<cfelse>
 				<cfparam name="schemaRules.minlength" default="0" />
 				<cfparam name="schemaRules.maxlength" default="9999999999" />
-				
+
 				<!--- If there are length requirements for the array make sure they are valid --->
 				<cfif ArrayLen(jsonDoc) LT schemaRules.minlength>
 					<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# is an array that should have at least #schemaRules.minlength# elements") />
@@ -409,7 +409,7 @@ Version: 1.9 February 20, 2008
 						<cfreturn false />
 					</cfif>
 				</cfif>
-				
+
 				<!--- Loop over the array elements and if there are rules for the array items recurse to enforce them --->
 				<cfif StructKeyExists(schemaRules, "items")>
 					<cfloop from="1" to="#ArrayLen(jsonDoc)#" index="i">
@@ -471,7 +471,7 @@ Version: 1.9 February 20, 2008
 				</cfif>
 			</cfif>
 		</cfif>
-		
+
 		<cfif ArrayLen(request[arguments.errorVar])>
 			<cfreturn false />
 		<cfelse>

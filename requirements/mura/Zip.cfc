@@ -43,7 +43,7 @@
 --->
 
 <cfcomponent displayname = "Zip Component"
-             hint        = "A collections of functions that supports the Zip and GZip functionality by using the Java Zip file API."
+             hint        = "This provides a collections of functions that supports the Zip and GZip functionality by using the Java Zip file API."
 			 output		 = "false"
 			 extends	 = "mura.cfobject">
 
@@ -72,7 +72,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- AddFiles --->
-	<cffunction name="AddFiles" access="public" output="no" returntype="boolean" hint="Add files to a new or an existing Zip file archive.">
+	<cffunction name="AddFiles" output="no" returntype="boolean" hint="Add files to a new or an existing Zip file archive.">
 
 		<!--- Function Arguments --->
 		<cfargument name="zipFilePath" required="yes" type="string"                hint="Pathname of the Zip file to add files.">
@@ -190,7 +190,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- DeleteFiles --->
-	<cffunction name="DeleteFiles" access="public" output="no" returntype="boolean" hint="Delete files from an existing Zip file archive.">
+	<cffunction name="DeleteFiles" output="no" returntype="boolean" hint="Delete files from an existing Zip file archive.">
 
 		<!--- Function Arguments --->
 		<cfargument name="zipFilePath" required="yes" type="string" hint="Pathname of the Zip file to delete files from.">
@@ -293,7 +293,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- Extract --->
-	<cffunction name="Extract" access="public" output="no" returntype="boolean" hint="Extracts a specified Zip file into a specified directory.">
+	<cffunction name="Extract" output="no" returntype="boolean" hint="Extracts a specified Zip file into a specified directory.">
 
 		<!--- Function Arguments --->
 		<cfargument name="zipFilePath"    required="yes" type="string"                              hint="Pathname of the Zip file to extract.">
@@ -327,12 +327,12 @@
 			var inStream="";
 			var skip="no";
 			</cfscript>
-			
+
 			<cfset rsdir=List(arguments.zipFilePath)>
-			
+
 			<cfif IsDefined("arguments.extractDirs") and len(arguments.extractDirs)>
 				<cfquery name="rsdir" dbtype="query">
-				select * from rsdir where 
+				select * from rsdir where
 				<cfloop list="#arguments.extractDirs#" index="i" delimiters="|">
 				<cfif started>or</cfif>
 				<cfif right(i,1) neq delim>
@@ -347,11 +347,11 @@
 					<cfset extractStruct["#hash(PathFormat(rsdir.entry))#"]=true>
 				</cfloop>
 			</cfif>
-			
-			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>		
+
+			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>
 				<cfset started=false>
 				<cfquery name="rsdir" dbtype="query">
-				select * from rsdir where 
+				select * from rsdir where
 				<cfloop list="#arguments.excludeDirs#" index="i" delimiters="|">
 				<cfif started>or</cfif>
 				<cfif right(i,1) neq delim>
@@ -366,7 +366,7 @@
 					<cfset excludeStruct["#hash(PathFormat(rsdir.entry))#"]=true>
 				</cfloop>
 			</cfif>
-		
+
 			<cfscript>
 			/* Convert to the right path format */
 			arguments.zipFilePath = PathFormat(arguments.zipFilePath);
@@ -383,7 +383,7 @@
 			{
 				/* Open Zip file */
 				zipFile.init(arguments.zipFilePath);
-	
+
 				/* Zip file entries */
 				entries = zipFile.entries();
 
@@ -392,17 +392,17 @@
 				{
 					entry = entries.nextElement();
 					entryHash = hash(pathFormat(entry.getName()));
-					
+
 					if(NOT entry.isDirectory()
-						AND 
+						AND
 						(
 							not structKeyExists(excludeStruct,entryHash)
-							
+
 							and (
 									(
 										not IsDefined("arguments.extractDirs") or not len(arguments.extractDirs)
 									)
-							
+
 								OR
 									structKeyExists(extractStruct,entryHash)
 							)
@@ -410,11 +410,11 @@
 					)
 					{
 						name = entry.getName();
-						
+
 						if(isDefined("arguments.extractDirs") and isDefined("arguments.extractDirsToTop") and yesNoFormat(arguments.extractDirsToTop)){
-							name=right(name,len(name)-len(arguments.extractDirs));					
+							name=right(name,len(name)-len(arguments.extractDirs));
 						}
-						
+
 						/* Create directory only if 'useFolderNames' is 'yes' */
 						if(arguments.useFolderNames EQ "yes")
 						{
@@ -472,8 +472,8 @@
 				zipFile.close();
 
 				getBean("fileWriter").chmod(path=arguments.extractPath);
-				
-				/* Return true */				
+
+				/* Return true */
 				return true;
 			}
 
@@ -483,7 +483,7 @@
 				zipFile.close();
 
 				getBean("fileWriter").chmod(path=arguments.extractPath);
-				
+
 				/* Return false */
 				return false;
 			}
@@ -494,7 +494,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- List --->
-	<cffunction name="List" access="public" output="no" returntype="query" hint="List the content of a specified Zip file.">
+	<cffunction name="List" output="no" hint="List the content of a specified Zip file.">
 
 		<!--- Function Arguments --->
 		<cfargument name="zipFilePath" required="yes" type="string" hint="Pathname of the Zip file to list the content.">
@@ -512,13 +512,13 @@
 			var qSize=0;
 			var qPacked="";
 			var qCrc="";
-			
+
 
 			cols = ListToArray(cols);
 
 			/* Open Zip file */
 			zipFile.init(arguments.zipFilePath);
-			
+
 			/* Zip file entries */
 			entries = zipFile.entries();
 
@@ -557,7 +557,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- gzipAddFile --->
-	<cffunction name="gzipAddFile" access="public" output="no" returntype="boolean" hint="Create a new GZip file archive.">
+	<cffunction name="gzipAddFile" output="no" returntype="boolean" hint="Create a new GZip file archive.">
 
 		<!--- Function Arguments --->
 		<cfargument name="gzipFilePath" required="yes" type="string" hint="Pathname of the GZip file to create.">
@@ -619,7 +619,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- gzipExtract --->
-	<cffunction name="gzipExtract" access="public" output="no" returntype="boolean" hint="Extracts a specified GZip file into a specified directory.">
+	<cffunction name="gzipExtract" output="no" returntype="boolean" hint="Extracts a specified GZip file into a specified directory.">
 
 		<!--- Function Arguments --->
 		<cfargument name="gzipFilePath" required="yes" type="string"                             hint="Pathname of the GZip file to extract.">
@@ -701,28 +701,28 @@
 					 name      = "dir"
 		             directory = "#PathFormat(arguments.directory)#"
 					 filter    = "#arguments.filter#">
-		
+
 		<cfif isDate(arguments.sinceDate)>
 			<cfquery name="dir" dbtype="query">
 			SELECT * FROM dir
-			WHERE 
+			WHERE
 			dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
 			</cfquery>
 		</cfif>
-		
+
 		<cfif len(arguments.excludeDirs)>
 			<cfquery name="dir" dbtype="query">
 			SELECT * FROM dir
-			WHERE 
+			WHERE
 			type = 'File'
 			or
 			(	type='Dir'
-				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#PathFormat(arguments.excludeDirs)#">) 
+				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#PathFormat(arguments.excludeDirs)#">)
 			)
 			</cfquery>
 		</cfif>
-	
-		
+
+
 		<cfscript>
 
 			if(dir.recordcount){
@@ -731,16 +731,16 @@
 				{
 					if(arguments.hiddenFiles or left(dir.name[i],1) neq "."){
 						path = PathFormat(arguments.directory & this.slash & dir.name[i]);
-		
+
 						/* Add file to array */
 						if(dir.type[i] eq "file")
 							ArrayAppend(array, path);
-		
+
 						/* Get files from sub directorys and add them to the array */
 						else if(dir.type[i] EQ "dir" AND arguments.recurse EQ "yes")
 						{
 							subdir = FilesList(path, arguments.filter, arguments.recurse);
-		
+
 							for(n=1; n LTE ArrayLen(subdir); n=n+1)
 								ArrayAppend(array, subdir[n]);
 						}
@@ -757,7 +757,7 @@
 
 	<!--- -------------------------------------------------- --->
 	<!--- PathFormat --->
-	<cffunction name="PathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
+	<cffunction name="PathFormat" access="private" output="no" hint="Convert path into Windows or Unix format.">
 
 		<!--- Function Arguments --->
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
@@ -771,12 +771,12 @@
 		<cfreturn arguments.path>
 
 	</cffunction>
-	
-	<cffunction name="ZipPathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
+
+	<cffunction name="ZipPathFormat" access="private" output="no" hint="Convert path into Windows or Unix format.">
 		<!--- Function Arguments --->
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
-		
+
 		<cfreturn arguments.path>
 
 	</cffunction>

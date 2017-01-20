@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
+component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="This provides file data access and persistence" {
 
 	property name="fileid" fieldtype="id";
 	property name="content" fieldtype="one-to-one" fkcolumn="contentid" cfc="content" required=false nullable=true;
@@ -8,7 +8,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 	property name="contentSubType" datatype="varchar" length=200;
 	property name="fileSize" datatype="int" default=0;
 	property name="fileExt" datatype="varchar" length=50;
-	property name="moduleid" datatype="varchar" default="00000000000000000000000000000000000" length=35;
+	property name="moduleid" datatype="char" default="00000000000000000000000000000000000" length=35;
 	property name="created" datatype="datetime";
 	property name="deleted" datatype="int" default=0;
 	property name="caption" datatype="text";
@@ -39,6 +39,11 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 	}
 	*/
 
+	function setFileSize(fileSize){
+		variables.instance.fileSize=int(arguments.fileSize);
+		return this;
+	}
+
 	function setFileField(fileField){
 		variables.instance.fileField=arguments.fileField;
 		if(isdefined('form') and structKeyExists(form,variables.instance.fileField)){
@@ -49,7 +54,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 	function save(processFile=true){
 		if(arguments.processFile && len(getValue('fileField')) && len(getValue(getValue('fileField')))){
 			setValue('fileID',createUUID());
-		
+
 			var fileManager=getBean('fileManager');
 
 			if(fileManager.isPostedFile(getValue('fileField'))){
@@ -69,8 +74,9 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 			}
 
 			var allowableExtensions=getBean('configBean').getFmAllowedExtensions();
+			var allowableMimeTypes=getBean('configBean').getAllowedMimeTypes();
 
-			if(!len(allowableExtensions) || listFindNoCase(allowableExtensions,local.tempFile.serverFileExt)){
+			if((!len(allowableExtensions) || listFindNoCase(allowableExtensions, local.tempFile.serverFileExt)) && (!len(allowableMimeTypes) || listFindNoCase(allowableMimeTypes, '#local.tempFile.contentType#/#local.tempFile.contentSubType#'))){
 				structAppend(variables.instance, local.tempFile);
 				structAppend(variables.instance, fileManager.process(local.tempFile,getValue('siteid')));
 				variables.instance.fileExt=local.tempFile.serverFileExt;
@@ -80,12 +86,12 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 
 				param name='variables.instance.content' default='';
 				param name='variables.instance.exif' default={};
-				
+
 				fileManager.create(argumentCollection=variables.instance);
-			
+
 				setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
 			}	else {
-				
+
 				var fileDelim='/';
 
 				try{
@@ -102,6 +108,10 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 		}
 		return this;
 
+	}
+
+	function getURL(complete=false,secure=false,method="inline"){
+		return this.getSite().getWebPath(argumentCollection=arguments) & "/index.cfm/render/?fileid=#get('fileid')#&siteid=#get('siteid')#&method=#arguments.method#";
 	}
 
 	function setRemotePubDate(remotePubDate){

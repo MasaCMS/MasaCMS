@@ -47,18 +47,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
  <cfif rc.nextN.numberofpages gt 1>
  <cfoutput>
-		<cfset args=arrayNew(1)>
-		<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
-		<cfset args[2]=rc.nextn.totalrecords>
-		<div class="mura-results-wrapper">
+	<cfset args=arrayNew(1)>
+	<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
+	<cfset args[2]=rc.nextn.totalrecords>
+	<div class="mura-results-wrapper">
 		<p class="clearfix search-showing">
 			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
 		</p>
-		<div class="pagination"> 
-		<ul>
+		<ul class="pagination">
 		<cfif rc.nextN.currentpagenumber gt 1> 
 			<li>
-				<a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.prev')#</a>
+				<a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-angle-left"></i></a>
 			</li>
 		</cfif>	
 		<cfloop from="1"  to="#rc.nextN.lastPage#" index="i">
@@ -71,10 +70,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 		<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-			<li><a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.next')#&nbsp;&raquo;</a></li>
+			<li><a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-angle-right"></i></a></li>
 		</cfif> 
 		</ul>
-		</div>
-		</div>		
+	</div>		
 </cfoutput>
 </cfif>

@@ -1,0 +1,108 @@
+.mura-table-grid {
+	.table;
+	.table-bordered;
+	.table-condensed;
+	.table-striped;	
+	.border-radius(0) !important;
+
+	td, th {
+		.regular-font;
+		border-radius:0 !important;
+		color: @grayDarker;
+		font-size: @baseFontSize;
+		text-align: center;
+		vertical-align: middle;
+		
+		&.title {
+			text-align: left;
+			}
+		}
+
+	th, thead th {
+		.bold-font;
+	  color: #7a7a7a;
+	  font-style: normal;
+	  height: 26px;
+	  line-height: 24px;
+	  padding: 0 5px;
+	  text-align: center;
+	  white-space: nowrap;
+
+		.btn {
+			padding: 2px 6px;
+			font-weight: normal;
+			font-size: 11px;
+			
+			i {
+				color: @grayDarker;
+				}
+			
+			}
+		
+		}
+		
+	tr { // Duplicated from bootstrap since they explicitly use .table class, may have to add that to our markup to account for other things
+		  &.success > td {
+		    background-color: @successBackground !important;
+		  }
+		  &.error > td {
+		    background-color: @errorBackground !important;
+		  }
+		  &.warning > td {
+		    background-color: @warningBackground !important;
+		  }
+		  &.info > td {
+		    background-color: @infoBackground !important;
+		  }
+	}
+	
+	a {
+		color: @grayDarker;
+		}
+	
+	.time {
+		white-space: nowrap;
+	}
+} // End .mura-table-grid
+
+#draft-prompt {
+	
+	.mura-table-grid {
+		
+		th,td {
+			padding: 6px 8px;
+			text-align: left;
+			}
+			
+		th {
+			font-size: 13px;
+
+			i{
+				margin-right: 3px;
+			}
+		}
+			
+		i {
+			font-size: 16px;
+			line-height: 13px;
+			color: @grayDark;
+			position: relative;
+			top: 1px;		
+			}
+		
+		}
+	
+	}
+
+
+table.cke_editor {
+	border: 0;
+	
+	th, td {
+		border: 0;
+	}
+}
+
+.fieldset > .mura-table-grid {
+		.box-sizing(border-box);
+}

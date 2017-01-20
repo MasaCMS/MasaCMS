@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,15 +36,15 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject">
+<cfcomponent extends="mura.cfobject" hint="This provides ability to hold a cookie based session to a remote website">
 
 <cfset variables.httpSession=structNew()>
 <cfset variables.host="">
@@ -58,9 +58,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.throwOnError="yes">
 <cfset variables.userAgent=CGI.http_user_agent>
 
-<cffunction name="setConfigBean" returntype="any" output="false" access="public">
+<cffunction name="setConfigBean" output="false">
 	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>	
+	<cfset variables.configBean=arguments.configBean>
 	<cfreturn this />
 </cffunction>
 
@@ -156,13 +156,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getBaseURL" output="false">
 	<cfset var str="">
-	
+
 	<cfset str=getProtocal() & "://" & getHost()>
-	
+
 	<cfif len(getPort())>
 		<cfset str=str & ":" & getPort()>
 	</cfif>
-	
+
 	<cfreturn str>
 </cffunction>
 
@@ -178,20 +178,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		required="true"
 		hint="The response of a CFHttp call."
 		/>
- 
+
 	<cfset var LOCAL = StructNew() />
- 
+
 	<cfset LOCAL.Cookies = StructNew() />
- 
+
 	<cfif NOT StructKeyExists(
 		ARGUMENTS.Response.ResponseHeader,
 		"Set-Cookie"
 		)>
- 
+
 		<cfreturn LOCAL.Cookies />
- 
+
 	</cfif>
- 
+
 	<cfset LOCAL.ReturnedCookies = ARGUMENTS.Response.ResponseHeader[ "Set-Cookie" ] />
 
 	<cfif not isStruct(LOCAL.ReturnedCookies) and not isArray(LOCAL.ReturnedCookies)>
@@ -211,19 +211,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		collection="#LOCAL.ReturnedCookies#">
 
 		<cfset LOCAL.CookieString = URLDecode(LOCAL.ReturnedCookies[ LOCAL.CookieIndex ]) />
-		
+
 		<cfloop
 			index="LOCAL.Index"
 			from="1"
 			to="#ListLen( LOCAL.CookieString, ';' )#"
 			step="1">
-				
+
 			<cfset LOCAL.Pair = ListGetAt(
 				LOCAL.CookieString,
 				LOCAL.Index,
 				";"
 				) />
- 
+
 			<cfset LOCAL.Name = ListFirst( LOCAL.Pair, "=" ) />
 
 			<cfif (ListLen( LOCAL.Pair, "=" ) GT 1)>
@@ -231,61 +231,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset LOCAL.Value = "" />
 			</cfif>
-			
+
 			<cfif (LOCAL.Index EQ 1)>
 				<cfset LOCAL.Cookies[ LOCAL.Name ] = StructNew() />
 				<cfset LOCAL.Cookie = LOCAL.Cookies[ LOCAL.Name ] />
 				<cfset LOCAL.Cookie.Value = LOCAL.Value />
 				<cfset LOCAL.Cookie.Attributes = StructNew() />
- 
+
 			<cfelse>
- 
+
 				<cfset LOCAL.Cookie.Attributes[ LOCAL.Name ] = LOCAL.Value />
- 
+
 			</cfif>
- 
+
 		</cfloop>
- 
- 
+
+
 	</cfloop>
 
- 
+
 	<!--- Return the cookies. --->
 	<cfreturn LOCAL.Cookies />
 </cffunction>
 
-<cffunction name="get" output="true" returntype="any">
+<cffunction name="get" output="true">
 	<cfargument name="url" default="/">
 	<cfargument name="data" default="#structNew()#">
 	<cfargument name="referer" default="">
-	
+
 	<cfset arguments.paramType="url">
 	<cfset arguments.httpMethod="get">
-	
+
 	<cfif not len(arguments.referer)>
 		<cfset arguments.referer=getReferer()>
 	</cfif>
-	
+
 	<cfif len(variables.configBean.getProxyServer())>
 		<cfreturn callWithProxyServer(argumentCollection=arguments)>
 	<cfelse>
 		<cfreturn callWithOutProxyServer(argumentCollection=arguments)>
 	</cfif>
-	
+
 </cffunction>
 
-<cffunction name="post" output="true" returntype="any">
+<cffunction name="post" output="true">
 	<cfargument name="url" default="/">
 	<cfargument name="data" default="#structNew()#">
 	<cfargument name="referer" default="">
-	
+
 	<cfset arguments.paramType="formField">
 	<cfset arguments.httpMethod="post">
-	
+
 	<cfif not len(arguments.referer)>
 		<cfset arguments.referer=getReferer()>
 	</cfif>
-	
+
 	<cfif len(variables.configBean.getProxyServer())>
 		<cfreturn callWithProxyServer(argumentCollection=arguments)>
 	<cfelse>
@@ -294,13 +294,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="callWithOutProxyServer" output="false" returntype="any" access="private">
+<cffunction name="callWithOutProxyServer" output="false" access="private">
 	<cfargument name="url">
 	<cfargument name="data">
 	<cfargument name="httpMethod">
 	<cfargument name="paramType">
 	<cfargument name="referer">
-	
+
 	<cfset var key="">
 	<cfset var objGet ="">
 	<cfset var response ="">
@@ -308,15 +308,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tempValue ="">
 	<cfset var tempNew=structNew()>
 
-	<cfhttp
-	method="#arguments.httpMethod#"
-	url="#getBaseURL()##arguments.url#"
-	useragent="#getUserAgent()#"
-	result="objGet"
-	resolveurl="#getResolveURL()#" 
-	timeout="#getTimeout()#"
-	throwOnError="#getThrowOnError()#" charset="#getCharSet()#">
-		
+	<cfhttp attributeCollection='#getHTTPAttrs(
+				method="#arguments.httpMethod#",
+				url="#getBaseURL()##arguments.url#",
+				useragent="#getUserAgent()#",
+				result="objGet",
+				resolveurl="#getResolveURL()#",
+				timeout="#getTimeout()#",
+				throwOnError="#getThrowOnError()#",
+				charset="#getCharSet()#")#'>
+
 	<cfif len(arguments.referer)>
 		<cfhttpparam
 		type="HEADER"
@@ -324,21 +325,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		value="#arguments.referer#"
 		/>
 	</cfif>
- 
+
 	<!--- Loop over the cookies we found. --->
 	<cfloop
 		item="strCookie"
 		collection="#variables.httpSession#">
- 
+
 		<!--- Send the cookie value with this request. --->
 		<cfhttpparam
 			type="COOKIE"
 			name="#strCookie#"
 			value="#variables.httpSession[ strCookie ].Value#"
 			/>
- 
+
 	</cfloop>
-	
+
 	<cfif not structIsEmpty(arguments.data)>
 	<cfloop
 		item="key"
@@ -358,58 +359,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			value="#tempValue#"
 			/>
 		</cfif>
- 
+
 	</cfloop>
 	</cfif>
- 
+
 	</cfhttp>
-	
+
 	<cfset tempNew=GetResponseCookies( objGet )>
-	
+
 	<cfset structAppend(variables.httpSession,tempNew,"true")>
-	
+
 	<cfif isJSON(objGet.fileContent)>
 		<cfset response=deserializeJSON(objGet.fileContent)>
 	<cfelseif isWDDX(objGet.fileContent)>
 		<cfwddx action="wddx2cfml" input="#objGet.fileContent#" output="response">
 	<cfelse>
 		<cfset response=objGet.fileContent>
-	</cfif>	
-	
+	</cfif>
+
 	<cfreturn response>
 
 </cffunction>
 
-<cffunction name="callWithProxyServer" output="false" returntype="any" access="private">
+<cffunction name="callWithProxyServer" output="false" access="private">
 	<cfargument name="url">
 	<cfargument name="data">
 	<cfargument name="httpMethod">
 	<cfargument name="paramType">
 	<cfargument name="referer">
-	
+
 	<cfset var key="">
 	<cfset var objGet ="">
 	<cfset var response ="">
 	<cfset var strCookie ="">
 	<cfset var tempValue ="">
 	<cfset var tempNew=structNew()>
-	
+
 	<cfif structKeyExists(arguments,"params") and isStruct(arguments.params)>
 		<cfset StructAppend(arguments.data, params, "yes")>
 	</cfif>
-	
-	<cfhttp
-	method="#arguments.httpMethod#"
-	url="#getBaseURL()##arguments.url#"
-	useragent="#getUserAgent()#"
-	result="objGet"
-	resolveurl="#getResolveURL()#" 
-	timeout="#getTimeout()#"
-	throwOnError="#getThrowOnError()#" charset="#getCharSet()#"
-	proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-	proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"
-	>
- 
+
+	<cfhttp attributeCollection='#getHTTPAttrs(
+		method="#arguments.httpMethod#",
+		url="#getBaseURL()##arguments.url#",
+		useragent="#getUserAgent()#",
+		result="objGet",
+		resolveurl="#getResolveURL()#",
+		timeout="#getTimeout()#",
+		throwOnError="#getThrowOnError()#",
+		charset="#getCharSet()#")#'>
+
 	<cfif len(arguments.referer)>
 		<cfhttpparam
 		type="HEADER"
@@ -417,21 +416,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		value="#arguments.referer#"
 		/>
 	</cfif>
-	
+
 	<!--- Loop over the cookies we found. --->
 	<cfloop
 		item="strCookie"
 		collection="#variables.httpSession#">
- 
+
 		<!--- Send the cookie value with this request. --->
 		<cfhttpparam
 			type="COOKIE"
 			name="#strCookie#"
 			value="#variables.httpSession[ strCookie ].Value#"
 			/>
- 
+
 	</cfloop>
-	
+
 	<cfif not structIsEmpty(arguments.data)>
 	<cfloop
 		item="key"
@@ -451,27 +450,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			value="#tempValue#"
 			/>
 		</cfif>
- 
+
 	</cfloop>
 	</cfif>
- 
+
 	</cfhttp>
-	
+
 	<cfset tempNew=GetResponseCookies( objGet )>
-	
+
 	<cfset structAppend(variables.httpSession,tempNew,"true")>
-	
+
 	<cfif isJSON(objGet.fileContent)>
 		<cfset response=deserializeJSON(objGet.fileContent)>
 	<cfelseif isWDDX(objGet.fileContent)>
 		<cfwddx action="wddx2cfml" input="#objGet.fileContent#" output="response">
 	<cfelse>
 		<cfset response=objGet.fileContent>
-	</cfif>	
-	
+	</cfif>
+
 	<cfreturn response>
 
 </cffunction>
 
 </cfcomponent>
-

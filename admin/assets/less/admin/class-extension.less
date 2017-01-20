@@ -1,0 +1,177 @@
+#cextend {
+
+	h2 {	
+	line-height: 26px; 
+		}
+
+	#newFrmclose{
+		margin-left: -2px;
+	}
+
+	#editFrm1container {
+	
+		form {
+			margin-top: @baseLineHeight*2;
+			}
+		}
+	
+	.attr-list {
+		padding-left: 0;		
+		list-style: none;
+		margin: 1em 0 @baseLineHeight*2 0;
+		clear: both;
+		
+		li {
+			.box-sizing(border-box);
+			width: 30%;
+			clear: both;
+			margin: 0 0 .25em;
+			background: @grayLighter;
+			padding: .25em .5em;
+			.border-radius(3px);
+			position: relative;
+			line-height: 28px;
+			z-index: 0;
+			
+			&.attr-edit { 
+				
+				width: 100%;
+				padding-top: @baseLineHeight; 
+				padding-left: 15px;
+				
+				p { 
+					.bold-font;
+					font-size: 16px;
+			    margin-left: 0;					
+					padding-left: 0;
+			    }
+				
+				.btns {
+					padding-right: @gridGutterWidth;
+					
+					i { font-size: 16px; }
+					
+					}
+				
+				.nav-pills { 
+				display: none;
+				 }
+				
+				#editFrm1container > form {
+					margin-top: 0;
+					}
+				
+				}
+			
+			form { z-index: 10; }
+			.attr-edit { width: 100%; }
+			
+			a:hover { 
+				text-decoration: none;
+				
+				i {
+				color: @blue;
+					}
+				}
+		
+				i {
+					font-size: 14px;
+					width: 1em;
+					color: @grayDark;
+					
+					&.icon-move {
+						font-size: 16px;
+						/* width: 1.5em; */
+						padding: 0;
+						margin-bottom: -2px;
+						position: relative;
+						top: 2px;
+						/* margin-right: 1em; */
+						.border-radius(3px);
+						text-shadow: 0 1px 0 @white;
+						line-height: 24px;
+						
+						&:hover {
+							cursor: hand !important;
+							color: @gray;
+							}
+					
+					}
+				
+				}
+	
+				.btns {
+
+					.inline-block;
+					margin-left: 2em;
+					.pull-right;
+				
+				.btn {
+					padding: 4px 6px;
+					}
+				
+				}
+				
+				p {
+					margin: 0 0 0 .5em;
+					.inline-block();
+					line-height: 1;
+				}
+			}		
+			
+		}
+		
+		&.ui-sortable li:hover {
+			background: @grayLight !important;
+			cursor: hand !important;
+		}
+		
+		// Icon Selector Dropdown
+		
+		.SubTypeIconSelect {
+			
+			.dropdown-menu {
+			
+				width: 731px;
+				padding: @baseLineHeight/2;
+				margin-bottom: @baseLineHeight;
+				/* left: -360px; */
+				height: 404px;
+				overflow-x: scroll;
+				
+			
+				li {
+					
+					float: left;
+					
+					i {
+						margin: @baseLineHeight/6;
+						 width: 23px;
+						 text-align: center;
+						
+						&:hover {
+							cursor: pointer;
+							background-color: @blue;
+							color: @white;
+							border-color: @blue;
+						}
+						
+						&.icon-default {
+							background-color: @gray;
+							border-color: @gray;
+							color: @white;
+						}
+						
+						&.icon-current {
+							background-color: @orange;
+							border-color: @orange;
+							color: @white;
+						}
+					}
+					
+				}
+			
+			}
+			
+		}
+	}

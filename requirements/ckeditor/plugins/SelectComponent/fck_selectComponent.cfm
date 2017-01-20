@@ -10,14 +10,17 @@
 	</head>
 	<body id="mura-select-component" class="mura-plugin">
 		<div class="cke_dialog">
-			<h1>Select a Component to Insert</h1>
+			<h4>Select a Component to Insert</h4>
 			<cfoutput>
+			<div class="mura-control-group">
+			<label></label>
 			<select id="btnComponents">
 				<option value="">Select Component</option>
 				<cfloop query="rs">
 					<option value="<cfif len(trim(rs.body))>#htmleditformat(rs.body)#<cfelse>[mura]$.dspObject('component', '#rs.contentID#')[/mura]</cfif>">#rs.title#</option>
 				</cfloop>
 			</select>
+			</div>
 			</cfoutput>
 		</div>
 	</body>

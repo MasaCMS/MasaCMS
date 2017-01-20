@@ -161,9 +161,8 @@
 						tagContent = manualTagContent;
 					}
 					
-					
 					// Insert Mura Tag into editor
-					if ( ranges.length == 1 && ranges[0].collapsed )
+					if ( ranges.length == 1 )
 					{
 						var textNode = new CKEDITOR.dom.text( '[m]'+tagContent+'[/m]', editor.document );
 						ranges[0].deleteContents();

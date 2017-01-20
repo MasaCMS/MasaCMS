@@ -25,16 +25,16 @@
  * HISTORY:
  * Date US Format		User					Note
  * 2013/04/10			CF Mitrah		 	Initial version
-*/ 
+*/
 	$(function(){
 			$('body').append('<div id="razunaModalWindow"></div>');
 	});
-	
+
 	$(document).on('change','input[name=razuna-selected-url]',{},function(){
 		$('#razuna-width').val(parseInt($(this).attr('data-width')));
 		$('#razuna-height').val(parseInt($(this).attr('data-height')));
 	});
-	
+
 	$(document).on('click','#razuna-search',{}, function() {
 		$("#razuna-tagTree").jstree('open_all');
 		$('#razuna-inner-div').hide();
@@ -44,10 +44,10 @@
 		setTimeout(function(){
 			$("#razuna-tagTree").jstree("search", $('#razuna-search-box').val());
 			$('#razuna-full_page_loader').css('display','none');
-		}, 2000);  
+		}, 2000);
 	});
-	
-	$(document).on('click','#razuna-insert',{},function(){	
+
+	$(document).on('click','#razuna-insert',{},function(){
 
 		var url=$('input[name="razuna-selected-url"]:checked').val();
 
@@ -57,18 +57,18 @@
 		} else {
 			$("#" + razuna_target.getInputElement().$.id).val($('input[name="razuna-selected-url"]:checked').val());
 			if(razuna_target.onChange){
-				razuna_target.onChange();	
+				razuna_target.onChange();
 			}
 			if(razuna_target.getInputElement().onChange){
-				razuna_target.getInputElement().onChange();	
+				razuna_target.getInputElement().onChange();
 			}
 		}
-		
+
 		$('#razunaModalWindow').dialog("close");
 
 	});
 
-	
+
 	function razunaRemoveAll(){
 		$('.razuna-inner-div').remove();
 		$('#razuna-loader-div').hide();
@@ -79,12 +79,11 @@
 	function renderRazunaWindow(target){
 		razuna_target=target;
 
-		$('#razunaModalWindow').html('<div align="center"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div>');
-		
+		//$('#razunaModalWindow').html('<div align="center"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div>');
+
 		$('#razunaModalWindow').dialog({
 	        bgiframe: true,
 	        autoOpen: false,
-	        position: ["top",20],
 	        width: 860,
 			height:450,
 	        modal: true,
@@ -92,14 +91,16 @@
 	        close: razunaRemoveAll
        	});
 
+		$('#razunaModalWindow').css("position","absolute")
+
        	$('#razunaModalWindow').closest(".ui-dialog").addClass('razuna-dialog');
-		
-		$('#razunaModalWindow').closest(".ui-dialog").addClass("razuna-dialog");
-		
+
 		$('#razunaModalWindow').load(razuna_folder+'?muraAction=razuna.default',function(){
-			var loader_div = '<div id="razuna-loader-div"><div class="razuna-img-div"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div></div>';
-				$('#razunaModalWindow').before(loader_div);
-		
+			//var loader_div = '<div id="razuna-loader-div"><div class="razuna-img-div"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div></div>';
+			//$('#razunaModalWindow').before(loader_div);
+		$('#action-modal').remove();
+
+
 		$("#razuna-tagTree").jstree({
 			"plugins" : [ "json_data", "ui", "types", "search"],
 			"types" : {
@@ -113,7 +114,7 @@
 								$('#razuna-tagTree').css("width","266px");
 								$('#razuna-inner-div').show();
 								$('.razuna-inner-div').remove();
-								$('#razuna-loader-div').show();
+								//$('#razuna-loader-div').show();
 								$(target).attr('data-cloud_url_thumb',$(target).attr('data-cloud_url'));
 
 								var type = $(target).attr('data-kind');
@@ -141,7 +142,7 @@
 										content+='</tbody>';
 								}
 								else if(type == 'img'){
-								
+
 									var content='<tbody>';
 										content+='		<tr>';
 										content+='			<td valign="top">';
@@ -151,29 +152,29 @@
 										content+='				<strong>Filename : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
 										content+='				<strong>Type : </strong><span>Image</span><br>';
 										content+='				<table border="0" id="renditions">';
-										
-										
+
+
 										content+='				<tr class="rend">';
 										content+='					<td><strong>Size:</strong></td>';
 										content+='					<td><label class="radio inline">';
 										content+='						<input type="radio" id="razuna-image-size" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_thumb')+'"  data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">Thumbnail</label>';
 										content+='					</td>';
 										content+='				</tr>';
-										
+
 
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
 										content+='					<td><label class="radio inline">';
 										content+='						<input type="radio"';
-									
+
 										content+='						checked="checked";'
 										content+='						name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
 										content+='				</table>';
-										
-										
+
+
 										content+='				<br><button type="button" id="razuna-insert" class="btn image">Select File</button>';
 										content+='			</td>';
 										content+='		</tr>';
@@ -197,7 +198,7 @@
 										content+='					</td>';
 										content+='				</tr>';
 										content+='				</table>';
-							
+
 										content+='				<br><button type="button" id="razuna-insert" class="btn document">Select File</button>';
 										content+='			</td>';
 										content+='		</tr>';
@@ -254,10 +255,11 @@
 				}
 			}
 		});
+
+		$('#razuna-full_page_loader').css('display','none');
+
 		$('#razunaModalWindow').before($('#razuna-search-div'));
 		}).dialog('open');
 
 		//return false;
 	}
-
-

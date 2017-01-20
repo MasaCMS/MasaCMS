@@ -48,21 +48,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)/>
 <cfset rc.rsNotify=application.contentUtility.getNotify(rc.crumbdata) />
 <cfoutput>
-<div class="span6">
+<div class="mura-control-group">
 <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sendto')#</label>
-	<div class="controls">
-		<select id="notifyEditor" name="notify" multiple="multiple" class="span12" <cfif rc.perm eq 'editor'> onChange="javascript: this.selectedIndex==0?document.contentForm.approved.checked=true:document.contentForm.approved.checked=false;"</cfif>>
-		<option value="" selected>None</option>
-		<cfloop query="rc.rsnotify">
-		<option value="#rc.rsnotify.userID#">#rc.rsnotify.lname#, #rc.rsnotify.fname# (#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions.#rc.rsnotify.type#')#)</option>
-		</cfloop>
-		</select>
-	</div>
+	<select id="notifyEditor" name="notify" multiple="multiple" <cfif rc.perm eq 'editor'> onChange="javascript: this.selectedIndex==0?document.contentForm.approved.checked=true:document.contentForm.approved.checked=false;"</cfif>>
+	<option value="" selected>None</option>
+	<cfloop query="rc.rsnotify">
+	<option value="#rc.rsnotify.userID#">#rc.rsnotify.lname#, #rc.rsnotify.fname# (#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions.#rc.rsnotify.type#')#)</option>
+	</cfloop>
+	</select>
 </div>
-<div class="span6">
+<div class="mura-control-group">
 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.message')#</label>
-	<textarea name="message" rows="6" id="messageEditor" class="span12">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.messagetext')#
-</textarea>
+	<textarea name="message" rows="6" id="messageEditor">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.messagetext')#
+	</textarea>
 </div>
 </cfoutput>
 

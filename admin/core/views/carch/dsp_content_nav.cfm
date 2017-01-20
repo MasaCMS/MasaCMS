@@ -45,14 +45,14 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div id="newContentMenu" onMouseOut="siteManager.hideMenu('newContentMenu');" onMouseOver="siteManager.keepMenu('newContentMenu');" class="addNew hide">
-  <ul>
+<div id="newContentMenu" class="addNew hide">
+  <ul id="newContentOptions">
   <!--- Need class="first" and class="last" on these list items --->
-    <li id="newZoom"><a href="" id="newZoomLink"><i class="icon-zoom-in"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.zoom")#</a></li>
-    <li id="newContent"><a href="" id="newContentLink"><i class="icon-plus"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addcontent")#</a></li>
-    <li id="newCopy"><a href="" id="newCopyLink"><i class="icon-copy"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.copy")#</a></li>
-    <li id="newCopyAll"><a href="" id="newCopyAllLink"><i class="icon-sitemap"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.copyall")#</a></li>
-	<li id="newPaste"><a href="" id="newPasteLink"><i class="icon-paste"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.paste")#</a></li>
+    <li id="newZoom"><a href="" id="newZoomLink"><i class="mi-search-plus"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.zoom")#</a></li>
+    <li id="newContent"><a href="" id="newContentLink"><i class="mi-plus"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addcontent")#</a></li>
+    <li id="newCopy"><a href="" id="newCopyLink"><i class="mi-copy"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.copy")#</a></li>
+    <li id="newCopyAll"><a href="" id="newCopyAllLink"><i class="mi-sitemap"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.copyall")#</a></li>
+	<li id="newPaste"><a href="" id="newPasteLink"><i class="mi-paste"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.paste")#</a></li>
   </ul>
 </div>
 

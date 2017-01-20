@@ -6,11 +6,16 @@
 			<div class="row">
 				<section class="content col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<cfinclude template="inc/breadcrumb.cfm" />
-					#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1,metaImageClass='thumbnail')#
+					<cfset pageTitle = $.content('type') neq 'Page' ? $.content('title') : ''>
+					#$.dspBody(body=$.content('body')
+						, pageTitle=pageTitle
+						, crumbList=false
+						, showMetaImage=false
+					)#
 					#$.dspObjects(2)#
 				</section>
 			</div>
-			<cfinclude template="inc/footer.cfm" />
 		</div><!-- /.container -->
+	<cfinclude template="inc/footer.cfm" />
 	<cfinclude template="inc/html_foot.cfm" />
 </cfoutput>

@@ -101,29 +101,32 @@
 
 	<div id="clipboard-container" style="position:fixed;left:0px;top:0px;width:0px;height:0px;z-index:100;display:none;opacity:0;"><textarea id="clipboard" style="width:1px;height:1px;padding:0px;margin:0px;"></textarea></div>
 
+<div class="mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.exportclassextensions')#</h1>
-
-	<div id="nav-module-specific" class="btn-group">
+	<div class="nav-module-specific btn-group">
 		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
-			<i class="icon-circle-arrow-left"></i> 
+					<i class="mi-arrow-circle-left"></i> 
 			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>
 	</div>
 
-	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post">
-		<div class="fieldset">
-			<div class="control-group">
-				<div id="copymessage" class="controls">
-					<div class="info-box alert alert-info"></div>
-				</div>
-				<div class="controls">
-					<textarea id="thecode" class="form-control span12" rows="20" style="height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
-				</div>
-			</div>
-		</div>
+</div> <!-- /.mura-header -->
 
-		<div class="form-actions">
-			<input id="btnSubmit" type="submit" class="btn" value="#rc.$.rbKey('sitemanager.extension.download')#" />
+<div class="block block-constrain">
+		<div class="block block-bordered">
+		  <div class="block-content">
+
+	<form novalidate="novalidate" name="form1" method="post">
+		<div class="mura-control-group">
+			<div id="copymessage">
+				<div class="info-box help-block"></div>
+			</div>
+				<textarea id="thecode" rows="20" style="width: 100%; height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
+		</div>
+		<div class="mura-actions">
+			<div class="form-actions">
+				<button id="btnSubmit" type="submit" class="btn mura-primary"><i class="mi-sign-out"></i>#rc.$.rbKey('sitemanager.extension.download')#</button>
+			</div>
 		</div>
 
 		<input name="exportClassExtensionID" value="#rc.exportClassExtensionID#" type="hidden">
@@ -133,4 +136,9 @@
 		#rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
 
 	</form>
+
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
+
 </cfoutput>

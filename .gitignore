@@ -6,11 +6,11 @@
 *_notes/
 *.codekit
 *.esproj
-*.json
 *.less.css
 *.log
 *.sublime-project
 *.sublime-workspace
+sftp-config.json
 
 # ignored '.' files and directories
 ._*
@@ -36,9 +36,7 @@ web.xml
 # ignored directories, regardless of location
 compiled/
 logs/
-mxunit/
-tests/
-unitTests/
+temp/
 
 # ignored CF & Tomcat directories
 CFIDE/
@@ -49,6 +47,7 @@ WEB-INF/
 /demo/
 /plugins/
 /temp/
+node_modules/
 
 # ignored 'config' directory files
 /config/cfapplication.cfm
@@ -63,7 +62,12 @@ WEB-INF/
 /default/includes/contentRenderer.cfc
 /default/includes/email/
 /default/includes/eventHandler.cfc
+/default/js/node_modules/
+/default/model/
 
 # create sites &/or directories beginning with 'demo' or 'temp' without tracking them
 demo-*/
 temp-*/
+bs3
+MuraBundle_default_2015_03_30_12_29.zip
+mxp-site-bundle.zip

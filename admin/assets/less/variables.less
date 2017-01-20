@@ -20,7 +20,8 @@
 
 // Accent colors
 // -------------------------
-@blue:                  #6699cc;
+@mura-blue:             #4485f1;
+@blue:                  @mura-blue;
 @blueDark:              darken(@blue, 20%);
 @blueDarker:            darken(@blueDark, 10%);
 @green:                 #46a546;
@@ -51,11 +52,25 @@
 
 // Typography
 // -------------------------
-@sansFontFamily:        HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+@sansFontFamily: "montserratlight", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@sansBoldFontFamily: "montserratsemi_bold", "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@flatFontFamily: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 @serifFontFamily:       Georgia, "Times New Roman", Times, serif;
 @monoFontFamily:        Menlo, Monaco, Consolas, "Courier New", monospace;
 
-@baseFontSize:          12px;
+.bold-font{
+   font-family: @sansBoldFontFamily; 
+   font-weight: normal;
+}
+.regular-font{
+  font-family: @sansFontFamily;
+  font-weight: normal;
+}
+/* plain sans font  used for some UI buttons */
+.flat-font{
+  font-family: @flatFontFamily;
+}
+@baseFontSize:          13px;
 @baseFontFamily:        @sansFontFamily;
 @baseLineHeight:        18px;
 @altFontFamily:         @serifFontFamily;
@@ -220,31 +235,31 @@
 // -------------------------
 
 .badge {
-  padding-left: 7px;
-  padding-right: 7px;
-  .border-radius(9px);
-  border: 0 solid @white;
-  background-color: darken(@gray,10%);
-  color: @white;
+  padding-left: 7px !important;
+  padding-right: 7px !important;
+  //.border-radius(9px) !important;
+  border: 0 solid @white !important;
+  background-color: darken(@gray,10%) !important;
+  color: @white !important;
 }
 
 .label,
 .badge {
   // Important (red)
-  &-important         { background-color: @orange; }
-  &-important[href]   { background-color: darken(@orange, 10%); }
+  &-important         { background-color: @orange !important; }
+  &-important[href]   { background-color: darken(@orange, 10%) !important; }
   // Warnings (orange)
-  &-warning           { background-color: @yellow; }
-  &-warning[href]     { background-color: darken(@yellow, 10%); }
+  &-warning           { background-color: @yellow !important; }
+  &-warning[href]     { background-color: darken(@yellow, 10%) !important; }
   // Success (green)
-  &-success           { background-color: @successText; }
-  &-success[href]     { background-color: darken(@successText, 10%); }
+  &-success           { background-color: @successText !important; }
+  &-success[href]     { background-color: darken(@successText, 10%) !important; }
   // Info (turquoise)
-  &-info              { background-color: @infoText; }
-  &-info[href]        { background-color: darken(@infoText, 10%); }
+  &-info              { background-color: @infoText !important; }
+  &-info[href]        { background-color: darken(@infoText, 10%) !important; }
   // Inverse (black)
-  &-inverse           { background-color: @grayDark; }
-  &-inverse[href]     { background-color: darken(@grayDark, 10%); }
+  &-inverse           { background-color: @grayDark !important; }
+  &-inverse[href]     { background-color: darken(@grayDark, 10%) !important; }
 }
 
 

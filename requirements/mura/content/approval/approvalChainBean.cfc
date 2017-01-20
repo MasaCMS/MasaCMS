@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="approvalChain" bundleable=true {
+component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="approvalChain" bundleable=true hint="This provides approval chain functionality"{
 
 	property name="chainID" fieldtype="id";
     property name="name" type="string" length="100";
@@ -11,14 +11,18 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
     property name="requests" singularname="request" fieldtype="one-to-many" cfc="approvalRequest" orderby="created asc" cascade="delete";
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";
 
+    function init(){
+        setValue('created',now());
+        super.init(argumentCollection=arguments);
+    }
 
     function getAvailableGroupsIterator(){
         var site=getBean('settingsManager').getSite(getValue('siteID'));
         var qs = new Query();
         var sql="
-            select * from tusers 
+            select * from tusers
             where type=1 and (isPublic=1 and siteid = :publicPoolID or isPublic=0 and siteid = :privatePoolID )
-            and inactive=0 
+            and inactive=0
             and userID not in (select groupID from tapprovalmemberships where chainid = :chainID)
             order by tusers.groupname
             ";
@@ -37,6 +41,18 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
     function save(){
 
         //writeDump(var=getValue('groupID'),abort=true);
+        setValue('lastUpdate',now());
+
+		var sessionData=getSession();
+
+        if(isDefined("sessionData.mura") and sessionData.mura.isLoggedIn){
+            setValue('lastUpdateBy',left(sessionData.mura.fname & " " & sessionData.mura.lname,50));
+            setValue('lastUpdateById', sessionData.mura.userID);
+        } else {
+             setValue('lastUpdateBy','');
+            setValue('lastUpdateById','');
+        }
+
         if(valueExists('groupID')){
             var groupID=getValue('groupID');
             var deleteID='';
@@ -98,5 +114,5 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
 
         return super.save();
     }
-    
+
 }

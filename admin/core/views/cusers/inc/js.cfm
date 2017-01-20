@@ -47,6 +47,6 @@
 --->
 <cfsavecontent variable="rc.ajax">
 	<cfoutput>
-		<script src="#rc.$.globalConfig('context')#/admin/assets/js/searchParams.min.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
+		<script src="#rc.$.globalConfig('context')#/admin/assets/js/searchParams.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
 	</cfoutput>
 </cfsavecontent>
