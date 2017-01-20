@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content rendering utiility methods">
 
 	<cffunction name="init" output="false">
 		<cfset variables.intervalManager=getBean('contentIntervalManager')>

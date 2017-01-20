@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent output="false" extends="mura.cfobject">
+<cfcomponent output="false" extends="mura.cfobject" hint="This provides a utility to property bind an query attribute">
 
 <cfset variables.relationship="" />
 <cfset variables.field="" />
@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  		<cfcase value="LTE,<=">
  			<cfset variables.condition="<=" />
  		</cfcase>
- 		<cfcase value="Begins,Contains,Like,Ends">
+ 		<cfcase value="Begins,Contains,ContainsValue,Like,Ends">
 	 		<cfif listFindNoCase("varchar,longvarchar",getDataType()) >
 				<cfset variables.condition="like" />
 			<cfelse>
@@ -202,13 +202,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfswitch expression="#getDataType()#">
 		<cfcase value="varchar,longvarchar">
 			<cfswitch expression="#arguments.condition#">
-				<cfcase value="Begins" >
+				<cfcase value="Begins,BeginsWith" >
 					<cfset variables.criteria="#tmp#%" />
 				</cfcase>
-				<cfcase value="ends" >
+				<cfcase value="Ends,EndsWith" >
 					<cfset variables.criteria="%#tmp#" />
 				</cfcase>
-				<cfcase value="Contains,Like" >
+				<cfcase value="Contains,ContainsValue,Like" >
 					<cfset variables.criteria="%#tmp#%" />
 				</cfcase>
 				<cfdefaultcase>

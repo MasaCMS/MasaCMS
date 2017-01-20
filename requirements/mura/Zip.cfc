@@ -43,7 +43,7 @@
 --->
 
 <cfcomponent displayname = "Zip Component"
-             hint        = "A collections of functions that supports the Zip and GZip functionality by using the Java Zip file API."
+             hint        = "This provides a collections of functions that supports the Zip and GZip functionality by using the Java Zip file API."
 			 output		 = "false"
 			 extends	 = "mura.cfobject">
 
@@ -327,12 +327,12 @@
 			var inStream="";
 			var skip="no";
 			</cfscript>
-			
+
 			<cfset rsdir=List(arguments.zipFilePath)>
-			
+
 			<cfif IsDefined("arguments.extractDirs") and len(arguments.extractDirs)>
 				<cfquery name="rsdir" dbtype="query">
-				select * from rsdir where 
+				select * from rsdir where
 				<cfloop list="#arguments.extractDirs#" index="i" delimiters="|">
 				<cfif started>or</cfif>
 				<cfif right(i,1) neq delim>
@@ -347,11 +347,11 @@
 					<cfset extractStruct["#hash(PathFormat(rsdir.entry))#"]=true>
 				</cfloop>
 			</cfif>
-			
-			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>		
+
+			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>
 				<cfset started=false>
 				<cfquery name="rsdir" dbtype="query">
-				select * from rsdir where 
+				select * from rsdir where
 				<cfloop list="#arguments.excludeDirs#" index="i" delimiters="|">
 				<cfif started>or</cfif>
 				<cfif right(i,1) neq delim>
@@ -366,7 +366,7 @@
 					<cfset excludeStruct["#hash(PathFormat(rsdir.entry))#"]=true>
 				</cfloop>
 			</cfif>
-		
+
 			<cfscript>
 			/* Convert to the right path format */
 			arguments.zipFilePath = PathFormat(arguments.zipFilePath);
@@ -383,7 +383,7 @@
 			{
 				/* Open Zip file */
 				zipFile.init(arguments.zipFilePath);
-	
+
 				/* Zip file entries */
 				entries = zipFile.entries();
 
@@ -392,17 +392,17 @@
 				{
 					entry = entries.nextElement();
 					entryHash = hash(pathFormat(entry.getName()));
-					
+
 					if(NOT entry.isDirectory()
-						AND 
+						AND
 						(
 							not structKeyExists(excludeStruct,entryHash)
-							
+
 							and (
 									(
 										not IsDefined("arguments.extractDirs") or not len(arguments.extractDirs)
 									)
-							
+
 								OR
 									structKeyExists(extractStruct,entryHash)
 							)
@@ -410,11 +410,11 @@
 					)
 					{
 						name = entry.getName();
-						
+
 						if(isDefined("arguments.extractDirs") and isDefined("arguments.extractDirsToTop") and yesNoFormat(arguments.extractDirsToTop)){
-							name=right(name,len(name)-len(arguments.extractDirs));					
+							name=right(name,len(name)-len(arguments.extractDirs));
 						}
-						
+
 						/* Create directory only if 'useFolderNames' is 'yes' */
 						if(arguments.useFolderNames EQ "yes")
 						{
@@ -472,8 +472,8 @@
 				zipFile.close();
 
 				getBean("fileWriter").chmod(path=arguments.extractPath);
-				
-				/* Return true */				
+
+				/* Return true */
 				return true;
 			}
 
@@ -483,7 +483,7 @@
 				zipFile.close();
 
 				getBean("fileWriter").chmod(path=arguments.extractPath);
-				
+
 				/* Return false */
 				return false;
 			}
@@ -512,13 +512,13 @@
 			var qSize=0;
 			var qPacked="";
 			var qCrc="";
-			
+
 
 			cols = ListToArray(cols);
 
 			/* Open Zip file */
 			zipFile.init(arguments.zipFilePath);
-			
+
 			/* Zip file entries */
 			entries = zipFile.entries();
 
@@ -701,28 +701,28 @@
 					 name      = "dir"
 		             directory = "#PathFormat(arguments.directory)#"
 					 filter    = "#arguments.filter#">
-		
+
 		<cfif isDate(arguments.sinceDate)>
 			<cfquery name="dir" dbtype="query">
 			SELECT * FROM dir
-			WHERE 
+			WHERE
 			dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
 			</cfquery>
 		</cfif>
-		
+
 		<cfif len(arguments.excludeDirs)>
 			<cfquery name="dir" dbtype="query">
 			SELECT * FROM dir
-			WHERE 
+			WHERE
 			type = 'File'
 			or
 			(	type='Dir'
-				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#PathFormat(arguments.excludeDirs)#">) 
+				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#PathFormat(arguments.excludeDirs)#">)
 			)
 			</cfquery>
 		</cfif>
-	
-		
+
+
 		<cfscript>
 
 			if(dir.recordcount){
@@ -731,16 +731,16 @@
 				{
 					if(arguments.hiddenFiles or left(dir.name[i],1) neq "."){
 						path = PathFormat(arguments.directory & this.slash & dir.name[i]);
-		
+
 						/* Add file to array */
 						if(dir.type[i] eq "file")
 							ArrayAppend(array, path);
-		
+
 						/* Get files from sub directorys and add them to the array */
 						else if(dir.type[i] EQ "dir" AND arguments.recurse EQ "yes")
 						{
 							subdir = FilesList(path, arguments.filter, arguments.recurse);
-		
+
 							for(n=1; n LTE ArrayLen(subdir); n=n+1)
 								ArrayAppend(array, subdir[n]);
 						}
@@ -771,12 +771,12 @@
 		<cfreturn arguments.path>
 
 	</cffunction>
-	
+
 	<cffunction name="ZipPathFormat" access="private" output="no" hint="Convert path into Windows or Unix format.">
 		<!--- Function Arguments --->
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
-		
+
 		<cfreturn arguments.path>
 
 	</cffunction>

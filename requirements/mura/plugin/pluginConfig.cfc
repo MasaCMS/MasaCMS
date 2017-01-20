@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides access to a plugin's configuration">
 
 <cfset variables.settings=structNew() />
 <cfset variables.name="" />
@@ -374,6 +374,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset getBean("configBean").registerBeanDir(dir=arguments.dir,siteid=siteids,moduleid=getModuleID())>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerModelDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="package">
+	<cfreturn registerBeanDir(argumentcollection=arguments)>
 </cffunction>
 
 <cffunction name="getAssignedSites" output="false">

@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content gateway queries">
 
 <cffunction name="init" output="true">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -1041,13 +1041,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortBy" type="string" required="true" default="lastUpdate">
 	<cfargument name="sortDirection" type="string" required="true" default="desc">
 	<cfset var rsDraftList = "">
+	<cfset var rsDraftList1 = "">
+	<cfset var rsDraftList2 = "">
+	<cfset var rsDraftList3 = "">
+	<cfset var rsDraftList4 = "">
 
 	<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
 		<cfset arguments.sortDirection='desc'>
 	</cfif>
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList')#">
 	<!--- Versions that have been assigned to you by someone else and there is another active version --->
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList1')#">
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
@@ -1070,11 +1074,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	</cfquery>
 
 	<!--- Versions that have been assigned to you by someone else and the assigned version is the active version --->
-
-	union
-
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList2')#">
 	SELECT DISTINCT draft.contenthistid,module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, draft.targetparams,draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
@@ -1096,11 +1099,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	</cfquery>
 
 	<!--- Versions that have been created by you --->
-
-	union
-
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList3')#">
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
@@ -1122,10 +1124,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isdate(arguments.startDate)>AND draft.lastUpdate >=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and  module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND active.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	</cfquery>
 
 	<!--- Versions that have been created by you and it's the active version --->
-	union
-
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList4')#">
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
@@ -1149,9 +1151,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfquery name="rsDraftList" dbtype="query" maxrows="#arguments.limit#">
-	select * from rsDraftList
+	select * from rsDraftList1
+	union
+		select * from rsDraftList2
+	union
+		select * from rsDraftList3
+	union
+		select * from rsDraftList4
 	order by #arguments.sortBy# #arguments.sortDirection#
 	</cfquery>
+
 	<cfreturn rsDraftList />
 </cffunction>
 

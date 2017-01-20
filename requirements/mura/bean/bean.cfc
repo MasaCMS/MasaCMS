@@ -45,7 +45,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component extends="mura.cfobject" output="false" {
+component extends="mura.cfobject" output="false" hint="This provides core bean functionality"{
 
 	property name="errors" type="struct" persistent="false" comparable="false";
 	property name="isNew" type="numeric" persistent="false" default="1";
@@ -756,6 +756,10 @@ component extends="mura.cfobject" output="false" {
 					       	 		prop.dataType='datetime';
 					       	 	}
 
+								if(structKeyExists(prop,'relatesTo')){
+									prop.cfc=prop.relatesTo;
+								}
+
 					       	 	if(structKeyExists(prop,'cfc')){
 
 					       	 		param name="prop.fkcolumn" default="primaryKey";
@@ -802,7 +806,7 @@ component extends="mura.cfobject" output="false" {
 
 							       	 	if(structKeyExists(prop,"singularname")){
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
-											application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator'];
+											//application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator'];
 											application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Query']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#'];
@@ -1133,6 +1137,7 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function exists() {
+		param name="variables.instance.isNew" default=1;
 		return !variables.instance.isNew;
 	}
 

@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM" table="tchangesetrollback" entityname="changesetRollBack" {
+component extends="mura.bean.beanORM" table="tchangesetrollback" entityname="changesetRollBack" hint="This provides changeset roll back functionality"{
 	property name="rollbackID" fieldtype="id";
     property name="changeset" fieldtype="many-to-one" cfc="changesetBean" fkcolumn="changesetID";
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";

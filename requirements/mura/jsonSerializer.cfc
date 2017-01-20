@@ -1,6 +1,6 @@
 component
 	output = false
-	hint = "I provide a way to serialize complext ColdFusion data values as case-sensitive JavaScript Object Notation (JSON) strings."
+	hint = "This provides a way to serialize complext ColdFusion data values as case-sensitive JavaScript Object Notation (JSON) strings."
 	{
 
 	// I return the initialized component.

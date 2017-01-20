@@ -1,1 +1,1 @@
-<mura name="Comments" legacyobjectfile="../dsp_comments.cfm" />
+<mura name="Comment Form" legacyobjectfile="../dsp_comments.cfm" />

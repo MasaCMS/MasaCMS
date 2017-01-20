@@ -315,7 +315,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop query="rc.rslist" startrow="#rc.startRow#" endrow="#endRow#">
 <tr>
 	<td class="actions">
-		<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+		<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 		<div class="actions-menu hide">			
 			<ul class="actions-list">
 				<li class="viewDetails"><a href="./?muraAction=cDashboard.viewSession&urlToken=#esapiEncode('url',rc.rslist.urlToken)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i>View Details</a></li>

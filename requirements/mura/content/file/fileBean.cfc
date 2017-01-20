@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
+component extends="mura.bean.beanORM" table='tfiles' entityName="file" hint="This provides file data access and persistence" {
 
 	property name="fileid" fieldtype="id";
 	property name="content" fieldtype="one-to-one" fkcolumn="contentid" cfc="content" required=false nullable=true;

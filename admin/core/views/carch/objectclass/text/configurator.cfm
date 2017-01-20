@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=rc.siteid,baseTable="tcontent",activeOnly=true,type=content.getType(),subtype=content.getSubType())>
 					<cfloop query="rsExtend">
 					<cfset options[rsExtend.currentRow + 4][1]=rsExtend.attribute>
-					<cfset options[rsExtend.currentRow + 4][2]=rsExtend.attribute/>
+					<cfset options[rsExtend.currentRow + 4][2]=rsExtend.label/>
 					</cfloop>
 				</cfsilent>
 				<select name="source" id="boundattribute">

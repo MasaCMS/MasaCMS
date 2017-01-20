@@ -1,4 +1,7 @@
-component extends="mura.bean.beanORM" table="tcontentsourcemaps" entityname="contentSourceMap"{
+component extends="mura.bean.beanORM"
+    table="tcontentsourcemaps"
+    entityname="contentSourceMap"
+    hint="This provides mapping of content version derivation"{
 
     property name="mapid" fieldtype="id";
     property name="activeContent" fieldtype="one-to-one" cfc="content" fkcolumn="contentid";

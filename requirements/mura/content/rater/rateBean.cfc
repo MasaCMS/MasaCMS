@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" output="false" hint="This provides content rating persitence">
 
 <cfproperty name="contentID" type="string" default="" required="true" />
 <cfproperty name="userID" type="string" default="" required="true" />
@@ -7,9 +7,9 @@
 <cfproperty name="rate" type="numeric" default="0" required="true" />
 
 <cffunction name="init" output="false">
-	
+
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.contentID="" />
 	<cfset variables.instance.userID=""/>
 	<cfset variables.instance.siteID=""/>
@@ -49,12 +49,12 @@
 <cffunction name="getQuery"  output="false">
 	<cfset var rs=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select * from tcontentratings where 
+	select * from tcontentratings where
 	contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 	and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#">
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 	</cfquery>
-	
+
 	<cfreturn rs/>
 </cffunction>
 
@@ -69,9 +69,9 @@
 
 <cffunction name="save"  output="false">
 <cfset var rs=""/>
-	
+
 	<cfif getQuery().recordcount>
-		
+
 		<cfquery>
 		update tcontentratings set
 		rate=#getRate()#,
@@ -80,9 +80,9 @@
 		and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#">
 		and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 		</cfquery>
-		
+
 	<cfelse>
-	
+
 		<cfquery>
 		insert into tcontentratings (contentID,userID,siteID,rate,entered)
 		values(
@@ -93,9 +93,9 @@
 		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.entered#">
 		)
 		</cfquery>
-		
+
 	</cfif>
-	
+
 </cffunction>
 
 </cfcomponent>

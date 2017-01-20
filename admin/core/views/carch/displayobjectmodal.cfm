@@ -18,7 +18,7 @@
         }
     }
 
-    url.view=ReReplace(url.view, '[^a-zA-Z0-9_\.\\/]','all');
+    url.view=ReReplace(url.view, '[^a-zA-Z0-9_\.\\/]','','all');
     url.view=replace(url.view,'../','','all');
     url.view=replace(url.view,'..\','','all');
 

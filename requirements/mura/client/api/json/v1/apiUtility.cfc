@@ -1,4 +1,4 @@
-component extends="mura.cfobject" {
+component extends="mura.cfobject" hint="This provides JSON/REST API functionality" {
 
 	function init(siteid){
 
@@ -27,10 +27,10 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser",
+			publicMethods="findOne,findMany,findAll,findFieldDescriptor,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser",
 			entities={
 				'contentnav'={
-					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
+					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
 				}
 			}
 		};
@@ -58,13 +58,13 @@ component extends="mura.cfobject" {
 
 	    registerEntity('site',{
 	    	public=true,
-			fields="domain,siteid",
+			fields="links,domain,siteid",
 			allowfieldselect=false
 		});
 
 		registerEntity('content',{
 			public=true,
-			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteid,remoteurl"
+			fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteid,remoteurl"
 		});
 
 		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
@@ -643,7 +643,7 @@ component extends="mura.cfobject" {
 								method=httpRequestData.method;
 							}
 						}
-					} else if(listFind('new,propertydescriptor,listviewdescriptor',pathInfo[3])){
+					} else if(listFind('new,fielddescriptor,propertydescriptor,listviewdescriptor',pathInfo[3])){
 						params.id=pathInfo[3];
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
@@ -715,6 +715,9 @@ component extends="mura.cfobject" {
 						} else if(params.id=='propertydescriptor') {
 								params.method='findPropertyDescriptor';
 								result=findPropertyDescriptor(argumentCollection=params);
+						} else if(params.id=='fielddescriptor') {
+								params.method='findFieldDescriptor';
+								result=findFieldDescriptor(argumentCollection=params);
 						} else if(params.id=='listviewdescriptor') {
 								params.method='findListViewDescriptor';
 								result=findListViewDescriptor(argumentCollection=params);
@@ -824,8 +827,47 @@ component extends="mura.cfobject" {
 		return 'v1';
 	}
 
+	function findFieldDescriptor(entityname,fields=''){
+		return findPropertyDescriptor(arguments.entityname,arguments.fields);
+	}
+
+	function applyPropertyFormat(prop){
+		arguments.prop=structCopy(prop);
+		structDelete(arguments.prop,'table');
+		structDelete(arguments.prop,'column');
+		structDelete(arguments.prop,'nested');
+		structDelete(arguments.prop,'comparable');
+		structDelete(arguments.prop,'ormtype');
+		structDelete(arguments.prop,'persistent');
+		if(structKeyExists(arguments.prop,'cfc')){
+			arguments.prop.relatesto=prop.cfc;
+			structDelete(arguments.prop,'cfc');
+		}
+
+		return arguments.prop;
+	}
+
 	function findPropertyDescriptor(entityname,properties=''){
-		return getBean(arguments.entityname).getProperties();
+		var props=getBean(arguments.entityname).getProperties();
+		var propArray=listToArray(arguments.properties);
+		var returnArray=[];
+		var prop='';
+
+		if(arrayLen(propArray)){
+			for(var p in propArray){
+				if(props[p].persistent){
+					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				}
+			}
+		} else {
+			for(var p in props){
+				if(props[p].persistent){
+					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				}
+			}
+		}
+
+		return returnArray;
 	};
 
 	function findListViewDescriptor(entityname){
@@ -833,14 +875,19 @@ component extends="mura.cfobject" {
 		var listViewArray=listToArray(sample.getListView());
 		var returnArray=[];
 		var props=sample.getProperties();
+		var prop='';
 
 		if(arrayLen(listViewArray)){
 			for(var p in listViewArray){
-				arrayAppend(returnArray,props[p]);
+				if(props[p].persistent){
+					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				}
 			}
 		} else {
 			for(var p in props){
-				arrayAppend(returnArray,props[p]);
+				if(props[p].persistent){
+					arrayAppend(returnArray,applyPropertyFormat(props[p]));
+				}
 			}
 		}
 
@@ -1102,7 +1149,7 @@ component extends="mura.cfobject" {
 
 	// MURA ORM ADAPTER
 
-	function save(siteid,entityname,id='new'){
+	function save(siteid,entityname,id='new',expand=''){
 
 		var $=getBean('$').init(arguments.siteid);
 
@@ -1190,25 +1237,15 @@ component extends="mura.cfobject" {
 
 		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
 
-		var returnStruct=getFilteredValues(entity,true,entity.getEntityName());
+		var returnStruct=getFilteredValues(entity,true,entity.getEntityName(),arguments.siteid,arguments.expand,pk);
 
 		returnStruct.saveErrors=saveErrors;
 		returnStruct.errors=errors;
-		returnStruct.links=getLinks(entity);
-		returnStruct.id=returnStruct[pk];
-
-		if(listFindNoCase('content,contentnav',arguments.entityName)){
-			returnstruct.images=setImageURLS(entity);
-			returnstruct.url=entity.getURL();
-		}
-
-		//var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 		return returnStruct;
 	}
 
-	function getFilteredValues(entity,expand=true,entityConfigName){
+	function getFilteredValues(entity,expand=true,entityConfigName,siteid,expandLinks='',pk=''){
 		var fields='';
 		var vals={};
 
@@ -1265,7 +1302,28 @@ component extends="mura.cfobject" {
 			}
 		}
 
+		if(len(arguments.pk)){
+			vals.id=arguments.entity.getValue(pk);
+		}
+
+		if(!arrayLen(fields) || arrayFind(fields,'links')){
+			vals.links=getLinks(entity);
+		}
+
+		if(listFindNoCase('content,contentnav',arguments.entityConfigName)){
+			if(!arrayLen(fields) || arrayFind(fields,'images')){
+				vals.images=setImageURLS(entity);
+			}
+			if(!arrayLen(fields) || arrayFind(fields,'url')){
+				vals.url=entity.getURL(complete=true);
+			}
+		}
+
 		vals['entityname']=arguments.entityConfigName;
+
+		if(len(arguments.expandLinks)){
+			expandEntity(entity=arguments.entity,itemStruct=vals,siteid=arguments.siteid,expand=arguments.expandLinks);
+		}
 
 		return vals;
 	}
@@ -1282,7 +1340,7 @@ component extends="mura.cfobject" {
 		);
 	}
 
-	function findOne(entityName,id,siteid,render=false,variation=false,expand=''){
+	function findOne(entityName,id,siteid,render=false,variation=false,expand='',method='findOne'){
 		var $=getBean('$').init(arguments.siteid);
 
 		checkForChangesetRequest(arguments.entityName,arguments.siteid);
@@ -1360,18 +1418,7 @@ component extends="mura.cfobject" {
 			}
 		}
 
-		var returnStruct=getFilteredValues(entity,true,arguments.entityName);
-		returnStruct.links=getLinks(entity);
-		returnStruct.id=returnStruct[pk];
-
-		if(listFindNoCase('content,contentnav',arguments.entityName)){
-			returnstruct.images=setImageURLS(entity);
-			returnstruct.url=entity.getURL();
-		}
-
-		if(len(arguments.expand)){
-			expandEntity(entity=entity,itemStruct=returnstruct,siteid=arguments.siteid,expand=arguments.expand);
-		}
+		var returnStruct=getFilteredValues(entity,true,arguments.entityName,arguments.siteid,arguments.expand,pk);
 
 		if(isDefined('url.ishuman')){
 			request.cffpJS=true;
@@ -1399,18 +1446,7 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		var returnStruct=getFilteredValues(entity,true,entity.getEntityName());
-		returnStruct.links=getLinks(entity);
-		returnStruct.id=returnStruct[pk];
-
-		if(listFindNoCase('content,contentnav',arguments.entityName)){
-			returnstruct.images=setImageURLS(entity);
-			returnstruct.url=entity.getURL();
-		}
-
-		if(len(arguments.expand)){
-			expandEntity(entity=entity,itemStruct=returnstruct,siteid=arguments.siteid,expand=arguments.expand);
-		}
+		var returnStruct=getFilteredValues(entity,true,entity.getEntityName(),arguments.siteid,arguments.expand,pk);
 
 		if(isDefined('url.ishuman')){
 			request.cffpJS=true;
@@ -1421,6 +1457,7 @@ component extends="mura.cfobject" {
 	}
 
 	function expandEntity(entity,itemStuct,siteid,expand=''){
+
 		if(len(arguments.expand)){
 			var p='';
 			var expandParams={};
@@ -1434,8 +1471,9 @@ component extends="mura.cfobject" {
 						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column),createUUID());
 
 						//try{
-							itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams,expanded=true);
+							arguments.itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams,expanded=true);
 						//} catch(any e){WriteDump(p); abort;}
+
 					}
 				}
 			}
@@ -1445,9 +1483,9 @@ component extends="mura.cfobject" {
 					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
 						//try{
 							if(p.name=='site'){
-								itemStruct[p.name]=findOne(entityName='site',id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
+								arguments.itemStruct[p.name]=findOne(entityName='site',id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
 							} else {
-								itemStruct[p.name]=findOne(entityName=p.cfc,id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
+								arguments.itemStruct[p.name]=findOne(entityName=p.cfc,id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
 							}
 						//} catch(any e){WriteDump(p); abort;}
 					}
@@ -1459,6 +1497,7 @@ component extends="mura.cfobject" {
 					arguments.itemStruct.crumbs=findCrumbArray(arguments.itemStruct.entityName,arguments.itemStruct.id,arguments.siteid,arguments.entity.getCrumbIterator());
 				}
 			}
+
 		}
 
 	}
@@ -1530,20 +1569,7 @@ component extends="mura.cfobject" {
 
 		while(iterator.hasNext()){
 			item=iterator.next();
-			itemStruct=getFilteredValues(item,false,entityConfigName);
-			if(len(pk)){
-				itemStruct.id=itemStruct[pk];
-			}
-			itemStruct.links=getLinks(item);
-
-			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item);
-				itemStruct.url=item.getURL();
-			}
-
-			if(len(arguments.expand)){
-				expandEntity(entity=item,itemStruct=itemStruct,siteid=arguments.siteid,expand=arguments.expand);
-			}
+			itemStruct=getFilteredValues(item,false,entityConfigName,arguments.siteid,arguments.expand,pk);
 
 			arrayAppend(returnArray, itemStruct);
 		}
@@ -1551,7 +1577,7 @@ component extends="mura.cfobject" {
 		return packageIteratorArray(iterator,returnArray,'findall');
 	}
 
-	function findMany(entityName,ids,siteid,params){
+	function findMany(entityName,ids,siteid,params,expand=''){
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
@@ -1609,21 +1635,7 @@ component extends="mura.cfobject" {
 				throw(type="authorization");
 			}
 
-			itemStruct=getFilteredValues(item,false,entityConfigName);
-
-			if(len(pk)){
-				itemStruct.id=itemStruct[pk];
-			}
-			itemStruct.links=getLinks(item);
-
-			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item);
-				itemStruct.url=item.getURL();
-			}
-
-			if(len(arguments.expand)){
-				expandEntity(entity=item,itemStruct=itemStruct,siteid=arguments.siteid,expand=arguments.expand);
-			}
+			itemStruct=getFilteredValues(item,false,entityConfigName,arguments.siteid,arguments.expand,pk);
 
 			arrayAppend(returnArray, itemStruct );
 
@@ -1691,15 +1703,16 @@ component extends="mura.cfobject" {
 			var started=false;
 
 			for(var p in arguments.params){
-				feed.addParam(column=p,criteria=arguments.params[p]);
+				if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection',p)){
+					feed.addParam(column=p,criteria=arguments.params[p]);
 
-				if(started){
-					baseURL=baseURL & '&';
+					if(started){
+						baseURL=baseURL & '&';
+					}
+
+					baseURL=baseURL & p & '=' & arguments.params[p];
+					started=true;
 				}
-
-				baseURL=baseURL & p & '=' & arguments.params[p];
-				started=true;
-
 			}
 
 		} else {
@@ -1731,42 +1744,44 @@ component extends="mura.cfobject" {
 				}
 
 				if(structKeyExists(params,p)){
-					if(started){
-						baseURL=baseURL & '&' & p;
-					} else {
-						baseURL=baseURL & p;
-						started=true;
-					}
+					if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection',p)){
+						if(started){
+							baseURL=baseURL & '&' & p;
+						} else {
+							baseURL=baseURL & p;
+							started=true;
+						}
 
-					if(len(params[p])){
-						baseURL=baseURL & '=' & params[p];
-					}
-					if(!(entity.getEntityName()=='user' && propName=='isPublic')){
-						if(entity.getEnityName()=='user' && propName=='groupid'){
-							feed.setGroupID(arguments.params[p]);
-						} else if(entity.valueExists(propName)){
-							var condition="eq";
-							var criteria=arguments.params[p];
+						if(len(params[p])){
+							baseURL=baseURL & '=' & params[p];
+						}
+						if(!(entity.getEntityName()=='user' && propName=='isPublic')){
+							if(entity.getEnityName()=='user' && propName=='groupid'){
+								feed.setGroupID(arguments.params[p]);
+							} else if(entity.valueExists(propName)){
+								var condition="eq";
+								var criteria=arguments.params[p];
 
-							if(listLen(criteria,"^") > 1){
-								condition=listFirst(criteria,'^');
-								criteria=listGetAt(criteria,2,'^');
-							} else if(find('*',criteria)){
-								condition="like";
-								criteria=replace(criteria,'*','%','all');
+								if(listLen(criteria,"^") > 1){
+									condition=listFirst(criteria,'^');
+									criteria=listGetAt(criteria,2,'^');
+								} else if(find('*',criteria)){
+									condition="like";
+									criteria=replace(criteria,'*','%','all');
+								}
+
+								feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
+								relationship='and';
+							} else if(propName=='or'){
+								relationship='or';
+							} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
+								feed.addParam(relationship=p);
+								relationship='and';
+							} else if(propname=='innerJoin'){
+								feed.innerJoin(relatedEntity=params[p]);
+							} else if(propname=='leftJoin'){
+								feed.leftJoin(relatedEntity=params[p]);
 							}
-
-							feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
-							relationship='and';
-						} else if(propName=='or'){
-							relationship='or';
-						} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
-							feed.addParam(relationship=p);
-							relationship='and';
-						} else if(propname=='innerJoin'){
-							feed.innerJoin(relatedEntity=params[p]);
-						} else if(propname=='leftJoin'){
-							feed.leftJoin(relatedEntity=params[p]);
 						}
 					}
 				}
@@ -1812,20 +1827,7 @@ component extends="mura.cfobject" {
 
 		while(iterator.hasNext()){
 			item=iterator.next();
-			itemStruct=getFilteredValues(item,false,entityConfigName);
-			if(len(pk)){
-				itemStruct.id=itemStruct[pk];
-			}
-			itemStruct.links=getLinks(item);
-
-			if(listFindNoCase('content,contentnav',entityName)){
-				itemStruct.images=setImageURLS(item);
-				itemStruct.url=item.getURL();
-			}
-
-			if(len(arguments.expand)){
-				expandEntity(entity=item,itemStruct=itemStruct,siteid=arguments.siteid,expand=arguments.expand);
-			}
+			itemStruct=getFilteredValues(item,false,entityConfigName,arguments.siteid,arguments.expand,pk);
 
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -1914,6 +1916,10 @@ component extends="mura.cfobject" {
 
   		}
 
+		if(isDefined('arguments.params.includeHomePage')){
+			arguments.feed.setIncludeHomePage(1);
+		}
+
 		if(isDefined('arguments.params.sortby') && len(arguments.params.sortby)){
 			arguments.feed.setSortBy(arguments.params.sortby);
 		}
@@ -1965,7 +1971,7 @@ component extends="mura.cfobject" {
 
 	}
 
-	function findCrumbArray(entityName,id,siteid,iterator){
+	function findCrumbArray(entityName,id,siteid,iterator,expand=''){
 
 		var $=getBean('$').init(arguments.siteid);
 
@@ -2007,20 +2013,7 @@ component extends="mura.cfobject" {
 
 		while(arguments.iterator.hasNext()){
 			item=arguments.iterator.next();
-			itemStruct=getFilteredValues(item,false,entityConfigName);
-			if(len(pk)){
-				itemStruct.id=itemStruct[pk];
-			}
-			itemStruct.links=getLinks(item);
-
-			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item);
-				itemStruct.url=item.getURL();
-			}
-
-			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-
+			itemStruct=getFilteredValues(item,false,entityConfigName,arguments.siteid,arguments.expand,pk);
 
 			arrayAppend(returnArray, itemStruct );
 		}

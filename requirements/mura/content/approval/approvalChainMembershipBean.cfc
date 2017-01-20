@@ -1,9 +1,9 @@
-component extends="mura.bean.beanORM"  table="tapprovalmemberships" entityname="approvalChainMembership" bundleable=true {
+component extends="mura.bean.beanORM"  table="tapprovalmemberships" entityname="approvalChainMembership" bundleable=true hint="This provides approval chain membership functionality" {
 
 	property name="membershipID" fieldtype="id";
     property name="orderno" type="int" default="1";
     property name="created" type="timestamp";
-    property name="approvalChain" fieldtype="many-to-one" cfc="approvalChain" fkcolumn="chainID";   
+    property name="approvalChain" fieldtype="many-to-one" cfc="approvalChain" fkcolumn="chainID";
     property name="group" fieldtype="many-to-one" cfc="user"  loadkey="userid" fkcolumn="groupID";
     property name="site" fieldtype="one-to-one" cfc="site" fkcolumn="siteID";
 
@@ -11,7 +11,7 @@ component extends="mura.bean.beanORM"  table="tapprovalmemberships" entityname="
         setValue('created',now());
         super.init(argumentCollection=arguments);
     }
-    
+
     function getPendingContentIterator(){
         var qs = new Query();
         var sql="
@@ -20,16 +20,16 @@ component extends="mura.bean.beanORM"  table="tapprovalmemberships" entityname="
             tcontent.lastupdate,tcontent.parentID,tapprovalrequests.created, tcontent.type, tcontent.subtype,
             tcontent.lastupdateby, tcontent.lastupdatebyid,
             tchangesets.name AS changesetName, tchangesets.publishDate AS changesetPublishDate, tcontent.filename
-            from  tcontent 
+            from  tcontent
             inner join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
             left join tchangesets on tcontent.changesetID=tchangesets.changesetID
-            where 
+            where
        			tapprovalrequests.groupid = :groupid
            		and tapprovalrequests.chainid = :chainid
            		and tapprovalrequests.status='Pending'
            	 	order by tapprovalrequests.created
             ";
-    
+
         qs.addParam(name="groupid", value=getValue('groupid'), cfsqltype='cf_sql_varchar');
         qs.addParam(name="chainid", value=getValue('chainid'), cfsqltype='cf_sql_varchar');
         qs.setSQL(sql);

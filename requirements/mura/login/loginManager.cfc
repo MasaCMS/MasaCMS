@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides primary login service functionality">
 
 <cffunction name="init" output="false">
 <cfargument name="userUtility" type="any" required="yes"/>
@@ -524,13 +524,20 @@ If you did not request a new authorization, contact #contactEmail#.
 		<cfset getPluginManager().announceEvent('onBeforeGlobalLogout',pluginEvent)/>
 	</cfif>
 
-	<cflogout>
+	<cfif yesNoFormat(getBean('configBean').getValue("useLegacySessions"))>
+		<cflogout>
+	</cfif>
+
+	<cfloop collection="#session#" item="local.i">
+		<cfif not listFindNoCase('cfid,cftoken,sessionid,urltoken,jsessionid',local.i)>
+			<cfset structDelete(session,local.i)>
+		</cfif>
+	</cfloop>
 
 	<cfif getBean('configBean').getValue(property='rotateSessions',defaultValue='false')>
 		<cfset sessionInvalidate()>
 	</cfif>
 
-	<cfset structclear(session) />
 	<cfset structDelete(cookie,"userid")>
 	<cfset structDelete(cookie,"userhash")>
 	<cfset variables.userUtility.setUserStruct()/>

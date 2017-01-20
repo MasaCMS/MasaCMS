@@ -179,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
-				exclude=["/.","/mura/autoUpdater/global","/mura/bean/beanFactory.cfc","/mura/cache/provider"],
+				exclude=["/.","/mura/autoUpdater/global","/mura/configBean.cfc","/mura/bean/beanFactory.cfc","/mura/cache/provider"],
 				strict=application.configBean.getStrictFactory(),
 				transientPattern = "(Iterator|Bean|executor|MuraScope|Event|dbUtility|extendObject)$"
 				});
@@ -278,6 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("contentDisplayInterval","contentDisplayIntervalBean");
 		variables.serviceFactory.addAlias("oauthClient","oauthClientBean");
 		variables.serviceFactory.addAlias("oauthToken","oauthTokenBean");
+		variables.serviceFactory.addAlias("dataCollection","dataCollectionBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
@@ -613,7 +614,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.tempDir=expandPath('/muraWRM/admin/temp/')>
 	<cfset local.fileWriter=application.serviceFactory.getBean('fileWriter')>
 	<cfloop query="local.rs">
-		<cfif not listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom',local.rs.name)>
+		<cfif not listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom,framework',local.rs.name)>
 			<cftry>
 			<cfset local.fileWriter.touchDir(local.tempDir)>
 			<cfif local.rs.type eq 'dir'>

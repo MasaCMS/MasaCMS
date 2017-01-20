@@ -1,4 +1,4 @@
-component extends='mura.cfobject' {
+component extends='mura.cfobject' hint="This provides content calendar utility methods" {
 
   public any function setMuraScope(required muraScope) {
     variables.$ = arguments.muraScope;

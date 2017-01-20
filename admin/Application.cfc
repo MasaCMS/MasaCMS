@@ -126,6 +126,8 @@ component extends="framework" output="false" {
 	variables.framework.usingSubsystems=true;
 	variables.framework.applicationKey="muraAdmin";
 	variables.framework.siteWideLayoutSubsystem='common';
+	variables.framework.diEngine='mura';
+
 
 	if(structKeyExists(form,"fuseaction")){
 		form.muraAction=form.fuseaction;
@@ -430,14 +432,14 @@ component extends="framework" output="false" {
 			session.paramCircuit=listLast(listFirst(request.context.muraAction,'.'),':');
 			for(i=1;i lte listLen(request.context.param);i=i+1){
 				theParam=listGetAt(request.context.param,i);
-				if(evaluate('request.context.paramField#theParam#') neq 'Select Field'
-				and evaluate('request.context.paramField#theParam#') neq ''
-				and evaluate('request.context.paramCriteria#theParam#') neq ''){
+				if(request.context['paramField#theParam#'] neq 'Select Field'
+				and request.context['paramField#theParam#'] neq ''
+				and request.context['paramCriteria#theParam#'] neq ''){
 					temp={};
-					temp.Field=evaluate('request.context.paramField#theParam#');
-					temp.Relationship=evaluate('request.context.paramRelationship#theParam#');
-					temp.Criteria=evaluate('request.context.paramCriteria#theParam#');
-					temp.Condition=evaluate('request.context.paramCondition#theParam#');
+					temp.Field=request.context['paramField#theParam#'];
+					temp.Relationship=request.context['paramRelationship#theParam#'];
+					temp.Criteria=request.context['paramCriteria#theParam#'];
+					temp.Condition=request.context['paramCondition#theParam#'];
 					arrayAppend(session.paramArray,temp);
 				}
 			}
@@ -517,5 +519,13 @@ component extends="framework" output="false" {
 	function rbKey(key){
 		return application.rbFactory.getKeyValue(session.rb,arguments.key);
 	}
+
+	public struct function getSubsystemConfig( string subsystem ) {
+        if ( structKeyExists( variables.framework.subsystems, subsystem ) && isStruct(variables.framework.subsystems[subsystem])) {
+            // return a copy to make it read only from outside the framework:
+            return structCopy( variables.framework.subsystems[ subsystem ] );
+        }
+        return { };
+    }
 
 }

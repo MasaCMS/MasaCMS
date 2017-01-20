@@ -348,6 +348,7 @@
      * @memberof Mura
 	 */
 	function get(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'get',
@@ -374,6 +375,7 @@
      * @memberof Mura
 	 */
 	function post(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'post',
@@ -2498,7 +2500,12 @@
 	}
 
 	function init(config){
-		if(!config.context){
+
+        if(config.endpoint){
+            config.context=config.endpoint;
+        }
+
+        if(!config.context){
 			config.context='';
 		}
 

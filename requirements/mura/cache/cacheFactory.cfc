@@ -1,2 +1,2 @@
-component extends="mura.cache.cacheSimple" {
+component extends="mura.cache.cacheSimple" hint="Deprecated" {
 }

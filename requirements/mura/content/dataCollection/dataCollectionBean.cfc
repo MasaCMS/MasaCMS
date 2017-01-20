@@ -45,7 +45,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component extends="mura.bean.bean" entityname='dataCollection'{
+component extends="mura.bean.bean" entityname="dataCollection" hint="This provides data collection functionality"{
 
 	property name='formID' required=true dataType='string';
 	property name='siteID' required=true dataType='string';
@@ -235,6 +235,10 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 		super.validate(fields=arguments.fields);
 
+		if(getBean('fileManager').requestHasRestrictedFiles(scope=getAllValues(),allowedExtensions=getBean('configBean').getFMPublicAllowedExtensions())){
+			getErrors().requestHasRestrictedFiles=$.siteConfig().getRBFactory().getKey('sitemanager.requestHasRestrictedFiles');
+		}
+
 		if(!len(arguments.fields)){
 
 			setValue('acceptData',structIsEmpty(getErrors()));
@@ -317,6 +321,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 		validate(arguments.$);
 		arguments.$.event('formDataBean',this);
+		arguments.$.event('formBean',getFormBean());
 		arguments.$.event('acceptData',getValue('acceptData'));
 		arguments.$.event('sendto','');
 		arguments.$.announceEvent('onBeforeFormSubmitSave');

@@ -42,7 +42,7 @@
 			    </cfsilent>
 		        <tr>
 							<td class="actions">
-								<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+								<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 								<div class="actions-menu hide">
 			            <ul class="actions-list">
 			              <li class="edit"><a href="#editlink#"><i class="mi-pencil"></i>Edit</a></li>

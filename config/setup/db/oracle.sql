@@ -1281,7 +1281,7 @@ Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('standard_nav','
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('portal_nav','default','Portal Navigation',6);
 --|
 
-Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('comments','default','Accept Comments',9);
+Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('comments','default','Comment Form',9);
 --|
 
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('seq_nav','default','Sequential Nav',8);

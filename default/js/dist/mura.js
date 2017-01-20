@@ -87,6 +87,62 @@ if (!Object.keys) {
 	};
 })(Window.prototype, HTMLDocument.prototype, Element.prototype, "addEventListener", "removeEventListener", "dispatchEvent", []);
 
+// Production steps of ECMA-262, Edition 5, 15.4.4.21
+// Reference: http://es5.github.io/#x15.4.4.21
+// https://tc39.github.io/ecma262/#sec-array.prototype.reduce
+if (!Array.prototype.reduce) {
+  Array.prototype.reduce=function(callback) {
+      if (this === null) {
+        throw new TypeError('Array.prototype.reduce called on null or undefined');
+      }
+      if (typeof callback !== 'function') {
+        throw new TypeError(callback + ' is not a function');
+      }
+
+      // 1. Let O be ? ToObject(this value).
+      var o = Object(this);
+
+      // 2. Let len be ? ToLength(? Get(O, "length")).
+      var len = o.length >>> 0;
+
+      // Steps 3, 4, 5, 6, 7
+      var k = 0;
+      var value;
+
+      if (arguments.length == 2) {
+        value = arguments[1];
+      } else {
+        while (k < len && !(k in o)) {
+          k++;
+        }
+
+        // 3. If len is 0 and initialValue is not present, throw a TypeError exception.
+        if (k >= len) {
+          throw new TypeError('Reduce of empty array with no initial value');
+        }
+        value = o[k++];
+      }
+
+      // 8. Repeat, while k < len
+      while (k < len) {
+        // a. Let Pk be ! ToString(k).
+        // b. Let kPresent be ? HasProperty(O, Pk).
+        // c. If kPresent is true, then
+        //    i. Let kValue be ? Get(O, Pk).
+        //    ii. Let accumulator be ? Call(callbackfn, undefined, « accumulator, kValue, k, O »).
+        if (k in o) {
+          value = callback(value, o[k], k, o);
+        }
+
+        // d. Increase k by 1.
+        k++;
+      }
+
+      // 9. Return accumulator.
+      return value;
+  }
+}
+
 if (!Array.prototype.forEach) {
 
   Array.prototype.forEach = function(callback, thisArg) {
@@ -957,7 +1013,6 @@ if (!Array.prototype.map) {
 
     lib$es6$promise$promise$$Promise.prototype = {
       constructor: lib$es6$promise$promise$$Promise,
-
     /*
       The primary way of interacting with a promise is through its `then` method,
       which registers callbacks to receive either a promise's eventual value or the
@@ -1172,8 +1227,7 @@ if (!Array.prototype.map) {
         }
 
         return child;
-      },
-
+    },
     /*
       `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
       as the catch block of a try/catch statement.
@@ -1201,10 +1255,12 @@ if (!Array.prototype.map) {
       Useful for tooling.
       @return {Promise}
     */
-      'catch': function(onRejection) {
+      'catch':function(onRejection) {
         return this.then(null, onRejection);
       }
-    };
+  };
+
+
     function lib$es6$promise$polyfill$$polyfill() {
       var local;
 
@@ -3018,6 +3074,7 @@ return /******/ (function(modules) { // webpackBootstrap
      * @memberof Mura
 	 */
 	function get(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'get',
@@ -3044,6 +3101,7 @@ return /******/ (function(modules) { // webpackBootstrap
      * @memberof Mura
 	 */
 	function post(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'post',
@@ -5168,7 +5226,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function init(config){
-		if(!config.context){
+
+        if(config.endpoint){
+            config.context=config.endpoint;
+        }
+
+        if(!config.context){
 			config.context='';
 		}
 
@@ -6003,7 +6066,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 		/**
-		 * get - Returns element at index of selection
+		 * get - Deprecated: Returns element at index of selection, use item()
 		 *
 		 * @param  {number} index Index of selection
 		 * @return {*}
@@ -6060,6 +6123,23 @@ return /******/ (function(modules) { // webpackBootstrap
 			return mura(this.selection.map( function(el,idx,array){
 				return fn.call(el,el,idx,array);
 			}));
+		},
+
+        /**
+		 * reduce - Returns value from  reduce function
+		 *
+		 * @param  {function} fn Reduce function
+         * @param  {any} initialValue Starting accumulator value
+		 * @return {accumulator}
+		 */
+		reduce:function(fn,initialValue){
+            initialValue=initialValue||0;
+			return this.selection.reduce(
+                function(accumulator,item,idx,array){
+    				return fn.call(item,accumulator,item,idx,array);
+    			},
+                initialValue
+            );
 		},
 
 
@@ -7018,24 +7098,6 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		/**
-		 * offset - Returns the offset of the first element in selection
-		 *
-		 * @return {object}
-		 */
-		offset:function(){
-			if(!this.selection.length){
-				return this;
-			}
-			var el=this.selection[0];
-			var rect = el.getBoundingClientRect()
-
-			return {
-			  top: rect.top + document.body.scrollTop,
-			  left: rect.left + document.body.scrollLeft
-			};
-		},
-
-		/**
 		 * scrollTop - Returns the scrollTop of the current document
 		 *
 		 * @return {object}
@@ -7583,7 +7645,7 @@ return /******/ (function(modules) { // webpackBootstrap
             var self=this;
 
 			return new Promise(function(resolve,reject){
-				params=Mura.extend(
+                params=Mura.extend(
 					{
 						entityname:self.get('entityname'),
 						method:'findNew',
@@ -7593,8 +7655,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					params
 				);
 
-				Mura.get(params).then(function(item){
-					self.set(item.getAll());
+				Mura.get(Mura.apiEndpoint,params).then(function(resp){
+					self.set(resp.data);
 					if(typeof resolve == 'function'){
 						resolve(self);
 					}
@@ -7614,7 +7676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		loadBy:function(propertyName,propertyValue,params){
 
 			propertyName=propertyName || 'id';
-			propertyValue=propertyValue || this.get(propertyName);
+			propertyValue=propertyValue || this.get(propertyName) || 'null';
 
 			var self=this;
 
@@ -7632,15 +7694,20 @@ return /******/ (function(modules) { // webpackBootstrap
 			return new Promise(function(resolve,reject){
 				params=Mura.extend(
 					{
-						entityname:self.get('entityname'),
+						entityname:self.get('entityname').toLowerCase(),
 						method:'findQuery',
 						siteid:self.get('siteid'),
-                        '_cacheid':Math.random()
+                        '_cacheid':Math.random(),
 					},
 					params
 				);
 
+                if(params.entityname=='content' || params.entityname=='contentnav'){
+                    params.includeHomePage=1;
+                }
+
 				params[propertyName]=propertyValue;
+
 
 				Mura.findQuery(params).then(function(collection){
 
@@ -8067,6 +8134,23 @@ return /******/ (function(modules) { // webpackBootstrap
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
+		},
+
+        /**
+		 * reduce - Returns value from  reduce function
+		 *
+		 * @param  {function} fn Reduce function
+         * @param  {any} initialValue Starting accumulator value
+		 * @return {accumulator}
+		 */
+		reduce:function(fn,initialValue){
+            initialValue=initialValue||0;
+			return this.properties.items.reduce(
+                function(accumulator,item,idx,array){
+    				return fn.call(item,accumulator,item,idx,array);
+    			},
+                initialValue
+            );
 		}
 	});
 }));
@@ -8217,6 +8301,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isEQ:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+=encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8228,6 +8315,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isNEQ:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='neq^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8239,6 +8329,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLT:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='lt^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8250,6 +8343,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLTE:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='lte^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8261,6 +8357,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGT:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='gt^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8272,6 +8371,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGTE:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='gte^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -8392,6 +8494,16 @@ return /******/ (function(modules) { // webpackBootstrap
 			 */
 			itemsPerPage:function(itemsPerPage){
 	            this.queryString+='&itemsPerPage=' + encodeURIComponent(itemsPerPage);
+				return this;
+	        },
+
+			/**
+			 * pageIndex - Sets items per page
+			 *
+			 * @param  {number} pageIndex page to start at
+			 */
+			pageIndex:function(pageIndex){
+	            this.queryString+='&pageIndex=' + encodeURIComponent(pageIndex);
 				return this;
 	        },
 
@@ -8741,7 +8853,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			formInit: false,
 			responsemessage: "",
 			rb: {
-				btnsubmitclass:"form-submit"
+				btnsubmitclass:"form-submit",
+				btnsubmitlabel:"Submit",
+				btnnextlabel:"Next",
+				btnbacklabel:"Back",
+				btncancellabel:"Cancel"
 			},
 			render:function(){
 
@@ -9047,7 +9163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			renderPaging:function() {
 				var self = this;
-				var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : 'Submit';
+				var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : self.rb.btnsubmitlabel;
 
 				mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
 
@@ -9058,12 +9174,12 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 				else {
 					if(self.currentpage == 0) {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:1,label:"Next","class":"form-nav"}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:1,label:self.rb.btnnextlabel,"class":"form-nav"}));
 					} else {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage-1,label:"Back","class":'form-nav'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage-1,label:self.rb.btnbacklabel,"class":'form-nav'}));
 
 						if(self.currentpage+1 < self.formJSON.form.pages.length) {
-							mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:"Next","class":'form-nav'}));
+							mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.btnnextlabel,"class":'form-nav'}));
 						}
 						else {
 							mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":'form-submit  btn-primary'}));
@@ -9071,7 +9187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 
 					if(self.backlink != undefined && self.backlink.length)
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:"Cancel","class":'form-cancel btn-primary pull-right'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.btncancellabel,"class":'form-cancel btn-primary pull-right'}));
 				}
 
 				mura(".form-submit",self.context.formEl).click( function() {
@@ -9456,7 +9572,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						rawdata.saveform=true;
 						rawdata.formid=rawdata.objectid;
 						rawdata.siteid=rawdata.siteid || Mura.siteid;
-						
+
 						var data=new FormData();
 
 						for(var p in rawdata){

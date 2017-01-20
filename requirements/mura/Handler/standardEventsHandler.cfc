@@ -54,7 +54,7 @@
   may, if you choose, apply this exception to your own modified versions of
   Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides default implementation for standard events that can be overridden through event system">
 
 <!---- HANDLERS --->
 <cffunction name="standardEnableLockdownHandler" output="false">

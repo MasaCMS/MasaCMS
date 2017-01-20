@@ -43,7 +43,7 @@ config.licenseKey = 'KERW-TDPK-HK57-WMXW-NGYM-TU4Y-DF1M';
 currentSite=application.settingsManager.getSite(session.siteid);
 
 
-config.defaultAlledExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v,less';
+config.defaultAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v,less';
 
 //ATTENTION: The trailing slash is required.
 config.baseUrl = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets/';
@@ -160,7 +160,7 @@ config.resourceType[1].name = 'Files';
 config.resourceType[1].url = config.baseUrl & 'File';
 config.resourceType[1].directory = config.baseDir & 'File';
 config.resourceType[1].maxSize = 0;
-config.resourceType[1].allowedExtensions = config.defaultAlledExtensions;
+config.resourceType[1].allowedExtensions = config.defaultAllowedExtensions;
 config.resourceType[1].deniedExtensions = '';
 application.serviceFactory.getBean("fileWriter").touchDir(config.resourceType[1].directory);
 
@@ -205,7 +205,7 @@ if (isdefined("url.type")){
 	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets/";
 	    temp.maxSize = 0;
 	    if(application.configBean.getValue('fmAllowedExtensions') eq ''){
-	      temp.allowedExtensions = config.defaultAlledExtensions;
+	      temp.allowedExtensions = config.defaultAllowedExtensions;
 	    } else {
 	      temp.allowedExtensions = application.configBean.getValue('fmAllowedExtensions');
 	    }

@@ -54,7 +54,7 @@
   may, if you choose, apply this exception to your own modified versions of
   Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides a CRUD utility for the host file system">
 
 	<cfset variables.useMode=true>
 

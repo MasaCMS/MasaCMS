@@ -55,7 +55,7 @@
   Mura CMS.
 --->
 
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides global utility methods">
 
 <cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -593,28 +593,28 @@ Blog: www.codfusion.com--->
 				<!--- Lucee uses lowercase cookies the setCookie method allows it to maintain case--->
 				<cfif server.coldfusion.productname neq 'Coldfusion Server'>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-						<cfset setCookie(name='cfid', value=sessionTokens.CFID )>
-						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN )>
+						<cfset setCookie(name='cfid', value=sessionTokens.CFID, encodevalue=false )>
+						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN, encodevalue=false )>
 					<cfelse>
-						<cfset setCookie(name='cfid', value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires())>
-						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires())>
+						<cfset setCookie(name='cfid', value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false)>
+						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false)>
 					</cfif>
 				<cfelse>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-						<cfset setCookie(name="CFID", value=sessionTokens.CFID) />
-						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN)/>
+						<cfset setCookie(name="CFID", value=sessionTokens.CFID, encodevalue=false) />
+						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN, encodevalue=false)/>
 					<cfelse>
-						<cfset setCookie(name="CFID", value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires()) />
-						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires()) />
+						<cfset setCookie(name="CFID", value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
+						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
 					</cfif>
 				</cfif>
 			</cfif>
 
-			<cfif  isDefined('sessionTokens.jsessionid') and (arguments.reset or not isDefined('cookie.jsessionid'))>
+			<cfif isDefined('sessionTokens.jsessionid') and (arguments.reset or not isDefined('cookie.jsessionid'))>
 				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid) />
+					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid, encodevalue=false) />
 				<cfelse>
-					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid, expires=application.configBean.getSessionCookiesExpires()) />
+					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
 				</cfif>
 			</cfif>
 		<!---<cfcatch></cfcatch>
@@ -930,7 +930,7 @@ Blog: www.codfusion.com--->
 			var secret = $.siteConfig('reCAPTCHASecret');
 
 			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
-				var reCaptcha = new mura.reCAPTCHA(secret);
+				var reCaptcha = new mura.reCaptcha(secret);
 				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=cgi.remote_addr);
 			}
 

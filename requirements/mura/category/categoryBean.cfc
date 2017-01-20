@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfcomponent extends="mura.bean.bean" entityName="category" table="tcontentcategories" output="false">
+<cfcomponent extends="mura.bean.bean" entityName="category" table="tcontentcategories" output="false" hint="This provides category bean functionality">
 
 <cfproperty name="categoryID" fieldtype="id" type="string" default="" />
 <cfproperty name="kids" fieldtype="one-to-many" cfc="category" nested=true orderby="name asc" cascade="delete"/>

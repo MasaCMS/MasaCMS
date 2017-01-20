@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanExtendable" entityName="site" table="tsettings" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" entityName="site" table="tsettings" output="false" hint="Site settings bean">
 
 <cfproperty name="siteID" fieldtype="id" type="string" default="" required="true" />
 <cfproperty name="site" type="string" default=""/>
@@ -1338,7 +1338,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="lookupContentTypeFilePath" output="false">
 	<cfargument name="filePath">
 	<cfargument name="customOnly" default="false">
-	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
+
+	<cfset arguments.filePath=REReplace(listFirst(Replace(arguments.filePath, "\", "/", "ALL"),"/"), "[^a-zA-Z0-9_]", "", "ALL") & "/index.cfm">
 
 	<cfif len(request.altTheme)>
 		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/content_types/" & arguments.filePath>

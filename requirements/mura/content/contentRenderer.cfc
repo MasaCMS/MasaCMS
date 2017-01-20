@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides core rendering functionality">
 
 <cfset this.navOffSet=0/>
 <cfset this.navDepthLimit=1000/>
@@ -2469,6 +2469,7 @@ Display Objects
 	<cfset var displayPoolID=application.settingsManager.getSite(variables.event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=(len(request.altTheme) ? request.altTheme : application.settingsManager.getSite(variables.event.getValue('siteID')).getTheme())>
 	<cfset var tracePoint=0>
+	<cfset var item = "" />
 
 	<cfif getRenderHTMLQueues()>
 
@@ -2506,6 +2507,7 @@ Display Objects
 				<cfset i=HTMLQueue[item]>
 
 				<cfif refind('[<>]',i)>
+					<!--- If we got just an in-line block of HTML markup and not a "real" file, render accordingly --->
 						<cfset itemStr=i>
 				<cfelse>
 					<cfset itemStr=""/>
