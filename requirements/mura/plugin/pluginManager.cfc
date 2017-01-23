@@ -398,7 +398,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfset deployArgs.siteAssignID=arguments.siteID>
 			</cfif>
 
-			<cfif structKeyExists(pluginXML.plugin.settings,"setting")>
+			<cfif isDefined("pluginXML.plugin.settings.setting") and isArray(pluginXML.plugin.settings.setting)>
 				<cfset settingsLen=arraylen(pluginXML.plugin.settings.setting)/>
 			<cfelse>
 				<cfset settingsLen=0>
@@ -965,8 +965,10 @@ select * from tplugins order by #arguments.orderby#
 
 	<cfset deleteSettings(arguments.args.moduleID) />
 
-	<cfif structKeyExists(pluginXML.plugin.settings,"setting")>
-		<cfset settingsLen=arraylen(pluginXML.plugin.settings.setting) />
+	<cfif isDefined("pluginXML.plugin.settings.setting") and isArray(pluginXML.plugin.settings.setting)>
+		<cfset settingsLen=arraylen(pluginXML.plugin.settings.setting)/>
+	<cfelse>
+		<cfset settingsLen=0>
 	</cfif>
 
 	<cfif len(settingsLen)>

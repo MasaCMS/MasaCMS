@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						--->
 
-						<cfif structKeyExists(rc.pluginXML.plugin.settings,"setting")>
+						<cfif isDefined("rc.pluginXML.plugin.settings.setting") and isArray(rc.pluginXML.plugin.settings.setting)>
 							<cfset settingsLen=arraylen(rc.pluginXML.plugin.settings.setting)/>
 						<cfelse>
 							<cfset settingsLen=0>

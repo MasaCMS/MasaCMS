@@ -129,7 +129,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfreturn bean>
+</cffunction>
 
+<cffunction name="getEntity" output="false">
+	<cfargument name="entityName">
+	<cfargument name="siteID" default="">
+	<cfreturn getBean(arguments.entityName,arguments.siteid)>
 </cffunction>
 
 <cffunction name="getPluginManager" output="false">
