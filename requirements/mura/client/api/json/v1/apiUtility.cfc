@@ -300,13 +300,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						if(isJSON(token.getData())){
 							structAppend(getSession(), deserializeJSON(token.getData()), true);
 						} else {
-							var client=token.getClient();
+							var oauthclient=token.getClient();
 
-							if(!client.exists()){
+							if(!oauthclient.exists()){
 								params.method='undefined';
 								throw(type='invalidAccessToken');
 							} else {
-								var clientAccount=client.getUser();
+								var clientAccount=oauthclient.getUser();
 
 								if(!clientAccount.exists()){
 									params.method='undefined';
@@ -324,10 +324,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					structDelete(params,'client_secret');
 					throw(type='authorization');
 				} else {
-					var client=getBean('oauthClient').loadBy(clientid=params.client_id);
+					var oauthclient=getBean('oauthClient').loadBy(clientid=params.client_id);
 
 					//WriteDump(credentials.getAllValues());abort;
-					if(!client.exists() || client.getClientSecret() != params.client_secret){
+					if(!oauthclient.exists() || oauthclient.getClientSecret() != params.client_secret){
 						params.method='Not Available';
 						structDelete(params,'client_id');
 						structDelete(params,'client_secret');
@@ -335,7 +335,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						structDelete(url,'client_secret');
 						throw(type='authorization');
 					} else {
-						var clientAccount=client.getUser();
+						var clientAccount=oauthclient.getUser();
 						structDelete(url,'client_id');
 						structDelete(url,'client_secret');
 						if(!clientAccount.exists()){
@@ -354,7 +354,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								))
 								&& isdefined('params.grant_type')
 								&& params.grant_type == 'client_credentials'){
-								var token=client.generateToken(granttype='client_credentials');
+								var token=oauthclient.generateToken(granttype='client_credentials');
 								params.method='getOAuthToken';
 								result=serializeResponse(
 									statusCode=200,
