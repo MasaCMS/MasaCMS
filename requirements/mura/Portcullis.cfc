@@ -242,7 +242,7 @@
 
 		<cfquery dbtype="query" name="find">
 		select IP from variables.internal.iplog
-		where IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="54" value="#arguments.ipAddress#">
+		where IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="100" value="#arguments.ipAddress#">
 		</cfquery>
 
 		<cfreturn YesNoFormat(find.recordcount)/>
