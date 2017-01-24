@@ -538,9 +538,10 @@ If you did not request a new authorization, contact #contactEmail#.
 		<cfset sessionInvalidate()>
 	</cfif>
 
-	<cfset structDelete(cookie,"userid")>
-	<cfset structDelete(cookie,"userhash")>
-	<cfset variables.userUtility.setUserStruct()/>
+	<cfset variables.globalUtility.deleteCookie(name="userHash")>
+	<cfset variables.globalUtility.deleteCookie(name="userid")>
+	<cfset getSession()/>
+
 	<cfset getBean('changesetManager').removeSessionPreviewData()>
 
 	<cfif len(pluginEvent.getValue("siteID"))>
