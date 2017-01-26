@@ -208,6 +208,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif find(".",last)>
 				<cfif last eq 'index.json'>
 		 			<cfset request.returnFormat="JSON">
+				<cfelseif last eq 'index.amp'>
+		 			<cfset request.returnFormat="AMP">
 		 		</cfif>
 				<cfset indexFile=last>
 			</cfif>
