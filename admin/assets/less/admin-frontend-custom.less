@@ -491,11 +491,16 @@
 	  position:relative;
 
 		> .dropdown-menu {
+			display: none;
 			margin-left: 0 !important;
 	    top:0 !important;
 	    left:100%;
 	    margin-top:-6px;
 	    margin-left:-1px;
+		}
+
+		&:hover > .dropdown-menu{
+			display:block !important;
 		}
 
 		a {
@@ -512,6 +517,7 @@
 	#frontEndTools > ul > li#adminSave .dropdown-menu,
 	#frontEndTools > ul > li#adminPreview .dropdown-menu{
 		margin-left: 0 !important;
+		width: auto !important;
 	}
 
 	.dropdown-submenu:hover > .dropdown-menu,
