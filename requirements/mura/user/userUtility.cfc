@@ -335,14 +335,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 
 		<cfif isDefined('cookie.userid') and cookie.userid neq rsuser.userid>
-			<cfset structDelete(cookie,"userid")>
-			<cfset structDelete(cookie,"userhash")>
+			<cfset variables.globalUtility.deleteCookie(name="userHash")>
+			<cfset variables.globalUtility.deleteCookie(name="userid")>
 		</cfif>
 
 		<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
 		<cfif variables.configBean.getValue(property='rotateSessions',defaultValue='false')>
 			<cfset sessionRotate()>
-			<cfset getBean('utility').setSessionCookies()>
+			<cfset variables.globalUtility.setSessionCookies()>
 		</cfif>
 	</cfif>
 
