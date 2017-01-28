@@ -87,7 +87,7 @@
                 <div class="mura-control-group">
                     <label>Example Usage</label>
                     <div>
-                        <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth/token?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth/token?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&#rc.bean.getClientSecret()#</a>
+                        <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth/token?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth/token?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
                     </div>
                 </div>
             </cfif>
