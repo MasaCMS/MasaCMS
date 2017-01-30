@@ -1130,8 +1130,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setAdminDir" output="false">
 	<cfargument name="adminDir" type="String" />
-
-	<cfif len(arguments.adminDir)>
+	<cfif len(arguments.adminDir) and arguments.adminDir neq '/'>
+		<cfif left(arguments.adminDir,1) neq '/'>
+			<cfset arguments.adminDir="/" & arguments.adminDir>
+		</cfif>
 		<cfset variables.instance.adminDir = arguments.adminDir />
 	</cfif>
 	<cfreturn this>
@@ -1737,7 +1739,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.useProtocol>
 			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & getValue('adminDir')>
 		<cfelse>
-			<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context')  & getValue('adminDir')>
+			<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & getValue('adminDir')>
 		</cfif>
 	<cfelse>
 		<cfreturn getValue('context') &  getValue('adminDir')>

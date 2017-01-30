@@ -166,7 +166,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cffile action="delete" file="#destination#">
 							</cfif>
 							<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>
-							<cfset destination=ReplaceNoCase(destination, "admin#variables.fileDelim#", "#listFirst(variables.configBean.getAdminDir(),'/')##variables.fileDelim#" )>
+
+							<cfset destination=ReplaceNoCase(destination, "#variables.fileDelim#admin#variables.fileDelim#", "#replace(variables.configBean.getAdminDir(),'/',variables.fileDelim,'all')##variables.fileDelim#" )>
 
 							<cfif not directoryExists(destination)>
 								<cfset variables.fileWriter.createDir(directory="#destination#")>
