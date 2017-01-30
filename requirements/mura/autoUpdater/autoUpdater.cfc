@@ -167,8 +167,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>
 
-							<cfset destination=ReplaceNoCase(destination, "#variables.fileDelim#admin#variables.fileDelim#", "#replace(variables.configBean.getAdminDir(),'/',variables.fileDelim,'all')##variables.fileDelim#" )>
-
+							<cfif variables.configBean.getAdminDir() neq "/admin">
+								<cfset destination=ReplaceNoCase(destination, "#variables.fileDelim#admin#variables.fileDelim#", "#replace(variables.configBean.getAdminDir(),'/',variables.fileDelim,'all')##variables.fileDelim#" )>
+							</cfif>
+							
 							<cfif not directoryExists(destination)>
 								<cfset variables.fileWriter.createDir(directory="#destination#")>
 							</cfif>
