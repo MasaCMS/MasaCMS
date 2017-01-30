@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <script>
 	/*jQuery(document).ready(function(){
 		jQuery.ajax({
-			url: '#application.configBean.getContext()#/admin/core/utilities/bundle/feedback.cfm?siteID=<cfoutput>#rc.siteID#</cfoutput>',
+			url: '#application.configBean.getContext()##application.configBean.getAdminDir()#/core/utilities/bundle/feedback.cfm?siteID=<cfoutput>#rc.siteID#</cfoutput>',
 			success: function(data) {
 				jQuery('#feedbackLoop').html(data);
 			}
@@ -52,6 +52,6 @@ to your own modified versions of Mura CMS.
 	});*/
 </script>
 <h1>Deploy Bundle</h1>
-<iframe frameborder="0" src="#application.configBean.getContext()#/admin/core/utilities/bundle/feedback.cfm?siteID=<cfoutput>#esapiEncode('url',rc.siteID)#</cfoutput>"></iframe>
+<iframe frameborder="0" src="#application.configBean.getContext()##application.configBean.getAdminDir()#/core/utilities/bundle/feedback.cfm?siteID=<cfoutput>#esapiEncode('url',rc.siteID)#</cfoutput>"></iframe>
 </cfoutput>
 <!---<cfoutput>#application.pluginManager.announceEvent("onAfterSiteDeployRender",event)#</cfoutput>--->

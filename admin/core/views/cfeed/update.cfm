@@ -58,8 +58,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset homeBean = application.contentManager.getActiveContent(event.getValue('homeID'), event.getValue('siteID'))>
 <cfset href = contentRenderer.createHREF(homeBean.getType(), homeBean.getFilename(), homeBean.getSiteId(), homeBean.getcontentId())>
 <cfoutput>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
 	function reload(){
 		if (top.location != self.location) {
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
 			</cfif>
 
-			frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+			frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/porthole/proxy.html");
 
 			if (jQuery("##ProxyIFrame").length) {
 				jQuery("##ProxyIFrame").load(function(){

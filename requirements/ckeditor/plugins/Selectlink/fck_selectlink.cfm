@@ -23,9 +23,9 @@ StructAppend(attributes, form, "no");
 		<title>Select Link</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta content="noindex, nofollow" name="robots">
-    <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/oneui.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+    <script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+		<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="#application.configBean.getContext()#/requirements/ckeditor/skins/mura/dialog.css">
 	</head>
 </cfoutput>
@@ -49,7 +49,7 @@ StructAppend(attributes, form, "no");
  <table class="table table-condensed table-bordered table-striped mura-table-grid">
  <thead>
     <tr>
-	  <th class="actions"></th> 
+	  <th class="actions"></th>
       <th class="var-width">Title</th>
     </tr>
  </thead>
@@ -62,11 +62,11 @@ StructAppend(attributes, form, "no");
         <td class="var-width">
           	 #application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#
           </td>
-		  
+
 		</tr>
        </cfoutput>
       <cfelse>
-      <tr> 
+      <tr>
         <td colspan="2" class="results"><em>Your search returned no results.</em></td>
       </tr>
     </cfif>
@@ -100,4 +100,3 @@ StructAppend(attributes, form, "no");
 #application.pluginManager.renderScripts("onLinkSelect",session.siteid, createObject("component","mura.event").init(attributes) ,rsPluginScripts)#
 </cfoutput>
 </cfif>
-

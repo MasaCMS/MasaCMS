@@ -28,7 +28,7 @@
 
     if(len(modalfile)){
         savecontent variable='modalbody'{
-            WriteOutput('<script src="#application.configBean.getContext()#/admin/assets/js/architecture.min.js?coreversion=#application.coreversion#" type="text/javascript" ></script>');
+            WriteOutput('<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/architecture.min.js?coreversion=#application.coreversion#" type="text/javascript" ></script>');
             include modalfile;
         }
     } else {

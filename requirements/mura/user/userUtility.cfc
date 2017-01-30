@@ -338,7 +338,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.globalUtility.deleteCookie(name="userHash")>
 			<cfset variables.globalUtility.deleteCookie(name="userid")>
 		</cfif>
-		
+
 		<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
 		<cfif variables.configBean.getValue(property='rotateSessions',defaultValue='false')>
 			<cfset sessionRotate()>
@@ -517,7 +517,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
-	<cfset editProfileURL =protocol & urlBase & "/admin/?muraAction=cEditProfile.edit">
+	<cfset editProfileURL =protocol & urlBase & "#variables.configBean.getAdminDir()#/?muraAction=cEditProfile.edit">
 
 </cfif>
 

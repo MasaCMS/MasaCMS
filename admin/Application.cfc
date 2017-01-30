@@ -121,7 +121,13 @@ component extends="framework" output="false" {
 	variables.framework=structNew();
 	variables.framework.home = "core:home.redirect";
 	variables.framework.action="muraAction";
-	variables.framework.base="/muraWRM/admin/";
+
+	if(isDefined('application.configBean')){
+		variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
+	} else{
+		variables.framework.base="/muraWRM/admin/";
+	}
+
 	variables.framework.defaultSubsystem="core";
 	variables.framework.usingSubsystems=true;
 	variables.framework.applicationKey="muraAdmin";
@@ -382,7 +388,7 @@ component extends="framework" output="false" {
 		}
 
 		if(application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":")){
-			application.contentServer.renderFilename("/admin/",false);
+			application.contentServer.renderFilename("#application.configBean.getAdminDir()#/",false);
 			abort;
 		}
 
@@ -398,13 +404,13 @@ component extends="framework" output="false" {
 
 		if(session.mura.isLoggedIn and structKeyExists(session,"siteArray") and not arrayLen(session.siteArray)){
 			if(not listFind(session.mura.memberships,'S2IsPrivate') and not listLast(listFirst(request.context.muraAction,"."),":") eq 'clogin'){
-				location(url="#application.configBean.getContext()#/admin/?muraAction=clogin.logout", addtoken="false");
+				location(url="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=clogin.logout", addtoken="false");
 			} else if(not len(request.context.muraAction)
 					or (
 							len(request.context.muraAction)
 							and not listfindNoCase("clogin,cMessage,cEditprofile",listLast(listFirst(request.context.muraAction,"."),":") )
 						)){
-				location(url="#application.configBean.getContext()#/admin/?muraAction=cMessage.noaccess", addtoken="false");
+				location(url="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cMessage.noaccess", addtoken="false");
 			}
 		}
 

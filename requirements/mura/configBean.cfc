@@ -187,6 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.MFASendAuthCode=true/>
 <cfset variables.instance.FMAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,json,key,keynote,mid,mov,mp3,mp4,mpc,mpeg,mpg,numbers,ods,odt,pages,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,m4v,less'>
 <cfset variables.instance.FMPublicAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,json,key,keynote,mid,mov,mp3,mp4,mpc,mpeg,mpg,numbers,ods,odt,pages,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,m4v,less'>
+<cfset variables.instance.adminDir="/admin"/>
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -398,7 +399,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setContext" output="false">
 	<cfargument name="Context" type="String" />
 	<cfset arguments.Context=cleanFilePath(arguments.Context) />
-	<cfif getContextRoot() NEQ "/" and getContextRoot() NEQ "/admin">
+	<cfif getContextRoot() NEQ "/" and getContextRoot() NEQ getValue('adminDir')>
 		<cfset arguments.Context = getContextRoot() & arguments.Context />
 	</cfif>
 	<cfset variables.instance.Context = arguments.Context />
@@ -1734,12 +1735,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="useProtocol" default="1">
 	<cfif len( getValue('admindomain') )>
 		<cfif arguments.useProtocol>
-			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & getValue('adminDir')>
 		<cfelse>
-			<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+			<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context')  & getValue('adminDir')>
 		</cfif>
 	<cfelse>
-		<cfreturn getValue('context') & "/admin">
+		<cfreturn getValue('context') &  getValue('adminDir')>
 	</cfif>
 </cffunction>
 

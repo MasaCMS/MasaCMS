@@ -52,8 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset variables.configBean = configBean />
 
-		<cfset variables.filePath = "#expandPath("/muraWRM")#/admin/core/utilities/formbuilder/templates" />
-		<cfset variables.templatePath = "/muraWRM/admin/core/utilities/formbuilder/templates" />
+		<cfset variables.filePath = "#expandPath("/muraWRM")##variables.configBean.getAdminDir()#/core/utilities/formbuilder/templates" />
+		<cfset variables.templatePath = "/muraWRM#variables.configBean.getAdminDir()#/core/utilities/formbuilder/templates" />
 		<cfset variables.fields["en"] = StructNew()>
 
 		<cfreturn this/>

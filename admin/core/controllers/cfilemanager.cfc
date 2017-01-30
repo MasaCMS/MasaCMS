@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="session.resourceType" default="assets">
 
 	<!---<cfif not listFindNoCase(session.mura.memberships,'S2')>
-	<cflocation addtoken="false" url="#application.configBean.getContext()#/admin/">
+	<cflocation addtoken="false" url="#application.configBean.getContext()##application.configBean.getAdminDir()#/">
 	</cfif>--->
 </cffunction>
 

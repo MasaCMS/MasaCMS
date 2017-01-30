@@ -745,7 +745,7 @@
 			<a <cfif arguments.ajax>
 				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','#arguments.crumbdata[I].moduleid#','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
-				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=#arguments.crumbdata[I].moduleid#&activeTab=0"
+				href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=#arguments.crumbdata[I].moduleid#&activeTab=0"
 			</cfif>><i class="#icon#"></i>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a></li>
 		</cfloop>
 		<cfsilent>
@@ -762,7 +762,7 @@
 		<a <cfif arguments.ajax>
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','#arguments.crumbdata[1].moduleid#','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
-			href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=#arguments.crumbdata[1].moduleid#&activeTab=0"
+			href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=#arguments.crumbdata[1].moduleid#&activeTab=0"
 		</cfif>><i class="#icon#"></i>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a></strong></li>
 		</ul></cfoutput></cfsavecontent>
 
@@ -1046,18 +1046,18 @@
 				<cfcase value="plugin">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editablePlugin">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
 					<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableFeed">
-					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 				</cfcase>
 				<cfcase value="category_summary,category_summary_rss"><cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableCategorySummary">
-					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 
@@ -1065,31 +1065,31 @@
 				<cfcase value="collection">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableCollection">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="text">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableText">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="media">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableMedia">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="socialembed">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableSocialembed">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="container">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableContainer">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<!--- END: New Layout Manager Objects --->
@@ -1098,7 +1098,7 @@
 					<cfif Len($.siteConfig('customTagGroups'))>
 						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 						<cfset editableControl.class="editableTagCloud">
-						<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+						<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfif>
 
@@ -1109,7 +1109,7 @@
 				<cfcase value="site_map">
 					<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableSiteMap">
-					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 
 					<cfif isJSON(arguments.params)>
@@ -1119,7 +1119,7 @@
 				<cfcase value="related_content,related_section_content">
 					<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableRelatedContent">
-					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="component,form">
@@ -1132,7 +1132,7 @@
 							<cfset editableControl.class="editableForm">
 						</cfif>
 
-						<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.edit">
+						<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.edit">
 
 						<cfif len($.event('previewID'))>
 							<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & $.event('previewID')>

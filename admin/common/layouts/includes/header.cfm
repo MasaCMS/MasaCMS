@@ -56,7 +56,7 @@
 		<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
 	</cfif>
 	<cfif not isDefined("session.mura.memberships")>
-	  <cflocation url="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout" addtoken="false">
+	  <cflocation url="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cLogin.logout" addtoken="false">
 	</cfif>
 	<cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
 	<cfset rc.currentUser=rc.$.currentUser()>
@@ -104,9 +104,9 @@
 				<cfloop query="theSiteList" startrow="1" endrow="100">
 					<cfsilent>
 						<cfif settingsManager.getSite(theSiteList.siteID).getValue(property='showDashboard',defaultValue=0)>
-							<cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main">
+							<cfset baseURL="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cDashboard.main">
 						<cfelse>
-							<cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
+							<cfset baseURL="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
 						</cfif>
 					</cfsilent>
           			<li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
@@ -220,7 +220,7 @@
       <li id="user-tools-selector">
           <div class="btn-group">
 
-            <a tabindex="-1" class="btn btn-default" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"> <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</a>
+            <a tabindex="-1" class="btn btn-default" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cEditProfile.edit"> <i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</a>
 
               <button type="button" class="btn btn-default dropdown-toggle" id="site-selector-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <cfif local.prompttally> <span class="badge">#local.prompttally#</span></cfif><span class="caret"></span>
@@ -234,10 +234,10 @@
 									</cfif>
 
                   <li>
-                      <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"><i class="mi-cog"></i> Edit Profile</a>
+                      <a tabindex="-1" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cEditProfile.edit"><i class="mi-cog"></i> Edit Profile</a>
                   </li>
                   <li>
-                      <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #rc.$.rbKey("layout.logout")#</a>
+                      <a tabindex="-1" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #rc.$.rbKey("layout.logout")#</a>
                   </li>
 
 

@@ -41,8 +41,8 @@
 
 <cfsavecontent variable="rc.headertext">
 <cfoutput>
-<script src="#$.globalConfig('context')#/admin/assets/js/jquery/jquery.Jcrop.min.js" type="text/javascript"></script>
-<link rel="stylesheet" href="#$.globalConfig('context')#/admin/assets/css/jquery/jquery.Jcrop.min.css" type="text/css" />
+<script src="#$.globalConfig('context')##$.globalConfig('adminDir')#/assets/js/jquery/jquery.Jcrop.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="#$.globalConfig('context')##$.globalConfig('adminDir')#/assets/css/jquery/jquery.Jcrop.min.css" type="text/css" />
 </cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#rc.headertext#">

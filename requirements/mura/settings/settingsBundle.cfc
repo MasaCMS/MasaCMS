@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.utility	= application.utility.getBean("utility")>
 		<cfset variables.dirName	= "Bundle_#createUUID()#" />
 		<cfset variables.BundleDir	= variables.dirName />
-		<cfset variables.workDir	= "#expandPath('/muraWRM/admin/')#temp/">
+		<cfset variables.workDir	= "#expandPath('/muraWRM#variables.configBean.getAdminDir()#/')#temp/">
 		<cfset variables.procDir	= "#workdir#proc/" />
 		<cfset variables.unpackPath	= "#procDir##BundleDir#/" />
 		<cfset variables.backupDir	= "#variables.procDir##variables.dirName#/" />

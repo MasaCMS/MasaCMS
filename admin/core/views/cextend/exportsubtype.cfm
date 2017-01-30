@@ -86,7 +86,7 @@
 <div class="mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.exportclassextensions')#</h1>
 	<div class="nav-module-specific btn-group">
-		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+		<a class="btn" href="#rc.$.globalConfig('context')##rc.$.globalConfig('adminDir')#/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 					<i class="mi-arrow-circle-left"></i> 
 			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>

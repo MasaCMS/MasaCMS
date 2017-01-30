@@ -2417,7 +2417,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="moduleid" required="false" default="#request.muraMostRecentPluginModuleID#" />
 <cfset var sessionData=getSession()>
 <cfif not (isDefined('sessionData.siteid') and isDefined('sessionData.siteArray'))>
-	<cflocation url="#variables.configBean.getContext()#/admin/" addtoken="false">
+	<cflocation url="#variables.configBean.getContext##variables.configBean.getAdminDir()#/" addtoken="false">
 </cfif>
 
 <cfset var rc=structNew()>
@@ -2442,7 +2442,7 @@ select * from tplugins order by #arguments.orderby#
 </cfif>
 
 <cfsavecontent variable="returnStr">
-	<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/#layoutTemplate#.cfm">
+	<cfinclude template="/#variables.configBean.getWebrootMap()##variables.configBean.getAdminDir()#/common/layouts/#layoutTemplate#.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>
@@ -2454,7 +2454,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var returnStr="">
 
 <cfsavecontent variable="returnStr">
-<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/includes/pluginHeader.cfm">
+<cfinclude template="/#variables.configBean.getWebrootMap()##variables.configBean.getAdminDir()#/common/layouts/includes/pluginHeader.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>

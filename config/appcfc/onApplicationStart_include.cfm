@@ -610,8 +610,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<!--- Clean root admin directory --->
-	<cfdirectory action="list" directory="#expandPath('/muraWRM/admin/')#" name="local.rs">
-	<cfset local.tempDir=expandPath('/muraWRM/admin/temp/')>
+	<cfdirectory action="list" directory="#expandPath('/muraWRM#application.configBean.getAdminDir()#/')#" name="local.rs">
+	<cfset local.tempDir=expandPath('/muraWRM#application.configBean.getAdminDir()#/temp/')>
 	<cfset local.fileWriter=application.serviceFactory.getBean('fileWriter')>
 	<cfloop query="local.rs">
 		<cfif not listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom,framework',local.rs.name)>
