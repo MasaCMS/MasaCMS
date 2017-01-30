@@ -121,13 +121,7 @@ component extends="framework" output="false" {
 	variables.framework=structNew();
 	variables.framework.home = "core:home.redirect";
 	variables.framework.action="muraAction";
-
-	if(isDefined('application.configBean')){
-		variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
-	} else{
-		variables.framework.base="/muraWRM/admin/";
-	}
-
+	variables.framework.base="/muraWRM/admin/";
 	variables.framework.defaultSubsystem="core";
 	variables.framework.usingSubsystems=true;
 	variables.framework.applicationKey="muraAdmin";
@@ -165,6 +159,8 @@ component extends="framework" output="false" {
 			variables.framework.password=application.appreloadkey;
 			setBeanFactory( application.serviceFactory );
 		}
+
+		variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
 
 	}
 
@@ -259,6 +255,8 @@ component extends="framework" output="false" {
 
 			}
 		} catch(any e){}
+
+	    variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
 
 		super.onRequestStart(argumentCollection=arguments);
 	}

@@ -465,7 +465,7 @@
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/bootstrap-tabdrop.js"></script>
 
 		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (listFind(',00000000000000000000000000000000099,00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleid) or rc.moduleid eq '')>
-			<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
+			<cfinclude template="/muraWRM#application.configBean.getAdminDir()#/core/views/carch/dsp_content_nav.cfm">
 		</cfif>
 		<cfinclude template="includes/dialog.cfm">
 		<cfif structKeyExists(rc,'$')>
