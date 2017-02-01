@@ -605,7 +605,7 @@ if(len($.siteConfig('customTagGroups'))){
 				<ul class="siteSummary">
 					<cfif not listFindNoCase('none,read',verdict) or $.event('report') eq 'mydrafts'>
 
-					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" class="draftprompt" href="#editLink#"><i class="mi-pencil"></i></a></li>
+					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" onclick="draftprompt.call(this,event);return false;" data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" href="" data-href="#editLink#"><i class="mi-pencil"></i></a></li>
 						<cfif item.getmoduleid() eq '00000000000000000000000000000000000' or (item.getmoduleid() eq '00000000000000000000000000000000099' and item.getType() eq 'Variation')>
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="File">

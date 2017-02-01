@@ -273,7 +273,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <dd class="actions">
     <ul>
     	<cfif not listFindNoCase('none,read',verdict)>
-       <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-pencil"></i></a></li>
+       <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a onclick="draftprompt.call(this,event);return false;" data-siteid="#attributes.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="" data-href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-pencil"></i></a></li>
 	   <cfif rsnest.moduleid eq '00000000000000000000000000000000000' or (rsnest.moduleid eq '00000000000000000000000000000000099' and rsnest.type eq 'Variation')>
 	   <cfswitch expression="#rsnest.type#">
 		   <cfcase value="Page,Folder,Calendar,Gallery">
