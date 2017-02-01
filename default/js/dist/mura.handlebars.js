@@ -12935,12 +12935,19 @@ return /******/ (function(modules) { // webpackBootstrap
 						data.saveform=true;
 						data.formid=data.objectid;
 						data.siteid=data.siteid || Mura.siteid;
+						data.contentid=Mura.contentid || '';
+						data.contenthistid=Mura.contenthistid || '';
+						delete data.filename;
+
 					} else {
 						var rawdata=Mura.deepExtend({},self.context,self.data);
 						rawdata.saveform=true;
 						rawdata.formid=rawdata.objectid;
 						rawdata.siteid=rawdata.siteid || Mura.siteid;
-
+						rawdata.contentid=Mura.contentid || '';
+						rawdata.contenthistid=Mura.contenthistid || '';
+						delete rawdata.filename;
+						
 						var data=new FormData();
 
 						for(var p in rawdata){
