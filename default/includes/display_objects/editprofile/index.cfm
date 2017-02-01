@@ -190,9 +190,9 @@
 									<input type="file" name="newFile" data-validate="regex" regex="(.+)(\.)(jpg|JPG)" data-message="Your logo must be a .JPG" value=""/>
 							</li>
 							<li class="col">
-								<cfif len(request.userBean.getPhotoFileID())>
-									<img src="#variables.$.globalConfig('context')#/index.cfm/_api/render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
-									<input type="checkbox" name="removePhotoFile" value="true"> Remove current logo
+							<cfif len(request.userBean.getPhotoFileID())>
+								<img src="#variables.$.globalConfig('context')#/index.cfm/_api/render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
+								<input type="checkbox" name="removePhotoFile" value="true"> Remove current logo
 							</cfif>
 							</li>
 						</ul>
