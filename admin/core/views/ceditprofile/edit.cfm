@@ -159,10 +159,10 @@ select * from rsSubTypes where subType <> 'Default'
 
 
 						    <div class="mura-control-group">
-						      		<label>#application.rbFactory.getKeyValue(session.rb,'user.image')#</label>
-						      		<input type="file" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
+						      	<label>#application.rbFactory.getKeyValue(session.rb,'user.image')#</label>
+						      	<input type="file" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
 						        <cfif len(rc.userBean.getPhotoFileID())>
-							        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
+							        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/medium/?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
 
 							        	<input type="checkbox" name="removePhotoFile" value="true"> #application.rbFactory.getKeyValue(session.rb,'user.delete')#
 						        </cfif>

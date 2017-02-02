@@ -709,4 +709,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getFileMetaData" output="false">
+	<cfargument name="property" default="fileid">
+	<cfreturn getBean('fileMetaData').loadBy(contentid=getValue('userid'),contentHistID=getValue('userid'),siteID=getValue('siteid'),fileid=getValue(arguments.property))>
+</cffunction>
+
 </cfcomponent>

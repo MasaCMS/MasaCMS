@@ -276,12 +276,13 @@ component persistent='false' accessors='true' output='false' extends='controller
 	  arguments.rc.siteID = origSiteID;
 
 	  // image processing
+	    /*
 		if ( Len(request.newImageIDList) ) {
 			arguments.rc.fileid = request.newImageIDList;
 			arguments.rc.userid = arguments.rc.userBean.getUserID();
 			variables.fw.redirect(action='cArch.imagedetails', append='userid,siteid,fileid,compactDisplay', path='./');
 		}
-
+		*/
 		if ( arguments.rc.action != 'delete' && StructIsEmpty(arguments.rc.userBean.getErrors()) || arguments.rc.action == 'delete' ) {
 			route(arguments.rc);
 		}
