@@ -881,7 +881,11 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 	}
 
 	function getLoadSQL(){
-		return "select * from #getTable()# ";
+		return "select #getLoadSQLColumnsAndTables()# ";
+	}
+
+	function getLoadSQLColumnsAndTables(){
+		return "* from #getTable()# ";
 	}
 
 	function clone(){

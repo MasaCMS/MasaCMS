@@ -446,12 +446,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		select <cfif not arguments.countOnly and dbtype eq "mssql" and variables.instance.maxItems>top #val(variables.instance.maxItems)#</cfif>
 
 		<cfif not arguments.countOnly>
-			#getTableFieldList()#
-		<cfelse>
-			count(*) as count
-		</cfif>
+			<cfif len(getEntity().getLoadSQLColumnsAndTables())>
+				#getEntity().getLoadSQLColumnsAndTables()#
+			<cfelse>
+				#getTableFieldList()#
+				from #variables.instance.table#
+			</cfif>
 
-		from #variables.instance.table#
+		<cfelse>
+			count(*) as count from #variables.instance.table#
+		</cfif>
 
 		<cfif getIsHistorical()>
 			<cfset var primaryKey=getEntity().getPrimaryKey()>
@@ -502,7 +506,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			(not isDefined('application.objectMappings.#getValue('entityName')#.columns') and len(variables.instance.siteID))
 			or
 			 (hasColumn('siteid') and len(variables.instance.siteID))>
-			siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>
+			#variables.instance.table#.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>
 		<cfelse>
 			1=1
 		</cfif>
