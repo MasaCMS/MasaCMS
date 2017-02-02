@@ -858,13 +858,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 					       	 		}
 
 					       	 		param name="prop.cascade" default="none";
-
-					       	 		prop.persistent=true;
+									param name="prop.persistent" default=true;
 
 					       	 		if(prop.column=='primarykey'){
 					       	 			prop.persistent=false;
-					       	 		} else {
-					       	 			prop.persistent=true;
+					       	 		} else if(prop.persistent){
 					       	 			setPropAsIDColumn(prop,false);
 					       	 		}
 
