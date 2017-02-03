@@ -1352,6 +1352,10 @@ Display Objects
 
 	<cfset objectParams.async=false>
 	<cfset objectParams.render='server'>
+	<cfset objectparams.object=arguments.object>
+	<cfset objectparams.objectname=arguments.objectname>
+	<cfset objectparams.objectid=arguments.objectid>
+	<cfset objectparams.instanceid=createUUID()>
 
 	<cfif arguments.object eq 'plugin'>
 		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
@@ -1383,6 +1387,10 @@ Display Objects
 
 	<cfset var doLayoutManagerWrapper=arguments.returnFormat neq 'struct' and not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
 
+	<cfif arguments.object eq 'tag_cloud'>
+		<cfdump var="#doLayoutManagerWrapper#">
+		<cfabort>
+	</cfif>
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
 				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,

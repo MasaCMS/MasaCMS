@@ -907,6 +907,8 @@
 
 		<cfset var openingDiv='<div class="mura-object'>
 
+		<cfparam name="arguments.objectparams.instanceid" default="#createUUID()#">
+
 		<cfif arguments.bodyRender or structKeyExists(arguments.objectParams,'isBodyObject')>
 			<cfset openingDiv=openingDiv & ' mura-body-object'>
 			<cfset structDelete(arguments.objectParams,'isBodyObject')>
@@ -957,7 +959,7 @@
 			<cfset openingDiv=openingDiv & " " & arguments.objectParams.cssClass>
 		</cfif>
 
-		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#createUUID()#"'>
+		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#arguments.objectparams.instanceid#"'>
 
 		<cfloop collection="# arguments.objectparams#" item="local.i">
 			<cfif len(local.i)>
