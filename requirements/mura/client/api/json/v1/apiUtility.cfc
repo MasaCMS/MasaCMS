@@ -1730,6 +1730,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var propIndex=0;
 			var relationship='and';
 			var started=false;
+			var advancedsort='';
 
 			for(var p in queryParams){
 				if(find('[',p)){
@@ -1745,18 +1746,21 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 
 				if(structKeyExists(params,p)){
-					if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection',p)){
-						if(started){
-							baseURL=baseURL & '&' & p;
-						} else {
-							baseURL=baseURL & p;
-							started=true;
-						}
+					if(started){
+						baseURL=baseURL & '&' & p;
+					} else {
+						baseURL=baseURL & p;
+						started=true;
+					}
 
-						if(len(params[p])){
-							baseURL=baseURL & '=' & params[p];
-						}
-						if(!(entity.getEntityName()=='user' && propName=='isPublic')){
+					if(len(params[p])){
+						baseURL=baseURL & '=' & params[p];
+					}
+
+					if(!listFindNoCase('maxItems,pageIndex,itemsPerPage,sortBy,sortDirection',p)){	
+						if(propName == 'sort'){
+							advancedsort=listAppend(advancedsort,arguments.params[p]);
+						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
 							if(entity.getEnityName()=='user' && propName=='groupid'){
 								feed.setGroupID(arguments.params[p]);
 							} else if(entity.valueExists(propName)){
@@ -1785,6 +1789,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							}
 						}
 					}
+				}
+
+				if(len(advancedsort)){
+					params.sort=advancedsort;
 				}
 			}
 		}
