@@ -8067,7 +8067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		/**
-		 * getAll - Returns array of all entities way properties
+		 * getAll - Returns object with of all entities and properties
 		 *
 		 * @return {object}
 		 */
