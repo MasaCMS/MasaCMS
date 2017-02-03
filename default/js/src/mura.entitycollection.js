@@ -121,16 +121,15 @@
 		/**
 		 * getAll - Returns array of all entities way properties
 		 *
-		 * @return {array}
+		 * @return {object}
 		 */
 		getAll:function(){
 			var self=this;
-
 			return Mura.extend(
 				{},
 				self.properties,
 				{
-					items:self.map(function(obj){
+					items:this.properties.items.map(function(obj){
 						return obj.getAll();
 					})
 				}
