@@ -8801,6 +8801,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			deepExtend:deepExtend,
 			ajax:ajax,
 			changeElementType:changeElementType,
+            setHTMLEditor:setHTMLEditor,
 			each:each,
 			parseHTML:parseHTML,
 			getData:getData,

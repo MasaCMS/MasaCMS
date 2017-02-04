@@ -2707,6 +2707,7 @@
 			deepExtend:deepExtend,
 			ajax:ajax,
 			changeElementType:changeElementType,
+            setHTMLEditor:setHTMLEditor,
 			each:each,
 			parseHTML:parseHTML,
 			getData:getData,
