@@ -1385,7 +1385,7 @@ Display Objects
 
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel-1>
 
-	<cfset var doLayoutManagerWrapper=arguments.returnFormat neq 'struct' and not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
+	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
 
 	<cfif arguments.object eq 'tag_cloud'>
 		<cfdump var="#doLayoutManagerWrapper#">
@@ -1393,7 +1393,7 @@ Display Objects
 	</cfif>
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
-				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+			<cfset objectparams.html=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content='',
 				objectParams=objectParams,
@@ -1403,7 +1403,7 @@ Display Objects
 				renderer=this,
 				bodyRender=arguments.bodyRender) />
 		<cfelse>
-			<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+			<cfset objectparams.html=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content=trim(theContent),
 				objectParams=objectParams,
@@ -1412,7 +1412,12 @@ Display Objects
 				objectname=arguments.objectname,
 				renderer=this,
 				bodyRender=arguments.bodyRender) />
-		</cfif>'
+		</cfif>
+		<cfif arguments.returnFormat eq 'struct'>
+			<cfreturn objectparams>
+		<cfelse>
+			<cfreturn objectparams.html>
+		</cfif>
 	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>
 	<cfelseif arguments.returnFormat eq 'struct'>
