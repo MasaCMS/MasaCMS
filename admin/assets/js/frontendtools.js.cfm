@@ -81,6 +81,8 @@
 				var item=Mura('[data-instanceid="' + parameters["instanceid"] + '"]');
 				var data=item.data();
 
+				delete data.runtime;
+
 				if(item.hasClass('mura-body-object')){
 					data.isbodyobject=true;
 				}
@@ -133,7 +135,7 @@
 
 						for(var p in currentdata){
 							if(currentdata.hasOwnProperty(p)){
-								if(!(p=='inited' || p=='objecticonclass' || p=='async' || p=='instanceid' || p=='object' || p=='objectname' || p=='objectid' ) && typeof parameters.params[p] == 'undefined' ){
+								if(!(p=='inited' || p=='objecticonclass' || p=='async' || p=='instanceid' || p=='object' || p=='objectname' || p=='objectid') && typeof parameters.params[p] == 'undefined' ){
 									item.removeAttr('data-' + p);
 								}
 							}
@@ -1382,6 +1384,7 @@
 									delete params['async'];
 									delete params['forcelayout'];
 									delete params['isbodyobject'];
+									delete params['runtime'];
 
 									if(!item.data('objectname')){
 										item.data('objectname',item.data('object'));

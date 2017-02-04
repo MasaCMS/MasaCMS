@@ -1840,6 +1840,7 @@
 
 		self.removeClass('mura-active');
 		self.removeAttr('data-perm');
+        self.removeAttr('data-runtime');
 		self.removeAttr('draggable');
 
 		if(self.data('object')=='container'){
@@ -1851,6 +1852,7 @@
 				self.removeClass('mura-active');
 				self.removeAttr('data-perm');
 				self.removeAttr('data-inited');
+                self.removeAttr('data-runtime');
 				self.removeAttr('draggable');
 			});
 
