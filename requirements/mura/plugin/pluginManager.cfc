@@ -977,7 +977,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfset local.settingName=pluginXML.plugin.settings.setting[i].name.xmlText>
 				<cfset local.settingValue=arguments.args['#pluginXML.plugin.settings.setting[i].name.xmlText#']>
 			<cfelseif structKeyExists(pluginXML.plugin.settings.setting[i].xmlAttributes,'name')>
-				<cfset local.settingName=pluginXML.plugin.settings.setting.xmlAttributes.name>
+				<cfset local.settingName=pluginXML.plugin.settings.setting[i].xmlAttributes.name>
 				<cfset local.settingValue=arguments.args['#pluginXML.plugin.settings.setting[i].xmlAttributes.name#']>
 			</cfif>
 			<cfquery>
