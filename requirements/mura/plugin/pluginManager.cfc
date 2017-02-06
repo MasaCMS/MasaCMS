@@ -399,7 +399,7 @@ select * from tplugins order by #arguments.orderby#
 			</cfif>
 
 			<cfif isDefined("pluginXML.plugin.settings.xmlChildren") and isArray(pluginXML.plugin.settings.xmlChildren)>
-				<cfset settingsLen=arraylen(rc.pluginXML.plugin.settings.xmlChildren)/>
+				<cfset settingsLen=arraylen(pluginXML.plugin.settings.xmlChildren)/>
 			<cfelse>
 				<cfset settingsLen=0>
 			</cfif>
@@ -966,7 +966,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset deleteSettings(arguments.args.moduleID) />
 
 	<cfif isDefined("pluginXML.plugin.settings.xmlChildren") and isArray(pluginXML.plugin.settings.xmlChildren)>
-		<cfset settingsLen=arraylen(rc.pluginXML.plugin.settings.xmlChildren)/>
+		<cfset settingsLen=arraylen(pluginXML.plugin.settings.xmlChildren)/>
 	<cfelse>
 		<cfset settingsLen=0>
 	</cfif>
