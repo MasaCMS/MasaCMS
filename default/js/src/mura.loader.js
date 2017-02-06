@@ -74,12 +74,12 @@
 					cb && url.push(cb); // relaunch the dependancie queue
 					return this.load.apply(this,url);
 				}
-				if( url.match(/\.css\b/) ){
+				if( url.match(/\.css\b/) || url.match(/\.css\.cfm\b/)){
 					return this.loadcss(url,cb);
-				} else if( url.match(/\.html\b/) ){
-					return this.loadimport(url,cb);
-				} else {
+				} else if( url.match(/\.js\b/) || url.match(/\.js\.cfm\b/)  ){
 					return this.loadjs(url,cb);
+				} else {
+					return this.loadimport(url,cb);
 				}
 			}
 			,loaded = {}  // will handle already loaded urls
