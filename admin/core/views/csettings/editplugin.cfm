@@ -112,12 +112,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						--->
 
-						<cfif isDefined("rc.pluginXML.plugin.settings.setting") and isArray(rc.pluginXML.plugin.settings.setting)>
-							<cfset settingsLen=arraylen(rc.pluginXML.plugin.settings.setting)/>
+						<cfif isDefined("rc.pluginXML.plugin.settings.xmlChildren") and isArray(rc.pluginXML.plugin.settings.xmlChildren)>
+							<cfset settingsLen=arraylen(rc.pluginXML.plugin.settings.xmlChildren)/>
 						<cfelse>
 							<cfset settingsLen=0>
 						</cfif>
-
+						
 						<cfif structKeyExists(rc.pluginXML.plugin,"extensions")
 						and structKeyExists(rc.pluginXML.plugin.extensions,"extension")>
 							<cfset extensionsLen=arraylen(rc.pluginXML.plugin.extensions.extension)/>
