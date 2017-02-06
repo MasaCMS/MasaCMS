@@ -76,8 +76,11 @@
 				}
 				if( url.match(/\.css\b/) ){
 					return this.loadcss(url,cb);
+				} else if( url.match(/\.html\b/) ){
+					return this.loadimport(url,cb);
+				} else {
+					return this.loadjs(url,cb);
 				}
-				return this.loadjs(url,cb);
 			}
 			,loaded = {}  // will handle already loaded urls
 			,loader  = {
@@ -191,6 +194,43 @@
 					cb && cb();
 					return this;
 				}
+				,loadimport: function(url,attrs,cb){
+
+					if(typeof url == 'object'){
+						if(Array.isArray(url)){
+							return loader.load.apply(this, arguments);
+						} else if(typeof attrs === 'function'){
+							cb=attrs;
+							attrs=url;
+							url=attrs.href
+						} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+							return loader.load.apply(this, arguments);
+						} else {
+							attrs=url;
+							url=attrs.href;
+							cb=undefined;
+						}
+					} else if (typeof attrs=='function' ) {
+						cb = attrs;
+						attrs = {};
+					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+						return loader.load.apply(this, arguments);
+					}
+
+					var parts = urlParse(url);
+					parts={rel:'import',href:url,id:parts.i}
+
+					if(typeof attrs !=='undefined'){
+						for(var a in attrs){
+							parts[a]=attrs[a];
+						}
+					}
+
+					loaded[parts.href] || appendElmt('link',parts);
+					loaded[parts.href] = true;
+					cb && cb();
+					return this;
+				}
 				,load: function(){
 					var argv=arguments,argc = argv[length];
 					if( argc === 1 && isA(argv[0],Function) ){
@@ -216,7 +256,7 @@
 			}
 			links = D[getElementsByTagName]('link');
 			for(i=0,l=links[length];i<l;i++){
-				(links[i].rel==='stylesheet' || links[i].type==='text/css') && (loaded[links[i].getAttribute('href').replace(/#.*$/,'')]=true);
+				(links[i].rel==='import' || links[i].rel==='stylesheet' || links[i].type==='text/css') && (loaded[links[i].getAttribute('href').replace(/#.*$/,'')]=true);
 			}
 		}
 		//export ljs
