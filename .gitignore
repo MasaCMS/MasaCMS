@@ -6,7 +6,6 @@
 *_notes/
 *.codekit
 *.esproj
-*.json
 *.less.css
 *.log
 *.sublime-project
