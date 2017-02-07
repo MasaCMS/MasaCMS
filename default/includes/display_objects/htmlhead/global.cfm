@@ -43,9 +43,10 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
----><cfoutput>
+--->
+<cfif request.returnformat neq 'amp'>
+<cfoutput>
 <script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/dist/mura.min.js?v=#$.siteConfig('version')#"></script>
-
 <script>
 Mura.init({
 	loginURL:"#variables.$.siteConfig('LoginURL')#",
@@ -71,3 +72,4 @@ Mura.init({
 });
 </script>
 </cfoutput>
+</cfif>
