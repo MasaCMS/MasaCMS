@@ -1055,31 +1055,29 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					arguments.bean.setApproved(0);
 				}
 
+				return true;
+
 			break;
 			case 'user':
 			case 'group':
 			case 'address':
-				if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
-					if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
-						if(arguments.bean.getValue('userid')!=$.currentUser('userid')){
-							return false;
-						}
-					}
+				if(getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
+					return true;
+				} else if (arguments.bean.getValue('userid')==$.currentUser('userid')){
+					return true;
+				} else {
+					return false;
 				}
 				break;
 			default:
 				if (isDefined('variables.config.entities.#arguments.bean.getEntityName()#.moduleid')) {
-					if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
-						return false;
-					}
+					return getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid);
 				} else {
-					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid)){
-						return false;
-					}
+					return getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid);
 				}
 		}
 
-		return true;
+		return false;
 
 	}
 
@@ -1757,7 +1755,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & params[p];
 					}
 
-					if(!listFindNoCase('maxItems,pageIndex,itemsPerPage,sortBy,sortDirection',p)){	
+					if(!listFindNoCase('maxItems,pageIndex,itemsPerPage,sortBy,sortDirection',p)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
