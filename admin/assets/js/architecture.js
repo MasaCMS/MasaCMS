@@ -1428,7 +1428,7 @@ buttons: {
 							},
 							start: function(event, ui) {
 								$(ui.item).addClass('ui-draggable-dragging');
-							} 
+							}
 						});
 						$("#sortableKids").disableSelection();
 					}
@@ -2701,7 +2701,7 @@ buttons: {
 	updateAvailableObject: function() {
 		var availableObjectParams = {};
 
-		$(".objectParam").each(
+		$(".objectParam, .objectparam").each(
 
 		function() {
 			var item = $(this);
@@ -2839,7 +2839,7 @@ buttons: {
 
 	initConfiguratorParams: function() {
 		this.updateAvailableObject();
-		$(".objectParam").bind("change", function() {
+		$(".objectParam, .objectparam").bind("change", function() {
 			siteManager.updateAvailableObject();
 		});
 	},
@@ -3234,7 +3234,7 @@ buttons: {
 		siteManager.frontEndProxyListeners.push(
 			{cmd:'setObjectParams',
 			fn:function(params){
-					$(".objectParam").each(function(){
+					$(".objectParam, .objectparam").each(function(){
 						var item=$(this);
 
 						var p=item.attr('name').toLowerCase();
