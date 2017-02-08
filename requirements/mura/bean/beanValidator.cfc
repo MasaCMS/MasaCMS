@@ -459,8 +459,9 @@ component output="false" accessors="true" extends="mura.cfobject" hint="This pro
 	}
 
 	public boolean function validate_regex(required any object, required string propertyIdentifier, required string constraintValue) {
-		if(listLast(arguments.propertyIdentifier,'_') == 'attachment' && isDefined('form.#arguments.propertyIdentifier#')){
-			var propertyValue = getBean('fileManager').getPostedClientFileName(arguments.propertyIdentifier);
+		var fileManager=getBean('fileManager');
+		if(fileManager.isPostedFile(arguments.propertyIdentifier)){
+			var propertyValue = fileManager.getPostedClientFileName(arguments.propertyIdentifier);
 		} else {
 			var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
 		}
