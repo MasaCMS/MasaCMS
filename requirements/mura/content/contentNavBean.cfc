@@ -104,6 +104,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="getSynthedFunctions" output="false">
+	<cfreturn application.objectMappings['content'].synthedFunctions>
+</cffunction>
+
 <cffunction name="set" output="false">
 	<cfargument name="contentStruct">
 	<cfargument name="sourceIterator">
