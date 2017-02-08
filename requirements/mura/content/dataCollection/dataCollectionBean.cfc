@@ -122,6 +122,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 		var fields='';
 		var nestedform = '';
 		var fieldorder = ArrayNew(1);
+		var propname='';
 
 		if(isJSON(arguments.content.getBody())){
 			var formDef=deserializeJSON(content.getBody());
@@ -163,11 +164,18 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 							arrayAppend(rules,{dataType=prop.validateType,message=message});
 						}
 
-						if(arrayLen(rules)){
-							validations.properties[prop.name]=rules;
+						if(prop.fieldtype.fieldtype == 'file'){
+							propname=prop.name & "_attachment";
+						} else {
+							propname=prop.name;
 						}
-						variables.formproperties[prop.name]=prop;
-						variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & prop.name);
+
+						if(arrayLen(rules)){
+							validations.properties[propname]=rules;
+						}
+						
+						variables.formproperties[propname]=prop;
+						variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & propname);
 					}
 				}
 			}

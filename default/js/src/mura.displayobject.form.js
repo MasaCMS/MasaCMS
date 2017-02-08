@@ -804,7 +804,7 @@
 						rawdata.contentid=Mura.contentid || '';
 						rawdata.contenthistid=Mura.contenthistid || '';
 						delete rawdata.filename;
-						
+
 						var data=new FormData();
 
 						for(var p in rawdata){
@@ -1320,7 +1320,7 @@
 				Mura.Handlebars.registerHelper('commonInputAttributes',function() {
 					//id, class, title, size
 					var escapeExpression=Mura.Handlebars.escapeExpression;
-
+					
 					if(typeof this.fieldtype != 'undefined' && this.fieldtype.fieldtype=='file'){
 						var returnString='name="' + escapeExpression(this.name) + '_attachment"';
 					} else {
