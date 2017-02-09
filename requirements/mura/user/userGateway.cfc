@@ -204,7 +204,7 @@
 		<!--- Generate a sorted (if specified) list of baseIDs with additional fields --->
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAdvancedUserSearch',cachedWithin=params.getCachedWithin())#">
 		<cfif not arguments.countOnly and dbType eq "oracle" and params.getMaxItems()>select * from (</cfif>
-		select <cfif not arguments.countOnly and params.getMaxItems()>top #params.getMaxItems()# </cfif>
+		select <cfif not arguments.countOnly and dbtype eq "mssql" and params.getMaxItems()>top #params.getMaxItems()# </cfif>
 
 		<cfif not arguments.countOnly>
 			#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif>

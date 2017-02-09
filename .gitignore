@@ -32,6 +32,7 @@ settings.xml
 Thumbs.db
 web.config
 web.xml
+server-*.json
 
 # ignored directories, regardless of location
 compiled/
@@ -48,6 +49,8 @@ WEB-INF/
 /plugins/
 /temp/
 node_modules/
+/requirements/docbox/
+/requirements/testbox/
 
 # ignored 'config' directory files
 /config/cfapplication.cfm

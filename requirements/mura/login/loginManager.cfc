@@ -416,7 +416,8 @@ If you did not request a new authorization, contact #contactEmail#.
 
 	<cfif not isdefined('arguments.data.username')
 		or not isdefined('arguments.data.password')
-		or not isdefined('arguments.data.siteid')>
+		or not isdefined('arguments.data.siteid')
+		or not (isDefined('form.username') and isDefined('form.password'))>
 
 		<cfreturn false>
 

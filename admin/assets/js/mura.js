@@ -9621,7 +9621,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						rawdata.contentid=Mura.contentid || '';
 						rawdata.contenthistid=Mura.contenthistid || '';
 						delete rawdata.filename;
-						
+
 						var data=new FormData();
 
 						for(var p in rawdata){
@@ -10137,7 +10137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				Mura.Handlebars.registerHelper('commonInputAttributes',function() {
 					//id, class, title, size
 					var escapeExpression=Mura.Handlebars.escapeExpression;
-
+					
 					if(typeof this.fieldtype != 'undefined' && this.fieldtype.fieldtype=='file'){
 						var returnString='name="' + escapeExpression(this.name) + '_attachment"';
 					} else {
@@ -10424,7 +10424,7 @@ this["mura"]["templates"]["file"] = this.mura.Handlebars.template({"1":function(
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "-container\">\r\n	<label for=\""
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "\">"
+    + "_attachment\">"
     + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isrequired : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</label>\r\n	<input type=\"file\" "

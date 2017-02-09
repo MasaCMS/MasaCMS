@@ -459,7 +459,13 @@ component output="false" accessors="true" extends="mura.cfobject" hint="This pro
 	}
 
 	public boolean function validate_regex(required any object, required string propertyIdentifier, required string constraintValue) {
-		var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
+		var fileManager=getBean('fileManager');
+		if(fileManager.isPostedFile(arguments.propertyIdentifier)){
+			var propertyValue = fileManager.getPostedClientFileName(arguments.propertyIdentifier);
+		} else {
+			var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
+		}
+
 		if(isNull(propertyValue) || isValid("regex", propertyValue, arguments.constraintValue)) {
 			return true;
 		}
