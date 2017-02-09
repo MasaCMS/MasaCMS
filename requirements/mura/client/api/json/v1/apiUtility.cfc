@@ -2156,9 +2156,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(entity.getEntityName()=='content'){
 			links['self']="#baseurl#/content/#entity.getContentID()#";
 			links['history']="#baseurl#/content/#entity.getContentID()#/history";
-			links['renderered']="#baseurl#/content/_path/#entity.getFilename()#";
+			links['rendered']="#baseurl#/content/_path/#entity.getFilename()#";
 			if(entity.getType()=='Variation'){
-				links['self']=links['renderered'];
+				links['self']=links['rendered'];
 			} else {
 				links['crumbs']="#baseurl#/#entity.getEntityName()#/#entity.getValue('contentid')#/crumbs";
 			}
