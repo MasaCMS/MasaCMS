@@ -512,7 +512,7 @@
 					<cfif loginManager.handleChallengeAttempt(arguments.$)>
 						<cfset loginManager.completedChallenge(arguments.$)>
 					</cfif>
-				<cfelse>
+				<cfelseif isDefined('form.username') and isDefined('form.password')>
 					<cfset loginManager.login(arguments.$.event().getAllValues(),'')>
 				</cfif>
 			</cfif>
