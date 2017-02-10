@@ -1392,8 +1392,11 @@ Display Objects
 		<cfabort>
 	</cfif>
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
+		<cfset var managerResponse=''>
+		<cfset theContent=trim(theContent)>
+
 		<cfif objectParams.render eq 'client'>
-			<cfset objectparams.html=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+			<cfset managerResponse=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content='',
 				objectParams=objectParams,
@@ -1401,22 +1404,35 @@ Display Objects
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname,
 				renderer=this,
-				bodyRender=arguments.bodyRender) />
+				bodyRender=arguments.bodyRender,
+				returnformat=arguments.returnFormat) />
 		<cfelse>
-			<cfset objectparams.html=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+			<cfset managerResponse=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
-				content=trim(theContent),
+				content=theContent,
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname,
 				renderer=this,
-				bodyRender=arguments.bodyRender) />
+				bodyRender=arguments.bodyRender,
+				returnformat=arguments.returnFormat) />
 		</cfif>
+
+
 		<cfif arguments.returnFormat eq 'struct'>
+			<cfset objectparams.header=managerResponse.header>
+			<cfset objectparams.footer=managerResponse.footer>
+
+			<cfif objectParams.render neq 'client'>
+				<cfset objectparams.html=thecontent>
+			<cfelse>
+				<cfset objectparams.html=''>
+			</cfif>
+			
 			<cfreturn objectparams>
 		<cfelse>
-			<cfreturn objectparams.html>
+			<cfreturn managerResponse>
 		</cfif>
 	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>

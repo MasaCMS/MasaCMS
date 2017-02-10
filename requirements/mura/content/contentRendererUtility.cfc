@@ -904,6 +904,7 @@
 		<cfargument name="objectname">
 		<cfargument name="renderer">
 		<cfargument name="bodyRender" default="false">
+		<cfargument name="returnformat" default="html">
 
 		<cfset var openingDiv='<div class="mura-object'>
 
@@ -974,10 +975,27 @@
 		</cfif>
 
 		<cfif arguments.renderer.useLayoutManager()>
-			<cfif len(trim(arguments.content))>
-				<cfreturn '#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)##arguments.renderer.dspObject_include(theFile='object/content.cfm',params=arguments)#</div>'>
+			<cfset openingDiv="#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)#">
+			<cfset arguments.content=trim(arguments.content)>
+
+			<cfif arguments.returnFormat eq 'struct'>
+				<cfif len(arguments.content)>
+					<cfreturn {
+								header=openingDiv & '<div class="mura-object-content">',
+								footer="</div></div>"
+							}>
+				<cfelse>
+					<cfreturn {
+								header=openingDiv,
+								footer="</div>"
+							}>
+				</cfif>
 			<cfelse>
-				<cfreturn '#openingDiv#</div>'>
+				<cfif len(arguments.content)>
+					<cfreturn openingDiv & '<div class="mura-object-content">' & arguments.content & '</div></div>'>
+				<cfelse>
+					<cfreturn openingDiv & '</div>'>
+				</cfif>
 			</cfif>
 		<cfelse>
 			<cfreturn '#openingDiv##trim(arguments.content)#</div>'>
@@ -1332,7 +1350,8 @@
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
 									objectname=arguments.objectname,
-									renderer=arguments.renderer)>
+									renderer=arguments.renderer,
+									returnformat=arguments.returnformat)>
 						</cfif>
 					</cfif>
 				</cfcase>
