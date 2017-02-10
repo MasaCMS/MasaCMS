@@ -44,17 +44,12 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false" hint="This provides a proxy to larger content data">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides a proxy to larger content data">
 
 <cfset variables.instance=structNew()>
 <cfset variables.instance.content="">
 <cfset variables.instance.struct=structNew()>
 <cfset variables.iterator="">
-<cfset variables.entityname="contentnav">
-
-<cffunction name="init" output="false">
-	<cfreturn this />
-</cffunction>
 
 <cffunction name="setContentManager">
 	<cfargument name="contentManager">
@@ -75,54 +70,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var prefix=left(arguments.MissingMethodName,3)>
 <cfset var theValue="">
 <cfset var bean="">
-<cfset var synthedFunctions = getSynthedFunctions()>
 
 <cfif len(arguments.MissingMethodName)>
-	<cfscript>
-		if(structKeyExists(synthedFunctions, arguments.MissingMethodName)){
-			try{
-
-				if(not structKeyExists(arguments,'MissingMethodArguments')){
-					arguments.MissingMethodArguments={};
-				}
-
-				if(structKeyExists(synthedFunctions[arguments.MissingMethodName],'args')){
-
-					if(structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'cfc')){
-						var bean=getBean(synthedFunctions[arguments.MissingMethodName].args.cfc);
-						//writeDump(var=bean.getProperties());
-
-						if(!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')
-							|| !(structKeyExists(bean,'has') && bean.has(synthedFunctions[arguments.MissingMethodName].args.loadkey))
-						){
-							if(synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
-								if(structKeyExists(synthedFunctions[arguments.MissingMethodName].args, "inverse")){
-									synthedFunctions[arguments.MissingMethodName].args.loadKey=getPrimaryKey();
-								} else {
-									synthedFunctions[arguments.MissingMethodName].args.loadKey=bean.getPrimaryKey();
-								}
-							} else{
-								synthedFunctions[arguments.MissingMethodName].args.loadkey=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.fkcolumn;
-							}
-						}
-
-						structAppend(arguments.MissingMethodArguments,synthArgs(synthedFunctions[arguments.MissingMethodName].args),true);
-					}
-				}
-
-				//writeDump(var=arguments.MissingMethodArguments);
-				//writeDump(var=synthedFunctions[arguments.MissingMethodName].exp,abort=true);
-				return evaluate(synthedFunctions[arguments.MissingMethodName].exp);
-
-			} catch(any err){
-				if(request.muratransaction){
-					transactionRollback();
-				}
-				//writeDump(var=synthedFunctions[arguments.MissingMethodName]);
-				writeDump(var=err,abort=true);
-			}
-		}
-	</cfscript>
 	<!--- forward normal getters to the default getValue method --->
 	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
 		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
@@ -153,14 +102,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "">
 </cfif>
 
-</cffunction>
-
-<cffunction name="getSynthedFunctions" output="false">
-	<cfreturn application.objectMappings['content'].synthedFunctions>
-</cffunction>
-
-<cffunction name="getEntityName" output="false">
-	<cfreturn "content">
 </cffunction>
 
 <cffunction name="set" output="false">
