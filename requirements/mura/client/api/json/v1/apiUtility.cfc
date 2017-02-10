@@ -2604,8 +2604,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					result={redirect=request.muraJSONRedirectURL};
 				} else {
 					if($.useLayoutManager() && isdefined('result.html') && result.render=='server'){
-						args.params.content=result.html;
-						result={render='server',async=true,html=trim('#$.dspObject_include(theFile='object/meta.cfm',params=args.params)##$.dspObject_include(theFile='object/content.cfm',params=args.params)#')};
+						result={render='server',async=true,html=trim('#$.dspObject_include(theFile='object/meta.cfm',params=args.params)#<div class="mura-object-content">#result.html#</div>')};
 					}
 				}
 		}
