@@ -154,7 +154,8 @@
     			var footer=document.createElement('DIV');
     			footer.setAttribute('id','mura-remote-footer');
     			window.document.body.appendChild(footer);
-    			mura('#mura-remote-footer').html(content.htmlfootqueue);
+    			mura('#mura-remote-footer').html(content.htmlheadqueue + content.htmlfootqueue);
+
 
     			mura
     				.loader()

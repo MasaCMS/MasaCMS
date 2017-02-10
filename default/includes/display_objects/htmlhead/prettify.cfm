@@ -56,13 +56,15 @@
 --->
 <cfoutput>
 <script>
-$(function(){
-	Mura.loader()
-	.loadcss("#variables.$.globalConfig('context')#/requirements/prettify/themes/tomorrow-night.min.css")
-	.loadjs("#variables.$.globalConfig('context')#/requirements/prettify/prettify.min.js",
-	function(){
-		!function($){$(function(){window.prettyPrint && prettyPrint()});}(window.jQuery)
+if(typeof $ != 'undefined'){
+	$(function(){
+		Mura.loader()
+		.loadcss("#variables.$.globalConfig('context')#/requirements/prettify/themes/tomorrow-night.min.css")
+		.loadjs("#variables.$.globalConfig('context')#/requirements/prettify/prettify.min.js",
+		function(){
+			!function($){$(function(){window.prettyPrint && prettyPrint()});}(window.jQuery)
+		});
 	});
-});
+}
 </script>
 </cfoutput>
