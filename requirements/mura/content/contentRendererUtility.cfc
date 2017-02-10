@@ -1214,9 +1214,10 @@
 		<cfif $.siteConfig().hasDisplayObject(arguments.object)>
 			<cfif arguments.object eq 'tag_cloud'>
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
-					<cfset theObject=tempObject>
+					<cfset theObject=trim(tempObject)>
 					<cfif arguments.renderer.useLayoutmanager()>
 						<cfif not arguments.include and request.muraFrontEndRequest>
+
 								<cfset theObject=renderObjectInManager(object=arguments.object,
 									objectid=arguments.objectid,
 									content=theObject,
@@ -1339,6 +1340,7 @@
 				<cfcase value="user_tools"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_user_tools.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat,params=arguments.params)></cfcase>
 				<cfcase value="tag_cloud">
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
+					<cfset tempObject=trim(tempObject)>
 					<cfset theObject=tempObject>
 					<cfif arguments.renderer.useLayoutmanager()>
 						<cfif request.muraFrontEndRequest>
@@ -1352,6 +1354,9 @@
 									objectname=arguments.objectname,
 									renderer=arguments.renderer,
 									returnformat=arguments.returnformat)>
+								<cfif isStruct(theObject)>
+									<cfset theObject.html=tempObject>
+								</cfif>
 						</cfif>
 					</cfif>
 				</cfcase>
