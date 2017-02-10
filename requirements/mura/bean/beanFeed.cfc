@@ -873,13 +873,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var column = "">
 
 	<cfloop list="#arguments.orderBy#" index="orderByValue">
-		<cfset table = variables.instance.entityName>
+		<cfset table = getEntity().getTable()>
 		<cfset column = listfirst(orderByValue, " ")>
 		<cfif listlen(column, ".") eq 2>
 			<cfset table = listfirst(column, ".")>
 			<cfset column = listrest(column, ".")>
 		</cfif>
-		<cfif structkeyexists(application.objectMappings, table) and structkeyexists(application.objectMappings[table]["columns"], column) and listfindnocase("char,varchar", application.objectMappings[table]["columns"][column]["dataType"])>
+
+		<cfif len(column) and structkeyexists(application.objectMappings, table) and structkeyexists(application.objectMappings[table]["columns"], column) and listfindnocase("char,varchar", application.objectMappings[table]["columns"][column]["dataType"])>
 			<cfset orderByList = listappend(orderByList, "lower(" & column & ") " & listrest(orderByValue, " ")) />
 		<cfelse>
 			<cfset orderByList = listappend(orderByList, orderByValue) />
