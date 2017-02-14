@@ -38,7 +38,7 @@
 					</cfif>
 					<cfset variables.contentLink = "" />
 					<cfset variables.lid = replace(variables.rsFavorites.favoriteID, "-", "", "ALL") />
-				
+
 					<cfset variables.contentLink = variables.$.createHref(variables.rsFavorites.Type, variables.rsFavorites.filename, variables.$.event('siteID'), variables.rsFavorites.contentID, variables.rsFavorites.target,variables.rsFavorites.targetParams, '', '#variables.$.globalConfig('context')#', '#variables.$.globalConfig('stub')#', '', 'false') />
 					<cfset variables.contentLink = "<a href='#variables.contentLink#'>#HTMLEditFormat(variables.rsFavorites.menuTitle)#</a>" />
 					<li id="favorite#variables.lid#" class="remove-favorite"><a href="" onclick="return deleteFavorite('#variables.rsFavorites.favoriteID#', 'favorite#variables.lid#');" title="#xmlformat(variables.$.rbKey('favorites.removefromfavorites'))#" class="remove"></a> #variables.contentLink#</li>
@@ -48,25 +48,25 @@
 		</cfif>
 		<li id="favoriteTip" class="defaultMsg" style="display:none;">#variables.$.rbKey('favorites.nofavorites')#</li>
 	<cfelse>
-		<li id="favoriteTip" class="defaultMsg">#variables.$.rbKey('favorites.nofavorites')#</li>	
+		<li id="favoriteTip" class="defaultMsg">#variables.$.rbKey('favorites.nofavorites')#</li>
 	</cfif>
 	</ul>
-	
+
 	<!--- add favorites --->
 	<cfset variables.userID = getPersonalizationID() />
 	<cfset variables.menuTitle = variables.$.content('menuTitle') />
 	<cfset variables.contentID = variables.$.content('contentID') />
 	<cfset variables.favoriteType = 'internal_content' />
 	<cfset variables.favoriteExists = application.favoriteManager.checkForFavorite(variables.userID, variables.contentID) />
-<!---	
+<!---
 	<cfif favoriteExists>
 		<span id="favoriteStatus" style="display:none"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#menuTitle#', '#contentID#', '#favoriteType#')">Add to favorites</a></span>
 	<cfelse>
 		<span id="favoriteStatus"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#menuTitle#', '#contentID#', '#favoriteType#')">Add to favorites</a></span>
 	</cfif>
---->	
+--->
 <cfelse>
-	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.pleaselogin'),'#variables.$.siteConfig('LoginURL')#&returnURL=#getCurrentURL()#')#</p>
+	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.pleaselogin'),'#variables.$.siteConfig('LoginURL')#&returnURL=#variables.$.esapiEncode('url',getCurrentURL()#')#</p>
 </cfif>
 </div>
 <cfif len(getPersonalizationID())>
@@ -90,6 +90,3 @@
 </div>
 </cfif>
 </cfoutput>
-
-
-

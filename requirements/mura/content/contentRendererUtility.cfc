@@ -442,9 +442,9 @@
 				 and not (item eq 'doaction' and url[item] eq 'logout')) >
 				<cftry>
 				<cfif len(qrystr)>
-						<cfset qrystr="#qrystr#&#item#=#URLEncodedFormat(url[item])#">
+						<cfset qrystr="#qrystr#&#esapiEncode('url',item)#=#esapiEncode('url',url[item])#">
 				<cfelse>
-					<cfset qrystr="?#item#=#URLEncodedFormat(url[item])#">
+					<cfset qrystr="?#esapiEncode('url',item)#=#esapiEncode('url',url[item])#">
 				</cfif>
 				<cfcatch ></cfcatch>
 				</cftry>
