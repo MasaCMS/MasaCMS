@@ -6373,7 +6373,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    for ( var i = 0; ret[i]; i++ ) {
 	      if ( scripts && nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
-	            scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
+                if(ret[i].src){
+                    scripts.push(ret[i]);
+                } else {
+                    scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
+                }
 	        } else if(ret[i].nodeType==1 || ret[i].nodeType==9 || ret[i].nodeType==11){
 	        	evalScripts(ret[i]);
 	        }
@@ -6389,19 +6393,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
   	function evalScript(el) {
-	    var data = ( el.text || el.textContent || el.innerHTML || "" );
+        if(el.src){
+            Mura.loader().load(el.src);
+            Mura(el).remove();
+        } else {
+    	    var data = ( el.text || el.textContent || el.innerHTML || "" );
 
-	    var head = document.getElementsByTagName("head")[0] || document.documentElement,
-	    script = document.createElement("script");
-	    script.type = "text/javascript";
-	    //script.appendChild( document.createTextNode( data ) );
-		script.text=data;
-	    head.insertBefore( script, head.firstChild );
-	    head.removeChild( script );
+    	    var head = document.getElementsByTagName("head")[0] || document.documentElement,
+    	    script = document.createElement("script");
+    	    script.type = "text/javascript";
+    	    //script.appendChild( document.createTextNode( data ) );
+    		script.text=data;
+    	    head.insertBefore( script, head.firstChild );
+    	    head.removeChild( script );
 
-	    if ( el.parentNode ) {
-	        el.parentNode.removeChild( el );
-	    }
+    	    if ( el.parentNode ) {
+    	        el.parentNode.removeChild( el );
+    	    }
+        }
 	}
 
 	function changeElementType(el, to) {
