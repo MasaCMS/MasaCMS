@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 
 				<cfloop query="rs">
-					<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,.gitignore",listLast(rs.entry,variables.fileDelim))>
+					<cfif not listFind("README.md,settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,.gitignore",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
 						<cftry>
 							<cfif fileExists(destination)>
@@ -170,7 +170,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif variables.configBean.getAdminDir() neq "/admin">
 								<cfset destination=ReplaceNoCase(destination, "#variables.fileDelim#admin#variables.fileDelim#", "#replace(variables.configBean.getAdminDir(),'/',variables.fileDelim,'all')##variables.fileDelim#" )>
 							</cfif>
-							
+
 							<cfif not directoryExists(destination)>
 								<cfset variables.fileWriter.createDir(directory="#destination#")>
 							</cfif>
