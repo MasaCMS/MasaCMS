@@ -1879,6 +1879,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset var beanName=''>
 		<cfset var beanInstance=''>
+		<cfset var $=''>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir'>
@@ -1894,6 +1895,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop list="#arguments.siteid#" index="local.i">
 					<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyglobal)>
 					<cfset var applyglobal=true>
+
+					<cfif isDefined('beanInstance.onApplicationLoad')>
+						<cfset $=getBean('$').init()>
+						<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
+					</cfif>
 				</cfloop>
 			</cfif>
 		</cfloop>
