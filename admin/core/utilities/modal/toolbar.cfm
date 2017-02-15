@@ -402,7 +402,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-history"></i></a></li>
 							<cfif $.content('type') neq 'Variation'>
-							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.esapiEncode(
+							<li id="adminPreview"<!--- class="dropdown"--->><a href="#esapiEncode(
 								'html_attr',variables.$.getCurrentURL())#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="mi-mobile"></i></a>
 							</li>
 							</cfif>

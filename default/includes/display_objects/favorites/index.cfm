@@ -66,7 +66,7 @@
 	</cfif>
 --->
 <cfelse>
-	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.pleaselogin'),'#variables.$.siteConfig('LoginURL')#&returnURL=#variables.$.esapiEncode('url',getCurrentURL())#')#</p>
+	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.pleaselogin'),'#variables.$.siteConfig('LoginURL')#&returnURL=#esapiEncode('url',getCurrentURL())#')#</p>
 </cfif>
 </div>
 <cfif len(getPersonalizationID())>

@@ -95,7 +95,7 @@
 				<form name="rater1" id="rater1" method="post" action="">
 					<input type="hidden" id="rate" name="rate" value="##">
 					<input type="hidden" id="userID" name="userID" value="#variables.$.event('raterID')#">
-					<input type="hidden" id="loginURL" name="loginURL" value="#variables.$.siteConfig('loginURL')#&returnURL=#variables.$.esapiEncode('url',variables.$.getCurrentURL(true,'doaction=saveRate&rate='))#">
+					<input type="hidden" id="loginURL" name="loginURL" value="#variables.$.siteConfig('loginURL')#&returnURL=#esapiEncode('url',variables.$.getCurrentURL(true,'doaction=saveRate&rate='))#">
 					<input type="hidden" id="siteID" name="siteID" value="#variables.$.event('siteID')#">
 					<input type="hidden" id="contentID" name="contentID" value="#variables.$.content('contentID')#">
 					<input type="hidden" id="formID" name="formID" value="rater1">

@@ -105,14 +105,14 @@
 			</div>
 			<!--- Not Registered? --->
 			<cfif application.settingsManager.getSite(variables.$.event('siteID')).getExtranetPublicReg()>
-					<#variables.$.getHeaderTag('subHead2')#>#variables.$.rbKey('user.notregistered')# <a class="#this.userToolsNotRegisteredLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;returnURL=#variables.$.esapiEncode('url',variables.$.getCurrentURL())#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead2')#>
+					<#variables.$.getHeaderTag('subHead2')#>#variables.$.rbKey('user.notregistered')# <a class="#this.userToolsNotRegisteredLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;returnURL=#esapiEncode('url',variables.$.getCurrentURL())#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead2')#>
 			</cfif>
 		<cfelse>
 			<cfif session.mura.isLoggedIn>
 				<div id="svSessionTools" class="mura-user-tools-session #this.userToolsWrapperClass#">
 					<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
 				 	<ul id="navSession">
-						<li id="navEditProfile"><a class="#this.userToolsEditProfileLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;nocache=1&amp;returnURL=#variables.$.esapiEncode('url',variables.$.getCurrentURL())#">#variables.$.rbKey('user.editprofile')#</a></li>
+						<li id="navEditProfile"><a class="#this.userToolsEditProfileLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;nocache=1&amp;returnURL=#esapiEncode('url',variables.$.getCurrentURL())#">#variables.$.rbKey('user.editprofile')#</a></li>
 						<li id="navLogout"><a class="#this.userToolsLogoutLinkClass#" href="./?doaction=logout">#variables.$.rbKey('user.logout')#</a></li>
 					</ul>
 				</div>

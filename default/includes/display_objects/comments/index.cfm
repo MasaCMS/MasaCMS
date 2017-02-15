@@ -359,7 +359,7 @@
 				<!--- SUBMIT BUTTON --->
 				<div class="#this.commentFieldWrapperClass#">
 					<div class="#this.commentSubmitButtonWrapperClass#">
-						<input type="hidden" name="returnURL" value="#variables.$.esapiEncode('html_attr',variables.$.getCurrentURL())#">
+						<input type="hidden" name="returnURL" value="#esapiEncode('html_attr',variables.$.getCurrentURL())#">
 						<input type="hidden" name="commentid" value="#createuuid()#">
 						<input type="hidden" name="parentid" value="">
 						<input type="hidden" name="commenteditmode" value="add">
