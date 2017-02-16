@@ -202,9 +202,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
-		<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
-		<cfset returnStruct.currentVersion=updateVersion/>
-		<cfset returnStruct.files=updatedArray>
+
+		<cfif len(diff)>
+			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
+			<cfset returnStruct.currentVersion=updateVersion/>
+		<cfelse>
+			<cfset returnStruct.currentVersion=currentVersion/>
+		</cfif>
 
 		</cflock>
 	</cfif>
