@@ -61,6 +61,16 @@
 		<cfreturn variables.recordIndex  />
 	</cffunction>
 
+	<cffunction name="getCurrentIndex" output="false">
+		<cfreturn currentIndex() />
+	</cffunction>
+
+	<cffunction name="setCurrentIndex" output="false">
+		<cfargument name="currentIndex">
+		<cfset setStartRow(arguments.currentIndex)>
+		<cfreturn this>
+	</cffunction>
+
 	<cffunction name="getRecordIndex" output="false">
 		<cfreturn variables.recordIndex />
 	</cffunction>
@@ -116,10 +126,23 @@
 			<cfelse>
 				<cfset setPage(arguments.startRow)>
 			</cfif>
+
+			<!---
+				startrow in an iterator means it's queued to be next
+				so the recordIndex should be set to the one before
+			--->
+			<cfif arguments.startRow>
+				<cfset arguments.startRow=arguments.startRow-1>
+			</cfif>
+
+			<cfif variables.recordIndex neq arguments.startRow and arguments.startRow lt getRecordCount()>
+				<cfset variables.recordIndex=arguments.startRow>
+			</cfif>
 		<cfelse>
 			<cfset variables.recordIndex=0 />
 			<cfset setPage(1)>
 		</cfif>
+
 		<cfreturn this>
 	</cffunction>
 
