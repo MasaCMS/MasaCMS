@@ -465,7 +465,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					savecontent variable="sql" {
 						writeOutput('insert into #getTable()# (');
 						for(prop in props){
-							if(structKeyExists(columns, props[prop].column)){
+							if(props[prop].persistent){
 								if(started){
 									writeOutput(",");
 								}
