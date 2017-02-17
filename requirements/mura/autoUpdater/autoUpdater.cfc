@@ -111,6 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="readBinary" file="#currentDir##zipFileName#.zip" variable="diff">
 
 		<!--- make sure that there are actually any updates--->
+
 		<cfif len(diff)>
 			<cfset rs=zipUtil.list("#currentDir##zipFileName#.zip")>
 
@@ -161,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop query="rs">
 					<cfif not listFind("README.md,settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,.gitignore",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-						<cftry>
+						<!---<cftry>--->
 							<cfif fileExists(destination)>
 								<cffile action="delete" file="#destination#">
 							</cfif>
@@ -175,13 +176,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset variables.fileWriter.createDir(directory="#destination#")>
 							</cfif>
 							<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
+								<!---
 							<cfcatch>
 								<!--- patch to make sure autoupdates do not stop for mode errors --->
 								<cfif not findNoCase("change mode of file",cfcatch.message) and not listFindNoCase('jar,class',listLast(rs.entry,"."))>
 									<cfrethrow>
 								</cfif>
 							</cfcatch>
-						</cftry>
+						</cftry>--->
 						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
@@ -206,6 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(diff)>
 			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
 			<cfset returnStruct.currentVersion=updateVersion/>
+			<cfset returnstruct.files=updatedArray>
 		<cfelse>
 			<cfset returnStruct.currentVersion=currentVersion/>
 		</cfif>
