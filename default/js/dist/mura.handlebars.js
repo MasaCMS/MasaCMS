@@ -6440,7 +6440,7 @@ return /******/ (function(modules) { // webpackBootstrap
     var holdingQueueReleased=false;
     var holdingQueue=[];
 
-    if(typeof jQuery != 'undefined'){
+    if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
         jQuery.holdReady(true);
     }
 
@@ -6452,7 +6452,7 @@ return /******/ (function(modules) { // webpackBootstrap
     document.addEventListener('DOMContentLoaded',function(){
       if(!holdingReadyAltered){
            holdingReady=false;
-           if(typeof jQuery != 'undefined'){
+           if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                jQuery.holdReady(false);
            }
            releaseReadyQueue();
@@ -6471,7 +6471,8 @@ return /******/ (function(modules) { // webpackBootstrap
         if(!holdingQueueReleased){
             holdingReady=hold;
             holdingReadyAltered=true;
-            if(typeof jQuery != 'undefined'){
+
+            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                 jQuery.holdReady(hold);
             }
 
