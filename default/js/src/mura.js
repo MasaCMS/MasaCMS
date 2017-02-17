@@ -357,7 +357,6 @@
     */
     document.addEventListener('DOMContentLoaded',function(){
       if(!holdingReadyAltered){
-           holdingReady=false;
            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                jQuery.holdReady(false);
            }
@@ -367,7 +366,8 @@
 
     function releaseReadyQueue(){
         holdingQueueReleased=true;
-
+        holdingReady=false;
+        
         for(var fn in holdingQueue){
             readyInternal(holdingQueue[fn]);
         }
@@ -389,7 +389,7 @@
     }
 
 	function ready(fn) {
-        if(!holdingQueueReleased && holdingReady){
+        if(!holdingQueueReleased){
              holdingQueue.push(fn);
         } else {
             readyInternal(fn);

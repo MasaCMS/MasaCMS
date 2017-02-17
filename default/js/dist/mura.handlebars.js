@@ -6451,7 +6451,6 @@ return /******/ (function(modules) { // webpackBootstrap
     */
     document.addEventListener('DOMContentLoaded',function(){
       if(!holdingReadyAltered){
-           holdingReady=false;
            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                jQuery.holdReady(false);
            }
@@ -6461,7 +6460,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
     function releaseReadyQueue(){
         holdingQueueReleased=true;
-
+        holdingReady=false;
+        
         for(var fn in holdingQueue){
             readyInternal(holdingQueue[fn]);
         }
@@ -6483,7 +6483,7 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 
 	function ready(fn) {
-        if(!holdingQueueReleased && holdingReady){
+        if(!holdingQueueReleased){
              holdingQueue.push(fn);
         } else {
             readyInternal(fn);
