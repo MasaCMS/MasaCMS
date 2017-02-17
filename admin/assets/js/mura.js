@@ -8779,7 +8779,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		onAfterRender:function(){},
 		onBeforeRender:function(){},
 		trigger:function(eventName){
-			$eventName=eventName.toLowerCase();
+			var $eventName=eventName.toLowerCase();
 			if(typeof this.context.targetEl != 'undefined'){
 				var obj=mura(this.context.targetEl).closest('.mura-object');
 				if(obj.length && typeof obj.node != 'undefined'){
