@@ -6437,6 +6437,8 @@ return /******/ (function(modules) { // webpackBootstrap
     */
     var holdingReady=true;
     var holdingReadyAltered=false;
+    var holdingQueueReleased=false;
+    var holdingQueue=[];
 
     if(typeof jQuery != 'undefined'){
         jQuery.holdReady(true);
@@ -6450,32 +6452,54 @@ return /******/ (function(modules) { // webpackBootstrap
     document.addEventListener('DOMContentLoaded',function(){
       if(!holdingReadyAltered){
            holdingReady=false;
-           jQuery.holdReady(false);
+           if(typeof jQuery != 'undefined'){
+               jQuery.holdReady(false);
+           }
+           releaseReadyQueue();
       }
     });
 
+    function releaseReadyQueue(){
+        holdingQueueReleased=true;
+
+        for(var fn in holdingQueue){
+            readyInternal(holdingQueue[fn]);
+        }
+    }
+
     function holdReady(hold){
-        holdingReady=hold;
-        holdingReadyAltered=true;
-        if(typeof jQuery != 'undefined'){
-            jQuery.holdReady(hold);
+        if(!holdingQueueReleased){
+            holdingReady=hold;
+            holdingReadyAltered=true;
+            if(typeof jQuery != 'undefined'){
+                jQuery.holdReady(hold);
+            }
+
+            if(!holdingReady){
+                releaseReadyQueue();
+            }
         }
     }
 
 	function ready(fn) {
-        if(holdingReady){
-             setTimeout(function(){Mura(fn);},1);
+        if(!holdingQueueReleased && holdingReady){
+             holdingQueue.push(fn);
         } else {
-            if(document.readyState != 'loading'){
-    	      //IE sets the readyState to interative too early
-    	      setTimeout(function(){fn(root.Mura);},1);
-    	    } else {
-    	      document.addEventListener('DOMContentLoaded',function(){
-    	        fn(root.Mura);
-    	      });
-    	    }
-        }
+            readyInternal(fn);
+	    }
+    }
+
+    function readyInternal(fn) {
+	    if(document.readyState != 'loading'){
+	      //IE set the readyState to interative too early
+	      setTimeout(function(){fn(root.Mura);},1);
+	    } else {
+	      document.addEventListener('DOMContentLoaded',function(){
+	        fn(root.Mura);
+	      });
+	    }
 	  }
+
 
 
 
