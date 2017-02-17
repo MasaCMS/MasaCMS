@@ -3063,26 +3063,53 @@ return /******/ (function(modules) { // webpackBootstrap
 		return newEl;
 	}
 
-    var holdingReady=false;
+    /*
+    Defaults to holdReady is true so that everything
+    is queued up until the DOMContentLoaded is fired
+    */
+    var holdingReady=true;
+    var holdingReadyAltered=false;
+
+    if(typeof jQuery != 'undefined'){
+        jQuery.holdReady(true);
+    }
+
+    /*
+    When DOMContentLoaded is fired check to see it the
+    holdingReady has been altered by custom code.
+    If it hasn't then fire holding functions.
+    */
+    document.addEventListener('DOMContentLoaded',function(){
+      if(!holdingReadyAltered){
+           holdingReady=false;
+           jQuery.holdReady(false);
+      }
+    });
 
     function holdReady(hold){
         holdingReady=hold;
-
+        holdingReadyAltered=true;
         if(typeof jQuery != 'undefined'){
             jQuery.holdReady(hold);
         }
     }
 
 	function ready(fn) {
-	    if(holdingReady || document.readyState != 'loading'){
-	      //IE sets the readyState to interative too early
-	      setTimeout(function(){fn(root.Mura);},1);
-	    } else {
-	      document.addEventListener('DOMContentLoaded',function(){
-	        fn(root.Mura);
-	      });
-	    }
+        if(holdingReady){
+             setTimeout(function(){Mura(fn);},1);
+        } else {
+            if(document.readyState != 'loading'){
+    	      //IE sets the readyState to interative too early
+    	      setTimeout(function(){fn(root.Mura);},1);
+    	    } else {
+    	      document.addEventListener('DOMContentLoaded',function(){
+    	        fn(root.Mura);
+    	      });
+    	    }
+        }
 	  }
+
+
 
 	/**
 	 * get - Make GET request
