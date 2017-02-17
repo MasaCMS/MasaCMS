@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						    <label>
 						    	#application.rbFactory.getKeyValue(session.rb,'login.username')#
 						    </label>
-								<input id="username" name="username" type="text">
+								<input id="username" name="username" type="text" autofocus="autofocus">
 							</div>
 
 							<div class="mura-control-group">
@@ -241,7 +241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<p id="pw-response" class="#alertclass# clear-both">#pwresponse#</p>
 									<div class="mura-control-group">
 										<label>Email Address</label>
-										<input id="email" name="email" type="text">
+										<input id="email" name="email" type="text" autofocus="autofocus">
 									</div>
 							</div>
 							<div class="mura-focus-actions">
@@ -288,11 +288,13 @@ jQuery(document).ready(function(){
 	jQuery('#pw-link a').click(function(){
 		jQuery('#mura-login-panel').removeClass('flipInY').addClass('flipOutY').hide();
 		jQuery('#mura-password-panel').removeClass('flipOutY').show().addClass('flipInY');
+		document.getElementById('email').focus();
 	});
 	jQuery('#login-link a').click(function(){
 		jQuery('#mura-password-panel').removeClass('flipInY').addClass('flipOutY').hide();
 		jQuery('#pw-response').removeClass('alert').removeClass('alert-error').html('<cfoutput>#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'login.enteremail'))#</cfoutput>');
 		jQuery('#mura-login-panel').removeClass('flipOutY').show().addClass('flipInY');
+		document.getElementById('username').focus();
 	});
 
 });
