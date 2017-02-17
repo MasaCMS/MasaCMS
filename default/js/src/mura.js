@@ -337,9 +337,19 @@
 		return newEl;
 	}
 
+    var holdingReady=false;
+
+    function holdReady(hold){
+        holdingReady=hold;
+
+        if(typeof jQuery != 'undefined'){
+            jQuery.holdReady(hold);
+        }
+    }
+
 	function ready(fn) {
-	    if(document.readyState != 'loading'){
-	      //IE set the readyState to interative too early
+	    if(holdingReady || document.readyState != 'loading'){
+	      //IE sets the readyState to interative too early
 	      setTimeout(function(){fn(root.Mura);},1);
 	    } else {
 	      document.addEventListener('DOMContentLoaded',function(){
@@ -2750,7 +2760,8 @@
 			trim:trim,
 			hashCode:hashCode,
 			DisplayObject:{},
-			displayObjectInstances:{}
+			displayObjectInstances:{},
+            holdReady:holdReady
 			}
 		),
 		//these are here for legacy support
