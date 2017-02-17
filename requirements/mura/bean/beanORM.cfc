@@ -401,7 +401,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					savecontent variable="sql" {
 						writeOutput('update #getTable()# set ');
 						for(prop in props){
-							if(props[prop].column neq getPrimaryKey() and structKeyExists(columns, props[prop].column)){
+							if(props[prop].persistent && props[prop].column neq getPrimaryKey() && structKeyExists(columns, props[prop].column)){
 								if(started){
 									writeOutput(",");
 								}
@@ -465,7 +465,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					savecontent variable="sql" {
 						writeOutput('insert into #getTable()# (');
 						for(prop in props){
-							if(props[prop].persistent){
+							if(props[prop].persistent && structKeyExists(columns, props[prop].column)){
 								if(started){
 									writeOutput(",");
 								}
@@ -478,7 +478,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 
 						started=false;
 						for(prop in props){
-							if(structKeyExists(columns, props[prop].column)){
+							if(props[prop].persistent && structKeyExists(columns, props[prop].column)){
 								if(started){
 									writeOutput(",");
 								}
