@@ -3066,7 +3066,7 @@ return /******/ (function(modules) { // webpackBootstrap
     /*
     Defaults to holdReady is true so that everything
     is queued up until the DOMContentLoaded is fired
-    */
+
     var holdingReady=true;
     var holdingReadyAltered=false;
     var holdingQueueReleased=false;
@@ -3075,12 +3075,12 @@ return /******/ (function(modules) { // webpackBootstrap
     if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
         jQuery.holdReady(true);
     }
-
+    */
     /*
     When DOMContentLoaded is fired check to see it the
     holdingReady has been altered by custom code.
     If it hasn't then fire holding functions.
-    */
+
     document.addEventListener('DOMContentLoaded',function(){
       if(!holdingReadyAltered){
            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
@@ -3093,7 +3093,7 @@ return /******/ (function(modules) { // webpackBootstrap
     function releaseReadyQueue(){
         holdingQueueReleased=true;
         holdingReady=false;
-        
+
         for(var fn in holdingQueue){
             readyInternal(holdingQueue[fn]);
         }
@@ -3121,8 +3121,8 @@ return /******/ (function(modules) { // webpackBootstrap
             readyInternal(fn);
 	    }
     }
-
-    function readyInternal(fn) {
+    */
+    function ready(fn) {
 	    if(document.readyState != 'loading'){
 	      //IE set the readyState to interative too early
 	      setTimeout(function(){fn(root.Mura);},1);
@@ -3132,9 +3132,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 	  }
-
-
-
 
 	/**
 	 * get - Make GET request
@@ -5538,8 +5535,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			trim:trim,
 			hashCode:hashCode,
 			DisplayObject:{},
-			displayObjectInstances:{},
-            holdReady:holdReady
+			displayObjectInstances:{}
+            //,holdReady:holdReady
 			}
 		),
 		//these are here for legacy support

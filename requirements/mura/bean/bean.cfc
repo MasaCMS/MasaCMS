@@ -987,70 +987,72 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 						for(var prop in props){
 
-							rules=[];
+							if(props[prop].persistent){
+								rules=[];
 
-							if(structKeyExists(props[prop], "fkcolumn")){
-								ruleKey=props[prop].fkcolumn;
-							} else {
-								ruleKey=prop;
-							}
-
-							if(structKeyExists(props[prop], "datatype") && props[prop].datatype != 'any'){
-								if(structKeyExists(props[prop], "message")){
-									rule={message=props[prop].message};
+								if(structKeyExists(props[prop], "fkcolumn")){
+									ruleKey=props[prop].fkcolumn;
 								} else {
-									rule={};
+									ruleKey=prop;
 								}
-								structAppend(rule,{datatype=props[prop].datatype});
-								arrayAppend(rules, rule);
-							}
 
-							if(structKeyExists(props[prop], "required") && props[prop].required){
-								if(structKeyExists(props[prop], "message")){
-									rule={message=props[prop].message};
-								} else {
-									rule={};
-								}
-								structAppend(rule,{required=props[prop].required});
-								arrayAppend(rules,rule);
-							}
-
-							if(structKeyExists(props[prop], "format")){
-								if(structKeyExists(props[prop], "message")){
-									rule={message=props[prop].message};
-								} else {
-									rule={};
-								}
-								structAppend(rule,{format=props[prop].format});
-								arrayAppend(rules,rule);
-							}
-
-							if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
-								if(structKeyExists(props[prop], "message")){
-									rule={message=props[prop].message};
-								} else {
-									rule={};
-								}
-								structAppend(rule,{maxLength=props[prop].length});
-								arrayAppend(rules,rule);
-							}
-
-							for(var r=1;r <= arrayLen(basicRules);r++){
-								if(structKeyExists(props[prop], basicRules[r])){
+								if(structKeyExists(props[prop], "datatype") && props[prop].datatype != 'any'){
 									if(structKeyExists(props[prop], "message")){
 										rule={message=props[prop].message};
 									} else {
 										rule={};
 									}
-									tempRule=props[prop];
-									structAppend(rule, {'#basicRules[r]#'=tempRule[basicRules[r]]});
+									structAppend(rule,{datatype=props[prop].datatype});
 									arrayAppend(rules, rule);
 								}
 
-							}
+								if(structKeyExists(props[prop], "required") && props[prop].required){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									structAppend(rule,{required=props[prop].required});
+									arrayAppend(rules,rule);
+								}
 
-							if(arrayLen(rules)){
-								application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
+								if(structKeyExists(props[prop], "format")){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									structAppend(rule,{format=props[prop].format});
+									arrayAppend(rules,rule);
+								}
+
+								if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									structAppend(rule,{maxLength=props[prop].length});
+									arrayAppend(rules,rule);
+								}
+
+								for(var r=1;r <= arrayLen(basicRules);r++){
+									if(structKeyExists(props[prop], basicRules[r])){
+										if(structKeyExists(props[prop], "message")){
+											rule={message=props[prop].message};
+										} else {
+											rule={};
+										}
+										tempRule=props[prop];
+										structAppend(rule, {'#basicRules[r]#'=tempRule[basicRules[r]]});
+										arrayAppend(rules, rule);
+									}
+
+								}
+
+								if(arrayLen(rules)){
+									application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
+								}
 							}
 						}
 					}
