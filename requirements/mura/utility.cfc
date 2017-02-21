@@ -55,7 +55,7 @@
   Mura CMS.
 --->
 
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides global utility methods">
 
 <cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -564,55 +564,139 @@ Blog: www.codfusion.com--->
 	<cfreturn local.result/>
 </cffunction>
 
-<cffunction name="setSessionCookies">
-	<cfif application.configBean.getSecureCookies() or len(application.configBean.getSessionCookiesExpires())>
-		<cftry>
+<cffunction name="setSessionCookies" output="false">
+	<cfargument name="reset" default="true">
+
+	<cfif application.configBean.getSecureCookies() or application.configBean.getSessionCookiesExpires() neq 'never' or len(application.configBean.getCookieDomain())>
+		<!---<cftry>--->
 			<cfset var sessionData=getSession()>
-			<cfif isdefined('sessionData.CFID')>
+
+			<cftry>
+				<cfset var hasURLToken=len(sessionData.urlToken)>
+				<cfcatch>
+					<cfset var hasURLToken=false>
+				</cfcatch>
+			</cftry>
+
+			<cfif hasURLToken>
+				<cfset var sessionTokens={}>
+
+				<cfloop list="#sessionData.urlToken#" index="local.item" delimiters="&">
+					<cfset local.key=listFirst(local.item,"=")>
+					<cfset sessionTokens["#local.key#"]=listLast(local.item,"=")>
+				</cfloop>
+			<cfelse>
+				<cfreturn>
+			</cfif>
+
+			<cfif isDefined('sessionTokens.cfid') and (arguments.reset or not isDefined('cookie.cfid'))>
 				<!--- Lucee uses lowercase cookies the setCookie method allows it to maintain case--->
 				<cfif server.coldfusion.productname neq 'Coldfusion Server'>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-						<cfset setCookie('cfid', sessionData.CFID,"", "", "/", application.configBean.getSecureCookies(), true, true)>
-						<cfset setCookie('cftoken', sessionData.CFTOKEN, "", "", "/", application.configBean.getSecureCookies(), true, true)>
+						<cfset setCookie(name='cfid', value=sessionTokens.CFID, encodevalue=false )>
+						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN, encodevalue=false )>
 					<cfelse>
-						<cfset setCookie('cfid', sessionData.CFID, application.configBean.getSessionCookiesExpires(), "", "/", application.configBean.getSecureCookies(), true, true)>
-						<cfset setCookie('cftoken', sessionData.CFTOKEN, application.configBean.getSessionCookiesExpires(), "", "/", application.configBean.getSecureCookies(), true, true)>
+						<cfset setCookie(name='cfid', value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false)>
+						<cfset setCookie(name='cftoken', value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false)>
 					</cfif>
 				<cfelse>
 					<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-						<cfcookie name="CFID" value="#sessionData.CFID#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
-						<cfcookie name="CFTOKEN" value="#sessionData.CFTOKEN#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+						<cfset setCookie(name="CFID", value=sessionTokens.CFID, encodevalue=false) />
+						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN, encodevalue=false)/>
 					<cfelse>
-						<cfcookie name="CFID" value="#sessionData.CFID#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
-						<cfcookie name="CFTOKEN" value="#sessionData.CFTOKEN#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+						<cfset setCookie(name="CFID", value=sessionTokens.CFID, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
+						<cfset setCookie(name="CFTOKEN", value=sessionTokens.CFTOKEN, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
 					</cfif>
 				</cfif>
 			</cfif>
-			<cfif isdefined('sessionData.jsessionid')>
+
+			<cfif isDefined('sessionTokens.jsessionid') and (arguments.reset or not isDefined('cookie.jsessionid'))>
 				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-					<cfcookie name="JSESSIONID" value="#sessionData.jsessionid#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid, encodevalue=false) />
 				<cfelse>
-					<cfcookie name="JSESSIONID" value="#sessionData.jsessionid#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+					<cfset setCookie(name="JSESSIONID", value=sessionTokens.jsessionid, expires=application.configBean.getSessionCookiesExpires(), encodevalue=false) />
 				</cfif>
 			</cfif>
-		<cfcatch></cfcatch>
-		</cftry>
+		<!---<cfcatch></cfcatch>
+		</cftry>--->
 	</cfif>
 </cffunction>
 
-<!---
-Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
-<cffunction name="SetCookie" hint="Replacement for cfcookie that handles httponly cookies" output="false">
+<cffunction name="deleteCookie" output="false">
+	<cfargument name="name" type="string" required="true">
+	<cfargument name="maintainCase" type="boolean" default="true">
+	<cfset structDelete(cookie,arguments.name)>
+	<cfset arguments.expires="0">
+	<cfset arguments.value="">
+	<cfset setCookieLegacy(argumentCollection=arguments)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setCookie" output="false">
+    <cfargument name="name" type="string" required="true">
+    <cfargument name="value" type="string" required="true">
+	<cfargument name="expires" type="string" default="never">
+    <cfargument name="maintainCase" type="boolean" default="true">
+	<cfargument name="httpOnly" type="boolean" default="true">
+
+	<cfif variables.configBean.getSecureCookies()>
+		<cfset arguments.secure=true>
+	</cfif>
+
+	<cfif len(variables.configBean.getCookieDomain())>
+		<cfset arguments.domain=variables.configBean.getCookieDomain()>
+	</cfif>
+
+	<cfif len(variables.configBean.getCookiePath()) and len(variables.configBean.getCookieDomain())>
+		<cfset arguments.path=variables.configBean.getCookiePath()>
+	<cfelseif len(variables.configBean.getCookieDomain())>
+		<cfset arguments.path="/">
+	</cfif>
+
+	<cfset arguments.preserveCase=arguments.maintainCase>
+
+	<cfif not (
+			isDate(arguments.expires)
+			or isNumeric(arguments.expires)
+			or listFindNoCase('session only,now,never',arguments.expires)
+		)>
+		<cfset structDelete(arguments,'expires')>
+	</cfif>
+
+	<cfif application.cfversion gt 9>
+		<cfcookie attributeCollection="#arguments#" />
+	<cfelse>
+		<cfset setCookieLegacy(argumentCollection=arguments)>
+	</cfif>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setCookieLegacy" hint="Replacement for cfcookie that handles httponly cookies" output="false" returntype="void">
     <cfargument name="name" type="string" required="true">
     <cfargument name="value" type="string" required="true">
     <cfargument name="expires" type="any" default="" hint="''=session only|now|never|[date]|[number of days]">
     <cfargument name="domain" type="string" default="">
     <cfargument name="path" type="string" default="/">
     <cfargument name="secure" type="boolean" default="false">
-    <cfargument name="httponly" type="boolean" default="false">
+    <cfargument name="httponly" type="boolean" default="true">
     <cfargument name="maintainCase" type="boolean" default="false">
     <cfset var c = "">
     <cfset var expDate = "">
+
+	<cfif variables.configBean.getSecureCookies()>
+		<cfset arguments.secure=true>
+	</cfif>
+
+	<cfif len(variables.configBean.getCookieDomain())>
+		<cfset arguments.domain=variables.configBean.getCookieDomain()>
+	</cfif>
+
+	<cfif len(variables.configBean.getCookiePath()) and len(variables.configBean.getCookieDomain())>
+		<cfset arguments.path=variables.configBean.getCookiePath()>
+	<cfelseif len(variables.configBean.getCookieDomain())>
+		<cfset arguments.path="/">
+	</cfif>
 
 	<cfif arguments.maintainCase>
 		<cfset c = "#name#=#value#;">
@@ -846,7 +930,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			var secret = $.siteConfig('reCAPTCHASecret');
 
 			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
-				var reCaptcha = new mura.reCAPTCHA(secret);
+				var reCaptcha = new mura.reCaptcha(secret);
 				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=cgi.remote_addr);
 			}
 

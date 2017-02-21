@@ -249,7 +249,7 @@
             var self=this;
 
 			return new Promise(function(resolve,reject){
-				params=Mura.extend(
+                params=Mura.extend(
 					{
 						entityname:self.get('entityname'),
 						method:'findNew',
@@ -259,8 +259,8 @@
 					params
 				);
 
-				Mura.get(params).then(function(item){
-					self.set(item.getAll());
+				Mura.get(Mura.apiEndpoint,params).then(function(resp){
+					self.set(resp.data);
 					if(typeof resolve == 'function'){
 						resolve(self);
 					}
@@ -280,7 +280,7 @@
 		loadBy:function(propertyName,propertyValue,params){
 
 			propertyName=propertyName || 'id';
-			propertyValue=propertyValue || this.get(propertyName);
+			propertyValue=propertyValue || this.get(propertyName) || 'null';
 
 			var self=this;
 
@@ -298,15 +298,20 @@
 			return new Promise(function(resolve,reject){
 				params=Mura.extend(
 					{
-						entityname:self.get('entityname'),
+						entityname:self.get('entityname').toLowerCase(),
 						method:'findQuery',
 						siteid:self.get('siteid'),
-                        '_cacheid':Math.random()
+                        '_cacheid':Math.random(),
 					},
 					params
 				);
 
+                if(params.entityname=='content' || params.entityname=='contentnav'){
+                    params.includeHomePage=1;
+                }
+
 				params[propertyName]=propertyValue;
+
 
 				Mura.findQuery(params).then(function(collection){
 

@@ -179,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
-				exclude=["/.","/mura/autoUpdater/global","/mura/bean/beanFactory.cfc"],
+				exclude=["/.","/mura/autoUpdater/global","/mura/configBean.cfc","/mura/bean/beanFactory.cfc","/mura/cache/provider"],
 				strict=application.configBean.getStrictFactory(),
 				transientPattern = "(Iterator|Bean|executor|MuraScope|Event|dbUtility|extendObject)$"
 				});
@@ -239,6 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("mailingList","mailingListBean");
 		variables.serviceFactory.addAlias("mailingListMember","memberBean");
 		variables.serviceFactory.addAlias("groupDAO","userDAO");
+		variables.serviceFactory.addAlias("userRedirect","userRedirectBean");
 
 		//The ad manager has been removed, but may be there in certain legacy conditions
 		if(variables.serviceFactory.containsBean('placementBean')){
@@ -277,6 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("contentDisplayInterval","contentDisplayIntervalBean");
 		variables.serviceFactory.addAlias("oauthClient","oauthClientBean");
 		variables.serviceFactory.addAlias("oauthToken","oauthTokenBean");
+		variables.serviceFactory.addAlias("dataCollection","dataCollectionBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
@@ -331,6 +333,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.getBean('contentFilenameArchive');
 			variables.serviceFactory.getBean('commenter');
 			variables.serviceFactory.getBean('userDevice');
+			variables.serviceFactory.getBean('userRedirect');
 			//variables.serviceFactory.getBean('remoteContentPointer');
 			variables.serviceFactory.getBean('contentDisplayInterval');
 			variables.serviceFactory.getBean('variationTargeting');
@@ -607,11 +610,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<!--- Clean root admin directory --->
-	<cfdirectory action="list" directory="#expandPath('/muraWRM/admin/')#" name="local.rs">
-	<cfset local.tempDir=expandPath('/muraWRM/admin/temp/')>
+	<cfdirectory action="list" directory="#expandPath('/muraWRM#application.configBean.getAdminDir()#/')#" name="local.rs">
+	<cfset local.tempDir=expandPath('/muraWRM#application.configBean.getAdminDir()#/temp/')>
 	<cfset local.fileWriter=application.serviceFactory.getBean('fileWriter')>
 	<cfloop query="local.rs">
-		<cfif not listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom',local.rs.name)>
+		<cfif not listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom,framework',local.rs.name)>
 			<cftry>
 			<cfset local.fileWriter.touchDir(local.tempDir)>
 			<cfif local.rs.type eq 'dir'>

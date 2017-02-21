@@ -475,7 +475,7 @@ INSERT INTO tsystemobjects (Object,SiteID,Name,OrderNo) VALUES
  ('sub_nav','default','Sub Navigation',4),
  ('standard_nav','default','Standard Navigation',5),
  ('portal_nav','default','Portal Navigation',6),
- ('comments','default','Accept Comments',9),
+ ('comments','default','Comment Form',9),
  ('seq_nav','default','Sequential Nav',8),
  ('rater','default','Content Rater',16),
  ('favorites','default','User Favorites',17),

@@ -85,7 +85,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rsDefault.recordcount>
 		<cfset arguments.rc.siteid=rsDefault.siteid />
 	<cfelseif rsList.recordcount>
-		<cfset arguments.rc.siteid=rsList.siteid />
+		<cfquery name="rsDefault" dbtype="query">
+			SELECT siteid FROM rsList
+			order by orderno
+		</cfquery>
+		<cfset arguments.rc.siteid=rsDefault.siteid />
 	</cfif>
 
 	<cfif len(arguments.rc.siteid)>

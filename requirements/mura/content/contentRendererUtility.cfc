@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content rendering utiility methods">
 
 	<cffunction name="init" output="false">
 		<cfset variables.intervalManager=getBean('contentIntervalManager')>
@@ -442,9 +442,9 @@
 				 and not (item eq 'doaction' and url[item] eq 'logout')) >
 				<cftry>
 				<cfif len(qrystr)>
-						<cfset qrystr="#qrystr#&#item#=#URLEncodedFormat(url[item])#">
+						<cfset qrystr="#qrystr#&#esapiEncode('url',item)#=#esapiEncode('url',url[item])#">
 				<cfelse>
-					<cfset qrystr="?#item#=#URLEncodedFormat(url[item])#">
+					<cfset qrystr="?#esapiEncode('url',item)#=#esapiEncode('url',url[item])#">
 				</cfif>
 				<cfcatch ></cfcatch>
 				</cftry>
@@ -479,9 +479,9 @@
 		<cfreturn sessionData.mura.userID />
 		<cfelse>
 		<cfif not structKeyExists(cookie,"pid")>
-		<cfcookie name="pid" expires="never" value="#application.utility.getUUID()#" httpOnly="true" secure="#arguments.renderer.getMuraScope().globalConfig('secureCookies')#">
+			<cfset application.utility.setCookie(name="pid", value=application.utility.getUUID()) >
 		</cfif>
-		<cfreturn cookie.pid />
+			<cfreturn cookie.pid />
 		</cfif>
 	</cffunction>
 
@@ -745,7 +745,7 @@
 			<a <cfif arguments.ajax>
 				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','#arguments.crumbdata[I].moduleid#','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
-				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=#arguments.crumbdata[I].moduleid#&activeTab=0"
+				href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=#arguments.crumbdata[I].moduleid#&activeTab=0"
 			</cfif>><i class="#icon#"></i>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a></li>
 		</cfloop>
 		<cfsilent>
@@ -762,7 +762,7 @@
 		<a <cfif arguments.ajax>
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','#arguments.crumbdata[1].moduleid#','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
-			href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=#arguments.crumbdata[1].moduleid#&activeTab=0"
+			href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=#arguments.crumbdata[1].moduleid#&activeTab=0"
 		</cfif>><i class="#icon#"></i>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a></strong></li>
 		</ul></cfoutput></cfsavecontent>
 
@@ -904,8 +904,11 @@
 		<cfargument name="objectname">
 		<cfargument name="renderer">
 		<cfargument name="bodyRender" default="false">
+		<cfargument name="returnformat" default="html">
 
 		<cfset var openingDiv='<div class="mura-object'>
+
+		<cfparam name="arguments.objectparams.instanceid" default="#createUUID()#">
 
 		<cfif arguments.bodyRender or structKeyExists(arguments.objectParams,'isBodyObject')>
 			<cfset openingDiv=openingDiv & ' mura-body-object'>
@@ -957,10 +960,10 @@
 			<cfset openingDiv=openingDiv & " " & arguments.objectParams.cssClass>
 		</cfif>
 
-		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#createUUID()#"'>
+		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#arguments.objectparams.instanceid#"'>
 
-		<cfloop collection="# arguments.objectparams#" item="local.i">
-			<cfif len(local.i)>
+		<cfloop collection="#arguments.objectparams#" item="local.i">
+			<cfif len(local.i) and local.i neq 'runtime'>
 				<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
 			</cfif>
 		</cfloop>
@@ -972,10 +975,27 @@
 		</cfif>
 
 		<cfif arguments.renderer.useLayoutManager()>
-			<cfif len(trim(arguments.content))>
-				<cfreturn '#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)##arguments.renderer.dspObject_include(theFile='object/content.cfm',params=arguments)#</div>'>
+			<cfset openingDiv="#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)#">
+			<cfset arguments.content=trim(arguments.content)>
+
+			<cfif arguments.returnFormat eq 'struct'>
+				<cfif len(arguments.content)>
+					<cfreturn {
+								header=openingDiv & '<div class="mura-object-content">',
+								footer="</div></div>"
+							}>
+				<cfelse>
+					<cfreturn {
+								header=openingDiv,
+								footer="</div>"
+							}>
+				</cfif>
 			<cfelse>
-				<cfreturn '#openingDiv#</div>'>
+				<cfif len(arguments.content)>
+					<cfreturn openingDiv & '<div class="mura-object-content">' & arguments.content & '</div></div>'>
+				<cfelse>
+					<cfreturn openingDiv & '</div>'>
+				</cfif>
 			</cfif>
 		<cfelse>
 			<cfreturn '#openingDiv##trim(arguments.content)#</div>'>
@@ -1046,18 +1066,18 @@
 				<cfcase value="plugin">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editablePlugin">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
 					<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableFeed">
-					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 				</cfcase>
 				<cfcase value="category_summary,category_summary_rss"><cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableCategorySummary">
-					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 
@@ -1065,31 +1085,31 @@
 				<cfcase value="collection">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableCollection">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="text">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableText">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="media">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableMedia">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="socialembed">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableSocialembed">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="container">
 					<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableContainer">
-					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<!--- END: New Layout Manager Objects --->
@@ -1098,7 +1118,7 @@
 					<cfif Len($.siteConfig('customTagGroups'))>
 						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 						<cfset editableControl.class="editableTagCloud">
-						<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+						<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfif>
 
@@ -1109,7 +1129,7 @@
 				<cfcase value="site_map">
 					<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableSiteMap">
-					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 
 					<cfif isJSON(arguments.params)>
@@ -1119,7 +1139,7 @@
 				<cfcase value="related_content,related_section_content">
 					<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 					<cfset editableControl.class="editableRelatedContent">
-					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfcase>
 				<cfcase value="component,form">
@@ -1132,7 +1152,7 @@
 							<cfset editableControl.class="editableForm">
 						</cfif>
 
-						<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.edit">
+						<cfset editableControl.editLink = "#$.globalConfig('context')##$.globalConfig('adminDir')#/?muraAction=#configuratorAction#cArch.edit">
 
 						<cfif len($.event('previewID'))>
 							<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & $.event('previewID')>
@@ -1194,9 +1214,10 @@
 		<cfif $.siteConfig().hasDisplayObject(arguments.object)>
 			<cfif arguments.object eq 'tag_cloud'>
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
-					<cfset theObject=tempObject>
+					<cfset theObject=trim(tempObject)>
 					<cfif arguments.renderer.useLayoutmanager()>
 						<cfif not arguments.include and request.muraFrontEndRequest>
+
 								<cfset theObject=renderObjectInManager(object=arguments.object,
 									objectid=arguments.objectid,
 									content=theObject,
@@ -1319,6 +1340,7 @@
 				<cfcase value="user_tools"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_user_tools.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,returnformat=arguments.returnformat,params=arguments.params)></cfcase>
 				<cfcase value="tag_cloud">
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
+					<cfset tempObject=trim(tempObject)>
 					<cfset theObject=tempObject>
 					<cfif arguments.renderer.useLayoutmanager()>
 						<cfif request.muraFrontEndRequest>
@@ -1330,7 +1352,11 @@
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
 									objectname=arguments.objectname,
-									renderer=arguments.renderer)>
+									renderer=arguments.renderer,
+									returnformat=arguments.returnformat)>
+								<cfif isStruct(theObject)>
+									<cfset theObject.html=tempObject>
+								</cfif>
 						</cfif>
 					</cfif>
 				</cfcase>
@@ -1445,7 +1471,7 @@
 		<cfif (event.getValue('isOnDisplay')
 				and ((not event.getValue('r').restrict)
 					or (event.getValue('r').restrict and event.getValue('r').allow)))
-						and not (event.getValue('display') neq '' and arguments.renderer.getSite().getPrimaryColumn() eq arguments.columnid)>
+						and not (listFindNoCase('search,editprofile,login',event.getValue('display')) and arguments.renderer.getSite().getPrimaryColumn() eq arguments.columnid)>
 
 			<cfif arguments.allowInheritance and event.getValue('contentBean').getinheritObjects() eq 'inherit'
 				and event.getValue('inheritedObjects') neq ''
@@ -1825,6 +1851,7 @@
 	<cffunction name="renderIntervalDesc" output="false">
 		<cfargument name="content">
 		<cfargument name="renderer">
+		<cfargument name="showTitle" default="true">
 
 		<cfset var displayInterval=arguments.content.getDisplayInterval().getAllValues()>
 		<cfset var returnstring=''>
@@ -1832,11 +1859,11 @@
 
 		<cfif not isDate(arguments.content.getdisplayStart())>
 			<cfreturn ''>
-		<cfelseif content.hasParent()>
+		<cfelseif arguments.showTitle and content.hasParent()>
 			<cfset returnstring=esapiEncode('html',UCase(arguments.content.getParent().getMenuTitle())) & ': '>
 		</cfif>
 
-		<cfset var allday=variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
+		<cfset var allday=displayInterval.allday or variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
 
 		<cfif isDate(arguments.content.getdisplayStart()) and isDate(arguments.content.getdisplayStop())
 			and month(arguments.content.getdisplayStart()) eq month(arguments.content.getdisplayStop())

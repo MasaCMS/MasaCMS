@@ -69,10 +69,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset layout=feed.getLayout()>
 			<cfset layout=(len(layout)) ? layout :' default'>
 			<select name="layout" class="objectParam">
-				<option value="default"<cfif feed.getLayout() eq "default"> selected</cfif>>default</option>
+				<option value="default"<cfif feed.getLayout() eq "default"> selected</cfif>>Default</option>
 				<cfloop query="layouts">
 					<cfif layouts.name neq 'default'>
-					<option value="#layouts.name#"<cfif feed.getLayout() eq layouts.name> selected</cfif>>#layouts.name#</option>
+					<option value="#layouts.name#"<cfif feed.getLayout() eq layouts.name> selected</cfif>>#reReplace(layouts.name, "\b([a-zA-Z])(\w{2,})\b", "\U\1\E\2", "all")#</option>
 					</cfif>
 				</cfloop>
 			</select>

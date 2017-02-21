@@ -65,179 +65,179 @@
 <!--[if gt IE 9]><!--> <html lang="#esapiEncode('html_attr',session.locale)#" class="mura no-focus"><!--<![endif]-->
 </cfif>
   <head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-		<cfsilent>
-			<cfparam name="cookie.ADMINSIDEBAR" default="off">
-			<cfparam name="request.action" default="core:cplugin.plugin">
-			<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
-			<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
-			<cfparam name="rc.jsLib" default="jquery">
-			<cfparam name="rc.jsLibLoaded" default="false">
-			<cfparam name="rc.activetab" default="0">
-			<cfparam name="rc.renderMuraAlerts" default="#application.configBean.getValue(property='renderMuraAlerts',defaultValue=true)#">
-			<cfparam name="rc.activepanel" default="0">
-			<cfparam name="rc.siteid" default="#session.siteID#">
-			<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
-			<!--- default site id --->
-			<cfif not len(rc.siteID)>
-			<cfset rc.siteID="default">
-			</cfif>
-			<!--- admin titles --->
-			<cfparam name="moduleTitle" default="">
-			<cfif not len(moduleTitle)>
-				<cfswitch expression="#rc.originalcircuit#">
-					<cfcase value="cArch">
-					<cfswitch expression="#rc.moduleID#">
-					<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
-						<cfset moduleTitle="Site Content"/>
-					</cfcase>
-					<cfdefaultcase>
-						<cfif rc.originalfuseaction eq "imagedetails">
-							<cfset moduleTitle="Image Details">
-					  <cfelseif rc.muraAction eq 'core:carch.export'>
-					    <cfset moduleTitle="Export Content">
-					  <cfelseif rc.muraAction eq 'core:carch.import'>
-					    <cfset moduleTitle="Import Content">
-						<cfelse>
-							<cfset moduleTitle="Drafts">
-						</cfif>
-					</cfdefaultcase>
-					</cfswitch>
-					</cfcase>
-					<cfcase value="cSettings">
-					<cfset moduleTitle="Settings"/>
-					</cfcase>
-					<cfcase value="cPrivateUsers">
-					<cfset moduleTitle="Admin Users"/>
-					</cfcase>
-					<cfcase value="cPublicUsers">
-					<cfset moduleTitle="Site Members"/>
-					</cfcase>
-					<cfcase value="cEmail">
-					<cfset moduleTitle="Email Broadcaster"/>
-					</cfcase>
-					<cfcase value="cLogin">
-					<cfset moduleTitle="Login"/>
-					</cfcase>
-					<cfcase value="cMailingList">
-					<cfset moduleTitle="Mailing Lists"/>
-					</cfcase>
-					<cfcase value="cMessage">
-					<cfset moduleTitle="Message"/>
-					</cfcase>
-					<cfcase value="cAdvertising">
-					<cfset moduleTitle="Advertising Manager"/>
-					</cfcase>
-					<cfcase value="cEditProfile">
-					<cfset moduleTitle="Edit Profile"/>
-					</cfcase>
-					<cfcase value="cFeed">
-					<cfset moduleTitle="Content Collections"/>
-					</cfcase>
-					<cfcase value="cFilemanager">
-					<cfset moduleTitle="File Manager"/>
-					</cfcase>
-					<cfcase value="cDashboard">
-					<cfset moduleTitle="Dashboard"/>
-					</cfcase>
-					<cfcase value="cCategory">
-					<cfset moduleTitle="Categories"/>
-					</cfcase>
-					<cfcase value="cChain">
-					<cfset moduleTitle="Approval Chains"/>
-					</cfcase>
-					<cfcase value="cChangesets">
-					<cfset moduleTitle="Content Staging"/>
-					</cfcase>
-					<cfcase value="cComments">
-					<cfset moduleTitle="Comments"/>
-					</cfcase>
-					<cfcase value="cExtend">
-					<cfset moduleTitle="Class Extensions"/>
-					</cfcase>
-					<cfcase value="cPerm">
-					<cfset moduleTitle="Permissions"/>
-					</cfcase>
-					<cfcase value="cPlugin">
-					<cfset moduleTitle="Plugins"/>
-					</cfcase>
-					<cfcase value="cPlugins">
-					<cfset moduleTitle="Plugins"/>
-					</cfcase>
-					<cfcase value="cTrash">
-					<cfset moduleTitle="Trash Bin"/>
-					</cfcase>
-					<cfcase value="cUsers">
-					<cfset moduleTitle="Users"/>
-					</cfcase>
-					<cfdefaultcase>
-					<cfset moduleTitle="">
-					</cfdefaultcase>
+	<cfsilent>
+		<cfparam name="cookie.ADMINSIDEBAR" default="off">
+		<cfparam name="request.action" default="core:cplugin.plugin">
+		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
+		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
+		<cfparam name="rc.jsLib" default="jquery">
+		<cfparam name="rc.jsLibLoaded" default="false">
+		<cfparam name="rc.activetab" default="0">
+		<cfparam name="rc.renderMuraAlerts" default="#application.configBean.getValue(property='renderMuraAlerts',defaultValue=true)#">
+		<cfparam name="rc.activepanel" default="0">
+		<cfparam name="rc.siteid" default="#session.siteID#">
+		<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
+		<!--- default site id --->
+		<cfif not len(rc.siteID)>
+		<cfset rc.siteID="default">
+		</cfif>
+		<!--- admin titles --->
+		<cfparam name="moduleTitle" default="">
+		<cfif not len(moduleTitle)>
+			<cfswitch expression="#rc.originalcircuit#">
+				<cfcase value="cArch">
+				<cfswitch expression="#rc.moduleID#">
+				<cfcase value="00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
+					<cfset moduleTitle="Site Content"/>
+				</cfcase>
+				<cfdefaultcase>
+					<cfif rc.originalfuseaction eq "imagedetails">
+						<cfset moduleTitle="Image Details">
+				  <cfelseif rc.muraAction eq 'core:carch.export'>
+				    <cfset moduleTitle="Export Content">
+				  <cfelseif rc.muraAction eq 'core:carch.import'>
+				    <cfset moduleTitle="Import Content">
+					<cfelse>
+						<cfset moduleTitle="Drafts">
+					</cfif>
+				</cfdefaultcase>
 				</cfswitch>
-			</cfif>
-			<cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
-			<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
-		</cfsilent>
+				</cfcase>
+				<cfcase value="cSettings">
+				<cfset moduleTitle="Settings"/>
+				</cfcase>
+				<cfcase value="cPrivateUsers">
+				<cfset moduleTitle="Admin Users"/>
+				</cfcase>
+				<cfcase value="cPublicUsers">
+				<cfset moduleTitle="Site Members"/>
+				</cfcase>
+				<cfcase value="cEmail">
+				<cfset moduleTitle="Email Broadcaster"/>
+				</cfcase>
+				<cfcase value="cLogin">
+				<cfset moduleTitle="Login"/>
+				</cfcase>
+				<cfcase value="cMailingList">
+				<cfset moduleTitle="Mailing Lists"/>
+				</cfcase>
+				<cfcase value="cMessage">
+				<cfset moduleTitle="Message"/>
+				</cfcase>
+				<cfcase value="cAdvertising">
+				<cfset moduleTitle="Advertising Manager"/>
+				</cfcase>
+				<cfcase value="cEditProfile">
+				<cfset moduleTitle="Edit Profile"/>
+				</cfcase>
+				<cfcase value="cFeed">
+				<cfset moduleTitle="Content Collections"/>
+				</cfcase>
+				<cfcase value="cFilemanager">
+				<cfset moduleTitle="File Manager"/>
+				</cfcase>
+				<cfcase value="cDashboard">
+				<cfset moduleTitle="Dashboard"/>
+				</cfcase>
+				<cfcase value="cCategory">
+				<cfset moduleTitle="Categories"/>
+				</cfcase>
+				<cfcase value="cChain">
+				<cfset moduleTitle="Approval Chains"/>
+				</cfcase>
+				<cfcase value="cChangesets">
+				<cfset moduleTitle="Content Staging"/>
+				</cfcase>
+				<cfcase value="cComments">
+				<cfset moduleTitle="Comments"/>
+				</cfcase>
+				<cfcase value="cExtend">
+				<cfset moduleTitle="Class Extensions"/>
+				</cfcase>
+				<cfcase value="cPerm">
+				<cfset moduleTitle="Permissions"/>
+				</cfcase>
+				<cfcase value="cPlugin">
+				<cfset moduleTitle="Plugins"/>
+				</cfcase>
+				<cfcase value="cPlugins">
+				<cfset moduleTitle="Plugins"/>
+				</cfcase>
+				<cfcase value="cTrash">
+				<cfset moduleTitle="Trash Bin"/>
+				</cfcase>
+				<cfcase value="cUsers">
+				<cfset moduleTitle="Users"/>
+				</cfcase>
+				<cfdefaultcase>
+				<cfset moduleTitle="">
+				</cfdefaultcase>
+			</cfswitch>
+		</cfif>
+		<cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
+		<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
+	</cfsilent>
 
-		<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
+	<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
-		<meta name="author" content="Blue River Interactive Group">
-		<meta name="robots" content="noindex, nofollow, noarchive">
-		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
+	<meta name="author" content="Blue River Interactive Group">
+	<meta name="robots" content="noindex, nofollow, noarchive">
+	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
     <!-- Favicons -->
-		<link rel="icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
-		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
 
     <!-- Stylesheets -->
     <!-- Web fonts, stored locally -->
-    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/fonts.min.css">
+    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/fonts.min.css">
 
-		<!-- Admin CSS -->
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
+	<!-- Admin CSS -->
+	<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
-		<!-- Spinner JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
+	<!-- Spinner JS -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
 
     <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-   	<script src="#application.configBean.getContext()#/admin/assets/js/oneui.js"></script>
+   	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.js"></script>
 
    	<!-- jQuery UI components -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 
-		<!-- Mura js --->
-		<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<!-- Mura js -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-		<!-- Mura Admin JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+	<!-- Mura Admin JS -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-		<cfif cgi.http_user_agent contains 'msie'>
-			<!--[if lte IE 8]>
-			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-			<![endif]-->
-		</cfif>
+	<cfif cgi.http_user_agent contains 'msie'>
+		<!--[if lte IE 8]>
+		<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<![endif]-->
+	</cfif>
 
-		<!-- CK Editor/Finder -->
-		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
-		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>
-		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"></script>
+	<!-- CK Editor/Finder -->
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"></script>
 
-		<!-- Color Picker -->
-		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
-		<link href="#application.configBean.getContext()#/requirements/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<!-- Color Picker -->
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
+	<link href="#application.configBean.getContext()#/requirements/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
-		<!-- JSON -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
+	<!-- JSON -->
+	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
 
 	<!-- Mura Vars -->
 	<script type="text/javascript">
@@ -460,27 +460,17 @@
 
 		</cfif>
 
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 
-		<script src="#application.configBean.getContext()#/admin/assets/js/bootstrap-tabdrop.js"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/bootstrap-tabdrop.js"></script>
 
 		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (listFind(',00000000000000000000000000000000099,00000000000000000000000000000000000,00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleid) or rc.moduleid eq '')>
-			<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
+			<cfinclude template="/muraWRM#application.configBean.getAdminDir()#/core/views/carch/dsp_content_nav.cfm">
 		</cfif>
 		<cfinclude template="includes/dialog.cfm">
 		<cfif structKeyExists(rc,'$')>
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
-
-<!---
-		<cfif rc.originalcircuit neq "cLogin">
-			<footer class="mura-footer footer navbar-fixed-bottom clearfix">
-				<div class="credits">
-					&copy; #year(now())# Blue River Interactive Group. Licensed under <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank">GNU General Public License Version 2.0 with exceptions</a>
-				</div>
-      </footer>
-  	</cfif>
---->
 
     </div><!-- /.page-container -->
 

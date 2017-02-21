@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provide user specific utility methods">
 
 <cffunction name="init" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
@@ -178,10 +178,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfswitch expression="#arguments.lockdownExpries#">
 					<cfcase value="1,7,30,10950">
-						<cfcookie name="passedLockdown" value="true" expires="#arguments.lockdownExpries#" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
+						<cfset application.utility.setCookie(name="passedLockdown", value=true, expires=arguments.lockdownExpries)>
 					</cfcase>
 					<cfcase value="session">
-						<cfcookie name="passedLockdown" value="true" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
+						<cfset application.utility.setCookie(name="passedLockdown", value=true, expires="session")>
 					</cfcase>
 				</cfswitch>
 			</cfif>
@@ -335,14 +335,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 
 		<cfif isDefined('cookie.userid') and cookie.userid neq rsuser.userid>
-			<cfset structDelete(cookie,"userid")>
-			<cfset structDelete(cookie,"userhash")>
+			<cfset variables.globalUtility.deleteCookie(name="userHash")>
+			<cfset variables.globalUtility.deleteCookie(name="userid")>
 		</cfif>
 
 		<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
 		<cfif variables.configBean.getValue(property='rotateSessions',defaultValue='false')>
 			<cfset sessionRotate()>
-			<cfset getBean('utility').setSessionCookies()>
+			<cfset variables.globalUtility.setSessionCookies()>
 		</cfif>
 	</cfif>
 
@@ -486,7 +486,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif arguments.siteid neq ''>
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)>
-	<cfset urlBase="#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()#">
+	<cfset urlBase="#listFirst(cgi.http_host,':')##site.getServerPort()##site.getContext()#">
 
 	<cfif not len(sendLoginScript)>
 		<cfset sendLoginScript =site.getSendLoginScript()/>
@@ -507,7 +507,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
 <cfelse>
-	<cfset urlBase="#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#">
+	<cfset urlBase="#listFirst(cgi.http_host,':')##variables.configBean.getServerPort()##variables.configBean.getContext()#">
 	<cfset site=variables.settingsManager.getSite("default")>
 	<cfset contactEmail=variables.configBean.getAdminEmail()/>
 	<cfset contactName=variables.configBean.getTitle()/>
@@ -517,7 +517,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
-	<cfset editProfileURL =protocol & urlBase & "/admin/?muraAction=cEditProfile.edit">
+	<cfset editProfileURL =protocol & urlBase & "#variables.configBean.getAdminDir()#/?muraAction=cEditProfile.edit">
 
 </cfif>
 
@@ -534,13 +534,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- add extra attributes --->
 <cfset editProfileURL=editProfileURL & "&returnID=#returnID#&returnUserID=#arguments.args.userID#">
 
-<cfquery>
-	insert into tredirects (redirectID,URL,created) values(
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#returnID#" >,
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#editProfileURL#" >,
-	<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-	)
-</cfquery>
+<cfset getBean('userRedirect').set(
+	{
+		redirectid=returnID,
+		url=editProfileURL,
+		userid=arguments.args.userID,
+		siteid=arguments.args.siteid,
+		created=now()
+
+	}).save()>
 
 <cfif sendLoginScript neq ''>
 
@@ -566,7 +568,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="mailText">
 <cfoutput>Dear #firstname#,
 
-You've requested your login information be sent to you.
+You have requested your login information be sent to you.
 
 Username: #username#
 Password: #password#
@@ -777,12 +779,15 @@ Thanks for using #contactName#</cfoutput>
 <cfargument name="$">
 	<cfset var rs="">
 	<cfif not arguments.$.currentUser().isLoggedIn() and len(arguments.$.event('returnID')) and len(arguments.$.event('returnUserID'))>
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-			select created from tredirects
-			where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.$.event('returnID')#" >
-		</cfquery>
-		<cfif rs.recordcount and rs.created gte dateAdd("d",-1,now())>
-			<cfset loginByUserID($.event('returnUserID'),arguments.$.event('siteID'))>
+		<cfset redirect=arguments.$.getBean('userRedirect').loadBy(redirectid=arguments.$.event('returnID'))>
+		<cfif redirect.exists()
+			and redirect.getCreated() gte dateAdd("d",-1,now())
+			and $.event('returnUserID') eq redirect.getUserID()>
+			<cfset var user=redirect.getUser()>
+			<cfif user.exists()>
+				<cfset user.login()>
+				<cfset redirect.delete()>
+			</cfif>
 			<cfset structDelete(session,"siteArray")>
 		</cfif>
 	</cfif>

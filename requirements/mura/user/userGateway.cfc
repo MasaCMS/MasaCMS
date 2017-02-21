@@ -45,7 +45,7 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides user gateway queries">
 
 	<cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName, tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.ContactForm, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
 
@@ -204,7 +204,7 @@
 		<!--- Generate a sorted (if specified) list of baseIDs with additional fields --->
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAdvancedUserSearch',cachedWithin=params.getCachedWithin())#">
 		<cfif not arguments.countOnly and dbType eq "oracle" and params.getMaxItems()>select * from (</cfif>
-		select <cfif not arguments.countOnly and params.getMaxItems()>top #params.getMaxItems()# </cfif>
+		select <cfif not arguments.countOnly and dbtype eq "mssql" and params.getMaxItems()>top #params.getMaxItems()# </cfif>
 
 		<cfif not arguments.countOnly>
 			#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif>
@@ -278,11 +278,14 @@
 						rsParams.criteria
 					) />
 
-				<cfif param.getIsValid()>
-					<cfif not started >
+				<cfif param.getIsValid() and param.getField() neq 'tusers.siteid'>
+					<cfset isNullVal = param.getCriteria() eq 'null' ? true : false />
+
+					<cfif not started>
 						<cfset openGrouping=true />
 						and (
 					</cfif>
+
 					<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
 						<cfif not openGrouping>and</cfif> (
 						<cfset openGrouping=true />
@@ -305,11 +308,20 @@
 						#param.getRelationship()#
 					</cfif>
 
-					<cfset started = true />
-					<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>
+					<cfset isListParam=param.isListParam()>
+					<cfset started=true>
 
 					<cfif listLen(param.getField(),".") gt 1>
-						#param.getFieldStatement()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
+						#param.getFieldStatement()#
+						<cfif param.getCriteria() eq 'null'>
+							#param.getCondition()# NULL
+						<cfelse>
+							#param.getCondition()#
+							<cfif isListParam>(</cfif>
+							<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#">
+							<cfif isListParam>)</cfif>
+						</cfif>
+						<cfset started=true>
 						<cfset openGrouping=false />
 					<cfelseif len(param.getField())>
 						<cfif not ((param.getCriteria() eq 'null' or param.getCriteria() eq '') and param.getCondition() eq 'is')>

@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides plugin service level logic functionality">
 
 <cfset variables.configBean="">
 <cfset variables.settingsManager="">
@@ -398,8 +398,8 @@ select * from tplugins order by #arguments.orderby#
 				<cfset deployArgs.siteAssignID=arguments.siteID>
 			</cfif>
 
-			<cfif structKeyExists(pluginXML.plugin.settings,"setting")>
-				<cfset settingsLen=arraylen(pluginXML.plugin.settings.setting)/>
+			<cfif isDefined("pluginXML.plugin.settings.xmlChildren") and isArray(pluginXML.plugin.settings.xmlChildren)>
+				<cfset settingsLen=arraylen(pluginXML.plugin.settings.xmlChildren)/>
 			<cfelse>
 				<cfset settingsLen=0>
 			</cfif>
@@ -965,8 +965,10 @@ select * from tplugins order by #arguments.orderby#
 
 	<cfset deleteSettings(arguments.args.moduleID) />
 
-	<cfif structKeyExists(pluginXML.plugin.settings,"setting")>
-		<cfset settingsLen=arraylen(pluginXML.plugin.settings.setting) />
+	<cfif isDefined("pluginXML.plugin.settings.xmlChildren") and isArray(pluginXML.plugin.settings.xmlChildren)>
+		<cfset settingsLen=arraylen(pluginXML.plugin.settings.xmlChildren)/>
+	<cfelse>
+		<cfset settingsLen=0>
 	</cfif>
 
 	<cfif len(settingsLen)>
@@ -975,7 +977,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfset local.settingName=pluginXML.plugin.settings.setting[i].name.xmlText>
 				<cfset local.settingValue=arguments.args['#pluginXML.plugin.settings.setting[i].name.xmlText#']>
 			<cfelseif structKeyExists(pluginXML.plugin.settings.setting[i].xmlAttributes,'name')>
-				<cfset local.settingName=pluginXML.plugin.settings.setting.xmlAttributes.name>
+				<cfset local.settingName=pluginXML.plugin.settings.setting[i].xmlAttributes.name>
 				<cfset local.settingValue=arguments.args['#pluginXML.plugin.settings.setting[i].xmlAttributes.name#']>
 			</cfif>
 			<cfquery>
@@ -2409,13 +2411,13 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="renderAdminTemplate" output="false">
 <cfargument name="body">
 <cfargument name="pageTitle">
-<cfargument name="jsLib" required="true" default="prototype">
-<cfargument name="jsLibLoaded" required="true" default="false">
+<cfargument name="jsLib" required="true" default="jquery">
+<cfargument name="jsLibLoaded" required="true" default="true">
 <cfargument name="compactDisplay" required="false" default="false" />
 <cfargument name="moduleid" required="false" default="#request.muraMostRecentPluginModuleID#" />
 <cfset var sessionData=getSession()>
 <cfif not (isDefined('sessionData.siteid') and isDefined('sessionData.siteArray'))>
-	<cflocation url="#variables.configBean.getContext()#/admin/" addtoken="false">
+	<cflocation url="#variables.configBean.getContext##variables.configBean.getAdminDir()#/" addtoken="false">
 </cfif>
 
 <cfset var rc=structNew()>
@@ -2440,7 +2442,7 @@ select * from tplugins order by #arguments.orderby#
 </cfif>
 
 <cfsavecontent variable="returnStr">
-	<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/#layoutTemplate#.cfm">
+	<cfinclude template="/#variables.configBean.getWebrootMap()##variables.configBean.getAdminDir()#/common/layouts/#layoutTemplate#.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>
@@ -2452,7 +2454,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var returnStr="">
 
 <cfsavecontent variable="returnStr">
-<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/includes/pluginHeader.cfm">
+<cfinclude template="/#variables.configBean.getWebrootMap()##variables.configBean.getAdminDir()#/common/layouts/includes/pluginHeader.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>

@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides the ability to update both core and site files">
 
 <cffunction name="init" output="false">
 	<cfargument name="configBean" required="true" default=""/>
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsetting requestTimeout = "7200">
 <cfset var sessionData=getSession()>
-	
+
 <cfif listFind(sessionData.mura.memberships,'S2')>
 	<cfif updateVersion gt currentVersion>
 		<cflock type="exclusive" name="autoUpdate#arguments.siteid##application.instanceID#" timeout="600">
@@ -111,6 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="readBinary" file="#currentDir##zipFileName#.zip" variable="diff">
 
 		<!--- make sure that there are actually any updates--->
+
 		<cfif len(diff)>
 			<cfset rs=zipUtil.list("#currentDir##zipFileName#.zip")>
 
@@ -131,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#templates%'
 				</cfquery>
 				<cfloop query="rs">
-					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc,.gitignore",listLast(rs.entry,variables.fileDelim))>
+					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc,.gitignore,.travis.yml",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
 						<cftry>
 							<cfif fileExists(destination)>
@@ -159,25 +160,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 
 				<cfloop query="rs">
-					<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,.gitignore",listLast(rs.entry,variables.fileDelim))>
+					<cfif not listFind("README.md,settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,.gitignore",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-						<cftry>
+						<!---<cftry>--->
 							<cfif fileExists(destination)>
 								<cffile action="delete" file="#destination#">
 							</cfif>
 							<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>
 
+							<cfif variables.configBean.getAdminDir() neq "/admin">
+								<cfset destination=ReplaceNoCase(destination, "#variables.fileDelim#admin#variables.fileDelim#", "#replace(variables.configBean.getAdminDir(),'/',variables.fileDelim,'all')##variables.fileDelim#" )>
+							</cfif>
+
 							<cfif not directoryExists(destination)>
 								<cfset variables.fileWriter.createDir(directory="#destination#")>
 							</cfif>
 							<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
+								<!---
 							<cfcatch>
 								<!--- patch to make sure autoupdates do not stop for mode errors --->
 								<cfif not findNoCase("change mode of file",cfcatch.message) and not listFindNoCase('jar,class',listLast(rs.entry,"."))>
 									<cfrethrow>
 								</cfif>
 							</cfcatch>
-						</cftry>
+						</cftry>--->
 						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
@@ -198,9 +204,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
-		<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
-		<cfset returnStruct.currentVersion=updateVersion/>
-		<cfset returnStruct.files=updatedArray>
+
+		<cfif len(diff)>
+			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
+			<cfset returnStruct.currentVersion=updateVersion/>
+			<cfset returnstruct.files=updatedArray>
+		<cfelse>
+			<cfset returnStruct.currentVersion=currentVersion/>
+		</cfif>
 
 		</cflock>
 	</cfif>

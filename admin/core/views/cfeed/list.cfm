@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rc.rsLocal">
 		<tr>
 			<td class="actions">
-					<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+					<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 					<div class="actions-menu hide">
 					<ul class="actions-list">
 						<li class="edit"><a href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Local"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</a></li>
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rc.rsRemote">
 	<tr>
 		<td class="actions">
-			<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+			<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 			<div class="actions-menu hide">
 			<ul class="actions-list">
 				<li class="edit"><a href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#esapiEncode('url',rc.siteid)#&type=Remote"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</a></li>

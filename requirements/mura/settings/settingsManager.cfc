@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides site service level logic functionality">
 
 <cffunction name="init" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -638,10 +638,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfset application.appInitialized=false>
-			]
-	<cfcatch>
 
-		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
+	<cfcatch>
+		<cflog type="Error"
+	    file="mura_bundle"
+	    text="#serializeJSON(cfcatch)#">
+
+		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR (Full Details Available in 'mura_bundle' Log)<br/>: " & cfcatch.message>
 		<cfif findNoCase("duplicate",errors.message)>
 			<cfset arguments.errors.message=arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
 		</cfif>
@@ -744,16 +747,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					var origin='';
 
 					for(var site in sites){
-						if(sites[site].getJSONApi()){
-							originArray=listToArray(sites[site].getAccessControlOriginList());
-							if(arrayLen(originArray)){
-								for(origin in originArray){
-									if(!listFind(variables.AccessControlOriginList,origin)){
-										variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,origin);
-									}
+						originArray=listToArray(sites[site].getAccessControlOriginList());
+						if(arrayLen(originArray)){
+							for(origin in originArray){
+								if(!listFind(variables.AccessControlOriginList,origin)){
+									variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,origin);
 								}
 							}
 						}
+
 					}
 				}
 			}

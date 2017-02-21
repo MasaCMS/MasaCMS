@@ -83,8 +83,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 <cfoutput>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
 	<cfparam name="session.mura.objectInstanceId" default="">
 	<cfif rc.$.getContentRenderer().useLayoutmanager() and len(session.mura.objectInstanceId)>
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset session.mura.objectInstanceId=''>
 	function reload(){
 		if (top.location != self.location) {
-			frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+			frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/porthole/proxy.html");
 			if (jQuery("##ProxyIFrame").length) {
 				jQuery("##ProxyIFrame").load(function(){
 					frontEndProxy.post({cmd:'scrollToTop'});

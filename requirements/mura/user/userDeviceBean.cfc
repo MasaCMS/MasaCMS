@@ -1,4 +1,4 @@
-component extends="mura.bean.beanORM" table="tuserdevice" entityname="userDevice" bundleable=false {
+component extends="mura.bean.beanORM" table="tuserdevice" entityname="userDevice" bundleable=false hint="This provide User Device Entity"{
 
 	property name="deviceid" fieldtype="id";
     property name="created" ormtype="timestamp";

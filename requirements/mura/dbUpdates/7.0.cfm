@@ -18,5 +18,18 @@
         .addColumn(column="contentCanceledScript",dataType="longtext")
         .addColumn(column="showDashboard",dataType="integer",default=0)
         .addColumn(column="placeholderImgID",dataType="varchar",length=35)
-        .addColumn(column="placeholderImgExt",dataType="varchar",length=10);;
+        .addColumn(column="placeholderImgExt",dataType="varchar",length=10);
+
+    dbUtility.setTable("tcontent").addIndex('SiteID,Active,Approved,IsNav,ModuleID,searchExclude,ContentID,Type,subType,Display,DisplayStart,DisplayStop,mobileExclude');
+    dbUtility.setTable("tcontentrelated").addIndex('relatedID').addIndex('contentHistID');
+    dbUtility.setTable("tclassextendrcsets").addIndex('name');
+    dbUtility.setTable("tredirects")
+        .addColumn(column="userid",dataType="char",length=35)
+        .addIndex('userid')
+        .addColumn(column="siteid",dataType="varchar",length=25)
+        .addIndex('siteid');
 </cfscript>
+
+<cfquery>
+    update tsystemobjects set name='Comment Form' where name='Accept Comments'
+</cfquery>

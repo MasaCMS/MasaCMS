@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides access the global configuration">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
 <cfset variables.instance.version="7.0"/>
@@ -175,6 +175,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.allowSimpleHTMLForms=true/>
 <cfset variables.instance.securecookies=false/>
 <cfset variables.instance.sessioncookiesexpires="never"/>
+<cfset variables.instance.cookiedomain=""/>
+<cfset variables.instance.cookiepath=""/>
 <cfset variables.instance.javaEnabled=true/>
 <cfset variables.instance.bCryptPasswords=true/>
 <cfset variables.instance.allowQueryCaching=true/>
@@ -183,6 +185,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.MFAPerDeviceEnabled=false/>
 <cfset variables.instance.MFAEnabled=false/>
 <cfset variables.instance.MFASendAuthCode=true/>
+<cfset variables.instance.FMAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,eps,fla,flv,gif,gz,gzip,ics,jpeg,jpg,json,key,keynote,mid,mov,mp3,mp4,mpc,mpeg,mpg,numbers,ods,odt,pages,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,m4v,less'>
+<cfset variables.instance.FMPublicAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,eps,fla,flv,gif,gz,gzip,ics,jpeg,jpg,json,key,keynote,mid,mov,mp3,mp4,mpc,mpeg,mpg,numbers,ods,odt,pages,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,m4v,less'>
+<cfset variables.instance.adminDir="/admin"/>
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -394,7 +399,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setContext" output="false">
 	<cfargument name="Context" type="String" />
 	<cfset arguments.Context=cleanFilePath(arguments.Context) />
-	<cfif getContextRoot() NEQ "/" and getContextRoot() NEQ "/admin">
+	<cfif getContextRoot() NEQ "/" and getContextRoot() NEQ getValue('adminDir')>
 		<cfset arguments.Context = getContextRoot() & arguments.Context />
 	</cfif>
 	<cfset variables.instance.Context = arguments.Context />
@@ -804,7 +809,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="applyDbUpdates" output="false">
-
 	<cfset var rsCheck ="" />
 	<cfset var rsSubCheck ="" />
 	<cfset var rsUpdates ="" />
@@ -1126,14 +1130,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setAdminDir" output="false">
 	<cfargument name="adminDir" type="String" />
-
-	<cfif len(arguments.adminDir)>
+	<cfif len(arguments.adminDir) and arguments.adminDir neq '/'>
+		<cfif left(arguments.adminDir,1) neq '/'>
+			<cfset arguments.adminDir="/" & arguments.adminDir>
+		</cfif>
 		<cfset variables.instance.adminDir = arguments.adminDir />
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getAdminDir" output="false">
+	<cfparam name="variables.instance.adminDir" default="/admin">
 	<cfreturn variables.instance.adminDir />
 </cffunction>
 
@@ -1731,12 +1738,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="useProtocol" default="1">
 	<cfif len( getValue('admindomain') )>
 		<cfif arguments.useProtocol>
-			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & getValue('adminDir')>
 		<cfelse>
-			<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+			<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & getValue('adminDir')>
 		</cfif>
 	<cfelse>
-		<cfreturn getValue('context') & "/admin">
+		<cfreturn getValue('context') &  getValue('adminDir')>
 	</cfif>
 </cffunction>
 
@@ -1774,15 +1781,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="registerModelDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="package">
-	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
-	<cfset registerBeanDir(argumentCollection)>
+	<cfset registerBeanDir(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="registerBeanDir" output="false">
 	<cfargument name="dir">
 	<cfargument name="package">
-	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfset var rs="">
 	<cfif directoryExists(expandPath(arguments.dir))>
@@ -1807,7 +1814,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="registerBean" output="false">
 	<cfargument name="componentPath">
-	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfset var ioc=getServiceFactory()>
 	<cfset var checkSchema=isDefined('url.applydbupdates')>
@@ -1838,8 +1845,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 	<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
 	<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
-		<cfset beanName=metadata.entityname>
 		<cfset ioc.addAlias(metadata.entityname,beanName)>
+		<cfset beanName=metadata.entityname>
 	</cfif>
 
 	<cfset entity=ioc.getBean(beanName)>
@@ -1872,6 +1879,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset var beanName=''>
 		<cfset var beanInstance=''>
+		<cfset var $=''>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir'>
@@ -1887,6 +1895,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop list="#arguments.siteid#" index="local.i">
 					<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyglobal)>
 					<cfset var applyglobal=true>
+
+					<cfif isDefined('beanInstance.onApplicationLoad')>
+						<cfset $=getBean('$').init()>
+						<cfset beanInstance.onApplicationLoad($=$,m=$,Mura=$,event=$.event())>
+					</cfif>
 				</cfloop>
 			</cfif>
 		</cfloop>

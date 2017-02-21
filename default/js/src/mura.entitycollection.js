@@ -89,6 +89,15 @@
 			return this;
 		},
 
+        /**
+		 * length - Returns length entity collection
+		 *
+		 * @return {number}     integer
+		 */
+		length:function(){
+			return this.properties.items.length;
+		},
+
 		/**
 		 * item - Return entity in collection at index
 		 *
@@ -110,18 +119,17 @@
 		},
 
 		/**
-		 * getAll - Returns array of all entities way properties
+		 * getAll - Returns object with of all entities and properties
 		 *
-		 * @return {array}
+		 * @return {object}
 		 */
 		getAll:function(){
 			var self=this;
-
 			return Mura.extend(
 				{},
 				self.properties,
 				{
-					items:self.map(function(obj){
+					items:this.properties.items.map(function(obj){
 						return obj.getAll();
 					})
 				}
@@ -177,6 +185,23 @@
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
+		},
+
+        /**
+		 * reduce - Returns value from  reduce function
+		 *
+		 * @param  {function} fn Reduce function
+         * @param  {any} initialValue Starting accumulator value
+		 * @return {accumulator}
+		 */
+		reduce:function(fn,initialValue){
+            initialValue=initialValue||0;
+			return this.properties.items.reduce(
+                function(accumulator,item,idx,array){
+    				return fn.call(item,accumulator,item,idx,array);
+    			},
+                initialValue
+            );
 		}
 	});
 }));

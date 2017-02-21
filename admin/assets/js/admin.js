@@ -80,7 +80,7 @@ function loadObject(url, target, message) {
 //content scheduling
 var dtCh = "/";
 var minYear = 1800;
-var maxYear = 2100;
+var maxYear = 2200;
 var dtFormat = [0, 1, 2];
 var dtExample = "12/31/2016";
 
@@ -646,7 +646,7 @@ function submitForm(frm, action, msg) {
 									frmInputs[f].setAttribute('value', action);
 								}
 							}
-							currentFrm.submit();				
+							currentFrm.submit();
 						}
 						, text: 'Yes'
 						, class: 'mura-primary'
@@ -771,7 +771,8 @@ function htmlEditorOnComplete(editorInstance) {
 	if(typeof CKFinder != 'undefined'){
 		CKFinder.setupCKEditor(
 			instance, {
-			basePath: context + '/requirements/ckfinder/'
+				basePath: context + '/requirements/ckfinder/',
+				rememberLastFolder: true
 			}
 		);
 	}
@@ -1240,7 +1241,7 @@ function confirmDialog(message,yesAction,noAction,title,width,yesButtonText,noBu
 			,text: noButtonText
 			,class: 'mura-cancel'
 			} // /no
-			
+
 			,'Yes': {	click: function() {
 					$(this).dialog('close');
 					if(typeof(yesAction) == 'function') {
@@ -1620,38 +1621,43 @@ function setLowerCaseKeys(obj) {
 }
 
 function setFinders(selector){
+	if(typeof CKFinder != 'undefined'){
+		$(selector).unbind('click').on('click',function(){
+			var target=$(this).attr('data-target');
+			var finder = new CKFinder();
+			finder.basePath = context + '/requirements/ckfinder/';
+			var completepath=$(this).attr('data-completepath');
 
-	$(selector).unbind('click').on('click',function(){
-		var target=$(this).attr('data-target');
-		var finder = new CKFinder();
-		finder.basePath = context + '/requirements/ckfinder/';
-		var completepath=$(this).attr('data-completepath');
+			if(completepath.toLowerCase() == 'true'){
+				finder.selectActionFunction = function(fileUrl) {
+					var fs=jQuery('input[name="' + target + '"]');
+					fs.val(webroot + fileDelim + fileUrl);
+					fs.trigger('change');
+				};
+			} else {
+				finder.selectActionFunction = function(fileUrl) {
+					var fs=jQuery('input[name="' + target + '"]');
+					fs.val(fileUrl);
+					fs.trigger('change');
+				};
+			}
 
-		if(completepath.toLowerCase() == 'true'){
-			finder.selectActionFunction = function(fileUrl) {
-				jQuery('input[name="' + target + '"]').val(webroot + fileDelim + fileUrl);
-			};
-		} else {
-			finder.selectActionFunction = function(fileUrl) {
-				jQuery('input[name="' + target + '"]').val(fileUrl);
-			};
-		}
+			if($(this).attr('data-resourcetype') =='root'){
+				finder.resourceType='Application_Root';
+			} else if($(this).attr('data-resourcetype') == 'site'){
+				finder.resourceType=siteid + '_Site_Files';
+			} else {
+				finder.resourceType=siteid + '_User_Assets';
+			}
 
-		if($(this).attr('data-resourcetype') =='root'){
-			finder.resourceType='Application_Root';
-		} else if($(this).attr('data-resourcetype') == 'site'){
-			finder.resourceType=siteid + '_Site_Files';
-		} else {
-			finder.resourceType=siteid + '_User_Assets';
-		}
+			finder.popup();
 
-		finder.popup();
-
-	});
+		});
+	}
 }
 
-$(function(){
 
+function wireupExterndalUIWidgets(){
 	setFinders(".mura-ckfinder");
 	if(typeof dtLocale != 'undefined'){
 		setDatePickers(".datepicker",dtLocale);
@@ -1667,8 +1673,7 @@ $(function(){
 	setColorPickers(".colorpicker");
 	setToolTips(".container");
 	setFileSelectors();
-
-});
+}
 
 // table actions menu
 function showTableControls(el){
@@ -1676,3 +1681,7 @@ function showTableControls(el){
 	$('td.actions div.actions-menu').not('.hide').addClass('hide');
 	$(optionsList).removeClass('hide');
 };
+
+$(function(){
+	wireupExterndalUIWidgets();
+});

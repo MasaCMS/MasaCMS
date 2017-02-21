@@ -284,7 +284,7 @@
 			<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
 			<!--- THE FORM --->
-			<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" novalidate="novalidate">
+			<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" novalidate="novalidate" onsubmit="return Mura.validateForm(this);">
 				<fieldset>
 
 					<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
@@ -359,7 +359,7 @@
 				<!--- SUBMIT BUTTON --->
 				<div class="#this.commentFieldWrapperClass#">
 					<div class="#this.commentSubmitButtonWrapperClass#">
-						<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.getCurrentURL())#">
+						<input type="hidden" name="returnURL" value="#esapiEncode('html_attr',variables.$.getCurrentURL())#">
 						<input type="hidden" name="commentid" value="#createuuid()#">
 						<input type="hidden" name="parentid" value="">
 						<input type="hidden" name="commenteditmode" value="add">

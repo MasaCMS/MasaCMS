@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides a utility to access all Mura functionality">
 
 <cfset variables.instance.event="">
 
@@ -390,6 +390,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="eventName">
 	<cfargument name="index" default="0">
 	<cfset getEventManager().announceEvent(eventToAnnounce=arguments.eventName,currentEventObject=this,index=arguments.index)>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="renderEvent" output="false">

@@ -146,37 +146,40 @@
 <script>
 mura.ready(function(){
 	<cfif $.content('type') eq 'Variation'>
-	if(!mura('.mxp-editable').length){
-		mura('##adminQuickEdit').remove();
+	if(!Mura('.mxp-editable').length){
+		Mura('##adminQuickEdit').remove();
+		//Mura('##adminQuickEdit').css('text-decoration','line-through');
+	} else {
+		//Mura('##mura-edit-var-targetingjs-text').html('Re-Select Editable Content')
 	}
 	</cfif>
-	mura('body').addClass('mura-sidebar-state__hidden--right');
-	mura('##mura-sidebar-container').show();
-	mura('##mura-objects-legacy-btn').click(function(e){
+	Mura('body').addClass('mura-sidebar-state__hidden--right');
+	Mura('##mura-sidebar-container').show();
+	Mura('##mura-objects-legacy-btn').click(function(e){
 		e.preventDefault();
 		MuraInlineEditor.sidebarAction('showlegacyobjects');
 	});
 
-	mura('##mura-objects-openregions-btn').click(function(e){
+	Mura('##mura-objects-openregions-btn').click(function(e){
 		e.preventDefault();
-		var el=mura('body');
+		var el=Mura('body');
 		if(el.hasClass('mura-regions-state__pushed--right')){
 			el.removeClass('mura-regions-state__pushed--right');
 		} else {
 			el.addClass('mura-regions-state__pushed--right');
 		}
 	});
-	mura('##mura-objects-closeregions-btn').click(function(e){
+	Mura('##mura-objects-closeregions-btn').click(function(e){
 		e.preventDefault();
-		mura('body').removeClass('mura-regions-state__pushed--right');
+		Mura('body').removeClass('mura-regions-state__pushed--right');
 	});
 
-	mura('.mura-objects-back-btn').click(function(e){
+	Mura('.mura-objects-back-btn').click(function(e){
 		e.preventDefault();
 		MuraInlineEditor.sidebarAction('showobjects');
 	});
 
-	//mura('.mura-region.mura-editable').attr('style','clear:both;');
+	//Mura('.mura-region.mura-editable').attr('style','clear:both;');
 	mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
 	mura.adminpath='#variables.$.globalConfig("adminPath")#';
 	mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');

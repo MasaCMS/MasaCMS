@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 				<tr>
 					<td class="actions">
-						<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+						<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 						<div class="actions-menu hide">
 							<ul class="actions-list">
 								<cfif verdict neq 'none'>
@@ -82,8 +82,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<!---
 								<cfelse>
 									<li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</li>
-									<li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</li></cfif>
+									<li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</li>
 									 --->
+									</cfif>
 							</ul>
 						</div>
 					</td>

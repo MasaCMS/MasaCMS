@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent output="false">
+<cfcomponent output="false" hint="This provides base functionality to all Mura core objects">
 
 <cfscript>
 	if(server.ColdFusion.ProductName != 'Coldfusion Server'){
@@ -129,7 +129,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfreturn bean>
+</cffunction>
 
+<cffunction name="getEntity" output="false">
+	<cfargument name="entityName">
+	<cfargument name="siteID" default="">
+	<cfreturn getBean(arguments.entityName,arguments.siteid)>
 </cffunction>
 
 <cffunction name="getPluginManager" output="false">
@@ -403,10 +408,72 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	function getSession(){
 		if(request.muraSessionManagement && isdefined('session')){
-			return session;
+			var sessionData=session;
 		} else {
 			param name="request.muraSessionPlaceholder" default={};
-			return request.muraSessionPlaceholder;
+			var sessionData=request.muraSessionPlaceholder;
+		}
+
+		if(!structKeyExists(sessionData,'mura')){
+			sessionData.mura={};
+			sessionData.mura.isLoggedIn=false;
+			sessionData.mura.userID="";
+			sessionData.mura.siteID="";
+			sessionData.mura.subtype="Default";
+			sessionData.mura.username="";
+			sessionData.mura.password="";
+			sessionData.mura.fname="";
+			sessionData.mura.lname="";
+			sessionData.mura.company="";
+			sessionData.mura.lastlogin="";
+			sessionData.mura.passwordCreated="";
+			sessionData.mura.email="";
+			sessionData.mura.remoteID="";
+			sessionData.mura.memberships="";
+			sessionData.mura.membershipids="";
+			sessionData.mura.showTrace=false;
+		}
+
+		param name="sessionData.siteid" default="default";
+
+		return sessionData;
+
+	}
+
+	function mixin(obj){
+		for(var key in obj){
+			this.inject('#key#',arguments.obj[key]);
+		}
+
+		return this;
+	}
+
+	function getFeed(beanName,siteid=""){
+		return getBean(argumentCollection=arguments).getFeed();
+	}
+
+	function parseDateArg(String arg){
+
+ 		//fix so that date's like 2015-06-23T14:22:35 can be parsed
+ 		if(refind('(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d)',arguments.arg)){
+ 			arguments.arg=replace(arguments.arg,'T',' ');
+ 		}
+
+		if(lsisDate(arguments.arg)){
+			try{
+				return lsparseDateTime(arguments.arg);
+			} catch(any e){
+				return arguments.arg;
+			}
+
+		} else if(isDate(arguments.arg)){
+			try{
+				return parseDateTime(arguments.arg);
+			} catch(any e){
+				return arguments.arg;
+			}
+		} else {
+			return "";
 		}
 	}
 </cfscript>

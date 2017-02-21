@@ -35,8 +35,12 @@
 
 	<cfif fileMetaData.hasImageFileExt()>
 		<div class="mura-input-set imageToolsButtonGroup">
-			<cfif fileMetaData.hasCroppableImageFileExt()>
-			<a class="btn" href="./?muraAction=cArch.imagedetails&contenthistid=#attributes.bean.getContentHistID()#&siteid=#attributes.bean.getSiteID()#&fileid=#attributes.bean.getvalue(attributes.property)#&compactDisplay=#urlEncodedFormat(attributes.compactDisplay)#"><i class="mi-crop"></i></a>
+			<cfif fileMetaData.hasCroppableImageFileExt() and listFindNoCase('content,user,group',attributes.bean.getEntityName())>
+				<cfif attributes.bean.getEntityName() eq 'content'>
+					<a class="btn" href="./?muraAction=cArch.imagedetails&contenthistid=#attributes.bean.getContentHistID()#&siteid=#attributes.bean.getSiteID()#&fileid=#attributes.bean.getvalue(attributes.property)#&compactDisplay=#urlEncodedFormat(attributes.compactDisplay)#"><i class="mi-crop"></i></a>
+				<cfelse>
+					<a class="btn" href="./?muraAction=cArch.imagedetails&userid=#attributes.bean.getUserID()#&siteid=#attributes.bean.getSiteID()#&fileid=#attributes.bean.getvalue(attributes.property)#&compactDisplay=#urlEncodedFormat(attributes.compactDisplay)#"><i class="mi-crop"></i></a>
+				</cfif>
 			</cfif>
 			<cfif attributes.bean.getEntityName() eq 'content'>
 				<a class="btn" href="" onclick="return openFileMetaData('#fileMetaData.getContentHistID()#','#fileMetaData.getFileID()#','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="mi-info-circle"></i></a>

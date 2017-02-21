@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.bean.bean" entityName="changeset" table="tchangesets" output="false">
+<cfcomponent extends="mura.bean.bean" entityName="changeset" table="tchangesets" output="false" hint="This provides changeset bean functionality">
 
 <cfproperty name="changesetID" fieldtype="id" type="string" default="" required="true" />
 <cfproperty name="siteID" type="string" default="" required="true" />

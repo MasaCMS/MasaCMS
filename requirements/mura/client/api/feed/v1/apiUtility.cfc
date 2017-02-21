@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides feed RSS functionality">
 	<cfscript>
 
 	/*
@@ -184,7 +184,7 @@
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 			responseObject.getresponse().setStatus(500);
-			return _serializeWDDX({'error'={'message'="Unhandeld Exception",'stacktrace'=e}});
+			return _serializeWDDX({'error'={'message'="Unhandled Exception",'stacktrace'=e}});
 		}
 
 	}

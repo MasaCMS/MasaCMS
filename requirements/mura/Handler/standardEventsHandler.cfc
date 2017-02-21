@@ -54,7 +54,7 @@
   may, if you choose, apply this exception to your own modified versions of
   Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides default implementation for standard events that can be overridden through event system">
 
 <!---- HANDLERS --->
 <cffunction name="standardEnableLockdownHandler" output="false">
@@ -512,7 +512,7 @@
 					<cfif loginManager.handleChallengeAttempt(arguments.$)>
 						<cfset loginManager.completedChallenge(arguments.$)>
 					</cfif>
-				<cfelse>
+				<cfelseif isDefined('form.username') and isDefined('form.password')>
 					<cfset loginManager.login(arguments.$.event().getAllValues(),'')>
 				</cfif>
 			</cfif>
@@ -818,7 +818,7 @@
 							expandParams['#entity.translatePropKey(p.loadkey)#']=entity.getValue(entity.translatePropKey(p.column));
 							try{
 								result[p.name]=apiUtility.findQuery(entityName=p.cfc,siteid=$.event('siteid'),params=expandParams);
-							} catch(any e){WriteDump(p); abort;}
+							} catch(any e){/*WriteDump(p); abort;*/}
 						}
 					}
 				}
@@ -832,7 +832,7 @@
 								} else {
 									result[p.name]=apiUtility.findOne(entityName=p.cfc,id=entity.getValue(entity.translatePropKey(p.column)),siteid=$.event('siteid'),render=false,variation=false,expand=false);
 								}
-							} catch(any e){WriteDump(p); abort;}
+							} catch(any e){/*WriteDump(p); abort;*/}
 						}
 					}
 				}
@@ -888,7 +888,9 @@
 			structDelete(result,'extendAutoComplete');
 
 			if($.content('type')=='Variation'){
-				result.initjs=$.content().getVariationTargeting().getInitJS();
+				var variationTargeting=$.content().getVariationTargeting();
+				result.initjs=variationTargeting.getInitJS();
+				result.targetingjs=variationTargeting.getTargetingJS();
 			}
 
 			$.event('__MuraResponse__',apiUtility.serializeResponse({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'={filename=result.filename,siteid=result.siteid,rendered=true},data=result}));

@@ -45,7 +45,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component extends="mura.bean.beanORM" table="tcontentcategoryassign" entityname="contentCategoryAssign" bundleable=false {
+component extends="mura.bean.beanORM" table="tcontentcategoryassign" entityname="contentCategoryAssign" bundleable=false hint="This provides content category assignment functionality"{
 
     property name="content" fieldtype="many-to-one" cfc="content" fkcolumn="contenthistid";
     property name="activeContent" fieldtype="many-to-one" cfc="content" fkcolumn="contentid";

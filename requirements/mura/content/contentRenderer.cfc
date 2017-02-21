@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides core rendering functionality">
 
 <cfset this.navOffSet=0/>
 <cfset this.navDepthLimit=1000/>
@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.hasEditableObjects=false>
 <cfset this.asyncObjects=true>
 <cfset this.asyncRender=false>
+<cfset this.queueObjects=true>
 <cfset this.layoutmanager=false>
 <cfset this.legacyobjects=true>
 
@@ -169,6 +170,8 @@ Display Objects
 <cfset this.calendarWrapperClass="svCalendar">
 <cfset this.calendarTableClass="table table-bordered">
 <cfset this.calendarTableHeaderClass="">
+
+<cfset this.calendarTitleInDesc=true>
 
 <!--- calendar/dspList.cfm --->
 <cfset this.calendarListWrapperClass="svCalendar">
@@ -1349,6 +1352,10 @@ Display Objects
 
 	<cfset objectParams.async=false>
 	<cfset objectParams.render='server'>
+	<cfset objectparams.object=arguments.object>
+	<cfset objectparams.objectname=arguments.objectname>
+	<cfset objectparams.objectid=arguments.objectid>
+	<cfset objectparams.instanceid=createUUID()>
 
 	<cfif arguments.object eq 'plugin'>
 		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
@@ -1378,11 +1385,18 @@ Display Objects
 
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel-1>
 
-	<cfset var doLayoutManagerWrapper=arguments.returnFormat neq 'struct' and not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
+	<cfset var doLayoutManagerWrapper=not arguments.include and (request.muraFrontEndRequest or request.muraDisplayObjectNestLevel) and (this.layoutmanager or objectparams.render eq 'client') and len(arguments.object)>
 
+	<cfif arguments.object eq 'tag_cloud'>
+		<cfdump var="#doLayoutManagerWrapper#">
+		<cfabort>
+	</cfif>
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
+		<cfset var managerResponse=''>
+		<cfset theContent=trim(theContent)>
+
 		<cfif objectParams.render eq 'client'>
-				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+			<cfset managerResponse=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content='',
 				objectParams=objectParams,
@@ -1390,18 +1404,36 @@ Display Objects
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname,
 				renderer=this,
-				bodyRender=arguments.bodyRender) />
+				bodyRender=arguments.bodyRender,
+				returnformat=arguments.returnFormat) />
 		<cfelse>
-			<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+			<cfset managerResponse=variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
-				content=trim(theContent),
+				content=theContent,
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname,
 				renderer=this,
-				bodyRender=arguments.bodyRender) />
-		</cfif>'
+				bodyRender=arguments.bodyRender,
+				returnformat=arguments.returnFormat) />
+		</cfif>
+
+
+		<cfif arguments.returnFormat eq 'struct'>
+			<cfset objectparams.header=managerResponse.header>
+			<cfset objectparams.footer=managerResponse.footer>
+
+			<cfif objectParams.render neq 'client'>
+				<cfset objectparams.html=thecontent>
+			<cfelse>
+				<cfset objectparams.html=''>
+			</cfif>
+			
+			<cfreturn objectparams>
+		<cfelse>
+			<cfreturn managerResponse>
+		</cfif>
 	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>
 	<cfelseif arguments.returnFormat eq 'struct'>
@@ -1460,7 +1492,7 @@ Display Objects
 		<cfif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
 			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not sessionData.mura.isLoggedIn)
 			or (variables.event.getValue('display') eq 'editprofile' and sessionData.mura.isLoggedIn)>
-			<cfif variables.event.getValue('display') neq ''>
+			<cfif listFindNoCase('search,editprofile,login',variables.event.getValue('display'))>
 				<cfswitch expression="#variables.event.getValue('display')#">
 					<cfcase value="editprofile">
 						<cfset variables.$.noIndex()>
@@ -1799,7 +1831,7 @@ Display Objects
 
 				<cfset started=true>
 				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
-				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif><cfif len(arguments.liClass)> #arguments.liClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 			</cfif>
 
 			<cfloop query="rsSection">
@@ -2466,6 +2498,7 @@ Display Objects
 	<cfset var displayPoolID=application.settingsManager.getSite(variables.event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=(len(request.altTheme) ? request.altTheme : application.settingsManager.getSite(variables.event.getValue('siteID')).getTheme())>
 	<cfset var tracePoint=0>
+	<cfset var item = "" />
 
 	<cfif getRenderHTMLQueues()>
 
@@ -2482,13 +2515,13 @@ Display Objects
 		<cfelseif arguments.queueType eq "FOOT">
 			<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
 				<cfif getShowModal()>
-					<cfsavecontent variable="headerStr"><cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/toolbar.cfm"></cfsavecontent>
+					<cfsavecontent variable="headerStr"><cfinclude template="/#application.configBean.getWebRootMap()##application.configBean.getAdminDir()#/core/utilities/modal/toolbar.cfm"></cfsavecontent>
 					<cfset commitTracePoint(tracePoint)>
 				</cfif>
 				<!---
 				<cfif variables.event.getValue("muraChangesetPreviewToolbar")>
-					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm")>
-					<cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm">
+					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##application.configBean.getAdminDir()#/core/utilities/modal/dsp_modal_changeset.cfm")>
+					<cfinclude template="/#application.configBean.getWebRootMap()##application.configBean.getAdminDir()#/core/utilities/modal/dsp_modal_changeset.cfm">
 					<cfset commitTracePoint(tracePoint)>
 				</cfif>
 				--->
@@ -2503,6 +2536,7 @@ Display Objects
 				<cfset i=HTMLQueue[item]>
 
 				<cfif refind('[<>]',i)>
+					<!--- If we got just an in-line block of HTML markup and not a "real" file, render accordingly --->
 						<cfset itemStr=i>
 				<cfelse>
 					<cfset itemStr=""/>
@@ -2765,6 +2799,7 @@ Display Objects
 
 <cffunction name="renderIntervalDesc" output="false">
 	<cfargument name="content">
+	<cfargument name="showTitle" default="true">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.renderIntervalDesc(argumentCollection=arguments)>
 </cffunction>

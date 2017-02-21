@@ -1,4 +1,4 @@
-component extends="mura.bean.bean" {
+component extends="mura.bean.bean" hint="This provides content display interval functionality" {
 
     property name="type" datatype="string" default="daily";
     property name="every" datatype="integer" default="1";
@@ -65,6 +65,11 @@ component extends="mura.bean.bean" {
     function endOn(endOn){
         set('end','on');
         set('endOn',arguments.endOn);
+        return this;
+    }
+
+    function setEndOn(endOn){
+        variables.instance.endOn=parseDateArg(arguments.endOn);
         return this;
     }
 

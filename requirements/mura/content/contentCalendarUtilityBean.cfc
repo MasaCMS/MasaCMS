@@ -1,4 +1,4 @@
-component extends='mura.cfobject' {
+component extends='mura.cfobject' hint="This provides content calendar utility methods" {
 
   public any function setMuraScope(required muraScope) {
     variables.$ = arguments.muraScope;
@@ -137,7 +137,7 @@ component extends='mura.cfobject' {
 
     for ( local.i=1; local.i<=local.rs.recordcount; local.i++ ) {
       // add URL to rs
-      local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i]);
+      local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i],complete=1);
       // convert dates to UTC, then use browser's local tz settings to output the dates/times
       /*
       local.tempstart = DateConvert('local2utc', local.rs['displaystart'][i]);

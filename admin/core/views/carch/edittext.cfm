@@ -7,12 +7,11 @@
 	<h1>Edit Text</h1>
 </div> <!-- /.mura-header -->
 
-
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  	<div class="block-content">
-		  	<div class="control-group">
-				<textarea name="source" id="source" class="htmlEditor"></textarea>
+		  	<div class="mura-control-group">
+				<textarea name="source" id="source" class="htmlEditor" data-width="100%"></textarea>
 			</div>
 			<div class="mura-actions">
 				<div class="form-actions">
@@ -64,7 +63,7 @@ $(function(){
 		}
 
 		frontEndProxy.addEventListener(onFrontEndMessage);
-		frontEndProxy.post({cmd:'setWidth',width:800});
+		frontEndProxy.post({cmd:'setWidth',width:600});
 		frontEndProxy.post({
 			cmd:'requestObjectParams',
 			instanceid:'#esapiEncode("javascript",rc.instanceid)#',

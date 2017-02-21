@@ -95,7 +95,7 @@
 									<li><a href="##" class="nextN" data-nextn="100">100</a></li>
 									<li><a href="##" class="nextN" data-nextn="250">250</a></li>
 									<li><a href="##" class="nextN" data-nextn="500">500</a></li>
-									<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
+									<li><a href="##" class="nextN" data-nextn="1000">1000</a></li>
 									<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
 								</ul>
 							</div>
@@ -237,7 +237,7 @@
 							<tr>
 								<!--- ACTIONS --->
 								<td class="actions">
-									<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+									<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 									<div class="actions-menu hide">	
 										<ul class="actions-list">
 											<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal"><i class="mi-comments"></i>Comments</a></li>
@@ -340,7 +340,7 @@
 						<li><a href="##" class="nextN" data-nextn="100">100</a></li>
 						<li><a href="##" class="nextN" data-nextn="250">250</a></li>
 						<li><a href="##" class="nextN" data-nextn="500">500</a></li>
-						<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
+						<li><a href="##" class="nextN" data-nextn="1000">1000</a></li>
 						<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
 					</ul>
 				</div>

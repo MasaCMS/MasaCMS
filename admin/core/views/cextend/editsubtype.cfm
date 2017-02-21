@@ -63,8 +63,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				         <i class="mi-arrow-circle-left"></i> Back <span class="caret"></span>
 	       </a>
 	       <ul class="dropdown-menu">
-	          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#">&hellip;to Class Extensions</a></li>
-	          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#">&hellip;to Class Extension Overview</a></li>
+	          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#">Back to Class Extensions</a></li>
+	          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#">Back to Class Extension Overview</a></li>
 	       </ul>
 				<cfelse>
 					<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> Back to Class Extension Overview</a>

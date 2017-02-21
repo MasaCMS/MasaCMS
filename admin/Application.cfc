@@ -126,6 +126,8 @@ component extends="framework" output="false" {
 	variables.framework.usingSubsystems=true;
 	variables.framework.applicationKey="muraAdmin";
 	variables.framework.siteWideLayoutSubsystem='common';
+	variables.framework.diEngine='mura';
+
 
 	if(structKeyExists(form,"fuseaction")){
 		form.muraAction=form.fuseaction;
@@ -157,6 +159,8 @@ component extends="framework" output="false" {
 			variables.framework.password=application.appreloadkey;
 			setBeanFactory( application.serviceFactory );
 		}
+
+		variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
 
 	}
 
@@ -251,6 +255,8 @@ component extends="framework" output="false" {
 
 			}
 		} catch(any e){}
+
+	    variables.framework.base="/muraWRM#application.configBean.getAdminDir()#/";
 
 		super.onRequestStart(argumentCollection=arguments);
 	}
@@ -380,7 +386,7 @@ component extends="framework" output="false" {
 		}
 
 		if(application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":")){
-			application.contentServer.renderFilename("/admin/",false);
+			application.contentServer.renderFilename("#application.configBean.getAdminDir()#/",false);
 			abort;
 		}
 
@@ -396,13 +402,13 @@ component extends="framework" output="false" {
 
 		if(session.mura.isLoggedIn and structKeyExists(session,"siteArray") and not arrayLen(session.siteArray)){
 			if(not listFind(session.mura.memberships,'S2IsPrivate') and not listLast(listFirst(request.context.muraAction,"."),":") eq 'clogin'){
-				location(url="#application.configBean.getContext()#/admin/?muraAction=clogin.logout", addtoken="false");
+				location(url="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=clogin.logout", addtoken="false");
 			} else if(not len(request.context.muraAction)
 					or (
 							len(request.context.muraAction)
 							and not listfindNoCase("clogin,cMessage,cEditprofile",listLast(listFirst(request.context.muraAction,"."),":") )
 						)){
-				location(url="#application.configBean.getContext()#/admin/?muraAction=cMessage.noaccess", addtoken="false");
+				location(url="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cMessage.noaccess", addtoken="false");
 			}
 		}
 
@@ -430,14 +436,14 @@ component extends="framework" output="false" {
 			session.paramCircuit=listLast(listFirst(request.context.muraAction,'.'),':');
 			for(i=1;i lte listLen(request.context.param);i=i+1){
 				theParam=listGetAt(request.context.param,i);
-				if(evaluate('request.context.paramField#theParam#') neq 'Select Field'
-				and evaluate('request.context.paramField#theParam#') neq ''
-				and evaluate('request.context.paramCriteria#theParam#') neq ''){
+				if(request.context['paramField#theParam#'] neq 'Select Field'
+				and request.context['paramField#theParam#'] neq ''
+				and request.context['paramCriteria#theParam#'] neq ''){
 					temp={};
-					temp.Field=evaluate('request.context.paramField#theParam#');
-					temp.Relationship=evaluate('request.context.paramRelationship#theParam#');
-					temp.Criteria=evaluate('request.context.paramCriteria#theParam#');
-					temp.Condition=evaluate('request.context.paramCondition#theParam#');
+					temp.Field=request.context['paramField#theParam#'];
+					temp.Relationship=request.context['paramRelationship#theParam#'];
+					temp.Criteria=request.context['paramCriteria#theParam#'];
+					temp.Condition=request.context['paramCondition#theParam#'];
 					arrayAppend(session.paramArray,temp);
 				}
 			}
@@ -468,7 +474,7 @@ component extends="framework" output="false" {
 				page='#cgi.script_name#?#cgi.QUERY_STRING#';
 			}
 
-			location(addtoken="false", url="https://#listFirst(cgi.http_host,":")##page#");
+			location(addtoken="false", url="https://" & listFirst(cgi.http_host,':') & page);
 		}
 
 
@@ -517,5 +523,13 @@ component extends="framework" output="false" {
 	function rbKey(key){
 		return application.rbFactory.getKeyValue(session.rb,arguments.key);
 	}
+
+	public struct function getSubsystemConfig( string subsystem ) {
+        if ( structKeyExists( variables.framework.subsystems, subsystem ) && isStruct(variables.framework.subsystems[subsystem])) {
+            // return a copy to make it read only from outside the framework:
+            return structCopy( variables.framework.subsystems[ subsystem ] );
+        }
+        return { };
+    }
 
 }

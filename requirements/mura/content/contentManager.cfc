@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content service level logic functionality">
 	<cfset this.TreeLevelList="Page,Folder,Calendar,Link,File,Gallery">
 	<cfset this.ExtendableList="Page,Folder,Calendar,Link,File,Gallery,Component,Form">
 	<cfset this.HTMLBodyList="Form,Gallery,Calendar,Component,Page,Folder">
@@ -799,9 +799,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="setInheritance" required="true" type="boolean" default="false">
 		<cfargument name="path" required="true" default="">
 		<cfargument name="sort" required="true" default="asc">
+		<cfargument name="usecache" required="true" default="true">
 		<cfset var array ="" />
 
-		<cfset array=variables.contentGateway.getCrumbList(arguments.contentid,arguments.siteid, arguments.setInheritance, arguments.path) />
+		<cfset array=variables.contentGateway.getCrumbList(argumentCollection=arguments) />
 
 		<cfif arguments.sort eq "desc">
 			<cfset createObject("java", "java.util.Collections").reverse(array)>

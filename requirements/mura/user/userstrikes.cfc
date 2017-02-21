@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This handles user login strikes persistence">
 <cfset variables.instance.userID="">
 <cfset variables.instance.strikes=0>
 <cfset variables.instance.lastAttempt="">
@@ -19,11 +19,11 @@
 
 <cffunction name="getQuery" output="false">
 	<cfset var rs="">
-	
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select * from tuserstrikes where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">
 	</cfquery>
-	
+
 	<cfif not rs.recordcount>
 		<cfquery>
 		insert into tuserstrikes (username,strikes,lastAttempt) values (
@@ -32,17 +32,17 @@
 		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">
 		)
 		</cfquery>
-		
+
 		<cfreturn getQuery()>
 	<cfelse>
 		<cfreturn rs>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="load" output="false">
 	<cfset var rs=getQuery()>
-	
+
 	<cfif isDate(rs.lastAttempt) and rs.lastAttempt gte dateAdd("n",-variables.blockedDuration,now())>
 		<cfset setLastAttempt(rs.lastAttempt)>
 		<cfset setStrikes(rs.strikes)>
@@ -50,7 +50,7 @@
 		<cfset setLastAttempt(dateAdd("n",-1,now()))>
 		<cfset setStrikes(0)>
 		<cfquery>
-		update tuserstrikes set 
+		update tuserstrikes set
 		strikes=0,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getLastAttempt()#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
@@ -89,12 +89,12 @@
 
 <cffunction name="addStrike" output="false">
 	<cfquery>
-		update tuserstrikes set 
+		update tuserstrikes set
 		strikes=strikes + 1,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
-	
+
 	<cfset load()>
 </cffunction>
 
@@ -112,12 +112,12 @@
 
 <cffunction name="clear" output="false">
 	<cfquery>
-		update tuserstrikes set 
+		update tuserstrikes set
 		strikes=0,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
-	
+
 	<cfset load()>
 </cffunction>
 </cfcomponent>

@@ -179,6 +179,17 @@
 	<cfargument name="rc">
 
 	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
+
+	<cfif not arguments.rc.rsTop.recordcount>
+		<cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
+			<cfset arguments.rc.topid='00000000000000000000000000000000001'>
+		<cfelse>
+			<cfset arguments.rc.topid=arguments.rc.moduleid>
+		</cfif>
+		<cfset session['#session.moduleid#']={topid=arguments.rc.topid}>
+		<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
+	</cfif>
+
 	<cfif not listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid )>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
 	</cfif>
@@ -189,6 +200,16 @@
 	<cfargument name="rc">
 
 	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
+
+	<cfif not arguments.rc.rsTop.recordcount>
+		<cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
+			<cfset arguments.rc.topid='00000000000000000000000000000000001'>
+		<cfelse>
+			<cfset arguments.rc.topid=arguments.rc.moduleid>
+		</cfif>
+		<cfset session['#session.moduleid#']={topid=arguments.rc.topid}>
+		<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
+	</cfif>
 
 	<cfif not listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid)>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>

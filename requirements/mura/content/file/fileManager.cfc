@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides file service level logic functionality">
 
 <cffunction name="init" output="false">
 		<cfargument name="fileDAO" type="any" required="yes"/>
@@ -533,12 +533,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="requestHasRestrictedFiles" output="false">
 	<cfargument name="scope" default="#form#">
+	<cfargument name="allowedExtensions" default="#getBean('configBean').getFMAllowedExtensions()#">
 	<cfscript>
 		var tempext='';
-		var allowedExtensions=variables.configBean.getFMAllowedExtensions();
+		var classExtensionManager=getBean('configBean').getClassExtensionManager();
 
-		if(!len(allowedExtensions)){
+		if(!len(arguments.allowedExtensions)){
 			return false;
+		}
+
+		if(structKeyExists(arguments.scope,'siteid')){
+			var siteid=arguments.scope.siteid;
+		} else {
+			var siteid=getSession().siteid;
 		}
 
 		if(isdefined('arguments.scope.type') && arguments.scope.type=='Link'){
@@ -552,12 +559,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					temptext=listLast(getPostedClientFileName(i),'.');
 
-					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
+					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(arguments.allowedExtensions,temptext)){
 						return true;
 					}
 				}
 
 				if(isValid('url',arguments.scope['#i#']) && right(arguments.scope['#i#'],1) != '/'){
+
+					if(i neq 'newfile' && !classExtensionManager.isFileAttribute(i,siteid)){
+						break;
+					}
+
 					tempText=arguments.scope['#i#'];
 
 					//if it contains a protocol
@@ -582,7 +594,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}
 					*/
 
-					if(len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
+					if(len(tempText) < 5 && !listFindNoCase(arguments.allowedExtensions,temptext)){
 						return true;
 					}
 				}

@@ -128,36 +128,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </cfif>
 
-<cfset conflicts=rc.contentBean.getDisplayConflicts()>
+<cfif rc.parentBean.getType() eq 'Calendar'>
+	<cfset conflicts=rc.contentBean.getDisplayConflicts()>
 
-<cfif rc.contentBean.getDisplay() eq 2>
-	<div class="alert alert-info" >
-		<span>
-			<strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#
-		</span>
-	</div>
+	<cfif rc.contentBean.getDisplay() eq 2>
+		<div class="alert alert-info" >
+			<span>
+				<strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc(showTitle=false)#
+			</span>
+		</div>
+	</cfif>
+
+	<cfif conflicts.hasNext()>
+		<cfset calendar=rc.contentBean.getParent()>
+		<div class="alert alert-error">
+			<span>
+			<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.displayinterval.schedulingconflicts")#:</h3>
+				<cfloop condition="conflicts.hasNext()">
+					<cfset conflict=conflicts.next()>
+					<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
+						<cfset conflictDetails=conflict.getConfictDetailIterator()>
+						<cfloop condition="conflictDetails.hasNext()">
+							<cfset conflictdetail=conflictDetails.next()>
+							<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
+							<cfif conflictDetails.hasNext()>, </cfif>
+						</cfloop>
+					</p>
+				</cfloop>
+			</span>
+		</div>
+	</cfif>
 </cfif>
-
-<cfif conflicts.hasNext()>
-	<cfset calendar=rc.contentBean.getParent()>
-	<div class="alert alert-error">
-		<span>
-		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.displayinterval.schedulingconflicts")#:</h3>
-			<cfloop condition="conflicts.hasNext()">
-				<cfset conflict=conflicts.next()>
-				<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
-					<cfset conflictDetails=conflict.getConfictDetailIterator()>
-					<cfloop condition="conflictDetails.hasNext()">
-						<cfset conflictdetail=conflictDetails.next()>
-						<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
-						<cfif conflictDetails.hasNext()>, </cfif>
-					</cfloop>
-				</p>
-			</cfloop>
-		</span>	
-	</div>
-</cfif>
-
 <script>
 function viewStatusInfo(contenthistid,siteid){
 

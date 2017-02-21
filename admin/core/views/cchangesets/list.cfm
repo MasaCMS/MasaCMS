@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset rc.changeset=rc.changesets.next()>
 					<tr>
 						<td class="actions">
-							<a class="show-actions" href="javascript:;" ontouchstart="this.onclick();" onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
+							<a class="show-actions" href="javascript:;" <!---ontouchstart="this.onclick();"---> onclick="showTableControls(this);"><i class="mi-ellipsis-v"></i></a>
 							<div class="actions-menu hide">
 							<ul class="actions-list">
 										<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="./?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="mi-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#</a></li>

@@ -1,4 +1,4 @@
-component extends="mura.cfobject" {
+component extends="mura.cfobject" hint="This provides a utilty to compare values"{
 
 	function init(){
 		if(getBean('configBean').getValue(property='legacyJavaLoader',defaultValue=true)){

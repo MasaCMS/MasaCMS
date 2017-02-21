@@ -279,7 +279,11 @@
 
 	    for ( var i = 0; ret[i]; i++ ) {
 	      if ( scripts && nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
-	            scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
+                if(ret[i].src){
+                    scripts.push(ret[i]);
+                } else {
+                    scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
+                }
 	        } else if(ret[i].nodeType==1 || ret[i].nodeType==9 || ret[i].nodeType==11){
 	        	evalScripts(ret[i]);
 	        }
@@ -295,19 +299,24 @@
 	}
 
   	function evalScript(el) {
-	    var data = ( el.text || el.textContent || el.innerHTML || "" );
+        if(el.src){
+            Mura.loader().load(el.src);
+            Mura(el).remove();
+        } else {
+    	    var data = ( el.text || el.textContent || el.innerHTML || "" );
 
-	    var head = document.getElementsByTagName("head")[0] || document.documentElement,
-	    script = document.createElement("script");
-	    script.type = "text/javascript";
-	    //script.appendChild( document.createTextNode( data ) );
-		script.text=data;
-	    head.insertBefore( script, head.firstChild );
-	    head.removeChild( script );
+    	    var head = document.getElementsByTagName("head")[0] || document.documentElement,
+    	    script = document.createElement("script");
+    	    script.type = "text/javascript";
+    	    //script.appendChild( document.createTextNode( data ) );
+    		script.text=data;
+    	    head.insertBefore( script, head.firstChild );
+    	    head.removeChild( script );
 
-	    if ( el.parentNode ) {
-	        el.parentNode.removeChild( el );
-	    }
+    	    if ( el.parentNode ) {
+    	        el.parentNode.removeChild( el );
+    	    }
+        }
 	}
 
 	function changeElementType(el, to) {
@@ -328,7 +337,74 @@
 		return newEl;
 	}
 
+    /*
+    Defaults to holdReady is true so that everything
+    is queued up until the DOMContentLoaded is fired
+    */
+    var holdingReady=true;
+    var holdingReadyAltered=false;
+    var holdingQueueReleased=false;
+    var holdingQueue=[];
+
+    /*
+    if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
+        jQuery.holdReady(true);
+    }
+    */
+
+    /*
+    When DOMContentLoaded is fired check to see it the
+    holdingReady has been altered by custom code.
+    If it hasn't then fire holding functions.
+    */
+    function initReadyQueue(){
+      if(!holdingReadyAltered){
+           /*
+           if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
+               jQuery.holdReady(false);
+           }
+           */
+           releaseReadyQueue();
+      }
+    };
+
+    function releaseReadyQueue(){
+        holdingQueueReleased=true;
+        holdingReady=false;
+
+        holdingQueue.forEach(function(fn){
+            readyInternal(fn);
+        });
+
+    }
+
+    function holdReady(hold){
+        if(!holdingQueueReleased){
+            holdingReady=hold;
+            holdingReadyAltered=true;
+
+            /*
+            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
+                jQuery.holdReady(hold);
+            }
+            */
+
+            if(!holdingReady){
+                releaseReadyQueue();
+            }
+        }
+    }
+
 	function ready(fn) {
+        if(!holdingQueueReleased){
+             holdingQueue.push(fn);
+        } else {
+            readyInternal(fn);
+	    }
+    }
+
+
+    function readyInternal(fn) {
 	    if(document.readyState != 'loading'){
 	      //IE set the readyState to interative too early
 	      setTimeout(function(){fn(root.Mura);},1);
@@ -348,6 +424,7 @@
      * @memberof Mura
 	 */
 	function get(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'get',
@@ -374,6 +451,7 @@
      * @memberof Mura
 	 */
 	function post(url,data){
+        data=data || {};
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'post',
@@ -1016,9 +1094,7 @@
 			var instance=root.CKEDITOR.instances[el.getAttribute('id')];
 			var conf={height:200,width:'70%'};
 
-			if(el.getAttribute('data-editorconfig')){
-				extend(conf,el.getAttribute('data-editorconfig'));
-			}
+    		extend(conf,Mura(el).data());
 
 			if (instance) {
 				instance.destroy();
@@ -1029,11 +1105,8 @@
 		}
 
 		function htmlEditorOnComplete( editorInstance ) {
-			//var instance=jQuery(editorInstance).ckeditorGet();
-			//instance.resetDirty();
 			editorInstance.resetDirty();
 			var totalIntances=root.CKEDITOR.instances;
-			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;
 		}
 
 		function getHTMLEditorConfig(customConfig) {
@@ -1609,7 +1682,7 @@
 
     			function(){
     				find('.mura-object, .mura-async-object').each(function(){
-    					processDisplayObject(this,true).then(resolve);
+    					processDisplayObject(this,Mura.queueObjects).then(resolve);
     				});
     			},
 
@@ -1630,10 +1703,12 @@
     			},
 
     			function(){
+                    mura.reCAPTCHALanguage=mura.reCAPTCHALanguage || 'en';
+
     				if(find(".g-recaptcha" ).length){
     					var fileref=document.createElement('script')
     				        fileref.setAttribute("type","text/javascript")
-    				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
+    				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit&hl=" + mura.reCAPTCHALanguage)
 
     					document.getElementsByTagName("head")[0].appendChild(fileref)
 
@@ -1641,7 +1716,7 @@
 
     				if(find(".g-recaptcha-container" ).length){
     					loader().loadjs(
-    						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
+    						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit&hl=" + mura.reCAPTCHALanguage,
     						function(){
     							find(".g-recaptcha-container" ).each(function(el){
     								var self=el;
@@ -1841,6 +1916,7 @@
 
 		self.removeClass('mura-active');
 		self.removeAttr('data-perm');
+        self.removeAttr('data-runtime');
 		self.removeAttr('draggable');
 
 		if(self.data('object')=='container'){
@@ -1852,6 +1928,7 @@
 				self.removeClass('mura-active');
 				self.removeAttr('data-perm');
 				self.removeAttr('data-inited');
+                self.removeAttr('data-runtime');
 				self.removeAttr('draggable');
 			});
 
@@ -2142,6 +2219,9 @@
 
 		obj=(obj.node) ? obj : Mura(obj);
 
+		// handle HTML response
+		resp=(!resp.data) ? { data: resp } : resp;
+
 		if(typeof resp.data.redirect != 'undefined'){
 			if(resp.data.redirect && resp.data.redirect != location.href){
 				location.href=resp.data.redirect;
@@ -2175,6 +2255,11 @@
 	function processDisplayObject(el,queue,rerender,resolveFn){
 
 		var obj=(el.node) ? el : Mura(el);
+
+        if(obj.data('queue') != null){
+            queue=obj.data('queue');
+        }
+
 		el =el.node || el;
 		var self=el;
 		var rendered=!rerender && !(obj.hasClass('mura-async-object') || obj.data('render')=='client'|| obj.data('async'));
@@ -2493,7 +2578,12 @@
 	}
 
 	function init(config){
-		if(!config.context){
+
+        if(config.endpoint){
+            config.context=config.endpoint;
+        }
+
+        if(!config.context){
 			config.context='';
 		}
 
@@ -2527,6 +2617,10 @@
 
 		if(typeof config.mobileformat == 'undefined'){
 			config.mobileformat=false;
+		}
+
+        if(typeof config.queueObjects == 'undefined'){
+			config.queueObjects=true;
 		}
 
 		if(typeof config.rootdocumentdomain != 'undefined' && config.rootdocumentdomain != ''){
@@ -2647,6 +2741,8 @@
 
 		});
 
+        readyInternal(initReadyQueue);
+
 	    return root.Mura
 	}
 
@@ -2691,6 +2787,7 @@
 			deepExtend:deepExtend,
 			ajax:ajax,
 			changeElementType:changeElementType,
+            setHTMLEditor:setHTMLEditor,
 			each:each,
 			parseHTML:parseHTML,
 			getData:getData,
@@ -2722,7 +2819,8 @@
 			trim:trim,
 			hashCode:hashCode,
 			DisplayObject:{},
-			displayObjectInstances:{}
+			displayObjectInstances:{},
+            holdReady:holdReady
 			}
 		),
 		//these are here for legacy support

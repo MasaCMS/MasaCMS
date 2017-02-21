@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 																		arguments.siteid,
 																		arguments.contentid,
 																		getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),
-																		cookie.originalURLToken,
+																		cookie.MXP_TRACKINGID,
 																		sessionData.mura.fname,
 																		sessionData.mura.lname,
 																		sessionData.mura.company

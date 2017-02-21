@@ -24,6 +24,10 @@
 <cfset attributes.minutename="">
 <cfset attributes.daypartname="">
 
+<cfif isDate(attributes.datetime) and dateDiff('yyyy',now(),attributes.datetime) gt 50>
+	<cfset attributes.datetime=''>
+</cfif>
+
 <cfscript>
 	if(server.coldfusion.productname != 'ColdFusion Server'){
 		backportdir='';

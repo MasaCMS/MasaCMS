@@ -13,7 +13,7 @@
 <cfoutput>
 
 <div class="mura-header">
-	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.editableregiontargeting')#</h1>
+	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.custominitjs')#</h1>
 </div> <!-- /.mura-header -->
 
 <div class="alert alert-error">
@@ -37,8 +37,8 @@
 	</div> <!-- /.block-bordered -->
 	<div class="">
 		<p>Example:</p>
-		<pre>m('SELECTOR').addClass('mxp-editable')</pre>
-	</div>
+		<pre>Mura('SELECTOR').addClass('mxp-editable')</pre>
+	</div><br/>
 </div> <!-- /.block-constrain -->
 <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 <input type="hidden" name="remoteurl" value="#esapiEncode('html_attr',rc.remoteurl)#">

@@ -1,4 +1,4 @@
-""<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content gateway queries">
 
 <cffunction name="init" output="true">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" required="true" default="">
 		<cfargument name="setInheritance" required="true" type="boolean" default="false">
 		<cfargument name="path" required="true" default="">
+		<cfargument name="useCache" required="true" default="true">
 
 		<cfset var I=0>
 		<cfset var crumbdata="">
@@ -79,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 
-			<cfif NOT cacheFactory.has( key )>
+			<cfif NOT arguments.useCache or NOT cacheFactory.has( key )>
 				<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path) />
 				<cfif arrayLen(crumbdata) and arrayLen(crumbdata) lt 50>
 					<cfset crumbdata=cacheFactory.get( key, crumbdata ) />
@@ -424,7 +425,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif mxpRelevanceSort>
-				,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
+				,tracktotal.track_total_score as total_score, (stagetotal.stage_points + personatotal.persona_points) as total_points
 				</cfif>
 				FROM <cfif len(altTable)>#alttable#</cfif> tcontent #tableModifier#
 
@@ -437,14 +438,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif mxpRelevanceSort>
-					LEFT JOIN mxp_personapoints persona #tableModifier#
-					ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
+					left join (
+						select sum(persona.points) persona_points, persona.contenthistid
+						from mxp_personapoints persona
+						where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">
+						group by persona.contenthistid
+					) personatotal on (tcontent.contenthistid = personatotal.contenthistid)
 
-					LEFT JOIN mxp_stagepoints stage #tableModifier#
-					ON (tcontent.contenthistid=stage.contenthistid and stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">)
+					left join (
+						select sum(stage.points) stage_points, stage.contenthistid
+						from mxp_stagepoints stage
+						where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">
+						group by stage.contenthistid
+					) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
 
-					LEFT JOIN mxp_conversiontrack track #tableModifier#
-					ON (tcontent.contentid = track.contentid and track.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"> and track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">)
+					left join (
+						select sum(track.points) track_total_score, track.contentid
+						from mxp_conversiontrack track
+						where track.created >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#dateAdd('m',-1,nowAdjusted)#">
+						group by track.contentid
+					) tracktotal on (tcontent.contentid=tracktotal.contentid)
 				</cfif>
 
 				<cfif isExtendedSort>
@@ -727,19 +740,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 				#renderMobileClause()#
-
-				<cfif mxpRelevanceSort>
-				Group By
-				tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate,tcontent.summary, tcontent.tags,tcontent.filename, tcontent.type,tcontent.subType, tcontent.siteid,
-				tcontent.contentid, tcontent.contentHistID, tcontent.target, tcontent.targetParams,
-				tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
-				tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
-				tfiles.fileSize,tfiles.fileExt, tcontent.audience, tcontent.keypoints
-				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
-				,tcontentstats.comments,tcontent.path, tcontent.created, tcontent.nextn,
-				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
-				tfiles.filename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText,tcontent.changesetid
-				</cfif>
 
 				order by
 
@@ -1041,13 +1041,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortBy" type="string" required="true" default="lastUpdate">
 	<cfargument name="sortDirection" type="string" required="true" default="desc">
 	<cfset var rsDraftList = "">
+	<cfset var rsDraftList1 = "">
+	<cfset var rsDraftList2 = "">
+	<cfset var rsDraftList3 = "">
+	<cfset var rsDraftList4 = "">
 
 	<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
 		<cfset arguments.sortDirection='desc'>
 	</cfif>
 
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList')#">
 	<!--- Versions that have been assigned to you by someone else and there is another active version --->
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList1')#">
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
@@ -1070,11 +1074,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	</cfquery>
 
 	<!--- Versions that have been assigned to you by someone else and the assigned version is the active version --->
-
-	union
-
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList2')#">
 	SELECT DISTINCT draft.contenthistid,module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, draft.targetparams,draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
@@ -1096,11 +1099,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	</cfquery>
 
 	<!--- Versions that have been created by you --->
-
-	union
-
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList3')#">
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
@@ -1122,10 +1124,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isdate(arguments.startDate)>AND draft.lastUpdate >=  <cfqueryparam cfsqltype="#renderDateTimeParamType()#" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	and  module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND active.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	</cfquery>
 
 	<!--- Versions that have been created by you and it's the active version --->
-	union
-
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDraftList4')#">
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires
@@ -1149,9 +1151,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfquery name="rsDraftList" dbtype="query" maxrows="#arguments.limit#">
-	select * from rsDraftList
+	select * from rsDraftList1
+	union
+		select * from rsDraftList2
+	union
+		select * from rsDraftList3
+	union
+		select * from rsDraftList4
 	order by #arguments.sortBy# #arguments.sortDirection#
 	</cfquery>
+
 	<cfreturn rsDraftList />
 </cffunction>
 
@@ -2047,7 +2056,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				#renderMobileClause()#
 
-	ORDER BY supersort, priority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
+	ORDER BY supersort, priority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc, title
 	</cfquery>
 
 	<cfreturn rsPublicSearch />
@@ -2083,6 +2092,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsRelatedContent ="" />
 	<cfset var dbType=variables.configBean.getDbType() />
 	<cfset var tableModifier="">
+	<cfset var nowAdjusted="">
+
+	<cfif request.muraChangesetPreview and isStruct(getCurrentUser().getValue("ChangesetPreviewData"))>
+		<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
+	</cfif>
+
+	<cfif not isdate(nowAdjusted)>
+		<cfset nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+	</cfif>
 
 	<cfif dbtype eq "MSSQL">
 		<cfset tableModifier="with (nolock)">
@@ -2121,21 +2139,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
 	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
-	tcr.relatedContentSetID, tcr.orderNo
+	tcr.relatedContentSetID, tcr.orderNo, tcontent.displayInterval, tcontent.display
 	<cfif mxpRelevanceSort>
-	,sum(track.points) as total_score, ( stage.points + persona.points ) as total_points
+	,tracktotal.track_total_score as total_score, (stagetotal.stage_points + personatotal.persona_points) as total_points
 	</cfif>
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 
 	<cfif mxpRelevanceSort>
-		LEFT JOIN mxp_personapoints persona #tableModifier#
-		ON (tcontent.contenthistid=persona.contenthistid and persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">)
+		left join (
+			select sum(persona.points) persona_points, persona.contenthistid
+			from mxp_personapoints persona
+			where persona.personaid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.personaid#">
+			group by persona.contenthistid
+		) personatotal on (tcontent.contenthistid = personatotal.contenthistid)
 
-		LEFT JOIN mxp_stagepoints stage #tableModifier#
-		ON (tcontent.contenthistid=stage.contenthistid and stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">)
+		left join (
+			select sum(stage.points) stage_points, stage.contenthistid
+			from mxp_stagepoints stage
+			where stage.stageid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.mxp.trackingProperties.stageid#">
+			group by stage.contenthistid
+		) stagetotal on (tcontent.contenthistid = stagetotal.contenthistid)
 
-		LEFT JOIN mxp_conversiontrack track #tableModifier#
-		ON (tcontent.contentid = track.contentid and track.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"> and track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">)
+		left join (
+			select sum(track.points) track_total_score, track.contentid
+			from mxp_conversiontrack track
+			where track.created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',-1,now())#">
+			group by track.contentid
+		) tracktotal on (tcontent.contentid=tracktotal.contentid)
 	</cfif>
 
 	<cfif arguments.reverse>
@@ -2189,14 +2219,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> --->
 	and tcontent.siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
-	and tcontent.active=1
-
-
 	<cfif arguments.navOnly>
 		and tcontent.isnav=1
 	</cfif>
 
 	<cfif arguments.liveOnly>
+		#renderActiveClause("tcontent",arguments.siteID)#
+
 		AND tcontent.approved=1
 	 	AND (
 			(
@@ -2226,17 +2255,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   		tcontent.Display = 1
 		   	)
 		)
+	<cfelse>
+			and tcontent.active=1
 	</cfif>
 
 	#renderMobileClause()#
-
-	<cfif mxpRelevanceSort>
-	tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.lastupdatebyid, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
-	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
-	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype,
-	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
-	tcr.relatedContentSetID, tcr.orderNo
-	</cfif>
 
 	order by
 
@@ -2272,7 +2295,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cfquery>
 
-	<cfreturn rsRelatedContent />
+	<cfif arguments.liveOnly>
+		<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsRelatedContent,menuType="default",menuDate=nowAdjusted)>
+	<cfelse>
+		<cfreturn rsRelatedContent />
+	</cfif>
 
 </cffunction>
 
@@ -2932,7 +2959,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="renderDateTimeParamType">
 	<cfif variables.configBean.getDBType() eq 'Oracle'>
-		<cfreturn "cf_sql_date">
+		<!--- This was cf_sql_date,but it was loosing precision.  Looking for better solution--->
+		<cfreturn "cf_sql_timestamp">
 	<cfelse>
 		<cfreturn "cf_sql_timestamp">
 	</cfif>

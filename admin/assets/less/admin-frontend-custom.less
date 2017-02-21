@@ -282,10 +282,14 @@
 			}
 		}
 
+	#frontEndTools > ul + ul#tools-changesets {
+		margin-left: 22px !important;
+	}	
+	
 	#frontEndTools > ul#tools-changesets {
 
 			float: left !important;
-			margin-left: 22px !important;
+			margin-left: 44px;
 
 			li {
 				cursor: pointer !important;
@@ -443,8 +447,9 @@
 		li {
 			cursor: pointer !important;
 			display: block !important;
-			margin-bottom: 0 !important;
+			margin: 0 !important;
 			padding: 0;
+
 			}
 
 		a {
@@ -467,13 +472,12 @@
 			}
 
 		i {
-			//color: @grayDark !important;
-			top: 1px !important;
-			//font-size: 16px !important;
-			margin-left: 3px !important;
-			margin-right: 2px !important;
 			display: inline-block !important;
+			margin-left: 0 !important;
+			margin-right: 2px !important;
+			min-width: 16px !important;
 			text-align: center !important;
+			top: 1px !important;
 			}
 
 		li > a:hover i {
@@ -488,11 +492,16 @@
 	  position:relative;
 
 		> .dropdown-menu {
+			display: none;
 			margin-left: 0 !important;
 	    top:0 !important;
 	    left:100%;
 	    margin-top:-6px;
 	    margin-left:-1px;
+		}
+
+		&:hover > .dropdown-menu{
+			display:block !important;
 		}
 
 		a {
@@ -509,6 +518,7 @@
 	#frontEndTools > ul > li#adminSave .dropdown-menu,
 	#frontEndTools > ul > li#adminPreview .dropdown-menu{
 		margin-left: 0 !important;
+		width: auto !important;
 	}
 
 	.dropdown-submenu:hover > .dropdown-menu,

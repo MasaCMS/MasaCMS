@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanExtendable" entityName="content" table="tcontent" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" entityName="content" table="tcontent" output="false" hint="This provides content functionality">
 
 <cfproperty name="contentHistID" fieldtype="id" type="string" default="" required="true" comparable="false"/>
 <cfproperty name="contentID" type="string" default="" required="true" comparable="false"/>
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="expires" type="date" default=""/>
 <cfproperty name="assocFilename" type="string" default=""/>
-<cfproperty name="displayInterval" default="Daily" />
+<cfproperty name="displayInterval" type="any" default="Daily" />
 <cfproperty name="requestID" type="string" default="" comparable="false"/>
 <cfproperty name="approvalStatus" type="string" default=""/>
 <cfproperty name="approvalGroupID" type="string" default="" comparable="false"/>
@@ -853,35 +853,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDisplayInterval" output="false">
 	<cfargument name="displayInterval">
 
+	<cfif isJSON(arguments.displayInterval)>
+		<cfset arguments.displayInterval=deserializeJSON(arguments.displayInterval)>
+	</cfif>
+
 	<cfif not isSimpleValue(arguments.displayInterval)>
 
 		<cfif isValid('component',arguments.displayInterval)>
 			<cfset arguments.displayInterval=arguments.displayInterval.getAllValues()>
+		<cfelseif isdefined('arguments.displayInterval.endon')>
+			<cfset arguments.displayInterval.endon=parseDateArg(arguments.displayInterval.endon)>
 		</cfif>
 
 		<cfif isDefined('arguments.displayInterval.end')>
 			<cfif arguments.displayInterval.end eq 'on'
 			and isDefined('arguments.displayInterval.endon')
 			and isDate(arguments.displayInterval.endon)>
-				<cfset setValue('displayStop',arguments.displayInterval.end)>
+				<cfif not isDate(getValue('displayStop'))
+				or dateFormat(getValue('displayStop'),'yyyymmdd') neq dateFormat(arguments.displayInterval.endon,'yyyymmdd')>
+					<cfset setValue('displayStop',arguments.displayInterval.endon)>
+				</cfif>
 			<cfelseif arguments.displayInterval.end eq 'after'
 				and isDefined('arguments.displayInterval.endafter')
 				and isNumeric(arguments.displayInterval.endafter)
 				or arguments.displayInterval.end eq 'never'>
-				<cfif isDate(getValue('displayStop'))>
-					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStop')))>
-				<cfelse>
-					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
-				</cfif>
+				<cfset setValue('displayStop',dateAdd('yyyy',100,now()))>
 			</cfif>
 		</cfif>
 
 		<cfif isDefined('arguments.displayInterval.end') and arguments.displayInterval.end eq 'on'
 			and (!isDefined('arguments.displayInterval.endon') or !isDate(arguments.displayInterval.endon))>
-			<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
+			<cfdump var="#getValue('displayStart')#">
+			<cfdump var="#arguments#">
+			<cfset setValue('displayStop',dateAdd('yyyy',100,now()))>
 			<cfset arguments.displayInterval.endon='never'>
 		</cfif>
-		
+
 		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
 	</cfif>
 
@@ -890,7 +897,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayIntervalDesc" output="false">
-	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(this)>
+	<cfargument name="showTitle" default="true">
+	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(content=this,showTitle=arguments.showTitle)>
 </cffunction>
 
 <cffunction name="getDisplayInterval" output="false">
@@ -942,21 +950,46 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn returnList>
 </cffunction>
 
+<cffunction name="removeCategory" output="false">
+	<cfargument name="categoryID"  required="true" default="" hint="only use when not using name"/>
+	<cfargument name="name"  required="true" default="" hint="only use when not using categoryid"/>
+	<cfset setCategory(arguments.categoryid,'')>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setCategory" output="false">
-	<cfargument name="categoryID"  required="true" default=""/>
-	<cfargument name="isFeature"  required="true" default="0"/>
+	<cfargument name="categoryID"  required="true" default="" hint="only use when not using name"/>
+	<cfargument name="membership"  required="true" default="0"/>
 	<cfargument name="featureStart"  required="true" default=""/>
 	<cfargument name="featureStop"  required="true" default=""/>
+	<cfargument name="name"  required="true" default="" hint="only use when not using categoryid"/>
+
+	<cfif len(arguments.name)>
+		<cfset arguments.categoryid=getBean('category').loadBy(name=arguments.name,siteid=getValue('siteid')).getCategoryID()>
+	<cfelseif len(arguments.categoryid) and not isValid('uuid',arguments.categoryid)>
+		<cfset arguments.categoryid=getBean('category').loadBy(name=arguments.categoryid,siteid=getValue('siteid')).getCategoryID()>
+	</cfif>
+
+	<cfif isDefined('arguments.isFeature')>
+		<cfset arguments.membership=arguments.isFeature>
+	</cfif>
 
 	<cfset var catTrim=replace(arguments.categoryID,'-','','ALL')>
 
-	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.isFeature />
+	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.membership />
 
-	<cfif not listFind(variables.instance.categoryID,arguments.categoryID)>
-		<cfset variables.instance.categoryID=listAppend(variables.instance.categoryID,arguments.categoryID)>
+	<cfif isNumeric(arguments.membership)>
+		<cfif not listFind(variables.instance.categoryID,arguments.categoryID)>
+			<cfset variables.instance.categoryID=listAppend(variables.instance.categoryID,arguments.categoryID)>
+		</cfif>
+	<cfelse>
+		<cfset var catPOS=listFind(variables.instance.categoryID,arguments.categoryID)>
+		<cfif catPOS>
+			<cfset variables.instance.categoryID=listDeleteAt(variables.instance.categoryID,catPOS)>
+		</cfif>
 	</cfif>
 
-	<cfif arguments.isFeature eq "2">
+	<cfif arguments.membership eq "2">
 		<cfif isdate(arguments.featureStart)>
 			<cfset variables.instance['featureStart#catTrim#']=arguments.featureStart />
 			<cfset variables.instance['startDayPart#catTrim#']=timeFormat(arguments.featureStart,"tt") />

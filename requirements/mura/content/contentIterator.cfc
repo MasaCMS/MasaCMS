@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.iterator.queryIterator" output="false">
+<cfcomponent extends="mura.iterator.queryIterator" output="false" hint="This provides content iterating functionality">
 
 <cfset variables.content="">
 <cfset variables.recordIDField="contenthistid">
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset QuerySetCell(variables.records, arguments.idType, idArray[i])>
 		<cfset QuerySetCell(variables.records, 'siteID',arguments.siteid)>
 	</cfloop>
-	
+
 	<cfset variables._recordcount=variables.records.recordcount>
 	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
 	<cfset variables.recordIndex = 0 />

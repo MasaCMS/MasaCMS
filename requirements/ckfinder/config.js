@@ -13,5 +13,6 @@ CKFinder.customConfig = function( config )
 	// config.uiColor = '#BDE31E';
 	// config.language = 'fr';
 	config.removePlugins = 'flashupload,basket';
+	config.rememberLastFolder=true;
 
 };

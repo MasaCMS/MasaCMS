@@ -23,21 +23,23 @@ StructAppend(attributes, form, "no");
 		<title>Select Link</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta content="noindex, nofollow" name="robots">
-    <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+    <script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+		<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="#application.configBean.getContext()#/requirements/ckeditor/skins/mura/dialog.css">
 	</head>
 </cfoutput>
 <body id="mura-select-link">
 <cfoutput>
-<h2>Keyword Search</h2>
-<form id="mura-link-search" name="siteSearch" method="post">
- <input id="keywords" name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="span4" maxlength="50"/>
-	<input type="hidden" name="fuseaction" value="cArch.search">
-	<input type="hidden" name="siteid" value="#session.siteid#">
-	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
-	<input class="btn" type="submit" onClick="return submitForm(document.forms.siteSearch);" value="Search">
+<h4>Keyword Search</h4>
+<form id="mura-link-search" class="form-inline" name="siteSearch" method="post">
+  <div class="mura-input-set">
+   <input id="keywords" name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="span4" maxlength="50"/>
+    <input class="btn" type="submit" onclick="document.getElementById('mura-link-search').submit();" value="Search">
+  </div>
+  	<input type="hidden" name="fuseaction" value="cArch.search">
+  	<input type="hidden" name="siteid" value="#session.siteid#">
+  	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
 </form>
 
 </cfoutput>
@@ -47,8 +49,8 @@ StructAppend(attributes, form, "no");
  <table class="table table-condensed table-bordered table-striped mura-table-grid">
  <thead>
     <tr>
-	  <th class="actions"></th> 
-      <th class="varWidth">Title</th>
+	  <th class="actions"></th>
+      <th class="var-width">Title</th>
     </tr>
  </thead>
  <tbody>
@@ -57,14 +59,14 @@ StructAppend(attributes, form, "no");
 		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
         <tr>
         <td class="actions"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>
-        <td class="varWidth">
+        <td class="var-width">
           	 #application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#
           </td>
-		  
+
 		</tr>
        </cfoutput>
       <cfelse>
-      <tr> 
+      <tr>
         <td colspan="2" class="results"><em>Your search returned no results.</em></td>
       </tr>
     </cfif>
@@ -98,4 +100,3 @@ StructAppend(attributes, form, "no");
 #application.pluginManager.renderScripts("onLinkSelect",session.siteid, createObject("component","mura.event").init(attributes) ,rsPluginScripts)#
 </cfoutput>
 </cfif>
-

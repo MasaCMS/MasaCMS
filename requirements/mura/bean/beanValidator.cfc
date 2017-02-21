@@ -45,7 +45,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component output="false" accessors="true" extends="mura.cfobject" {
+component output="false" accessors="true" extends="mura.cfobject" hint="This provides validation to entities" {
 
 	public struct function getValidationsByContext(required any object, string context="") {
 
@@ -248,8 +248,15 @@ component output="false" accessors="true" extends="mura.cfobject" {
 
 		var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
 
+		//Translate from db types to CF types
 		if(arguments.constraintValue=='datetime'){
 			arguments.constraintValue='date';
+		} else if (listFindNoCase('varchar,char,text,longtext,mediumtext,clob,nvarchar',arguments.constraintValue)){
+			arguments.constraintValue='string';
+		} else if (listFindNoCase('tinyint,int,smallint',arguments.constraintValue)){
+			arguments.constraintValue='integer';
+		} else if (arguments.constraintValue=='double'){
+			arguments.constraintValue='float';
 		}
 
 		if(listFindNoCase("any,array,binary,boolean,component,creditCard,date,time,email,eurodate,float,numeric,guid,integer,query,range,ssn,social_security_number,string,telephone,url,uuid,usdate,zipcode",arguments.constraintValue)) {
@@ -452,7 +459,13 @@ component output="false" accessors="true" extends="mura.cfobject" {
 	}
 
 	public boolean function validate_regex(required any object, required string propertyIdentifier, required string constraintValue) {
-		var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
+		var fileManager=getBean('fileManager');
+		if(fileManager.isPostedFile(arguments.propertyIdentifier)){
+			var propertyValue = fileManager.getPostedClientFileName(arguments.propertyIdentifier);
+		} else {
+			var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
+		}
+
 		if(isNull(propertyValue) || isValid("regex", propertyValue, arguments.constraintValue)) {
 			return true;
 		}

@@ -19,9 +19,7 @@
 *            - 2012-04-19 - add addAliases method
 * @note coding style is implied by the target usage of this script not my habbits
 */
-	/** gEval credits goes to my javascript idol John Resig, this is a simplified jQuery.globalEval */
-	var gEval = function(js){ ( root.execScript || function(js){ root[ "eval" ].call(root,js);} )(js); }
-		, isA =  function(a,b){ return a instanceof (b || Array);}
+	var isA =  function(a,b){ return a instanceof (b || Array);}
 		//-- some minifier optimisation
 		, D = document
 		, getElementsByTagName = 'getElementsByTagName'
@@ -33,8 +31,8 @@
 		, scriptTag = scripts[scripts[length]-1]
 		, script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
 	;
-	//avoid multiple inclusion to override current loader but allow tag content evaluation
 
+	//avoid multiple inclusion to override current loader but allow tag content evaluation
 	if( ! root.Mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
@@ -78,8 +76,11 @@
 				}
 				if( url.match(/\.css\b/) ){
 					return this.loadcss(url,cb);
+				} else if( url.match(/\.html\b/) ){
+					return this.loadimport(url,cb);
+				} else {
+					return this.loadjs(url,cb);
 				}
-				return this.loadjs(url,cb);
 			}
 			,loaded = {}  // will handle already loaded urls
 			,loader  = {
@@ -193,6 +194,43 @@
 					cb && cb();
 					return this;
 				}
+				,loadimport: function(url,attrs,cb){
+
+					if(typeof url == 'object'){
+						if(Array.isArray(url)){
+							return loader.load.apply(this, arguments);
+						} else if(typeof attrs === 'function'){
+							cb=attrs;
+							attrs=url;
+							url=attrs.href
+						} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+							return loader.load.apply(this, arguments);
+						} else {
+							attrs=url;
+							url=attrs.href;
+							cb=undefined;
+						}
+					} else if (typeof attrs=='function' ) {
+						cb = attrs;
+						attrs = {};
+					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+						return loader.load.apply(this, arguments);
+					}
+
+					var parts = urlParse(url);
+					parts={rel:'import',href:url,id:parts.i}
+
+					if(typeof attrs !=='undefined'){
+						for(var a in attrs){
+							parts[a]=attrs[a];
+						}
+					}
+
+					loaded[parts.href] || appendElmt('link',parts);
+					loaded[parts.href] = true;
+					cb && cb();
+					return this;
+				}
 				,load: function(){
 					var argv=arguments,argc = argv[length];
 					if( argc === 1 && isA(argv[0],Function) ){
@@ -218,12 +256,12 @@
 			}
 			links = D[getElementsByTagName]('link');
 			for(i=0,l=links[length];i<l;i++){
-				(links[i].rel==='stylesheet' || links[i].type==='text/css') && (loaded[links[i].getAttribute('href').replace(/#.*$/,'')]=true);
+				(links[i].rel==='import' || links[i].rel==='stylesheet' || links[i].type==='text/css') && (loaded[links[i].getAttribute('href').replace(/#.*$/,'')]=true);
 			}
 		}
 		//export ljs
 		root.Mura.ljs = loader;
 		// eval inside tag code if any
 	}
-	script && gEval(script);
+	scriptTag.src && script && appendElmt('script', {innerHTML: script});
 })(this);

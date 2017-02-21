@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" output="false" hint="This is provides base feed functionality for all entities">
 
 	<cfproperty name="entityName" type="string" default="" />
 	<cfproperty name="table" type="string" default="" />
@@ -52,6 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="nextN" type="numeric" default="0" required="true" />
 	<cfproperty name="maxItems" type="numeric" default="0" required="true" />
 	<cfproperty name="siteID" type="string" default="" />
+	<cfproperty name="contentpoolid" type="string" default="" />
 	<cfproperty name="sortBy" type="string" default="" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
 	<cfproperty name="orderby" type="string" default=""/>
@@ -71,6 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.addObjects=[]>
 	<cfset variables.instance.removeObjects=[]>
 	<cfset variables.instance.siteID="">
+	<cfset variables.instance.contentPoolID="">
 	<cfset variables.instance.entityName=""/>
 	<cfset variables.instance.table="">
 	<cfset variables.instance.keyField="">
@@ -110,6 +112,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="orderby">
 	<cfset variables.instance.orderby=arguments.orderby>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getContentPoolID" output="false">
+
+	<cfif not len(variables.instance.contentpoolid)>
+		<cfset variables.instance.contentpoolid=variables.instance.siteid />
+	<cfelseif variables.instance.contentpoolid eq '*'>
+		<cfset variables.instance.contentpoolid=getBean('settingsManager').getSite(variables.instance.siteid).getContentPoolID() />
+	</cfif>
+
+	<cfreturn variables.instance.contentpoolid>
 </cffunction>
 
 <cffunction name="getSort" output="false">
@@ -378,6 +391,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn isDefined("application.objectMappings.#getValue('entityName')#.discriminatorColumn") and len(application.objectMappings[getValue('entityName')].discriminatorColumn)>
 </cffunction>
 
+<cffunction name="getIsHistorical" output="false">
+	<cfreturn isDefined("application.objectMappings.#getValue('entityName')#.historical") and IsBoolean(application.objectMappings[getValue('entityName')].historical) and application.objectMappings[getValue('entityName')].historical>
+</cffunction>
+
 <cffunction name="getDiscriminatorColumn" output="false">
 	<cfreturn application.objectMappings[getValue('entityName')].discriminatorColumn>
 </cffunction>
@@ -442,13 +459,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		select <cfif not arguments.countOnly and dbtype eq "mssql" and variables.instance.maxItems>top #val(variables.instance.maxItems)#</cfif>
 
 		<cfif not arguments.countOnly>
-			#getTableFieldList()#
+			<cfif len(getEntity().getLoadSQLColumnsAndTables())>
+				#getEntity().getLoadSQLColumnsAndTables()#
+			<cfelse>
+				#getTableFieldList()#
+				from #variables.instance.table#
+			</cfif>
+
 		<cfelse>
-			count(*) as count
+			count(*) as count from #variables.instance.table#
 		</cfif>
 
-		from #variables.instance.table#
+		<cfif getIsHistorical()>
+			<cfset var primaryKey=getEntity().getPrimaryKey()>
 
+			inner join (
+				select #primaryKey# primarykey, max(lastupdate) lastupdatemax from #variables.instance.table#
+				where
+			  	lastupdate <= <cfif isDate(request.muraPointInTime)>
+								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#request.muraPointInTime#">
+							<cfelse>
+								<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+							</cfif>
+				group by #primaryKey#
+
+			) activeTable
+			 on (
+			 	#variables.instance.table#.#primaryKey#=activeTable.primarykey
+				and #variables.instance.table#.lastupdate=activeTable.lastupdatemax
+			 )
+		</cfif>
 		<!--- Join to implied tables based on field prefix --->
 		<cfloop list="#jointables#" index="jointable">
 			<cfset started=false>
@@ -479,7 +519,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			(not isDefined('application.objectMappings.#getValue('entityName')#.columns') and len(variables.instance.siteID))
 			or
 			 (hasColumn('siteid') and len(variables.instance.siteID))>
-			siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>
+			#variables.instance.table#.siteID in (<cfqueryparam cfsqltype="cf_sql_varchar" list=true value="#getContentPoolID()#"/>)
 		<cfelse>
 			1=1
 		</cfif>
@@ -527,7 +567,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(param.getField())>
 					#param.getFieldStatement()#
 					<cfif param.getCriteria() eq 'null'>
-						IS NULL
+						#param.getCondition()# NULL
 					<cfelse>
 						#param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
 					</cfif>
@@ -536,6 +576,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 		<cfif started>)</cfif>
+	</cfif>
+
+	<cfif getIsHistorical()>
+		and #variables.instance.table#.deleted=0
 	</cfif>
 
 	<cfif not arguments.countOnly>
@@ -615,7 +659,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="property">
 	<cfif listLen(arguments.property,'.') eq 2>
 		<cfset var propArray=listToArray(arguments.property,'.')>
-		<cfset arguments.property=application.objectMapping[propArray[1]].table & '.' & propArray[2]>
+		<cfset arguments.property=application.objectMappings[propArray[1]].table & '.' & propArray[2]>
 	</cfif>
 	<cfset variables.instance.pendingParam.relationship='and'>
 	<cfset variables.instance.pendingParam.column=arguments.property>
@@ -842,13 +886,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var column = "">
 
 	<cfloop list="#arguments.orderBy#" index="orderByValue">
-		<cfset table = variables.instance.entityName>
+		<cfset table = getEntity().getTable()>
 		<cfset column = listfirst(orderByValue, " ")>
 		<cfif listlen(column, ".") eq 2>
 			<cfset table = listfirst(column, ".")>
 			<cfset column = listrest(column, ".")>
 		</cfif>
-		<cfif structkeyexists(application.objectMappings, table) and structkeyexists(application.objectMappings[table]["columns"], column) and listfindnocase("char,varchar", application.objectMappings[table]["columns"][column]["dataType"])>
+
+		<cfif len(column) and structkeyexists(application.objectMappings, table) and structkeyexists(application.objectMappings[table]["columns"], column) and listfindnocase("char,varchar", application.objectMappings[table]["columns"][column]["dataType"])>
 			<cfset orderByList = listappend(orderByList, "lower(" & column & ") " & listrest(orderByValue, " ")) />
 		<cfelse>
 			<cfset orderByList = listappend(orderByList, orderByValue) />

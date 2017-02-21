@@ -304,10 +304,10 @@
 				<div class="mura-actions">
 					<div class="form-actions">
 						<cfif rc.userid eq ''>
-							<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
+							<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'add');"><i class="mi-check-circle"></i>#rbKey('user.add')#</button>
 						<cfelse>
-							<button class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
-							<button class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
+							<button type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');"><i class="mi-trash"></i>#rbKey('user.delete')#</button>
+							<button type="button" class="btn mura-primary" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i>#rbKey('user.update')#</button>
 						</cfif>
 
 						<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />

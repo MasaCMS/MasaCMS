@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanExtendable" entityName="user" table="tusers" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" entityName="user" table="tusers" output="false" hint="This provides the User bean">
 
 <cfproperty name="userID" fieldtype="id" type="string" />
 <cfproperty name="remoteID" type="string" default="" />
@@ -707,6 +707,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="login" output="false">
 	<cfset getBean('userUtility').loginByUserID(userid=getValue('userid'),siteid=getValue('siteid'))>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFileMetaData" output="false">
+	<cfargument name="property" default="fileid">
+	<cfreturn getBean('fileMetaData').loadBy(contentid=getValue('userid'),contentHistID=getValue('userid'),siteID=getValue('siteid'),fileid=getValue(arguments.property))>
 </cffunction>
 
 </cfcomponent>

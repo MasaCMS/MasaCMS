@@ -1,6 +1,6 @@
 {
     "name":"Mura CMS",
-    "version":"7.0.0",
+    "version":"0.0.0",
     "author":"Blue River Interactive Group, Inc.",
     "location":"https://github.com/blueriver/MuraCMS/archive/master.zip",
     "directory":"",
@@ -14,39 +14,59 @@
     },
     "bugs":"",
     "slug":"muracms",
-    "shortDescription":"Mura CMS is an open source content management system for CFML.",
+    "shortDescription":"A sweet package",
     "description":"Mura CMS is an open source content management system for CFML, created by Blue River Interactive Group. Mura has been designed to be used by marketing departments, web designers and developers.",
     "instructions":"",
     "changelog":"",
     "type":"cms",
-    "keywords":[ "mura", "cms", "cfml", "content management system", "content", "management", "system" ],
+    "keywords":[
+        "mura",
+        "cms",
+        "cfml",
+        "content management system",
+        "content",
+        "management",
+        "system"
+    ],
     "private":false,
     "engines":[
-        { "type" : "railo", "version" : ">=4.0.x" },
-        { "type" : "lucee", "version" : ">=4.5.x" },
-        { "type" : "adobe", "version" : ">=9.0.0" }
+        {
+            "type":"lucee",
+            "version":">=4.5.x"
+        },
+        {
+            "type":"adobe",
+            "version":">=10.0.0"
+        }
     ],
     "defaultEngine":"lucee",
     "defaultPort":0,
     "projectURL":"",
     "license":[
-        { "type" : "GPL-2.0 with execptions", "URL" : "https://github.com/blueriver/MuraCMS/blob/develop/license.txt" }
+        {
+            "type":"GPL-2.0 with execptions",
+            "URL":"https://github.com/blueriver/MuraCMS/blob/develop/license.txt"
+        }
     ],
     "contributors":[
-
+        
     ],
     "dependencies":{
-
+        "docbox":"2.0.7",
+        "testbox":"2.4.0+80"
     },
     "devDependencies":{
-
+        "testbox":"^2.3.0+00044",
+        "docbox":"^2.0.7+00005"
     },
     "installPaths":{
-
+        "testbox":"requirements/testbox",
+        "docbox":"requirements/docbox"
+    },
+    "scripts":{
+        
     },
     "ignore":[
-        ".git/*",
-        ".gitignore",
         "**/.*",
         "test",
         "tests"
@@ -54,11 +74,14 @@
     "testbox":{
         "runner":[
             {
-                "default":""
+                "adobe":"http://localhost:53644/requirements/tests/runner.cfm"
+            },
+            {
+                "lucee":"http://localhost:53645/requirements/tests/runner.cfm"
             }
         ],
         "labels":[
-
+            
         ],
         "reporter":"",
         "reporterResults":"",
@@ -66,15 +89,15 @@
             ""
         ],
         "directory":{
-            "mapping":"",
+            "mapping":"murawrm.requirements.tests.specs",
             "recurse":true
         },
         "watchers":[
-
+            
         ],
         "notify":{
             "emails":[
-
+                
             ],
             "growl":"",
             "URL":""

@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="rcAdvancedSearch" style="display:none;">
 			<div class="mura-control-group">
 				<cfif rc.relatedcontentsetid neq 'calendar'>
-					
+
 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.contenttype')#</label>
 					<select name="searchTypeSelector" id="searchTypeSelector">
 						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.all')#</option>
@@ -165,16 +165,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</select>
 
 				</cfif>
-			</div>	
+			</div>
 		<div class="mura-control-group">
 			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
 			<div class="mura-control-inline">
 				<label>#application.rbFactory.getKeyValue(session.rb,"params.from")#</label>
-				<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" /> 
+				<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" />
 				<label>#application.rbFactory.getKeyValue(session.rb,"params.to")#</label>
 				 <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
 			</div>
-		</div>
 		</div>
 		<div class="mura-control-group">
 			<div class="mura-control justify">
@@ -183,6 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.rcCategoryID#" nestLevel="0" useID="0" elementName="rcCategoryID">
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 </cfoutput>
@@ -200,12 +200,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.setShowNavOnly(0);
 			feed.setSortBy("lastupdate");
 			feed.setSortDirection("desc");
-			feed.setContentPoolID(arguments.siteid);
+			feed.setContentPoolID($.siteConfig('contentpoolid'));
 
 			feed.addParam(field="active", criteria=1, condition="eq");
 			feed.addParam(field="contentid", criteria=$.event('contentid'), condition="neq");
 
-			if(rc.relatedcontentsetid=='calendar'){
+			if(isDefined('rc.relatedcontentsetid') && rc.relatedcontentsetid=='calendar'){
 				feed.addParam(field="tcontent.type",criteria='Calendar',condition="eq");
 			} else {
 				if (len($.event("searchTypeSelector"))) {
@@ -226,7 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 
 				if (len($.event("rcEndDate"))) {
-					feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));
+					feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.parseDateArg($.event("rcEndDate"))));
 				}
 
 				feed.addParam(relationship=")");
@@ -250,7 +250,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 
 				if (len($.event("rcEndDate"))) {
-					feed.addParam(field="tcontent.featureStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));
+					feed.addParam(field="tcontent.featureStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.parseDateArg($.event("rcEndDate"))));
 				}
 
 				feed.addParam(relationship=")");

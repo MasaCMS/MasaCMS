@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" displayname="FormBuilderManager" output="false">
+<cfcomponent extends="mura.cfobject" displayname="FormBuilderManager" output="false" hint="This provides form service level logic functionality">
 	<cfset variables.fields		= StructNew()>
 
 	<cffunction name="init" output="false" returntype="FormBuilderManager">
@@ -52,8 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset variables.configBean = configBean />
 
-		<cfset variables.filePath = "#expandPath("/muraWRM")#/admin/core/utilities/formbuilder/templates" />
-		<cfset variables.templatePath = "/muraWRM/admin/core/utilities/formbuilder/templates" />
+		<cfset variables.filePath = "#expandPath("/muraWRM")##variables.configBean.getAdminDir()#/core/utilities/formbuilder/templates" />
+		<cfset variables.templatePath = "/muraWRM#variables.configBean.getAdminDir()#/core/utilities/formbuilder/templates" />
 		<cfset variables.fields["en"] = StructNew()>
 
 		<cfreturn this/>

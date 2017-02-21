@@ -1,4 +1,4 @@
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides trash service logic functionality">
 
 <cfset variables.configBean="">
 
@@ -25,7 +25,7 @@
 
 	<cfloop query="rs">
 		<cftransaction>
-			
+
 		<!--- CONTENT --->
 		 <cfquery>
 			delete from tcontentratings

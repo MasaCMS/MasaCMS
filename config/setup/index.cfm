@@ -94,4 +94,3 @@ to your own modified versions of Mura CMS.
 <cfinclude template="inc/_wrapperStart.cfm" />
 <cfinclude template="inc/_form.cfm" />
 <cfinclude template="inc/_wrapperEnd.cfm" />
-

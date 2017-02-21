@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides content utility methods">
 
 <cffunction name="init" output="false">
 		<cfargument name="contentDAO" type="any" required="yes"/>
@@ -569,7 +569,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset versionLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
 		</cfif>
 	<cfelse>
-		<cfset versionLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/?muraAction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
+		<cfset versionLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.configBean.getAdminDir()#/?muraAction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
 	</cfif>
 
 	<cfquery>
@@ -580,7 +580,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		)
 	</cfquery>
 	</cfif>
-	<cfset historyLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/?muraAction=cArch.hist&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#'>
+	<cfset historyLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.configBean.getAdminDir()#/?muraAction=cArch.hist&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#'>
 
 	<cfquery>
 		insert into tredirects (redirectID,URL,created) values(
@@ -986,7 +986,7 @@ Sincerely,
 
 	<cfset contentBean.setCreated(now())>
 	<cfset contentBean.save()>
-	
+
 	<cfset newContentHistID=contentBean.getContentHistID()>
 	<cfset newContentID=contentBean.getContentID()>
 

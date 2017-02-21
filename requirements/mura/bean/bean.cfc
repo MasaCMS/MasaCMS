@@ -45,7 +45,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
-component extends="mura.cfobject" output="false" {
+component extends="mura.cfobject" output="false" hint="This provides core bean functionality"{
 
 	property name="errors" type="struct" persistent="false" comparable="false";
 	property name="isNew" type="numeric" persistent="false" default="1";
@@ -523,6 +523,11 @@ component extends="mura.cfobject" output="false" {
 		return this;
 	}
 
+	function getIsHistorical(){
+		param name="application.objectMappings.#variables.entityName#.historical" default=false;
+		return application.objectMappings[variables.entityName].historical;
+	}
+
 	function getPrimaryKey(){
 		return variables.primarykey;
 	}
@@ -566,7 +571,8 @@ component extends="mura.cfobject" output="false" {
 					var pname='';
 					var i='';
 					var prop={};
-					var md=duplicate(getMetaData(this));
+					var omd=duplicate(getMetaData(this));
+					var md=omd;
 					var loadKey="";
 					var dottedPath=md.fullname;
 					var synthArgs={};
@@ -579,7 +585,6 @@ component extends="mura.cfobject" output="false" {
 
 					application.objectMappings[variables.entityName].properties={};
 					application.objectMappings[variables.entityName].primarykey="";
-
 
 					if(structKeyExists(md,'versioned') && md.versioned){
 						application.objectMappings[variables.entityName].versioned=true;
@@ -651,6 +656,12 @@ component extends="mura.cfobject" output="false" {
 						application.objectMappings[variables.entityName].readonly=false;
 					}
 
+					if(structKeyExists(md,'historical')){
+						application.objectMappings[variables.entityName].historical=md.historical;
+					} else {
+						application.objectMappings[variables.entityName].historical=false;
+					}
+
 					if(structKeyExists(md,'manageschema')){
 						application.objectMappings[variables.entityName].manageschema=md.manageschema;
 					} else {
@@ -663,11 +674,36 @@ component extends="mura.cfobject" output="false" {
 						application.objectMappings[variables.entityName].usetrash=false;
 					}
 
+					//Need to set top level historcal entity level property based on property check before fully parsing properties
+
 					for (md;
 					    structKeyExists(md, "extends");
 					    md = md.extends)
 					  {
 
+					    if (structKeyExists(md, "properties"))
+					    {
+					      for (i = 1;
+					           i <= arrayLen(md.properties);
+					           i++)
+					      {
+
+							  if(structKeyExists(md.properties[i],'historical') && isBoolean(md.properties[i].historical) && md.properties[i].historical){
+								  application.objectMappings[variables.entityName].historical=true;
+								  break;
+							  }
+
+						  }
+					  }
+				    }
+
+					//reset to original component metadata
+					md=omd;
+
+					for (md;
+					    structKeyExists(md, "extends");
+					    md = md.extends)
+					  {
 					    if (structKeyExists(md, "properties"))
 					    {
 					      for (i = 1;
@@ -699,9 +735,10 @@ component extends="mura.cfobject" output="false" {
 					       	 	}
 
 					       	 	if(prop.fieldtype eq 'id'){
-					       	 		application.objectMappings[variables.entityName].primaryKey=prop.name;
-					       	 		setPropAsIDColumn(prop);
-					       	 		//writeDump(var=prop,abort=true);
+									setPropAsIDColumn(prop);
+									if(!getIsHistorical() || prop.name !='histid'){
+										application.objectMappings[variables.entityName].primaryKey=prop.name;
+									}
 					       	 	}
 
 					       	 	if(!structKeyExists(prop,"dataType")){
@@ -718,6 +755,10 @@ component extends="mura.cfobject" output="false" {
 					       	 	if(listFindNoCase('date,timetamp',prop.dataType)){
 					       	 		prop.dataType='datetime';
 					       	 	}
+
+								if(structKeyExists(prop,'relatesTo')){
+									prop.cfc=prop.relatesTo;
+								}
 
 					       	 	if(structKeyExists(prop,'cfc')){
 
@@ -765,7 +806,7 @@ component extends="mura.cfobject" output="false" {
 
 							       	 	if(structKeyExists(prop,"singularname")){
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
-											application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator'];
+											//application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator'];
 											application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Query']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#'];
@@ -817,13 +858,11 @@ component extends="mura.cfobject" output="false" {
 					       	 		}
 
 					       	 		param name="prop.cascade" default="none";
-
-					       	 		prop.persistent=true;
+									param name="prop.persistent" default=true;
 
 					       	 		if(prop.column=='primarykey'){
 					       	 			prop.persistent=false;
-					       	 		} else {
-					       	 			prop.persistent=true;
+					       	 		} else if(prop.persistent){
 					       	 			setPropAsIDColumn(prop,false);
 					       	 		}
 
@@ -948,70 +987,72 @@ component extends="mura.cfobject" output="false" {
 
 						for(var prop in props){
 
-							rules=[];
+							if(props[prop].persistent){
+								rules=[];
 
-							if(structKeyExists(props[prop], "fkcolumn")){
-								ruleKey=props[prop].fkcolumn;
-							} else {
-								ruleKey=prop;
-							}
-
-							if(structKeyExists(props[prop], "datatype") && props[prop].datatype != 'any'){
-								if(structKeyExists(props[prop], "message")){
-									rule={message=props[prop].message};
+								if(structKeyExists(props[prop], "fkcolumn")){
+									ruleKey=props[prop].fkcolumn;
 								} else {
-									rule={};
+									ruleKey=prop;
 								}
-								structAppend(rule,{datatype=props[prop].datatype});
-								arrayAppend(rules, rule);
-							}
 
-							if(structKeyExists(props[prop], "required") && props[prop].required){
-								if(structKeyExists(props[prop], "message")){
-									rule={message=props[prop].message};
-								} else {
-									rule={};
-								}
-								structAppend(rule,{required=props[prop].required});
-								arrayAppend(rules,rule);
-							}
-
-							if(structKeyExists(props[prop], "format")){
-								if(structKeyExists(props[prop], "message")){
-									rule={message=props[prop].message};
-								} else {
-									rule={};
-								}
-								structAppend(rule,{format=props[prop].format});
-								arrayAppend(rules,rule);
-							}
-
-							if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
-								if(structKeyExists(props[prop], "message")){
-									rule={message=props[prop].message};
-								} else {
-									rule={};
-								}
-								structAppend(rule,{maxLength=props[prop].length});
-								arrayAppend(rules,rule);
-							}
-
-							for(var r=1;r <= arrayLen(basicRules);r++){
-								if(structKeyExists(props[prop], basicRules[r])){
+								if(structKeyExists(props[prop], "datatype") && props[prop].datatype != 'any'){
 									if(structKeyExists(props[prop], "message")){
 										rule={message=props[prop].message};
 									} else {
 										rule={};
 									}
-									tempRule=props[prop];
-									structAppend(rule, {'#basicRules[r]#'=tempRule[basicRules[r]]});
+									structAppend(rule,{datatype=props[prop].datatype});
 									arrayAppend(rules, rule);
 								}
 
-							}
+								if(structKeyExists(props[prop], "required") && props[prop].required){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									structAppend(rule,{required=props[prop].required});
+									arrayAppend(rules,rule);
+								}
 
-							if(arrayLen(rules)){
-								application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
+								if(structKeyExists(props[prop], "format")){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									structAppend(rule,{format=props[prop].format});
+									arrayAppend(rules,rule);
+								}
+
+								if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									structAppend(rule,{maxLength=props[prop].length});
+									arrayAppend(rules,rule);
+								}
+
+								for(var r=1;r <= arrayLen(basicRules);r++){
+									if(structKeyExists(props[prop], basicRules[r])){
+										if(structKeyExists(props[prop], "message")){
+											rule={message=props[prop].message};
+										} else {
+											rule={};
+										}
+										tempRule=props[prop];
+										structAppend(rule, {'#basicRules[r]#'=tempRule[basicRules[r]]});
+										arrayAppend(rules, rule);
+									}
+
+								}
+
+								if(arrayLen(rules)){
+									application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
+								}
 							}
 						}
 					}
@@ -1096,6 +1137,7 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function exists() {
+		param name="variables.instance.isNew" default=1;
 		return !variables.instance.isNew;
 	}
 

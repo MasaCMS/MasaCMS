@@ -20,7 +20,7 @@ Access Restricted.
 <body>
 
 <div id="feedbackLoop" class="up">Starting the bundle push</div>
-<div id="feedbackIndicator"><img src="/admin/images/progress_bar.gif"></div>
+<div id="feedbackIndicator"><img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/images/progress_bar.gif"></div>
 
 <script language="javascript">
 	document.getElementById('feedbackLoop').innerHTML="Creating bundle";
@@ -33,7 +33,7 @@ Access Restricted.
 <cfset bundleFileName = application.serviceFactory.getBean("Bundle").Bundle(
 		siteID=siteID,
 		moduleID=ValueList(rsPlugins.moduleID),
-		BundleName='deployBundle', 
+		BundleName='deployBundle',
 		includeVersionHistory=false,
 		includeTrash=false,
 		includeMetaData=true,
@@ -62,7 +62,7 @@ Access Restricted.
 				document.getElementById('feedbackLoop').innerHTML="Deployment #counter# of #listLen(application.configBean.getServerList(),'^')# failed - aborting";
 			</script>
 			<cfif isWddx(result)>
-				<cfwddx action="wddx2cfml" input="#result#" output="errorMessage"> 
+				<cfwddx action="wddx2cfml" input="#result#" output="errorMessage">
 				<cfsavecontent variable="emailBody">
 					<cfdump var="#errorMessage#">
 				</cfsavecontent>

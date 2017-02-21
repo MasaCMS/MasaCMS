@@ -80,10 +80,17 @@
             <div class="mura-control-group">
                 <label>Endpoint</label>
                 <div>
-                    #rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#
+                    <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#</a>
                 </div>
-
             </div>
+            <cfif rc.bean.exists()>
+                <div class="mura-control-group">
+                    <label>Example Usage</label>
+                    <div>
+                        <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth/token?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth/token?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
+                    </div>
+                </div>
+            </cfif>
 
         </cfif>
 

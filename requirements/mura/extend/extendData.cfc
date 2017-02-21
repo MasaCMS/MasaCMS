@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,15 +36,15 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false" hint="This provides access to an extended instance's custom data">
 
 <cfset variables.instance.data="">
 <cfset variables.instance.baseID="">
@@ -66,12 +66,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="subType"/>
 	<cfargument name="siteID"/>
 	<cfargument name="sourceIterator" default=""/>
-	
+
 	<cfset variables.configBean=arguments.configBean />
 	<cfset setBaseID(arguments.baseID)/>
 	<cfset setDataTable(arguments.dataTable)/>
 	<cfset setDefinitions(arguments.configBean.getClassExtensionManager().getDefinitionsQuery())>
-	
+
 	<cfif structKeyExists(arguments,"type")>
 		<cfset setType(arguments.type)/>
 	</cfif>
@@ -81,11 +81,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(arguments,"siteID")>
 		<cfset setSiteID(arguments.siteID)/>
 	</cfif>
-	
+
 	<cfset setSourceIterator(arguments.sourceIterator)/>
 
 	<cfset loadData()/>
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -163,15 +163,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif structKeyExists(variables.instance.idLookUp,idKey)>
 		<cfset index=variables.instance.idLookUp[idKey]>
 	</cfif>
-		
+
 	<cfif index>
 		<cfif len(variables.instance.data.baseID[index])>
 			<cfif  listFindNoCase("date,datetime",variables.instance.data.validation[index])>
 				<cfset tempDate=variables.instance.data.attributeValue[index]>
 				<cftry>
-					<cfreturn parseDateTime(tempDate) />	
+					<cfreturn parseDateTime(tempDate) />
 					<cfcatch><cfreturn variables.instance.data.attributeValue[index] /></cfcatch>
-				</cftry>	
+				</cftry>
 			<cfelse>
 				<cfreturn variables.instance.data.attributeValue[index] />
 			</cfif>
@@ -203,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var saveEmptyExtendedValues=variables.configBean.getValue(property='saveEmptyExtendedValues',default=true)>
 
 	<cfif isObject(variables.instance.sourceIterator) and (
-		variables.instance.sourceIterator.getNextN() lte 2000 
+		variables.instance.sourceIterator.getNextN() lte 2000
 		or (
 			not variables.instance.sourceIterator.getNextN()
 			and variables.instance.sourceIterator.getRecordCount() lte 2000
@@ -212,27 +212,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif not isQuery(variables.instance.sourceIterator.getPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPage')#">
-				select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.type, tclassextendattributes.validation, 
+				select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.type, tclassextendattributes.validation,
 				<cfif variables.configBean.getDBType() eq "oracle">
 					to_char(tclassextendattributes.label) as label
 				<cfelse>
 					tclassextendattributes.label
-				</cfif>, 
+				</cfif>,
 				tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-				
+
 				#getDataTable()#.attributeValue
-				
-				from #getDataTable()# #tableModifier# 
+
+				from #getDataTable()# #tableModifier#
 				inner join tclassextendattributes #tableModifier# On (#getDataTable()#.attributeID=tclassextendattributes.attributeID)
 				<cfif variables.instance.sourceIterator.getRecordIdField() eq 'contentid'>
 					inner join tcontent #tableModifier# On (#getDataTable()#.baseid=tcontent.contenthistid)
-					where 
-					tcontent.contentid 
+					where
+					tcontent.contentid
 					in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 					and tcontent.active=1
 				<cfelse>
-					where #getDataTable()#.baseID 
+					where #getDataTable()#.baseID
 					in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
 				</cfif>
 				<cfif not saveEmptyExtendedValues>
@@ -251,17 +251,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 	<cfelse>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsExtended')#">
-			select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.type, tclassextendattributes.validation, 
+			select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.type, tclassextendattributes.validation,
 			<cfif variables.configBean.getDBType() eq "oracle">
 				to_char(tclassextendattributes.label) as label
 			<cfelse>
 				tclassextendattributes.label
-			</cfif>, 
+			</cfif>,
 			tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-			
+
 			#dataTable#.attributeValue
-			
-			from #dataTable# #tableModifier# 
+
+			from #dataTable# #tableModifier#
 			inner join tclassextendattributes #tableModifier# On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 			where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
 			<cfif not saveEmptyExtendedValues>
@@ -269,14 +269,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfquery>
 	</cfif>
-		
+
 	<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
 		<cfquery name="rsCombine" dbtype="query">
 			select baseID, name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
 			from rsExtended
-			
+
 			union all
-			
+
 			select '' baseID, attributename, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
 			from rsDefinitions
 			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
@@ -289,7 +289,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           	and (
                  <cfif getSubType() neq "Default">
                   subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
-                 
+
 				  or
                   </cfif>
                  subtype='Default'
@@ -297,7 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rsExtended.recordcount>
 			and attributeID not in (#ListQualify(ValueList(rsExtended.attributeid), "'", ",", "char")#)
 			</cfif>
-		
+
 		</cfquery>
 
 		<!--- Can't union in clob attribute value so they are manually added after the fact --->
@@ -310,11 +310,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset querySetCell(rsCombine, "attributeValue", rsExtended.attributeValue, rsCombine.currentrow)>
 						<cfbreak>
 					</cfif>
-				</cfloop>	
+				</cfloop>
 			</cfloop>
-			
+
 		</cfif>
-		
+
 		<cfset rsExtended=rsCombine>
 
 	</cfif>
@@ -338,16 +338,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAllExtendSetData" returntype="struct" output="false">
-	<cfset var extData=structNew() />	
+	<cfset var extData=structNew() />
 	<cfreturn convertDataToStruct(variables.instance.data)/>
-	<cfreturn extData/>	
+	<cfreturn extData/>
 </cffunction>
 
 <!---
 <cffunction name="getExtendSetDataByAttributeName" returntype="struct" output="false">
 	<cfargument name="key">
 	<cfset var rsExtendSetDataByAttributeName="" />
-	
+
 	<cfquery name="rsExtendSetDataByAttributeName" dbType="query">
 		 select baseID, extendSetID, name, defaultValue, attributeValue, validation from variables.instance.data
 		 where lower(name)=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#lcase(key)#">
@@ -355,9 +355,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
 		 </cfif>
 	</cfquery>
-		
+
 	<cfreturn convertDataToStruct(rsExtendSetDataByAttributeName)/>
-	
+
 </cffunction>
 --->
 
@@ -369,7 +369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.rs.recordcount>
 		<cfset extData.extendSetID=valueList(arguments.rs.extendSetID)>
 		<cfset extData.data=structNew()>
-		
+
 		<cfloop query="arguments.rs">
 			<cfif len(arguments.rs.baseID)>
 				<cfif listFindNoCase("date,datetime",arguments.rs.validation) and len(arguments.rs.attributeValue)>
@@ -389,7 +389,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 	</cfif>
-	
+
 	<cfreturn extData>
 </cffunction>
 

@@ -88,38 +88,38 @@
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 			<!--[if lt IE 9]>
-			   <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
+			   <script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/html5.js"></script>
 			<![endif]-->
 		</cfif>
 
     <!-- Favicons -->
-		<link rel="icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
-		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
+		<link rel="icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/favicon.ico" type="image/x-icon" />
+	    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-144-precomposed.png">
+	    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-114-precomposed.png">
+	    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-72-precomposed.png">
+	    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/ico/apple-touch-icon-57-precomposed.png">
 
 		<!-- Spinner JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/spin.min.js" type="text/javascript"></script>
 
 	  <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/oneui.min.js"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/oneui.min.js"></script>
 
 		<!-- jQuery UI components -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 
-		<!-- Mura js --->
-		<script src="#application.configBean.getContext()#/admin/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<!-- Mura js -->
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/mura.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
-    <!-- Web fonts, stored locally -->
-    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/fonts.min.css">
+	    <!-- Web fonts, stored locally -->
+	    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/fonts.min.css">
 
 		<!-- Mura Admin JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- CK Editor/Finder -->
 		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
@@ -135,22 +135,22 @@
 
 		<!-- nice-select: select box replacement (sidebar configurator only) -->
 		<cfif rc.sourceFrame neq 'modal'>
-	    <link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/nice-select.min.css">
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
+	    <link rel="stylesheet" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/nice-select.min.css">
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery.nice-select.min.js" type="text/javascript"></script>
 	    <script type="text/javascript">
 	    	$(document).ready(function() {
-				$('.mura ##configurator select').niceSelect();
+				//$('.mura ##configurator select').niceSelect();
 			});
 	    </script>
 		</cfif>
 		<!-- /nice-select -->
 
 		<!-- JSON -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
 
 		<!-- Utilities to support iframe communication -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<script type="text/javascript">
 		var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
@@ -164,7 +164,7 @@
 		var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 		</script>
 
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
+		<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 		#session.dateKey#
 		<script type="text/javascript">
 			var frontEndProxy;
@@ -202,7 +202,7 @@
 						}
 					}
 
-					frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+					frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/porthole/proxy.html");
 					frontEndProxy.post({cmd:
 											'setHeight',
 											height:getHeight(),
@@ -215,6 +215,10 @@
 											'targetFrame': '#esapiEncode("javascript",rc.sourceFrame)#'
 										});
 					});
+
+					if(typeof siteManager != 'undefined'){
+						frontEndProxy.addEventListener(siteManager.frontEndProxyListener);
+					}
 				};
 
 
@@ -230,7 +234,7 @@
 
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
-			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+			<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 			<![endif]-->
 		</cfif>
 	</head>
@@ -241,13 +245,13 @@
 			<cfinclude template="includes/dialog.cfm">
 		</cfif>
 
-			<div class="main mura-layout-row"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
+		<div class="main mura-layout-row"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
 
 		</div> <!-- /mura-content -->
 
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 
-		<script src="#application.configBean.getContext()#/admin/assets/js/bootstrap-tabdrop.js"></script>
+		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/bootstrap-tabdrop.js"></script>
 
 	</body>
 </html></cfprocessingdirective>

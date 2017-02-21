@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfsavecontent variable="str"><cfoutput>
-<link href="#application.configBean.getContext()#/admin/assets/css/jquery/jquery.fileupload-ui.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
+<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/jquery/jquery.fileupload-ui.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
 #session.dateKey#
 <cfif rc.compactDisplay eq "true">
 <script type="text/javascript">
@@ -99,7 +99,7 @@ jQuery(document).ready(function(){
     <!--- <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileuploadinstructions")#</h2> --->
 <div id="multi-file-upload">
     <!-- The file upload form used as target for the file upload widget -->
-    <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
+    <form id="fileupload" action="#application.configBean.getContext()##application.configBean.getAdminDir()#/" method="POST" enctype="multipart/form-data">
     	<!-- Creating a visual target for files. Doesn't actually do anything. Pure eye candy. -->
     	<div id="fileupload-target"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
@@ -397,33 +397,33 @@ jQuery(document).ready(function(){
 {% } %}
 </script>
 <!-- The Templates plugin is included to render the upload/download listings -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/tmpl.min.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/tmpl.min.js?coreversion=#application.coreversion#"></script>
 <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/load-image.min.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/load-image.min.js?coreversion=#application.coreversion#"></script>
 <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/canvas-to-blob.min.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/canvas-to-blob.min.js?coreversion=#application.coreversion#"></script>
 
 <!-- blueimp Gallery script
 <script src="#application.settingsManager.getSite(rc.siteid).getScheme()#://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
 -->
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.iframe-transport.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.iframe-transport.js?coreversion=#application.coreversion#"></script>
 <!-- The basic File Upload plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.fileupload.js?coreversion=#application.coreversion#"></script>
 <!-- The File Upload processing plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-process.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.fileupload-process.js?coreversion=#application.coreversion#"></script>
 <!-- The File Upload image preview & resize plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-image.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.fileupload-image.js?coreversion=#application.coreversion#"></script>
 <!-- The File Upload audio preview plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-audio.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.fileupload-audio.js?coreversion=#application.coreversion#"></script>
 <!-- The File Upload video preview plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-video.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.fileupload-video.js?coreversion=#application.coreversion#"></script>
 <!-- The File Upload validation plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-validate.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.fileupload-validate.js?coreversion=#application.coreversion#"></script>
 <!-- The File Upload user interface plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-ui.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.fileupload-ui.js?coreversion=#application.coreversion#"></script>
 <!-- The localization script -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload.locale.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.fileupload.locale.js?coreversion=#application.coreversion#"></script>
 
 <!-- The main application script -->
 <script>
@@ -474,7 +474,7 @@ $(function () {
 
     // Initialize the jQuery File Upload widget:
     $('##fileupload').fileupload(
-        {url:'#application.configBean.getContext()#/admin/',
+        {url:'#application.configBean.getContext()##application.configBean.getAdminDir()#/',
         getFilesFromResponse: function (data) {
                 if (data.result && $.isArray(data.result.files)) {
                     return data.result.files;

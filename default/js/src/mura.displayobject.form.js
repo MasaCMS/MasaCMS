@@ -78,7 +78,11 @@
 			formInit: false,
 			responsemessage: "",
 			rb: {
-				btnsubmitclass:"form-submit"
+				btnsubmitclass:"form-submit",
+				btnsubmitlabel:"Submit",
+				btnnextlabel:"Next",
+				btnbacklabel:"Back",
+				btncancellabel:"Cancel"
 			},
 			render:function(){
 
@@ -384,7 +388,7 @@
 
 			renderPaging:function() {
 				var self = this;
-				var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : 'Submit';
+				var submitlabel=(typeof self.formJSON.form.formattributes != 'undefined' && typeof self.formJSON.form.formattributes.submitlabel != 'undefined' && self.formJSON.form.formattributes.submitlabel) ? self.formJSON.form.formattributes.submitlabel : self.rb.btnsubmitlabel;
 
 				mura(".error-container-" + self.context.objectid,self.context.formEl).empty();
 
@@ -395,12 +399,12 @@
 				}
 				else {
 					if(self.currentpage == 0) {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:1,label:"Next","class":"form-nav"}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:1,label:self.rb.btnnextlabel,"class":"form-nav"}));
 					} else {
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage-1,label:"Back","class":'form-nav'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage-1,label:self.rb.btnbacklabel,"class":'form-nav'}));
 
 						if(self.currentpage+1 < self.formJSON.form.pages.length) {
-							mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:"Next","class":'form-nav'}));
+							mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.btnnextlabel,"class":'form-nav'}));
 						}
 						else {
 							mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:submitlabel,"class":'form-submit  btn-primary'}));
@@ -408,7 +412,7 @@
 					}
 
 					if(self.backlink != undefined && self.backlink.length)
-						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:"Cancel","class":'form-cancel btn-primary pull-right'}));
+						mura(".paging-container-" + self.context.objectid,self.context.formEl).append(Mura.templates['paging']({page:self.currentpage+1,label:self.rb.btncancellabel,"class":'form-cancel btn-primary pull-right'}));
 				}
 
 				mura(".form-submit",self.context.formEl).click( function() {
@@ -488,8 +492,11 @@
 				var multi = {};
 				var item = {};
 				var valid = [];
+				var currentPage = {};
 
 				mura(".field-container-" + self.context.objectid + " input, .field-container-" + self.context.objectid + " select, .field-container-" + self.context.objectid + " textarea").each( function() {
+
+					currentPage[mura(this).attr('name')]=true;
 
 					if( mura(this).is('[type="checkbox"]')) {
 						if ( multi[mura(this).attr('name')] == undefined )
@@ -531,6 +538,17 @@
 					else {
 						self.data[ i ] = multi[i].join(",");
 						valid[ i ] = multi[i].join(",");
+					}
+				}
+
+				if(typeof FormData != 'undefined'){
+					var frm=document.getElementById('frm' + self.context.objectid);
+					for(var p in currentPage){
+						if(currentPage.hasOwnProperty(p) && typeof self.data[p] != 'undefined'){
+							if(p.indexOf("_attachment") > -1 && typeof frm[p] != 'undefined'){
+								self.attachments[p]=frm[p].files[0];
+							}
+						}
 					}
 				}
 
@@ -708,6 +726,7 @@
 				mura(self.context.formEl).append(html);
 
 				self.currentpage = 0;
+				self.attachments={};
 				self.formInit=true;
 			},
 
@@ -767,10 +786,37 @@
 				}
 				else {
 					//console.log('b!');
-					var data=Mura.deepExtend({},self.context,self.data);
-					data.saveform=true;
-					data.formid=data.objectid;
-					data.siteid=data.siteid || Mura.siteid;
+
+					if(typeof FormData == 'undefined'){
+						var data=Mura.deepExtend({},self.context,self.data);
+						data.saveform=true;
+						data.formid=data.objectid;
+						data.siteid=data.siteid || Mura.siteid;
+						data.contentid=Mura.contentid || '';
+						data.contenthistid=Mura.contenthistid || '';
+						delete data.filename;
+
+					} else {
+						var rawdata=Mura.deepExtend({},self.context,self.data);
+						rawdata.saveform=true;
+						rawdata.formid=rawdata.objectid;
+						rawdata.siteid=rawdata.siteid || Mura.siteid;
+						rawdata.contentid=Mura.contentid || '';
+						rawdata.contenthistid=Mura.contenthistid || '';
+						delete rawdata.filename;
+
+						var data=new FormData();
+
+						for(var p in rawdata){
+							if(rawdata.hasOwnProperty(p)){
+								if(typeof self.attachments[p] != 'undefined'){
+									data.append(p,self.attachments[p]);
+								} else {
+									data.append(p,rawdata[p]);
+								}
+							}
+						}
+					}
 
 	                Mura.post(
 	                        Mura.apiEndpoint + '?method=processAsyncObject',
@@ -1274,7 +1320,12 @@
 				Mura.Handlebars.registerHelper('commonInputAttributes',function() {
 					//id, class, title, size
 					var escapeExpression=Mura.Handlebars.escapeExpression;
-					var returnString='name="' + escapeExpression(this.name) + '"';
+					
+					if(typeof this.fieldtype != 'undefined' && this.fieldtype.fieldtype=='file'){
+						var returnString='name="' + escapeExpression(this.name) + '_attachment"';
+					} else {
+						var returnString='name="' + escapeExpression(this.name) + '"';
+					}
 
 					if(this.cssid){
 						returnString += ' id="' + escapeExpression(this.cssid) + '"';

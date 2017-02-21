@@ -75,7 +75,6 @@
 			init:function(siteid,entityname){
 	            this.queryString= entityname + '/?_cacheid=' + Math.random();
 				this.propIndex=0;
-				this.entityname=entityname;
 	            return this;
 			},
 
@@ -88,6 +87,17 @@
 			fields:function(fields){
 	            this.queryString+='&fields=' + encodeURIComponent(fields);
 	            return this;
+	        },
+
+			/**
+			 * contentPoolID - Sets items per page
+			 *
+			 * @param  {number} contentPoolID Items per page
+			 * @return {Mura.Feed}              Self
+			 */
+			contentPoolID:function(contentPoolID){
+	            this.queryString+='&contentpoolid=' + encodeURIComponent(contentPoolID);
+				return this;
 	        },
 
 	        /**
@@ -146,6 +156,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isEQ:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+=encodeURIComponent(criteria);
 				return this;
 	        },
@@ -157,6 +170,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isNEQ:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='neq^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -168,6 +184,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLT:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='lt^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -179,6 +198,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isLTE:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='lte^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -190,6 +212,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGT:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='gt^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -201,6 +226,9 @@
 	         * @return {Mura.Feed}          Self
 	         */
 	        isGTE:function(criteria){
+				if(typeof criteria == 'undefined' || criteria=='' || criteria==null){
+					criteria='null';
+				}
 	            this.queryString+='gte^' + encodeURIComponent(criteria);
 				return this;
 	        },
@@ -325,6 +353,16 @@
 	        },
 
 			/**
+			 * pageIndex - Sets items per page
+			 *
+			 * @param  {number} pageIndex page to start at
+			 */
+			pageIndex:function(pageIndex){
+	            this.queryString+='&pageIndex=' + encodeURIComponent(pageIndex);
+				return this;
+	        },
+
+			/**
 			 * maxItems - Sets max items to return
 			 *
 			 * @param  {number} maxItems Items to return
@@ -367,9 +405,14 @@
 	            var self=this;
 
 	            return new Promise(function(resolve,reject) {
+					if(Mura.apiEndpoint.charAt(Mura.apiEndpoint.length-1)=="/"){
+						var apiEndpoint=Mura.apiEndpoint;
+					} else {
+						var apiEndpoint=Mura.apiEndpoint + '/';
+					}
 					Mura.ajax({
 						type:'get',
-						url:Mura.apiEndpoint + self.queryString,
+						url:apiEndpoint + self.queryString,
 						success:function(resp){
 
 							var returnObj = new Mura.EntityCollection(resp.data);

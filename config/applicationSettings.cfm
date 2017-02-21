@@ -69,6 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.mura404" default="false">
 <cfparam name="request.returnFormat" default="html">
 <cfparam name="request.muraSessionManagement" default="true">
+<cfparam name="request.muraPointInTime" default="">
 
 <cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 <!--- Application name, should be unique --->
@@ -83,6 +84,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
 <cfset this.setClientCookies = true>
 
+<cfparam name="this.sessioncookies" default="#structNew()#">
+<cfset this.sessioncookies.disableupdate = false>
+
 <cfset this.searchImplicitScopes=false>
 
 <!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
@@ -96,6 +100,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.secureJSONPrefix = "">
 <!--- Used to help CF work with missing files and dir indexes --->
 <cfset this.welcomeFileList = "">
+<!--- Compile cfml in all cfincluded files --->
+<cfset this.compileextforinclude="*">
 
 <cfset baseDir= left(this.configPath,len(this.configPath)-8) />
 <cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
@@ -243,6 +249,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset request.hasCFApplicationCFM=false>
 	</cfcatch>
 </cftry>
+
+<cfif len(evalSetting(getINIProperty("cookiedomain","")))>
+	<cfset this.setClientCookies=false>
+</cfif>
 
 <cfif len(getINIProperty("datasource",""))>
 

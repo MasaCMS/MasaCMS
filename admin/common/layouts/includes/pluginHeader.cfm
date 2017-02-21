@@ -59,17 +59,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not arguments.jsLibLoaded>
 <cfif arguments.jsLib eq "jquery">
 <script src="#application.configBean.getContext()#/#application.settingsmanager.getSite(session.siteid).getDisplayPoolID()#/js/jquery/jquery.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <cfelse>
 <script src="#application.configBean.getContext()#/#application.settingsmanager.getSite(session.siteid).getDisplayPoolID()#/js/prototype.js" type="text/javascript"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/#application.settingsmanager.getSite(session.siteid).getDisplayPoolID()#/js/scriptaculous/src/scriptaculous.js?load=effects"></script>
 </cfif>
 </cfif>
 <!-- JSON -->
-<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/admin.min.js"></script>
-<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
-<link href="#application.configBean.getContext()#/admin/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
+<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>
+<script type="text/javascript" src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.min.js"></script>
+<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 function toggleAdminToolbar(){
@@ -80,13 +80,13 @@ function toggleAdminToolbar(){
 	}
 </script>
 
-	<img src="#application.configBean.getContext()#/admin/assets/images/mura-logo-fe@2x.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+	<img src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/images/mura-logo-fe@2x.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 	<div id="frontEndTools" class="pluginHdr" style="display: #Cookie.fetDisplay#">
 			<ul>
-				<li id="adminPlugIns"><a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="mi-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
-				<li id="adminSiteManager"><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001"><i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
-				<li id="adminDashboard"><a href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="mi-dashboard"></i> #application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
-				<li id="adminLogOut"><a href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
+				<li id="adminPlugIns"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="mi-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
+				<li id="adminSiteManager"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001"><i class="mi-sitemap"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
+				<li id="adminDashboard"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="mi-dashboard"></i> #application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
+				<li id="adminLogOut"><a href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
 				<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#.</li>
 			</ul>
 		</div>
