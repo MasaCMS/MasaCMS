@@ -346,9 +346,11 @@
     var holdingQueueReleased=false;
     var holdingQueue=[];
 
+    /*
     if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
         jQuery.holdReady(true);
     }
+    */
 
     /*
     When DOMContentLoaded is fired check to see it the
@@ -357,9 +359,11 @@
     */
     function initReadyQueue(){
       if(!holdingReadyAltered){
+           /*
            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                jQuery.holdReady(false);
            }
+           */
            releaseReadyQueue();
       }
     };
@@ -379,9 +383,11 @@
             holdingReady=hold;
             holdingReadyAltered=true;
 
+            /*
             if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                 jQuery.holdReady(hold);
             }
+            */
 
             if(!holdingReady){
                 releaseReadyQueue();
@@ -2735,7 +2741,7 @@
 
 		});
 
-        initReadyQueue();
+        readyInternal(initReadyQueue);
 
 	    return root.Mura
 	}

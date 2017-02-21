@@ -3072,9 +3072,11 @@ return /******/ (function(modules) { // webpackBootstrap
     var holdingQueueReleased=false;
     var holdingQueue=[];
 
+    /*
     if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
         jQuery.holdReady(true);
     }
+    */
 
     /*
     When DOMContentLoaded is fired check to see it the
@@ -3083,9 +3085,11 @@ return /******/ (function(modules) { // webpackBootstrap
     */
     function initReadyQueue(){
       if(!holdingReadyAltered){
+           /*
            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                jQuery.holdReady(false);
            }
+           */
            releaseReadyQueue();
       }
     };
@@ -3105,9 +3109,11 @@ return /******/ (function(modules) { // webpackBootstrap
             holdingReady=hold;
             holdingReadyAltered=true;
 
+            /*
             if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                 jQuery.holdReady(hold);
             }
+            */
 
             if(!holdingReady){
                 releaseReadyQueue();
@@ -5461,7 +5467,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		});
 
-        initReadyQueue();
+        readyInternal(initReadyQueue);
 
 	    return root.Mura
 	}
