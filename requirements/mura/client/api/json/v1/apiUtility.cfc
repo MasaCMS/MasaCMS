@@ -1710,7 +1710,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var started=false;
 
 			for(var p in arguments.params){
-				if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection',p)){
+				if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid',p)){
 					feed.addParam(column=p,criteria=arguments.params[p]);
 
 					if(started){
@@ -1763,7 +1763,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & params[p];
 					}
 
-					if(!listFindNoCase('maxItems,pageIndex,itemsPerPage,sortBy,sortDirection',p)){
+					if(!listFindNoCase('maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid',p)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
@@ -1863,6 +1863,26 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(isDefined('arguments.params.sort') && len(arguments.params.sort)){
 			sort=arguments.params.sort;
+		}
+
+		if(isDefined('arguments.params.contentpoolid') && len(arguments.params.contentpoolid)){
+			if(arguments.params.contentpoolid == '*'){
+				feed.setContentPoolID('*');
+			} else {
+				var poolrequest=[];
+				var requestedPoolArray=listToArray(arguments.params.contentpoolid);
+				var validPools=getBean('settingsManager').getSite(variables.siteid).getContentPoolID();
+
+				for(var c in requestedPoolArray){
+					if(listFindNoCase(validPools,c)){
+						arrayAppend(poolrequest,c);
+					}
+				}
+
+				if(arrayLen(poolrequest)){
+					feed.setContentPoolID(arrayToList(poolrequest));
+				}
+			}
 		}
 
 

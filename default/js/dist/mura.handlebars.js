@@ -11734,6 +11734,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this;
 	        },
 
+			/**
+			 * contentPoolID - Sets items per page
+			 *
+			 * @param  {number} contentPoolID Items per page
+			 * @return {Mura.Feed}              Self
+			 */
+			contentPoolID:function(contentPoolID){
+	            this.queryString+='&contentpoolid=' + encodeURIComponent(contentPoolID);
+				return this;
+	        },
+
 	        /**
 	         * where - Optional method for starting query chain
 	         *

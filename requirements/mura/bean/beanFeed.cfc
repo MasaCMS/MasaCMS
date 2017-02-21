@@ -52,6 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="nextN" type="numeric" default="0" required="true" />
 	<cfproperty name="maxItems" type="numeric" default="0" required="true" />
 	<cfproperty name="siteID" type="string" default="" />
+	<cfproperty name="contentpoolid" type="string" default="" />
 	<cfproperty name="sortBy" type="string" default="" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
 	<cfproperty name="orderby" type="string" default=""/>
@@ -71,6 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.addObjects=[]>
 	<cfset variables.instance.removeObjects=[]>
 	<cfset variables.instance.siteID="">
+	<cfset variables.instance.contentPoolID="">
 	<cfset variables.instance.entityName=""/>
 	<cfset variables.instance.table="">
 	<cfset variables.instance.keyField="">
@@ -110,6 +112,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="orderby">
 	<cfset variables.instance.orderby=arguments.orderby>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getContentPoolID" output="false">
+
+	<cfif not len(variables.instance.contentpoolid)>
+		<cfset variables.instance.contentpoolid=variables.instance.siteid />
+	<cfelseif variables.instance.contentpoolid eq '*'>
+		<cfset variables.instance.contentpoolid=getBean('settingsManager').getSite(variables.instance.siteid).getContentPoolID() />
+	</cfif>
+
+	<cfreturn variables.instance.contentpoolid>
 </cffunction>
 
 <cffunction name="getSort" output="false">
@@ -506,7 +519,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			(not isDefined('application.objectMappings.#getValue('entityName')#.columns') and len(variables.instance.siteID))
 			or
 			 (hasColumn('siteid') and len(variables.instance.siteID))>
-			#variables.instance.table#.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>
+			#variables.instance.table#.siteID in (<cfqueryparam cfsqltype="cf_sql_varchar" list=true value="#getContentPoolID()#"/>)
 		<cfelse>
 			1=1
 		</cfif>

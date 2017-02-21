@@ -264,6 +264,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not len(variables.instance.contentpoolid)>
 		<cfset variables.instance.contentpoolid=variables.instance.siteid />
+	<cfelseif variables.instance.contentpoolid eq '*'>
+		<cfset variables.instance.contentpoolid=getBean('settingsManager').getSite(variables.instance.siteid).getContentPoolID() />
 	</cfif>
 
 	<cfreturn variables.instance.contentpoolid>
