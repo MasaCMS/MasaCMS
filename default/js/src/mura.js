@@ -355,14 +355,14 @@
     holdingReady has been altered by custom code.
     If it hasn't then fire holding functions.
     */
-    document.addEventListener('DOMContentLoaded',function(){
+    function initReadyQueue(){
       if(!holdingReadyAltered){
            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                jQuery.holdReady(false);
            }
            releaseReadyQueue();
       }
-    });
+    };
 
     function releaseReadyQueue(){
         holdingQueueReleased=true;
@@ -2734,6 +2734,8 @@
 			Mura(document).trigger('muraReady');
 
 		});
+
+        initReadyQueue();
 
 	    return root.Mura
 	}

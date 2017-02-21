@@ -71,12 +71,12 @@
 
         var loc=[location.host, pathname].join('');
         var remoteurl=[location.protocol,'//',location.host, pathname].join('');
-    	var lochash=mura.hashCode(loc);
+    	var lochash=Mura.hashCode(loc);
 
     	var initVariations=function(fn,leadprops){
 
     		if(location.search.indexOf("doaction=logout") > -1){
-    			mura.ajax({
+    			Mura.ajax({
     		        type:"POST",
     		        dataType: 'json',
     		        xhrFields:{ withCredentials: true },
@@ -102,7 +102,7 @@
     				content.title=loc;
     			}
 
-    			content.config=mura.extend({
+    			content.config=Mura.extend({
     				content:content,
     				loginurl:loginurl,
     				variations:variations,
@@ -149,15 +149,14 @@
     				}
     			}
 
-    			mura.init(content.config);
+    			Mura.init(content.config);
 
     			var footer=document.createElement('DIV');
     			footer.setAttribute('id','mura-remote-footer');
     			window.document.body.appendChild(footer);
     			mura('#mura-remote-footer').html(content.htmlheadqueue + content.htmlfootqueue);
 
-
-    			mura
+    			Mura
     				.loader()
     				.loadcss(assetpath + '/css/mura.7.0.min.css')
     				.loadcss(assetpath + '/css/mura.7.0.skin.css')
@@ -166,21 +165,21 @@
 
     			if(content.body){
     				try{
-    					mura.variations=eval('(' + content.body + ')');
-    					mura.origvariations=variations.slice();
+    					Mura.variations=eval('(' + content.body + ')');
+    					Mura.origvariations=variations.slice();
     				} catch(e){
     					try{
-    						mura.variations=eval('(' + decodeURIComponent(content.body) + ')');
-    						mura.origvariations=variations.slice();
+    						Mura.variations=eval('(' + decodeURIComponent(content.body) + ')');
+    						Mura.origvariations=variations.slice();
     					} catch(e){
     						console.log(e)
-    						mura.variations=[];
-    						mura.origvariations=[];
+    						Mura.variations=[];
+    						Mura.origvariations=[];
     					}
     				}
     			} else {
-    				mura.variations=[];
-    				mura.origvariations=[];
+    				Mura.variations=[];
+    				Mura.origvariations=[];
     			}
 
 				<cfif getServiceFactory().containsBean('marketingManager')>
@@ -194,7 +193,7 @@
     			ga('create', content.ga.trackingid, 'auto','mxpGATracker');
     			ga('mxpGATracker.send','pageview', content.ga.trackingvars);
 
-    			mura.loader().loadjs(
+    			Mura.loader().loadjs(
     				context + '/plugins/MXP/assets/js/metrics/scrolldepth.js',
     				context + '/plugins/MXP/assets/js/metrics/riveted.js',
     				function(){
@@ -221,7 +220,7 @@
 
     					    //Send to GA
     						var eventData= { eventCategory: scrollDepth.eventCategory, eventAction: scrollDepth.eventAction, eventLabel: scrollDepth.eventLabel, nonInteraction:true};
-    						mura.extend(eventData,content.ga.trackingvars);
+    						Mura.extend(eventData,content.ga.trackingvars);
     						ga('mxpGATracker.send', 'event', eventData);
 
     					  }
@@ -247,7 +246,7 @@
 
     					    	//Send to GA
     							var eventData= { eventCategory: 'Active Time', eventAction: 'Seconds', eventLabel: data.toString(), eventValue: data, nonInteraction:true};
-    							mura.extend(eventData,content.ga.trackingvars);
+    							Mura.extend(eventData,content.ga.trackingvars);
     							ga('mxpGATracker.send', 'event', eventData);
     						}
     					});
@@ -258,18 +257,18 @@
     			mura('.mxp-editable').each(function(){
     				var item=mura(this);
     				if(!item.attr('id')){
-    					item.attr('id','mxp' + mura.hashCode(item.selector()));
+    					item.attr('id','mxp' + Mura.hashCode(item.selector()));
     					item.addClass('mxp-dynamic-id');
     				}
     			});
 
     			var applyVariations=function(){
 
-    				for(var i=0;i<mura.variations.length;i++){
-    					var item=mura(mura.variations[i].selector);
-    					//if(item.html().replace(/\s+/g,' ')==mura.variations[i].original.replace(/\s+/g,' ')){
-    						mura.variations[i].original=item.html();
-    						item.html(mura.variations[i].adjusted);
+    				for(var i=0;i<Mura.variations.length;i++){
+    					var item=mura(Mura.variations[i].selector);
+    					//if(item.html().replace(/\s+/g,' ')==Mura.variations[i].original.replace(/\s+/g,' ')){
+    						Mura.variations[i].original=item.html();
+    						item.html(Mura.variations[i].adjusted);
     					//}
 
     				}
@@ -314,7 +313,7 @@
     			trackingparams+='&mautic_trk=' + encodeURIComponent(mautic_trk);
     		}
 
-    		mura.ajax({
+    		Mura.ajax({
     	        type:"GET",
     	        dataType: 'json',
     	        xhrFields:{ withCredentials: true },
@@ -334,7 +333,7 @@
     	}
 
     	//legacy support
-    	mura.initVariations=function(){};
+    	Mura.initVariations=function(){};
 
     	initVariations(function(data){
     		//Look for callback method

@@ -6449,14 +6449,14 @@ return /******/ (function(modules) { // webpackBootstrap
     holdingReady has been altered by custom code.
     If it hasn't then fire holding functions.
     */
-    document.addEventListener('DOMContentLoaded',function(){
+    function initReadyQueue(){
       if(!holdingReadyAltered){
            if(typeof jQuery != 'undefined' && typeof jQuery.holdReady != 'undefined'){
                jQuery.holdReady(false);
            }
            releaseReadyQueue();
       }
-    });
+    };
 
     function releaseReadyQueue(){
         holdingQueueReleased=true;
@@ -8828,6 +8828,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			Mura(document).trigger('muraReady');
 
 		});
+
+        initReadyQueue();
 
 	    return root.Mura
 	}
