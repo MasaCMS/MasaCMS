@@ -71,6 +71,10 @@
 	<cfargument name="property">
 	<cfargument name="propertyValue">
 
+	<cfif not hasSession()>
+		<cfset variables.sessionData=getSession()>
+	</cfif>
+
 	<cfset variables.sessionData.mura[arguments.property]=arguments.propertyValue>
 	<cfset getUserBean().setValue(arguments.property, arguments.propertyValue)>
 	<cfreturn this>
@@ -96,6 +100,9 @@
 	<cfif isObject(variables.userBean) >
 		<cfreturn variables.userBean>
 	<cfelse>
+		<cfif not hasSession()>
+			<cfset variables.sessionData=getSession()>
+		</cfif>
 		<cfset variables.userBean=application.userManager.read(variables.sessionData.mura.userID)>
 		<cfif variables.userBean.getIsNew()>
 			<cfset variables.userBean.setSiteID(getValue('siteID'))>
@@ -115,7 +122,7 @@
 <cffunction name="isInGroup" returntype="boolean" output="false">
 	<cfargument name="group">
 	<cfargument name="isPublic" hint="optional">
-	<cfset var siteid=variables.sessionData.mura.siteID>
+	<cfset var siteid="">
 	<cfset var publicPool="">
 	<cfset var privatePool="">
 
@@ -147,10 +154,8 @@
 </cffunction>
 
 <cffunction name="isPrivateUser" returntype="boolean" output="false">
-	<cfset var siteid=variables.sessionData.mura.siteID>
-
 	<cfif hasSession()>
-		<cfset siteid=variables.sessionData.mura.siteID>
+		<cfset var siteid=variables.sessionData.mura.siteID>
 
 		<cfif structKeyExists(request,"siteid")>
 			<cfset siteID=request.siteID>
@@ -210,6 +215,10 @@
 	<cfargument name="$" default="">
 	<cfargument name="context" default="">
 
+	<cfif not hasSession()>
+		<cfset variables.sessionData=getSession()>
+	</cfif>
+
 	<!---CLEAR OLD TOKENS--->
 	<cfloop collection="#variables.sessionData.mura.csrfusedtokens#" item="local.key">
 		<cfif variables.sessionData.mura.csrfusedtokens['#local.key#'] lt dateAdd('h',-3,now())>
@@ -242,6 +251,10 @@
 <cffunction name="generateCSRFTokens" output="false">
 	<cfargument name="timespan" default="#createTimeSpan(0,3,0,0)#">
 	<cfargument name="context" default="">
+
+	<cfif not hasSession()>
+		<cfset variables.sessionData=getSession()>
+	</cfif>
 
 	<cfif application.cfversion lt 10>
 		<cfset var expires="#numberFormat((now() + arguments.timespan),'99999.9999999')#">
