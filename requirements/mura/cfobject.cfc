@@ -432,10 +432,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			sessionData.mura.memberships="";
 			sessionData.mura.membershipids="";
 			sessionData.mura.showTrace=false;
+			sessionData.mura.csrfsecretkey=createUUID();
+			sessionData.mura.csrfusedtokens={};
 		}
 
 		param name="sessionData.siteid" default="default";
-
+		
 		return sessionData;
 
 	}
