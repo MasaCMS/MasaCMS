@@ -508,7 +508,7 @@
                             <!--- java version --->
                             <cfif structKeyExists(server,'java') and structKeyExists(server.java,'version') >
                                 <li>
-                                    <a class="no-link" href="##"> <strong>#rc.$.rbKey('version.java')#</strong> #server.java.version#</a></a>
+                                    <a class="no-link" href="##"> <strong>#rc.$.rbKey('version.java')#</strong> #server.java.version#</a>
                                 </li>
                             </cfif>
                             <!--- server os --->
