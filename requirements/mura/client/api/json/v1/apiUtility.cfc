@@ -1533,7 +1533,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			throw(type="authorization");
 		}
 
-		if(!entity.allowQueryParams(arguments.params,$)){
+		if(!entity.allowQueryParams(arguments.params,$,m)){
 			throw(type="authorization");
 		}
 
@@ -1692,7 +1692,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
-		if(!entity.allowQueryParams(arguments.params,$)){
+		if(!entity.allowQueryParams(arguments.params,$,m)){
 			throw(type="authorization");
 		}
 

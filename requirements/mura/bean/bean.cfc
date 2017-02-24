@@ -1158,7 +1158,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return true;
 	}
 
-	function allowQueryParams(params,$){
+	function allowQueryParams(params,$,m){
 		return true;
 	}
 
