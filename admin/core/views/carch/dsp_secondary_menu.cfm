@@ -175,15 +175,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					</cfswitch>
 					<cfif rc.originalfuseaction eq 'hist'>
-					<cfif (rc.perm neq 'none' and application.configBean.getPurgeDrafts() or (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))) and not isLockedBySomeoneElse>
-						<li><a href="./?muraAction=cArch.update&action=deletehistall&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&compactDisplay=#esapiEncode('url',rc.compactdisplay)##rc.$.renderCSRFTokens(context=rc.contentid & 'deletehistall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistoryconfirm'))#',this.href)"><i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistory')#</a></li>
-					</cfif>
+						<!--- Clear Version History --->
+						<cfif (rc.perm neq 'none' and application.configBean.getPurgeDrafts() or (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))) and not isLockedBySomeoneElse>
+							<li>
+								<a href="./?muraAction=cArch.update&action=deletehistall&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&compactDisplay=#esapiEncode('url',rc.compactdisplay)##rc.$.renderCSRFTokens(context=rc.contentid & 'deletehistall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistoryconfirm'))#',this.href)">
+									<i class="mi-eraser"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistory')#
+								</a>
+							</li>
+						</cfif>
+						<!--- /Clear Version History --->
 					<cfelse>
 						<li><a href="./?muraAction=cArch.hist&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&compactDisplay=#esapiEncode('url',rc.compactdisplay)#"><i class="mi-history"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a></li>
 					</cfif>
 					<cfif rc.deletable and not isLockedBySomeoneElse>
-						<li><a href="./?muraAction=cArch.update&action=deleteall&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)##rc.$.renderCSRFTokens(context=rc.contentid & 'deleteall',format='url')#"
-						<cfif listFindNoCase(nodeLevelList,rc.contentBean.getType())>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rc.contentBean.getMenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#',this.href)"</cfif>><i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li>
+						<li>
+							<a href="./?muraAction=cArch.update&action=deleteall&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)##rc.$.renderCSRFTokens(context=rc.contentid & 'deleteall',format='url')#"
+								<cfif listFindNoCase(nodeLevelList,rc.contentBean.getType())>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rc.contentBean.getMenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#',this.href)"</cfif>>
+								<i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#
+							</a>
+						</li>
 					</cfif>
 					<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
 						<li><a href="./?muraAction=cPerm.main&contentid=#esapiEncode('url',rc.contentid)#&type=#rc.contentBean.gettype()#&parentid=#rc.contentBean.getparentID()#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiEncode('url',rc.moduleid)#&startrow=#esapiEncode('url',rc.startrow)#"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li>
@@ -274,9 +284,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  </a>
 				  <ul class="dropdown-menu drop-right">
 				<cfif rc.originalfuseaction eq 'hist'>
+					<!--- Clear Version History --->
 					<cfif rc.perm neq 'none' and not isLockedBySomeoneElse>
-						<li><a class="btn" href="./?muraAction=cArch.update&action=deletehistall&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&compactDisplay=#esapiEncode('url',rc.compactdisplay)##rc.$.renderCSRFTokens(context=rc.contentid & 'deletehistall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistoryconfirm'))#',this.href)"><i class="mi-trash"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistory')#</a></li>
+						<li>
+							<a href="./?muraAction=cArch.update&action=deletehistall&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&compactDisplay=#esapiEncode('url',rc.compactdisplay)##rc.$.renderCSRFTokens(context=rc.contentid & 'deletehistall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistoryconfirm'))#',this.href)">
+								<i class="mi-eraser"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistory')#
+							</a>
+						</li>
 					</cfif>
+					<!--- /Clear Version History --->
 				<cfelse>
 					<li><a href="./?muraAction=cArch.hist&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&compactDisplay=#esapiEncode('url',rc.compactdisplay)#"><i class="mi-history"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a></li>
 				</cfif>
