@@ -1446,6 +1446,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'))>
             </cfif>
 
+			<cfif directoryExists('#rs.directory#/#rs.name#/display_objects')>
+                <cfset registerDisplayObjectDir(dir='#arguments.dir#/#rs.name#/display_objects')>
+            </cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/modules')>
+                <cfset registerDisplayObjectDir(dir='#arguments.dir#/#rs.name#/modules',conditional=true)>
+            </cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/content_types')>
+                <cfset registerContentTypeDir(dir='#arguments.dir#/#rs.name#/content_types')>
+            </cfif>
+
 		</cfloop>
 
 		<cfif not listFind('/,\',right(arguments.dir,1))>
@@ -1521,6 +1533,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
             <cfif directoryExists('#rs.directory#/#rs.name#/model')>
                 <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
+            </cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/display_objects')>
+                <cfset registerDisplayObjectDir(dir='#arguments.dir#/#rs.name#/display_objects')>
+            </cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/modules')>
+                <cfset registerDisplayObjectDir(dir='#arguments.dir#/#rs.name#/modules',conditional=true)>
+            </cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/content_types')>
+                <cfset registerContentTypeDir(dir='#arguments.dir#/#rs.name#/content_types')>
             </cfif>
 
 		</cfloop>
@@ -1604,17 +1628,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		'/muraWRM/admin/core/views/carch/objectclass',
 		getIncludePath()  & "/includes/display_objects",
 		getIncludePath()  & "/includes/display_objects/custom",
-		getThemeIncludePath(getValue('theme')) & "/display_objects"
+		getThemeIncludePath(getValue('theme')) & "/display_objects",
+		getIncludePath()  & "/includes/modules",
+		getThemeIncludePath(getValue('theme')) & "/modules"
 	]>
 
 	<cfset var dir="">
 	<cfset var dirIndex=0>
 	<cfset var custom=true>
+	<cfset var conditional=false>
 
 	<cfloop array="#lookupArray#" index="dir">
 		<cfset dirIndex=dirIndex+1>
 		<cfset custom=dirIndex gt 2>
-		<cfset registerDisplayObjectDir(dir=dir,conditional=false,custom=custom)>
+		<cfset conditional=dirIndex gt 2>
+		<cfset registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom)>
 	</cfloop>
 
 	<cfset var rs="">
@@ -1629,6 +1657,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop query="rs">
 		<cfset registerDisplayObjectDir('/' & rs.package & '/display_objects',true)>
+		<cfset registerDisplayObjectDir('/' & rs.package & '/modules',true)>
 	</cfloop>
 
 	<cfreturn this>
