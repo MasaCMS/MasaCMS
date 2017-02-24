@@ -468,8 +468,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		}
 
+		try {
 		$.globalConfig().registerBean( "#siteid#.includes.model.beans.#lcase(objectname)#",siteid );
 		$.getBean(objectname).checkSchema();
+		}
+		catch(any e) {
+			removeFormObject( objectname,$.event('siteid') );
+			rethrow;
+		}
 
 	}
 
@@ -480,6 +486,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var siteid = arguments.contentBean.getSiteID();
 
 		var objectname = rereplacenocase( content.getValue('filename'),"[^[:alnum:]]","","all" );
+		if(getServiceFactory().containsBean(objectname)){
+			getBean('dbUtility').dropTable(table=getBean(objectname).getTable());
+			getServiceFactory().removeBean(objectname);
+		}
+		var fullFilePath="#expandPath("/muraWRM/" & siteid)#/includes/model/beans/#lcase(objectname)#.cfc";
+		if(fileExists( fullFilePath )){
+			fileDelete(fullFilePath);
+		}
+		fullFilePath="#expandPath("/muraWRM/" & siteid)#/includes/model/core/formbuilder/#lcase(objectname)#Entity.cfc";
+		if(fileExists( fullFilePath )){
+			fileDelete(fullFilePath);
+		}
+	}
+	function removeFormObject( objectname,siteid ) {
 
 		if(getServiceFactory().containsBean(objectname)){
 			getBean('dbUtility').dropTable(table=getBean(objectname).getTable());
@@ -630,7 +650,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			try {
 				StructDelete(application.objectMappings,dataset.source);
 			}
-			catch(any e) {}
+			catch(any e) {
+			}
 		}
 
 		if(arguments.createDataentity == false) {
@@ -674,10 +695,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			$.getBean(dataset.source).checkSchema();
 		}
 
+		try {
 		if( arguments.createJoinEntity ) {
 			$.globalConfig().registerBean( "#$.event('siteid')#.includes.model.beans.#lcase(cfcBridgeName)#",$.event('siteid') );
 			$.getBean(cfcBridgeName).checkSchema();
 
+			}
+		}
+		catch(any e) {
+			removeFormObject( cfcBridgeName,$.event('siteid') );
+			rethrow(e);
 		}
 
 	}
