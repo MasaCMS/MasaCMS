@@ -502,7 +502,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function removeFormObject( objectname,siteid ) {
 
 		if(getServiceFactory().containsBean(objectname)){
+			try {
 			getBean('dbUtility').dropTable(table=getBean(objectname).getTable());
+			}
+			catch(any e) {
+				writeLog("Error dropping table on formBuilderManager removeFormObject: #arguments.objectname#");
+			}
 			getServiceFactory().removeBean(objectname);
 		}
 
