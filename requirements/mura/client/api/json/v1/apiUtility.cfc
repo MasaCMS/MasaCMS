@@ -840,6 +840,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		structDelete(arguments.prop,'persistent');
 		arguments.prop.name=lcase(arguments.prop.name);
 
+		if(arguments.prop.datatype=='string'){
+			arguments.prop.datatype='varchar';
+		} else if(listFindNoCase('integer,numeric',arguments.prop.datatype)){
+			arguments.prop.datatype='int';
+		} else if(listFindNoCase('timestamp',arguments.prop.datatype)){
+			arguments.prop.datatype='datetime';
+		}
+
 		if(structKeyExists(arguments.prop,'cfc')){
 			arguments.prop.relatesto=prop.cfc;
 			structDelete(arguments.prop,'cfc');
@@ -872,7 +880,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		structAppend(result,{
 			entityname=arguments.entityname,
 			links={
-				endpoint=getEndpoint() & "/" & arguments.entityname
+				endpoint=getEndpoint() & "/" & arguments.entityname,
+				entities=getEndpoint()
 			}
 			});
 		return result;
