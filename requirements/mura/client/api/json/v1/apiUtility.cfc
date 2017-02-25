@@ -868,7 +868,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
-		return returnArray;
+		var result=formatArray(returnArray);
+		structAppend(result,{
+			entityname=arguments.entityname,
+			links={
+				endpoint=getEndpoint() & "/" & arguments.entityname
+			}
+			});
+		return result;
 	};
 
 	function getParamsWithOutMethod(params){
