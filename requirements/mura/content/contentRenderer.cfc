@@ -836,6 +836,7 @@ Display Objects
 			<cfset linkArgs.siteID=variables.event.getValue('siteID')>
 			<cfset linkArgs.querystring=arguments.querystring>
 			<cfset linkArgs.isParent=subnav>
+			<cfset linkArgs.complete=arguments.complete>
 			<cfset link=addlink(argumentCollection=linkArgs)>
 		</cfsilent>
 		<cfif not started>
@@ -1951,6 +1952,7 @@ Display Objects
 	<cfargument name="aHasKidsClass" type="string" default="">
 	<cfargument name="aHasKidsAttributes" type="string" default="">
 	<cfargument name="siteid" default="#$.event('siteid')#">
+	<cfargument name="complete" type="boolean" default="false">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
