@@ -27,7 +27,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findFieldDescriptor,findPropertyDescriptor,findListViewDescriptor,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser",
+			publicMethods="findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser",
 			entities={
 				'contentnav'={
 					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
@@ -643,7 +643,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								method=httpRequestData.method;
 							}
 						}
-					} else if(listFind('new,fielddescriptor,propertydescriptor,listviewdescriptor',pathInfo[3])){
+					} else if(listFind('new,properties',pathInfo[3])){
 						params.id=pathInfo[3];
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
@@ -712,15 +712,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						if(params.id=='new') {
 							params.method='findNew';
 							result=findNew(argumentCollection=params);
-						} else if(params.id=='propertydescriptor') {
-								params.method='findPropertyDescriptor';
-								result=findPropertyDescriptor(argumentCollection=params);
-						} else if(params.id=='fielddescriptor') {
-								params.method='findFieldDescriptor';
-								result=findFieldDescriptor(argumentCollection=params);
-						} else if(params.id=='listviewdescriptor') {
-								params.method='findListViewDescriptor';
-								result=findListViewDescriptor(argumentCollection=params);
+						} else if(params.id=='properties') {
+								params.method='findProperties';
+								result=findProperties(argumentCollection=params);
 						} else if(listLen(params.id) > 1){
 							params.ids=params.id;
 							params.method='findMany';
@@ -835,10 +829,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return 'v1';
 	}
 
-	function findFieldDescriptor(entityname,fields=''){
-		return findPropertyDescriptor(arguments.entityname,arguments.fields);
-	}
-
 	function applyPropertyFormat(prop){
 		arguments.prop=structCopy(prop);
 		structDelete(arguments.prop,'table');
@@ -846,7 +836,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		structDelete(arguments.prop,'nested');
 		structDelete(arguments.prop,'comparable');
 		structDelete(arguments.prop,'ormtype');
+		structDelete(arguments.prop,'type');
 		structDelete(arguments.prop,'persistent');
+		arguments.prop.name=lcase(arguments.prop.name);
+
 		if(structKeyExists(arguments.prop,'cfc')){
 			arguments.prop.relatesto=prop.cfc;
 			structDelete(arguments.prop,'cfc');
@@ -855,7 +848,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return arguments.prop;
 	}
 
-	function findPropertyDescriptor(entityname,properties=''){
+	function findProperties(entityname,properties=''){
 		var props=getBean(arguments.entityname).getProperties();
 		var propArray=listToArray(arguments.properties);
 		var returnArray=[];
@@ -863,30 +856,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(arrayLen(propArray)){
 			for(var p in propArray){
-				if(props[p].persistent){
-					arrayAppend(returnArray,applyPropertyFormat(props[p]));
-				}
-			}
-		} else {
-			for(var p in props){
-				if(props[p].persistent){
-					arrayAppend(returnArray,applyPropertyFormat(props[p]));
-				}
-			}
-		}
-
-		return returnArray;
-	};
-
-	function findListViewDescriptor(entityname){
-		var sample=getBean(arguments.entityname);
-		var listViewArray=listToArray(sample.getListView());
-		var returnArray=[];
-		var props=sample.getProperties();
-		var prop='';
-
-		if(arrayLen(listViewArray)){
-			for(var p in listViewArray){
 				if(props[p].persistent){
 					arrayAppend(returnArray,applyPropertyFormat(props[p]));
 				}
@@ -1519,7 +1488,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var entityKeys=listToArray(ListSort(StructKeyList(variables.config.entities),'textnocase'));
 			for(var i in entityKeys){
 				if(allowAccess(i,$,false)){
-					arrayAppend(returnArray,{entityname=i,links={endpoint=getEndPoint() & "/" & i}});
+					arrayAppend(returnArray,{entityname=i,links={endpoint=getEndPoint() & "/" & i,properties=getEndPoint() & "/" & i & "/properties"}});
 				}
 			}
 			return {items=returnArray,links={self=getEndPoint()},entityname='entityname'};
@@ -2180,6 +2149,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 		*/
 		links['all']="#baseurl#/#entity.getEntityName()#";
+		links['properties']="#baseurl#/#entity.getEntityName()#/properties";
 
 		if(entity.getEntityName()=='content'){
 			links['self']="#baseurl#/content/#entity.getContentID()#";

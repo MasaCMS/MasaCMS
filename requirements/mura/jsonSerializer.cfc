@@ -132,6 +132,8 @@ component
 		required string hint
 		) {
 
+		arguments.key=lcase(arguments.key);
+		
 		if ( structKeyExists( fullKeyList, key ) ) {
 
 			return this;
