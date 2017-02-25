@@ -708,6 +708,7 @@ Display Objects
 	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 	<cfargument name="size" required="true" default="#this.navsize#">
 	<cfargument name="liClass" type="string" default="">
+	<cfargument name="complete" type="boolean" required="true" default="false">
 
 	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
 		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
@@ -1430,7 +1431,7 @@ Display Objects
 			<cfelse>
 				<cfset objectparams.html=''>
 			</cfif>
-			
+
 			<cfreturn objectparams>
 		<cfelse>
 			<cfreturn managerResponse>
