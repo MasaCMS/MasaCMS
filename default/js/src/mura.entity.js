@@ -443,7 +443,7 @@
 										if(resp.data != 'undefined'){
 											self.set(resp.data)
 											self.set('isdirty',false);
-											if(self.get('saveErrors') || self.get('saveerrors') || Mura.isEmptyObject(self.getErrors())){
+											if(self.get('saveerrors') || Mura.isEmptyObject(self.getErrors())){
 												if(typeof resolve == 'function'){
 													resolve(self);
 												}
