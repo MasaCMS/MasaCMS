@@ -374,6 +374,36 @@
 	        },
 
 			/**
+			 * showNavOnly - Sets to only return content set to be in nav
+			 *
+			 * @return {Mura.Feed}              Self
+			 */
+			showNavOnly:function(){
+	            this.queryString+='&showNavOnly=1';
+				return this;
+	        },
+
+			/**
+			 * showExcludeSearch - Sets to include the homepage
+			 *
+			 * @return {Mura.Feed}              Self
+			 */
+			showExcludeSearch:function(){
+	            this.queryString+='&showExcludeSearch=1';
+				return this;
+	        },
+
+			/**
+			 * includeHomepage - Sets to include the home page
+			 *
+			 * @return {Mura.Feed}              Self
+			 */
+			includeHomepage:function(){
+	            this.queryString+='&includehomepage=1';
+				return this;
+	        },
+
+			/**
 			 * innerJoin - Sets entity to INNER JOIN
 			 *
 			 * @param  {string} relatedEntity Related entity

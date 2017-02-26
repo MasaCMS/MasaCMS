@@ -1695,7 +1695,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var started=false;
 
 			for(var p in arguments.params){
-				if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid',p)){
+				if(!listFindNoCase('maxItems,pageIndex,sort,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){
 					feed.addParam(column=p,criteria=arguments.params[p]);
 
 					if(started){
@@ -1748,7 +1748,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & params[p];
 					}
 
-					if(!listFindNoCase('maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid',p)){
+					if(!listFindNoCase('maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
@@ -1938,6 +1938,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(isDefined('arguments.params.includeHomePage')){
 			arguments.feed.setIncludeHomePage(1);
+		}
+
+		if(isDefined('arguments.params.shownavonly')){
+			arguments.feed.setShowNavOnly(1);
+		}
+
+		if(isDefined('arguments.params.showexcludesearch')){
+			arguments.feed.showExcludeSearch(1);
 		}
 
 		if(isDefined('arguments.params.sortby') && len(arguments.params.sortby)){

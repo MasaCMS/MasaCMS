@@ -7826,6 +7826,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
                 if(params.entityname=='content' || params.entityname=='contentnav'){
                     params.includeHomePage=1;
+                    params.showNavOnly=1;
+                    params.showExcludeSearch=1;
                 }
 
 				params[propertyName]=propertyValue;
@@ -8647,6 +8649,36 @@ return /******/ (function(modules) { // webpackBootstrap
 			 */
 			maxItems:function(maxItems){
 	            this.queryString+='&maxItems=' + encodeURIComponent(maxItems);
+				return this;
+	        },
+
+			/**
+			 * showNavOnly - Sets to only return content set to be in nav
+			 *
+			 * @return {Mura.Feed}              Self
+			 */
+			showNavOnly:function(){
+	            this.queryString+='&showNavOnly=1';
+				return this;
+	        },
+
+			/**
+			 * showExcludeSearch - Sets to include the homepage
+			 *
+			 * @return {Mura.Feed}              Self
+			 */
+			showExcludeSearch:function(){
+	            this.queryString+='&showExcludeSearch=1';
+				return this;
+	        },
+
+			/**
+			 * includeHomepage - Sets to include the home page
+			 *
+			 * @return {Mura.Feed}              Self
+			 */
+			includeHomepage:function(){
+	            this.queryString+='&includehomepage=1';
 				return this;
 	        },
 

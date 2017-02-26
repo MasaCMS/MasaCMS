@@ -308,6 +308,8 @@
 
                 if(params.entityname=='content' || params.entityname=='contentnav'){
                     params.includeHomePage=1;
+                    params.showNavOnly=1;
+                    params.showExcludeSearch=1;
                 }
 
 				params[propertyName]=propertyValue;
