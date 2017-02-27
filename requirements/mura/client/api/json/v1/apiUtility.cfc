@@ -2321,8 +2321,21 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	function validate(data='{}',validations='{}') {
 
-		arguments.data=deserializeJSON(urlDecode(arguments.data));
-		arguments.validations=deserializeJSON(urlDecode(arguments.validations));
+		arguments.data=urlDecode(arguments.data);
+
+		if(isJSON(arguments.data)){
+			arguments.data=deserializeJSON(arguments.data);
+		} else {
+			throw(type="invalidParameters");
+		}
+
+		arguments.validations=urlDecode(arguments.validations);
+
+		if(isJSON(arguments.validations)){
+			arguments.validations=deserializeJSON(arguments.validations);
+		} else {
+			throw(type="invalidParameters");		
+		}
 
 		if(!isStruct(arguments.data)){
 			return {invalid='Invalid validation request'};
