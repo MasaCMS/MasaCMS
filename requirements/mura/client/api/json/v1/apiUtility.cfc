@@ -1945,7 +1945,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		if(isDefined('arguments.params.showexcludesearch')){
-			arguments.feed.showExcludeSearch(1);
+			arguments.feed.setShowExcludeSearch(1);
 		}
 
 		if(isDefined('arguments.params.sortby') && len(arguments.params.sortby)){
@@ -2334,7 +2334,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(isJSON(arguments.validations)){
 			arguments.validations=deserializeJSON(arguments.validations);
 		} else {
-			throw(type="invalidParameters");		
+			throw(type="invalidParameters");
 		}
 
 		if(!isStruct(arguments.data)){
