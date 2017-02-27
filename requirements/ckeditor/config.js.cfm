@@ -183,6 +183,7 @@ CKEDITOR.editorConfig = function( config )
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
 	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g );
 	config.protectedSource.push( /<script.*?>.*?<\/script>/g );
+	config.protectedSource.push( /<ins[\s|\S]+?<\/ins>/g); // Protects <INS> tags
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';
