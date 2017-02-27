@@ -11194,7 +11194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
                 if(params.entityname=='content' || params.entityname=='contentnav'){
                     params.includeHomePage=1;
-                    params.showNavOnly=1;
+                    params.showNavOnly=0;
                     params.showExcludeSearch=1;
                 }
 
@@ -12023,30 +12023,33 @@ return /******/ (function(modules) { // webpackBootstrap
 			/**
 			 * showNavOnly - Sets to only return content set to be in nav
 			 *
+			 * @param  {boolean} showNavOnly Whether to return items that have been excluded from nav
 			 * @return {Mura.Feed}              Self
 			 */
-			showNavOnly:function(){
-	            this.queryString+='&showNavOnly=1';
+			showNavOnly:function(showNavOnly){
+	            this.queryString+='&showNavOnly=' + encodeURIComponent(showNavOnly);
 				return this;
 	        },
 
 			/**
 			 * showExcludeSearch - Sets to include the homepage
 			 *
+			 * @param  {boolean} showExcludeSearch Whether to return items that have been excluded from search
 			 * @return {Mura.Feed}              Self
 			 */
-			showExcludeSearch:function(){
-	            this.queryString+='&showExcludeSearch=1';
+			showExcludeSearch:function(showExcludeSearch){
+	            this.queryString+='&showExcludeSearch=' + encodeURIComponent(showExcludeSearch);
 				return this;
 	        },
 
 			/**
 			 * includeHomepage - Sets to include the home page
 			 *
+			 * @param  {boolean} showExcludeSearch Whether to return the homepage
 			 * @return {Mura.Feed}              Self
 			 */
-			includeHomepage:function(){
-	            this.queryString+='&includehomepage=1';
+			includeHomepage:function(includeHomepage){
+	            this.queryString+='&includehomepage=' + encodeURIComponent(includeHomepage);
 				return this;
 	        },
 

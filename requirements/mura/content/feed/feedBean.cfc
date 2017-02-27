@@ -337,12 +337,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setIncludeHomePage" output="false">
+	<cfargument name="includeHomePage" type="any" />
+	<cfif isNumeric(arguments.includeHomePage)>
+	<cfset variables.instance.includeHomePage = arguments.includeHomePage />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="includeHomePage" output="false">
+	<cfargument name="value" type="any" />
+	<cfreturn setIncludeHomePage(arguments.value)>
+</cffunction>
+
 <cffunction name="setShowNavOnly" output="false">
 	<cfargument name="showNavOnly" type="any" />
 	<cfif isNumeric(arguments.showNavOnly)>
 	<cfset variables.instance.showNavOnly = arguments.showNavOnly />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="showNavOnly" output="false">
+	<cfargument name="value" type="any" />>
+	<cfreturn setShowNavOnly(arguments.value)>
 </cffunction>
 
 <cffunction name="setIsLocked" output="false">
@@ -367,6 +385,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.showExcludeSearch = arguments.showExcludeSearch />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="showExcludeSearch" output="false">
+	<cfargument name="value" type="any" />>
+	<cfreturn setShowExcludeSearch(arguments.value)>
 </cffunction>
 
 <cffunction name="setImageSize" output="false">

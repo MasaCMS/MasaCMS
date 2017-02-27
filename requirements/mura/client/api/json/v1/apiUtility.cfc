@@ -1936,16 +1936,36 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
   		}
 
-		if(isDefined('arguments.params.includeHomePage')){
-			arguments.feed.setIncludeHomePage(1);
-		}
+		if(listFind('content,contentnav',params.entityname)){
+			if(isDefined('arguments.params.includeHomePage')){
+				if(isBoolean(arguments.params.includeHomePage)){
+					if(arguments.params.includeHomePage){
+						arguments.feed.setIncludeHomePage(1);
+					} else {
+						arguments.feed.setIncludeHomePage(0);
+					}
+				}
+			}
 
-		if(isDefined('arguments.params.shownavonly')){
-			arguments.feed.setShowNavOnly(1);
-		}
+			if(isDefined('arguments.params.shownavonly')){
+				if(isBoolean(arguments.params.shownavonly)){
+					if(arguments.params.shownavonly){
+						arguments.feed.setShowNavOnly(1);
+					} else {
+						arguments.feed.setShowNavOnly(0);
+					}
+				}
+			}
 
-		if(isDefined('arguments.params.showexcludesearch')){
-			arguments.feed.setShowExcludeSearch(1);
+			if(isDefined('arguments.params.showexcludesearch')){
+				if(isBoolean(arguments.params.showexcludesearch)){
+					if(arguments.params.showexcludesearch){
+						arguments.feed.setShowExcludeSearch(1);
+					} else {
+						arguments.feed.setShowExcludeSearch(0);
+					}
+				}
+			}
 		}
 
 		if(isDefined('arguments.params.sortby') && len(arguments.params.sortby)){
