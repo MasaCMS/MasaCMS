@@ -793,6 +793,9 @@
 				<cfcase value="char,bpchar">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
+				<cfcase value="boolean">
+                    <cfreturn "boolean">
+                </cfcase>
 				<cfcase value="int,integer,int4">
 					<cfreturn "integer">
 				</cfcase>
@@ -925,11 +928,16 @@
 				<cfset columnArgs.datatype="char">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
+			<cfcase value="bit,boolean">
+				<cfset columnArgs.datatype="boolean">
+			</cfcase>
 			<cfcase value="int,integer,int4">
 				<cfset columnArgs.datatype="int">
 			</cfcase>
 			<cfcase value="number">
-				<cfif arguments.rs.data_precision eq 3>
+				<cfif arguments.rs.data_precision eq 1>
+					<cfset columnArgs.datatype="boolean">
+				<cfelseif arguments.rs.data_precision eq 3>
 					<cfset columnArgs.datatype="tinyint">
 				<cfelse>
 					<cfset columnArgs.datatype="int">
@@ -1497,6 +1505,9 @@ function _parseInt(String){
 		</cfcase>
 		<cfcase value="date">
 			<cfreturn "date">
+		</cfcase>
+		<cfcase value="boolean">
+			<cfreturn "boolean">
 		</cfcase>
 		<cfcase value="ntext,longtext,clob,text">
 			<cfreturn "longvarchar">
