@@ -1560,6 +1560,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="registerModuleDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="conditional" default="true">
+    <cfargument name="package" default="">
+	<cfargument name="custom" default="true">
+    <cfreturn registerDisplayObjectDir(arguments=arguments)>
+</cffunction>
+
 <cffunction name="lookupDisplayObjectFilePath" output="false">
 	<cfargument name="filePath">
 	<cfargument name="customOnly" default="false">

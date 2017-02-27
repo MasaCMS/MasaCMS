@@ -344,6 +344,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfreturn this>
 </cffunction>
 
+<cffunction name="registerModuleDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="conditional" default="true">
+    <cfargument name="package" default="">
+	<cfargument name="custom" default="true">
+    <cfreturn registerDisplayObjectDir(arguments=arguments)>
+</cffunction>
+
 <cffunction name="registerContentTypeDir" output="false">
 	<cfargument name="dir">
 	<cfset var settingsManager=getBean('settingsManager')>
