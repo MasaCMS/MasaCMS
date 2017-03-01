@@ -356,21 +356,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							--->
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="mi-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
+
 								<cfif this.showInlineEditor>
-									<li id="adminQuickEdit">
-										<a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i>
-										<cfif $.content('type') eq 'Variation'>
-											Edit Content
-											<!---#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#--->
-										<cfelseif useLayoutManager()>
-											<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
-											<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
-											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
-											</cfif>
-										<cfelse>
-											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
-										</cfif></a>
-									</li>
+									<cfif $.content('type') eq 'Variation'>
+										<li id="adminQuickEdit">
+											<a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i>
+												Edit Content
+												<!---#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#--->
+											</a>
+										</li>
+									<cfelseif useLayoutManager()>
+										<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
+										<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects') or listFindNocase(tabAssignments,'Layout')>
+										<li id="adminQuickEdit">
+											<a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i>
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
+											</a>
+										</li>
+										</cfif>
+									<cfelse>
+										<li id="adminQuickEdit">
+											<a onclick="return MuraInlineEditor.init();"><i class="mi-pencil"></i>
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
+											</a>
+										</li>
+									</cfif>
+
 									<li id="adminFullEdit">
 										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#>
 											<cfif $.content('type') eq 'Variation'>
