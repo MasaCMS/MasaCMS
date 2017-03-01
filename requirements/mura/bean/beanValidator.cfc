@@ -217,7 +217,7 @@ component output="false" accessors="true" extends="mura.cfobject" hint="This pro
 				} else if(structKeyExists(arguments.constraintDetails,'message')){
 					arguments.errorsStruct[arguments.propertyIdentifier]=arguments.constraintDetails.message;
 				} else {
-					arguments.errorsStruct[arguments.propertyIdentifier]="The property name '#arguments.propertyIdentifier#' is not valid";
+					arguments.errorsStruct[arguments.propertyIdentifier]="The property named '#arguments.propertyIdentifier#' is not valid";
 				}
 
 				//writeDump(var=constraintDetails,abort=true);

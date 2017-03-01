@@ -871,11 +871,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 								if(prop.dataType=='string'){
 									prop.dataType='varchar';
 								}
-								*/
 
 								if(prop.dataType=='varchar' && !structKeyExists(prop,'length')){
 									prop.length=50;
 								}
+								*/
 
 					      	}
 					      }
