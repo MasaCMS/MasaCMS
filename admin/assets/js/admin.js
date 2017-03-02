@@ -753,8 +753,10 @@ function setHTMLEditors() {
 				$(document.getElementById(allPageTags[i].id)).val("<p></p>")
 			}
 
+			var toolbar= allPageTags[i].getAttribute('data-toolbar') || 'Default';
+			
 			$(document.getElementById(allPageTags[i].id)).ckeditor({
-				toolbar: 'Default',
+				toolbar: toolbar,
 				customConfig: 'config.js.cfm'
 			}, htmlEditorOnComplete);
 
