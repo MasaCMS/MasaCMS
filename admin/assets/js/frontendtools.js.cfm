@@ -1266,7 +1266,6 @@
 				var self=utility(this);
 
 				self.removeAttr('data-perm')
-				.removeAttr('data-instanceid')
 				.removeAttr('draggable');
 
 				if(typeof mura !='undefined' && typeof Mura.resetAsyncObject=='function'){
@@ -1328,7 +1327,6 @@
 							utility(attribute)
 								.find('.mura-object')
 								.removeAttr('data-perm')
-								.removeAttr('data-instanceid')
 								.removeAttr('draggable');
 
 							if(mura && Mura.resetAsyncObject){
