@@ -1176,6 +1176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfelse>
 									total_points desc, total_score desc
 								</cfif>
+								,tcontent.releaseDate desc, tcontent.lastUpdate desc <!--- tie-breaker sort options for articles with the same MXP points/scores. Show the most recent one first. --->
 							<cfelse>
 								#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\- ]","","all")#
 							</cfif>
