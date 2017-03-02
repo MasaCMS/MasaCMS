@@ -2225,8 +2225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif arguments.liveOnly>
 		#renderActiveClause("tcontent",arguments.siteID)#
-
-		AND tcontent.approved=1
+		
 	 	AND (
 			(
 			  	tcontent.Display = 2
