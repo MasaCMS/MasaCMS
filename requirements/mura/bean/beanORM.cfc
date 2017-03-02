@@ -284,6 +284,8 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 	private function getQueryParamType(datatype){
 		if(arguments.datatype=='int'){
 			return "cf_sql_integer";
+		} else if (arguments.datatype=='boolean'){
+			return "cf_sql_bit";
 		} else {
 			return "cf_sql_" & arguments.datatype;
 		}
