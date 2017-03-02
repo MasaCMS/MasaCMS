@@ -853,6 +853,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			structDelete(arguments.prop,'cfc');
 		}
 
+		if(arguments.prop.datatype=='varchar' && !structKeyExists(arguments.prop,'length')){
+			arguments.prop.length=50;
+		}
+
 		return arguments.prop;
 	}
 
