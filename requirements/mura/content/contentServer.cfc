@@ -420,7 +420,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset fileOutput=doRequest(request.servletEvent)>
 	<cfcontent reset="true"><cfoutput>#fileOutput#</cfoutput>
-	<cfif arguments.doabort><cfabort></cfif>
+	<cfabort>
 </cffunction>
 
 <cffunction name="render404" output="true">

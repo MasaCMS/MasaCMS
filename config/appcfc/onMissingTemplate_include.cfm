@@ -109,9 +109,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset firstItem=listFirst(local.filename,'/')>
 	<cfif listFind('_api,tasks',firstItem)>
 		<cfoutput>#application.contentServer.handleAPIRequest('/' & local.filename)#</cfoutput>
+		<cfabort>
 	<cfelse>
-		<cfoutput>#application.contentServer.renderFilename(filename=local.filename,siteid=siteid,doabort=false)#</cfoutput>
+		<cfset application.contentServer.renderFilename(filename=local.filename,siteid=siteid)>
 	</cfif>
+	
 	<cfreturn true>
 </cfif>
 
