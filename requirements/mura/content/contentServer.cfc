@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.isAdmin>
 			<cfreturn "--none--">
 		<cfelse>
-			<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##variables.configBean.getAdminDir()#/")>
+			<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##application.configBean.getAdminDir()#/")>
 		</cfif>
 	<cfelse>
 		<cfreturn rsSites.siteID>
@@ -374,7 +374,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
-		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##variables.configBean.getAdminDir()#/")>
+		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##application.configBean.getAdminDir()#/")>
 	<cfelse>
 		<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 		<cfset getBean('contentRenderer').redirect("#site.getWebPath(complete=1)##site.getContentRenderer().getURLStem(site.getSiteID(),'')#")>
