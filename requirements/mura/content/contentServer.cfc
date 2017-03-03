@@ -387,6 +387,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="validateDomain" default="true">
 	<cfargument name="parseURL" default="true">
 	<cfargument name="siteid" default="#bindToDomain()#">
+	<cfargument name="doabort" default="true">
 	<cfset var fileoutput="">
 
 	<cfset url.path=arguments.filename>
@@ -395,9 +396,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	<cfif find(".",last)>
  		<cfif last eq 'index.json'>
  			<cfset request.returnFormat="JSON">
+		<cfelseif last eq 'index.amp'>
+		 	<cfset request.returnFormat="AMP">
  		</cfif>
- 		<cfset arguments.filename=listDeleteAt(arguments.filename,listLen(arguments.filename,"/"),"/")>
- 	</cfif>
+
+		<cfif listFind(application.configBean.getAllowedIndexFiles(),last)>
+ 			<cfset arguments.filename=listDeleteAt(arguments.filename,listLen(arguments.filename,"/"),"/")>
+		</cfif>
+	</cfif>
 
 	<cfset request.siteid =arguments.siteid>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
@@ -414,8 +420,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset fileOutput=doRequest(request.servletEvent)>
 	<cfcontent reset="true"><cfoutput>#fileOutput#</cfoutput>
-	<cfabort>
-
+	<cfif arguments.doabort><cfabort></cfif>
 </cffunction>
 
 <cffunction name="render404" output="true">

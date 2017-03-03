@@ -81,7 +81,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset onRequestStart()>
 	<cfset local.fileArray=listToArray(cgi.script_name,"/")>
 	<cfset local.filename="">
-
 	<cfif len(application.configBean.getValue('context'))>
 		<cfset local.contextArray=listToArray(application.configBean.getValue('context'),"/")>
 		<cfset local.contextArrayLen=arrayLen(local.contextArray)>
@@ -102,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop from="1" to="#arrayLen(local.fileArray)#" index="local.i">
 		<cfif find(".",local.fileArray[local.i]) and local.i lt arrayLen(local.fileArray)>
 			<cfset local.filename="">
-		<cfelseif not find(".",local.fileArray[local.i])>
+		<cfelseif not (find(".",local.fileArray[local.i]) and listFind(application.configBean.getAllowedIndexFiles(),local.fileArray[local.i]))>
 			<cfset local.filename=listAppend(local.filename,local.fileArray[local.i] , "/")>
 		</cfif>
 	</cfloop>
@@ -110,11 +109,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset firstItem=listFirst(local.filename,'/')>
 	<cfif listFind('_api,tasks',firstItem)>
 		<cfoutput>#application.contentServer.handleAPIRequest('/' & local.filename)#</cfoutput>
-		<cfabort>
 	<cfelse>
-		<cfset application.contentServer.renderFilename(filename=local.filename,siteid=siteid)>
+		<cfoutput>#application.contentServer.renderFilename(filename=local.filename,siteid=siteid,doabort=false)#</cfoutput>
 	</cfif>
-
 	<cfreturn true>
 </cfif>
 

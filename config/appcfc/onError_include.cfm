@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn />
 </cfif>
 
-<cfif not isDefined('request.muraTemplateMissing')>
+<cfif not request.muraTemplateMissing>
 	<cfparam name="local" default="#structNew()#">
 	<cfset local.pluginEvent="">
 
@@ -293,3 +293,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<cfabort>
 </cfif>
+<cfset request.muraTemplateMissing=false>

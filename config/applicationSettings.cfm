@@ -70,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.returnFormat" default="html">
 <cfparam name="request.muraSessionManagement" default="true">
 <cfparam name="request.muraPointInTime" default="">
+<cfparam name="request.muraTemplateMissing" default="false">
 
 <cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 <!--- Application name, should be unique --->
