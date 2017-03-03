@@ -65,19 +65,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		data-forcelayout="#esapiEncode('html_attr',objectParams.forcelayout)#">
 
 		<div class="mura-layout-row">
-
-			<!--- temp --->
-			<cfloop list="date,url,text,datetime,datetime-local,image,email,month,number,tel,range,week" index="i">
-				<div class="mura-control-group">
-						<label>Demo #i#</label>
-						<input type="#i#">
-				</div>
-			</cfloop>
-
-
-
-
-
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentsource')#</label>
 				<select class="objectParam" name="sourcetype">
