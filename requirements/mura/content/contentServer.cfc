@@ -240,7 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset theLen=listLen(tempfilename,'/')/>
 			<cfloop from="2" to="#theLen#" index="n">
 			<cfset item=listgetat(tempfilename,n,"/")/>
-			<cfif not find(".",item)>
+			<cfif not (find(".",item) and listFind(application.configBean.getAllowedIndexFiles(),item))>
 				<cfset request.currentFilename=listappend(request.currentFilename,item,"/") />
 			</cfif>
 			</cfloop>
