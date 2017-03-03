@@ -387,7 +387,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="validateDomain" default="true">
 	<cfargument name="parseURL" default="true">
 	<cfargument name="siteid" default="#bindToDomain()#">
-	<cfargument name="doabort" default="true">
 	<cfset var fileoutput="">
 
 	<cfset url.path=arguments.filename>
