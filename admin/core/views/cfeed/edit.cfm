@@ -930,7 +930,7 @@ jQuery(document).ready(function(){
 				</label>
 			</div>
 
-			<div class="mura-control-group">
+			<!--- <div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</label>
 				<label class="radio inline">
 				<input name="isDefault" type="radio" value="1" <cfif rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
@@ -938,7 +938,7 @@ jQuery(document).ready(function(){
 				<label class="radio inline">
 					<input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 				</label>
-			</div>
+			</div> --->
 
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
