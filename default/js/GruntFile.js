@@ -40,7 +40,7 @@ module.exports = function(grunt) {
             files:{
               'dist/mura.js': [
                   'external/polyfill.js',
-                  'external/handlebars.runtime-v4.0.5.js',
+                  'external/handlebars.runtime-v4.0.6.js',
                   'src/mura.js',
                   'src/mura.loader.js',
                   'src/mura.core.js',
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
               ],
               'dist/mura.handlebars.js': [
                   'external/polyfill.js',
-                  'external/handlebars-v4.0.5.js',
+                  'external/handlebars-v4.0.6.js',
                   'src/mura.js',
                   'src/mura.loader.js',
                   'src/mura.core.js',

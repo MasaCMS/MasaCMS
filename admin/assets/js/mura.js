@@ -1485,11 +1485,12 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
   window.addEventListener("load", ready);
 })();
-;/*!
+;/**!
 
- handlebars v4.0.5
+ @license
+ handlebars v4.0.6
 
-Copyright (C) 2011-2015 by Yehuda Katz
+Copyright (C) 2011-2016 by Yehuda Katz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1509,7 +1510,58 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-@license
+*/
+/**!
+
+ @license
+ handlebars v4.0.6
+
+Copyright (C) 2011-2016 by Yehuda Katz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
+/**!
+
+ @license
+ handlebars v4.0.6
+
+Copyright (C) 2011-2016 by Yehuda Katz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -1582,7 +1634,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Each of these augment the Handlebars object. No need to setup here.
 	// (This is done to easily share code between commonjs and browse envs)
 
-	var _handlebarsSafeString = __webpack_require__(17);
+	var _handlebarsSafeString = __webpack_require__(20);
 
 	var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 
@@ -1594,11 +1646,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Utils = _interopRequireWildcard(_handlebarsUtils);
 
-	var _handlebarsRuntime = __webpack_require__(18);
+	var _handlebarsRuntime = __webpack_require__(21);
 
 	var runtime = _interopRequireWildcard(_handlebarsRuntime);
 
-	var _handlebarsNoConflict = __webpack_require__(19);
+	var _handlebarsNoConflict = __webpack_require__(22);
 
 	var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 
@@ -1686,11 +1738,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _exception2 = _interopRequireDefault(_exception);
 
-	var _helpers = __webpack_require__(6);
+	var _helpers = __webpack_require__(9);
 
-	var _decorators = __webpack_require__(14);
+	var _decorators = __webpack_require__(17);
 
-	var _logger = __webpack_require__(16);
+	var _logger = __webpack_require__(19);
 
 	var _logger2 = _interopRequireDefault(_logger);
 
@@ -1906,9 +1958,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _Object$defineProperty = __webpack_require__(6)['default'];
 
 	exports.__esModule = true;
 
@@ -1937,9 +1991,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Error.captureStackTrace(this, Exception);
 	  }
 
-	  if (loc) {
-	    this.lineNumber = line;
-	    this.column = column;
+	  try {
+	    if (loc) {
+	      this.lineNumber = line;
+
+	      // Work around issue under safari where we can't directly set the column value
+	      /* istanbul ignore next */
+	      if (_Object$defineProperty) {
+	        Object.defineProperty(this, 'column', { value: column });
+	      } else {
+	        this.column = column;
+	      }
+	    }
+	  } catch (nop) {
+	    /* Ignore if the browser is very particular */
 	  }
 	}
 
@@ -1952,6 +2017,39 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = { "default": __webpack_require__(7), __esModule: true };
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $ = __webpack_require__(8);
+	module.exports = function defineProperty(it, key, desc){
+	  return $.setDesc(it, key, desc);
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	var $Object = Object;
+	module.exports = {
+	  create:     $Object.create,
+	  getProto:   $Object.getPrototypeOf,
+	  isEnum:     {}.propertyIsEnumerable,
+	  getDesc:    $Object.getOwnPropertyDescriptor,
+	  setDesc:    $Object.defineProperty,
+	  setDescs:   $Object.defineProperties,
+	  getKeys:    $Object.keys,
+	  getNames:   $Object.getOwnPropertyNames,
+	  getSymbols: $Object.getOwnPropertySymbols,
+	  each:       [].forEach
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	var _interopRequireDefault = __webpack_require__(2)['default'];
@@ -1959,31 +2057,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.__esModule = true;
 	exports.registerDefaultHelpers = registerDefaultHelpers;
 
-	var _helpersBlockHelperMissing = __webpack_require__(7);
+	var _helpersBlockHelperMissing = __webpack_require__(10);
 
 	var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 
-	var _helpersEach = __webpack_require__(8);
+	var _helpersEach = __webpack_require__(11);
 
 	var _helpersEach2 = _interopRequireDefault(_helpersEach);
 
-	var _helpersHelperMissing = __webpack_require__(9);
+	var _helpersHelperMissing = __webpack_require__(12);
 
 	var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 
-	var _helpersIf = __webpack_require__(10);
+	var _helpersIf = __webpack_require__(13);
 
 	var _helpersIf2 = _interopRequireDefault(_helpersIf);
 
-	var _helpersLog = __webpack_require__(11);
+	var _helpersLog = __webpack_require__(14);
 
 	var _helpersLog2 = _interopRequireDefault(_helpersLog);
 
-	var _helpersLookup = __webpack_require__(12);
+	var _helpersLookup = __webpack_require__(15);
 
 	var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 
-	var _helpersWith = __webpack_require__(13);
+	var _helpersWith = __webpack_require__(16);
 
 	var _helpersWith2 = _interopRequireDefault(_helpersWith);
 
@@ -1998,7 +2096,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 7 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2041,7 +2139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 8 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2138,7 +2236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 9 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2166,7 +2264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 10 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2199,7 +2297,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2229,7 +2327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 12 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2245,7 +2343,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 13 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2282,7 +2380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 14 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2292,7 +2390,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.__esModule = true;
 	exports.registerDefaultDecorators = registerDefaultDecorators;
 
-	var _decoratorsInline = __webpack_require__(15);
+	var _decoratorsInline = __webpack_require__(18);
 
 	var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 
@@ -2301,7 +2399,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 15 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2334,7 +2432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 16 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2385,7 +2483,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 17 */
+/* 20 */
 /***/ function(module, exports) {
 
 	// Build out our basic SafeString type
@@ -2404,7 +2502,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 18 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2569,7 +2667,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        blockParams = templateSpec.useBlockParams ? [] : undefined;
 	    if (templateSpec.useDepths) {
 	      if (options.depths) {
-	        depths = context !== options.depths[0] ? [context].concat(options.depths) : options.depths;
+	        depths = context != options.depths[0] ? [context].concat(options.depths) : options.depths;
 	      } else {
 	        depths = [context];
 	      }
@@ -2618,7 +2716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
 	    var currentDepths = depths;
-	    if (depths && context !== depths[0]) {
+	    if (depths && context != depths[0]) {
 	      currentDepths = [context].concat(depths);
 	    }
 
@@ -2636,7 +2734,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function resolvePartial(partial, context, options) {
 	  if (!partial) {
 	    if (options.name === '@partial-block') {
-	      partial = options.data['partial-block'];
+	      var data = options.data;
+	      while (data['partial-block'] === noop) {
+	        data = data._parent;
+	      }
+	      partial = data['partial-block'];
+	      data['partial-block'] = noop;
 	    } else {
 	      partial = options.partials[options.name];
 	    }
@@ -2697,7 +2800,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 19 */
+/* 22 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/* global window */
@@ -2724,7 +2827,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ }
 /******/ ])
 });
-;;/* This file is part of Mura CMS.
+;
+;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
