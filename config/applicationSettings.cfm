@@ -307,7 +307,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.ormSettings.automanageSession =evalSetting( getINIProperty("ormautomanageSession","false")) />
 	<cfset this.ormSettings.savemapping= evalSetting(getINIProperty("ormsavemapping","false")) />
 	<cfset this.ormSettings.skipCFCwitherror= evalSetting(getINIProperty("ormskipCFCwitherror","false")) />
-	<cfset this.ormSettings.useDBforMapping= evalSetting(getINIProperty("ormuseDBforMapping","true")) />
+	<cfset this.ormSettings.useDBforMapping= evalSetting(getINIProperty("ormuseDBforMapping","false")) />
 	<cfset this.ormSettings.autogenmap= evalSetting(getINIProperty("ormautogenmap","true")) />
 	<cfset this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false")) />
 </cfif>
