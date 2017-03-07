@@ -48,6 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn />
 </cfif>
 
+<cfparam name="request.muraTemplateMissing" default="false">
+	
 <cfif not request.muraTemplateMissing>
 	<cfparam name="local" default="#structNew()#">
 	<cfset local.pluginEvent="">
