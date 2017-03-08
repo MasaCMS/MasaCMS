@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif not structKeyExists(request,"preformated")>
-			<cfif find(".",last)>
+			<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
 				<cfif last eq 'index.json'>
 		 			<cfset request.returnFormat="JSON">
 				<cfelseif last eq 'index.amp'>
@@ -304,8 +304,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	<cfset request.preformated=true/>
 
-	<cfif listLast(url.path,'/') eq 'index.json'>
-		<cfset request.returnFormat="JSON">
+	<cfset var last=listLast(url.path,'/')>
+
+	<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
+		<cfif last eq 'index.json'>
+			<cfset request.returnFormat="JSON">
+		<cfelseif last eq 'index.amp'>
+			<cfset request.returnFormat="AMP">
+		</cfif>
 	</cfif>
 
 	<cfreturn parseURL()>
@@ -338,9 +344,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(url.path)>
 		<cfset last=listLast(url.path,"/") />
 
-		<cfif find(".",last)>
+		<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
 			<cfif last eq 'index.json'>
 	 			<cfset request.returnFormat="JSON">
+			<cfelseif last eq 'index.amp'>
+	 			<cfset request.returnFormat="AMP">
 	 		</cfif>
 			<cfset indexFile=last>
 		</cfif>
@@ -392,16 +400,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset url.path=arguments.filename>
 	<cfset var last=listLast(arguments.filename,"/")>
 
- 	<cfif find(".",last)>
+ 	<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
  		<cfif last eq 'index.json'>
  			<cfset request.returnFormat="JSON">
 		<cfelseif last eq 'index.amp'>
 		 	<cfset request.returnFormat="AMP">
  		</cfif>
 
-		<cfif listFind(application.configBean.getAllowedIndexFiles(),last)>
- 			<cfset arguments.filename=listDeleteAt(arguments.filename,listLen(arguments.filename,"/"),"/")>
-		</cfif>
+ 		<cfset arguments.filename=listDeleteAt(arguments.filename,listLen(arguments.filename,"/"),"/")>
+
 	</cfif>
 
 	<cfset request.siteid =arguments.siteid>
