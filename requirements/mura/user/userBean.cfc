@@ -714,4 +714,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getBean('fileMetaData').loadBy(contentid=getValue('userid'),contentHistID=getValue('userid'),siteID=getValue('siteid'),fileid=getValue(arguments.property))>
 </cffunction>
 
+<cffunction name="setFirstName" output="false">
+	<cfargument name="firstname">
+	<cfset setValue('fname',arguments.firstname)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFirstName" output="false">
+	<cfreturn getValue('fname')>
+</cffunction>
+
+<cffunction name="setLastName" output="false">
+	<cfargument name="lastname">
+	<cfset setValue('lname',arguments.lastname)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getLastName" output="false">
+	<cfreturn getValue('lname')>
+</cffunction>
+
 </cfcomponent>
