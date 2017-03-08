@@ -1357,7 +1357,8 @@ Display Objects
 	<cfset objectparams.object=arguments.object>
 	<cfset objectparams.objectname=arguments.objectname>
 	<cfset objectparams.objectid=arguments.objectid>
-	<cfset objectparams.instanceid=createUUID()>
+
+	<cfparam name="objectparams.instanceid" default="#createUUID()#">
 
 	<cfif arguments.object eq 'plugin'>
 		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
