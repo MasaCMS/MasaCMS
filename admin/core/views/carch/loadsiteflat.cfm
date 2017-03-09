@@ -618,6 +618,10 @@ if(len($.siteConfig('customTagGroups'))){
 						</cfif>
 						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-history"></i></a></li>
 
+						<cfif item.getType() eq 'Form'>
+				 			<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#"  href="./?muraAction=cArch.datamanager&contentid=#esapiEncode('url',item.getContentID())#&siteid=#esapiEncode('url',item.getSiteid())#&topid=#esapiEncode('url',topid)#&moduleid=#esapiEncode('url',item.getModuleID())#&type=Form&parentid=#esapiEncode('url',item.getParentID())#"><i class="mi-wrench"></i></a></li>
+				 		</cfif>
+
 					    <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 					        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="./?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-group"></i></a></li>
 					    <cfelse>
