@@ -417,7 +417,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   </cfdefaultcase>
 	   </cfswitch>
     </cfif>
-			 <li class="version-history disabled"><a><i class="mi-history"></i></a></li>
+		<li class="version-history disabled"><a><i class="mi-history"></i></a></li>
 		 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 		   <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rstop.moduleid#&type=#rc.rstop.type#"><i class="mi-group"></i></a></li>
 		 <cfelse>
