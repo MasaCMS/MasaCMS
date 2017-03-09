@@ -8567,7 +8567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					resolve.call(obj.node,obj);
 				}
 			} else {
-				if(!obj.data('async') && obj.data('inited') && obj.data('render')=='client'){
+				if(!obj.data('async') &&  obj.data('render')=='client'){
 					wireUpObject(obj);
 					if(typeof resolve == 'function'){
 						resolve.call(obj.node,obj);
