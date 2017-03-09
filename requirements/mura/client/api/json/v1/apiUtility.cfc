@@ -2634,7 +2634,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 					if(isDefined('url') && isStruct(url)){
 						for(var u in url){
-							if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
+							if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache',u)){
 								args.params['#u#']=url['#u#'];
 							}
 						}
@@ -2642,7 +2642,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 					if(isDefined('form') && isStruct(form)){
 						for(var f in form){
-							if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',f)){
+							if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache',f)){
 								args.params['#f#']=form['#f#'];
 							}
 						}

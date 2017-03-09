@@ -512,7 +512,7 @@
 				obj.find('.mura-region-local[data-inited="false"]').each(function(){
 
 					var region=Mura(this);
-					
+
 					if(!region.data('loose') || (region.data('loose') && (region.html() == '<p></p>') || Mura.trim(region.html()) =='' )){
 						region.on('drop',function(e) {
 						    var dropParent, dropIndex, dragIndex;
