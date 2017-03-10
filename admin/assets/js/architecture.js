@@ -1827,9 +1827,7 @@ buttons: {
 					$('#selectedIcon').attr("id", "").attr("src", "assets/images/icons/template_24x24.png");
 					$(this).parent().prepend(quickEditTmpl);
 
-					var qe = $("#mura-quickEditor")
-					var dd = qe.parents("dd:first");
-
+					var dd = $("#mura-quickEditor").parents("dd:first");
 					dd.attr("id", "selected");
 
 					$.get(url + "?" + pars, function(data) {
@@ -2084,10 +2082,8 @@ buttons: {
 				$('#selectedIcon').attr("id", "").attr("src", "assets/images/icons/template_24x24.png");
 				$(this).parent().prepend(quickEditTmpl);
 
-				var qe = $("#mura-quickEditor")
-				var dd = qe.parents("dd:first");
-
-				dd.attr("id", "selected");
+				var dd = $("#mura-quickEditor").parents("dd:first");
+				$(dd).attr("id", "selected");
 
 				$.ajax({
 				  type: "POST",
