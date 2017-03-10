@@ -12,6 +12,7 @@
 	<cfparam name="rc.object" default="">
 	<cfparam name="rc.objectname" default="">
 	<cfparam name="rc.objecticonclass" default="mi-cog">
+	<cfparam name="rc.isnew" default="false">
 
 	<cfif not len(rc.objectname) and len(rc.object) gt 1>
 		<cfif rc.$.siteConfig().hasDisplayObject(rc.object)>
@@ -148,6 +149,7 @@
 							'objectid':'#esapiEncode('javascript',rc.objectid)#',
 							'name':'#esapiEncode('javascript',rc.objectname)#',
 							'iconclass':'#esapiEncode('javascript',rc.objecticonclass)#',
+							'isnew':'#esapiEncode('javascript',rc.isnew)#',
 							'regionid':'0',
 							'context':'#application.configBean.getContext()#',
 							'params':encodeURIComponent(JSON.stringify(parameters["params"])),

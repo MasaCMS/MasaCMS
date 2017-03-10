@@ -440,7 +440,7 @@
 		        }
 
 		        initDraggableObject(displayObject);
-		        openFrontEndToolsModal(displayObject);
+		        openFrontEndToolsModal(displayObject,true);
 		        Mura.processAsyncObject(displayObject);
 
 		        Mura(displayObject).closest('.mura-region-local').data('dirty',true);
