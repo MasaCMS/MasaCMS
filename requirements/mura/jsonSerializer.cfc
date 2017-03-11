@@ -225,9 +225,7 @@ component
 				} else {
 					// Write the date in ISO 8601 time string format. We're going to assume that the
 					// date is already in the dezired timezone.
-					//input=DateConvert('local2utc',input);
 					var utcTotalOffset=moment.getArbitraryTimeOffset(input,moment.getZone())/60;
-
 					var utcHourOffset=int(utcTotalOffset / 60);
 					var utcMinuteOffset=abs(utcTotalOffset - (utcHourOffset*60));
 					var tzmod=(utcTotalOffset < 0) ? '-' : '+';
