@@ -133,7 +133,7 @@ component
 		) {
 
 		arguments.key=lcase(arguments.key);
-		
+
 		if ( structKeyExists( fullKeyList, key ) ) {
 
 			return this;
@@ -230,7 +230,7 @@ component
 					var tzmod=(tzinfo.utcTotalOffset < 0) ? '+' : '-';
 					var tsmin=(tzinfo.utcMinuteOffset < 10) ? '0#tzinfo.utcMinuteOffset#' : tzinfo.utcMinuteOffset;
 					var tshour=(tzinfo.utcHourOffset < 10) ? '0#tzinfo.utcHourOffset#' : tzinfo.utcHourOffset;
-					writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss" ) & tzmod & tshour & ":" & tsmin & """" );
+					writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss" ) & '+0' & tzmod & tshour & ":" & tsmin & """" );
 				}
 			} else {
 
