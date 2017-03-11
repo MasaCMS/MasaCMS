@@ -6,6 +6,7 @@ component
 	// I return the initialized component.
 	public any function init() {
 
+		moment=new mura.moment();
 		// Every key is added to the full key list - used for one-time key serialization.
 		fullKeyList = {};
 
@@ -170,7 +171,6 @@ component
 
 	}
 
-
 	// I walk the given object, writing the serialized value to the output (which is expected to
 	// be a content buffer).
 	// ---
@@ -226,11 +226,16 @@ component
 					// Write the date in ISO 8601 time string format. We're going to assume that the
 					// date is already in the dezired timezone.
 					//input=DateConvert('local2utc',input);
-					var tzinfo=getTimeZoneInfo();
-					var tzmod=(tzinfo.utcTotalOffset < 0) ? '+' : '-';
-					var tsmin=(tzinfo.utcMinuteOffset < 10) ? '0#tzinfo.utcMinuteOffset#' : tzinfo.utcMinuteOffset;
-					var tshour=(tzinfo.utcHourOffset < 10) ? '0#tzinfo.utcHourOffset#' : tzinfo.utcHourOffset;
-					writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss" ) & '+0' & tzmod & tshour & ":" & tsmin & """" );
+					var utcTotalOffset=moment.getArbitraryTimeOffset(input,moment.getZone())/60;
+
+					var utcHourOffset=int(utcTotalOffset / 60);
+					var utcMinuteOffset=abs(utcTotalOffset - (utcHourOffset*60));
+					var tzmod=(utcTotalOffset < 0) ? '-' : '+';
+					var tsmin=(utcMinuteOffset < 10) ? '0#abs(utcMinuteOffset)#' : utcMinuteOffset;
+					var tshour=(utcHourOffset < 10) ? '0#abs(utcHourOffset)#' : utcHourOffset;
+
+					writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss" ) & tzmod  & tshour & ":" & tsmin & """" );
+
 				}
 			} else {
 
