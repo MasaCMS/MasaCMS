@@ -434,7 +434,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfschedule action = "update"
 				task = "#variables.siteMonitorTask#"
 				operation = "HTTPRequest"
-				url = "http://#listFirst(cgi.http_host,":")##application.configBean.getContext()#/index.cfm/_api/sitemonitor/"
+				url = "http://" & listFirst(cgi.http_host,":") & application.configBean.getContext() & "/index.cfm/_api/sitemonitor/"
 				port="#variables.port#"
 				startDate = "#dateFormat(now(),'mm/dd/yyyy')#"
 				startTime = "#createTime(0,15,0)#"
