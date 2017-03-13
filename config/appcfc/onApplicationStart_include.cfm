@@ -431,10 +431,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cftry>
 		<cfif variables.iniProperties.ping eq 1>
+			<cfset local.updateurl = "http://" & listFirst(cgi.http_host,":") & application.configBean.getContext() & "/index.cfm/_api/sitemonitor/" />
 			<cfschedule action = "update"
 				task = "#variables.siteMonitorTask#"
 				operation = "HTTPRequest"
-				url = "http://" & listFirst(cgi.http_host,":") & application.configBean.getContext() & "/index.cfm/_api/sitemonitor/"
+				url = "#local.updateurl#"
 				port="#variables.port#"
 				startDate = "#dateFormat(now(),'mm/dd/yyyy')#"
 				startTime = "#createTime(0,15,0)#"
