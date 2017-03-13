@@ -63,17 +63,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</ul>
 		<div class="tab-content block-content">
-		<cfset rscategorylist = rc.plugingroups['Application']/>
-		<cfset local.category = "Application" />
-		<cfinclude template="dsp_table.cfm" />
-		<cfset rscategorylist = rc.plugingroups['Utility']/>
-		<cfset local.category = "Utility" />
-		<cfinclude template="dsp_table.cfm" />
-		<cfloop collection="#rc.plugingroups#" item="local.category" >
-			<cfif not listFind("Application,Utility",local.category) and rc.plugingroups[local.category].recordCount>
-				<cfset rscategorylist = rc.plugingroups[local.category]/>
-				<cfinclude template="dsp_table.cfm" />
-			</cfif>
-		</cfloop>
+			<cfset rscategorylist = rc.plugingroups['Application']/>
+			<cfset local.category = "Application" />
+			<cfinclude template="dsp_table.cfm" />
+			<cfset rscategorylist = rc.plugingroups['Utility']/>
+			<cfset local.category = "Utility" />
+			<cfinclude template="dsp_table.cfm" />
+			<cfloop collection="#rc.plugingroups#" item="local.category" >
+				<cfif not listFind("Application,Utility",local.category) and rc.plugingroups[local.category].recordCount>
+					<cfset rscategorylist = rc.plugingroups[local.category]/>
+					<cfinclude template="dsp_table.cfm" />
+				</cfif>
+			</cfloop>
+		</div>
 	</div> <!-- /.block-constrain -->
 </cfoutput>
