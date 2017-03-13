@@ -949,7 +949,7 @@
 			<cfset tempFile=variables.fileManager.emulateUpload(userBean.getNewFile())>
 		</cfif>
 
-		<cfif (tempFile.ServerFileExt eq "jpg" or tempFile.ServerFileExt eq "gif" or tempFile.ServerFileExt eq "png") and tempFile.ContentType eq "Image">
+		<cfif (tempFile.ServerFileExt eq "jpeg" or tempFile.ServerFileExt eq "jpg" or tempFile.ServerFileExt eq "gif" or tempFile.ServerFileExt eq "png") and tempFile.ContentType eq "Image">
 			<cftry>
 				<cfif len(arguments.userBean.getPhotoFileID())>
 					<cfset variables.fileManager.deleteVersion(arguments.userBean.getPhotoFileID()) />
