@@ -160,7 +160,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 						    <div class="mura-control-group">
 						      	<label>#application.rbFactory.getKeyValue(session.rb,'user.image')#</label>
-						      	<input type="file" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
+						      	<input type="file" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG|jpeg|JPEG|png|PNG)" message="Your logo must be a .JPG" value=""/>
 						        <cfif len(rc.userBean.getPhotoFileID())>
 							        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/medium/?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
 

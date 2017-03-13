@@ -200,7 +200,7 @@
 							<!--- Image --->
 							<div class="mura-control-group">
 								<label for="newFile">#rbKey('user.image')#</label>
-									<input type="file" id="newFile" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
+									<input type="file" id="newFile" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG|jpeg|JPEG|png|PNG)" message="Your logo must be a .JPG" value=""/>
 								<cfif len(rc.userBean.getPhotoFileID())>
 										<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#rc.userBean.getUserID()#&amp;siteid=#rc.userBean.getSiteID()#&amp;fileid=#rc.userBean.getPhotoFileID()#">
 											<img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/medium/?fileid=#rc.userBean.getPhotoFileID()#&amp;cacheID=#createUUID()#" />
