@@ -144,6 +144,13 @@
 													</a>
 												</li>
 
+											<!--- View Members --->
+												<li class="members">
+													<a href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" onclick="actionModal(); window.location=this.href;">
+														<i class="mi-users"></i>#rbKey('user.members')#
+													</a>
+												</li>
+
 											<!--- Delete --->
 												<cfif local.item.getValue('perm') eq 0>
 
