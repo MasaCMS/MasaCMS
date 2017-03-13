@@ -369,13 +369,21 @@
 
 					// min-height for page content area
 					var setBlockHeight = function(){
+						var bc = $('##mura-content .block-constrain');
 						var minFooterH = 15;
 						var windowH = $(window).height();
 						var headerH = $('.mura-header:first').height();
 						var footerH = $('.mura-actions:first').height();
 						if (footerH <= minFooterH){ footerH = minFooterH;}
+						if ($(bc).length > 1){
+							$.each(bc,function(){
+								if($(this)[0] !== $(bc).last()[0]){
+									footerH = footerH + $(this).height();
+								}
+							});
+						}
 						var h = windowH - headerH - footerH -110;
-						$('.block-constrain').css('min-height',h + 'px');
+						$(bc).last().css('min-height',h + 'px');
 					};
 					// run on page load
 					setBlockHeight();
