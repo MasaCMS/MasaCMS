@@ -620,15 +620,20 @@
 										</div>
 								</cfif>
 
+						<!--- Email Broadcaster --->
+						<cfif YesNoFormat(rc.$.siteConfig('EmailBroadcaster'))>
 							<div class="mura-control-group">
 								<label>#rbKey('user.emailbroadcaster')#</label>
-										<label class="radio inline"><input name="subscribe" type="radio" class="radio inline" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>
-											#rbKey('user.yes')#
-										</label>
-										<label class="radio inline"><input name="subscribe" type="radio" class="radio inline" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>
-											#rbKey('user.no')#
-										</label>
-									</div>
+								<label class="radio inline">
+									<input name="subscribe" type="radio" class="radio inline" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>
+									#rbKey('user.yes')#
+								</label>
+								<label class="radio inline">
+									<input name="subscribe" type="radio" class="radio inline" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>
+									#rbKey('user.no')#
+								</label>
+							</div>
+						</cfif>
 
 							<!--- Active + User Type --->
 							<div class="mura-control-group">
