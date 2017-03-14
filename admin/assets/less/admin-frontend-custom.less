@@ -404,9 +404,11 @@
 
 				cursor: pointer !important;
 
+				/*
 				> i {
 					color: @blueDarker !important;
 					}
+				*/
 
 				}
 
@@ -415,6 +417,45 @@
 				margin: 9px 0 0 4px !important;
 				}
 			}
+
+			&.mura-saving > a{
+				/*			
+				animation:loadbar .75s;
+				-webkit-animation:loadbar .75s;
+				animation-fill-mode: forwards;			  
+				-webkit-animation-fill-mode: forwards;
+				width: 0% !important;
+				*/
+				background-color: #6f6f6f !important;		
+				cursor: default !important;						
+			}
+/*
+			@keyframes loadbar {
+
+			  0% {
+			    width: 0%;
+			  }
+
+			  100% {
+			    width: 100%;
+			  }
+			}
+			@-webkit-keyframes loadbar {
+
+			  0% {
+			    width: 0%;
+			  }
+
+			  100% {
+			    width: 100%;
+			  }
+
+			}*/
+
+			&.mura-saving > ul.dropdown-menu{
+				display:none !important;
+			}
+
 
 		}
 
