@@ -491,17 +491,20 @@ to your own modified versions of Mura CMS.
 					</select>
 					</div>
 
-				<div class="mura-control-group">
-				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.advertiseruserpool')#</label>
+				<!--- The ad manager is now gone, but can exist in limited legacy situations --->
+				<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
+					<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.advertiseruserpool')#</label>
 						<select  name="advertiserUserPoolID">
-						<option value="">This site</option>
-						<cfloop query="rsSites">
+							<option value="">This site</option>
+							<cfloop query="rsSites">
 								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
-								<option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getAdvertiserUserPoolID()>selected</cfif>>#esapiEncode('html',rsSites.site)#</option>
-							</cfif>
+									<option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getAdvertiserUserPoolID()>selected</cfif>>#esapiEncode('html',rsSites.site)#</option>
+								</cfif>
 							</cfloop>
-					</select>
+						</select>
 					</div>
+				</cfif>
 
 				<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.displayobjectpool')#</label>
