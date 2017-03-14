@@ -388,16 +388,16 @@
 		text-align: left;
 
 			> a {
-			position: relative !important;
-			display: inline-block !important; 
-			color: @white !important;
-			font-size: 11px !important;
-			padding: 0 12px 2px !important;
-			cursor: pointer !important;
 			background-color: @mura-blue !important;
-			border-color: #4882cc;
 			background-image: none !important;
-
+			border-color: #4882cc;
+			color: @white !important;
+			cursor: pointer !important;
+			display: inline-block !important; 
+			font-size: 11px !important;
+			min-width: 74px !important;
+			padding: 0 12px 2px !important;
+			position: relative !important;
 
 			&:hover {
 
@@ -418,14 +418,13 @@
 			}
 
 			&.mura-saving > a{
-				background-color: #6f6f6f !important;		
 				cursor: default !important;						
-				color: rgba(255,255,255,.7)!important;
-
 
 				i{	
 					-webkit-animation: fa-spin 2s infinite linear;
-					animation: fa-spin 2s infinite linear;					
+					animation: fa-spin 2s infinite linear;	
+					font-size: 13px !important;				
+					margin-right: 1px !important;
 				}
 
 				&:hover i{
