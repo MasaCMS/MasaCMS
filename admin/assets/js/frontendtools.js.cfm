@@ -1317,6 +1317,8 @@
 		save:function(){
 			try{
 
+				utility('##adminSave').addClass('mura-saving');
+
 				utility('.mura-object-selected').removeClass('mura-object-selected');
 
 				MuraInlineEditor.validate(
@@ -1531,6 +1533,8 @@
 
 					        	</cfif>
 								} else {
+
+									utility('##adminSave').removeClass('mura-saving');
 
 									MuraInlineEditor.data['csrf_token']=resp['csrf_token'];
 									MuraInlineEditor.data['csrf_token_expires']=resp['csrf_token_expires'];
