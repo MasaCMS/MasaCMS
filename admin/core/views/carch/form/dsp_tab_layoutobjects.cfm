@@ -145,12 +145,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#
         </label>
       </div>
-  
+
         <cfif rc.$.getContentRenderer().useLayoutManager()>
           <div class="mura-control-group">
             <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
             <div class="help-block">
-              <p>To manage content objects, <a href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.contentbean.getfilename())#','#esapiEncode('javascript',rc.contentbean.getTargetParams())#');">preview this content node</a> and select the "Inline Edit" option.</p>
+              <p>To manage content objects, <a href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rc.contentbean.getfilename())#?previewid=#rc.contentbean.getContentHistID()#','#esapiEncode('javascript',rc.contentbean.getTargetParams())#');">preview this content node</a> and select the "Inline Edit" option.</p>
             </div>
           </div>
 
