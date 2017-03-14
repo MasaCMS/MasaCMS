@@ -245,15 +245,19 @@
 	#frontEndTools > #tools-status > li {
 
 	 	padding-right: 6px !important;
-	/*	border-right: 1px solid hsla(0,0,.33,.85) !important; */
 
 		> a {
 			border: 0 !important;
 		}
 
-		&#adminStatus > a {
-			background-color: @mura-blue !important;
-			border-radius: 0 !important;
+		&#adminStatus{
+
+			/*min-width: 95px !important;*/
+
+			&> a {
+				background-color: @mura-blue !important;
+				border-radius: 0 !important;
+				}
 			}
 		}
 
@@ -376,26 +380,25 @@
 	}
 
 	#frontEndTools > ul > li#adminSave {
-		position: relative;
-		color: #fff !important;
-		float: left !important;
-		line-height: 30px !important;
-		//margin-left: 14px !important;
-		list-style: none !important;
-		font-weight: normal !important;
-		font-style: normal !important;
 		background: transparent !important;
 		border: 0 !important;
+		color: #fff !important;
+		float: left !important;
+		font-weight: normal !important;
+		font-style: normal !important;
+		line-height: 30px !important;
+		list-style: none !important;
+		/*min-width: 95px !important;*/
+		position: relative;
+		/*text-align: left;*/
 
 			> a {
 			position: relative !important;
 			display: block !important;
+			/*display: inline-block !important; */
 			color: @white !important;
 			font-size: 11px !important;
 			padding: 0 12px 2px !important;
-		//	line-height: 24px !important;
-		//	height: 24px !important;
-		//	.border-radius(2px) !important;
 			cursor: pointer !important;
 			background-color: @mura-blue !important;
 			border-color: #4882cc;
