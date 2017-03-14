@@ -375,7 +375,7 @@
 		<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
 		<cfargument name="OriginID" type="string" default="" required="yes" />
 
-		<cfset var error =""/>
+		<cfset var errors =""/>
 		<cfset var addressBean =""/>
 		<cfset var userBean="" />
 		<cfset var pluginEvent = createObject("component","mura.event") />
@@ -849,7 +849,7 @@
 	<cffunction name="updateAddress" output="false">
 		<cfargument name="data" type="any" default="#structnew()#"/>
 
-		<cfset var error =""/>
+		<cfset var errors =""/>
 		<cfset var addressBean=""/>
 		<cfset var userBean="" />
 

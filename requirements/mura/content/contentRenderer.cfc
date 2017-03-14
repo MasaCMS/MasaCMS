@@ -1339,6 +1339,7 @@ Display Objects
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
+	<cfset var result=''>
 
 	<cfset request.muraDisplayObjectNestLevel=request.muraDisplayObjectNestLevel+1>
 

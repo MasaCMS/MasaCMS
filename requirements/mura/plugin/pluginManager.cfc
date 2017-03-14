@@ -1709,6 +1709,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var currentModuleID="">
 	<cfset var tracePoint=0>
 	<cfset var scriptIndex=0>
+	<cfset var listenerStruct={}>
 
 	<cfset arguments.runat=REReplace(arguments.runat, "[^a-zA-Z0-9_]", "", "ALL")>
 

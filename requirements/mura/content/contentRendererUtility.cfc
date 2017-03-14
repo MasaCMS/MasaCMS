@@ -1966,7 +1966,7 @@
 		<!--- END Checking for Override via content_types includes--->
 
 		<!--- START Checking for Override via Display Object --->
-		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+		<cfset var displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
 			<cfset var params=$.content().getObjectParams()>

@@ -1235,7 +1235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(val)>
 		<cfreturn val>
 	<cfelse>
-		<cfset params=getObjectParams()>
+		<cfset var params=getObjectParams()>
 
 		<cfif structKeyExists(params,arguments.param)>
 			<cfreturn params['#arguments.param#']>

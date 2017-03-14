@@ -1240,8 +1240,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var adminSSL=application.configBean.getAdminSSL()>
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
+	<cfset var theurl = "#getValue('domain')##application.configBean.getServerPort()#">
 
-	<cfset theurl = "#getValue('domain')##application.configBean.getServerPort()#">
 	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
 		<cfset thelist = listAppend(thelist,'http://#theurl#')>
 	</cfif>

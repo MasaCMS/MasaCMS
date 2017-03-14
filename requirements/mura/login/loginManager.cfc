@@ -220,7 +220,7 @@ If you did not request a new authorization, contact #contactEmail#.
 
 	<cfset var sessionData=getSession()>
 
-	<cfset sessionData.mfa.authcode=userUtility.getRandomPassword()>
+	<cfset sessionData.mfa.authcode=variables.userUtility.getRandomPassword()>
 
 	<cfif getBean('configBean').getValue(property='MFASendAuthCode',defaultValue=true)>
 		<cfset sendAuthCode()>
@@ -229,7 +229,7 @@ If you did not request a new authorization, contact #contactEmail#.
 	<cfif arguments.isAdminLogin>
 		<cflocation url="./?muraAction=cLogin.main&display=login&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
 	<cfelse>
-		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
+		<cfset var loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 		<cfif find('?', loginURL)>
 			<cfset loginURL &= "&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
 		<cfelse>
@@ -260,7 +260,7 @@ If you did not request a new authorization, contact #contactEmail#.
 	<cfif arguments.isAdminLogin>
 		<cflocation url="./?muraAction=cLogin.main&display=login&status=failed&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
 	<cfelse>
-		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
+		<cfset var loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 		<cfif find('?', loginURL)>
 			<cfset loginURL &= "&status=failed&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
 		<cfelse>
@@ -373,7 +373,7 @@ If you did not request a new authorization, contact #contactEmail#.
 
 					<cfif userDevice.exists()>
 						<cfset userDevice.setLastLogin(now()).save()>
-						<cfset userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
+						<cfset variables.userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
 						<cfset handleSuccess(argumentCollection=sessionData.mfa)>
 						<cfreturn true>
 					</cfif>
@@ -478,7 +478,7 @@ If you did not request a new authorization, contact #contactEmail#.
 
 					<cfif userDevice.exists()>
 						<cfset userDevice.setLastLogin(now()).save()>
-						<cfset userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
+						<cfset variables.userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
 						<cfset handleSuccess(argumentCollection=sessionData.mfa)>
 						<cfreturn true>
 					</cfif>

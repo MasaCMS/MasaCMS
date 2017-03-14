@@ -368,6 +368,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
 			<cfset var filedir=variables.configBean.getValue('filedir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
+			<cfset var bodyFileArray=[]>
+			<cfset var extensionXML="">
 
  			<!--- We do not want to include files collected from mura forms or the advertising manager --->
 
@@ -453,7 +455,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var path = "" />
 		<cfset var pathArray = [] />
 		<cfset var filePoolID =getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
-
+		<cfset var end="">
+			
 		<cfloop condition="find gt 0">
 			<cfset block = {} />
 
