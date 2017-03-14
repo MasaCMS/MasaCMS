@@ -247,7 +247,7 @@
 
 		&#adminStatus{
 
-			/*min-width: 95px !important;*/
+			min-width: 95px !important;
 
 			&> a {
 				background-color: @mura-blue !important;
@@ -383,14 +383,13 @@
 		font-style: normal !important;
 		line-height: 30px !important;
 		list-style: none !important;
-		/*min-width: 95px !important;*/
+		min-width: 95px !important;
 		position: relative;
-		/*text-align: left;*/
+		text-align: left;
 
 			> a {
 			position: relative !important;
-			display: block !important;
-			/*display: inline-block !important; */
+			display: inline-block !important; 
 			color: @white !important;
 			font-size: 11px !important;
 			padding: 0 12px 2px !important;
@@ -419,38 +418,21 @@
 			}
 
 			&.mura-saving > a{
-				/*			
-				animation:loadbar .75s;
-				-webkit-animation:loadbar .75s;
-				animation-fill-mode: forwards;			  
-				-webkit-animation-fill-mode: forwards;
-				width: 0% !important;
-				*/
 				background-color: #6f6f6f !important;		
 				cursor: default !important;						
+				color: rgba(255,255,255,.7)!important;
+
+
+				i{	
+					-webkit-animation: fa-spin 2s infinite linear;
+					animation: fa-spin 2s infinite linear;					
+				}
+
+				&:hover i{
+					opacity:.7 !important;
+				}
+				
 			}
-/*
-			@keyframes loadbar {
-
-			  0% {
-			    width: 0%;
-			  }
-
-			  100% {
-			    width: 100%;
-			  }
-			}
-			@-webkit-keyframes loadbar {
-
-			  0% {
-			    width: 0%;
-			  }
-
-			  100% {
-			    width: 100%;
-			  }
-
-			}*/
 
 			&.mura-saving > ul.dropdown-menu{
 				display:none !important;
@@ -490,7 +472,6 @@
 			}
 
 		a {
-			//font-size: 12px !important;
 			color: #CCC !important;
 			padding: 5px 10px !important;
 			line-height: 1.2 !important;
