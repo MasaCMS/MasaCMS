@@ -295,6 +295,8 @@
 		<cfset var filemeta=''>
 		<cfset var thelink=''>
 		<cfset var returnString=''>
+		<cfset var r=''>
+		<cfset var thePubDate=''>
 
 		<cfcontent reset="true"><cfheader name="content-type" value="text/xml;charset=UTF-8">
 		<cfsavecontent variable="returnString"><cfoutput><?xml version="1.0" ?>
@@ -390,7 +392,8 @@
 		<cfset var thelink=''>
 		<cfset var returnString=''>
 		<cfset var $=application.serviceFactory.getBean('$').init(arguments.feed.getSiteID())>
-
+		<cfset var thePubDate="">
+			
 		<cfcontent reset="true"><cfheader name="content-type" value="text/xml;charset=UTF-8">
 		<cfsavecontent variable="returnString"><cfoutput><?xml version="1.0" ?>
 		<rss version="0.92"

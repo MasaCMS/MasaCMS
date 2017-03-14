@@ -357,7 +357,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstContentObjects=""/>
 		<cfset var rsContentObjects=""/>
 		<cfset var rsObjects=""/>
+		
 		<cfset var rsContentObjectsUpdate=""/>
+		<cfset var rsthierarchy=""/>
+		<cfset var rstfiles=""/>
+		<cfset var rsthasmetadata=""/>
+		<cfset var importExtensions=""/>
 
 		<cfset var rstClassExtendData=""/>
 		<cfset var rsExtendData=""/>

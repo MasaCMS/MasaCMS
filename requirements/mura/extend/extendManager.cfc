@@ -1705,8 +1705,9 @@ and tclassextendattributes.type='File'
 	  <cfset var isCDATAEnd = "" />
 	  <cfset var isEndTag = "" />
 	  <cfset var isSelfClose = "" />
+	  <cfset var i = "" />
 
-	  <cfset xml = trim(REReplace(xml, "(^|>)\s*(<|$)", "\1#chr(10)#\2", "all")) />
+	  <cfset arguments.xml = trim(REReplace(xml, "(^|>)\s*(<|$)", "\1#chr(10)#\2", "all")) />
 	  <cfset lines = listToArray(xml, chr(10)) />
 	  <cfset depth = 0 />
 	  <cfloop from="1" to="#arrayLen(lines)#" index="i">

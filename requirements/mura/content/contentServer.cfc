@@ -696,12 +696,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var sessionData=getSession()>
 		<cfparam name="request.returnFormat" default="HTML">
 		<cfparam name="sessionData.siteid" default="#arguments.event.getValue('siteID')#">
-		<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
-			<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.servlet").init(arguments.event)>
-		<cfelse>
-			<cfset arguments.event.getHandler("standardSetContentRenderer").handle(arguments.event)>
-		</cfif>
-
+		<cfset arguments.event.getHandler("standardSetContentRenderer").handle(arguments.event)>
 		<cfset arguments.event.setValue("localHandler",application.settingsManager.getSite(arguments.event.getValue('siteID')).getLocalHandler())>
 	</cfif>
 </cffunction>
