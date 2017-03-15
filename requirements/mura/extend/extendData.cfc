@@ -277,7 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			union all
 
-			select '' baseID, attributename as 'name', type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
+			select '' baseID, attributename as name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
 			from rsDefinitions
 			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 			and (
