@@ -392,6 +392,8 @@
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			MuraInlineEditor.sidebarAction('showconfigurator');
 		}
+
+		return false;
 	}
 
 	var resizeFrontEndToolsSidebar=function(frameHeight){
@@ -2105,7 +2107,7 @@
 	window.muraInlineEditor=window.MuraInlineEditor;
 
 	Mura.initFrontendUI=initFrontendUI;
-	
+
 	<cfif url.contenttype eq 'Variation'>
 		Mura('#mura-edit-var-targetingjs').click(function(e){
 			e.preventDefault();
