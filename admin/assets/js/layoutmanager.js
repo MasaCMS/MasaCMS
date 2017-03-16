@@ -515,6 +515,7 @@
 						item.addClass('mura-region-local');
 						item.data('inited', false);
 						item.data('loose', true);
+						item.data('perm', 'editor');
 					}
 				});
 
