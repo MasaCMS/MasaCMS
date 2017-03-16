@@ -1189,7 +1189,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="">
 	<cfargument name="useProtocol" default="1">
-	<cfreturn getEndpoint(argumentCollection=arguments)>
+	<cfreturn getWebPath(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getRootPath" output="false">
@@ -1197,7 +1197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="">
 	<cfargument name="useProtocol" default="1">
-	<cfreturn getEndpoint(argumentCollection=arguments)>
+	<cfreturn getWebPath(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getResourcePath" output="false">
