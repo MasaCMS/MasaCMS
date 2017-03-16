@@ -1184,6 +1184,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="getEndpoint" output="false">
+	<cfargument name="secure" default="#getValue('useSSL')#">
+	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="">
+	<cfargument name="useProtocol" default="1">
+	<cfreturn getEndpoint(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="getRootPath" output="false">
+	<cfargument name="secure" default="#getValue('useSSL')#">
+	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="">
+	<cfargument name="useProtocol" default="1">
+	<cfreturn getEndpoint(argumentCollection=arguments)>
+</cffunction>
+
 <cffunction name="getResourcePath" output="false">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="">
