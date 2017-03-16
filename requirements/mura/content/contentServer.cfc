@@ -208,8 +208,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
 				<cfif last eq 'index.json'>
 		 			<cfset request.returnFormat="JSON">
-				<cfelseif last eq 'index.amp'>
-		 			<cfset request.returnFormat="AMP">
 		 		</cfif>
 				<cfset indexFile=last>
 			</cfif>
@@ -309,8 +307,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
 		<cfif last eq 'index.json'>
 			<cfset request.returnFormat="JSON">
-		<cfelseif last eq 'index.amp'>
-			<cfset request.returnFormat="AMP">
 		</cfif>
 	</cfif>
 
@@ -347,8 +343,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
 			<cfif last eq 'index.json'>
 	 			<cfset request.returnFormat="JSON">
-			<cfelseif last eq 'index.amp'>
-	 			<cfset request.returnFormat="AMP">
 	 		</cfif>
 			<cfset indexFile=last>
 		</cfif>
@@ -403,8 +397,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	<cfif find(".",last) and (application.configBean.getAllowedIndexFiles() eq '*' or listFind(application.configBean.getAllowedIndexFiles(),last))>
  		<cfif last eq 'index.json'>
  			<cfset request.returnFormat="JSON">
-		<cfelseif last eq 'index.amp'>
-		 	<cfset request.returnFormat="AMP">
  		</cfif>
 
  		<cfset arguments.filename=listDeleteAt(arguments.filename,listLen(arguments.filename,"/"),"/")>
