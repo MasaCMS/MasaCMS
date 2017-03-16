@@ -2104,6 +2104,8 @@
 	window.themepath=window.themepath || Mura.themepath;
 	window.muraInlineEditor=window.MuraInlineEditor;
 
+	Mura.initFrontendUI=initFrontendUI;
+	
 	<cfif url.contenttype eq 'Variation'>
 		Mura('#mura-edit-var-targetingjs').click(function(e){
 			e.preventDefault();
