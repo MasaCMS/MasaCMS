@@ -16,7 +16,7 @@
 <cfinclude template="/muraWRM/default/js/dist/mura.min.js">
 
     /*
-    	BEGIN MURA VARIATION TOOLS
+    	BEGIN Mura VARIATION TOOLS
     */
 
     (function (exports) {
@@ -154,7 +154,7 @@
     			var footer=document.createElement('DIV');
     			footer.setAttribute('id','mura-remote-footer');
     			window.document.body.appendChild(footer);
-    			mura('#mura-remote-footer').html(content.htmlheadqueue + content.htmlfootqueue);
+    			Mura('#mura-remote-footer').html(content.htmlheadqueue + content.htmlfootqueue);
 
     			Mura
     				.loader()
@@ -254,8 +254,8 @@
     			);
 				</cfif>
 
-    			mura('.mxp-editable').each(function(){
-    				var item=mura(this);
+    			Mura('.mxp-editable').each(function(){
+    				var item=Mura(this);
     				if(!item.attr('id')){
     					item.attr('id','mxp' + Mura.hashCode(item.selector()));
     					item.addClass('mxp-dynamic-id');
@@ -265,7 +265,7 @@
     			var applyVariations=function(){
 
     				for(var i=0;i<Mura.variations.length;i++){
-    					var item=mura(Mura.variations[i].selector);
+    					var item=Mura(Mura.variations[i].selector);
     					//if(item.html().replace(/\s+/g,' ')==Mura.variations[i].original.replace(/\s+/g,' ')){
     						Mura.variations[i].original=item.html();
     						item.html(Mura.variations[i].adjusted);
@@ -326,7 +326,7 @@
     	        		fn(resp.data);
     	        	}
 
-    	        	mura('.mxp-loader').hide();
+    	        	Mura('.mxp-loader').hide();
     	        }
     	    });
 
