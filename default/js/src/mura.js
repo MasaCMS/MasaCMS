@@ -137,6 +137,25 @@
         return child ? child.nodeValue : '';
     };
 
+    //This is for Mura Experience Platform. It has no use with Mura standard
+    function trackEvent(category, label, contentid, fn) {
+        if (typeof contentid == 'function') {
+            fn = contentid;
+            contentid = Mura.contentid;
+        }
+
+        fn = fn || function() {};
+
+        Mura.loader().loadjs(Mura.pluginspath +
+            '/MXP/remote/trackevent/?contentid=' +
+            encodeURIComponent(contentid) + '&siteid=' +
+            encodeURIComponent(Mura.siteid) + '&category=' +
+            encodeURIComponent(category) + '&label=' +
+            encodeURIComponent(label) + '&cacheid=' + Math.random(),
+            fn
+        );
+    }
+
     /**
      * renderFilename - Returns "Rendered" JSON object of content
      *
@@ -3120,7 +3139,8 @@
                 hashCode: hashCode,
                 DisplayObject: {},
                 displayObjectInstances: {},
-                holdReady: holdReady
+                holdReady: holdReady,
+                trackEvent: trackEvent
             }
         ),
         //these are here for legacy support
