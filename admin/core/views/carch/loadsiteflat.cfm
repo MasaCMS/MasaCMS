@@ -53,6 +53,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	//data=structNew();
 
 	$=application.serviceFactory.getBean("MuraScope");
+
+	if(!isNumeric($.event('page'))){
+			$.event('page',1);
+	}
+
 	rsTypes=application.configBean.getClassExtensionManager().getSubTypes(siteid=session.siteid,activeOnly=true);
 
 	filterSubtypes=!poweruser;
@@ -340,9 +345,7 @@ if(len($.siteConfig('customTagGroups'))){
 	</cfif>
 </cfif>
 
-<cfif isNumeric($.event('page'))>
-	<cfset iterator.setPage($.event('page'))>
-</cfif>
+<cfset iterator.setPage($.event('page'))>
 
 <cfcatch>
 	<cfdump var="#cfcatch#" abort="true">
