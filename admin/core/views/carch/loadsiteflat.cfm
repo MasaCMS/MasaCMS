@@ -340,7 +340,9 @@ if(len($.siteConfig('customTagGroups'))){
 	</cfif>
 </cfif>
 
-<cfset iterator.setPage($.event('page'))>
+<cfif isNumeric($.event('page'))>
+	<cfset iterator.setPage($.event('page'))>
+</cfif>
 
 <cfcatch>
 	<cfdump var="#cfcatch#" abort="true">
