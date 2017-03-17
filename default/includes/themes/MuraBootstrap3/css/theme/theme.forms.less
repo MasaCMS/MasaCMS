@@ -1,40 +1,35 @@
 .mura-form{
-
 	/* bootstrap class mapping */
 	
 	@import url('../../assets/bootstrap/less/variables.less');
 	@import url('../../assets/bootstrap/less/mixins.less');
 	@import url('../../assets/bootstrap/less/buttons.less');
 	@import url('../../assets/bootstrap/less/forms.less');
-	
+
 	textarea,
 	input[type=text]:not([class*="datepicker"]),
 	input[type=password],
 	select{
 	  .form-control;
 	}
-
 	div[class*="paging-container-"]{
-
 		clear:both;
 		padding-top: 24px;
-
 		 button{
 			.btn;
-
+			margin-top: 0;
 			&:not[class*="btn-"]{
 				.btn-default;
 			}
-
 			&.btn-primary:hover{
 				color: #fff;
 			}
-
+			&.btn-primary:focus{
+				color: #fff;
+			}
 		}
 	}
-
 	/* /end bootstrap class mapping */
-
 	.mura-divide{
 		border-bottom: 1px solid #ccc;
 		height: .5px;
@@ -42,7 +37,6 @@
 		padding: 0;
 		display: block;
 	}
-
 	.mura-section{
 		font-size: 20px;
 		font-weight: bold;
@@ -54,7 +48,6 @@
 	.mura-form-text{
 		margin: 12px 0;
 	}
-
 	.form-group{
 		clear: both;
 	}
@@ -65,43 +58,33 @@
 		margin: 0;
 		padding:0;
 		width: 100%;
-
 			label, 
 			.mura-group-label{
 				display: block;
 				font-weight: 600;
 			}
-
 			input[type=text],
 			textarea,
 			select{
 				margin: 6px 0 12px 0;
 			}
-
 			label.radio, 
 			label.checkbox{
 				padding-right: 6px;
 				display: inline-block;
 			}
-
 			.mura-radio-group, 
 			.mura-checkbox-group{
 				margin: 6px 0;
 			}
-
 		.mura-radio-group label.radio,
 		.mura-checkbox-group label.checkbox{
 			margin-left: 0px;
-
 				input[type=radio],
 				input[type=checkbox]{
 					margin-left: 0;
 					position: relative;
 				}
-
 		}
-
-
 	}
-
 } // mura-form

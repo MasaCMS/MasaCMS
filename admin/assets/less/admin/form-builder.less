@@ -84,13 +84,11 @@
 	}
 	#mura-tb-form-pages .current {
 		background: #ccc;
+		position: relative;
 	}	
-	#mura-tb-form-pages .current:not(#page-1) {
-		padding-left: 16px;
-	}
 	#mura-form-pages li,
 	#mura-form-addpage {
-		padding: 12px 4px 14px 5px;
+		padding: 16px 4px 14px 5px;
 		margin: 8px 0;
 		background: #fff;
 		color: #646464;
@@ -108,16 +106,18 @@
 	}
 
  	.button-trash {
-		display: block;
-		padding: 0;
-		margin: 0;
 		.border-radius(0);
-		width: 16px;
-		height: 16px;
-		float: right;
+		.box-shadow(~"0 0 0,0 0 0") !important;
 		background-image:none !important;
 		border: 0 !important;
-		.box-shadow(~"0 0 0,0 0 0") !important;
+		display: block;
+		height: 16px;
+		width: 16px;
+		margin: 0;
+		padding: 0;
+ 		position: absolute;
+	 		top: 11px;
+ 			right: 5px;
 		text-shadow: 0 0 0 !important;
 	}
 
