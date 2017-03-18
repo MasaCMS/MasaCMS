@@ -184,8 +184,7 @@
         Mura.get(mura.apiEndpoint, {
             method: 'findTrackingProps',
             siteid: Mura.siteid,
-            contentid: data.contentid,
-            cacheid: Math.random()
+            contentid: data.contentid
         }).then(function(response) {
             trackingVars = response.data;
             trackGA();
