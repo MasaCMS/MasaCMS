@@ -141,8 +141,7 @@
      * trackEvent - This is for Mura Experience Platform. It has no use with Mura standard
      *
      * @param  {object} data event data
-     * @param  {fn} fn Callback method to fire after tracking has happened
-     * @return {void}
+     * @return {Promise}
      * @memberof Mura
      */
     function trackEvent(data) {
