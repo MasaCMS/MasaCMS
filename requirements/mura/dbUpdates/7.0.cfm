@@ -7,6 +7,9 @@
 <cfquery>
     update tcontent set Title='Remote Variations',Menutitle='Remote Variations' where contentid='00000000000000000000000000000000099'
 </cfquery>
+<cfquery>
+    update tcontent set Title='Content Staging Manager',Menutitle='Content Staging Manager' where contentid='00000000000000000000000000000000014'
+</cfquery>
 
 <cfscript>
     getBean('variationTargeting').checkSchema();
