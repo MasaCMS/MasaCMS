@@ -165,7 +165,7 @@
             if (typeof ga != 'undefined') {
                 trackingVars.ga.eventCategory = category;
                 trackingVars.ga.eventAction = action;
-                trackingVars.ga.eventLabel = trackingVars.props.title;
+                trackingVars.ga.eventLabel = trackingVars.title;
 
                 ga('mxpGATracker.send', 'event', trackingVars.ga);
                 gaFound = true;
