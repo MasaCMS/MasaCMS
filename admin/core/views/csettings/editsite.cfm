@@ -573,7 +573,7 @@ to your own modified versions of Mura CMS.
 									<label class="radio inline"><input type="radio" name="extranet" value="1" <cfif rc.siteBean.getextranet()  eq 1> checked</cfif>>On</label>
 					</div>
 					<div class="mura-control-group">
-							<label>Content Collections</label>
+							<label>Collections Manager</label>
 									<label class="radio inline"><input type="radio" name="hasFeedManager" value="0" <cfif rc.siteBean.getHasFeedManager() neq 1> checked</cfif>>Off</label>
 									<label class="radio inline"><input type="radio" name="hasFeedManager" value="1" <cfif rc.siteBean.getHasFeedManager()  eq 1> checked</cfif>>On</label>
 						</div>
