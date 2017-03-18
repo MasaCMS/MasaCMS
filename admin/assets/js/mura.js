@@ -3006,11 +3006,11 @@ return /******/ (function(modules) { // webpackBootstrap
         }
 
         Mura.get(mura.apiEndpoint, {
-            method: 'findGATrackingProps',
+            method: 'findTrackingProps',
             siteid: Mura.siteid,
             contentid: contentid
         }).then(function(response) {
-            gaTrackingVars = response.data;
+            gaTrackingVars = response.data.ga;
             trackGA();
         })
     }
