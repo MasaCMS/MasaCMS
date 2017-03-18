@@ -2970,20 +2970,23 @@ return /******/ (function(modules) { // webpackBootstrap
     /**
      * trackEvent - This is for Mura Experience Platform. It has no use with Mura standard
      *
-     * @param  {String} categoryName Mura content filename
-     * @param  {String} label String
+     * @param  {String} category Mura content filename
+     * @param  {String} action String
      * @param  {any} contentid Can be the FN if contentid is not needed
+     * @param  {any} label Can be the FN if contentid is not needed
      * @param  {fn} fn Callback method to fire after tracking has happened
      * @return {void}
      * @memberof Mura
      */
-    function trackEvent(category, action, contentid, fn) {
+    function trackEvent(data, fn) {
 
-        contentid = contentid || Mura.contentid;
+        data.category = data.category || '';
+        data.action = data.action || '';
+        data.label == data.label || '';
+        data.contentid = data.contentid || Mura.contentid;
 
-        if (typeof contentid == 'function') {
-            fn = contentid;
-            contentid = Mura.contentid;
+        if (typeof data.nonInteraction == 'undefined') {
+            data.nonInteraction = false;
         }
 
         fn = fn || function() {};
@@ -2993,9 +2996,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
         function trackGA() {
             if (typeof ga != 'undefined') {
-                trackingVars.ga.eventCategory = category;
-                trackingVars.ga.eventAction = action;
-                trackingVars.ga.eventLabel = trackingVars.title;
+                trackingVars.ga.eventCategory = data.category;
+                trackingVars.ga.eventAction = data.action;
+                trackingVars.ga.nonInteraction = data.nonInteraction;
+
+                if (data.label) {
+                    trackingVars.ga.eventLabel = data.label;
+                } else {
+                    trackingVars.ga.eventLabel = trackingVars.title;
+                }
 
                 ga('mxpGATracker.send', 'event', trackingVars.ga);
                 gaFound = true;
@@ -3003,7 +3012,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
             if (!gaFound) {
                 setTimeout(trackGA, 1);
-            } else if (typeof fn == 'function') {
+            } else {
                 fn();
             }
         }
@@ -3011,7 +3020,7 @@ return /******/ (function(modules) { // webpackBootstrap
         Mura.get(mura.apiEndpoint, {
             method: 'findTrackingProps',
             siteid: Mura.siteid,
-            contentid: contentid
+            contentid: data.contentid
         }).then(function(response) {
             trackingVars = response.data;
             trackGA();
