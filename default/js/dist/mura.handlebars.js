@@ -6384,7 +6384,8 @@ return /******/ (function(modules) { // webpackBootstrap
         Mura.get(mura.apiEndpoint, {
             method: 'findTrackingProps',
             siteid: Mura.siteid,
-            contentid: data.contentid
+            contentid: data.contentid,
+            cacheid: Math.random()
         }).then(function(response) {
             trackingVars = response.data;
             trackGA();
