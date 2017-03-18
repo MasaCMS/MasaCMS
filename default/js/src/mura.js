@@ -139,6 +139,9 @@
 
     //This is for Mura Experience Platform. It has no use with Mura standard
     function trackEvent(category, label, contentid, fn) {
+
+        contentid = contentid || Mura.contentid;
+
         if (typeof contentid == 'function') {
             fn = contentid;
             contentid = Mura.contentid;
@@ -146,14 +149,31 @@
 
         fn = fn || function() {};
 
-        Mura.loader().loadjs(Mura.pluginspath +
-            '/MXP/remote/trackevent/?contentid=' +
-            encodeURIComponent(contentid) + '&siteid=' +
-            encodeURIComponent(Mura.siteid) + '&category=' +
-            encodeURIComponent(category) + '&label=' +
-            encodeURIComponent(label) + '&cacheid=' + Math.random(),
-            fn
-        );
+        var gaTrackingVars = {};
+        var gaFound = false;
+
+        function trackGA() {
+            if (typeof ga != 'undefined') {
+                gaTrackingVars.eventCategory = category;
+                gaTrackingVars.label = label;
+
+                ga('mxpGATracker.send', 'event', gaTrackingVars);
+                gaFound = true;
+            }
+
+            if (!gaFound) {
+                setTimeout(trackGA, 1);
+            }
+        }
+
+        Mura.get(mura.apiEndpoint, {
+            method: 'findGATrackingProps',
+            siteid: Mura.siteid,
+            contentid: contentid
+        }).then(function(response) {
+            gaTrackingVars = response.data;
+            trackGA();
+        })
     }
 
     /**
