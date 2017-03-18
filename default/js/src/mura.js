@@ -145,7 +145,7 @@
      * @return {void}
      * @memberof Mura
      */
-    function trackEvent(data, fn) {
+    function trackEvent(data) {
 
         data.category = data.category || '';
         data.action = data.action || '';
@@ -156,10 +156,9 @@
             data.nonInteraction = false;
         }
 
-        fn = fn || function() {};
-
         var trackingVars = {};
         var gaFound = false;
+        var trackingComplete = false;
 
         function trackGA() {
             if (typeof ga != 'undefined') {
@@ -175,12 +174,11 @@
 
                 ga('mxpGATracker.send', 'event', trackingVars.ga);
                 gaFound = true;
+                trackingComplete = true;
             }
 
             if (!gaFound) {
                 setTimeout(trackGA, 1);
-            } else {
-                fn();
             }
         }
 
@@ -192,6 +190,22 @@
             trackingVars = response.data;
             trackGA();
         })
+
+        return new Promise(function(resolve, reject) {
+
+            resolve = resolve || function() {};
+
+            function checkComplete() {
+                if (trackingComplete) {
+                    resolve();
+                } else {
+                    setTimeout(checkComplete, 1);
+                }
+            }
+
+            checkComplete();
+
+        });
     }
 
     /**
