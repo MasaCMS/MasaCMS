@@ -147,7 +147,7 @@
      * @return {void}
      * @memberof Mura
      */
-    function trackEvent(category, label, contentid, fn) {
+    function trackEvent(category, action, contentid, fn) {
 
         contentid = contentid || Mura.contentid;
 
@@ -158,15 +158,16 @@
 
         fn = fn || function() {};
 
-        var gaTrackingVars = {};
+        var trackingVars = {};
         var gaFound = false;
 
         function trackGA() {
             if (typeof ga != 'undefined') {
-                gaTrackingVars.eventCategory = category;
-                gaTrackingVars.label = label;
+                trackingVars.ga.eventCategory = category;
+                trackingVars.ga.eventAction = action;
+                trackingVars.ga.eventLabel = trackingVars.props.title;
 
-                ga('mxpGATracker.send', 'event', gaTrackingVars);
+                ga('mxpGATracker.send', 'event', trackingVars.ga);
                 gaFound = true;
             }
 
@@ -180,7 +181,7 @@
             siteid: Mura.siteid,
             contentid: contentid
         }).then(function(response) {
-            gaTrackingVars = response.data.ga;
+            trackingVars = response.data;
             trackGA();
         })
     }
