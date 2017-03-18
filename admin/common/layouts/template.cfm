@@ -135,7 +135,7 @@
 				<cfset moduleTitle="Edit Profile"/>
 				</cfcase>
 				<cfcase value="cFeed">
-				<cfset moduleTitle="Content Collections"/>
+				<cfset moduleTitle="Collections"/>
 				</cfcase>
 				<cfcase value="cFilemanager">
 				<cfset moduleTitle="File Manager"/>
