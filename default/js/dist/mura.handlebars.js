@@ -6340,10 +6340,7 @@ return /******/ (function(modules) { // webpackBootstrap
     /**
      * trackEvent - This is for Mura Experience Platform. It has no use with Mura standard
      *
-     * @param  {String} category Mura content filename
-     * @param  {String} action String
-     * @param  {any} contentid Can be the FN if contentid is not needed
-     * @param  {any} label Can be the FN if contentid is not needed
+     * @param  {object} data event data
      * @param  {fn} fn Callback method to fire after tracking has happened
      * @return {void}
      * @memberof Mura
