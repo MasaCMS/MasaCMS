@@ -137,7 +137,16 @@
         return child ? child.nodeValue : '';
     };
 
-    //This is for Mura Experience Platform. It has no use with Mura standard
+    /**
+     * trackEvent - This is for Mura Experience Platform. It has no use with Mura standard
+     *
+     * @param  {String} categoryName Mura content filename
+     * @param  {String} label String
+     * @param  {any} contentid Can be the FN if contentid is not needed
+     * @param  {fn} fn Callback method to fire after tracking has happened
+     * @return {void}
+     * @memberof Mura
+     */
     function trackEvent(category, label, contentid, fn) {
 
         contentid = contentid || Mura.contentid;
