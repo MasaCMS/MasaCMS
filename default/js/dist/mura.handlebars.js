@@ -6373,6 +6373,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
             if (!gaFound) {
                 setTimeout(trackGA, 1);
+            } else if (typeof fn == 'function') {
+                fn();
             }
         }
 
