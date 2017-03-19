@@ -165,6 +165,11 @@
                 trackingVars.ga.eventAction = data.action;
                 trackingVars.ga.nonInteraction = data.nonInteraction;
 
+                if (typeof data.value != 'undefined' && Mura.isNumeric(
+                        data.value)) {
+                    trackingVars.ga.eventValue = data.value;
+                }
+
                 if (data.label) {
                     trackingVars.ga.eventLabel = data.label;
                 } else {
