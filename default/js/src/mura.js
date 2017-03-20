@@ -150,6 +150,7 @@
         data.action = data.action || '';
         data.label == data.label || '';
         data.contentid = data.contentid || Mura.contentid;
+        data.objectid = data.objectid || '';
 
         if (typeof data.nonInteraction == 'undefined') {
             data.nonInteraction = false;
@@ -173,7 +174,7 @@
                 if (data.label) {
                     trackingVars.ga.eventLabel = data.label;
                 } else {
-                    trackingVars.ga.eventLabel = trackingVars.title;
+                    trackingVars.ga.eventLabel = trackingVars.object.title;
                 }
 
                 ga('mxpGATracker.send', 'event', trackingVars.ga);
@@ -189,7 +190,8 @@
         Mura.get(mura.apiEndpoint, {
             method: 'findTrackingProps',
             siteid: Mura.siteid,
-            contentid: data.contentid
+            contentid: data.contentid,
+            objectid: data.objectid
         }).then(function(response) {
             trackingVars = response.data;
             trackGA();
