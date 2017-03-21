@@ -41,8 +41,10 @@
 
       <div class="mura-control-group" id="availableGroups">
       	<div class="help-block">
-          <span>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.<br>
-          <em>All content creators can send for approval whether or not they belong to a group in the chain.</em></span>
+          <span>
+            The first group in the chain will be the first group required to make the decision to &quot;Approve&quot; or &quot;Reject&quot; any additions or changes.
+            Approval chains do <em>not</em> affect &quot;permissions&quot; for creating or updating content, they merely force content to go through a review process.
+          </span>
       	</div>
         <label>
           <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="half">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>
