@@ -17,8 +17,6 @@ Purpose:    Utlitity class for loading Java Classes
 	instance.static.uuid = "A0608BEC-0AEB-B46A-0E1E1EC5F3CE7C9C";
 </cfscript>
 
-<cfimport taglib="tags" prefix="jl">
-
 <!------------------------------------------- PUBLIC ------------------------------------------->
 
 <cffunction name="init" hint="Constructor" returntype="JavaLoader" output="false">
@@ -101,7 +99,7 @@ Purpose:    Utlitity class for loading Java Classes
 	<cfreturn instance.classLoadPaths />
 </cffunction>
 
-	
+
 <cffunction name="switchThreadContextClassLoader" hint="Sometimes you will need to switch out the ThreadContextClassLoader with the classloader used by JavaLoader.<br/>
 			It has :
 			switchThreadContextClassLoader(function object, [struct function arguments], [classLoader=getURLClassLoader()])
@@ -122,55 +120,55 @@ Purpose:    Utlitity class for loading Java Classes
 		var currentClassloader = Thread.currentThread().getContextClassLoader();
 		var classLoader = "";
 
-		if (structCount(arguments) == 4) 
-		{	
+		if (structCount(arguments) == 4)
+		{
 			// the last 2 arguments are the function arguments and class loader
 			classLoader = arguments[4];
 			local.funcArgs = arguments[3];
-		} 
-		else if (structCount(arguments) == 3) 
-		{	
+		}
+		else if (structCount(arguments) == 3)
+		{
 			// 2nd argument could be classloader or function arguments
-			if (isInstanceOf(arguments[2],"java.lang.ClassLoader")) 
+			if (isInstanceOf(arguments[2],"java.lang.ClassLoader"))
 			{
 				classLoader = arguments[2];
 			}
-			else if (isStruct(arguments[2])) 
+			else if (isStruct(arguments[2]))
 			{
-				local.funcArgs = arguments[2];	
+				local.funcArgs = arguments[2];
 			}
-			
+
 			// 3rd argument could be classloader or function arguments
-			if (isInstanceOf(arguments[3],"java.lang.ClassLoader")) 
+			if (isInstanceOf(arguments[3],"java.lang.ClassLoader"))
 			{
 				classLoader = arguments[3];
-			} 
-			else if (isStruct(arguments[3])) 
-			{
-				local.funcArgs = arguments[3];	
 			}
-		} 
-		else if (structCount(arguments) == 2) 
-		{	
+			else if (isStruct(arguments[3]))
+			{
+				local.funcArgs = arguments[3];
+			}
+		}
+		else if (structCount(arguments) == 2)
+		{
 			// the 2nd argument could be a class loader or function arguments
-			if (isInstanceOf(arguments[2],"java.lang.ClassLoader")) 
+			if (isInstanceOf(arguments[2],"java.lang.ClassLoader"))
 			{
-				classLoader = arguments[2];	
-			} 
-			else if (isStruct(arguments[2])) 
+				classLoader = arguments[2];
+			}
+			else if (isStruct(arguments[2]))
 			{
-				local.funcArgs = arguments[2];	
+				local.funcArgs = arguments[2];
 			}
 		}
-		
-		if (!structKeyExists(local,"funcArgs")) 
+
+		if (!structKeyExists(local,"funcArgs"))
 		{
-			local.funcArgs = {};	
+			local.funcArgs = {};
 		}
-		
-		if (isSimpleValue(classLoader)) 
+
+		if (isSimpleValue(classLoader))
 		{
-			classLoader = getURLClassLoader();	
+			classLoader = getURLClassLoader();
 		}
 	</cfscript>
 
@@ -210,7 +208,7 @@ Purpose:    Utlitity class for loading Java Classes
 		}
 	</cfscript>
 </cffunction>
-	
+
 <cffunction name="getVersion" hint="Retrieves the version of the loader you are using" output="false">
 	<cfreturn "1.1">
 </cffunction>
@@ -373,10 +371,10 @@ Purpose:    Utlitity class for loading Java Classes
 	<!--- cf7 syntax. Yuck. --->
 	<cfloop from="1" to="#len#" index="counter">
 		<cfset dir = directories[counter]>
-		<jl:directory action="list" directory="#dir#" recurse="true"
-					type="file"
-					sort="dateLastModified desc"
-					name="qLastModified">
+		<cfdirectory action="list" directory="#dir#" recurse="true"
+	  					type="file"
+	  					sort="dateLastModified desc"
+	  					name="qLastModified">
 		<cfscript>
 			//it's possible there are no source files.
 			if(qLastModified.recordCount)
