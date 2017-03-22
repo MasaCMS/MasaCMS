@@ -46,8 +46,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="js.cfm">
-<cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).getIterator()>
-
+<cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).setSortBy('name').getIterator()>
 <cfoutput>
 <div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains")#</h1>
@@ -87,7 +86,7 @@
 									<a href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=chain.getChainID(),format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="mi-trash"></i>#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#</a>
 								</li>
 							</ul>
-						</div>	
+						</div>
 					</td>
 					<td class="var-width">
 						<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',chain.getName())#</a>
