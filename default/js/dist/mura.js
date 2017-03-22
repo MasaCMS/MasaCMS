@@ -9290,7 +9290,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						encodeURIComponent('-' + property);
 				} else {
 					this.queryString += '&sort[' + this.propIndex + ']=' +
-						encodeURIComponent('+' + property);
+						encodeURIComponent(property);
 				}
 				this.propIndex++;
 				return this;
