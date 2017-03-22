@@ -339,9 +339,10 @@
 				var stop=$('##mura-datepicker-displayStop');
 				stop.val(start.val()).trigger('change');
 				$('##displayIntervalEnd').val('on');
-				$('##displayIntervalEndOn').val(start.val());
+				$('##displayIntervalEndOn').val(start.val());	
 			}
 
+			updateDisplayInterval();
 		}
 
 		function setIntervalUnitLabel(){

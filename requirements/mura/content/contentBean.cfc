@@ -869,9 +869,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.displayInterval.end eq 'on'
 			and isDefined('arguments.displayInterval.endon')
 			and isDate(arguments.displayInterval.endon)>
-				<cfif not isDate(getValue('displayStop'))
-				or dateFormat(getValue('displayStop'),'yyyymmdd') neq dateFormat(arguments.displayInterval.endon,'yyyymmdd')>
+				<cfif not isDate(getValue('displayStop'))>
 					<cfset setValue('displayStop',arguments.displayInterval.endon)>
+				<cfelseif dateFormat(getValue('displayStop'),'yyyymmdd') neq dateFormat(arguments.displayInterval.endon,'yyyymmdd')>
+					<cfset var current=getValue('displayStop')>
+					<cfif isDate(current)>
+						<cfset setValue('displayStop',createDateTime(year(arguments.displayInterval.endon), month(arguments.displayInterval.endon), day(arguments.displayInterval.endon), hour(current), minute(current), 0))>
+					<cfelse>
+						<cfset setValue('displayStop',arguments.displayInterval.endon)>
+					</cfif>
 				</cfif>
 			<cfelseif arguments.displayInterval.end eq 'after'
 				and isDefined('arguments.displayInterval.endafter')

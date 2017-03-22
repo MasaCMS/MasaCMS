@@ -351,6 +351,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				$('##displayIntervalEndOn').val(start.val());
 			}
 
+			updateDisplayInterval();
+
 		}
 
 		function setIntervalUnitLabel(){
