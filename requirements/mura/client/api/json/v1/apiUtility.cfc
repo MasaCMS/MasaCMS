@@ -430,6 +430,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 					if(!isJson(result)){
 						result=serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
+					} else {
+						getpagecontext().getResponse().setContentType('application/json; charset=utf-8');
 					}
 
 					return result;
@@ -464,6 +466,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 					if(!isJson(result)){
 						result=serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
+					} else {
+						getpagecontext().getResponse().setContentType('application/json; charset=utf-8');
 					}
 
 					return result;
