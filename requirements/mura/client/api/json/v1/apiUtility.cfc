@@ -1724,8 +1724,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		} else {
 			var queryParams=[];
 
-			for(var i in listToArray(queryString,'&')){
-				var checkProp=listFirst(i,'=');
+			for(var i in listToArray(arguments.queryString,'&')){
+				var checkProp=urlDecode(listFirst(i,'='));
 				if(checkProp!='pageIndex'){
 					ArrayAppend(queryParams, checkProp);
 				}
@@ -1752,14 +1752,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				if(structKeyExists(params,p)){
 					if(started){
-						baseURL=baseURL & '&' & p;
+						baseURL=baseURL & '&' & esapiEncode('url',p);
 					} else {
-						baseURL=baseURL & p;
+						baseURL=baseURL & esapiEncode('url',p);
 						started=true;
 					}
 
 					if(len(params[p])){
-						baseURL=baseURL & '=' & params[p];
+						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
 					if(!listFindNoCase('maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){

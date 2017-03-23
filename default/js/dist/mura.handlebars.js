@@ -12684,8 +12684,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			andProp: function(property) {
-				this.queryString += '&' + encodeURIComponent(property) + '[' + this.propIndex +
-					']=';
+				this.queryString += '&' + encodeURIComponent(property + '[' + this.propIndex + ']') +
+					'=';
 				this.propIndex++;
 				return this;
 			},
@@ -12697,10 +12697,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			orProp: function(property) {
-				this.queryString += '&or[' + this.propIndex + ']&';
+				this.queryString += '&or$' + this.propIndex + '&';
 				this.propIndex++;
-				this.queryString += encodeURIComponent(property) + '[' + this.propIndex +
-					']=';
+				this.queryString += encodeURIComponent(property +'[' + this.propIndex + ']') +
+					'=';
 				this.propIndex++;
 				return this;
 			},
@@ -12731,7 +12731,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					null) {
 					criteria = 'null';
 				}
-				this.queryString += 'neq^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('neq^' + criteria);
 				return this;
 			},
 
@@ -12746,7 +12746,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					null) {
 					criteria = 'null';
 				}
-				this.queryString += 'lt^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('lt^' + criteria);
 				return this;
 			},
 
@@ -12761,7 +12761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					null) {
 					criteria = 'null';
 				}
-				this.queryString += 'lte^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('lte^' + criteria);
 				return this;
 			},
 
@@ -12776,7 +12776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					null) {
 					criteria = 'null';
 				}
-				this.queryString += 'gt^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('gt^' + criteria);
 				return this;
 			},
 
@@ -12791,7 +12791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					null) {
 					criteria = 'null';
 				}
-				this.queryString += 'gte^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('gte^' + criteria);
 				return this;
 			},
 
@@ -12802,7 +12802,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			isIn: function(criteria) {
-				this.queryString += 'in^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('in^' + criteria);
 				return this;
 			},
 
@@ -12813,7 +12813,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			isNotIn: function(criteria) {
-				this.queryString += 'notin^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('notin^' + criteria);
 				return this;
 			},
 
@@ -12824,11 +12824,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			containsValue: function(criteria) {
-				this.queryString += 'containsValue^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('containsValue^' + criteria);
 				return this;
 			},
 			contains: function(criteria) {
-				this.queryString += 'containsValue^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('containsValue^' + criteria);
 				return this;
 			},
 
@@ -12839,7 +12839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			beginsWith: function(criteria) {
-				this.queryString += 'begins^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('begins^' + criteria);
 				return this;
 			},
 
@@ -12850,7 +12850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}          Self
 			 */
 			endsWith: function(criteria) {
-				this.queryString += 'ends^' + encodeURIComponent(criteria);
+				this.queryString += encodeURIComponent('ends^' + criteria);
 				return this;
 			},
 
@@ -12895,10 +12895,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			sort: function(property, direction) {
 				direction = direction || 'asc';
 				if (direction == 'desc') {
-					this.queryString += '&sort[' + this.propIndex + ']=' +
+					this.queryString += '&sort' + encodeURIComponent('[' + this.propIndex + ']') + '=' +
 						encodeURIComponent('-' + property);
 				} else {
-					this.queryString += '&sort[' + this.propIndex + ']=' +
+					this.queryString += '&sort' +encodeURIComponent('[' + this.propIndex + ']') + '=' +
 						encodeURIComponent(property);
 				}
 				this.propIndex++;
@@ -12979,7 +12979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}              Self
 			 */
 			innerJoin: function(relatedEntity) {
-				this.queryString += '&innerJoin[' + this.propIndex + ']=' +
+				this.queryString += '&innerJoin' + encodeURIComponent('[' + this.propIndex + ']') + '=' +
 					encodeURIComponent(relatedEntity);
 				this.propIndex++;
 				return this;
@@ -12992,7 +12992,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			 * @return {Mura.Feed}              Self
 			 */
 			leftJoin: function(relatedEntity) {
-				this.queryString += '&leftJoin[' + this.propIndex + ']=' +
+				this.queryString += '&leftJoin' + encodeURIComponent('[' + this.propIndex + ']') + '=' +
 					encodeURIComponent(relatedEntity);
 				this.propIndex++;
 				return this;
