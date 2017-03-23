@@ -283,7 +283,7 @@ If it has not, set application.appInitialized=false. --->
 // HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
 	getPageContext()
 		.getResponse()
-		.setHeader('Strict-Transport-Security', 'max-age=1200;includeSubDomains');
+		.setHeader('Strict-Transport-Security', 'max-age=#application.configBean.getValue(property='HSTSMaxAge',defaultValue=1200)#;includeSubDomains');
 </cfscript>
 
 <cfheader name="Generator" value="Mura CMS #application.serviceFactory.getBean('configBean').getVersion()#" />
