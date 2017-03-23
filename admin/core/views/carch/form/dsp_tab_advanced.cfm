@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</cfif>
 	<!--- Use site useSSL sitewide setting instead --->
-	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and not rc.$.siteConfig('useSSL')>
+	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentBean.getForceSSL() and not rc.$.siteConfig('useSSL')>
 		<div class="mura-control-group">
 		    <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 	      	<label for="forceSSL" class="checkbox">
@@ -111,7 +111,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not rc.$.siteConfig().getContentRenderer().useLayoutManager() and rc.type eq 'Form' >
-		<cfif not rc.$.siteConfig('useSSL')>
+
+		<cfif rc.contentBean.getForceSSL() and not rc.$.siteConfig('useSSL')>
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 	     		<label for="forceSSL" class="checkbox">
@@ -119,6 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     		</label>
 		    </div>
 	   	</cfif>
+
 		    <div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
 	      		<label for="displayTitle" class="checkbox">
