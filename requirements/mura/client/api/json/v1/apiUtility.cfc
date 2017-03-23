@@ -756,7 +756,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if(isDefined('result.errors') && isStruct(result.errors) && !StructIsEmpty(result.errors)){
 				return serializeResponse(statusCode=405,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
-			} else
+			} else {
 				return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 			}
 
@@ -2735,8 +2735,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			"schemes"= [
 			$.getBean('utility').getRequestProtocol()
 			],
-			paths={},
-			definitions={}
+			'paths'={},
+			'definitions'={}
 		};
 
 		var entityKeys=listToArray(ListSort(StructKeyList(variables.config.entities),'textnocase'));
@@ -2744,7 +2744,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		for(var i in entityKeys){
 			if(allowAccess(i,$,false)){
 
-				result.paths['/#lcase(i)#']={
+				result['paths']['/#lcase(i)#']={
 					"post"= {
 						"tags"= [
 							i
