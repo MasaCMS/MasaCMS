@@ -243,7 +243,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
  			arguments.arg=replace(arguments.arg,'T',' ');
  		}
 
-		if(lsisDate(arguments.arg)){
+		if(!refind('(\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d)',arguments.arg) && lsisDate(arguments.arg)){
 			try{
 				return lsparseDateTime(arguments.arg);
 			} catch(any e){
