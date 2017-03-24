@@ -242,6 +242,8 @@ var extendManager = {
 				$(".hasAssocFileContainer").hide();
 			}
 
+			//$(".hasRow1Container").hide();
+
 			$(".hasSummaryContainer").hide();
 
 			if ( $("input[name='isnew']").val() === '1' ) {
