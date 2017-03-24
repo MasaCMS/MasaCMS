@@ -101,4 +101,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<textarea id="mura-formdata" name="body">#replace(rc.contentBean.getBody(),"&quot;","\""","all")#</textarea>
 
+	<script>
+		hideBodyEditor=function(){
+			jQuery("##mura-templatebuilder").hide();
+		}
+
+		showBodyEditor=function(){
+			jQuery("##mura-templatebuilder").show();
+		}
+
+		<cfif not isExtended>
+		jQuery(document).ready(function(){
+			showBodyEditor();
+		});
+		</cfif>
+	</script>
 </cfoutput>
