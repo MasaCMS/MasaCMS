@@ -2967,6 +2967,9 @@ return /******/ (function(modules) { // webpackBootstrap
         return child ? child.nodeValue : '';
     };
 
+
+    var trackingMetadata={};
+
     /**
      * trackEvent - This is for Mura Experience Platform. It has no use with Mura standard
      *
@@ -2989,6 +2992,8 @@ return /******/ (function(modules) { // webpackBootstrap
         var trackingVars = {};
         var gaFound = false;
         var trackingComplete = false;
+
+        var trackingID = data.contentid + data.objectid;
 
         function trackGA() {
             if (typeof ga != 'undefined') {
@@ -3017,15 +3022,21 @@ return /******/ (function(modules) { // webpackBootstrap
             }
         }
 
-        Mura.get(mura.apiEndpoint, {
-            method: 'findTrackingProps',
-            siteid: Mura.siteid,
-            contentid: data.contentid,
-            objectid: data.objectid
-        }).then(function(response) {
-            trackingVars = response.data;
+        if(typeof trackingMetadata[trackingID] != 'undefined'){
+            trackingVars = trackingMetadata[trackingID];
             trackGA();
-        })
+        } else {
+            Mura.get(mura.apiEndpoint, {
+                method: 'findTrackingProps',
+                siteid: Mura.siteid,
+                contentid: data.contentid,
+                objectid: data.objectid
+            }).then(function(response) {
+                trackingVars = response.data;
+                trackingMetadata[trackingID]=trackingVars;
+                trackGA();
+            });
+        }
 
         return new Promise(function(resolve, reject) {
 
