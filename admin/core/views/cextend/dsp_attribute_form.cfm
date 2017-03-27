@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
 	<label>Name (No spaces)</label>
-		<input type="text" name="name" required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" />
+		<input type="text" name="name" data-required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" />
 </div>
 <div class="mura-control-group">
 	<label>Label</label>
