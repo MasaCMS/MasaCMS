@@ -1,0 +1,60 @@
+# Apache mod_rewrite Docs: http://httpd.apache.org/docs/current/rewrite/
+# Intro: http://httpd.apache.org/docs/current/rewrite/intro.html
+# Flags: http://httpd.apache.org/docs/current/rewrite/flags.html
+
+Options All -Indexes
+Options +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Rewrite only nonexistent file or directory path
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# -------------------------------------------------------------------------------
+# MURA REWRITE OPTIONS
+#
+# NOTE: If running on Tomcat with sites using the SiteID in the URL
+# a custom servlet mapping will be required for each site.
+# Instructions: http://docs.getmura.com/v6/installation-setup/how-to-add-a-servlet-mapping-for-your-siteid-to-tomcat/
+# -------------------------------------------------------------------------------
+
+# OPTION 1 :: WITHOUT SiteID
+# In /config/settings.ini.cfm, set both siteidinurls and indexfileinurls to 0
+# and reload the Mura application
+RewriteRule ^(.*) /index.cfm/$1 [NC,QSA,PT]
+
+# OPTION 2 :: WITH SiteID
+# In /config/settings.ini.cfm, set indexfileinurls to 0
+# and reload the Mura application
+#RewriteRule ^([a-zA-Z0-9_\-]{1,})/(.*) /$1/index.cfm/$2 [NC,QSA,PT]
+
+# OPTION 3 :: Advanced Configuration
+# To use the SiteID in the URL for SPECIFIC SITES ONLY, but not for all sites:
+# First, add a custom getURLStem() method to the Site's contentRenderer.cfc,
+# then ENABLE OPTION 1 above, adding a custom rewrite rule for each site:
+#RewriteRule ^YourSiteID/(.*) /YourSiteID/index.cfm/$1 [NC,QSA,PT]
+
+# 404 :: Redirect to 404.cfm with the requested URI as a query string
+# This assumes a custom file named 404.cfm exists in your root directory
+#RewriteRule (.*) 404.cfm?%{REQUEST_URI}?%{QUERY_STRING}
+
+# Forbid executable files from being downloaded
+RewriteRule \.exe - [F]
+</IfModule>
+
+# -------------------------------------------------------------------------------
+# UTF-8 encoding
+# -------------------------------------------------------------------------------
+
+# Use UTF-8 encoding for anything served text/plain or text/html
+AddDefaultCharset utf-8
+
+# Force UTF-8 for a number of file formats
+AddCharset utf-8 .css .js .xml .json .rss .atom
+
+<FilesMatch ".(eot|ttf|otf|woff|js)">
+	Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
