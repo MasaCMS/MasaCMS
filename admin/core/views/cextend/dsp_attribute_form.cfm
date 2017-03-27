@@ -149,8 +149,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="mura-control-group">
 	<label>For administrative Use Only?</label>
-		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif attributes.attributeBean.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
-		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
+		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1" <cfif attributes.attributeBean.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
+		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0" <cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
 </div>
 
 <div class="mura-actions">
