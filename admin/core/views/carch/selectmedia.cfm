@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.fileid" default="">
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
 <cfquery name="rsImages">
-	select distinct tfiles.fileid,tfiles.siteid from tfiles
+	select tfiles.fileid from tfiles
 	left join tcontent on (tfiles.contentid=tcontent.contentid)
 	where tfiles.fileext in ('png','jpg','jpeg','svg')
 	and tfiles.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.siteConfig().getFilePoolID()#">
@@ -67,6 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								and tcontent.active=1
 								)
 		)
+	group by tfiles.fileid
 </cfquery>
 </cfsilent>
 <cfinclude template="js.cfm">
