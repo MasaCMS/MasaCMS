@@ -2594,8 +2594,17 @@
 
         if (obj.data('queue') != null) {
             queue = obj.data('queue');
-        }
 
+            if(typeof queue == 'string'){
+                queue=queue.toLowerCase();
+                if(queue=='no' || queue=='false'){
+                  queue=false;
+              } else {
+                  queue==true;
+              }
+            }
+        }
+        
         el = el.node || el;
         var self = el;
         var rendered = !rerender && !(obj.hasClass('mura-async-object') ||

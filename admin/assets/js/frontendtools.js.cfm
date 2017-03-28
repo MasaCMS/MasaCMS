@@ -1395,7 +1395,7 @@
 										item.data('objectname',item.data('object'));
 									}
 
-									objectid=item.data('objectid') || 'none';
+									objectid=item.data('objectid') || 'NA';
 
 									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + objectid + '~' + JSON.stringify(params))
 
