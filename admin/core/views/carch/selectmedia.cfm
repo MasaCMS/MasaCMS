@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
 <cfquery name="rsImages">
 	select tfiles.fileid from tfiles
-	left join tcontent on (tfiles.contentid=tcontent.contentid)
+	left join tcontent on (tfiles.fileid=tcontent.fileid)
 	where tfiles.fileext in ('png','jpg','jpeg','svg')
 	and tfiles.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.siteConfig().getFilePoolID()#">
 	and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.siteConfig().getSiteID()#">
