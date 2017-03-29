@@ -134,6 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 	objectParams.label=local.formBean.get('title');
 					 	 }
 	   					 objectParams.filename=local.formBean.get('filename');
+						 objectParams.name=local.formBean.get('title');
 	   					 objectParams.responsemessage=local.formBean.get('repsonseMesage');
 	   				 </cfscript>
 				 </cfif>

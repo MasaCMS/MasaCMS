@@ -755,6 +755,9 @@
 					.find('form')
 					.trigger('formSubmit');
 
+
+				Mura.trackEvent({category:'Form',action:'Submit',label:self.context.name,objectid:self.context.objectid})
+
 				if(self.ormform) {
 					//console.log('a!');
 					Mura.getEntity(self.entity)
@@ -1320,7 +1323,7 @@
 				Mura.Handlebars.registerHelper('commonInputAttributes',function() {
 					//id, class, title, size
 					var escapeExpression=Mura.Handlebars.escapeExpression;
-					
+
 					if(typeof this.fieldtype != 'undefined' && this.fieldtype.fieldtype=='file'){
 						var returnString='name="' + escapeExpression(this.name) + '_attachment"';
 					} else {

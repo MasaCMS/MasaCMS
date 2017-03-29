@@ -193,6 +193,8 @@
     			ga('create', content.ga.trackingid, 'auto','mxpGATracker');
     			ga('mxpGATracker.send','pageview', content.ga.trackingvars);
 
+				Mura.MXP=true;
+				
     			Mura.loader().loadjs(
     				context + '/plugins/MXP/assets/js/metrics/scrolldepth.js',
     				context + '/plugins/MXP/assets/js/metrics/riveted.js',

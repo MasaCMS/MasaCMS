@@ -2989,11 +2989,10 @@ return /******/ (function(modules) { // webpackBootstrap
             data.nonInteraction = false;
         }
 
+        var isMXP=(typeof Mura.MXP != 'undefined');
         var trackingVars = {};
         var gaFound = false;
         var trackingComplete = false;
-
-        var trackingID = data.contentid + data.objectid;
 
         function trackGA() {
             if (typeof ga != 'undefined') {
@@ -3008,7 +3007,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
                 if (data.label) {
                     trackingVars.ga.eventLabel = data.label;
-                } else {
+                } else if(isMXP) {
                     trackingVars.ga.eventLabel = trackingVars.object.title;
                 }
 
@@ -3022,20 +3021,28 @@ return /******/ (function(modules) { // webpackBootstrap
             }
         }
 
-        if(typeof trackingMetadata[trackingID] != 'undefined'){
-            trackingVars = trackingMetadata[trackingID];
-            trackGA();
-        } else {
-            Mura.get(mura.apiEndpoint, {
-                method: 'findTrackingProps',
-                siteid: Mura.siteid,
-                contentid: data.contentid,
-                objectid: data.objectid
-            }).then(function(response) {
-                trackingVars = response.data;
-                trackingMetadata[trackingID]=trackingVars;
+        if(isMXP){
+
+            var trackingID = data.contentid + data.objectid;
+
+            if(typeof trackingMetadata[trackingID] != 'undefined'){
+                trackingVars = trackingMetadata[trackingID];
                 trackGA();
-            });
+            } else {
+                Mura.get(mura.apiEndpoint, {
+                    method: 'findTrackingProps',
+                    siteid: Mura.siteid,
+                    contentid: data.contentid,
+                    objectid: data.objectid
+                }).then(function(response) {
+                    trackingVars = response.data;
+                    trackingMetadata[trackingID]=trackingVars;
+                    trackGA();
+                });
+            }
+        } else {
+            trackingVars={ga:{}};
+            trackGA();
         }
 
         return new Promise(function(resolve, reject) {
@@ -5434,7 +5441,7 @@ return /******/ (function(modules) { // webpackBootstrap
               }
             }
         }
-        
+
         el = el.node || el;
         var self = el;
         var rendered = !rerender && !(obj.hasClass('mura-async-object') ||
@@ -10636,6 +10643,9 @@ return /******/ (function(modules) { // webpackBootstrap
 					.find('form')
 					.trigger('formSubmit');
 
+
+				Mura.trackEvent({category:'Form',action:'Submit',label:self.context.name,objectid:self.context.objectid})
+
 				if(self.ormform) {
 					//console.log('a!');
 					Mura.getEntity(self.entity)
@@ -11201,7 +11211,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				Mura.Handlebars.registerHelper('commonInputAttributes',function() {
 					//id, class, title, size
 					var escapeExpression=Mura.Handlebars.escapeExpression;
-					
+
 					if(typeof this.fieldtype != 'undefined' && this.fieldtype.fieldtype=='file'){
 						var returnString='name="' + escapeExpression(this.name) + '_attachment"';
 					} else {

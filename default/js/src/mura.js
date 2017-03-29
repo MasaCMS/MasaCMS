@@ -159,11 +159,10 @@
             data.nonInteraction = false;
         }
 
+        var isMXP=(typeof Mura.MXP != 'undefined');
         var trackingVars = {};
         var gaFound = false;
         var trackingComplete = false;
-
-        var trackingID = data.contentid + data.objectid;
 
         function trackGA() {
             if (typeof ga != 'undefined') {
@@ -178,7 +177,7 @@
 
                 if (data.label) {
                     trackingVars.ga.eventLabel = data.label;
-                } else {
+                } else if(isMXP) {
                     trackingVars.ga.eventLabel = trackingVars.object.title;
                 }
 
@@ -192,20 +191,28 @@
             }
         }
 
-        if(typeof trackingMetadata[trackingID] != 'undefined'){
-            trackingVars = trackingMetadata[trackingID];
-            trackGA();
-        } else {
-            Mura.get(mura.apiEndpoint, {
-                method: 'findTrackingProps',
-                siteid: Mura.siteid,
-                contentid: data.contentid,
-                objectid: data.objectid
-            }).then(function(response) {
-                trackingVars = response.data;
-                trackingMetadata[trackingID]=trackingVars;
+        if(isMXP){
+
+            var trackingID = data.contentid + data.objectid;
+
+            if(typeof trackingMetadata[trackingID] != 'undefined'){
+                trackingVars = trackingMetadata[trackingID];
                 trackGA();
-            });
+            } else {
+                Mura.get(mura.apiEndpoint, {
+                    method: 'findTrackingProps',
+                    siteid: Mura.siteid,
+                    contentid: data.contentid,
+                    objectid: data.objectid
+                }).then(function(response) {
+                    trackingVars = response.data;
+                    trackingMetadata[trackingID]=trackingVars;
+                    trackGA();
+                });
+            }
+        } else {
+            trackingVars={ga:{}};
+            trackGA();
         }
 
         return new Promise(function(resolve, reject) {
@@ -2604,7 +2611,7 @@
               }
             }
         }
-        
+
         el = el.node || el;
         var self = el;
         var rendered = !rerender && !(obj.hasClass('mura-async-object') ||
