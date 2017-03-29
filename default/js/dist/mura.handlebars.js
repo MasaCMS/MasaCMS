@@ -6406,6 +6406,13 @@ return /******/ (function(modules) { // webpackBootstrap
                     objectid: data.objectid
                 }).then(function(response) {
                     trackingVars = response.data;
+
+                    for(var p in trackingVars.ga){
+                        if(trackingVars.ga.hasOwnProperty(p) && p.substring(0,1)=='d' && typeof trackingVars.ga[p] != 'string'){
+                            trackingVars.ga[p]=new String(trackingVars.ga[p]);
+                        }
+                    }
+
                     trackingMetadata[trackingID]=trackingVars;
                     trackGA();
                 });
