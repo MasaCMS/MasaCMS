@@ -270,6 +270,7 @@ select + .mura-sidebar__objects-list__object-item{
 /* compact view / configurators */
 
 body.configurator-wrapper{
+
 	background-color: #454545;
 
 	// reset typography styles in sidebar configurator
@@ -286,6 +287,14 @@ body.configurator-wrapper{
 				text-transform: none;
 			}
 
+			.clearfix{
+				clear:both !important;
+			}
+
+			img + div, 
+			img + label{
+				margin-top: 8px;
+			} 
 			#configurator .load-inline{
     		position: absolute;
 	    	right: ~'calc(50% - 30px)';
