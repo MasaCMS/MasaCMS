@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<ul class="ui-tabs-nav">
 					<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-basic"><span>Basic</span></a></li>
 					<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-advanced"><span>Advanced</span></a></li>
-					<!--<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-validation"><span>Validation</span></a></li>-->
+					<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-validation"><span>Validation</span></a></li>
 				</ul>
 				
 				<div class="ui-tabs-panel" id="mura-tb-form-tab-basic">
@@ -73,16 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</li>
 					</ul>
 				</div>
-				<!--
-				<div class="ui-tabs-panel" id="mura-tb-form-tab-validation">
-					
-					<ul class="template-form">
-						<li>Does this need validation fields?</li>
-					</ul>
-				</div>
-						-->
-		
-					<div class="ui-tabs-panel" id="mura-tb-form-tab-advanced">
+				<div class="ui-tabs-panel" id="mura-tb-form-tab-advanced">
 					<ul class="template-form">
 						<li>
 							<label for="size">#mmRBF.getKeyValue(session.rb,'formbuilder.field.size')#</label>
@@ -105,6 +96,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<input class="text long" type="text" name="tooltip" value="" maxlength="250" />
 						</li>
 					</ul>
+				</div>
+				<div class="ui-tabs-panel" id="mura-tb-form-tab-validation">
+				<ul class="template-form">
+					<li>
+						<label for="validatemessage">#mmRBF.getKeyValue(session.rb,'formbuilder.field.validatemessage')#</label>
+						<input class="text long" type="text" name="validatemessage" value="" maxlength="250" />
+					</li>
+					<li class="checkbox">
+						<label for="isrequired">
+						#mmRBF.getKeyValue(session.rb,'formbuilder.field.isrequired')#</label>
+						<input type="checkbox" type="text" name="isrequired" value="1">
+					</li>
+				</ul>
 				</div>
 			</div>
 		</div>

@@ -14142,7 +14142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var frm=mura(this.context.formEl);
 				var frmErrors=frm.find(".error-container-" + self.context.objectid);
 
-				frm.find('.mura-response-error').remove();
+				mura(this.context.formEl).find('.mura-response-error').remove();
 
 				console.log(errors);
 
