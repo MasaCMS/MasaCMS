@@ -270,6 +270,7 @@ select + .mura-sidebar__objects-list__object-item{
 /* compact view / configurators */
 
 body.configurator-wrapper{
+
 	background-color: #454545;
 
 	// reset typography styles in sidebar configurator
@@ -284,6 +285,10 @@ body.configurator-wrapper{
 			* {
 				.regular-font;
 				text-transform: none;
+			}
+
+			.clearfix{
+				clear:both !important;
 			}
 
 			#configurator .load-inline{
