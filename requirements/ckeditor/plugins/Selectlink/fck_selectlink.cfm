@@ -73,8 +73,8 @@ StructAppend(attributes, form, "no");
 </table>
 
 <cfif request.nextn.numberofpages gt 1>
-	<div  class="pagination">
-      <ul>
+	<div  class="pagination-wrapper">
+      <ul class="pagination">
       <cfloop from="1"  to="#request.nextn.numberofpages#" index="i">
       	<cfoutput>
       	<cfif request.nextn.currentpagenumber eq i><li class="active"><a href="##">#i#</a></li>
