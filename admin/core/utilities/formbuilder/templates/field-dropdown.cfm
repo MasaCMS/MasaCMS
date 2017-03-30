@@ -112,6 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<input type="checkbox" type="text" name="isrequired" value="1">
 						</li>
 					</ul>
+					</div>
 				</div>
 			</div>
 		</div>
