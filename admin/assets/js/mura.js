@@ -2977,28 +2977,35 @@ return /******/ (function(modules) { // webpackBootstrap
      * @return {Promise}
      * @memberof Mura
      */
-    function trackEvent(data) {
-
-        data.category = data.category || '';
-        data.action = data.action || '';
-        data.label == data.label || '';
-        data.contentid = data.contentid || Mura.contentid;
-        data.objectid = data.objectid || '';
-
-        if (typeof data.nonInteraction == 'undefined') {
-            data.nonInteraction = false;
-        }
-
+    function trackEvent(eventData) {
+        var data={};
         var isMXP=(typeof Mura.MXP != 'undefined');
         var trackingVars = {};
         var gaFound = false;
         var trackingComplete = false;
+        var attempt=0;
 
-        function trackGA() {
+        data.category = eventData.eventCategory || eventData.category || '';
+        data.action = eventData.eventAction || eventData.action || '';
+        data.label = eventData.eventLabel || eventData.label || '';
+        data.type =  eventData.hitType || eventData.type || 'event';
+        data.value =  eventData.eventValue || eventData.value || undefined;
+
+        if (typeof eventData.nonInteraction == 'undefined') {
+            data.nonInteraction = false;
+        } else {
+            data.nonInteraction = eventData.nonInteraction;
+        }
+
+        data.contentid = eventData.contentid || Mura.contentid;
+        data.objectid = eventData.objectid || '';
+
+        function track() {
             if (typeof ga != 'undefined') {
                 trackingVars.ga.eventCategory = data.category;
                 trackingVars.ga.eventAction = data.action;
                 trackingVars.ga.nonInteraction = data.nonInteraction;
+                trackingVars.ga.hitType = data.type;
 
                 if (typeof data.value != 'undefined' && Mura.isNumeric(
                         data.value)) {
@@ -3009,15 +3016,25 @@ return /******/ (function(modules) { // webpackBootstrap
                     trackingVars.ga.eventLabel = data.label;
                 } else if(isMXP) {
                     trackingVars.ga.eventLabel = trackingVars.object.title;
+                    data.label=trackingVars.object.title;
                 }
 
-                ga('mxpGATracker.send', 'event', trackingVars.ga);
+                ga('mxpGATracker.send', data.type, trackingVars.ga);
                 gaFound = true;
                 trackingComplete = true;
             }
 
-            if (!gaFound) {
-                setTimeout(trackGA, 1);
+            attempt++;
+
+            if (!gaFound && attempt <1000) {
+                setTimeout(track, 1);
+            } else {
+                trackingComplete = true;
+            }
+
+            if(trackingComplete){
+                Mura(document).trigger('muraTrackEvent',trackingVars);
+                Mura(document).trigger('muraRecordEvent',trackingVars);
             }
         }
 
@@ -3026,7 +3043,8 @@ return /******/ (function(modules) { // webpackBootstrap
             var trackingID = data.contentid + data.objectid;
 
             if(typeof trackingMetadata[trackingID] != 'undefined'){
-                trackingVars = trackingMetadata[trackingID];
+                Mura.deepExtend(trackingVars,trackingMetadata[trackingID]);
+                trackingVars.eventData=data;
                 trackGA();
             } else {
                 Mura.get(mura.apiEndpoint, {
@@ -3035,7 +3053,8 @@ return /******/ (function(modules) { // webpackBootstrap
                     contentid: data.contentid,
                     objectid: data.objectid
                 }).then(function(response) {
-                    trackingVars = response.data;
+                    Mura.deepExtend(trackingVars,response.data);
+                    trackingVars.eventData=data;
 
                     for(var p in trackingVars.ga){
                         if(trackingVars.ga.hasOwnProperty(p) && p.substring(0,1)=='d' && typeof trackingVars.ga[p] != 'string'){
@@ -3043,13 +3062,14 @@ return /******/ (function(modules) { // webpackBootstrap
                         }
                     }
 
-                    trackingMetadata[trackingID]=trackingVars;
-                    trackGA();
+                    trackingMetadata[trackingID]={};
+                    Mura.deepExtend(trackingMetadata[trackingID],response.data);
+                    track();
                 });
             }
         } else {
-            trackingVars={ga:{}};
-            trackGA();
+            Mura.deepExtend(trackingVars,{ga:{}});
+            track();
         }
 
         return new Promise(function(resolve, reject) {
@@ -3666,32 +3686,41 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 
     function trigger(el, eventName, eventDetail) {
-        var eventClass = "";
-
-        switch (eventName) {
-            case "click":
-            case "mousedown":
-            case "mouseup":
-                eventClass = "MouseEvents";
-                break;
-
-            case "focus":
-            case "change":
-            case "blur":
-            case "select":
-                eventClass = "HTMLEvents";
-                break;
-
-            default:
-                eventClass = "Event";
-                break;
-        }
 
         var bubbles = eventName == "change" ? false : true;
 
         if (document.createEvent) {
-            var event = document.createEvent(eventClass);
-            event.initEvent(eventName, bubbles, true);
+
+            if(eventDetail && !isEmptyObject(eventDetail)){
+                var event = document.createEvent('CustomEvent');
+                event.initCustomEvent(eventName, bubbles, true,eventDetail);
+            } else {
+
+                var eventClass = "";
+
+                switch (eventName) {
+                    case "click":
+                    case "mousedown":
+                    case "mouseup":
+                        eventClass = "MouseEvents";
+                        break;
+
+                    case "focus":
+                    case "change":
+                    case "blur":
+                    case "select":
+                        eventClass = "HTMLEvents";
+                        break;
+
+                    default:
+                        eventClass = "Event";
+                        break;
+                }
+
+                var event = document.createEvent(eventClass);
+                event.initEvent(eventName, bubbles, true);
+            }
+
             event.synthetic = true;
             el.dispatchEvent(event);
 
@@ -6062,7 +6091,8 @@ return /******/ (function(modules) { // webpackBootstrap
                 DisplayObject: {},
                 displayObjectInstances: {},
                 holdReady: holdReady,
-                trackEvent: trackEvent
+                trackEvent: trackEvent,
+                recordEvent: trackEvent
             }
         ),
         //these are here for legacy support
