@@ -127,6 +127,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn tempFunc()>
 		<cfelseif structKeyExists(variables.instance.struct,"#arguments.property#")>
 			<cfreturn variables.instance.struct["#arguments.property#"]>
+		<cfelseif isValid('variableName', arguments.property)>
+			<cfreturn evaluate('getContentBean().get#arguments.property#()')>
 		<cfelse>
 			<cfreturn getContentBean().getValue(arguments.property)>
 		</cfif>
