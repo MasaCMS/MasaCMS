@@ -43,6 +43,7 @@ encryptionkey=
 errortemplate=/muraWRM/config/error.html
 filedir=
 filestore=filedir
+fmallowfilerename=true
 fmshowapplicationroot=1
 fmshowsitefiles=1
 forceadminssl=true
