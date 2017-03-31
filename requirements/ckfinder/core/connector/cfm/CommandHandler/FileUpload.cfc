@@ -199,20 +199,23 @@
 		<cfreturn false />
 	</cfif>
 
-	<cfscript>
-		while (true)
-		{
-			filePath = currentFolderServerPath & fileName;
+	<cfset allowFileRename = application.configBean.getValue(property='fmAllowFileRename',default=true)>
+	<cfif allowFileRename neq false>
+		<cfscript>
+			while (true)
+			{
+				filePath = currentFolderServerPath & fileName;
 
-			if (fileexists(filePath)) {
-				i = i+1;
-				fileName = fileNameWithoutExtension & "(" & i & ")" & fileExtension;
+				if (fileexists(filePath)) {
+					i = i+1;
+					fileName = fileNameWithoutExtension & "(" & i & ")" & fileExtension;
+				}
+				else {
+					break;
+				}
 			}
-			else {
-				break;
-			}
-		}
-	</cfscript>
+		</cfscript>
+	</cfif>
 
 	<!--- check if file name has been changed --->
 	<cfif fileName neq originalFileName>
