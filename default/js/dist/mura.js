@@ -3001,6 +3001,7 @@ return /******/ (function(modules) { // webpackBootstrap
         var gaFound = false;
         var trackingComplete = false;
         var attempt=0;
+        var eventAnnounced=false;
 
         data.category = eventData.eventCategory || eventData.category || '';
         data.action = eventData.eventAction || eventData.action || '';
@@ -3041,7 +3042,7 @@ return /******/ (function(modules) { // webpackBootstrap
                 } else {
                     ga('send', data.type, trackingVars.ga);
                 }
-                
+
                 gaFound = true;
                 trackingComplete = true;
             }
@@ -3054,9 +3055,10 @@ return /******/ (function(modules) { // webpackBootstrap
                 trackingComplete = true;
             }
 
-            if(trackingComplete){
+            if(!eventAnnounced){
                 Mura(document).trigger('muraTrackEvent',trackingVars);
                 Mura(document).trigger('muraRecordEvent',trackingVars);
+                eventAnnounced=true;
             }
         }
 
