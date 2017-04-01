@@ -206,7 +206,12 @@
                     data.label=trackingVars.object.title;
                 }
 
-                ga('mxpGATracker.send', data.type, trackingVars.ga);
+                if(isMXP){
+                    ga('mxpGATracker.send', data.type, trackingVars.ga);
+                } else {
+                    ga('send', data.type, trackingVars.ga);
+                }
+                
                 gaFound = true;
                 trackingComplete = true;
             }
