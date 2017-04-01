@@ -1114,13 +1114,18 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function login(username,password,siteid,lockdownCheck=false,lockdownExpires=''){
+		var $=getBean('$').init(arguments.siteid);
 
-		var result=getBean('userUtility').login(argumentCollection=arguments);
+		if($.validateCSRFTokens(context='login')){
+			var result=getBean('userUtility').login(argumentCollection=arguments);
 
-		if(result){
-			return {'status'='success'};
+			if(result){
+				return {'status'='success'};
+			} else {
+				return {'status'='failed'};
+			}
 		} else {
-			return {'status'='failed'};
+			return {'status'='Invalid CSFR Tokens'};
 		}
 	}
 

@@ -125,7 +125,7 @@
 										<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.submitauthcode'))#</button>
 									</div>
 								</div>
-
+								#variables.$.renderCSRFTokens(format='form',context='login')#
 								<input type="hidden" name="doaction" value="login">
 								<input type="hidden" name="status" value="challenge">
 								<input type="hidden" name="attemptChallenge" value="true">
@@ -179,6 +179,7 @@
 							<input type="hidden" name="doaction" value="login">
 							<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
 							<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
+							#variables.$.renderCSRFTokens(format='form',context='login')#
 						</fieldset>
 					</form>
 

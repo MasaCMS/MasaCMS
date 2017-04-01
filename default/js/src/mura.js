@@ -77,20 +77,37 @@
         siteid = siteid || root.Mura.siteid;
 
         return new Promise(function(resolve, reject) {
-            root.Mura.ajax({
-                async: true,
+
+            Mura.ajax({
                 type: 'post',
-                url: root.Mura.apiEndpoint,
+                url: Mura.apiEndpoint +
+                    '?method=generateCSRFTokens',
                 data: {
-                    siteid: siteid,
-                    username: username,
-                    password: password,
-                    method: 'login'
+                    siteid: self.get(
+                        'siteid'
+                    ),
+                    context: 'login'
                 },
                 success: function(resp) {
-                    resolve(resp.data);
+                    root.Mura.ajax({
+                        async: true,
+                        type: 'post',
+                        url: root.Mura.apiEndpoint,
+                        data: {
+                            siteid: siteid,
+                            username: username,
+                            password: password,
+                            method: 'login',
+                            'csrf_token': resp.data.csrf_token,
+                            'csrf_token_expires': resp.data.csrf_token_expires
+                        },
+                        success: function(resp) {
+                            resolve(resp.data);
+                        }
+                    });
                 }
             });
+
         });
 
     }

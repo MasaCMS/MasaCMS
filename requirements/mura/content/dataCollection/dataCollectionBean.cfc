@@ -173,7 +173,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 						if(arrayLen(rules)){
 							validations.properties[propname]=rules;
 						}
-						
+
 						variables.formproperties[propname]=prop;
 						variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & propname);
 					}
@@ -315,6 +315,11 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 			setValue('fieldnames',fieldnames);
 		}
+
+		if(arguments.$.getContentRenderer().validateCSRFTokens && !rc.$.validateCSRFTokens(context=getValue('formID'))){
+			variables.instance.errors.csrf='Your request contained invalid tokens';
+		}
+
 		return this;
 	}
 

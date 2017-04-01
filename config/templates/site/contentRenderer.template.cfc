@@ -72,6 +72,7 @@
 
 	<cfscript>
 		this.layoutmanager=true;
+		this.validateCSRFTokens=true;
 
 		//this.navOffSet=0;
 		//this.navDepthLimit=1000;
