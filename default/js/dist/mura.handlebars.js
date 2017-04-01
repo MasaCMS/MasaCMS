@@ -6371,7 +6371,6 @@ return /******/ (function(modules) { // webpackBootstrap
         var gaFound = false;
         var trackingComplete = false;
         var attempt=0;
-        var eventAnnounced=false;
 
         data.category = eventData.eventCategory || eventData.category || '';
         data.action = eventData.eventAction || eventData.action || '';
@@ -6389,7 +6388,8 @@ return /******/ (function(modules) { // webpackBootstrap
         data.objectid = eventData.objectid || '';
 
         function track() {
-            if (typeof ga != 'undefined') {
+
+            if(!attempt){
                 trackingVars.ga.eventCategory = data.category;
                 trackingVars.ga.eventAction = data.action;
                 trackingVars.ga.nonInteraction = data.nonInteraction;
@@ -6407,6 +6407,11 @@ return /******/ (function(modules) { // webpackBootstrap
                     data.label=trackingVars.object.title;
                 }
 
+                Mura(document).trigger('muraTrackEvent',trackingVars);
+                Mura(document).trigger('muraRecordEvent',trackingVars);
+            }
+
+            if (typeof ga != 'undefined') {
                 if(isMXP){
                     ga('mxpGATracker.send', data.type, trackingVars.ga);
                 } else {
@@ -6425,11 +6430,6 @@ return /******/ (function(modules) { // webpackBootstrap
                 trackingComplete = true;
             }
 
-            if(!eventAnnounced){
-                Mura(document).trigger('muraTrackEvent',trackingVars);
-                Mura(document).trigger('muraRecordEvent',trackingVars);
-                eventAnnounced=true;
-            }
         }
 
         if(isMXP){
