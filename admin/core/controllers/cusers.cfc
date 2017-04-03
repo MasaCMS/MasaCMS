@@ -65,6 +65,10 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 		arguments.rc.isAdmin = ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') || ListFind(rc.$.currentUser().getMemberships(), 'S2');
 
+		if(!ListFind(rc.$.currentUser().getMemberships(), 'S2')){
+			structDelete(rc,'s2');
+		}
+		
 		if ( !(
 					IsDefined('arguments.rc.baseID')
 					&& ListLast(arguments.rc.muraAction, ':') == 'cUsers.loadExtendedAttributes'
