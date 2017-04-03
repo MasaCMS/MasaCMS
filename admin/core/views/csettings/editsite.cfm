@@ -1142,9 +1142,12 @@ to your own modified versions of Mura CMS.
 								<input id="bundleImportUsersMode" name="bundleImportUsersMode" value="all" type="checkbox"  onchange="if(this.checked){jQuery('##userNotice').show();}else{jQuery('##userNotice').hide();}">
 								Site Members &amp; Administrative Users</label>
 							</span>
+
+							<cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster()>
 								<label class="checkbox" for="bundleImportMailingListMembersMode">
 								<input id="bundleImportMailingListMembersMode" name="bundleImportMailingListMembersMode" value="all" type="checkbox">
 								Mailing Lists Members</label>
+							</cfif>
 								<label class="checkbox" for="bundleImportFormDataMode">
 								<input id="bundleImportFormDataMode" name="bundleImportFormDataMode" value="all" type="checkbox">
 								Form Response Data</label>
