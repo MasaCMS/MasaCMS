@@ -71,7 +71,7 @@ initMuraComments=function(config){
 
 	 var initPage=function() {
 
-		loadPage(params).success(function(data){
+		loadPage(params,function(data){
 			data=Mura.setLowerCaseKeys(data);
 			if (data.count > 0) {
 				jQuery('#mura-comments-page').html(data.htmloutput);
@@ -87,7 +87,7 @@ initMuraComments=function(config){
 
 	var handleHash=function() {
 		var hash = window.location.hash;
-		
+
 		//Only do this if there is a valid hash and it's not hash based filenames
 		if (hash.length > 0 && hash.indexOf("#/")==-1 && hash.indexOf("=")==-1) {
 			if (jQuery('' + hash).length != 0) {
@@ -99,7 +99,7 @@ initMuraComments=function(config){
 					commentID: hash.replace('#mura-comment-', '')
 				};
 
-				loadPage(params).success(function(data){
+				loadPage(params,function(data){
 					data=Mura.setLowerCaseKeys(data);
 					jQuery("#mura-more-comments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
@@ -112,7 +112,7 @@ initMuraComments=function(config){
 		}
 	}
 
-	var loadPage=function(ext) {
+	var loadPage=function(ext,callback) {
 
 		var params = {
 			method: "renderCommentsPage",
@@ -124,11 +124,12 @@ initMuraComments=function(config){
 
 		jQuery.extend(params, ext);
 
-		return jQuery.ajax({
+		jQuery.ajax({
 			dataType: "json",
 			url: $commentsProxyPath,
 			data: params,
-			cache: false
+			cache: false,
+			success:callback
 		});
 	}
 
@@ -163,7 +164,7 @@ initMuraComments=function(config){
 					siteID: jQuery("#mura-more-comments").attr('data-siteid')
 				};
 
-				loadPage(params).success(function(data){
+				loadPage(params,function(data){
 					data=Mura.setLowerCaseKeys(data);
 					jQuery("#mura-more-comments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
@@ -203,7 +204,7 @@ initMuraComments=function(config){
 				pageNo: pageNo
 			};
 
-			loadPage(params).success(function(data){
+			loadPage(params,function(data){
 				data=Mura.setLowerCaseKeys(data);
 				a.parent().remove();
 				jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
@@ -218,7 +219,7 @@ initMuraComments=function(config){
 				// empty
 			};
 
-			loadPage(params).success(function(data){
+			loadPage(params,function(data){
 				data=Mura.setLowerCaseKeys(data);
 				jQuery('#mura-comments-page').html(data.htmloutput);
 				bindEvents();
