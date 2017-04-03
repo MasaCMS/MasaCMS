@@ -71,7 +71,7 @@ initMuraComments=function(config){
 
 	 var initPage=function() {
 
-		loadPage(params,function(data){
+		loadPage(params).done(function(data){
 			data=Mura.setLowerCaseKeys(data);
 			if (data.count > 0) {
 				jQuery('#mura-comments-page').html(data.htmloutput);
@@ -99,7 +99,7 @@ initMuraComments=function(config){
 					commentID: hash.replace('#mura-comment-', '')
 				};
 
-				loadPage(params,function(data){
+				loadPage(params).done(function(data){
 					data=Mura.setLowerCaseKeys(data);
 					jQuery("#mura-more-comments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
@@ -112,7 +112,7 @@ initMuraComments=function(config){
 		}
 	}
 
-	var loadPage=function(ext,callback) {
+	var loadPage=function(ext) {
 
 		var params = {
 			method: "renderCommentsPage",
@@ -124,12 +124,11 @@ initMuraComments=function(config){
 
 		jQuery.extend(params, ext);
 
-		jQuery.ajax({
+		return jQuery.ajax({
 			dataType: "json",
 			url: $commentsProxyPath,
 			data: params,
-			cache: false,
-			success:callback
+			cache: false
 		});
 	}
 
@@ -164,7 +163,7 @@ initMuraComments=function(config){
 					siteID: jQuery("#mura-more-comments").attr('data-siteid')
 				};
 
-				loadPage(params,function(data){
+				loadPage(params).done(function(data){
 					data=Mura.setLowerCaseKeys(data);
 					jQuery("#mura-more-comments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
@@ -204,7 +203,7 @@ initMuraComments=function(config){
 				pageNo: pageNo
 			};
 
-			loadPage(params,function(data){
+			loadPage(params).done(function(data){
 				data=Mura.setLowerCaseKeys(data);
 				a.parent().remove();
 				jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
@@ -219,7 +218,7 @@ initMuraComments=function(config){
 				// empty
 			};
 
-			loadPage(params,function(data){
+			loadPage(params).done(function(data){
 				data=Mura.setLowerCaseKeys(data);
 				jQuery('#mura-comments-page').html(data.htmloutput);
 				bindEvents();
