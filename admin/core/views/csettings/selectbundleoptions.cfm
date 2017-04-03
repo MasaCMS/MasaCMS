@@ -122,8 +122,10 @@ function checkAll (form) {
       <label class="checkbox"><input type="checkbox" name="includeMetaData" value="true">
             Content Comments and Ratings</label>
 
-      <label class="checkbox"><input type="checkbox" name="includeMailingListMembers" value="true">
+      <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster()>
+        <label class="checkbox"><input type="checkbox" name="includeMailingListMembers" value="true">
             Mailing List Members</label>
+      </cfif>
 
       <label class="checkbox"><input type="checkbox" name="includeFormData" value="true">
             Form Response Data</label>
