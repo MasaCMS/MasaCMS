@@ -159,7 +159,7 @@
 					is_nullable,
 					numeric_precision data_precision
 					from information_schema.columns
-					where TABLE_NAME='#arguments.table#'
+					where lower(TABLE_NAME)='#lcase(arguments.table)#'
 			</cfquery>
 			</cfcase>
 			<cfdefaultcase>
