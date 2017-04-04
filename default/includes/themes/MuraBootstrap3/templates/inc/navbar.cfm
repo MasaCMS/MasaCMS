@@ -51,7 +51,7 @@
 						</script>
 					</div>
 					<div class="col-md-3 pull-right">
-						<form id="searchForm" class="navbar-form navbar-right" role="search">
+						<form method="post" id="searchForm" class="navbar-form navbar-right" role="search">
 							<div class="input-group">
 								<input type="text" name="Keywords" id="navKeywords" class="form-control" value="#esapiEncode('html', $.event('keywords'))#" placeholder="#$.rbKey('search.search')#">
 								<span class="input-group-btn">
@@ -63,6 +63,7 @@
 							<input type="hidden" name="display" value="search">
 							<input type="hidden" name="newSearch" value="true">
 							<input type="hidden" name="noCache" value="1">
+							#variables.$.renderCSRFTokens(format='form',context='search')#
 						</form>
 					</div><!--- /search --->
 				</div><!--- /.row --->

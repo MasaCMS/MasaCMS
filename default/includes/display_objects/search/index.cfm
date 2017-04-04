@@ -64,18 +64,24 @@
 	<cfparam name="request.aggregation" default="false">
 	<cfparam name="request.searchSectionID" default="">
 	<cfparam name="session.rsSearch" default="#queryNew('empty')#">
+	<cfset validCSRFTokens=true>
+
 	<cfif (len(request.keywords) or len(request.tag) ) and isdefined('request.newSearch')>
-	<cfset session.aggregation=request.aggregation />
-	<cfset variables.rsNewSearch=application.contentManager.getPublicSearch(variables.$.event('siteID'),request.keywords,request.tag,request.searchSectionID) />
+		<cfif variables.$.getContentRenderer().validateCSRFTokens and not variables.$.validateCSRFTokens(context='search')>
+			<cfset session.rsSearch=newResultQuery()/>
+			<cfset validCSRFTokens=false>
+		<cfelse>
+			<cfset session.aggregation=request.aggregation />
+			<cfset variables.rsNewSearch=application.contentManager.getPublicSearch(variables.$.event('siteID'),request.keywords,request.tag,request.searchSectionID) />
 
-	<cfif getSite().getExtranet() eq 1>
-		<cfset session.rsSearch=variables.$.queryPermFIlter(variables.rsnewsearch)/>
-	<cfelse>
-		<cfset session.rsSearch=variables.rsnewsearch/>
-	</cfif>
-
+			<cfif getSite().getExtranet() eq 1>
+				<cfset session.rsSearch=variables.$.queryPermFIlter(variables.rsnewsearch)/>
+			<cfelse>
+				<cfset session.rsSearch=variables.rsnewsearch/>
+			</cfif>
+		</cfif>
 	<cfelseif request.keywords eq '' and isdefined('request.newSearch')>
-	<cfset session.rsSearch=newResultQuery()/>
+		<cfset session.rsSearch=newResultQuery()/>
 	</cfif>
 
 	<cfset variables.totalrecords=session.rsSearch.RecordCount>
@@ -103,26 +109,31 @@
 
 	<div id="svSearchResults" class="mura-search-results #this.searchResultWrapperClass#">
 		<div class="#this.searchResultInnerClass#">
-			<cfset variables.args=arrayNew(1)>
-			<cfset variables.args[1]=session.rsSearch.recordcount>
-			<cfif len(request.tag)>
-				<cfset variables.args[2]=htmlEditFormat(request.tag)>
-				<cfif len(request.searchSectionID)>
-					<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
-					<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchtagsection'),variables.args)#</p>
+			<cfif validCSRFTokens>
+				<cfset variables.args=arrayNew(1)>
+				<cfset variables.args[1]=session.rsSearch.recordcount>
+				<cfif len(request.tag)>
+					<cfset variables.args[2]=htmlEditFormat(request.tag)>
+					<cfif len(request.searchSectionID)>
+						<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
+						<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchtagsection'),variables.args)#</p>
+					<cfelse>
+						<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchtag'),variables.args)#</p>
+					</cfif>
 				<cfelse>
-					<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchtag'),variables.args)#</p>
+					<cfset variables.args[2]=htmlEditFormat(request.keywords)>
+					<cfif len(request.searchSectionID)>
+						<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
+				 		<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchkeywordsection'),variables.args)#</p>
+					<cfelse>
+						<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchkeyword'),variables.args)#</p>
+					</cfif>
 				</cfif>
 			<cfelse>
-				<cfset variables.args[2]=htmlEditFormat(request.keywords)>
-				<cfif len(request.searchSectionID)>
-					<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
-			 		<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchkeywordsection'),variables.args)#</p>
-				<cfelse>
-					<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchkeyword'),variables.args)#</p>
-				</cfif>
+				<p>Your request contained invalid tokens</p>
 			</cfif>
 		</div>
+
 
 		<cfif variables.totalrecords>
 
@@ -196,6 +207,7 @@
 					<input type="hidden" name="newSearch" value="true">
 					<input type="hidden" name="noCache" value="1">
 					<input type="hidden" name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#">
+					#variables.$.renderCSRFTokens(format='form',context='search')#
 				</form>
 			</div>
 		</div>

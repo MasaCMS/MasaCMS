@@ -306,6 +306,7 @@
 						<input type="hidden" name="siteid" value="#HTMLEditFormat(variables.$.event('siteID'))#">
 						<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#">
 						<input type="hidden" name="display" value="editprofile">
+						#variables.$.renderCSRFTokens(format='form',context='editprofile')#
 					</div>
 				</div>
 			</form>

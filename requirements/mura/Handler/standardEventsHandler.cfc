@@ -507,7 +507,7 @@
 			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/loginHandler.cfc"))>
 				<cfset createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.loginHandler").init().handleLogin(arguments.event.getAllValues())>
 			<cfelse>
-				<cfif not rc.$.getContentRenderer().validateCSRFTokens or rc.$.validateCSRFTokens(context='login')>
+				<cfif not arguments.$.getContentRenderer().validateCSRFTokens or arguments.$.validateCSRFTokens(context='login')>
 					<cfset var loginManager=arguments.$.getBean('loginManager')>
 					<cfif isBoolean(arguments.$.event('attemptChallenge')) and arguments.$.event('attemptChallenge')>
 						<cfif loginManager.handleChallengeAttempt(arguments.$)>
@@ -532,54 +532,57 @@
 		<cfcase value="updateprofile">
 			<cfset var sessionData=getSession()>
 			<cfif sessionData.mura.isLoggedIn>
-				<cfset var eventStruct=arguments.event.getAllValues()>
-				<cfset structDelete(eventStruct,'isPublic')>
-				<cfset structDelete(eventStruct,'s2')>
-				<cfset structDelete(eventStruct,'type')>
-				<cfset structDelete(eventStruct,'groupID')>
-				<cfset eventStruct.userid=sessionData.mura.userID>
+				<cfif not arguments.$.getContentRenderer().validateCSRFTokens or arguments.$.validateCSRFTokens(context='editprofile')>
+					<cfset var eventStruct=arguments.event.getAllValues()>
+					<cfset structDelete(eventStruct,'isPublic')>
+					<cfset structDelete(eventStruct,'s2')>
+					<cfset structDelete(eventStruct,'type')>
+					<cfset structDelete(eventStruct,'groupID')>
+					<cfset eventStruct.userid=sessionData.mura.userID>
 
-				<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
+					<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
 
-				<cfset arguments.event.setValue("userID",sessionData.mura.userID)>
-				<cfif isDefined('request.addressAction')>
-					<cfif arguments.event.getValue('addressAction') eq "create">
-						<cfset application.userManager.createAddress(eventStruct)>
-					<cfelseif arguments.event.getValue('addressAction') eq "update">
-						<cfset application.userManager.updateAddress(eventStruct)>
-					<cfelseif arguments.event.getValue('addressAction') eq "delete">
-						<cfset application.userManager.deleteAddress(arguments.event.getValue('addressID'))>
-					</cfif>
-					<!--- reset the form --->
-					<cfset arguments.event.setValue('addressID','')>
-					<cfset arguments.event.setValue('addressAction','')>
-				<cfelse>
-					<cfset arguments.event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,arguments.event.getValue('siteID'))) />
-					<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors())>
-						<cfset application.loginManager.loginByUserID(eventStruct)>
+					<cfset arguments.event.setValue("userID",sessionData.mura.userID)>
+					<cfif isDefined('request.addressAction')>
+						<cfif arguments.event.getValue('addressAction') eq "create">
+							<cfset application.userManager.createAddress(eventStruct)>
+						<cfelseif arguments.event.getValue('addressAction') eq "update">
+							<cfset application.userManager.updateAddress(eventStruct)>
+						<cfelseif arguments.event.getValue('addressAction') eq "delete">
+							<cfset application.userManager.deleteAddress(arguments.event.getValue('addressID'))>
+						</cfif>
+						<!--- reset the form --->
+						<cfset arguments.event.setValue('addressID','')>
+						<cfset arguments.event.setValue('addressAction','')>
+					<cfelse>
+						<cfset arguments.event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,arguments.event.getValue('siteID'))) />
+						<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors())>
+							<cfset application.loginManager.loginByUserID(eventStruct)>
+						</cfif>
 					</cfif>
 				</cfif>
-
 			</cfif>
 		</cfcase>
 
 		<cfcase value="createprofile">
 			<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getextranetpublicreg() eq 1>
-				<cfset var eventStruct=arguments.event.getAllValues()>
-				<cfset structDelete(eventStruct,'isPublic')>
-				<cfset structDelete(eventStruct,'s2')>
-				<cfset structDelete(eventStruct,'type')>
-				<cfset structDelete(eventStruct,'groupID')>
-				<cfset eventStruct.userid=''>
+				<cfif not arguments.$.getContentRenderer().validateCSRFTokens or arguments.$.validateCSRFTokens(context='editprofile')>
+					<cfset var eventStruct=arguments.event.getAllValues()>
+					<cfset structDelete(eventStruct,'isPublic')>
+					<cfset structDelete(eventStruct,'s2')>
+					<cfset structDelete(eventStruct,'type')>
+					<cfset structDelete(eventStruct,'groupID')>
+					<cfset eventStruct.userid=''>
 
-				<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
+					<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
 
-				<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).save() ) />
-				<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and not arguments.event.valueExists('passwordNoCache')>
-					<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),arguments.event.getValue('contentRenderer').getCurrentURL(),true) />
-				<cfelseif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and arguments.event.valueExists('passwordNoCache') and arguments.event.getValue('userBean').getInactive() eq 0>
-					<cfset arguments.event.setValue('userID',arguments.event.getValue('userBean').getUserID()) />
-					<cfset application.loginManager.loginByUserID(eventStruct)>
+					<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).save() ) />
+					<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and not arguments.event.valueExists('passwordNoCache')>
+						<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),arguments.event.getValue('contentRenderer').getCurrentURL(),true) />
+					<cfelseif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and arguments.event.valueExists('passwordNoCache') and arguments.event.getValue('userBean').getInactive() eq 0>
+						<cfset arguments.event.setValue('userID',arguments.event.getValue('userBean').getUserID()) />
+						<cfset application.loginManager.loginByUserID(eventStruct)>
+					</cfif>
 				</cfif>
 			</cfif>
 		</cfcase>
