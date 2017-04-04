@@ -299,7 +299,7 @@ order by tformresponsepackets.entered asc
 <cfset finder=refind('\svalue="##.+?##"\s',body,1,"true")>
 </cfloop>
 
-<cfset body=rereplacenocase(arguments.preBody,'</form>','#formHTML#</form>')>
+<cfset body=rereplacenocase(arguments.preBody,'</form>','#formHTML##arguments.$.renderCSRFTokens(format="form",context=arguments.formID)#</form>')>
 <cfif not find(frmID,body)>
 	<cfset body=rereplacenocase(body,'<form','<form id="#frmID#" ')>
 </cfif>
