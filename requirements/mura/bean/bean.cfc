@@ -109,7 +109,13 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 								}
 							}
 
-							structAppend(arguments.MissingMethodArguments,synthArgs(synthedFunctions[arguments.MissingMethodName].args),true);
+							var synthedArgs=synthArgs(synthedFunctions[arguments.MissingMethodName].args);
+
+							for(var arg in synthedArgs) {
+								if(!structKeyExists(arguments.MissingMethodArguments,arg)){
+									arguments.MissingMethodArguments[arg]=synthedArgs[arg];
+								}
+							}
 						}
 					}
 
