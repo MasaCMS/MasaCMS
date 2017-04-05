@@ -71,7 +71,7 @@
 		// GENERAL
 		this.layoutmanager=true;
 		this.legacyobjects=false;
-		this.validateCSRFTokens=true;
+		this.validateCSRFTokens=false; //This will eventually default to true
 		this.jsLib = "jquery";
 		this.jsLibLoaded = true;
 		this.suppressWhitespace = false;

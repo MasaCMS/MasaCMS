@@ -185,7 +185,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		};
 		}
 
-
+		result['entityname']=iterator.getEntityName();
+		
 		if(!arguments.expanded &&
 			!(isDefined('arguments.baseURL')) || !len(arguments.baseURL)){
 			arguments.baseURL=getEndPoint() & "/?";
@@ -212,7 +213,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		result.links={
 			'self'=arguments.baseURL & "&pageIndex=" & result.pageIndex,
-			'entities'=getEndpoint()
+			'entities'=getEndpoint(),
+			'properties'='#getEndpoint()#/#iterator.getEntityName()#/properties'
 		};
 
 		if(result.pageIndex > 1){
