@@ -878,13 +878,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(arrayLen(propArray)){
 			for(var p in propArray){
-				if(props[p].persistent){
+				if(props[p].persistent || structKeyExists(props[p],'cfc')){
 					arrayAppend(returnArray,applyPropertyFormat(props[p]));
 				}
 			}
 		} else {
 			for(var p in props){
-				if(props[p].persistent){
+				if(props[p].persistent || structKeyExists(props[p],'cfc')){
 					arrayAppend(returnArray,applyPropertyFormat(props[p]));
 				}
 			}
@@ -1450,7 +1450,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var pk=entity.getPrimaryKey();
 		}
 
-		var loadparams={'#pk#'=''};
+		var loadparams={'#pk#'=createUUID()};
 		entity.loadBy(argumentCollection=loadparams);
 
 		if(!allowAccess(entity,$)){

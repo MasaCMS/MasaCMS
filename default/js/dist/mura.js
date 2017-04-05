@@ -2913,9 +2913,7 @@ return /******/ (function(modules) { // webpackBootstrap
                 url: Mura.apiEndpoint +
                     '?method=generateCSRFTokens',
                 data: {
-                    siteid: self.get(
-                        'siteid'
-                    ),
+                    siteid: siteid,
                     context: 'login'
                 },
                 success: function(resp) {
@@ -10405,24 +10403,40 @@ return /******/ (function(modules) { // webpackBootstrap
 						data.siteid=data.siteid || Mura.siteid;
 						data.fields=self.getPageFieldList();
 
-		                Mura.post(
-	                        Mura.apiEndpoint + '?method=processAsyncObject',
-	                        data)
-	                        .then(function(resp){
-	                            if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors)){
-									self.showErrors( resp.data.errors );
-	                            } else if(typeof resp.data.redirect != 'undefined') {
-									if(resp.data.redirect && resp.data.redirect != location.href){
-										location.href=resp.data.redirect;
-									} else {
-										location.reload(true);
-									}
-								} else {
-									self.currentpage = mura(button).data('page');
-	                                self.renderForm();
-	                            }
-	                        }
-							);
+						Mura.ajax({
+			                type: 'post',
+			                url: Mura.apiEndpoint +
+			                    '?method=generateCSRFTokens',
+			                data: {
+			                    siteid: data.siteid,
+			                    context: data.formid
+			                },
+			                success: function(resp) {
+								data['csrf_token_expires']=resp.data['csrf_token_expires'];
+								data['csrf_token']=resp.data['csrf_token'];
+
+								Mura.post(
+			                        Mura.apiEndpoint + '?method=processAsyncObject',
+			                        data)
+			                        .then(function(resp){
+			                            if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors)){
+											self.showErrors( resp.data.errors );
+			                            } else if(typeof resp.data.redirect != 'undefined') {
+											if(resp.data.redirect && resp.data.redirect != location.href){
+												location.href=resp.data.redirect;
+											} else {
+												location.reload(true);
+											}
+										} else {
+											self.currentpage = mura(button).data('page');
+			                                self.renderForm();
+			                            }
+			                        }
+								);
+							}
+						});
+
+
 					}
 
 					/*
@@ -10748,6 +10762,11 @@ return /******/ (function(modules) { // webpackBootstrap
 						data.contenthistid=Mura.contenthistid || '';
 						delete data.filename;
 
+						var tokenArgs={
+							siteid: data.siteid,
+							context: data.formid
+						}
+
 					} else {
 						var rawdata=Mura.deepExtend({},self.context,self.data);
 						rawdata.saveform=true;
@@ -10755,6 +10774,12 @@ return /******/ (function(modules) { // webpackBootstrap
 						rawdata.siteid=rawdata.siteid || Mura.siteid;
 						rawdata.contentid=Mura.contentid || '';
 						rawdata.contenthistid=Mura.contenthistid || '';
+
+						var tokenArgs={
+							siteid: rawdata.siteid,
+							context: rawdata.formid
+						}
+
 						delete rawdata.filename;
 
 						var data=new FormData();
@@ -10770,23 +10795,39 @@ return /******/ (function(modules) { // webpackBootstrap
 						}
 					}
 
-	                Mura.post(
-	                        Mura.apiEndpoint + '?method=processAsyncObject',
-	                        data)
-	                        .then(function(resp){
-	                            if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors )){
-									self.showErrors( resp.data.errors );
-								} else if(typeof resp.data.redirect != 'undefined'){
-									if(resp.data.redirect && resp.data.redirect != location.href){
-										location.href=resp.data.redirect;
-									} else {
-										location.reload(true);
-									}
-	                            } else {
-									mura(self.context.formEl).html( Mura.templates['success'](resp.data) );
-								}
-	                        });
+					Mura.ajax({
+						type: 'post',
+						url: Mura.apiEndpoint +
+							'?method=generateCSRFTokens',
+						data: tokenArgs,
+						success: function(resp) {
 
+							if(typeof FormData == 'undefined'){
+								data['csrf_token_expires']=resp.data['csrf_token_expires'];
+								data['csrf_token']=resp.data['csrf_token'];
+							} else {
+								data.append('csrf_token_expires',resp.data['csrf_token_expires']);
+								data.append('csrf_token',resp.data['csrf_token']);
+							}
+
+							Mura.post(
+							   Mura.apiEndpoint + '?method=processAsyncObject',
+							   data)
+							   .then(function(resp){
+								   if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors )){
+									   self.showErrors( resp.data.errors );
+								   } else if(typeof resp.data.redirect != 'undefined'){
+									   if(resp.data.redirect && resp.data.redirect != location.href){
+										   location.href=resp.data.redirect;
+									   } else {
+										   location.reload(true);
+									   }
+								   } else {
+									   mura(self.context.formEl).html( Mura.templates['success'](resp.data) );
+								   }
+							  });
+						}
+					});
 				}
 
 			},

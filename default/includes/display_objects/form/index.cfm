@@ -127,11 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   					 }
 
 	   					 request.cffpJS=true;
-
-						 csfrtokens=variables.$.generateCSRFTokens(context=objectparams.objectid);
-						 objectParams.csrf_token=csfrtokens.token;
-						 objectParams.csrf_token_expires=csfrtokens.expires;
-
+						 
 	   					 objectParams.def=serializeJSON(local.formJSON);
 	   					 objectParams.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
 						 if(!this.layoutmanager && local.formBean.getDisplayTitle() > 0){

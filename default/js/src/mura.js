@@ -83,9 +83,7 @@
                 url: Mura.apiEndpoint +
                     '?method=generateCSRFTokens',
                 data: {
-                    siteid: self.get(
-                        'siteid'
-                    ),
+                    siteid: siteid,
                     context: 'login'
                 },
                 success: function(resp) {
