@@ -186,7 +186,6 @@
         data.objectid = eventData.objectid || '';
 
         function track() {
-
             if(!attempt){
                 trackingVars.ga.eventCategory = data.category;
                 trackingVars.ga.eventAction = data.action;
@@ -222,7 +221,7 @@
 
             attempt++;
 
-            if (!gaFound && attempt <1000) {
+            if (!gaFound && attempt <250) {
                 setTimeout(track, 1);
             } else {
                 trackingComplete = true;
