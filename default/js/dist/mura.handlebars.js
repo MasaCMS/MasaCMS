@@ -6436,7 +6436,7 @@ return /******/ (function(modules) { // webpackBootstrap
             if(typeof trackingMetadata[trackingID] != 'undefined'){
                 Mura.deepExtend(trackingVars,trackingMetadata[trackingID]);
                 trackingVars.eventData=data;
-                trackGA();
+                track();
             } else {
                 Mura.get(mura.apiEndpoint, {
                     method: 'findTrackingProps',
