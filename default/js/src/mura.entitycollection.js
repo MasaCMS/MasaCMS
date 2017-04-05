@@ -150,6 +150,16 @@
 			return this;
 		},
 
+        /**
+		 * each - Passes each entity in collection through function
+		 *
+		 * @param  {function} fn Function
+		 * @return {object}  Self
+		 */
+		forEach:function(fn){
+			return this.each(fn);
+		},
+
 		/**
 		 * sort - Sorts collection
 		 *
@@ -168,23 +178,30 @@
 		 * @return {Mura.EntityCollection}
 		 */
 		filter:function(fn){
-			var collection=new Mura.EntityCollection(this.properties);
-			return collection.set('items',collection.get('items').filter( function(item,idx){
+            var newProps={};
+
+            for(var p in this.properties){
+                if(this.properties.hasOwnProperty(p) && p != 'items' && p != 'links'){
+                    newProps[p]=this.properties[p];
+                }
+            }
+
+			var collection=new Mura.EntityCollection(newProps);
+			return collection.set('items',this.properties.items.filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
         /**
-		 * map - Returns new Mura.EntityCollection of entities in objects returned from map function
+		 * map - Returns new Array returned from map function
 		 *
 		 * @param  {function} fn Filter function
-		 * @return {Mura.EntityCollection}
+		 * @return {Array}
 		 */
 		map:function(fn){
-			var collection=new Mura.EntityCollection(this.properties);
-			return collection.set('items',collection.get('items').map( function(item,idx){
+			return this.properties.items.map( function(item,idx){
 				return fn.call(item,item,idx);
-			}));
+			});
 		},
 
         /**
