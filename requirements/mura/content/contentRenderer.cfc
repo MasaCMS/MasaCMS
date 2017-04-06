@@ -1560,7 +1560,7 @@ Display Objects
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
 					</cfif>
 					<cfif $.hasParent() and $.getParent().getType() eq 'Calendar' and len(arguments.displayIntervalDesc)>
-						<p<cfif len(displayIntervalClass)> class="#displayIntervalClass#"</cfif>>#arguments.displayIntervalDesc#</p>
+						<p<cfif len(arguments.displayIntervalClass)> class="#arguments.displayIntervalClass#"</cfif>>#arguments.displayIntervalDesc#</p>
 					</cfif>
 				</cfoutput>
 

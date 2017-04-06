@@ -2312,7 +2312,10 @@
         return processDisplayObject(obj, false, true);
     }
 
-    function wireUpObject(obj, response) {
+    function wireUpObject(obj, response, attempt) {
+
+        attempt= attempt || 0;
+        attempt++;
 
         function validateFormAjax(frm) {
             validateForm(frm,
@@ -2411,8 +2414,17 @@
                             '.mura-object-content').node;
                         Mura.templates[template](context);
                     } else {
-                        console.log('Missing Client Template for:');
-                        console.log(obj.data());
+                        if(attempt < 1000){
+                            setTimeout(
+                                function(){
+                                    wireUpObject(obj,response,attempt);
+                                },
+                                1
+                            );
+                        } else {
+                            console.log('Missing Client Template for:');
+                            console.log(obj.data());
+                        }
                     }
                 }
             }
@@ -2448,8 +2460,18 @@
                         '.mura-object-content').node;
                     Mura.templates[template](context);
                 } else {
-                    console.log('Missing Client Template for:');
-                    console.log(obj.data());
+                    if(attempt < 1000){
+                        setTimeout(
+                            function(){
+                                wireUpObject(obj,response,attempt);
+                            },
+                            1
+                        );
+                    } else {
+                        console.log('Missing Client Template for:');
+                        console.log(obj.data());
+                    }
+
                 }
             }
         }
