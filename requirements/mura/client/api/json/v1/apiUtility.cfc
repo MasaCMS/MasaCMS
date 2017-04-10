@@ -1775,7 +1775,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
 							if(entity.getEnityName()=='user' && propName=='groupid'){
 								feed.setGroupID(arguments.params[p]);
-							} else if(entity.valueExists(propName)){
+							} else if(entity.valueExists(propName) || entity.valueExists('extendData')){
 								var condition="eq";
 								var criteria=arguments.params[p];
 
