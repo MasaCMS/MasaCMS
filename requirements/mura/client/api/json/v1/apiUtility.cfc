@@ -186,7 +186,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		result['entityname']=iterator.getEntityName();
-		
+
 		if(!arguments.expanded &&
 			!(isDefined('arguments.baseURL')) || !len(arguments.baseURL)){
 			arguments.baseURL=getEndPoint() & "/?";
@@ -2711,6 +2711,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
+		var entity='';
 
 		var result={
 			"swagger"= "2.0",
@@ -2749,41 +2750,157 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var entityKeys=listToArray(ListSort(StructKeyList(variables.config.entities),'textnocase'));
 
 		for(var i in entityKeys){
-			if(allowAccess(i,$,false)){
 
-				result['paths']['/#lcase(i)#']={
-					"post"= {
-						"tags"= [
-							i
-						],
-						"summary"= "Saves a #i#",
-						"description"= "",
-						"operationId"= "save#$.getBean('utility').setProperCase(i)#",
-						"consumes"= [
-							"application/json"
-						],
-						"produces"= [
-							"application/json"
-						],
-						"parameters"= [
+			if($.getServiceFactory().containsBean(i)){
+				entity=$.getBean(i);
 
-						],
-						"responses"= {
-							"405"= {
-								"description": "Invalid input"
-							}
+				if(allowAccess(entity,$,false)){
+
+					result['paths']['/#lcase(i)#']={
+						"get"= {
+							"tags"= [
+								i
+							],
+							"summary"= "lists #i#",
+							"description"= "",
+							"operationId"= "list#$.getBean('utility').setProperCase(i)#",
+							"consumes"= [
+								"application/json"
+							],
+							"produces"= [
+								"application/json"
+							],
+							"parameters"= [
+
+							],
+							"responses"= {
+								"405"= {
+									"description": "Invalid input"
+								}
+							},
+							"security"= [
+								{
+									"#$.event('siteid')#_auth"= [
+										"write:#lcase(i)#",
+										"read:#lcase(i)#"
+									]
+								}
+							]
+
+						}
+					};
+
+					result['paths']['/#lcase(i)#/{id}']={
+						"get"= {
+							"tags"= [
+								i
+							],
+							"summary"= "read an #i#",
+							"description"= "",
+							"operationId"= "read#$.getBean('utility').setProperCase(i)#",
+							"consumes"= [],
+							"produces"= [
+								"application/json"
+							],
+							"parameters"= [
+								{
+									"name": "id",
+									"in": "path",
+									"description": "#i# id to delete",
+									"required": true,
+									"type": "string"
+								}
+							],
+							"responses"= {
+								"405"= {
+									"description": "Invalid input"
+								}
+							},
+							"security"= [
+								{
+									"#$.event('siteid')#_auth"= [
+										"write:#lcase(i)#",
+										"read:#lcase(i)#"
+									]
+								}
+							]
+
 						},
-						"security"= [
-							{
-								"#$.event('siteid')#_auth"= [
-									"write:#lcase(i)#",
-									"read:#lcase(i)#"
-								]
-							}
-						]
+						"post"= {
+							"tags"= [
+								i
+							],
+							"summary"= "Saves a #i#",
+							"description"= "",
+							"operationId"= "save#$.getBean('utility').setProperCase(i)#",
+							"consumes"= [
+								"multipart/form-data"
+							],
+							"produces"= [
+								"application/json"
+							],
+							"parameters"= [
+								{
+									"name": "id",
+									"in": "path",
+									"description": "#i# id to delete",
+									"required": true,
+									"type": "string"
+								}
 
-					}
-				};
+							],
+							"responses"= {
+								"405"= {
+									"description": "Invalid input"
+								}
+							},
+							"security"= [
+								{
+									"#$.event('siteid')#_auth"= [
+										"write:#lcase(i)#",
+										"read:#lcase(i)#"
+									]
+								}
+							]
+
+						},
+						"delete"= {
+							"tags"= [
+								i
+							],
+							"summary"= "Deletes a #i#",
+							"description"= "",
+							"operationId"= "delete#$.getBean('utility').setProperCase(i)#",
+							"consumes"= [],
+							"produces"= [
+								"application/json"
+							],
+							"parameters"= [
+								{
+									"name": "id",
+									"in": "path",
+									"description": "#i# id to delete",
+									"required": true,
+									"type": "string"
+								}
+							],
+							"responses"= {
+								"405"= {
+									"description": "Invalid input"
+								}
+							},
+							"security"= [
+								{
+									"#$.event('siteid')#_auth"= [
+										"write:#lcase(i)#",
+										"read:#lcase(i)#"
+									]
+								}
+							]
+
+						}
+					};
+				}
 			}
 		}
 
