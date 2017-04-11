@@ -2707,6 +2707,43 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return {url=$.getURLForImage(argumentCollection=arguments)};
 	}
 
+	function getSwaggerPropertyDataType(datatype){
+		return {
+			'type'='string'
+		};
+	}
+
+	function getSwaggerEntityProperties(entity,_in="querystring",idInPath=false){
+		var response=[];
+		var item='';
+		var p='';
+		var properties=arguments.entity.getProperties();
+
+		if(arguments.idInPath){
+			arrayAppend(response,{
+					"name"= "id",
+					"in"= "path",
+					"required"= true,
+					"type"= "string"
+				});
+		}
+
+
+		for(p in properties){
+			if(properties['#p#'].persistent){
+				item={"name"=properties['#p#'].name,
+					"in"= arguments._in,
+					"required"= true
+				};
+
+				structAppend(item,getSwaggerPropertyDataType(properties['#p#'].datatype),true);
+				arrayAppend(response,item);
+			}
+		}
+
+		return response;
+	}
+
 	function swagger(siteid,params){
 		param name="arguments.params" default=url;
 
@@ -2770,12 +2807,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							"produces"= [
 								"application/json"
 							],
-							"parameters"= [
-
-							],
+							"parameters"= getSwaggerEntityProperties(entity=entity,_in="query",idInPath=false),
 							"responses"= {
 								"405"= {
-									"description": "Invalid input"
+									"description"= "Invalid input"
 								}
 							},
 							"security"= [
@@ -2802,18 +2837,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							"produces"= [
 								"application/json"
 							],
-							"parameters"= [
-								{
-									"name": "id",
-									"in": "path",
-									"description": "#i# id to delete",
-									"required": true,
-									"type": "string"
-								}
-							],
+							"parameters"= getSwaggerEntityProperties(entity=entity,_in="query",idInPath=true),
 							"responses"= {
 								"405"= {
-									"description": "Invalid input"
+									"description"= "Invalid input"
 								}
 							},
 							"security"= [
@@ -2839,19 +2866,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							"produces"= [
 								"application/json"
 							],
-							"parameters"= [
-								{
-									"name": "id",
-									"in": "path",
-									"description": "#i# id to delete",
-									"required": true,
-									"type": "string"
-								}
-
-							],
+							"parameters"= getSwaggerEntityProperties(entity=entity,_in='form',idInPath=true),
 							"responses"= {
 								"405"= {
-									"description": "Invalid input"
+									"description"= "Invalid input"
 								}
 							},
 							"security"= [
@@ -2877,16 +2895,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							],
 							"parameters"= [
 								{
-									"name": "id",
-									"in": "path",
-									"description": "#i# id to delete",
-									"required": true,
-									"type": "string"
+									"name"= "id",
+									"in"= "path",
+									"description"= "#i# id to delete",
+									"required"= true,
+									"type"= "string"
 								}
 							],
 							"responses"= {
 								"405"= {
-									"description": "Invalid input"
+									"description"= "Invalid input"
 								}
 							},
 							"security"= [
