@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="longitude" type="numeric" default="0" />
 <cfproperty name="latitude" type="numeric" default="0" />
 <cfproperty name="extendDataTable" type="string" default="tclassextenddatauseractivity" />
-<cfproperty name="isNew" type="numeric" default="0" />
+<cfproperty name="isNew" type="numeric" default="0" persistent="false"/>
 
 <cfset variables.primaryKey = 'addressid'>
 <cfset variables.entityName = 'address'>

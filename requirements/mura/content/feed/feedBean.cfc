@@ -80,8 +80,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayRatings" type="numeric" default="0" required="true" />
 <cfproperty name="displayComments" type="numeric" default="0" required="true" />
 <cfproperty name="displayKids" type="numeric" default="0" required="true" />
-<cfproperty name="isNew" type="numeric" default="0" required="true" />
-<cfproperty name="params" type="query" default=""/>
+<cfproperty name="isNew" type="numeric" default="0" required="true" persistent="false"/>
+<cfproperty name="params" type="query" default="" persistent="false"/>
 <cfproperty name="remoteID" type="string" default=""/>
 <cfproperty name="remoteSourceURL" type="string" default=""/>
 <cfproperty name="remotePubDAte" type="string" default="" />

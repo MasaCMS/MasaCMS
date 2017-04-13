@@ -19,12 +19,17 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
         return this;
     }
 
-    function generateToken(granttype='client_credentials'){
+    function generateToken(granttype='client_credentials',userid=''){
         var token=getBean('oauthToken');
+
+        if(!len(arguments.userid)){
+            arguments.userid=get('userid');
+        }
 
         var existingTokens=token.getFeed()
             .where('clientid').isEQ(get('clientid'))
             .andProp('granttype').isEQ(arguments.granttype)
+            .andProp('userid').isEQ(arguments.userid)
             .andProp('expires').isGT(now())
             .getIterator();
 
@@ -32,10 +37,10 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
             return existingTokens.next();
         } else {
 
-
             token.set({
                 clientid=get('clientid'),
-                granttype=arguments.granttype
+                granttype=arguments.granttype,
+                userid=arguments.userid
             }).save();
 
             if(arguments.granttype =='client_credentials'){

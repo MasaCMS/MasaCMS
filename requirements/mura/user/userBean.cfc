@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="IMName" type="string" default=""/>
 <cfproperty name="IMService" type="string" default=""/>
 <cfproperty name="extendDataTable" type="string" default="tclassextenddatauseractivity"/>
-<cfproperty name="isNew" type="numeric" default="1"/>
+<cfproperty name="isNew" type="numeric" default="1" persistent="false"/>
 <cfproperty name="tablist" type="string" default=""/>
 <cfproperty name="newFile" type="string" default=""/>
 

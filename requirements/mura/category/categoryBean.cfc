@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="remotePubDate" type="date" default="" />
 <cfproperty name="URLtitle" type="string" default="" />
 <cfproperty name="filename" type="string" default="" />
-<cfproperty name="isNew" type="numeric" default="1" required="true"/>
+<cfproperty name="isNew" type="numeric" default="1" required="true" persistent="false"/>
 <cfproperty name="isFeatureable" type="numeric" default="1" required="true"/>
 
 <cfset variables.primaryKey = 'categoryid'>

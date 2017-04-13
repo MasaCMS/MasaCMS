@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.bean" output="false" hint="This provides functionality for beans that are extended via the class extension manager">
 
-<cfproperty name="extendData" type="any" default="" comparable="false"/>
-<cfproperty name="extendSetID" type="string" default="" comparable="false"/>
-<cfproperty name="extendDataTable" type="string" default="tclassextenddata" required="true" comparable="false"/>
-<cfproperty name="type" type="string" default="Custom" required="true" />
-<cfproperty name="subType" type="string" default="Default" required="true" />
+<cfproperty name="extendData" type="any" default="" comparable="false" persistent="false"/>
+<cfproperty name="extendSetID" type="string" default="" comparable="false" persistent="false" />
+<cfproperty name="extendDataTable" type="string" default="tclassextenddata" required="true" comparable="false" persistent="false"/>
+<cfproperty name="type" type="string" default="Custom" />
+<cfproperty name="subType" type="string" default="Default" />
 <cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="extendAutoComplete" type="boolean" default="true" required="true" comparable="false"/>
+<cfproperty name="extendAutoComplete" type="boolean" default="true" required="true" comparable="false" persistent="false"/>
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>

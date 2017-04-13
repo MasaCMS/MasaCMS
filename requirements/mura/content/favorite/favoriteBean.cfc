@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="columnNumber" type="numeric" default="0" required="true" />
 <cfproperty name="rowNumber" type="numeric" default="0" required="true" />
 <cfproperty name="maxRSSItems" type="numeric" default="0" required="true" />
-<cfproperty name="isNew" type="numeric" default="1" required="true" />
+<cfproperty name="isNew" type="numeric" default="1" required="true" persistent="false"/>
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>

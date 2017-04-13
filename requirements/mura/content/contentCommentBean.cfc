@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="userID" type="string" default="" />
 <cfproperty name="path" type="string" default="" />
 <cfproperty name="remoteID" type="string" default=""/>
-<cfproperty name="isNew" type="numeric" default="1" />
+<cfproperty name="isNew" type="numeric" default="1" persistent="false"/>
 <cfproperty name="isSpam" type="numeric" default="0" />
 <cfproperty name="isDeleted" type="numeric" default="0" />
 <cfproperty name="flagCount" type="numeric" default="0" />

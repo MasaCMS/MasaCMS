@@ -3668,7 +3668,7 @@ return /******/ (function(modules) { // webpackBootstrap
     function generateOauthToken(grant_type, client_id, client_secret) {
         return new Promise(function(resolve, reject) {
             get(Mura.apiEndpoint.replace('/json/', '/rest/') +
-                'oauth/token?grant_type=' +
+                'oauth?grant_type=' +
                 encodeURIComponent(grant_type) +
                 '&client_id=' + encodeURIComponent(
                     client_id) + '&client_secret=' +
@@ -3678,8 +3678,11 @@ return /******/ (function(modules) { // webpackBootstrap
                 if (resp.data != 'undefined') {
                     resolve(resp.data);
                 } else {
-                    if (typeof reject == 'function') {
+
+                    if (typeof resp.error != 'undefined' && typeof reject == 'function') {
                         reject(resp);
+                    } else {
+                        resolve(resp);
                     }
                 }
             })

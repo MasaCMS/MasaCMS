@@ -288,6 +288,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					params['access_token']=headers['X-access_token'];
 				}
 
+				if( structKeyExists( headers, 'Authorization' )){
+					params['access_token']=listLast(headers['Authorization'],' ');
+				}
+
 				if(isDefined('params.access_token')){
 					var token=getBean('oauthToken').loadBy(token=params.access_token);
 					structDelete(params,'access_token');
@@ -308,7 +312,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								params.method='undefined';
 								throw(type='invalidAccessToken');
 							} else {
-								var clientAccount=oauthclient.getUser();
+								var clientAccount=token.getUser();
 
 								if(!clientAccount.exists()){
 									params.method='undefined';
@@ -320,10 +324,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							}
 						}
 					}
-				} else if(!(isDefined('params.client_id') && isdefined('params.client_secret'))){
+				} else if(!(isDefined('params.client_id') && isdefined('params.client_secret') || isDefined('params.refresh_token'))){
 					params.method='Not Available';
 					structDelete(params,'client_id');
 					structDelete(params,'client_secret');
+					structDelete(params,'refresh_token');
+					structDelete(url,'client_id');
+					structDelete(url,'client_secret');
+					structDelete(url,'refresh_token');
 					throw(type='authorization');
 				} else {
 					var oauthclient=getBean('oauthClient').loadBy(clientid=params.client_id);
@@ -333,48 +341,103 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						params.method='Not Available';
 						structDelete(params,'client_id');
 						structDelete(params,'client_secret');
+						structDelete(params,'refresh_token');
 						structDelete(url,'client_id');
 						structDelete(url,'client_secret');
+						structDelete(url,'refresh_token');
 						throw(type='authorization');
 					} else {
-						var clientAccount=oauthclient.getUser();
 						structDelete(url,'client_id');
 						structDelete(url,'client_secret');
-						if(!clientAccount.exists()){
-							params.method='undefined';
-							structDelete(params,'client_id');
-							structDelete(params,'client_secret');
-							throw(type='authorization');
-						} else {
-							if(((arrayLen(pathInfo) == 6
-								&& pathInfo[5]=='oauth'
-								&& pathInfo[6]=='token')
-								|| (
-									arrayLen(pathInfo) == 5
-									&& pathInfo[4]=='oauth'
-									&& pathInfo[5]=='token'
-								))
-								&& isdefined('params.grant_type')
-								&& params.grant_type == 'client_credentials'){
+						structDelete(url,'refresh_token');
+
+						if(arrayLen(pathInfo) == 6
+							&& pathInfo[5]=='oauth'
+							|| 
+								arrayLen(pathInfo) == 5
+								&& pathInfo[4]=='oauth'
+							){
+
+							param name="params.grant_type" default="invalid";
+
+							params.method='getOAuthToken';
+
+							if(params.grant_type == 'client_credentials'){
 								var token=oauthclient.generateToken(granttype='client_credentials');
-								params.method='getOAuthToken';
+								var clientAccount=token.getUser();
+
+								if(!clientAccount.exists()){
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
+									structDelete(params,'refresh_token');
+									throw(type='authorization');
+								} else {
+									result=serializeResponse(
+										statusCode=200,
+										response={'apiversion'=getApiVersion(),
+										'method'=params.method,
+										'params'=getParamsWithOutMethod(params),
+										'data'={
+											'token_type'='Bearer',
+											'access_token'=token.getToken(),
+											'expires_in'=token.getExpiresIn(),
+											'expires_at'=token.getExpiresAt(),
+											'refresh_token'=oauthclient.generateToken(granttype='refresh_token').getToken()
+										 }});
+								}
+							} else if(params.grant_type == 'refresh_token'){
+								//IF REFRESH_TOKEN WAS NOT SUBMITTED THROW AN ERROR
+								if(!isDefined('params.refresh_token')){
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
+									structDelete(params,'refresh_token');
+									throw(type='authorization');
+								}
+
+								var refreshToken=getBean('oauthToken').loadBy(token=params.refresh_token,granttype='refresh_token');
+								var clientAccount=refreshToken.getUser();
+
+								//IF THE REFRESH_TOKEN OR ASSOCIATED USER DOES NOT EXIST OR IS EXPIRED THROW AN ERROR
+								if(!clientAccount.exists() || !refreshToken.exists() || refreshToken.isExpired()){
+									if(refreshToken.exists() && refreshToken.isExpired()){
+										refreshToken.delete();
+									}
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
+									structDelete(params,'refresh_token');
+									throw(type='authorization');
+								}
+
+								var token=oauthclient.generateToken(granttype='client_credentials',userid=clientAccount.getUserID());
+
 								result=serializeResponse(
 									statusCode=200,
 									response={'apiversion'=getApiVersion(),
 									'method'=params.method,
 									'params'=getParamsWithOutMethod(params),
 									'data'={
+										'token_type'='Bearer',
 										'access_token'=token.getToken(),
 										'expires_in'=token.getExpiresIn(),
-										'expires_at'=token.getExpiresAt()
+										'expires_at'=token.getExpiresAt(),
+										'refresh_token'=refreshToken.getToken()
 									 }});
+
+
 								return result;
 							} else {
+								//IF VALID GRANT_TYPE WAS NOT SUBMITTED THROW AN ERROR
 								structDelete(params,'client_id');
 								structDelete(params,'client_secret');
-								clientAccount.login();
+								structDelete(params,'refresh_token');
+								throw(type='authorization');
 							}
-
+						} else {
+							//USING CLIENT_ID AND CLIENT_SECRET AS BASIC AUTH
+							structDelete(params,'client_id');
+							structDelete(params,'client_secret');
+							structDelete(params,'refresh_token');
+							clientAccount.login();
 						}
 					}
 				}
@@ -2173,20 +2236,24 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return '';
 	}
 
-	function getEndPoint(mode='json'){
+	function getEndPoint(mode='json',useProtocol=true){
 		if(request.muraApiRequest){
 			var configBean=getBean('configBean');
 			if(!isDefined('request.apiEndpoint')){
 
-				if(getBean('configBean').getAdminSSL()){
-					var protocol='https';
+				if(useProtocol){
+					if(getBean('configBean').getAdminSSL()){
+						var protocol='https:';
+					} else {
+						var protocol=getBean('utility').getRequestProtocol() & ":";
+					}
 				} else {
-					var protocol=getBean('utility').getRequestProtocol();
+					var protocol='';
 				}
 
 				var domain=cgi.server_name;
 
-				request.apiEndpoint="#protocol#://#domain##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/#request.muraAPIRequestMode#/v1/#variables.siteid#";
+				request.apiEndpoint="#protocol#//#domain##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/#request.muraAPIRequestMode#/v1/#variables.siteid#";
 			}
 			return request.apiEndpoint;
 		}
@@ -2708,36 +2775,142 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function getSwaggerPropertyDataType(datatype){
-		return {
-			'type'='string'
-		};
+		switch(arguments.datatype){
+			case 'int':
+			case 'integer':
+			case 'numeric':
+				return {
+					'type'='integer',
+					'format'='int64'
+				};
+				break;
+			case 'smallint':
+			case 'tinyint':
+			case 'meduimint':
+			case 'bit':
+				return {
+					'type'='integer',
+					'format'='int32'
+				};
+				break;
+			case 'boolean':
+				return {
+					'type'='boolean'
+				};
+				break;
+			case 'float':
+				return {
+					'type'='float'
+				};
+				break;
+			case 'double':
+				return {
+					'type'='double'
+				};
+				break;
+			case 'date':
+				return {
+					"type": "string",
+					"format": "date"
+				};
+				break;
+			case 'datetime':
+			case 'timestamp':
+				return {
+					"type": "string",
+					"format": "date-time"
+				};
+				break;
+			default:
+				return {
+					'type'='string'
+				};
+		}
+
 	}
 
-	function getSwaggerEntityProperties(entity,_in="querystring",idInPath=false){
+	function getSwaggerEntityParams(entity,_in="query",idInPath=false,method='get'){
 		var response=[];
 		var item='';
 		var p='';
 		var properties=arguments.entity.getProperties();
+		var map={};
 
 		if(arguments.idInPath){
+			if(entity.getEntityName()=='content'){
+				var primarykey='contentid';
+			} else {
+				var primarykey=lcase(entity.getPrimaryKey());
+			}
+
 			arrayAppend(response,{
-					"name"= "id",
+					"name"= primarykey,
 					"in"= "path",
 					"required"= true,
 					"type"= "string"
 				});
 		}
 
+		for(p in properties){
+			if(properties['#p#'].persistent
+				&& (
+					!structKeyExists(properties['#p#'],'fkcolumn')
+					 || properties['#p#'].fkcolumn != 'primarykey'
+					 )
+				&& !(arguments.idInPath && p==arguments.entity.getPrimaryKey())
+				){
+
+				item={};
+
+				if(structKeyExists(properties['#p#'],'fkcolumn')){
+					item["name"]=lcase(properties['#p#'].fkcolumn);
+				} else {
+					item["name"]=lcase(properties['#p#'].name);
+				}
+
+				if(!structKeyExists(map,item.name)){
+					item["in"]= arguments._in;
+
+					if(arguments.method=='save'){
+						item["required"]= properties['#p#'].required;
+					} else {
+						item["required"]= false;
+					}
+
+					structAppend(item,getSwaggerPropertyDataType(properties['#p#'].datatype),true);
+					arrayAppend(response,item);
+
+					map['#item.name#']=true;
+				}
+
+			}
+		}
+
+		return response;
+	}
+
+	function getSwaggerEntityProps(entity){
+		var response={
+			"links"={
+				"$ref": "##/definitions/links"
+			}
+		};
+		var p='';
+		var properties=arguments.entity.getProperties();
+
 
 		for(p in properties){
-			if(properties['#p#'].persistent){
-				item={"name"=properties['#p#'].name,
-					"in"= arguments._in,
-					"required"= true
-				};
+			if(properties['#p#'].persistent
+				&& (
+					!structKeyExists(properties['#p#'],'fkcolumn')
+					 || properties['#p#'].fkcolumn != 'primarykey'
+				)){
 
-				structAppend(item,getSwaggerPropertyDataType(properties['#p#'].datatype),true);
-				arrayAppend(response,item);
+				if(structKeyExists(properties['#p#'],'fkcolumn')){
+					response['#lcase(properties['#p#'].fkcolumn)#']=getSwaggerPropertyDataType(properties['#p#'].datatype);
+				} else {
+					response['#lcase(properties['#p#'].name)#']=getSwaggerPropertyDataType(properties['#p#'].datatype);
+				}
 			}
 		}
 
@@ -2746,9 +2919,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	function swagger(siteid,params){
 		param name="arguments.params" default=url;
-
+		param name="arguments.params.entities" default="";
 		var $=getBean('$').init(arguments.siteid);
 		var entity='';
+		var primarykey='';
 
 		var result={
 			"swagger"= "2.0",
@@ -2756,7 +2930,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				"description"= "This is the JSON API for #$.siteConfig().getRootPath(complete=1)#",
 				"version"= "1.0.0",
 				"title"= $.siteConfig('site'),
-				"termsOfService"= "http://swagger.io/terms/",
+				"termsOfService"= "https://getmura.com",
 				"contact"= {
 				"email"= $.siteConfig('contact')
 			},
@@ -2766,7 +2940,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 			},
 			"host": $.siteConfig('domain'),
-			"basePath"= $.siteConfig().getApi('JSON','v1').getEndPoint(),
+			"basePath"= $.siteConfig().getApi('JSON','v1').getEndPoint(useProtocol=false),
 			"tags": [
 				{
 					"name"= "Mura CMS",
@@ -2787,142 +2961,316 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var entityKeys=listToArray(ListSort(StructKeyList(variables.config.entities),'textnocase'));
 
 		for(var i in entityKeys){
+			if(i != 'contentnav'){
+				if($.getServiceFactory().containsBean(i)){
+					entity=$.getBean(i);
 
-			if($.getServiceFactory().containsBean(i)){
-				entity=$.getBean(i);
+					if((!len(arguments.params.entities) || listFindNoCase(arguments.params.entities,i)) && len(entity.getPrimaryKey()) && allowAccess(entity,$,false)){
 
-				if(allowAccess(entity,$,false)){
-
-					result['paths']['/#lcase(i)#']={
-						"get"= {
-							"tags"= [
-								i
-							],
-							"summary"= "lists #i#",
-							"description"= "",
-							"operationId"= "list#$.getBean('utility').setProperCase(i)#",
-							"consumes"= [
-								"application/json"
-							],
-							"produces"= [
-								"application/json"
-							],
-							"parameters"= getSwaggerEntityProperties(entity=entity,_in="query",idInPath=false),
-							"responses"= {
-								"405"= {
-									"description"= "Invalid input"
-								}
-							},
-							"security"= [
-								{
-									"#$.event('siteid')#_auth"= [
-										"write:#lcase(i)#",
-										"read:#lcase(i)#"
-									]
-								}
-							]
-
+						if(entity.getEntityName()=='content'){
+							primarykey='contentid';
+						} else {
+							primarykey=lcase(entity.getPrimaryKey());
 						}
-					};
 
-					result['paths']['/#lcase(i)#/{id}']={
-						"get"= {
-							"tags"= [
-								i
-							],
-							"summary"= "read an #i#",
-							"description"= "",
-							"operationId"= "read#$.getBean('utility').setProperCase(i)#",
-							"consumes"= [],
-							"produces"= [
-								"application/json"
-							],
-							"parameters"= getSwaggerEntityProperties(entity=entity,_in="query",idInPath=true),
-							"responses"= {
-								"405"= {
-									"description"= "Invalid input"
-								}
+						result['paths']['/#lcase(i)#']={
+							"get"= {
+								"tags"= [
+									lcase(i)
+								],
+								"summary"= "lists #i#",
+								"description"= "",
+								"operationId"= "list#$.getBean('utility').setProperCase(i)#",
+								"consumes"= [
+									"application/json"
+								],
+								"produces"= [
+									"application/json"
+								],
+								"parameters"= getSwaggerEntityParams(entity=entity,_in="query",idInPath=false,method='findQuery'),
+								"responses"= {
+									"200"= {
+										"description"= "Collection of #i#",
+										"schema"= {
+											"type"="object",
+											"properties"={
+												"data"={
+													"$ref"="##/definitions/#lcase(i)#collection"
+												}
+											}
+										}
+									},
+									"405"= {
+										"description"= "Invalid input"
+									}
+								},
+								"security"= [
+									{
+										"#$.event('siteid')#_auth"= [
+											"write",
+											"read"
+										]
+									}
+								]
+
 							},
-							"security"= [
-								{
-									"#$.event('siteid')#_auth"= [
-										"write:#lcase(i)#",
-										"read:#lcase(i)#"
-									]
-								}
-							]
+							"post"= {
+								"tags"= [
+									i
+								],
+								"summary"= "Saves a #i#",
+								"description"= "",
+								"operationId"= "save#$.getBean('utility').setProperCase(i)#",
+								"consumes"= [
+									"multipart/form-data"
+								],
+								"produces"= [
+									"application/json"
+								],
+								"parameters"= getSwaggerEntityParams(entity=entity,_in='formData',idInPath=false,method='save'),
+								"responses"= {
+									"200"= {
+										"description"= "#i# entity",
+										"schema"= {
+											"type"="object",
+											"properties"={
+												"data"={
+													"$ref"="##/definitions/#lcase(i)#"
+												}
+											}
+										}
+									},
+									"405"= {
+										"description"= "Invalid input"
+									}
+								},
+								"security"= [
+									{
+										"#$.event('siteid')#_auth"= [
+											"write:#lcase(i)#",
+											"read:#lcase(i)#"
+										]
+									}
+								]
 
-						},
-						"post"= {
-							"tags"= [
-								i
-							],
-							"summary"= "Saves a #i#",
-							"description"= "",
-							"operationId"= "save#$.getBean('utility').setProperCase(i)#",
-							"consumes"= [
-								"multipart/form-data"
-							],
-							"produces"= [
-								"application/json"
-							],
-							"parameters"= getSwaggerEntityProperties(entity=entity,_in='form',idInPath=true),
-							"responses"= {
-								"405"= {
-									"description"= "Invalid input"
-								}
 							},
-							"security"= [
-								{
-									"#$.event('siteid')#_auth"= [
-										"write:#lcase(i)#",
-										"read:#lcase(i)#"
-									]
-								}
-							]
+							"delete"= {
+								"tags"= [
+									i
+								],
+								"summary"= "Deletes a #i#",
+								"description"= "",
+								"operationId"= "delete#$.getBean('utility').setProperCase(i)#",
+								"consumes"= [
+									"multipart/form-data"
+								],
+								"produces"= [
+									"application/json"
+								],
+								"parameters"= [
+									{
+										"name"= lcase(entity.getPrimaryKey()),
+										"in"= "formData",
+										"description"= "#i# id to delete",
+										"required"= true,
+										"type"= "string"
+									}
+								],
+								"responses"= {
+									"200"= {
+										"description"= "#i# entity",
+										"schema"= {
+											"type"="object",
+											"properties"={
+												"data"={
+													"$ref"="##/definitions/#lcase(i)#"
+												}
+											}
+										}
+									},
+									"405"= {
+										"description"= "Invalid input"
+									}
+								},
+								"security"= [
+									{
+										"#$.event('siteid')#_auth"= [
+											"write:#lcase(i)#",
+											"read:#lcase(i)#"
+										]
+									}
+								]
 
-						},
-						"delete"= {
-							"tags"= [
-								i
-							],
-							"summary"= "Deletes a #i#",
-							"description"= "",
-							"operationId"= "delete#$.getBean('utility').setProperCase(i)#",
-							"consumes"= [],
-							"produces"= [
-								"application/json"
-							],
-							"parameters"= [
-								{
-									"name"= "id",
-									"in"= "path",
-									"description"= "#i# id to delete",
-									"required"= true,
-									"type"= "string"
-								}
-							],
-							"responses"= {
-								"405"= {
-									"description"= "Invalid input"
-								}
+							}
+						};
+
+						result['paths']['/#lcase(i)#/{#primaryKey#}']={
+							"get"= {
+								"tags"= [
+									i
+								],
+								"summary"= "read an #i#",
+								"description"= "",
+								"operationId"= "read#$.getBean('utility').setProperCase(i)#ByPath",
+								"consumes"= [],
+								"produces"= [
+									"application/json"
+								],
+								"parameters"= [
+										{
+											"name"= lcase(entity.getPrimaryKey()),
+											"in"= "path",
+											"description"= "#i# id to get",
+											"required"= true,
+											"type"= "string"
+										}
+									],
+								"responses"= {
+									"200"= {
+										"description"= "#i# entity",
+										"schema"= {
+											"type"="object",
+											"properties"={
+												"data"={
+													"$ref"="##/definitions/#lcase(i)#"
+												}
+											}
+										}
+									},
+									"405"= {
+										"description"= "Invalid input"
+									}
+								},
+								"security"= [
+									{
+										"#$.event('siteid')#_auth"= [
+											"write:#lcase(i)#",
+											"read:#lcase(i)#"
+										]
+									}
+								]
+
 							},
-							"security"= [
-								{
-									"#$.event('siteid')#_auth"= [
-										"write:#lcase(i)#",
-										"read:#lcase(i)#"
-									]
-								}
-							]
+							"post"= {
+								"tags"= [
+									i
+								],
+								"summary"= "Saves a #i#",
+								"description"= "",
+								"operationId"= "save#$.getBean('utility').setProperCase(i)#ByPath",
+								"consumes"= [
+									"multipart/form-data"
+								],
+								"produces"= [
+									"application/json"
+								],
+								"parameters"= getSwaggerEntityParams(entity=entity,_in='formData',idInPath=true, method='save'),
+								"responses"= {
+									"200"= {
+										"description"= "#i# entity",
+										"schema"= {
+											"type"="object",
+											"properties"={
+												"data"={
+													"$ref"="##/definitions/#lcase(i)#"
+												}
+											}
+										}
+									},
+									"405"= {
+										"description"= "Invalid input"
+									}
+								},
+								"security"= [
+									{
+										"#$.event('siteid')#_auth"= [
+											"write:#lcase(i)#",
+											"read:#lcase(i)#"
+										]
+									}
+								]
 
-						}
-					};
+							},
+							"delete"= {
+								"tags"= [
+									i
+								],
+								"summary"= "Deletes a #i#",
+								"description"= "",
+								"operationId"= "delete#$.getBean('utility').setProperCase(i)#ByPath",
+								"consumes"= [],
+								"produces"= [
+									"application/json"
+								],
+								"parameters"= [
+									{
+										"name"= lcase(entity.getPrimaryKey()),
+										"in"= "path",
+										"description"= "#i# id to delete",
+										"required"= true,
+										"type"= "string"
+									}
+								],
+								"responses"= {
+									"200"= {
+										"description"= "#i# entity",
+										"schema"= {
+											"type"="object",
+											"properties"={
+												"data"={
+													"$ref"="##/definitions/#lcase(i)#"
+												}
+											}
+										}
+									},
+									"405"= {
+										"description"= "Invalid input"
+									}
+								},
+								"security"= [
+									{
+										"#$.event('siteid')#_auth"= [
+											"write:#lcase(i)#",
+											"read:#lcase(i)#"
+										]
+									}
+								]
+
+							}
+						};
+
+						result["definitions"]["#lcase(i)#"]={
+							"type"="object",
+							"properties"=getSwaggerEntityProps(entity)
+						};
+
+						result["definitions"]["#lcase(i)#collection"]={
+							"type"="object",
+							"properties"={
+								"links"={
+									"$ref": "##/definitions/links"
+								},
+								"entityname"={"type"="string"},
+								"items"={
+									"type"="array",
+									"items"={
+										"$ref": "##/definitions/#lcase(i)#"
+									}
+								}
+							}
+						};
+
+					}
 				}
 			}
 		}
 
-		return serializeJSON(result);
+		result["definitions"]["links"]={"type"="object","properties"={}};
+		//result["paths"]=StructSort(result["paths"],"text","asc");
+
+		result=serializeJSON(result);
+		result=replace(result,'"swagger":2.0','"swagger":"2.0"');
+		return result;
 	}
 
 }

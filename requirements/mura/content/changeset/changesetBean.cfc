@@ -15,7 +15,7 @@
 <cfproperty name="closeDate" type="date" default="" />
 <cfproperty name="categoryID" type="string" default="" />
 <cfproperty name="tags" type="string" default="" />
-<cfproperty name="isNew" type="numeric" default="1" required="true" />
+<cfproperty name="isNew" type="numeric" default="1" required="true" persistent="false"/>
 <cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="changesetCategoryAssignment">
 <cfproperty name="contentAssignments" fieldtype="one-to-many" cfc="content">
 

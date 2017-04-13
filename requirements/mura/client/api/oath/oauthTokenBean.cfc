@@ -2,6 +2,7 @@ component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtoken
     property name="token" fieldtype="id";
     property name="granttype" datatype="varchar" default="client_credentials";
     property name="client" fieldtype="many-to-one" cfc="oauthClient" fkcolumn="clientid" required=true;
+    property name="user" fieldtype="many-to-one" cfc="user" fkcolumn="userid";
     property name="expires" datatype="datetime" required=true;
     property name="data" datatype="text";
 

@@ -46,25 +46,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.beanExtendable" entityName="content" table="tcontent" output="false" hint="This provides content functionality">
 
-<cfproperty name="contentHistID" fieldtype="id" type="string" default="" required="true" comparable="false"/>
-<cfproperty name="contentID" type="string" default="" required="true" comparable="false"/>
+<cfproperty name="contentHistID" fieldtype="id" type="string" default="" comparable="false"/>
+<cfproperty name="contentID" type="string" default="" comparable="false"/>
 <cfproperty name="kids" fieldtype="one-to-many" cfc="content" nested=true fkcolumn="contentid" orderby="created asc" cascade="delete"/>
-<cfproperty name="parent" fieldtype="many-to-one" cfc="content" fkcolumn="parentid"/>
-<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
+<cfproperty name="parent" fieldtype="many-to-one" cfc="content" fkcolumn="parentid"  required="true"/>
+<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID"  required="true"/>
 <cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign" loadkey="contenthistid"/>
 <cfproperty name="changeset" fieldtype="many-to-one" cfc="changeset" fkcolumn="changesetid"/>
 <cfproperty name="comments" fieldtype="one-to-many" cfc="comment" fkcolumn="contentid"/>
 <cfproperty name="stats" fieldtype="one-to-one" cfc="stats" fkcolumn="contentid" />
-<cfproperty name="preserveID" type="string" default="" comparable="false"/>
-<cfproperty name="active" type="numeric" default="0" required="true" comparable="false"/>
-<cfproperty name="approved" type="numeric" default="0" required="true" comparable="false"/>
-<cfproperty name="orderno" type="numeric" default="0" required="true" comparable="false"/>
+<cfproperty name="preserveID" type="string" default="" comparable="false" persistent="false"/>
+<cfproperty name="active" type="numeric" default="0" comparable="false"/>
+<cfproperty name="approved" type="numeric" default="0" comparable="false"/>
+<cfproperty name="orderno" type="numeric" default="0" comparable="false"/>
 <cfproperty name="metaDesc" type="string" default=""/>
 <cfproperty name="metaKeyWords" type="string" default=""/>
 <cfproperty name="displayStart" type="date" default=""/>
 <cfproperty name="displayStop" type="date" default=""/>
 <cfproperty name="body" type="string" default="" html="true"/>
-<cfproperty name="title" type="string" default=""/>
+<cfproperty name="title" type="string" default="" required="true"/>
 <cfproperty name="menuTitle" type="string" default=""/>
 <cfproperty name="URLTitle" type="string" default=""/>
 <cfproperty name="HTMLTitle" type="string" default=""/>
@@ -72,41 +72,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="oldfilename" type="string" default=""/>
 <cfproperty name="lastUpdate" type="date" default="" comparable="false"/>
 <cfproperty name="display" type="numeric" default=""/>
-<cfproperty name="type" type="string" default="Page" required="true" />
+<cfproperty name="type" type="string" default="Page" />
 <cfproperty name="newfile" type="string" default=""/>
 <cfproperty name="lastUpdateBy" type="string" default=""/>
 <cfproperty name="lastUpdateByID" type="string" default="" comparable="false"/>
 <cfproperty name="summary" type="string" default="" html="true"/>
-<cfproperty name="siteID" type="string" default=""/>
-<cfproperty name="moduleID" type="string" default="00000000000000000000000000000000000" required="true" />
-<cfproperty name="isNav" type="numeric" default="1" required="true" />
-<cfproperty name="restricted" type="numeric" default="0" required="true" />
-<cfproperty name="target" type="string" default="_self" required="true" />
+<cfproperty name="moduleID" type="string" default="00000000000000000000000000000000000" />
+<cfproperty name="isNav" type="numeric" default="1" />
+<cfproperty name="restricted" type="numeric" default="0" />
+<cfproperty name="target" type="string" default="_self" />
 <cfproperty name="restrictGroups" type="string" default=""/>
 <cfproperty name="template" type="string" default=""/>
 <cfproperty name="childTemplate" type="string" default=""/>
 <cfproperty name="responseMessage" type="string" default="" html="true" />
-<cfproperty name="responseChart" type="numeric" default="0" required="true" />
+<cfproperty name="responseChart" type="numeric" default="0"/>
 <cfproperty name="responseSendTo" type="string" default=""/>
 <cfproperty name="responseDisplayFields" type="string" default=""/>
 <cfproperty name="moduleAssign" type="string" default=""/>
 <cfproperty name="notes" type="string" default=""/>
-<cfproperty name="inheritObjects" type="string" default="Inherit" required="true" />
-<cfproperty name="isFeature" type="numeric" default="0" required="true" />
-<cfproperty name="isNew" type="numeric" default="1" required="true" />
+<cfproperty name="inheritObjects" type="string" default="Inherit" />
+<cfproperty name="isFeature" type="numeric" default="0" />
+<cfproperty name="isNew" type="numeric" default="1" persistent="false"/>
 <cfproperty name="releaseDate" type="date" default=""/>
-<cfproperty name="isLocked" type="numeric" default="0" required="true" />
-<cfproperty name="nextN" type="numeric" default="10" required="true" />
-<cfproperty name="sortBy" type="string" default="orderno" required="true"/>
-<cfproperty name="sortDirection" type="string" default="asc" required="true" />
+<cfproperty name="isLocked" type="numeric" default="0" persistent="false"/>
+<cfproperty name="nextN" type="numeric" default="10" />
+<cfproperty name="sortBy" type="string" default="orderno"/>
+<cfproperty name="sortDirection" type="string" default="asc" />
 <cfproperty name="featureStart" type="date" default=""/>
 <cfproperty name="featureStop" type="date" default=""/>
 <cfproperty name="fileID" type="string" default=""/>
-<cfproperty name="fileSize" type="any" default="0" />
-<cfproperty name="fileExt" type="string" default=""/>
-<cfproperty name="contentType" type="string" default=""/>
-<cfproperty name="contentSubType" type="string" default=""/>
-<cfproperty name="forceSSL" type="numeric" default="0" required="true" />
+<cfproperty name="fileSize" type="any" default="0" persistent="false"/>
+<cfproperty name="fileExt" type="string" default="" persistent="false"/>
+<cfproperty name="contentType" type="string" default="" persistent="false"/>
+<cfproperty name="contentSubType" type="string" default="" persistent="false"/>
+<cfproperty name="forceSSL" type="numeric" default="0" />
 <cfproperty name="remoteURL" type="string" default=""/>
 <cfproperty name="remoteID" type="string" default=""/>
 <cfproperty name="remotePubDate" type="string" default=""/>
@@ -114,28 +113,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="remoteSourceURL" type="string" default=""/>
 <cfproperty name="credits" type="string" default=""/>
 <cfproperty name="audience" type="string" default=""/>
-<cfproperty name="keyPoints" type="string" default=""/>
-<cfproperty name="searchExclude" type="numeric" default="0" required="true" />
-<cfproperty name="displayTitle" type="numeric" default="1" required="true" />
+<cfproperty name="keyPoints" type="string" default="" persistent="false"/>
+<cfproperty name="searchExclude" type="numeric" default="0" />
+<cfproperty name="displayTitle" type="numeric" default="1" />
 <cfproperty name="path" type="string" default=""/>
 <cfproperty name="tags" type="string" default=""/>
-<cfproperty name="doCache" type="numeric" default="1" required="true" />
+<cfproperty name="doCache" type="numeric" default="1" persistent="false"/>
 <cfproperty name="created" type="date" default=""/>
-<cfproperty name="mobileExclude" type="numeric" default="0" required="true" />
+<cfproperty name="mobileExclude" type="numeric" default="0" />
 <cfproperty name="changesetID" type="string" default="" comparable="false"/>
-<cfproperty name="imageSize" type="string" default="small" required="true" />
-<cfproperty name="imageHeight" type="string" default="AUTO" required="true" />
-<cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
-<cfproperty name="majorVersion" type="numeric" default="0" required="true" />
-<cfproperty name="minorVersion" type="numeric" default="0" required="true" />
+<cfproperty name="imageSize" type="string" default="small" />
+<cfproperty name="imageHeight" type="string" default="AUTO" />
+<cfproperty name="imageWidth" type="string" default="AUTO" />
+<cfproperty name="majorVersion" type="numeric" default="0" persistent="false"/>
+<cfproperty name="minorVersion" type="numeric" default="0" persistent="false"/>
 <cfproperty name="expires" type="date" default=""/>
-<cfproperty name="assocFilename" type="string" default=""/>
+<cfproperty name="assocFilename" type="string" default="" persistent="false"/>
 <cfproperty name="displayInterval" type="any" default="Daily" />
 <cfproperty name="requestID" type="string" default="" comparable="false"/>
-<cfproperty name="approvalStatus" type="string" default=""/>
-<cfproperty name="approvalGroupID" type="string" default="" comparable="false"/>
-<cfproperty name="approvalChainOverride" type="boolean" default="false" required="true" comparable="false"/>
-<cfproperty name="relatedContentSetData" type="any"/>
+<cfproperty name="approvalStatus" type="string" default="" persistent="false"/>
+<cfproperty name="approvalGroupID" type="string" default="" comparable="false" persistent="false"/>
+<cfproperty name="approvalChainOverride" type="boolean" default="false" comparable="false" persistent="false"/>
+<cfproperty name="relatedContentSetData" type="any" persistent="false"/>
 
 <cfset variables.primaryKey = 'contenthistid'>
 <cfset variables.entityName = 'content'>
