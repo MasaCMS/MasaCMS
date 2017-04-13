@@ -10221,7 +10221,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				switch( fieldtype ) {
 					case "textfield":
 					case "textarea":
-						field.value = self.data[field.name];
+						if(self.data[field.name]){
+							field.value = self.data[field.name];
+						}
 					 break;
 					case "checkbox":
 
