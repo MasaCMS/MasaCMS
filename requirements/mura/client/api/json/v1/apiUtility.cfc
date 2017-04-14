@@ -336,7 +336,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				} else {
 					var oauthclient=getBean('oauthClient').loadBy(clientid=params.client_id);
 
-					//WriteDump(credentials.getAllValues());abort;
+					//WriteDump(oauthclient.getAllValues());abort;
 					if(!oauthclient.exists() || oauthclient.getClientSecret() != params.client_secret){
 						params.method='Not Available';
 						structDelete(params,'client_id');
@@ -353,7 +353,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 						if(arrayLen(pathInfo) == 6
 							&& pathInfo[5]=='oauth'
-							|| 
+							||
 								arrayLen(pathInfo) == 5
 								&& pathInfo[4]=='oauth'
 							){
@@ -384,6 +384,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 											'expires_at'=token.getExpiresAt(),
 											'refresh_token'=oauthclient.generateToken(granttype='refresh_token').getToken()
 										 }});
+
+									return result;
 								}
 							} else if(params.grant_type == 'refresh_token'){
 								//IF REFRESH_TOKEN WAS NOT SUBMITTED THROW AN ERROR
@@ -437,7 +439,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							structDelete(params,'client_id');
 							structDelete(params,'client_secret');
 							structDelete(params,'refresh_token');
-							clientAccount.login();
+
+							oauthclient.getUser().login();
 						}
 					}
 				}
