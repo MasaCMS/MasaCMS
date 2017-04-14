@@ -77,4 +77,18 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
         return variables.instance.granttype;
     }
 
+    function isValidRedirectURI(redirect_uri){
+        if(!len(variables.redirecturl)){
+            return true;
+        }
+
+        for(var i in listToArray(replace(variables.redirecturl,chr(13)&chr(10),"|"),"|")){
+            if(i==arguments.redirect_uri){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

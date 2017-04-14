@@ -389,7 +389,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								var token=getBean('oauthToken').loadBy(clientid=params.client_id,accessCode=params.code);
 								var clientAccount=token.getUser();
 
-								if(!token.exists() || isExpired.isExpired() || !clientAccount.exists() || oauthclient.getRedirectURL()!=params.redirect_uri){
+								if(!token.exists() || isExpired.isExpired() || !clientAccount.exists() || !oauthclient.isValidRedirectURI(params.redirect_uri)){
 									structDelete(params,'client_id');
 									structDelete(params,'client_secret');
 									structDelete(params,'refresh_token');
