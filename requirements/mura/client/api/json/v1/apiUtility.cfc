@@ -3006,7 +3006,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 			},
 			"host": $.siteConfig('domain'),
-			"basePath"= replace($.siteConfig().getApi('JSON','v1').getEndPoint(useProtocol=false),'/json/','/rest/'),
+			"basePath"= replace($.siteConfig().getApi('JSON','v1').getEndPoint(useProtocol=false,mode='rest'),'/json/','/rest/'),
 			"tags": [
 				{
 					"name"= "Mura CMS",
@@ -3070,7 +3070,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= []
+								"security"= [
+									{
+										"oauthSecurity"= []
+									}
+								]
 
 							},
 							"post"= {
@@ -3103,7 +3107,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= []
+								"security"= [
+									{
+										"oauthSecurity"= []
+									}
+								]
 
 							},
 							"delete"= {
@@ -3144,7 +3152,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= []
+								"security"= [
+									{
+										"oauthSecurity"= []
+									}
+								]
 
 							}
 						};
@@ -3163,7 +3175,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								],
 								"parameters"= [
 										{
-											"name"= lcase(entity.getPrimaryKey()),
+											"name"= primarykey,
 											"in"= "path",
 											"description"= "#i# id to get",
 											"required"= true,
@@ -3188,10 +3200,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								},
 								"security"= [
 									{
-										"#$.event('siteid')#_auth"= [
-											"write:#lcase(i)#",
-											"read:#lcase(i)#"
-										]
+										"oauthSecurity"= []
 									}
 								]
 
@@ -3226,7 +3235,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= []
+								"security"= [
+									{
+										"oauthSecurity"= []
+									}
+								]
 
 							},
 							"delete"= {
@@ -3242,7 +3255,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								],
 								"parameters"= [
 									{
-										"name"= lcase(entity.getPrimaryKey()),
+										"name"= primarykey,
 										"in"= "path",
 										"description"= "#i# id to delete",
 										"required"= true,
@@ -3265,7 +3278,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= []
+								"security"= [
+									{
+										"oauthSecurity"= []
+									}
+								]
 
 							}
 						};
@@ -3298,16 +3315,20 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		result["definitions"]["links"]={"type"="object","properties"={}};
 		result['securityDefinitions']= {
-			"accessCode"= {
+			"oauthSecurity"= {
 					"type"= "oauth2",
 					"authorizationUrl"= $.siteConfig().getRootPath(complete=1),
-					"tokenUrl"=result.basePath & "/auth",
+					"tokenUrl"=getBean('utility').getRequestProtocol() & ":" & result.basePath & "/auth",
 					"flow"= "accessCode",
 					"scopes"= {
+						/*"member"="Site member",
+						"administrator"="Site administrator",
+						"super"="Site super user"
+						*/
 					}
 			},
 			"basic"= {
-				"type"= "basic",
+				"type"= "apiKey",
 				"name"= "Authorization",
 				"in"= "header"
 			}
