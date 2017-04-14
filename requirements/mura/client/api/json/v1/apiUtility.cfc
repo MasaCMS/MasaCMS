@@ -1801,7 +1801,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(arguments.entityname=='entityname'){
 			return findAll(argumentCollection=arguments);
 		}
-		
+
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
@@ -3006,7 +3006,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 			},
 			"host": $.siteConfig('domain'),
-			"basePath"= $.siteConfig().getApi('JSON','v1').getEndPoint(useProtocol=false),
+			"basePath"= replace($.siteConfig().getApi('JSON','v1').getEndPoint(useProtocol=false),'/json/','/rest/'),
 			"tags": [
 				{
 					"name"= "Mura CMS",
@@ -3070,14 +3070,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"#$.event('siteid')#_auth"= [
-											"write",
-											"read"
-										]
-									}
-								]
+								"security"= []
 
 							},
 							"post"= {
@@ -3110,14 +3103,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"#$.event('siteid')#_auth"= [
-											"write:#lcase(i)#",
-											"read:#lcase(i)#"
-										]
-									}
-								]
+								"security"= []
 
 							},
 							"delete"= {
@@ -3158,14 +3144,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"#$.event('siteid')#_auth"= [
-											"write:#lcase(i)#",
-											"read:#lcase(i)#"
-										]
-									}
-								]
+								"security"= []
 
 							}
 						};
@@ -3247,14 +3226,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"#$.event('siteid')#_auth"= [
-											"write:#lcase(i)#",
-											"read:#lcase(i)#"
-										]
-									}
-								]
+								"security"= []
 
 							},
 							"delete"= {
@@ -3293,14 +3265,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 										"description"= "Invalid input"
 									}
 								},
-								"security"= [
-									{
-										"#$.event('siteid')#_auth"= [
-											"write:#lcase(i)#",
-											"read:#lcase(i)#"
-										]
-									}
-								]
+								"security"= []
 
 							}
 						};
@@ -3332,6 +3297,21 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		result["definitions"]["links"]={"type"="object","properties"={}};
+		result['securityDefinitions']= {
+			"accessCode"= {
+					"type"= "oauth2",
+					"authorizationUrl"= $.siteConfig().getRootPath(complete=1),
+					"tokenUrl"=result.basePath & "/auth",
+					"flow"= "accessCode",
+					"scopes"= {
+					}
+			},
+			"basic"= {
+				"type"= "basic",
+				"name"= "Authorization",
+				"in"= "header"
+			}
+		};
 		//result["paths"]=StructSort(result["paths"],"text","asc");
 
 		result=serializeJSON(result);
