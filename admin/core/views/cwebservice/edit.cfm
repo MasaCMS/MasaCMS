@@ -85,7 +85,7 @@
                 <div class="mura-control-group">
                     <label>Basic Authentication Header</label>
                     <div>
-                        Basic #ToBase64(rc.bean.getClientID() & ":" & rc.bean.getClientSecret())#
+                        Authorization: Basic #ToBase64(rc.bean.getClientID() & ":" & rc.bean.getClientSecret())#
                     </div>
                 </div>
             <cfelse>
