@@ -62,6 +62,8 @@ component extends="controller" {
         param name='arguments.rc.clientsecret' default='';
 		param name='arguments.rc.name' default='';
 		param name='arguments.rc.description' default='';
+		param name='arguments.rc.granttype' default='basic';
+		param name='arguments.rc.redirecturl' default='';
 		param name='arguments.rc.userid' default='';
 
 	}

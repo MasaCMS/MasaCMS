@@ -73,7 +73,7 @@
 				<tr>
 					<th class="actions"></th>
 					<th class="var-width">Name</th>
-					<th class="var-width">Auth Type</th>
+					<th class="var-width">Auth Mode</th>
 					<th>Last Update</th>
 				</tr>
 			</thead>
