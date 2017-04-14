@@ -73,6 +73,7 @@
 				<tr>
 					<th class="actions"></th>
 					<th class="var-width">Name</th>
+					<th class="var-width">Auth Type</th>
 					<th>Last Update</th>
 				</tr>
 			</thead>
@@ -95,6 +96,9 @@
 					</td>
 					<td class="var-width">
 						<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',service.getName())#</a>
+					</td>
+					<td>
+						<cfif service.getGrantType() eq 'client_credentials'>OAuth2 (client_credentials)<cfelseif service.getGrantType() eq 'authorization_code'>OAuth2 (authorization_code)<cfelse>Basic</cfif>
 					</td>
 					<td>
 						#LSDateFormat(service.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(service.getLastUpdate(),"medium")#

@@ -288,15 +288,27 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					params['access_token']=headers['X-access_token'];
 				}
 
+				var isBasicAuth=false;
+
 				if( structKeyExists( headers, 'Authorization' )){
-					params['access_token']=listLast(headers['Authorization'],' ');
+					var tokentype=listFirst(headers['Authorization'],' ');
+					var tokenvalue=listLast(headers['Authorization'],' ');
+
+					if(tokentype=='Basic'){
+						tokenvalue=ToString( ToBinary( tokenvalue ) );
+						params['client_id']=listFirst(tokenvalue,":");
+						params['client_secret']=listLast(tokenvalue,":");
+						isBasicAuth=true;
+					} else if(tokentype=='Bearer') {
+						params['access_token']=tokenvalue;
+					}
 				}
 
 				if(isDefined('params.access_token')){
 					var token=getBean('oauthToken').loadBy(token=params.access_token);
 					structDelete(params,'access_token');
 					structDelete(url,'access_token');
-					if(!token.exists() || token.getGrantType() != 'client_credentials'){
+					if(!token.exists() || !listFind('client_credentials,authorization_code',token.getGrantType())){
 						params.method='Not Available';
 						throw(type='invalidAccessToken');
 					} else if (token.isExpired()){
@@ -355,14 +367,57 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							&& pathInfo[5]=='oauth'
 							||
 								arrayLen(pathInfo) == 5
-								&& pathInfo[4]=='oauth'
+								&& (
+									pathInfo[4]=='oauth' || pathInfo[5]=='oauth'
+								)
 							){
 
 							param name="params.grant_type" default="invalid";
 
 							params.method='getOAuthToken';
 
-							if(params.grant_type == 'client_credentials'){
+							if(params.grant_type == 'authorization_code'){
+								if(oauthclient.getGrantType()!='authorization_code'){
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
+									structDelete(params,'refresh_token');
+									throw(type='authorization');
+								}
+
+								param name="params.code" default="invalid";
+								param name="params.redirect_uri" default="invalid";
+								var token=getBean('oauthToken').loadBy(clientid=params.client_id,accessCode=params.code);
+								var clientAccount=token.getUser();
+
+								if(!token.exists() || isExpired.isExpired() || !clientAccount.exists() || oauthclient.getRedirectURL()!=params.redirect_uri){
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
+									structDelete(params,'refresh_token');
+									throw(type='authorization');
+								} else {
+									result=serializeResponse(
+										statusCode=200,
+										response={'apiversion'=getApiVersion(),
+										'method'=params.method,
+										'params'=getParamsWithOutMethod(params),
+										'data'={
+											'token_type'='Bearer',
+											'access_token'=token.getToken(),
+											'expires_in'=token.getExpiresIn(),
+											'expires_at'=token.getExpiresAt(),
+											'refresh_token'=oauthclient.generateToken(granttype='refresh_token').getToken()
+										 }});
+
+									return result;
+								}
+							} else if(params.grant_type == 'client_credentials'){
+								if(oauthclient.getGrantType()=='authorization_code'){
+									structDelete(params,'client_id');
+									structDelete(params,'client_secret');
+									structDelete(params,'refresh_token');
+									throw(type='authorization');
+								}
+
 								var token=oauthclient.generateToken(granttype='client_credentials');
 								var clientAccount=token.getUser();
 
@@ -381,8 +436,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 											'token_type'='Bearer',
 											'access_token'=token.getToken(),
 											'expires_in'=token.getExpiresIn(),
-											'expires_at'=token.getExpiresAt(),
-											'refresh_token'=oauthclient.generateToken(granttype='refresh_token').getToken()
+											'expires_at'=token.getExpiresAt()
 										 }});
 
 									return result;
@@ -436,9 +490,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							}
 						} else {
 							//USING CLIENT_ID AND CLIENT_SECRET AS BASIC AUTH
+							//ONLY WORKS WITH CLIENTS WITH CLIENT_CREDENTIALS GRANTTYPE
 							structDelete(params,'client_id');
 							structDelete(params,'client_secret');
 							structDelete(params,'refresh_token');
+
+							if(oauthclient.getGrantType()=='authorization_code' && !isBasicAuth){
+								throw(type='authorization');
+							}
 
 							oauthclient.getUser().login();
 						}
@@ -1739,6 +1798,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 	function findQuery(entityName,siteid,params,queryString=cgi.QUERY_STRING,expand='',expanded=false){
 
+		if(arguments.entityname=='entityname'){
+			return findAll(argumentCollection=arguments);
+		}
+		
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);

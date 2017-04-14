@@ -5,6 +5,7 @@ component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtoken
     property name="user" fieldtype="many-to-one" cfc="user" fkcolumn="userid";
     property name="expires" datatype="datetime" required=true;
     property name="data" datatype="text";
+    property name="accessCode" datatype="varchar" fieldtype="index";
 
     function save(){
         if(isValid('uuid',get('token'))){
@@ -12,7 +13,7 @@ component extends="mura.bean.beanORM" entityName='oauthToken' table="toauthtoken
         }
 
         if(!isDate(get('expires'))){
-            if(get('granttype')=='client_credentials'){
+            if(listFind('client_credentials,authorization_code',get('granttype'))){
                 set('expires',dateAdd('n',60,now()));
             } else {
                 set('expires',dateAdd('yyyy',100,now()));

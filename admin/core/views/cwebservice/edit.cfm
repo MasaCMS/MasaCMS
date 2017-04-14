@@ -24,7 +24,7 @@
     </script>
   <div class="nav-module-specific btn-group">
       <a class="btn" href="./?muraAction=cwebservice.list&siteid=&#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i>  Back to Web Services</a>
-      <cfif rc.bean.exists()><a class="btn" href="##" onclick="generateToken();return false;"><i class="mi-key"></i> Generate Access Token</a></cfif>
+      <cfif rc.bean.exists() and rc.bean.getGrantType() eq 'client_credentials'><a class="btn" href="##" onclick="generateToken();return false;"><i class="mi-key"></i> Generate Access Token</a></cfif>
   </div>
 </div> <!-- /.mura-header -->
 
@@ -64,34 +64,52 @@
               </select>
       </div>
 
+      <div class="mura-control-group">
+          <label>Authorization Mode</label>
+              <select name="granttype">
+                  <option value="basic" <cfif rc.bean.getGrantType() eq 'basic'> selected</cfif>>Basic</option>
+                  <option value="client_credentials"<cfif rc.bean.getGrantType() eq 'client_credentials'> selected</cfif>>OAuth2 (client_credentials)</option>
+                  <!---<option value="authorization_code"><cfif rc.bean.getGrantType() eq 'authorization_code'> selected</cfif>>OAuth2 (authorization_code)</option>--->
+              </select>
+      </div>
+
         <cfif rc.bean.exists()>
-            <div class="mura-control-group">
-                <label>client_id</label>
-                <div>
-                    #rc.bean.getClientID()#
-                </div>
-            </div>
-            <div class="mura-control-group">
-                <label>client_secret</label>
-                <div>
-                    #rc.bean.getClientSecret()#
-                </div>
-            </div>
             <div class="mura-control-group">
                 <label>Endpoint</label>
                 <div>
                     <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#</a>
                 </div>
             </div>
-            <cfif rc.bean.exists()>
+
+            <cfif not len(rc.bean.getGrantType()) or rc.bean.getGrantType() eq 'basic'>
                 <div class="mura-control-group">
-                    <label>Example Usage</label>
+                    <label>Basic Authentication Header</label>
                     <div>
-                        <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth/token?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth/token?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
+                        Basic #ToBase64(rc.bean.getClientID() & ":" & rc.bean.getClientSecret())#
                     </div>
                 </div>
+            <cfelse>
+                <div class="mura-control-group">
+                    <label>client_id</label>
+                    <div>
+                        #rc.bean.getClientID()#
+                    </div>
+                </div>
+                <div class="mura-control-group">
+                    <label>client_secret</label>
+                    <div>
+                        #rc.bean.getClientSecret()#
+                    </div>
+                </div>
+                <cfif rc.bean.getGrantType() eq 'client_credentials'>
+                    <div class="mura-control-group">
+                        <label>Example Usage of</label>
+                        <div>
+                            <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
+                        </div>
+                    </div>
+                </cfif>
             </cfif>
-
         </cfif>
 
       <div class="mura-actions">
