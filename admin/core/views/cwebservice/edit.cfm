@@ -53,6 +53,15 @@
       </div>
 
       <div class="mura-control-group">
+          <label>Authorization Mode</label>
+              <select name="granttype">
+                  <option value="basic" <cfif rc.bean.getGrantType() eq 'basic'> selected</cfif>>Basic</option>
+                  <option value="client_credentials"<cfif rc.bean.getGrantType() eq 'client_credentials'> selected</cfif>>OAuth2 (client_credentials)</option>
+                  <option value="authorization_code"<cfif rc.bean.getGrantType() eq 'authorization_code'> selected</cfif>>OAuth2 (authorization_code)</option>
+              </select>
+      </div>
+
+      <div class="mura-control-group conditional basic client_credentials">
           <label>Connected Account</label>
               <cfset users=$.getBean('userFeed').setSiteID(rc.siteid).setIsPublic(0).setSortBy('lname').getIterator()>
               <select name="userid">
@@ -61,15 +70,6 @@
                       <cfset user=users.next()>
                       <option value="#user.getUserID()#"<cfif user.getUserID() eq rc.bean.getUserID()> selected</cfif>>#esapiEncode('html',user.getFullname())#</option>
                   </cfloop>
-              </select>
-      </div>
-
-      <div class="mura-control-group">
-          <label>Authorization Mode</label>
-              <select name="granttype">
-                  <option value="basic" <cfif rc.bean.getGrantType() eq 'basic'> selected</cfif>>Basic</option>
-                  <option value="client_credentials"<cfif rc.bean.getGrantType() eq 'client_credentials'> selected</cfif>>OAuth2 (client_credentials)</option>
-                  <option value="authorization_code"<cfif rc.bean.getGrantType() eq 'authorization_code'> selected</cfif>>OAuth2 (authorization_code)</option>
               </select>
       </div>
 
@@ -85,36 +85,30 @@
                     <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#</a>
                 </div>
             </div>
-
-            <cfif not len(rc.bean.getGrantType()) or rc.bean.getGrantType() eq 'basic'>
-                <div class="mura-control-group">
-                    <label>Basic Authentication Header</label>
-                    <div>
-                        Authorization: Basic #ToBase64(rc.bean.getClientID() & ":" & rc.bean.getClientSecret())#
-                    </div>
+            <div class="mura-control-group conditional basic">
+                <label>Basic Authentication Header</label>
+                <div>
+                    Authorization: Basic #ToBase64(rc.bean.getClientID() & ":" & rc.bean.getClientSecret())#
                 </div>
-            <cfelse>
-                <div class="mura-control-group">
-                    <label>client_id</label>
-                    <div>
-                        #rc.bean.getClientID()#
-                    </div>
+            </div>
+            <div class="mura-control-group conditional client_credentials authorization_code">
+                <label>client_id</label>
+                <div>
+                    #rc.bean.getClientID()#
                 </div>
-                <div class="mura-control-group">
-                    <label>client_secret</label>
-                    <div>
-                        #rc.bean.getClientSecret()#
-                    </div>
+            </div>
+            <div class="mura-control-group conditional client_credentials authorization_code">
+                <label>client_secret</label>
+                <div>
+                    #rc.bean.getClientSecret()#
                 </div>
-                <cfif rc.bean.getGrantType() eq 'client_credentials'>
-                    <div class="mura-control-group conditional client_credentials">
-                        <label>Example Usage of</label>
-                        <div>
-                            <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
-                        </div>
-                    </div>
-                </cfif>
-            </cfif>
+            </div>
+            <div class="mura-control-group conditional client_credentials">
+                <label>Example Usage of</label>
+                <div>
+                    <a href="#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret=#rc.bean.getClientSecret()#" target="_blank">#rc.$.siteConfig().getApi('json','v1').getEndpoint(mode='rest')#/oauth?grant_type=client_credentials&client_id=#rc.bean.getClientID()#&client_secret#rc.bean.getClientSecret()#</a>
+                </div>
+            </div>
         </cfif>
 
       <div class="mura-actions">
