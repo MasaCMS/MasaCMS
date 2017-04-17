@@ -3,7 +3,7 @@
 
 		<!--- Page Title --->
 			<#$.getHeaderTag('headline')# class="mura-page-title pageTitle">
-				#esapiEncode('html', $.content('title'))#
+				#m.renderEditableAttribute(attribute='title')#
 			</#$.getHeaderTag('headline')#>
 		<!--- /Page Title --->
 
