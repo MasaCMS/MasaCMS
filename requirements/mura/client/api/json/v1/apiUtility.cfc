@@ -2537,8 +2537,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			);
 		}
 
-		WriteDump(arguments.data);abort;
-
 		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby')){
 			var args={
 				'#arguments.data.loadby#'=arguments.data[arguments.data.loadby],
