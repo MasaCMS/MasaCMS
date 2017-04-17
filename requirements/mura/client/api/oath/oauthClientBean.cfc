@@ -21,7 +21,7 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
         return this;
     }
 
-    function generateToken(granttype='client_credentials',userid='',authcode='',redirecturl=''){
+    function generateToken(granttype='client_credentials',userid='',redirecturl=''){
         var token=getBean('oauthToken');
 
         if(!len(arguments.userid)){

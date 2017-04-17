@@ -1554,6 +1554,8 @@
 
 					        },
 					         error: function(data){
+								utility('##adminSave').removeClass('mura-saving');
+								alert("An server error occurred.  Please check js console for more information.");
 					        	console.log(JSON.stringify(data));
 
 					        }

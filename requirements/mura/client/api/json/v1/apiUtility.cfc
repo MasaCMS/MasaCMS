@@ -2529,7 +2529,6 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		errors={};
 
 		if(!structIsEmpty(arguments.validations)){
-
 			structAppend(errors,new mura.bean.bean()
 				.set(data)
 				.setValidations(arguments.validations)
@@ -2539,9 +2538,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby')){
+			var loadArgs={
+				'#arguments.data.loadby#'=arguments.data[arguments.data.loadby],
+				siteid=arguments.data.siteid
+			};
+
 			structAppend(errors,
 				getBean(arguments.data.bean)
-				.loadBy(arguments.data.loadby=arguments.data[arguments.data.loadby],siteid=arguments.data.siteid)
+				.loadBy(argumentCollection=loadArgs)
 				.set(arguments.data)
 				.validate(arguments.data.fields)
 				.getErrors()
