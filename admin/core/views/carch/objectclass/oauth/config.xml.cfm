@@ -1,1 +1,1 @@
-<mura name="OAuth" contenttypes="Page" condition="find('/authorize',m.content('filename'))"></mura>
+<mura name="OAuth" contenttypes="Page" condition="(listLast(m.content('filename'),'/') eq 'authorize')"></mura>
