@@ -57,7 +57,7 @@
               <select name="granttype">
                   <option value="basic" <cfif rc.bean.getGrantType() eq 'basic'> selected</cfif>>Basic</option>
                   <option value="client_credentials"<cfif rc.bean.getGrantType() eq 'client_credentials'> selected</cfif>>OAuth2 (client_credentials)</option>
-                  <!---<option value="authorization_code"<cfif rc.bean.getGrantType() eq 'authorization_code'> selected</cfif>>OAuth2 (authorization_code)</option>--->
+                  <option value="authorization_code"<cfif rc.bean.getGrantType() eq 'authorization_code'> selected</cfif>>OAuth2 (authorization_code)</option>
               </select>
       </div>
 

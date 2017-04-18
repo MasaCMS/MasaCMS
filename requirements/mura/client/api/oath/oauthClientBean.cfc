@@ -78,7 +78,7 @@ component extends="mura.bean.beanORM" entityName='oauthClient' table="toauthclie
     }
 
     function isValidRedirectURI(redirect_uri){
-        if(!len(variables.redirecturl)){
+        if(!len(variables.instance.redirecturl)){
             return true;
         }
 
