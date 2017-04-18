@@ -1,9 +1,9 @@
 <cfsilent>
 <!---
-	NOTE: Since the MuraBootstrap theme is a 'Responsive' framework, this layout is 
-	completely optional. It uses jQuery Mobile (http://jquerymobile.com/) to display 
+	NOTE: Since the MuraBootstrap theme is a 'Responsive' framework, this layout is
+	completely optional. It uses jQuery Mobile (http://jquerymobile.com/) to display
 	content for handheld devices.
-	
+
 	To use it, simply rename the file to 'mobile.cfm'
 
 	If you wish to see how it looks, simply append '/?mobileformat=1' to the end of the
@@ -18,7 +18,7 @@
 --->
 </cfsilent>
 <cfoutput>
-	<!DOCTYPE html> 
+	<!DOCTYPE html>
 	<html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,15 +37,15 @@
 		<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 
-		<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.2.min.css" />
+		<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.7.0.min.css" />
 		<link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 		<!--- Font Awesome --->
 		<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
 
 		<!--- Theme-Specific Mobile CSS --->
 		<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile/mobile.min.css">
-		
-		<script src="#$.siteConfig('assetPath')#/jquery/jquery.js"></script>
+
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 			// because mobileinit is triggered immediately, we need to bind our event handler before jQM is loaded
 			$(document).on('mobileinit', function() {
@@ -90,10 +90,10 @@
 				<cfelse>
 					#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
 				</cfif>
-				
+
 				<!--- Display Objects --->
 				#$.dspObjects($.siteConfig('primaryColumn'))#
-				
+
 				<cfif $.content('isHome')>
 					<!--- Mobile Primary Nav --->
 					<cf_CacheOMatic key="dspMobilePrimaryNav#$.content('contentID')#">
@@ -121,7 +121,7 @@
 						</a>
 				</div>
 			<!--- /footer --->
-			
+
 		</div><!-- /page -->
 
 		<script>
@@ -134,7 +134,7 @@
 						'data-theme': 'a',
 						'data-dividertheme': 'b',
 				});
-				
+
 				// Secondary Nav
 				$('##navSub ul').attr({
 					'data-role': 'listview',
@@ -146,7 +146,7 @@
 				// $('div.mura-next-n').attr({
 				// 	'data-role': 'navbar'
 				// });
-				
+
 				// Back buttons
 				$('##btn-back').on('tap',function() {
 					history.back(); return false;
@@ -155,6 +155,6 @@
 				});
 			});
 		</script>
-	</body> 
+	</body>
 	</html>
 </cfoutput>
