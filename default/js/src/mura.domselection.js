@@ -698,6 +698,8 @@
             appendDisplayObject: function(data) {
                 var self = this;
 
+                delete data.method;
+                
                 return new Promise(function(resolve, reject) {
                     self.each(function() {
                         var el = document.createElement(
@@ -733,7 +735,7 @@
                         mura(this).append(el);
 
                         Mura.processDisplayObject(
-                            el).then(
+                            el,true,true).then(
                             resolve, reject
                         );
 
@@ -749,6 +751,8 @@
              */
             prependDisplayObject: function(data) {
                 var self = this;
+
+                delete data.method;
 
                 return new Promise(function(resolve, reject) {
                     self.each(function() {
@@ -785,7 +789,7 @@
                         mura(this).prepend(el);
 
                         Mura.processDisplayObject(
-                            el).then(
+                            el,true,true).then(
                             resolve, reject
                         );
 
@@ -801,10 +805,13 @@
              */
             processDisplayObject: function(data) {
                 var self = this;
+
+                delete data.method;
+
                 return new Promise(function(resolve, reject) {
                     self.each(function() {
                         Mura.processDisplayObject(
-                            this).then(
+                            this,true,true).then(
                             resolve, reject
                         );
                     });
