@@ -1,5 +1,9 @@
 <cfscript>
-    oauthClient=m.getBean('oauthClient').loadBy(clientid=m.event('client_id'),client_secret=m.event('client_secret'));
+    if(m.event('grant_type')=='implicit'){
+        oauthClient=m.getBean('oauthClient').loadBy(clientid=m.event('client_id'));
+    } else {
+        oauthClient=m.getBean('oauthClient').loadBy(clientid=m.event('client_id'),client_secret=m.event('client_secret'));
+    }
 </cfscript>
 
 <cfif not oauthClient.exists()>
@@ -10,7 +14,16 @@
     <div class="alert alert-danger">Invalid grant_type variable.</div>
 <cfelse>
     <cfoutput>
-        <cfif len(m.event('accept')) and isBoolean(m.event('accept')) and m.validateCSRFTokens(context=oauthClient.getClientID())>
+        <cfif len(m.event('accept'))
+            and isBoolean(m.event('accept'))
+            and m.validateCSRFTokens(context=oauthClient.getClientID())
+            and oauthClient.exists()
+            and oauthClient.isValidRedirectURI(m.event('redirect_uri'))
+            and m.event('grant_type') eq oauthClient.getGrantType()
+            and (oauthClient.getGrantType() eq 'implicit'
+                or oauthClient.getGrantType() eq 'authorization_code'
+                    and m.event('client_secret') eq oauthClient.getClientSecret()
+                )>
             <cfscript>
                 if(m.event('accept')){
                     if(find(m.event('redirect_uri'),'?')){
@@ -19,7 +32,7 @@
                         delim="?";
                     }
 
-                    token=oauthClient.generateToken(granttype='authorization_code',userid=m.currentUser('userid'));
+                    token=oauthClient.generateToken(granttype=m.event('grant_type'),userid=m.currentUser('userid'));
 
                     m.redirect(m.event('redirect_uri') & delim & 'code=' & esapiEncode('url',token.get('accessCode')) & "&state=" & esapiEncode('url',m.event('state')));
                 } else {

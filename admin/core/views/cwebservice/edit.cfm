@@ -58,6 +58,7 @@
                   <option value="basic" <cfif rc.bean.getGrantType() eq 'basic'> selected</cfif>>Basic</option>
                   <option value="client_credentials"<cfif rc.bean.getGrantType() eq 'client_credentials'> selected</cfif>>OAuth2 (client_credentials)</option>
                   <option value="authorization_code"<cfif rc.bean.getGrantType() eq 'authorization_code'> selected</cfif>>OAuth2 (authorization_code)</option>
+                  <option value="implicit"<cfif rc.bean.getGrantType() eq 'implicit'> selected</cfif>>OAuth2 (implicit)</option>
               </select>
       </div>
 
@@ -73,7 +74,7 @@
               </select>
       </div>
 
-      <div class="mura-control-group conditional authorization_code" style="block:none">
+      <div class="mura-control-group conditional authorization_code implicit" style="block:none">
           <label>Redirect_URI</label>
           <textarea name="redirectURL" rows="5">#esapiEncode('html',rc.bean.getRedirectURL())#</textarea>
       </div>
@@ -91,7 +92,7 @@
                     Authorization: Basic #ToBase64(rc.bean.getClientID() & ":" & rc.bean.getClientSecret())#
                 </div>
             </div>
-            <div class="mura-control-group conditional client_credentials authorization_code">
+            <div class="mura-control-group conditional client_credentials authorization_code implicit">
                 <label>client_id</label>
                 <div>
                     #rc.bean.getClientID()#
