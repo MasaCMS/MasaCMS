@@ -165,23 +165,22 @@ to your own modified versions of Mura CMS.
               FORM.production_datasource = Form.production_databasename;
             };
           </cfscript>
+
+            <cfif form.production_dbtype eq 'Oracle'>
+            <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
+
+            <cfquery name="rsTableSpaces" datasource="#form.production_datasource#" username="#form.production_dbusername#" password="#form.production_dbpassword#">
+                select * from user_ts_quotas
+                where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
+            </cfquery>
+
+            <cfif not rsTableSpaces.recordcount>
+                <cfset message = "<strong>Error:</strong> The Oracle tablespace named '#form.production_dbtablespace#' is not available">
+                <cfset bProcessWithMessage = false>
+            </cfif>
+          </cfif>
+
         </cfif>
-
-
-        <cfif form.production_dbtype eq 'Oracle'>
-           <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
-
-           <cfquery name="rsTableSpaces" datasource="#form.production_datasource#" username="#form.production_dbusername#" password="#form.production_dbpassword#">
-              select * from user_ts_quotas
-              where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
-           </cfquery>
-
-           <cfif not rsTableSpaces.recordcount>
-              <cfset message = "<strong>Error:</strong> The Oracle tablespace named '#form.production_dbtablespace#' is not available">
-              <cfset bProcessWithMessage = false>
-           </cfif>
-        </cfif>
-
         <cfif bProcessWithMessage>
           <!--- try to create the database --->
           <!--- <cftry> --->
