@@ -135,9 +135,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<!--- temp fix, may become permanent--->
 				<cfif globalConfig().getValue(property='alwaysUseLocalRenderer',defaultValue=false)>
-					<cfset event("contentRenderer",createObject("component","#event('siteid')#.includes.contentRenderer") )>
+					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/contentRenderer.cfc")>
+						<cfset event("contentRenderer",createObject("component","#event('siteid')#.contentRenderer") )>
+					<cfelse>
+						<cfset event("contentRenderer",createObject("component","#event('siteid')#.includes.contentRenderer") )>
+					</cfif>
 				<cfelse>
-					<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
+					<cfif fileExists(expandPath("#siteConfig().getIncludePath()#/contentRenderer.cfc"))>
+						<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.contentRenderer") )>
+					<cfelse>
+						<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
+					</cfif>
 				</cfif>
 				<!--- end temp fix --->
 				<cfset event("contentRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>

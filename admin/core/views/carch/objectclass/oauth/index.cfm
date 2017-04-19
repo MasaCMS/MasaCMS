@@ -28,7 +28,7 @@
             </cfscript>
         <cfelse>
             <form id="accept-app-form">
-                <p><strong>#esapiEncode('html',oauthClient.getName())#</strong> would like to your account.</p>
+                <p><strong>"#esapiEncode('html',oauthClient.getName())#"</strong> would like to your account.</p>
                 <button type="button" class="btn accept-app" value="true">Yes</button>&nbsp;<button type="button" class="btn accept-app" value="false">No</button>
                 #variables.m.renderCSRFTokens(format='form',context=oauthClient.getClientID())#
                 <input type="hidden" name="client_id" value="#esapiEncode('html_attr',oauthClient.getClientID())#"/>

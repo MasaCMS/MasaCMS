@@ -456,7 +456,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var pathArray = [] />
 		<cfset var filePoolID =getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 		<cfset var end="">
-			
+
 		<cfloop condition="find gt 0">
 			<cfset block = {} />
 
@@ -606,6 +606,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelseif arguments.renderingMode eq "theme" and len(arguments.themeDir)>
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
 				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes/themes/#arguments.themeDir#")>
+				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="themes/#arguments.themeDir#")>
 			</cfif>
 		</cfif>
 
