@@ -34,7 +34,11 @@
 
                     token=oauthClient.generateToken(granttype=m.event('grant_type'),userid=m.currentUser('userid'));
 
-                    m.redirect(m.event('redirect_uri') & delim & 'code=' & esapiEncode('url',token.get('accessCode')) & "&state=" & esapiEncode('url',m.event('state')));
+                    if(m.event('grant_type') eq 'implicit'){
+                        m.redirect(m.event('redirect_uri') & delim & 'token_type=Bearer&access_token=' & esapiEncode('url',token.get('token')) & '&expires_in=' & esapiEncode('url',token.getExpiresIn()) & "&state=" & esapiEncode('url',m.event('state')));
+                    } else {
+                        m.redirect(m.event('redirect_uri') & delim & 'code=' & esapiEncode('url',token.get('accessCode')) & "&state=" & esapiEncode('url',m.event('state')));
+                    }
                 } else {
                     m.redirect(m.event('redirect_uri'));
                 }
