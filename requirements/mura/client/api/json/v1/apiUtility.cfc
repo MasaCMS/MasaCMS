@@ -336,7 +336,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							}
 						}
 					}
-				} else if(!(isDefined('params.client_id') && isdefined('params.client_secret') || isDefined('params.refresh_token'))){
+				} else if(!(isDefined('params.client_id') || isDefined('params.refresh_token'))){
 					params.method='Not Available';
 					structDelete(params,'client_id');
 					structDelete(params,'client_secret');
@@ -351,20 +351,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					//WriteDump(oauthclient.getAllValues());abort;
 					if(!oauthclient.exists()){
 						params.method='Not Available';
-						structDelete(params,'client_id');
-						structDelete(params,'client_secret');
-						structDelete(params,'refresh_token');
-						structDelete(params,'username');
-						structDelete(params,'password');
-						structDelete(url,'client_id');
-						structDelete(url,'client_secret');
-						structDelete(url,'refresh_token');
+						params={
+							method='getOAuthToken'
+						};
 						throw(type='authorization');
 					} else {
-						structDelete(url,'client_id');
-						structDelete(url,'client_secret');
-						structDelete(url,'refresh_token');
-
 						if(arrayLen(pathInfo) == 6
 							&& pathInfo[5]=='oauth'
 							||
@@ -413,7 +404,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									return result;
 								}
 							} else if(params.grant_type == 'password'){
-								if(oauthclient.getGrantType()!='password'){
+								if(oauthclient.getGrantType()!='password' || oauthclient.getClientSecret() != params.client_secret){
 									params={
 										method='getOAuthToken'
 									};
@@ -447,9 +438,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									return result;
 								}
 							} else if(params.grant_type == 'client_credentials'){
-								if(oauthclient.getGrantType()=='client_credentials' || oauthclient.getClientSecret() != params.client_secret){
-									structDelete(params,'client_id');
-									structDelete(params,'client_secret');
+								if(oauthclient.getGrantType()!='client_credentials' || oauthclient.getClientSecret() != params.client_secret){
+									params={
+										method='getOAuthToken'
+									};
 									throw(type='authorization');
 								}
 
@@ -528,9 +520,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							//ONLY WORKS WITH CLIENTS WITH CLIENT_CREDENTIALS GRANTTYPE
 							structDelete(params,'client_id');
 							structDelete(params,'client_secret');
-							structDelete(params,'refresh_token');
 
-							if(oauthclient.getGrantType()=='authorization_code' && !isBasicAuth){
+							if(!isBasicAuth){
+								params={
+									method='getOAuthToken'
+								};
 								throw(type='authorization');
 							}
 
