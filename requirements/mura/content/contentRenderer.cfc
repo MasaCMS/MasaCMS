@@ -1228,6 +1228,7 @@ Display Objects
 <cfargument name="rsContent"  type="any"  required="true"  default="" />
 <cfargument name="taggroup"  type="any"  required="true"  default="" />
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
+	<cfset var theExandedIncludePath = expandPath(variables.event.getSite().getIncludePath()) />
 	<cfset var fileDelim = "/" />
 	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim />
 	<cfset var theContent = "" />
@@ -1243,6 +1244,9 @@ Display Objects
 	<cfelseif fileExists(expandedPath & "display_objects/custom/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm" />
+	<cfelseif fileExists(theExandedIncludePath & "/display_objects/nav/dsp_tag_cloud.cfm")>
+		<cfset tracePoint=initTracePoint("#theExandedIncludePath#/display_objects/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#theIncludePath#/display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelse>
 		<cfset tracePoint=initTracePoint("#filePath#display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
@@ -2559,8 +2563,39 @@ Display Objects
 							<cfset headerFound=true />
 						</cfif>
 
+						<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
+						<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+							<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+							<cfset commitTracePoint(tracePoint)>
+							<cfset headerFound=true />
+						</cfif>
+
 						<cfif not headerFound>
 							<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+
+						<cfif not headerFound>
+							<cfset pluginBasePath="/#displayPoolID#/display_objects/htmlhead/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+
+						<cfif not headerFound>
+							<cfset pluginBasePath="/#displayPoolID#/themes/#theme#/display_objects/htmlhead/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>

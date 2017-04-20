@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<!---- Begin layout based configuration --->
-		<cfset configFile=rc.$.siteConfig('themeIncludePath') & "/display_objects/collection/layouts/#layout#/configurator.cfm">
+		<cfset configFile=rc.$.siteConfig().lookupDisplayObjectFilePath('collection/layouts/#layout#/configurator.cfm')>
 		<cfif fileExists(expandPath(configFile))>
 			<cfinclude template="#configFile#">
 		<cfelse>

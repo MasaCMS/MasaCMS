@@ -59,6 +59,7 @@
                   <option value="client_credentials"<cfif rc.bean.getGrantType() eq 'client_credentials'> selected</cfif>>OAuth2 (client_credentials)</option>
                   <option value="authorization_code"<cfif rc.bean.getGrantType() eq 'authorization_code'> selected</cfif>>OAuth2 (authorization_code)</option>
                   <option value="implicit"<cfif rc.bean.getGrantType() eq 'implicit'> selected</cfif>>OAuth2 (implicit)</option>
+                  <option value="password"<cfif rc.bean.getGrantType() eq 'password'> selected</cfif>>OAuth2 (password)</option>
               </select>
       </div>
 
@@ -92,13 +93,13 @@
                     Authorization: Basic #ToBase64(rc.bean.getClientID() & ":" & rc.bean.getClientSecret())#
                 </div>
             </div>
-            <div class="mura-control-group conditional client_credentials authorization_code implicit">
+            <div class="mura-control-group conditional client_credentials authorization_code implicit password">
                 <label>client_id</label>
                 <div>
                     #rc.bean.getClientID()#
                 </div>
             </div>
-            <div class="mura-control-group conditional client_credentials authorization_code">
+            <div class="mura-control-group conditional client_credentials authorization_code password">
                 <label>client_secret</label>
                 <div>
                     #rc.bean.getClientSecret()#
