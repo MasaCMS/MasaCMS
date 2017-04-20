@@ -192,10 +192,18 @@
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/index.template.cfm", destination="#webroot#/#arguments.siteid#/index.cfm")>
 	</cfif>
 
-	<cfset var basedir="#webroot#/#arguments.siteid#/includes">
+	<cfif directoryExists(expandPath('#webroot#/#arguments.siteid#/includes'))>
+		<cfset basedir="#webroot#/#arguments.siteid#/includes">
+	<cfelse>
+		<cfset basedir="#webroot#/#arguments.siteid#">
+	</cfif>
 
 	<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
-		<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
+		<cfif directoryExists(expandPath('#webroot#/#arguments.displaypoolid#/includes'))>
+			<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
+		<cfelse>
+			<cfset basedir="#webroot#/#arguments.displaypoolid#">
+		</cfif>
 	</cfif>
 
 	<cfif not directoryExists(basedir)>
