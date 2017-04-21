@@ -2554,7 +2554,7 @@ Display Objects
 					<!--- look in default htmlHead directory --->
 					<cfif not refind('[\\/]',i)>
 
-						<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
+						<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
 						<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
@@ -2563,7 +2563,7 @@ Display Objects
 							<cfset headerFound=true />
 						</cfif>
 
-						<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
+						<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
 						<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
@@ -2573,7 +2573,18 @@ Display Objects
 						</cfif>
 
 						<cfif not headerFound>
-							<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
+							<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/display_objects/htmlhead/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##application.configBean.getSiteAssetPath()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+
+						<cfif not headerFound>
+							<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/display_objects/htmlhead/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
@@ -2584,18 +2595,7 @@ Display Objects
 						</cfif>
 
 						<cfif not headerFound>
-							<cfset pluginBasePath="/#displayPoolID#/display_objects/htmlhead/">
-							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
-								<cfset commitTracePoint(tracePoint)>
-								<cfset headerFound=true />
-							</cfif>
-						</cfif>
-
-						<cfif not headerFound>
-							<cfset pluginBasePath="/#displayPoolID#/themes/#theme#/display_objects/htmlhead/">
+							<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/themes/#theme#/display_objects/htmlhead/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
@@ -2607,7 +2607,7 @@ Display Objects
 
 					<cfelse>
 						<!--- If not found, look in look in your theme --->
-						<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
+						<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/display_objects/">
 						<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
@@ -2624,7 +2624,7 @@ Display Objects
 
 						<!--- If not found, look in display_objects directory --->
 						<cfif not headerFound>
-							<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
+							<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/display_objects/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
@@ -2647,7 +2647,7 @@ Display Objects
 
 						<!--- If not found, look in includes directory --->
 						<cfif not headerFound>
-							<cfset pluginBasePath="/#displayPoolID#/includes/">
+							<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
@@ -2659,7 +2659,7 @@ Display Objects
 
 						<!--- If not found, look in local plugins directory --->
 						<cfif not headerFound>
-							<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">
+							<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/plugins/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginID=listLast(listFirst(i,"/"),"_")>
 								<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
