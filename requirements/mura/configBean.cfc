@@ -190,6 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.adminDir="/admin"/>
 <cfset variables.instance.allowedIndexFiles="index.cfm,index.json,index.html"/>
 <cfset variables.instance.HSTSMaxAge=1200/>
+<cfset variables.instance.sitesDir=""/>
 
 <cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1907,6 +1908,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getSiteDir" output="false">
+	<cfreturn expandPath(getSitesIncludePath())>
+</cffunction>
+
+<cffunction name="getSitesIncludePath" output="false">
+	<cfif len(variables.instance.sitesDir)>
+		<cfreturn '/muraWRM/#variables.instance.sitesDir#'>
+	<cfelse>
+		<cfreturn'/muraWRM'>
+	</cfif>
+</cffunction>
+
+<cffunction name="getSitesMap" output="false">
+	<cfif len(variables.instance.sitesDir)>
+		<cfreturn 'muraWRM.#variables.instance.sitesDir#'>
+	<cfelse>
+		<cfreturn'muraWRM'>
+	</cfif>
+</cffunction>
+
+<cffunction name="getSitesAssetPath" output="false">
+	<cfif len(variables.instance.sitesDir)>
+		<cfreturn "/#variables.instance.sitesDir#">
+	<cfelse>
+		<cfreturn "">
+	</cfif>
+</cffunction>
+
+<cffunction name="setSitesDir" output="false">
+	<cfargument name="setSitesDir" default="">
+	<cfset variables.instance.sitesDir=listLast(listLast(variables.instance.sitesDir,'/'),'\')>
 </cffunction>
 
 </cfcomponent>
