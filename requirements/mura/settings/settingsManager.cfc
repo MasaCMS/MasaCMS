@@ -290,7 +290,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset setSites() />
 	<cftry>
-	<cfset variables.utility.deleteDir("#variables.configBean.getWebRoot()#/#arguments.siteid#/") />
+	<cfset variables.utility.deleteDir("#variables.configBean.getSitesDir()#/#arguments.siteid#/") />
 	<cfcatch></cfcatch>
 	</cftry>
 	<cftry>
@@ -331,7 +331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfabort>
 		</cfif>
 
-		<cfif directoryExists(expandPath("/muraWRM/#bean.getSiteID()#"))>
+		<cfif directoryExists("#variables.configBean.getSitesDir()#/#bean.getSiteID()#")>
 			<cfthrow message="A directory with the same name as the SiteID you entered is already being used.">
 		</cfif>
 
@@ -381,9 +381,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif bean.getSiteID() eq bean.getDisplayPoolID() and !directoryExists('#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#')>
 
 		<cfset variables.utility.copyDir(
-				baseDir="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#",
-				destDir="#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#",
-				excludeList="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#cache,#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#assets"
+				baseDir="#variables.configBean.getSitesDir()##fileDelim#default#fileDelim#",
+				destDir="#variables.configBean.getSitesDir()##fileDelim##bean.getSiteID()##fileDelim#",
+				excludeList="#variables.configBean.getSitesDir()##fileDelim#default#fileDelim#cache,#variables.configBean.getSitesDir()##fileDelim#default#fileDelim#assets"
 			)>
 	</cfif>
 </cffunction>

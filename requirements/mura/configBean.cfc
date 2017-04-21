@@ -654,7 +654,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(ap)>
 			<cfset variables.instance.fileDir = variables.instance.webroot & replace(ap,"/",variables.instance.filedelim,"all") />
 		<cfelse>
-			<cfset variables.instance.fileDir = variables.instance.webroot  />
+			<cfset variables.instance.fileDir = getSiteDir()  />
 		</cfif>
 	</cfif>
 
@@ -681,7 +681,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(ap)>
 			<cfset variables.instance.assetDir = variables.instance.webroot & replace(ap,"/",variables.instance.filedelim,"all") />
 		<cfelse>
-			<cfset variables.instance.assetDir = variables.instance.webroot  />
+			<cfset variables.instance.assetDir = getSiteDir()  />
 		</cfif>
 	</cfif>
 
@@ -1911,10 +1911,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getSiteDir" output="false">
-	<cfreturn expandPath(getSitesIncludePath())>
+	<cfreturn expandPath(getSiteIncludePath())>
 </cffunction>
 
-<cffunction name="getSitesIncludePath" output="false">
+<cffunction name="getSiteIncludePath" output="false">
 	<cfif len(variables.instance.sitesDir)>
 		<cfreturn '/muraWRM/#variables.instance.sitesDir#'>
 	<cfelse>
@@ -1922,7 +1922,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getSitesMap" output="false">
+<cffunction name="getSiteMap" output="false">
 	<cfif len(variables.instance.sitesDir)>
 		<cfreturn 'muraWRM.#variables.instance.sitesDir#'>
 	<cfelse>
@@ -1930,7 +1930,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getSitesAssetPath" output="false">
+<cffunction name="getSiteAssetPath" output="false">
 	<cfif len(variables.instance.sitesDir)>
 		<cfreturn "/#variables.instance.sitesDir#">
 	<cfelse>
@@ -1939,8 +1939,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setSitesDir" output="false">
-	<cfargument name="setSitesDir" default="">
-	<cfset variables.instance.sitesDir=listLast(listLast(variables.instance.sitesDir,'/'),'\')>
+	<cfargument name="sitesDir" default="">
+	<cfset variables.instance.sitesDir=listLast(listLast(arguments.sitesDir,'/'),'\')>
 </cffunction>
 
 </cfcomponent>

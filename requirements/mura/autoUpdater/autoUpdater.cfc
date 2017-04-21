@@ -82,8 +82,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif updateVersion gt currentVersion>
 		<cflock type="exclusive" name="autoUpdate#arguments.siteid##application.instanceID#" timeout="600">
 		<cfif len(arguments.siteID) >
-			<cfset baseDir=baseDir & "#variables.fileDelim##arguments.siteid#">
-			<cfset versionDir=versionDir & "/#arguments.siteid#">
+			<cfset baseDir=variables.configBean.getSiteDir() & "#variables.fileDelim##arguments.siteid#">
+			<cfset versionDir=variables.configBean.getSiteDir() & "/#arguments.siteid#">
 			<cfset zipFileName="#arguments.siteid#">
 			<cfset svnUpdateDir= svnUpdateDir & "/default">
 			<cfset trimLen=len(svnUpdateDir)-1>
@@ -233,14 +233,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCurrentVersion" output="false">
 <cfargument name="siteid" required="true" default="">
 
-	<cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#")>
+
 	<cfset var versionFileContents="">
 	<cfset var currentVersion="">
 
 	<cfif len(arguments.siteid)>
-		<cfset versionDir=versionDir & "/#arguments.siteid#">
+		<cfset var versionDir=variables.configBean.getSiteDir() & "/" & arguments.siteid>
 	<cfelse>
-		<cfset versionDir=versionDir & "/config">
+		<cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#")>
 	</cfif>
 
 	<cfif not FileExists(versionDir & "/" & "version.cfm")>

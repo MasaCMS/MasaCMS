@@ -723,21 +723,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAssetPath" output="false">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
-	<cfreturn getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSitesAssetPath()#/#variables.instance.displayPoolID#" />
+	<cfreturn getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getFileAssetPath" output="false">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
-	<cfreturn getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSitesAssetPath()#/#variables.instance.displayPoolID#" />
+	<cfreturn getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getIncludePath" output="false">
-	<cfreturn "#variables.configBean.getSitesIncludePath()#/#variables.instance.displayPoolID#" />
+	<cfreturn "#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getAssetMap" output="false">
-	<cfreturn "#variables.configBean.getSitesMap()#.#variables.instance.displayPoolID#" />
+	<cfreturn "#variables.configBean.getSiteMap()#.#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getThemeAssetPath" output="false">
@@ -758,13 +758,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset var path="">
 
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
 			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetPath=getAssetPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
 			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetPath />
 		</cfif>
 
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
 			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetPath=getAssetPath(argumentCollection=arguments) & "/includes/themes/#arguments.theme#">
 			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetPath />
@@ -798,13 +798,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset var path="">
 
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
 			<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="#getIncludePath()#/themes/#arguments.theme#">
 			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
 		</cfif>
 
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
 			<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="#getIncludePath()#/includes/themes/#arguments.theme#">
 			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
@@ -838,13 +838,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset var path="">
 
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
 			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="#getAssetMap()#.themes.#arguments.theme#">
 			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
 		</cfif>
 
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
 			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="#getAssetMap()#.includes.themes.#arguments.theme#">
 			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
@@ -899,13 +899,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset var path="">
 
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
 		<cfif directoryExists(path & "/templates")>
 			<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir=path>
 			<cfreturn path>
 		</cfif>
 
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
 		<cfif directoryExists(path & "/templates")>
 			<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir=path>
 			<cfreturn path>
@@ -929,7 +929,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs="">
 
 	<cfif len(variables.instance.displayPoolID)>
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/themes">
+		<cfset themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/themes">
 
 		<cfif directoryExists(themeDir)>
 			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
@@ -946,7 +946,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 		</cfif>
 
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes">
+		<cfset themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/themes">
 
 		<cfif directoryExists(themeDir)>
 			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
@@ -963,7 +963,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 	<cfelse>
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/default/themes">
+		<cfset themeDir="#variables.configBean.getSiteDir()#/default/themes">
 
 		<cfif directoryExists(themeDir)>
 			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
@@ -979,7 +979,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 		</cfif>
 
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/default/includes/themes">
+		<cfset themeDir="#variables.configBean.getSiteDir()#/default/includes/themes">
 
 		<cfif directoryExists(themeDir)>
 			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">

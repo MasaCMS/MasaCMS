@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="changesetID" default="">
 		<cfargument name="bundleMode" default="">
 
-		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID />
+		<cfset var siteRoot = variables.configBean.getSitesDir() & '/' & arguments.siteID />
 		<cfset var zipDir	= "" />
 		<cfset var rstplugins = "" />
 		<cfset var rsInActivefiles = "" />
@@ -278,12 +278,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfloop>
 
-			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getValue('webroot')>
+			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getSitesDir()>
 				<cfset zipDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
 				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
 				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>
 			</cfif>
-			<cfif variables.configBean.getValue('filedir') neq variables.configBean.getValue('webroot')>
+			<cfif variables.configBean.getValue('filedir') neq variables.configBean.getSitesDir()>
 				<cfset zipDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
 				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />
 				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>
@@ -496,7 +496,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="errors" type="any" required="true" default="#structNew()#">
 
 		<cfset var zipPath = "" />
-		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID />
+		<cfset var siteRoot = variables.configBean.getSitesDir() & '/' & arguments.siteID />
 		<cfset var fileManager = getBean('fileManager') />
 		<cfset var tmpDir = "" />
 		<cfset var destDir = "" />
@@ -548,7 +548,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="themeDir" type="string" default="" required="true">
 
 		<cfset var zipPath = "" />
-		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID />
+		<cfset var siteRoot = variables.configBean.getSitesDir() & '/' & arguments.siteID />
 		<cfset var tmpDir = "" />
 		<cfset var destDir = "" />
 		<cfset var qCheck = "" />
