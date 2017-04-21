@@ -240,7 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(arguments.siteid)>
 		<cfset var versionDir=variables.configBean.getSiteDir() & "/" & arguments.siteid>
 	<cfelse>
-		<cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#")>
+		<cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#/config")>
 	</cfif>
 
 	<cfif not FileExists(versionDir & "/" & "version.cfm")>
