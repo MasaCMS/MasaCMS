@@ -257,7 +257,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif listFindNoCase("All,Theme",arguments.renderingMode)>
 				<cfset rssite=Bundle.getValue("rssite")>
-				<cfif rssite.recordcount and directoryExists(expandPath("/muraWRM/#arguments.toSiteID#/includes/themes/#rssite.theme#"))>
+				<cfif rssite.recordcount
+					and (
+						directoryExists("#getBean('configBean').getSiteDir()#/#arguments.toSiteID#/includes/themes/#rssite.theme#")
+						or directoryExists("#getBean('configBean').getSiteDir()#/#arguments.toSiteID#/themes/#rssite.theme#")
+						or directoryExists("#expandPath('/muraWRM')#/themes/#rssite.theme#")
+					)>
 					<cfquery datasource="#arguments.toDSN#">
 						update tsettings set
 
@@ -357,7 +362,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstContentObjects=""/>
 		<cfset var rsContentObjects=""/>
 		<cfset var rsObjects=""/>
-		
+
 		<cfset var rsContentObjectsUpdate=""/>
 		<cfset var rsthierarchy=""/>
 		<cfset var rstfiles=""/>
