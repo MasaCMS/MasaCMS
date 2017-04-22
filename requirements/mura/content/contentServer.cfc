@@ -277,7 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(cgi_path)>
 		<cfset url.path="#application.configBean.getStub()#/#siteID#/" />
 	<cfelse>
-		<cfif not listFirst(url.path,"/") eq siteid>
+		<cfif not (listFirst(url.path,"/") eq siteid or len(application.configBean.getSiteAssetPath()) and listLen(url.path,'/') gt 1 and listGetAt(url.path,2,"/") eq siteid)>
 			<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 		<cfelse>
 			<cfset url.path="#application.configBean.getStub()#/#siteID#/" />
@@ -861,12 +861,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfif arguments.filename neq ''>
 			<cfif arguments.indexfileinurls>
-				<cfreturn "/" & arguments.siteID & "/index.cfm" & filenamePrefix & arguments.filename />
+				<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/index.cfm" & filenamePrefix & arguments.filename />
 			<cfelse>
-				<cfreturn "/" & arguments.siteID & filenamePrefix & arguments.filename />
+				<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & filenamePrefix & arguments.filename />
 			</cfif>
 		<cfelse>
-			<cfreturn "/" & arguments.siteID & "/" />
+			<cfreturn application.configBean.getSiteAssetPath() & "/" & arguments.siteID & "/" />
 		</cfif>
 	</cfif>
 </cffunction>

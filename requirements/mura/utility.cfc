@@ -188,8 +188,8 @@
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 	</cfif>
 
-	<cfif variables.configBean.getSiteIDInURLS() and not fileExists("#webroot#/#arguments.siteid#/index.cfm")>
-		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/index.template.cfm", destination="#webroot#/#arguments.siteid#/index.cfm")>
+	<cfif variables.configBean.getSiteIDInURLS() and not fileExists("#variables.configBean.getSiteDir()#/#arguments.siteid#/index.cfm")>
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/index.template.cfm", destination="#variables.configBean.getSiteDir()#/#arguments.siteid#/index.cfm")>
 	</cfif>
 
 	<cfif directoryExists(expandPath('#variables.configBean.getSiteDir()#/#arguments.siteid#/includes'))>
