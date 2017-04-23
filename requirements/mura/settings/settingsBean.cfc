@@ -742,6 +742,59 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "#variables.configBean.getSiteMap()#.#variables.instance.displayPoolID#" />
 </cffunction>
 
+<cffunction name="getDisplayObjectAssetPath" output="false">
+	<cfargument name="theme" default="#request.altTheme#">
+	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="#getValue('domain')#">
+
+	<cfset var key="displayObjectAssetPath" & YesNoFormat(arguments.complete) & replace(arguments.domain,".","all")>
+
+	<cfif structKeyExists(variables.instance,'#key#')>
+		<cfreturn variables.instance[key] />
+	<cfelse>
+		<cfset var path="">
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/modules')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/modules">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/display_objects')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/display_objects">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/modules')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/includes/modules">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/display_objects')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/includes/display_objects">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('muraWRM/modules')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/modules">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('muraWRM/display_objects')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/display_objects">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfreturn getThemeAssetPath()>
+	</cfif>
+
+</cffunction>
+
 <cffunction name="getThemeAssetPath" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 	<cfargument name="complete" default=0>
