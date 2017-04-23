@@ -1247,9 +1247,15 @@ Display Objects
 	<cfelseif fileExists(theExandedIncludePath & "/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#theExandedIncludePath#/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#theIncludePath#/display_objects/nav/dsp_tag_cloud.cfm" />
-	<cfelse>
+	<cfelseif fileExists(expandPath("#filePath#display_objects/nav/dsp_tag_cloud.cfm"))>
 		<cfset tracePoint=initTracePoint("#filePath#display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
+	<cfelseif fileExists(expandPath("/muraWRM/display_objects/nav/dsp_tag_cloud.cfm"))>
+		<cfset tracePoint=initTracePoint("/display_objects/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
+	<cfelse>
+		<cfset tracePoint=initTracePoint("/modules/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="/muraWRM/modules/nav/dsp_tag_cloud.cfm" />
 	</cfif>
 	</cfsavecontent>
 
