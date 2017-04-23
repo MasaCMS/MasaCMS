@@ -1252,7 +1252,7 @@ Display Objects
 		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelseif fileExists(expandPath("/muraWRM/display_objects/nav/dsp_tag_cloud.cfm"))>
 		<cfset tracePoint=initTracePoint("/display_objects/nav/dsp_tag_cloud.cfm")>
-		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
+		<cfinclude template="/muraWRM/display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelse>
 		<cfset tracePoint=initTracePoint("/modules/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="/muraWRM/modules/nav/dsp_tag_cloud.cfm" />
@@ -2611,6 +2611,39 @@ Display Objects
 							</cfif>
 						</cfif>
 
+						<cfif not headerFound>
+							<cfset pluginBasePath="/themes/#theme#/display_objects/htmlhead/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+
+						<cfif not headerFound>
+							<cfset pluginBasePath="/display_objects/htmlhead/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+
+						<cfif not headerFound>
+							<cfset pluginBasePath="/modules/htmlhead/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+
 					<cfelse>
 						<!--- If not found, look in look in your theme --->
 						<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/themes/#theme#/display_objects/">
@@ -2631,6 +2664,28 @@ Display Objects
 						<!--- If not found, look in display_objects directory --->
 						<cfif not headerFound>
 							<cfset pluginBasePath="#application.configBean.getSiteAssetPath()#/#displayPoolID#/includes/display_objects/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+
+						<cfif not headerFound>
+							<cfset pluginBasePath="/display_objects/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+
+						<cfif not headerFound>
+							<cfset pluginBasePath="/modules/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
