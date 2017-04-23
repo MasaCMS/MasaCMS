@@ -681,8 +681,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not isObject(variables.instance.rbFactory)>
 		<cfif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/')>
 			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale())>
-		<cfelse>
+		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/')>
 			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
+		<cfelseif directoryExists(expandPath('/muraWRM/resourceBundles/'))>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale())>
 		</cfif>
 		<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/">
 		<cfif directoryExists(themeRBDir)>
