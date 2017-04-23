@@ -751,35 +751,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.theme=variables.instance.theme>
 	</cfif>
 
+	<cfset var key="themeAssetPath" & YesNoFormat(arguments.complete) & replace(arguments.domain,".","all")>
+
 	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
 		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
 	</cfif>
 
-	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeAssetPath')>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetPath />
+	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'#key#')>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
 	<cfelse>
 		<cfset var path="">
 
 		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetPath=getAssetPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetPath />
+			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
 		</cfif>
 
 		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetPath=getAssetPath(argumentCollection=arguments) & "/includes/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetPath />
+			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments) & "/includes/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
 		</cfif>
 
 		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
 		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetPath=getRootPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetPath />
+			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getRootPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
 		</cfif>
 
-		<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetPath=getAssetPath(argumentCollection=arguments)>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetPath />
+		<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments)>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
 	</cfif>
 
 </cffunction>
