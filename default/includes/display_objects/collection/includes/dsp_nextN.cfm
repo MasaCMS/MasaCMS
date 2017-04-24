@@ -85,11 +85,11 @@
 	<cfset variables.qrystr=variables.qrystr & "&relatedID=#esapiEncode('url',request.relatedID)#"/>
 </cfif>
 <cfif len(request.currentNextNID)>
-	<cfset variables.qrystr=variables.qrystr & "&nextNID=#esapiEncode(request.currentNextNID)#"/>
+	<cfset variables.qrystr=variables.qrystr & "&nextNID=#esapiEncode('url',request.currentNextNID)#"/>
 </cfif>
 <cfif len(request.filterBy)>
 <cfif isNumeric(request.day) and request.day>
-	<cfset variables.qrystr=variables.qrystr & "&month=#esapiEncode(request.month)#&year=#esapiEncode('url',request.year)#&day=#esapiEncode('url',request.day)#&filterBy=#esapiEncode('url',request.filterBy)#">
+	<cfset variables.qrystr=variables.qrystr & "&month=#esapiEncode('url',request.month)#&year=#esapiEncode('url',request.year)#&day=#esapiEncode('url',request.day)#&filterBy=#esapiEncode('url',request.filterBy)#">
 </cfif>
 <cfelse>
 <cfif isNumeric(request.day) and request.day>
