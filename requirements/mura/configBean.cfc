@@ -243,6 +243,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
+	<cfif directoryExists(expandPath('/muraWRM/sites/default'))>
+		<cfset variables.instance.siteDir='sites'>
+	<cfelse>
+		<cfset variables.instance.siteDir=''>
+	</cfif>
+
 	<cfset setWebRoot(arguments.config.webroot)/>
 	<cfset setContext(arguments.config.context)/>
 	<cfset setAssetPath(arguments.config.assetPath)/>
@@ -1936,11 +1942,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn "">
 	</cfif>
-</cffunction>
-
-<cffunction name="setSiteDir" output="false">
-	<cfargument name="siteDir" default="">
-	<cfset variables.instance.siteDir=listLast(listLast(arguments.siteDir,'/'),'\')>
 </cffunction>
 
 </cfcomponent>
