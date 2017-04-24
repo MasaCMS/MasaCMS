@@ -1692,6 +1692,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getContentTypeLookupArray" output="false">
+	<cfreturn variables.instance.contentTypeLoopUpArray>
+</cffunction>
+
 <cffunction name="registerContentTypeDir" output="false">
 	<cfargument name="dir">
 
@@ -1841,6 +1845,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="package" default="">
 	<cfargument name="custom" default="true">
     <cfreturn registerDisplayObjectDir(arguments=arguments)>
+</cffunction>
+
+<cffunction name="getDispayObjectLookupArray" output="false">
+	<cfreturn variables.instance.displayObjectLoopUpArray>
 </cffunction>
 
 <cffunction name="lookupDisplayObjectFilePath" output="false">

@@ -321,7 +321,12 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 		if(arguments.$.getContentRenderer().validateCSRFTokens && !arguments.$.validateCSRFTokens(context=getValue('formID'))){
 			variables.instance.errors.csrf='Your request contained invalid tokens';
 		}
-
+	/*
+	writeDUmp($.event('csrf_token'));
+	writeDUmp($.event('csrf_token_expires'));
+	writeDump(getValue('formID'));
+	abort;
+	*/
 		if(hasErrors()){
 			setValue('acceptData','0');
 		} else {
