@@ -73,7 +73,7 @@
 <cfset variables.qrystr="" />
 
 <cfif len(trim($.event("keywords")))>
-	<cfset variables.qrystr="&keywords=" & encodeForHTMLAttribute( $.event("keywords") ) />
+	<cfset variables.qrystr="&keywords=" & encodeForURL( $.event("keywords") ) />
 </cfif>
 <cfif len(request.sortBy)>
 	<cfset variables.qrystr=variables.qrystr & "&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
