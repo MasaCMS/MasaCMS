@@ -63,6 +63,8 @@
 <cfparam name="request.startRow" default="1"/>
 <cfparam name="request.filterBy" default=""/>
 <cfparam name="request.currentNextNID" default=""/>
+<cfparam name="request.keywords" default=""/>
+
 <cfif variables.nextN.recordsPerPage gt 1>
 <cfset variables.paginationKey="startRow">
 <cfelse>
@@ -70,8 +72,11 @@
 </cfif>
 <cfset variables.qrystr="" />
 
+<cfif len(trim($.event("keywords")))>
+	<cfset variables.qrystr="&keywords=" & encodeForURL( $.event("keywords") ) />
+</cfif>
 <cfif len(request.sortBy)>
-	<cfset variables.qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
+	<cfset variables.qrystr=variables.qrystr & "&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
 </cfif>
 <cfif len(variables.$.event('categoryID'))>
 	<cfset variables.qrystr=variables.qrystr & "&categoryID=#variables.$.event('categoryID')#"/>
