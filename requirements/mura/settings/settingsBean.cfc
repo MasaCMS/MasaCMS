@@ -681,16 +681,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not isObject(variables.instance.rbFactory)>
 		<cfif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/')>
 			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale())>
+		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/')>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale())>
 		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/')>
 			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
+		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/')>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale())>
 		<cfelseif directoryExists(expandPath('/muraWRM/resourceBundles/'))>
 			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale())>
+		<cfelseif directoryExists(expandPath('/muraWRM/resource_bundles/'))>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale())>
 		</cfif>
 		<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/">
 		<cfif directoryExists(themeRBDir)>
 			<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
 		<cfelse>
-			<cfset variables.instance.rbFactory=tmpFactory />
+			<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resource_bundles/">
+			<cfif directoryExists(themeRBDir)>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
+			<cfelse>
+				<cfset variables.instance.rbFactory=tmpFactory />
+			</cfif>
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.rbFactory />
@@ -1737,6 +1748,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <cfset registerContentTypeDir(dir='#arguments.dir#/#rs.name#/content_types')>
             </cfif>
 
+			<cfif directoryExists('#rs.directory#/#rs.name#/resource_bundles')>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resource_bundles',getJavaLocale()) />
+			</cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/resourceBundles')>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resourceBundles',getJavaLocale()) />
+			</cfif>
 		</cfloop>
 
 		<cfif not listFind('/,\',right(arguments.dir,1))>
@@ -1825,6 +1843,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif directoryExists('#rs.directory#/#rs.name#/content_types')>
                 <cfset registerContentTypeDir(dir='#arguments.dir#/#rs.name#/content_types')>
             </cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/resource_bundles')>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resource_bundles',getJavaLocale()) />
+			</cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/resourceBundles')>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resourceBundles',getJavaLocale()) />
+			</cfif>
 
 		</cfloop>
 

@@ -417,6 +417,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop query="rs">
 		<cfif structKeyExists(foundSites,'#rs.siteid#')>
+			<cfset builtSites['#rs.siteid#'].getRBFactory()>
 			<cfset builtSites['#rs.siteid#'].registerContentTypeDirs()>
 			<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
 			<cfset builtSites['#rs.siteid#'].discoverBeans()>
