@@ -695,7 +695,7 @@
 										<label for="removeToken#tokens.getCurrentIndex()#" class="checkbox"><input name="removeToken" id="removeToken#tokens.getCurrentIndex()#" type="CHECKBOX" value="#token.getToken()#" class="checkbox"> #esapiEncode('html',token.getClient().getName())#</label>
 									</cfloop>
 									<cfelse>
-										<div class="alert alert-info">This user has not connected through any web services.</div>
+										<div class="alert alert-info"><p>This user has not connected through any web services.</p></div>
 									</cfif>
 								</div>
 							</cfif>
