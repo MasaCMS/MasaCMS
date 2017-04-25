@@ -18,7 +18,7 @@ Mura CMS. Thus, the terms and conditions of the GNU General Public License versi
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+In addition, as a special exc©©eption, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
 independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
 Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
@@ -679,18 +679,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tmpFactory="">
 	<cfset var themeRBDir="">
 	<cfif not isObject(variables.instance.rbFactory)>
+		<cfif not isDefined('application.rbFactory')>
+			<cfset variables.tracepoint=initTracepoint("Instantiating resourceBundleFactory")>
+			<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory() />
+			<cfset commitTracepoint(variables.tracepoint)>
+		</cfif>
+
 		<cfif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/')>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale())>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init("","#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale())>
 		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/')>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale())>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init("","#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale())>
 		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/')>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init("","#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
 		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/')>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale())>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init("","#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale())>
 		<cfelseif directoryExists(expandPath('/muraWRM/resourceBundles/'))>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale())>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init("",expandPath("/muraWRM/resourceBundles/"),getJavaLocale())>
 		<cfelseif directoryExists(expandPath('/muraWRM/resource_bundles/'))>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale())>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init("",expandPath("/muraWRM/resource_bundles/"),getJavaLocale())>
 		</cfif>
 		<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/">
 		<cfif directoryExists(themeRBDir)>

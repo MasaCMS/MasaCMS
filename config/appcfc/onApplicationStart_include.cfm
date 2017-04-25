@@ -379,9 +379,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")>
-	<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory() />
-	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
+	<cfif not isDefined('application.rbFactory')>
+		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")>
+		<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory() />
+		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
+	</cfif>
 
 	<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 	<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>

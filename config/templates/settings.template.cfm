@@ -1,24 +1,19 @@
 [settings]
-appname=Mura CMS
 appreloadkey=appreload
-installed=0
 mode=production
 [production]
-accesscontrolheaders=false
-accesscontrolcredentials=false
 admindomain=
 adminemail=
 adminssl=0
 allowautoupdates=1
+allowedIndexFiles=index.cfm,index.json,index.html
 allowlocalfiles=false
 assetdir=
 assetpath=
 autodiscoverplugins=false
 autoresetpasswords=false
 autoupdatemode=default
-bcryptlogrounds=10
 bcryptpasswords=true
-bcryptreseedfrequency=60
 clientmanagement=false
 clientstorage=
 confirmsaveasdraft=true
@@ -26,8 +21,6 @@ context=
 cookiedomain=
 cookiepath=
 customtagpaths=
-dashboardcomments=true
-datacollection=true
 datasource=
 dbcasesensitive=false
 dbpassword=
