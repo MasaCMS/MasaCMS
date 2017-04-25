@@ -77,6 +77,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$.event('sortby','lastupdate');
 	}
 
+	if(!structKeyExists(session.flatViewArgs,"#rc.siteID#")){
+		session.flatViewArgs["#rc.siteID#"]={};
+	}
 	session.flatViewArgs["#rc.siteID#"].moduleid=$.event("moduleid");
 	session.flatViewArgs["#rc.siteID#"].sortBy=$.event("sortby");
 	session.flatViewArgs["#rc.siteID#"].sortDirection=$.event("sortdirection");
@@ -404,7 +407,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset showingLabel = application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")>
 	</cfif>
 	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#:</span>
-	<a id="navReportsToggle" class="dropdown-toggle" data-toggle="dropdown">#showingLabel#<i class="mi-chevron-down"></i></a>
+	<a id="navReportsToggle" class="dropdown-toggle" data-toggle="dropdown">#esapiEncode('html',showingLabel)#<i class="mi-chevron-down"></i></a>
 		<ul id="navReports" class="dropdown-menu">
 			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#<!---<span class="badge">#$.getBean('contentGateway').getPageCount(siteid=session.siteid).counter#</span>---></a></li>
 			<cfset draftCount=$.getBean('contentManager').getMyDraftsCount(siteid=session.siteid, startdate=dateAdd('m',-3,now()))>
