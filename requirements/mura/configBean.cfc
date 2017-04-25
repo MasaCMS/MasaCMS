@@ -51,8 +51,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.version="7.0"/>
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
-<cfset variables.instance.webrootmap=""/>
-<cfset variables.instance.mapdir=""/>
+<cfset variables.instance.webrootmap="muraWRM"/>
+<cfset variables.instance.mapdir="mura"/>
 <cfset variables.instance.datasource=""/>
 <cfset variables.instance.stub=""/>
 <cfset variables.instance.context=""/>
@@ -68,10 +68,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.MailServerPOPPort="110"/>
 <cfset variables.instance.MailServerTLS="false"/>
 <cfset variables.instance.MailServerSSL="false" />
-<cfset variables.instance.useDefaultSMTPServer=0/>
-<cfset variables.instance.adminssl=0/>
+<cfset variables.instance.useDefaultSMTPServer=false/>
+<cfset variables.instance.adminssl=false/>
 <cfset variables.instance.forceAdminSSL=true>
-<cfset variables.instance.logEvents=0/>
+<cfset variables.instance.logEvents=false/>
 <cfset variables.instance.fileDelim="\" />
 <cfset variables.instance.dbType="mssql"/>
 <cfset variables.instance.dbUsername=""/>
@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.productionFiledir=""/>
 <cfset variables.instance.productionAssetdir=""/>
 <cfset variables.instance.productionPushMode="full"/>
-<cfset variables.instance.fileStore=""/>
+<cfset variables.instance.fileStore="fileDir"/>
 <cfset variables.instance.fileStoreAccessInfo=""/>
 <cfset variables.instance.fileStoreEndPoint="http://s3.amazonaws.com"/>
 <cfset variables.instance.tooltips=structNew()/>
@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.indexFileInURLS=true />
 <cfset variables.instance.hashURLs=false />
-<cfset variables.instance.strictExtendedData=false />
+<cfset variables.instance.strictExtendedData=true />
 <cfset variables.instance.purgeDrafts=true />
 <cfset variables.instance.createRequiredDirectories=true />
 <cfset variables.instance.confirmSaveAsDraft=true />
@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.tempDir="" />
 <cfset variables.instance.autoresetpasswords=true />
 <cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath()) />
-<cfset variables.instance.uselegacysessions=true />
+<cfset variables.instance.uselegacysessions=false />
 <cfset variables.instance.customUrlVarDelimiters="_">
 <cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
 <cfset variables.instance.duplicateTransients=false>
@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.readOnlyDbPassword="" />
 <cfset variables.instance.MYSQLEngine="InnoDB" />
 <cfset variables.instance.autoDiscoverPlugins=false />
-<cfset variables.instance.trackSessionInNewThread=1 />
+<cfset variables.instance.trackSessionInNewThread=true />
 <cfset variables.instance.cfStaticJavaLoaderScope="application">
 <cfset variables.instance.URLTitleDelim="-">
 <cfset variables.instance.BCryptLogRounds=10>

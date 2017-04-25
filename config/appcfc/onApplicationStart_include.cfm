@@ -432,7 +432,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cftry>
-		<cfif variables.iniProperties.ping eq 1>
+		<cfif isBoolean(variables.iniProperties.ping) and variables.iniProperties.ping>
 			<cfset local.updateurl = "http://" & listFirst(cgi.http_host,":") & application.configBean.getContext() & "/index.cfm/_api/sitemonitor/" />
 			<cfschedule action = "update"
 				task = "#variables.siteMonitorTask#"
