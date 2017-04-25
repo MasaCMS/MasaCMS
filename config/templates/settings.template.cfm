@@ -95,12 +95,9 @@ sessioncookiesexpires=never
 sendfrommailserverusername=true
 sessionhistory=0
 sessiontimeout=180
-sharableremotesessions=1
 showadminloginhelp=true
 siteidinurls=false
 sortpermission=editor
-sourceimagescale=3000
-sourceimagescaleby=x
 strictfactory=true
 strongpasswordregex=(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$
 strongpasswords=false
