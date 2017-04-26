@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
 	<cfset variables.mode = variables.iniProperties.mode />
-	<cfset variables.mapdir = variables.iniProperties.mapdir />
+	<cfset variables.mapdir = "mura" />
 	<cfset variables.webroot = variables.iniProperties.webroot />
 
 	<cfif not structKeyExists(variables.iniProperties,"useFileMode")>
