@@ -73,7 +73,7 @@
 <cfset variables.qrystr="" />
 
 <cfif len(trim($.event("keywords")))>
-	<cfset variables.qrystr="&keywords=" & esapiEncode( $.event("keywords") ) />
+	<cfset variables.qrystr="&keywords=" & esapiEncode('html_attr', $.event("keywords")) />
 </cfif>
 <cfif len(request.sortBy)>
 	<cfset variables.qrystr=variables.qrystr & "&sortBy=#esapiEncode('url',request.sortBy)#&sortDirection=#esapiEncode('url',request.sortDirection)#"/>
