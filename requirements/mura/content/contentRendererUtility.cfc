@@ -1922,7 +1922,7 @@
 		<cfset var safesubtype=REReplace(arguments.$.content().getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 		<cfset var eventOutput="">
 		<cfset var displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
-
+		<cfset var filePath="">
 		<!--- START Checking for Override via Event Model --->
 		<!--- For backwards compatibility --->
 		<cfif arguments.$.content().getType() eq 'Folder'>
@@ -1947,7 +1947,6 @@
 		<!--- END Checking for Override via Event Model --->
 
 		<!--- START Checking for Override via File  --->
-		<cfset var filePath="">
 
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#_#safesubtype#/index.cfm')>
 		<cfif len(filePath)>
@@ -1957,13 +1956,6 @@
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
-		</cfif>
-
-		<cfif not arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#/index.cfm')>
-			<cfif len(filePath)>
-				<cfreturn {filepath=filePath}>
-			</cfif>
 		</cfif>
 
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
@@ -1991,7 +1983,6 @@
 		<!--- END Checking for Override via File  --->
 
 		<!--- START Checking for Override via content_types includes  --->
-		<cfset var filePath="">
 
 		<cfset filePath=$.siteConfig().lookupContentTypeFilePath(lcase('#arguments.$.content().getType()#_#safesubtype#/index.cfm'))>
 		<cfif len(filePath)>
@@ -2006,6 +1997,13 @@
 		<cfset filePath=$.siteConfig().lookupContentTypeFilePath(lcase('#arguments.$.content().getType()#/index.cfm'))>
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
+		</cfif>
+
+		<cfif not arguments.$.siteConfig().hasDisplayObject(arguments.$.content().getType())>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#/index.cfm')>
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			</cfif>
 		</cfif>
 
 		<!--- END Checking for Override via content_types includes--->
@@ -2047,8 +2045,6 @@
 		</cfif>
 
 		<!--- END Checking for Override via Display Object --->
-
-
 
 		<cfreturn {}>
 	</cffunction>
