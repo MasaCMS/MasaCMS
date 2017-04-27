@@ -112,7 +112,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset variables.iniProperties=structNew()>
 	<cfloop list="#variables.iniSections.settings#" index="variables.p">
-		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>
+		<cfset variables.envVar='MURA_#UCASE(variables.p)#'>
+		<cfif structKeyExists(request.muraSysEnv,variables.envVar)>
+				<cfset variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar]>
+		<cfelse>
+				<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>
+		</cfif>
+
 		<cfif left(variables.iniProperties[variables.p],2) eq "${"
 			and right(variables.iniProperties[variables.p],1) eq "}">
 			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
@@ -125,7 +131,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfloop list="#variables.iniSections[ variables.iniProperties.mode]#" index="variables.p">
-		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p)>
+		<cfset variables.envVar='MURA_#UCASE(variables.p)#'>
+		<cfif structKeyExists(request.muraSysEnv,variables.envVar)>
+			<cfset variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar]>
+		<cfelse>
+			<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p)>
+		</cfif>
+
 		<cfif left(variables.iniProperties[variables.p],2) eq "${"
 			and right(variables.iniProperties[variables.p],1) eq "}">
 			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
@@ -199,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.addAlias("contentGateway","contentGatewayLucee");
 		}
 
-		if(getINIProperty("javaEnabled",true) && getINIProperty("legacyJavaLoader",true)){
+		if(getINIProperty("javaEnabled",true) && not request.muraInDocker && getINIProperty("legacyJavaLoader",true)){
 			variables.serviceFactory.addBean('javaLoader',
 					new mura.javaloader.JavaLoader(
 						loadPaths=[

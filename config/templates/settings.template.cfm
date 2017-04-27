@@ -22,7 +22,6 @@ cookiedomain=
 cookiepath=
 customtagpaths=
 datasource=
-dbcasesensitive=false
 dbpassword=
 dbtype=
 dbtablespace=USERS

@@ -71,6 +71,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.muraSessionManagement" default="true">
 <cfparam name="request.muraPointInTime" default="">
 <cfparam name="request.muraTemplateMissing" default="false">
+<cfparam name="request.muraSysEnv" default = "#createObject( "java", "java.lang.System" ).getEnv()#">
+
+<cfscript>
+	function getSystemEnvironmentSetting(required string name){
+	   var setting = '';
+
+	   if (structKeyExists(request.muraSysEnv, name)) {
+		   setting = request.muraSysEnv[name];
+	   }
+
+	   return setting;
+	}
+</cfscript>
+
+<cfset request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'))>
 
 <cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 <!--- Application name, should be unique --->
@@ -104,6 +119,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- Compile cfml in all cfincluded files --->
 <cfset this.compileextforinclude="*">
 
+
+
 <cfset baseDir= left(this.configPath,len(this.configPath)-8) />
 <cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
 	<cfset variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm")>
@@ -115,6 +132,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
+
+<cfif request.muraInDocker and not fileExists(baseDir & "/config/cfapplication.cfm")>
+	<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>
+	<cftry>
+	<cffile action="copy" source="#baseDir#/config/docker/cfapplication/mysql.cfm" destination="#baseDir#/config/cfapplication.cfm" mode="777">
+	<cfcatch>
+		<cffile action="copy" source="#baseDir#/config/docker/cfapplication/mysql.cfm" destination="#baseDir#/config/cfapplication.cfm">
+	</cfcatch>
+	</cftry>
+	<cfset commitTracePoint(variables.tracePoint)>
+	<cflocation url="./?#getSystemEnvironmentSetting('MURA_APPRELOADKEY')#" addtoken="false">
+</cfif>
+
 
 <cfset this.baseDir=baseDir>
 <cfset variables.baseDir=baseDir>
@@ -433,18 +463,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="entry" type="string" required="false" hint="Entry name." />
 	<cfargument name="default" type="string" required="false" />
 	<cfargument name="section" type="string" required="false" hint="Section name." default="#variables.ini.settings.mode#"/>
+	<cfset var envVar='MURA_#UCASE(arguments.entry)#'>
 
-	<cfif NOT structKeyExists( arguments, "entry" )>
-		<cfreturn variables.ini[ arguments.section ] />
-	</cfif>
-
-	<cfif structKeyExists( variables.ini[ arguments.section ], arguments.entry )>
-		<cfreturn variables.ini[ arguments.section ][ arguments.entry ] />
-	<cfelseif ( structKeyExists( arguments, "default" ) )>
-		<cfset setINIProperty(arguments.entry, arguments.default ,arguments.section) />
-		<cfreturn arguments.default />
+	<cfif structKeyExists(request.muraSysEnv,'#envVar#')>
+		<cfreturn request.muraSysEnv['#envVar#']>
 	<cfelse>
-		<cfreturn "" />
+		<cfif NOT structKeyExists( arguments, "entry" )>
+			<cfreturn variables.ini[ arguments.section ] />
+		</cfif>
+
+		<cfif structKeyExists( variables.ini[ arguments.section ], arguments.entry )>
+			<cfreturn variables.ini[ arguments.section ][ arguments.entry ] />
+		<cfelseif ( structKeyExists( arguments, "default" ) )>
+			<cfset setINIProperty(arguments.entry, arguments.default ,arguments.section) />
+			<cfreturn arguments.default />
+		<cfelse>
+			<cfreturn "" />
+		</cfif>
 	</cfif>
 </cffunction>
 

@@ -200,6 +200,7 @@ to your own modified versions of Mura CMS.
           <cfelse>
             <cfparam name="form.production_mysqlengine" default="InnoDB">
             <cfset storageEngine="ENGINE=#form.production_mysqlengine# DEFAULT CHARSET=utf8">
+
             <cfsavecontent variable="sql">
               <cfinclude template="../db/#FORM.production_dbtype#.sql">
             </cfsavecontent>

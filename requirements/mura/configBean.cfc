@@ -524,7 +524,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setAdminSSL" output="false">
-	<cfargument name="AdminSSL" type="Numeric" />
+	<cfargument name="AdminSSL" />
 	<cfset variables.instance.adminSSL = arguments.AdminSSL />
 	<cfreturn this>
 </cffunction>
@@ -534,7 +534,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setLogEvents" output="false">
-	<cfargument name="logEvents" type="Numeric" />
+	<cfargument name="logEvents"/>
 	<cfset variables.instance.logEvents = arguments.logEvents />
 	<cfreturn this>
 </cffunction>
