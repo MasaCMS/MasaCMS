@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
 			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 
-			<cfinclude template="/muraWRM/config/appcfc/docker_setup.cfm">
+			<cfinclude template="/muraWRM/config/docker/global/setup_check.cfm">
 
 			<cfif trim( getINIProperty("datasource") ) IS NOT ""
 					AND (
