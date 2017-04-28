@@ -2910,8 +2910,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				break;
 			case 'date':
 				var result= {
-					"type": "string",
-					"format": "date"
+					"type"= "string",
+					"format"= "date"
 				};
 				break;
 			case 'datetime':
