@@ -3041,15 +3041,15 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				"url"= "https://github.com/blueriver/MuraCMS/blob/develop/license.txt"
 			}
 			},
-			"host": $.siteConfig('domain'),
+			"host"= $.siteConfig('domain'),
 			"basePath"= replace($.siteConfig().getApi('JSON','v1').getEndPoint(useProtocol=false,mode='rest'),'/json/','/rest/'),
-			"tags": [
+			"tags"= [
 				{
 					"name"= "Mura CMS",
 					"description"= "Open source content management system",
 					"externalDocs"= {
 					"description"= "Find out more",
-					"url": "http://www.getmura.com"
+					"url"= "http://www.getmura.com"
 					}
 				}
 			],
