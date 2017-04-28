@@ -52,7 +52,7 @@ component output="false" {
 		canWriteMode=true;
 		canWriteMappings=true;
 		hasMappings=true;
-		
+
 		try{
 			include "config/mappings.cfm";
 		}

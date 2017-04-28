@@ -70,7 +70,6 @@ to your own modified versions of Mura CMS.
 <cfif form.action eq 'doSetup'>
   <cfinclude template="inc/_udf.cfm" />
   <cfinclude template="inc/_process.cfm" />
-
 </cfif>
 
 <!-----------------------------------------------------------------------

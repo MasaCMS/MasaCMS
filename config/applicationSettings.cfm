@@ -119,8 +119,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- Compile cfml in all cfincluded files --->
 <cfset this.compileextforinclude="*">
 
-
-
 <cfset baseDir= left(this.configPath,len(this.configPath)-8) />
 <cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
 	<cfset variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm")>
@@ -144,7 +142,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset commitTracePoint(variables.tracePoint)>
 	<cflocation url="./?#getSystemEnvironmentSetting('MURA_APPRELOADKEY')#" addtoken="false">
 </cfif>
-
 
 <cfset this.baseDir=baseDir>
 <cfset variables.baseDir=baseDir>

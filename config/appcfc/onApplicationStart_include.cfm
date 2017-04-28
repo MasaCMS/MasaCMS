@@ -75,7 +75,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
 			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 
-			<cfif trim( getINIProperty("datasource") ) IS NOT ""
+			<cfif false and isDefined('request.muraSysEnv.MURA_DATASOURCE')>
+				<cfquery>
+
+				</cfquery>
+			<cfelseif trim( getINIProperty("datasource") ) IS NOT ""
 					AND (
 						NOT isDefined( "FORM.#application.setupSubmitButton#" )
 						AND
@@ -102,21 +106,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif application.setupComplete>
 	<cfset application.appInitialized=false>
 	<cfset request.muraShowTrace=true>
-
 	<cfset application.appInitialized=false>
 	<cfset request.muraShowTrace=true>
-
 	<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
-
 	<cfset variables.iniSections=getProfileSections(variables.iniPath)>
 
 	<cfset variables.iniProperties=structNew()>
 	<cfloop list="#variables.iniSections.settings#" index="variables.p">
 		<cfset variables.envVar='MURA_#UCASE(variables.p)#'>
 		<cfif structKeyExists(request.muraSysEnv,variables.envVar)>
-				<cfset variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar]>
+			<cfset variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar]>
 		<cfelse>
-				<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>
+			<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>
 		</cfif>
 
 		<cfif left(variables.iniProperties[variables.p],2) eq "${"
