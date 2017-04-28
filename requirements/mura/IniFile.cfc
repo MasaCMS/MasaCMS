@@ -143,11 +143,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="entry" type="string" required="true" hint="Entry name." />
 		<cfargument name="value" type="any" required="false" default="" hint="Property value" />
 
-		<cfset setSection( arguments.section ) />
+		<cfif not request.muraInDocker>
+			<cfset setSection( arguments.section ) />
 
-		<cfset variables.ini[ arguments.section ][ arguments.entry ] = arguments.value />
-		<cfset setProfileString( variables.iniPath, arguments.section, arguments.entry, arguments.value ) />
-
+			<cfset variables.ini[ arguments.section ][ arguments.entry ] = arguments.value />
+			<cfset setProfileString( variables.iniPath, arguments.section, arguments.entry, arguments.value ) />
+		</cfif>
 		<cfreturn this />
 	</cffunction>
 

@@ -134,9 +134,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif request.muraInDocker and not fileExists(baseDir & "/config/cfapplication.cfm")>
 	<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>
 	<cftry>
-	<cffile action="copy" source="#baseDir#/config/docker/cfapplication/mysql.cfm" destination="#baseDir#/config/cfapplication.cfm" mode="777">
+	<cffile action="copy" source="#baseDir#/config/docker/local-dev/cfapplication.cfm" destination="#baseDir#/config/cfapplication.cfm" mode="777">
 	<cfcatch>
-		<cffile action="copy" source="#baseDir#/config/docker/cfapplication/mysql.cfm" destination="#baseDir#/config/cfapplication.cfm">
+		<cffile action="copy" source="#baseDir#/config/docker/local-dev/cfapplication.cfm" destination="#baseDir#/config/cfapplication.cfm">
 	</cfcatch>
 	</cftry>
 	<cfset commitTracePoint(variables.tracePoint)>
