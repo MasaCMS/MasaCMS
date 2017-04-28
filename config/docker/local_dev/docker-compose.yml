@@ -20,9 +20,9 @@ services:
       MURA_DBPASSWORD: NOT_SECURE_CHANGE
       MURA_DBHOST: mura_mysql
       MURA_DBPORT: 3306
-      MURA_SITEIDINURLS: 'false'
-      MURA_INDEXFILEINURLS: 'true'
-      LUCEE_JAVA_OPTS: -Xms512m -Xmx1024m
+      MURA_SITEIDINURLS: "false"
+      MURA_INDEXFILEINURLS: "true"
+      LUCEE_JAVA_OPTS: "-Xms512m -Xmx1024m"
     volumes:
         - ../../../:/app
     ports:
