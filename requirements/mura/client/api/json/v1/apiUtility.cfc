@@ -2845,11 +2845,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function getSwaggerPropertyDataType(datatype){
+
 		switch(arguments.datatype){
 			case 'int':
 			case 'integer':
 			case 'numeric':
-				return {
+				var result= {
 					'type'='integer',
 					'format'='int64'
 				};
@@ -2858,44 +2859,46 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			case 'tinyint':
 			case 'meduimint':
 			case 'bit':
-				return {
+				var result= {
 					'type'='integer',
 					'format'='int32'
 				};
 				break;
 			case 'boolean':
-				return {
+				var result= {
 					'type'='boolean'
 				};
 				break;
 			case 'float':
-				return {
+				var result= {
 					'type'='float'
 				};
 				break;
 			case 'double':
-				return {
+				var result= {
 					'type'='double'
 				};
 				break;
 			case 'date':
-				return {
-					"type": "string",
-					"format": "date"
+				var result= {
+					"type"= "string",
+					"format"= "date"
 				};
 				break;
 			case 'datetime':
 			case 'timestamp':
-				return {
-					"type": "string",
-					"format": "date-time"
+				var result={
+					"type"= "string",
+					"format"= "date-time"
 				};
 				break;
 			default:
-				return {
+				var result= {
 					'type'='string'
 				};
 		}
+
+		return result;
 
 	}
 
