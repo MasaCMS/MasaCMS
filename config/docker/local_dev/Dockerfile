@@ -1,0 +1,1 @@
+FROM ortussolutions/commandbox:latest
