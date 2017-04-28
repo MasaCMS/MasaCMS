@@ -113,6 +113,7 @@ If it has not, set application.appInitialized=false. --->
 	<cfif not application.setupComplete>
 		<cfset request.renderMuraSetup = true />
 		<!--- go to the index.cfm page (setup) --->
+		<cfinclude template="/muraWRM/config/appcfc/docker_setup.cfm">
 		<cfinclude template="/muraWRM/config/setup/index.cfm">
 		<cfabort>
 	</cfif>

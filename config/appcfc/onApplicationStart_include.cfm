@@ -75,21 +75,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
 			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 
-			<cfif isDefined('request.muraSysEnv.MURA_DATABASE')>
-				<!--- MYSQL ONLY AT THE MOMENT --->
-				<cfquery name="checkForDB">
-					SELECT IF('#request.muraSysEnv.MURA_DATABASE#' IN(SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA), 1, 0) AS found;
-				</cfquery>
+			<cfinclude template="/muraWRM/config/appcfc/docker_setup.cfm">
 
-				<cfif not checkForDB.found>
-					<cfquery>
-						CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#;
-					</cfquery>
-
-					<cfset FORM['#application.setupSubmitButton#']=true>
-					<cfset FORM['#application.setupSubmitButtonComplete#']=true>
-				</cfif>
-			</cfif>
 			<cfif trim( getINIProperty("datasource") ) IS NOT ""
 					AND (
 						NOT isDefined( "FORM.#application.setupSubmitButton#" )
