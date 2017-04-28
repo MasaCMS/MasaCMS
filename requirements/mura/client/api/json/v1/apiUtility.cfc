@@ -2965,7 +2965,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	function getSwaggerEntityProps(entity){
 		var response={
 			"links"={
-				"$ref": "##/definitions/links"
+				"$ref"= "##/definitions/links"
 			}
 		};
 		var p='';
