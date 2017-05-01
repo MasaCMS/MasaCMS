@@ -9,7 +9,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
+You should have received a copy of txhe GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
@@ -380,7 +380,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.mura=application.serviceFactory.getBean('mura')>
 	</cfloop>
 
-
 	<!--- End beanServicePlaceHolders --->
 
 	<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
@@ -390,11 +389,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 
-	<cfif not isDefined('application.rbFactory')>
-		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")>
-		<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory() />
-		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-	</cfif>
+	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")>
+	<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory() />
+	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 
 	<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 	<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
@@ -650,7 +647,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			contentMode='all',
 			pluginMode='all'
 		)>
-		<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
+		<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/deployed.zip"))>
 	</cfif>
 
 	<cfset application.sessionTrackingThrottle=false>

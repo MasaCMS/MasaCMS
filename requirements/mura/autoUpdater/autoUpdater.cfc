@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
 
 		<cfif len(diff)>
-			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
+			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="#updateVersion#")>
 			<cfset returnStruct.currentVersion=updateVersion/>
 			<cfset returnstruct.files=updatedArray>
 		<cfelse>
@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not FileExists(versionDir & "/" & "version.cfm")>
-		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="<cfabort>:1")>
+		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="1")>
 	</cfif>
 
 	<cffile action="read" file="#versionDir#/version.cfm" variable="versionFileContents">
@@ -252,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset currentVersion=listLast(versionFileContents,":")>
 
 	<cfif not isNumeric(currentVersion)>
-		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="<cfabort>:1")>
+		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="1")>
 		<cfreturn 1>
 	<cfelse>
 		<cfreturn trim(currentVersion)>

@@ -3,12 +3,12 @@ version: '2.1'
 services:
   #Mura Server
   mura_cfml:
-    image: mura
     build: .
     environment:
       PORT: 8080
       SSL_PORT: 8443
       CFENGINE: lucee@5
+      CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
       MURA_ADMIN_USERNAME: admin
       MURA_ADMIN_PASSWORD: admin
       MURA_ADMINEMAIL: example@localhost.com
