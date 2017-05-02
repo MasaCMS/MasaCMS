@@ -32,6 +32,6 @@ username:admin
 password:admin
 ```
 
-Simply hold down control-c to the service.
+Simply hold down control-c to stop the service.
 
 [Website (http://www.getmura.com)](http://www.getmura.com)
