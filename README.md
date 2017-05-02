@@ -25,6 +25,8 @@ Then access the application via:
 
 http://localhost:8080
 
+Then to login type esc-l or go to http://localhost:8080/admin
+
 ```
 username:admin
 password:admin
