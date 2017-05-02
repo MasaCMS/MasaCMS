@@ -23,10 +23,12 @@ docker-compose -f config/docker/local-dev/docker-compose.yml up
 
 Then access the application via:
 
-http://localhost/8080
+http://localhost:8080
 
+```
 username:admin
 password:admin
+```
 
 Simply hold down control-c to the service.
 
