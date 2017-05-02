@@ -133,7 +133,7 @@ fi
 
 # We need to do this all on one line because escaped line breaks
 # aren't picked up correctly by CommandBox on this base image ( JIRA:COMMANDBOX-598 )
-box server set app.cfengine=${CFENGINE} app.serverHomeDirectory=${SERVER_HOME_DIRECTORY} web.host=0.0.0.0 openbrowser=false web.http.port=${PORT} web.ssl.port=${SSL_PORT}
+box server set app.cfengine=${CFENGINE} app.serverHomeDirectory=${SERVER_HOME_DIRECTORY} web.host=0.0.0.0 openbrowser=false web.http.port=${PORT} web.ssl.port=${SSL_PORT} web.rewrites.enable=true
 box server start
 
 #Sleep for ACF servers

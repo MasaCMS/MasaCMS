@@ -21,7 +21,7 @@ services:
       MURA_DBHOST: mura_demo_mysql
       MURA_DBPORT: 3306
       MURA_SITEIDINURLS: "false"
-      MURA_INDEXFILEINURLS: "true"
+      MURA_INDEXFILEINURLS: "false"
       LUCEE_JAVA_OPTS: "-Xms512m -Xmx1024m"
     volumes:
         - ../../../:/app
