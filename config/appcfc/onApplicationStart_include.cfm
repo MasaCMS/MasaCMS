@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
 			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 
-			<cfinclude template="/muraWRM/config/docker/global/setup_check.cfm">
+			<cfinclude template="/muraWRM/config/appcfc/setup_check.cfm">
 
 			<cfif trim( getINIProperty("datasource") ) IS NOT ""
 					AND (
@@ -638,7 +638,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfset local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip")>
+	<cfif request.muraInDocker>
+		<cfset local.bundleLoc="/tmp/MuraBundle.zip">
+	<cfelse>
+		<cfset local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip")>
+	</cfif>
+
 	<cfif fileExists(local.bundleLoc) and application.contentGateway.getPageCount('default').counter eq 1>
 		<cfset application.settingsManager.restoreBundle(
 			bundleFile=local.bundleLoc,
@@ -647,7 +652,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			contentMode='all',
 			pluginMode='all'
 		)>
-		<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/deployed.zip"))>
 	</cfif>
 
 	<cfset application.sessionTrackingThrottle=false>
