@@ -283,9 +283,13 @@ to your own modified versions of Mura CMS.
 				</cfcase>
             </cfswitch>
             <!--- update the domain to be local to the domain the server is being installed on --->
+            <cfset domain=listFirst(cgi.http_host,":")>
+            <cfif domain eq '127.0.0.1'>
+                <cfset domain='localhost'>
+            </cfif>
             <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
               UPDATE tsettings
-              SET domain = '#listFirst(cgi.http_host,":")#',
+              SET domain = '#domain#',
                 theme = 'MuraBootstrap3',
                 gallerySmallScaleBy='s',
                 gallerySmallScale=80,
