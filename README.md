@@ -28,8 +28,17 @@ http://localhost:8080
 To login type esc-l or go to http://localhost:8080/admin
 
 ```
-username:admin
-password:admin
+Username:admin
+Password:admin
+```
+
+MYSQL Connection Info:
+
+```
+Host: localhost
+Port: 55555
+Username: root
+Passsword: NOT_SECURE_CHANGE
 ```
 
 Simply hold down control-c to stop the service.
