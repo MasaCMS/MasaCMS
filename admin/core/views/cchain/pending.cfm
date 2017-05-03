@@ -128,12 +128,16 @@
 										<td class="title var-width">#$.dspZoom(item.getCrumbArray())#</td>
 										<cfif hasChangesets>
 											<td>
-												<cfif isDate(item.getchangesetPublishDate())>
-													<a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(item.getchangesetPublishDate()," short"))#">
-														<i class="mi-calendar"></i>
-													</a>
-												</cfif>
-												<a href="./?muraAction=cChangesets.assignments&siteID=#item.getSiteID()#&changesetID=#item.getChangeSetID()#">#esapiEncode('html',item.getChangesetName())#</a>
+												<cfif len(item.getChangeSetID())>
+													<cfif isDate(item.getchangesetPublishDate())>
+														<a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(item.getchangesetPublishDate()," short"))#">
+															<i class="mi-calendar"></i>
+														</a>
+													</cfif>
+													<a href="./?muraAction=cChangesets.assignments&siteID=#item.getSiteID()#&changesetID=#item.getChangeSetID()#">#esapiEncode('html',item.getChangesetName())#</a>
+													<cfelse>
+															NA
+													</cfif>
 											</td>
 										</cfif>
 										<td>#esapiEncode('html',item.getLastUpdateBy())#</td>
