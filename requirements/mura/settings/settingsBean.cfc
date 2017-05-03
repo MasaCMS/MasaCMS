@@ -1948,7 +1948,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="discoverDisplayObjects" output="false">
 	<cfset var lookupArray=[
-		'/muraWRM/admin/core/views/carch/objectclass',
+		'/muraWRM/#variables.configBean.getAdminDir()#/core/views/carch/objectclass',
 		"/muraWRM/modules",
 		"/muraWRM/display_objects",
 		getIncludePath()  & "/includes/display_objects",
@@ -1967,8 +1967,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop array="#lookupArray#" index="dir">
 		<cfset dirIndex=dirIndex+1>
-		<cfset custom=dirIndex gt 2 or listFind('/muraWRM/modules,/muraWRM/display_objects',dir)>
-		<cfset conditional=dirIndex gt 2 or listFind('/muraWRM/modules,/muraWRM/display_objects',dir)>
+		<cfset custom=dirIndex gt 2 or listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir)>
+		<cfset conditional=dirIndex gt 2 or listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir)>
 		<cfset registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom)>
 	</cfloop>
 
