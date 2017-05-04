@@ -377,11 +377,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				nodatabase=  {
 						'#driverVarName#' = driverName
 					 , host = getSystemEnvironmentSetting('MURA_DBHOST')
+					 , database = ''
 					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
 					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
 					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
 				}
 		};
+
+
 	}
 </cfscript>
 
