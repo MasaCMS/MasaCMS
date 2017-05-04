@@ -2,7 +2,7 @@
 appreloadkey=appreload
 mode=production
 [production]
-adminddir=admin
+adminddir=/admin
 admindomain=
 adminemail=
 adminssl=false
