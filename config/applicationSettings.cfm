@@ -131,17 +131,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
 
-<cfif request.muraInDocker and not fileExists(baseDir & "/config/cfapplication.cfm")>
-	<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>
-	<cftry>
-	<cffile action="copy" source="#baseDir#/config/templates/cfapplication.cfm" destination="#baseDir#/config/cfapplication.cfm" mode="777">
-	<cfcatch>
-		<cffile action="copy" source="#baseDir#/config/templates/cfapplication.cfm" destination="#baseDir#/config/cfapplication.cfm">
-	</cfcatch>
-	</cftry>
-	<cfset commitTracePoint(variables.tracePoint)>
-</cfif>
-
 <cfset this.baseDir=baseDir>
 <cfset variables.baseDir=baseDir>
 
@@ -337,6 +326,64 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.ormSettings.autogenmap= evalSetting(getINIProperty("ormautogenmap","true")) />
 	<cfset this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false")) />
 </cfif>
+
+<cfscript>
+	if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
+		if(server.coldfusion.productname == 'lucee'){
+			driverVarName='type';
+
+			switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
+				case 'mysql':
+					driverName='mysql';
+					break;
+				case 'mssql':
+					driverName='mssql';
+					break;
+				case 'oracle':
+					driverName='Oracle';
+					break;
+				case 'postgres':
+					driverName='Postgres';
+					break;
+			}
+		} else {
+			driverVarName='driver';
+
+			switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
+				case 'mysql':
+					driverName='MySQL5';
+					break;
+				case 'mssql':
+					driverName='MSSQLServer';
+					break;
+				case 'oracle':
+					driverName='Oracle';
+					break;
+				case 'postgres':
+					driverName='PostgreSQL';
+					break;
+			}
+		}
+
+		this.datasources={
+			'#getSystemEnvironmentSetting('MURA_DATASOURCE')#' =  {
+						'#driverVarName#' = driverName
+					 , host = getSystemEnvironmentSetting('MURA_DBHOST')
+					 , database = getSystemEnvironmentSetting('MURA_DATABASE')
+					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
+					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				},
+				nodatabase=  {
+						'#driverVarName#' = driverName
+					 , host = getSystemEnvironmentSetting('MURA_DBHOST')
+					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
+					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				}
+		};
+	}
+</cfscript>
 
 <cftry>
 	<cfinclude template="#variables.context#/plugins/cfapplication.cfm">
