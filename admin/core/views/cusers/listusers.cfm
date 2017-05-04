@@ -90,7 +90,7 @@
 		<div class="mura-control-group">
 
 			<!--- View All / Unassigned Only --->
-				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#esapiEncode('url',rc.ispublic)#&unassigned=#esapiEncode('url',rc.unassigned)#')#" onclick="actionModal();">
+				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=#esapiEncode('url',rc.ispublic)#&unassigned=#esapiEncode('url',rc.unassigned)#')#" onclick="actionModal();">
 					<i class="mi-filter"></i>
 					<cfif rc.unassigned EQ 0>
 						#rbKey('user.viewunassignedonly')#
@@ -101,7 +101,7 @@
 
 			<!--- Download .CSV --->
         <cfif rc.it.hasNext()>
-  				<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#esapiEncode('url',rc.ispublic)#&unassigned=#esapiEncode('url',rc.unassigned)#')#">
+  				<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=#esapiEncode('url',rc.ispublic)#&unassigned=#esapiEncode('url',rc.unassigned)#')#">
 			  		<i class="mi-download"></i>
   					#rbKey('user.download')#
   				</a>
