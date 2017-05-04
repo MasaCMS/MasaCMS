@@ -17,11 +17,11 @@ services:
       MURA_APPRELOADKEY: appreload
       MURA_DATASOURCE: muradb
       MURA_DATABASE: muradb
-      MURA_DBTYPE: postgres
-      MURA_DBUSERNAME: root
+      MURA_DBTYPE: postgresql
+      MURA_DBUSERNAME: muradb
       MURA_DBPASSWORD: NOT_SECURE_CHANGE
       MURA_DBHOST: mura_postgres
-      MURA_DBPORT: 1433
+      MURA_DBPORT: 5432
       MURA_SITEIDINURLS: "false"
       MURA_INDEXFILEINURLS: "false"
     volumes:
@@ -34,7 +34,7 @@ services:
     image: postgres:latest
     environment:
        POSTGRES_DB: muradb
-       POSTGRES_USER: root
+       POSTGRES_USER: muradb
        POSTGRES_PASSWORD: NOT_SECURE_CHANGE
     volumes:
         - mura_postgres_data:/var/lib/postgresql/data

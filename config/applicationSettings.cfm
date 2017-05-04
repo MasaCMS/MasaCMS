@@ -342,8 +342,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				case 'oracle':
 					driverName='Oracle';
 					break;
-				case 'postgres':
-					driverName='Postgres';
+				case 'postgresql':
+					driverName='PostgreSQL';
 					break;
 			}
 		} else {
@@ -359,7 +359,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				case 'oracle':
 					driverName='Oracle';
 					break;
-				case 'postgres':
+				case 'postgresql':
 					driverName='PostgreSQL';
 					break;
 			}

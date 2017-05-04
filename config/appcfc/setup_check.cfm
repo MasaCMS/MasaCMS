@@ -53,7 +53,7 @@
            <cfset FORM['setupSubmitButton']=true>
            <cfset FORM['action']='doSetup'>
        </cfif>
-    <cfelseif request.muraSysEnv.MURA_DBTYPE eq 'postgres'>
+    <cfelseif request.muraSysEnv.MURA_DBTYPE eq 'postgresql'>
         <cfquery name="rs" datasource="nodatabase">
           SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = <cfqueryparam cfsqltype="cf_sql_varchar" value="#lcase(request.muraSysEnv.MURA_DATABASE)#">;
         </cfquery>
@@ -70,10 +70,10 @@
         </cfif>
 
           <cfquery name="checkForTCONTENT">
-              select count(*) from pg_class where relname='tablename' and relkind='r'
+              select * from pg_class where relname='tcontent' and relkind='r'
           </cfquery>
 
-         <cfif not checkForTCONTENT.found>
+         <cfif not checkForTCONTENT.recordcount>
              <cfset FORM['#application.setupSubmitButton#']=true>
              <cfset FORM['#application.setupSubmitButtonComplete#']=true>
              <cfset FORM['setupSubmitButton']=true>
