@@ -18,7 +18,7 @@ Start up an instance with no content:
 ```
 git clone git@github.com:blueriver/MuraCMS.git
 cd MuraCMS
-docker-compose -f config/docker/local-dev/docker-compose.yml up
+docker-compose -f config/docker/local-mysql/docker-compose.yml up
 ```
 
 Then access the application via:

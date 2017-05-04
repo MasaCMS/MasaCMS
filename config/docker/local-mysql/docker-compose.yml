@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   #Mura Server
-  mura_cfml:
+  mura_mysql_cfml:
     image: ortussolutions/commandbox:latest
     environment:
       PORT: 8080

@@ -140,7 +140,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcatch>
 	</cftry>
 	<cfset commitTracePoint(variables.tracePoint)>
-	<cflocation url="./?#getSystemEnvironmentSetting('MURA_APPRELOADKEY')#" addtoken="false">
 </cfif>
 
 <cfset this.baseDir=baseDir>
