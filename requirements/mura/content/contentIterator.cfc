@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,75 +43,67 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.iterator.queryIterator" output="false" hint="This provides content iterating functionality">
+*/
+/**
+ * This provides content iterating functionality
+ */
+component extends="mura.iterator.queryIterator" output="false" hint="This provides content iterating functionality" {
+	variables.content="";
+	variables.recordIDField="contenthistid";
 
-<cfset variables.content="">
-<cfset variables.recordIDField="contenthistid">
+	public function getEntityName() output=false {
+		return "content";
+	}
 
-<cffunction name="getEntityName" output="false">
-	<cfreturn "content">
-</cffunction>
+	public function init() output=false {
+		super.init(argumentCollection=arguments);
+		variables.content=getBean("contentNavBean");
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
-	<cfset variables.content=getBean("contentNavBean")>
+	public function packageRecord() output=false {
+		var item="";
+		if ( isQuery(variables.records) ) {
+			item=queryRowToStruct(variables.records,currentIndex());
+		} else if ( isArray(variables.records) ) {
+			item=variables.records[currentIndex()];
+		} else {
+			throw( message="The records have not been set." );
+		}
+		variables.content=getBean("contentNavBean").set(item,this);
+		return variables.content;
+	}
 
-	<cfreturn this />
-</cffunction>
+	public function getRecordIdField() output=false {
+		if ( isArray(variables.records) ) {
+			if ( arrayLen(variables.records) && structKeyExists(variables.records[1],'contenthistid') ) {
+				return "contenthistid";
+			} else {
+				return "contentid";
+			}
+		} else {
+			if ( isdefined("variables.records.contenthistid") ) {
+				return "contenthistid";
+			} else {
+				return "contentid";
+			}
+		}
+	}
 
-<cffunction name="packageRecord" output="false">
-	<cfset var item="">
+	public function buildQueryFromList(idList, siteid, required idType="contentID") output=false {
+		var i="";
+		var idArray=listToArray(arguments.idList);
+		variables.records=queryNew("#arguments.idType#,siteID","VARCHAR,VARCHAR");
+		for ( i=1 ; i<=arrayLen(idArray) ; i++ ) {
+			QueryAddRow(variables.records);
+			QuerySetCell(variables.records, arguments.idType, idArray[i]);
+			QuerySetCell(variables.records, 'siteID',arguments.siteid);
+		}
+		variables._recordcount=variables.records.recordcount;
+		variables.maxRecordsPerPage=variables.records.recordcount;
+		variables.recordIndex = 0;
+		variables.pageIndex = 1;
+		return this;
+	}
 
-	<cfif isQuery(variables.records)>
-		<cfset item=queryRowToStruct(variables.records,currentIndex())>
-	<cfelseif isArray(variables.records)>
-		<cfset item=variables.records[currentIndex()]>
-	<cfelse>
-		<cfthrow message="The records have not been set.">
-	</cfif>
-
-	<cfset variables.content=getBean("contentNavBean").set(item,this) />
-
-	<cfreturn variables.content>
-</cffunction>
-
-<cffunction name="getRecordIdField" output="false">
-	<cfif isArray(variables.records)>
-		<cfif arrayLen(variables.records) and structKeyExists(variables.records[1],'contenthistid')>
-			<cfreturn "contenthistid">
-		<cfelse>
-			<cfreturn "contentid">
-		</cfif>
-	<cfelse>
-		<cfif isdefined("variables.records.contenthistid")>
-			<cfreturn "contenthistid">
-		<cfelse>
-			<cfreturn "contentid">
-		</cfif>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="buildQueryFromList" output="false">
-	<cfargument name="idList">
-	<cfargument name="siteid">
-	<cfargument name="idType" required="true" default="contentID">
-	<cfset var i="">
-	<cfset var idArray=listToArray(arguments.idList)>
-	<cfset variables.records=queryNew("#arguments.idType#,siteID","VARCHAR,VARCHAR")>
-
-	<cfloop from="1" to="#arrayLen(idArray)#" index="i">
-		<cfset QueryAddRow(variables.records)>
-		<cfset QuerySetCell(variables.records, arguments.idType, idArray[i])>
-		<cfset QuerySetCell(variables.records, 'siteID',arguments.siteid)>
-	</cfloop>
-
-	<cfset variables._recordcount=variables.records.recordcount>
-	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
-	<cfset variables.recordIndex = 0 />
-	<cfset variables.pageIndex = 1 />
-	<cfreturn this>
-</cffunction>
-
-</cfcomponent>
+}

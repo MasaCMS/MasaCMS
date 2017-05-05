@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,345 +36,208 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false">
+*/
+component extends="mura.cfobject" output="false" {
 
-<cffunction name="init" output="false">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="userGateway" type="any" required="yes"/>
-<cfargument name="contentGateway" type="any" required="yes"/>
-<cfargument name="sessionTrackingGateway" type="any" required="yes"/>
-<cfargument name="emailGateway" type="any" required="yes"/>
-<cfargument name="settingsManager" type="any" required="yes"/>
-<cfargument name="raterManager" type="any" required="yes"/>
-<cfargument name="feedGateway" type="any" required="yes"/>
+	public function init(required any configBean, required any userGateway, required any contentGateway, required any sessionTrackingGateway, required any emailGateway, required any settingsManager, required any raterManager, required any feedGateway) output=false {
+		variables.configBean=arguments.configBean;
+		variables.userGateway=arguments.userGateway;
+		variables.contentGateway=arguments.contentGateway;
+		variables.sessionTrackingGateway=arguments.sessionTrackingGateway;
+		variables.emailGateway=arguments.emailGateway;
+		variables.settingsManager=arguments.settingsManager;
+		variables.raterManager=arguments.raterManager;
+		variables.feedGateway=arguments.feedGateway;
+		return this;
+	}
 
-		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.userGateway=arguments.userGateway />
-		<cfset variables.contentGateway=arguments.contentGateway />
-		<cfset variables.sessionTrackingGateway=arguments.sessionTrackingGateway />
-		<cfset variables.emailGateway=arguments.emailGateway />
-		<cfset variables.settingsManager=arguments.settingsManager />
-		<cfset variables.raterManager=arguments.raterManager />
-		<cfset variables.feedGateway=arguments.feedGateway />
-		
-<cfreturn this />
-</cffunction>
+	public function getSiteSessionCount(required string siteID="", required boolean membersOnly="false", required string visitorStatus="false", required numeric span="15", required string spanType="n") output=false {
+		return variables.sessionTrackingGateway.getSiteSessionCount(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.span,arguments.spanType);
+	}
 
-<cffunction name="getSiteSessionCount" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="membersOnly" type="boolean" required="true" default="false">
-	<cfargument name="visitorStatus" type="string" required="true" default="false">
-	<cfargument name="span" type="numeric" required="true" default="15">
-	<cfargument name="spanType" type="string" required="true" default="n">
-	
-	<cfreturn variables.sessionTrackingGateway.getSiteSessionCount(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.span,arguments.spanType) />
-</cffunction>
+	public function getCreatedMembers(required string siteID="", required string startDate="", required string stopDate="") output=false {
+		return variables.userGateway.getCreatedMembers(arguments.siteID,arguments.startDate,arguments.stopDate);
+	}
 
-<cffunction name="getCreatedMembers" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.userGateway.getCreatedMembers(arguments.siteID,arguments.startDate,arguments.stopDate) />
-</cffunction>
+	public function getTotalMembers(required string siteID="") output=false {
+		return variables.userGateway.getTotalMembers(arguments.siteID);
+	}
 
-<cffunction name="getTotalMembers" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
+	public function getTotalAdministrators(required string siteID="") output=false {
+		return variables.userGateway.getTotalAdministrators(arguments.siteID);
+	}
 
-	
-	<cfreturn variables.userGateway.getTotalMembers(arguments.siteID) />
-</cffunction>
+	public function getTopContent(required string siteID="", required numeric limit="10", required boolean membersOnly="false", required string visitorStatus="false", required string startDate="", required string stopDate="", required boolean excludeHome="false") output=false {
+		return variables.sessionTrackingGateway.getTopContent(arguments.siteID,arguments.limit,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate,arguments.excludeHome);
+	}
 
-<cffunction name="getTotalAdministrators" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
+	public function getSiteSessions(required string siteID="", required String contentID="", required boolean membersOnly="false", required string visitorStatus="false", required numeric span="15", required string spanType="n") output=false {
+		return variables.sessionTrackingGateway.getSiteSessions(arguments.siteID,arguments.contentID,arguments.membersOnly,arguments.visitorStatus,arguments.span,arguments.spanType);
+	}
 
-	
-	<cfreturn variables.userGateway.getTotalAdministrators(arguments.siteID) />
-</cffunction>
+	public function getSessionHistory(string urlToken="", string siteID="") {
+		return variables.sessionTrackingGateway.getSessionHistory(arguments.urlToken,arguments.siteID);
+	}
 
-<cffunction name="getTopContent" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="limit" type="numeric" required="true" default="10">
-	<cfargument name="membersOnly" type="boolean" required="true" default="false">
-	<cfargument name="visitorStatus" type="string" required="true" default="false">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	<cfargument name="excludeHome" type="boolean" required="true" default="false">
-	
-	<cfreturn variables.sessionTrackingGateway.getTopContent(arguments.siteID,arguments.limit,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate,arguments.excludeHome) />
-</cffunction>
+	public function getTopKeywords(required string siteID="", required numeric limit="10", required boolean membersOnly="false", required string visitorStatus="false", required string startDate="", required string stopDate="") output=false {
+		return variables.sessionTrackingGateway.getTopKeywords(arguments.siteID,arguments.limit,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate);
+	}
 
-<cffunction name="getSiteSessions" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="contentID" type="String" required="true" default="">
-	<cfargument name="membersOnly" type="boolean" required="true" default="false">
-	<cfargument name="visitorStatus" type="string" required="true" default="false">
-	<cfargument name="span" type="numeric" required="true" default="15">
-	<cfargument name="spanType" type="string" required="true" default="n">
-	
-	<cfreturn variables.sessionTrackingGateway.getSiteSessions(arguments.siteID,arguments.contentID,arguments.membersOnly,arguments.visitorStatus,arguments.span,arguments.spanType) />
-</cffunction>
+	public function getTotalKeywords(required string siteID="", required boolean membersOnly="false", required string visitorStatus="false", required string startDate="", required string stopDate="") output=false {
+		return variables.sessionTrackingGateway.getTotalKeywords(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate);
+	}
 
-<cffunction name="getSessionHistory">
-	<cfargument name="urlToken" type="string" default="">
-	<cfargument name="siteID" type="string" default="">
+	public function getTotalHits(required string siteID="", required boolean membersOnly="false", required string visitorStatus="false", required string startDate="", required string stopDate="") output=false {
+		return variables.sessionTrackingGateway.getTotalHits(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate);
+	}
 
-	<cfreturn variables.sessionTrackingGateway.getSessionHistory(arguments.urlToken,arguments.siteID) />
+	public function getTotalSessions(required string siteID="", required boolean membersOnly="false", required string visitorStatus="false", required string startDate="", required string stopDate="") output=false {
+		return variables.sessionTrackingGateway.getTotalSessions(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate);
+	}
 
-</cffunction>
+	public function getTopReferers(required string siteID="", required numeric limit="10", required string startDate="", required string stopDate="") output=false {
+		return variables.sessionTrackingGateway.getTopReferers(arguments.siteID,arguments.limit,arguments.startDate,arguments.stopDate);
+	}
 
-<cffunction name="getTopKeywords" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="limit" type="numeric" required="true" default="10">
-	<cfargument name="membersOnly" type="boolean" required="true" default="false">
-	<cfargument name="visitorStatus" type="string" required="true" default="false">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.sessionTrackingGateway.getTopKeywords(arguments.siteID,arguments.limit,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
-</cffunction>
+	public function getTotalReferers(required string siteID="", required string startDate="", required string stopDate="") output=false {
+		return variables.sessionTrackingGateway.getTotalReferers(arguments.siteID,arguments.startDate,arguments.stopDate);
+	}
 
-<cffunction name="getTotalKeywords" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="membersOnly" type="boolean" required="true" default="false">
-	<cfargument name="visitorStatus" type="string" required="true" default="false">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.sessionTrackingGateway.getTotalKeywords(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
-</cffunction>
+	public function getcontentTypeCount(required string siteID="", required string type="") output=false {
+		return variables.contentGateway.getTypeCount(arguments.siteID,arguments.type);
+	}
 
-<cffunction name="getTotalHits" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="membersOnly" type="boolean" required="true" default="false">
-	<cfargument name="visitorStatus" type="string" required="true" default="false">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.sessionTrackingGateway.getTotalHits(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
-</cffunction>
+	public function getRecentUpdates(required string siteID="", required numeric limit="5", required string startDate="", required string stopDate="") output=false {
+		return variables.contentGateway.getRecentUpdates(arguments.siteID,arguments.limit,arguments.startdate,arguments.stopdate);
+	}
 
-<cffunction name="getTotalSessions" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="membersOnly" type="boolean" required="true" default="false">
-	<cfargument name="visitorStatus" type="string" required="true" default="false">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.sessionTrackingGateway.getTotalSessions(arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
-</cffunction>
+	public function getRecentFormActivity(required string siteID="", required numeric limit="5") output=false {
+		return variables.contentGateway.getRecentFormActivity(arguments.siteID,arguments.limit);
+	}
 
-<cffunction name="getTopReferers" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="limit" type="numeric" required="true" default="10">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.sessionTrackingGateway.getTopReferers(arguments.siteID,arguments.limit,arguments.startDate,arguments.stopDate) />
-</cffunction>
+	public function getDraftList(string siteID, required string userID="#listFirst(session.mura.isLoggedIn,'^')#", required numeric limit="100000000", required string startDate="", required string stopDate="", required string sortBy="lastUpdate", required string sortDirection="desc") output=false {
+		return variables.contentGateway.getDraftList(arguments.siteID,arguments.userID,arguments.limit,arguments.startDate,arguments.stopDate,arguments.sortBy,arguments.sortDirection);
+	}
 
-<cffunction name="getTotalReferers" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.sessionTrackingGateway.getTotalReferers(arguments.siteID,arguments.startDate,arguments.stopDate) />
-</cffunction>
+	public function getTopRated(required string siteID="", required numeric threshold="1", required numeric limit="0", required string startDate="", required string stopDate="") output=true {
+		return variables.raterManager.getTopRated(arguments.siteID,arguments.threshold,arguments.limit,arguments.startDate,arguments.stopDate);
+	}
 
-<cffunction name="getcontentTypeCount" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="type" type="string" required="true" default="">
-	
-	<cfreturn variables.contentGateway.getTypeCount(arguments.siteID,arguments.type) />
-</cffunction>
+	public function getFeedTypeCount(required string siteID="", required string type="") output=false {
+		return variables.feedGateway.getTypeCount(arguments.siteID,arguments.type);
+	}
 
-<cffunction name="getRecentUpdates" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="limit" type="numeric" required="true" default="5">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.contentGateway.getRecentUpdates(arguments.siteID,arguments.limit,arguments.startdate,arguments.stopdate) />
-</cffunction>
+	public function getSessionSearch(required array params, required string siteid="", required boolean membersOnly="false", required string visitorStatus="false", required string startDate="", required string stopDate="") output=false {
+		return variables.sessionTrackingGateway.getSessionSearch(arguments.params,arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate);
+	}
 
-<cffunction name="getRecentFormActivity" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="limit" type="numeric" required="true" default="5">
-	
-	<cfreturn variables.contentGateway.getRecentFormActivity(arguments.siteID,arguments.limit) />
-</cffunction>
+	public function getEmailActivity(required string siteid="", required numeric limit="5", required string startDate="", required string stopDate="") output=false {
+		return variables.emailGateway.getSessionSearch(arguments.siteID,arguments.limit,arguments.startDate,arguments.stopDate);
+	}
 
-<cffunction name="getDraftList" output="false">
-	<cfargument name="siteID"  type="string" />
-	<cfargument name="userID"  type="string"  required="true" default="#listFirst(session.mura.isLoggedIn,'^')#"/>
-	<cfargument name="limit" type="numeric" required="true" default="100000000">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	<cfargument name="sortBy" type="string" required="true" default="lastUpdate">
-	<cfargument name="sortDirection" type="string" required="true" default="desc">
-	
-	<cfreturn variables.contentGateway.getDraftList(arguments.siteID,arguments.userID,arguments.limit,arguments.startDate,arguments.stopDate,arguments.sortBy,arguments.sortDirection) />
-</cffunction>
+	public function getTimeSpan(firstRequest, lastRequest, required format="#session.dateKeyFormat#") output=false {
+		var theStart=arguments.firstRequest;
+		var days = 0;
+		var hours = 0;
+		var minutes = 0;
+		var seconds = 0;
+		var returnStr = "";
+		if ( arguments.format == session.dateKeyFormat ) {
+			hours = dateDiff("h",theStart,arguments.lastRequest);
+			theStart = dateAdd("h",hours,theStart);
+			minutes = dateDiff("n",theStart,arguments.lastRequest);
+			theStart = dateAdd("n",minutes,theStart);
+			seconds = dateDiff("s",theStart,arguments.lastRequest);
+			if ( hours < 10 ) {
+				hours="0#hours#";
+			}
+			if ( minutes < 10 ) {
+				minutes="0#minutes#";
+			}
+			if ( seconds < 10 ) {
+				seconds="0#seconds#";
+			}
+			return "#hours#:#minutes#:#seconds#";
+		} else {
+			days = dateDiff("d",theStart,arguments.lastRequest);
+			theStart = dateAdd("d",days,theStart);
+			hours = dateDiff("h",theStart,arguments.lastRequest);
+			theStart = dateAdd("h",hours,theStart);
+			minutes = dateDiff("n",theStart,arguments.lastRequest);
+			if ( days ) {
+				returnStr = days & " days";
+			}
+			if ( hours ) {
+				if ( returnStr != "" ) {
+					returnStr = returnStr & ", ";
+				}
+				returnStr = returnStr & hours & " hours";
+			}
+			if ( minutes ) {
+				if ( returnStr != "" ) {
+					returnStr = returnStr & ", ";
+				}
+				returnStr = returnStr & minutes & " minutes";
+			}
+			return returnStr;
+		}
+	}
 
-<cffunction name="getTopRated" output="true">
-	<cfargument name="siteID" type="string" default="" required="yes"/>
-	<cfargument name="threshold" type="numeric" default="1" required="yes"/>
-	<cfargument name="limit" type="numeric" default="0" required="yes"/>
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.raterManager.getTopRated(arguments.siteID,arguments.threshold,arguments.limit,arguments.startDate,arguments.stopDate)>
-</cffunction>
+	public function getLastSessionDate(urlToken, originalUrlToken, beforeDate) {
+		var rs = "";
+		var qs = getQueryService(name='rs',readOnly=true);
 
-<cffunction name="getFeedTypeCount" output="false">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="type" type="string" required="true" default="">
-	
-	<cfreturn variables.feedGateway.getTypeCount(arguments.siteID,arguments.type) />
-</cffunction>
+		qs.addParam(name='urlToken', cfsqltype="cf_sql_varchar", value=arguments.urlToken );
+		qs.addParam(name='originalUrlToken', cfsqltype="cf_sql_varchar", value=arguments.originalUrlToken );
+		qs.addParam(name="entered",cfsqltype="cf_sql_timestamp", value=LSDateFormat(arguments.beforeDate,'mm/dd/yyyy'));
 
-<cffunction name="getSessionSearch" output="false">
-	<cfargument name="params" type="array" required="true" >
-	<cfargument name="siteid" type="string" required="true" default="">
-	<cfargument name="membersOnly" type="boolean" required="true" default="false">
-	<cfargument name="visitorStatus" type="string" required="true" default="false">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.sessionTrackingGateway.getSessionSearch(arguments.params,arguments.siteID,arguments.membersOnly,arguments.visitorStatus,arguments.startDate,arguments.stopDate) />
-</cffunction>
-
-<cffunction name="getEmailActivity" output="false">
-	<cfargument name="siteid" type="string" required="true" default="">
-	<cfargument name="limit" type="numeric" required="true" default="5">
-	<cfargument name="startDate" type="string" required="true" default="">
-	<cfargument name="stopDate" type="string" required="true" default="">
-	
-	<cfreturn variables.emailGateway.getSessionSearch(arguments.siteID,arguments.limit,arguments.startDate,arguments.stopDate) />
-</cffunction>
-
-<cffunction name="getTimeSpan" output="false">
-	<cfargument name="firstRequest">
-	<cfargument name="lastRequest">
-	<cfargument name="format" required="true" default="#session.dateKeyFormat#">
-	
-	<cfset var theStart=arguments.firstRequest />
-	<cfset var days = 0 />
-	<cfset var hours = 0 />
-	<cfset var minutes = 0 />
-	<cfset var seconds = 0 />
-	<cfset var returnStr = "" />
-	
-	<cfif arguments.format eq session.dateKeyFormat>
-		<cfset hours = dateDiff("h",theStart,arguments.lastRequest) />
-		<cfset theStart = dateAdd("h",hours,theStart) />
-		<cfset minutes = dateDiff("n",theStart,arguments.lastRequest) />
-		<cfset theStart = dateAdd("n",minutes,theStart) />
-		<cfset seconds = dateDiff("s",theStart,arguments.lastRequest) />
-		
-		<cfif hours lt 10>
-		<cfset hours="0#hours#"/>
-		</cfif>
-		<cfif minutes lt 10>
-		<cfset minutes="0#minutes#"/>
-		</cfif>
-		<cfif seconds lt 10>
-		<cfset seconds="0#seconds#"/>
-		</cfif>
-		
-		<cfreturn "#hours#:#minutes#:#seconds#" />
-	
-	<cfelse>
-		<cfset days = dateDiff("d",theStart,arguments.lastRequest) />
-		<cfset theStart = dateAdd("d",days,theStart) />
-		<cfset hours = dateDiff("h",theStart,arguments.lastRequest) />
-		<cfset theStart = dateAdd("h",hours,theStart) />
-		<cfset minutes = dateDiff("n",theStart,arguments.lastRequest) />
-	
-		<cfif days>
-			<cfset returnStr = days & " days" />
-		</cfif>
-		<cfif hours>
-			<cfif returnStr neq "">
-				<cfset returnStr = returnStr & ", " />
-			</cfif>
-			<cfset returnStr = returnStr & hours & " hours" />
-		</cfif>
-		<cfif minutes>
-			<cfif returnStr neq "">
-				<cfset returnStr = returnStr & ", " />
-			</cfif>
-			<cfset returnStr = returnStr & minutes & " minutes" />
-		</cfif>
-		
-		
-		<cfreturn returnStr /> 
-	
-	
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getLastSessionDate">
-	<cfargument name="urlToken"/>
-	<cfargument name="originalUrlToken"/>
-	<cfargument name="beforeDate"/>
-	
-	<cfset var rs = "" />
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select max(entered) as lastRequest
-	from tsessiontracking 
-	where originalUrlToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.originalUrlToken#"/>
-	and urlToken <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#urlToken#"/>
-	and entered < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.beforeDate,'mm/dd/yyyy')#">
-	</cfquery>
-	
-	<cfif isDate(rs.lastRequest)>
-		<cfreturn rs.lastRequest />
-	<cfelse>
-		<cfreturn "Not Available" />
-	</cfif>
-</cffunction>
-
-<cffunction name="getUserFromSessionQuery">
-	<cfargument name="rsSession"/>
-	
-	<cfset var rs = "" />
-	
-	<cfquery name="rs" dbType="query">
-	select fname,lname from arguments.rsSession where userID > ''
-	</cfquery>
-	
-	<cfif rs.recordcount>
-		<cfreturn rs.fname & " " & rs.lname />
-	<cfelse>
-		<cfreturn "Anonymous" />
-	</cfif>
-</cffunction>
-
-<cffunction name="getUserAgentFromSessionQuery">
-	<cfargument name="rsSession"/>
-	
-	<cfset var rs = "" />
-	
-	<cfquery name="rs" dbType="query">
-	select user_agent from arguments.rsSession where user_agent > ''
-	</cfquery>
-	
-	<cfif rs.recordcount>
-		<cfreturn rs.user_agent />
-	<cfelse>
-		<cfreturn "unknown" />
-	</cfif>
-</cffunction>
+		rs=qs.execute(sql="select max(entered) as lastRequest
+				from tsessiontracking
+				where originalUrlToken= :originalUrlToken
+				and urlToken <> : urlToken
+				and entered < :entered").getResult();
 
 
-</cfcomponent>
+		if ( isDate(rs.lastRequest) ) {
+			return rs.lastRequest;
+		} else {
+			return "Not Available";
+		}
+	}
+
+	public function getUserFromSessionQuery(rsSession) {
+		var rs = "";
+		var qs = new Query();
+		qs.setDbType('query');
+
+		rs=qs.execute(sql="select fname,lname from arguments.rsSession where userID > ''").getResult();
+
+		if ( rs.recordcount ) {
+			return rs.fname & " " & rs.lname;
+		} else {
+			return "Anonymous";
+		}
+	}
+
+	public function getUserAgentFromSessionQuery(rsSession) {
+		var rs = "";
+		var qs = new Query();
+		qs.setDbType('query');
+
+		rs=qs.execute(sql="select user_agent from arguments.rsSession where user_agent > ''").getResult();
+
+		if ( rs.recordcount ) {
+			return rs.user_agent;
+		} else {
+			return "unknown";
+		}
+	}
+
+}

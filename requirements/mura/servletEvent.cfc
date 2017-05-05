@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,13 +43,15 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent output="false" extends="mura.cfobject" hint="This provides specialized methods to the primary front end request event object">
+*/
+/**
+ * This provides specialized methods to the primary front end request event object
+ */
+component output="false" extends="mura.cfobject" hint="This provides specialized methods to the primary front end request event object" {
 
-<cffunction name="init" output="false">
+	public function init() output=false {
 
-	<cfscript>
-	if (NOT IsDefined("request"))
+		if (NOT IsDefined("request"))
 	    request=structNew();
 	StructAppend(request, url, "no");
 	StructAppend(request, form, "no");
@@ -58,175 +60,145 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		StructAppend(request, request.muraGlobalEvent.getAllValues(), "no");
 		StructDelete(request,"muraGlobalEvent");
 	}
-	</cfscript>
+		param name="request.doaction" default="";
+		param name="request.month" default=month(now());
+		param name="request.year" default=year(now());
+		param name="request.display" default="";
+		param name="request.startrow" default=1;
+		param name="request.pageNum" default=1;
+		param name="request.keywords" default="";
+		param name="request.tag" default="";
+		param name="request.mlid" default="";
+		param name="request.noCache" default=0;
+		param name="request.categoryID" default="";
+		param name="request.relatedID" default="";
+		param name="request.linkServID" default="";
+		param name="request.track" default=1;
+		param name="request.exportHTMLSite" default=0;
+		param name="request.returnURL" default="";
+		param name="request.showMeta" default=0;
+		param name="request.forceSSL" default=0;
+		param name="request.muraForceFilename" default=true;
+		setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')));
+		setValue("MuraScope",createObject("component","mura.MuraScope"));
+		getValue('MuraScope').setEvent(this);
+		return this;
+	}
 
-	<cfparam name="request.doaction" default=""/>
-	<cfparam name="request.month" default="#month(now())#"/>
-	<cfparam name="request.year" default="#year(now())#"/>
-	<cfparam name="request.display" default=""/>
-	<cfparam name="request.startrow" default="1"/>
-	<cfparam name="request.pageNum" default="1"/>
-	<cfparam name="request.keywords" default=""/>
-	<cfparam name="request.tag" default=""/>
-	<cfparam name="request.mlid" default=""/>
-	<cfparam name="request.noCache" default="0"/>
-	<cfparam name="request.categoryID" default=""/>
-	<cfparam name="request.relatedID" default=""/>
-	<cfparam name="request.linkServID" default=""/>
-	<cfparam name="request.track" default="1"/>
-	<cfparam name="request.exportHTMLSite" default="0"/>
-	<cfparam name="request.returnURL" default=""/>
-	<cfparam name="request.showMeta" default="0"/>
-	<cfparam name="request.forceSSL" default="0"/>
-	<cfparam name="request.muraForceFilename" default="true"/>
+	public function setValue(required string property, propertyValue="", required scope="request") output=false {
+		var theScope=getScope(arguments.scope);
+		theScope["#arguments.property#"]=arguments.propertyValue;
+		return this;
+	}
 
-	<cfset setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')))>
-	<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
-	<cfset getValue('MuraScope').setEvent(this)>
-	<cfreturn this />
-</cffunction>
+	public function set(required string property, defaultValue, required scope="request") output=false {
+		return setValue(argumentCollection=arguments);
+	}
 
-<cffunction name="setValue" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="propertyValue" default="" >
-	<cfargument name="scope" default="request" required="true">
+	public function getValue(required string property, defaultValue, required scope="request") output=false {
+		var theScope=getScope(arguments.scope);
+		if ( structKeyExists(theScope,"#arguments.property#") ) {
+			return theScope["#arguments.property#"];
+		} else if ( structKeyExists(arguments,"defaultValue") ) {
+			theScope["#arguments.property#"]=arguments.defaultValue;
+			return theScope["#arguments.property#"];
+		} else {
+			return "";
+		}
+	}
 
-	<cfset var theScope=getScope(arguments.scope) />
+	public function get(required string property, defaultValue, required scope="request") output=false {
+		return getValue(argumentCollection=arguments);
+	}
 
-	<cfset theScope["#arguments.property#"]=arguments.propertyValue />
-	<cfreturn this>
-</cffunction>
+	public function getAllValues(required scope="request") output=false {
+		return getScope(arguments.scope);
+	}
 
-<cffunction name="set" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="defaultValue">
-	<cfargument name="scope" default="request" required="true">
-	<cfreturn setValue(argumentCollection=arguments)>
-</cffunction>
+	public struct function getScope(required scope="request") output=false {
+		switch ( arguments.scope ) {
+			case  "request":
+				return request;
+				break;
+			case  "form":
+				return form;
+				break;
+			case  "url":
+				return url;
+				break;
+			case  "session":
+				return session;
+				break;
+			case  "server":
+				return server;
+				break;
+			case  "application":
+				return application;
+				break;
+			case  "attributes":
+				return attributes;
+				break;
+			case  "cluster":
+				return cluster;
+				break;
+		}
+	}
 
-<cffunction name="getValue" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="defaultValue">
-	<cfargument name="scope" default="request" required="true">
-	<cfset var theScope=getScope(arguments.scope)>
+	public function valueExists(required string property, required scope="request") output=false {
+		var theScope=getScope(arguments.scope);
+		return structKeyExists(theScope,arguments.property);
+	}
 
-	<cfif structKeyExists(theScope,"#arguments.property#")>
-		<cfreturn theScope["#arguments.property#"] />
-	<cfelseif structKeyExists(arguments,"defaultValue")>
-		<cfset theScope["#arguments.property#"]=arguments.defaultValue />
-		<cfreturn theScope["#arguments.property#"] />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
+	public function removeValue(required string property, required scope="request") output=false {
+		var theScope=getScope(arguments.scope);
+		structDelete(theScope,arguments.property);
+	}
 
-</cffunction>
+	public function getHandler(handler) output=false {
+		return getValue('HandlerFactory').get(arguments.handler & "Handler",getValue("localHandler"));
+	}
 
-<cffunction name="get" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="defaultValue">
-	<cfargument name="scope" default="request" required="true">
-	<cfreturn getValue(argumentCollection=arguments)>
-</cffunction>
+	public function getValidator(validation) output=false {
+		return getValue('HandlerFactory').get(arguments.validation & "Validator",getValue("localHandler"));
+	}
 
-<cffunction name="getAllValues" output="false">
-<cfargument name="scope" default="request" required="true">
-		<cfreturn getScope(arguments.scope)  />
-</cffunction>
+	public function getTranslator(translator) output=false {
+		return getValue('HandlerFactory').get(arguments.translator & "Translator",getValue("localHandler"));
+	}
 
-<cffunction name="getScope" returntype="struct" output="false">
-<cfargument name="scope" default="request" required="true">
+	public function getContentRenderer() output=false {
+		return getValue('contentRenderer');
+	}
 
-		<cfswitch expression="#arguments.scope#">
-		<cfcase value="request">
-			<cfreturn request />
-		</cfcase>
-		<cfcase value="form">
-			<cfreturn form />
-		</cfcase>
-		<cfcase value="url">
-			<cfreturn url />
-		</cfcase>
-		<cfcase value="session">
-			<cfreturn session />
-		</cfcase>
-		<cfcase value="server">
-			<cfreturn server />
-		</cfcase>
-		<cfcase value="application">
-			<cfreturn application />
-		</cfcase>
-		<cfcase value="attributes">
-			<cfreturn attributes />
-		</cfcase>
-		<cfcase value="cluster">
-			<cfreturn cluster />
-		</cfcase>
-		</cfswitch>
+	/**
+	 * deprecated: use getContentRenderer()
+	 */
+	public function getThemeRenderer() output=false {
+		return getContentRenderer();
+	}
 
-</cffunction>
+	public function getContentBean() output=false {
+		return getValue('contentBean');
+	}
 
-<cffunction name="valueExists" output="false">
-	<cfargument name="property" type="string" required="true">
-	<cfargument name="scope" default="request" required="true">
-		<cfset var theScope=getScope(arguments.scope) />
-		<cfreturn structKeyExists(theScope,arguments.property) />
-</cffunction>
+	public function getCrumbData() output=false {
+		return getValue('crumbdata');
+	}
 
-<cffunction name="removeValue" output="false">
-	<cfargument name="property" type="string" required="true"/>
-	<cfargument name="scope" default="request" required="true">
-		<cfset var theScope=getScope(arguments.scope) />
-		<cfset structDelete(theScope,arguments.property) />
-</cffunction>
+	public function getSite() output=false {
+		return application.settingsManager.getSite(getValue('siteid'));
+	}
 
-<cffunction name="getHandler" output="false">
-	<cfargument name="handler">
-	<cfreturn getValue('HandlerFactory').get(arguments.handler & "Handler",getValue("localHandler")) />
-</cffunction>
+	public function getMuraScope() output=false {
+		return getValue("MuraScope");
+	}
 
-<cffunction name="getValidator" output="false">
-	<cfargument name="validation">
-	<cfreturn getValue('HandlerFactory').get(arguments.validation & "Validator",getValue("localHandler")) />
-</cffunction>
+	public function getBean(beanName, siteID) output=false {
+		if ( structKeyExists(arguments,"siteid") ) {
+			return super.getBean(arguments.beanName,arguments.siteID);
+		} else {
+			return super.getBean(arguments.beanName,getValue('siteid'));
+		}
+	}
 
-<cffunction name="getTranslator" output="false">
-	<cfargument name="translator">
-	<cfreturn getValue('HandlerFactory').get(arguments.translator & "Translator",getValue("localHandler")) />
-</cffunction>
-
-<cffunction name="getContentRenderer" output="false">
-	<cfreturn getValue('contentRenderer') />
-</cffunction>
-
-<cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
-	<cfreturn getContentRenderer() />
-</cffunction>
-
-<cffunction name="getContentBean" output="false">
-	<cfreturn getValue('contentBean') />
-</cffunction>
-
-<cffunction name="getCrumbData" output="false">
-	<cfreturn getValue('crumbdata') />
-</cffunction>
-
-<cffunction name="getSite" output="false">
-	<cfreturn application.settingsManager.getSite(getValue('siteid')) />
-</cffunction>
-
-<cffunction name="getMuraScope" output="false">
-	<cfreturn getValue("MuraScope") />
-</cffunction>
-
-<cffunction name="getBean" output="false">
-	<cfargument name="beanName">
-	<cfargument name="siteID" required="false">
-
-	<cfif structKeyExists(arguments,"siteid")>
-		<cfreturn super.getBean(arguments.beanName,arguments.siteID)>
-	<cfelse>
-		<cfreturn super.getBean(arguments.beanName,getValue('siteid'))>
-	</cfif>
-</cffunction>
-
-</cfcomponent>
+}

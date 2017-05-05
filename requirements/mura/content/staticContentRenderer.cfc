@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,73 +43,47 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="contentRenderer" output="false" hint="This provides static content rendering functionality">
+*/
+/**
+ * This provides static content rendering functionality
+ */
+component extends="contentRenderer" output="false" hint="This provides static content rendering functionality" {
 
-<cffunction name="createHREF" output="false">
-	<cfargument name="type" required="true">
-	<cfargument name="filename" required="true">
-	<cfargument name="siteid" required="true">
-	<cfargument name="contentid" required="true">
-	<cfargument name="target" required="true" default="">
-	<cfargument name="targetParams" required="true" default="">
-	<cfargument name="querystring" required="true" default="">
-	<cfargument name="context" type="string" default="">
-	<cfargument name="stub" type="string" default="">
-	<cfargument name="indexFile" type="string"  default="index.htm">
-	<cfargument name="complete" type="boolean"  default="false">
+	public function createHREF(required type, required filename, required siteid, required contentid, required target="", required targetParams="", required querystring="", string context="", string stub="", string indexFile="index.htm", boolean complete="false") output=false {
+		var href="";
+		var tp="";
+		var begin=iif(arguments.complete,de('#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de(''));
+		var staticIndexFile = "index.htm";
+		var contentBean = "";
+		var rsFile = "";
+		switch ( arguments.type ) {
+			case  "Link,File":
+				contentBean=getBean('contentManager').getActiveContent(arguments.contentID,arguments.siteid);
+				rsFile=getBean('fileManager').read(contentBean.getfileid());
+				href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#replace(arguments.contentid, '-', '', 'ALL')#.#rsfile.fileExt#";
+				break;
+			default:
+				href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#arguments.filename##iif(arguments.filename != '',de('/'),de(''))##staticIndexFile#";
+				break;
+		}
+		if ( arguments.target == "_blank" ) {
+			tp=iif(arguments.targetParams != "",de(",'#arguments.targetParams#'"),de(""));
+			href="javascript:newWin=window.open('#href#','NewWin#replace('#rand()#','.','')#'#tp#);newWin.focus();void(0);";
+		}
+		return href;
+	}
 
-	<cfset var href=""/>
-	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete,de('#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
-	<cfset var staticIndexFile = "index.htm">
-	<cfset var contentBean = "">
-	<cfset var rsFile = "">
+	public function addlink(required type, required filename, required title, string target="", string targetParams="", required contentid, required siteid, string querystring="", string context="", string stub="", string indexFile="index.cfm") output=false {
+		var link ="";
+		var href ="";
+		var staticIndexFile = "index.htm";
+		if ( request.contentBean.getcontentid() == arguments.contentid ) {
+			link='<a href="#staticIndexFile#" class="current">#arguments.title#</a>';
+		} else {
+			href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename == request.contentBean.getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile);
+			link='<a href="#href#" #iif(request.contentBean.getparentid() == arguments.contentid,de("class=current"),de(""))#>#arguments.title#</a>';
+		}
+		return link;
+	}
 
-		<cfswitch expression="#arguments.type#">
-				<cfcase value="Link,File">
-					<cfset contentBean=getBean('contentManager').getActiveContent(arguments.contentID,arguments.siteid) />
-					<cfset rsFile=getBean('fileManager').read(contentBean.getfileid()) />
-					<cfset href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#replace(arguments.contentid, '-', '', 'ALL')#.#rsfile.fileExt#"/>
-				</cfcase>
-				<cfdefaultcase>
-					<cfset href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#arguments.filename##iif(arguments.filename neq '',de('/'),de(''))##staticIndexFile#" />
-				</cfdefaultcase>
-		</cfswitch>
-
-		<cfif arguments.target eq "_blank">
-			<cfset tp=iif(arguments.targetParams neq "",de(",'#arguments.targetParams#'"),de("")) />
-			<cfset href="javascript:newWin=window.open('#href#','NewWin#replace('#rand()#','.','')#'#tp#);newWin.focus();void(0);" />
-		</cfif>
-
-<cfreturn href />
-</cffunction>
-
-<cffunction name="addlink" output="false">
-			<cfargument name="type" required="true">
-			<cfargument name="filename" required="true">
-			<cfargument name="title" required="true">
-			<cfargument name="target" type="string"  default="">
-			<cfargument name="targetParams" type="string"  default="">
-			<cfargument name="contentid" required="true">
-			<cfargument name="siteid" required="true">
-			<cfargument name="querystring" type="string"  default="">
-			<cfargument name="context" type="string"  default="">
-			<cfargument name="stub" type="string"  default="">
-			<cfargument name="indexFile" type="string"  default="index.cfm">
-
-			<cfset var link ="">
-			<cfset var href ="">
-			<cfset var staticIndexFile = "index.htm">
-
-			<cfif request.contentBean.getcontentid() eq arguments.contentid>
-				<cfset link='<a href="#staticIndexFile#" class="current">#arguments.title#</a>' />
-			<cfelse>
-				<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq request.contentBean.getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile)>
-				<cfset link='<a href="#href#" #iif(request.contentBean.getparentid() eq arguments.contentid,de("class=current"),de(""))#>#arguments.title#</a>' />
-			</cfif>
-
-		<cfreturn link>
-</cffunction>
-
-</cfcomponent>
+}

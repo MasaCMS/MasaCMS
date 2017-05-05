@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,336 +43,267 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides a proxy to larger content data">
+*/
+/**
+ * This provides a proxy to larger content data
+ */
+component extends="mura.cfobject" output="false" hint="This provides a proxy to larger content data" {
+	variables.instance=structNew();
+	variables.instance.content="";
+	variables.instance.struct=structNew();
+	variables.iterator="";
 
-<cfset variables.instance=structNew()>
-<cfset variables.instance.content="">
-<cfset variables.instance.struct=structNew()>
-<cfset variables.iterator="">
+	public function setContentManager(contentManager) {
+		variables.contentManager=arguments.contentManager;
+		return this;
+	}
 
-<cffunction name="setContentManager">
-	<cfargument name="contentManager">
-	<cfset variables.contentManager=arguments.contentManager>
-	<cfreturn this>
-</cffunction>
+	public function setSettingsManager(settingsManager) {
+		variables.settingsManager=arguments.settingsManager;
+		return this;
+	}
 
-<cffunction name="setSettingsManager">
-	<cfargument name="settingsManager">
-	<cfset variables.settingsManager=arguments.settingsManager>
-	<cfreturn this>
-</cffunction>
+	/**
+	 * Handles missing method exceptions.
+	 */
+	public function OnMissingMethod(required string MissingMethodName, required struct MissingMethodArguments) output=false {
+		var prop="";
+		var prefix=left(arguments.MissingMethodName,3);
+		var theValue="";
+		var bean="";
+		if ( len(arguments.MissingMethodName) ) {
+			//  forward normal getters to the default getValue method
+			if ( listFindNoCase("set,get",prefix) && len(arguments.MissingMethodName) > 3 ) {
+				prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);
+				if ( prefix == "get" ) {
+					return getValue(prop);
+				} else if ( prefix == "set" && !structIsEmpty(MissingMethodArguments) ) {
+					setValue(prop,MissingMethodArguments[1]);
+					return this;
+				}
+			}
+			//  otherwise get the bean and if the method exsists forward request
+			bean=getContentBean();
+			if ( !structIsEmpty(MissingMethodArguments) ) {
+					theValue=bean.invokeMethod( methodArguments=MissingMethodArguments,  methodName=MissingMethodName );
+			} else {
+					theValue=bean.invokeMethod( methodName=MissingMethodName );
+			}
+			if ( isDefined("theValue") ) {
+				return theValue;
+			} else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
 
-<cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
-<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
-<cfargument name="MissingMethodArguments" type="struct" required="true" />
-<cfset var prop="">
-<cfset var prefix=left(arguments.MissingMethodName,3)>
-<cfset var theValue="">
-<cfset var bean="">
+	public function set(contentStruct, sourceIterator) output=false {
+		variables.instance.struct=arguments.contentStruct;
+		variables.sourceiterator=arguments.sourceIterator;
+		if ( isObject(variables.instance.content) ) {
+			variables.instance.content.setIsNew(1);
+		}
+		return this;
+	}
 
-<cfif len(arguments.MissingMethodName)>
-	<!--- forward normal getters to the default getValue method --->
-	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
-		<cfif prefix eq "get">
-			<cfreturn getValue(prop)>
-		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
-			<cfset setValue(prop,MissingMethodArguments[1])>
-			<cfreturn this>
-		</cfif>
-	</cfif>
+	public function getValue(property) output=false {
+		if ( len(arguments.property) ) {
+			if ( isDefined("this.get#arguments.property#") ) {
+				var tempFunc=this["get#arguments.property#"];
+				return tempFunc();
+			} else if ( structKeyExists(variables.instance.struct,"#arguments.property#") ) {
+				return variables.instance.struct["#arguments.property#"];
+			} else if ( isValid('variableName', arguments.property) ) {
+				return evaluate('getContentBean().get#arguments.property#()');
+			} else {
+				return getContentBean().getValue(arguments.property);
+			}
+		} else {
+			return "";
+		}
+	}
 
-	<!--- otherwise get the bean and if the method exsists forward request --->
-	<cfset bean=getContentBean()>
+	public function setValue(property, propertyValue) output=false {
+		if ( isDefined("this.set#arguments.property#") ) {
+			var tempFunc=this["set#arguments.property#"];
+			tempFunc(arguments.propertyValue);
+		} else {
+			variables.instance.struct[arguments.property]=arguments.propertyValue;
+			getContentBean().setValue(arguments.property, arguments.propertyValue);
+		}
+		return this;
+	}
 
-	<cfif not structIsEmpty(MissingMethodArguments)>
-		<cfinvoke component="#bean#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
-	<cfelse>
-		<cfinvoke component="#bean#" method="#MissingMethodName#" returnvariable="theValue">
-	</cfif>
+	public function getContentBean() output=false {
+		if ( !isObject(variables.instance.content) ) {
+			variables.instance.content=getBean("content");
+			variables.instance.content.setIsNew(1);
+			variables.instance.contentStructTemplate=structCopy(variables.instance.content.getAllValues(autocomplete=false));
+		}
+		if ( !variables.instance.content.getIsNew() ) {
+			return variables.instance.content;
+		} else {
+			variables.instance.content.setAllValues( structCopy(variables.instance.contentStructTemplate) );
+			if ( structKeyExists(variables.instance.struct,"contentHistID") ) {
+				variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content, sourceIterator=variables.sourceIterator);
+			} else if ( structKeyExists(variables.instance.struct,"contentID") ) {
+				variables.instance.content=variables.contentManager.getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content, sourceIterator=variables.sourceIterator);
+			} else {
+				throw( message="The query you are iterating over does not contain either contentID or contentHistID" );
+			}
+			variables.instance.content.setValue('sourceIterator',variables.sourceiterator);
+			return variables.instance.content;
+		}
+	}
 
-	<cfif isDefined("theValue")>
-		<cfreturn theValue>
-	<cfelse>
-		<cfreturn "">
-	</cfif>
+	public function getAllValues(expand="true") output=false {
+		if ( arguments.expand ) {
+			return getContentBean().getAllValues(argumentCollection=arguments);
+		} else {
+			return variables.instance.struct;
+		}
+	}
 
-<cfelse>
-	<cfreturn "">
-</cfif>
+	public function getParent() output=false {
+		var i="";
+		var cl=0;
+		if ( structKeyExists(request,"crumbdata") ) {
+			cl=arrayLen(request.crumbdata)-1;
+			if ( cl ) {
+				for ( i=1 ; i<=cl ; i++ ) {
+					if ( request.crumbdata[i].contentID == getValue("contentID") ) {
+						return getBean("contentNavBean").set(request.crumbData[i+1],"active");
+					}
+				}
+			}
+		}
+		return getContentBean().getParent();
+	}
 
-</cffunction>
+	public function getKidsQuery(required aggregation="false") output=false {
+		if ( structKeyExists(variables.instance.struct,"kids") && isNumeric(variables.instance.struct.kids) && !variables.instance.struct.kids ) {
+			//  There are no kids so no need to query
+			return queryNew("contentid,contenthistid,siteid,type,filename,title,menutitle,summary,kids");
+		} else {
+			return variables.contentManager.getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection"), aggregation=arguments.aggregation);
+		}
+	}
 
-<cffunction name="set" output="false">
-	<cfargument name="contentStruct">
-	<cfargument name="sourceIterator">
+	public function getKidsIterator(required liveOnly="true", required aggregation="false") output=false {
+		var q=getKidsQuery(arguments.aggregation);
+		var it=getBean("contentIterator");
+		if ( arguments.liveOnly ) {
+			q=getKidsQuery(arguments.aggregation);
+		} else {
+			q=variables.contentManager.getNest( parentID:getValue("contentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection"));
+		}
+		it.setQuery(q,getValue("nextn"));
+		return it;
+	}
 
-	<cfset variables.instance.struct=arguments.contentStruct>
-	<cfset variables.sourceiterator=arguments.sourceIterator>
+	public function getCrumbArray(required sort="asc", required boolean setInheritance="false") output=false {
+		return variables.contentManager.getCrumbList(contentID=getValue("contentID"), siteID=getValue("siteID"), setInheritance=arguments.setInheritance, path=getValue("path"), sort=arguments.sort);
+	}
 
-	<cfif isObject(variables.instance.content)>
-		<cfset variables.instance.content.setIsNew(1)>
-	</cfif>
+	public function getCrumbIterator(required sort="asc", required boolean setInheritance="false") output=false {
+		var a=getCrumbArray(setInheritance=arguments.setInheritance,sort=arguments.sort);
+		var it=getBean("contentIterator");
+		it.setArray(a);
+		return it;
+	}
 
-	<cfreturn this>
-</cffunction>
+	public function getURL(required querystring="", required boolean complete="false", required string showMeta="0", secure="false") output=false {
+		return variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta, arguments.secure);
+	}
 
-<cffunction name="getValue" output="false">
-	<cfargument name="property">
-	<cfif len(arguments.property)>
+	public function getImageURL(required size="undefined", direct="true", complete="false", height="", width="", defaultURL="", secure="false", useProtocol="true") output=false {
+		arguments.bean=this;
+		if(isDefined('arguments.default')){
+			arguments.defaultURL=arguments.default;
+		}
+		return variables.contentManager.getImageURL(argumentCollection=arguments);
+	}
 
-		<cfif isDefined("this.get#arguments.property#")>
-			<cfset var tempFunc=this["get#arguments.property#"]>
-			<cfreturn tempFunc()>
-		<cfelseif structKeyExists(variables.instance.struct,"#arguments.property#")>
-			<cfreturn variables.instance.struct["#arguments.property#"]>
-		<cfelseif isValid('variableName', arguments.property)>
-			<cfreturn evaluate('getContentBean().get#arguments.property#()')>
-		<cfelse>
-			<cfreturn getContentBean().getValue(arguments.property)>
-		</cfif>
-	<cfelse>
-		<cfreturn "">
-	</cfif>
-</cffunction>
+	public function getFileMetaData(property="fileid") output=false {
+		return getBean('fileMetaData').loadBy(contentid=getValue('contentid'),contentHistID=getValue('contentHistID'),siteID=getValue('siteid'),fileid=getValue(arguments.property));
+	}
 
-<cffunction name="setValue" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
-	<cfif isDefined("this.set#arguments.property#")>
-		<cfset var tempFunc=this["set#arguments.property#"]>
-		<cfset tempFunc(arguments.propertyValue)>
-	<cfelse>
-		<cfset variables.instance.struct[arguments.property]=arguments.propertyValue>
-		<cfset getContentBean().setValue(arguments.property, arguments.propertyValue)>
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function getRelatedContentQuery(required boolean liveOnly="false", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false") output=false {
+		return variables.contentManager.getRelatedContent(getValue('siteID'), getValue('contentHistID'), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getValue('contentID'));
+	}
 
-<cffunction name="getContentBean" output="false">
-	<cfif NOT isObject(variables.instance.content)>
-		<cfset variables.instance.content=getBean("content")>
-		<cfset variables.instance.content.setIsNew(1)>
-		<cfset variables.instance.contentStructTemplate=structCopy(variables.instance.content.getAllValues(autocomplete=false))>
-	</cfif>
+	public function getRelatedContentIterator(required boolean liveOnly="false", required date today="#now()#", string sortBy="orderno", string sortDirection="asc", string relatedContentSetID="", string name="", boolean reverse="false") output=false {
+		var q=getRelatedContentQuery(argumentCollection=arguments);
+		var it=getBean("contentIterator");
+		it.setQuery(q);
+		return it;
+	}
 
-	<cfif NOT variables.instance.content.getIsNew() >
-		<cfreturn variables.instance.content>
-	<cfelse>
-		<cfset variables.instance.content.setAllValues( structCopy(variables.instance.contentStructTemplate) )>
-		<cfif structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content, sourceIterator=variables.sourceIterator)>
-		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
-			<cfset variables.instance.content=variables.contentManager.getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content, sourceIterator=variables.sourceIterator)>
-		<cfelse>
-			<cfthrow message="The query you are iterating over does not contain either contentID or contentHistID">
-		</cfif>
-		<cfset variables.instance.content.setValue('sourceIterator',variables.sourceiterator)>
+	public function hasImage(usePlaceholder="true") {
+		return len(getValue('fileID')) && listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) || arguments.usePlaceholder && len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgID());
+	}
 
-		<cfreturn variables.instance.content>
-	</cfif>
-</cffunction>
+	public struct function getExtendedAttributes(name="") output=false {
+		return getContentBean().getExtendedAttributes(name=arguments.name);
+	}
 
-<cffunction name="getAllValues" output="false">
-	<cfargument name="expand" default="true">
-	<cfif arguments.expand>
-		<cfreturn getContentBean().getAllValues(argumentCollection=arguments)>
-	<cfelse>
-		<cfreturn variables.instance.struct>
-	</cfif>
-</cffunction>
+	public function getExtendedAttributesList(name="") output=false {
+		return StructKeyList(getExtendedAttributes(name=arguments.name));
+	}
 
-<cffunction name="getParent" output="false">
-	<cfset var i="">
-	<cfset var cl=0>
+	public function getExtendedAttributesQuery(name="") output=false {
+		return getContentBean().getExtendedAttributesQuery(name=arguments.name);
+	}
 
-	<cfif structKeyExists(request,"crumbdata")>
-		<cfset cl=arrayLen(request.crumbdata)-1>
-		<cfif cl>
-			<cfloop from="1" to="#cl#" index="i">
-				<cfif request.crumbdata[i].contentID eq getValue("contentID") >
-					<cfreturn getBean("contentNavBean").set(request.crumbData[i+1],"active") />
-				</cfif>
-			</cfloop>
-		</cfif>
-	</cfif>
+	public function setDisplayInterval(displayInterval) output=false {
+		if ( !isSimpleValue(arguments.displayInterval) ) {
+			if ( isValid('component',arguments.displayInterval) ) {
+				arguments.displayInterval=arguments.displayInterval.getAllValues();
+			}
+			if ( isDefined('arguments.displayInterval.end') ) {
+				if ( arguments.displayInterval.end == 'on'
+	and isDefined('arguments.displayInterval.endon')
+	and isDate(arguments.displayInterval.endon) ) {
+					setValue('displayStop',arguments.displayInterval.end);
+				} else if ( arguments.displayInterval.end == 'after'
+		and isDefined('arguments.displayInterval.endafter')
+		and isNumeric(arguments.displayInterval.endafter)
+		or arguments.displayInterval.end == 'never' ) {
+					if ( isDate(getValue('displayStop')) ) {
+						setValue('displayStop',dateAdd('yyyy',100,getValue('displayStop')));
+					} else {
+						setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')));
+					}
+				}
+			}
+			arguments.displayInterval=serializeJSON(arguments.displayInterval);
+		}
+		variables.instance.struct.displayInterval=arguments.displayInterval;
+		getContentBean().setValue("displayInterval", arguments.displayInterval);
+		return this;
+	}
 
-	<cfreturn getContentBean().getParent()>
+	public function getDisplayIntervalDesc() output=false {
+		return getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(this);
+	}
 
-</cffunction>
+	public function getDisplayInterval(serialize="false") output=false {
+		if ( structKeyExists(variables.instance.struct,"displayInterval") ) {
+			var result=variables.instance.struct["displayInterval"];
+		} else {
+			var result=getContentBean().getValue("displayInterval");
+		}
+		if ( !arguments.serialize ) {
+			return getBean('contentDisplayInterval').set(getBean('contentIntervalManager').deserializeInterval(
+				interval=result,
+				displayStart=getValue('displayStart'),
+				displayStop=getValue('displayStop')
+			)).setContent(this);
+		} else {
+			return result;
+		}
+	}
 
-<cffunction name="getKidsQuery" output="false">
-	<cfargument name="aggregation" required="true" default="false">
-
-	<cfif structKeyExists(variables.instance.struct,"kids") and isNumeric(variables.instance.struct.kids) and not variables.instance.struct.kids>
-		<!--- There are no kids so no need to query --->
-		<cfreturn queryNew("contentid,contenthistid,siteid,type,filename,title,menutitle,summary,kids")>
-	<cfelse>
-		<cfreturn variables.contentManager.getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection"), aggregation=arguments.aggregation) />
-	</cfif>
-</cffunction>
-
-<cffunction name="getKidsIterator" output="false">
-	<cfargument name="liveOnly" required="true" default="true">
-	<cfargument name="aggregation" required="true" default="false">
-	<cfset var q=getKidsQuery(arguments.aggregation) />
-	<cfset var it=getBean("contentIterator")>
-
-	<cfif arguments.liveOnly>
-		<cfset q=getKidsQuery(arguments.aggregation) />
-	<cfelse>
-		<cfset q=variables.contentManager.getNest( parentID:getValue("contentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
-	</cfif>
-	<cfset it.setQuery(q,getValue("nextn"))>
-
-	<cfreturn it>
-</cffunction>
-
-<cffunction name="getCrumbArray" output="false">
-	<cfargument name="sort" required="true" default="asc">
-	<cfargument name="setInheritance" required="true" type="boolean" default="false">
-	<cfreturn variables.contentManager.getCrumbList(contentID=getValue("contentID"), siteID=getValue("siteID"), setInheritance=arguments.setInheritance, path=getValue("path"), sort=arguments.sort)>
-</cffunction>
-
-<cffunction name="getCrumbIterator" output="false">
-	<cfargument name="sort" required="true" default="asc">
-	<cfargument name="setInheritance" required="true" type="boolean" default="false">
-	<cfset var a=getCrumbArray(setInheritance=arguments.setInheritance,sort=arguments.sort)>
-	<cfset var it=getBean("contentIterator")>
-	<cfset it.setArray(a)>
-	<cfreturn it>
-</cffunction>
-
-<cffunction name="getURL" output="false">
-	<cfargument name="querystring" required="true" default="">
-	<cfargument name="complete" type="boolean" required="true" default="false">
-	<cfargument name="showMeta" type="string" required="true" default="0">
-	<cfargument name="secure" default="false">
-	<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta, arguments.secure)>
-</cffunction>
-
-<cffunction name="getImageURL" output="false">
-	<cfargument name="size" required="true" default="undefined">
-	<cfargument name="direct" default="true"/>
-	<cfargument name="complete" default="false"/>
-	<cfargument name="height" default=""/>
-	<cfargument name="width" default=""/>
-	<cfargument name="default" default=""/>
-	<cfargument name="secure" default="false">
-	<cfargument name="useProtocol" default="true">
-	<cfset arguments.bean=this>
-	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="getFileMetaData" output="false">
-	<cfargument name="property" default="fileid">
-	<cfreturn getBean('fileMetaData').loadBy(contentid=getValue('contentid'),contentHistID=getValue('contentHistID'),siteID=getValue('siteid'),fileid=getValue(arguments.property))>
-</cffunction>
-
-<cffunction name="getRelatedContentQuery" output="false">
-	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
-	<cfargument name="today" type="date" required="yes" default="#now()#" />
-	<cfargument name="sortBy" type="string" default="orderno">
-	<cfargument name="sortDirection" type="string" default="asc">
-	<cfargument name="relatedContentSetID" type="string" default="">
-	<cfargument name="name" type="string" default="">
-	<cfargument name="reverse" type="boolean" default="false">
-
-	<cfreturn variables.contentManager.getRelatedContent(getValue('siteID'), getValue('contentHistID'), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getValue('contentID')) />
-</cffunction>
-
-<cffunction name="getRelatedContentIterator" output="false">
-	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
-	<cfargument name="today" type="date" required="yes" default="#now()#" />
-	<cfargument name="sortBy" type="string" default="orderno" >
-	<cfargument name="sortDirection" type="string" default="asc">
-	<cfargument name="relatedContentSetID" type="string" default="">
-	<cfargument name="name" type="string" default="">
-	<cfargument name="reverse" type="boolean" default="false">
-
-	<cfset var q=getRelatedContentQuery(argumentCollection=arguments) />
-	<cfset var it=getBean("contentIterator")>
-	<cfset it.setQuery(q)>
-	<cfreturn it>
-</cffunction>
-
-<cffunction name="hasImage">
-	<cfargument name="usePlaceholder" default="true">
-	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT')) or arguments.usePlaceholder and len(variables.settingsManager.getSite(getValue('siteid')).getPlaceholderImgID())>
-</cffunction>
-
-<cffunction name="getExtendedAttributes" returntype="struct" output="false">
-	<cfargument name="name" default="" hint="Extend Set Name" />
-	<cfreturn getContentBean().getExtendedAttributes(name=arguments.name) />
-</cffunction>
-
- <cffunction name="getExtendedAttributesList" output="false">
- 	<cfargument name="name" default="" hint="Extend Set Name" />
- 	<cfreturn StructKeyList(getExtendedAttributes(name=arguments.name)) />
- </cffunction>
-
- <cffunction name="getExtendedAttributesQuery" output="false">
-	<cfargument name="name" default="" hint="Extend Set Name" />
-	<cfreturn getContentBean().getExtendedAttributesQuery(name=arguments.name) />
-</cffunction>
-
-<cffunction name="setDisplayInterval" output="false">
-	<cfargument name="displayInterval">
-
-	<cfif not isSimpleValue(arguments.displayInterval)>
-
-		<cfif isValid('component',arguments.displayInterval)>
-			<cfset arguments.displayInterval=arguments.displayInterval.getAllValues()>
-		</cfif>
-
-		<cfif isDefined('arguments.displayInterval.end') >
-			<cfif arguments.displayInterval.end eq 'on'
-			and isDefined('arguments.displayInterval.endon')
-			and isDate(arguments.displayInterval.endon)>
-				<cfset setValue('displayStop',arguments.displayInterval.end)>
-			<cfelseif arguments.displayInterval.end eq 'after'
-				and isDefined('arguments.displayInterval.endafter')
-				and isNumeric(arguments.displayInterval.endafter)
-				or arguments.displayInterval.end eq 'never'>
-				<cfif isDate(getValue('displayStop'))>
-					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStop')))>
-				<cfelse>
-					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
-				</cfif>
-			</cfif>
-		</cfif>
-		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
-	</cfif>
-
-	<cfset variables.instance.struct.displayInterval=arguments.displayInterval>
-	<cfset getContentBean().setValue("displayInterval", arguments.displayInterval)>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDisplayIntervalDesc" output="false">
-	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(this)>
-</cffunction>
-
-<cffunction name="getDisplayInterval" output="false">
-	<cfargument name="serialize" default="false">
-
-	<cfif structKeyExists(variables.instance.struct,"displayInterval")>
-		<cfset var result=variables.instance.struct["displayInterval"]>
-	<cfelse>
-		<cfset var result=getContentBean().getValue("displayInterval")>
-	</cfif>
-
-	<cfif not arguments.serialize>
-		<cfreturn getBean('contentDisplayInterval').set(getBean('contentIntervalManager').deserializeInterval(
-			interval=result,
-			displayStart=getValue('displayStart'),
-			displayStop=getValue('displayStop')
-		)).setContent(this)>
-	<cfelse>
-		<cfreturn result>
-	</cfif>
-
-</cffunction>
-
-</cfcomponent>
+}

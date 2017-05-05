@@ -2672,7 +2672,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="complete" default="false"/>
 		<cfargument name="height" default=""/>
 		<cfargument name="width" default=""/>
-		<cfargument name="default" default=""/>
+		<cfargument name="defaultURL" default=""/>
 		<cfargument name="secure" default="false">
 		<cfargument name="useProtocol" default="true">
 		<cfscript>
@@ -2682,7 +2682,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure,arguments.useProtocol);
 			}
 
-			return Len(image) ? image : arguments.default;
+			if(isDefined('arguments.default')){
+				arguments.defaultURL=arguments.default;
+			}
+			
+			return Len(image) ? image : arguments.defaultURL;
 		</cfscript>
 	</cffunction>
 

@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,29 +43,28 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.beanFeed" output="false" hint="This provides content comment feed functionality">
+*/
+/**
+ * This provides content comment feed functionality
+ */
+component extends="mura.bean.beanFeed" output="false" hint="This provides content comment feed functionality" {
+	property name="entityName" type="string" default="comment" required="true";
+	property name="table" type="string" default="tcontentcomments" required="true";
+	property name="keyField" type="string" default="commentID" required="true";
+	property name="siteID" type="string" default="" required="true";
+	property name="sortBy" type="string" default="entered" required="true";
+	property name="sortDirection" type="string" default="asc" required="true";
 
-	<cfproperty name="entityName" type="string" default="comment" required="true" />
-	<cfproperty name="table" type="string" default="tcontentcomments" required="true" />
-	<cfproperty name="keyField" type="string" default="commentID" required="true" />
-	<cfproperty name="siteID" type="string" default="" required="true" />
-	<cfproperty name="sortBy" type="string" default="entered" required="true" />
-	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
+	public function init() output=false {
+		super.init(argumentCollection=arguments);
+		variables.instance.siteID="";
+		variables.instance.entityName="comment";
+		variables.instance.table="tcontentcomments";
+		variables.instance.keyField="commentID";
+		variables.instance.sortBy="entered";
+		variables.instance.sortDirection="asc";
+		variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" );
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
-
-	<cfset variables.instance.siteID="">
-	<cfset variables.instance.entityName="comment">
-	<cfset variables.instance.table="tcontentcomments">
-	<cfset variables.instance.keyField="commentID">
-	<cfset variables.instance.sortBy="entered" />
-	<cfset variables.instance.sortDirection="asc" />
-
-	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
-	<cfreturn this/>
-</cffunction>
-
-
-</cfcomponent>
+}

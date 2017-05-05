@@ -1298,4 +1298,8 @@ Blog: www.codfusion.com--->
 	<cfschedule attributeCollection=arguments>
 </cffunction>
 
+<cffunction name="legacyLogout" output="false">
+	<cflogout>
+</cffunction>
+
 </cfcomponent>

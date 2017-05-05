@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,10 +43,12 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent output="false" hint="This provides base functionality to all Mura core objects">
+*/
+/**
+ * This provides base functionality to all Mura core objects
+ */
+component output="false" hint="This provides base functionality to all Mura core objects" {
 
-<cfscript>
 	if(server.ColdFusion.ProductName != 'Coldfusion Server'){
 		backportdir='';
 		include "/mura/backport/backport.cfm";
@@ -54,202 +56,172 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		backportdir='/mura/backport/';
 		include "#backportdir#backport.cfm";
 	}
-</cfscript>
 
-<cffunction name="init" output="false">
-	<cfreturn this />
-</cffunction>
+	public function init() output=false {
+		return this;
+	}
 
-<cffunction name="setValue" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" >
-	<cfset variables["#arguments.property#"]=arguments.propertyValue />
-	<cfreturn this>
-</cffunction>
+	public function setValue(required string property, propertyValue="") output=false {
+		variables["#arguments.property#"]=arguments.propertyValue;
+		return this;
+	}
 
-<cffunction name="set" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" >
-	<cfreturn setValue(argumentCollection=arguments)>
-</cffunction>
+	public function set(required string property, propertyValue="") output=false {
+		return setValue(argumentCollection=arguments);
+	}
 
-<cffunction name="getValue" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="defaultValue">
+	public function getValue(required string property, defaultValue) output=false {
+		if ( structKeyExists(variables,"#arguments.property#") ) {
+			return variables["#arguments.property#"];
+		} else if ( structKeyExists(arguments,"defaultValue") ) {
+			variables["#arguments.property#"]=arguments.defaultValue;
+			return variables["#arguments.property#"];
+		} else {
+			return "";
+		}
+	}
 
-	<cfif structKeyExists(variables,"#arguments.property#")>
-		<cfreturn variables["#arguments.property#"] />
-	<cfelseif structKeyExists(arguments,"defaultValue")>
-		<cfset variables["#arguments.property#"]=arguments.defaultValue />
-		<cfreturn variables["#arguments.property#"] />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
+	public function get(required string property, defaultValue) output=false {
+		return getValue(argumentCollection=arguments);
+	}
 
-</cffunction>
+	public function valueExists(required string property) output=false {
+		return structKeyExists(variables,arguments.property);
+	}
 
-<cffunction name="get" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="defaultValue">
-	<cfreturn getValue(argumentCollection=arguments)>
-</cffunction>
+	public function removeValue(required string property) output=false {
+		structDelete(variables,arguments.property);
+		return this;
+	}
 
-<cffunction name="valueExists" output="false">
-	<cfargument name="property" type="string" required="true">
-		<cfreturn structKeyExists(variables,arguments.property) />
-</cffunction>
+	public function getConfigBean() output=false {
+		return application.configBean;
+	}
 
-<cffunction name="removeValue" output="false">
-	<cfargument name="property" type="string" required="true"/>
-		<cfset structDelete(variables,arguments.property) />
-		<cfreturn this>
-</cffunction>
+	public function getServiceFactory() output=false {
+		return application.serviceFactory;
+	}
 
-<cffunction name="getConfigBean" output="false">
-	<cfreturn application.configBean />
-</cffunction>
+	public function getBean(beanName, siteID="") output=false {
+		var bean="";
+		bean=getServiceFactory().getBean(arguments.beanName);
+		if ( structKeyExists(bean,'valueExists') && bean.valueExists('siteid') ) {
+			if ( len(arguments.siteID) ) {
+				bean.setValue('siteid',arguments.siteID);
+			} else if ( len(getValue("siteID")) ) {
+				bean.setValue('siteid',getValue("siteID"));
+			}
+		}
+		return bean;
+	}
 
-<cffunction name="getServiceFactory" output="false">
-	<cfreturn application.serviceFactory />
-</cffunction>
+	public function getEntity(entityName, siteID="") output=false {
+		return getBean(arguments.entityName,arguments.siteid);
+	}
 
-<cffunction name="getBean" output="false">
-	<cfargument name="beanName">
-	<cfargument name="siteID" default="">
-	<cfset var bean="">
+	public function getPluginManager() output=false {
+		return application.pluginManager;
+	}
 
-	<cfset bean=getServiceFactory().getBean(arguments.beanName) />
+	/**
+	 * The eventManager is the same as the pluginManager.
+	 */
+	public function getEventManager() output=false {
+		return application.eventManager;
+	}
 
-	<cfif structKeyExists(bean,'valueExists') and bean.valueExists('siteid')>
-		<cfif len(arguments.siteID)>
-			<cfset bean.setValue('siteid',arguments.siteID)>
-		<cfelseif len(getValue("siteID"))>
-			<cfset bean.setValue('siteid',getValue("siteID"))>
-		</cfif>
-	</cfif>
+	public function getCurrentUser() output=false {
+		if ( !structKeyExists(request,"currentUser") ) {
+			request.currentUser=createObject("component","mura.user.sessionUserFacade").init();
+		}
+		return request.currentUser;
+	}
 
-	<cfreturn bean>
-</cffunction>
+	public function getPlugin(ID, required siteID="", required cache="true") output=false {
+		return application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache);
+	}
 
-<cffunction name="getEntity" output="false">
-	<cfargument name="entityName">
-	<cfargument name="siteID" default="">
-	<cfreturn getBean(arguments.entityName,arguments.siteid)>
-</cffunction>
+	/**
+	 * @deprecated Use inject method
+	 */
+	public function injectMethod(required string toObjectMethod, required any fromObjectMethod) output=false {
+		this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod;
+		variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod;
+		return this;
+	}
 
-<cffunction name="getPluginManager" output="false">
-	<cfreturn application.pluginManager />
-</cffunction>
+	public function inject(required string property, required any propertValue) output=false {
+		this[ arguments.property ] =  arguments.propertValue;
+		variables[ arguments.property ] =  arguments.propertValue;
+		return this;
+	}
 
-<cffunction name="getEventManager" output="false" hint="The eventManager is the same as the pluginManager.">
-	<cfreturn application.eventManager />
-</cffunction>
+	public function deleteMethod(required any methodName) output=false {
+		StructDelete(this,arguments.methodName);
+		StructDelete(variables,arguments.methodName);
+	}
 
-<cffunction name="getCurrentUser" output="false">
-	<cfif not structKeyExists(request,"currentUser")>
-		<cfset request.currentUser=createObject("component","mura.user.sessionUserFacade").init() />
-	</cfif>
-	<cfreturn request.currentUser>
-</cffunction>
+	public function getAsJSON() output=false {
+		var data = getAsStruct();
+		return serializeJSON( data );
+	}
 
-<cffunction name="getPlugin" output="false">
-	<cfargument name="ID">
-	<cfargument name="siteID" required="true" default="">
-	<cfargument name="cache" required="true" default="true">
+	public struct function getAsStruct() output=false {
+		var data			= "";
+		var iiX			= "";
+		var subBeans		= StructNew();
+		var subData		= StructNew();
+		var subItem		= "";
+		var iiY			= "";
+		if ( !StructKeyExists(this,"getAllValues") ) {
+			return "";
+		}
+		data = getAllValues();
+		for ( iiX in data ) {
+			if ( isInstanceOf(data[iiX],"cfobject") ) {
+				data[iiX] = data[iiX].getAsStruct();
+			} else if ( isStruct( data[iiX] ) && StructCount( data[iiX] ) ) {
+				subBeans = data[iiX];
+				subData	= StructNew();
+				for ( iiY in subBeans ) {
+					subItem = subBeans[iiY];
+					if ( isInstanceOf(subItem,"cfobject") ) {
+						subData[iiY] = subItem.getAsStruct();
+					} else if ( isStruct(subItem) ) {
+						subData[iiY] = subItem;
+					}
+				}
+				if ( structCount( subData ) ) {
+					data[iiX] = subData;
+				}
+			} else if ( isJSON(data[iiX]) ) {
+				data[iiX] = deserializeJSON( data[iiX] );
+			}
+		}
+		return data;
+	}
 
-	<cfreturn application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache) />
-</cffunction>
+	public function initTracePoint(detail) output=false {
+		var tracePoint=structNew();
+		if ( !request.muraShowTrace ) {
+			return 0;
+		}
+		tracePoint.detail=arguments.detail;
+		tracePoint.start=getTickCount();
+		arrayAppend(request.muraTraceRoute,tracePoint);
+		return arrayLen(request.muraTraceRoute);
+	}
 
-<cffunction name="injectMethod" output="false" deprecated="Use inject method">
-	<cfargument name="toObjectMethod" type="string" required="true" />
-	<cfargument name="fromObjectMethod" type="any" required="true" />
-	<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
-	<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
-	<cfreturn this>
-</cffunction>
+	public function commitTracePoint(tracePointID) output=false {
+		var tracePoint="";
+		if ( arguments.tracePointID ) {
+			tracePoint=request.muraTraceRoute[arguments.tracePointID];
+			tracePoint.stop=getTickCount();
+			tracePoint.duration=tracePoint.stop-tracePoint.start;
+			tracePoint.total=tracePoint.stop-request.muraRequestStart;
+		}
+	}
 
-<cffunction name="inject" output="false">
-	<cfargument name="property" type="string" required="true" />
-	<cfargument name="propertValue" type="any" required="true" />
-	<cfset this[ arguments.property ] =  arguments.propertValue  />
-	<cfset variables[ arguments.property ] =  arguments.propertValue />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="deleteMethod" output="false">
-	<cfargument name="methodName" type="any" required="true" />
-	<cfset StructDelete(this,arguments.methodName)>
-	<cfset StructDelete(variables,arguments.methodName)>
-</cffunction>
-
-<cffunction name="getAsJSON" output="false" >
-	<cfset var data = getAsStruct() />
-	<cfreturn serializeJSON( data ) />
-</cffunction>
-
-<cffunction name="getAsStruct" output="false" returntype="struct">
-	<cfset var data			= "">
-	<cfset var iiX			= "">
-	<cfset var subBeans		= StructNew()>
-	<cfset var subData		= StructNew()>
-	<cfset var subItem		= "">
-	<cfset var iiY			= "">
-
-	<cfif not StructKeyExists(this,"getAllValues")>
-		<cfreturn "" />
-	</cfif>
-
-	<cfset data = getAllValues() />
-
-	<cfloop collection="#data#" item="iiX">
-		<cfif isInstanceOf(data[iiX],"cfobject")>
-			<cfset data[iiX] = data[iiX].getAsStruct() />
-		<cfelseif isStruct( data[iiX] ) and StructCount( data[iiX] )>
-			<cfset subBeans = data[iiX] />
-			<cfset subData	= StructNew()>
-			<cfloop collection="#subBeans#" item="iiY">
-				<cfset subItem = subBeans[iiY] />
-				<cfif isInstanceOf(subItem,"cfobject")>
-					<cfset subData[iiY] = subItem.getAsStruct() />
-				<cfelseif isStruct(subItem)>
-					<cfset subData[iiY] = subItem />
-				</cfif>
- 			</cfloop>
-			<cfif structCount( subData )>
-				<cfset data[iiX] = subData />
-			</cfif>
-		<cfelseif isJSON(data[iiX])>
-			<cfset data[iiX] = deserializeJSON( data[iiX] ) />
-		</cfif>
-	</cfloop>
-
-	<cfreturn data />
-</cffunction>
-
-<cffunction name="initTracePoint" output="false">
-	<cfargument name="detail">
-	<cfset var tracePoint=structNew()>
-	<cfif not request.muraShowTrace>
-		<cfreturn 0>
-	</cfif>
-	<cfset tracePoint.detail=arguments.detail>
-	<cfset tracePoint.start=getTickCount()>
-	<cfset arrayAppend(request.muraTraceRoute,tracePoint)>
-	<cfreturn arrayLen(request.muraTraceRoute)>
-</cffunction>
-
-<cffunction name="commitTracePoint" output="false">
-	<cfargument name="tracePointID">
-	<cfset var tracePoint="">
-	<cfif arguments.tracePointID>
-		<cfset tracePoint=request.muraTraceRoute[arguments.tracePointID]>
-		<cfset tracePoint.stop=getTickCount()>
-		<cfset tracePoint.duration=tracePoint.stop-tracePoint.start>
-		<cfset tracePoint.total=tracePoint.stop-request.muraRequestStart>
-	</cfif>
-</cffunction>
-
-<cfscript>
 	public any function invokeMethod(required string methodName, struct methodArguments={}) {
 		if(structKeyExists(this, arguments.methodName)) {
 			var theMethod = this[ arguments.methodName ];
@@ -437,7 +409,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		param name="sessionData.siteid" default="default";
-		
+
 		return sessionData;
 
 	}
@@ -478,6 +450,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return "";
 		}
 	}
-</cfscript>
 
-</cfcomponent>
+}
