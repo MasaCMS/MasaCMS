@@ -216,6 +216,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfdefaultcase>
 			</cfswitch>
 		</cfcase>
+		<cfcase value="bit">
+			<cfif isBoolean(tmp)>
+				<cfset variables.criteria=tmp />
+			<cfelse>
+				<cfset variables.criteria="" />
+				<cfset setIsValid(false) />
+			</cfif>
+		</cfcase>
 		<cfcase value="date" >
 			<cfif lsIsDate(tmp)>
 				<cfset tmp=lsParseDateTime(tmp)>
@@ -279,6 +287,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif arguments.datatype eq 'datetime'>
 		<cfset arguments.datatype="timestamp">
+	<cfelseif arguments.datatype eq 'boolean'>
+		<cfset arguments.datatype="bit">
 	<cfelse>
 		<cfset arguments.datatype=rereplacenocase(arguments.datatype, '\W', '', 'all')>
 	</cfif>
