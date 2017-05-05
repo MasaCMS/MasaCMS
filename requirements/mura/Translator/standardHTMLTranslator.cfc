@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,102 +43,87 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This handles translating a frontend request to html">
+*/
+/**
+ * This handles translating a frontend request to html
+ */
+component extends="mura.cfobject" output="false" hint="This handles translating a frontend request to html" {
 
-<cffunction name="translate" output="false">
-	<cfargument name="event" required="true">
-	<cfset var page = "" />
-	<cfset var themePath=arguments.event.getSite().getThemeAssetPath()  />
-	<cfset var $=arguments.event.getValue("MuraScope")>
-	<cfset var m=$>
-	<cfset var mura=arguments.event.getValue("MuraScope")>
-	<cfset var renderer="">
-	<cfset var siteRenderer=arguments.event.getContentRenderer()>
-	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
-	<cfset var modal="">
-	<cfset var tracePoint=0>
-	<cfset var inheritedObjectsPerm="">
-	<cfset var inheritedObjectsContentID="">
-	<cfset var defaultTemplatePath = arguments.event.getSite().getTemplateIncludePath() & '/default.cfm' />
-	<cfset var sessionData=getSession()>
+	public function translate(required event) output=false {
+		var page = "";
+		var themePath=arguments.event.getSite().getThemeAssetPath();
+		var $=arguments.event.getValue("MuraScope");
+		var m=$;
+		var mura=arguments.event.getValue("MuraScope");
+		var renderer="";
+		var siteRenderer=arguments.event.getContentRenderer();
+		var themeRenderer=arguments.event.getThemeRenderer();
+		var modal="";
+		var tracePoint=0;
+		var inheritedObjectsPerm="";
+		var inheritedObjectsContentID="";
+		var defaultTemplatePath = arguments.event.getSite().getTemplateIncludePath() & '/default.cfm';
+		var sessionData=getSession();
+		request.muraActiveRegions="";
+		variables.$=$;
+		variables.m=$;
+		if ( !isNumeric(arguments.event.getValue('startRow')) ) {
+			arguments.event.setValue('startRow',1);
+		}
+		if ( !isNumeric(arguments.event.getValue('pageNum')) ) {
+			arguments.event.setValue('pageNum',1);
+		}
+		if ( sessionData.mura.isLoggedIn && siteRenderer.getShowEditableObjects() ) {
+			inheritedObjectsContentID=$.getBean("contentGateway").getContentIDFromContentHistID(contentHistID=$.event('inheritedObjects') );
+			if ( len(inheritedObjectsContentID) ) {
+				inheritedObjectsPerm=$.getBean('permUtility').getNodePerm($.getBean('contentGateway').getCrumblist(inheritedObjectsContentID,$.event('siteID')));
+			} else {
+				inheritedObjectsPerm="none";
+			}
+			$.event("inheritedObjectsPerm",inheritedObjectsPerm);
+		}
+		if ( isObject(themeRenderer) && structKeyExists(themeRenderer,"renderHTMLHeadQueue") ) {
+			renderer=themeRenderer;
+		} else {
+			renderer=siteRenderer;
+		}
+		arguments.event.setValue('themePath',themePath);
+		savecontent variable="page" {
+			if ( fileExists(expandPath("#$.siteConfig('templateIncludePath')#/#renderer.getTemplate()#") ) ) {
+				tracePoint=initTracePoint("#arguments.event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#");
+				include "#arguments.event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#";
+				commitTracePoint(tracePoint);
+			} else {
+				tracePoint=initTracePoint("#defaultTemplatePath#");
+				try {
+					include defaultTemplatePath;
+				} catch (any cfcatch) {	
+						writeOutput("#$.getBean('resourceBundle').messageFormat($.rbKey('sitemanager.missingDefaultTemplate'), ['<strong>/#ListRest(defaultTemplatePath, '/')#</strong>'])#");
+				}
+				commitTracePoint(tracePoint);
+			}
+		}
+		page=rereplace(page,'(class|id)="\s*"','','all');
+		page=replaceNoCase(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>");
+		//  This is to prevent a lower level CF replaceNoCase issue from throwing an error with some utf chars
+		var renderedFootQueue=renderer.renderHTMLQueue("Foot");
+		try {
+			page=replaceNoCase(page,"</body>", renderedFootQueue & "</body>");
+		} catch (any cfcatch) {
+			page=replace(page,"</body>", renderedFootQueue & "</body>");
+		}
+		//  Cleaning up old paths
+		try {
+			page=replaceNoCase(page,"/tasks/widgets/","/requirements/");
+		} catch (any cfcatch) {
+			page=replace(page,"/tasks/widgets/","/requirements/");
+		}
+		try {
+			page=replaceNoCase(page,"/tasks/","/index.cfm/tasks/");
+		} catch (any cfcatch) {
+			page=replace(page,"/tasks/","/index.cfm/tasks/");
+		}
+		arguments.event.setValue('__MuraResponse__',trim(page));
+	}
 
-	<cfset request.muraActiveRegions="">
-
-	<cfset variables.$=$>
-	<cfset variables.m=$>
-
-	<cfif not isNumeric(arguments.event.getValue('startRow'))>
-		<cfset arguments.event.setValue('startRow',1)>
-	</cfif>
-	<cfif not isNumeric(arguments.event.getValue('pageNum'))>
-		<cfset arguments.event.setValue('pageNum',1)>
-	</cfif>
-
-	<cfif sessionData.mura.isLoggedIn and siteRenderer.getShowEditableObjects()>
-		<cfset inheritedObjectsContentID=$.getBean("contentGateway").getContentIDFromContentHistID(contentHistID=$.event('inheritedObjects') )>
-		<cfif len(inheritedObjectsContentID)>
-			<cfset inheritedObjectsPerm=$.getBean('permUtility').getNodePerm($.getBean('contentGateway').getCrumblist(inheritedObjectsContentID,$.event('siteID')))>
-		<cfelse>
-			<cfset inheritedObjectsPerm="none">
-		</cfif>
-		<cfset $.event("inheritedObjectsPerm",inheritedObjectsPerm)>
-	</cfif>
-
-	<cfif isObject(themeRenderer) and structKeyExists(themeRenderer,"renderHTMLHeadQueue")>
-		<cfset renderer=themeRenderer>
-	<cfelse>
-		<cfset renderer=siteRenderer>
-	</cfif>
-
-	<cfset arguments.event.setValue('themePath',themePath)>
-
-	<cfsavecontent variable="page">
-		<cfif fileExists(expandPath("#$.siteConfig('templateIncludePath')#/#renderer.getTemplate()#") )>
-			<cfset tracePoint=initTracePoint("#arguments.event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#")>
-			<cfinclude template="#arguments.event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#">
-			<cfset commitTracePoint(tracePoint)>
-		<cfelse>
-			<cfset tracePoint=initTracePoint("#defaultTemplatePath#")>
-			<cftry>
-				<cfinclude template="#defaultTemplatePath#">
-				<cfcatch type="any">
-					<cfoutput>#$.getBean('resourceBundle').messageFormat($.rbKey('sitemanager.missingDefaultTemplate'), ['<strong>/#ListRest(defaultTemplatePath, '/')#</strong>'])#</cfoutput>
-				</cfcatch>
-			</cftry>
-			<cfset commitTracePoint(tracePoint)>
-		</cfif>
-	</cfsavecontent>
-
-	<cfset page=rereplace(page,'(class|id)="\s*"','','all')>
-
-	<cfset page=replaceNoCase(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>")>
-
-	<!--- This is to prevent a lower level CF replaceNoCase issue from throwing an error with some utf chars--->
-	<cfset var renderedFootQueue=renderer.renderHTMLQueue("Foot")>
-	<cftry>
-		<cfset page=replaceNoCase(page,"</body>", renderedFootQueue & "</body>")>
-		<cfcatch>
-			<cfset page=replace(page,"</body>", renderedFootQueue & "</body>")>
-		</cfcatch>
-	</cftry>
-
-	<!--- Cleaning up old paths --->
-	<cftry>
-		<cfset page=replaceNoCase(page,"/tasks/widgets/","/requirements/")>
-		<cfcatch>
-			<cfset page=replace(page,"/tasks/widgets/","/requirements/")>
-		</cfcatch>
-	</cftry>
-
-	<cftry>
-		<cfset page=replaceNoCase(page,"/tasks/","/index.cfm/tasks/")>
-		<cfcatch>
-			<cfset page=replace(page,"/tasks/","/index.cfm/tasks/")>
-		</cfcatch>
-	</cftry>
-
-	<cfset arguments.event.setValue('__MuraResponse__',trim(page))>
-</cffunction>
-
-</cfcomponent>
+}

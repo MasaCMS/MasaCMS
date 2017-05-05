@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,50 +43,45 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.iterator.queryIterator" output="false" hint="This provides user iterating functionality">
+*/
+/**
+ * This provides user iterating functionality
+ */
+component extends="mura.iterator.queryIterator" output="false" hint="This provides user iterating functionality" {
+	variables.userBean ="";
+	variables.recordIDField="userID";
 
-<cfset variables.userBean ="">
-<cfset variables.recordIDField="userID">
+	public function getEntityName() output=false {
+		return "user";
+	}
 
-<cffunction name="getEntityName" output="false">
-	<cfreturn "user">
-</cffunction>
+	public function packageRecord() output=false {
+		if ( !isObject(variables.userBean) ) {
+			variables.userBean=getBean("user");
+			variables.userStructTemplate= structCopy(variables.userBean.getAllValues(autocomplete=false));
+		} else {
+			variables.userBean.setAllValues( structCopy(variables.userStructTemplate) );
+		}
+		variables.userBean.set(queryRowToStruct(variables.records,currentIndex()));
+		getBean("userManager").setUserBeanMetaData(variables.userBean);
+		variables.userBean.setValue('sourceIterator',this);
+		return variables.userBean;
+	}
 
-<cffunction name="packageRecord" output="false">
-	<cfif NOT isObject(variables.userBean)>
-		<cfset variables.userBean=getBean("user") />
-		<cfset variables.userStructTemplate= structCopy(variables.userBean.getAllValues(autocomplete=false))>
-	<cfelse>
-		<cfset variables.userBean.setAllValues( structCopy(variables.userStructTemplate) )>
-	</cfif>
+	public function buildQueryFromList(idList, siteid) output=false {
+		var i="";
+		var idArray=listToArray(arguments.idList);
+		variables.records=queryNew("userID,siteID","VARCHAR,VARCHAR");
+		for ( i=1 ; i<=arrayLen(arguments.idArray) ; i++ ) {
+			QueryAddRow(variables.records);
+			QuerySetCell(variables.records,"userID", idArray[i]);
+			QuerySetCell(variables.records, 'siteID',arguments.siteid);
+		}
+		variables._recordcount=variables.records.recordcount;
+		variables.maxRecordsPerPage=variables.records.recordcount;
+		variables.recordIndex = 0;
+		variables.pageIndex = 1;
+		return this;
+	}
 
-	<cfset variables.userBean.set(queryRowToStruct(variables.records,currentIndex()))>
-
-	<cfset getBean("userManager").setUserBeanMetaData(variables.userBean)/>
-	<cfset variables.userBean.setValue('sourceIterator',this)>
-
-	<cfreturn variables.userBean>
-</cffunction>
-
-<cffunction name="buildQueryFromList" output="false">
-	<cfargument name="idList">
-	<cfargument name="siteid">
-	<cfset var i="">
-	<cfset var idArray=listToArray(arguments.idList)>
-	<cfset variables.records=queryNew("userID,siteID","VARCHAR,VARCHAR")>
-
-	<cfloop from="1" to="#arrayLen(arguments.idArray)#" index="i">
-		<cfset QueryAddRow(variables.records)>
-		<cfset QuerySetCell(variables.records,"userID", idArray[i])>
-		<cfset QuerySetCell(variables.records, 'siteID',arguments.siteid)>
-	</cfloop>
-
-	<cfset variables._recordcount=variables.records.recordcount>
-	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
-	<cfset variables.recordIndex = 0 />
-	<cfset variables.pageIndex = 1 />
-	<cfreturn this>
-</cffunction>
-
-</cfcomponent>
+}

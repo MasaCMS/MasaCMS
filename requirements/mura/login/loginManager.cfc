@@ -229,7 +229,7 @@ If you did not request a new authorization, contact #contactEmail#.");
 		if ( isBoolean(arguments.$.event('attemptChallenge')) && arguments.$.event('attemptChallenge') ) {
 			var sessionData=getSession();
 			var strikes = createObject("component","mura.user.userstrikes").init(sessionData.mfa.username,getBean('configBean'));
-			cfparam( default=strikes.blockedUntil(), name="sessionData.blockLoginUntil", type="string" );
+			param name="sessionData.blockLoginUntil" default=strikes.blockedUntil();
 			if ( attemptChallenge($=arguments.$) ) {
 				strikes.clear();
 				return true;
@@ -350,14 +350,14 @@ If you did not request a new authorization, contact #contactEmail#.");
 		var site="";
 		var returnDomain="";
 		var sessionData=getSession();
-		cfparam( default="", name="arguments.data.redirect" );
-		cfparam( default="", name="arguments.data.returnUrl" );
-		cfparam( default=0, name="arguments.data.rememberMe" );
-		cfparam( default="", name="arguments.data.contentid" );
-		cfparam( default="", name="arguments.data.linkServID" );
-		cfparam( default="", name="arguments.data.contentid" );
-		cfparam( default=false, name="arguments.data.compactDisplay" );
-		cfparam( default=false, name="arguments.data.isAdminLogin" );
+		param name="arguments.data.redirect" default="";
+		param name="arguments.data.returnUrl" default="";
+		param name="arguments.data.rememberMe" default=0;
+		param name="arguments.data.contentid"default="";
+		param name="arguments.data.linkServID" default="";
+		param name="arguments.data.contentid" default="";
+		param name="arguments.data.compactDisplay" default=false;
+		param name="arguments.data.isAdminLogin" default=false;
 		sessionData.rememberMe=arguments.data.rememberMe;
 		if ( !isdefined('arguments.data.userid') ) {
 			location( "./?muraAction=clogin.main&linkServID=#arguments.data.linkServID#", false );

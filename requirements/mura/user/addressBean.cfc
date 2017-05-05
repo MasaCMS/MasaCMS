@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,254 +43,221 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.beanExtendable" entityName="address" table="tuseraddresses" output="false" hint="This provides the User Address ben">
+*/
+/**
+ * This provides the User Address ben
+ */
+component extends="mura.bean.beanExtendable" entityName="address" table="tuseraddresses" output="false" hint="This provides the User Address ben" {
+	property name="addressID" fieldtype="id" type="string" default="";
+	property name="user" fieldtype="many-to-one" cfc="user" fkcolumn="userID";
+	property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";
+	property name="isPrimary" type="numeric" default="0";
+	property name="address1" type="string" default="";
+	property name="address2" type="string" default="";
+	property name="fax" type="string" default="";
+	property name="city" type="string" default="";
+	property name="state" type="string" default="";
+	property name="zip" type="string" default="";
+	property name="phone" type="string" default="";
+	property name="country" type="string" default="";
+	property name="addressName" type="string" default="";
+	property name="addressEmail" type="string" default="";
+	property name="addressNotes" type="string" default="";
+	property name="addressURL" type="string" default="";
+	property name="hours" type="string" default="";
+	property name="longitude" type="numeric" default="0";
+	property name="latitude" type="numeric" default="0";
+	property name="extendDataTable" type="string" default="tclassextenddatauseractivity";
+	property name="isNew" type="numeric" default="0" persistent="false";
+	variables.primaryKey = 'addressid';
+	variables.entityName = 'address';
+	variables.instanceName= 'addressname';
 
-<cfproperty name="addressID" fieldtype="id" type="string" default="" />
-<cfproperty name="user" fieldtype="many-to-one" cfc="user" fkcolumn="userID"/>
-<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
-<cfproperty name="isPrimary" type="numeric" default="0" />
-<cfproperty name="address1" type="string" default="" />
-<cfproperty name="address2" type="string" default="" />
-<cfproperty name="fax" type="string" default="" />
-<cfproperty name="city" type="string" default="" />
-<cfproperty name="state" type="string" default="" />
-<cfproperty name="zip" type="string" default="" />
-<cfproperty name="phone" type="string" default="" />
-<cfproperty name="country" type="string" default="" />
-<cfproperty name="addressName" type="string" default="" />
-<cfproperty name="addressEmail" type="string" default="" />
-<cfproperty name="addressNotes" type="string" default="" />
-<cfproperty name="addressURL" type="string" default="" />
-<cfproperty name="hours" type="string" default="" />
-<cfproperty name="longitude" type="numeric" default="0" />
-<cfproperty name="latitude" type="numeric" default="0" />
-<cfproperty name="extendDataTable" type="string" default="tclassextenddatauseractivity" />
-<cfproperty name="isNew" type="numeric" default="0" persistent="false"/>
+	public function init() output=false {
+		super.init(argumentCollection=arguments);
+		variables.instance.addressid="";
+		variables.instance.userid="";
+		variables.instance.siteid="";
+		variables.instance.isPrimary=0;
+		variables.instance.address1="";
+		variables.instance.address2="";
+		variables.instance.fax="";
+		variables.instance.city="";
+		variables.instance.state="";
+		variables.instance.zip="";
+		variables.instance.phone="";
+		variables.instance.country="";
+		variables.instance.addressID="";
+		variables.instance.addressName="";
+		variables.instance.addressEmail="";
+		variables.instance.addressNotes="";
+		variables.instance.addressURL="";
+		variables.instance.hours="";
+		variables.instance.longitude=0;
+		variables.instance.latitude=0;
+		variables.instance.errors=structnew();
+		variables.instance.extendDataTable="tclassextenddatauseractivity";
+		variables.instance.isNew=0;
+		variables.instance.type="Address";
+		variables.instance.subType="Default";
+		return this;
+	}
 
-<cfset variables.primaryKey = 'addressid'>
-<cfset variables.entityName = 'address'>
-<cfset variables.instanceName= 'addressname'>
+	public function setUserManager(userManager) {
+		variables.userManager=arguments.userManager;
+		return this;
+	}
 
-<cffunction name="init" output="false">
+	public function setSettingsManager(settingsManager) {
+		variables.settingsManager=arguments.settingsManager;
+		return this;
+	}
 
-	<cfset super.init(argumentCollection=arguments)>
+	public function setConfigBean(configBean) {
+		variables.configBean=arguments.configBean;
+		return this;
+	}
 
-	<cfset variables.instance.addressid="" />
-	<cfset variables.instance.userid="" />
-	<cfset variables.instance.siteid="" />
-	<cfset variables.instance.isPrimary=0 />
-	<cfset variables.instance.address1="" />
-	<cfset variables.instance.address2="" />
-	<cfset variables.instance.fax="" />
-	<cfset variables.instance.city="" />
-	<cfset variables.instance.state="" />
-	<cfset variables.instance.zip="" />
-	<cfset variables.instance.phone="" />
-	<cfset variables.instance.country="" />
-	<cfset variables.instance.addressID="" />
-	<cfset variables.instance.addressName="" />
-	<cfset variables.instance.addressEmail="" />
-	<cfset variables.instance.addressNotes="" />
-	<cfset variables.instance.addressURL="" />
-	<cfset variables.instance.hours="" />
-	<cfset variables.instance.longitude=0 />
-	<cfset variables.instance.latitude=0 />
-    <cfset variables.instance.errors=structnew() />
-	<cfset variables.instance.extendDataTable="tclassextenddatauseractivity" />
-	<cfset variables.instance.isNew=0 />
-	<cfset variables.instance.type="Address" />
-	<cfset variables.instance.subType="Default" />
+	public function set(required property, propertyValue) output=false {
+		if ( !isDefined('arguments.args') ) {
+			if ( isSimpleValue(arguments.property) ) {
+				return setValue(argumentCollection=arguments);
+			}
+			arguments.args=arguments.property;
+		}
+		var prop="";
+		if ( isQuery(arguments.args) && arguments.args.recordcount ) {
+			
+			for(prop in arrayToList(arguments.args.columnlist)){
+				setValue(prop,arguments.args[prop][1]);
+			}
 
-	<cfreturn this />
-</cffunction>
+		} else if ( isStruct(arguments.args) ) {
+			for ( prop in arguments.args ) {
+				setValue(prop,arguments.args[prop]);
+			}
+		}
+		if ( isdefined('arguments.args.siteid') && trim(arguments.args.siteid) != ''
+		and isdefined('arguments.args.isPublic') && trim(arguments.args.isPublic) != '' ) {
+			if ( arguments.args.isPublic == 0 ) {
+				setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPrivateUserPoolID());
+			} else {
+				setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPublicUserPoolID());
+			}
+		}
+		return this;
+	}
 
-<cffunction name="setUserManager">
-	<cfargument name="userManager">
-	<cfset variables.userManager=arguments.userManager>
-	<cfreturn this>
-</cffunction>
+	public function setGeoCoding() output=false {
+		var result=structNew();
+		var address="";
+		var googleAPIKey="";
+		if ( len(variables.instance.siteID) ) {
+			googleAPIKey=variables.settingsManager.getSite(variables.instance.siteID).getGoogleAPIKey();
+			if ( len(googleAPIKey) ) {
+				if ( len(variables.instance.address1) ) {
+					address=listAppend(address,trim("#variables.instance.address1# #variables.instance.address2#"));
+				}
+				if ( len(variables.instance.siteID) ) {
+					address=listAppend(address,variables.instance.state);
+				}
+				if ( len(variables.instance.country) ) {
+					address=listAppend(address,variables.instance.country);
+				}
+				if ( len(variables.instance.city) ) {
+					address=listAppend(address,variables.instance.city);
+				}
+				if ( len(variables.instance.zip) ) {
+					address=listAppend(address,variables.instance.zip);
+				}
+				result = getBean("geoCoding").geocode(googleAPIKey,trim(address));
+				if ( structKeyExists(result, "latitude") && structKeyExists(result, "longitude") ) {
+					variables.instance.longitude=result.longitude;
+					variables.instance.latitude=result.latitude;
+				}
+			}
+		}
+		return this;
+	}
 
-<cffunction name="setSettingsManager">
-	<cfargument name="settingsManager">
-	<cfset variables.settingsManager=arguments.settingsManager>
-	<cfreturn this>
-</cffunction>
+	public function getAddressID() output=false {
+		if ( !len(variables.instance.addressID) ) {
+			variables.instance.addressID = createUUID();
+		}
+		return variables.instance.addressID;
+	}
 
-<cffunction name="setConfigBean">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+	public function setIsPrimary(required IsPrimary) output=false {
+		if ( isNumeric(arguments.IsPrimary) ) {
+			variables.instance.IsPrimary = arguments.IsPrimary;
+		}
+		return this;
+	}
 
-<cffunction name="set" output="false">
-	<cfargument name="property" required="true">
-    <cfargument name="propertyValue">
+	public function validate() output=false {
+		var extErrors=structNew();
+		if ( len(variables.instance.siteID) ) {
+			extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues());
+		}
+		super.validate();
+		if ( !structIsEmpty(extErrors) ) {
+			structAppend(variables.instance.errors,extErrors);
+		}
+		setGeoCoding();
+		return this;
+	}
 
-    <cfif not isDefined('arguments.args')>
-	    <cfif isSimpleValue(arguments.property)>
-	      <cfreturn setValue(argumentCollection=arguments)>
-	    </cfif>
+	public function setLongitude(required Longitude) output=false {
+		if ( isNumeric(arguments.Longitude) ) {
+			variables.instance.Longitude = arguments.Longitude;
+		}
+		return this;
+	}
 
-	    <cfset arguments.args=arguments.property>
-    </cfif>
+	public function setLatitude(required Latitude) output=false {
+		if ( isNumeric(arguments.Latitude) ) {
+			variables.instance.Latitude = arguments.Latitude;
+		}
+		return this;
+	}
 
-	<cfset var prop=""/>
+	public function getExtendBaseID() output=false {
+		return getAddressID();
+	}
 
-	<cfif isQuery(arguments.args) and arguments.args.recordcount>
-		<cfloop list="#arguments.args.columnlist#" index="prop">
-			<cfset setValue(prop,arguments.args[prop][1]) />
-		</cfloop>
+	public function save() output=false {
+		var rs="";
+		cfquery( attributeCollection=variables.configBean.getReadOnlyQRYAttrs(name='rs') ) { //Note: queryExecute() is the preferred syntax but this syntax is easier to convert generically
 
-	<cfelseif isStruct(arguments.args)>
-		<cfloop collection="#arguments.args#" item="prop">
-			<cfset setValue(prop,arguments.args[prop]) />
-		</cfloop>
-	</cfif>
+			writeOutput("select addressID from tuseraddresses where addressID=");
+			cfqueryparam( cfsqltype="cf_sql_varchar", value=getAddressID() );
+		}
+		if ( rs.recordcount ) {
+			variables.userManager.updateAddress(this);
+		} else {
+			variables.userManager.createAddress(this);
+		}
+		return this;
+	}
 
-	<cfif isdefined('arguments.args.siteid') and trim(arguments.args.siteid) neq ''
-		and isdefined('arguments.args.isPublic') and trim(arguments.args.isPublic) neq ''>
-		<cfif arguments.args.isPublic eq 0>
-			<cfset setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPrivateUserPoolID()) />
-		<cfelse>
-			<cfset setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPublicUserPoolID()) />
-		</cfif>
-	</cfif>
+	public function delete() output=false {
+		variables.userManager.deleteAddress(getAddressID());
+	}
 
-	<cfreturn this />
-</cffunction>
+	public function clone() output=false {
+		return getBean("addressBean").setAllValues(structCopy(getAllValues()));
+	}
 
-<cffunction name="setGeoCoding"   output="false">
-	<cfset var result=structNew() />
-	<cfset var address=""/>
-	<cfset var googleAPIKey="" />
+	public function getPrimaryKey() output=false {
+		return "addressID";
+	}
 
-	<cfif len(variables.instance.siteID)>
-		<cfset googleAPIKey=variables.settingsManager.getSite(variables.instance.siteID).getGoogleAPIKey() />
-		<cfif len(googleAPIKey)>
+	public function loadBy() output=false {
+		if ( !structKeyExists(arguments,"siteID") ) {
+			arguments.siteID=variables.instance.siteID;
+		}
+		arguments.addressBean=this;
+		return variables.userManager.readAddress(argumentCollection=arguments);
+	}
 
-			<cfif len(variables.instance.address1)>
-				<cfset address=listAppend(address,trim("#variables.instance.address1# #variables.instance.address2#")) />
-			</cfif>
-
-			<cfif len(variables.instance.siteID)>
-				<cfset address=listAppend(address,variables.instance.state) />
-			</cfif>
-
-			<cfif len(variables.instance.country)>
-				<cfset address=listAppend(address,variables.instance.country) />
-			</cfif>
-
-			<cfif len(variables.instance.city)>
-				<cfset address=listAppend(address,variables.instance.city) />
-			</cfif>
-
-			<cfif len(variables.instance.zip)>
-				<cfset address=listAppend(address,variables.instance.zip) />
-			</cfif>
-
-			<cfset result = getBean("geoCoding").geocode(googleAPIKey,trim(address))>
-
-			<cfif structKeyExists(result, "latitude") and structKeyExists(result, "longitude")>
-				<cfset variables.instance.longitude=result.longitude />
-				<cfset variables.instance.latitude=result.latitude />
-			</cfif>
-
-		</cfif>
-
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAddressID" output="false">
-    <cfif not len(variables.instance.addressID)>
-		<cfset variables.instance.addressID = createUUID() />
-	</cfif>
-	<cfreturn variables.instance.addressID />
-</cffunction>
-
-<cffunction name="setIsPrimary" output="false">
-    <cfargument name="IsPrimary" required="true">
-
-	<cfif isNumeric(arguments.IsPrimary)>
-    <cfset variables.instance.IsPrimary = arguments.IsPrimary />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="validate" output="false">
-	<cfset var extErrors=structNew() />
-
-	<cfif len(variables.instance.siteID)>
-		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
-	</cfif>
-
-	<cfset super.validate()>
-
-	<cfif not structIsEmpty(extErrors)>
-		<cfset structAppend(variables.instance.errors,extErrors)>
-	</cfif>
-
-	<cfset setGeoCoding()/>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setLongitude" output="false">
-    <cfargument name="Longitude" required="true">
-
-	<cfif isNumeric(arguments.Longitude)>
-		<cfset variables.instance.Longitude = arguments.Longitude />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setLatitude" output="false">
-    <cfargument name="Latitude" required="true">
-
-	<cfif isNumeric(arguments.Latitude)>
-		<cfset variables.instance.Latitude = arguments.Latitude />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getExtendBaseID" output="false">
-	<cfreturn getAddressID()>
-</cffunction>
-
-<cffunction name="save" output="false">
-	<cfset var rs="">
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select addressID from tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getAddressID()#">
-	</cfquery>
-
-	<cfif rs.recordcount>
-		<cfset variables.userManager.updateAddress(this)>
-	<cfelse>
-		<cfset variables.userManager.createAddress(this)>
-	</cfif>
-
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="delete" output="false">
-	<cfset variables.userManager.deleteAddress(getAddressID())>
-</cffunction>
-
-<cffunction name="clone" output="false">
-	<cfreturn getBean("addressBean").setAllValues(structCopy(getAllValues()))>
-</cffunction>
-
-<cffunction name="getPrimaryKey" output="false">
-	<cfreturn "addressID">
-</cffunction>
-
-<cffunction name="loadBy" output="false">
-	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset arguments.siteID=variables.instance.siteID>
-	</cfif>
-
-	<cfset arguments.addressBean=this>
-
-	<cfreturn variables.userManager.readAddress(argumentCollection=arguments)>
-</cffunction>
-</cfcomponent>
+}

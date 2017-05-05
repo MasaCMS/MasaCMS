@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,194 +43,167 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.beanFeed" entityName="user" output="false" hint="This provides user feed functionality">
+*/
+/**
+ * This provides user feed functionality
+ */
+component extends="mura.bean.beanFeed" entityName="user" output="false" hint="This provides user feed functionality" {
+	property name="inActive" type="numeric" default="0" required="true";
+	property name="isPublic" type="numeric" default="1" required="true";
+	property name="groupID" type="string" default="" required="true";
+	property name="type" type="numeric" default="2" required="true";
+	property name="categoryID" type="string" default="" required="true";
+	property name="siteID" type="string" default="" required="true";
+	property name="sortBy" type="string" default="lname" required="true";
+	property name="sortDirection" type="string" default="asc" required="true";
+	property name="bean" type="string" default="user" required="true";
+	variables.entityName="user";
 
-	<cfproperty name="inActive" type="numeric" default="0" required="true" />
-	<cfproperty name="isPublic" type="numeric" default="1" required="true" />
-	<cfproperty name="groupID" type="string" default="" required="true" />
-	<cfproperty name="type" type="numeric" default="2" required="true" />
-	<cfproperty name="categoryID" type="string" default="" required="true" />
-	<cfproperty name="siteID" type="string" default="" required="true" />
-	<cfproperty name="sortBy" type="string" default="lname" required="true" />
-	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
-	<cfproperty name="bean" type="string" default="user" required="true" />
+	public function init() output=false {
+		super.init(argumentCollection=arguments);
+		variables.instance.inactive="";
+		variables.instance.isPublic=1;
+		variables.instance.groupID="";
+		variables.instance.type=2;
+		variables.instance.categoryID="";
+		variables.instance.siteID="";
+		variables.instance.sortBy="lname";
+		variables.instance.sortDirection="asc";
+		variables.instance.table="tusers";
+		variables.instance.entityName="user";
+		variables.instance.fieldAliases={'tag'={field='tuserstags.tag',datatype='varchar'}};
+		variables.instance.cachedWithin=createTimeSpan(0,0,0,0);
+		variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" );
+		return this;
+	}
 
-	<cfset variables.entityName="user">
-
-<cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
-
-	<cfset variables.instance.inactive="">
-	<cfset variables.instance.isPublic=1>
-	<cfset variables.instance.groupID="">
-	<cfset variables.instance.type=2>
-	<cfset variables.instance.categoryID="">
-	<cfset variables.instance.siteID="">
-	<cfset variables.instance.sortBy="lname" />
-	<cfset variables.instance.sortDirection="asc" />
-	<cfset variables.instance.table="tusers">
-	<cfset variables.instance.entityName="user">
-	<cfset variables.instance.fieldAliases={'tag'={field='tuserstags.tag',datatype='varchar'}}/>
-	<cfset variables.instance.cachedWithin=createTimeSpan(0,0,0,0)/>
-
-	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
-	<cfreturn this/>
-</cffunction>
-
-<cffunction name="setParams" output="false">
-	<cfargument name="params" type="any" required="true">
-
-		<cfset var rows=0/>
-		<cfset var I = 0 />
-
-		<cfif isquery(arguments.params)>
-
-		<cfset variables.instance.params=arguments.params />
-
-		<cfelseif isdefined('arguments.params.param')>
-
-			<cfset clearparams() />
-			<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
-
-				<cfset addParam(
+	public function setParams(required any params) output=false {
+		var rows=0;
+		var I = 0;
+		if ( isquery(arguments.params) ) {
+			variables.instance.params=arguments.params;
+		} else if ( isdefined('arguments.params.param') ) {
+			clearparams();
+			for ( i=1 ; i<=listLen(arguments.params.param) ; i++ ) {
+				addParam(
 						listFirst(arguments.params['paramField#i#'],'^'),
 						arguments.params['paramRelationship#i#'],
 						arguments.params['paramCriteria#i#'],
 						arguments.params['paramCondition#i#'],
 						listLast(arguments.params['paramField#i#'],'^')
-						) />
-
-			</cfloop>
-
-		<cfelseif isdefined('arguments.params.paramarray') and isArray(arguments.params.paramarray)>
-
-			<cfset clearparams() />
-			<cfloop from="1" to="#arrayLen(arguments.params.paramarray)#" index="i">
-
-				<cfset addParam(
+						);
+			}
+		} else if ( isdefined('arguments.params.paramarray') && isArray(arguments.params.paramarray) ) {
+			clearparams();
+			for ( i=1 ; i<=arrayLen(arguments.params.paramarray) ; i++ ) {
+				addParam(
 						listFirst(arguments.params.paramarray[i].field,'^'),
 						arguments.params.paramarray[i].relationship,
 						arguments.params.paramarray[i].criteria,
 						arguments.params.paramarray[i].condition,
 						listLast(arguments.params.paramarray[i].field,'^')
-						) />
+						);
+			}
+		}
+		if ( isStruct(arguments.params) ) {
+			if ( structKeyExists(arguments.params,"inactive") ) {
+				setInActive(arguments.params.inactive);
+			}
+			if ( structKeyExists(arguments.params,"ispublic") ) {
+				setIsPublic(arguments.params.ispublic);
+			}
+			if ( structKeyExists(arguments.params,"type") ) {
+				setType(arguments.params.type);
+			}
+			if ( structKeyExists(arguments.params,"siteid") ) {
+				setValue('siteid',arguments.params.siteid);
+			}
+			if ( structKeyExists(arguments.params,"categoryID") ) {
+				setCategoryID(arguments.params.categoryID);
+			}
+			if ( structKeyExists(arguments.params,"groupID") ) {
+				setGroupID(arguments.params.groupID);
+			}
+		}
+		return this;
+	}
 
-			</cfloop>
+	public function getQuery(required cachedWithin="#variables.instance.cachedWithin#") output=false {
+		variables.instance.cachedWithin=arguments.cachedWithin;
+		if ( !len(variables.instance.siteID) ) {
+			throw( message="The 'SITEID' value must be set in order to search users." );
+		}
+		return getBean('userManager').getAdvancedSearchQuery(userFeedBean=this);
+	}
 
-		</cfif>
+	public function getIterator(required cachedWithin="#variables.instance.cachedWithin#") output=false {
+		var rs=getQuery(argumentCollection=arguments);
+		var it=getBean("userIterator");
+		it.setQuery(rs,variables.instance.nextN);
+		return it;
+	}
 
-		<cfif isStruct(arguments.params)>
-			<cfif structKeyExists(arguments.params,"inactive")>
-				<cfset setInActive(arguments.params.inactive)>
-			</cfif>
+	public function setInActive(inactive) output=false {
+		if ( isNumeric(arguments.inactive) ) {
+			variables.instance.inactive=arguments.inactive;
+		}
+		return this;
+	}
 
-			<cfif structKeyExists(arguments.params,"ispublic")>
-				<cfset setIsPublic(arguments.params.ispublic)>
-			</cfif>
+	public function setIsPublic(isPublic) output=false {
+		variables.instance.isPublic=arguments.isPublic;
+		return this;
+	}
 
-			<cfif structKeyExists(arguments.params,"type")>
-				<cfset setType(arguments.params.type)>
-			</cfif>
+	public function setType(type) output=false {
+		if ( isNumeric(arguments.type) ) {
+			variables.instance.type=arguments.type;
+		} else if ( arguments.type == 'user' ) {
+			variables.instance.type=2;
+		} else if ( arguments.type == 'group' ) {
+			variables.instance.type=1;
+		}
+		return this;
+	}
 
-			<cfif structKeyExists(arguments.params,"siteid")>
-				<cfset setValue('siteid',arguments.params.siteid)>
-			</cfif>
+	public function setGroupID(String groupID, required boolean append="false") output=false {
+		var i="";
+		if ( !arguments.append ) {
+			variables.instance.groupID = trim(arguments.groupID);
+		} else {
 
-			<cfif structKeyExists(arguments.params,"categoryID")>
-				<cfset setCategoryID(arguments.params.categoryID)>
-			</cfif>
+			for(i in listToArray(arguments.groupID)){
+				if (not listFindNoCase(variables.instance.groupID,trim(i))){
+			    	variables.instance.groupID = listAppend(variables.instance.groupID,trim(i));
+			  }
+			}
 
-			<cfif structKeyExists(arguments.params,"groupID")>
-				<cfset setGroupID(arguments.params.groupID)>
-			</cfif>
-		</cfif>
-		<cfreturn this>
-</cffunction>
+		}
+		return this;
+	}
 
-<cffunction name="getQuery" output="false">
-	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
-	<cfset variables.instance.cachedWithin=arguments.cachedWithin>
-	<cfif not len(variables.instance.siteID)>
-		<cfthrow message="The 'SITEID' value must be set in order to search users.">
-	</cfif>
-	<cfreturn getBean('userManager').getAdvancedSearchQuery(userFeedBean=this)>
-</cffunction>
+	public function setCategoryID(String categoryID, required boolean append="false") output=false {
+		var i="";
+		if ( !arguments.append ) {
+			variables.instance.categoryID = trim(arguments.categoryID);
+		} else {
 
-<cffunction name="getIterator" output="false">
-	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
-	<cfset var rs=getQuery(argumentCollection=arguments)>
-	<cfset var it=getBean("userIterator")>
-	<cfset it.setQuery(rs,variables.instance.nextN)>
-	<cfreturn it>
-</cffunction>
+			for(i in listToArray(arguments.categoryID)){
+				if (not listFindNoCase(variables.instance.categoryID,trim(i))){
+			    	variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i));
+			  }
+			}
 
-<cffunction name="setInActive" output="false">
-	<cfargument name="inactive">
-	<cfif isNumeric(arguments.inactive)>
-		<cfset variables.instance.inactive=arguments.inactive>
-	</cfif>
-	<cfreturn this>
-</cffunction>
+		}
+		return this;
+	}
 
-<cffunction name="setIsPublic" output="false">
-	<cfargument name="isPublic">
-	<cfset variables.instance.isPublic=arguments.isPublic>
-	<cfreturn this>
-</cffunction>
+	public function getAvailableCount() output=false {
+		return getQuery(countOnly=true).count;
+	}
 
-<cffunction name="setType" output="false">
-	<cfargument name="type">
-	<cfif isNumeric(arguments.type)>
-		<cfset variables.instance.type=arguments.type>
-	<cfelseif arguments.type eq 'user'>
-		<cfset variables.instance.type=2>
-	<cfelseif arguments.type eq 'group'>
-		<cfset variables.instance.type=1>
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function clone() output=false {
+		return getBean("userFeed").setAllValues(structCopy(getAllValues()));
+	}
 
-<cffunction name="setGroupID" output="false">
-<cfargument name="groupID" type="String" />
-	<cfargument name="append" type="boolean" default="false" required="true" />
-	<cfset var i="">
-
-    <cfif not arguments.append>
-		<cfset variables.instance.groupID = trim(arguments.groupID) />
-	<cfelse>
-		<cfloop list="#arguments.groupID#" index="i">
-		<cfif not listFindNoCase(variables.instance.groupID,trim(i))>
-	    	<cfset variables.instance.groupID = listAppend(variables.instance.groupID,trim(i)) />
-	    </cfif>
-	    </cfloop>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setCategoryID" output="false">
-<cfargument name="categoryID" type="String" />
-	<cfargument name="append" type="boolean" default="false" required="true" />
-	<cfset var i="">
-
-    <cfif not arguments.append>
-		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
-	<cfelse>
-		<cfloop list="#arguments.categoryID#" index="i">
-		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
-	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
-	    </cfif>
-	    </cfloop>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAvailableCount" output="false">
-	<cfreturn getQuery(countOnly=true).count>
-</cffunction>
-
-<cffunction name="clone" output="false">
-	<cfreturn getBean("userFeed").setAllValues(structCopy(getAllValues()))>
-</cffunction>
-
-</cfcomponent>
+}
