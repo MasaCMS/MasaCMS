@@ -1,83 +1,83 @@
-<cfif request.muraInDocker>
-    <cfif request.muraSysEnv.MURA_DBTYPE eq 'mssql'>
-      <cfquery name="rs" datasource="nodatabase">
-          select * from sys.databases where name = <cfqueryparam cfsqltype="cf_sql_varchar" value="#request.muraSysEnv.MURA_DATABASE#">
-      </cfquery>
-      <cfif not rs.recordcount>
-        <cfquery datasource="nodatabase">
-            CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#
-        </cfquery>
+<cfscript>
+if ( request.muraInDocker ) {
+	if ( request.muraSysEnv.MURA_DBTYPE == 'mssql' ) {
 
-        <cfset FORM['#application.setupSubmitButton#']=true>
-        <cfset FORM['#application.setupSubmitButtonComplete#']=true>
-        <cfset FORM['setupSubmitButton']=true>
-        <cfset FORM['action']='doSetup'>
-      </cfif>
+    qs=new Query();
+    qs.setDatasource('nodatabase');
 
-      <cfquery name="checkForTCONTENT">
-         SELECT *
+		if ( !qs.execute(sql="select * from sys.databases where name = '#request.muraSysEnv.MURA_DATABASE#'").getResult().recordcount ) {
+      qs=new Query();
+      qs.setDatasource('nodatabase');
+      qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
+
+			FORM['#application.setupSubmitButton#']=true;
+			FORM['#application.setupSubmitButtonComplete#']=true;
+			FORM['setupSubmitButton']=true;
+			FORM['action']='doSetup';
+		}
+
+    qs=new Query();
+    qs.setDatasource('nodatabase');
+
+		if(!qs.execute(sql="SELECT *
          FROM INFORMATION_SCHEMA.TABLES
          WHERE TABLE_CATALOG = '#request.muraSysEnv.MURA_DATABASE#'
-         AND  lower(TABLE_NAME) = 'tcontent'
-     </cfquery>
+         AND  lower(TABLE_NAME) = 'tcontent'").getResult().recordcount){
+			FORM['#application.setupSubmitButton#']=true;
+			FORM['#application.setupSubmitButtonComplete#']=true;
+			FORM['setupSubmitButton']=true;
+			FORM['action']='doSetup';
+		}
 
-     <cfif not checkForTCONTENT.recordcount>
-         <cfset FORM['#application.setupSubmitButton#']=true>
-         <cfset FORM['#application.setupSubmitButtonComplete#']=true>
-         <cfset FORM['setupSubmitButton']=true>
-         <cfset FORM['action']='doSetup'>
-     </cfif>
-    <cfelseif request.muraSysEnv.MURA_DBTYPE eq 'mysql'>
-        <cfquery name="rs" datasource="nodatabase">
-            SELECT IF('#request.muraSysEnv.MURA_DATABASE#' IN(SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA), 1, 0) AS found;
-        </cfquery>
+	} else if ( request.muraSysEnv.MURA_DBTYPE == 'mysql' ) {
 
-        <cfif not rs.found>
-            <cfquery datasource="nodatabase">
-                CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#;
-            </cfquery>
+    qs=new Query();
+    qs.setDatasource('nodatabase');
 
-            <cfset FORM['#application.setupSubmitButton#']=true>
-            <cfset FORM['#application.setupSubmitButtonComplete#']=true>
-            <cfset FORM['setupSubmitButton']=true>
-            <cfset FORM['action']='doSetup'>
-        </cfif>
+		if ( !qs.execute(sql="SELECT IF('#request.muraSysEnv.MURA_DATABASE#' IN(SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA), 1, 0) AS found").getResult().found) {
+      qs=new Query();
+      qs.setDatasource('nodatabase');
+      qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
 
-        <cfquery name="checkForTCONTENT">
-          SELECT IF('tcontent' IN(SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#request.muraSysEnv.MURA_DATABASE#' AND TABLE_NAME = 'tcontent'), 1, 0) AS found;
-        </cfquery>
+			FORM['#application.setupSubmitButton#']=true;
+			FORM['#application.setupSubmitButtonComplete#']=true;
+			FORM['setupSubmitButton']=true;
+			FORM['action']='doSetup';
+		}
 
-       <cfif not checkForTCONTENT.found>
-           <cfset FORM['#application.setupSubmitButton#']=true>
-           <cfset FORM['#application.setupSubmitButtonComplete#']=true>
-           <cfset FORM['setupSubmitButton']=true>
-           <cfset FORM['action']='doSetup'>
-       </cfif>
-    <cfelseif request.muraSysEnv.MURA_DBTYPE eq 'postgresql'>
-        <cfquery name="rs" datasource="nodatabase">
-          SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = <cfqueryparam cfsqltype="cf_sql_varchar" value="#lcase(request.muraSysEnv.MURA_DATABASE)#">;
-        </cfquery>
+    qs=new Query();
+    qs.setDatasource('nodatabase');
 
-        <cfif not rs.recordcount>
-            <cfquery datasource="nodatabase">
-                CREATE DATABASE <cfqueryparam cfsqltype="cf_sql_varchar" value="#request.muraSysEnv.MURA_DATABASE#">
-            </cfquery>
+    if ( !qs.execute(sql="SELECT IF('tcontent' IN(SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '#request.muraSysEnv.MURA_DATABASE#' AND TABLE_NAME = 'tcontent'), 1, 0) AS found").getResult().found) {
+			FORM['#application.setupSubmitButton#']=true;
+			FORM['#application.setupSubmitButtonComplete#']=true;
+			FORM['setupSubmitButton']=true;
+			FORM['action']='doSetup';
+		}
 
-            <cfset FORM['#application.setupSubmitButton#']=true>
-            <cfset FORM['#application.setupSubmitButtonComplete#']=true>
-            <cfset FORM['setupSubmitButton']=true>
-            <cfset FORM['action']='doSetup'>
-        </cfif>
+	} else if ( request.muraSysEnv.MURA_DBTYPE == 'postgresql' ) {
 
-          <cfquery name="checkForTCONTENT">
-              select * from pg_class where relname='tcontent' and relkind='r'
-          </cfquery>
+    qs=new Query();
+    qs.setDatasource('nodatabase');
 
-         <cfif not checkForTCONTENT.recordcount>
-             <cfset FORM['#application.setupSubmitButton#']=true>
-             <cfset FORM['#application.setupSubmitButtonComplete#']=true>
-             <cfset FORM['setupSubmitButton']=true>
-             <cfset FORM['action']='doSetup'>
-         </cfif>
-    </cfif>
-</cfif>
+		if ( !qs.execute(sql="SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = '#lcase(request.muraSysEnv.MURA_DATABASE)#'").getResult().recordcount ) {
+
+      qs=new Query();
+      qs.setDatasource('nodatabase');
+      qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
+
+			FORM['#application.setupSubmitButton#']=true;
+			FORM['#application.setupSubmitButtonComplete#']=true;
+			FORM['setupSubmitButton']=true;
+			FORM['action']='doSetup';
+		}
+
+		if ( !qs.execute(sql="select * from pg_class where relname='tcontent' and relkind='r'").getResult().recordcount ) {
+			FORM['#application.setupSubmitButton#']=true;
+			FORM['#application.setupSubmitButtonComplete#']=true;
+			FORM['setupSubmitButton']=true;
+			FORM['action']='doSetup';
+		}
+	}
+}
+</cfscript>

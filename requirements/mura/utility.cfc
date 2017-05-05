@@ -1274,4 +1274,28 @@ Blog: www.codfusion.com--->
 
 </cfscript>
 
+<!--- Stashing some support for tags here until CF10 support is dropped --->
+<cffunction name="setHeader" output="false">
+	<cfargument name="statustext">
+	<cfargument name="statuscode">
+	<cfheader statustext="#arguments.statustext#" statuscode="#arguments.statuscode#">
+</cffunction>
+
+<cffunction name="resetContent" output="false">
+	<cfcontent reset="true">
+</cffunction>
+
+<cffunction name="clearObjectCache" output="false">
+	<cfobjectcache action="clear" />
+</cffunction>
+
+<cffunction name="setRequestTimeout" output="false">
+	<cfargument name="timeout">
+	<cfsetting requestTimeout = "#timeout#">
+</cffunction>
+
+<cffunction name="scheduleTask" output="false">
+	<cfschedule attributeCollection=arguments>
+</cffunction>
+
 </cfcomponent>

@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,256 +43,231 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.bean" output="false" hint="This provides functionality for beans that are extended via the class extension manager">
+*/
+/**
+ * This provides functionality for beans that are extended via the class extension manager
+ */
+component extends="mura.bean.bean" output="false" hint="This provides functionality for beans that are extended via the class extension manager" {
+	property name="extendData" type="any" default="" comparable="false" persistent="false";
+	property name="extendSetID" type="string" default="" comparable="false" persistent="false";
+	property name="extendDataTable" type="string" default="tclassextenddata" required="true" comparable="false" persistent="false";
+	property name="type" type="string" default="Custom";
+	property name="subType" type="string" default="Default";
+	property name="siteID" type="string" default="" required="true";
+	property name="extendAutoComplete" type="boolean" default="true" required="true" comparable="false" persistent="false";
 
-<cfproperty name="extendData" type="any" default="" comparable="false" persistent="false"/>
-<cfproperty name="extendSetID" type="string" default="" comparable="false" persistent="false" />
-<cfproperty name="extendDataTable" type="string" default="tclassextenddata" required="true" comparable="false" persistent="false"/>
-<cfproperty name="type" type="string" default="Custom" />
-<cfproperty name="subType" type="string" default="Default" />
-<cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="extendAutoComplete" type="boolean" default="true" required="true" comparable="false" persistent="false"/>
+	public function init() output=false {
+		super.init(argumentCollection=arguments);
+		variables.instance.extendData="";
+		variables.instance.extendSetID="";
+		variables.instance.extendDataTable="tclassextenddata";
+		variables.instance.extendAutoComplete = true;
+		variables.instance.frommuracache = false;
+		variables.instance.type = "Custom";
+		variables.instance.subType = "Default";
+		variables.instance.siteiD = "";
+		variables.instance.sourceIterator = "";
+		variables.missingDefaultAppended=false;
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
-	<cfset variables.instance.extendData="" />
-	<cfset variables.instance.extendSetID="" />
-	<cfset variables.instance.extendDataTable="tclassextenddata" />
-	<cfset variables.instance.extendAutoComplete = true />
-	<cfset variables.instance.frommuracache = false />
-	<cfset variables.instance.type = "Custom" />
-	<cfset variables.instance.subType = "Default" />
-	<cfset variables.instance.siteiD = "" />
-	<cfset variables.instance.sourceIterator = "" />
+	public function setConfigBean(configBean) output=false {
+		variables.configBean=arguments.configBean;
+		return this;
+	}
+	//  This needs to be overriden
 
-	<cfset variables.missingDefaultAppended=false>
+	public function getExtendBaseID() output=false {
+		return "";
+	}
 
-	<cfreturn this>
-</cffunction>
+	public function setType(required string Type) output=false {
+		arguments.Type=trim(arguments.Type);
+		if ( len(arguments.Type) && variables.instance.Type != arguments.Type ) {
+			variables.instance.Type = arguments.Type;
+			purgeExtendedData();
+		}
+		return this;
+	}
 
-<cffunction name="setConfigBean" output="false">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+	public function setSubType(required string SubType) output=false {
+		arguments.subType=trim(arguments.subType);
+		if ( len(arguments.subType) && variables.instance.SubType != arguments.SubType ) {
+			variables.instance.SubType = arguments.SubType;
+			purgeExtendedData();
+		}
+		return this;
+	}
 
-<!--- This needs to be overriden--->
-<cffunction name="getExtendBaseID" output="false">
-	<cfreturn "">
-</cffunction>
+	public function setSiteID(required string SiteID) output=false {
+		if ( len(arguments.siteID) && trim(arguments.siteID) != variables.instance.siteID ) {
+			variables.instance.SiteID = trim(arguments.SiteID);
+			purgeExtendedData();
+		}
+		return this;
+	}
 
-<cffunction name="setType" output="false">
-		<cfargument name="Type" type="string" required="true">
-		<cfset arguments.Type=trim(arguments.Type)>
-
-	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type>
-		<cfset variables.instance.Type = arguments.Type />
-		<cfset purgeExtendedData()>
-	</cfif>
-
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setSubType" output="false">
-		<cfargument name="SubType" type="string" required="true">
-	<cfset arguments.subType=trim(arguments.subType)>
-	<cfif len(arguments.subType) and variables.instance.SubType neq arguments.SubType>
-			<cfset variables.instance.SubType = arguments.SubType />
-		<cfset purgeExtendedData()>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setSiteID" output="false">
-		<cfargument name="SiteID" type="string" required="true">
-	<cfif len(arguments.siteID) and trim(arguments.siteID) neq variables.instance.siteID>
-		<cfset variables.instance.SiteID = trim(arguments.SiteID) />
-	<cfset purgeExtendedData()>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getExtendedData" output="false">
-	<cfif not isObject(variables.instance.extendData)>
-		<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(
+	public function getExtendedData() output=false {
+		if ( !isObject(variables.instance.extendData) ) {
+			variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(
 				baseID=getExtendBaseID()
 				, type=variables.instance.type
 				, subType=variables.instance.subtype
 				, siteID=variables.instance.siteID
 				, dataTable=variables.instance.extendDataTable
 				, sourceIterator=variables.instance.sourceIterator
-			) />
-	</cfif>
-	<cfreturn variables.instance.extendData />
-</cffunction>
+			);
+		}
+		return variables.instance.extendData;
+	}
 
-<cffunction name="purgeExtendedData" output="false">
-	<cfset variables.instance.extendData=""/>
-	<cfset variables.instance.extendAutoComplete = true />
-	<cfset variables.instance.sourceIterator = "" />
-	<cfreturn this>
-</cffunction>
+	public function purgeExtendedData() output=false {
+		variables.instance.extendData="";
+		variables.instance.extendAutoComplete = true;
+		variables.instance.sourceIterator = "";
+		return this;
+	}
 
-<cffunction name="getExtendedAttribute" output="false">
-	<cfargument name="key" type="string" required="true">
-	<cfargument name="useMuraDefault" type="boolean" required="true" default="false">
-		<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
-</cffunction>
+	public function getExtendedAttribute(required string key, required boolean useMuraDefault="false") output=false {
+		return getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault);
+	}
 
-<cffunction name="appendMissingAttributes" output="false">
-	<cfif not variables.missingDefaultAppended>
-		<cfset getBean('configBean')
+	public function appendMissingAttributes() output=false {
+		if ( !variables.missingDefaultAppended ) {
+			getBean('configBean')
 		.getClassExtensionManager()
-		.appendMissingAttributes(variables.instance) />
-		<cfset variables.missingDefaultAppended=true>
-	</cfif>
-</cffunction>
+		.appendMissingAttributes(variables.instance);
+			variables.missingDefaultAppended=true;
+		}
+	}
 
-<cffunction name="getExtendedAttributes" returnType="struct" output="false">
-	<cfargument name="name" default="" hint="Extend Set Name" />
+	public struct function getExtendedAttributes(name="") output=false {
+		var extendSetData = getExtendedData().getAllExtendSetData();
+		extendSetData=StructKeyExists(extendSetData, 'data') ? extendSetData.data : {};
+		var i = "";
+		if ( Len(arguments.name) ) {
+			var rsAttributes = getExtendedAttributesQuery(name=arguments.name);
+			if ( rsAttributes.recordcount ) {
+				extendSetData = {};
 
-	<cfset var extendSetData = getExtendedData().getAllExtendSetData() />
-	<cfset extendSetData=StructKeyExists(extendSetData, 'data') ? extendSetData.data : {} />
-	<cfset var i = "" />
+				for(i=1;i <= rsAttributes.recordcount;i++){
+					extendSetData['#rsAttributes.name[currentrow]#'] = rsAttributes.attributeValue[currentrow];
+				}
 
-	<cfif Len(arguments.name)>
-		<cfset var rsAttributes = getExtendedAttributesQuery(name=arguments.name) />
-		<cfif rsAttributes.recordcount>
-			<cfset extendSetData = {} />
-			<cfloop query="rsAttributes">
-				<cfset extendSetData['#rsAttributes.name[currentrow]#'] = rsAttributes.attributeValue[currentrow] />
-			</cfloop>
-		</cfif>
-	</cfif>
+			}
+		}
+		if ( !structIsEmpty(extendSetData) ) {
+			for ( i in extendSetData ) {
+				if ( valueExists(i) ) {
+					extendSetData[i]=getValue(i);
+				}
+			}
+		}
+		return extendSetData;
+	}
 
-	<cfif not structIsEmpty(extendSetData)>
-		<cfloop collection="#extendSetData#" item="i">
-			<cfif valueExists(i)>
-				<cfset extendSetData[i]=getValue(i) />
-			</cfif>
-		</cfloop>
-	</cfif>
+	public function getExtendedAttributesList(name="") output=false {
+		return StructKeyList(getExtendedAttributes(name=arguments.name));
+	}
 
-	<cfreturn extendSetData />
-</cffunction>
+	public function getExtendedAttributesQuery(name="") output=false {
 
-<cffunction name="getExtendedAttributesList" output="false">
-	<cfargument name="name" default="" hint="Extend Set Name" />
-	<cfreturn StructKeyList(getExtendedAttributes(name=arguments.name)) />
-</cffunction>
-
-<cffunction name="getExtendedAttributesQuery" output="false">
-	<cfargument name="name" default="" hint="Extend Set Name" />
-
-	<cfscript>
 		var structData = getExtendedData().getAllValues();
 		var rsData = StructKeyExists(structData, 'data') ? structData.data : QueryNew('');
 		var rsDefinitions = StructKeyExists(structData, 'definitions') ? structData.definitions : QueryNew('');
-		var rsExtendSet = QueryNew('');
+		var rsExtendSet = queryNew('');
+		var qs='';
 		var rsAttributes = rsData;
-	</cfscript>
+		if ( Len(arguments.name) ) {
+			if ( rsDefinitions.recordcount ) {
 
-	<cfif Len(arguments.name)>
-		<cfif rsDefinitions.recordcount>
-			<cfquery dbtype="query" name="rsExtendSet">
-				SELECT DISTINCT extendsetid
-				FROM rsDefinitions
-				WHERE extendsetname = <cfqueryparam value="#arguments.name#" cfsqltype="cf_sql_varchar" />
-			</cfquery>
-		</cfif>
-		<cfif rsExtendSet.recordcount>
-			<cfquery dbtype="query" name="rsAttributes">
-				SELECT *
-				FROM rsData
-				WHERE extendsetid = <cfqueryparam value="#rsExtendSet.extendsetid#" cfsqltype="cf_sql_varchar" />
-			</cfquery>
-		</cfif>
-	</cfif>
+				qs=getQueryService();
+				qs.setDbType('query');
+				qs.addParam( name="name", cfsqltype="cf_sql_varchar", value=arguments.name );
 
-	<cfreturn rsAttributes />
-</cffunction>
+				rsExtendSet=qs.execute(sql="SELECT DISTINCT extendsetid FROM rsDefinitions WHERE extendsetname = :name").getResult();
 
-<cffunction name="setValue" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="propertyValue" default="" >
+			}
 
-	<cfset var extData =structNew() />
-	<cfset var i = "">
+			if ( rsExtendSet.recordcount ) {
 
-	<cfif isSimpleValue(arguments.propertyValue)>
-		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
-	</cfif>
+				qs=getQueryService();
+				qs.setDbType('query');
+				qs.addParam( name="id", cfsqltype="cf_sql_varchar", value=rsExtendSet.extendsetid );
 
-	<cfif arguments.property neq 'value' and isValid('variableName',arguments.property) and isDefined("this.set#arguments.property#")>
-		<cfset var tempFunc=this["set#arguments.property#"]>
-		<cfset tempFunc(arguments.propertyValue)>
-	<cfelse>
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-	</cfif>
+				rsAttributes=qs.execute(sql="SELECT * FROM rsData WHERE extendsetid = :id").getResult();
 
-	<cfreturn this>
-</cffunction>
+			}
+		}
+		return rsAttributes;
+	}
 
-<cffunction name="getValue" output="false">
-	<cfargument name="property" type="string" required="true">
-	<cfargument name="defaultValue">
-	<cfset var tempValue="">
+	public function setValue(required string property, propertyValue="") output=false {
+		var extData =structNew();
+		var i = "";
+		if ( isSimpleValue(arguments.propertyValue) ) {
+			arguments.propertyValue=trim(arguments.propertyValue);
+		}
+		if ( arguments.property != 'value' && isValid('variableName',arguments.property) && isDefined("this.set#arguments.property#") ) {
+			var tempFunc=this["set#arguments.property#"];
+			tempFunc(arguments.propertyValue);
+		} else {
+			variables.instance["#arguments.property#"]=arguments.propertyValue;
+		}
+		return this;
+	}
 
-	<cfif isValid('variableName',arguments.property) and isDefined("this.get#arguments.property#")>
-		<cfset var tempFunc=this["get#arguments.property#"]>
-		<cfreturn tempFunc()>
-	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
-		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelseif not variables.instance.frommuracache>
-		<cfif structKeyExists(arguments,"defaultValue")>
-			<cfset tempValue=getExtendedAttribute(arguments.property,true) />
-			<cfif tempValue neq "useMuraDefault">
-				<cfset variables.instance["#arguments.property#"]=tempValue />
-				<cfreturn tempValue>
-			<cfelse>
-				<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
-				<cfreturn arguments.defaultValue />
-			</cfif>
-		<cfelse>
-			<cfreturn getExtendedAttribute(arguments.property) />
-		</cfif>
-	<cfelseif structKeyExists(arguments,"defaultValue")>
-		<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
-		<cfreturn arguments.defaultValue />
-	<cfelse>
-		<cfset appendMissingAttributes()>
+	public function getValue(required string property, defaultValue) output=false {
+		var tempValue="";
+		if ( isValid('variableName',arguments.property) && isDefined("this.get#arguments.property#") ) {
+			var tempFunc=this["get#arguments.property#"];
+			return tempFunc();
+		} else if ( structKeyExists(variables.instance,"#arguments.property#") ) {
+			return variables.instance["#arguments.property#"];
+		} else if ( !variables.instance.frommuracache ) {
+			if ( structKeyExists(arguments,"defaultValue") ) {
+				tempValue=getExtendedAttribute(arguments.property,true);
+				if ( tempValue != "useMuraDefault" ) {
+					variables.instance["#arguments.property#"]=tempValue;
+					return tempValue;
+				} else {
+					variables.instance["#arguments.property#"]=arguments.defaultValue;
+					return arguments.defaultValue;
+				}
+			} else {
+				return getExtendedAttribute(arguments.property);
+			}
+		} else if ( structKeyExists(arguments,"defaultValue") ) {
+			variables.instance["#arguments.property#"]=arguments.defaultValue;
+			return arguments.defaultValue;
+		} else {
+			appendMissingAttributes();
+			if ( structKeyExists(variables.instance,"#arguments.property#") ) {
+				return variables.instance["#arguments.property#"];
+			} else {
+				return '';
+			}
+		}
+	}
 
-		<cfif structKeyExists(variables.instance,"#arguments.property#")>
-			<cfreturn variables.instance["#arguments.property#"]>
-		<cfelse>
-			<cfreturn ''>
-		</cfif>
-	</cfif>
+	public struct function getAllValues(required autocomplete="#variables.instance.extendAutoComplete#") output=false {
+		var i="";
+		var extData="";
+		if ( arguments.autocomplete ) {
+			extData=getExtendedData().getAllExtendSetData();
+			if ( !structIsEmpty(extData) ) {
+				structAppend(variables.instance,extData.data,false);
 
-</cffunction>
+				for(i in ListToArray(extData.extendSetID)){
+					if(!listFind(variables.instance.extendSetID,i)){
+						variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i);
+					}
+				}
 
-<cffunction name="getAllValues" returntype="struct" output="false">
-	<cfargument name="autocomplete" required="true" default="#variables.instance.extendAutoComplete#">
-	<cfset var i="">
-	<cfset var extData="">
+			}
+		}
+		purgeExtendedData();
+		return variables.instance;
+	}
 
-	<cfif arguments.autocomplete>
-		<cfset extData=getExtendedData().getAllExtendSetData()>
-
-		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>
-			<cfloop list="#extData.extendSetID#" index="i">
-				<cfif not listFind(variables.instance.extendSetID,i)>
-					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-				</cfif>
-			</cfloop>
-		</cfif>
-	</cfif>
-
-	<cfset purgeExtendedData()>
-
-	<cfreturn variables.instance />
-</cffunction>
-
-</cfcomponent>
+}

@@ -1,44 +1,46 @@
-<!--- Preventing XSS attacks --->
-<cfparam name="local" default="#structNew()#">
-<cfif structKeyExists(application,"scriptProtectionFilter") and application.configBean.getScriptProtect()>
-	<cfif isDefined("url")>
-		<cfset application.scriptProtectionFilter.scan(
+<cfscript>
+//  Preventing XSS attacks
+
+if ( structKeyExists(application,"scriptProtectionFilter") && application.configBean.getScriptProtect() ) {
+	if ( isDefined("url") ) {
+		application.scriptProtectionFilter.scan(
 									object=url,
 									objectname="url",
 									ipAddress=request.remoteAddr,
 									useTagFilter=true,
-									useWordFilter=true)>
-	</cfif>
-	<cfif isDefined("form")>
-		<cfset application.scriptProtectionFilter.scan(
+									useWordFilter=true);
+	}
+	if ( isDefined("form") ) {
+		application.scriptProtectionFilter.scan(
 									object=form,
 									objectname="form",
 									ipAddress=request.remoteAddr,
 									useTagFilter=true,
-									useWordFilter=true)>
-	</cfif>
-	<cftry>
-		<cfif isDefined("cgi")>
-			<cfset application.scriptProtectionFilter.scan(
+									useWordFilter=true);
+	}
+	try {
+		if ( isDefined("cgi") ) {
+			application.scriptProtectionFilter.scan(
 										object=cgi,
 										objectname="cgi",
 										ipAddress=request.remoteAddr,
 										useTagFilter=true,
 										useWordFilter=true,
-										fixValues=false)>
-		</cfif>
-		<cfif isDefined("cookie")>
-			<cfset application.scriptProtectionFilter.scan(
+										fixValues=false);
+		}
+		if ( isDefined("cookie") ) {
+			application.scriptProtectionFilter.scan(
 										object=cookie,
 										objectname="cookie",
 										ipAddress=request.remoteAddr,
 										useTagFilter=true,
 										useWordFilter=true,
-										fixValues=false)>
-		</cfif>
-		<cfcatch></cfcatch>
-	</cftry>
-	<cfif application.scriptProtectionFilter.isBlocked(request.remoteAddr) eq true>
-		<cfset application.eventManager.announceEvent("onGlobalThreatDetect",createObject("component","mura.event").init())>
-	</cfif> 
-</cfif>
+										fixValues=false);
+		}
+	} catch (any cfcatch) {
+	}
+	if ( application.scriptProtectionFilter.isBlocked(request.remoteAddr) == true ) {
+		application.eventManager.announceEvent("onGlobalThreatDetect",createObject("component","mura.event").init());
+	}
+}
+</cfscript>
