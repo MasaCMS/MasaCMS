@@ -373,9 +373,10 @@ if ( application.setupComplete ) {
 	if ( len(application.configBean.getValue('encryptionKey')) ) {
 		application.encryptionKey=application.configBean.getValue('encryptionKey');
 	}
-	cfdirectory( directory="#variables.basedir#/requirements/", name="variables.rsRequirements", action="list" );
 
-	for(var i=1;i <= variables.rsRequirements.recordcount;i++){
+	variables.rsRequirements=application.serviceFactory.getBean('fileWriter').getDirectoryList(directory="#variables.basedir#/requirements/");
+
+	for(i=1;i <= variables.rsRequirements.recordcount;i++){
 		if ( variables.rsRequirements.type[i] == "dir" && variables.rsRequirements.name[i] != '.svn' && !structKeyExists(this.mappings,"/#variables.rsRequirements.name[i]#") ) {
 			application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name[i]#"] = variables.basedir & "/requirements/#variables.rsRequirements.name[i]#">');
 		}
@@ -460,7 +461,7 @@ if ( application.setupComplete ) {
 	//  Fire local onApplicationLoad events
 	variables.rsSites=application.settingsManager.getList();
 
-	for(var i=1;i <= variables.rsSites.recordcount;i++){
+	for(i=1;i <= variables.rsSites.recordcount;i++){
 		variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteID[i]);
 		variables.themedir=expandPath(variables.siteBean.getThemeIncludePath());
 		if ( fileExists(variables.themedir & '/config.xml.cfm') ) {
@@ -538,7 +539,7 @@ if ( application.setupComplete ) {
 		and filename is not null").getResult();
 
 	variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs);
-	
+
 	while ( variables.legacyURLsIterator.hasNext() ) {
 		variables.item=variables.legacyURLsIterator.next();
 
@@ -576,7 +577,7 @@ if ( application.setupComplete ) {
 	local.tempDir=expandPath('/muraWRM#application.configBean.getAdminDir()#/temp/');
 
 	if(local.rs.recordcount){
-		for(var i=1;i <= local.rs.recordcount;i++){
+		for(i=1;i <= local.rs.recordcount;i++){
 			if ( !listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom,framework',local.rs.name[i]) ) {
 				try {
 					local.fileWriter.touchDir(local.tempDir);

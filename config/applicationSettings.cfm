@@ -447,7 +447,7 @@ function setINIProperty(required string entry, any value="", required string sec
 /**
 	 * Get all INI data (no arguments); a section's data, as a struct (one argument, section name); or an entry's value (section and entry name arguments). Optionally pass a third argument to set/get a default value if requested entry doesn't exist.
 	 */
-	function getINIProperty(string entry, string default, string section="#variables.ini.settings.mode#") output=false {
+	function getINIProperty(string entry, string defaultValue, string section="#variables.ini.settings.mode#") output=false {
 	var envVar='MURA_#UCASE(arguments.entry)#';
 	if ( structKeyExists(request.muraSysEnv,'#envVar#') ) {
 		return request.muraSysEnv['#envVar#'];
@@ -455,11 +455,12 @@ function setINIProperty(required string entry, any value="", required string sec
 		if ( !structKeyExists( arguments, "entry" ) ) {
 			return variables.ini[ arguments.section ];
 		}
+
 		if ( structKeyExists( variables.ini[ arguments.section ], arguments.entry ) ) {
 			return variables.ini[ arguments.section ][ arguments.entry ];
-		} else if ( ( structKeyExists( arguments, "default" ) ) ) {
-			setINIProperty(arguments.entry, arguments.default ,arguments.section);
-			return arguments.default;
+		} else if ( ( structKeyExists( arguments, "defaultValue" ) ) ) {
+			setINIProperty(arguments.entry, arguments.defaultValue ,arguments.section);
+			return arguments.defaultValue;
 		} else {
 			return "";
 		}

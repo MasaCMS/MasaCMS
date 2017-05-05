@@ -94,7 +94,7 @@ component extends="mura.iterator.queryIterator" output="false" hint="This provid
 
 			if(variables.records.recordcount){
 				for(var i=1;i<=variables.records.recordcount;i++){
-					arrayAppend(array,packageRecord(i))
+					arrayAppend(array,packageRecord(i));
 				}
 			}
 
