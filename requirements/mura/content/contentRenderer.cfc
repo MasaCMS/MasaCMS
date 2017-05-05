@@ -1505,7 +1505,12 @@ Display Objects
 	<cfset variables.event.setValue("BodyRenderArgs",arguments)>
 	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
-		<cfif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
+		<cfset eventOutput=application.pluginManager.renderEvent("onDisplayRender",variables.event)>
+		<cfif len(eventOutput)>
+			<cfset variables.$.noIndex()>
+			<cfset variables.event.setValue('noCache',1)>
+			<cfoutput>#eventOutput#</cfoutput>
+		<cfelseif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
 			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not sessionData.mura.isLoggedIn)
 			or (variables.event.getValue('display') eq 'editprofile' and sessionData.mura.isLoggedIn)>
 			<cfif listFindNoCase('search,editprofile,login',variables.event.getValue('display'))>
@@ -1547,16 +1552,6 @@ Display Objects
 						<cfoutput>#variables.$.dspObject_include(thefile='dsp_login.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
-					<cfdefaultcase>
-						<cfset variables.$.noIndex()>
-						<cfset variables.event.setValue('noCache',1)>
-						<cfset eventOutput=application.pluginManager.renderEvent("onDisplayRender",variables.event)>
-						<cfif len(eventOutput)>
-							<cfoutput>#eventOutput#</cfoutput>
-						<cfelse>
-							<cfoutput><p>The display action that you have requested is not valid.</p></cfoutput>
-						</cfif>
-					</cfdefaultcase>
 				</cfswitch>
 			<cfelse>
 
