@@ -343,34 +343,6 @@ component extends="mura.cfobject" displayname="Iterator" output="false" hint="Th
 		variables.pageQueries=structNew();
 		return this;
 	}
-	/*
-	<cffunction name="each">
-		<cfargument name="action" hint="A function that will run per item in iterator.">
-		<cfargument name="$" hint="If not provides a MuraScope instance is created.">
-		<cfset var test=false>
-		<cfset var item="">
-
-		<cfif structKeyExists(arguments,"mura")>
-			<cfset arguments.$=arguments.mura>
-		</cfif>
-
-		<cfif structKeyExists(arguments,"$")>
-			<cfset arguments.$.event("each:count",getRecordCount())>
-		</cfif>
-
-		<cfloop condition="hasNext()">
-			<cfset item=next()>
-			<cfif not structKeyExists(arguments,"$")>
-				<cfset arguments.$=getBean("$").init(item.getValue("siteID"))>
-				<cfset arguments.$.event("each:count",getRecordCount())>
-			</cfif>
-			<cfset arguments.$.event("each:index",getRecordIndex())>
-			<cfset test=arguments.action(item=item, $=arguments.$, mura=arguments.$)>
-			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>
-			</cfif>
-		</cfloop>
-	</cffunction>
-	*/
+	
 
 }

@@ -272,11 +272,6 @@ component extends="mura.cfobject" output="false" hint="This provides resource bu
 			case  "es_MX":
 				return "Spanish (Mexican)";
 				break;
-			/*  Only support Spanish Standard
-			<cfcase value="es_ES">
-				<cfreturn "Spanish (Modern)">
-			</cfcase>
-			*/
 			case  "es_ES":
 				return "Spanish (Standard)";
 				break;
@@ -343,24 +338,19 @@ component extends="mura.cfobject" output="false" hint="This provides resource bu
 			sessionData.locale="en_US";
 		}
 		savecontent variable="variables.jsDateKey" {
-			cfoutput(  ) {
-
-				writeOutput("<invalidTag type=""text/javascript"">
-	var dtExample=""#variables.datekeyExample#"";
-	var dtCh=""#dtCh#"";
+				writeOutput('<script type="text/javascript">
+	var dtExample="#variables.datekeyExample#";
+	var dtCh="#dtCh#";
 	var dtFormat =[#dtFormat#];
-	var dtLocale=""#replace(sessionData.locale,'_','-')#"";
-	</script>");
-			}
+	var dtLocale="#replace(sessionData.locale,'_','-')#";
+	</script>');
 		}
-		savecontent variable="variables.jsDateKeyObjInc" {
-			cfoutput(  ) {
 
-				writeOutput("dtExample:""#variables.datekeyExample#"",
-	dtCh:""#dtCh#"",
+		savecontent variable="variables.jsDateKeyObjInc" {
+				writeOutput('dtExample:"#variables.datekeyExample#",
+	dtCh:"#dtCh#",
 	dtFormat:[#dtFormat#],
-	dtLocale:""#replace(sessionData.locale,'_','-')#""");
-			}
+	dtLocale:"#replace(sessionData.locale,'_','-')#"');
 		}
 	}
 
