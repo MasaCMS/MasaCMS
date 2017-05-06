@@ -47,7 +47,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 /**
  * Site custom image size iterator
  */
-component extends="mura.bean.beanIterator" output="false" hint="Site custom image size iterator" {
+component extends="mura.bean.beanIterator" {
 	variables.entityName="imageSize";
-
 }
