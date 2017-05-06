@@ -696,7 +696,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 					//reset to original component metadata
 					md=omd;
 
-					//Look for remote MissingMethodArguments
+					//Look for remote functions
 					for (md;
 					    structKeyExists(md, "extends");
 					    md = md.extends)
