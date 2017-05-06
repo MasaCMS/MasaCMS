@@ -47,20 +47,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="ioc" hint="This provides the primary bean factory that all component instances are instantiated within"{
 
- 	// Calls containsBean(). Added for WireBox compatibility
-	public function containsInstance( String name ) {
-	  return containsBean( name );
-	}
+   	// Calls containsBean(). Added for WireBox compatibility
+  	public function containsInstance( String name ) {
+  	  return containsBean( name );
+  	}
 
-	 // calls getBean(). Added for WireBox compatibility
-	public function getInstance( String name, String dsl, Any initArguments ) {
-	  return getBean( arguments.name );
-	}
+	  // calls getBean(). Added for WireBox compatibility
+  	public function getInstance( String name, String dsl, Any initArguments ) {
+  	  return getBean( arguments.name );
+  	}
 
-	// return the parent factory. Added for WireBox compatibility
-	public function getParent() {
-	  return variables.parent;
-	}
+  	// return the parent factory. Added for WireBox compatibility
+  	public function getParent() {
+  	  return variables.parent;
+  	}
 
     public function removeBean(beanName){
         structDelete(variables.beanInfo,arguments.beanName);
@@ -68,13 +68,13 @@ component extends="ioc" hint="This provides the primary bean factory that all co
         return this;
     }
 
-	public function shutdown() {
-	  // shutdown parent bean factory
+  	public function shutdown() {
+  	  // shutdown parent bean factory
 
-	  if ( isObject( variables.parent ) AND structKeyExists( variables.parent, "shutdown" ) ) {
-	    variables.parent.shutdown();
-	  }
+  	  if ( isObject( variables.parent ) AND structKeyExists( variables.parent, "shutdown" ) ) {
+  	    variables.parent.shutdown();
+  	  }
 
-	  // At the moment this does nothing else. This method is here for WireBox compatibility for dealing with WireBox's scope storage.
+  	  // At the moment this does nothing else. This method is here for WireBox compatibility for dealing with WireBox's scope storage.
 	}
 }

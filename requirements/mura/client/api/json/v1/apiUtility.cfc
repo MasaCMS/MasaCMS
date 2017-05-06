@@ -728,6 +728,30 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								result=findCrumbArray(argumentCollection=params);
 								return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'='findCrumbArray','params'=getParamsWithOutMethod(params),'data'=result});
 
+							} else if (isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[4]#')) {
+								params.method=pathInfo[4];
+								url.method=pathInfo[4];
+								var entity=getBean(params.entityName);
+
+								if(params.entityName=='content'){
+									var loadByArgs={
+										siteid=params.siteid,
+										contentid=params.id
+									};
+								} else {
+									var loadByArgs={
+										siteid=params.siteid,
+										'#entity.getPrimaryKey()#'=params.id
+									};
+								}
+
+								entity.loadBy(argumentCollection=loadByArgs);
+
+								structDelete(params,'id');
+
+								var result=evaluate('entity.#pathInfo[4]#(argumentCollection=params)');
+								return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
+
 							} else if(isDefined('application.objectmappings.#params.entityName#.properties.#pathInfo[4]#')
 							&& structKeyExists(application.objectmappings[params.entityName].properties[pathInfo[4]],'cfc') ){
 								var relationship=application.objectmappings[params.entityName].properties[pathInfo[4]];
@@ -805,6 +829,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						}
 					} else if(listFind('new,properties',pathInfo[3])){
 						params.id=pathInfo[3];
+					} else if (isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[3]#')) {
+						params.method=pathInfo[3];
+						url.method=pathInfo[3];
+
+						var entity=getBean(params.entityName);
+						var result=evaluate('entity.#pathInfo[3]#(argumentCollection=params)');
+						return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
 						var filenamestart=3;

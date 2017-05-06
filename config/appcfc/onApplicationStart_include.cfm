@@ -608,7 +608,6 @@ if ( application.setupComplete ) {
 	}
 	application.sessionTrackingThrottle=false;
 
-	writeOutput("<!-- Clean out old cluster commands --->");
 	application.clusterManager.clearOldCommands();
 }
 </cfscript>
