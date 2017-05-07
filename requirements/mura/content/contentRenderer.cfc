@@ -1244,6 +1244,8 @@ Display Objects
 	<cfelseif fileExists(expandedPath & "display_objects/custom/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm" />
+	<cfelseif fileExists(theExandedIncludePath & "/modules/nav/dsp_tag_cloud.cfm")>
+		<cfset tracePoint=initTracePoint("#theExandedIncludePath#/modules/nav/dsp_tag_cloud.cfm")>
 	<cfelseif fileExists(theExandedIncludePath & "/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#theExandedIncludePath#/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#theIncludePath#/display_objects/nav/dsp_tag_cloud.cfm" />
