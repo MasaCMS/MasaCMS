@@ -1238,26 +1238,36 @@ Display Objects
 	<cfset var tracePoint=0>
 
 	<cfsavecontent variable="str">
-	<cfif fileExists(expandedPath & "themes/"  & theme & "/display_objects/nav/dsp_tag_cloud.cfm")>
+	<cfif fileExists(expandedPath & "themes/"  & theme & "/modules/nav/dsp_tag_cloud.cfm")>
+		<cfset tracePoint=initTracePoint("#filePath#themes/#theme#/modules/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#filePath#themes/#theme#/display_objects/nav/dsp_tag_cloud.cfm" />
+	<cfelseif fileExists(expandedPath & "themes/"  & theme & "/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#filePath#themes/#theme#/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#filePath#themes/#theme#/display_objects/nav/dsp_tag_cloud.cfm" />
+	<cfelseif fileExists(expandedPath & "modules/custom/nav/dsp_tag_cloud.cfm")>
+		<cfset tracePoint=initTracePoint("#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#filePath#modules/custom/nav/dsp_tag_cloud.cfm" />
 	<cfelseif fileExists(expandedPath & "display_objects/custom/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm" />
 	<cfelseif fileExists(theExandedIncludePath & "/modules/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#theExandedIncludePath#/modules/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#theIncludePath#/modules/nav/dsp_tag_cloud.cfm" />
 	<cfelseif fileExists(theExandedIncludePath & "/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#theExandedIncludePath#/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#theIncludePath#/display_objects/nav/dsp_tag_cloud.cfm" />
+	<cfelseif fileExists(expandPath("#filePath#modules/nav/dsp_tag_cloud.cfm"))>
+		<cfset tracePoint=initTracePoint("#filePath#modules/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelseif fileExists(expandPath("#filePath#display_objects/nav/dsp_tag_cloud.cfm"))>
 		<cfset tracePoint=initTracePoint("#filePath#display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
-	<cfelseif fileExists(expandPath("/muraWRM/display_objects/nav/dsp_tag_cloud.cfm"))>
-		<cfset tracePoint=initTracePoint("/display_objects/nav/dsp_tag_cloud.cfm")>
-		<cfinclude template="/muraWRM/display_objects/nav/dsp_tag_cloud.cfm" />
-	<cfelse>
+	<cfelseif fileExists(expandPath("/muraWRM/modules/nav/dsp_tag_cloud.cfm"))>
 		<cfset tracePoint=initTracePoint("/modules/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="/muraWRM/modules/nav/dsp_tag_cloud.cfm" />
+	<cfelse>
+		<cfset tracePoint=initTracePoint("/display_objects/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="/muraWRM/display_objects/nav/dsp_tag_cloud.cfm" />
 	</cfif>
 	</cfsavecontent>
 
