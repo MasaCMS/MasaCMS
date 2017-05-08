@@ -586,6 +586,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 
 			var qs=new Query();
 			qs.setDbType('query');
+			qs.setAttributes(rsExtend=rsExtend);
 
 			rsExtend=qs.execute(sql="select attribute from rsExtend
 				group by attribute

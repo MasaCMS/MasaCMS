@@ -815,6 +815,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		if ( rsExtend.recordcount ) {
 			var qs=getQueryService();
 			qs.setDbType('query');
+			qs.setAttributes(rsExtend=rsExtend);
 
 			rsExtend=qs.execute(sql="select attribute from rsExtend
 				group by attribute
@@ -1114,6 +1115,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		if ( hasDisplayObject(argumentCollection=arguments) ) {
 			var qs=getQueryService();
 			qs.setDbType('query');
+			qs.setAttributes(rs=rs);
 
 			variables["displayRegions.objectlist#arguments.regionID#"]=qs.execute(sql="select * from rs where
 				not (objectID='#arguments.objectID#'
@@ -1129,6 +1131,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		var qs=getQueryService();
 
 		qs.setDbType('query');
+		qs.setAttributes(rs=rs);
 
 		rs=qs.execute(sql="select * from rs where
 		objectID='#arguments.objectID#'
