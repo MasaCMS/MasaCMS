@@ -102,6 +102,7 @@ strictfactory=true
 strongpasswordregex=(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$
 strongpasswords=false
 tempdir=
+testbox=false
 title=Mura CMS
 tracksessioninnewthread=true
 usedefaultsmtpserver=true
