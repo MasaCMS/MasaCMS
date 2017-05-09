@@ -1025,7 +1025,7 @@
 		</cfif>
 
 		<cfif isdefined('arguments.rs.column_default_value') and not (columnArgs.nullable and not len(arguments.rs.column_default_value))>
-			<cfset columnArgs.default=arguments.rs.column_default_value>
+			<cfset columnArgs.default=trim(arguments.rs.column_default_value)>
 		</cfif>
 
 		<cfif len(columnArgs.default)
@@ -1037,7 +1037,7 @@
 			<cfset columnArgs.default=_parseInt(columnArgs.default)>
 		</cfif>
 
-		<cfif variables.dbtype eq 'nuodb' and len(columnArgs.default) gte 2>
+		<cfif listFindNoCase('nuodb,oracle',variables.dbtype) and len(columnArgs.default) gte 2>
 			<cfif left(columnArgs.default,1) eq "'">
 				<cfset columnArgs.default=right(columnArgs.default,len(columnArgs.default)-1)>
 			</cfif>
