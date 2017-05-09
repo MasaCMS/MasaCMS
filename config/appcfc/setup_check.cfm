@@ -17,12 +17,12 @@ if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) 
 		}
 
     qs=new Query();
-    qs.setDatasource('nodatabase');
 
 		if(!qs.execute(sql="SELECT *
          FROM INFORMATION_SCHEMA.TABLES
          WHERE TABLE_CATALOG = '#request.muraSysEnv.MURA_DATABASE#'
          AND  lower(TABLE_NAME) = 'tcontent'").getResult().recordcount){
+
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
 			FORM['setupSubmitButton']=true;
