@@ -235,14 +235,14 @@
 	</cfif>
 
 	<cfif len(existing.column)
-			and (existing.dataType neq arguments.datatype
+			and (existing.dataType neq generalizeDataType(arguments.datatype)
 			and not arguments.autoincrement
 			or (
 				listFindNoCase("char,varchar",arguments.datatype)
 				and arguments.length neq existing.length
 				)
 			or existing.nullable neq arguments.nullable
-			or existing.default neq arguments.default
+			or trim(existing.default) neq trim(arguments.default)
 			)
 		>
 			<cftry>
@@ -905,6 +905,55 @@
 
 </cffunction>
 
+<cffunction name="generalizeDataType" access="private" output="false" hint="Translates from db to Mura">
+<cfargument name="datatype">
+	<!--- These need to match outcomes from transformColumnMetaData--->
+	<cfswitch expression="#arguments.datatype#">
+		<cfcase value="varchar,nvarchar,varchar2,character varying">
+				<cfreturn "varchar">
+		</cfcase>
+		<cfcase value="char,bpchar,character">
+			<cfreturn "char">
+		</cfcase>
+		<cfcase value="bit,boolean">
+			<cfreturn "boolean">
+		</cfcase>
+		<cfcase value="int,integer,int4">
+			<cfreturn "int">
+		</cfcase>
+		<cfcase value="number">
+			<cfreturn "number">
+		</cfcase>
+		<cfcase value="tinyint,int2">
+			<cfreturn "tinyint">
+		</cfcase>
+		<cfcase value="smallint">
+			<cfreturn "smallint">
+		</cfcase>
+		<cfcase value="date,datetime,timestamp,timestamp without time zone,timestamp with time zone">
+			<cfreturn "datetime">
+		</cfcase>
+		<cfcase value="ntext,longtext,clob,nclob">
+			<<cfreturn "longtext">
+		</cfcase>
+		<cfcase value="text">
+			<cfreturn "text">
+		</cfcase>
+		<cfcase value="float,binary_float,real">
+			<cfreturn "float">
+		</cfcase>
+		<cfcase value="double,decimal,binary_double,double precision">
+			<cfreturn "double">
+		</cfcase>
+		<cfcase value="blob,longblob,bytea,varbinary">
+			<cfreturn "blob">
+		</cfcase>
+	</cfswitch>
+
+	<cfreturn "varchar">
+
+</cffunction>
+
 <cffunction name="transformColumnMetaData" access="private" output="false" hint="Translates from db to Mura">
 <cfargument name="rs">
 <cfargument name="table">
@@ -917,7 +966,7 @@
 		<cfset columnArgs=structCopy(defaultArgs)>
 		<cfset columnArgs.column=arguments.rs.column_name>
 		<cfset columnArgs.table=arguments.table>
-
+		<!--- These need to match outcomes from generalizeDataType--->
 		<cfswitch expression="#arguments.rs.type_name#">
 			<cfcase value="varchar,nvarchar,varchar2,character varying">
 				<!--- Add MSSQL nvarchar(max)--->
