@@ -22,6 +22,7 @@ services:
       MURA_DBPORT: 3306
       MURA_SITEIDINURLS: "false"
       MURA_INDEXFILEINURLS: "true"
+      MURA_TESTBOX: "true"
     volumes:
         - ../../../:/app
     ports:

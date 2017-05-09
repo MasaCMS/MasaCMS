@@ -1836,7 +1836,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var levelObj=metadata>
 	<cfset var entity="">
 	<cfloop condition="structKeyExists(levelObj,'extends')">
-		<cfif not isPublicFound && (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public || isdefined('levelObj.access') && levelObj.access == 'remote')>
+		<cfif not isPublicFound and (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public or isdefined('levelObj.access') && levelObj.access eq 'remote')>
 			<cfset isPublic=true>
 			<cfset isPublicFound=true>
 		</cfif>

@@ -24,6 +24,7 @@ services:
       MURA_DBPORT: 1433
       MURA_SITEIDINURLS: "false"
       MURA_INDEXFILEINURLS: "false"
+      MURA_TESTBOX: "true"
     volumes:
         - ../../../:/app
     ports:
