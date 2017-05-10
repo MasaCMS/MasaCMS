@@ -226,7 +226,6 @@ component extends="mura.bean.beanExtendable" entityName="address" table="tuserad
 	}
 
 	public function save() output=false {
-		var rs="";
 		var qs=getQueryService();
 
 		qs.addParam(name="addressid", cfsqltype="cf_sql_varchar", value=getAddressID());
