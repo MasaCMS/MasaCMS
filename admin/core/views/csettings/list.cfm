@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.action neq 'updateCore'>
 	<cfif rc.action eq "deploy">
-		<cfoutput>#application.pluginManager.announceEvent("onAfterSiteDeployRender",event)#</cfoutput>
+		<cfoutput>#application.pluginManager.renderEvent("onAfterSiteDeployRender",event)#</cfoutput>
 	</cfif>
 	<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
 	<cfif isStruct(errors) and not structIsEmpty(errors)>
