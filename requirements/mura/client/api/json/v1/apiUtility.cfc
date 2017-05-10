@@ -1958,35 +1958,35 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
-					if(!listFindNoCase('entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){
+					if(!listFindNoCase('_cacheid,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
-							if(entity.getEnityName()=='user' && propName=='groupid'){
-								feed.setGroupID(arguments.params[p]);
-							} else if(entity.valueExists(propName) || entity.valueExists('extendData')){
-								var condition="eq";
-								var criteria=arguments.params[p];
+								if(entity.getEnityName()=='user' && propName=='groupid'){
+									feed.setGroupID(arguments.params[p]);
+								} else if(propName=='or'){
+									relationship='or';
+								} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
+									feed.addParam(relationship=p);
+									relationship='and';
+								} else if(propname=='innerJoin'){
+									feed.innerJoin(relatedEntity=params[p]);
+								} else if(propname=='leftJoin'){
+									feed.leftJoin(relatedEntity=params[p]);
+								} else if(entity.valueExists(propName) || entity.valueExists('extendData')){
+									var condition="eq";
+									var criteria=arguments.params[p];
 
-								if(listLen(criteria,"^") > 1){
-									condition=listFirst(criteria,'^');
-									criteria=listGetAt(criteria,2,'^');
-								} else if(find('*',criteria)){
-									condition="like";
-									criteria=replace(criteria,'*','%','all');
-								}
+									if(listLen(criteria,"^") > 1){
+										condition=listFirst(criteria,'^');
+										criteria=listGetAt(criteria,2,'^');
+									} else if(find('*',criteria)){
+										condition="like";
+										criteria=replace(criteria,'*','%','all');
+									}
 
-								feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
-								relationship='and';
-							} else if(propName=='or'){
-								relationship='or';
-							} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
-								feed.addParam(relationship=p);
-								relationship='and';
-							} else if(propname=='innerJoin'){
-								feed.innerJoin(relatedEntity=params[p]);
-							} else if(propname=='leftJoin'){
-								feed.leftJoin(relatedEntity=params[p]);
+									feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
+									relationship='and';
 							}
 						}
 					}
@@ -1997,7 +1997,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 			}
 		}
-		
+
 		setFeedProps(feed,arguments.params);
 
 		if(isdefined('arguments.params.countOnly') && isBoolean(arguments.params.countOnly) && arguments.params.countOnly){
