@@ -2080,9 +2080,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		}
 
-
-		if(isDefined('params.entityname')
-			&& listFind('content,contentnav',params.entityname)
+		if(listFind('content,contentnav',arguments.feed.getEntityName())
 		){
 			if(isDefined('params.changesetid')
 			&& len(params.changesetid)){
@@ -2146,7 +2144,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
   		}
 
-		if(isDefined('params.entityName') && listFind('content,contentnav',params.entityname)){
+		if(listFind('content,contentnav',arguments.feed.getEntityName())){
 			if(isDefined('arguments.params.includeHomePage')){
 				if(isBoolean(arguments.params.includeHomePage)){
 					if(arguments.params.includeHomePage){
