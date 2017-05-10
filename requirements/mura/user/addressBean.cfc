@@ -231,7 +231,7 @@ component extends="mura.bean.beanExtendable" entityName="address" table="tuserad
 
 		qs.addParam(name="addressid", cfsqltype="cf_sql_varchar", value=getAddressID());
 
-		if ( qs.execute(sql="select addressID from tuseraddresses where addressID= addressid").getResult().recordcount ) {
+		if ( qs.execute(sql="select addressID from tuseraddresses where addressID= :addressid").getResult().recordcount ) {
 			variables.userManager.updateAddress(this);
 		} else {
 			variables.userManager.createAddress(this);
