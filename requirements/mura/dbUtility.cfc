@@ -235,7 +235,7 @@
 	</cfif>
 
 	<cfif len(existing.column)
-			and (existing.dataType neq generalizeDataType(arguments.datatype)
+			and (generalizeDataType(existing.dataType) neq generalizeDataType(arguments.datatype)
 			and not arguments.autoincrement
 			or (
 				listFindNoCase("char,varchar",arguments.datatype)
@@ -909,7 +909,7 @@
 <cfargument name="datatype">
 	<!--- These need to match outcomes from transformColumnMetaData--->
 	<cfswitch expression="#arguments.datatype#">
-		<cfcase value="varchar,nvarchar,varchar2,character varying">
+		<cfcase value="string,varchar,nvarchar,varchar2,character varying">
 				<cfreturn "varchar">
 		</cfcase>
 		<cfcase value="char,bpchar,character">
@@ -933,11 +933,8 @@
 		<cfcase value="date,datetime,timestamp,timestamp without time zone,timestamp with time zone">
 			<cfreturn "datetime">
 		</cfcase>
-		<cfcase value="ntext,longtext,clob,nclob">
+		<cfcase value="ntext,longtext,clob,nclob,text">
 			<<cfreturn "longtext">
-		</cfcase>
-		<cfcase value="text">
-			<cfreturn "text">
 		</cfcase>
 		<cfcase value="float,binary_float,real">
 			<cfreturn "float">
@@ -950,7 +947,7 @@
 		</cfcase>
 	</cfswitch>
 
-	<cfreturn "varchar">
+	<cfreturn arguments.datatype>
 
 </cffunction>
 
@@ -1028,15 +1025,6 @@
 			<cfset columnArgs.default=trim(arguments.rs.column_default_value)>
 		</cfif>
 
-		<cfif len(columnArgs.default)
-			and listFindNoCase("tinyint,int,smallint,float,double",columnArgs.datatype)
-			and not (
-						isNumeric(columnArgs.default)
-						and columnArgs.default neq "null")
-			>
-			<cfset columnArgs.default=_parseInt(columnArgs.default)>
-		</cfif>
-
 		<cfif listFindNoCase('nuodb,oracle',variables.dbtype) and len(columnArgs.default) gte 2>
 			<cfif left(columnArgs.default,1) eq "'">
 				<cfset columnArgs.default=right(columnArgs.default,len(columnArgs.default)-1)>
@@ -1049,6 +1037,15 @@
 				</cfif>
 				<cfset columnArgs.default=mid(columnArgs.default,2,len(columnArgs.default)-1)>
 			</cfif>
+		</cfif>
+
+		<cfif len(columnArgs.default)
+			and listFindNoCase("tinyint,int,smallint,float,double",columnArgs.datatype)
+			and not (
+						isNumeric(columnArgs.default)
+						and columnArgs.default neq "null")
+			>
+			<cfset columnArgs.default=_parseInt(columnArgs.default)>
 		</cfif>
 
 		<cfif listFindNoCase("tinyint,int,float,double",columnArgs.datatype) and not (isNumeric(columnArgs.default) or columnArgs.default eq 'null')>

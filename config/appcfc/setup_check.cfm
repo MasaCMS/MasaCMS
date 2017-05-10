@@ -63,7 +63,7 @@ if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) 
 		if ( !qs.execute(sql="SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = '#lcase(request.muraSysEnv.MURA_DATABASE)#'").getResult().recordcount ) {
 
       qs=new Query();
-      qs.setDatasource('nodatabase');
+
       qs.execute(sql="CREATE DATABASE #request.muraSysEnv.MURA_DATABASE#");
 
 			FORM['#application.setupSubmitButton#']=true;
@@ -72,12 +72,26 @@ if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) 
 			FORM['action']='doSetup';
 		}
 
+		 qs=new Query();
+		 qs.setDatasource('nodatabase');
+		 
 		if ( !qs.execute(sql="select * from pg_class where relname='tcontent' and relkind='r'").getResult().recordcount ) {
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
 			FORM['setupSubmitButton']=true;
 			FORM['action']='doSetup';
 		}
-	}
+		} else if ( request.muraSysEnv.MURA_DBTYPE == 'oracle' ) {
+			/*
+	    qs=new Query();
+
+			if ( !qs.execute(sql="SELECT * FROM dba_tables where table_name = 'tcontent'").getResult().recordcount ) {
+				FORM['#application.setupSubmitButton#']=true;
+				FORM['#application.setupSubmitButtonComplete#']=true;
+				FORM['setupSubmitButton']=true;
+				FORM['action']='doSetup';
+			}
+			*/
+		}
 }
 </cfscript>
