@@ -82,8 +82,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif updateVersion gt currentVersion>
 		<cflock type="exclusive" name="autoUpdate#arguments.siteid##application.instanceID#" timeout="600">
 		<cfif len(arguments.siteID) >
-			<cfset baseDir=baseDir & "#variables.fileDelim##arguments.siteid#">
-			<cfset versionDir=versionDir & "/#arguments.siteid#">
+			<cfset baseDir=variables.configBean.getSiteDir() & "#variables.fileDelim##arguments.siteid#">
+			<cfset versionDir=variables.configBean.getSiteDir() & "/#arguments.siteid#">
 			<cfset zipFileName="#arguments.siteid#">
 			<cfset svnUpdateDir= svnUpdateDir & "/default">
 			<cfset trimLen=len(svnUpdateDir)-1>
@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
 
 		<cfif len(diff)>
-			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
+			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="#updateVersion#")>
 			<cfset returnStruct.currentVersion=updateVersion/>
 			<cfset returnstruct.files=updatedArray>
 		<cfelse>
@@ -233,18 +233,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCurrentVersion" output="false">
 <cfargument name="siteid" required="true" default="">
 
-	<cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#")>
+
 	<cfset var versionFileContents="">
 	<cfset var currentVersion="">
 
 	<cfif len(arguments.siteid)>
-		<cfset versionDir=versionDir & "/#arguments.siteid#">
+		<cfset var versionDir=variables.configBean.getSiteDir() & "/" & arguments.siteid>
 	<cfelse>
-		<cfset versionDir=versionDir & "/config">
+		<cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#/config")>
 	</cfif>
 
 	<cfif not FileExists(versionDir & "/" & "version.cfm")>
-		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="<cfabort>:1")>
+		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="1")>
 	</cfif>
 
 	<cffile action="read" file="#versionDir#/version.cfm" variable="versionFileContents">
@@ -252,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset currentVersion=listLast(versionFileContents,":")>
 
 	<cfif not isNumeric(currentVersion)>
-		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="<cfabort>:1")>
+		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="1")>
 		<cfreturn 1>
 	<cfelse>
 		<cfreturn trim(currentVersion)>

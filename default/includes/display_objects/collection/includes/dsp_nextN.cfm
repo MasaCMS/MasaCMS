@@ -63,6 +63,8 @@
 <cfparam name="request.startRow" default="1"/>
 <cfparam name="request.filterBy" default=""/>
 <cfparam name="request.currentNextNID" default=""/>
+<cfparam name="request.keywords" default=""/>
+
 <cfif variables.nextN.recordsPerPage gt 1>
 <cfset variables.paginationKey="startRow">
 <cfelse>
@@ -70,25 +72,28 @@
 </cfif>
 <cfset variables.qrystr="" />
 
+<cfif len(trim($.event("keywords")))>
+	<cfset variables.qrystr="&keywords=" & esapiEncode('html_attr', $.event("keywords")) />
+</cfif>
 <cfif len(request.sortBy)>
-	<cfset variables.qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
+	<cfset variables.qrystr=variables.qrystr & "&sortBy=#esapiEncode('url',request.sortBy)#&sortDirection=#esapiEncode('url',request.sortDirection)#"/>
 </cfif>
 <cfif len(variables.$.event('categoryID'))>
-	<cfset variables.qrystr=variables.qrystr & "&categoryID=#variables.$.event('categoryID')#"/>
+	<cfset variables.qrystr=variables.qrystr & "&categoryID=#esapiEncode('url',variables.$.event('categoryID'))#"/>
 </cfif>
 <cfif len(request.relatedID)>
-	<cfset variables.qrystr=variables.qrystr & "&relatedID=#request.relatedID#"/>
+	<cfset variables.qrystr=variables.qrystr & "&relatedID=#esapiEncode('url',request.relatedID)#"/>
 </cfif>
 <cfif len(request.currentNextNID)>
-	<cfset variables.qrystr=variables.qrystr & "&nextNID=#request.currentNextNID#"/>
+	<cfset variables.qrystr=variables.qrystr & "&nextNID=#esapiEncode('url',request.currentNextNID)#"/>
 </cfif>
 <cfif len(request.filterBy)>
 <cfif isNumeric(request.day) and request.day>
-	<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#&filterBy=#request.filterBy#">
+	<cfset variables.qrystr=variables.qrystr & "&month=#esapiEncode('url',request.month)#&year=#esapiEncode('url',request.year)#&day=#esapiEncode('url',request.day)#&filterBy=#esapiEncode('url',request.filterBy)#">
 </cfif>
 <cfelse>
 <cfif isNumeric(request.day) and request.day>
-	<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#">
+	<cfset variables.qrystr=variables.qrystr & "&month=#esapiEncode('url',request.month)#&year=#esapiEncode('url',request.year)#&day=#esapiEncode('url',request.day)#">
 </cfif>
 </cfif>
 </cfsilent>

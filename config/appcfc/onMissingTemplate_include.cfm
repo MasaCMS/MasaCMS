@@ -1,4 +1,5 @@
-<!--- This file is part of Mura CMS.
+<cfscript>
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,78 +44,75 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfparam name="local" default="#structNew()#">
-<cfset local.pluginEvent="">
-<cfif structKeyExists(application,"pluginManager") and structKeyExists(application.pluginManager,"announceEvent")>
-	<cfif structKeyExists(request,"servletEvent")>
-		<cfset local.pluginEvent=request.servletEvent>
-	<cfelseif structKeyExists(request,"event")>
-		<cfset local.pluginEvent=request.event>
-	<cfelse>
-		<cfset local.pluginEvent=createObject("component","mura.event")>
-	</cfif>
-	<cfset local.pluginEvent.setValue("targetPage",arguments.targetPage)>
-	<cfif len(local.pluginEvent.getValue("siteID"))>
-		<cfset local.response=application.pluginManager.renderEvent("onSiteMissingTemplate",local.pluginEvent)>
-		<cfif len(local.response)>
-			<cfoutput>#local.response#</cfoutput>
-			<cfreturn true>
-		</cfif>
-		<cfif structKeyExists(request.muraHandledEvents,'onSiteMissingTemplate')>
-			<cfset structKeyDelete(request.muraHandledEvents,'onSiteMissingTemplate')>
-			<cfreturn true>
-		</cfif>
-	</cfif>
-	<cfset local.response=application.pluginManager.renderEvent("onGlobalMissingTemplate",local.pluginEvent)>
-	<cfif len(local.response)>
-		<cfoutput>#local.response#</cfoutput>
-		<cfreturn true>
-	</cfif>
-	<cfif structKeyExists(request.muraHandledEvents,'onGlobalMissingTemplate')>
-		<cfset structKeyDelete(request.muraHandledEvents,'onGlobalMissingTemplate')>
-		<cfreturn true>
-	</cfif>
-</cfif>
-<cfif isDefined("application.contentServer")>
-	<cfset request.muraTemplateMissing=true>
-	<cfset onRequestStart()>
-	<cfset local.fileArray=listToArray(cgi.script_name,"/")>
-	<cfset local.filename="">
-	<cfif len(application.configBean.getValue('context'))>
-		<cfset local.contextArray=listToArray(application.configBean.getValue('context'),"/")>
-		<cfset local.contextArrayLen=arrayLen(local.contextArray)>
-		<cfloop from="1" to="#local.contextArrayLen#" index="local.i">
-			<cfset arrayDeleteAt(local.contextArray, 1)>
-		</cfloop>
-	</cfif>
-	<cfif application.configBean.getValue('siteidinurls') eq 1 >
-		<cfif local.fileArray[1] neq 'index.cfm'>
-			<cfset siteid=local.fileArray[1]>
-		<cfelse>
-			<cfset siteid=application.contentServer.bindToDomain()>
-		</cfif>
-	<cfelse>
-		<cfset siteid=application.contentServer.bindToDomain()>
-	</cfif>
-
-	<cfloop from="1" to="#arrayLen(local.fileArray)#" index="local.i">
-		<cfif find(".",local.fileArray[local.i]) and local.i lt arrayLen(local.fileArray)>
-			<cfset local.filename="">
-		<cfelseif not (find(".",local.fileArray[local.i]) and listFind(application.configBean.getAllowedIndexFiles(),local.fileArray[local.i]))>
-			<cfset local.filename=listAppend(local.filename,local.fileArray[local.i] , "/")>
-		</cfif>
-	</cfloop>
-
-	<cfset firstItem=listFirst(local.filename,'/')>
-	<cfif listFind('_api,tasks',firstItem)>
-		<cfoutput>#application.contentServer.handleAPIRequest('/' & local.filename)#</cfoutput>
-		<cfabort>
-	<cfelse>
-		<cfset application.contentServer.renderFilename(filename=local.filename,siteid=siteid)>
-	</cfif>
-	
-	<cfreturn true>
-</cfif>
-
-<cfreturn false>
+*/
+param name="local" default=structNew();
+local.pluginEvent="";
+if ( structKeyExists(application,"pluginManager") && structKeyExists(application.pluginManager,"announceEvent") ) {
+	if ( structKeyExists(request,"servletEvent") ) {
+		local.pluginEvent=request.servletEvent;
+	} else if ( structKeyExists(request,"event") ) {
+		local.pluginEvent=request.event;
+	} else {
+		local.pluginEvent=createObject("component","mura.event");
+	}
+	local.pluginEvent.setValue("targetPage",arguments.targetPage);
+	if ( len(local.pluginEvent.getValue("siteID")) ) {
+		local.response=application.pluginManager.renderEvent("onSiteMissingTemplate",local.pluginEvent);
+		if ( len(local.response) ) {
+			writeOutput("#local.response#");
+			return true;
+		}
+		if ( structKeyExists(request.muraHandledEvents,'onSiteMissingTemplate') ) {
+			structKeyDelete(request.muraHandledEvents,'onSiteMissingTemplate');
+			return true;
+		}
+	}
+	local.response=application.pluginManager.renderEvent("onGlobalMissingTemplate",local.pluginEvent);
+	if ( len(local.response) ) {
+		writeOutput("#local.response#");
+		return true;
+	}
+	if ( structKeyExists(request.muraHandledEvents,'onGlobalMissingTemplate') ) {
+		structKeyDelete(request.muraHandledEvents,'onGlobalMissingTemplate');
+		return true;
+	}
+}
+if ( isDefined("application.contentServer") ) {
+	request.muraTemplateMissing=true;
+	onRequestStart();
+	local.fileArray=listToArray(cgi.script_name,"/");
+	local.filename="";
+	if ( len(application.configBean.getValue('context')) ) {
+		local.contextArray=listToArray(application.configBean.getValue('context'),"/");
+		local.contextArrayLen=arrayLen(local.contextArray);
+		for ( local.i=1 ; local.i<=local.contextArrayLen ; local.i++ ) {
+			arrayDeleteAt(local.contextArray, 1);
+		}
+	}
+	if ( application.configBean.getValue('siteidinurls') == 1 ) {
+		if ( local.fileArray[1] != 'index.cfm' ) {
+			siteid=local.fileArray[1];
+		} else {
+			siteid=application.contentServer.bindToDomain();
+		}
+	} else {
+		siteid=application.contentServer.bindToDomain();
+	}
+	for ( local.i=1 ; local.i<=arrayLen(local.fileArray) ; local.i++ ) {
+		if ( find(".",local.fileArray[local.i]) && local.i < arrayLen(local.fileArray) ) {
+			local.filename="";
+		} else if ( !(find(".",local.fileArray[local.i]) && listFind(application.configBean.getAllowedIndexFiles(),local.fileArray[local.i])) ) {
+			local.filename=listAppend(local.filename,local.fileArray[local.i] , "/");
+		}
+	}
+	firstItem=listFirst(local.filename,'/');
+	if ( listFind('_api,tasks',firstItem) ) {
+		writeOutput("#application.contentServer.handleAPIRequest('/' & local.filename)#");
+		abort;
+	} else {
+		application.contentServer.renderFilename(filename=local.filename,siteid=siteid);
+	}
+	return true;
+}
+return false;
+</cfscript>

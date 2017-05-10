@@ -679,6 +679,27 @@
 								<input id="remoteID" name="remoteID" type="text" value="#esapiEncode('html',rc.userBean.getRemoteID())#">
 							</div>
 
+							<cfif rc.userBean.exists()>
+								<cfset tokens=rc.$.getFeed('oauthtoken')
+									.where()
+									.prop('userID').isEQ(rc.userBean.getUserID())
+									.andProp('granttype').isEQ('refresh_token')
+									.getIterator()>
+
+								<div class="mura-control-group">
+									<span data-toggle="popover" title="" data-placement="right" data-content="Check to remove connection to web service." data-original-title="Web Services">
+							  		Web Services <i class="mi-question-circle"></i></span>
+									<cfif tokens.hasNext()>
+									<cfloop condition="tokens.hasNext()">
+										<cfset token=tokens.next()>
+										<label for="removeToken#tokens.getCurrentIndex()#" class="checkbox"><input name="removeToken" id="removeToken#tokens.getCurrentIndex()#" type="CHECKBOX" value="#token.getToken()#" class="checkbox"> #esapiEncode('html',token.getClient().getName())#</label>
+									</cfloop>
+									<cfelse>
+										<div class="alert alert-info"><p>This user has not connected through any web services.</p></div>
+									</cfif>
+								</div>
+							</cfif>
+
 						</div> <!-- /.block-content -->
 					</div> <!-- /.block-bordered -->
 				</div> <!-- /.tab-pane -->

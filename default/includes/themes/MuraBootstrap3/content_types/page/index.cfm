@@ -1,11 +1,13 @@
 <cfoutput>
 	<cfif !$.content().getIsHome()>
 
-		<!--- Page Title --->
-			<#$.getHeaderTag('headline')# class="mura-page-title pageTitle">
-				#m.renderEditableAttribute(attribute='title')#
-			</#$.getHeaderTag('headline')#>
-		<!--- /Page Title --->
+		<cfif !YesNoFormat($.event('muraMobileTemplate')) or (StructKeyExists(cookie, 'mobileFormat') and !cookie.mobileFormat)>
+			<!--- Page Title --->
+				<#$.getHeaderTag('headline')# class="mura-page-title pageTitle">
+					#m.renderEditableAttribute(attribute='title')#
+				</#$.getHeaderTag('headline')#>
+			<!--- /Page Title --->
+		</cfif>
 
 		<!--- Release Date, Credits, etc. --->
 		<cfset commentCount = Val($.content().getStats().getComments())>

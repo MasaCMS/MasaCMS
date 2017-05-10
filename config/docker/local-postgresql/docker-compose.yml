@@ -1,0 +1,46 @@
+version: '2.1'
+
+services:
+  #Mura Server
+  mura_postgres_cfml:
+    image: ortussolutions/commandbox:latest
+    depends_on:
+      - mura_postgres
+    environment:
+      PORT: 8080
+      SSL_PORT: 8443
+      CFENGINE: lucee@5
+      CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
+      MURA_ADMIN_USERNAME: admin
+      MURA_ADMIN_PASSWORD: admin
+      MURA_ADMINEMAIL: example@localhost.com
+      MURA_APPRELOADKEY: appreload
+      MURA_DATASOURCE: muradb
+      MURA_DATABASE: muradb
+      MURA_DBTYPE: postgresql
+      MURA_DBUSERNAME: muradb
+      MURA_DBPASSWORD: NOT_SECURE_CHANGE
+      MURA_DBHOST: mura_postgres
+      MURA_DBPORT: 5432
+      MURA_SITEIDINURLS: "false"
+      MURA_INDEXFILEINURLS: "false"
+      MURA_TESTBOX: "true"
+    volumes:
+        - ../../../:/app
+    ports:
+        - "8080:8080"
+
+  #POSTGRES
+  mura_postgres:
+    image: postgres:latest
+    environment:
+       POSTGRES_DB: muradb
+       POSTGRES_USER: muradb
+       POSTGRES_PASSWORD: NOT_SECURE_CHANGE
+    volumes:
+        - mura_postgres_data:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
+
+volumes:
+    mura_postgres_data:

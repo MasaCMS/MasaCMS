@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,181 +43,155 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent output="false" extends="mura.cfobject" hint="This provides a utility to hold the contextual information related to code execution">
+*/
+/**
+ * This provides a utility to hold the contextual information related to code execution
+ */
+component output="false" extends="mura.cfobject" hint="This provides a utility to hold the contextual information related to code execution" {
+	variables.event=structNew();
 
-<cfset variables.event=structNew()>
+	public function init(any data="#structNew()#", $) output=false {
+		if ( isStruct(arguments.data) ) {
+			variables.event=arguments.data;
+		}
+		if ( isdefined("form") ) {
+			structAppend(variables.event,form,false);
+		}
+		structAppend(variables.event,url,false);
+		if ( structKeyExists(arguments,"$") ) {
+			setValue("MuraScope",arguments.$);
+		} else {
+			setValue("MuraScope",createObject("component","mura.MuraScope"));
+		}
+		getValue('MuraScope').setEvent(this);
+		if ( len(getValue('siteid')) && getBean('settingsManager').siteExists(getValue('siteid')) ) {
+			loadSiteRelatedObjects();
+		} else {
+			setValue("contentRenderer",getBean('contentRenderer'));
+		}
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfargument name="data"  type="any" default="#structNew()#">
-	<cfargument name="$">
+	public function setValue(required string property, propertyValue="") output=false {
+		variables.event["#arguments.property#"]=arguments.propertyValue;
+		return this;
+	}
 
-	<cfif isStruct(arguments.data)>
-		<cfset variables.event=arguments.data />
-	</cfif>
+	public function set(required string property, defaultValue) output=false {
+		return setValue(argumentCollection=arguments);
+	}
 
-	<cfif isdefined("form")>
-		<cfset structAppend(variables.event,form,false)/>
-	</cfif>
+	public function getValue(required string property, defaultValue) output=false {
+		if ( structKeyExists(variables.event,"#arguments.property#") ) {
+			return variables.event["#arguments.property#"];
+		} else if ( structKeyExists(arguments,"defaultValue") ) {
+			variables.event["#arguments.property#"]=arguments.defaultValue;
+			return variables.event["#arguments.property#"];
+		} else {
+			return "";
+		}
+	}
 
-	<cfset structAppend(variables.event,url,false)/>
+	public function get(required string property, defaultValue) output=false {
+		return getValue(argumentCollection=arguments);
+	}
 
-	<cfif structKeyExists(arguments,"$")>
-		<cfset setValue("MuraScope",arguments.$)>
-	<cfelse>
-		<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
-	</cfif>
+	public function valueExists(required string property) output=false {
+		return structKeyExists(variables.event,arguments.property);
+	}
 
-	<cfset getValue('MuraScope').setEvent(this)>
+	public function removeValue(required string property) output=false {
+		structDelete(variables.event,arguments.property);
+		return this;
+	}
 
-	<cfif len(getValue('siteid')) and getBean('settingsManager').siteExists(getValue('siteid'))>
-		<cfset loadSiteRelatedObjects()/>
-	<cfelse>
-		<cfset setValue("contentRenderer",getBean('contentRenderer'))>
-	</cfif>
+	public function getValues() output=false {
+		return variables.event;
+	}
 
-	<cfreturn this />
-</cffunction>
+	public function getAllValues() output=false {
+		return variables.event;
+	}
 
-<cffunction name="setValue" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" >
+	public function getHandler(handler) output=false {
+		if ( isObject(getValue('HandlerFactory')) ) {
+			return getValue('HandlerFactory').get(arguments.handler & "Handler",getValue("localHandler"));
+		} else {
+			throwSiteIDError();
+		}
+	}
 
-	<cfset variables.event["#arguments.property#"]=arguments.propertyValue />
-	<cfreturn this>
-</cffunction>
+	public function getValidator(validation) output=false {
+		if ( isObject(getValue('ValidatorFactory')) ) {
+			return getValue('ValidatorFactory').get(arguments.validation & "Validator",getValue("localHandler"));
+		} else {
+			throwSiteIDError();
+		}
+	}
 
-<cffunction name="set" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="defaultValue">
-	<cfreturn setValue(argumentCollection=arguments)>
-</cffunction>
+	public function getTranslator(translator) output=false {
+		if ( isObject(getValue('TranslatorFactory')) ) {
+			return getValue('TranslatorFactory').get(arguments.translator & "Translator",getValue("localHandler"));
+		} else {
+			throwSiteIDError();
+		}
+	}
 
-<cffunction name="getValue" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="defaultValue">
+	public function getContentRenderer() output=false {
+		var renderer=getValue('contentRenderer');
+		return getValue('contentRenderer');
+		return renderer;
+	}
 
-	<cfif structKeyExists(variables.event,"#arguments.property#")>
-		<cfreturn variables.event["#arguments.property#"] />
-	<cfelseif structKeyExists(arguments,"defaultValue")>
-		<cfset variables.event["#arguments.property#"]=arguments.defaultValue />
-		<cfreturn variables.event["#arguments.property#"] />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
+	/**
+	 * deprecated: use getContentRenderer()
+	 */
+	public function getThemeRenderer() output=false {
+		return getContentRenderer();
+	}
 
-</cffunction>
+	public function getSite() output=false {
+		if ( len(getValue('siteid')) ) {
+			return getBean('settingsManager').getSite(getValue('siteid'));
+		} else {
+			throwSiteIDError();
+		}
+	}
 
-<cffunction name="get" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="defaultValue">
-	<cfreturn getValue(argumentCollection=arguments)>
-</cffunction>
+	public function getServiceFactory() output=false {
+		if ( isDefined('application') && structKeyExists(application,'serviceFactory') ) {
+			return application.serviceFactory;
+		} else if ( structKeyExists(variables,'applicationScope') ) {
+			//  in case this is called in the onRequestEnd()
+			return variables.applicationScope;
+		}
+	}
 
-<cffunction name="valueExists" output="false">
-	<cfargument name="property" type="string" required="true">
-		<cfreturn structKeyExists(variables.event,arguments.property) />
-</cffunction>
+	public function getMuraScope() output=false {
+		return getValue("MuraScope");
+	}
 
-<cffunction name="removeValue" output="false">
-	<cfargument name="property" type="string" required="true"/>
-		<cfset structDelete(variables.event,arguments.property) />
-		<cfreturn this>
-</cffunction>
+	public function getBean(beanName, siteID) output=false {
+		if ( structKeyExists(arguments,"siteid") ) {
+			return super.getBean(arguments.beanName,arguments.siteID);
+		} else {
+			return super.getBean(arguments.beanName,getValue('siteid'));
+		}
+	}
 
-<cffunction name="getValues" output="false">
-		<cfreturn variables.event />
-</cffunction>
+	public function throwSiteIDError() output=false {
+		throw( message="The 'SITEID' was not defined for this event", type="custom" );
+	}
 
-<cffunction name="getAllValues" output="false">
-		<cfreturn variables.event />
-</cffunction>
+	public function loadSiteRelatedObjects() output=false {
+		if ( !isObject(getValue("HandlerFactory")) ) {
+			setValue('HandlerFactory',getBean('pluginManager').getStandardEventFactory(getValue('siteid')));
+		}
+		if ( !valueExists("contentRenderer") ) {
+			setValue('contentRenderer',getValue('MuraScope').getContentRenderer());
+		}
+		setValue('localHandler',getBean('settingsManager').getSite(getValue('siteID')).getLocalHandler());
+		return this;
+	}
 
-<cffunction name="getHandler" output="false">
-	<cfargument name="handler">
-	<cfif isObject(getValue('HandlerFactory'))>
-		<cfreturn getValue('HandlerFactory').get(arguments.handler & "Handler",getValue("localHandler")) />
-	<cfelse>
-		<cfset throwSiteIDError()>
-	</cfif>
-</cffunction>
-
-<cffunction name="getValidator" output="false">
-	<cfargument name="validation">
-	<cfif isObject(getValue('ValidatorFactory'))>
-		<cfreturn getValue('ValidatorFactory').get(arguments.validation & "Validator",getValue("localHandler")) />
-	<cfelse>
-		<cfset throwSiteIDError()>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getTranslator" output="false">
-	<cfargument name="translator">
-	<cfif isObject(getValue('TranslatorFactory'))>
-		<cfreturn getValue('TranslatorFactory').get(arguments.translator & "Translator",getValue("localHandler")) />
-	<cfelse>
-		<cfset throwSiteIDError()>
-	</cfif>
-</cffunction>
-
-<cffunction name="getContentRenderer" output="false">
-	<cfset var renderer=getValue('contentRenderer')>
-	<cfreturn getValue('contentRenderer')>
-	<cfreturn renderer />
-</cffunction>
-
-<cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
-	<cfreturn getContentRenderer() />
-</cffunction>
-
-<cffunction name="getSite" output="false">
-	<cfif len(getValue('siteid'))>
-		<cfreturn getBean('settingsManager').getSite(getValue('siteid')) />
-	<cfelse>
-		<cfset throwSiteIDError()>
-	</cfif>
-</cffunction>
-
-<cffunction name="getServiceFactory" output="false">
-	<cfif isDefined('application') and structKeyExists(application,'serviceFactory')>
-		<cfreturn application.serviceFactory />
-	<cfelseif structKeyExists(variables,'applicationScope')><!--- in case this is called in the onRequestEnd() --->
-		<cfreturn variables.applicationScope />
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getMuraScope" output="false">
-	<cfreturn getValue("MuraScope") />
-</cffunction>
-
-<cffunction name="getBean" output="false">
-	<cfargument name="beanName">
-	<cfargument name="siteID" required="false">
-
-	<cfif structKeyExists(arguments,"siteid")>
-		<cfreturn super.getBean(arguments.beanName,arguments.siteID)>
-	<cfelse>
-		<cfreturn super.getBean(arguments.beanName,getValue('siteid'))>
-	</cfif>
-</cffunction>
-
-<cffunction name="throwSiteIDError" output="false">
-	<cfthrow type="custom" message="The 'SITEID' was not defined for this event">
-</cffunction>
-
-<cffunction name="loadSiteRelatedObjects" output="false">
-
-	<cfif not isObject(getValue("HandlerFactory"))>
-		<cfset setValue('HandlerFactory',getBean('pluginManager').getStandardEventFactory(getValue('siteid')))>
-	</cfif>
-	<cfif not valueExists("contentRenderer")>
-		<cfset setValue('contentRenderer',getValue('MuraScope').getContentRenderer())>
-	</cfif>
-	<cfset setValue('localHandler',getBean('settingsManager').getSite(getValue('siteID')).getLocalHandler())>
-
-	<cfreturn this>
-</cffunction>
-
-</cfcomponent>
+}

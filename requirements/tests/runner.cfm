@@ -8,5 +8,9 @@
     <cfset r = new testbox.system.TestBox( directory={ mapping = "murawrm.requirements.tests.specs", recurse = true } ) >
     <cfoutput>#r.run(reporter=url.reporter)#</cfoutput>
 <cfelse>
-    Access Restricted.
+    <h1>Access Restricted.</h1>
+    <cfoutput>
+      <br/>Testbox enabled: #application.mura.getBean('configBean').getValue(property='testbox',defaultValue=false)#
+      <br/>Testbox installed: #directoryExists(Expandpath("/testbox"))#
+    </cfoutput>
 </cfif>

@@ -290,7 +290,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset setSites() />
 	<cftry>
-	<cfset variables.utility.deleteDir("#variables.configBean.getWebRoot()#/#arguments.siteid#/") />
+	<cfset variables.utility.deleteDir("#variables.configBean.getSiteDir()#/#arguments.siteid#/") />
 	<cfcatch></cfcatch>
 	</cftry>
 	<cftry>
@@ -331,7 +331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfabort>
 		</cfif>
 
-		<cfif directoryExists(expandPath("/muraWRM/#bean.getSiteID()#"))>
+		<cfif directoryExists("#variables.configBean.getSiteDir()#/#bean.getSiteID()#")>
 			<cfthrow message="A directory with the same name as the SiteID you entered is already being used.">
 		</cfif>
 
@@ -381,9 +381,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif bean.getSiteID() eq bean.getDisplayPoolID() and !directoryExists('#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#')>
 
 		<cfset variables.utility.copyDir(
-				baseDir="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#",
-				destDir="#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#",
-				excludeList="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#cache,#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#assets"
+				baseDir="#variables.configBean.getSiteDir()##fileDelim#default#fileDelim#",
+				destDir="#variables.configBean.getSiteDir()##fileDelim##bean.getSiteID()##fileDelim#",
+				excludeList="#variables.configBean.getSiteDir()##fileDelim#default#fileDelim#cache,#variables.configBean.getSiteDir()##fileDelim#default#fileDelim#assets"
 			)>
 	</cfif>
 </cffunction>
@@ -417,6 +417,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop query="rs">
 		<cfif structKeyExists(foundSites,'#rs.siteid#')>
+			<cfset builtSites['#rs.siteid#'].getRBFactory()>
 			<cfset builtSites['#rs.siteid#'].registerContentTypeDirs()>
 			<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
 			<cfset builtSites['#rs.siteid#'].discoverBeans()>

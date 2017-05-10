@@ -1,298 +1,260 @@
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides access to the current user's session">
+/**
+ * This provides access to the current user's session
+ */
+component extends="mura.cfobject" output="false" hint="This provides access to the current user's session" {
+	variables.userBean="";
 
-<cfset variables.userBean="">
+	/**
+	 * Handles missing method exceptions.
+	 */
+	public function OnMissingMethod(required string MissingMethodName, required struct MissingMethodArguments) output=false {
+		var prop="";
+		var prefix=left(arguments.MissingMethodName,3);
+		var theValue="";
+		var bean="";
+		if ( len(arguments.MissingMethodName) ) {
+			//  forward normal getters to the default getValue method
+			if ( listFindNoCase("set,get",prefix) && len(arguments.MissingMethodName) > 3 ) {
+				prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);
+				if ( prefix == "get" ) {
+					return getValue(prop);
+				} else if ( prefix == "set" && !structIsEmpty(MissingMethodArguments) ) {
+					setValue(prop,MissingMethodArguments[1]);
+					return this;
+				}
+			}
+			//  otherwise get the bean and if the method exsists forward request
+			bean=getUserBean();
+			if ( !structIsEmpty(MissingMethodArguments) ) {
+				theValue=bean.invokeMethod(methodName=MissingMethodName,methodArguments=MissingMethodArguments);
+			} else {
+				theValue=bean.invokeMethod(methodName=MissingMethodName);
+			}
+			if ( isDefined("theValue") ) {
+				return theValue;
+			} else {
+				return "";
+			}
+		} else {
+				return "";
+		}
+	}
 
-<cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
-<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
-<cfargument name="MissingMethodArguments" type="struct" required="true" />
-<cfset var prop="">
-<cfset var prefix=left(arguments.MissingMethodName,3)>
-<cfset var theValue="">
-<cfset var bean="">
+		public function init() output=false {
+			variables.sessionData=getSession();
+			return this;
+		}
 
-<cfif len(arguments.MissingMethodName)>
+		public function getValue(property) output=false {
+			var theValue="";
+			if ( isDefined('get#arguments.property#') ) {
+				var tempFunc=this["get#arguments.property#"];
+				return tempFunc();
+			} else if ( !structKeyExists(variables.sessionData.mura,arguments.property) ) {
+				theValue=getUserBean().getValue(arguments.property);
+				if ( isSimpleValue(theValue) ) {
+					variables.sessionData.mura[arguments.property]=theValue;
+				}
+				return theValue;
+			} else {
+				return variables.sessionData.mura[arguments.property];
+			}
+		}
 
-	<!--- forward normal getters to the default getValue method --->
-	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
-		<cfif prefix eq "get">
-			<cfreturn getValue(prop)>
-		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
-			<cfset setValue(prop,MissingMethodArguments[1])>
-			<cfreturn this>
-		</cfif>
-	</cfif>
+		public function setValue(property, propertyValue) output=false {
+			if ( !hasSession() ) {
+				variables.sessionData=getSession();
+			}
+			variables.sessionData.mura[arguments.property]=arguments.propertyValue;
+			getUserBean().setValue(arguments.property, arguments.propertyValue);
+			return this;
+		}
 
-	<!--- otherwise get the bean and if the method exsists forward request --->
-	<cfset bean=getUserBean()>
+		public function set(property, propertyValue) output=false {
+			setValue(argumentCollection=arguments);
+			return this;
+		}
 
-	<cfif not structIsEmpty(MissingMethodArguments)>
-		<cfinvoke component="#bean#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
-	<cfelse>
-		<cfinvoke component="#bean#" method="#MissingMethodName#" returnvariable="theValue">
-	</cfif>
+		public function get(property) output=false {
+			return getValue(argumentCollection=arguments);
+		}
 
-	<cfif isDefined("theValue")>
-		<cfreturn theValue>
-	<cfelse>
-		<cfreturn "">
-	</cfif>
+		public function getAll() output=false {
+			return getAllValues();
+		}
 
-<cfelse>
-	<cfreturn "">
-</cfif>
+		public function getUserBean() output=false {
+			if ( isObject(variables.userBean) ) {
+				return variables.userBean;
+			} else {
+				if ( !hasSession() ) {
+					variables.sessionData=getSession();
+				}
+				variables.userBean=application.userManager.read(variables.sessionData.mura.userID);
+				if ( variables.userBean.getIsNew() ) {
+					variables.userBean.setSiteID(getValue('siteID'));
+				}
+			}
+			return variables.userBean;
+		}
 
-</cffunction>
+		public function getFullName() output=false {
+			if ( hasSession() ) {
+				return trim("#variables.sessionData.mura.fname# #variables.sessionData.mura.lname#");
+			} else {
+				return "";
+			}
+		}
 
-<cffunction name="init" output="false">
-	<cfset variables.sessionData=getSession()>
-	<cfreturn this>
-</cffunction>
+		public boolean function isInGroup(group, isPublic) output=false {
+			var siteid="";
+			var publicPool="";
+			var privatePool="";
+			if ( hasSession() ) {
+				siteid=variables.sessionData.mura.siteID;
+				if ( structKeyExists(request,"siteid") ) {
+					siteID=request.siteID;
+				}
+				publicPool=application.settingsManager.getSite(siteid).getPublicUserPoolID();
+				privatePool=application.settingsManager.getSite(siteid).getPrivateUserPoolID();
+				if ( variables.sessionData.mura.isLoggedIn && len(siteID) ) {
+					if ( structKeyExists(arguments,"isPublic") ) {
+						if ( arguments.isPublic ) {
+							return application.permUtility.isUserInGroup(arguments.group,publicPool,1);
+						} else {
+							return application.permUtility.isUserInGroup(arguments.group,privatePool,0);
+						}
+					} else {
+						return application.permUtility.isUserInGroup(arguments.group,publicPool,1) || application.permUtility.isUserInGroup(arguments.group,privatePool,0);
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
 
-<cffunction name="getValue" output="false">
-	<cfargument name="property">
-	<cfset var theValue="">
+		public boolean function isPrivateUser() output=false {
+			if ( hasSession() ) {
+				var siteid=variables.sessionData.mura.siteID;
+				if ( structKeyExists(request,"siteid") ) {
+					siteID=request.siteID;
+				}
+				return application.permUtility.isS2() || application.permUtility.isPrivateUser(siteid);
+			} else {
+				return false;
+			}
+		}
 
-	<cfif isDefined('get#arguments.property#')>
-		<cfset var tempFunc=this["get#arguments.property#"]>
-        <cfreturn tempFunc()>
-	<cfelseif not structKeyExists(variables.sessionData.mura,arguments.property)>
-		<cfset theValue=getUserBean().getValue(arguments.property)>
-		<cfif isSimpleValue(theValue)>
-			<cfset variables.sessionData.mura[arguments.property]=theValue>
-		</cfif>
-		<cfreturn theValue>
-	<cfelse>
-		<cfreturn variables.sessionData.mura[arguments.property]>
-	</cfif>
-</cffunction>
+		public boolean function isSuperUser() output=false {
+			if ( hasSession() ) {
+				return application.permUtility.isS2();
+			} else {
+				return false;
+			}
+		}
 
-<cffunction name="setValue" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
+		public boolean function isAdminUser() output=false {
+			if ( hasSession() ) {
+				return isInGroup('Admin',0);
+			} else {
+				return false;
+			}
+		}
 
-	<cfif not hasSession()>
-		<cfset variables.sessionData=getSession()>
-	</cfif>
+		public boolean function isLoggedIn() output=false {
+			if ( hasSession() ) {
+				return variables.sessionData.mura.isLoggedIn;
+			} else {
+				return false;
+			}
+		}
 
-	<cfset variables.sessionData.mura[arguments.property]=arguments.propertyValue>
-	<cfset getUserBean().setValue(arguments.property, arguments.propertyValue)>
-	<cfreturn this>
-</cffunction>
+		public boolean function isPassedLockdown() output=false {
+			if ( !structKeyExists(cookie, "passedLockdown") ) {
+				application.utility.setCookie(name="passedLockdown", value="false");
+			}
+			return cookie.passedLockdown;
+		}
 
-<cffunction name="set" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
-	<cfset setValue(argumentCollection=arguments)>
-	<cfreturn this>
-</cffunction>
+		public boolean function hasSession() output=false {
+			return isDefined("variables.sessionData.mura");
+		}
 
-<cffunction name="get" output="false">
-	<cfargument name="property">
-	<cfreturn getValue(argumentCollection=arguments)>
-</cffunction>
+		public function logout() output=false {
+			getBean('loginManager').logout();
+			return this;
+		}
 
-<cffunction name="getAll" output="false">
-	<cfreturn getAllValues()>
-</cffunction>
+		public function getAllValues() output=false {
+			return getUserBean().getAllValues();
+		}
 
-<cffunction name="getUserBean" output="false">
-	<cfif isObject(variables.userBean) >
-		<cfreturn variables.userBean>
-	<cfelse>
-		<cfif not hasSession()>
-			<cfset variables.sessionData=getSession()>
-		</cfif>
-		<cfset variables.userBean=application.userManager.read(variables.sessionData.mura.userID)>
-		<cfif variables.userBean.getIsNew()>
-			<cfset variables.userBean.setSiteID(getValue('siteID'))>
-		</cfif>
-	</cfif>
-	<cfreturn variables.userBean>
-</cffunction>
+		public function validateCSRFTokens($="", context="") output=false {
+			if ( !hasSession() ) {
+				variables.sessionData=getSession();
+			}
+			// CLEAR OLD TOKENS
+			for ( local.key in variables.sessionData.mura.csrfusedtokens ) {
+				if ( variables.sessionData.mura.csrfusedtokens['#local.key#'] < dateAdd('h',-3,now()) ) {
+					structDelete(variables.sessionData.mura.csrfusedtokens,'#local.key#');
+				}
+			}
+			//  CAN ONLY USE TOKEN ONCE
+			if ( !len(arguments.$.event('csrf_token')) || structKeyExists(variables.sessionData.mura.csrfusedtokens, "#arguments.$.event('csrf_token')#") ) {
+				return false;
+			}
+			if ( application.cfversion < 10 ) {
+				if ( arguments.$.event('csrf_token_expires') > (now() + 0) && arguments.$.event('csrf_token') == hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires')) ) {
+					variables.sessionData.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now();
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				if ( arguments.$.event('csrf_token_expires') > datetimeformat(now(),'yyMMddHHnnsslll') && arguments.$.event('csrf_token') == hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires')) ) {
+					variables.sessionData.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now();
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
 
-<cffunction name="getFullName" output="false">
-	<cfif hasSession()>
-		<cfreturn trim("#variables.sessionData.mura.fname# #variables.sessionData.mura.lname#")>
-	<cfelse>
-		<cfreturn "">
-	</cfif>
-</cffunction>
+		public function generateCSRFTokens(timespan="#createTimeSpan(0,3,0,0)#", context="") output=false {
+			if ( !hasSession() ) {
+				variables.sessionData=getSession();
+			}
+			if ( application.cfversion < 10 ) {
+				var expires="#numberFormat((now() + arguments.timespan),'99999.9999999')#";
+			} else {
+				var currentDateTime = now();
+				var milliseconds = datetimeFormat(currentDateTime,'lll');
+				var expires=dateTimeFormat(dateAdd('l',milliseconds,(currentDateTime + arguments.timespan)),'yyMMddHHnnsslll');
+			}
+			return {
+				expires=expires,
+				token=hash(arguments.context & variables.sessionData.mura.csrfsecretkey & expires)
+			};
+		}
 
-<cffunction name="isInGroup" returntype="boolean" output="false">
-	<cfargument name="group">
-	<cfargument name="isPublic" hint="optional">
-	<cfset var siteid="">
-	<cfset var publicPool="">
-	<cfset var privatePool="">
+		public function renderCSRFTokens(timespan="#createTimeSpan(0,3,0,0)#", context="", format="form") output=false {
+			var csrf=generateCSRFTokens(argumentCollection=arguments);
+			switch ( arguments.format ) {
+				case  "url":
+					return "&csrf_token=#csrf.token#&csrf_token_expires=#csrf.expires#";
+					break;
+				case  "json":
+					return "{csrf_token:'#csrf.token#',csrf_token_expires:'#csrf.expires#'}";
+					break;
+				default:
+					savecontent variable="local.str" {
+							writeOutput('<input type="hidden" name="csrf_token" value="#csrf.token#" /><input type="hidden" name="csrf_token_expires" value="#csrf.expires#" />');
+					}
+					return local.str;
+					break;
+			}
+		}
 
-	<cfif hasSession()>
-		<cfset siteid=variables.sessionData.mura.siteID>
-		<cfif structKeyExists(request,"siteid")>
-			<cfset siteID=request.siteID>
-		</cfif>
-
-		<cfset publicPool=application.settingsManager.getSite(siteid).getPublicUserPoolID()>
-		<cfset privatePool=application.settingsManager.getSite(siteid).getPrivateUserPoolID()>
-
-		<cfif variables.sessionData.mura.isLoggedIn and len(siteID)>
-			<cfif structKeyExists(arguments,"isPublic")>
-				<cfif arguments.isPublic>
-					<cfreturn application.permUtility.isUserInGroup(arguments.group,publicPool,1)>
-				<cfelse>
-					<cfreturn application.permUtility.isUserInGroup(arguments.group,privatePool,0)>
-				</cfif>
-			<cfelse>
-				<cfreturn application.permUtility.isUserInGroup(arguments.group,publicPool,1) or application.permUtility.isUserInGroup(arguments.group,privatePool,0)>
-			</cfif>
-		<cfelse>
-			<cfreturn false>
-		</cfif>
-	<cfelse>
-		<cfreturn false>
-	</cfif>
-</cffunction>
-
-<cffunction name="isPrivateUser" returntype="boolean" output="false">
-	<cfif hasSession()>
-		<cfset var siteid=variables.sessionData.mura.siteID>
-
-		<cfif structKeyExists(request,"siteid")>
-			<cfset siteID=request.siteID>
-		</cfif>
-
-		<cfreturn application.permUtility.isS2() or application.permUtility.isPrivateUser(siteid)>
-	<cfelse>
-		<cfreturn false>
-	</cfif>
-</cffunction>
-
-<cffunction name="isSuperUser" returntype="boolean" output="false">
-	<cfif hasSession()>
-		<cfreturn application.permUtility.isS2() />
-	<cfelse>
-		<cfreturn false>
-	</cfif>
-</cffunction>
-
-<cffunction name="isAdminUser" returntype="boolean" output="false">
-	<cfif hasSession()>
-		<cfreturn isInGroup('Admin',0) />
-	<cfelse>
-		<cfreturn false>
-	</cfif>
-</cffunction>
-
-<cffunction name="isLoggedIn" returntype="boolean" output="false">
-	<cfif hasSession()>
-		<cfreturn variables.sessionData.mura.isLoggedIn>
-	<cfelse>
-		<cfreturn false>
-	</cfif>
-</cffunction>
-
-<cffunction name="isPassedLockdown" returntype="boolean" output="false">
-	<cfif not structKeyExists(cookie, "passedLockdown")>
-		<cfset application.utility.setCookie(name="passedLockdown", value="false")>
-	</cfif>
-	<cfreturn cookie.passedLockdown>
-</cffunction>
-
-<cffunction name="hasSession" output="false" returntype="boolean">
-	<cfreturn isDefined("variables.sessionData.mura")>
-</cffunction>
-
-<cffunction name="logout" output="false">
-	<cfset getBean('loginManager').logout()>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAllValues" output="false">
-	<cfreturn getUserBean().getAllValues()>
-</cffunction>
-
-<cffunction name="validateCSRFTokens" output="false">
-	<cfargument name="$" default="">
-	<cfargument name="context" default="">
-
-	<cfif not hasSession()>
-		<cfset variables.sessionData=getSession()>
-	</cfif>
-
-	<!---CLEAR OLD TOKENS--->
-	<cfloop collection="#variables.sessionData.mura.csrfusedtokens#" item="local.key">
-		<cfif variables.sessionData.mura.csrfusedtokens['#local.key#'] lt dateAdd('h',-3,now())>
-			<cfset structDelete(variables.sessionData.mura.csrfusedtokens,'#local.key#')>
-		</cfif>
-	</cfloop>
-
-	<!--- CAN ONLY USE TOKEN ONCE --->
-	<cfif not len(arguments.$.event('csrf_token')) or structKeyExists(variables.sessionData.mura.csrfusedtokens, "#arguments.$.event('csrf_token')#")>
-		<cfreturn false>
-	</cfif>
-
-	<cfif application.cfversion lt 10>
-		<cfif arguments.$.event('csrf_token_expires') gt (now() + 0) and arguments.$.event('csrf_token') eq hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'))>
-			<cfset variables.sessionData.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now()>
-			<cfreturn true>
-		<cfelse>
-			<cfreturn false>
-		</cfif>
-	<cfelse>
-		<cfif arguments.$.event('csrf_token_expires') gt datetimeformat(now(),'yyMMddHHnnsslll') and arguments.$.event('csrf_token') eq hash(arguments.context & variables.sessionData.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'))>
-			<cfset variables.sessionData.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now()>
-			<cfreturn true>
-		<cfelse>
-			<cfreturn false>
-		</cfif>
-	</cfif>
-</cffunction>
-
-<cffunction name="generateCSRFTokens" output="false">
-	<cfargument name="timespan" default="#createTimeSpan(0,3,0,0)#">
-	<cfargument name="context" default="">
-
-	<cfif not hasSession()>
-		<cfset variables.sessionData=getSession()>
-	</cfif>
-
-	<cfif application.cfversion lt 10>
-		<cfset var expires="#numberFormat((now() + arguments.timespan),'99999.9999999')#">
-	<cfelse>
-		<cfset var currentDateTime = now()>
-		<cfset var milliseconds = datetimeFormat(currentDateTime,'lll')/>
-		<cfset var expires=dateTimeFormat(dateAdd('l',milliseconds,(currentDateTime + arguments.timespan)),'yyMMddHHnnsslll')>
-	</cfif>
-
-	<cfreturn {
-		expires=expires,
-		token=hash(arguments.context & variables.sessionData.mura.csrfsecretkey & expires)
-	}>
-</cffunction>
-
-<cffunction name="renderCSRFTokens" output="false">
-	<cfargument name="timespan" default="#createTimeSpan(0,3,0,0)#">
-	<cfargument name="context" default="">
-	<cfargument name="format" default="form">
-	<cfset var csrf=generateCSRFTokens(argumentCollection=arguments)>
-	<cfswitch expression="#arguments.format#">
-		<cfcase value="url">
-			<cfreturn "&csrf_token=#csrf.token#&csrf_token_expires=#csrf.expires#">
-		</cfcase>
-		<cfcase value="json">
-			<cfreturn "{csrf_token:'#csrf.token#',csrf_token_expires:'#csrf.expires#'}">
-		</cfcase>
-		<cfdefaultcase>
-			<cfsavecontent variable="local.str">
-			<cfoutput>
-				<input type="hidden" name="csrf_token" value="#csrf.token#" />
-				<input type="hidden" name="csrf_token_expires" value="#csrf.expires#" />
-			</cfoutput>
-			</cfsavecontent>
-			<cfreturn local.str>
-		</cfdefaultcase>
-	</cfswitch>
-
-</cffunction>
-
-</cfcomponent>
+	}

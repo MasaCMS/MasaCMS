@@ -1,4 +1,4 @@
-<!---
+/*
    Copyright 2007 Paul Marcotte
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,300 +22,283 @@
 				Acknowlegement to Aaron Roberson for suggesting currentRow() method and other enhancements.
    [2007-05-10]	Initial Release.
 				Acknowlegement to Peter Bell for the "Iterating Business Object" concept that Iterator seeks to provide as a composite.
- --->
-<cfcomponent extends="mura.cfobject" displayname="Iterator" output="false" hint="This provide core iterating functionality">
-	<cfset variables.maxRecordsPerPage=1000>
-	<cfset variables.recordTranslator="">
-	<cfset variables.iteratorID="">
-	<cfset variables.feed="">
-	<cfset variables.recordIDField="id">
-	<cfset variables.pageQueries=structNew()>
+ */
+/**
+ * This provide core iterating functionality
+ */
+component extends="mura.cfobject" displayname="Iterator" output="false" hint="This provide core iterating functionality" {
+	variables.maxRecordsPerPage=1000;
+	variables.recordTranslator="";
+	variables.iteratorID="";
+	variables.feed="";
+	variables.recordIDField="id";
+	variables.pageQueries=structNew();
 
-	<cffunction name="init" output="false">
-		<cfset variables.recordIndex = 0 />
-		<cfset variables._recordcount = 0 />
-		<cfset variables.pageIndex = 1 />
-		<cfset variables.iteratorID="i" & hash(createUUID())>
-		<cfreturn THIS />
-	</cffunction>
+	public function init() output=false {
+		variables.recordIndex = 0;
+		variables._recordcount = 0;
+		variables.pageIndex = 1;
+		variables.iteratorID="i" & hash(createUUID());
+		return THIS;
+	}
 
-	<cffunction name="setFeed" output="false">
-		<cfargument name="feed">
-		<cfset variables.feed=arguments.feed>
-		<cfreturn this>
-	</cffunction>
+	public function setFeed(feed) output=false {
+		variables.feed=arguments.feed;
+		return this;
+	}
 
-	<cffunction name="getFeed" output="false">
-		<cfreturn variables.feed>
-	</cffunction>
+	public function getFeed() output=false {
+		return variables.feed;
+	}
 
-	<cffunction name="hasFeed" output="false">
-		<cfreturn isObject(variables.feed)>
-	</cffunction>
+	public function hasFeed() output=false {
+		return isObject(variables.feed);
+	}
 
-	<cffunction name="getIteratorID" output="false">
-		<cfreturn variables.iteratorID  />
-	</cffunction>
+	public function getIteratorID() output=false {
+		return variables.iteratorID;
+	}
 
-	<cffunction name="currentIndex" output="false">
-		<cfreturn variables.recordIndex  />
-	</cffunction>
+	public function currentIndex() output=false {
+		return variables.recordIndex;
+	}
 
-	<cffunction name="getCurrentIndex" output="false">
-		<cfreturn currentIndex() />
-	</cffunction>
+	public function getCurrentIndex() output=false {
+		return currentIndex();
+	}
 
-	<cffunction name="setCurrentIndex" output="false">
-		<cfargument name="currentIndex">
-		<cfset setStartRow(arguments.currentIndex)>
-		<cfreturn this>
-	</cffunction>
+	public function setCurrentIndex(currentIndex) output=false {
+		setStartRow(arguments.currentIndex);
+		return this;
+	}
 
-	<cffunction name="getRecordIndex" output="false">
-		<cfreturn variables.recordIndex />
-	</cffunction>
+	public function getRecordIndex() output=false {
+		return variables.recordIndex;
+	}
 
-	<cffunction name="getRecordIdField" output="false">
-		<cfreturn variables.recordIDField />
-	</cffunction>
+	public function getRecordIdField() output=false {
+		return variables.recordIDField;
+	}
 
-	<cffunction name="getPageIDList" output="false">
-		<cfset var idList="">
-		<cfset var i="">
+	public function getPageIDList() output=false {
+		var idList="";
+		var i="";
+		if ( getRecordCount() ) {
+			if ( isArray(variables.records) ) {
+				for ( i in variables.records ) {
+					idList=listAppend(idList,i[getRecordIDField()]);
+				}
+			} else {
+				for ( i=getFirstRecordOnPageIndex() ; i<=getLastRecordOnPageIndex() ; i++ ) {
+					idList=listAppend(idList,variables.records[getRecordIDField()][i]);
+				}
+			}
+		}
+		return idList;
+	}
 
-		<cfif getRecordCount()>
-			<cfif isArray(variables.records)>
-				<cfloop array="#variables.records#" index="i">
-					<cfset idList=listAppend(idList,i[getRecordIDField()])>
-				</cfloop>
-			<cfelse>
-				<cfloop from="#getFirstRecordOnPageIndex()#" to="#getLastRecordOnPageIndex()#" index="i">
-					<cfset idList=listAppend(idList,variables.records[getRecordIDField()][i])>
-				</cfloop>
-			</cfif>
-		</cfif>
+	public function getFirstRecordOnPageIndex() output=false {
+		var first = ((variables.pageIndex-1) * variables.maxRecordsPerPage);
+		if ( first > getRecordCount() ) {
+			return 1;
+		} else {
+			return first+1;
+		}
+	}
 
-		<cfreturn idList>
+	public function getLastRecordOnPageIndex() output=false {
+		var last=(((variables.pageIndex-1) * variables.maxRecordsPerPage) + variables.maxRecordsPerPage);
+		if ( last > getRecordCount() ) {
+			last=getRecordCount();
+		}
+		return last;
+	}
 
-	</cffunction>
-
-	<cffunction name="getFirstRecordOnPageIndex" output="false">
-		<cfset var first = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
-
-		<cfif first gt getRecordCount()>
-			<cfreturn 1>
-		<cfelse>
-			<cfreturn first+1 />
-		</cfif>
-
-	</cffunction>
-
-	<cffunction name="getLastRecordOnPageIndex" output="false">
-		<cfset var last=(((variables.pageIndex-1) * variables.maxRecordsPerPage) + variables.maxRecordsPerPage)>
-		<cfif last gt getRecordCount()>
-			<cfset last=getRecordCount()>
-		</cfif>
-		<cfreturn last />
-	</cffunction>
-
-	<cffunction name="setStartRow" output="false">
-		<cfargument name="startRow">
-		<cfif getRecordCount()>
-			<cfif variables.maxRecordsPerPage neq 1>
-				<cfset setPage(Ceiling(arguments.startRow/variables.maxRecordsPerPage))>
-			<cfelse>
-				<cfset setPage(arguments.startRow)>
-			</cfif>
-
-			<!---
+	public function setStartRow(startRow) output=false {
+		if ( getRecordCount() ) {
+			if ( variables.maxRecordsPerPage != 1 ) {
+				setPage(Ceiling(arguments.startRow/variables.maxRecordsPerPage));
+			} else {
+				setPage(arguments.startRow);
+			}
+			/*
 				startrow in an iterator means it's queued to be next
 				so the recordIndex should be set to the one before
-			--->
-			<cfif arguments.startRow>
-				<cfset arguments.startRow=arguments.startRow-1>
-			</cfif>
+			*/
+			if ( arguments.startRow ) {
+				arguments.startRow=arguments.startRow-1;
+			}
+			if ( variables.recordIndex != arguments.startRow && arguments.startRow < getRecordCount() ) {
+				variables.recordIndex=arguments.startRow;
+			}
+		} else {
+			variables.recordIndex=0;
+			setPage(1);
+		}
+		return this;
+	}
 
-			<cfif variables.recordIndex neq arguments.startRow and arguments.startRow lt getRecordCount()>
-				<cfset variables.recordIndex=arguments.startRow>
-			</cfif>
-		<cfelse>
-			<cfset variables.recordIndex=0 />
-			<cfset setPage(1)>
-		</cfif>
+	public function currentRow() output=false {
+		return variables.recordIndex;
+	}
 
-		<cfreturn this>
-	</cffunction>
+	public boolean function hasNext() output=false {
+		return currentIndex() < getRecordCount() && currentIndex() < (getPageIndex() *  variables.maxRecordsPerPage );
+	}
 
-	<cffunction name="currentRow" output="false">
-    	<cfreturn variables.recordIndex />
-    </cffunction>
+	public function peek() output=false {
+		return packageRecord( currentIndex() + 1);
+	}
 
-	<cffunction name="hasNext" output="false" returntype="boolean">
-		<cfreturn currentIndex() lt getRecordCount() and currentIndex() lt (getPageIndex() *  variables.maxRecordsPerPage ) />
-	</cffunction>
+	public function next() output=false {
+		variables.recordIndex = currentIndex() + 1;
+		return packageRecord();
+	}
 
-	<cffunction name="peek" output="false">
-			<cfreturn packageRecord( currentIndex() + 1) />
-	</cffunction>
+	public boolean function hasPrevious() output=false {
+		return (currentIndex() > (((variables.pageIndex-1) * variables.maxRecordsPerPage) + 1));
+	}
 
-	<cffunction name="next" output="false">
-		<cfset variables.recordIndex = currentIndex() + 1 />
-		<cfreturn packageRecord() />
-	</cffunction>
+	public function previous() output=false {
+		variables.recordIndex = currentIndex() - 1;
+		return packageRecord();
+	}
 
-	<cffunction name="hasPrevious" output="false" returntype="boolean">
-		<cfreturn (currentIndex() gt (((variables.pageIndex-1) * variables.maxRecordsPerPage) + 1)) />
-	</cffunction>
+	public function packageRecord(recordIndex="#currentIndex()#") output=false {
+		if ( isQuery(variables.records) ) {
+			return queryRowToStruct(variables.records,arguments.recordIndex);
+		} else if ( isArray(variables.records) ) {
+			return variables.records[arguments.recordIndex];
+		} else {
+			throw( message="The records have not been set." );
+		}
+	}
 
-	<cffunction name="previous" output="false">
-		<cfset variables.recordIndex = currentIndex() - 1 />
-		<cfreturn packageRecord() />
-	</cffunction>
+	public function reset() output=false {
+		variables.recordIndex = 0;
+		return this;
+	}
 
-	<cffunction name="packageRecord" output="false">
-		<cfargument name="recordIndex" default="#currentIndex()#">
-		<cfif isQuery(variables.records)>
-			<cfreturn queryRowToStruct(variables.records,arguments.recordIndex)>
-		<cfelseif isArray(variables.records)>
-			<cfreturn variables.records[arguments.recordIndex]>
-		<cfelse>
-			<cfthrow message="The records have not been set.">
-		</cfif>
-	</cffunction>
+	public function end() output=false {
+		variables.recordIndex = getRecordCount() + 1;
+		return this;
+	}
 
-	<cffunction name="reset" output="false">
-		<cfset variables.recordIndex = 0 />
-		<cfreturn this>
-	</cffunction>
+	public function pageCount() output=false {
+		var pageCount = 1;
+		if ( structKeyExists(variables,"maxRecordsPerPage") ) {
+			pageCount = Ceiling(getRecordCount()/variables.maxRecordsPerPage);
+		}
+		return pageCount;
+	}
 
-	<cffunction name="end" output="false">
-		<cfset variables.recordIndex = getRecordCount() + 1 />
-		<cfreturn this>
-	</cffunction>
+	/**
+	 * For Lucee compatibility use getRecordCount()
+	 */
+	public function recordCount() output=false {
+		return getRecordCount();
+	}
 
-	<cffunction name="pageCount" output="false">
-		<cfset var pageCount = 1 />
-		<cfif structKeyExists(variables,"maxRecordsPerPage")>
-			<cfset pageCount = Ceiling(getRecordCount()/variables.maxRecordsPerPage) />
-		</cfif>
-		<cfreturn pageCount />
-	</cffunction>
+	public function getRecordCount() output=false {
+		return variables._recordCount;
+	}
 
-	<cffunction name="recordCount" output="false" hint="For Lucee compatibility use getRecordCount()">
-		<cfreturn getRecordCount()>
-	</cffunction>
+	public function getPageIndex() output=false {
+		return variables.pageIndex;
+	}
 
-	<cffunction name="getRecordCount" output="false">
-		<cfreturn variables._recordCount />
-	</cffunction>
+	public function setPage(pageIndex) output=false {
+		setPageIndex(arguments.pageIndex);
+		return this;
+	}
 
-	<cffunction name="getPageIndex" output="false">
-		<cfreturn variables.pageIndex />
-	</cffunction>
+	public function setPageIndex(required numeric pageIndex) output=false {
+		variables.pageIndex = arguments.pageIndex;
+		variables.recordIndex = ((variables.pageIndex-1) * variables.maxRecordsPerPage);
+		if ( variables.recordIndex > getRecordCount() ) {
+			variables.recordIndex=0;
+			variables.pageIndex=1;
+		}
+		return this;
+	}
 
-	<cffunction name="setPage" output="false">
-		<cfargument name="pageIndex">
-		<cfset setPageIndex(arguments.pageIndex)>
-		<cfreturn this>
-	</cffunction>
+	public function setItemsPerPage(itemsPerPage) output=false {
+		setNextN(nextN=arguments.itemsPerPage);
+		return this;
+	}
 
-	<cffunction name="setPageIndex" output="false">
-		<cfargument name="pageIndex" type="numeric" required="true">
-		<cfset variables.pageIndex = arguments.pageIndex />
-		<cfset variables.recordIndex = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
+	public function getItemsPerPage() output=false {
+		return variables.maxRecordsPerPage;
+	}
 
-		<cfif variables.recordIndex gt getRecordCount()>
-			<cfset variables.recordIndex=0>
-			<cfset variables.pageIndex=1>
-		</cfif>
-		<cfreturn this>
-	</cffunction>
+	public function setNextN(nextN) output=false {
+		if ( isNumeric(arguments.nextN) && arguments.nextN ) {
+			variables.maxRecordsPerPage=arguments.nextN;
+		} else {
+			variables.maxRecordsPerPage=getRecordCount();
+		}
+		return this;
+	}
 
-	<cffunction name="setItemsPerPage" output="false">
-		<cfargument name="itemsPerPage">
-		<cfset setNextN(nextN=arguments.itemsPerPage)>
-		<cfreturn this>
-	</cffunction>
+	public function getNextN() output=false {
+		return variables.maxRecordsPerPage;
+	}
 
-	<cffunction name="getItemsPerPage" output="false">
-		<cfreturn variables.maxRecordsPerPage>
-	</cffunction>
+	public function setArray(required any array, numeric maxRecordsPerPage) output=false {
+		variables.records = arguments.array;
+		variables._recordcount=arrayLen(arguments.array);
+		if ( structKeyExists(arguments,"maxRecordsPerPage") && isNumeric(arguments.maxRecordsPerPage) ) {
+			variables.maxRecordsPerPage = arguments.maxRecordsPerPage;
+		} else {
+			variables.maxRecordsPerPage = arrayLen(variables.records);
+		}
+		return this;
+	}
 
-	<cffunction name="setNextN" output="false">
-		<cfargument name="nextN">
-		<cfif isNumeric(arguments.nextN) and arguments.nextN>
-			<cfset variables.maxRecordsPerPage=arguments.nextN>
-		<cfelse>
-			<cfset variables.maxRecordsPerPage=getRecordCount()>
-		</cfif>
-		<cfreturn this>
-	</cffunction>
+	public function getArray() output=false {
+		var array=arrayNew(1);
+		var i=1;
+		var qi=0;
+		if ( isArray(variables.records) ) {
+			return variables.records;
+		} else if ( isQuery(variables.records) ) {
 
-	<cffunction name="getNextN" output="false">
-		<cfreturn variables.maxRecordsPerPage>
-	</cffunction>
+			if(variables.records.recordcount){
+				for(qi=1;qi <= variables.records.recordcount;qi++){
+						arrayAppend(array,queryRowToStruct(variables.records,qi));
+				}
+			}
 
-	<cffunction name="setArray" output="false">
-		<cfargument name="array" type="any" required="true">
-		<cfargument name="maxRecordsPerPage" type="numeric" required="false">
+			return array;
+		} else {
+			throw( message="The records have not been set." );
+		}
+	}
 
-		<cfset variables.records = arguments.array />
-		<cfset variables._recordcount=arrayLen(arguments.array)>
+	public function setQuery(required query rs, numeric maxRecordsPerPage) output=false {
+		variables.records = arguments.rs;
+		variables._recordcount=rs.recordcount;
+		if ( structKeyExists(arguments,"maxRecordsPerPage") && isNumeric(arguments.maxRecordsPerPage) && arguments.maxRecordsPerPage ) {
+			variables.maxRecordsPerPage = arguments.maxRecordsPerPage;
+		} else {
+			variables.maxRecordsPerPage = getRecordCount();
+		}
+		return this;
+	}
 
-		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage)>
-			<cfset variables.maxRecordsPerPage = arguments.maxRecordsPerPage />
-		<cfelse>
-			<cfset variables.maxRecordsPerPage = arrayLen(variables.records) />
-		</cfif>
-		<cfreturn this>
-	</cffunction>
+	public function getQuery() output=false {
+		if ( isQuery(variables.records) ) {
+			return variables.records;
+		} else if ( isArray(variables.records) ) {
+			return getBean("utility").arrayToQuery(variables.records);
+		} else {
+			throw( message="The records have not been set." );
+		}
+	}
 
-	<cffunction name="getArray" output="false">
-		<cfset var array=arrayNew(1)>
-		<cfset var i=1>
+	public struct function queryRowToStruct(required query qry) output=false {
 
-		<cfif isArray(variables.records)>
-			<cfreturn variables.records>
-		<cfelseif isQuery(variables.records)>
-			<cfloop query="variables.records">
-				<cfset arrayAppend(array,queryRowToStruct(variables.records,variables.records.currentRow))>
-			</cfloop>
-			<cfreturn array>
-		<cfelse>
-			<cfthrow message="The records have not been set.">
-		</cfif>
-	</cffunction>
-
-	<cffunction name="setQuery" output="false">
-		<cfargument name="rs" type="query" required="true">
-		<cfargument name="maxRecordsPerPage" type="numeric" required="false">
-
-		<cfset variables.records = arguments.rs />
-		<cfset variables._recordcount=rs.recordcount>
-
-		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage) and arguments.maxRecordsPerPage>
-			<cfset variables.maxRecordsPerPage = arguments.maxRecordsPerPage />
-		<cfelse>
-			<cfset variables.maxRecordsPerPage = getRecordCount() />
-		</cfif>
-		<cfreturn this>
-	</cffunction>
-
-	<cffunction name="getQuery" output="false">
-		<cfif isQuery(variables.records)>
-			<cfreturn variables.records>
-		<cfelseif isArray(variables.records)>
-			<cfreturn getBean("utility").arrayToQuery(variables.records)>
-		<cfelse>
-			<cfthrow message="The records have not been set.">
-		</cfif>
-	</cffunction>
-
-	<cffunction name="queryRowToStruct" output="false" returntype="struct">
-		<cfargument name="qry" type="query" required="true">
-
-		<cfscript>
-			/**
+		/**
 			 * Makes a row of a query into a structure.
 			 *
 			 * @param query 	 The query to work with.
@@ -341,60 +324,25 @@
 			}
 			//return the struct
 			return stReturn;
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="setPageQuery" output="false">
-	<cfargument name="queryName"  type="string" required="true">
-	<cfargument name="queryObject" default="" >
+	public function setPageQuery(required string queryName, queryObject="") output=false {
+		variables.pageQueries["#arguments.queryName#"]=arguments.queryObject;
+		return this;
+	}
 
-		<cfset variables.pageQueries["#arguments.queryName#"]=arguments.queryObject />
-		<cfreturn this>
-	</cffunction>
+	public function getPageQuery(required string queryName) output=false {
+		if ( structKeyExists(variables.pageQueries,"#arguments.queryName#") ) {
+			return variables.pageQueries["#arguments.queryName#"];
+		} else {
+			return "";
+		}
+	}
 
-	<cffunction name="getPageQuery" output="false">
-	<cfargument name="queryName"  type="string" required="true">
+	public function clearPageQueries() output=false {
+		variables.pageQueries=structNew();
+		return this;
+	}
+	
 
-		<cfif structKeyExists(variables.pageQueries,"#arguments.queryName#")>
-			<cfreturn variables.pageQueries["#arguments.queryName#"] />
-		<cfelse>
-			<cfreturn "" />
-		</cfif>
-
-	</cffunction>
-
-	<cffunction name="clearPageQueries" output="false">
-		<cfset variables.pageQueries=structNew()>
-		<cfreturn this>
-	</cffunction>
-
-	<!---
-	<cffunction name="each">
-		<cfargument name="action" hint="A function that will run per item in iterator.">
-		<cfargument name="$" hint="If not provides a MuraScope instance is created.">
-		<cfset var test=false>
-		<cfset var item="">
-
-		<cfif structKeyExists(arguments,"mura")>
-			<cfset arguments.$=arguments.mura>
-		</cfif>
-
-		<cfif structKeyExists(arguments,"$")>
-			<cfset arguments.$.event("each:count",getRecordCount())>
-		</cfif>
-
-		<cfloop condition="hasNext()">
-			<cfset item=next()>
-			<cfif not structKeyExists(arguments,"$")>
-				<cfset arguments.$=getBean("$").init(item.getValue("siteID"))>
-				<cfset arguments.$.event("each:count",getRecordCount())>
-			</cfif>
-			<cfset arguments.$.event("each:index",getRecordIndex())>
-			<cfset test=arguments.action(item=item, $=arguments.$, mura=arguments.$)>
-			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>
-			</cfif>
-		</cfloop>
-	</cffunction>
-	--->
-</cfcomponent>
+}

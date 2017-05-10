@@ -1,4 +1,5 @@
-<!--- This file is part of Mura CMS.
+<cfscript>
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,27 +44,27 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfparam name="local" default="#structNew()#">
-<cfparam name="session.mura.isLoggedIn" default="false" />
-<cfparam name="session.mura.userID" default="" />
-<cfparam name="session.mura.siteID" default="" />
-<cfparam name="session.mura.subtype" default="Default" />
-<cfparam name="session.mura.username" default="" />
-<cfparam name="session.mura.password" default="" />
-<cfparam name="session.mura.email" default="" />
-<cfparam name="session.mura.fname" default="" />
-<cfparam name="session.mura.lname" default="" />
-<cfparam name="session.mura.company" default="" />
-<cfparam name="session.mura.lastlogin" default="" />
-<cfparam name="session.mura.passwordCreated" default="" />
-<cfparam name="session.mura.remoteID" default="" />
-<cfparam name="session.mura.memberships" default="" />
-<cfparam name="session.mura.membershipids" default="" />
-<cfparam name="session.mura.showTrace" default="false" />
-<cfparam name="session.mura.csrfsecretkey" default="#createUUID()#">
-<cfparam name="session.mura.csrfusedtokens" default="#structNew()#">
-<cfparam name="session.rememberMe" type="numeric" default="0" />
-<cfparam name="session.loginAttempts" type="numeric" default="0" />
-<cfparam name="session.blockLoginUntil" type="string" default="" />
-<cfset request.doMuraGlobalSessionStart=true>
+*/
+param name="session.mura.isLoggedIn" default=false;
+param name="session.mura.userID" default="";
+param name="session.mura.siteID" default="";
+param name="session.mura.subtype" default="Default";
+param name="session.mura.username" default="";
+param name="session.mura.password" default="";
+param name="session.mura.email" default="";
+param name="session.mura.fname" default="";
+param name="session.mura.lname" default="";
+param name="session.mura.company" default="";
+param name="session.mura.lastlogin" default="";
+param name="session.mura.passwordCreated" default="";
+param name="session.mura.remoteID" default="";
+param name="session.mura.memberships" default="";
+param name="session.mura.membershipids" default="";
+param name="session.mura.showTrace" default=false;
+param name="session.mura.csrfsecretkey" default=createUUID();
+param name="session.mura.csrfusedtokens" default=structNew();
+param name="session.rememberMe" default=0;
+param name="session.loginAttempts" default=0;
+param name="session.blockLoginUntil" default="";
+request.doMuraGlobalSessionStart=true;
+</cfscript>

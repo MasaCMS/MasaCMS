@@ -18,7 +18,7 @@ Mura CMS. Thus, the terms and conditions of the GNU General Public License versi
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+In addition, as a special exc©©eption, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
 independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
 Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
@@ -257,6 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.displayObjectFilePathLookup={}/>
 	<cfset variables.instance.displayObjectLoopUpArray=[]>
 	<cfset variables.instance.showDashboard=0/>
+	<cfset variables.instance.themeLookup={}/>
 
 	<cfreturn this />
 </cffunction>
@@ -678,12 +679,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tmpFactory="">
 	<cfset var themeRBDir="">
 	<cfif not isObject(variables.instance.rbFactory)>
-		<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
+		<cfif not isDefined('application.rbFactory')>
+			<cfset variables.tracepoint=initTracepoint("Instantiating resourceBundleFactory")>
+			<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory(expandPath("/mura/resourceBundle/resourceBundles")) />
+			<cfset commitTracepoint(variables.tracepoint)>
+		</cfif>
+
+		<cfif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/')>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale())>
+		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/')>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale())>
+		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/')>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
+		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/')>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale())>
+		<cfelseif directoryExists(expandPath('/muraWRM/resourceBundles/'))>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale())>
+		<cfelseif directoryExists(expandPath('/muraWRM/resource_bundles/'))>
+			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale())>
+		</cfif>
 		<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/">
 		<cfif directoryExists(themeRBDir)>
 			<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
 		<cfelse>
-			<cfset variables.instance.rbFactory=tmpFactory />
+			<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resource_bundles/">
+			<cfif directoryExists(themeRBDir)>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
+			<cfelse>
+				<cfset variables.instance.rbFactory=tmpFactory />
+			</cfif>
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.rbFactory />
@@ -718,21 +742,75 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAssetPath" output="false">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
-	<cfreturn getResourcePath(argumentCollection=arguments) & "/#variables.instance.displayPoolID#" />
+	<cfreturn getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getFileAssetPath" output="false">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
-	<cfreturn getResourcePath(argumentCollection=arguments) & "/#variables.instance.filePoolID#" />
+	<cfreturn getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getIncludePath" output="false">
-	<cfreturn "/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#" />
+	<cfreturn "#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getAssetMap" output="false">
-	<cfreturn "#variables.configBean.getWebRootMap()#.#variables.instance.displayPoolID#" />
+	<cfreturn "#variables.configBean.getSiteMap()#.#variables.instance.displayPoolID#" />
+</cffunction>
+
+<cffunction name="getDisplayObjectAssetPath" output="false">
+	<cfargument name="theme" default="#request.altTheme#">
+	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="#getValue('domain')#">
+
+	<cfset var key="displayObjectAssetPath" & YesNoFormat(arguments.complete) & replace(arguments.domain,".","all")>
+
+	<cfif structKeyExists(variables.instance,'#key#')>
+		<cfreturn variables.instance[key] />
+	<cfelse>
+		<cfset var path="">
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/modules')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/modules">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/display_objects')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/display_objects">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/modules')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/includes/modules">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/display_objects')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/includes/display_objects">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('muraWRM/modules')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/modules">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset path=expandPath('muraWRM/display_objects')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/display_objects">
+			<cfreturn variables.instance[key] />
+		</cfif>
+
+		<cfset variables.instance[key]=getThemeAssetPath(argumentCollection=arguments) & "/display_objects">
+		<cfreturn variables.instance[key]>
+	</cfif>
+
 </cffunction>
 
 <cffunction name="getThemeAssetPath" output="false">
@@ -740,49 +818,134 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
 
-	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfreturn getAssetPath(argumentCollection=arguments) & "/includes/themes/#arguments.theme#" />
-	<cfelseif len(variables.instance.theme)>
-		<cfreturn  getAssetPath(argumentCollection=arguments) & "/includes/themes/#variables.instance.theme#" />
-	<cfelse>
-		<cfreturn getAssetPath(argumentCollection=arguments) />
+	<cfif not len(arguments.theme) or not directoryExists(getTemplateIncludeDir(arguments.theme))>
+		<cfset arguments.theme=variables.instance.theme>
 	</cfif>
+
+	<cfset var key="themeAssetPath" & YesNoFormat(arguments.complete) & replace(arguments.domain,".","all")>
+
+	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
+		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
+	</cfif>
+
+	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'#key#')>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
+	<cfelse>
+		<cfset var path="">
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments) & "/includes/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
+		</cfif>
+
+		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getRootPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
+		</cfif>
+
+		<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments)>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
+	</cfif>
+
 </cffunction>
 
 <cffunction name="getThemeIncludePath" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 
-	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfreturn "#getIncludePath()#/includes/themes/#arguments.theme#" />
-	<cfelseif len(variables.instance.theme)>
-		<cfreturn "#getIncludePath()#/includes/themes/#variables.instance.theme#" />
-	<cfelse>
-		<cfreturn getIncludePath() />
+	<cfif not len(arguments.theme)>
+		<cfset arguments.theme=variables.instance.theme>
 	</cfif>
+
+	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
+		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
+	</cfif>
+
+	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeIncludePath')>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
+	<cfelse>
+		<cfset var path="">
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="#getIncludePath()#/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="#getIncludePath()#/includes/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
+		</cfif>
+
+		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="/muraWRM/themes/#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
+		</cfif>
+
+		<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath=getIncludePath()>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
+	</cfif>
+
 </cffunction>
 
 <cffunction name="getThemeAssetMap" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 
-	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfreturn "#getAssetMap()#.includes.themes.#arguments.theme#" />
-	<cfelseif len(variables.instance.theme)>
-		<cfreturn "#getAssetMap()#.includes.themes.#variables.instance.theme#" />
+	<cfif not len(arguments.theme) or not directoryExists(getTemplateIncludeDir(arguments.theme))>
+		<cfset arguments.theme=variables.instance.theme>
+	</cfif>
+
+	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
+		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
+	</cfif>
+
+	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeAssetMap')>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
 	<cfelse>
-		<cfreturn getAssetMap() />
+		<cfset var path="">
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="#getAssetMap()#.themes.#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="#getAssetMap()#.includes.themes.#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
+		</cfif>
+
+		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
+		<cfif directoryExists(path)>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="muraWRM.themes.#arguments.theme#">
+			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
+		</cfif>
+
+		<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap=getAssetMap()>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap>
 	</cfif>
 </cffunction>
+
 
 <cffunction name="getTemplateIncludePath" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 
-	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfreturn "#getIncludePath()#/includes/themes/#arguments.theme#/templates" />
-	<cfelseif len(variables.instance.theme)>
-		<cfreturn "#getIncludePath()#/includes/themes/#variables.instance.theme#/templates" />
-	<cfelse>
-		<cfreturn "#getIncludePath()#/includes/templates" />
+	<cfif not len(arguments.theme) or not directoryExists(getTemplateIncludeDir(arguments.theme))>
+		<cfset arguments.theme=variables.instance.theme>
 	</cfif>
+
+	<cfreturn getThemeIncludePath(arguments.theme) & "/templates" />
+
 </cffunction>
 
 <cffunction name="hasNonThemeTemplates" output="false">
@@ -792,30 +955,138 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getTemplateIncludeDir" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
 
-	<cfif len(arguments.theme)>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#/templates">
-	<cfelseif len(variables.instance.theme)>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#variables.instance.theme#/templates">
+	<cfreturn expandPath(getThemeIncludePath(arguments.theme) & "/templates")>
+</cffunction>
+
+<cffunction name="getThemeDir" output="false">
+	<cfargument name="theme" default="#request.altTheme#">
+
+	<cfif not len(arguments.theme)>
+		<cfset arguments.theme=variables.instance.theme>
+	</cfif>
+
+	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
+		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
+	</cfif>
+
+	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeDir')>
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeDir />
 	<cfelse>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/templates">
+		<cfset var path="">
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
+		<cfif directoryExists(path & "/templates")>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir=path>
+			<cfreturn path>
+		</cfif>
+
+		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
+		<cfif directoryExists(path & "/templates")>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir=path>
+			<cfreturn path>
+		</cfif>
+
+		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
+		<cfif directoryExists(path & "/templates")>
+			<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir=path>
+			<cfreturn path>
+		</cfif>
+
+		<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir= "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/">
+		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeDir>
 	</cfif>
 </cffunction>
 
 <cffunction name="getThemes" output="false">
 	<cfset var rs = "">
 	<cfset var themeDir="">
+	<cfset var rsDirs="">
+	<cfset var rs="">
 
 	<cfif len(variables.instance.displayPoolID)>
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes">
+		<cfset themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/themes">
+
+		<cfif directoryExists(themeDir)>
+			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
+
+			<cfquery name="rs" dbtype="query">
+
+			select * from rsDirs where type='Dir' and name not like '%.svn'
+
+			<cfif isQuery(rs)>
+				union
+
+				select * from rs
+			</cfif>
+			</cfquery>
+		</cfif>
+
+		<cfset themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/themes">
+
+		<cfif directoryExists(themeDir)>
+			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
+
+			<cfquery name="rs" dbtype="query">
+			select * from rsDirs where type='Dir' and name not like '%.svn'
+
+			<cfif isQuery(rs)>
+				union
+
+				select * from rs
+			</cfif>
+			</cfquery>
+		</cfif>
+
 	<cfelse>
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/default/includes/themes">
+		<cfset themeDir="#variables.configBean.getSiteDir()#/default/themes">
+
+		<cfif directoryExists(themeDir)>
+			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
+
+			<cfquery name="rs" dbtype="query">
+			select * from rsDirs where type='Dir' and name not like '%.svn'
+
+			<cfif isQuery(rs)>
+				union
+
+				select * from rs
+			</cfif>
+			</cfquery>
+		</cfif>
+
+		<cfset themeDir="#variables.configBean.getSiteDir()#/default/includes/themes">
+
+		<cfif directoryExists(themeDir)>
+			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
+
+			<cfquery name="rs" dbtype="query">
+			select * from rsDirs where type='Dir' and name not like '%.svn'
+
+			<cfif isQuery(rs)>
+				union
+
+				select * from rs
+			</cfif>
+			</cfquery>
+		</cfif>
 	</cfif>
 
-	<cfdirectory action="list" directory="#themeDir#" name="rs">
+	<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes">
 
-	<cfquery name="rs" dbtype="query">
-	select * from rs where type='Dir' and name not like '%.svn'
-	</cfquery>
+	<cfif directoryExists(themeDir)>
+		<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
+
+		<cfquery name="rs" dbtype="query">
+
+		select * from rsDirs where type='Dir' and name not like '%.svn'
+
+		<cfif isQuery(rs)>
+			union
+
+			select * from rs
+		</cfif>
+		</cfquery>
+	</cfif>
 
 	<cfreturn rs />
 </cffunction>
@@ -933,7 +1204,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getLocalHandler" output="false">
 	<cfset var localHandler="">
-	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/eventHandler.cfc")>
+		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.eventHandler").init()>
+		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.eventHandler")>
+	<cfelseif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
 		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init()>
 		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler")>
 	<cfelseif getValue('displaypoolid') neq getValue('siteid') and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('displaypoolid')#/includes/eventHandler.cfc")>
@@ -1407,7 +1681,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="registerContentTypeDirs" output="false">
 	<cfset var lookupArray=[
+		'/muraWRM/content_types',
 		getIncludePath()  & "/includes/content_types",
+		getIncludePath()  & "/content_types",
 		getThemeIncludePath(getValue('theme')) & "/content_types"
 	]>
 
@@ -1431,6 +1707,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getContentTypeLookupArray" output="false">
+	<cfreturn variables.instance.contentTypeLoopUpArray>
 </cffunction>
 
 <cffunction name="registerContentTypeDir" output="false">
@@ -1474,6 +1754,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <cfset registerContentTypeDir(dir='#arguments.dir#/#rs.name#/content_types')>
             </cfif>
 
+			<cfif directoryExists('#rs.directory#/#rs.name#/resource_bundles')>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resource_bundles',getJavaLocale()) />
+			</cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/resourceBundles')>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resourceBundles',getJavaLocale()) />
+			</cfif>
 		</cfloop>
 
 		<cfif not listFind('/,\',right(arguments.dir,1))>
@@ -1563,6 +1850,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <cfset registerContentTypeDir(dir='#arguments.dir#/#rs.name#/content_types')>
             </cfif>
 
+			<cfif directoryExists('#rs.directory#/#rs.name#/resource_bundles')>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resource_bundles',getJavaLocale()) />
+			</cfif>
+
+			<cfif directoryExists('#rs.directory#/#rs.name#/resourceBundles')>
+				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resourceBundles',getJavaLocale()) />
+			</cfif>
+
 		</cfloop>
 
 		<cfif objectfound>
@@ -1582,6 +1877,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="package" default="">
 	<cfargument name="custom" default="true">
     <cfreturn registerDisplayObjectDir(arguments=arguments)>
+</cffunction>
+
+<cffunction name="getDispayObjectLookupArray" output="false">
+	<cfreturn variables.instance.displayObjectLoopUpArray>
 </cffunction>
 
 <cffunction name="lookupDisplayObjectFilePath" output="false">
@@ -1649,11 +1948,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="discoverDisplayObjects" output="false">
 	<cfset var lookupArray=[
-		'/muraWRM/admin/core/views/carch/objectclass',
+		'/muraWRM/#variables.configBean.getAdminDir()#/core/views/carch/objectclass',
+		"/muraWRM/modules",
+		"/muraWRM/display_objects",
 		getIncludePath()  & "/includes/display_objects",
-		getIncludePath()  & "/includes/display_objects/custom",
-		getThemeIncludePath(getValue('theme')) & "/display_objects",
 		getIncludePath()  & "/includes/modules",
+		getIncludePath()  & "/includes/display_objects/custom",
+		getIncludePath()  & "/display_objects",
+		getIncludePath()  & "/modules",
+		getThemeIncludePath(getValue('theme')) & "/display_objects",
 		getThemeIncludePath(getValue('theme')) & "/modules"
 	]>
 
@@ -1664,8 +1967,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop array="#lookupArray#" index="dir">
 		<cfset dirIndex=dirIndex+1>
-		<cfset custom=dirIndex gt 2>
-		<cfset conditional=dirIndex gt 2>
+		<cfset custom=dirIndex gt 2 or listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir)>
+		<cfset conditional=dirIndex gt 2 or listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir)>
 		<cfset registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom)>
 	</cfloop>
 
@@ -1682,6 +1985,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rs">
 		<cfset registerDisplayObjectDir('/' & rs.package & '/display_objects',true)>
 		<cfset registerDisplayObjectDir('/' & rs.package & '/modules',true)>
+		<cfset registerContentTypeDir('/' & rs.package & '/content_types',true)>
 	</cfloop>
 
 	<cfreturn this>
@@ -1694,6 +1998,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="discoverBeans" output="false">
 	<cfset var lookups=[
 		'/muraWRM/#getValue('siteid')#/includes',
+		'/muraWRM/#getValue('siteid')#',
+		'/muraWRM/#getValue('siteid')#/themes/#getValue('theme')#',
 		'/muraWRM/#getValue('siteid')#/includes/themes/#getValue('theme')#'
 		]>
 	<cfset var i=1>

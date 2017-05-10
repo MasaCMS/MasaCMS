@@ -1,0 +1,43 @@
+version: '2.1'
+
+services:
+  #Mura Server
+  mura_demo_cfml:
+    build: .
+    environment:
+      PORT: 8080
+      SSL_PORT: 8443
+      CFENGINE: lucee@5
+      CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
+      MURA_ADMIN_USERNAME: admin
+      MURA_ADMIN_PASSWORD: admin
+      MURA_ADMINEMAIL: example@localhost.com
+      MURA_APPRELOADKEY: appreload
+      MURA_DATASOURCE: muradb
+      MURA_DATABASE: muradb
+      MURA_DBTYPE: mysql
+      MURA_DBUSERNAME: root
+      MURA_DBPASSWORD: NOT_SECURE_CHANGE
+      MURA_DBHOST: mura_demo_mysql
+      MURA_DBPORT: 3306
+      MURA_SITEIDINURLS: "false"
+      MURA_INDEXFILEINURLS: "false"
+      LUCEE_JAVA_OPTS: "-Xms512m -Xmx1024m"
+    volumes:
+        - ../../../:/app
+    ports:
+        - "8080:8080"
+
+  #MySQL
+  mura_demo_mysql:
+    image: mysql:latest
+    environment:
+        MYSQL_ROOT_PASSWORD: NOT_SECURE_CHANGE
+        MYSQL_DATABASE: muradb
+    volumes:
+        - mura_demo_mysql_data:/var/lib/mysql
+    ports:
+        - "55555:3306"
+
+volumes:
+    mura_demo_mysql_data:

@@ -1,4 +1,5 @@
-<!--- This file is part of Mura CMS.
+<cfscript>
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,131 +44,112 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfparam name="request.muraFrontEndRequest" default="false"/>
-<cfparam name="request.muraChangesetPreview" default="false"/>
-<cfparam name="request.muraChangesetPreviewToolbar" default="false"/>
-<cfparam name="request.muraExportHtml" default="false"/>
-<cfparam name="request.muraMobileRequest" default="false"/>
-<cfparam name="request.muraMobileTemplate" default="false"/>
-<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
-<cfparam name="request.altTHeme" default=""/>
-<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
-<cfparam name="request.muraTraceRoute" default="#arrayNew(1)#"/>
-<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
-<cfparam name="request.muraShowTrace" default="true"/>
-<cfparam name="request.muraValidateDomain" default="true"/>
-<cfparam name="request.muraAppreloaded" default="false"/>
-<cfparam name="request.muratransaction" default="0"/>
-<cfparam name="request.muraDynamicContentError" default="false">
-<cfparam name="request.muraPreviewDomain" default="">
-<cfparam name="request.muraOutputCacheOffset" default="">
-<cfparam name="request.muraCachingOutput" default="false">
-<cfparam name="request.muraMostRecentPluginModuleID" default="">
-<cfparam name="request.muraAPIRequest" default="false">
-<cfparam name="request.muraAdminRequest" default="false">
-<cfparam name="request.mura404" default="false">
-<cfparam name="request.returnFormat" default="html">
-<cfparam name="request.muraSessionManagement" default="true">
-<cfparam name="request.muraPointInTime" default="">
-<cfparam name="request.muraTemplateMissing" default="false">
+*/
+param name="request.muraFrontEndRequest" default=false;
+param name="request.muraChangesetPreview" default=false;
+param name="request.muraChangesetPreviewToolbar" default=false;
+param name="request.muraExportHtml" default=false;
+param name="request.muraMobileRequest" default=false;
+param name="request.muraMobileTemplate" default=false;
+param name="request.muraHandledEvents" default=structNew();
+param name="request.altTHeme" default="";
+param name="request.customMuraScopeKeys" default=structNew();
+param name="request.muraTraceRoute" default=arrayNew(1);
+param name="request.muraRequestStart" default=getTickCount();
+param name="request.muraShowTrace" default=true;
+param name="request.muraValidateDomain" default=true;
+param name="request.muraAppreloaded" default=false;
+param name="request.muratransaction" default=0;
+param name="request.muraDynamicContentError" default=false;
+param name="request.muraPreviewDomain" default="";
+param name="request.muraOutputCacheOffset" default="";
+param name="request.muraCachingOutput" default=false;
+param name="request.muraMostRecentPluginModuleID" default="" ;
+param name="request.muraAPIRequest" default=false;
+param name="request.muraAdminRequest" default=false;
+param name="request.mura404" default=false;
+param name="request.returnFormat" default="html";
+param name="request.muraSessionManagement" default=true;
+param name="request.muraPointInTime" default="";
+param name="request.muraTemplateMissing" default=false;
+param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 
-<cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
-<!--- Application name, should be unique --->
-<cfset this.name = "mura" & hash(getCurrentTemplatePath()) />
-<!--- How long application vars persist --->
-<cfset this.applicationTimeout = createTimeSpan(3,0,0,0)>
-<!--- Where should cflogin stuff persist --->
-<cfset this.loginStorage = "cookie">
-
-<cfset this.sessionManagement = not (left(cgi.path_info,11) eq '/_api/rest/')>
-
-<!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
-<cfset this.setClientCookies = true>
-
-<cfparam name="this.sessioncookies" default="#structNew()#">
-<cfset this.sessioncookies.disableupdate = false>
-
-<cfset this.searchImplicitScopes=false>
-
-<!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
-<cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
---->
-<!--- should we try to block 'bad' input from users --->
-<cfset this.scriptProtect = false>
-<!--- should we secure our JSON calls? --->
-<cfset this.secureJSON = false>
-<!--- Should we use a prefix in front of JSON strings? --->
-<cfset this.secureJSONPrefix = "">
-<!--- Used to help CF work with missing files and dir indexes --->
-<cfset this.welcomeFileList = "">
-<!--- Compile cfml in all cfincluded files --->
-<cfset this.compileextforinclude="*">
-
-<cfset baseDir= left(this.configPath,len(this.configPath)-8) />
-<cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
-	<cfset variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm")>
-	<cftry>
-	<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
-	<cfcatch>
-		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm">
-	</cfcatch>
-	</cftry>
-	<cfset commitTracePoint(variables.tracePoint)>
-</cfif>
-
-<cfset this.baseDir=baseDir>
-<cfset variables.baseDir=baseDir>
-
-<cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
-<cfset variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm">
-<cfset initINI(variables.iniPath)>
-<cfset variables.ini.settings.mode=evalSetting(variables.ini.settings.mode)>
-
-<cfset commitTracePoint(variables.tracePoint)>
-
-<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
-<!--- This is here for older mappings.cfm files --->
-<cfset mapPrefix="" />
-<cfset this.mapPrefix=mapPrefix>
-<cfset variables.mapPrefix=mapPrefix>
-
-<cfset this.mappings = structNew()>
-<cfset this.mappings["/plugins"] = variables.baseDir & "/plugins">
-<cfset this.mappings["/muraWRM"] = variables.baseDir>
-<cfset this.mappings["/savaWRM"] = variables.baseDir>
-<cfset this.mappings["/config"] = variables.baseDir & "/config">
-
-<cfset variables.context=evalSetting(getINIProperty("context",""))>
-
-<cftry>
-	<cfinclude template="#variables.context#/config/mappings.cfm">
-	<cfset hasMainMappings=true>
-	<cfcatch>
-		<cfset hasMainMappings=false>
-	</cfcatch>
-</cftry>
-
-<cftry>
-	<cfinclude template="#variables.context#/plugins/mappings.cfm">
-	<cfset hasPluginMappings=true>
-	<cfcatch>
-		<cfset hasPluginMappings=false>
-	</cfcatch>
-</cftry>
-
-<cfset this.mappings["/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect">
-<cfset this.mappings["/murawrm/tasks/widgets/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect">
-
-<cfset request.userAgent = LCase( CGI.http_user_agent ) />
-
-<cfif not this.sessionManagement>
-	<cfset request.muraSessionManagement=false>
-	<cfset request.trackSession=0>
-<cfelse>
-<!--- Should we even use sessions? --->
-<cfset request.trackSession = len(request.userAgent)
- and not (
+request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
+this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
+//  Application name, should be unique
+this.name = "mura" & hash(getCurrentTemplatePath());
+//  How long application vars persist
+this.applicationTimeout = createTimeSpan(3,0,0,0);
+//  Where should cflogin stuff persist
+this.loginStorage = "cookie";
+this.sessionManagement = !(left(cgi.path_info,11) == '/_api/rest/');
+//  We don't set client cookies here, because they are not set secure if required. We use setSessionCookies()
+this.setClientCookies = true;
+param name="this.sessioncookies" default=structNew();
+this.sessioncookies.disableupdate = false;
+this.searchImplicitScopes=false;
+/*  should cookies be domain specific, ie, *.foo.com or www.foo.com
+	this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
+*/
+//  should we try to block 'bad' input from users
+this.scriptProtect = false;
+//  should we secure our JSON calls?
+this.secureJSON = false;
+//  Should we use a prefix in front of JSON strings?
+this.secureJSONPrefix = "";
+//  Used to help CF work with missing files and dir indexes
+this.welcomeFileList = "";
+//  Compile cfml in all cfincluded files
+this.compileextforinclude="*";
+baseDir= left(this.configPath,len(this.configPath)-8);
+if ( !fileExists(baseDir & "/config/settings.ini.cfm") ) {
+	variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm");
+	fileCopy("#baseDir#/config/templates/settings.template.cfm","#baseDir#/config/settings.ini.cfm");
+	try {
+		fileSetAccessMode("#baseDir#/config/settings.ini.cfm","777");
+	} catch (any cfcatch) {}
+	commitTracePoint(variables.tracePoint);
+}
+this.baseDir=baseDir;
+variables.baseDir=baseDir;
+variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm");
+variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm";
+initINI(variables.iniPath);
+variables.ini.settings.mode=evalSetting(variables.ini.settings.mode);
+commitTracePoint(variables.tracePoint);
+//  define custom coldfusion mappings. Keys are mapping names, values are full paths
+//  This is here for older mappings.cfm files
+mapPrefix="";
+this.mapPrefix=mapPrefix;
+variables.mapPrefix=mapPrefix;
+this.mappings = structNew();
+this.mappings["/plugins"] = variables.baseDir & "/plugins";
+this.mappings["/muraWRM"] = variables.baseDir;
+this.mappings["/savaWRM"] = variables.baseDir;
+this.mappings["/config"] = variables.baseDir & "/config";
+variables.context=evalSetting(getINIProperty("context",""));
+try {
+	include "#variables.context#/config/mappings.cfm";
+	hasMainMappings=true;
+} catch (any cfcatch) {
+	hasMainMappings=false;
+}
+try {
+	include "#variables.context#/plugins/mappings.cfm";
+	hasPluginMappings=true;
+} catch (any cfcatch) {
+	hasPluginMappings=false;
+}
+this.mappings["/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect";
+this.mappings["/murawrm/tasks/widgets/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect";
+request.userAgent = LCase( CGI.http_user_agent );
+if ( !this.sessionManagement ) {
+	request.muraSessionManagement=false;
+	request.trackSession=0;
+} else {
+	//  Should we even use sessions?
+	request.trackSession = len(request.userAgent)
+ && !(
  REFind( "bot\b", request.userAgent ) OR
  Find( "_bot_", request.userAgent ) OR
  Find( "crawl", request.userAgent ) OR
@@ -200,21 +182,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  Find( "microsoft office protocol", request.userAgent ) OR
  Find( "railo", request.userAgent ) OR
  Find( "lucee", request.userAgent )
- )>
+ );
 
-<cfif request.tracksession>
-	<cfset checklist=evalSetting(getINIProperty("donottrackagents",""))>
-	<cfif len(checklist)>
-		<cfloop list="#checklist#" index="i">
-			<cfif FindNoCase( i, request.userAgent )>
-				<cfset request.tracksession=false>
-				<cfbreak>
-			</cfif>
-		</cfloop>
-	</cfif>
-</cfif>
+	if ( request.tracksession ) {
+		checklist=evalSetting(getINIProperty("donottrackagents",""));
+		if ( len(checklist) ) {
+			for(i in listToArray(checklist)){
+				if (FindNoCase( i, request.userAgent )){
+					request.tracksession=false;
+					break;
+				}
+			}
+		}
+	}
 
-<cfscript>
 	// How long do session vars persist?
 	if ( request.tracksession ) {
 		iniSessionTimeout = evalSetting(getINIProperty('sessionTimeout',180));
@@ -223,110 +204,153 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	} else {
 		this.sessionTimeout = CreateTimeSpan(0,0,0,2);
 	}
-</cfscript>
-</cfif>
+}
+this.timeout =  getINIProperty("requesttimeout","1000");
+//  define a list of custom tag paths.
+this.customtagpaths =  evalSetting(getINIProperty("customtagpaths",""));
+this.customtagpaths = listAppend(this.customtagpaths,variables.baseDir  &  "/requirements/mura/customtags/");
+this.clientManagement = evalSetting(getINIProperty("clientManagement","false"));
+variables.clientStorageCheck=evalSetting(getINIProperty("clientStorage",""));
+if ( len(variables.clientStorageCheck) ) {
+	this.clientStorage = variables.clientStorageCheck;
+}
+this.ormenabled =  evalSetting(getINIProperty("ormenabled","true"));
+this.ormSettings={};
+this.ormSettings.cfclocation=[];
+try {
+	include "#variables.context#/config/cfapplication.cfm";
+	request.hasCFApplicationCFM=true;
+} catch (any cfcatch) {
+	request.hasCFApplicationCFM=false;
+}
+if ( len(evalSetting(getINIProperty("cookiedomain",""))) ) {
+	this.setClientCookies=false;
+}
+if ( len(getINIProperty("datasource","")) ) {
+	//  You can't depend on 9 supporting datasource as struct
+	if ( listFirst(SERVER.COLDFUSION.PRODUCTVERSION) > 9
+		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) > 0 ) {
+		this.datasource = structNew();
+		this.datasource.name = evalSetting(getINIProperty("datasource",""));
+		dbUsername=evalSetting(getINIProperty("dbusername",""));
+		if ( len(dbUsername) ) {
+			this.datasource.username =dbUsername;
+		}
+		dbPassword=evalSetting(getINIProperty("dbpassword",""));
+		if ( len(dbPassword) ) {
+			this.datasource.password = dbPassword;
+		}
+	} else {
+		this.datasource = evalSetting(getINIProperty("datasource",""));
+	}
+} else {
+	this.ormenabled=false;
+}
+if ( this.ormenabled ) {
+	switch ( evalSetting(getINIProperty('dbtype','')) ) {
+		case  "mssql":
+			this.ormSettings.dialect = "MicrosoftSQLServer";
+			break;
+		case  "mysql":
+			this.ormSettings.dialect = "MySQL";
+			break;
+		case  "postgresql":
+			this.ormSettings.dialect = "PostgreSQL";
+			break;
+		case  "oracle":
+			this.ormSettings.dialect = "Oracle10g";
+			break;
+		case  "nuodb":
+			this.ormSettings.dialect = "nuodb";
+			break;
+	}
+	this.ormSettings.dbcreate =evalSetting(getINIProperty("ormdbcreate","update"));
+	if ( len(getINIProperty("ormcfclocation","")) ) {
+		arrayAppend(this.ormSettings.cfclocation,evalSetting(getINIProperty("ormcfclocation")));
+	}
+	if ( len(getINIProperty("ormdatasource","")) ) {
+		this.ormSettings.datasource = evalSetting(getINIProperty("ormdatasource",""));
+	}
+	this.ormSettings.flushAtRequestEnd = evalSetting(getINIProperty("ormflushAtRequestEnd","false"));
+	this.ormsettings.eventhandling = evalSetting(getINIProperty("ormeventhandling","true"));
+	this.ormSettings.automanageSession =evalSetting( getINIProperty("ormautomanageSession","false"));
+	this.ormSettings.savemapping= evalSetting(getINIProperty("ormsavemapping","false"));
+	this.ormSettings.skipCFCwitherror= evalSetting(getINIProperty("ormskipCFCwitherror","false"));
+	this.ormSettings.useDBforMapping= evalSetting(getINIProperty("ormuseDBforMapping","false"));
+	this.ormSettings.autogenmap= evalSetting(getINIProperty("ormautogenmap","true"));
+	this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false"));
+}
 
-<cfset this.timeout =  getINIProperty("requesttimeout","1000")>
+if(request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))){
+		if(server.coldfusion.productname == 'lucee'){
+			driverVarName='type';
 
-<!--- define a list of custom tag paths. --->
-<cfset this.customtagpaths =  evalSetting(getINIProperty("customtagpaths","")) />
-<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.baseDir  &  "/requirements/mura/customtags/")>
-<cfset this.clientManagement = evalSetting(getINIProperty("clientManagement","false")) />
+			switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
+				case 'mysql':
+					driverName='mysql';
+					break;
+				case 'mssql':
+					driverName='mssql';
+					break;
+				case 'oracle':
+					driverName='Oracle';
+					break;
+				case 'postgresql':
+					driverName='PostgreSQL';
+					break;
+			}
+		} else {
+			driverVarName='driver';
 
-<cfset variables.clientStorageCheck=evalSetting(getINIProperty("clientStorage",""))>
+			switch(getSystemEnvironmentSetting('MURA_DBTYPE')){
+				case 'mysql':
+					driverName='MySQL5';
+					break;
+				case 'mssql':
+					driverName='MSSQLServer';
+					break;
+				case 'oracle':
+					driverName='Oracle';
+					break;
+				case 'postgresql':
+					driverName='PostgreSQL';
+					break;
+			}
+		}
 
-<cfif len(variables.clientStorageCheck)>
-	<cfset this.clientStorage = variables.clientStorageCheck />
-</cfif>
+		this.datasources={
+			'#getSystemEnvironmentSetting('MURA_DATASOURCE')#' =  {
+						'#driverVarName#' = driverName
+					 , host = getSystemEnvironmentSetting('MURA_DBHOST')
+					 , database = getSystemEnvironmentSetting('MURA_DATABASE')
+					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
+					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				},
+				nodatabase=  {
+						'#driverVarName#' = driverName
+					 , host = getSystemEnvironmentSetting('MURA_DBHOST')
+					 , database = ''
+					 , port = getSystemEnvironmentSetting('MURA_DBPORT')
+					 , username = getSystemEnvironmentSetting('MURA_DBUSERNAME')
+					 , password = getSystemEnvironmentSetting('MURA_DBPASSWORD')
+				}
+		};
 
-<cfset this.ormenabled =  evalSetting(getINIProperty("ormenabled","true")) />
-<cfset this.ormSettings={}>
-<cfset this.ormSettings.cfclocation=[]>
 
-<cftry>
-	<cfinclude template="#variables.context#/config/cfapplication.cfm">
-	<cfset request.hasCFApplicationCFM=true>
-	<cfcatch>
-		<cfset request.hasCFApplicationCFM=false>
-	</cfcatch>
-</cftry>
+	}
+try {
+	include "#variables.context#/plugins/cfapplication.cfm";
+	hasPluginCFApplication=true;
+} catch (any cfcatch) {
+	hasPluginCFApplication=false;
+}
+if ( !(isSimpleValue(this.ormSettings.cfclocation) && len(this.ormSettings.cfclocation))
+	and !(isArray(this.ormSettings.cfclocation) && arrayLen(this.ormSettings.cfclocation)) ) {
+	this.ormenabled=false;
+}
 
-<cfif len(evalSetting(getINIProperty("cookiedomain","")))>
-	<cfset this.setClientCookies=false>
-</cfif>
-
-<cfif len(getINIProperty("datasource",""))>
-
-	<!--- You can't depend on 9 supporting datasource as struct --->
-	<cfif listFirst(SERVER.COLDFUSION.PRODUCTVERSION) gt 9
-		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) gt 0>
-		<cfset this.datasource = structNew()>
-		<cfset this.datasource.name = evalSetting(getINIProperty("datasource","")) />
-		<cfset dbUsername=evalSetting(getINIProperty("dbusername",""))>
-		<cfif len(dbUsername)>
-			<cfset this.datasource.username =dbUsername>
-		</cfif>
-		<cfset dbPassword=evalSetting(getINIProperty("dbpassword",""))>
-		<cfif len(dbPassword)>
-			<cfset this.datasource.password = dbPassword>
-		</cfif>
-	<cfelse>
-		<cfset this.datasource = evalSetting(getINIProperty("datasource","")) >
-	</cfif>
-<cfelse>
-	<cfset this.ormenabled=false>
-</cfif>
-
-<cfif this.ormenabled>
-	<cfswitch expression="#evalSetting(getINIProperty('dbtype',''))#">
-		<cfcase value="mssql">
-			<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
-		</cfcase>
-		<cfcase value="mysql">
-			<cfset this.ormSettings.dialect = "MySQL" />
-		</cfcase>
-		<cfcase value="postgresql">
-			<cfset this.ormSettings.dialect = "PostgreSQL" />
-		</cfcase>
-		<cfcase value="oracle">
-			<cfset this.ormSettings.dialect = "Oracle10g" />
-		</cfcase>
-		<cfcase value="nuodb">
-			<cfset this.ormSettings.dialect = "nuodb" />
-		</cfcase>
-	</cfswitch>
-	<cfset this.ormSettings.dbcreate =evalSetting(getINIProperty("ormdbcreate","update")) />
-	<cfif len(getINIProperty("ormcfclocation",""))>
-		<cfset arrayAppend(this.ormSettings.cfclocation,evalSetting(getINIProperty("ormcfclocation"))) />
-	</cfif>
-	<cfif len(getINIProperty("ormdatasource",""))>
-			<cfset this.ormSettings.datasource = evalSetting(getINIProperty("ormdatasource","")) />
-	</cfif>
-	<cfset this.ormSettings.flushAtRequestEnd = evalSetting(getINIProperty("ormflushAtRequestEnd","false")) />
-	<cfset this.ormsettings.eventhandling = evalSetting(getINIProperty("ormeventhandling","true")) />
-	<cfset this.ormSettings.automanageSession =evalSetting( getINIProperty("ormautomanageSession","false")) />
-	<cfset this.ormSettings.savemapping= evalSetting(getINIProperty("ormsavemapping","false")) />
-	<cfset this.ormSettings.skipCFCwitherror= evalSetting(getINIProperty("ormskipCFCwitherror","false")) />
-	<cfset this.ormSettings.useDBforMapping= evalSetting(getINIProperty("ormuseDBforMapping","false")) />
-	<cfset this.ormSettings.autogenmap= evalSetting(getINIProperty("ormautogenmap","true")) />
-	<cfset this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false")) />
-</cfif>
-
-<cftry>
-	<cfinclude template="#variables.context#/plugins/cfapplication.cfm">
-	<cfset hasPluginCFApplication=true>
-	<cfcatch>
-		<cfset hasPluginCFApplication=false>
-	</cfcatch>
-</cftry>
-
-<cfif not (isSimpleValue(this.ormSettings.cfclocation) and len(this.ormSettings.cfclocation))
-	and not (isArray(this.ormSettings.cfclocation) and arrayLen(this.ormSettings.cfclocation))>
-	<cfset this.ormenabled=false>
-</cfif>
-
-<cfscript>
-	//This is use to interact with Lucee admin settings.s
+//This is use to interact with Lucee admin settings.s
 	this.webadminpassword=evalSetting(getINIProperty('webadminpassword',''));
 
 	// if true, CF converts form fields as an array instead of a list (not recommended)
@@ -354,134 +378,133 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	} catch(any e) {
 		// not supported
 	}
+
+function initINI(required string iniPath) output=false {
+	var file = "";
+	var line = "";
+	var currentSection = "";
+	var entry = "";
+	var value = "";
+	variables.iniPath = arguments.iniPath;
+	variables.ini = structNew();
+	file=fileRead(variables.iniPath);
+
+	for(line in listToArray(file,"#chr(10)##chr(13)#")){
+		line=trim(line);
+
+		if (NOT ( startsWith( line, ";" ) OR startsWith( line, "##" ) OR startsWith( line, "<" ) )){
+			if (startsWith( line, "[" ) AND find( "]", line, 2 ) GT 2){
+				currentSection = mid( line, 2, find( "]", line, 2 ) - 2 );
+				setINISection( currentSection );
+			} else if (find( "=", line ) GT 1 AND len( currentSection )){
+				entry = trim( listFirst( line, "=" ) );
+				value = "";
+				if (listLen( line, "=" ) GT 1){
+					value = trim( listRest( line, "=" ) );
+				}
+				setINIProperty(entry, value , currentSection);
+			}
+		}
+	}
+
+	return variables.ini;
+}
+
+/**
+	 * Returns a struct with section names and values set to list of section entry names. This behaves much like the CF built-in function getProfileSections().
+	 */
+	struct function getINISections() output=false {
+	var sections = structNew();
+	var sectionName = "";
+
+	for(sectionName in ListToArray(structKeyList( variables.ini ))){
+		sections[ sectionName ] = structKeyList( variables.ini[ sectionName ] );
+	}
+
+	return sections;
+}
+
+function evalSetting(value) output=false {
+	if ( left(arguments.value,2) == "${"
+		and right(arguments.value,1) == "}" ) {
+		arguments.value=mid(arguments.value,3,len(arguments.value)-3);
+		return evaluate(arguments.value);
+	} else if ( left(arguments.value,2) == "{{"
+		and right(arguments.value,2) == "}}" ) {
+		arguments.value=mid(arguments.value,3,len(arguments.value)-4);
+		return evaluate(arguments.value);
+	} else {
+		return arguments.value;
+	}
+}
+
+function setINIProperty(required string entry, any value="", required string section="#variables.ini.settings.mode#") output=false {
+	setINISection( arguments.section );
+	variables.ini[ arguments.section ][ arguments.entry ] =  arguments.value;
+	return this;
+}
+
+/**
+	 * Get all INI data (no arguments); a section's data, as a struct (one argument, section name); or an entry's value (section and entry name arguments). Optionally pass a third argument to set/get a default value if requested entry doesn't exist.
+	 */
+	function getINIProperty(string entry, string defaultValue, string section="#variables.ini.settings.mode#") output=false {
+	var envVar='MURA_#UCASE(arguments.entry)#';
+	if ( structKeyExists(request.muraSysEnv,'#envVar#') ) {
+		return request.muraSysEnv['#envVar#'];
+	} else {
+		if ( !structKeyExists( arguments, "entry" ) ) {
+			return variables.ini[ arguments.section ];
+		}
+
+		if ( structKeyExists( variables.ini[ arguments.section ], arguments.entry ) ) {
+			return variables.ini[ arguments.section ][ arguments.entry ];
+		} else if ( ( structKeyExists( arguments, "defaultValue" ) ) ) {
+			setINIProperty(arguments.entry, arguments.defaultValue ,arguments.section);
+			return arguments.defaultValue;
+		} else {
+			return "";
+		}
+	}
+}
+
+void function setINISection(required string section) output=false {
+	if ( !structKeyExists( variables.ini, arguments.section ) ) {
+		variables.ini[ arguments.section ] = structNew();
+	}
+}
+
+private boolean function startsWith(required string str, required string char) output=false {
+	return left( arguments.str, 1 ) == arguments.char;
+}
+
+function initTracePoint(detail) output=false {
+	var tracePoint=structNew();
+	if ( !request.muraShowTrace ) {
+		return 0;
+	}
+	tracePoint.detail=arguments.detail;
+	tracePoint.start=getTickCount();
+	arrayAppend(request.muraTraceRoute,tracePoint);
+	return arrayLen(request.muraTraceRoute);
+}
+
+function commitTracePoint(tracePointID) output=false {
+	var tracePoint="";
+	if ( arguments.tracePointID ) {
+		tracePoint=request.muraTraceRoute[arguments.tracePointID];
+		tracePoint.stop=getTickCount();
+		tracePoint.duration=tracePoint.stop-tracePoint.start;
+		tracePoint.total=tracePoint.stop-request.muraRequestStart;
+	}
+}
+
+function getSystemEnvironmentSetting(required string name){
+   var setting = '';
+
+   if (structKeyExists(request.muraSysEnv, name)) {
+	   setting = request.muraSysEnv[name];
+   }
+
+   return setting;
+}
 </cfscript>
-
-<cffunction name="initINI" output="false">
-	<cfargument name="iniPath" type="string" required="true" hint="Mapped Path to an ini file." />
-
-	<cfset var file = "" />
-	<cfset var line = "" />
-	<cfset var currentSection = "" />
-	<cfset var entry = "" />
-	<cfset var value = "" />
-
-
-	<cfset variables.iniPath = arguments.iniPath />
-	<cfset variables.ini = structNew() />
-
-	<cffile variable="file" action="read" file="#variables.iniPath#"  />
-
-	<cfloop list="#file#" index="line" delimiters="#chr(10)##chr(13)#">
-		<cfset line = trim( line ) />
-		<cfif NOT ( startsWith( line, ";" ) OR startsWith( line, "##" ) OR startsWith( line, "<" ) )>
-			<cfif startsWith( line, "[" ) AND find( "]", line, 2 ) GT 2>
-				<cfset currentSection = mid( line, 2, find( "]", line, 2 ) - 2 ) />
-				<cfset setINISection( currentSection ) />
-			<cfelseif find( "=", line ) GT 1 AND len( currentSection )>
-				<cfset entry = trim( listFirst( line, "=" ) ) />
-				<cfset value = "" />
-				<cfif listLen( line, "=" ) GT 1>
-					<cfset value = trim( listRest( line, "=" ) ) />
-				</cfif>
-				<cfset setINIProperty(entry, value , currentSection) />
-			</cfif>
-		</cfif>
-	</cfloop>
-
-	<cfreturn variables.ini />
-</cffunction>
-
-<cffunction name="getINISections" returntype="struct" output="false" hint="Returns a struct with section names and values set to list of section entry names. This behaves much like the CF built-in function getProfileSections().">
-	<cfset var sections = structNew() />
-	<cfset var sectionName = "" />
-
-	<cfloop list="#structKeyList( variables.ini )#" index="sectionName">
-		<cfset sections[ sectionName ] = structKeyList( variables.ini[ sectionName ] ) />
-	</cfloop>
-
-	<cfreturn sections />
-</cffunction>
-
-<cffunction name="evalSetting" output="false">
-	<cfargument name="value">
-	<cfif left(arguments.value,2) eq "${"
-		and right(arguments.value,1) eq "}">
-		<cfset arguments.value=mid(arguments.value,3,len(arguments.value)-3)>
-		<cfreturn evaluate(arguments.value)>
-	<cfelseif left(arguments.value,2) eq "{{"
-		and right(arguments.value,2) eq "}}">
-		<cfset arguments.value=mid(arguments.value,3,len(arguments.value)-4)>
-		<cfreturn evaluate(arguments.value)>
-	<cfelse>
-		<cfreturn arguments.value>
-	</cfif>
-</cffunction>
-
-<cffunction name="setINIProperty" output="false">
-	<cfargument name="entry" type="string" required="true" hint="Entry name." />
-	<cfargument name="value" type="any" required="false" default="" hint="Property value" />
-	<cfargument name="section" type="string" required="true" hint="Section name." default="#variables.ini.settings.mode#"/>
-
-	<cfset setINISection( arguments.section ) />
-
-	<cfset variables.ini[ arguments.section ][ arguments.entry ] =  arguments.value />
-
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="getINIProperty" output="false" hint="Get all INI data (no arguments); a section's data, as a struct (one argument, section name); or an entry's value (section and entry name arguments). Optionally pass a third argument to set/get a default value if requested entry doesn't exist.">
-	<cfargument name="entry" type="string" required="false" hint="Entry name." />
-	<cfargument name="default" type="string" required="false" />
-	<cfargument name="section" type="string" required="false" hint="Section name." default="#variables.ini.settings.mode#"/>
-
-	<cfif NOT structKeyExists( arguments, "entry" )>
-		<cfreturn variables.ini[ arguments.section ] />
-	</cfif>
-
-	<cfif structKeyExists( variables.ini[ arguments.section ], arguments.entry )>
-		<cfreturn variables.ini[ arguments.section ][ arguments.entry ] />
-	<cfelseif ( structKeyExists( arguments, "default" ) )>
-		<cfset setINIProperty(arguments.entry, arguments.default ,arguments.section) />
-		<cfreturn arguments.default />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
-</cffunction>
-
-<cffunction name="setINISection" returntype="void" output="false">
-	<cfargument name="section" type="string" required="true" hint="Section name." />
-
-	<cfif NOT structKeyExists( variables.ini, arguments.section )>
-		<cfset variables.ini[ arguments.section ] = structNew() />
-	</cfif>
-</cffunction>
-
-<cffunction name="startsWith" returntype="boolean" access="private" output="false">
-	<cfargument name="str" type="string" required="true" hint="String to check." />
-	<cfargument name="char" type="string" required="true" hint="Character to check for." />
-
-	<cfreturn left( arguments.str, 1 ) EQ arguments.char />
-</cffunction>
-
-<cffunction name="initTracePoint" output="false">
-	<cfargument name="detail">
-	<cfset var tracePoint=structNew()>
-	<cfif not request.muraShowTrace>
-		<cfreturn 0>
-	</cfif>
-	<cfset tracePoint.detail=arguments.detail>
-	<cfset tracePoint.start=getTickCount()>
-	<cfset arrayAppend(request.muraTraceRoute,tracePoint)>
-	<cfreturn arrayLen(request.muraTraceRoute)>
-</cffunction>
-
-<cffunction name="commitTracePoint" output="false">
-	<cfargument name="tracePointID">
-	<cfset var tracePoint="">
-	<cfif arguments.tracePointID>
-		<cfset tracePoint=request.muraTraceRoute[arguments.tracePointID]>
-		<cfset tracePoint.stop=getTickCount()>
-		<cfset tracePoint.duration=tracePoint.stop-tracePoint.start>
-		<cfset tracePoint.total=tracePoint.stop-request.muraRequestStart>
-	</cfif>
-</cffunction>

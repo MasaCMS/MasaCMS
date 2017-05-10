@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,512 +43,457 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" output="false" hint="This provides content feed bean functionality">
+*/
+/**
+ * This provides content feed bean functionality
+ */
+component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" output="false" hint="This provides content feed bean functionality" {
+	property name="feedID" fieldtype="id" type="string" default="";
+	property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";
+	property name="dateCreated" type="date" default="";
+	property name="lastUpdate" type="date" default="";
+	property name="lastUpdateBy" type="string" default="";
+	property name="name" type="string" default="";
+	property name="altName" type="string" default="";
+	property name="lang" type="string" default="en-us" required="true";
+	property name="isActive" type="numeric" default="1" required="true";
+	property name="showNavOnly" type="numeric" default="1" required="true";
+	property name="showExcludeSearch" type="numeric" default="0" required="true";
+	property name="isPublic" type="numeric" default="0" required="true";
+	property name="isDefault" type="numeric" default="0" required="true";
+	property name="description" type="string" default="";
+	property name="contentID" type="string" default="";
+	property name="categoryID" type="string" default="";
+	property name="maxItems" type="numeric" default="20" required="true";
+	property name="allowHTML" type="numeric" default="1" required="true";
+	property name="isFeaturesOnly" type="numeric" default="0" required="true" hint="either,architecture,category";
+	property name="featureType" type="string" default="either";
+	property name="restricted" type="numeric" default="0" required="true";
+	property name="restrictGroups" type="string" default="";
+	property name="version" type="string" default="RSS 2.0" required="true";
+	property name="channelLink" type="string" default="";
+	property name="authtype" type="string" default="DEFAULT";
+	property name="type" type="string" default="local" required="true";
+	property name="sortBy" type="string" default="lastUpdate" required="false";
+	property name="sortDirection" type="string" default="desc" required="true";
+	property name="parentID" type="string" default="";
+	property name="nextN" type="numeric" default="20" required="true";
+	property name="displayName" type="numeric" default="0" required="true";
+	property name="displayRatings" type="numeric" default="0" required="true";
+	property name="displayComments" type="numeric" default="0" required="true";
+	property name="displayKids" type="numeric" default="0" required="true";
+	property name="isNew" type="numeric" default="0" required="true" persistent="false";
+	property name="params" type="query" default="" persistent="false";
+	property name="remoteID" type="string" default="";
+	property name="remoteSourceURL" type="string" default="";
+	property name="remotePubDAte" type="string" default="";
+	property name="imageSize" type="string" default="small" required="true";
+	property name="imageHeight" type="string" default="AUTO" required="true";
+	property name="imageWidth" type="string" default="AUTO" required="true";
+	property name="displayList" type="string" default="Title,Date,Image,Summary,Tags,Credits" required="true";
+	property name="liveOnly" type="numeric" default="1" required="true";
+	property name="entityName" type="string" default="content";
+	property name="viewalllabel" type="string" default="";
+	property name="viewalllink" type="string" default="View All";
+	property name="autoimport" type="numeric" default="0" required="true";
+	property name="isLocked" type="numeric" default="0" required="true";
+	property name="cssClass" type="string" default="";
+	property name="useCategoryIntersect" type="numeric" default="0";
+	property name="altTable" type="string" default="";
+	property name="contentpoolid" type="string" default="";
+	property name="includeHomePage" type="numeric" default="0";
+	variables.primaryKey = 'feedid';
+	variables.entityName = 'feed';
 
-<cfproperty name="feedID" fieldtype="id" type="string" default="" />
-<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
-<cfproperty name="dateCreated" type="date" default=""/>
-<cfproperty name="lastUpdate" type="date" default=""/>
-<cfproperty name="lastUpdateBy" type="string" default=""/>
-<cfproperty name="name" type="string" default=""/>
-<cfproperty name="altName" type="string" default=""/>
-<cfproperty name="lang" type="string" default="en-us" required="true" />
-<cfproperty name="isActive" type="numeric" default="1" required="true" />
-<cfproperty name="showNavOnly" type="numeric" default="1" required="true" />
-<cfproperty name="showExcludeSearch" type="numeric" default="0" required="true" />
-<cfproperty name="isPublic" type="numeric" default="0" required="true" />
-<cfproperty name="isDefault" type="numeric" default="0" required="true" />
-<cfproperty name="description" type="string" default=""/>
-<cfproperty name="contentID" type="string" default=""/>
-<cfproperty name="categoryID" type="string" default=""/>
-<cfproperty name="maxItems" type="numeric" default="20" required="true" />
-<cfproperty name="allowHTML" type="numeric" default="1" required="true" />
-<cfproperty name="isFeaturesOnly" type="numeric" default="0" required="true" hint="either,architecture,category"/>
-<cfproperty name="featureType" type="string" default="either"/>
-<cfproperty name="restricted" type="numeric" default="0" required="true" />
-<cfproperty name="restrictGroups" type="string" default=""/>
-<cfproperty name="version" type="string" default="RSS 2.0" required="true" />
-<cfproperty name="channelLink" type="string" default=""/>
-<cfproperty name="authtype" type="string" default="DEFAULT"/>
-<cfproperty name="type" type="string" default="local" required="true" />
-<cfproperty name="sortBy" type="string" default="lastUpdate" required="false" />
-<cfproperty name="sortDirection" type="string" default="desc" required="true" />
-<cfproperty name="parentID" type="string" default=""/>
-<cfproperty name="nextN" type="numeric" default="20" required="true" />
-<cfproperty name="displayName" type="numeric" default="0" required="true" />
-<cfproperty name="displayRatings" type="numeric" default="0" required="true" />
-<cfproperty name="displayComments" type="numeric" default="0" required="true" />
-<cfproperty name="displayKids" type="numeric" default="0" required="true" />
-<cfproperty name="isNew" type="numeric" default="0" required="true" persistent="false"/>
-<cfproperty name="params" type="query" default="" persistent="false"/>
-<cfproperty name="remoteID" type="string" default=""/>
-<cfproperty name="remoteSourceURL" type="string" default=""/>
-<cfproperty name="remotePubDAte" type="string" default="" />
-<cfproperty name="imageSize" type="string" default="small" required="true" />
-<cfproperty name="imageHeight" type="string" default="AUTO" required="true" />
-<cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
-<cfproperty name="displayList" type="string" default="Title,Date,Image,Summary,Tags,Credits" required="true" />
-<cfproperty name="liveOnly" type="numeric" default="1" required="true" />
-<cfproperty name="entityName" type="string" default="content" />
-<cfproperty name="viewalllabel" type="string" default="" />
-<cfproperty name="viewalllink" type="string" default="View All" />
-<cfproperty name="autoimport" type="numeric" default="0" required="true" />
-<cfproperty name="isLocked" type="numeric" default="0" required="true" />
-<cfproperty name="cssClass" type="string" default="" />
-<cfproperty name="useCategoryIntersect" type="numeric" default="0" />
-<cfproperty name="altTable" type="string" default=""/>
-<cfproperty name="contentpoolid" type="string" default=""/>
-<cfproperty name="includeHomePage" type="numeric" default="0"/>
+	public function init() output=false {
+		super.init(argumentCollection=arguments);
+		variables.instance.feedID="";
+		variables.instance.siteID="";
+		variables.instance.dateCreated="#now()#";
+		variables.instance.lastUpdate="#now()#";
+		variables.instance.lastUpdateBy="";
+		variables.instance.name="";
+		variables.instance.altName="";
+		variables.instance.Lang="en-us";
+		variables.instance.isActive=1;
+		variables.instance.showNavOnly=1;
+		variables.instance.showExcludeSearch=0;
+		variables.instance.isPublic=0;
+		variables.instance.isDefault=0;
+		variables.instance.description="";
+		variables.instance.contentID="";
+		variables.instance.categoryID="";
+		variables.instance.MaxItems=20;
+		variables.instance.allowHTML=1;
+		variables.instance.isFeaturesOnly=0;
+		variables.instance.featureType='either';
+		variables.instance.restricted=0;
+		variables.instance.restrictGroups="";
+		variables.instance.Version="RSS 2.0";
+		variables.instance.ChannelLink="";
+		variables.instance.authtype="DEFAULT";
+		variables.instance.type="local";
+		variables.instance.sortBy="lastUpdate";
+		variables.instance.sortDirection="desc";
+		variables.instance.parentID="";
+		variables.instance.nextN=20;
+		variables.instance.displayName=0;
+		variables.instance.displayRatings=0;
+		variables.instance.displayComments=0;
+		variables.instance.displaySummaries=1;
+		variables.instance.displayKids=0;
+		variables.instance.isNew=1;
+		variables.instance.params=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" );
+		variables.instance.errors=structnew();
+		variables.instance.remoteID = "";
+		variables.instance.remoteSourceURL = "";
+		variables.instance.remotePubDate = "";
+		variables.instance.imageSize="small";
+		variables.instance.imageHeight="AUTO";
+		variables.instance.imageWidth="AUTO";
+		variables.instance.displayList="Date,Title,Image,Summary,Credits,Tags";
+		variables.instance.liveOnly=1;
+		variables.instance.activeOnly=1;
+		variables.instance.entityName="content";
+		variables.instance.table="tcontent";
+		variables.instance.viewalllink="";
+		variables.instance.viewalllabel="";
+		variables.instance.autoimport=0;
+		variables.instance.isLocked=0;
+		variables.instance.cssClass="";
+		variables.instance.useCategoryIntersect=0;
+		variables.instance.altTable="";
+		variables.instance.contentpoolid="";
+		variables.instance.fieldAliases={'tag'={field='tcontenttags.tag',datatype='varchar'},'taggroup'={field='tcontenttags.taggroup',datatype='varchar'}};
+		variables.instance.cachedWithin=createTimeSpan(0,0,0,0);
+		variables.instance.includeHomePage=0;
+		return this;
+	}
 
-<cfset variables.primaryKey = 'feedid'>
-<cfset variables.entityName = 'feed'>
+	public function setFeedManager(feedManager) {
+		variables.feedManager=arguments.feedManager;
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
+	public function set(required property, propertyValue) output=false {
+		if ( !isDefined('arguments.feed') ) {
+			if ( isSimpleValue(arguments.property) ) {
+				return setValue(argumentCollection=arguments);
+			}
+			arguments.feed=arguments.property;
+		}
+		var prop="";
+		if ( isQuery(arguments.feed) && arguments.feed.recordcount ) {
 
-	<cfset variables.instance.feedID=""/>
-	<cfset variables.instance.siteID=""/>
-	<cfset variables.instance.dateCreated="#now()#"/>
-	<cfset variables.instance.lastUpdate="#now()#"/>
-	<cfset variables.instance.lastUpdateBy=""/>
-	<cfset variables.instance.name=""/>
-	<cfset variables.instance.altName=""/>
-	<cfset variables.instance.Lang="en-us"/>
-	<cfset variables.instance.isActive=1 />
-	<cfset variables.instance.showNavOnly=1 />
-	<cfset variables.instance.showExcludeSearch=0 />
-	<cfset variables.instance.isPublic=0 />
-	<cfset variables.instance.isDefault=0 />
-	<cfset variables.instance.description=""/>
-	<cfset variables.instance.contentID=""/>
-	<cfset variables.instance.categoryID=""/>
-	<cfset variables.instance.MaxItems=20 />
-	<cfset variables.instance.allowHTML=1 />
-	<cfset variables.instance.isFeaturesOnly=0 />
-	<cfset variables.instance.featureType='either' />
-	<cfset variables.instance.restricted=0 />
-	<cfset variables.instance.restrictGroups="" />
-	<cfset variables.instance.Version="RSS 2.0" />
-	<cfset variables.instance.ChannelLink="" />
-	<cfset variables.instance.authtype="DEFAULT" />
-	<cfset variables.instance.type="local" />
-	<cfset variables.instance.sortBy="lastUpdate" />
-	<cfset variables.instance.sortDirection="desc" />
-	<cfset variables.instance.parentID="" />
-	<cfset variables.instance.nextN=20 />
-	<cfset variables.instance.displayName=0 />
-	<cfset variables.instance.displayRatings=0 />
-	<cfset variables.instance.displayComments=0 />
-	<cfset variables.instance.displaySummaries=1 />
-	<cfset variables.instance.displayKids=0 />
-	<cfset variables.instance.isNew=1 />
-	<cfset variables.instance.params=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
-	<cfset variables.instance.errors=structnew() />
-	<cfset variables.instance.remoteID = "" />
-	<cfset variables.instance.remoteSourceURL = "" />
-	<cfset variables.instance.remotePubDate = "">
-	<cfset variables.instance.imageSize="small" />
-	<cfset variables.instance.imageHeight="AUTO" />
-	<cfset variables.instance.imageWidth="AUTO" />
-	<cfset variables.instance.displayList="Date,Title,Image,Summary,Credits,Tags" />
-	<cfset variables.instance.liveOnly=1 />
-	<cfset variables.instance.activeOnly=1 />
-	<cfset variables.instance.entityName="content" />
-	<cfset variables.instance.table="tcontent">
-	<cfset variables.instance.viewalllink="" />
-	<cfset variables.instance.viewalllabel="" />
-	<cfset variables.instance.autoimport=0 />
-	<cfset variables.instance.isLocked=0 />
-	<cfset variables.instance.cssClass="" />
-	<cfset variables.instance.useCategoryIntersect=0 />
-	<cfset variables.instance.altTable="" />
-	<cfset variables.instance.contentpoolid="" />
-	<cfset variables.instance.fieldAliases={'tag'={field='tcontenttags.tag',datatype='varchar'},'taggroup'={field='tcontenttags.taggroup',datatype='varchar'}}/>
-	<cfset variables.instance.cachedWithin=createTimeSpan(0,0,0,0)/>
-	<cfset variables.instance.includeHomePage=0 />
+			/* toScript ERROR: Unimplemented cfloop condition
 
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="setFeedManager">
-	<cfargument name="feedManager">
-	<cfset variables.feedManager=arguments.feedManager>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="set" output="false">
-	<cfargument name="property" required="true">
-    <cfargument name="propertyValue">
-
-    <cfif not isDefined('arguments.feed')>
-	    <cfif isSimpleValue(arguments.property)>
-	      <cfreturn setValue(argumentCollection=arguments)>
-	    </cfif>
-
-	    <cfset arguments.feed=arguments.property>
-    </cfif>
-
-	<cfset var prop=""/>
-
-	<cfif isQuery(arguments.feed) and arguments.feed.recordcount>
-		<cfloop list="#arguments.feed.columnlist#" index="prop">
+						<cfloop list="#arguments.feed.columnlist#" index="prop">
 			<cfset setValue(prop,arguments.feed[prop][1]) />
 		</cfloop>
 
-	<cfelseif isStruct(arguments.feed)>
+			*/
 
-		<cfloop collection="#arguments.feed#" item="prop">
-			<cfset setValue(prop,arguments.feed[prop]) />
-		</cfloop>
+		} else if ( isStruct(arguments.feed) ) {
+			for ( prop in arguments.feed ) {
+				setValue(prop,arguments.feed[prop]);
+			}
+			setAdvancedParams(arguments.feed);
+		}
+		return this;
+	}
 
-		<cfset setAdvancedParams(arguments.feed) />
-	</cfif>
+	public function type(String type) output=false {
+		variables.instance.type = arguments.type;
+		return this;
+	}
 
-	<cfreturn this />
-</cffunction>
+	public function setDateCreated(String dateCreated) output=false {
+		variables.instance.dateCreated = parseDateArg(arguments.dateCreated);
+		return this;
+	}
 
-<cffunction name="type" output="false">
-	<cfargument name="type" type="String" />
-	<cfset variables.instance.type = arguments.type />
-	<cfreturn this>
-</cffunction>
+	public function setLastUpdate(String lastUpdate) output=false {
+		variables.instance.lastUpdate = parseDateArg(arguments.lastUpdate);
+		return this;
+	}
 
-<cffunction name="setDateCreated" output="false">
-	<cfargument name="dateCreated" type="String" />
-	<cfset variables.instance.dateCreated = parseDateArg(arguments.dateCreated) />
-	<cfreturn this>
-</cffunction>
+	public function setContentID(String contentID, required boolean append="false") output=false {
+		var i="";
+		if ( !arguments.append ) {
+			variables.instance.contentID = trim(arguments.contentID);
+		} else {
 
-<cffunction name="setLastUpdate" output="false">
-	<cfargument name="lastUpdate" type="String" />
-	<cfset variables.instance.lastUpdate = parseDateArg(arguments.lastUpdate) />
-	<cfreturn this>
-</cffunction>
+			/* toScript ERROR: Unimplemented cfloop condition
 
-<cffunction name="setContentID" output="false">
-	<cfargument name="contentID" type="String" />
-	<cfargument name="append" type="boolean" default="false" required="true" />
-	<cfset var i="">
-
-	<cfif not arguments.append>
-		<cfset variables.instance.contentID = trim(arguments.contentID) />
-	<cfelse>
-		<cfloop list="#arguments.contentID#" index="i">
+						<cfloop list="#arguments.contentID#" index="i">
 		<cfif not listFindNoCase(variables.instance.contentID,trim(i))>
 	    	<cfset variables.instance.contentID = listAppend(variables.instance.contentID,trim(i)) />
 	    </cfif>
 	    </cfloop>
-	</cfif>
-	<cfreturn this>
-</cffunction>
 
-<cffunction name="removeContentID" output="false">
-	<cfargument name="contentID" type="String" />
-	<cfset var i=0>
-	<cfset var offset=0>
+			*/
 
-	<cfif len(arguments.contentID)>
-		<cfloop from="1" to="#listLen(arguments.contentID)#" index="i">
-		<cfif listFindNoCase(variables.instance.contentID,listGetAt(arguments.contentID,i))>
-	    	<cfset variables.instance.contentID = listDeleteAt(variables.instance.contentID,i-offset) /> />
-	    	<cfset offset=offset+1>
-	    </cfif>
-	    </cfloop>
-	</cfif>
+		}
+		return this;
+	}
 
-	<cfreturn this>
-</cffunction>
+	public function removeContentID(String contentID) output=false {
+		var i=0;
+		var offset=0;
+		if ( len(arguments.contentID) ) {
+			for ( i=1 ; i<=listLen(arguments.contentID) ; i++ ) {
+				if ( listFindNoCase(variables.instance.contentID,listGetAt(arguments.contentID,i)) ) {
+					variables.instance.contentID = listDeleteAt(variables.instance.contentID,i-offset);
 
-<cffunction name="getContentPoolID" output="false">
+					writeOutput("/>");
+					offset=offset+1;
+				}
+			}
+		}
+		return this;
+	}
 
-	<cfif not len(variables.instance.contentpoolid)>
-		<cfset variables.instance.contentpoolid=variables.instance.siteid />
-	<cfelseif variables.instance.contentpoolid eq '*'>
-		<cfset variables.instance.contentpoolid=getBean('settingsManager').getSite(variables.instance.siteid).getContentPoolID() />
-	</cfif>
+	public function getContentPoolID() output=false {
+		if ( !len(variables.instance.contentpoolid) ) {
+			variables.instance.contentpoolid=variables.instance.siteid;
+		} else if ( variables.instance.contentpoolid == '*' ) {
+			variables.instance.contentpoolid=getBean('settingsManager').getSite(variables.instance.siteid).getContentPoolID();
+		}
+		return variables.instance.contentpoolid;
+	}
 
-	<cfreturn variables.instance.contentpoolid>
-</cffunction>
+	public function setCategoryID(String categoryID, required boolean append="false") output=false {
+		var i="";
+		if ( !arguments.append ) {
+			variables.instance.categoryID = trim(arguments.categoryID);
+		} else {
 
-<cffunction name="setCategoryID" output="false">
-	<cfargument name="categoryID" type="String" />
-	<cfargument name="append" type="boolean" default="false" required="true" />
-	<cfset var i="">
+			for(i in ListToArray(arguments.categoryID)){
+				if (not listFindNoCase(variables.instance.categoryID,trim(i))){
+			    	variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i));
+			  }
+			}
 
-	<cfif not arguments.append>
-		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
-	<cfelse>
-		<cfloop list="#arguments.categoryID#" index="i">
-		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
-	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
-	    </cfif>
-	    </cfloop>
-	</cfif>
-	<cfreturn this>
-</cffunction>
+		}
+		return this;
+	}
 
-<cffunction name="removeCategoryID" output="false">
-	<cfargument name="categoryID" type="String" />
-	<cfset var i=0>
-	<cfset var offset=0>
+	public function removeCategoryID(String categoryID) output=false {
+		var i=0;
+		var offset=0;
+		if ( len(arguments.categoryID) ) {
+			for ( i=1 ; i<=listLen(arguments.categoryID) ; i++ ) {
+				if ( listFindNoCase(variables.instance.categoryID,listGetAt(arguments.categoryID,i)) ) {
+					variables.instance.categoryID = listDeleteAt(variables.instance.categoryID,i-offset);
 
-	<cfif len(arguments.categoryID)>
-		<cfloop from="1" to="#listLen(arguments.categoryID)#" index="i">
-		<cfif listFindNoCase(variables.instance.categoryID,listGetAt(arguments.categoryID,i))>
-	    	<cfset variables.instance.categoryID = listDeleteAt(variables.instance.categoryID,i-offset) /> />
-	    	<cfset offset=offset+1>
-	    </cfif>
-	    </cfloop>
-	</cfif>
+					writeOutput("/>");
+					offset=offset+1;
+				}
+			}
+		}
+		return this;
+	}
 
-	<cfreturn this>
-</cffunction>
+	public function setDisplayName(any DisplayName) output=false {
+		if ( isNumeric(arguments.DisplayName) ) {
+			variables.instance.DisplayName = arguments.DisplayName;
+		}
+		return this;
+	}
 
-<cffunction name="setDisplayName" output="false">
-	<cfargument name="DisplayName" type="any" />
-	<cfif isNumeric(arguments.DisplayName)>
-	<cfset variables.instance.DisplayName = arguments.DisplayName />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setDisplayRatings(any DisplayRatings) output=false {
+		if ( isNumeric(arguments.DisplayRatings) ) {
+			variables.instance.DisplayRatings = arguments.DisplayRatings;
+		}
+		return this;
+	}
 
-<cffunction name="setDisplayRatings" output="false">
-	<cfargument name="DisplayRatings" type="any" />
-	<cfif isNumeric(arguments.DisplayRatings)>
-	<cfset variables.instance.DisplayRatings = arguments.DisplayRatings />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setDisplayComments(any DisplayComments) output=false {
+		if ( isNumeric(arguments.DisplayComments) ) {
+			variables.instance.DisplayComments = arguments.DisplayComments;
+		}
+		return this;
+	}
 
-<cffunction name="setDisplayComments" output="false">
-	<cfargument name="DisplayComments" type="any" />
-	<cfif isNumeric(arguments.DisplayComments)>
-	<cfset variables.instance.DisplayComments = arguments.DisplayComments />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setDisplayKids(any DisplayKids) output=false {
+		if ( isNumeric(arguments.DisplayKids) ) {
+			variables.instance.displayKids = arguments.DisplayKids;
+		}
+		return this;
+	}
 
-<cffunction name="setDisplayKids" output="false">
-	<cfargument name="DisplayKids" type="any" />
-	<cfif isNumeric(arguments.DisplayKids)>
-	<cfset variables.instance.displayKids = arguments.DisplayKids />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setIncludeHomePage(any includeHomePage) output=false {
+		if ( isNumeric(arguments.includeHomePage) ) {
+			variables.instance.includeHomePage = arguments.includeHomePage;
+		}
+		return this;
+	}
 
-<cffunction name="setIncludeHomePage" output="false">
-	<cfargument name="includeHomePage" type="any" />
-	<cfif isNumeric(arguments.includeHomePage)>
-	<cfset variables.instance.includeHomePage = arguments.includeHomePage />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function includeHomePage(any value) output=false {
+		return setIncludeHomePage(arguments.value);
+	}
 
-<cffunction name="includeHomePage" output="false">
-	<cfargument name="value" type="any" />
-	<cfreturn setIncludeHomePage(arguments.value)>
-</cffunction>
+	public function setShowNavOnly(any showNavOnly) output=false {
+		if ( isNumeric(arguments.showNavOnly) ) {
+			variables.instance.showNavOnly = arguments.showNavOnly;
+		}
+		return this;
+	}
 
-<cffunction name="setShowNavOnly" output="false">
-	<cfargument name="showNavOnly" type="any" />
-	<cfif isNumeric(arguments.showNavOnly)>
-	<cfset variables.instance.showNavOnly = arguments.showNavOnly />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function showNavOnly(any value) output=false {
 
-<cffunction name="showNavOnly" output="false">
-	<cfargument name="value" type="any" />>
-	<cfreturn setShowNavOnly(arguments.value)>
-</cffunction>
+		writeOutput(">");
+		return setShowNavOnly(arguments.value);
+	}
 
-<cffunction name="setIsLocked" output="false">
-	<cfargument name="isLocked" type="any" />
-	<cfif isNumeric(arguments.isLocked)>
-	<cfset variables.instance.isLocked = arguments.isLocked />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setIsLocked(any isLocked) output=false {
+		if ( isNumeric(arguments.isLocked) ) {
+			variables.instance.isLocked = arguments.isLocked;
+		}
+		return this;
+	}
 
-<cffunction name="setUseCategoryIntersect" output="false">
-	<cfargument name="useCategoryIntersect" type="any" />
-	<cfif isNumeric(arguments.useCategoryIntersect)>
-	<cfset variables.instance.useCategoryIntersect = arguments.useCategoryIntersect />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setUseCategoryIntersect(any useCategoryIntersect) output=false {
+		if ( isNumeric(arguments.useCategoryIntersect) ) {
+			variables.instance.useCategoryIntersect = arguments.useCategoryIntersect;
+		}
+		return this;
+	}
 
-<cffunction name="setShowExcludeSearch" output="false">
-	<cfargument name="showExcludeSearch" type="any" />
-	<cfif isNumeric(arguments.showExcludeSearch)>
-	<cfset variables.instance.showExcludeSearch = arguments.showExcludeSearch />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setShowExcludeSearch(any showExcludeSearch) output=false {
+		if ( isNumeric(arguments.showExcludeSearch) ) {
+			variables.instance.showExcludeSearch = arguments.showExcludeSearch;
+		}
+		return this;
+	}
 
-<cffunction name="showExcludeSearch" output="false">
-	<cfargument name="value" type="any" />>
-	<cfreturn setShowExcludeSearch(arguments.value)>
-</cffunction>
+	public function showExcludeSearch(any value) output=false {
+		return setShowExcludeSearch(arguments.value);
+	}
 
-<cffunction name="setImageSize" output="false">
-	<cfargument name="imageSize">
-	<cfif len(arguments.imageSize)>
-		<cfset variables.instance.imageSize = arguments.imageSize>
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setImageSize(imageSize) output=false {
+		if ( len(arguments.imageSize) ) {
+			variables.instance.imageSize = arguments.imageSize;
+		}
+		return this;
+	}
 
-<cffunction name="getImageSize" output="false">
-	<cfif variables.instance.imageSize eq "Custom"
-	and variables.instance.ImageHeight eq "AUTO"
-	and variables.instance.ImageWidth eq "AUTO">
-  	  <cfreturn "small" />
-	<cfelse>
-		<cfreturn variables.instance.imageSize>
-	</cfif>
-</cffunction>
+	public function getImageSize() output=false {
+		if ( variables.instance.imageSize == "Custom"
+	and variables.instance.ImageHeight == "AUTO"
+	and variables.instance.ImageWidth == "AUTO" ) {
+			return "small";
+		} else {
+			return variables.instance.imageSize;
+		}
+	}
 
-<cffunction name="setImageHeight" output="false">
-    <cfargument name="ImageHeight" required="true">
-	<cfif isNumeric(arguments.ImageHeight)>
-  	  <cfset variables.instance.ImageHeight = arguments.ImageHeight />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setImageHeight(required ImageHeight) output=false {
+		if ( isNumeric(arguments.ImageHeight) ) {
+			variables.instance.ImageHeight = arguments.ImageHeight;
+		}
+		return this;
+	}
 
-<cffunction name="getImageHeight" output="false">
-	<cfif variables.instance.imageSize eq "Custom">
-  	  <cfreturn variables.instance.ImageHeight />
-	<cfelse>
-		<cfreturn "AUTO">
-	</cfif>
-</cffunction>
+	public function getImageHeight() output=false {
+		if ( variables.instance.imageSize == "Custom" ) {
+			return variables.instance.ImageHeight;
+		} else {
+			return "AUTO";
+		}
+	}
 
-<cffunction name="setImageWidth" output="false">
-    <cfargument name="ImageWidth" required="true">
-	<cfif isNumeric(arguments.ImageWidth)>
-  	  <cfset variables.instance.ImageWidth = arguments.ImageWidth />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setImageWidth(required ImageWidth) output=false {
+		if ( isNumeric(arguments.ImageWidth) ) {
+			variables.instance.ImageWidth = arguments.ImageWidth;
+		}
+		return this;
+	}
 
-<cffunction name="setAutoImport" output="false">
-    <cfargument name="autoimport" required="true">
-	<cfif isNumeric(arguments.autoimport)>
-  	  <cfset variables.instance.autoimport = arguments.autoimport />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function setAutoImport(required autoimport) output=false {
+		if ( isNumeric(arguments.autoimport) ) {
+			variables.instance.autoimport = arguments.autoimport;
+		}
+		return this;
+	}
 
-<cffunction name="getImageWidth" output="false">
-	<cfif variables.instance.imageSize eq "Custom">
-  	  <cfreturn variables.instance.ImageWidth />
-	<cfelse>
-		<cfreturn "AUTO">
-	</cfif>
-</cffunction>
+	public function getImageWidth() output=false {
+		if ( variables.instance.imageSize == "Custom" ) {
+			return variables.instance.ImageWidth;
+		} else {
+			return "AUTO";
+		}
+	}
 
-<cffunction name="setParams" output="false">
-	<cfargument name="params" type="any" required="true">
-
-	<cfset var rows=0/>
-	<cfset var I = 0 />
-
-
-	<cfif isquery(arguments.params)>
-		<cfset variables.instance.params=arguments.params />
-
-	<cfelseif isdefined('arguments.params.param')>
-
-		<cfset clearParams() />
-		<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
-
-			<cfset addParam(
+	public function setParams(required any params) output=false {
+		var rows=0;
+		var I = 0;
+		if ( isquery(arguments.params) ) {
+			variables.instance.params=arguments.params;
+		} else if ( isdefined('arguments.params.param') ) {
+			clearParams();
+			for ( i=1 ; i<=listLen(arguments.params.param) ; i++ ) {
+				addParam(
 					listFirst(arguments.params['paramField#i#'],'^'),
 					arguments.params['paramRelationship#i#'],
 					arguments.params['paramCriteria#i#'],
 					arguments.params['paramCondition#i#'],
 					listLast(arguments.params['paramField#i#'],'^')
-					) />
-		</cfloop>
+					);
+			}
+		}
+		return this;
+	}
 
-	</cfif>
-
-	<cfreturn this>
-</cffunction>
-
-
-<cffunction name="addParam" output="false">
-	<cfargument name="field" hint="You can use 'Column' as an alias to field" type="string" required="true" default="">
-	<cfargument name="relationship" type="string" default="and" required="true">
-	<cfargument name="criteria" type="string" required="true" default="">
-	<cfargument name="condition" type="string" default="EQUALS" required="true">
-	<cfargument name="datatype" type="string"  default="" required="true">
-
-	<cfif isDefined('arguments.column')>
-		<cfset arguments.field=arguments.column>
-	</cfif>
-
-	<cfif listFindNoCase('tcontentcategories.categoryid,categoryid,category',arguments.field)>
-		<cfset arguments.field='tcontentcategoryassign.categoryid'>
-	<cfelseif arguments.field eq 'categorypathid'>
-		<cfset arguments.field='tcontentcategories.path'>
-	</cfif>
-
-	<cfif len(arguments.criteria) and ListFindNoCase('tcontentcategories.path,tcontentcategoryassign.categoryid,tcontentcategories.parentid',arguments.field) and not IsValid('uuid',listFirst(arguments.criteria))>
-		<cfif listLast(arguments.field,'.') eq 'categoryid'>
-			<cfset arguments.field='tcontentcategories.name'>
-		<cfelse>
-			<cfif listLen(arguments.criteria) gt 1>
-				<cfset var rs=getBean('category').getFeed()
+	public function addParam(required string field="", required string relationship="and", required string criteria="", required string condition="EQUALS", required string datatype="") output=false {
+		if ( isDefined('arguments.column') ) {
+			arguments.field=arguments.column;
+		}
+		if ( listFindNoCase('tcontentcategories.categoryid,categoryid,category',arguments.field) ) {
+			arguments.field='tcontentcategoryassign.categoryid';
+		} else if ( arguments.field == 'categorypathid' ) {
+			arguments.field='tcontentcategories.path';
+		}
+		if ( len(arguments.criteria) && ListFindNoCase('tcontentcategories.path,tcontentcategoryassign.categoryid,tcontentcategories.parentid',arguments.field) && !IsValid('uuid',listFirst(arguments.criteria)) ) {
+			if ( listLast(arguments.field,'.') == 'categoryid' ) {
+				arguments.field='tcontentcategories.name';
+			} else {
+				if ( listLen(arguments.criteria) > 1 ) {
+					var rs=getBean('category').getFeed()
 						.setSiteID(get('siteid'))
 						.itemsPerPage(0)
 						.maxItems(0)
 						.where()
 						.prop('name')
 						.isIn(arguments.criteria)
-						.getQuery()>
+						.getQuery();
+					arguments.criteria=valueList(rs.categoryid);
+				} else {
+					arguments.criteria=getBean('category').loadBy(name=arguments.criteria,siteid=get('siteid')).getCategoryID();
+				}
+			}
+		} else if ( arguments.field == 'tag' ) {
+			arguments.field='tcontenttags.tag';
+		}
+		arguments.column=arguments.field;
+		return super.addParam(argumentCollection=arguments);
+	}
 
-				<cfset arguments.criteria=valueList(rs.categoryid)>
-			<cfelse>
-				<cfset arguments.criteria=getBean('category').loadBy(name=arguments.criteria,siteid=get('siteid')).getCategoryID()>
-			</cfif>
-		</cfif>
-	<cfelseif arguments.field eq 'tag'>
-		<cfset arguments.field='tcontenttags.tag'>
-	</cfif>
+	public function setAdvancedParams(required any params) output=false {
+		return setParams(argumentCollection=arguments);
+	}
 
-	<cfset arguments.column=arguments.field>
-	<cfreturn super.addParam(argumentCollection=arguments)>
-</cffunction>
+	public function renderName() output=false {
+		if ( len(variables.instance.altName) ) {
+			return variables.instance.altName;
+		} else {
+			return variables.instance.name;
+		}
+	}
 
-<cffunction name="setAdvancedParams" output="false">
-	<cfargument name="params" type="any" required="true">
-	<cfreturn setParams(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="renderName" output="false">
-	<cfif len(variables.instance.altName)>
-		<cfreturn variables.instance.altName />
-	<cfelse>
-		<cfreturn variables.instance.name />
-	</cfif>
-</cffunction>
-
-<cffunction name="getQuery" output="false">
-	<cfargument name="aggregation" required="true" default="false">
-	<cfargument name="applyPermFilter" required="true" default="false">
-	<cfargument name="countOnly" default="false">
-	<cfargument name="menuType" default="default">
-	<cfargument name="from" required="true" default="">
-	<cfargument name="to" required="true" default="">
-	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
-
-	<cfset variables.instance.cachedWithin=arguments.cachedWithin>
-
-	<cfreturn variables.feedManager.getFeed(
+	public function getQuery(required aggregation="false", required applyPermFilter="false", countOnly="false", menuType="default", required from="", required to="", required cachedWithin="#variables.instance.cachedWithin#") output=false {
+		variables.instance.cachedWithin=arguments.cachedWithin;
+		return variables.feedManager.getFeed(
 		feedBean=this
 		, tag=''
 		, aggregation=arguments.aggregation
@@ -557,150 +502,135 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		, menuType=arguments.menuType
 		, from=arguments.from
 		, to=arguments.to
-	) />
-</cffunction>
+	);
+	}
 
-<cffunction name="getIterator" output="false">
-	<cfargument name="aggregation" required="true" default="false">
-	<cfargument name="applyPermFilter" required="true" default="false">
-	<cfargument name="from" required="true" default="">
-	<cfargument name="to" required="true" default="">
-	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
-	<cfset var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,from=arguments.from,to=arguments.to,cachedwithin=arguments.cachedWithin) />
-	<cfset var it=getBean("contentIterator")>
-	<cfset it.setQuery(q,variables.instance.nextn)>
-	<cfreturn it>
-</cffunction>
+	public function getIterator(required aggregation="false", required applyPermFilter="false", required from="", required to="", required cachedWithin="#variables.instance.cachedWithin#") output=false {
+		var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,from=arguments.from,to=arguments.to,cachedwithin=arguments.cachedWithin);
+		var it=getBean("contentIterator");
+		it.setQuery(q,variables.instance.nextn);
+		return it;
+	}
 
-<cffunction name="save" output="false">
-	<cfset setAllValues(variables.feedManager.save(this).getAllValues())>
-	<cfreturn this />
-</cffunction>
+	public function save() output=false {
+		setAllValues(variables.feedManager.save(this).getAllValues());
+		return this;
+	}
 
-<cffunction name="delete" output="false">
-	<cfset variables.feedManager.delete(variables.instance.feedID) />
-</cffunction>
+	public function delete() output=false {
+		variables.feedManager.delete(variables.instance.feedID);
+	}
 
-<cffunction name="loadBy" output="false">
-	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset arguments.siteID=variables.instance.siteID>
-	</cfif>
-	<cfset arguments.feedBean=this>
+	public function loadBy() output=false {
+		if ( !structKeyExists(arguments,"siteID") ) {
+			arguments.siteID=variables.instance.siteID;
+		}
+		arguments.feedBean=this;
+		return variables.feedManager.read(argumentCollection=arguments);
+	}
 
-	<cfreturn variables.feedManager.read(argumentCollection=arguments)>
-</cffunction>
+	public function setRemotePubDate(required string RemotePubDate) output=false {
+		if ( lsisDate(arguments.RemotePubDate) ) {
+			try {
+				variables.instance.RemotePubDate = lsparseDateTime(arguments.RemotePubDate);
+			} catch (any cfcatch) {
+				variables.instance.RemotePubDate = arguments.RemotePubDate;
+			}
+		} else {
+			variables.instance.RemotePubDate = "";
+		}
+		return this;
+	}
 
-<cffunction name="setRemotePubDate" output="false">
-    <cfargument name="RemotePubDate" type="string" required="true">
-	<cfif lsisDate(arguments.RemotePubDate)>
-		<cftry>
-		<cfset variables.instance.RemotePubDate = lsparseDateTime(arguments.RemotePubDate) />
-		<cfcatch>
-			<cfset variables.instance.RemotePubDate = arguments.RemotePubDate />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.RemotePubDate = ""/>
-	</cfif>
-	<cfreturn this>
-  </cffunction>
+	public function setAltTable(any altTable) output=false {
+		if ( len(arguments.altTable) ) {
+			variables.instance.altTable = arguments.altTable;
+		}
+		return this;
+	}
 
- <cffunction name="setAltTable" output="false">
-	<cfargument name="altTable" type="any" />
-	<cfif len(arguments.altTable)>
-	<cfset variables.instance.altTable = arguments.altTable />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function getEditUrl(required any compactDisplay="false") output=false {
+		var returnStr="";
+		returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cFeed.edit&feedID=#variables.instance.feedID#&siteid=#variables.instance.siteID#&type=#variables.instance.type#&compactDisplay=#arguments.compactdisplay#";
+		return returnStr;
+	}
 
-<cffunction name="getEditUrl" output="false">
-	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
-	<cfset var returnStr="">
+	public function getDisplayList() output=false {
+		var hasRating=false;
+		var hasComments=false;
+		if ( !len(variables.instance.displayList) ) {
+			variables.instance.displayList="Date,Title,Image,Summary,Credits";
+			hasRating=listFindNoCase(variables.instance.displayList,"Rating");
+			hasComments=listFindNoCase(variables.instance.displayList,"Comments");
+			if ( variables.instance.displayComments && !hasComments ) {
+				variables.instance.displayList=listAppend(variables.instance.displayList,"Comments");
+			} else if ( !variables.instance.displayComments && hasComments ) {
+				variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasComments);
+			}
+			variables.instance.displayList=listAppend(variables.instance.displayList,"Tags");
+			if ( variables.instance.displayRatings && !hasRating ) {
+				variables.instance.displayList=listAppend(variables.instance.displayList,"Rating");
+			} else if ( !variables.instance.displayRatings && hasRating ) {
+				variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasRating);
+			}
+		}
+		return variables.instance.displayList;
+	}
 
-	<cfset returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cFeed.edit&feedID=#variables.instance.feedID#&siteid=#variables.instance.siteID#&type=#variables.instance.type#&compactDisplay=#arguments.compactdisplay#" >
+	public function getAvailableDisplayList() output=false {
+		var returnList="Date,Title,Image,Summary,Body,ReadMore,Credits,Comments,Tags,Rating";
+		var i=0;
+		var finder=0;
+		var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent");
+		if ( rsExtend.recordcount ) {
 
-	<cfreturn returnStr>
-</cffunction>
+			var qs=new Query();
+			qs.setDbType('query');
+			qs.setAttributes(rsExtend=rsExtend);
 
-<cffunction name="getDisplayList" output="false">
-	<cfset var hasRating=false>
-	<cfset var hasComments=false>
+			rsExtend=qs.execute(sql="select attribute from rsExtend
+				group by attribute
+				order by attribute").getResult();
 
-	<cfif not len(variables.instance.displayList)>
-		<cfset variables.instance.displayList="Date,Title,Image,Summary,Credits" />
-		<cfset hasRating=listFindNoCase(variables.instance.displayList,"Rating")>
-		<cfset hasComments=listFindNoCase(variables.instance.displayList,"Comments")>
+			returnList=returnList & "," & valueList(rsExtend.attribute);
+		}
 
-		<cfif variables.instance.displayComments and not hasComments>
-			<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Comments")>
-		<cfelseif not variables.instance.displayComments and hasComments>
-			<cfset variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasComments)>
-		</cfif>
+		for(i in ListToArray(variables.instance.displayList)){
+			finder=listFindNoCase(returnList,i);
+			if (finder){
+				eturnList=listDeleteAt(returnList,finder);
+			}
+		}
 
-		<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Tags")>
+		return returnList;
+	}
 
-		<cfif variables.instance.displayRatings and not hasRating>
-			<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Rating")>
-		<cfelseif not variables.instance.displayRatings and hasRating>
-			<cfset variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasRating)>
-		</cfif>
-	</cfif>
+	public function getPrimaryKey() output=false {
+		return "feedID";
+	}
 
-	<cfreturn variables.instance.displayList>
-</cffunction>
+	public function getEntityName(useProxyName="true") output=false {
+		variables.entityName='feed';
+		if ( arguments.useProxyName ) {
+			return "content";
+		} else {
+			return "feed";
+		}
+	}
 
-<cffunction name="getAvailableDisplayList" output="false">
-	<cfset var returnList="Date,Title,Image,Summary,Body,ReadMore,Credits,Comments,Tags,Rating">
-	<cfset var i=0>
-	<cfset var finder=0>
-	<cfset var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>
+	public function getAvailableCount() output=false {
+		return getQuery(countOnly=true).count;
+	}
 
-	<cfif rsExtend.recordcount>
-		<cfquery name="rsExtend" dbType="query">
-			select attribute from rsExtend
-			group by attribute
-			order by attribute
-		</cfquery>
-		<cfset returnList=returnList & "," & valueList(rsExtend.attribute)>
-	</cfif>
+	public function clone() output=false {
+		return getBean("feed").setAllValues(structCopy(getAllValues()));
+	}
 
-	<cfloop list="#variables.instance.displayList#" index="i">
-		<cfset finder=listFindNoCase(returnList,i)>
-		<cfif finder>
-			<cfset returnList=listDeleteAt(returnList,finder)>
-		</cfif>
-	</cfloop>
-	<cfreturn returnList>
-</cffunction>
+	public function getRemoteData() output=false {
+		return getBean('feedManager').getRemoteFeedData(feedURL=variables.instance.channellink,maxItems=variables.instance.maxitems,authtype=variables.instance.authtype);
+	}
 
-<cffunction name="getPrimaryKey" output="false">
-	<cfreturn "feedID">
-</cffunction>
-
-<cffunction name="getEntityName" output="false">
-	<cfargument name="useProxyName" default="true">
-	<cfset variables.entityName='feed'>
-	<cfif arguments.useProxyName>
-		<cfreturn "content">
-	<cfelse>
-		<cfreturn "feed">
-	</cfif>
-</cffunction>
-
-<cffunction name="getAvailableCount" output="false">
-	<cfreturn getQuery(countOnly=true).count>
-</cffunction>
-
-<cffunction name="clone" output="false">
-	<cfreturn getBean("feed").setAllValues(structCopy(getAllValues()))>
-</cffunction>
-
-<cffunction name="getRemoteData" output="false">
-	<cfreturn getBean('feedManager').getRemoteFeedData(feedURL=variables.instance.channellink,maxItems=variables.instance.maxitems,authtype=variables.instance.authtype)>
-</cffunction>
-
-<cfscript>
- function getFeed(){
+	function getFeed(){
 		var feed=getBean('beanFeed').setEntityName('feed').setTable('tcontentfeeds');
 
 		if(hasProperty('siteid')){
@@ -713,6 +643,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		return feed;
 	}
-</cfscript>
 
-</cfcomponent>
+}

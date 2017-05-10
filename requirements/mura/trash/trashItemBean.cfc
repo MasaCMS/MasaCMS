@@ -1,69 +1,69 @@
-<cfcomponent extends="mura.cfobject" output="false" hint="Trash item bean">
+/**
+ * Trash item bean
+ */
+component extends="mura.cfobject" output="false" hint="Trash item bean" {
+	variables.trashManager="";
 
-<cfset variables.trashManager="">
+	public function setTrashManager(trashManager) output=false {
+		variables.trashManager=arguments.trashManager;
+		return this;
+	}
 
-<cffunction name="setTrashManager" output="false">
-<cfargument name="trashManager">
-<cfset variables.trashManager=arguments.trashManager>
-<cfreturn this>
-</cffunction>
+	public function setAllValues(instance) output=false {
+		variables.instance=arguments.instance;
+		return this;
+	}
 
-<cffunction name="setAllValues" output="false">
-<cfargument name="instance">
-<cfset variables.instance=arguments.instance>
-<cfreturn this>
-</cffunction>
+	public function getAllValues() output=false {
+		return variables.instance;
+	}
 
-<cffunction name="getAllValues" output="false">
-<cfreturn variables.instance>
-</cffunction>
+	public function getObjectID() output=false {
+		return variables.instance.objectID;
+	}
 
-<cffunction name="getObjectID" output="false">
-<cfreturn variables.instance.objectID>
-</cffunction>
+	public function getSiteID() output=false {
+		return variables.instance.siteID;
+	}
 
-<cffunction name="getSiteID" output="false">
-<cfreturn variables.instance.siteID>
-</cffunction>
+	public function getParentID() output=false {
+		return variables.instance.parentID;
+	}
 
-<cffunction name="getParentID" output="false">
-<cfreturn variables.instance.parentID>
-</cffunction>
+	public function getObjectClass() output=false {
+		return variables.instance.objectClass;
+	}
 
-<cffunction name="getObjectClass" output="false">
-<cfreturn variables.instance.objectClass>
-</cffunction>
+	public function getObjectLabel() output=false {
+		return variables.instance.objectLabel;
+	}
 
-<cffunction name="getObjectLabel" output="false">
-<cfreturn variables.instance.objectLabel>
-</cffunction>
+	public function getObjectType() output=false {
+		return variables.instance.objectType;
+	}
 
-<cffunction name="getObjectType" output="false">
-<cfreturn variables.instance.objectType>
-</cffunction>
+	public function getObjectSubType() output=false {
+		return variables.instance.objectSubType;
+	}
 
-<cffunction name="getObjectSubType" output="false">
-<cfreturn variables.instance.objectSubType>
-</cffunction>
+	public function getDeletedDate() output=false {
+		return variables.instance.deletedDate;
+	}
 
-<cffunction name="getDeletedDate" output="false">
-<cfreturn variables.instance.deletedDate>
-</cffunction>
+	public function getDeletedBy() output=false {
+		return variables.instance.deletedBy;
+	}
 
-<cffunction name="getDeletedBy" output="false">
-<cfreturn variables.instance.deletedBy>
-</cffunction>
+	public function getDeleteID() output=false {
+		return variables.instance.deleteID;
+	}
 
-<cffunction name="getDeleteID" output="false">
-<cfreturn variables.instance.deleteID>
-</cffunction>
+	public function getOrderNO() output=false {
+		return variables.instance.orderno;
+	}
 
-<cffunction name="getOrderNO" output="false">
-<cfreturn variables.instance.orderno>
-</cffunction>
+	public function getObject() output=false {
+		return variables.trashManager.getObject(variables.instance.objectID);
+	}
 
-<cffunction name="getObject" output="false">
-<cfreturn variables.trashManager.getObject(variables.instance.objectID)>
-</cffunction>
-
-</cfcomponent>
+}

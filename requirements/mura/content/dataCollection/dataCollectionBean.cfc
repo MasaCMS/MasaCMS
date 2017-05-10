@@ -243,6 +243,8 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 		super.validate(fields=arguments.fields);
 
+		setValue('acceptData','1');
+
 		if(getBean('fileManager').requestHasRestrictedFiles(scope=getAllValues(),allowedExtensions=getBean('configBean').getFMPublicAllowedExtensions())){
 			getErrors().requestHasRestrictedFiles=$.siteConfig().getRBFactory().getKey('sitemanager.requestHasRestrictedFiles');
 		}
@@ -318,6 +320,17 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 
 		if(arguments.$.getContentRenderer().validateCSRFTokens && !arguments.$.validateCSRFTokens(context=getValue('formID'))){
 			variables.instance.errors.csrf='Your request contained invalid tokens';
+		}
+	/*
+	writeDUmp($.event('csrf_token'));
+	writeDUmp($.event('csrf_token_expires'));
+	writeDump(getValue('formID'));
+	abort;
+	*/
+		if(hasErrors()){
+			setValue('acceptData','0');
+		} else {
+			setValue('acceptData','1');
 		}
 
 		return this;

@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,580 +43,505 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides a utility to access all Mura functionality">
-
-<cfset variables.instance.event="">
-
-<cffunction name="init" output="false">
-	<cfargument name="data" hint="Can be an event object, struct or siteID">
-
-	<cfset var initArgs=structNew()>
-
-	<cfif structKeyExists(arguments,"data") and not (isSimpleValue(arguments.data) and not len(arguments.data))>
-		<cfif isObject(arguments.data)>
-			<cfset setEvent(arguments.data)>
-		<cfelse>
-			<cfif isStruct(arguments.data)>
-				<cfset initArgs=arguments.data>
-			<cfelse>
-				<cfset initArgs.siteID=arguments.data>
-			</cfif>
-			<cfset initArgs.muraScope=this>
-			<cfset setEvent(createObject("component","mura.event").init(initArgs).setValue('MuraScope',this))>
-		</cfif>
-	</cfif>
-
-	<cfset structAppend(this,request.customMuraScopeKeys,false)>
-
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="OnMissingMethod" output="false" hint="Handles missing method exceptions.">
-<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
-<cfargument name="MissingMethodArguments" type="struct" required="true"/>
-	<cfset var local=structNew()>
-	<cfset var object="">
-	<cfset var prefix="">
-
-	<cfif len(arguments.MissingMethodName)>
-
-		<cfif isObject(getEvent()) and structKeyExists(variables.instance.event,arguments.MissingMethodName)>
-			<cfset object=variables.instance.event>
-		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),arguments.MissingMethodName)>
-			<cfset object=getContentRenderer()>
-		<cfelseif structKeyExists(request.customMuraScopeKeys,arguments.MissingMethodName)>
-			<cfreturn request.customMuraScopeKeys[arguments.MissingMethodName]>
-		<cfelseif isObject(getContentBean())>
-			<cfif structKeyExists(getContentBean(),arguments.MissingMethodName)>
-				<cfset object=getContentBean()>
-			<cfelse>
-				<cfset prefix=left(arguments.MissingMethodName,3)>
-				<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-					<cfif getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3))>
-						<cfset object=getContentBean()>
-					<cfelse>
-						<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
-					</cfif>
-				<cfelse>
-					<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
-				</cfif>
-			</cfif>
-		<cfelse>
-			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
-		</cfif>
-
-		<cfsavecontent variable="local.thevalue2">
-		<cfif not structIsEmpty(arguments.MissingMethodArguments)>
-			<cfinvoke component="#object#" method="#arguments.MissingMethodName#" argumentcollection="#arguments.MissingMethodArguments#" returnvariable="local.theValue1">
-		<cfelse>
-			<cfinvoke component="#object#" method="#arguments.MissingMethodName#" returnvariable="local.theValue1">
-		</cfif>
-		</cfsavecontent>
-
-		<cfif isDefined("local.theValue1")>
-			<cfreturn local.theValue1>
-		<cfelseif isDefined("local.theValue2")>
-			<cfreturn local.theValue2>
-		<cfelse>
-			<cfreturn "">
-		</cfif>
-	<cfelse>
-		<cfreturn "">
-	</cfif>
-</cffunction>
-
-<cffunction name="getContentRenderer" output="false">
-	<cfargument name="force" default="false">
-	<cfif arguments.force or not isObject(event("contentRenderer"))>
-		<cfif len(event('siteid'))>
-			<cfif not arguments.force and structKeyExists(request,"contentRenderer") and request.contentRenderer.getValue('siteid') eq event('siteid')>
-				<cfset event("contentRenderer",request.contentRenderer)>
-			<cfelse>
-				<!--- temp fix, may become permanent--->
-				<cfif globalConfig().getValue(property='alwaysUseLocalRenderer',defaultValue=false)>
-					<cfset event("contentRenderer",createObject("component","#event('siteid')#.includes.contentRenderer") )>
-				<cfelse>
-					<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
-				</cfif>
-				<!--- end temp fix --->
-				<cfset event("contentRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
-				<cfif fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" )>
-					<cfset var themeRenderer=createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer")>
-					<cfset themeRenderer.injectMethod('$',event("muraScope")).injectMethod('mura',event("muraScope")).injectMethod('event',event())>
-					<cfset themeRenderer.init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
-					<cfset var siteRenderer=event("contentRenderer")>
-	         		<cfset var key=''>
-	         		<cfloop collection="#themeRenderer#" item="key">
-	          			<cfset siteRenderer.injectMethod('#key#',themeRenderer[key])>
-	         		</cfloop>
-				</cfif>
-				<cfset event("contentRenderer").setValue('siteid',event('siteid'))>
-			</cfif>
-			<cfset event("contentRenderer").postMergeInit()>
-		<cfelseif structKeyExists(application,"contentRenderer")>
-			<cfset event("contentRenderer",getBean('contentRenderer'))>
-		</cfif>
-	</cfif>
-	<cfreturn event("contentRenderer")>
-</cffunction>
-
-<cffunction name="getSiteRenderer" output="false" hint="deprecated: use getContentRenderer()">
-	<cfreturn getContentRenderer()>
-</cffunction>
-
-<cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
-	<cfreturn getContentRenderer()>
-</cffunction>
-
-<cffunction name="getContentBean" output="false">
-	<cfreturn event("contentBean")>
-</cffunction>
-
-<cffunction name="setContentBean" output="false">
-	<cfargument name="contentBean">
-	<cfif isObject(arguments.contentBean)>
-		<cfreturn event("contentBean",arguments.contentBean)>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getEvent" output="false">
-	<cfif not isObject(variables.instance.event)>
-		<cfif structKeyExists(request,"servletEvent")>
-			<cfset variables.instance.event=request.servletEvent>
-		<cfelseif structKeyExists(request,"event")>
-			<cfset variables.instance.event=request.event>
-		<cfelse>
-			<cfset variables.instance.event=createObject("component","mura.event").init($=this)>
-		</cfif>
-	</cfif>
-	<cfreturn variables.instance.event>
-</cffunction>
-
-<cffunction name="getGlobalEvent" output="false">
-	<cfset var temp="">
-	<cfif structKeyExists(request,"servletEvent")>
-		<cfreturn request.servletEvent>
-	<cfelseif structKeyExists(request,"event")>
-		<cfreturn request.event>
-	<cfelse>
-		<cfset temp=structNew()>
-		<cfset var sessionData=getSession()>
-		<cfif isdefined("sessionData.siteid")>
-			<cfset temp.siteID=sessionData.siteID>
-		</cfif>
-		<cfset request.muraGlobalEvent=createObject("component","mura.event").init(temp)>
-		<cfreturn request.muraGlobalEvent>
-	</cfif>
-</cffunction>
-
-<cffunction name="setEvent" output="false">
-	<cfargument name="event">
-	<cfif isObject(arguments.event)>
-		<cfset variables.instance.event=arguments.event>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="event" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
-
-	<cfif structKeyExists(arguments,"property")>
-		<cfif isObject(getEvent())>
-			<cfif structKeyExists(arguments,"propertyValue")>
-				<cfset getEvent().setValue(arguments.property,arguments.propertyValue)>
-				<cfreturn this>
-			<cfelse>
-				<cfreturn getEvent().getValue(arguments.property)>
-			</cfif>
-		<cfelse>
-			<cfthrow message="The event is not set in the Mura Scope.">
-		</cfif>
-	<cfelse>
-		<cfreturn getEvent()>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="content" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
-
-	<cfif structKeyExists(arguments,"property")>
-		<cfif isObject(getContentBean())>
-			<cfif structKeyExists(arguments,"propertyValue")>
-				<cfset getContentBean().setValue(arguments.property,arguments.propertyValue)>
-				<cfreturn this>
-			<cfelse>
-				<cfreturn getContentBean().getValue(arguments.property)>
-			</cfif>
-		<cfelse>
-			<cfthrow message="The content is not set in the Mura Scope.">
-		</cfif>
-	<cfelse>
-		<cfreturn getContentBean()>
-	</cfif>
-</cffunction>
-
-<cffunction name="currentUser" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
-
-	<cfif structKeyExists(arguments,"property")>
-		<cfif structKeyExists(arguments,"propertyValue")>
-			<cfset getCurrentUser().setValue(arguments.property,arguments.propertyValue)>
-			<cfreturn this>
-		<cfelse>
-			<cfreturn getCurrentUser().getValue(arguments.property)>
-		</cfif>
-	<cfelse>
-		<cfreturn getCurrentUser()>
-	</cfif>
-</cffunction>
-
-<cffunction name="siteConfig" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
-	<cfset var site="">
-	<cfset var theValue="">
-	<cfset var sessionData=getSession()>
-	<cfset var siteID = Len(event('siteid'))
-		? event('siteid')
-		: IsDefined('sessionData') && StructKeyExists(sessionData, 'siteid')
-			? sessionData.siteid
-			: '' />
-
-	<cfif len(siteid)>
-		<cfset site=getBean('settingsManager').getSite(siteid)>
-
-		<cfif structKeyExists(arguments,"property")>
-			<cfif structKeyExists(arguments,"propertyValue")>
-				<cfset site.setValue(arguments.property,arguments.propertyValue)>
-				<cfreturn this>
-			<cfelse>
-				<cfreturn (IsSimpleValue(site.getValue(arguments.property)) and Len(site.getValue(arguments.property))) || !IsSimpleValue(site.getValue(arguments.property))
-					? site.getValue(arguments.property)
-					: globalConfig(arguments.property) />
-			</cfif>
-		<cfelse>
-			<cfreturn site>
-		</cfif>
-
-	<cfelse>
-		<cfthrow message="The SiteID is not set in the current Mura Scope event.">
-	</cfif>
-</cffunction>
-
-<cffunction name="globalConfig" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
-	<cfset var theValue="">
-
-	<cfif structKeyExists(arguments,"property")>
-		<cfif structKeyExists(arguments,"propertyValue")>
-			<cfinvoke component="#application.configBean#" method="set#arguments.property#">
-				<cfinvokeargument name="#arguments.property#" value="#arguments.propertyValue#">
-			</cfinvoke>
-			<cfreturn this>
-		<cfelse>
-			<cfinvoke component="#application.configBean#" method="get#arguments.property#" returnvariable="theValue">
-			<cfreturn theValue>
-		</cfif>
-	<cfelse>
-		<cfreturn application.configBean>
-	</cfif>
-</cffunction>
-
-<cffunction name="component" output="false">
-	<cfargument name="property">
-	<cfargument name="propertyValue">
-	<cfset var componentBean="">
-	<cfset var component=event('component')>
-
-	<cfif structKeyExists(arguments,"property") and isStruct(component)>
-		<cfif structKeyExists(arguments,"property") and structKeyExists(component,arguments.property)>
-			<cfif structKeyExists(arguments,"propertyValue")>
-				<cfset component[arguments.property]=arguments.propertyValue>
-				<cfreturn this>
-			<cfelse>
-				<cfreturn component[arguments.property]>
-			</cfif>
-		<cfelse>
-			<cfreturn "">
-		</cfif>
-	<cfelseif isStruct(component)>
-		<cfset componentBean=getBean("content")>
-		<cfset componentBean.setAllValues(component)>
-		<cfreturn componentBean>
-	<cfelse>
-		<cfthrow message="No component has been set in the Mura Scope.">
-	</cfif>
-</cffunction>
-
-<cffunction name="currentURL" output="false">
-	<cfreturn getContentRenderer().getCurrentURL()>
-</cffunction>
-
-<cffunction name="getParent" output="false">
-	<cfset var parent="">
-
-	<cfif structKeyExists(request,"crumbdata") and arrayLen(request.crumbdata) gt 1>
-		<cfreturn getBean("contentNavBean").set(request.crumbdata[2],"active") />
-	<cfelseif isObject(getContentBean())>
-		<cfreturn getContentBean().getParent()>
-	<cfelse>
-		<cfthrow message="No primary content has been set.">
-	</cfif>
-</cffunction>
-
-<cffunction name="hasParent" output="false">
-	<cfreturn structKeyExists(request,"crumbdata") and arrayLen(request.crumbdata) gt 1>
-</cffunction>
-
-<cffunction name="getBean" output="false">
-	<cfargument name="beanName">
-	<cfargument name="siteID" default="">
-
-	<cfif len(arguments.siteID)>
-		<cfreturn super.getBean(arguments.beanName,arguments.siteID)>
-	<cfelse>
-		<cfreturn super.getBean(arguments.beanName,event('siteid'))>
-	</cfif>
-</cffunction>
-
-<cffunction name="announceEvent" output="false">
-	<cfargument name="eventName">
-	<cfargument name="index" default="0">
-	<cfset getEventManager().announceEvent(eventToAnnounce=arguments.eventName,currentEventObject=this,index=arguments.index)>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="renderEvent" output="false">
-	<cfargument name="eventName">
-	<cfargument name="index" default="0">
-	<cfreturn getEventManager().renderEvent(eventToRender=arguments.eventName,currentEventObject=this,index=arguments.index)>
-</cffunction>
-
-<cffunction name="createHREF" output="false">
-	<cfargument name="type" required="true" default="Page">
-	<cfargument name="filename" required="true" default="">
-	<cfargument name="siteid" required="true" default="#event('siteid')#">
-	<cfargument name="contentid" required="true" default="">
-	<cfargument name="target" required="true" default="">
-	<cfargument name="targetParams" required="true" default="">
-	<cfargument name="querystring" required="true" default="">
-	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
-	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
-	<cfargument name="indexFile" type="string" required="true" default="">
-	<cfargument name="complete" type="boolean" required="true" default="false">
-	<cfargument name="showMeta" type="string" required="true" default="0">
-	<cfreturn getContentRenderer().createHref(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="rbKey" output="false">
-	<cfargument name="key">
-	<cfargument name="locale" type="string" required="false" default="">
-	<cfif isDefined('request.muraAdminRequest') and request.muraAdminRequest>
-		<cfif len(arguments.locale)>
-			<cfreturn application.rbFactory.getKeyValue(arguments.locale,arguments.key)>
-		<cfelse>
-			<cfset var sessionData=getSession()>
-			<cfreturn application.rbFactory.getKeyValue(sessionData.rb,arguments.key)>
-		</cfif>
-	<cfelse>
-		<cfif len(arguments.locale)>
-			<cfreturn siteConfig("RBFactory").getKeyValue(arguments.locale,arguments.key)>
-		<cfelse>
-			<cfreturn siteConfig("RBFactory").getKey(arguments.key)>
-		</cfif>
-	</cfif>
-</cffunction>
-
-<cffunction name="setCustomMuraScopeKey" output="false">
-	<cfargument name="name">
-	<cfargument name="value">
-
-	<cfset this['#arguments.name#']=arguments.value>
-	<cfset request.customMuraScopeKeys['#arguments.name#']=arguments.value>
-</cffunction>
-
-<cffunction name="static" output="false">
-	<cfargument name="staticDirectory" default="">
-	<cfargument name="staticUrl" default="">
-	<cfargument name="outputDirectory" default="compiled">
-	<cfargument name="minifyMode" default="package">
-	<cfargument name="checkForUpdates" default="true">
-	<cfargument name="addCacheBusters" default="true">
-	<cfargument name="forceCompilation" default="false">
-	<cfargument name="javaLoaderScope" default="#application.configBean.getValue('cfStaticJavaLoaderScope')#">
-	<cfset var hashKey="">
-
-	<cfif not len(arguments.staticDirectory) and len(event("siteid"))>
-		<cfset arguments.staticDirectory=ExpandPath(siteConfig("themeIncludePath"))>
-	</cfif>
-
-	<cfset hashKey=hash(arguments.staticDirectory)>
-
-	<cfif not structKeyExists(application.cfstatic,hashKey)>
-
-		<cfif not len(arguments.staticUrl)>
-			<cfset arguments.staticUrl=replace(globalConfig("context") & right(arguments.staticDirectory,len(arguments.staticDirectory)-len(expandPath("/murawrm"))), "\","/","all")>
-		</cfif>
-
-		<cfif not directoryExists(arguments.staticDirectory & "/compiled")>
-			<cfset getBean("fileWriter").createDir(arguments.staticDirectory & "/compiled")>
-		</cfif>
-
-		<cfset application.cfstatic[hashKey]=createObject("component","org.cfstatic.CfStatic").init(argumentCollection=arguments)>
-	</cfif>
-	<cfreturn application.cfstatic[hashKey]>
-</cffunction>
-
-<cffunction name="each">
-	<cfargument name="collection" hint="An Query, Array, Iterator, Struct or List the action function will be applied." >
-	<cfargument name="action" hint="A function that will run per item in iterator.">
-	<cfargument name="$" default="#this#" hint="A context object that is passed to each method. It defaults to the current MuraScope istance">
-	<cfargument name="delimiters" default="," hint="The delimiter to be used when the collection argument is a list.">
-	<cfset var i="">
-	<cfset var queryIterator="">
-	<cfset var test=false>
-	<cfset var item="">
-
-	<cfif structKeyExists(arguments,"mura")>
-		<cfset arguments.$=arguments.mura>
-	</cfif>
-
-	<cfif isObject(arguments.collection) and structKeyExists(arguments.collection,"hasNext")>
-		<cfset arguments.$.event("each:count",arguments.collection.getRecordCount())>
-		<cfloop condition="arguments.collection.hasNext()">
-			<cfset item=arguments.collection.next()>
-			<cfset arguments.$.event("each:index",arguments.collection.getRecordIndex())>
-			<cfset test=arguments.action(item=item, $=arguments.$, mura=arguments.$)>
-			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>
-			</cfif>
-		</cfloop>
-	<cfelseif isArray(arguments.collection) and arrayLen(arguments.collection)>
-		<cfset arguments.$.event("each:count",arrayLen(arguments.collection))>
-		<cfloop from="1" to="#arrayLen(arguments.collection)#" index="i">
-			<cfset arguments.$.event("each:index",i)>
-			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
-			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>
-			</cfif>
-		</cfloop>
-	<cfelseif isStruct(arguments.collection)>
-		<cfset arguments.$.event("each:count",structCount(arguments.collection))>
-		<cfset arguments.$.event("each:index",0)>
-		<cfloop collection="#arguments.collection#" item="i">
-			<cfset arguments.$.event("each:index",arguments.$.event("each:index")+1)>
-			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
-			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>
-			</cfif>
-		</cfloop>
-	<cfelseif isQuery(arguments.collection)>
-		<cfset queryIterator=createObject("component","mura.iterator.queryIterator")>
-		<cfset queryIterator.setQuery(arguments.collection).init()>
-		<cfset arguments.$.event("each:count",queryIterator.getRecordCount())>
-		<cfloop condition="queryIterator.hasNext()">
-			<cfset item=queryIterator.next()>
-			<cfset arguments.$.event("each:index",queryIterator.getRecordIndex())>
-			<cfset test=arguments.action(item=item, $=arguments.$)>
-			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>
-			</cfif>
-		</cfloop>
-	<cfelseif isSimpleValue(arguments.collection) and len(arguments.collection)>
-		<cfset arguments.collection=listToArray(arguments.collection,arguments.delimiters)>
-		<cfset arguments.$.event("each:count",arrayLen(arguments.collection))>
-		<cfloop from="1" to="#arrayLen(arguments.collection)#" index="i">
-			<cfset arguments.$.event("each:index",i)>
-			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
-			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>
-			</cfif>
-		</cfloop>
-	</cfif>
-</cffunction>
-
-<cffunction name="isHandledEvent" output="false">
-<cfargument name="eventName">
-	<cfreturn structKeyExists(request.muraHandledEvents,arguments.eventName)>
-</cffunction>
-
-<cffunction name="getCrumbPropertyArray" output="false">
-	<cfargument name="property">
-	<cfargument name="direction" default="desc">
-
-	<cfset var it=content().getCrumbIterator()>
-	<cfset var propertyArray=[]>
-	<cfset var item="">
-
-	<cfif arguments.direction eq "desc">
-		<cfset it.end()>
-		<cfloop condition="it.hasPrevious()">
-			<cfset item=it.previous()>
-			<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>
-		</cfloop>
-	<cfelse>
-		<cfloop condition="it.hasNext()">
-			<cfset item=it.next()>
-			<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>
-		</cfloop>
-	</cfif>
-	<cfreturn propertyArray>
-</cffunction>
-
-<cffunction name="validateCSRFTokens" output="false">
-	<cfset arguments.$=this>
-	<cfreturn currentUser().validateCSRFTokens(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="renderCSRFTokens" output="false">
-	<cfreturn currentUser().renderCSRFTokens(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="generateCSRFTokens" output="false">
-	<cfreturn currentUser().generateCSRFTokens(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="setAdminAlert" output="false">
-	<cfargument name="key">
-	<cfargument name="text">
-	<cfargument name="type" default="">
-
-	<cfif len(event('siteid'))>
-		<cfif len(arguments.type) and !ListFindNoCase('error,warning,success,info', arguments.type)>
-			<cfset arguments.type=''>
-		</cfif>
-		<cfset var sessionData=getSession()>
-		<cfparam name="sessionData.mura.alerts" default="#structNew()#">
-		<cfif structKeyExists(sessionData.mura.alerts,'#event('siteid')#')>
-			<cfset sessionData.mura.alerts['#event('siteid')#']={}>
-		</cfif>
-		<cfset sessionData.mura.alerts['#event('siteid')#']['#arguments.key#']={text=arguments.text,type=arguments.type}>
-	</cfif>
-</cffunction>
-
-<cffunction name="removeAdminAlert" output="false">
-	<cfargument name="key">
-	<cfargument name="text">
-	<cfif len(event('siteid'))>
-		<cfset var sessionData=getSession()>
-		<cfparam name="sessionData.mura.alerts" default="#structNew()#">
-		<cfif structKeyExists(sessionData.mura.alerts,'#event('siteid')#')>
-			<cfset sessionData.mura.alerts['#event('siteid')#']={}>
-		</cfif>
-		<cfset structDelete(sessionData.mura.alerts['#event('siteid')#'],'#arguments.key#')>
-	</cfif>
-</cffunction>
-
-<cffunction name="getFeed" output="false">
-	<cfargument name="entityName">
-	<cfreturn getBean(arguments.entityName).getFeed()>
-</cffunction>
-
-</cfcomponent>
+*/
+/**
+ * This provides a utility to access all Mura functionality
+ */
+component extends="mura.cfobject" output="false" hint="This provides a utility to access all Mura functionality" {
+	variables.instance.event="";
+
+	public function init(data) output=false {
+		var initArgs=structNew();
+		if ( structKeyExists(arguments,"data") && !(isSimpleValue(arguments.data) && !len(arguments.data)) ) {
+			if ( isObject(arguments.data) ) {
+				setEvent(arguments.data);
+			} else {
+				if ( isStruct(arguments.data) ) {
+					initArgs=arguments.data;
+				} else {
+					initArgs.siteID=arguments.data;
+				}
+				initArgs.muraScope=this;
+				setEvent(createObject("component","mura.event").init(initArgs).setValue('MuraScope',this));
+			}
+		}
+		structAppend(this,request.customMuraScopeKeys,false);
+		return this;
+	}
+
+	/**
+	 * Handles missing method exceptions.
+	 */
+	public function OnMissingMethod(required string MissingMethodName, required struct MissingMethodArguments) output=false {
+		var local=structNew();
+		var object="";
+		var prefix="";
+		if ( len(arguments.MissingMethodName) ) {
+			if ( isObject(getEvent()) && structKeyExists(variables.instance.event,arguments.MissingMethodName) ) {
+				object=variables.instance.event;
+			} else if ( isObject(getContentRenderer()) && structKeyExists(getContentRenderer(),arguments.MissingMethodName) ) {
+				object=getContentRenderer();
+			} else if ( structKeyExists(request.customMuraScopeKeys,arguments.MissingMethodName) ) {
+				return request.customMuraScopeKeys[arguments.MissingMethodName];
+			} else if ( isObject(getContentBean()) ) {
+				if ( structKeyExists(getContentBean(),arguments.MissingMethodName) ) {
+					object=getContentBean();
+				} else {
+					prefix=left(arguments.MissingMethodName,3);
+					if ( listFindNoCase("set,get",prefix) && len(arguments.MissingMethodName) > 3 ) {
+						if ( getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)) ) {
+							object=getContentBean();
+						} else {
+							throw( message="The method '#arguments.MissingMethodName#' is not defined" );
+						}
+					} else {
+						throw( message="The method '#arguments.MissingMethodName#' is not defined" );
+					}
+				}
+			} else {
+				throw( message="The method '#arguments.MissingMethodName#' is not defined" );
+			}
+			savecontent variable="local.thevalue2" {
+					if ( !structIsEmpty(arguments.MissingMethodArguments) ) {
+						local.theValue1=object.invokeMethod( methodArguments=arguments.MissingMethodArguments, methodName=arguments.MissingMethodName);
+					} else {
+						local.theValue1=object.invokeMethod(methodName=arguments.MissingMethodName);
+					}
+			}
+
+			if ( isDefined("local.theValue1") ) {
+				return local.theValue1;
+			} else if ( isDefined("local.theValue2") ) {
+				return local.theValue2;
+			} else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
+
+	function getContentRenderer(force="false") output=false {
+		if ( arguments.force || !isObject(event("contentRenderer")) ) {
+			if ( len(event('siteid')) ) {
+				if ( !arguments.force && structKeyExists(request,"contentRenderer") && request.contentRenderer.getValue('siteid') == event('siteid') ) {
+					event("contentRenderer",request.contentRenderer);
+				} else {
+					//  temp fix, may become permanent
+					if ( globalConfig().getValue(property='alwaysUseLocalRenderer',defaultValue=false) ) {
+						if ( fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/contentRenderer.cfc") ) {
+							event("contentRenderer",createObject("component","#event('siteid')#.contentRenderer") );
+						} else {
+							event("contentRenderer",createObject("component","#event('siteid')#.includes.contentRenderer") );
+						}
+					} else {
+						if ( fileExists(expandPath("#siteConfig().getIncludePath()#/contentRenderer.cfc")) ) {
+							event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.contentRenderer") );
+						} else {
+							event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") );
+						}
+					}
+					//  end temp fix
+					event("contentRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") );
+					if ( fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" ) ) {
+						var themeRenderer=createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer");
+						themeRenderer.injectMethod('$',event("muraScope")).injectMethod('mura',event("muraScope")).injectMethod('event',event());
+						themeRenderer.init(event=event(),$=event("muraScope"),mura=event("muraScope") );
+						var siteRenderer=event("contentRenderer");
+						var key='';
+						for ( key in themeRenderer ) {
+							siteRenderer.injectMethod('#key#',themeRenderer[key]);
+						}
+					}
+					event("contentRenderer").setValue('siteid',event('siteid'));
+				}
+				event("contentRenderer").postMergeInit();
+			} else if ( structKeyExists(application,"contentRenderer") ) {
+				event("contentRenderer",getBean('contentRenderer'));
+			}
+		}
+		return event("contentRenderer");
+	}
+
+	/**
+* deprecated: use getContentRenderer()
+*/
+function getSiteRenderer() output=false {
+		return getContentRenderer();
+	}
+
+	/**
+* deprecated: use getContentRenderer()
+*/
+function getThemeRenderer() output=false {
+		return getContentRenderer();
+	}
+
+	function getContentBean() output=false {
+		return event("contentBean");
+	}
+
+	function setContentBean(contentBean) output=false {
+		if ( isObject(arguments.contentBean) ) {
+			return event("contentBean",arguments.contentBean);
+		}
+		return this;
+	}
+
+	function getEvent() output=false {
+		if ( !isObject(variables.instance.event) ) {
+			if ( structKeyExists(request,"servletEvent") ) {
+				variables.instance.event=request.servletEvent;
+			} else if ( structKeyExists(request,"event") ) {
+				variables.instance.event=request.event;
+			} else {
+				variables.instance.event=createObject("component","mura.event").init($=this);
+			}
+		}
+		return variables.instance.event;
+	}
+
+	function getGlobalEvent() output=false {
+		var temp="";
+		if ( structKeyExists(request,"servletEvent") ) {
+			return request.servletEvent;
+		} else if ( structKeyExists(request,"event") ) {
+			return request.event;
+		} else {
+			temp=structNew();
+			var sessionData=getSession();
+			if ( isdefined("sessionData.siteid") ) {
+				temp.siteID=sessionData.siteID;
+			}
+			request.muraGlobalEvent=createObject("component","mura.event").init(temp);
+			return request.muraGlobalEvent;
+		}
+	}
+
+	function setEvent(event) output=false {
+		if ( isObject(arguments.event) ) {
+			variables.instance.event=arguments.event;
+		}
+		return this;
+	}
+
+	function event(property, propertyValue) output=false {
+		if ( structKeyExists(arguments,"property") ) {
+			if ( isObject(getEvent()) ) {
+				if ( structKeyExists(arguments,"propertyValue") ) {
+					getEvent().setValue(arguments.property,arguments.propertyValue);
+					return this;
+				} else {
+					return getEvent().getValue(arguments.property);
+				}
+			} else {
+				throw( message="The event is not set in the Mura Scope." );
+			}
+		} else {
+			return getEvent();
+		}
+	}
+
+	function content(property, propertyValue) output=false {
+		if ( structKeyExists(arguments,"property") ) {
+			if ( isObject(getContentBean()) ) {
+				if ( structKeyExists(arguments,"propertyValue") ) {
+					getContentBean().setValue(arguments.property,arguments.propertyValue);
+					return this;
+				} else {
+					return getContentBean().getValue(arguments.property);
+				}
+			} else {
+				throw( message="The content is not set in the Mura Scope." );
+			}
+		} else {
+			return getContentBean();
+		}
+	}
+
+	function currentUser(property, propertyValue) output=false {
+		if ( structKeyExists(arguments,"property") ) {
+			if ( structKeyExists(arguments,"propertyValue") ) {
+				getCurrentUser().setValue(arguments.property,arguments.propertyValue);
+				return this;
+			} else {
+				return getCurrentUser().getValue(arguments.property);
+			}
+		} else {
+			return getCurrentUser();
+		}
+	}
+
+	function siteConfig(property, propertyValue) output=false {
+		var site="";
+		var theValue="";
+		var sessionData=getSession();
+		var siteID = Len(event('siteid'))
+? event('siteid')
+: IsDefined('sessionData') && StructKeyExists(sessionData, 'siteid')
+	? sessionData.siteid
+	: '';
+		if ( len(siteid) ) {
+			site=getBean('settingsManager').getSite(siteid);
+			if ( structKeyExists(arguments,"property") ) {
+				if ( structKeyExists(arguments,"propertyValue") ) {
+					site.setValue(arguments.property,arguments.propertyValue);
+					return this;
+				} else {
+					return (IsSimpleValue(site.getValue(arguments.property)) && Len(site.getValue(arguments.property))) || !IsSimpleValue(site.getValue(arguments.property))
+			? site.getValue(arguments.property)
+			: globalConfig(arguments.property);
+				}
+			} else {
+				return site;
+			}
+		} else {
+			throw( message="The SiteID is not set in the current Mura Scope event." );
+		}
+	}
+
+	function globalConfig(property, propertyValue) output=false {
+		var theValue="";
+		if ( structKeyExists(arguments,"property") ) {
+			if ( structKeyExists(arguments,"propertyValue") ) {
+				var args={'#arguments.property#'=arguments.propertyValue };
+				application.configBean.invokeMethod(methodName="set#arguments.property#", methodArguments=args);
+				return this;
+			} else {
+				return application.configBean.invokeMethod(methodName="get#arguments.property#");
+			}
+		} else {
+			return application.configBean;
+		}
+	}
+
+	function component(property, propertyValue) output=false {
+		var componentBean="";
+		var component=event('component');
+		if ( structKeyExists(arguments,"property") && isStruct(component) ) {
+			if ( structKeyExists(arguments,"property") && structKeyExists(component,arguments.property) ) {
+				if ( structKeyExists(arguments,"propertyValue") ) {
+					component[arguments.property]=arguments.propertyValue;
+					return this;
+				} else {
+					return component[arguments.property];
+				}
+			} else {
+				return "";
+			}
+		} else if ( isStruct(component) ) {
+			componentBean=getBean("content");
+			componentBean.setAllValues(component);
+			return componentBean;
+		} else {
+			throw( message="No component has been set in the Mura Scope." );
+		}
+	}
+
+	function currentURL() output=false {
+		return getContentRenderer().getCurrentURL();
+	}
+
+	function getParent() output=false {
+		var parent="";
+		if ( structKeyExists(request,"crumbdata") && arrayLen(request.crumbdata) > 1 ) {
+			return getBean("contentNavBean").set(request.crumbdata[2],"active");
+		} else if ( isObject(getContentBean()) ) {
+			return getContentBean().getParent();
+		} else {
+			throw( message="No primary content has been set." );
+		}
+	}
+
+	function hasParent() output=false {
+		return structKeyExists(request,"crumbdata") && arrayLen(request.crumbdata) > 1;
+	}
+
+	function getBean(beanName, siteID="") output=false {
+		if ( len(arguments.siteID) ) {
+			return super.getBean(arguments.beanName,arguments.siteID);
+		} else {
+			return super.getBean(arguments.beanName,event('siteid'));
+		}
+	}
+
+	function announceEvent(eventName, index="0") output=false {
+		getEventManager().announceEvent(eventToAnnounce=arguments.eventName,currentEventObject=this,index=arguments.index);
+		return this;
+	}
+
+	function renderEvent(eventName, index="0") output=false {
+		return getEventManager().renderEvent(eventToRender=arguments.eventName,currentEventObject=this,index=arguments.index);
+	}
+
+	function createHREF(required type="Page", required filename="", required siteid="#event('siteid')#", required contentid="", required target="", required targetParams="", required querystring="", required string context="#application.configBean.getContext()#", required string stub="#application.configBean.getStub()#", required string indexFile="", required boolean complete="false", required string showMeta="0") output=false {
+		return getContentRenderer().createHref(argumentCollection=arguments);
+	}
+
+	function rbKey(key, string locale="") output=false {
+		if ( isDefined('request.muraAdminRequest') && request.muraAdminRequest ) {
+			if ( len(arguments.locale) ) {
+				return application.rbFactory.getKeyValue(arguments.locale,arguments.key);
+			} else {
+				var sessionData=getSession();
+				return application.rbFactory.getKeyValue(sessionData.rb,arguments.key);
+			}
+		} else {
+			if ( len(arguments.locale) ) {
+				return siteConfig("RBFactory").getKeyValue(arguments.locale,arguments.key);
+			} else {
+				return siteConfig("RBFactory").getKey(arguments.key);
+			}
+		}
+	}
+
+	function setCustomMuraScopeKey(name, value) output=false {
+		this['#arguments.name#']=arguments.value;
+		request.customMuraScopeKeys['#arguments.name#']=arguments.value;
+	}
+
+	function static(staticDirectory="", staticUrl="", outputDirectory="compiled", minifyMode="package", checkForUpdates="true", addCacheBusters="true", forceCompilation="false", javaLoaderScope="#application.configBean.getValue('cfStaticJavaLoaderScope')#") output=false {
+		var hashKey="";
+		if ( !len(arguments.staticDirectory) && len(event("siteid")) ) {
+			arguments.staticDirectory=ExpandPath(siteConfig("themeIncludePath"));
+		}
+		hashKey=hash(arguments.staticDirectory);
+		if ( !structKeyExists(application.cfstatic,hashKey) ) {
+			if ( !len(arguments.staticUrl) ) {
+				arguments.staticUrl=replace(globalConfig("context") & right(arguments.staticDirectory,len(arguments.staticDirectory)-len(expandPath("/murawrm"))), "\","/","all");
+			}
+			if ( !directoryExists(arguments.staticDirectory & "/compiled") ) {
+				getBean("fileWriter").createDir(arguments.staticDirectory & "/compiled");
+			}
+			application.cfstatic[hashKey]=createObject("component","org.cfstatic.CfStatic").init(argumentCollection=arguments);
+		}
+		return application.cfstatic[hashKey];
+	}
+
+	function each(collection, action, $="#this#", delimiters=",") {
+		var i="";
+		var queryIterator="";
+		var test=false;
+		var item="";
+		if ( structKeyExists(arguments,"mura") ) {
+			arguments.$=arguments.mura;
+		}
+		if ( isObject(arguments.collection) && structKeyExists(arguments.collection,"hasNext") ) {
+			arguments.$.event("each:count",arguments.collection.getRecordCount());
+			while ( arguments.collection.hasNext() ) {
+				item=arguments.collection.next();
+				arguments.$.event("each:index",arguments.collection.getRecordIndex());
+				test=arguments.action(item=item, $=arguments.$, mura=arguments.$);
+				if ( isDefined("test") && isBoolean(test) && !test ) {
+					break;
+				}
+			}
+		} else if ( isArray(arguments.collection) && arrayLen(arguments.collection) ) {
+			arguments.$.event("each:count",arrayLen(arguments.collection));
+			for ( i=1 ; i<=arrayLen(arguments.collection) ; i++ ) {
+				arguments.$.event("each:index",i);
+				test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$);
+				if ( isDefined("test") && isBoolean(test) && !test ) {
+					break;
+				}
+			}
+		} else if ( isStruct(arguments.collection) ) {
+			arguments.$.event("each:count",structCount(arguments.collection));
+			arguments.$.event("each:index",0);
+			for ( i in arguments.collection ) {
+				arguments.$.event("each:index",arguments.$.event("each:index")+1);
+				test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$);
+				if ( isDefined("test") && isBoolean(test) && !test ) {
+					break;
+				}
+			}
+		} else if ( isQuery(arguments.collection) ) {
+			queryIterator=createObject("component","mura.iterator.queryIterator");
+			queryIterator.setQuery(arguments.collection).init();
+			arguments.$.event("each:count",queryIterator.getRecordCount());
+			while ( queryIterator.hasNext() ) {
+				item=queryIterator.next();
+				arguments.$.event("each:index",queryIterator.getRecordIndex());
+				test=arguments.action(item=item, $=arguments.$);
+				if ( isDefined("test") && isBoolean(test) && !test ) {
+					break;
+				}
+			}
+		} else if ( isSimpleValue(arguments.collection) && len(arguments.collection) ) {
+			arguments.collection=listToArray(arguments.collection,arguments.delimiters);
+			arguments.$.event("each:count",arrayLen(arguments.collection));
+			for ( i=1 ; i<=arrayLen(arguments.collection) ; i++ ) {
+				arguments.$.event("each:index",i);
+				test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$);
+				if ( isDefined("test") && isBoolean(test) && !test ) {
+					break;
+				}
+			}
+		}
+	}
+
+	function isHandledEvent(eventName) output=false {
+		return structKeyExists(request.muraHandledEvents,arguments.eventName);
+	}
+
+	function getCrumbPropertyArray(property, direction="desc") output=false {
+		var it=content().getCrumbIterator();
+		var propertyArray=[];
+		var item="";
+		if ( arguments.direction == "desc" ) {
+			it.end();
+			while ( it.hasPrevious() ) {
+				item=it.previous();
+				arrayAppend(propertyArray,item.getValue(arguments.property));
+			}
+		} else {
+			while ( it.hasNext() ) {
+				item=it.next();
+				arrayAppend(propertyArray,item.getValue(arguments.property));
+			}
+		}
+		return propertyArray;
+	}
+
+	function validateCSRFTokens() output=false {
+		arguments.$=this;
+		return currentUser().validateCSRFTokens(argumentCollection=arguments);
+	}
+
+	function renderCSRFTokens() output=false {
+		return currentUser().renderCSRFTokens(argumentCollection=arguments);
+	}
+
+	function generateCSRFTokens() output=false {
+		return currentUser().generateCSRFTokens(argumentCollection=arguments);
+	}
+
+	function setAdminAlert(key, text, type="") output=false {
+		if ( len(event('siteid')) ) {
+			if ( len(arguments.type) && !ListFindNoCase('error,warning,success,info', arguments.type) ) {
+				arguments.type='';
+			}
+			var sessionData=getSession();
+			param name="sessionData.mura.alerts" default=structNew();
+			if ( structKeyExists(sessionData.mura.alerts,'#event('siteid')#') ) {
+				sessionData.mura.alerts['#event('siteid')#']={};
+			}
+			sessionData.mura.alerts['#event('siteid')#']['#arguments.key#']={text=arguments.text,type=arguments.type};
+		}
+	}
+
+	function removeAdminAlert(key, text) output=false {
+		if ( len(event('siteid')) ) {
+			var sessionData=getSession();
+			param name="sessionData.mura.alerts" default=structNew();
+			if ( structKeyExists(sessionData.mura.alerts,'#event('siteid')#') ) {
+				sessionData.mura.alerts['#event('siteid')#']={};
+			}
+			structDelete(sessionData.mura.alerts['#event('siteid')#'],'#arguments.key#');
+		}
+	}
+
+	function getFeed(entityName) output=false {
+		return getBean(arguments.entityName).getFeed();
+	}
+}

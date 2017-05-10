@@ -1,4 +1,6 @@
-<!--- This file is part of Mura CMS.
+<cfprocessingdirective pageencoding="utf-8">
+<cfscript>
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -9,7 +11,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
+You should have received a copy of txhe GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
@@ -43,132 +45,126 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfparam name="local" default="#structNew()#">
-<cfparam name="application.appInitializedTime" default="" />
-<cfparam name="application.appInitialized" default="false" />
-<cfparam name="application.appAutoUpdated" default="false" />
-<cfparam name="application.appReloadKey" default="appreload" />
-<cfparam name="application.broadcastInit" default="false" />
-<cfparam name="application.sessionTrackingThrottle" default="true"/>
-<cfparam name="application.instanceID" default="#createUUID()#" />
-<cfparam name="application.CFVersion" default="#listFirst(SERVER.COLDFUSION.PRODUCTVERSION)#" />
-<cfparam name="application.setupComplete" default="false">
+*/
+param name="application.appInitializedTime" default="";
+param name="application.appInitialized" default=false;
+param name="application.appAutoUpdated" default=false;
+param name="application.appReloadKey" default="appreload";
+param name="application.broadcastInit" default=false;
+param name="application.sessionTrackingThrottle" default=true;
+param name="application.instanceID" default=createUUID();
+param name="application.CFVersion" default=listFirst(SERVER.COLDFUSION.PRODUCTVERSION);
+param name="application.setupComplete" default=false;
+request.muraAppreloaded=true;
 
-<cfset request.muraAppreloaded=true>
+if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.coldfusion.productversion) < 9 ) {
+	writeOutput("Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
+	abort;
+}
 
-<cfif left(server.coldfusion.productversion,5) eq "9,0,0" or listFirst(server.coldfusion.productversion) lt 9>
-	<cfoutput>Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility</cfoutput>
-	<cfabort>
-</cfif>
-<!--- this is here for CF8 compatibility --->
-<cfset variables.baseDir=this.baseDir>
-<cfprocessingdirective pageencoding="utf-8"/>
-<cfsetting requestTimeout = "1000">
+//  this is here for CF8 compatibility
+variables.baseDir=this.baseDir;
 
-<!--- do a settings setup check --->
-<cfif NOT application.setupComplete OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
-	<cfif getINIProperty(entry="mode",section="settings") eq "production">
-		<cfif directoryExists( variables.basedir & "/config/setup" )>
-			<cfset application.setupComplete = false />
-			<!--- check the settings --->
-			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
-			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
-
-			<cfif trim( getINIProperty("datasource") ) IS NOT ""
+//  do a settings setup check
+if ( !application.setupComplete || (not application.appInitialized || structKeyExists(url,application.appReloadKey) ) ) {
+	if ( getINIProperty(entry="mode",section="settings") == "production" ) {
+		if ( directoryExists( variables.basedir & "/config/setup" ) ) {
+			application.setupComplete = false;
+			//  check the settings
+			param name="application.setupSubmitButton" default="A#hash( createUUID() )#";
+			param name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#";
+			include "/muraWRM/config/appcfc/setup_check.cfm";
+			if ( trim( getINIProperty("datasource") ) != ""
 					AND (
 						NOT isDefined( "FORM.#application.setupSubmitButton#" )
 						AND
 						NOT isDefined( "FORM.#application.setupSubmitButtonComplete#" )
-						)
-				>
+						) ) {
+				application.setupComplete = true;
+			} else {
+				//  check to see if the index.cfm page exists in the setup folder
+				if ( !fileExists( variables.basedir & "/config/setup/index.cfm" ) ) {
+					throw( message="Your setup directory is incomplete. Please reset it up from the Mura source." );
+				}
+				application.setupComplete = false;
+			}
+		} else {
+			application.setupComplete = true;
+		}
+	} else {
+		application.setupComplete=true;
+	}
+}
+if ( application.setupComplete ) {
+	application.appInitialized=false;
+	request.muraShowTrace=true;
+	application.appInitialized=false;
+	request.muraShowTrace=true;
+	variables.iniPath = "#variables.basedir#/config/settings.ini.cfm";
+	variables.iniSections=getProfileSections(variables.iniPath);
+	variables.iniProperties=structNew();
 
-				<cfset application.setupComplete = true />
-			<cfelse>
-				<!--- check to see if the index.cfm page exists in the setup folder --->
-				<cfif NOT fileExists( variables.basedir & "/config/setup/index.cfm" )>
-					<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
-				</cfif>
-				<cfset application.setupComplete = false />
-			</cfif>
-		<cfelse>
-			<cfset application.setupComplete = true />
-		</cfif>
-	<cfelse>
-		<cfset application.setupComplete=true>
-	</cfif>
-</cfif>
+	for(variables.p in listToArray(variables.iniSections.settings)){
+		variables.envVar='MURA_#UCASE(variables.p)#';
+		if ( structKeyExists(request.muraSysEnv,variables.envVar) ) {
+			variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar];
+		} else {
+			variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p);
+		}
+		if ( left(variables.iniProperties[variables.p],2) == "${"
+					and right(variables.iniProperties[variables.p],1) == "}" ) {
+			variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3);
+			variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
+		} else if ( left(variables.iniProperties[variables.p],2) == "{{"
+					and right(variables.iniProperties[variables.p],2) == "}}" ) {
+			variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4);
+			variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
+		}
+	}
 
-<cfif application.setupComplete>
-	<cfset application.appInitialized=false>
-	<cfset request.muraShowTrace=true>
+	for(variables.p in listToArray(variables.iniSections[ variables.iniProperties.mode])){
+		variables.envVar='MURA_#UCASE(variables.p)#';
+		if ( structKeyExists(request.muraSysEnv,variables.envVar) ) {
+			variables.iniProperties[variables.p]=request.muraSysEnv[variables.envVar];
+		} else {
+			variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p);
+		}
+		if ( left(variables.iniProperties[variables.p],2) == "${"
+					and right(variables.iniProperties[variables.p],1) == "}" ) {
+			variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3);
+			variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
+		} else if ( left(variables.iniProperties[variables.p],2) == "{{"
+					and right(variables.iniProperties[variables.p],2) == "}}" ) {
+			variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4);
+			variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p]);
+		}
+	}
 
-	<cfset application.appInitialized=false>
-	<cfset request.muraShowTrace=true>
 
-	<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
+	try {
+		if ( !structKeyExists(variables.iniProperties,"encryptionkey") || !len(variables.iniProperties["encryptionkey"]) ) {
+			variables.iniProperties.encryptionkey=generateSecretKey('AES');
+			createobject("component","mura.IniFile").init(variables.iniPath).set( variables.iniProperties.mode, "encryptionkey", variables.iniProperties.encryptionkey );
+		}
+	} catch (any cfcatch) {
+	}
 
-	<cfset variables.iniSections=getProfileSections(variables.iniPath)>
+	variables.iniProperties.webroot = expandPath("/muraWRM");
+	variables.mode = variables.iniProperties.mode;
+	variables.mapdir = "mura";
+	variables.webroot = variables.iniProperties.webroot;
+	if ( !structKeyExists(variables.iniProperties,"useFileMode") ) {
+		variables.iniProperties.useFileMode=true;
+	}
+	if ( !StructKeyExists(variables.iniProperties, 'fileDelim') ) {
+		variables.iniProperties.fileDelim = '';
+	}
+	application.appReloadKey = variables.iniProperties.appreloadkey;
+	variables.iniProperties.webroot = expandPath("/muraWRM");
+	variables.tracer=createObject("component","mura.cfobject").init();
+	variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1");
 
-	<cfset variables.iniProperties=structNew()>
-	<cfloop list="#variables.iniSections.settings#" index="variables.p">
-		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>
-		<cfif left(variables.iniProperties[variables.p],2) eq "${"
-			and right(variables.iniProperties[variables.p],1) eq "}">
-			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
-			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
-			and right(variables.iniProperties[variables.p],2) eq "}}">
-			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
-			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		</cfif>
-	</cfloop>
-
-	<cfloop list="#variables.iniSections[ variables.iniProperties.mode]#" index="variables.p">
-		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p)>
-		<cfif left(variables.iniProperties[variables.p],2) eq "${"
-			and right(variables.iniProperties[variables.p],1) eq "}">
-			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
-			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
-			and right(variables.iniProperties[variables.p],2) eq "}}">
-			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
-			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		</cfif>
-	</cfloop>
-
-	<cftry>
-		<cfif not structKeyExists(variables.iniProperties,"encryptionkey") or not len(variables.iniProperties["encryptionkey"])>
-			<cfset variables.iniProperties.encryptionkey=generateSecretKey('AES')>
-			<cfset createobject("component","mura.IniFile").init(variables.iniPath).set( variables.iniProperties.mode, "encryptionkey", variables.iniProperties.encryptionkey )>
-		</cfif>
-		<cfcatch></cfcatch>
-	</cftry>
-
-	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
-	<cfset variables.iniProperties.mapdir = "mura">
-	<cfset variables.mode = variables.iniProperties.mode />
-	<cfset variables.mapdir = variables.iniProperties.mapdir />
-	<cfset variables.webroot = variables.iniProperties.webroot />
-
-	<cfif not structKeyExists(variables.iniProperties,"useFileMode")>
-		<cfset variables.iniProperties.useFileMode=true>
-	</cfif>
-
-	<cfif not StructKeyExists(variables.iniProperties, 'fileDelim')>
-		<cfset variables.iniProperties.fileDelim = '' />
-	</cfif>
-
-	<cfset application.appReloadKey = variables.iniProperties.appreloadkey />
-
-	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
-
-	<cfset variables.tracer=createObject("component","mura.cfobject").init()>
-
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1")>
-
-	<cfscript>
-		if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
+	if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
 	    	directoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
 	    }
 
@@ -200,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.addAlias("contentGateway","contentGatewayLucee");
 		}
 
-		if(getINIProperty("javaEnabled",true) && getINIProperty("legacyJavaLoader",true)){
+		if(getINIProperty("javaEnabled",true) && not request.muraInDocker && getINIProperty("legacyJavaLoader",true)){
 			variables.serviceFactory.addBean('javaLoader',
 					new mura.javaloader.JavaLoader(
 						loadPaths=[
@@ -281,46 +277,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("oauthToken","oauthTokenBean");
 		variables.serviceFactory.addAlias("dataCollection","dataCollectionBean");
 		application.serviceFactory=variables.serviceFactory;
-	</cfscript>
+		application.serviceFactory.getBean('utility').setRequestTimeout(1000);
 
-	<cfif listfindnocase('oracle,postgresql,nuodb', application.configBean.getDbType()) >
-		<cfset application.configBean.setDbCaseSensitive(true)>
-	</cfif>
+	if ( listfindnocase('oracle,postgresql,nuodb', application.configBean.getDbType()) ) {
+		application.configBean.setDbCaseSensitive(true);
+	}
+	try {
+		if ( !application.configBean.getDbCaseSensitive() && application.serviceFactory.getBean('dbUtility').version().database_productname == 'h2' ) {
+			application.configBean.setDbCaseSensitive(true);
+		}
+	} catch (any cfcatch) {
+	}
+	variables.tracer.commitTracepoint(variables.tracepoint);
+	try {
 
-	<cftry>
-		<cfif not application.configBean.getDbCaseSensitive() and application.serviceFactory.getBean('dbUtility').version().database_productname eq 'h2'>
-			<cfset application.configBean.setDbCaseSensitive(true)>
-		</cfif>
-		<cfcatch></cfcatch>
-	</cftry>
+		application.serviceFactory.getBean('utility').clearObjectCache();
 
-	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
+	} catch (any cfcatch) {
+	}
+	// You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded
+	if ( fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm")) ) {
+		include "/muraWRM/config/onGlobalConfig.cfm";
+	}
+	application.objectMappings={};
+	application.objectMappings.bundleableBeans="";
+	application.objectMappings.versionedBeans="";
+	if ( application.appAutoUpdated || isdefined('url.applyDBUpdates') ) {
+		variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates");
+		application.configBean.applyDbUpdates();
+		variables.tracer.commitTracepoint(variables.tracepoint);
+	} else if ( fileExists(ExpandPath("/muraWRM/config/objectMappings.json.cfm")) ) {
+		cffile( variable="variables.objectMappingJSON", file=ExpandPath("/muraWRM/config/objectMappings.json.cfm"), action="read" );
+		application.objectMappings=deserializeJSON(variables.objectMappingJSON);
+	} else {
 
-
-	<cftry>
-		<cfobjectcache action="clear" />
-		<cfcatch></cfcatch>
-	</cftry>
-
-	<!---You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded --->
-	<cfif fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm"))>
-		<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
-	</cfif>
-
-	<cfset application.objectMappings={}>
-	<cfset application.objectMappings.bundleableBeans="">
-	<cfset application.objectMappings.versionedBeans="">
-
-	<cfif application.appAutoUpdated or isdefined('url.applyDBUpdates')>
-		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")>
-		<cfset application.configBean.applyDbUpdates() />
-		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-	<cfelseif fileExists(ExpandPath("/muraWRM/config/objectMappings.json.cfm"))>
-		<cffile variable="variables.objectMappingJSON" action="read" file="#ExpandPath("/muraWRM/config/objectMappings.json.cfm")#"  />
-		<cfset application.objectMappings=deserializeJSON(variables.objectMappingJSON)>
-	<cfelse>
-		<cfscript>
-			variables.serviceFactory.getBean('approvalChain');
+		variables.serviceFactory.getBean('approvalChain');
 			variables.serviceFactory.getBean('approvalChainMembership');
 			variables.serviceFactory.getBean('approvalRequest');
 			variables.serviceFactory.getBean('approvalAction');
@@ -340,309 +331,283 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.getBean('variationTargeting');
 			variables.serviceFactory.getBean('oauthClient');
 			variables.serviceFactory.getBean('oauthToken');
-		</cfscript>
-	</cfif>
+	}
+	variables.serviceFactory.getBean('contentCategoryAssign');
+	application.appAutoUpdated=false;
+	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";
+	//  The ad manager has been removed, but may be there in certain legacy conditions
+	if ( application.serviceFactory.containsBean('advertiserManager') ) {
+		variables.serviceList=listAppend(variables.serviceList,'advertiserManager');
+	}
+	//  These application level services use the beanServicePlaceHolder to lazy load the bean
 
-	<cfset variables.serviceFactory.getBean('contentCategoryAssign')>
+	for(variables.i in listToArray(variables.serviceList)){
+		variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#");
+		try {
+			application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#");
+		} catch (any cfcatch) {
+			if ( application.configBean.getDebuggingEnabled() ) {
+				writeDump( var=variables.i );
+				writeDump( var=cfcatch, abort=true );
+			}
+		}
+		variables.tracer.commitTracepoint(variables.tracepoint);
+		application.mura=application.serviceFactory.getBean('mura');
+	}
 
-	<cfset application.appAutoUpdated=false>
+	//  End beanServicePlaceHolders
+	variables.temp='';
+	application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL");
+	variables.tracepoint=variables.tracer.initTracepoint("Instantiating classExtensionManager");
+	application.classExtensionManager=application.configBean.getClassExtensionManager();
+	variables.tracer.commitTracepoint(variables.tracepoint);
+	variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory");
+	application.rbFactory=new mura.resourceBundle.resourceBundleFactory();
+	variables.tracer.commitTracepoint(variables.tracepoint);
+	// settings.custom.managers.cfm reference is for backwards compatibility
+	if ( fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm")) ) {
+		include "/muraWRM/config/settings.custom.managers.cfm";
+	}
+	variables.basedir=expandPath("/muraWRM");
+	variables.mapprefix="";
+	if ( len(application.configBean.getValue('encryptionKey')) ) {
+		application.encryptionKey=application.configBean.getValue('encryptionKey');
+	}
 
-	<cfset variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
+	variables.rsRequirements=application.serviceFactory.getBean('fileWriter').getDirectoryList(directory="#variables.basedir#/requirements/");
 
-	<!--- The ad manager has been removed, but may be there in certain legacy conditions --->
-	<cfif application.serviceFactory.containsBean('advertiserManager')>
-		<cfset variables.serviceList=listAppend(variables.serviceList,'advertiserManager')>
-	</cfif>
+	for(i=1;i <= variables.rsRequirements.recordcount;i++){
+		if ( variables.rsRequirements.type[i] == "dir" && variables.rsRequirements.name[i] != '.svn' && !structKeyExists(this.mappings,"/#variables.rsRequirements.name[i]#") ) {
+			application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name[i]#"] = variables.basedir & "/requirements/#variables.rsRequirements.name[i]#">');
+		}
+	}
 
-	<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
-	<cfloop list="#variables.serviceList#" index="variables.i">
-		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#")>
-		<cftry>
-			<cfset application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#") />
-			<cfcatch>
-				<cfif application.configBean.getDebuggingEnabled()>
-					<cfdump var="#variables.i#">
-					<cfdump var="#cfcatch#" abort="true">
-				</cfif>
-			</cfcatch>
-		</cftry>
-		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-		<cfset application.mura=application.serviceFactory.getBean('mura')>
-	</cfloop>
+	if ( application.configBean.getValue("autoDiscoverPlugins") && !isdefined("url.safemode") ) {
+		application.pluginManager.discover();
+	}
+	application.cfstatic=structNew();
+	application.appInitialized=true;
+	application.appInitializedTime=now();
+	application.clusterManager.reload(broadcast=application.broadcastInit);
+	application.broadcastInit=true;
 
+	structDelete(application,"muraAdmin");
+	structDelete(application,"proxyServices");
+	structDelete(application,"CKFinderResources");
+	//  Set up scheduled tasks
+	if ( (len(application.configBean.getServerPort())-1) < 1 ) {
+		variables.port=80;
+	} else {
+		variables.port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1);
+	}
+	if ( listFindNoCase('Railo,Lucee',application.configBean.getCompiler()) ) {
+		variables.siteMonitorTask="siteMonitor";
+	} else {
+		variables.siteMonitorTask="#application.configBean.getWebRoot()#/index.cfm/_api/sitemonitor/";
+	}
+	try {
+		if ( isBoolean(variables.iniProperties.ping) && variables.iniProperties.ping ) {
+			local.updateurl = "http://" & listFirst(cgi.http_host,":") & application.configBean.getContext() & "/index.cfm/_api/sitemonitor/";
 
-	<!--- End beanServicePlaceHolders --->
-
-	<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
-	<cfset application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL")/>
-
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating classExtensionManager")>
-	<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
-	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")>
-	<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory() />
-	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-
-	<!---settings.custom.managers.cfm reference is for backwards compatibility --->
-	<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
-		<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
-	</cfif>
-
-	<cfset variables.basedir=expandPath("/muraWRM")/>
-	<cfset variables.mapprefix="" />
-
-	<cfif len(application.configBean.getValue('encryptionKey'))>
-		<cfset application.encryptionKey=application.configBean.getValue('encryptionKey')>
-	</cfif>
-
-	<cfdirectory action="list" directory="#variables.basedir#/requirements/" name="variables.rsRequirements">
-
-	<cfloop query="variables.rsRequirements">
-		<cfif variables.rsRequirements.type eq "dir" and variables.rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#variables.rsRequirements.name#")>
-			<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name#"] = variables.basedir & "/requirements/#variables.rsRequirements.name#">')>
-		</cfif>
-	</cfloop>
-
-	<cfif application.configBean.getValue("autoDiscoverPlugins") and not isdefined("url.safemode")>
-		<cfset application.pluginManager.discover()>
-	</cfif>
-
-	<cfset application.cfstatic=structNew()>
-	<cfset application.appInitialized=true/>
-	<cfset application.appInitializedTime=now()>
-	<cfset application.clusterManager.reload(broadcast=application.broadcastInit)>
-	<cfset application.broadcastInit=true/>
-	<cfset structDelete(application,"muraAdmin")>
-	<cfset structDelete(application,"proxyServices")>
-	<cfset structDelete(application,"CKFinderResources")>
-
-	<!--- Set up scheduled tasks --->
-	<cfif (len(application.configBean.getServerPort())-1) lt 1>
-		<cfset variables.port=80/>
-	<cfelse>
-		<cfset variables.port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1) />
-	</cfif>
-
-	<cfif listFindNoCase('Railo,Lucee',application.configBean.getCompiler())>
-		<cfset variables.siteMonitorTask="siteMonitor"/>
-	<cfelse>
-		<cfset variables.siteMonitorTask="#application.configBean.getWebRoot()#/index.cfm/_api/sitemonitor/"/>
-	</cfif>
-
-	<cftry>
-		<cfif variables.iniProperties.ping eq 1>
-			<cfset local.updateurl = "http://" & listFirst(cgi.http_host,":") & application.configBean.getContext() & "/index.cfm/_api/sitemonitor/" />
-			<cfschedule action = "update"
-				task = "#variables.siteMonitorTask#"
-				operation = "HTTPRequest"
-				url = "#local.updateurl#"
-				port="#variables.port#"
-				startDate = "#dateFormat(now(),'mm/dd/yyyy')#"
-				startTime = "#createTime(0,15,0)#"
-				publish = "No"
-				interval = "900"
+			application.serviceFactory.getBean('utility').scheduleTask(
+				action = "update",
+				task = "#variables.siteMonitorTask#",
+				operation = "HTTPRequest",
+				url = "#local.updateurl#",
+				port="#variables.port#",
+				startDate = "#dateFormat(now(),'mm/dd/yyyy')#",
+				startTime = "#createTime(0,15,0)#",
+				publish = "No",
+				interval = "900",
 				requestTimeOut = "600"
-			/>
-		</cfif>
-		<cfcatch></cfcatch>
-	</cftry>
+			);
 
-	<cfif application.configBean.getCreateRequiredDirectories()>
-		<cfif not directoryExists("#application.configBean.getWebRoot()#/plugins")>
-			<cftry>
-				<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()#/plugins">
-				<cfcatch>
-					<cfdirectory action="create" directory="#application.configBean.getWebRoot()#/plugins">
-				</cfcatch>
-			</cftry>
-		</cfif>
+		}
+	} catch (any cfcatch) {
+	}
+	if ( application.configBean.getCreateRequiredDirectories() ) {
+		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
+			try {
+				cfdirectory( mode=777, directory="#application.configBean.getWebRoot()#/plugins", action="create" );
+			} catch (any cfcatch) {
+				cfdirectory( directory="#application.configBean.getWebRoot()#/plugins", action="create" );
+			}
+		}
+		if ( !fileExists(variables.basedir & "/robots.txt") ) {
+			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt");
+		}
+		if ( !fileExists(variables.basedir & "/web.config") ) {
+			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/web.config.template.cfm", destination="#variables.basedir#/web.config");
+		}
+		if ( !fileExists(variables.basedir & "/requirements/cfformprotect/cffp.ini.cfm") ) {
+			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/cffp.ini.template.cfm", destination="#variables.basedir#/requirements/cfformprotect/cffp.ini.cfm");
+		}
+	}
+	if ( !structKeyExists(application,"plugins") ) {
+		application.plugins=structNew();
+	}
+	application.pluginstemp=application.plugins;
+	application.plugins=structNew();
+	variables.pluginEvent=createObject("component","mura.event").init();
 
-		<cfif not fileExists(variables.basedir & "/robots.txt")>
-			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt")>
-		</cfif>
+	try {
+		application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent);
+	} catch (any cfcatch) {
+		structAppend(application.plugins,application.pluginstemp,false);
+		structDelete(application,"pluginstemp");
+		rethrow;
+	}
+	structDelete(application,"pluginstemp");
+	//  Fire local onApplicationLoad events
+	variables.rsSites=application.settingsManager.getList();
 
-		<cfif not fileExists(variables.basedir & "/web.config")>
-			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/web.config.template.cfm", destination="#variables.basedir#/web.config")>
-		</cfif>
+	for(i=1;i <= variables.rsSites.recordcount;i++){
+		variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteID[i]);
+		variables.themedir=expandPath(variables.siteBean.getThemeIncludePath());
+		if ( fileExists(variables.themedir & '/config.xml.cfm') ) {
+			variables.themeConfig='config.xml.cfm';
+		} else if ( fileExists(variables.themedir & '/config.xml') ) {
+			variables.themeConfig='config.xml';
+		} else {
+			variables.themeConfig="";
+		}
+		if ( len(variables.themeConfig) ) {
+			if ( variables.themeConfig == "config.xml.cfm" ) {
+				savecontent variable="variables.themeConfig" {
+					include "#variables.siteBean.getThemeIncludePath()#/config.xml.cfm";
+				}
+			} else {
+				variables.themeConfig=fileRead(variables.themedir & "/" & variables.themeConfig);
+			}
+			if ( IsValid('xml', variables.themeConfig) ) {
+				variables.themeConfig=xmlParse(variables.themeConfig);
+				application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites.siteid[i]);
+			}
+		}
+		variables.localHandler=variables.siteBean.getLocalHandler();
+		if ( isObject(variables.localHandler) ) {
+			if ( structKeyExists(variables.localhandler,"onApplicationLoad") ) {
+				variables.pluginEvent.setValue("siteID",variables.rsSites.siteID[i]);
+				variables.pluginEvent.loadSiteRelatedObjects();
+				if ( !isDefined('variables.localhandler.injectMethod') ) {
+					variables.localhandler.injectMethod=variables.pluginEvent.injectMethod;
+				}
+				if ( !isDefined('variables.localhandler.getValue') ) {
+					variables.localhandler.injectMethod('getValue',variables.pluginEvent.getValue);
+				}
+				if ( !isDefined('variables.localhandler.setValue') ) {
+					variables.localhandler.injectMethod('setValue',variables.pluginEvent.setValue);
+				}
+				variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler.getValue('_objectName')#.onApplicationLoad");
+				variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"));
+				application.pluginManager.commitTracepoint(variables.tracepoint);
+			}
+		}
+		variables.expandedPath=expandPath(variables.siteBean.getThemeIncludePath()) & "/eventHandler.cfc";
+		if ( fileExists(variables.expandedPath) ) {
+			variables.themeHandler=createObject("component","#variables.siteBean.getThemeAssetMap()#.eventHandler").init();
+			if ( structKeyExists(variables.themeHandler,"onApplicationLoad") ) {
+				variables.pluginEvent.setValue("siteID",variables.rsSites.siteID[i]);
+				variables.pluginEvent.loadSiteRelatedObjects();
+				if ( !isDefined('variables.themeHandler.injectMethod') ) {
+					variables.themeHandler.injectMethod=variables.pluginEvent.injectMethod;
+				}
+				if ( !isDefined('variables.themeHandler.getValue') ) {
+					variables.themeHandler.injectMethod('getValue',variables.pluginEvent.getValue);
+				}
+				if ( !isDefined('variables.themeHandler.setValue') ) {
+					variables.themeHandler.injectMethod('setValue',variables.pluginEvent.setValue);
+				}
+				variables.themeHandler.setValue("_objectName","#variables.siteBean.getThemeAssetMap()#.eventHandler");
+				variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler.getValue('_objectName')#.onApplicationLoad");
+				variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"));
+				application.pluginManager.commitTracepoint(variables.tracepoint);
+			}
+			application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID[i]);
+		}
 
-		<cfif not fileExists(variables.basedir & "/requirements/cfformprotect/cffp.ini.cfm")>
-			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/cffp.ini.template.cfm", destination="#variables.basedir#/requirements/cfformprotect/cffp.ini.cfm")>
-		</cfif>
-	</cfif>
+	}
 
-	<cfif not structKeyExists(application,"plugins")>
-		<cfset application.plugins=structNew()>
-	</cfif>
-	<cfset application.pluginstemp=application.plugins>
-	<cfset application.plugins=structNew()>
-	<cfset variables.pluginEvent=createObject("component","mura.event").init()>
+	qs=new Query();
+	qs.setUsername(application.configBean.getDbUserName());
+	qs.setPassword(application.configBean.getDbPassword());
+	qs.setDatasource(application.configBean.getDatasource());
 
-	<!---
-	<cfset application.pluginManager.discoverBeans()>
-	--->
-	<cftry>
-		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent)>
-		<cfcatch>
-			<cfset structAppend(application.plugins,application.pluginstemp,false)>
-			<cfset structDelete(application,"pluginstemp")>
-			<cfrethrow>
-		</cfcatch>
-	</cftry>
-
-	<cfset structDelete(application,"pluginstemp")>
-
-	<!--- Fire local onApplicationLoad events--->
-	<cfset variables.rsSites=application.settingsManager.getList() />
-
-	<cfloop query="variables.rsSites">
-		<cfset variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteID)>
-		<cfset variables.themedir=expandPath(variables.siteBean.getThemeIncludePath())>
-
-		<cfif fileExists(variables.themedir & '/config.xml.cfm')>
-			<cfset variables.themeConfig='config.xml.cfm'>
-		<cfelseif fileExists(variables.themedir & '/config.xml')>
-			<cfset variables.themeConfig='config.xml'>
-		<cfelse>
-			<cfset variables.themeConfig="">
-		</cfif>
-
-		<cfif len(variables.themeConfig)>
-			<cfif variables.themeConfig eq "config.xml.cfm">
-				<cfsavecontent variable="variables.themeConfig">
-					<cfinclude template="#variables.siteBean.getThemeIncludePath()#/config.xml.cfm">
-				</cfsavecontent>
-			<cfelse>
-				<cfset variables.themeConfig=fileRead(variables.themedir & "/" & variables.themeConfig)>
-			</cfif>
-
-			<cfif IsValid('xml', variables.themeConfig)>
-				<cfset variables.themeConfig=xmlParse(variables.themeConfig)>
-				<cfset application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites.siteid)>
-			</cfif>
-
-		</cfif>
-
-		<cfset variables.localHandler=variables.siteBean.getLocalHandler()>
-
-		<cfif isObject(variables.localHandler)>
-			<cfif structKeyExists(variables.localhandler,"onApplicationLoad")>
-				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
-				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
-
-				<cfif not isDefined('variables.localhandler.injectMethod')>
-					<cfset variables.localhandler.injectMethod=variables.pluginEvent.injectMethod>
-				</cfif>
-
-				<cfif not isDefined('variables.localhandler.getValue')>
-					<cfset variables.localhandler.injectMethod('getValue',variables.pluginEvent.getValue)>
-				</cfif>
-
-				<cfif not isDefined('variables.localhandler.setValue')>
-					<cfset variables.localhandler.injectMethod('setValue',variables.pluginEvent.setValue)>
-				</cfif>
-
-				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler.getValue('_objectName')#.onApplicationLoad")>
-				<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"))>
-				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
-			</cfif>
-		</cfif>
-
-		<cfset variables.expandedPath=expandPath(variables.siteBean.getThemeIncludePath()) & "/eventHandler.cfc">
-		<cfif fileExists(variables.expandedPath)>
-			<cfset variables.themeHandler=createObject("component","#variables.siteBean.getThemeAssetMap()#.eventHandler").init()>
-			<cfif structKeyExists(variables.themeHandler,"onApplicationLoad")>
-				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
-				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
-
-				<cfif not isDefined('variables.themeHandler.injectMethod')>
-					<cfset variables.themeHandler.injectMethod=variables.pluginEvent.injectMethod>
-				</cfif>
-
-				<cfif not isDefined('variables.themeHandler.getValue')>
-					<cfset variables.themeHandler.injectMethod('getValue',variables.pluginEvent.getValue)>
-				</cfif>
-
-				<cfif not isDefined('variables.themeHandler.setValue')>
-					<cfset variables.themeHandler.injectMethod('setValue',variables.pluginEvent.setValue)>
-				</cfif>
-
-				<cfset variables.themeHandler.setValue("_objectName","#variables.siteBean.getThemeAssetMap()#.eventHandler")>
-				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler.getValue('_objectName')#.onApplicationLoad")>
-				<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"),m=variables.pluginEvent.getValue("muraScope"))>
-				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
-			</cfif>
-			<cfset application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID)>
-		</cfif>
-	</cfloop>
-
-	<!--- This looks for and update File and Link nodes that legacy urls --->
-	<cfquery name="variables.legacyURLs" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
-		select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
+	variables.legacyURLs=qs.execute(sql="select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
 		and active=1
 		and body is null
-		and filename is not null
-	</cfquery>
+		and filename is not null").getResult();
 
-	<cfset variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs)>
+	variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs);
 
-	<cfloop condition="variables.legacyURLsIterator.hasNext()">
-		<cfset variables.item=variables.legacyURLsIterator.next()>
+	while ( variables.legacyURLsIterator.hasNext() ) {
+		variables.item=variables.legacyURLsIterator.next();
 
-		<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
-			update tcontent set body=filename where
-			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
-			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
-			and body is null
-		</cfquery>
+		qs=new Query();
+		qs.setUsername(application.configBean.getDbUserName());
+		qs.setPassword(application.configBean.getDbPassword());
+		qs.setDatasource(application.configBean.getDatasource());
+		qs.addParam(name="contentid", cfsqltype="cf_sql_varchar", value=variables.item.getContentID() );
+		qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.item.getSiteID() );
 
-		<cfset application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item)>
+		qs.execute(sql="update tcontent set body=filename where contentID= :contentid and siteid = :siteid and body is null");
 
-		<cftry>
-			<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
-				update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getFilename()#">,
-				urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getURLTitle()#">  where
-				contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
-				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
-			</cfquery>
-			<cfcatch>
-				<cfthrow message="An error occurred trying to create a filename for #variables.item.getFilename()#">
-			</cfcatch>
-		</cftry>
-	</cfloop>
+		application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item);
+		try {
 
-	<!--- Clean root admin directory --->
-	<cfdirectory action="list" directory="#expandPath('/muraWRM#application.configBean.getAdminDir()#/')#" name="local.rs">
-	<cfset local.tempDir=expandPath('/muraWRM#application.configBean.getAdminDir()#/temp/')>
-	<cfset local.fileWriter=application.serviceFactory.getBean('fileWriter')>
-	<cfloop query="local.rs">
-		<cfif not listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom,framework',local.rs.name)>
-			<cftry>
-			<cfset local.fileWriter.touchDir(local.tempDir)>
-			<cfif local.rs.type eq 'dir'>
-				<cfset local.fileWriter.renameDir(directory=local.rs.directory & "/" & local.rs.name,newDirectory=local.rs.directory & "/temp/" & local.rs.name )>
-			<cfelse>
-				<cfset local.fileWriter.renameFile(source=local.rs.directory & "/" & local.rs.name,destination=local.rs.directory & "/temp/" & local.rs.name )>
-			</cfif>
-			<cfcatch></cfcatch>
-			</cftry>
-		</cfif>
-	</cfloop>
+			qs=new Query();
+			qs.setUsername(application.configBean.getDbUserName());
+			qs.setPassword(application.configBean.getDbPassword());
+			qs.setDatasource(application.configBean.getDatasource());
 
-	<cfset local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip")>
-	<cfif fileExists(local.bundleLoc) and application.contentGateway.getPageCount('default').counter eq 1>
-		<cfset application.settingsManager.restoreBundle(
+			qs.addParam( name="filename",cfsqltype="cf_sql_varchar", value=variables.item.getFilename() );
+			qs.addParam(name="urltitle", cfsqltype="cf_sql_varchar", value=variables.item.getURLTitle() );
+			qs.addParam(name="contentid", cfsqltype="cf_sql_varchar", value=variables.item.getContentID() );
+			qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.item.getSiteID() );
+
+			qs.execute(sql="update tcontent set filename= :filename, urlTitle= :urltitle where contentid= :contentid and siteid= :siteid");
+
+		} catch (any cfcatch) {
+			throw( message="An error occurred trying to create a filename for #variables.item.getFilename()#" );
+		}
+	}
+	//  Clean root admin directory
+	local.fileWriter=application.serviceFactory.getBean('fileWriter');
+	local.rs=local.fileWriter.getDirectoryList(expandPath('/muraWRM#application.configBean.getAdminDir()#/'));
+	local.tempDir=expandPath('/muraWRM#application.configBean.getAdminDir()#/temp/');
+
+	if(local.rs.recordcount){
+		for(i=1;i <= local.rs.recordcount;i++){
+			if ( !listFind('.gitignore,.svn,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom,framework',local.rs.name[i]) ) {
+				try {
+					local.fileWriter.touchDir(local.tempDir);
+					if ( local.rs.type[i] == 'dir' ) {
+						local.fileWriter.renameDir(directory=local.rs.directory[i] & "/" & local.rs.name[i],newDirectory=local.rs.directory[i] & "/temp/" & local.rs.name[i] );
+					} else {
+						local.fileWriter.renameFile(source=local.rs.directory[i] & "/" & local.rs.name[i],destination=local.rs.directory[i] & "/temp/" & local.rs.name[i] );
+					}
+				} catch (any cfcatch) {
+				}
+			}
+		}
+	}
+
+	if ( request.muraInDocker ) {
+		local.bundleLoc="/tmp/MuraBundle.zip";
+	} else {
+		local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip");
+	}
+	if ( fileExists(local.bundleLoc) && application.contentGateway.getPageCount('default').counter == 1 ) {
+		application.settingsManager.restoreBundle(
 			bundleFile=local.bundleLoc,
 			keyMode='publish',
 			siteID='default',
 			contentMode='all',
 			pluginMode='all'
-		)>
-		<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
-	</cfif>
+		);
+	}
+	application.sessionTrackingThrottle=false;
 
-	<cfset application.sessionTrackingThrottle=false>
-
-	<!-- Clean out old cluster commands --->
-	<cfset application.clusterManager.clearOldCommands()>
-</cfif>
+	application.clusterManager.clearOldCommands();
+}
+</cfscript>

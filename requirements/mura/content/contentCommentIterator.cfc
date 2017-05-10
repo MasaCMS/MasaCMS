@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,22 +43,23 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.iterator.queryIterator" output="false" hint="This provides content comment iterating functionality">
+*/
+/**
+ * This provides content comment iterating functionality
+ */
+component extends="mura.iterator.queryIterator" output="false" hint="This provides content comment iterating functionality" {
+	variables.commentBean="";
+	variables.recordIDField="commentid";
 
-<cfset variables.commentBean="">
-<cfset variables.recordIDField="commentid">
+	public function packageRecord() output=false {
+		if ( !isObject(variables.commentBean) ) {
+			variables.commentBean=getBean('comment');
+			variables.commentStructTemplate=structCopy(variables.commentBean.getAllValues());
+		} else {
+			variables.commentBean.setAllValues( structCopy(variables.commentStructTemplate) );
+		}
+		variables.commentBean.set(queryRowToStruct(variables.records,currentIndex()));
+		return variables.commentBean;
+	}
 
-<cffunction name="packageRecord" output="false">
-	<cfif NOT isObject(variables.commentBean)>
-		<cfset variables.commentBean=getBean('comment') />
-		<cfset variables.commentStructTemplate=structCopy(variables.commentBean.getAllValues())>
-	<cfelse>
-		<cfset variables.commentBean.setAllValues( structCopy(variables.commentStructTemplate) )>
-	</cfif>
-
-	<cfset variables.commentBean.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfreturn variables.commentBean>
-</cffunction>
-
-</cfcomponent>
+}

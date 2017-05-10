@@ -1,0 +1,45 @@
+version: '2.1'
+
+services:
+  #Mura Server
+  mura_mssql_cfml:
+    image: ortussolutions/commandbox:latest
+    depends_on:
+      - mura_mssql
+    environment:
+      PORT: 8080
+      SSL_PORT: 8443
+      CFENGINE: adobe@2016
+      CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
+      MURA_ADMIN_USERNAME: admin
+      MURA_ADMIN_PASSWORD: admin
+      MURA_ADMINEMAIL: example@localhost.com
+      MURA_APPRELOADKEY: appreload
+      MURA_DATASOURCE: muradb
+      MURA_DATABASE: muradb
+      MURA_DBTYPE: mssql
+      MURA_DBUSERNAME: sa
+      MURA_DBPASSWORD: NOT_SECURE_CHANGE_a1
+      MURA_DBHOST: mura_mssql
+      MURA_DBPORT: 1433
+      MURA_SITEIDINURLS: "false"
+      MURA_INDEXFILEINURLS: "false"
+      MURA_TESTBOX: "true"
+    volumes:
+        - ../../../:/app
+    ports:
+        - "8080:8080"
+
+  #MSSQL
+  mura_mssql:
+    image: microsoft/mssql-server-linux:latest
+    environment:
+       ACCEPT_EULA: Y
+       SA_PASSWORD: NOT_SECURE_CHANGE_a1
+    volumes:
+        - mura_mssql_data:/var/opt/mssql
+    ports:
+        - "1433:1433"
+
+volumes:
+    mura_mssql_data:

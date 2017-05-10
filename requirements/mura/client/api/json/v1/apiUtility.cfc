@@ -12,7 +12,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ){
 			var protocol="https://";
 		} else {
-			var protocol="http://";
+			var protocol=©"http://";
 		}
 
 		*/
@@ -336,7 +336,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							}
 						}
 					}
-				} else if(!(isDefined('params.client_id') && isdefined('params.client_secret') || isDefined('params.refresh_token'))){
+				} else if(!(isDefined('params.client_id') || isDefined('params.refresh_token'))){
 					params.method='Not Available';
 					structDelete(params,'client_id');
 					structDelete(params,'client_secret');
@@ -349,20 +349,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					var oauthclient=getBean('oauthClient').loadBy(clientid=params.client_id);
 
 					//WriteDump(oauthclient.getAllValues());abort;
-					if(!oauthclient.exists() || oauthclient.getClientSecret() != params.client_secret){
+					if(!oauthclient.exists()){
 						params.method='Not Available';
-						structDelete(params,'client_id');
-						structDelete(params,'client_secret');
-						structDelete(params,'refresh_token');
-						structDelete(url,'client_id');
-						structDelete(url,'client_secret');
-						structDelete(url,'refresh_token');
+						params={
+							method='getOAuthToken'
+						};
 						throw(type='authorization');
 					} else {
-						structDelete(url,'client_id');
-						structDelete(url,'client_secret');
-						structDelete(url,'refresh_token');
-
 						if(arrayLen(pathInfo) == 6
 							&& pathInfo[5]=='oauth'
 							||
@@ -377,10 +370,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							params.method='getOAuthToken';
 
 							if(params.grant_type == 'authorization_code'){
-								if(oauthclient.getGrantType()!='authorization_code'){
+								if(oauthclient.getGrantType()!='authorization_code' || oauthclient.getClientSecret() != params.client_secret){
 									structDelete(params,'client_id');
 									structDelete(params,'client_secret');
-									structDelete(params,'refresh_token');
 									throw(type='authorization');
 								}
 
@@ -390,9 +382,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								var clientAccount=token.getUser();
 
 								if(!token.exists() || isExpired.isExpired() || !clientAccount.exists() || !oauthclient.isValidRedirectURI(params.redirect_uri)){
-									structDelete(params,'client_id');
-									structDelete(params,'client_secret');
-									structDelete(params,'refresh_token');
+									params={
+										method='getOAuthToken'
+									};
+
 									throw(type='authorization');
 								} else {
 									result=serializeResponse(
@@ -410,11 +403,45 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 									return result;
 								}
+							} else if(params.grant_type == 'password'){
+								if(oauthclient.getGrantType()!='password' || oauthclient.getClientSecret() != params.client_secret){
+									params={
+										method='getOAuthToken'
+									};
+									throw(type='authorization');
+								}
+
+								param name="params.username" default="";
+								param name="params.password" default="";
+
+								var clientAccount=getBean('userUtility').lookupByCredentials(username=params.username,password=params.password,siteid=variables.siteid);
+
+								if(!clientAccount.exists()){
+									params={
+										method='getOAuthToken'
+									};
+									throw(type='authorization');
+								} else {
+									var token=oauthclient.generateToken(granttype='password',userid=clientAccount.getUserID());
+									result=serializeResponse(
+										statusCode=200,
+										response={'apiversion'=getApiVersion(),
+										'method'=params.method,
+										'params'=getParamsWithOutMethod(params),
+										'data'={
+											'token_type'='Bearer',
+											'access_token'=token.getToken(),
+											'expires_in'=token.getExpiresIn(),
+											'expires_at'=token.getExpiresAt()
+										 }});
+
+									return result;
+								}
 							} else if(params.grant_type == 'client_credentials'){
-								if(oauthclient.getGrantType()=='authorization_code'){
-									structDelete(params,'client_id');
-									structDelete(params,'client_secret');
-									structDelete(params,'refresh_token');
+								if(oauthclient.getGrantType()!='client_credentials' || oauthclient.getClientSecret() != params.client_secret){
+									params={
+										method='getOAuthToken'
+									};
 									throw(type='authorization');
 								}
 
@@ -422,9 +449,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								var clientAccount=token.getUser();
 
 								if(!clientAccount.exists()){
-									structDelete(params,'client_id');
-									structDelete(params,'client_secret');
-									structDelete(params,'refresh_token');
+									params={
+										method='getOAuthToken'
+									};
 									throw(type='authorization');
 								} else {
 									result=serializeResponse(
@@ -444,9 +471,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							} else if(params.grant_type == 'refresh_token'){
 								//IF REFRESH_TOKEN WAS NOT SUBMITTED THROW AN ERROR
 								if(!isDefined('params.refresh_token')){
-									structDelete(params,'client_id');
-									structDelete(params,'client_secret');
-									structDelete(params,'refresh_token');
+									params={
+										method='getOAuthToken'
+									};
 									throw(type='authorization');
 								}
 
@@ -458,10 +485,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 									if(refreshToken.exists() && refreshToken.isExpired()){
 										refreshToken.delete();
 									}
-									structDelete(params,'client_id');
-									structDelete(params,'client_secret');
-									structDelete(params,'refresh_token');
-									throw(type='authorization');
+									params={
+										method='getOAuthToken'
+									};
+									throw(type='invalid_token');
 								}
 
 								var token=oauthclient.generateToken(granttype='client_credentials',userid=clientAccount.getUserID());
@@ -483,9 +510,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								return result;
 							} else {
 								//IF VALID GRANT_TYPE WAS NOT SUBMITTED THROW AN ERROR
-								structDelete(params,'client_id');
-								structDelete(params,'client_secret');
-								structDelete(params,'refresh_token');
+								params={
+									method='getOAuthToken'
+								};
 								throw(type='authorization');
 							}
 						} else {
@@ -493,9 +520,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 							//ONLY WORKS WITH CLIENTS WITH CLIENT_CREDENTIALS GRANTTYPE
 							structDelete(params,'client_id');
 							structDelete(params,'client_secret');
-							structDelete(params,'refresh_token');
 
-							if(oauthclient.getGrantType()=='authorization_code' && !isBasicAuth){
+							if(!isBasicAuth){
+								params={
+									method='getOAuthToken'
+								};
 								throw(type='authorization');
 							}
 
@@ -699,6 +728,30 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								result=findCrumbArray(argumentCollection=params);
 								return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'='findCrumbArray','params'=getParamsWithOutMethod(params),'data'=result});
 
+							} else if (isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[4]#')) {
+								params.method=pathInfo[4];
+								url.method=pathInfo[4];
+								var entity=getBean(params.entityName);
+
+								if(params.entityName=='content'){
+									var loadByArgs={
+										siteid=params.siteid,
+										contentid=params.id
+									};
+								} else {
+									var loadByArgs={
+										siteid=params.siteid,
+										'#entity.getPrimaryKey()#'=params.id
+									};
+								}
+
+								entity.loadBy(argumentCollection=loadByArgs);
+
+								structDelete(params,'id');
+
+								var result=evaluate('entity.#pathInfo[4]#(argumentCollection=params)');
+								return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
+
 							} else if(isDefined('application.objectmappings.#params.entityName#.properties.#pathInfo[4]#')
 							&& structKeyExists(application.objectmappings[params.entityName].properties[pathInfo[4]],'cfc') ){
 								var relationship=application.objectmappings[params.entityName].properties[pathInfo[4]];
@@ -776,6 +829,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						}
 					} else if(listFind('new,properties',pathInfo[3])){
 						params.id=pathInfo[3];
+					} else if (isDefined('application.objectmappings.#params.entityName#.remoteFunctions.#pathInfo[3]#')) {
+						params.method=pathInfo[3];
+						url.method=pathInfo[3];
+
+						var entity=getBean(params.entityName);
+						var result=evaluate('entity.#pathInfo[3]#(argumentCollection=params)');
+						return serializeResponse(statusCode=200,response={'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
 						var filenamestart=3;
@@ -2888,8 +2948,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			case 'datetime':
 			case 'timestamp':
 				var result={
-					"type"= "string",
-					"format"= "date-time"
+					"type": "string",
+					"format": "date-time"
 				};
 				break;
 			default:

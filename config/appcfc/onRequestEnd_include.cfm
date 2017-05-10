@@ -1,4 +1,5 @@
-<!--- This file is part of Mura CMS.
+<cfscript>
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,14 +44,14 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfparam name="local" default="#structNew()#">
-<cfif isDefined("application.eventManager")>
-	<cfif isDefined("request.servletEvent")>
-		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",request.servletEvent)>
-	<cfelseif isDefined("request.event")>
-		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",request.event)>
-	<cfelse>
-		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.event").init())>
-	</cfif>
-</cfif>
+*/
+if ( isDefined("application.eventManager") ) {
+	if ( isDefined("request.servletEvent") ) {
+		application.eventManager.announceEvent("onGlobalRequestEnd",request.servletEvent);
+	} else if ( isDefined("request.event") ) {
+		application.eventManager.announceEvent("onGlobalRequestEnd",request.event);
+	} else {
+		application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.event").init());
+	}
+}
+</cfscript>

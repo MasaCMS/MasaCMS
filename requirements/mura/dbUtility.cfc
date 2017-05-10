@@ -235,14 +235,14 @@
 	</cfif>
 
 	<cfif len(existing.column)
-			and (existing.dataType neq arguments.datatype
+			and (generalizeDataType(existing.dataType) neq generalizeDataType(arguments.datatype)
 			and not arguments.autoincrement
 			or (
 				listFindNoCase("char,varchar",arguments.datatype)
 				and arguments.length neq existing.length
 				)
 			or existing.nullable neq arguments.nullable
-			or existing.default neq arguments.default
+			or trim(existing.default) neq trim(arguments.default)
 			)
 		>
 			<cftry>
@@ -905,6 +905,52 @@
 
 </cffunction>
 
+<cffunction name="generalizeDataType" access="private" output="false" hint="Translates from db to Mura">
+<cfargument name="datatype">
+	<!--- These need to match outcomes from transformColumnMetaData--->
+	<cfswitch expression="#arguments.datatype#">
+		<cfcase value="string,varchar,nvarchar,varchar2,character varying">
+				<cfreturn "varchar">
+		</cfcase>
+		<cfcase value="char,bpchar,character">
+			<cfreturn "char">
+		</cfcase>
+		<cfcase value="bit,boolean">
+			<cfreturn "boolean">
+		</cfcase>
+		<cfcase value="int,integer,int4">
+			<cfreturn "int">
+		</cfcase>
+		<cfcase value="number">
+			<cfreturn "number">
+		</cfcase>
+		<cfcase value="tinyint,int2">
+			<cfreturn "tinyint">
+		</cfcase>
+		<cfcase value="smallint">
+			<cfreturn "smallint">
+		</cfcase>
+		<cfcase value="date,datetime,timestamp,timestamp without time zone,timestamp with time zone">
+			<cfreturn "datetime">
+		</cfcase>
+		<cfcase value="ntext,longtext,clob,nclob,text">
+			<<cfreturn "longtext">
+		</cfcase>
+		<cfcase value="float,binary_float,real">
+			<cfreturn "float">
+		</cfcase>
+		<cfcase value="double,decimal,binary_double,double precision">
+			<cfreturn "double">
+		</cfcase>
+		<cfcase value="blob,longblob,bytea,varbinary">
+			<cfreturn "blob">
+		</cfcase>
+	</cfswitch>
+
+	<cfreturn arguments.datatype>
+
+</cffunction>
+
 <cffunction name="transformColumnMetaData" access="private" output="false" hint="Translates from db to Mura">
 <cfargument name="rs">
 <cfargument name="table">
@@ -917,7 +963,7 @@
 		<cfset columnArgs=structCopy(defaultArgs)>
 		<cfset columnArgs.column=arguments.rs.column_name>
 		<cfset columnArgs.table=arguments.table>
-
+		<!--- These need to match outcomes from generalizeDataType--->
 		<cfswitch expression="#arguments.rs.type_name#">
 			<cfcase value="varchar,nvarchar,varchar2,character varying">
 				<!--- Add MSSQL nvarchar(max)--->
@@ -976,19 +1022,10 @@
 		</cfif>
 
 		<cfif isdefined('arguments.rs.column_default_value') and not (columnArgs.nullable and not len(arguments.rs.column_default_value))>
-			<cfset columnArgs.default=arguments.rs.column_default_value>
+			<cfset columnArgs.default=trim(arguments.rs.column_default_value)>
 		</cfif>
 
-		<cfif len(columnArgs.default)
-			and listFindNoCase("tinyint,int,smallint,float,double",columnArgs.datatype)
-			and not (
-						isNumeric(columnArgs.default)
-						and columnArgs.default neq "null")
-			>
-			<cfset columnArgs.default=_parseInt(columnArgs.default)>
-		</cfif>
-
-		<cfif variables.dbtype eq 'nuodb' and len(columnArgs.default) gte 2>
+		<cfif listFindNoCase('nuodb,oracle',variables.dbtype) and len(columnArgs.default) gte 2>
 			<cfif left(columnArgs.default,1) eq "'">
 				<cfset columnArgs.default=right(columnArgs.default,len(columnArgs.default)-1)>
 			</cfif>
@@ -1000,6 +1037,15 @@
 				</cfif>
 				<cfset columnArgs.default=mid(columnArgs.default,2,len(columnArgs.default)-1)>
 			</cfif>
+		</cfif>
+
+		<cfif len(columnArgs.default)
+			and listFindNoCase("tinyint,int,smallint,float,double",columnArgs.datatype)
+			and not (
+						isNumeric(columnArgs.default)
+						and columnArgs.default neq "null")
+			>
+			<cfset columnArgs.default=_parseInt(columnArgs.default)>
 		</cfif>
 
 		<cfif listFindNoCase("tinyint,int,float,double",columnArgs.datatype) and not (isNumeric(columnArgs.default) or columnArgs.default eq 'null')>

@@ -33,6 +33,7 @@ Thumbs.db
 web.config
 web.xml
 server-*.json
+server.json
 
 # ignored directories, regardless of location
 compiled/

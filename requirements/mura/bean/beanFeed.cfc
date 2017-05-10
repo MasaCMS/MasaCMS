@@ -817,7 +817,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="sort" output="false">
 	<cfargument name="property">
 	<cfargument name="direction">
-	
+
 	<!--- default sort direction ASC for everything *except* mxpRelevance, which should be DESC so the highest point values are first. --->
 	<cfif not StructKeyExists( arguments, "direction" )>
 		<cfif arguments.property eq "mxpRelevance">
@@ -826,7 +826,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.direction = "asc" />
 		</cfif>
 	</cfif>
-	
+
 	<cfset variables.instance.orderby=listAppend(variables.instance.orderby,arguments.property & ' ' & arguments.direction)>
 	<cfreturn this>
 </cffunction>

@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,63 +43,65 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.iterator.queryIterator" output="false" hint="This provides base iterating functionality to all entities">
+*/
+/**
+ * This provides base iterating functionality to all entities
+ */
+component extends="mura.iterator.queryIterator" output="false" hint="This provides base iterating functionality to all entities" {
+	variables.entityName="bean";
 
-<cfset variables.entityName="bean">
+	public function init() output=false {
+		super.init();
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfset super.init()>
-	<cfreturn this>
-</cffunction>
+	public function setEntityName(entityName) output=false {
+		if ( len(arguments.entityName) ) {
+			variables.entityName=arguments.entityName;
+		}
+		return this;
+	}
 
-<cffunction name="setEntityName" output="false">
-	<cfargument name="entityName">
-	<cfif len(arguments.entityName)>
-		<cfset variables.entityName=arguments.entityName>
-	</cfif>
-	<cfreturn this>
-</cffunction>
+	public function getEntityName() output=false {
+		return variables.entityName;
+	}
 
-<cffunction name="getEntityName" output="false">
-	<cfreturn variables.entityName>
-</cffunction>
+	public function packageRecord(recordIndex="#currentIndex()#") output=false {
+		var bean="";
+		if ( isQuery(variables.records) ) {
+			return getBean(variables.entityName).set(queryRowToStruct(variables.records,arguments.recordIndex)).setIsNew(0);
+		} else if ( isArray(variables.records) ) {
+			bean=variables.records[arguments.recordIndex];
+			if ( isObject(bean) ) {
+				return bean;
+			} else {
+				return getBean(variables.entityName).set(bean);
+			}
+		} else {
+			throw( message="The records have not been set." );
+		}
+	}
 
-<cffunction name="packageRecord" output="false">
-	<cfargument name="recordIndex" default="#currentIndex()#">
-	<cfset var bean="">
+	public function getBeanArray() output=false {
+		var array=arrayNew(1);
+		var record = "";
+		if ( isArray(variables.records) ) {
+			for ( record in variables.records ) {
+				arrayAppend(array,packageRecord(record));
+			}
+			return array;
+		} else if ( isQuery(variables.records) ) {
 
-	<cfif isQuery(variables.records)>
-		<cfreturn getBean(variables.entityName).set(queryRowToStruct(variables.records,arguments.recordIndex)).setIsNew(0)>
-	<cfelseif isArray(variables.records)>
-		<cfset bean=variables.records[arguments.recordIndex]>
-		<cfif isObject(bean)>
-			<cfreturn bean>
-		<cfelse>
-			<cfreturn getBean(variables.entityName).set(bean)>
-		</cfif>
-	<cfelse>
-		<cfthrow message="The records have not been set.">
-	</cfif>
-</cffunction>
+			if(variables.records.recordcount){
+				for(var i=1;i<=variables.records.recordcount;i++){
+					arrayAppend(array,packageRecord(i));
+				}
+			}
 
-<cffunction name="getBeanArray" output="false">
-    <cfset var array=arrayNew(1)>
-    <cfset var record = "">
+			return array;
+		} else {
+			throw( message="The records have not been set." );
+		}
+	}
 
-    <cfif isArray(variables.records)>
-        <cfloop array="#variables.records#" index="record">
-            <cfset arrayAppend(array,packageRecord(record))>
-        </cfloop>
-        <cfreturn array>
-    <cfelseif isQuery(variables.records)>
-        <cfloop query="variables.records">
-            <cfset arrayAppend(array,packageRecord(variables.records.currentRow))>
-        </cfloop>
-        <cfreturn array>
-    <cfelse>
-        <cfthrow message="The records have not been set.">
-    </cfif>
-</cffunction>
-
-</cfcomponent>
+}

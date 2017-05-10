@@ -1,4 +1,4 @@
-<!---
+/*
 	Name         :	utils.cfc
 	Author       :	Paul Hastings, Raymond Camden
 	Created      :	October 29, 2003
@@ -16,29 +16,32 @@
 				   Most of these methods operate on the current locale.
 
 				   To Do - handle converting from UTC to local time, modded by user pref TZ
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides resource bundle utility methods">
-<cfset variables.locale = "en_US">
+*/
+/**
+ * This provides resource bundle utility methods
+ */
+component extends="mura.cfobject" output="false" hint="This provides resource bundle utility methods" {
+	variables.locale = "en_US";
 
-	<cffunction name="init" return="any" output="false">
-	<cfargument name="locale" required="true" default="en_US">
+	/**
+	 * @return any
+	 */
+	public function init(required locale="en_US") output=false {
+		if ( isValidLocale(arguments.locale)
+		and !(not listLen(arguments.locale,"_") == 2 or
+			  !len(listFirst(arguments.locale,"_")) == 2 or
+			  !len(listLast(arguments.locale,"_")) == 2) ) {
+			variables.locale=arguments.locale;
+		}
+		loadLocale();
+		return this;
+	}
 
-		<cfif isValidLocale(arguments.locale)
-		and not (not listLen(arguments.locale,"_") is 2 or
-			  not len(listFirst(arguments.locale,"_")) is 2 or
-			  not len(listLast(arguments.locale,"_")) is 2)>
-			<cfset variables.locale=arguments.locale />
-		</cfif>
+	/**
+	 * locale version of dateFormat
+	 */
+	public function dateLocaleFormat(required date date, string style="LONG") output=false {
 
-		<cfset loadLocale()>
-
-		<cfreturn this />
-	</cffunction>
-
-	<cffunction name="dateLocaleFormat"  output="false" hint="locale version of dateFormat">
-		<cfargument name="date" type="date" required="true">
-		<cfargument name="style" type="string" required="false" default="LONG">
-		<cfscript>
 		// hack to trap & fix varchar mystery goop coming out of mysql datetimes
 		try {
 			return variables.aDateFormat.getDateInstance(variables.aDateFormat[arguments.style],variables.thisLocale).format(arguments.date);
@@ -47,12 +50,13 @@
 			variables.aCalendar.setTime(arguments.date);
 			return variables.aDateFormat.getDateInstance(variables.aDateFormat[arguments.style],variables.thisLocale).format(variables.aCalendar.getTime());
 		}
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="getAvailableLocales" returnType="array" output="false"
-				hint="Returns an array of locales.">
-		<cfscript>
+	/**
+	 * Returns an array of locales.
+	 */
+	public array function getAvailableLocales() output=false {
+
 		var i=0;
 		var orgLocales=createObject("java","java.util.Locale").getAvailableLocales();
 		var theseLocales=arrayNew(1);
@@ -63,12 +67,13 @@
 			} // if
 		} //for
 		return theseLocales;
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="getLocalizedDays" returnType="array" output="false"
-				hint="Returns localized days">
-		<cfscript>
+	/**
+	 * Returns localized days
+	 */
+	public array function getLocalizedDays() output=false {
+
 		var localizedShortDays="";
 		var i=0;
 		var tmp=variables.dateSymbols.getShortWeekdays();
@@ -97,63 +102,66 @@
 			break;
 		}
 		return localizedShortDays;
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="getLocalizedMonth" output="false"
-				hint="Returns localized month">
-		<cfargument name="month" type="numeric" required="true">
-		<cfscript>
+	/**
+	 * Returns localized month
+	 */
+	public function getLocalizedMonth(required numeric month) output=false {
+
 		variables.sDateFormat.init("MMMM",variables.thisLocale);
 		return variables.sDateFormat.format(createDate(1999,arguments.month,1));
-		</cfscript>
+	}
 
-	</cffunction>
+	/**
+	 * Returns current locale name
+	 */
+	public function getLocalizedName() output=false {
+		return variables.localeName;
+	}
 
-	<cffunction name="getLocalizedName" output="false"
-				hint="Returns current locale name">
-		<cfreturn variables.localeName>
-	</cffunction>
+	/**
+	 * Returns current locale
+	 */
+	public function getCurrentLocale() output=false {
+		return variables.thisLocale;
+	}
 
-	<cffunction name="getCurrentLocale" output="false"
-				hint="Returns current locale">
-		<cfreturn variables.thisLocale>
-	</cffunction>
+	/**
+	 * Returns localized year, probably only useful for BE calendars like in thailand, etc.
+	 */
+	public function getLocalizedYear(required numeric thisYear) output=false {
 
-	<cffunction name="getLocalizedYear" output="false"
-				hint="Returns localized year, probably only useful for BE calendars like in thailand, etc.">
-		<cfargument name="thisYear" type="numeric" required="true">
-		<cfscript>
 		variables.sDateFormat.init("yyyy",variables.thisLocale);
 		return variables.sDateFormat.init("yyyy",variables.thisLocale).format(createDate(arguments.thisYear,1,1));
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="isBIDI" returnType="boolean" output="false">
-		<cfreturn listFind(variables.BIDILanguages,variables.lang)>
-	</cffunction>
+	public boolean function isBIDI() output=false {
+		return listFind(variables.BIDILanguages,variables.lang);
+	}
 
-	<cffunction name="loadLocale" output="false"
-				hint="Loads a locale.">
+	/**
+	 * Loads a locale.
+	 */
+	public function loadLocale() output=false {
+		variables.lang = listFirst(variables.locale,"_");
+		variables.country = listLast(variables.locale,"_");
+		variables.BIDIlanguages="ar,he,fa,ps";
+		//  couple more BIDI writing systems
+		variables.thisLocale=createObject("java","java.util.Locale").init(variables.lang, variables.country);
+		variables.localeName=variables.thisLocale.getDisplayName(variables.thisLocale);
+		variables.aDateFormat=createObject("java","java.text.DateFormat");
+		variables.sDateFormat=createObject("java","java.text.SimpleDateFormat");
+		variables.aCalendar=createObject("java","java.util.GregorianCalendar").init(variables.thisLocale);
+		variables.dateSymbols=createObject("java","java.text.DateFormatSymbols").init(variables.thisLocale);
+		setJSDateKeys();
+	}
 
-		<cfset variables.lang = listFirst(variables.locale,"_")>
-		<cfset variables.country = listLast(variables.locale,"_")>
+	/**
+	 * locale version of timeFormat
+	 */
+	public function timeLocaleFormat(required date date, string style="SHORT") output=false {
 
-		<cfset variables.BIDIlanguages="ar,he,fa,ps"><!--- couple more BIDI writing systems --->
-		<cfset variables.thisLocale=createObject("java","java.util.Locale").init(variables.lang, variables.country)>
-		<cfset variables.localeName=variables.thisLocale.getDisplayName(variables.thisLocale)>
-		<cfset variables.aDateFormat=createObject("java","java.text.DateFormat")>
-		<cfset variables.sDateFormat=createObject("java","java.text.SimpleDateFormat")>
-		<cfset variables.aCalendar=createObject("java","java.util.GregorianCalendar").init(variables.thisLocale)>
-		<cfset variables.dateSymbols=createObject("java","java.text.DateFormatSymbols").init(variables.thisLocale)>
-		<cfset setJSDateKeys()>
-	</cffunction>
-
-	<cffunction name="timeLocaleFormat" output="false"
-				hint="locale version of timeFormat">
-		<cfargument name="date" type="date" required="true">
-		<cfargument name="style" type="string" required="false" default="SHORT">
-		<cfscript>
 		// hack to trap & fix varchar mystery goop coming out of mysql datetimes
 		try {
 			return variables.aDateFormat.getTimeInstance(variables.aDateFormat[arguments.style],variables.thisLocale).format(arguments.date);
@@ -162,15 +170,13 @@
 			variables.aCalendar.setTime(arguments.date);
 			return variables.aDateFormat.getTimeInstance(variables.aDateFormat[arguments.style],variables.thisLocale).format(variables.aCalendar.getTime());
 		}
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="datetimeLocaleFormat" output="false"
-				hint="locale date/time format">
-		<cfargument name="date" type="date" required="true">
-		<cfargument name="dateStyle" type="string" required="false" default="SHORT">
-		<cfargument name="timeStyle" type="string" required="false" default="SHORT">
-		<cfscript>
+	/**
+	 * locale date/time format
+	 */
+	public function datetimeLocaleFormat(required date date, string dateStyle="SHORT", string timeStyle="SHORT") output=false {
+
 		// hack to trap & fix varchar mystery goop coming out of mysql datetimes
 		try {
 			return variables.aDateFormat.getDateTimeInstance(variables.aDateFormat[arguments.dateStyle],variables.aDateFormat[arguments.timeStyle],variables.thisLocale).format(arguments.date);
@@ -179,232 +185,189 @@
 			variables.aCalendar.setTime(arguments.date);
 			return variables.aDateFormat.getDateTimeInstance(variables.aDateFormat[arguments.dateStyle],variables.aDateFormat[arguments.timeStyle],variables.thisLocale).format(variables.aCalendar.getTime());
 		}
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="isValidLocale" returnType="boolean" output="false">
-		<cfargument name="thisLocale" type="string" required="true">
-		<cfscript>
-		    var locales=arrayToList(getAvailableLocales());
+	public boolean function isValidLocale(required string thisLocale) output=false {
+
+		var locales=arrayToList(getAvailableLocales());
 		    return listFind(locales,arguments.thisLocale) gte 1;
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="weekStarts" output="false"
-				hint="Determines the first DOW">
-		<cfscript>
+	/**
+	 * Determines the first DOW
+	 */
+	public function weekStarts() output=false {
+
 		return variables.aCalendar.getFirstDayOfWeek();
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="java2CF" output="false" hint="Switches Java locale to CF locale (for CF6)">
+	/**
+	 * Switches Java locale to CF locale (for CF6)
+	 */
+	public function java2CF() output=false {
+		switch ( variables.locale ) {
+			case  "nl_BE":
+				return "Dutch (Belgian)";
+				break;
+			case  "nl_NL":
+				return "Dutch (Standard)";
+				break;
+			case  "en_AU":
+				return "English (Australian)";
+				break;
+			case  "en_CA":
+				return "English (Canadian)";
+				break;
+			case  "en_GB":
+				return "English (UK)";
+				break;
+			case  "en_NZ":
+				return "English (New Zealand)";
+				break;
+			case  "en_US":
+				return "English (US)";
+				break;
+			default:
+				return "English (US)";
+				break;
+			case  "fr_BE":
+				return "French (Belgian)";
+				break;
+			case  "fr_CA":
+				return "French (Canadian)";
+				break;
+			case  "fr_FR":
+				return "French (Standard)";
+				break;
+			case  "fr_CH":
+				return "French (Swiss)";
+				break;
+			case  "de_AT":
+				return "German (Austrian)";
+				break;
+			case  "de_DE":
+				return "German (Standard)";
+				break;
+			case  "de_CH":
+				return "German (Swiss)";
+				break;
+			case  "it_IT":
+				return "Italian (Standard)";
+				break;
+			case  "it_CH":
+				return "Italian (Swiss)";
+				break;
+			case  "no_NO":
+				return "Norwegian (Bokmal)";
+				break;
+			case  "no_NO@nynorsk":
+				return "Norwegian (Nynorsk)";
+				break;
+			case  "pt_BR":
+				return "Portuguese (Brazilian)";
+				break;
+			case  "pt_PT":
+				return "Portuguese (Standard)";
+				break;
+			case  "es_MX":
+				return "Spanish (Mexican)";
+				break;
+			case  "es_ES":
+				return "Spanish (Standard)";
+				break;
+			case  "sv_SE":
+				return "Swedish";
+				break;
+			case  "ja_JP":
+				return "Japanese";
+				break;
+			case  "ko_KR":
+				return "Korean";
+				break;
+			case  "zh_CN":
+				return "Chinese (China)";
+				break;
+			case  "zh_HK":
+				return "Chinese (Hong Kong)";
+				break;
+			case  "zh_TW":
+				return "Chinese (Taiwan)";
+				break;
+		}
+	}
 
-		<cfswitch expression="#variables.locale#">
+	public function setJSDateKeys() output=false {
+		//  make sure that a locale and language resouce bundle have been set in the users session
+		var f="";
+		var dtCh="";
+		var dtFormat="";
+		var formatTest=LSDateFormat(createDate(2018,11,10),'short');
+		var sessionData=getSession();
+		variables.jsDateKey="";
+		variables.dateKeyFormat="";
+		variables.datekeyExample="";
+		//  now we create a date so we can parse it and figure out the date format and then create a date validation key
+		if ( find(".",formatTest) ) {
+			dtCh=	".";
+		} else if ( find("-",formatTest) ) {
+			dtCh=	"-";
+		} else {
+			dtCh=	"/";
+		}
+		dtFormat="";
 
-			<cfcase value="nl_BE">
-				<cfreturn "Dutch (Belgian)">
-			</cfcase>
+		for(f in ListToArray(formatTest,dtCh)){
+			if ( listFind("2018,18",f) ) {
+				variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"YYYY",dtCh);
+			} else if ( f == 11 ) {
+				variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"MM",dtCh);
+			} else {
+				variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"DD",dtCh);
+			}
+		}
 
-			<cfcase value="nl_NL">
-				<cfreturn "Dutch (Standard)">
-			</cfcase>
-
-			<cfcase value="en_AU">
-				<cfreturn "English (Australian)">
-			</cfcase>
-
-			<cfcase value="en_CA">
-				<cfreturn "English (Canadian)">
-			</cfcase>
-
-			<cfcase value="en_GB">
-				<cfreturn "English (UK)">
-			</cfcase>
-
-			<cfcase value="en_NZ">
-				<cfreturn "English (New Zealand)">
-			</cfcase>
-
-			<cfcase value="en_US">
-				<cfreturn "English (US)">
-			</cfcase>
-
-			<cfdefaultcase>
-				<cfreturn "English (US)">
-			</cfdefaultcase>
-
-			<cfcase value="fr_BE">
-				<cfreturn "French (Belgian)">
-			</cfcase>
-
-			<cfcase value="fr_CA">
-				<cfreturn "French (Canadian)">
-			</cfcase>
-
-			<cfcase value="fr_FR">
-				<cfreturn "French (Standard)">
-			</cfcase>
-
-			<cfcase value="fr_CH">
-				<cfreturn "French (Swiss)">
-			</cfcase>
-
-			<cfcase value="de_AT">
-				<cfreturn "German (Austrian)">
-			</cfcase>
-
-			<cfcase value="de_DE">
-				<cfreturn "German (Standard)">
-			</cfcase>
-
-			<cfcase value="de_CH">
-				<cfreturn "German (Swiss)">
-			</cfcase>
-
-			<cfcase value="it_IT">
-				<cfreturn "Italian (Standard)">
-			</cfcase>
-
-			<cfcase value="it_CH">
-				<cfreturn "Italian (Swiss)">
-			</cfcase>
-
-			<cfcase value="no_NO">
-				<cfreturn "Norwegian (Bokmal)">
-			</cfcase>
-
-			<cfcase value="no_NO@nynorsk">
-				<cfreturn "Norwegian (Nynorsk)">
-			</cfcase>
-
-			<cfcase value="pt_BR">
-				<cfreturn "Portuguese (Brazilian)">
-			</cfcase>
-
-			<cfcase value="pt_PT">
-				<cfreturn "Portuguese (Standard)">
-			</cfcase>
-
-			<cfcase value="es_MX">
-				<cfreturn "Spanish (Mexican)">
-			</cfcase>
-
-			<!--- Only support Spanish Standard
-			<cfcase value="es_ES">
-				<cfreturn "Spanish (Modern)">
-			</cfcase>
-			--->
-			<cfcase value="es_ES">
-				<cfreturn "Spanish (Standard)">
-			</cfcase>
-
-			<cfcase value="sv_SE">
-				<cfreturn "Swedish">
-			</cfcase>
-
-			<cfcase value="ja_JP">
-				<cfreturn "Japanese">
-			</cfcase>
-
-			<cfcase value="ko_KR">
-				<cfreturn "Korean">
-			</cfcase>
-
-			<cfcase value="zh_CN">
-				<cfreturn "Chinese (China)">
-			</cfcase>
-
-			<cfcase value="zh_HK">
-				<cfreturn "Chinese (Hong Kong)">
-			</cfcase>
-
-			<cfcase value="zh_TW">
-				<cfreturn "Chinese (Taiwan)">
-			</cfcase>
-
-		</cfswitch>
-	</cffunction>
-
-	<cffunction name="setJSDateKeys" output="false">
-	<!--- make sure that a locale and language resouce bundle have been set in the users session --->
-	<cfset var f="">
-	<cfset var dtCh="">
-	<cfset var dtFormat="">
-	<cfset var formatTest=LSDateFormat(createDate(2018,11,10),'short')/>
-	<cfset var sessionData=getSession()>
-
-	<cfset variables.jsDateKey="">
-	<cfset variables.dateKeyFormat="">
-	<cfset variables.datekeyExample="">
-
-	<!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
-
-	<cfif find(".",formatTest)>
-		<cfset dtCh=	"."/>
-	<cfelseif find("-",formatTest)>
-		<cfset dtCh=	"-"/>
-	<cfelse>
-		<cfset dtCh=	"/"/>
-	</cfif>
-	<cfset dtFormat=""/>
-
-	<cfloop list="#formatTest#" index="f" delimiters="#dtCh#">
-		<cfif listFind("2018,18",f)>
-			<cfset variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"YYYY",dtCh)>
-		<cfelseif f eq 11>
-			<cfset variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"MM",dtCh)>
-		<cfelse>
-			<cfset variables.dateKeyFormat=listAppend(variables.dateKeyFormat,"DD",dtCh)>
-		</cfif>
-	</cfloop>
-
-	<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"11",dtCh) -1) />
-	<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"10",dtCh) -1) />
-	<cfif listFind(formatTest,"2018",dtCh)>
-		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"2018",dtCh) -1) />
-	<cfelseif listFind(formatTest,"18",dtCh)>
-		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"18",dtCh) -1) />
-	</cfif>
-
-	<cfset variables.datekeyExample=lsDateFormat(createDate(2018,11,10),variables.datekeyFormat)/>
-
-	<cfif not isdefined('sessionData.locale')>
-		<cfset sessionData.locale="en_US">
-	</cfif>
-
-	<cfsavecontent variable="variables.jsDateKey">
-	<cfoutput><script type="text/javascript">
+		dtFormat=listAppend(dtFormat,listFind(formatTest,"11",dtCh) -1);
+		dtFormat=listAppend(dtFormat,listFind(formatTest,"10",dtCh) -1);
+		if ( listFind(formatTest,"2018",dtCh) ) {
+			dtFormat=listAppend(dtFormat,listFind(formatTest,"2018",dtCh) -1);
+		} else if ( listFind(formatTest,"18",dtCh) ) {
+			dtFormat=listAppend(dtFormat,listFind(formatTest,"18",dtCh) -1);
+		}
+		variables.datekeyExample=lsDateFormat(createDate(2018,11,10),variables.datekeyFormat);
+		if ( !isdefined('sessionData.locale') ) {
+			sessionData.locale="en_US";
+		}
+		savecontent variable="variables.jsDateKey" {
+				writeOutput('<script type="text/javascript">
 	var dtExample="#variables.datekeyExample#";
 	var dtCh="#dtCh#";
 	var dtFormat =[#dtFormat#];
 	var dtLocale="#replace(sessionData.locale,'_','-')#";
-	</script></cfoutput>
-	</cfsavecontent>
+	</script>');
+		}
 
-	<cfsavecontent variable="variables.jsDateKeyObjInc">
-	<cfoutput>
-	dtExample:"#variables.datekeyExample#",
+		savecontent variable="variables.jsDateKeyObjInc" {
+				writeOutput('dtExample:"#variables.datekeyExample#",
 	dtCh:"#dtCh#",
 	dtFormat:[#dtFormat#],
-	dtLocale:"#replace(sessionData.locale,'_','-')#"
-	</cfoutput>
-	</cfsavecontent>
+	dtLocale:"#replace(sessionData.locale,'_','-')#"');
+		}
+	}
 
-	</cffunction>
+	public function getJsDateKeyObjInc() output=false {
+		return variables.jsDateKeyObjInc;
+	}
 
-	<cffunction name="getJsDateKeyObjInc" output="false">
-	<cfreturn variables.jsDateKeyObjInc>
-	</cffunction>
+	public function getJSDateKey() output=false {
+		return variables.JSDateKey;
+	}
 
-	<cffunction name="getJSDateKey" output="false">
-	<cfreturn variables.JSDateKey>
-	</cffunction>
+	public function getJSDateKeyFormat() output=false {
+		return variables.datekeyFormat;
+	}
 
-	<cffunction name="getJSDateKeyFormat" output="false">
-	<cfreturn variables.datekeyFormat>
-	</cffunction>
+	public function getJSDateKeyExample() output=false {
+		return variables.datekeyExample;
+	}
 
-	<cffunction name="getJSDateKeyExample" output="false">
-	<cfreturn variables.datekeyExample>
-	</cffunction>
-</cfcomponent>
+}

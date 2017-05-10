@@ -332,6 +332,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset deleteExtendData(arguments.UserID) />
 		<cfset deleteTags(arguments.UserID) />
 
+
+ 	   <cfset var tokens=getFeed('oauthtoken')
+ 		   .where()
+ 		   .prop('userID').isEQ(arguments.userid)
+ 		   .getIterator()>
+
+	 	<cfloop condition="tokens.hasNext()">
+		 	<cfset tokens.next().delete()>
+		</cfloop>
+
 		<cfquery>
 		DELETE FROM tusers where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userid#">
 		</cfquery>
@@ -435,6 +445,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset deleteTags(arguments.userBean.getUserID()) />
 		<cfset createTags(arguments.userBean) />
+
+		<cfif len(arguments.userBean.get('removeToken'))>
+	 	   <cfset var tokens=getFeed('oauthtoken')
+	 		   .where()
+	 		   .prop('userID').isEQ(arguments.userBean.getUserID())
+	 		   .andProp('token').isIn(arguments.userBean.get('removeToken'))
+	 		   .getIterator()>
+
+	 		  <cfloop condition="tokens.hasNext()">
+	 			  <cfset tokens.next().delete()>
+	 		  </cfloop>
+	    </cfif>
 	<!--- </cfif> --->
 
 </cffunction>

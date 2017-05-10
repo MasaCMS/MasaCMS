@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,50 +43,43 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent output="false" extends="mura.cfobject" hint="This provides a utility to map old to new imported key bundles values">
+*/
+/**
+ * This provides a utility to map old to new imported key bundles values
+ */
+component output="false" extends="mura.cfobject" hint="This provides a utility to map old to new imported key bundles values" {
+	variables.keys="";
+	variables.mode="";
 
-<cfset variables.keys="" />
-<cfset variables.mode="" />
+	public function init(mode, utility) output=false {
+		variables.utility=arguments.utility;
+		variables.mode=arguments.mode;
+		variables.keys=createObject("component","mura.cfobject");
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfargument name="mode">
-	<cfargument name="utility">
+	public function getMode() output=false {
+		return variables.mode;
+	}
 
-	<cfset variables.utility=arguments.utility>
-	<cfset variables.mode=arguments.mode>
-	<cfset variables.keys=createObject("component","mura.cfobject")>
+	public function setMode(mode) output=false {
+		variables.mode=arguments.mode;
+	}
 
-	<cfreturn this />
-</cffunction>
+	public function has(key) output=false {
+		return variables.keys.hasValue(hash(arguments.key));
+	}
 
-<cffunction name="getMode" output="false">
-	<cfreturn variables.mode>
-</cffunction>
+	public function get(key, required defaultValue="#variables.utility.getUUID()#") output=false {
+		if ( variables.mode == "publish" && !isNumeric(arguments.key) ) {
+			return arguments.key;
+		} else {
+			if ( left(key,32) != '00000000000000000000000000000000' ) {
+				return variables.keys.getValue(hash(arguments.key),arguments.defaultValue);
+			} else {
+				return key;
+			}
+		}
+	}
 
-<cffunction name="setMode" output="false">
-	<cfargument name="mode">
-	<cfset variables.mode=arguments.mode>
-</cffunction>
-
-<cffunction name="has" output="false">
-	<cfargument name="key">
-	<cfreturn variables.keys.hasValue(hash(arguments.key))>
-</cffunction>
-
-<cffunction name="get" output="false">
-	<cfargument name="key">
-	<cfargument name="defaultValue" required="true" default="#variables.utility.getUUID()#">
-
-	<cfif variables.mode eq "publish" and not isNumeric(arguments.key)>
-		<cfreturn arguments.key>
-	<cfelse>
-		<cfif left(key,32) neq '00000000000000000000000000000000'>
-			<cfreturn variables.keys.getValue(hash(arguments.key),arguments.defaultValue)>
-		<cfelse>
-			<cfreturn key>
-		</cfif>
-	</cfif>
-</cffunction>
-
-</cfcomponent>
+}

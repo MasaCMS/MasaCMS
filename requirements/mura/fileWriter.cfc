@@ -406,4 +406,11 @@
 		<cfreturn rsDir>
 	</cffunction>
 
+	<cffunction name="getDirectoryList" output="false">
+		<cfargument name="directory">
+		<cfset var rs="">
+		<cfdirectory directory="#arguments.directory#" name="rs" action="list">
+		<cfreturn rs>
+	</cffunction>
+
 </cfcomponent>

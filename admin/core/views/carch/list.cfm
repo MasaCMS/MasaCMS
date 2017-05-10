@@ -793,7 +793,7 @@
 					<cfif isdefined('url.moduleid') and not isdefined('url.activetab')>
 						initSiteManagerTabContent(0);
 					<cfelse>
-						initSiteManagerTabContent(#rc.activeTab#);
+						initSiteManagerTabContent(#esapiEncode('javascript',rc.activeTab)#);
 					</cfif>
 
 				});

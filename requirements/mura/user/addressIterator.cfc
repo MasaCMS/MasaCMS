@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,28 +43,28 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.beanIterator" output="false" hint="This provides user address iterating functionality">
+*/
+/**
+ * This provides user address iterating functionality
+ */
+component extends="mura.bean.beanIterator" output="false" hint="This provides user address iterating functionality" {
+	variables.addressBean="";
+	variables.recordIDField="addressID";
 
-<cfset variables.addressBean="">
-<cfset variables.recordIDField="addressID">
+	public function getEntityName() output=false {
+		return "address";
+	}
 
-<cffunction name="getEntityName" output="false">
-	<cfreturn "address">
-</cffunction>
+	public function packageRecord() output=false {
+		if ( !isObject(variables.addressBean) ) {
+			variables.addressBean=getBean("address");
+			variables.addressStructTemplate=structCopy(variables.addressBean.getAllValues(autocomplete=false));
+		} else {
+			variables.addressBean.setAllValues( structCopy(variables.addressStructTemplate) );
+		}
+		variables.addressBean.set(queryRowToStruct(variables.records,currentIndex()));
+		variables.addressBean.setValue('sourceIterator',this);
+		return variables.addressBean;
+	}
 
-<cffunction name="packageRecord" output="false">
-	<cfif NOT isObject(variables.addressBean)>
-		<cfset variables.addressBean=getBean("address") />
-		<cfset variables.addressStructTemplate=structCopy(variables.addressBean.getAllValues(autocomplete=false))>
-	<cfelse>
-		<cfset variables.addressBean.setAllValues( structCopy(variables.addressStructTemplate) )>
-	</cfif>
-
-	<cfset variables.addressBean.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfset variables.addressBean.setValue('sourceIterator',this)>
-
-	<cfreturn variables.addressBean>
-</cffunction>
-
-</cfcomponent>
+}

@@ -131,8 +131,8 @@ variables.setupProcessComplete	= false;
 <cfparam name="FORM.admin_password"					default="admin" />
 <!--- options tab --->
 <cfif form.action eq 'doSetup'>
-	<cfparam name="FORM.production_siteidinurls"	default="0" />
-	<cfparam name="FORM.production_indexfileinurls"	default="0" />
+	<cfparam name="FORM.production_siteidinurls"	default="false" />
+	<cfparam name="FORM.production_indexfileinurls"	default="true" />
 <Cfelse>
 	<cfparam name="FORM.production_siteidinurls"	default="#settingsIni.get( "production", "siteidinurls" )#" />
 	<cfparam name="FORM.production_indexfileinurls"	default="#settingsIni.get( "production", "indexfileinurls" )#" />

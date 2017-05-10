@@ -188,14 +188,22 @@
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 	</cfif>
 
-	<cfif variables.configBean.getSiteIDInURLS() and not fileExists("#webroot#/#arguments.siteid#/index.cfm")>
-		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/index.template.cfm", destination="#webroot#/#arguments.siteid#/index.cfm")>
+	<cfif variables.configBean.getSiteIDInURLS() and not fileExists("#variables.configBean.getSiteDir()#/#arguments.siteid#/index.cfm")>
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/index.template.cfm", destination="#variables.configBean.getSiteDir()#/#arguments.siteid#/index.cfm")>
 	</cfif>
 
-	<cfset var basedir="#webroot#/#arguments.siteid#/includes">
+	<cfif directoryExists(expandPath('#variables.configBean.getSiteDir()#/#arguments.siteid#/includes'))>
+		<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#/includes">
+	<cfelse>
+		<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#">
+	</cfif>
 
 	<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
-		<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
+		<cfif directoryExists(expandPath('#webroot#/#arguments.displaypoolid#/includes'))>
+			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes">
+		<cfelse>
+			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#">
+		</cfif>
 	</cfif>
 
 	<cfif not directoryExists(basedir)>
@@ -1265,5 +1273,33 @@ Blog: www.codfusion.com--->
 	}
 
 </cfscript>
+
+<!--- Stashing some support for tags here until CF10 support is dropped --->
+<cffunction name="setHeader" output="false">
+	<cfargument name="statustext">
+	<cfargument name="statuscode">
+	<cfheader statustext="#arguments.statustext#" statuscode="#arguments.statuscode#">
+</cffunction>
+
+<cffunction name="resetContent" output="false">
+	<cfcontent reset="true">
+</cffunction>
+
+<cffunction name="clearObjectCache" output="false">
+	<cfobjectcache action="clear" />
+</cffunction>
+
+<cffunction name="setRequestTimeout" output="false">
+	<cfargument name="timeout">
+	<cfsetting requestTimeout = "#timeout#">
+</cffunction>
+
+<cffunction name="scheduleTask" output="false">
+	<cfschedule attributeCollection=arguments>
+</cffunction>
+
+<cffunction name="legacyLogout" output="false">
+	<cflogout>
+</cffunction>
 
 </cfcomponent>

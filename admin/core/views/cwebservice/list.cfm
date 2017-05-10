@@ -98,7 +98,7 @@
 						<a title="Edit" href="./?muraAction=cwebservice.edit&clientid=#service.getClientID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',service.getName())#</a>
 					</td>
 					<td>
-						<cfif service.getGrantType() eq 'client_credentials'>OAuth2 (client_credentials)<cfelseif service.getGrantType() eq 'authorization_code'>OAuth2 (authorization_code)<cfelse>Basic</cfif>
+						<cfif service.getGrantType() eq 'client_credentials'>OAuth2 (client_credentials)<cfelseif service.getGrantType() eq 'authorization_code'>OAuth2 (authorization_code)<cfelseif service.getGrantType() eq 'implicit'>OAuth2 (implicit)<cfelseif service.getGrantType() eq 'password'>OAuth2 (password)<cfelse>Basic</cfif>
 					</td>
 					<td>
 						#LSDateFormat(service.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(service.getLastUpdate(),"medium")#

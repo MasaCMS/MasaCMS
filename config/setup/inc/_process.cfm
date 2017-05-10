@@ -165,23 +165,22 @@ to your own modified versions of Mura CMS.
               FORM.production_datasource = Form.production_databasename;
             };
           </cfscript>
+
+            <cfif form.production_dbtype eq 'Oracle'>
+            <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
+
+            <cfquery name="rsTableSpaces" datasource="#form.production_datasource#" username="#form.production_dbusername#" password="#form.production_dbpassword#">
+                select * from user_ts_quotas
+                where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
+            </cfquery>
+
+            <cfif not rsTableSpaces.recordcount>
+                <cfset message = "<strong>Error:</strong> The Oracle tablespace named '#form.production_dbtablespace#' is not available">
+                <cfset bProcessWithMessage = false>
+            </cfif>
+          </cfif>
+
         </cfif>
-
-
-        <cfif form.production_dbtype eq 'Oracle'>
-           <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
-
-           <cfquery name="rsTableSpaces" datasource="#form.production_datasource#" username="#form.production_dbusername#" password="#form.production_dbpassword#">
-              select * from user_ts_quotas
-              where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
-           </cfquery>
-
-           <cfif not rsTableSpaces.recordcount>
-              <cfset message = "<strong>Error:</strong> The Oracle tablespace named '#form.production_dbtablespace#' is not available">
-              <cfset bProcessWithMessage = false>
-           </cfif>
-        </cfif>
-
         <cfif bProcessWithMessage>
           <!--- try to create the database --->
           <!--- <cftry> --->
@@ -201,6 +200,7 @@ to your own modified versions of Mura CMS.
           <cfelse>
             <cfparam name="form.production_mysqlengine" default="InnoDB">
             <cfset storageEngine="ENGINE=#form.production_mysqlengine# DEFAULT CHARSET=utf8">
+
             <cfsavecontent variable="sql">
               <cfinclude template="../db/#FORM.production_dbtype#.sql">
             </cfsavecontent>
@@ -283,9 +283,13 @@ to your own modified versions of Mura CMS.
 				</cfcase>
             </cfswitch>
             <!--- update the domain to be local to the domain the server is being installed on --->
+            <cfset domain=listFirst(cgi.http_host,":")>
+            <cfif domain eq '127.0.0.1'>
+                <cfset domain='localhost'>
+            </cfif>
             <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
               UPDATE tsettings
-              SET domain = '#listFirst(cgi.http_host,":")#',
+              SET domain = '#domain#',
                 theme = 'MuraBootstrap3',
                 gallerySmallScaleBy='s',
                 gallerySmallScale=80,

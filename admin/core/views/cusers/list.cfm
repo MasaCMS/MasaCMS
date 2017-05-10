@@ -139,14 +139,14 @@
 
 											<!--- Edit --->
 												<li class="edit">
-													<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" onclick="actionModal(); window.location=this.href;">
+													<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#esapiEncode('url',rc.siteid)#')#" rel="tooltip" onclick="actionModal(); window.location=this.href;">
 														<i class="mi-pencil"></i>#rbKey('user.edit')#
 													</a>
 												</li>
 
 											<!--- View Members --->
 												<li class="members">
-													<a href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" onclick="actionModal(); window.location=this.href;">
+													<a href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#local.item.getValue('userid')#&siteid=#esapiEncode('url',rc.siteid)#')#" rel="tooltip" onclick="actionModal(); window.location=this.href;">
 														<i class="mi-users"></i>#rbKey('user.members')#
 													</a>
 												</li>
@@ -160,7 +160,7 @@
 													) />
 
 													<li class="delete">
-														<a href="#buildURL(action='cusers.update', querystring='action=delete&isPublic=#local.item.getValue('isPublic')#&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip">
+														<a href="#buildURL(action='cusers.update', querystring='action=delete&isPublic=#local.item.getValue('isPublic')#&userid=#local.item.getValue('userid')#&siteid=#esapiEncode('url',rc.siteid)#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip">
 															<i class="mi-trash"></i>#rbKey('user.delete')#
 														</a>
 													</li>
@@ -177,7 +177,7 @@
 
 							<!--- Group Name --->
 								<td class="var-width">
-									<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
+									<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 										#esapiEncode('html',local.item.getValue('groupname'))#</a>
 									(#Val(local.membercount)#)
 								</td>

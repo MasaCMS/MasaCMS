@@ -162,7 +162,14 @@
 				<cfset preBodyText = variables.contentRenderer.setDynamicContent(rsemail.bodytext)>
 				<cfset site=application.settingsManager.getSite(rsemail.siteid)>
 				<cfset scheme = site.getScheme()>
-				<cfset template = Len(rsEmail.template) ? '#site.getThemeAssetPath()#/templates/emails/#rsEmail.template#' : '#site.getAssetPath()#/includes/email/inc_email.cfm'>
+
+				<cfif fileExists(expandPath('#site.getAssetPath()#/email/inc_email.cfm'))>
+					<cfset var defaultTemplate='#site.getAssetPath()#/email/inc_email.cfm'>
+				<cfelse>
+					<cfset var defaultTemplate='#site.getAssetPath()#/includes/email/inc_email.cfm'>
+				</cfif>
+
+				<cfset template = Len(rsEmail.template) ? '#site.getThemeAssetPath()#/templates/emails/#rsEmail.template#' : defaultTemplate>
 
 				<cfloop query="rsAddresses">
 					<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(rsAddresses.email)) neq 0 and prevEmail neq rsAddresses.email>

@@ -57,10 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var entry = "" />
 		<cfset var value = "" />
 
-
 		<cfset variables.iniPath = arguments.iniPath />
 		<cfset variables.ini = structNew() />
-
 
 		<cffile variable="file" action="read" file="#variables.iniPath#"  />
 
@@ -103,21 +101,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="entry" type="string" required="false" hint="Entry name." />
 		<cfargument name="default" type="string" required="false" />
 
-		<cfif NOT structKeyExists( arguments, "section" )>
-			<cfreturn variables.ini />
-		</cfif>
+		<cfset var envVar='MURA_#UCASE(arguments.entry)#'>
 
-		<cfif NOT structKeyExists( arguments, "entry" )>
-			<cfreturn variables.ini[ arguments.section ] />
-		</cfif>
-
-		<cfif structKeyExists( variables.ini[ arguments.section ], arguments.entry )>
-			<cfreturn variables.ini[ arguments.section ][ arguments.entry ] />
-		<cfelseif ( structKeyExists( arguments, "default" ) )>
-			<cfset set( arguments.section, arguments.entry, arguments.default ) />
-			<cfreturn arguments.default />
+		<cfif structKeyExists(request.muraSysEnv,'#envVar#')>
+			<cfreturn request.muraSysEnv['#envVar#']>
 		<cfelse>
-			<cfreturn "" />
+			<cfif NOT structKeyExists( arguments, "section" )>
+				<cfreturn variables.ini />
+			</cfif>
+
+			<cfif NOT structKeyExists( arguments, "entry" )>
+				<cfreturn variables.ini[ arguments.section ] />
+			</cfif>
+
+			<cfif structKeyExists( variables.ini[ arguments.section ], arguments.entry )>
+				<cfreturn variables.ini[ arguments.section ][ arguments.entry ] />
+			<cfelseif ( structKeyExists( arguments, "default" ) )>
+				<cfset set( arguments.section, arguments.entry, arguments.default ) />
+				<cfreturn arguments.default />
+			<cfelse>
+				<cfreturn "" />
+			</cfif>
 		</cfif>
 	</cffunction>
 
@@ -139,11 +143,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="entry" type="string" required="true" hint="Entry name." />
 		<cfargument name="value" type="any" required="false" default="" hint="Property value" />
 
-		<cfset setSection( arguments.section ) />
+		<cfif not request.muraInDocker>
+			<cfset setSection( arguments.section ) />
 
-		<cfset variables.ini[ arguments.section ][ arguments.entry ] = arguments.value />
-		<cfset setProfileString( variables.iniPath, arguments.section, arguments.entry, arguments.value ) />
-
+			<cfset variables.ini[ arguments.section ][ arguments.entry ] = arguments.value />
+			<cfset setProfileString( variables.iniPath, arguments.section, arguments.entry, arguments.value ) />
+		</cfif>
 		<cfreturn this />
 	</cffunction>
 

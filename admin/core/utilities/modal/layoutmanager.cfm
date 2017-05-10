@@ -144,7 +144,7 @@
 </cfif>
 </div>
 <script>
-mura.ready(function(){
+Mura.ready(function(){
 	<cfif $.content('type') eq 'Variation'>
 	if(!Mura('.mxp-editable').length){
 		Mura('##adminQuickEdit').remove();
@@ -180,9 +180,9 @@ mura.ready(function(){
 	});
 
 	//Mura('.mura-region.mura-editable').attr('style','clear:both;');
-	mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
-	mura.adminpath='#variables.$.globalConfig("adminPath")#';
-	mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');
+	Mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
+	Mura.adminpath='#variables.$.globalConfig("adminPath")#';
+	Mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');
 });
 </script>
 </cfoutput>
