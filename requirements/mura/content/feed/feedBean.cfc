@@ -244,8 +244,6 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 			for ( i=1 ; i<=listLen(arguments.contentID) ; i++ ) {
 				if ( listFindNoCase(variables.instance.contentID,listGetAt(arguments.contentID,i)) ) {
 					variables.instance.contentID = listDeleteAt(variables.instance.contentID,i-offset);
-
-					writeOutput("/>");
 					offset=offset+1;
 				}
 			}
@@ -285,8 +283,6 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 			for ( i=1 ; i<=listLen(arguments.categoryID) ; i++ ) {
 				if ( listFindNoCase(variables.instance.categoryID,listGetAt(arguments.categoryID,i)) ) {
 					variables.instance.categoryID = listDeleteAt(variables.instance.categoryID,i-offset);
-
-					writeOutput("/>");
 					offset=offset+1;
 				}
 			}
@@ -341,8 +337,6 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function showNavOnly(any value) output=false {
-
-		writeOutput(">");
 		return setShowNavOnly(arguments.value);
 	}
 
