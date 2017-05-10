@@ -146,6 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 
 	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
+	<cfset variables.iniProperties.mapdir = "mura">
 	<cfset variables.mode = variables.iniProperties.mode />
 	<cfset variables.mapdir = variables.iniProperties.mapdir />
 	<cfset variables.webroot = variables.iniProperties.webroot />
