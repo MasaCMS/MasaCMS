@@ -111,7 +111,7 @@
 						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
 					}
 
-					//console.log(siteManager.availableObject.params);
+					console.log(siteManager.availableObject.params);
 
 					frontEndProxy.post(
 					{
@@ -221,7 +221,7 @@
 			<cfif rc.sourceFrame eq 'modal'>
 			jQuery("##saveConfigDraft").bind("click",updateDraft);
 			<cfelse>
-			jQuery('##configuratorContainer').on('change','.objectParam, ##availableObjectSelector',updateDraft);
+			jQuery('##configuratorContainer').on('change','.objectParam, .objectparam,  ##availableObjectSelector',updateDraft);
 			</cfif>
 
 			jQuery("##deleteObject").bind("click",

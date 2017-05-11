@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,154 +43,134 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides reminder bean functionality">
+*/
+/**
+ * This provides reminder bean functionality
+ */
+component extends="mura.cfobject" output="false" hint="This provides reminder bean functionality" {
+	variables.instance=structNew();
+	variables.instance.contentid="";
+	variables.instance.email="";
+	variables.instance.isSent=0;
+	variables.instance.remindHour=0;
+	variables.instance.remindMinute=0;
+	variables.instance.siteID="";
+	variables.instance.errors=structnew();
+	variables.instance.isNew=1;
+	variables.instance.RemindInterval=0;
 
-<cfset variables.instance=structNew() />
-<cfset variables.instance.contentid=""/>
-<cfset variables.instance.email=""/>
-<cfset variables.instance.isSent=0/>
-<cfset variables.instance.remindHour=0 />
-<cfset variables.instance.remindMinute=0 />
-<cfset variables.instance.siteID="" />
-<cfset variables.instance.errors=structnew() />
-<cfset variables.instance.isNew=1/>
-<cfset variables.instance.RemindInterval=0/>
+	public function init() output=false {
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfreturn this />
-	</cffunction>
+	public function set(required property, propertyValue) output=false {
+		if ( !isDefined('arguments.reminder') ) {
+			if ( isSimpleValue(arguments.property) ) {
+				return getValue(argumentCollection=arguments);
+			}
+			arguments.reminder=arguments.property;
+		}
+		var prop = "";
+		var tempFunc="";
+		if ( isquery(arguments.reminder) ) {
+			setcontentID(arguments.reminder.contentid);
+			setEmail(arguments.reminder.email);
+			setIsSent(arguments.reminder.isSent);
+			setRemindHour(arguments.reminder.remindHour);
+			setRemindMinute(arguments.reminder.remindMinute);
+			setSiteID(arguments.reminder.siteID);
+			setRemindInterval(arguments.reminder.RemindInterval);
+		} else if ( isStruct(arguments.reminder) ) {
+			for ( prop in arguments.reminder ) {
+				if ( isdefined("variables.instance.#prop#") ) {
+					tempFunc=this["set#prop#"];
+					tempFunc(arguments.reminder['#prop#']);
+				}
+			}
+		}
+	}
 
- 	<cffunction name="set" output="false">
-		<cfargument name="property" required="true">
-    <cfargument name="propertyValue">
+	public struct function getAllValues() output=false {
+		return variables.instance;
+	}
 
-    <cfif not isDefined('arguments.reminder')>
-      <cfif isSimpleValue(arguments.property)>
-        <cfreturn getValue(argumentCollection=arguments)>
-      </cfif>
+	public function validate() output=false {
+		variables.instance.errors=structnew();
+		if ( REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}",variables.instance.email) != 0 ) {
+			variables.instance.errors.email="The 'email' address that you provided mus be in a valid format.";
+		}
+	}
 
-      <cfset arguments.reminder=arguments.property>
-    </cfif>
+	public function setcontentId(required string ContentId) output=false {
+		variables.instance.ContentId = trim(arguments.ContentId);
+	}
 
-		<cfset var prop = "" />
-    <cfset var tempFunc="">
+	public function getcontentId() output=false {
+		return variables.instance.ContentId;
+	}
 
-		<cfif isquery(arguments.reminder)>
+	public function setEmail(required string Email) output=false {
+		variables.instance.Email = trim(arguments.Email);
+	}
 
-			<cfset setcontentID(arguments.reminder.contentid) />
-			<cfset setEmail(arguments.reminder.email) />
-			<cfset setIsSent(arguments.reminder.isSent) />
-			<cfset setRemindHour(arguments.reminder.remindHour) />
-			<cfset setRemindMinute(arguments.reminder.remindMinute) />
-			<cfset setSiteID(arguments.reminder.siteID) />
-			<cfset setRemindInterval(arguments.reminder.RemindInterval) />
+	public function getEmail() output=false {
+		return variables.instance.Email;
+	}
 
-		<cfelseif isStruct(arguments.reminder)>
+	public function setIsSent(required numeric IsSent) output=false {
+		variables.instance.IsSent =arguments.IsSent;
+	}
 
-			<cfloop collection="#arguments.reminder#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
-					<cfset tempFunc=this["set#prop#"]>
-          <cfset tempFunc(arguments.reminder['#prop#'])>
-				</cfif>
-			</cfloop>
+	public function getIsSent() output=false {
+		return variables.instance.IsSent;
+	}
 
-		</cfif>
+	public function setRemindDate(required string RemindDat) output=false {
+		variables.instance.RemindDat = trim(arguments.RemindDat);
+	}
 
-	 </cffunction>
+	public function getRemindDate() output=false {
+		return variables.instance.RemindDat;
+	}
 
-	<cffunction name="getAllValues" returntype="struct" output="false">
-		<cfreturn variables.instance />
-  	</cffunction>
+	public function setRemindHour(required numeric RemindHour) output=false {
+		variables.instance.RemindHour =arguments.RemindHour;
+	}
 
-	<cffunction name="validate" output="false">
-		<cfset variables.instance.errors=structnew() />
+	public function getRemindHour() output=false {
+		return variables.instance.RemindHour;
+	}
 
-		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}",variables.instance.email) neq 0>
-		<cfset variables.instance.errors.email="The 'email' address that you provided mus be in a valid format."/>
-		</cfif>
+	public function setRemindMinute(required numeric RemindMinute) output=false {
+		variables.instance.RemindMinute =arguments.RemindMinute;
+	}
 
-     </cffunction>
+	public function getRemindMinute() output=false {
+		return variables.instance.RemindMinute;
+	}
 
-	<cffunction name="setcontentId" output="false">
-    <cfargument name="ContentId" type="string" required="true">
-    <cfset variables.instance.ContentId = trim(arguments.ContentId) />
-  	</cffunction>
+	public function setSiteID(required string SiteID) output=false {
+		variables.instance.SiteID = trim(arguments.SiteID);
+	}
 
-  	<cffunction name="getcontentId" output="false">
-    <cfreturn variables.instance.ContentId />
-  	</cffunction>
+	public function getSiteID() output=false {
+		return variables.instance.SiteID;
+	}
 
-	<cffunction name="setEmail" output="false">
-    <cfargument name="Email" type="string" required="true">
-    <cfset variables.instance.Email = trim(arguments.Email) />
-  	</cffunction>
+	public function setIsNew(required numeric IsNew) output=false {
+		variables.instance.IsNew = arguments.IsNew;
+	}
 
-  	<cffunction name="getEmail" output="false">
-    <cfreturn variables.instance.Email />
-  	</cffunction>
+	public function getIsNew() output=false {
+		return variables.instance.IsNew;
+	}
 
-	<cffunction name="setIsSent" output="false">
-    <cfargument name="IsSent" type="numeric" required="true">
-    <cfset variables.instance.IsSent =arguments.IsSent />
-  	</cffunction>
+	public function setRemindInterval(required numeric RemindInterval) output=false {
+		variables.instance.RemindInterval = arguments.RemindInterval;
+	}
 
-  	<cffunction name="getIsSent" output="false">
-    <cfreturn variables.instance.IsSent />
-  	</cffunction>
+	public function getRemindInterval() output=false {
+		return variables.instance.RemindInterval;
+	}
 
-	<cffunction name="setRemindDate" output="false">
-    <cfargument name="RemindDat" type="string" required="true">
-    <cfset variables.instance.RemindDat = trim(arguments.RemindDat) />
-  	</cffunction>
-
-  	<cffunction name="getRemindDate" output="false">
-    <cfreturn variables.instance.RemindDat />
-  	</cffunction>
-
-	<cffunction name="setRemindHour" output="false">
-    <cfargument name="RemindHour" type="numeric" required="true">
-    <cfset variables.instance.RemindHour =arguments.RemindHour />
-  	</cffunction>
-
-  	<cffunction name="getRemindHour" output="false">
-    <cfreturn variables.instance.RemindHour />
-  	</cffunction>
-
-	<cffunction name="setRemindMinute" output="false">
-    <cfargument name="RemindMinute" type="numeric" required="true">
-    <cfset variables.instance.RemindMinute =arguments.RemindMinute />
-  	</cffunction>
-
-  	<cffunction name="getRemindMinute" output="false">
-    <cfreturn variables.instance.RemindMinute />
-  	</cffunction>
-
-		<cffunction name="setSiteID" output="false">
-    <cfargument name="SiteID" type="string" required="true">
-    <cfset variables.instance.SiteID = trim(arguments.SiteID) />
-  	</cffunction>
-
-  	<cffunction name="getSiteID" output="false">
-    <cfreturn variables.instance.SiteID />
-  	</cffunction>
-
-	     <cffunction name="setIsNew" output="false">
-    <cfargument name="IsNew" type="numeric" required="true">
-    <cfset variables.instance.IsNew = arguments.IsNew />
-  </cffunction>
-
-  <cffunction name="getIsNew" output="false">
-    <cfreturn variables.instance.IsNew />
-  </cffunction>
-
-  <cffunction name="setRemindInterval" output="false">
-    <cfargument name="RemindInterval" type="numeric" required="true">
-    <cfset variables.instance.RemindInterval = arguments.RemindInterval />
-  </cffunction>
-
-  <cffunction name="getRemindInterval" output="false">
-    <cfreturn variables.instance.RemindInterval />
-  </cffunction>
-
-</cfcomponent>
+}

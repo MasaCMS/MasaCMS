@@ -1,6 +1,8 @@
-<cfcomponent output="false" displayname="FCKeditor" hint="Create an instance of the FCKeditor.">
-
-<!---
+/**
+ * Create an instance of the FCKeditor.
+ */
+component output="false" displayname="FCKeditor" hint="Create an instance of the FCKeditor." {
+	/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2009 Frederico Caldeira Knabben
  *
@@ -42,57 +44,45 @@
  * *** Note:
  * Do not use path names with a "." (dot) in the name. This is a coldfusion
  * limitation with the cfc invocation.
---->
+*/
+	include "fckutils.cfm";
 
-<cfinclude template="fckutils.cfm">
+	/**
+	 * Outputs the editor HTML in the place where the function is called
+	 */
+	public void function Create() output=true {
+		cfoutput(  ) {
 
-<cffunction
-	name="Create"
-	access="public"
-	output="true"
-	returntype="void"
-	hint="Outputs the editor HTML in the place where the function is called"
->
-	<cfoutput>#CreateHtml()#</cfoutput>
-</cffunction>
+			writeOutput("#CreateHtml()#");
+		}
+	}
 
-<cffunction
-	name="CreateHtml"
-	access="public"
-	output="false"
-	returntype="string"
-	hint="Retrieves the editor HTML"
->
+	/**
+	 * Retrieves the editor HTML
+	 */
+	public string function CreateHtml() output=false {
+		cfparam( name="this.instanceName", type="string" );
+		cfparam( default="100%", name="this.width", type="string" );
+		cfparam( default=200, name="this.height", type="string" );
+		cfparam( default="Default", name="this.toolbarSet", type="string" );
+		cfparam( default="", name="this.value", type="string" );
+		cfparam( default="/fckeditor/", name="this.basePath", type="string" );
+		cfparam( default=true, name="this.checkBrowser", type="boolean" );
+		cfparam( default=structNew(), name="this.config", type="struct" );
 
-	<cfparam name="this.instanceName" type="string" />
-	<cfparam name="this.width" type="string" default="100%" />
-	<cfparam name="this.height" type="string" default="200" />
-	<cfparam name="this.toolbarSet" type="string" default="Default" />
-	<cfparam name="this.value" type="string" default="" />
-	<cfparam name="this.basePath" type="string" default="/fckeditor/" />
-	<cfparam name="this.checkBrowser" type="boolean" default="true" />
-	<cfparam name="this.config" type="struct" default="#structNew()#" />
-
-	<cfscript>
-	// display the html editor or a plain textarea?
+		// display the html editor or a plain textarea?
 	if( isCompatible() )
 		return getHtmlEditor();
 	else
 		return getTextArea();
-	</cfscript>
+	}
 
-</cffunction>
+	/**
+	 * Check browser compatibility via HTTP_USER_AGENT, if checkBrowser is true
+	 */
+	private boolean function isCompatible() output=false {
 
-<cffunction
-	name="isCompatible"
-	access="private"
-	output="false"
-	returnType="boolean"
-	hint="Check browser compatibility via HTTP_USER_AGENT, if checkBrowser is true"
->
-
-	<cfscript>
-	var sAgent = lCase( cgi.HTTP_USER_AGENT );
+		var sAgent = lCase( cgi.HTTP_USER_AGENT );
 	var stResult = "";
 	var sBrowserVersion = "";
 
@@ -101,22 +91,17 @@
 		return true;
 
 	return FCKeditor_IsCompatibleBrowser();
-	</cfscript>
-</cffunction>
+	}
 
-<cffunction
-	name="getTextArea"
-	access="private"
-	output="false"
-	returnType="string"
-	hint="Create a textarea field for non-compatible browsers."
->
-	<cfset var result = "" />
-	<cfset var sWidthCSS = "" />
-	<cfset var sHeightCSS = "" />
+	/**
+	 * Create a textarea field for non-compatible browsers.
+	 */
+	private string function getTextArea() output=false {
+		var result = "";
+		var sWidthCSS = "";
+		var sHeightCSS = "";
 
-	<cfscript>
-	if( Find( "%", this.width ) gt 0)
+		if( Find( "%", this.width ) gt 0)
 		sWidthCSS = this.width;
 	else
 		sWidthCSS = this.width & "px";
@@ -127,22 +112,17 @@
 		sHeightCSS = this.height & "px";
 
 	result = "<textarea name=""#this.instanceName#"" rows=""4"" cols=""40"" style=""width: #sWidthCSS#; height: #sHeightCSS#"">#HTMLEditFormat(this.value)#</textarea>" & chr(13) & chr(10);
-	</cfscript>
-	<cfreturn result />
-</cffunction>
+		return result;
+	}
 
-<cffunction
-	name="getHtmlEditor"
-	access="private"
-	output="false"
-	returnType="string"
-	hint="Create the html editor instance for compatible browsers."
->
-	<cfset var sURL = "" />
-	<cfset var result = "" />
+	/**
+	 * Create the html editor instance for compatible browsers.
+	 */
+	private string function getHtmlEditor() output=false {
+		var sURL = "";
+		var result = "";
 
-	<cfscript>
-	// try to fix the basePath, if ending slash is missing
+		// try to fix the basePath, if ending slash is missing
 	if( len( this.basePath) and right( this.basePath, 1 ) is not "/" )
 		this.basePath = this.basePath & "/";
 
@@ -152,32 +132,25 @@
 	// append toolbarset name to the url
 	if( len( this.toolbarSet ) )
 		sURL = sURL & "&amp;Toolbar=" & this.toolbarSet;
-	</cfscript>
 
-	<cfscript>
-	result = result & "<input type=""hidden"" id=""#this.instanceName#"" name=""#this.instanceName#"" value=""#HTMLEditFormat(this.value)#"" style=""display:none"" />" & chr(13) & chr(10);
+		result = result & "<input type=""hidden"" id=""#this.instanceName#"" name=""#this.instanceName#"" value=""#HTMLEditFormat(this.value)#"" style=""display:none"" />" & chr(13) & chr(10);
 	result = result & "<input type=""hidden"" id=""#this.instanceName#___Config"" value=""#GetConfigFieldString()#"" style=""display:none"" />" & chr(13) & chr(10);
-	result = result & "<iframe id=""#this.instanceName#___Frame"" src=""#sURL#"" width=""#this.width#"" height=""#this.height#"" frameborder=""0"" scrolling=""no""></iframe>" & chr(13) & chr(10);
-	</cfscript>
-	<cfreturn result />
-</cffunction>
+	result = result & "<invalidTag id=""#this.instanceName#___Frame"" src=""#sURL#"" width=""#this.width#"" height=""#this.height#"" frameborder=""0"" scrolling=""no""></iframe>" & chr(13) & chr(10);
+		return result;
+	}
 
-<cffunction
-	name="GetConfigFieldString"
-	access="private"
-	output="false"
-	returnType="string"
-	hint="Create configuration string: Key1=Value1&Key2=Value2&... (Key/Value:HTML encoded)"
->
-	<cfset var sParams = "" />
-	<cfset var key = "" />
-	<cfset var fieldValue = "" />
-	<cfset var fieldLabel = "" />
-	<cfset var lConfigKeys = "" />
-	<cfset var iPos = "" />
-
-	<cfscript>
 	/**
+	 * Create configuration string: Key1=Value1&Key2=Value2&... (Key/Value:HTML encoded)
+	 */
+	private string function GetConfigFieldString() output=false {
+		var sParams = "";
+		var key = "";
+		var fieldValue = "";
+		var fieldLabel = "";
+		var lConfigKeys = "";
+		var iPos = "";
+
+		/**
 	 * CFML doesn't store casesensitive names for structure keys, but the configuration names must be casesensitive for js.
 	 * So we need to find out the correct case for the configuration keys.
 	 * We "fix" this by comparing the caseless configuration keys to a list of all available configuration options in the correct case.
@@ -225,8 +198,6 @@
 		}
 	}
 	return sParams;
-	</cfscript>
+	}
 
-</cffunction>
-
-</cfcomponent>
+}

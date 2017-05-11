@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,112 +43,82 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides a thread safe context to execute plugin cfm base event handling">
+*/
+/**
+ * This provides a thread safe context to execute plugin cfm base event handling
+ */
+component extends="mura.cfobject" output="false" hint="This provides a thread safe context to execute plugin cfm base event handling" {
+	variables.configBean="";
+	variables.settingsManager="";
+	variables.pluginManager="";
 
-<cfset variables.configBean="">
-<cfset variables.settingsManager="">
-<cfset variables.pluginManager="">
+	public function init(configBean, settingsManager, pluginManager) output=false {
+		variables.configBean=arguments.configBean;
+		variables.settingsManager=arguments.settingsManager;
+		variables.pluginManager=arguments.pluginManager;
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfargument name="configBean">
-	<cfargument name="settingsManager">
-	<cfargument name="pluginManager">
+	public function displayObject(objectID, event, rsDisplayObject, $, mura, m) output=true {
+		var rs="";
+		var str="";
+		var pluginConfig="";
+		var tracePoint=0;
+		request.pluginConfig=variables.pluginManager.getConfig(arguments.rsDisplayObject.pluginID);
+		request.pluginConfig.setSetting("pluginMode","object");
+		request.scriptEvent=arguments.event;
+		pluginConfig=request.pluginConfig;
+		if ( arguments.rsDisplayObject.location == "global" ) {
+			pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/");
+			tracePoint=initTracePoint("/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#");
+			savecontent variable="str" {
+				include "/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#";
+			}
+			commitTracePoint(tracePoint);
+		} else {
+			pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/");
+			tracePoint=initTracePoint("/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#");
+			savecontent variable="str" {
+				include "/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#";
+			}
+			commitTracePoint(tracePoint);
+		}
+		structDelete(request,"pluginConfig");
+		structDelete(request,"scriptEvent");
+		return trim(str);
+	}
 
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.settingsManager=arguments.settingsManager />
-	<cfset variables.pluginManager=arguments.pluginManager />
+	public function executeScript(required any event="", required any scriptFile="", required any pluginConfig="", $, mura, m) output=false {
+		var scriptEvent=arguments.event;
+		var tracePoint=0;
+		request.pluginConfig=arguments.pluginConfig;
+		request.scriptEvent=arguments.event;
+		tracePoint=initTracePoint(arguments.scriptFile);
+		include arguments.scriptFile;
+		commitTracePoint(tracePoint);
+		structDelete(request,"pluginConfig");
+		structDelete(request,"scriptEvent");
+		return event;
+	}
 
-<cfreturn this />
-</cffunction>
+	public function renderScript(required any event="", required any scriptFile="", required any pluginConfig="", $, mura, m) output=true {
+		var rs="";
+		var str="";
+		var tracePoint=0;
+		var attributes=structNew();
+		request.pluginConfig=arguments.pluginConfig;
+		request.pluginConfig.setSetting("pluginMode","object");
+		request.scriptEvent=arguments.event;
+		pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/");
+		attributes=arguments.event.getAllValues();
+		tracePoint=initTracePoint(arguments.scriptFile);
+		savecontent variable="str" {
+			include arguments.scriptFile;
+		}
+		commitTracePoint(tracePoint);
+		structDelete(request,"pluginConfig");
+		structDelete(request,"scriptEvent");
+		return trim(str);
+	}
 
-<cffunction name="displayObject" output="true">
-<cfargument name="objectID">
-<cfargument name="event">
-<cfargument name="rsDisplayObject">
-<cfargument name="$">
-<cfargument name="mura">
-<cfargument name="m">
-
-	<cfset var rs=""/>
-	<cfset var str=""/>
-	<cfset var pluginConfig=""/>
-	<cfset var tracePoint=0>
-
-	<cfset request.pluginConfig=variables.pluginManager.getConfig(arguments.rsDisplayObject.pluginID)>
-	<cfset request.pluginConfig.setSetting("pluginMode","object")/>
-	<cfset request.scriptEvent=arguments.event />
-	<cfset pluginConfig=request.pluginConfig/>
-
-	<cfif arguments.rsDisplayObject.location eq "global">
-		<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/")/>
-		<cfset tracePoint=initTracePoint("/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#")>
-		<cfsavecontent variable="str">
-		<cfinclude template="/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#">
-		</cfsavecontent>
-		<cfset commitTracePoint(tracePoint)>
-	<cfelse>
-		<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/")/>
-		<cfset tracePoint=initTracePoint("/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#")>
-		<cfsavecontent variable="str">
-		<cfinclude template="/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#">
-		</cfsavecontent>
-		<cfset commitTracePoint(tracePoint)>
-	</cfif>
-
-	<cfset structDelete(request,"pluginConfig")>
-	<cfset structDelete(request,"scriptEvent")>
-
-	<cfreturn trim(str) />
-</cffunction>
-
-<cffunction name="executeScript" output="false">
-<cfargument name="event" required="true" default="" type="any">
-<cfargument name="scriptFile" required="true" default="" type="any">
-<cfargument name="pluginConfig" required="true" default="" type="any">
-<cfargument name="$">
-<cfargument name="mura">
-<cfargument name="m">
-	<cfset var scriptEvent=arguments.event>
-	<cfset var tracePoint=0>
-
-	<cfset request.pluginConfig=arguments.pluginConfig/>
-	<cfset request.scriptEvent=arguments.event/>
-	<cfset tracePoint=initTracePoint(arguments.scriptFile)>
-	<cfinclude template="#arguments.scriptFile#">
-	<cfset commitTracePoint(tracePoint)>
-	<cfset structDelete(request,"pluginConfig")>
-	<cfset structDelete(request,"scriptEvent")>
-	<cfreturn event/>
-
-</cffunction>
-
-<cffunction name="renderScript" output="true">
-<cfargument name="event" required="true" default="" type="any">
-<cfargument name="scriptFile" required="true" default="" type="any">
-<cfargument name="pluginConfig" required="true" default="" type="any">
-<cfargument name="$">
-<cfargument name="mura">
-<cfargument name="m">
-	<cfset var rs=""/>
-	<cfset var str=""/>
-	<cfset var tracePoint=0>
-	<cfset var attributes=structNew()>
-
-	<cfset request.pluginConfig=arguments.pluginConfig/>
-	<cfset request.pluginConfig.setSetting("pluginMode","object")/>
-	<cfset request.scriptEvent=arguments.event />
-	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/")/>
-	<cfset attributes=arguments.event.getAllValues()/>
-	<cfset tracePoint=initTracePoint(arguments.scriptFile)>
-	<cfsavecontent variable="str">
-	<cfinclude template="#arguments.scriptFile#">
-	</cfsavecontent>
-	<cfset commitTracePoint(tracePoint)>
-	<cfset structDelete(request,"pluginConfig")>
-	<cfset structDelete(request,"scriptEvent")>
-
-	<cfreturn trim(str) />
-</cffunction>
-
-</cfcomponent>
+}

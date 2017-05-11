@@ -63,7 +63,7 @@
 		<cfset objectparams.sortBy=$.content('sortBy')>
 		<cfset objectparams.sortDirectory=$.content('sortDirectory')>
 		<cfset objectparams.nextn=$.content('nextn')>
-		<cfset objectparams.layout='default'>		
+		<cfset objectparams.layout='default'>
 	</cfif>
 </cfsilent>
 <cfoutput>

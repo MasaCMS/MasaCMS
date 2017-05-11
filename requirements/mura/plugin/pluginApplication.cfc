@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,89 +43,73 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides the ability to manage plugin specific application level variables">
+*/
+/**
+ * This provides the ability to manage plugin specific application level variables
+ */
+component extends="mura.cfobject" output="false" hint="This provides the ability to manage plugin specific application level variables" {
+	variables.properties=structNew();
+	variables.wired=structNew();
+	variables.pluginConfig="";
 
-<cfset variables.properties=structNew() />
-<cfset variables.wired=structNew() />
-<cfset variables.pluginConfig="" />
+	public function init(any data="#structNew()#") output=false {
+		variables.properties=arguments.data;
+		variables.utility=getBean('utility');
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfargument name="data"  type="any" default="#structNew()#">
+	public function setPluginConfig(pluginConfig) output=false {
+		variables.pluginConfig=arguments.pluginConfig;
+	}
 
-	<cfset variables.properties=arguments.data />
+	public function setValue(required string property, required propertyValue="", required autowire="false") output=false {
+		variables.properties[arguments.property]=arguments.propertyValue;
+		structDelete(variables.wired,arguments.property);
+		if ( arguments.autowire && isObject(arguments.propertyValue) ) {
+			doAutowire(variables.properties[arguments.property]);
+			variables.wired[arguments.property]=true;
+		}
+	}
 
-	<cfreturn this />
-</cffunction>
+	public function doAutowire(cfc) output=false {
+		var i="";
+		var property="";
+		var setters="";
+		if ( application.cfversion > 8 ) {
+			setters=findImplicitAndExplicitSetters(arguments.cfc);
+			for ( i in setters ) {
+				wireProperty(arguments.cfc,i);
+			}
+		} else {
+			for ( i in arguments.cfc ) {
+				if ( len(i) > 3 && left(i,3) == "set" ) {
+					property=right(i,len(i)-3);
+					wireProperty(arguments.cfc,property);
+				}
+			}
+		}
+		return arguments.cfc;
+	}
 
-<cffunction name="setPluginConfig" output="false">
-<cfargument name="pluginConfig" >
+	private function wireProperty(object, property) output=false {
+		var args=structNew();
+		if ( arguments.property != "value" ) {
+			if ( arguments.property == "pluginConfig" ) {
+				args[arguments.property] = variables.pluginConfig;
+				variables.utility.invokeMethod(component=arguments.object,methodName="set#arguments.property#",args=args);
+			} else if ( structKeyExists(variables.properties,arguments.property) ) {
+				args[arguments.property] = variables.properties[arguments.property];
+				variables.utility.invokeMethod(component=arguments.object,methodName="set#arguments.property#",args=args);
+			} else if ( getServiceFactory().containsBean(arguments.property) ) {
+				args[arguments.property] = getBean(arguments.property);
+				variables.utility.invokeMethod(component=arguments.object,methodName="set#arguments.property#",args=args);
+			}
+		}
+	}
+	//  Ported from FW1
 
-	<cfset variables.pluginConfig=arguments.pluginConfig />
+	private function findImplicitAndExplicitSetters(cfc) output=false {
 
-</cffunction>
-
-<cffunction name="setValue" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" required="true">
-<cfargument name="autowire" default="false" required="true">
-
-	<cfset variables.properties[arguments.property]=arguments.propertyValue />
-	<cfset structDelete(variables.wired,arguments.property)>
-
-	<cfif arguments.autowire and isObject(arguments.propertyValue)>
-		<cfset doAutowire(variables.properties[arguments.property])>
-		<cfset variables.wired[arguments.property]=true>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="doAutowire" output="false">
-<cfargument name="cfc">
-	<cfset var i="">
-	<cfset var property="">
-	<cfset var setters="">
-
-	<cfif application.cfversion gt 8>
-		<cfset setters=findImplicitAndExplicitSetters(arguments.cfc)>
-		<cfloop collection="#setters#" item="i">
-			<cfset wireProperty(arguments.cfc,i)>
-		</cfloop>
-	<cfelse>
-		<cfloop collection="#arguments.cfc#" item="i">
-			<cfif len(i) gt 3 and left(i,3) eq "set">
-				<cfset property=right(i,len(i)-3)>
-				<cfset wireProperty(arguments.cfc,property)>
-			</cfif>
-		</cfloop>
-	</cfif>
-
-	<cfreturn arguments.cfc>
-</cffunction>
-
-<cffunction name="wireProperty" output="false" access="private">
-<cfargument name="object">
-<cfargument name="property">
-	<cfset var args=structNew()>
-
-	<cfif arguments.property neq "value">
-		<cfif arguments.property eq "pluginConfig">
-			<cfset args[arguments.property] = variables.pluginConfig />
-			<cfinvoke component="#arguments.object#" method="set#arguments.property#" argumentCollection="#args#" />
-		<cfelseif structKeyExists(variables.properties,arguments.property)>
-			<cfset args[arguments.property] = variables.properties[arguments.property] />
-			<cfinvoke component="#arguments.object#" method="set#arguments.property#" argumentCollection="#args#" />
-		<cfelseif getServiceFactory().containsBean(arguments.property)>
-			<cfset args[arguments.property] = getBean(arguments.property) />
-			<cfinvoke component="#arguments.object#" method="set#arguments.property#" argumentCollection="#args#" />
-		</cfif>
-	</cfif>
-</cffunction>
-
-<!--- Ported from FW1 --->
-<cffunction name="findImplicitAndExplicitSetters" access="private" output="false">
-	<cfargument name="cfc">
-	<cfscript>
 		//Moved all the varing to top of method for CF8 compilation.
 		var baseMetadata = getMetadata( arguments.cfc );
 		var setters = { };
@@ -180,59 +164,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 		}
 		return setters;
-	</cfscript>
-</cffunction>
+	}
 
-<cffunction name="getValue" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="defaultValue" default="" required="true">
-<cfargument name="autowire" default="true" required="true" >
-	<cfset var returnValue="">
+	public function getValue(required string property, required defaultValue="", required autowire="true") output=false {
+		var returnValue="";
+		if ( structKeyExists(variables.properties,arguments.property) ) {
+			returnValue=variables.properties[arguments.property];
+		} else {
+			variables.properties[arguments.property]=arguments.defaultValue;
+			returnValue=variables.properties[arguments.property];
+		}
+		if ( arguments.autowire && isObject(returnValue) && !structKeyExists(variables.wired,arguments.property) ) {
+			doAutowire(returnValue);
+			variables.wired[arguments.property]=true;
+		}
+		return returnValue;
+	}
 
-	<cfif structKeyExists(variables.properties,arguments.property)>
-		<cfset returnValue=variables.properties[arguments.property] />
-	<cfelse>
-		<cfset variables.properties[arguments.property]=arguments.defaultValue />
-		<cfset returnValue=variables.properties[arguments.property] />
-	</cfif>
+	public function getAllValues() output=false {
+		return variables.properties;
+	}
 
-	<cfif arguments.autowire and isObject(returnValue) and not structKeyExists(variables.wired,arguments.property)>
-		<cfset doAutowire(returnValue)>
-		<cfset variables.wired[arguments.property]=true>
-	</cfif>
-	<cfreturn returnValue>
-</cffunction>
+	public function valueExists(required string property) output=false {
+		return structKeyExists(variables.properties,arguments.property);
+	}
 
-<cffunction name="getAllValues" output="false">
-		<cfreturn variables.properties />
-</cffunction>
+	public function removeValue(required string property) output=false {
+		structDelete(variables.properties,arguments.property);
+		structDelete(variables.wired,arguments.property);
+	}
 
-<cffunction name="valueExists" output="false">
-	<cfargument name="property" type="string" required="true">
-		<cfreturn structKeyExists(variables.properties,arguments.property) />
-</cffunction>
+	/**
+	 * This is for fw1 autowiring
+	 */
+	public function containsBean(required string property) output=false {
+					return (structKeyExists(variables.properties,arguments.property) && isObject(variables.properties[arguments.property]))
+	 				|| getServiceFactory().containsBean(arguments.property) || arguments.property == "pluginConfig";
+	}
 
-<cffunction name="removeValue" output="false">
-	<cfargument name="property" type="string" required="true"/>
-		<cfset structDelete(variables.properties,arguments.property) />
-		<cfset structDelete(variables.wired,arguments.property) />
-</cffunction>
+				/**
+	 * This is for fw1 autowiring
+	 */
+	public function getBean(required string property) output=false {
+			if ( arguments.property == "pluginConfig" ) {
+				return variables.pluginConfig;
+			} else if ( getServiceFactory().containsBean(arguments.property) ) {
+				return getServiceFactory().getBean(arguments.property);
+			} else {
+				return getValue(arguments.property);
+			}
+		}
 
-<cffunction name="containsBean" output="false" hint="This is for fw1 autowiring">
-	<cfargument name="property" type="string" required="true">
-	<cfreturn (structKeyExists(variables.properties,arguments.property) and isObject(variables.properties[arguments.property]))
-	 or getServiceFactory().containsBean(arguments.property) or arguments.property eq "pluginConfig">
-</cffunction>
-
-<cffunction name="getBean" output="false" hint="This is for fw1 autowiring">
-	<cfargument name="property" type="string" required="true">
-	<cfif arguments.property eq "pluginConfig">
-		<cfreturn variables.pluginConfig>
-	<cfelseif getServiceFactory().containsBean(arguments.property)>
-		<cfreturn getServiceFactory().getBean(arguments.property)>
-	<cfelse>
-		<cfreturn getValue(arguments.property)>
-	</cfif>
-</cffunction>
-
-</cfcomponent>
+	}

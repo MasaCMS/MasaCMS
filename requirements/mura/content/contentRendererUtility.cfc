@@ -1919,6 +1919,7 @@
 
 	<cffunction name="lookupCustomContentTypeBody" output="false" hint="This is for looking up overrides in dspBody">
 		<cfargument name="$">
+
 		<cfset var safesubtype=REReplace(arguments.$.content().getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 		<cfset var eventOutput="">
 		<cfset var displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
@@ -1947,7 +1948,6 @@
 		<!--- END Checking for Override via Event Model --->
 
 		<!--- START Checking for Override via File  --->
-
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#_#safesubtype#/index.cfm')>
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
@@ -2020,6 +2020,7 @@
 			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true)}>
 		</cfif>
 
+		<!---
 		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
@@ -2043,7 +2044,7 @@
 		</cfif>
 			<cfreturn {eventOutput=$.dspObject(objectid=$.content('contentid'),object=displayObjectKey,params=params,bodyRender=true)}>
 		</cfif>
-
+		--->
 		<!--- END Checking for Override via Display Object --->
 
 		<cfreturn {}>

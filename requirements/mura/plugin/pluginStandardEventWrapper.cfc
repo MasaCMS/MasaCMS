@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,97 +43,101 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides functionality to parse runtime context and provide it to the executing event handler method">
+*/
+/**
+ * This provides functionality to parse runtime context and provide it to the executing event handler method
+ */
+component extends="mura.cfobject" output="false" hint="This provides functionality to parse runtime context and provide it to the executing event handler method" {
+	variables.eventHandler="";
+	variables.eventName="";
+	variables.objectName="";
 
-<cfset variables.eventHandler="">
-<cfset variables.eventName="">
-<cfset variables.objectName="">
+	public function init(eventHandler, eventName) output=false {
+		variables.eventHandler=arguments.eventHandler;
+		variables.eventName=arguments.eventName;
+		variables.objectName=getMetaData(variables.eventHandler).name;
+		variables.utility=getBean('utility');
+		return this;
+	}
 
-<cffunction name="init" output="false">
-<cfargument name="eventHandler">
-<cfargument name="eventName">
+	public function splitContexts(context) output=false {
+		var contexts=structNew();
+		if ( listLast(getMetaData(arguments.context).name, '.') == "MuraScope" ) {
+			contexts.muraScope=arguments.context;
+			contexts.event=arguments.context.event();
+		} else {
+			contexts.muraScope=arguments.context.getValue("muraScope");
+			contexts.event=arguments.context;
+		}
+		return contexts;
+	}
 
-<cfset variables.eventHandler=arguments.eventHandler>
-<cfset variables.eventName=arguments.eventName>
-<cfset variables.objectName=getMetaData(variables.eventHandler).name>
+	public function handle(context) output=false {
+		var contexts=splitContexts(arguments.context);
+		var tracePoint=0;
+		var handler="";
 
-<cfreturn this>
-</cffunction>
+		if ( structKeyExists(variables.eventHandler,variables.eventName) ) {
+			tracePoint=initTracePoint("#variables.objectName#.#variables.eventName#");
 
-<cffunction name="splitContexts" output="false">
-<cfargument name="context">
-	<cfset var contexts=structNew()>
+			var args={
+					event=contexts.event,
+					mura=contexts.muraScope,
+					$=contexts.muraScope
+				};
+			
+			variables.utility.invokeMethod(component=variables.eventHandler,methodName=variables.eventName,args=args);
+		} else {
+			tracePoint=initTracePoint("#variables.objectName#.handle");
+			variables.eventHandler.handle(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope);
+		}
+		commitTracePoint(tracePoint);
+		request.muraHandledEvents["#variables.eventName#"]=true;
+	}
 
-	<cfif listLast(getMetaData(arguments.context).name, '.') eq "MuraScope">
-		<cfset contexts.muraScope=arguments.context>
-		<cfset contexts.event=arguments.context.event()>
-	<cfelse>
-		<cfset contexts.muraScope=arguments.context.getValue("muraScope")>
-		<cfset contexts.event=arguments.context>
-	</cfif>
-	<cfreturn contexts>
-</cffunction>
+	public function validate(context) output=false {
+		var contexts=splitContexts(arguments.context);
+		var verdict="";
+		var tracePoint=0;
+		if ( structKeyExists(variables.eventHandler,variables.eventName) ) {
+			var args={
+					event=contexts.event,
+					mura=contexts.muraScope,
+					$=contexts.muraScope
+				};
 
-<cffunction name="handle" output="false">
-<cfargument name="context">
-	<cfset var contexts=splitContexts(arguments.context)>
-	<cfset var tracePoint=0>
-	<cfset var handler="">
-	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
-		<cfset tracePoint=initTracePoint("#variables.objectName#.#variables.eventName#")>
-		<cfinvoke component="#variables.eventHandler#" method="#variables.eventName#">
-			<cfinvokeargument name="event" value="#contexts.event#">
-			<cfinvokeargument name="mura" value="#contexts.muraScope#">
-			<cfinvokeargument name="$" value="#contexts.muraScope#">
-		</cfinvoke>
-	<cfelse>
-		<cfset tracePoint=initTracePoint("#variables.objectName#.handle")>
-		<cfset variables.eventHandler.handle(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
-	</cfif>
-	<cfset commitTracePoint(tracePoint)>
-	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
-</cffunction>
+			verdict=variables.utility.invokeMethod(component=variables.eventHandler,methodName=variables.eventName,args=args);
 
-<cffunction name="validate" output="false">
-<cfargument name="context">
-	<cfset var contexts=splitContexts(arguments.context)>
-	<cfset var verdict="">
-	<cfset var tracePoint=0>
-	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
-		<cfinvoke component="#variables.eventHandler#" method="#variables.eventName#" returnvariable="verdict">
-			<cfinvokeargument name="event" value="#contexts.event#">
-			<cfinvokeargument name="mura" value="#contexts.muraScope#">
-			<cfinvokeargument name="$" value="#contexts.muraScope#">
-		</cfinvoke>
-	<cfelse>
-		<cfset tracePoint=initTracePoint("#variables.objectName#.validate")>
-		<cfset verdict=variables.eventHandler.validate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
-	</cfif>
-	<cfset commitTracePoint(tracePoint)>
-	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
-	<cfif isdefined("verdict")>
-		<cfreturn verdict>
-	</cfif>
-</cffunction>
+		} else {
+			tracePoint=initTracePoint("#variables.objectName#.validate");
+			verdict=variables.eventHandler.validate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope);
+		}
+		commitTracePoint(tracePoint);
+		request.muraHandledEvents["#variables.eventName#"]=true;
+		if ( isdefined("verdict") ) {
+			return verdict;
+		}
+	}
 
-<cffunction name="translate" output="false">
-<cfargument name="context">
-	<cfset var contexts=splitContexts(arguments.context)>
-	<cfset var tracePoint=0>
-	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
-		<cfset tracePoint=initTracePoint("#variables.objectName#.#variables.eventName#")>
-		<cfinvoke component="#variables.eventHandler#" method="#variables.eventName#">
-			<cfinvokeargument name="event" value="#contexts.event#">
-			<cfinvokeargument name="mura" value="#contexts.muraScope#">
-			<cfinvokeargument name="$" value="#contexts.muraScope#">
-		</cfinvoke>
-	<cfelse>
-		<cfset tracePoint=initTracePoint("#variables.objectName#.translate")>
-		<cfset variables.eventHandler.translate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
-	</cfif>
-	<cfset commitTracePoint(tracePoint)>
-	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
-</cffunction>
+	public function translate(context) output=false {
+		var contexts=splitContexts(arguments.context);
+		var tracePoint=0;
+		if ( structKeyExists(variables.eventHandler,variables.eventName) ) {
+			tracePoint=initTracePoint("#variables.objectName#.#variables.eventName#");
 
-</cfcomponent>
+			var args={
+					event=contexts.event,
+					mura=contexts.muraScope,
+					$=contexts.muraScope
+				};
+
+			variables.utility.invokeMethod(component=variables.eventHandler,methodName=variables.eventName,args=args);
+		} else {
+			tracePoint=initTracePoint("#variables.objectName#.translate");
+			variables.eventHandler.translate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope);
+		}
+		commitTracePoint(tracePoint);
+		request.muraHandledEvents["#variables.eventName#"]=true;
+	}
+
+}

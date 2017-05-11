@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,104 +43,92 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cache.cacheAbstract" output="false" hint="This provides event handler mapping/caching functionality">
+*/
+/**
+ * This provides event handler mapping/caching functionality
+ */
+component extends="mura.cache.cacheAbstract" output="false" hint="This provides event handler mapping/caching functionality" {
 
-<cffunction name="init" output="false">
-<cfargument name="siteid">
-<cfargument name="standardEventsHandler">
-<cfargument name="pluginManager">
-	<cfset variables.siteid=arguments.siteid>
-	<cfset variables.standardEventsHandler=arguments.standardEventsHandler>
-	<cfset variables.pluginManager=arguments.pluginManager>
-	<cfset super.init() />
-	<cfreturn this>
-</cffunction>
+	public function init(siteid, standardEventsHandler, pluginManager) output=false {
+		variables.siteid=arguments.siteid;
+		variables.standardEventsHandler=arguments.standardEventsHandler;
+		variables.pluginManager=arguments.pluginManager;
+		super.init();
+		return this;
+	}
 
-<cffunction name="get" output="false">
-		<cfargument name="key" type="string" required="true" />
-		<cfargument name="localHandler" default="" required="true" />
-		<!---<cfargument name="persist" default="true" required="true" />--->
-		<cfset var hashKey = getHashKey( arguments.key ) />
-		<cfset var checkKey= "__check__" & arguments.key>
-		<cfset var localKey=arguments.key>
-		<cfset var hashCheckKey = getHashKey( checkKey ) />
-		<cfset var rs="" />
-		<cfset var event="" />
-		<cfset var classInstance="" />
-		<cfset var wrappedClassInstance="" />
+	public function get(required string key, required localHandler="") output=false {
+		var hashKey = getHashKey( arguments.key );
+		var checkKey= "__check__" & arguments.key;
+		var localKey=arguments.key;
+		var hashCheckKey = getHashKey( checkKey );
+		var rs="";
+		var event="";
+		var classInstance="";
+		var wrappedClassInstance="";
+		// If the local handler has a locally defined method then use it instead
+		// if (NOT arguments.persist or NOT has( localKey )){
+		if ( !has( localKey ) ) {
+			if ( isObject(arguments.localHandler) && structKeyExists(arguments.localHandler, localKey) ) {
+				classInstance=localHandler;
+				wrappedClassInstance=wrapHandler(classInstance, localKey);
+				// if (arguments.persist){
+				super.set( localKey, wrappedClassInstance );
+				// }
+				return wrappedClassInstance;
+			}
+			// If there is a non plugin listener then use it instead
+			classInstance=variables.pluginManager.getSiteListener(variables.siteID, localKey);
+			if ( isObject(classInstance) ) {
+				wrappedClassInstance=wrapHandler(classInstance, localKey);
+				// if (arguments.persist){
+				super.set( localKey, wrappedClassInstance );
+				// }
+				return wrappedClassInstance;
+			}
+		}
+		//  Check if the prelook for plugins has been made
+		// if( NOT arguments.persist or NOT has( checkKey )){
+		if ( !has( checkKey ) ) {
+			rs=variables.pluginManager.getScripts(localKey, variables.siteid);
+			//  If it has not then get it
+			// if (arguments.persist){
+			super.set( checkKey, rs.recordcount );
+			// }
+			if ( rs.recordcount ) {
+				classInstance=variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache);
+				wrappedClassInstance=wrapHandler(classInstance, localKey);
+				// if (arguments.persist){
+				super.set( localKey, wrappedClassInstance );
+				// }
+				return wrappedClassInstance;
+			}
+		}
+		if ( has( localKey ) ) {
+			//  It's already in cache
+			return variables.collection.get( getHashKey(localKey) ).object;
+		} else {
+			//  return cached context
+			if ( structKeyExists(variables.standardEventsHandler,localKey) ) {
+				wrappedClassInstance=wrapHandler(variables.standardEventsHandler,localKey);
+				super.set( localKey, wrappedClassInstance );
+			} else {
+				wrappedClassInstance=wrapHandler(createObject("component","mura.Translator.#localKey#").init(),localKey);
+			}
+			/* if (arguments.persist){
+				super.set( localKey, wrappedClassInstance );
+			}
+			*/
+			return wrappedClassInstance;
+		}
+	}
 
-		<!---If the local handler has a locally defined method then use it instead --->
-		<!---<cfif NOT arguments.persist or NOT has( localKey )>--->
-		<cfif NOT has( localKey )>
-			<cfif isObject(arguments.localHandler) and structKeyExists(arguments.localHandler, localKey)>
-				<cfset classInstance=localHandler>
-				<cfset wrappedClassInstance=wrapHandler(classInstance, localKey)>
-				<!---<cfif arguments.persist>--->
-					<cfset super.set( localKey, wrappedClassInstance )>
-				<!---</cfif>--->
-				<cfreturn wrappedClassInstance />
-			</cfif>
+	public function wrapHandler(handler, eventName) output=false {
+		return createObject("component","mura.plugin.pluginStandardEventWrapper").init(arguments.handler,arguments.eventName);
+	}
 
-			<!---If there is a non plugin listener then use it instead --->
-			<cfset classInstance=variables.pluginManager.getSiteListener(variables.siteID, localKey)>
-			<cfif isObject(classInstance)>
-				<cfset wrappedClassInstance=wrapHandler(classInstance, localKey)>
-				<!---<cfif arguments.persist>--->
-					<cfset super.set( localKey, wrappedClassInstance )>
-				<!---</cfif>--->
-				<cfreturn wrappedClassInstance />
-			</cfif>
-		</cfif>
+	public boolean function has(required string key) output=false {
+		return structKeyExists( variables.collection , getHashKey( arguments.key ) );
+	}
 
-		<!--- Check if the prelook for plugins has been made --->
-		<!---<cfif NOT arguments.persist or NOT has( checkKey )>--->
-		<cfif NOT has( checkKey )>
-			<cfset rs=variables.pluginManager.getScripts(localKey, variables.siteid)>
-			<!--- If it has not then get it--->
-			<!---<cfif arguments.persist>--->
-				<cfset super.set( checkKey, rs.recordcount ) />
-			<!---</cfif>--->
-
-			<cfif rs.recordcount>
-				<cfset classInstance=variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache)>
-				<cfset wrappedClassInstance=wrapHandler(classInstance, localKey)>
-				<!---<cfif arguments.persist>--->
-					<cfset super.set( localKey, wrappedClassInstance )>
-				<!---</cfif>--->
-				<cfreturn wrappedClassInstance />
-			</cfif>
-		</cfif>
-
-		<cfif has( localKey )>
-			<!--- It's already in cache --->
-			<cfreturn variables.collection.get( getHashKey(localKey) ).object>
-		<cfelse>
-			<!--- return cached context --->
-			<cfif structKeyExists(variables.standardEventsHandler,localKey)>
-				<cfset wrappedClassInstance=wrapHandler(variables.standardEventsHandler,localKey)>
-				<cfset super.set( localKey, wrappedClassInstance )>
-			<cfelse>
-				<cfset wrappedClassInstance=wrapHandler(createObject("component","mura.Translator.#localKey#").init(),localKey)>
-			</cfif>
-			<!---<cfif arguments.persist>
-				<cfset super.set( localKey, wrappedClassInstance )>
-			</cfif>--->
-
-			<cfreturn wrappedClassInstance />
-		</cfif>
-
-</cffunction>
-
-<cffunction name="wrapHandler"  output="false">
-<cfargument name="handler">
-<cfargument name="eventName">
-<cfreturn createObject("component","mura.plugin.pluginStandardEventWrapper").init(arguments.handler,arguments.eventName)>
-</cffunction>
-
-<cffunction name="has" returntype="boolean" output="false">
-	<cfargument name="key" type="string" required="true" />
-	<cfreturn structKeyExists( variables.collection , getHashKey( arguments.key ) ) >
-</cffunction>
-
-</cfcomponent>
+}
