@@ -1518,10 +1518,16 @@ Display Objects
 	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
 		<cfset eventOutput=application.pluginManager.renderEvent("onDisplayRender",variables.event)>
+		<!---
+			Test for custom onDisplayRender output
+		--->
 		<cfif len(eventOutput)>
 			<cfset variables.$.noIndex()>
 			<cfset variables.event.setValue('noCache',1)>
 			<cfoutput>#eventOutput#</cfoutput>
+		<!---
+			If not check if the content is on display, but there's standard display override happening
+		--->
 		<cfelseif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
 			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not sessionData.mura.isLoggedIn)
 			or (variables.event.getValue('display') eq 'editprofile' and sessionData.mura.isLoggedIn)>
@@ -1566,7 +1572,10 @@ Display Objects
 					</cfcase>
 				</cfswitch>
 			<cfelse>
-
+				<!---
+					Render crumblist and title if required which is beind phazed out
+					infavor of handling that within a content_type include
+				--->
 				 <cfoutput>
 				 	<cfif structKeyExists(arguments,'titleAttribute')>
 				 		<#getHeaderTag('headline')# class="pageTitle">#renderEditableAttribute(attribute=arguments.titleAttribute,required=true)#</#getHeaderTag('headline')#>
@@ -1581,7 +1590,9 @@ Display Objects
 					</cfif>
 				</cfoutput>
 
-				<!--- Look for custom overrides--->
+				<!---
+					Look for custom overrides via events or content types includes.  Preferred for future development
+				--->
 				<cfset var bodyLookup=variables.contentRendererUtility.lookupCustomContentTypeBody(variables.$)>
 
 				<cfif isDefined('bodyLookup.eventOutput')>
@@ -1591,7 +1602,10 @@ Display Objects
 					<cfset objectParams.isBodyObject=true>
 					<cfinclude template="#bodyLookup.filepath#">
 
-				<!--- Otherwise start default body rendering --->
+				<!---
+					Otherwise start default body rendering, Mura will eventually ship
+					wth content_type includes for all base content types. So this will eventually be phased out
+				 --->
 				<cfelse>
 					<cfswitch expression="#$.content('type')#">
 					<cfcase value="File">
@@ -1661,6 +1675,9 @@ Display Objects
 				</cfif>
 			</cfif>
 		<cfelse>
+			<!---
+				The content is not on display or offline or the current viewer is not allowed to see it.
+			--->
 			<cfoutput>#$.dspContentTypeBody(params=$.content().getObjectParams())#</cfoutput>
 		</cfif>
 	</cfsavecontent>
