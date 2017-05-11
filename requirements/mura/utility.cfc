@@ -1302,4 +1302,31 @@ Blog: www.codfusion.com--->
 	<cflogout>
 </cffunction>
 
+<cffunction name="invokeMethod" output="false">
+		<cfargument name="component">
+		<cfargument name="methodName">
+		<cfargument name="args" default="#structNew()#">
+		<cfinvoke component="#arguments.component#" method="#arguments.methodName#" returnVariable="local.returnValue" argumentCollection="#arguments.args#">
+		<cfif isDefined('local.returnValue')>
+			<cfreturn local.returnValue>
+		</cfif>
+</cffunction>
+
+<cffunction name="cfml2wddx" output="false">
+	<cfargument name="value">
+		<cfwddx action="cfml2wddx" input="#arguments.value#" output="local.temp">
+		<cfreturn local.temp>
+</cffunction>
+
+<cffunction name="wddx2cfml" output="false">
+	<cfargument name="value">
+		<cfwddx action="wddx2cfml" input=#arguments.value# output="local.temp">
+		<cfreturn local.temp>
+</cffunction>
+
+<cffunction name="setHTMLHead" output="false">
+	<cfargument name="value">
+		<cfhtmlhead text="#arguments.value#">
+</cffunction>
+
 </cfcomponent>

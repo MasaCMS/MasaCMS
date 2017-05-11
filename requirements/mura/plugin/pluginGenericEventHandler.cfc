@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,26 +43,24 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="Thid provides base plugin event handling functionality">
+*/
+/**
+ * Thid provides base plugin event handling functionality
+ */
+component extends="mura.cfobject" output="false" hint="Thid provides base plugin event handling functionality" {
 
-<cffunction name="init" output="false">
-	<cfargument name="pluginConfig" required="true">
-	<cfargument name="configBean" required="true">
-	<cfset variables.pluginConfig=arguments.pluginConfig>
-	<cfset variables.configBean=arguments.configBean>
+	public function init(required pluginConfig, required configBean) output=false {
+		variables.pluginConfig=arguments.pluginConfig;
+		variables.configBean=arguments.configBean;
+		return this;
+	}
 
-	<cfreturn this>
-</cffunction>
+	/**
+	 * gets the objectid associated with the passed in display object
+	 */
+	private function renderPluginDisplayObject(required string object, required component event) output=false {
+		var rsObjID = "";
+		return getPluginManager().displayObject(arguments.object , arguments.event, pluginConfig.getModuleID() );
+	}
 
-<cffunction name="renderPluginDisplayObject" access="private" output="false" hint="gets the objectid associated with the passed in display object">
-	<cfargument name="object" type="string" required="true" />
-	<cfargument name="event" type="component" required="true" />
-	<cfset var rsObjID = "" />
-
-	<cfreturn getPluginManager().displayObject(arguments.object , arguments.event, pluginConfig.getModuleID() )
-/>
-</cffunction>
-
-
-</cfcomponent>
+}

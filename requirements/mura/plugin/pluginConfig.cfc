@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,477 +43,419 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides access to a plugin's configuration">
-
-<cfset variables.settings=structNew() />
-<cfset variables.name="" />
-<cfset variables.deployed=0 />
-<cfset variables.pluginID=0 />
-<cfset variables.loadPriority=5 />
-<cfset variables.moduleID="" />
-<cfset variables.provider="" />
-<cfset variables.providerURL="" />
-<cfset variables.created="" />
-<cfset variables.category="" />
-<cfset variables.version="" />
-<cfset variables.package="" />
-<cfset variables.directory="" />
-<cfset variables.customSettings=structNew()>
-<cfset variables.hasCustomSettingsDir=false />
-<cfset variables.CFStatic=structNew()>
-
-<cffunction name="initSettings" output="false">
-	<cfargument name="data"  type="any" default="#structNew()#">
-	<cfset var appcfcStr="">
-	<cfset variables.settings=arguments.data />
-
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="getModuleID" output="false">
-	<cfreturn variables.moduleID />
-</cffunction>
-
-<cffunction name="setModuleID" output="false">
-	<cfargument name="moduleID" type="String" />
-	<cfset variables.moduleID = trim(arguments.moduleID) />
-</cffunction>
-
-<cffunction name="setPluginID" output="false">
-	<cfargument name="pluginID" />
-	<cfif isnumeric(arguments.pluginID)>
-	<cfset variables.pluginID = arguments.pluginID />
-	</cfif>
-</cffunction>
-
-<cffunction name="getPluginID" output="false">
-	<cfreturn variables.pluginID />
-</cffunction>
-
-<cffunction name="setName" output="false">
-	<cfargument name="name" type="String" />
-	<cfset variables.name = trim(arguments.name) />
-</cffunction>
-
-<cffunction name="getName" output="false">
-	<cfreturn variables.name />
-</cffunction>
-
-<cffunction name="setProvider" output="false">
-	<cfargument name="provider" type="String" />
-	<cfset variables.provider = trim(arguments.provider) />
-</cffunction>
-
-<cffunction name="getProvider" output="false">
-	<cfreturn variables.provider />
-</cffunction>
-
-<cffunction name="setProviderURL" output="false">
-	<cfargument name="providerURL" type="String" />
-	<cfset variables.providerURL = trim(arguments.providerURL) />
-</cffunction>
-
-<cffunction name="getProviderURL" output="false">
-	<cfreturn variables.providerURL />
-</cffunction>
-
-<cffunction name="setLoadPriority" output="false">
-	<cfargument name="loadPriority" />
-	<cfif isNumeric(arguments.loadPriority)>
-		<cfset variables.loadPriority = arguments.loadPriority >
-	</cfif>
-</cffunction>
-
-<cffunction name="getLoadPriority" output="false">
-	<cfreturn variables.loadPriority />
-</cffunction>
-
-<cffunction name="setCategory" output="false">
-	<cfargument name="category" type="String" />
-	<cfset variables.category = trim(arguments.category) />
-</cffunction>
-
-<cffunction name="getCategory" output="false">
-	<cfreturn variables.category />
-</cffunction>
-
-<cffunction name="setCreated" output="false">
-	<cfargument name="created" type="String" />
-	<cfset variables.created = trim(arguments.created) />
-</cffunction>
-
-<cffunction name="getCreated" output="false">
-	<cfreturn variables.created />
-</cffunction>
-
-<cffunction name="setDeployed" output="false">
-	<cfargument name="deployed" />
-	<cfif isNumeric(arguments.deployed)>
-	<cfset variables.deployed = arguments.deployed />
-	</cfif>
-</cffunction>
-
-<cffunction name="getDeployed" output="false">
-	<cfreturn variables.deployed />
-</cffunction>
-
-<cffunction name="setVersion" output="false">
-	<cfargument name="version" type="String" />
-	<cfset variables.version = trim(arguments.version) />
-</cffunction>
-
-<cffunction name="getVersion" output="false">
-	<cfreturn variables.version />
-</cffunction>
-
-<cffunction name="setPackage" output="false">
-	<cfargument name="package" type="String" />
-	<cfset variables.package = trim(arguments.package) />
-</cffunction>
-
-<cffunction name="getPackage" output="false">
-	<cfreturn variables.package />
-</cffunction>
-
-<cffunction name="setDirectory" output="false">
-	<cfargument name="directory" type="String" />
-
-	<cfif arguments.directory neq variables.directory>
-		<cfset variables.directory = trim(arguments.directory) />
-		<cfset variables.CFStatic=structNew()>
-	</cfif>
-</cffunction>
-
-<cffunction name="getDirectory" output="false">
-	<cfreturn variables.directory />
-</cffunction>
-
-<cffunction name="setSetting" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" >
-
-	<cfset variables.settings["#arguments.property#"]=arguments.propertyValue />
-
-</cffunction>
-
-<cffunction name="getSetting" output="false">
-<cfargument name="property"  type="string" required="true">
-
-	<cfif structKeyExists(variables.settings,"#arguments.property#")>
-		<cfreturn variables.settings["#arguments.property#"] />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getSettings" output="false">
-		<cfreturn variables.settings />
-</cffunction>
-
-<cffunction name="addToHTMLHeadQueue" output="false">
-<cfargument name="text">
-
-<cfset var headerStr=""/>
-<cfset var pluginPath=""/>
-<cfset var pluginConfig=this>
-<cfset var event="">
-<cfset var eventData=structNew()>
-<cfset var sessionData=super.getSession()>
-
-<cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
-	<cfif findNoCase("<script",arguments.text) or findNoCase("<link",arguments.text)>
-		<cfset request.contentRenderer.addtoHTMLHeadQueue(arguments.text) />
-	<cfelse>
-		<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
-	</cfif>
-<cfelse>
-<cfif structKeyExists(request,"servletEvent")>
-	<cfset event=request.servletEvent>
-<cfelse>
-	<cfif structKeyExists(sessionData,"siteid")>
-		<cfset eventData.siteID=sessionData.siteid>
-	</cfif>
-	<cfset event=createObject("component","mura.event").init(eventData)>
-</cfif>
-<cfset pluginPath= application.configBean.getContext() & "/plugins/" & getDirectory() & "/" >
-<cfsavecontent variable="headerStr">
-<cfinclude template="/plugins/#getDirectory()#/#arguments.text#">
-</cfsavecontent>
-<cfhtmlhead text="#headerStr#">
-</cfif>
-
-</cffunction>
-
-<cffunction name="addToHTMLFootQueue" output="false">
-<cfargument name="text">
-
-<cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
-	<cfset request.contentRenderer.addtoHTMLFootQueue(getDirectory() & "/" & arguments.text) />
-</cfif>
-</cffunction>
-
-<cffunction name="getApplication" output="false">
-<cfargument name="purge" default="false">
-
-		<cfif not structKeyExists(application,"plugins")>
-			<cflock name="settingPluginStruct#application.instanceID#" timeout="100">
-				<cfif not structKeyExists(application,"plugins")>
-					<cfset application.plugins=structNew()>
-				</cfif>
-			</cflock>
-		</cfif>
-
-		<cfif not structKeyExists(application.plugins,"p#getPluginID()#") or arguments.purge>
-			<cfset application.plugins["p#getPluginID()#"]=createObject("component","pluginApplication")>
-			<cfset application.plugins["p#getPluginID()#"].setPluginConfig(this)>
-		</cfif>
-
-		<cfreturn application.plugins["p#getPluginID()#"] />
-</cffunction>
-
-<cffunction name="getSession" output="false">
-<cfargument name="purge" default="false">
-	<cfset var sessionData=super.getSession()>
-	<cfif not structKeyExists(sessionData,"plugins")>
-		<cfset sessionData.plugins=structNew()>
-	</cfif>
-
-		<cfif not structKeyExists(sessionData.plugins,"p#getPluginID()#") or arguments.purge>
-			<cfset sessionData.plugins["p#getPluginID()#"]=createObject("component","pluginSession")>
-			<cfset sessionData.plugins["p#getPluginID()#"].setPluginConfig(this)>
-		</cfif>
-
-		<cfreturn sessionData.plugins["p#getPluginID()#"] />
-</cffunction>
-
-<cffunction name="addEventHandler" output="false">
-	<cfargument name="component" required="true">
-
-	<cfif not isDefined('arguments.component.injectMethod')>
-		<cfset arguments.component.injectMethod=injectMethod>
-	</cfif>
-
-	<cfif not isDefined('arguments.component.getValue')>
-		<cfset arguments.component.injectMethod('getValue',getValue)>
-	</cfif>
-
-	<cfif not isDefined('arguments.component.setValue')>
-		<cfset arguments.component.injectMethod('setValue',setValue)>
-	</cfif>
-
-	<cfset arguments.component.setValue('pluginName',getName())>
-    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
-    <cfset var applyglobal=true>
-    <cfloop query="rsSites">
-    <cfset getPluginManager().addEventHandler(component=arguments.component,siteid=rsSites.siteID,applyglobal=applyglobal)>
-     <cfset var applyglobal=false>
-    </cfloop>
-     <cfreturn this>
-</cffunction>
-
-<cffunction name="addAPIMethod" output="false">
-	<cfargument name="methodName" required="true">
-	<cfargument name="method" required="true">
-	<cfset var settingsManager=getBean('settingsManager')>
-    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
-    <cfloop query="rsSites">
-    <cfset settingsManager.getSite(rs.siteid).getApi('json','v1').registerMethod(argumentCollection=arguments)>
-    </cfloop>
-    <cfreturn this>
-</cffunction>
-
-<cffunction name="registerDisplayObjectDir" output="false">
-	<cfargument name="dir">
-	<cfargument name="conditional" default="true">
-    <cfargument name="package" default="">
-	<cfargument name="custom" default="true">
-	<cfset var settingsManager=getBean('settingsManager')>
-    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
-
-	<cfif listFind('/,\',left(arguments.dir,1) )>
-		<cfset arguments.dir='/' & getPackage() & arguments.dir>
-	<cfelse>
-		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
-	</cfif>
-
-    <cfloop query="rsSites">
-    <cfset settingsManager.getSite(rssites.siteid).registerDisplayObjectDir(argumentCollection=arguments)>
-    </cfloop>
-    <cfreturn this>
-</cffunction>
-
-<cffunction name="registerModuleDir" output="false">
-	<cfargument name="dir">
-	<cfargument name="conditional" default="true">
-    <cfargument name="package" default="">
-	<cfargument name="custom" default="true">
-    <cfreturn registerDisplayObjectDir(arguments=arguments)>
-</cffunction>
-
-<cffunction name="registerContentTypeDir" output="false">
-	<cfargument name="dir">
-	<cfset var settingsManager=getBean('settingsManager')>
-    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
-
-	<cfif listFind('/,\',left(arguments.dir,1) )>
-		<cfset arguments.dir='/' & getPackage() & arguments.dir>
-	<cfelse>
-		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
-	</cfif>
-
-    <cfloop query="rsSites">
-    <cfset settingsManager.getSite(rssites.siteid).registerContentTypeDir(argumentCollection=arguments)>
-    </cfloop>
-    <cfreturn this>
-</cffunction>
-
-<cffunction name="registerBeanDir" output="false">
-	<cfargument name="dir">
-	<cfargument name="package">
-	<cfset var rssites=getPluginManager().getAssignedSites(getModuleID())>
-	<cfset var siteids=valueList(rssites.siteid)>
-
-	<cfif listFind('/,\',left(arguments.dir,1) )>
-		<cfset arguments.dir='/' & getPackage() & arguments.dir>
-	<cfelse>
-		<cfset arguments.dir='/' & getPackage() & '/' & arguments.dir>
-	</cfif>
-	<cfset getBean("configBean").registerBeanDir(dir=arguments.dir,siteid=siteids,moduleid=getModuleID())>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="registerModelDir" output="false">
-	<cfargument name="dir">
-	<cfargument name="package">
-	<cfreturn registerBeanDir(argumentcollection=arguments)>
-</cffunction>
-
-<cffunction name="getAssignedSites" output="false">
-    <cfreturn getPluginManager().getAssignedSites(getModuleID())>
-</cffunction>
-
-<cffunction name="deleteCustomSetting" output="false">
-	<cfargument name="name" type="string" required="true">
-	<cfset var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm">
-
-	<cfif fileExists(wddxFile)>
-		<cffile action="delete" file="#wddxFile#">
-	</cfif>
-
-	<cfset structDelete(variables.customSettings,arguments.name)>
-
-</cffunction>
-
-<cffunction name="getCustomSetting" output="false">
-	<cfargument name="name" type="string" required="true">
-	<cfargument name="default">
-	<cfset var customValue="">
-	<cfset var customWDDX="">
-	<cfset var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm">
-
-	<cfif not variables.hasCustomSettingsDir>
-		<cfset createCustomSettingsDir()>
-	</cfif>
-
-	<cfif structKeyExists(variables.customSettings,arguments.name)>
-		<cfreturn variables.customSettings["#arguments.name#"]>
-	<cfelseif fileExists(wddxFile)>
-		<cffile action="read" file="#wddxFile#" variable="customWDDX" charset="utf-8">
-		<cfwddx action="wddx2cfml" input=#customWDDX# output="customValue">
-		<cfset variables.customSettings["#arguments.name#"]=customValue>
-		<cfreturn customValue>
-	<cfelse>
-		<cfif structKeyExists(arguments,"default")>
-			<cfreturn arguments.default>
-		<cfelse>
-			<cfreturn "" />
-		</cfif>
-	</cfif>
-</cffunction>
-
-<cffunction name="setCustomSetting">
-	<cfargument name="name" type="string" required="true">
-	<cfargument name="value" type="any" required="true">
-	<cfset var temp="">
-
-	<cfif not variables.hasCustomSettingsDir>
-		<cfset createCustomSettingsDir()>
-	</cfif>
-
-	<cfif isQuery(arguments.value) and application.configBean.getDBType() eq "Oracle">
-		<cfset arguments.value=fixOracleClobs(arguments.value)>
-	</cfif>
-
-	<cfset variables.customSettings["#name#"]=arguments.value>
-	<cfwddx action="cfml2wddx" input="#arguments.value#" output="temp">
-	<cffile action="write" output="#temp#" file="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm"  charset="utf-8">
-</cffunction>
-
-<cffunction name="fixOracleClobs" output="false">
-	<cfargument name="rs">
-	<cfset var rsmeta=getMetaData(arguments.rs)>
-	<cfset var clobArray=arrayNew(1)>
-	<cfset var i=1>
-
-	<cfif arrayLen(rsmeta)>
-	<cfloop from="1" to="#arrayLen(rsmeta)#" index="i">
-		<cfif rsmeta[i].typename eq "clob">
-			<cfset arrayAppend(clobArray,rsmeta[i].name)>
-		</cfif>
-	</cfloop>
-	</cfif>
-
-	<cfif arrayLen(clobArray)>
-		<cfloop query="arguments.rs">
-			<cfloop from="1" to="#arrayLen(clobArray)#" index="i">
-				 <cfset QuerySetCell(arguments.rs, clobArray[i],arguments.rs['#clobArray[i]#'], arguments.rs.currentRow)>
-			</cfloop>
-		</cfloop>
-	</cfif>
-	<cfreturn arguments.rs>
-</cffunction>
-
-<cffunction name="purgeCustomSettings" output="false">
-	<cfif directoryExists(getFullPath() & "/plugin/customSettings")>
-		<cfdirectory action="delete" directory="#getFullPath()#/plugin/customSettings" recurse="true">
-	</cfif>
-	<cfset variables.hasCustomSettingsDir=false>
-	<cfset variables.customSettings=structNew()>
-</cffunction>
-
-<cffunction name="createCustomSettingsDir" output="false">
-	<cfset var appcfcStr="">
-	<cftry>
-	<cfif not directoryExists(getFullPath() & "/plugin/customSettings/")>
-		<cfdirectory action="create" directory="#getFullPath()#/plugin/customSettings/">
-		<cfset appcfcStr='<cfcomponent><cffunction name="onRequestStart">Access Restricted</cffunction></cfcomponent>'>
-		<cffile action="write" output="#appcfcStr#" file="#getFullPath()#/plugin/customSettings/Application.cfc">
-	</cfif>
-	<cfset variables.hasCustomSettingsDir=true>
-	<cfcatch></cfcatch>
-	</cftry>
-</cffunction>
-
-<cffunction name="getFullPath" output="false">
-	<cfreturn application.configBean.getPluginDir() & "/" & getDirectory()>
-</cffunction>
-
-<cffunction name="renderAdminTemplate" output="false">
-<cfargument name="body">
-<cfargument name="pageTitle" default="#getName()#">
-<cfargument name="jsLib" required="true" default="jquery">
-<cfargument name="jsLibLoaded" required="true" default="false">
-<cfargument name="compactDisplay" required="false" default="false" />
-<cfargument name="moduleid" required="false" default="#getModuleID()#" />
-
-	<cfreturn getBean('pluginManager').renderAdminTemplate(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="currentUserAccess" output="false">
-	<cfset var sessionData=super.getSession()>
-	<cfreturn isDefined('sessionData.siteID') and getBean('permUtility').getModulePerm(getModuleID(),sessionData.siteID)>
-</cffunction>
-
-</cfcomponent>
+*/
+/**
+ * This provides access to a plugin's configuration
+ */
+component extends="mura.cfobject" output="false" hint="This provides access to a plugin's configuration" {
+	variables.settings=structNew();
+	variables.name="";
+	variables.deployed=0;
+	variables.pluginID=0;
+	variables.loadPriority=5;
+	variables.moduleID="";
+	variables.provider="";
+	variables.providerURL="";
+	variables.created="";
+	variables.category="";
+	variables.version="";
+	variables.package="";
+	variables.directory="";
+	variables.customSettings=structNew();
+	variables.hasCustomSettingsDir=false;
+	variables.CFStatic=structNew();
+
+	public function initSettings(any data="#structNew()#") output=false {
+		var appcfcStr="";
+		variables.settings=arguments.data;
+		return this;
+	}
+
+	public function getModuleID() output=false {
+		return variables.moduleID;
+	}
+
+	public function setModuleID(String moduleID) output=false {
+		variables.moduleID = trim(arguments.moduleID);
+	}
+
+	public function setPluginID(pluginID) output=false {
+		if ( isnumeric(arguments.pluginID) ) {
+			variables.pluginID = arguments.pluginID;
+		}
+	}
+
+	public function getPluginID() output=false {
+		return variables.pluginID;
+	}
+
+	public function setName(String name) output=false {
+		variables.name = trim(arguments.name);
+	}
+
+	public function getName() output=false {
+		return variables.name;
+	}
+
+	public function setProvider(String provider) output=false {
+		variables.provider = trim(arguments.provider);
+	}
+
+	public function getProvider() output=false {
+		return variables.provider;
+	}
+
+	public function setProviderURL(String providerURL) output=false {
+		variables.providerURL = trim(arguments.providerURL);
+	}
+
+	public function getProviderURL() output=false {
+		return variables.providerURL;
+	}
+
+	public function setLoadPriority(loadPriority) output=false {
+		if ( isNumeric(arguments.loadPriority) ) {
+			variables.loadPriority = arguments.loadPriority;
+		}
+	}
+
+	public function getLoadPriority() output=false {
+		return variables.loadPriority;
+	}
+
+	public function setCategory(String category) output=false {
+		variables.category = trim(arguments.category);
+	}
+
+	public function getCategory() output=false {
+		return variables.category;
+	}
+
+	public function setCreated(String created) output=false {
+		variables.created = trim(arguments.created);
+	}
+
+	public function getCreated() output=false {
+		return variables.created;
+	}
+
+	public function setDeployed(deployed) output=false {
+		if ( isNumeric(arguments.deployed) ) {
+			variables.deployed = arguments.deployed;
+		}
+	}
+
+	public function getDeployed() output=false {
+		return variables.deployed;
+	}
+
+	public function setVersion(String version) output=false {
+		variables.version = trim(arguments.version);
+	}
+
+	public function getVersion() output=false {
+		return variables.version;
+	}
+
+	public function setPackage(String package) output=false {
+		variables.package = trim(arguments.package);
+	}
+
+	public function getPackage() output=false {
+		return variables.package;
+	}
+
+	public function setDirectory(String directory) output=false {
+		if ( arguments.directory != variables.directory ) {
+			variables.directory = trim(arguments.directory);
+			variables.CFStatic=structNew();
+		}
+	}
+
+	public function getDirectory() output=false {
+		return variables.directory;
+	}
+
+	public function setSetting(required string property, propertyValue="") output=false {
+		variables.settings["#arguments.property#"]=arguments.propertyValue;
+	}
+
+	public function getSetting(required string property) output=false {
+		if ( structKeyExists(variables.settings,"#arguments.property#") ) {
+			return variables.settings["#arguments.property#"];
+		} else {
+			return "";
+		}
+	}
+
+	public function getSettings() output=false {
+		return variables.settings;
+	}
+
+	public function addToHTMLHeadQueue(text) output=false {
+		var headerStr="";
+		var pluginPath="";
+		var pluginConfig=this;
+		var event="";
+		var eventData=structNew();
+		var sessionData=super.getSession();
+		if ( structKeyExists(request,"servletEvent") && structKeyExists(request,"contentRenderer") ) {
+			if ( findNoCase("<script",arguments.text) || findNoCase("<link",arguments.text) ) {
+				request.contentRenderer.addtoHTMLHeadQueue(arguments.text);
+			} else {
+				request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text);
+			}
+		} else {
+			if ( structKeyExists(request,"servletEvent") ) {
+				event=request.servletEvent;
+			} else {
+				if ( structKeyExists(sessionData,"siteid") ) {
+					eventData.siteID=sessionData.siteid;
+				}
+				event=createObject("component","mura.event").init(eventData);
+			}
+			pluginPath= application.configBean.getContext() & "/plugins/" & getDirectory() & "/";
+			savecontent variable="headerStr" {
+				include "/plugins/#getDirectory()#/#arguments.text#";
+			}
+
+			getBean('utility').setHTMLHead(headerStr);
+
+		}
+	}
+
+	public function addToHTMLFootQueue(text) output=false {
+		if ( structKeyExists(request,"servletEvent") && structKeyExists(request,"contentRenderer") ) {
+			request.contentRenderer.addtoHTMLFootQueue(getDirectory() & "/" & arguments.text);
+		}
+	}
+
+	public function getApplication(purge="false") output=false {
+		if ( !structKeyExists(application,"plugins") ) {
+			lock name="settingPluginStruct#application.instanceID#" timeout="100" {
+				if ( !structKeyExists(application,"plugins") ) {
+					application.plugins=structNew();
+				}
+			}
+		}
+		if ( !structKeyExists(application.plugins,"p#getPluginID()#") || arguments.purge ) {
+			application.plugins["p#getPluginID()#"]=createObject("component","pluginApplication");
+			application.plugins["p#getPluginID()#"].setPluginConfig(this);
+		}
+		return application.plugins["p#getPluginID()#"];
+	}
+
+	public function getSession(purge="false") output=false {
+		var sessionData=super.getSession();
+		if ( !structKeyExists(sessionData,"plugins") ) {
+			sessionData.plugins=structNew();
+		}
+		if ( !structKeyExists(sessionData.plugins,"p#getPluginID()#") || arguments.purge ) {
+			sessionData.plugins["p#getPluginID()#"]=createObject("component","pluginSession");
+			sessionData.plugins["p#getPluginID()#"].setPluginConfig(this);
+		}
+		return sessionData.plugins["p#getPluginID()#"];
+	}
+
+	public function addEventHandler(required component) output=false {
+		if ( !isDefined('arguments.component.injectMethod') ) {
+			arguments.component.injectMethod=injectMethod;
+		}
+		if ( !isDefined('arguments.component.getValue') ) {
+			arguments.component.injectMethod('getValue',getValue);
+		}
+		if ( !isDefined('arguments.component.setValue') ) {
+			arguments.component.injectMethod('setValue',setValue);
+		}
+		arguments.component.setValue('pluginName',getName());
+		var rsSites=getPluginManager().getAssignedSites(getModuleID());
+		var applyglobal=true;
+
+		if(rsSites.recordcount){
+			for(var i=1;i<=rsSites.recordcount;i++) {
+				getPluginManager().addEventHandler(component=arguments.component,siteid=rsSites.siteID[i],applyglobal=applyglobal);
+				var applyglobal=false;
+			}
+		}
+
+		return this;
+	}
+
+	public function addAPIMethod(required methodName, required method) output=false {
+		var settingsManager=getBean('settingsManager');
+		var rsSites=getPluginManager().getAssignedSites(getModuleID());
+
+		if(rsSites.recordcount){
+			for(var i=1;i<=rsSites.recordcount;i++) {
+				settingsManager.getSite(rs.siteid[i]).getApi('json','v1').registerMethod(argumentCollection=arguments);
+			}
+		}
+
+		return this;
+	}
+
+	public function registerDisplayObjectDir(dir, conditional="true", package="", custom="true") output=false {
+		var settingsManager=getBean('settingsManager');
+		var rsSites=getPluginManager().getAssignedSites(getModuleID());
+		if ( listFind('/,\',left(arguments.dir,1) ) ) {
+			arguments.dir='/' & getPackage() & arguments.dir;
+		} else {
+			arguments.dir='/' & getPackage() & '/' & arguments.dir;
+		}
+
+		if(rsSites.recordcount){
+			for(var i=1;i<=rsSites.recordcount;i++) {
+				settingsManager.getSite(rssites.siteid[i]).registerDisplayObjectDir(argumentCollection=arguments);
+			}
+		}
+
+		return this;
+	}
+
+	public function registerModuleDir(dir, conditional="true", package="", custom="true") output=false {
+		return registerDisplayObjectDir(arguments=arguments);
+	}
+
+	public function registerContentTypeDir(dir) output=false {
+		var settingsManager=getBean('settingsManager');
+		var rsSites=getPluginManager().getAssignedSites(getModuleID());
+		if ( listFind('/,\',left(arguments.dir,1) ) ) {
+			arguments.dir='/' & getPackage() & arguments.dir;
+		} else {
+			arguments.dir='/' & getPackage() & '/' & arguments.dir;
+		}
+
+		if(rsSites.recordcount){
+			for(var i=1;i<=rsSites.recordcount;i++) {
+				settingsManager.getSite(rssites.siteid[i]).registerContentTypeDir(argumentCollection=arguments);
+			}
+		}
+
+		return this;
+	}
+
+	public function registerBeanDir(dir, package) output=false {
+		var rssites=getPluginManager().getAssignedSites(getModuleID());
+		var siteids=valueList(rssites.siteid);
+		if ( listFind('/,\',left(arguments.dir,1) ) ) {
+			arguments.dir='/' & getPackage() & arguments.dir;
+		} else {
+			arguments.dir='/' & getPackage() & '/' & arguments.dir;
+		}
+		getBean("configBean").registerBeanDir(dir=arguments.dir,siteid=siteids,moduleid=getModuleID());
+		return this;
+	}
+
+	public function registerModelDir(dir, package) output=false {
+		return registerBeanDir(argumentcollection=arguments);
+	}
+
+	public function getAssignedSites() output=false {
+		return getPluginManager().getAssignedSites(getModuleID());
+	}
+
+	public function deleteCustomSetting(required string name) output=false {
+		var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm";
+		if ( fileExists(wddxFile) ) {
+			fileDelete(wddxFile);
+		}
+		structDelete(variables.customSettings,arguments.name);
+	}
+
+	public function getCustomSetting(required string name, default) output=false {
+		var customValue="";
+		var customWDDX="";
+		var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm";
+		if ( !variables.hasCustomSettingsDir ) {
+			createCustomSettingsDir();
+		}
+		if ( structKeyExists(variables.customSettings,arguments.name) ) {
+			return variables.customSettings["#arguments.name#"];
+		} else if ( fileExists(wddxFile) ) {
+			customWDDX=fileRead(customWDDX,"utf-8");
+			variables.customSettings["#arguments.name#"]=getBean('utility').wddx2cfml(customWDDX);
+			fileClose(customWDDX);
+			return customValue;
+		} else {
+			if ( structKeyExists(arguments,"default") ) {
+				return arguments.default;
+			} else {
+				return "";
+			}
+		}
+	}
+
+	public function setCustomSetting(required string name, required any value) {
+		var temp="";
+		if ( !variables.hasCustomSettingsDir ) {
+			createCustomSettingsDir();
+		}
+		if ( isQuery(arguments.value) && application.configBean.getDBType() == "Oracle" ) {
+			arguments.value=fixOracleClobs(arguments.value);
+		}
+		variables.customSettings["#name#"]=arguments.value;
+
+		getBean('fileWriter').writeFile( charset="utf-8", output=getBean('utility').cfml2wddx(arguments.value), file="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm" );
+	}
+
+	public function fixOracleClobs(rs) output=false {
+		var rsmeta=getMetaData(arguments.rs);
+		var clobArray=arrayNew(1);
+		var i=1;
+		if ( arrayLen(rsmeta) ) {
+			for ( i=1 ; i<=arrayLen(rsmeta) ; i++ ) {
+				if ( rsmeta[i].typename == "clob" ) {
+					arrayAppend(clobArray,rsmeta[i].name);
+				}
+			}
+		}
+		if ( arrayLen(clobArray) && rs.recordcoun) {
+
+			for(var row=1;row<=rs.recordcount;row++){
+				for(i in clobArray){
+					QuerySetCell(arguments.rs, clobArray[i],arguments.rs['#clobArray[i]#'][row], row);
+				}
+			}
+
+		}
+		return arguments.rs;
+	}
+
+	public function purgeCustomSettings() output=false {
+		if ( directoryExists(getFullPath() & "/plugin/customSettings") ) {
+			getBean('fileWriter').deleteDir(directory="#getFullPath()#/plugin/customSettings", recurse=true);
+		}
+		variables.hasCustomSettingsDir=false;
+		variables.customSettings=structNew();
+	}
+
+	public function createCustomSettingsDir() output=false {
+		var appcfcStr="";
+		var fileWriter=getBean('fileWriter');
+		try {
+			if ( !directoryExists(getFullPath() & "/plugin/customSettings/") ) {
+				fileWriter.createDir( directory="#getFullPath()#/plugin/customSettings/" );
+				var ct="cfcomponent";
+				var ft="cffunction";
+				appcfcStr='<#ct#><#ft# name="onRequestStart">Access Restricted</#ft#></#ct#>';
+				fileWriter.writeFile( output=appcfcStr, file="#getFullPath()#/plugin/customSettings/Application.cfc" );
+			}
+			variables.hasCustomSettingsDir=true;
+		} catch (any cfcatch) {
+		}
+	}
+
+	public function getFullPath() output=false {
+		return application.configBean.getPluginDir() & "/" & getDirectory();
+	}
+
+	public function renderAdminTemplate(body, pageTitle="#getName()#", required jsLib="jquery", required jsLibLoaded="false", compactDisplay="false", moduleid="#getModuleID()#") output=false {
+		return getBean('pluginManager').renderAdminTemplate(argumentCollection=arguments);
+	}
+
+	public function currentUserAccess() output=false {
+		var sessionData=super.getSession();
+		return isDefined('sessionData.siteID') && getBean('permUtility').getModulePerm(getModuleID(),sessionData.siteID);
+	}
+
+}

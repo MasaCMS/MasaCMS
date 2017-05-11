@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,30 +43,30 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false" hint="This provides plugin install, update and delete handling">
+*/
+/**
+ * This provides plugin install, update and delete handling
+ */
+component extends="mura.cfobject" output="false" hint="This provides plugin install, update and delete handling" {
+	variables.pluginConfig="";
 
-	<cfset variables.pluginConfig=""/>
+	public function init(any pluginConfig="", any configBean="") output=false {
+		variables.pluginConfig = arguments.pluginConfig;
+		if ( isObject(arguments.configBean) ) {
+			variables.configBean = arguments.configBean;
+		}
+	}
 
-	<cffunction name="init" output="false">
-		<cfargument name="pluginConfig"  type="any" default="">
-		<cfargument name="configBean"  type="any" default="">
-		<cfset variables.pluginConfig = arguments.pluginConfig>
-		<cfif isObject(arguments.configBean)>
-			<cfset variables.configBean = arguments.configBean>
-		</cfif>
-	</cffunction>
+	public function install() output=false {
+		application.appInitialized=false;
+	}
 
-	<cffunction name="install" output="false">
-		<cfset application.appInitialized=false>
-	</cffunction>
+	public function update() output=false {
+		application.appInitialized=false;
+	}
 
-	<cffunction name="update" output="false">
-		<cfset application.appInitialized=false>
-	</cffunction>
+	public function delete() output=false {
+		application.appInitialized=false;
+	}
 
-	<cffunction name="delete" output="false">
-		<cfset application.appInitialized=false>
-	</cffunction>
-
-</cfcomponent>
+}

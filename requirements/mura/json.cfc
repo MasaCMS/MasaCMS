@@ -1,4 +1,4 @@
-<!---
+/*
 Serialize and deserialize JSON data into native ColdFusion objects
 http://www.epiphantastic.com/cfjson/
 
@@ -6,235 +6,215 @@ Authors: Jehiah Czebotar (jehiah@gmail.com)
          Thomas Messier  (thomas@epiphantastic.com)
 
 Version: 1.9 February 20, 2008
---->
+*/
+/**
+ * deprecated
+ */
+component displayname="JSON" output="No" hint="deprecated" {
 
-<cfcomponent displayname="JSON" output="No" hint="deprecated">
-	<cffunction name="init" output="false">
-	<cfreturn this>
-	</cffunction>
+	public function init() output=false {
+		return this;
+	}
 
-	<cffunction name="jsonencode" access="remote" output="no"
-			hint="Converts data frm JSON to CF format">
-		<cfargument name="data" type="any" required="Yes" />
+	/**
+	 * Converts data frm JSON to CF format
+	 */
+	remote function jsonencode(required any data) output=false {
+		return encode(arguments.data);
+	}
 
-		<cfreturn encode(arguments.data)>
-	</cffunction>
+	/**
+	 * Converts data frm JSON to CF format
+	 */
+	remote function jsondecode(required string data) output=false {
+		return decode(arguments.data);
+	}
 
-	<cffunction name="jsondecode" access="remote" output="no"
-			hint="Converts data frm JSON to CF format">
-		<cfargument name="data" type="string" required="Yes" />
+	/**
+	 * Converts data frm JSON to CF format
+	 */
+	remote function decode(required string data) output=false {
+		//  DECLARE VARIABLES
+		var ar = ArrayNew(1);
+		var st = StructNew();
+		var dataType = "";
+		var inQuotes = false;
+		var startPos = 1;
+		var nestingLevel = 0;
+		var dataSize = 0;
+		var i = 1;
+		var skipIncrement = false;
+		var j = 0;
+		var char = "";
+		var dataStr = "";
+		var structVal = "";
+		var structKey = "";
+		var colonPos = "";
+		var qRows = 0;
+		var qCol = "";
+		var qData = "";
+		var curCharIndex = "";
+		var curChar = "";
+		var result = "";
+		var unescapeVals = "\\,\"",\/,\b,\t,\n,\f,\r";
+		var unescapeToVals = "\,"",/,#Chr(8)#,#Chr(9)#,#Chr(10)#,#Chr(12)#,#Chr(13)#";
+		var unescapeVals2 = '\,",/,b,t,n,f,r';
+		var unescapetoVals2 = '\,",/,#Chr(8)#,#Chr(9)#,#Chr(10)#,#Chr(12)#,#Chr(13)#';
+		var dJSONString = "";
+		var pos=0;
+		var _data = Trim(arguments.data);
+		//  NUMBER
+		if ( IsNumeric(_data) ) {
+			return _data;
+			//  NULL
+		} else if ( _data == "null" ) {
+			return "";
+			//  BOOLEAN
+		} else if ( ListFindNoCase("true,false", _data) ) {
+			return _data;
+			//  EMPTY STRING
+		} else if ( _data == "''" || _data == '""' ) {
+			return "";
+			//  STRING
+		} else if ( ReFind('^"[^\\"]*(?:\\.[^\\"]*)*"$', _data) == 1 || ReFind("^'[^\\']*(?:\\.[^\\']*)*'$", _data) == 1 ) {
+			_data = mid(_data, 2, Len(_data)-2);
+			/*  If there are any \b, \t, \n, \f, and \r, do extra processing
+				(required because ReplaceList() won't work with those) */
+			if ( Find("\b", _data) || Find("\t", _data) || Find("\n", _data) || Find("\f", _data) || Find("\r", _data) ) {
+				curCharIndex = 0;
+				curChar =  "";
+				dJSONString = createObject("java", "java.lang.StringBuffer").init("");
+				while ( true ) {
+					curCharIndex = curCharIndex + 1;
+					if ( curCharIndex > len(_data) ) {
+						break;
+					} else {
+						curChar = mid(_data, curCharIndex, 1);
+						if ( curChar == "\" ) {
+							curCharIndex = curCharIndex + 1;
+							curChar = mid(_data, curCharIndex,1);
+							pos = listFind(unescapeVals2, curChar);
+							if ( pos ) {
+								dJSONString.append(ListGetAt(unescapetoVals2, pos));
+							} else {
+								dJSONString.append("\" & curChar);
+							}
+						} else {
+							dJSONString.append(curChar);
+						}
+					}
+				}
+				return dJSONString.toString();
+			} else {
+				return ReplaceList(_data, unescapeVals, unescapeToVals);
+			}
+			//  ARRAY, STRUCT, OR QUERY
+		} else if ( ( Left(_data, 1) == "[" && Right(_data, 1) == "]" )
+			OR ( Left(_data, 1) == "{" && Right(_data, 1) == "}" ) ) {
+			//  Store the data type we're dealing with
+			if ( Left(_data, 1) == "[" && Right(_data, 1) == "]" ) {
+				dataType = "array";
+			} else if ( ReFindNoCase('^\{"recordcount":[0-9]+,"columnlist":"[^"]+","data":\{("[^"]+":\[[^]]*\],?)+\}\}$', _data, 0) == 1 ) {
+				dataType = "query";
+			} else {
+				dataType = "struct";
+			}
+			//  Remove the brackets
+			_data = Trim( Mid(_data, 2, Len(_data)-2) );
+			//  Deal with empty array/struct
+			if ( Len(_data) == 0 ) {
+				if ( dataType == "array" ) {
+					return ar;
+				} else {
+					return st;
+				}
+			}
+			//  Loop through the string characters
+			dataSize = Len(_data) + 1;
+			while ( i <= dataSize ) {
+				skipIncrement = false;
+				//  Save current character
+				char = Mid(_data, i, 1);
+				//  If char is a quote, switch the quote status
+				if ( char == '"' ) {
+					inQuotes = !inQuotes;
+					//  If char is escape character, skip the next character
+				} else if ( char == "\" && inQuotes ) {
+					i = i + 2;
+					skipIncrement = true;
+					//  If char is a comma and is not in quotes, or if end of string, deal with data
+				} else if ( (char == "," && !inQuotes && nestingLevel == 0) || i == Len(_data)+1 ) {
+					dataStr = Mid(_data, startPos, i-startPos);
+					//  If data type is array, append data to the array
+					if ( dataType == "array" ) {
+						arrayappend( ar, decode(dataStr) );
+						//  If data type is struct or query...
+					} else if ( dataType == "struct" || dataType == "query" ) {
+						dataStr = Mid(_data, startPos, i-startPos);
+						colonPos = Find('":', dataStr);
+						if ( colonPos ) {
+							colonPos = colonPos + 1;
+						} else {
+							colonPos = Find(":", dataStr);
+						}
+						structKey = Trim( Mid(dataStr, 1, colonPos-1) );
+						//  If needed, remove quotes from keys
+						if ( Left(structKey, 1) == "'" || Left(structKey, 1) == '"' ) {
+							structKey = Mid( structKey, 2, Len(structKey)-2 );
+						}
+						structVal = Mid( dataStr, colonPos+1, Len(dataStr)-colonPos );
+						//  If struct, add to the structure
+						if ( dataType == "struct" ) {
+							StructInsert( st, structKey, decode(structVal) );
+							//  If query, build the query
+						} else {
+							if ( structKey == "recordcount" ) {
+								qRows = decode(structVal);
+							} else if ( structKey == "columnlist" ) {
+								st = QueryNew( decode(structVal) );
+								if ( qRows ) {
+									QueryAddRow(st, qRows);
+								}
+							} else if ( structKey == "data" ) {
+								qData = decode(structVal);
+								ar = StructKeyArray(qData);
+								for ( j=1 ; j<=ArrayLen(ar) ; j++ ) {
+									for ( qRows=1 ; qRows<=st.recordcount ; qRows++ ) {
+										qCol = ar[j];
+										QuerySetCell(st, qCol, qData[qCol][qRows], qRows);
+									}
+								}
+							}
+						}
+					}
+					startPos = i + 1;
+					//  If starting a new array or struct, add to nesting level
+				} else if ( "{[" CONTAINS char && !inQuotes ) {
+					nestingLevel = nestingLevel + 1;
+					//  If ending an array or struct, subtract from nesting level
+				} else if ( "]}" CONTAINS char && !inQuotes ) {
+					nestingLevel = nestingLevel - 1;
+				}
+				if ( !skipIncrement ) {
+					i = i + 1;
+				}
+			}
+			//  Return appropriate value based on data type
+			if ( dataType == "array" ) {
+				return ar;
+			} else {
+				return st;
+			}
+			//  INVALID JSON
+		} else {
+			throw( message="Invalid JSON", detail="The document you are trying to decode is not in valid JSON format" );
+		}
+	}
+	//  CONVERTS DATA FROM CF TO JSON FORMAT
 
-		<cfreturn decode(arguments.data)>
-	</cffunction>
+	public function encode(required any arg="") output=false {
 
-	<cffunction name="decode" access="remote" output="no"
-			hint="Converts data frm JSON to CF format">
-		<cfargument name="data" type="string" required="Yes" />
-
-		<!--- DECLARE VARIABLES --->
-		<cfset var ar = ArrayNew(1) />
-		<cfset var st = StructNew() />
-		<cfset var dataType = "" />
-		<cfset var inQuotes = false />
-		<cfset var startPos = 1 />
-		<cfset var nestingLevel = 0 />
-		<cfset var dataSize = 0 />
-		<cfset var i = 1 />
-		<cfset var skipIncrement = false />
-		<cfset var j = 0 />
-		<cfset var char = "" />
-		<cfset var dataStr = "" />
-		<cfset var structVal = "" />
-		<cfset var structKey = "" />
-		<cfset var colonPos = "" />
-		<cfset var qRows = 0 />
-		<cfset var qCol = "" />
-		<cfset var qData = "" />
-		<cfset var curCharIndex = "" />
-		<cfset var curChar = "" />
-		<cfset var result = "" />
-		<cfset var unescapeVals = "\\,\"",\/,\b,\t,\n,\f,\r" />
-		<cfset var unescapeToVals = "\,"",/,#Chr(8)#,#Chr(9)#,#Chr(10)#,#Chr(12)#,#Chr(13)#" />
-		<cfset var unescapeVals2 = '\,",/,b,t,n,f,r' />
-		<cfset var unescapetoVals2 = '\,",/,#Chr(8)#,#Chr(9)#,#Chr(10)#,#Chr(12)#,#Chr(13)#' />
-		<cfset var dJSONString = "" />
-		<cfset var pos=0>
-		<cfset var _data = Trim(arguments.data) />
-
-		<!--- NUMBER --->
-		<cfif IsNumeric(_data)>
-			<cfreturn _data />
-
-		<!--- NULL --->
-		<cfelseif _data EQ "null">
-			<cfreturn "" />
-
-		<!--- BOOLEAN --->
-		<cfelseif ListFindNoCase("true,false", _data)>
-			<cfreturn _data />
-
-		<!--- EMPTY STRING --->
-		<cfelseif _data EQ "''" OR _data EQ '""'>
-			<cfreturn "" />
-
-		<!--- STRING --->
-		<cfelseif ReFind('^"[^\\"]*(?:\\.[^\\"]*)*"$', _data) EQ 1 OR ReFind("^'[^\\']*(?:\\.[^\\']*)*'$", _data) EQ 1>
-			<cfset _data = mid(_data, 2, Len(_data)-2) />
-			<!--- If there are any \b, \t, \n, \f, and \r, do extra processing
-				(required because ReplaceList() won't work with those) --->
-			<cfif Find("\b", _data) OR Find("\t", _data) OR Find("\n", _data) OR Find("\f", _data) OR Find("\r", _data)>
-				<cfset curCharIndex = 0 />
-				<cfset curChar =  ""/>
-				<cfset dJSONString = createObject("java", "java.lang.StringBuffer").init("") />
-				<cfloop condition="true">
-					<cfset curCharIndex = curCharIndex + 1 />
-					<cfif curCharIndex GT len(_data)>
-						<cfbreak />
-					<cfelse>
-						<cfset curChar = mid(_data, curCharIndex, 1) />
-						<cfif curChar EQ "\">
-							<cfset curCharIndex = curCharIndex + 1 />
-							<cfset curChar = mid(_data, curCharIndex,1) />
-							<cfset pos = listFind(unescapeVals2, curChar) />
-							<cfif pos>
-								<cfset dJSONString.append(ListGetAt(unescapetoVals2, pos)) />
-							<cfelse>
-								<cfset dJSONString.append("\" & curChar) />
-							</cfif>
-						<cfelse>
-							<cfset dJSONString.append(curChar) />
-						</cfif>
-					</cfif>
-				</cfloop>
-
-				<cfreturn dJSONString.toString() />
-			<cfelse>
-				<cfreturn ReplaceList(_data, unescapeVals, unescapeToVals) />
-			</cfif>
-
-		<!--- ARRAY, STRUCT, OR QUERY --->
-		<cfelseif ( Left(_data, 1) EQ "[" AND Right(_data, 1) EQ "]" )
-			OR ( Left(_data, 1) EQ "{" AND Right(_data, 1) EQ "}" )>
-
-			<!--- Store the data type we're dealing with --->
-			<cfif Left(_data, 1) EQ "[" AND Right(_data, 1) EQ "]">
-				<cfset dataType = "array" />
-			<cfelseif ReFindNoCase('^\{"recordcount":[0-9]+,"columnlist":"[^"]+","data":\{("[^"]+":\[[^]]*\],?)+\}\}$', _data, 0) EQ 1>
-				<cfset dataType = "query" />
-			<cfelse>
-				<cfset dataType = "struct" />
-			</cfif>
-
-			<!--- Remove the brackets --->
-			<cfset _data = Trim( Mid(_data, 2, Len(_data)-2) ) />
-
-			<!--- Deal with empty array/struct --->
-			<cfif Len(_data) EQ 0>
-				<cfif dataType EQ "array">
-					<cfreturn ar />
-				<cfelse>
-					<cfreturn st />
-				</cfif>
-			</cfif>
-
-			<!--- Loop through the string characters --->
-			<cfset dataSize = Len(_data) + 1 />
-			<cfloop condition="#i# LTE #dataSize#">
-				<cfset skipIncrement = false />
-				<!--- Save current character --->
-				<cfset char = Mid(_data, i, 1) />
-
-				<!--- If char is a quote, switch the quote status --->
-				<cfif char EQ '"'>
-					<cfset inQuotes = NOT inQuotes />
-				<!--- If char is escape character, skip the next character --->
-				<cfelseif char EQ "\" AND inQuotes>
-					<cfset i = i + 2 />
-					<cfset skipIncrement = true />
-				<!--- If char is a comma and is not in quotes, or if end of string, deal with data --->
-				<cfelseif (char EQ "," AND NOT inQuotes AND nestingLevel EQ 0) OR i EQ Len(_data)+1>
-					<cfset dataStr = Mid(_data, startPos, i-startPos) />
-
-					<!--- If data type is array, append data to the array --->
-					<cfif dataType EQ "array">
-						<cfset arrayappend( ar, decode(dataStr) ) />
-					<!--- If data type is struct or query... --->
-					<cfelseif dataType EQ "struct" OR dataType EQ "query">
-						<cfset dataStr = Mid(_data, startPos, i-startPos) />
-						<cfset colonPos = Find('":', dataStr) />
-						<cfif colonPos>
-							<cfset colonPos = colonPos + 1 />
-						<cfelse>
-							<cfset colonPos = Find(":", dataStr) />
-						</cfif>
-						<cfset structKey = Trim( Mid(dataStr, 1, colonPos-1) ) />
-
-						<!--- If needed, remove quotes from keys --->
-						<cfif Left(structKey, 1) EQ "'" OR Left(structKey, 1) EQ '"'>
-							<cfset structKey = Mid( structKey, 2, Len(structKey)-2 ) />
-						</cfif>
-
-						<cfset structVal = Mid( dataStr, colonPos+1, Len(dataStr)-colonPos ) />
-
-						<!--- If struct, add to the structure --->
-						<cfif dataType EQ "struct">
-							<cfset StructInsert( st, structKey, decode(structVal) ) />
-
-						<!--- If query, build the query --->
-						<cfelse>
-							<cfif structKey EQ "recordcount">
-								<cfset qRows = decode(structVal) />
-							<cfelseif structKey EQ "columnlist">
-								<cfset st = QueryNew( decode(structVal) ) />
-								<cfif qRows>
-									<cfset QueryAddRow(st, qRows) />
-								</cfif>
-							<cfelseif structKey EQ "data">
-								<cfset qData = decode(structVal) />
-								<cfset ar = StructKeyArray(qData) />
-								<cfloop from="1" to="#ArrayLen(ar)#" index="j">
-									<cfloop from="1" to="#st.recordcount#" index="qRows">
-										<cfset qCol = ar[j] />
-										<cfset QuerySetCell(st, qCol, qData[qCol][qRows], qRows) />
-									</cfloop>
-								</cfloop>
-							</cfif>
-						</cfif>
-					</cfif>
-
-					<cfset startPos = i + 1 />
-				<!--- If starting a new array or struct, add to nesting level --->
-				<cfelseif "{[" CONTAINS char AND NOT inQuotes>
-					<cfset nestingLevel = nestingLevel + 1 />
-				<!--- If ending an array or struct, subtract from nesting level --->
-				<cfelseif "]}" CONTAINS char AND NOT inQuotes>
-					<cfset nestingLevel = nestingLevel - 1 />
-				</cfif>
-
-				<cfif NOT skipIncrement>
-					<cfset i = i + 1 />
-				</cfif>
-			</cfloop>
-
-			<!--- Return appropriate value based on data type --->
-			<cfif dataType EQ "array">
-				<cfreturn ar />
-			<cfelse>
-				<cfreturn st />
-			</cfif>
-
-		<!--- INVALID JSON --->
-		<cfelse>
-			<cfthrow message="Invalid JSON" detail="The document you are trying to decode is not in valid JSON format" />
-		</cfif>
-	</cffunction>
-
-
-	<!--- CONVERTS DATA FROM CF TO JSON FORMAT --->
-	<cffunction name="encode" output="false">
-	<cfargument name="arg" default="" required="yes" type="any"/>
-	<cfscript>
-	    var i=0;
+		var i=0;
 		var o="";
 		var u="";
 		var v="";
@@ -312,170 +292,151 @@ Version: 1.9 February 20, 2008
 			return '{' & o & '}';
 		}
 		return "unknown";
+	}
 
+	/**
+	 * I validate a JSON document against a JSON schema
+	 */
+	remote boolean function validate(string doc, string schema, string errorVar="jsonSchemaErrors", boolean stopOnError="true", any _doc, any _schema, string _item="root") output=true {
+		//  These arguments are for internal use only
+		var schemaRules = "";
+		var jsonDoc = "";
+		var i = 0;
+		var key = "";
+		var isValid = true;
+		var msg = "";
+		if ( StructKeyExists(arguments, "doc") ) {
+			if ( FileExists(arguments.doc) ) {
+				cffile( variable="arguments.doc", file=arguments.doc, action="READ" );
+			}
+			if ( FileExists(arguments.schema) ) {
+				cffile( variable="arguments.schema", file=arguments.schema, action="READ" );
+			}
+			jsonDoc = decode(arguments.doc);
+			schemaRules = decode(arguments.schema);
+			request[arguments.errorVar] = ArrayNew(1);
+		} else if ( StructKeyExists(arguments, "_doc") ) {
+			jsonDoc = arguments._doc;
+			schemaRules = arguments._schema;
+		}
+		//  See if the document matches the rules from the schema
+		if ( schemaRules.type == "struct" ) {
+			if ( !IsStruct(jsonDoc) ) {
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be a struct");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			} else {
+				//  If specific keys are set to be required, check if they exist
+				if ( StructKeyExists(schemaRules, "keys") ) {
+					for ( i=1 ; i<=ArrayLen(schemaRules.keys) ; i++ ) {
+						if ( !StructKeyExists(jsonDoc, schemaRules.keys[i]) ) {
+							ArrayPrepend(request[arguments.errorVar], "#arguments._item# should have a key named #schemaRules.keys[i]#");
+							if ( arguments.stopOnError ) {
+								return false;
+							}
+						}
+					}
+				}
+				//  Loop over all the keys for the structure and see if they are valid (if items key is specified) by recursing the validate function
+				if ( StructKeyExists(schemaRules, "items") ) {
+					for ( key in jsonDoc ) {
+						if ( StructKeyExists(schemaRules.items, key) ) {
+							isValid = validate(_doc=jsonDoc[key], _schema=schemaRules.items[key], _item="#arguments._item#['#key#']", errorVar=arguments.errorVar, stopOnError=arguments.stopOnError);
+							if ( arguments.stopOnError && !isValid ) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+		} else if ( schemaRules.type == "array" ) {
+			if ( !IsArray(jsonDoc) ) {
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be an array");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			} else {
+				cfparam( default=0, name="schemaRules.minlength" );
+				cfparam( default=9999999999, name="schemaRules.maxlength" );
+				//  If there are length requirements for the array make sure they are valid
+				if ( ArrayLen(jsonDoc) < schemaRules.minlength ) {
+					ArrayPrepend(request[arguments.errorVar], "#arguments._item# == an array that should have at least #schemaRules.minlength# elements");
+					if ( arguments.stopOnError ) {
+						return false;
+					}
+				} else if ( ArrayLen(jsonDoc) > schemaRules.maxlength ) {
+					ArrayPrepend(request[arguments.errorVar], "#arguments._item# == an array that should have at the most #schemaRules.maxlength# elements");
+					if ( arguments.stopOnError ) {
+						return false;
+					}
+				}
+				//  Loop over the array elements and if there are rules for the array items recurse to enforce them
+				if ( StructKeyExists(schemaRules, "items") ) {
+					for ( i=1 ; i<=ArrayLen(jsonDoc) ; i++ ) {
+						isValid = validate(_doc=jsonDoc[i], _schema=schemaRules.items, _item="#arguments._item#[#i#]", errorVar=arguments.errorVar, stopOnError=arguments.stopOnError);
+						if ( arguments.stopOnError && !isValid ) {
+							return false;
+						}
+					}
+				}
+			}
+		} else if ( schemaRules.type == "number" ) {
+			if ( !IsNumeric(jsonDoc) ) {
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be numeric");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			} else if ( StructKeyExists(schemaRules, "min") && jsonDoc < schemaRules.min ) {
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# cannot be a number less than #schemaRules.min#");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			} else if ( StructKeyExists(schemaRules, "max") && jsonDoc > schemaRules.max ) {
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# cannot be a number greater than #schemaRules.max#");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			}
+		} else if ( schemaRules.type == "boolean" && ( !IsBoolean(jsonDoc) || ListFindNoCase("Yes,No", jsonDoc) || IsNumeric(jsonDoc) ) ) {
+			ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be a boolean");
+			if ( arguments.stopOnError ) {
+				return false;
+			}
+		} else if ( schemaRules.type == "date" ) {
+			if ( !IsSimpleValue(jsonDoc) || !IsDate(jsonDoc)
+					OR ( StructKeyExists(schemaRules, "mask") && CompareNoCase( jsonDoc, DateFormat(jsonDoc, schemaRules.mask) ) != 0 ) ) {
+				if ( StructKeyExists(schemaRules, "mask") ) {
+					msg = " in #schemaRules.mask# format";
+				}
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be a date#msg#");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			}
+		} else if ( schemaRules.type == "string" ) {
+			if ( !IsSimpleValue(jsonDoc) ) {
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be a string");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			} else if ( StructKeyExists(schemaRules, "minlength") && Len(jsonDoc) < schemaRules.minlength ) {
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# should have a minimum length of #schemaRules.minlength#");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			} else if ( StructKeyExists(schemaRules, "maxlength") && Len(jsonDoc) > schemaRules.maxlength ) {
+				ArrayPrepend(request[arguments.errorVar], "#arguments._item# should have a maximum length of #schemaRules.maxlength#");
+				if ( arguments.stopOnError ) {
+					return false;
+				}
+			}
+		}
+		if ( ArrayLen(request[arguments.errorVar]) ) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-	</cfscript>
-
-	</cffunction>
-
-	<cffunction name="validate" access="remote" output="yes" returntype="boolean"
-			hint="I validate a JSON document against a JSON schema">
-		<cfargument name="doc" type="string" required="No" />
-		<cfargument name="schema" type="string" required="No" />
-		<cfargument name="errorVar" type="string" required="No" default="jsonSchemaErrors" />
-		<cfargument name="stopOnError" type="boolean" required="No" default=true />
-
-		<!--- These arguments are for internal use only --->
-		<cfargument name="_doc" type="any" required="No" />
-		<cfargument name="_schema" type="any" required="No" />
-		<cfargument name="_item" type="string" required="No" default="root" />
-
-		<cfset var schemaRules = "" />
-		<cfset var jsonDoc = "" />
-		<cfset var i = 0 />
-		<cfset var key = "" />
-		<cfset var isValid = true />
-		<cfset var msg = "" />
-
-		<cfif StructKeyExists(arguments, "doc")>
-			<cfif FileExists(arguments.doc)>
-				<cffile action="READ" file="#arguments.doc#" variable="arguments.doc" />
-			</cfif>
-
-			<cfif FileExists(arguments.schema)>
-				<cffile action="READ" file="#arguments.schema#" variable="arguments.schema" />
-			</cfif>
-
-			<cfset jsonDoc = decode(arguments.doc) />
-			<cfset schemaRules = decode(arguments.schema) />
-
-			<cfset request[arguments.errorVar] = ArrayNew(1) />
-		<cfelseif StructKeyExists(arguments, "_doc")>
-			<cfset jsonDoc = arguments._doc />
-			<cfset schemaRules = arguments._schema />
-		</cfif>
-
-		<!--- See if the document matches the rules from the schema --->
-		<cfif schemaRules.type EQ "struct">
-			<cfif NOT IsStruct(jsonDoc)>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be a struct") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			<cfelse>
-				<!--- If specific keys are set to be required, check if they exist --->
-				<cfif StructKeyExists(schemaRules, "keys")>
-					<cfloop from="1" to="#ArrayLen(schemaRules.keys)#" index="i">
-						<cfif NOT StructKeyExists(jsonDoc, schemaRules.keys[i])>
-							<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should have a key named #schemaRules.keys[i]#") />
-							<cfif arguments.stopOnError>
-								<cfreturn false />
-							</cfif>
-						</cfif>
-					</cfloop>
-				</cfif>
-
-				<!--- Loop over all the keys for the structure and see if they are valid (if items key is specified) by recursing the validate function --->
-				<cfif StructKeyExists(schemaRules, "items")>
-					<cfloop collection="#jsonDoc#" item="key">
-						<cfif StructKeyExists(schemaRules.items, key)>
-							<cfset isValid = validate(_doc=jsonDoc[key], _schema=schemaRules.items[key], _item="#arguments._item#['#key#']", errorVar=arguments.errorVar, stopOnError=arguments.stopOnError) />
-							<cfif arguments.stopOnError AND NOT isValid>
-								<cfreturn false />
-							</cfif>
-						</cfif>
-					</cfloop>
-				</cfif>
-			</cfif>
-		<cfelseif schemaRules.type EQ "array">
-			<cfif NOT IsArray(jsonDoc)>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be an array") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			<cfelse>
-				<cfparam name="schemaRules.minlength" default="0" />
-				<cfparam name="schemaRules.maxlength" default="9999999999" />
-
-				<!--- If there are length requirements for the array make sure they are valid --->
-				<cfif ArrayLen(jsonDoc) LT schemaRules.minlength>
-					<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# is an array that should have at least #schemaRules.minlength# elements") />
-					<cfif arguments.stopOnError>
-						<cfreturn false />
-					</cfif>
-				<cfelseif ArrayLen(jsonDoc) GT schemaRules.maxlength>
-					<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# is an array that should have at the most #schemaRules.maxlength# elements") />
-					<cfif arguments.stopOnError>
-						<cfreturn false />
-					</cfif>
-				</cfif>
-
-				<!--- Loop over the array elements and if there are rules for the array items recurse to enforce them --->
-				<cfif StructKeyExists(schemaRules, "items")>
-					<cfloop from="1" to="#ArrayLen(jsonDoc)#" index="i">
-						<cfset isValid = validate(_doc=jsonDoc[i], _schema=schemaRules.items, _item="#arguments._item#[#i#]", errorVar=arguments.errorVar, stopOnError=arguments.stopOnError) />
-						<cfif arguments.stopOnError AND NOT isValid>
-							<cfreturn false />
-						</cfif>
-					</cfloop>
-				</cfif>
-			</cfif>
-		<cfelseif schemaRules.type EQ "number">
-			<cfif NOT IsNumeric(jsonDoc)>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be numeric") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			<cfelseif StructKeyExists(schemaRules, "min") AND jsonDoc LT schemaRules.min>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# cannot be a number less than #schemaRules.min#") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			<cfelseif StructKeyExists(schemaRules, "max") AND jsonDoc GT schemaRules.max>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# cannot be a number greater than #schemaRules.max#") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			</cfif>
-		<cfelseif schemaRules.type EQ "boolean" AND ( NOT IsBoolean(jsonDoc) OR ListFindNoCase("Yes,No", jsonDoc) OR IsNumeric(jsonDoc) )>
-			<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be a boolean") />
-			<cfif arguments.stopOnError>
-				<cfreturn false />
-			</cfif>
-		<cfelseif schemaRules.type EQ "date">
-			<cfif NOT IsSimpleValue(jsonDoc) OR NOT IsDate(jsonDoc)
-					OR ( StructKeyExists(schemaRules, "mask") AND CompareNoCase( jsonDoc, DateFormat(jsonDoc, schemaRules.mask) ) NEQ 0 )>
-				<cfif StructKeyExists(schemaRules, "mask")>
-					<cfset msg = " in #schemaRules.mask# format" />
-				</cfif>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be a date#msg#") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			</cfif>
-		<cfelseif schemaRules.type EQ "string">
-			<cfif NOT IsSimpleValue(jsonDoc)>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should be a string") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			<cfelseif StructKeyExists(schemaRules, "minlength") AND Len(jsonDoc) LT schemaRules.minlength>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should have a minimum length of #schemaRules.minlength#") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			<cfelseif StructKeyExists(schemaRules, "maxlength") AND Len(jsonDoc) GT schemaRules.maxlength>
-				<cfset ArrayPrepend(request[arguments.errorVar], "#arguments._item# should have a maximum length of #schemaRules.maxlength#") />
-				<cfif arguments.stopOnError>
-					<cfreturn false />
-				</cfif>
-			</cfif>
-		</cfif>
-
-		<cfif ArrayLen(request[arguments.errorVar])>
-			<cfreturn false />
-		<cfelse>
-			<cfreturn true />
-		</cfif>
-    </cffunction>
-</cfcomponent>
+}

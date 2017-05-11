@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,20 +43,23 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.beanIterator" output="false" hint="This provides changeset iterating functionality">
+*/
+/**
+ * This provides changeset iterating functionality
+ */
+component extends="mura.bean.beanIterator" output="false" hint="This provides changeset iterating functionality" {
+	variables.changesetBean="";
+	variables.recordIDField="changesetID";
 
-<cfset variables.changesetBean="">
-<cfset variables.recordIDField="changesetID">
-<cffunction name="packageRecord" output="false">
-	<cfif NOT isObject(variables.changesetBean)>
-		<cfset variables.changesetBean=getBean('changeset') />
-		<cfset variables.changesetStructTemplate=structCopy(variables.changesetBean.getAllValues())>
-	<cfelse>
-		<cfset variables.changesetBean.setAllValues( structCopy(variables.changesetStructTemplate) )>
-	</cfif>
+	public function packageRecord() output=false {
+		if ( !isObject(variables.changesetBean) ) {
+			variables.changesetBean=getBean('changeset');
+			variables.changesetStructTemplate=structCopy(variables.changesetBean.getAllValues());
+		} else {
+			variables.changesetBean.setAllValues( structCopy(variables.changesetStructTemplate) );
+		}
+		variables.changesetBean.set(queryRowToStruct(variables.records,currentIndex()));
+		return variables.changesetBean;
+	}
 
-	<cfset variables.changesetBean.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfreturn variables.changesetBean>
-</cffunction>
-</cfcomponent>
+}

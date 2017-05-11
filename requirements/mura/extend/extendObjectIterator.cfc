@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,55 +43,52 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.iterator.queryIterator" output="false" hint="This provides legacy custom extended object iterating functionality">
+*/
+/**
+ * This provides legacy custom extended object iterating functionality
+ */
+component extends="mura.iterator.queryIterator" output="false" hint="This provides legacy custom extended object iterating functionality" {
+	variables.configBean="";
+	variables.manager="";
 
-<cfset variables.configBean="">
-<cfset variables.manager="">
-
-<cffunction name="init" output="false">
-	<cfargument name="configBean" default="">
-	<!---<cfargument name="manager" default="">--->
-	<cfset super.init(argumentCollection=arguments)>
-	<cfif isObject(arguments.configBean)>
-		<cfset setConfigBean(arguments.configBean)>
-	</cfif>
-	<!---
+	public function init(configBean="") output=false {
+		// <cfargument name="manager" default="">
+		super.init(argumentCollection=arguments);
+		if ( isObject(arguments.configBean) ) {
+			setConfigBean(arguments.configBean);
+		}
+		/*
 	<cfif isObject(arguments.manager)>
 		<cfset setManager(arguments.manager)>
 	</cfif>
-	--->
-	<cfreturn this />
-</cffunction>
+	*/
+		return this;
+	}
 
-<cffunction name="setConfigBean" output="false">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+	public function setConfigBean(configBean) output=false {
+		variables.configBean=arguments.configBean;
+		return this;
+	}
 
-<cffunction name="setManager" output="false">
-	<cfargument name="manager">
-	<cfset variables.manager=arguments.manager>
-	<cfreturn this>
-</cffunction>
+	public function setManager(manager) output=false {
+		variables.manager=arguments.manager;
+		return this;
+	}
 
-<cffunction name="packageRecord" output="false">
-	<cfset var extendObject="">
-
-	<cfset extendObject=createObject("component","extendObject").init(
+	public function packageRecord() output=false {
+		var extendObject="";
+		extendObject=createObject("component","extendObject").init(
 			Type=variables.records.type[currentIndex()],
 			SubType=variables.records.subtype[currentIndex()],
 			SiteID=variables.records.SiteID[currentIndex()],
 			configBean=variables.configBean,
 			ID=variables.records.ID[currentIndex()],
 			manager=variables.manager,
-			sourceIterator=this) />
+			sourceIterator=this);
+		if ( isObject(variables.recordTranslator) ) {
+			extendObject.setTranslator(variables.recordTranslator);
+		}
+		return extendObject;
+	}
 
-	<cfif isObject(variables.recordTranslator)>
-		<cfset extendObject.setTranslator(variables.recordTranslator)>
-	</cfif>
-	<cfreturn extendObject>
-</cffunction>
-
-</cfcomponent>
+}

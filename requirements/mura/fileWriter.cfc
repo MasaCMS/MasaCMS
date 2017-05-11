@@ -128,6 +128,7 @@
 		<cfargument name="output">
 		<cfargument name="addNewLine" required="true" default="true">
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+		<cfargument name="charset">
 		<cfset var new = "">
 		<cfset var x = "">
 		<cfset var counter = 0>
@@ -138,7 +139,11 @@
 
 				<cfloop condition="!fileIsEOF( arguments.output )">
 					<cfset x = FileRead(arguments.output, 10000)>
-					<cfset FileWrite(new, x)>
+					<cfif isDefined('arguments.charset')>
+						<cfset FileWrite(new, x, arguments.charset)>
+					<cfelse>
+						<cfset FileWrite(new, x)>
+					</cfif>
 					<cfset counter = counter + 1>
 				</cfloop>
 

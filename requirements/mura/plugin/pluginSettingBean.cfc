@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,214 +43,278 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.bean" output="false" hint="This provides plugin config xml custom settings functionality">
+*/
+/**
+ * This provides plugin config xml custom settings functionality
+ */
+component extends="mura.bean.bean" output="false" hint="This provides plugin config xml custom settings functionality" {
+	property name="name" type="string" default="" required="true";
+	property name="hint" type="string" default="" required="true";
+	property name="type" type="string" default="TextBox" required="true";
+	property name="required" type="string" default="false" required="true";
+	property name="validation" type="string" default="" required="true";
+	property name="regex" type="string" default="" required="true";
+	property name="message" type="string" default="" required="true";
+	property name="label" type="string" default="" required="true";
+	property name="settingValue" type="string" default="" required="true";
+	property name="optionList" type="string" default="" required="true";
+	property name="optionListLabel" type="string" default="" required="true";
 
-<cfproperty name="name" type="string" default="" required="true" />
-<cfproperty name="hint" type="string" default="" required="true" />
-<cfproperty name="type" type="string" default="TextBox" required="true" />
-<cfproperty name="required" type="string" default="false" required="true" />
-<cfproperty name="validation" type="string" default="" required="true" />
-<cfproperty name="regex" type="string" default="" required="true" />
-<cfproperty name="message" type="string" default="" required="true" />
-<cfproperty name="label" type="string" default="" required="true" />
-<cfproperty name="settingValue" type="string" default="" required="true" />
-<cfproperty name="optionList" type="string" default="" required="true" />
-<cfproperty name="optionListLabel" type="string" default="" required="true" />
+	public function init() output=false {
+		super.init(argumentCollection=arguments);
+		variables.instance.name="";
+		variables.instance.hint="";
+		variables.instance.type="TextBox";
+		variables.instance.required="false";
+		variables.instance.validation="";
+		variables.instance.regex="";
+		variables.instance.message="";
+		variables.instance.label="";
+		variables.instance.settingValue="";
+		variables.instance.optionList="";
+		variables.instance.optionLabelList="";
+		return this;
+	}
 
-<cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
+	public function setConfigBean(configBean) output=false {
+		variables.configBean=arguments.configBean;
+		return this;
+	}
 
-	<cfset variables.instance.name=""/>
-	<cfset variables.instance.hint=""/>
-	<cfset variables.instance.type="TextBox"/>
-	<cfset variables.instance.required="false"/>
-	<cfset variables.instance.validation=""/>
-	<cfset variables.instance.regex=""/>
-	<cfset variables.instance.message=""/>
-	<cfset variables.instance.label=""/>
-	<cfset variables.instance.settingValue=""/>
-	<cfset variables.instance.optionList=""/>
-	<cfset variables.instance.optionLabelList=""/>
+	public function set(theXML, moduleID) output=false {
+		var i="";
 
-	<cfreturn this />
-</cffunction>
+		for(i in ListToArray("name,type,hint,required,validation,regex,message,label,optionlist,optionlabellist")){
+			if(structKeyExists(arguments.theXML,i)){
+				evaluate("set#i#(arguments.theXML[i].xmlText)");
+			} else if (structKeyExists(arguments.theXML.xmlAttributes,i)){
+				evaluate("set#i#(arguments.theXML.xmlAttributes[i])");
+			}
+		}
 
-<cffunction name="setConfigBean" output="false">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+		setModuleID(arguments.moduleID);
+		loadSettingValue();
+		return this;
+	}
 
-<cffunction name="set"  output="false">
-	<cfargument name="theXML">
-	<cfargument name="moduleID">
-	<cfset var i="">
+	public function getName() output=false {
+		return variables.instance.name;
+	}
 
-	<cfloop list="name,type,hint,required,validation,regex,message,label,optionlist,optionlabellist" index="i">
-		<cfif structKeyExists(arguments.theXML,i)>
-			<cfset evaluate("set#i#(arguments.theXML[i].xmlText)")/>
-		<cfelseif structKeyExists(arguments.theXML.xmlAttributes,i)>
-			<cfset evaluate("set#i#(arguments.theXML.xmlAttributes[i])")/>
-		</cfif>
-	</cfloop>
+	public function setName(String name) output=false {
+		variables.instance.name = trim(arguments.name);
+	}
 
-	<cfset setModuleID(arguments.moduleID)/>
-	<cfset loadSettingValue()/>
+	public function getModuleID() output=false {
+		return variables.instance.ModuleID;
+	}
 
-	<cfreturn this>
+	public function setModuleID(String ModuleID) output=false {
+		variables.instance.ModuleID = trim(arguments.ModuleID);
+	}
 
-</cffunction>
+	public function getHint() output=false {
+		return variables.instance.Hint;
+	}
 
-<cffunction name="getName" output="false">
-	<cfreturn variables.instance.name />
-</cffunction>
+	public function setHint(String Hint) output=false {
+		variables.instance.Hint = trim(arguments.Hint);
+	}
 
-<cffunction name="setName" output="false">
-	<cfargument name="name" type="String" />
-	<cfset variables.instance.name = trim(arguments.name) />
-</cffunction>
+	public function getType() output=false {
+		return variables.instance.Type;
+	}
 
-<cffunction name="getModuleID" output="false">
-	<cfreturn variables.instance.ModuleID />
-</cffunction>
+	public function setType(String Type) output=false {
+		variables.instance.Type = trim(arguments.Type);
+	}
 
-<cffunction name="setModuleID" output="false">
-	<cfargument name="ModuleID" type="String" />
-	<cfset variables.instance.ModuleID = trim(arguments.ModuleID) />
-</cffunction>
+	public function getRequired() output=false {
+		return variables.instance.Required;
+	}
 
-<cffunction name="getHint" output="false">
-	<cfreturn variables.instance.Hint />
-</cffunction>
+	public function setRequired(String Required) output=false {
+		variables.instance.Required = trim(arguments.Required);
+	}
 
-<cffunction name="setHint" output="false">
-	<cfargument name="Hint" type="String" />
-	<cfset variables.instance.Hint = trim(arguments.Hint) />
-</cffunction>
+	public function getValidation() output=false {
+		return variables.instance.validation;
+	}
 
-<cffunction name="getType" output="false">
-	<cfreturn variables.instance.Type />
-</cffunction>
+	public function setValidation(String validation) output=false {
+		variables.instance.validation = trim(arguments.validation);
+	}
 
-<cffunction name="setType" output="false">
-	<cfargument name="Type" type="String" />
-	<cfset variables.instance.Type = trim(arguments.Type) />
-</cffunction>
+	public function getRegex() output=false {
+		return variables.instance.Regex;
+	}
 
-<cffunction name="getRequired" output="false">
-	<cfreturn variables.instance.Required />
-</cffunction>
+	public function setRegex(String Regex) output=false {
+		variables.instance.Regex = trim(arguments.Regex);
+	}
 
-<cffunction name="setRequired" output="false">
-	<cfargument name="Required" type="String" />
-	<cfset variables.instance.Required = trim(arguments.Required) />
-</cffunction>
+	public function getMessage() output=false {
+		return variables.instance.Message;
+	}
 
-<cffunction name="getValidation" output="false">
-	<cfreturn variables.instance.validation />
-</cffunction>
+	public function setMessage(String Message) output=false {
+		variables.instance.Message = trim(arguments.Message);
+	}
 
-<cffunction name="setValidation" output="false">
-	<cfargument name="validation" type="String" />
-	<cfset variables.instance.validation = trim(arguments.validation) />
-</cffunction>
+	public function getLabel() output=false {
+		if ( len(variables.instance.Label) ) {
+			return variables.instance.Label;
+		} else {
+			return variables.instance.name;
+		}
+	}
 
-<cffunction name="getRegex" output="false">
-	<cfreturn variables.instance.Regex />
-</cffunction>
+	public function setLabel(String Label) output=false {
+		variables.instance.Label = trim(arguments.Label);
+	}
 
-<cffunction name="setRegex" output="false">
-	<cfargument name="Regex" type="String" />
-	<cfset variables.instance.Regex = trim(arguments.Regex) />
-</cffunction>
+	public function getSettingValue() output=false {
+		return variables.instance.SettingValue;
+	}
 
-<cffunction name="getMessage" output="false">
+	public function setSettingValue(String SettingValue) output=false {
+		variables.instance.SettingValue = trim(arguments.SettingValue);
+	}
 
-	<cfreturn variables.instance.Message />
+	public function getOptionList() output=false {
+		return variables.instance.optionList;
+	}
 
-</cffunction>
+	public function setOptionList(String OptionList) output=false {
+		variables.instance.OptionList = trim(arguments.OptionList);
+	}
 
-<cffunction name="setMessage" output="false">
-	<cfargument name="Message" type="String" />
-	<cfset variables.instance.Message = trim(arguments.Message) />
-</cffunction>
+	public function getOptionLabelList() output=false {
+		return variables.instance.OptionLabelList;
+	}
 
-<cffunction name="getLabel" output="false">
-	<cfif len(variables.instance.Label)>
-	<cfreturn variables.instance.Label />
-	<cfelse>
-	<cfreturn variables.instance.name />
-	</cfif>
-</cffunction>
+	public function setOptionLabelList(String OptionLabelList) output=false {
+		variables.instance.OptionLabelList = trim(arguments.OptionLabelList);
+	}
 
-<cffunction name="setLabel" output="false">
-	<cfargument name="Label" type="String" />
-	<cfset variables.instance.Label = trim(arguments.Label) />
-</cffunction>
+	public function renderSetting(required theValue="useMuraDefault") output=false {
+		var renderValue= arguments.theValue;
+		var optionValue= "";
+		var str="";
+		var key=getName();
+		var o=0;
+		switch ( getType() ) {
+			case  "Text,TextBox":
+				savecontent variable="str" {
+						writeOutput("<input type=""text"" name=""#key#"" id=""#key#"" label=""#XMLFormat(getlabel())#"" value=""#HTMLEditFormat(renderValue)#"" required=""#getRequired()#""");
+						if ( len(getvalidation()) ) {
 
-<cffunction name="getSettingValue" output="false">
-	<cfreturn variables.instance.SettingValue />
-</cffunction>
+							writeOutput("validate=""#getValidation()#""");
+						}
+						if ( getvalidation() == "Regex" ) {
 
-<cffunction name="setSettingValue" output="false">
-	<cfargument name="SettingValue" type="String" />
-	<cfset variables.instance.SettingValue = trim(arguments.SettingValue) />
-</cffunction>
+							writeOutput("regex=""#getRegex()#""");
+						}
+						if ( len(getMessage()) ) {
 
-<cffunction name="getOptionList" output="false">
-	<cfreturn variables.instance.optionList />
-</cffunction>
+							writeOutput("message=""#XMLFormat(getMessage())#""");
+						}
 
-<cffunction name="setOptionList" output="false">
-	<cfargument name="OptionList" type="String" />
-	<cfset variables.instance.OptionList = trim(arguments.OptionList) />
-</cffunction>
+						writeOutput("/>");
+				}
+				break;
+			case  "TextArea":
+				savecontent variable="str" {
+						writeOutput("<textarea name=""#key#"" id=""#key#"" label=""#XMLFormat(getlabel())#"" required=""#getRequired()#""");
+						if ( len(getMessage()) ) {
 
-<cffunction name="getOptionLabelList" output="false">
-	<cfreturn variables.instance.OptionLabelList />
-</cffunction>
+							writeOutput("message=""#XMLFormat(getMessage())#""");
+						}
 
-<cffunction name="setOptionLabelList" output="false">
-	<cfargument name="OptionLabelList" type="String" />
-	<cfset variables.instance.OptionLabelList = trim(arguments.OptionLabelList) />
-</cffunction>
+						writeOutput(">#HTMLEditFormat(renderValue)#</textarea>");
+				}
+				break;
+			case  "Select,SelectBox,MultiSelectBox":
+				savecontent variable="str" {
+						writeOutput("<select name=""#key#"" id=""#key#"" label=""#XMLFormat(getlabel())#"" required=""#getRequired()#""");
+						if ( len(getMessage()) ) {
 
-<cffunction name="renderSetting" output="false">
-<cfargument name="theValue" required="true" default="useMuraDefault"/>
-<cfset var renderValue= arguments.theValue />
-<cfset var optionValue= "" />
-<cfset var str=""/>
-<cfset var key=getName() />
-<cfset var o=0/>
+							writeOutput("message=""#XMLFormat(getMessage())#""");
+						}
+						if ( getType() == "MultiSelectBox" ) {
 
-<cfswitch expression="#getType()#">
-<cfcase value="Text,TextBox">
-<cfsavecontent variable="str"><cfoutput><input type="text" name="#key#" id="#key#" label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" required="#getRequired()#"<cfif len(getvalidation())> validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> regex="#getRegex()#"</cfif><cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif>/></cfoutput></cfsavecontent>
-</cfcase>
-<cfcase value="TextArea">
-<cfsavecontent variable="str"><cfoutput><textarea name="#key#" id="#key#" label="#XMLFormat(getlabel())#" required="#getRequired()#"<cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif>>#HTMLEditFormat(renderValue)#</textarea></cfoutput></cfsavecontent>
-</cfcase>
-<cfcase value="Select,SelectBox,MultiSelectBox">
-<cfsavecontent variable="str"><cfoutput><select name="#key#" id="#key#" label="#XMLFormat(getlabel())#" required="#getRequired()#"<cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "MultiSelectBox"> multiple</cfif>><cfif listLen(getOptionList(),'^')><cfloop from="1" to="#listLen(getOptionList(),'^')#" index="o"><cfset optionValue=listGetAt(getOptionList(),o,'^') /><option value="#XMLFormat(optionValue)#" <cfif optionValue eq renderValue or listFind(renderValue,optionValue)>selected</cfif>><cfif len(getOptionLabelList())>#listGetAt(getOptionLabelList(),o,'^')#<cfelse>#optionValue#</cfif></option></cfloop></cfif></select></cfoutput></cfsavecontent>
-</cfcase>
-<cfcase value="Radio,RadioGroup">
-<cfsavecontent variable="str"><cfoutput><cfif listLen(getOptionList(),'^')><cfloop from="1" to="#listLen(getOptionList(),'^')#" index="o"><cfset optionValue=listGetAt(getOptionList(),o,'^') /><label class="radio inline"><input type="radio" id="#key#" name="#key#" value="#XMLFormat(optionValue)#" <cfif optionValue eq renderValue>checked</cfif>/> <cfif len(getOptionLabelList())>#listGetAt(getOptionLabelList(),o,'^')#<cfelse>#optionValue#</cfif></label></cfloop></select></cfif></cfoutput></cfsavecontent>
-</cfcase>
-</cfswitch>
+							writeOutput("multiple");
+						}
 
-<cfreturn str/>
-</cffunction>
+						writeOutput(">");
+						if ( listLen(getOptionList(),'^') ) {
+							for ( o=1 ; o<=listLen(getOptionList(),'^') ; o++ ) {
+								optionValue=listGetAt(getOptionList(),o,'^');
 
-<cffunction name="loadSettingValue"  output="false">
-<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tpluginsettings
-	where name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">
-	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
-	</cfquery>
+								writeOutput("<option value=""#XMLFormat(optionValue)#""");
+								if ( optionValue == renderValue || listFind(renderValue,optionValue) ) {
 
-	<cfset setSettingValue(rs.settingValue) />
-</cffunction>
+									writeOutput("selected");
+								}
 
-</cfcomponent>
+								writeOutput(">");
+								if ( len(getOptionLabelList()) ) {
+
+									writeOutput("#listGetAt(getOptionLabelList(),o,'^')#");
+								} else {
+
+									writeOutput("#optionValue#");
+								}
+
+								writeOutput("</option>");
+							}
+						}
+
+						writeOutput("</select>");
+				}
+				break;
+			case  "Radio,RadioGroup":
+				savecontent variable="str" {
+						if ( listLen(getOptionList(),'^') ) {
+							for ( o=1 ; o<=listLen(getOptionList(),'^') ; o++ ) {
+								optionValue=listGetAt(getOptionList(),o,'^');
+
+								writeOutput("<label class=""radio inline""><input type=""radio"" id=""#key#"" name=""#key#"" value=""#XMLFormat(optionValue)#""");
+								if ( optionValue == renderValue ) {
+
+									writeOutput("checked");
+								}
+
+								writeOutput("/>");
+								if ( len(getOptionLabelList()) ) {
+
+									writeOutput("#listGetAt(getOptionLabelList(),o,'^')#");
+								} else {
+
+									writeOutput("#optionValue#");
+								}
+
+								writeOutput("</label>");
+							}
+
+							writeOutput("</select>");
+						}
+				}
+				break;
+		}
+		return str;
+	}
+
+	public function loadSettingValue() output=false {
+		var rs="";
+
+		var qs=new Query( password=variables.configBean.getDBPassword(), name="rs", datasource=variables.configBean.getDatasource(), username=variables.configBean.getDBUsername() );
+		qs.addParam(name="name",cfsqltype="cf_sql_varchar", value=getName());
+		qs.addParam(name="moduleid",cfsqltype="cf_sql_varchar", value=getModuleID());
+
+		rs=qs.execute(sql="select * from tpluginsetting where name= :name and moduleid= :moduleid").getResult();
+
+		setSettingValue(rs.settingValue);
+	}
+
+}
