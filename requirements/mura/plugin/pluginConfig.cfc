@@ -362,7 +362,7 @@ component extends="mura.cfobject" output="false" hint="This provides access to a
 		structDelete(variables.customSettings,arguments.name);
 	}
 
-	public function getCustomSetting(required string name, default) output=false {
+	public function getCustomSetting(required string name, defaultValue) output=false {
 		var customValue="";
 		var customWDDX="";
 		var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm";
@@ -377,8 +377,11 @@ component extends="mura.cfobject" output="false" hint="This provides access to a
 			fileClose(customWDDX);
 			return customValue;
 		} else {
-			if ( structKeyExists(arguments,"default") ) {
-				return arguments.default;
+			if(isdefined('arguments.default')){
+				arguments.defaultValue=arguments['default'];
+			}
+			if ( structKeyExists(arguments,"defaultValue") ) {
+				return arguments.defaultValue;
 			} else {
 				return "";
 			}

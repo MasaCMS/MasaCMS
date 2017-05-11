@@ -7,7 +7,7 @@ services:
     environment:
       PORT: 8080
       SSL_PORT: 8443
-      CFENGINE: lucee@5
+      CFENGINE: adobe@10
       CFCONFIG_ADMINPASSWORD: NOT_SECURE_CHANGE
       MURA_ADMIN_USERNAME: admin
       MURA_ADMIN_PASSWORD: admin
