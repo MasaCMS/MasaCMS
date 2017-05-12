@@ -898,8 +898,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
-				qs.setAttribute('rsDirs',rsDirs);
-				qs.setAttribute('rs',rs);
+				qs.setAttributes('rsDirs',rsDirs);
+				qs.setAttributes('rs',rs);
 				qs.setDbType('query');
 
 				rs=qs.execute(sql="
@@ -912,8 +912,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
-				qs.setAttribute('rsDirs',rsDirs);
-				qs.setAttribute('rs',rs);
+				qs.setAttributes('rsDirs',rsDirs);
+				qs.setAttributes('rs',rs);
 				qs.setDbType('query');
 
 				rs=qs.execute(sql="
@@ -927,8 +927,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
-				qs.setAttribute('rsDirs',rsDirs);
-				qs.setAttribute('rs',rs);
+				qs.setAttributes('rsDirs',rsDirs);
+				qs.setAttributes('rs',rs);
 				qs.setDbType('query');
 
 				rs=qs.execute(sql="
@@ -941,8 +941,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
-				qs.setAttribute('rsDirs',rsDirs);
-				qs.setAttribute('rs',rs);
+				qs.setAttributes('rsDirs',rsDirs);
+				qs.setAttributes('rs',rs);
 				qs.setDbType('query');
 
 				rs=qs.execute(sql="
@@ -955,8 +955,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		if ( directoryExists(themeDir) ) {
 			rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 			qs=getQueryService();
-			qs.setAttribute('rsDirs',rsDirs);
-			qs.setAttribute('rs',rs);
+			qs.setAttributes('rsDirs',rsDirs);
+			qs.setAttributes('rs',rs);
 			qs.setDbType('query');
 
 			rs=qs.execute(sql="
@@ -979,7 +979,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				if ( directoryExists(dir) ) {
 					rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=dir );
 					qs=getQueryService();
-					qs.setAttribute('rs',rs);
+					qs.setAttributes('rs',rs);
 					qs.setDbType('query');
 					rs=qs.execute(sql="
 						select * from rs order by name
@@ -991,7 +991,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			default:
 				rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=getTemplateIncludeDir() );
 				qs=getQueryService();
-				qs.setAttribute('rs',rs);
+				qs.setAttributes('rs',rs);
 				qs.setDbType('query');
 				rs=qs.execute(sql="
 					select * from rs order by name
@@ -1014,8 +1014,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 					rs=getBean('fileWriter').getDirectoryList( directory=dir ,type='dir');
 					if ( rs.recordcount ) {
 						qs=getQueryService();
-						qs.setAttribute('rs',rs);
-						qs.setAttribute('rsFinal',rsFinal);
+						qs.setAttributes('rs',rs);
+						qs.setAttributes('rsFinal',rsFinal);
 						qs.setDbType('query');
 						rsFinal=qs.execute(sql="
 						select name from rsFinal
@@ -1027,7 +1027,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			}
 
 			qs=getQueryService();
-			qs.setAttribute('rsFinal',rsFinal);
+			qs.setAttributes('rsFinal',rsFinal);
 			qs.setDbType('query');
 			rsFinal=qs.execute(sql="
 			select distinct name from rsFinal
