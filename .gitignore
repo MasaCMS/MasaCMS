@@ -68,6 +68,14 @@ node_modules/
 /default/includes/eventHandler.cfc
 /default/js/node_modules/
 /default/model/
+/sites/default/assets/
+/sites/default/cache/
+/sites/default/Application.cfc
+/sites/default/contentRenderer.cfc
+/sites/default/email/
+/sites/default/eventHandler.cfc
+/sites/default/js/node_modules/
+/sites/default/model/
 
 # create sites &/or directories beginning with 'demo' or 'temp' without tracking them
 demo-*/
