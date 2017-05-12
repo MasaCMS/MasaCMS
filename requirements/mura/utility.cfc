@@ -192,17 +192,26 @@
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/index.template.cfm", destination="#variables.configBean.getSiteDir()#/#arguments.siteid#/index.cfm")>
 	</cfif>
 
-	<cfif directoryExists(expandPath('#variables.configBean.getSiteDir()#/#arguments.siteid#/includes'))>
-		<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#/includes">
-	<cfelse>
-		<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#">
-	</cfif>
-
-	<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
-		<cfif directoryExists(expandPath('#webroot#/#arguments.displaypoolid#/includes'))>
-			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes">
+	<!--- Double checking that it sees the new property on autoupdated instances--->
+	<cfif len(variables.configBean.getSiteDir())>
+		<cfif directoryExists(expandPath('#variables.configBean.getSiteDir()#/#arguments.siteid#/includes'))>
+			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#/includes">
 		<cfelse>
-			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#">
+			<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.siteid#">
+		</cfif>
+
+		<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
+			<cfif directoryExists(expandPath('#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes'))>
+				<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#/includes">
+			<cfelse>
+				<cfset basedir="#variables.configBean.getSiteDir()#/#arguments.displaypoolid#">
+			</cfif>
+		</cfif>
+	<cfelse>
+		<cfset var basedir="#webroot#/#arguments.siteid#/includes">
+
+		<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
+			<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
 		</cfif>
 	</cfif>
 
