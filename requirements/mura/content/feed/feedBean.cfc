@@ -184,14 +184,9 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		}
 		var prop="";
 		if ( isQuery(arguments.feed) && arguments.feed.recordcount ) {
-
-			/* toScript ERROR: Unimplemented cfloop condition
-
-						<cfloop list="#arguments.feed.columnlist#" index="prop">
-			<cfset setValue(prop,arguments.feed[prop][1]) />
-		</cfloop>
-
-			*/
+			for(prop in listToArray(arguments.feed.columnlist)){
+				setValue(prop,arguments.feed[prop][1]);
+			}
 
 		} else if ( isStruct(arguments.feed) ) {
 			for ( prop in arguments.feed ) {
@@ -222,17 +217,11 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		if ( !arguments.append ) {
 			variables.instance.contentID = trim(arguments.contentID);
 		} else {
-
-			/* toScript ERROR: Unimplemented cfloop condition
-
-						<cfloop list="#arguments.contentID#" index="i">
-		<cfif not listFindNoCase(variables.instance.contentID,trim(i))>
-	    	<cfset variables.instance.contentID = listAppend(variables.instance.contentID,trim(i)) />
-	    </cfif>
-	    </cfloop>
-
-			*/
-
+			for(i in listToArray(arguments.contentID)){
+				if(not listFindNoCase(variables.instance.contentID,trim(i))){
+			    	variables.instance.contentID = listAppend(variables.instance.contentID,trim(i));
+				}
+			}
 		}
 		return this;
 	}
@@ -374,8 +363,8 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 
 	public function getImageSize() output=false {
 		if ( variables.instance.imageSize == "Custom"
-	and variables.instance.ImageHeight == "AUTO"
-	and variables.instance.ImageWidth == "AUTO" ) {
+		and variables.instance.ImageHeight == "AUTO"
+		and variables.instance.ImageWidth == "AUTO" ) {
 			return "small";
 		} else {
 			return variables.instance.imageSize;

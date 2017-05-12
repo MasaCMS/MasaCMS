@@ -45,187 +45,218 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.bean" entityName="comment" table="tcontentcomments" output="false" hint="This provides content comment functionality">
+<cfproperty name="commentID" fieldType="id" type="string" default="">
+<cfproperty name="content" fieldtype="many-to-one" fkcolumn="contentid" cfc="content">
+<cfproperty name="kids" fieldtype="one-to-many" cfc="comment" nested=true orderby="created asc" cascade="delete">
+<cfproperty name="parent" fieldtype="many-to-one" cfc="comment" fkcolumn="parentid">
+<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID">
+<cfproperty name="comments" type="string" default="">
+<cfproperty name="url" type="string" default="">
+<cfproperty name="name" type="string" default="">
+<cfproperty name="email" type="string" default="">
+<cfproperty name="entered" type="date" default="">
+<cfproperty name="subscribe" type="numeric" default="0">
+<cfproperty name="isApproved" type="numeric" default="0">
+<cfproperty name="userID" type="string" default="">
+<cfproperty name="path" type="string" default="">
+<cfproperty name="remoteID" type="string" default="">
+<cfproperty name="isNew" type="numeric" default="1" persistent="false">
+<cfproperty name="isSpam" type="numeric" default="0">
+<cfproperty name="isDeleted" type="numeric" default="0">
+<cfproperty name="flagCount" type="numeric" default="0">
+<cfscript>
+variables.primaryKey = 'commentid';
+variables.entityName = 'comment';
 
-<cfproperty name="commentID" fieldType="id" type="string" default="" />
-<cfproperty name="content" fieldtype="many-to-one" fkcolumn="contentid" cfc="content"/>
-<cfproperty name="kids" fieldtype="one-to-many" cfc="comment" nested=true orderby="created asc" cascade="delete"/>
-<cfproperty name="parent" fieldtype="many-to-one" cfc="comment" fkcolumn="parentid"/>
-<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
-<cfproperty name="comments" type="string" default="" />
-<cfproperty name="url" type="string" default=""  />
-<cfproperty name="name" type="string" default=""  />
-<cfproperty name="email" type="string" default="" />
-<cfproperty name="entered" type="date" default="" />
-<cfproperty name="subscribe" type="numeric" default="0"  />
-<cfproperty name="isApproved" type="numeric" default="0" />
-<cfproperty name="userID" type="string" default="" />
-<cfproperty name="path" type="string" default="" />
-<cfproperty name="remoteID" type="string" default=""/>
-<cfproperty name="isNew" type="numeric" default="1" persistent="false"/>
-<cfproperty name="isSpam" type="numeric" default="0" />
-<cfproperty name="isDeleted" type="numeric" default="0" />
-<cfproperty name="flagCount" type="numeric" default="0" />
+function init() output=false {
+	super.init(argumentCollection=arguments);
+	variables.instance.commentID="";
+	variables.instance.contentID="";
+	variables.instance.parentID="";
+	variables.instance.siteID="";
+	variables.instance.comments="";
+	variables.instance.url="";
+	variables.instance.name="";
+	variables.instance.email="";
+	variables.instance.entered=now();
+	variables.instance.subscribe=0;
+	variables.instance.isApproved=0;
+	variables.instance.isSpam=0;
+	variables.instance.isDeleted=0;
+	variables.instance.userID="";
+	variables.instance.path="";
+	variables.instance.kids=0;
+	variables.instance.remoteID="";
+	variables.instance.isNew=1;
+	variables.instance.isSpam=0;
+	variables.instance.isDeleted=0;
+	variables.instance.flagCount=0;
+	return this;
+}
 
-<cfset variables.primaryKey = 'commentid'>
-<cfset variables.entityName = 'comment'>
+function setContentManager(contentManager) {
+	variables.contentManager=arguments.contentManager;
+	return this;
+}
 
-<cffunction name="init" output="false">
+function setSettingsManager(settingsManager) {
+	variables.settingsManager=arguments.settingsManager;
+	return this;
+}
 
-	<cfset super.init(argumentCollection=arguments)>
+function setTrashManager(trashManager) {
+	variables.trashManager=arguments.trashManager;
+	return this;
+}
 
-	<cfset variables.instance.commentID="" />
-	<cfset variables.instance.contentID="" />
-	<cfset variables.instance.parentID=""/>
-	<cfset variables.instance.siteID=""/>
-	<cfset variables.instance.comments=""/>
-	<cfset variables.instance.url=""/>
-	<cfset variables.instance.name=""/>
-	<cfset variables.instance.email=""/>
-	<cfset variables.instance.entered=now()/>
-	<cfset variables.instance.subscribe=0/>
-	<cfset variables.instance.isApproved=0/>
-	<cfset variables.instance.isSpam=0/>
-	<cfset variables.instance.isDeleted=0/>
-	<cfset variables.instance.userID=""/>
-	<cfset variables.instance.path=""/>
-	<cfset variables.instance.kids=0/>
-	<cfset variables.instance.remoteID=""/>
-	<cfset variables.instance.isNew=1/>
-	<cfset variables.instance.isSpam=0/>
-	<cfset variables.instance.isDeleted=0/>
-	<cfset variables.instance.flagCount=0/>
+function setContentDAO(contentDAO) {
+	variables.contentDAO=arguments.contentDAO;
+	return this;
+}
 
-	<cfreturn this />
-</cffunction>
+function setMailer(mailer) {
+	variables.mailer=arguments.mailer;
+	return this;
+}
 
-<cffunction name="setContentManager">
-	<cfargument name="contentManager">
-	<cfset variables.contentManager=arguments.contentManager>
-	<cfreturn this>
-</cffunction>
+function setConfigBean(configBean) {
+	variables.configBean=arguments.configBean;
+	return this;
+}
 
-<cffunction name="setSettingsManager">
-	<cfargument name="settingsManager">
-	<cfset variables.settingsManager=arguments.settingsManager>
-	<cfreturn this>
-</cffunction>
+function getCommentID() output=false {
+	if ( !len(variables.instance.commentID) ) {
+		variables.instance.commentID=createUUID();
+	}
+	return variables.instance.commentID;
+}
 
-<cffunction name="setTrashManager">
-	<cfargument name="trashManager">
-	<cfset variables.trashManager=arguments.trashManager>
-	<cfreturn this>
-</cffunction>
+function setURL(String url) output=false {
+	variables.instance.url = trim(arguments.url);
+	if ( len(variables.instance.url) and
+			not listFindNoCase("http:,https:",listFirst(variables.instance.url,"//")) ) {
+		variables.instance.url = "#variables.settingsManager.getSite(variables.instance.siteID).getScheme()#://" & variables.instance.url;
+	}
+	return this;
+}
 
-<cffunction name="setContentDAO">
-	<cfargument name="contentDAO">
-	<cfset variables.contentDAO=arguments.contentDAO>
-	<cfreturn this>
-</cffunction>
+function setSubscribe(subscribe) output=false {
+	if ( isNumeric(arguments.subscribe) ) {
+		variables.instance.subscribe = arguments.subscribe;
+	}
+	return this;
+}
 
-<cffunction name="setMailer">
-	<cfargument name="mailer">
-	<cfset variables.mailer=arguments.mailer>
-	<cfreturn this>
-</cffunction>
+function setIsApproved(isApproved) output=false {
+	if ( isNumeric(arguments.isApproved) ) {
+		variables.instance.isApproved = arguments.isApproved;
+	}
+	return this;
+}
 
-<cffunction name="setConfigBean">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+function setIsSpam(isSpam) output=false {
+	if ( isNumeric(arguments.isSpam) ) {
+		variables.instance.isSpam = arguments.isSpam;
+	}
+	return this;
+}
 
-<cffunction name="getCommentID" output="false">
-	<cfif not len(variables.instance.commentID)>
-	<cfset variables.instance.commentID=createUUID() />
-	</cfif>
-	<cfreturn variables.instance.commentID />
-</cffunction>
+function setIsDeleted(isDeleted) output=false {
+	if ( isNumeric(arguments.isDeleted) ) {
+		variables.instance.isDeleted = arguments.isDeleted;
+	}
+	return this;
+}
 
-<cffunction name="setURL" output="false">
-	<cfargument name="url" type="String" />
+function setFlagCount(flagCount) output=false {
+	if ( isNumeric(arguments.flagCount) ) {
+		variables.instance.flagCount = arguments.flagCount;
+	}
+	return this;
+}
 
-	<cfset variables.instance.url = trim(arguments.url) />
+function setEntered(entered) output=false {
+	if ( isDate(arguments.entered) ) {
+		variables.instance.entered = parseDateArg(arguments.entered);
+	}
+	return this;
+}
 
-	<cfif len(variables.instance.url) and
-			not listFindNoCase("http:,https:",listFirst(variables.instance.url,"//"))>
-		<cfset variables.instance.url = "#variables.settingsManager.getSite(variables.instance.siteID).getScheme()#://" & variables.instance.url />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setKids(kids) output=false {
+	if ( isNumeric(arguments.kids) ) {
+		variables.instance.kids = arguments.kids;
+	}
+	return this;
+}
 
-<cffunction name="setSubscribe" output="false">
-	<cfargument name="subscribe" />
-	<cfif isNumeric(arguments.subscribe)>
-	<cfset variables.instance.subscribe = arguments.subscribe />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function load(commentID, remoteID) output=false {
+	loadBy(argumentCollection=arguments);
+	return this;
+}
 
-<cffunction name="setIsApproved" output="false">
-	<cfargument name="isApproved" />
-	<cfif isNumeric(arguments.isApproved)>
-	<cfset variables.instance.isApproved = arguments.isApproved />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function loadBy(commentID, remoteID) output=false {
+	var rs=getQuery(argumentCollection=arguments);
+	if ( rs.recordcount ) {
+		variables.instance.isNew=0;
+		set(rs);
+	}
+	return this;
+}
 
-<cffunction name="setIsSpam" output="false">
-	<cfargument name="isSpam" />
-	<cfif isNumeric(arguments.isSpam)>
-	<cfset variables.instance.isSpam = arguments.isSpam />
-	</cfif>
-	<cfreturn this>
-</cffunction>
 
-<cffunction name="setIsDeleted" output="false">
-	<cfargument name="isDeleted" />
-	<cfif isNumeric(arguments.isDeleted)>
-	<cfset variables.instance.isDeleted = arguments.isDeleted />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function getCrumbIterator(required sort="asc") output=false {
+	var rs=getCrumbQuery(arguments.sort);
+	var it=getBean("contentCommentIterator").init();
+	it.setQuery(rs);
+	return it;
+}
 
-<cffunction name="setFlagCount" output="false">
-	<cfargument name="flagCount" />
-	<cfif isNumeric(arguments.flagCount)>
-	<cfset variables.instance.flagCount = arguments.flagCount />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function hasParent() output=false {
+	return listLen(variables.instance.path) > 1;
+}
 
-<cffunction name="setEntered" output="false">
-	<cfargument name="entered" />
-	<cfif isDate(arguments.entered)>
-	<cfset variables.instance.entered = parseDateArg(arguments.entered) />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+struct function getAllValues() output=false {
+	return variables.instance;
+}
 
-<cffunction name="setKids" output="false">
-	<cfargument name="kids"/>
-	<cfif isNumeric(arguments.kids)>
-	<cfset variables.instance.kids = arguments.kids />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setAllValues(instance) output=false {
+	variables.instance=arguments.instance;
+	return this;
+}
 
-<cffunction name="load" output="false">
-	<cfargument name="commentID">
-	<cfargument name="remoteID">
-	<cfset loadBy(argumentCollection=arguments)>
-	<cfreturn this>
-</cffunction>
+function clone() output=false {
+	return getBean("comment").setAllValues(structCopy(getAllValues()));
+}
 
-<cffunction name="loadBy" output="false">
-	<cfargument name="commentID">
-	<cfargument name="remoteID">
-	<cfset var rs=getQuery(argumentCollection=arguments)>
-	<cfif rs.recordcount>
-		<cfset variables.instance.isNew=0/>
-		<cfset set(rs) />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function getPrimaryKey() output=false {
+	return "commentID";
+}
+
+function setCommenter() output=false {
+	var pluginEvent=createObject("component","mura.event");
+	var eventArgs=structNew();
+	var commenter=getBean('commenter');
+	eventArgs.siteID=variables.instance.siteID;
+	eventArgs.commentBean=this;
+	eventArgs.commenterBean=commenter;
+	structAppend(eventArgs, arguments);
+	pluginEvent.init(eventArgs);
+	pluginEvent.getHandler("standardSetCommenter").handle(pluginEvent);
+}
+
+function getCommenter() output=false {
+	var pluginEvent=createObject("component","mura.event");
+	var eventArgs=structNew();
+	var commenter=getBean('commenter');
+	eventArgs.siteID=variables.instance.siteID;
+	eventArgs.commentBean=this;
+	eventArgs.commenterBean=commenter;
+	structAppend(eventArgs, arguments);
+	pluginEvent.init(eventArgs);
+	pluginEvent.getHandler("standardGetCommenter").handle(pluginEvent);
+	return commenter;
+}
+</cfscript>
 
 <cffunction name="getQuery"  output="false">
 	<cfargument name="commentID">
@@ -657,66 +688,6 @@ To Unsubscribe Click Here:
 	</cfquery>
 
 	<cfreturn rsCommentCrumbData>
-</cffunction>
-
-<cffunction name="getCrumbIterator" output="false">
-	<cfargument name="sort" required="true" default="asc">
-	<cfset var rs=getCrumbQuery(arguments.sort)>
-	<cfset var it=getBean("contentCommentIterator").init()>
-	<cfset it.setQuery(rs)>
-	<cfreturn it>
-</cffunction>
-
-<cffunction name="hasParent" output="false">
-	<cfreturn listLen(variables.instance.path) gt 1>
-</cffunction>
-
-<cffunction name="getAllValues" returntype="struct" output="false">
-	<cfreturn variables.instance />
-</cffunction>
-
-<cffunction name="setAllValues" output="false">
-	<cfargument name="instance">
-	<cfset variables.instance=arguments.instance/>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="clone" output="false">
-	<cfreturn getBean("comment").setAllValues(structCopy(getAllValues()))>
-</cffunction>
-
-<cffunction name="getPrimaryKey" output="false">
-	<cfreturn "commentID">
-</cffunction>
-
-<cffunction name="setCommenter" output="false">
-	<cfset var pluginEvent=createObject("component","mura.event")>
-	<cfset var eventArgs=structNew()>
-	<cfset var commenter=getBean('commenter')>
-
-	<cfset eventArgs.siteID=variables.instance.siteID>
-	<cfset eventArgs.commentBean=this>
-	<cfset eventArgs.commenterBean=commenter>
-	<cfset structAppend(eventArgs, arguments)>
-
-	<cfset pluginEvent.init(eventArgs)>
-	<cfset pluginEvent.getHandler("standardSetCommenter").handle(pluginEvent)>
-</cffunction>
-
-<cffunction name="getCommenter" output="false">
-	<cfset var pluginEvent=createObject("component","mura.event")>
-	<cfset var eventArgs=structNew()>
-	<cfset var commenter=getBean('commenter')>
-
-	<cfset eventArgs.siteID=variables.instance.siteID>
-	<cfset eventArgs.commentBean=this>
-	<cfset eventArgs.commenterBean=commenter>
-	<cfset structAppend(eventArgs, arguments)>
-
-	<cfset pluginEvent.init(eventArgs)>
-	<cfset pluginEvent.getHandler("standardGetCommenter").handle(pluginEvent)>
-
-	<cfreturn commenter>
 </cffunction>
 
 </cfcomponent>

@@ -45,48 +45,46 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.bean" output="false" hint="This provides plugin config xml event handling registration">
+<cfproperty name="scriptID" type="string" default="" required="true">
+<cfproperty name="moduleID" type="string" default="" required="true">
+<cfproperty name="runAt" type="string" default="" required="true">
+<cfproperty name="scriptFile" type="string" default="" required="true">
+<cfproperty name="doCache" type="boolean" default="false" required="true">
 
-<cfproperty name="scriptID" type="string" default="" required="true" />
-<cfproperty name="moduleID" type="string" default="" required="true" />
-<cfproperty name="runAt" type="string" default="" required="true" />
-<cfproperty name="scriptFile" type="string" default="" required="true" />
-<cfproperty name="doCache" type="boolean" default="false" required="true" />
+<cfscript>
 
-<cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
+function init() output=false {
+	super.init(argumentCollection=arguments);
+	variables.instance.scriptID="";
+	variables.instance.moduleID="";
+	variables.instance.runat="";
+	variables.instance.scriptfile="";
+	variables.instance.docache="false";
+	return this;
+}
 
-	<cfset variables.instance.scriptID="" />
-	<cfset variables.instance.moduleID=""/>
-	<cfset variables.instance.runat=""/>
-	<cfset variables.instance.scriptfile=""/>
-	<cfset variables.instance.docache="false"/>
+function setConfigBean(configBean) output=false {
+	variables.configBean=arguments.configBean;
+	return this;
+}
 
-	<cfreturn this />
-</cffunction>
+function getScriptID() output=false {
+	if ( !len(variables.instance.scriptID) ) {
+		variables.instance.scriptID = createUUID();
+	}
+	return variables.instance.scriptID;
+}
 
-<cffunction name="setConfigBean" output="false">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+function setDoCache(String docache) output=false {
+	if ( isBoolean(arguments.docache) ) {
+		variables.instance.docache = arguments.docache;
+	}
+}
 
-<cffunction name="getScriptID" output="false">
-	<cfif not len(variables.instance.scriptID)>
-		<cfset variables.instance.scriptID = createUUID() />
-	</cfif>
-	<cfreturn variables.instance.scriptID />
-</cffunction>
-
-<cffunction name="setDoCache" output="false">
-	<cfargument name="docache" type="String" />
-	<cfif isBoolean(arguments.docache)>
-		<cfset variables.instance.docache = arguments.docache />
-	</cfif>
-</cffunction>
-
-<cffunction name="load"  output="false">
-	<cfset set(getQuery()) />
-</cffunction>
+function load() output=false {
+	set(getQuery());
+}
+</cfscript>
 
 <cffunction name="getQuery"  output="false">
 	<cfset var rs=""/>

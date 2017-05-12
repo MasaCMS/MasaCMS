@@ -45,77 +45,91 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.bean" output="false" entityName="imageSize" table="timagesizes" hint="Site custom inage size bean">
+<cfproperty name="siteID" type="string" default="" required="true">
+<cfproperty name="sizeID" type="string" default="" required="true">
+<cfproperty name="name" type="string" default="" required="true">
+<cfproperty name="height" type="string" default="AUTO" required="true">
+<cfproperty name="width" type="string" default="AUT0" required="true">
+<cfproperty name="isNew" type="numeric" default="1" required="true">
 
-<cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="sizeID" type="string" default="" required="true" />
-<cfproperty name="name" type="string" default="" required="true" />
-<cfproperty name="height" type="string" default="AUTO" required="true" />
-<cfproperty name="width" type="string" default="AUT0" required="true" />
-<cfproperty name="isNew" type="numeric" default="1" required="true" />
+<cfscript>
 
-<cffunction name="init" output="false">
+function init() output=false {
+	super.init(argumentCollection=arguments);
+	variables.instance.siteID="";
+	variables.instance.name="";
+	variables.instance.sizeID=createUUID();
+	variables.instance.width="AUTO";
+	variables.instance.height="AUTO";
+	variables.instance.isNew=1;
+	variables.primaryKey = 'sizeid';
+	variables.entityName = 'imageSize';
+	return this;
+}
 
-	<cfset super.init(argumentCollection=arguments)>
+function setConfigBean(configBean) output=false {
+	variables.configBean=arguments.configBean;
+	return this;
+}
 
-	<cfset variables.instance.siteID=""/>
-	<cfset variables.instance.name=""/>
-	<cfset variables.instance.sizeID=createUUID()/>
-	<cfset variables.instance.width="AUTO"/>
-	<cfset variables.instance.height="AUTO"/>
-	<cfset variables.instance.isNew=1/>
+function setName(name) output=false {
+	variables.instance.name=getBean('contentUtility').formatFilename(arguments.name);
+}
 
-	<cfset variables.primaryKey = 'sizeid'>
-	<cfset variables.entityName = 'imageSize'>
+function setHeight(height) output=false {
+	if ( isNumeric(arguments.height) || arguments.height == "AUTO" ) {
+		variables.instance.height=arguments.height;
+	}
+	return this;
+}
 
-	<cfreturn this>
-</cffunction>
+function setWidth(width) output=false {
+	if ( isNumeric(arguments.width) || arguments.width == "AUTO" ) {
+		variables.instance.width=arguments.width;
+	}
+	return this;
+}
 
-<cffunction name="setConfigBean" output="false">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+function loadBy(sizeID, name, siteID="#variables.instance.siteID#") output=false {
+	if ( isDefined('arguments.name') ) {
+		arguments.name=getBean('contentUtility').formatFilename(arguments.name);
+	}
+	variables.instance.isNew=1;
+	var rs=getQuery(argumentCollection=arguments);
+	if ( rs.recordcount ) {
+		set(rs);
+		variables.instance.isNew=0;
+	}
+	return this;
+}
 
-<cffunction name="setName" output="false">
-	<cfargument name="name">
-	<cfset variables.instance.name=getBean('contentUtility').formatFilename(arguments.name)>
-</cffunction>
-
-<cffunction name="setHeight" output="false">
-<cfargument name="height">
-	<cfif isNumeric(arguments.height) or arguments.height eq "AUTO">
-		<cfset variables.instance.height=arguments.height>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setWidth" output="false">
-<cfargument name="width">
-	<cfif isNumeric(arguments.width) or arguments.width eq "AUTO">
-		<cfset variables.instance.width=arguments.width>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="loadBy" output="false">
-	<cfargument name="sizeID">
-	<cfargument name="name">
-	<cfargument name="siteID" default="#variables.instance.siteID#">
-
-	<cfif isDefined('arguments.name')>
-		<cfset arguments.name=getBean('contentUtility').formatFilename(arguments.name)>
-	</cfif>
-
-	<cfset variables.instance.isNew=1/>
-	<cfset var rs=getQuery(argumentCollection=arguments)>
-
-	<cfif rs.recordcount>
-		<cfset set(rs) />
-		<cfset variables.instance.isNew=0/>
-	</cfif>
-
-	<cfreturn this>
-</cffunction>
+function parseName() output=false {
+	var param=listFirst(getValue('name'),'-');
+	if ( left(param,1) == 'H' ) {
+		param=right(param,len(param)-1);
+		if ( isNumeric(param) ) {
+			setValue('height',param);
+		}
+	} else if ( left(param,1) == 'W' ) {
+		param=right(param,len(param)-1);
+		if ( isNumeric(param) ) {
+			setValue('width',param);
+		}
+	}
+	param=listLast(getValue('name'),'-');
+	if ( left(param,1) == 'H' ) {
+		param=right(param,len(param)-1);
+		if ( isNumeric(param) ) {
+			setValue('height',param);
+		}
+	} else if ( left(param,1) == 'W' ) {
+		param=right(param,len(param)-1);
+		if ( isNumeric(param) ) {
+			setValue('width',param);
+		}
+	}
+}
+</cfscript>
 
 <cffunction name="getQuery" output="false">
 
@@ -183,32 +197,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="parseName" output="false">
-	<cfset var param=listFirst(getValue('name'),'-')>
-	<cfif left(param,1) eq 'H'>
-		<cfset param=right(param,len(param)-1)>
-		<cfif isNumeric(param)>
-			<cfset setValue('height',param)>
-		</cfif>
-	<cfelseif left(param,1) eq 'W'>
-		<cfset param=right(param,len(param)-1)>
-		<cfif isNumeric(param)>
-			<cfset setValue('width',param)>
-		</cfif>
-	</cfif>
-
-	<cfset param=listLast(getValue('name'),'-')>
-
-	<cfif left(param,1) eq 'H'>
-		<cfset param=right(param,len(param)-1)>
-		<cfif isNumeric(param)>
-			<cfset setValue('height',param)>
-		</cfif>
-	<cfelseif left(param,1) eq 'W'>
-		<cfset param=right(param,len(param)-1)>
-		<cfif isNumeric(param)>
-			<cfset setValue('width',param)>
-		</cfif>
-	</cfif>
-</cffunction>
 </cfcomponent>

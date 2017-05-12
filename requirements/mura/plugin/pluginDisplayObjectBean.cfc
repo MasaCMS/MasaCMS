@@ -45,140 +45,131 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.bean" output="false" hint="This provides CRUD functionality to legacy config.xml display objects">
+<cfproperty name="objectID" type="string" default="" required="true">
+<cfproperty name="moduleID" type="string" default="" required="true">
+<cfproperty name="name" type="string" default="" required="true">
+<cfproperty name="location" type="string" default="" required="true">
+<cfproperty name="displayMethod" type="string" default="" required="true">
+<cfproperty name="displayMethodFile" type="string" default="" required="true">
+<cfproperty name="doCache" type="string" default="false" required="true">
+<cfproperty name="configuratorInit" type="string" default="false" required="true">
+<cfproperty name="configuratorJS" type="string" default="false" required="true">
 
-<cfproperty name="objectID" type="string" default="" required="true" />
-<cfproperty name="moduleID" type="string" default="" required="true" />
-<cfproperty name="name" type="string" default="" required="true" />
-<cfproperty name="location" type="string" default="" required="true" />
-<cfproperty name="displayMethod" type="string" default="" required="true" />
-<cfproperty name="displayMethodFile" type="string" default="" required="true" />
-<cfproperty name="doCache" type="string" default="false" required="true" />
-<cfproperty name="configuratorInit" type="string" default="false" required="true" />
-<cfproperty name="configuratorJS" type="string" default="false" required="true" />
+<cfscript>
 
-<cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
+function init() output=false {
+	super.init(argumentCollection=arguments);
+	variables.instance.objectID="";
+	variables.instance.moduleID="";
+	variables.instance.name="";
+	variables.instance.location="global";
+	variables.instance.displayMethod="";
+	variables.instance.displayObjectFile="";
+	variables.instance.docache="false";
+	variables.instance.configuratorInit="";
+	variables.instance.configuratorJS="";
+	return this;
+}
 
-	<cfset variables.instance.objectID="" />
-	<cfset variables.instance.moduleID=""/>
-	<cfset variables.instance.name=""/>
-	<cfset variables.instance.location="global"/>
-	<cfset variables.instance.displayMethod=""/>
-	<cfset variables.instance.displayObjectFile=""/>
-	<cfset variables.instance.docache="false"/>
-	<cfset variables.instance.configuratorInit=""/>
-	<cfset variables.instance.configuratorJS=""/>
+function setConfigBean(configBean) output=false {
+	variables.configBean=arguments.configBean;
+	return this;
+}
 
-	<cfreturn this />
-</cffunction>
+function getObjectID() output=false {
+	if ( !len(variables.instance.objectID) ) {
+		variables.instance.objectID = createUUID();
+	}
+	return variables.instance.objectID;
+}
 
-<cffunction name="setConfigBean" output="false">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+function setObjectID(String objectID) output=false {
+	variables.instance.objectID = trim(arguments.objectID);
+	return this;
+}
 
-<cffunction name="getObjectID" output="false">
-	<cfif not len(variables.instance.objectID)>
-		<cfset variables.instance.objectID = createUUID() />
-	</cfif>
-	<cfreturn variables.instance.objectID />
-</cffunction>
+function getModuleID() output=false {
+	return variables.instance.moduleID;
+}
 
-<cffunction name="setObjectID" output="false">
-	<cfargument name="objectID" type="String" />
-	<cfset variables.instance.objectID = trim(arguments.objectID) />
-	<cfreturn this>
-</cffunction>
+function setModuleID(String moduleID) output=false {
+	variables.instance.moduleID = trim(arguments.moduleID);
+	return this;
+}
 
-<cffunction name="getModuleID" output="false">
-	<cfreturn variables.instance.moduleID />
-</cffunction>
+function getName() output=false {
+	return variables.instance.name;
+}
 
-<cffunction name="setModuleID" output="false">
-	<cfargument name="moduleID" type="String" />
-	<cfset variables.instance.moduleID = trim(arguments.moduleID) />
-	<cfreturn this>
-</cffunction>
+function setName(String name) output=false {
+	variables.instance.name = trim(arguments.name);
+	return this;
+}
 
-<cffunction name="getName" output="false">
-	<cfreturn variables.instance.name />
-</cffunction>
+function getDisplayObjectFile() output=false {
+	return variables.instance.displayObjectFile;
+}
 
-<cffunction name="setName" output="false">
-	<cfargument name="name" type="String" />
-	<cfset variables.instance.name = trim(arguments.name) />
-	<cfreturn this>
-</cffunction>
+function setDisplayObjectFile(String displayObjectFile) output=false {
+	variables.instance.displayObjectFile = trim(arguments.displayObjectFile);
+	return this;
+}
 
-<cffunction name="getDisplayObjectFile" output="false">
-	<cfreturn variables.instance.displayObjectFile />
-</cffunction>
+function getDisplayMethod() output=false {
+	return variables.instance.displayMethod;
+}
 
-<cffunction name="setDisplayObjectFile" output="false">
-	<cfargument name="displayObjectFile" type="String" />
-	<cfset variables.instance.displayObjectFile = trim(arguments.displayObjectFile) />
-	<cfreturn this>
-</cffunction>
+function setDisplayMethod(String displayMethod) output=false {
+	variables.instance.displayMethod = trim(arguments.displayMethod);
+	return this;
+}
 
-<cffunction name="getDisplayMethod" output="false">
-	<cfreturn variables.instance.displayMethod />
-</cffunction>
+function getLocation() output=false {
+	return variables.instance.location;
+}
 
-<cffunction name="setDisplayMethod" output="false">
-	<cfargument name="displayMethod" type="String" />
-	<cfset variables.instance.displayMethod = trim(arguments.displayMethod) />
-	<cfreturn this>
-</cffunction>
+function setLocation(String location) output=false {
+	if ( len(arguments.location) ) {
+		variables.instance.location = trim(arguments.location);
+	}
+	return this;
+}
 
-<cffunction name="getLocation" output="false">
-	<cfreturn variables.instance.location />
-</cffunction>
+function getDoCache() output=false {
+	return variables.instance.docache;
+}
 
-<cffunction name="setLocation" output="false">
-	<cfargument name="location" type="String" />
-	<cfif len(arguments.location)>
-	<cfset variables.instance.location = trim(arguments.location) />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setDoCache(String docache) output=false {
+	if ( isBoolean(arguments.docache) ) {
+		variables.instance.docache = arguments.docache;
+	}
+	return this;
+}
 
-<cffunction name="getDoCache" output="false">
-	<cfreturn variables.instance.docache />
-</cffunction>
+function getConfiguratorInit() output=false {
+	return variables.instance.configuratorInit;
+}
 
-<cffunction name="setDoCache" output="false">
-	<cfargument name="docache" type="String" />
-	<cfif isBoolean(arguments.docache)>
-		<cfset variables.instance.docache = arguments.docache />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setConfiguratorInit(String configuratorInit) output=false {
+	variables.instance.configuratorInit = trim(arguments.configuratorInit);
+	return this;
+}
 
-<cffunction name="getConfiguratorInit" output="false">
-	<cfreturn variables.instance.configuratorInit />
-</cffunction>
+function getconfiguratorJS() output=false {
+	return variables.instance.configuratorJS;
+}
 
-<cffunction name="setConfiguratorInit" output="false">
-	<cfargument name="configuratorInit" type="String" />
-	<cfset variables.instance.configuratorInit = trim(arguments.configuratorInit) />
-	<cfreturn this>
-</cffunction>
+function setconfiguratorJS(String configuratorJS) output=false {
+	variables.instance.configuratorJS = trim(arguments.configuratorJS);
+	return this;
+}
 
-<cffunction name="getconfiguratorJS" output="false">
-	<cfreturn variables.instance.configuratorJS />
-</cffunction>
+function load() output=false {
+	set(getQuery());
+	return this;
+}
+</cfscript>
 
-<cffunction name="setconfiguratorJS" output="false">
-	<cfargument name="configuratorJS" type="String" />
-	<cfset variables.instance.configuratorJS = trim(arguments.configuratorJS) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="load"  output="false">
-	<cfset set(getQuery()) />
-	<cfreturn this>
-</cffunction>
 
 <cffunction name="loadByName"  output="false">
 	<cfset var rs=""/>

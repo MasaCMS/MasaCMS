@@ -45,130 +45,119 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.bean" entityName="stats" table="tcontentstats" output="false" hint="This provides content stats functionality">
+<cfproperty name="content" fieldtype="many-to-one" fkcolumn="contentid" cfc="content">
+<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteid">
+<cfproperty name="views" type="numeric" default="0" required="true">
+<cfproperty name="rating" type="numeric" default="0" required="true">
+<cfproperty name="totalvotes" type="numeric" default="0" required="true">
+<cfproperty name="upvotes" type="numeric" default="0" required="true">
+<cfproperty name="downvotes" type="numeric" default="0" required="true">
+<cfproperty name="comments" type="numeric" default="0" required="true">
+<cfproperty name="disablecomments" type="numeric" default="0" required="true">
+<cfproperty name="majorversion" type="numeric" default="0" required="true">
+<cfproperty name="minorversion" type="numeric" default="0" required="true">
+<cfproperty name="lockid" type="string" default="" required="true">
+<cfproperty name="locktype" type="string" default="" required="true">
 
-<cfproperty name="content" fieldtype="many-to-one" fkcolumn="contentid" cfc="content"/>
-<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteid" />
-<cfproperty name="views" type="numeric" default="0" required="true" />
-<cfproperty name="rating" type="numeric" default="0" required="true" />
-<cfproperty name="totalvotes" type="numeric" default="0" required="true" />
-<cfproperty name="upvotes" type="numeric" default="0" required="true" />
-<cfproperty name="downvotes" type="numeric" default="0" required="true" />
-<cfproperty name="comments" type="numeric" default="0" required="true" />
-<cfproperty name="disablecomments" type="numeric" default="0" required="true" />
-<cfproperty name="majorversion" type="numeric" default="0" required="true" />
-<cfproperty name="minorversion" type="numeric" default="0" required="true" />
-<cfproperty name="lockid" type="string" default="" required="true" />
-<cfproperty name="locktype" type="string" default="" required="true" />
+<cfscript>
+function init() output=false {
+variables.instance.contentID="";
+variables.instance.siteID="";
+variables.instance.views=0;
+variables.instance.rating=0;
+variables.instance.totalVotes=0;
+variables.instance.upVotes=0;
+variables.instance.downVotes=0;
+variables.instance.comments=0;
+variables.instance.disableComments=0;
+variables.instance.majorVersion=0;
+variables.instance.minorVersion=0;
+variables.instance.lockID="";
+variables.instance.lockType="";
+variables.instance.disableComments=0;
+return this;
+}
 
-<cffunction name="init" output="false">
+function setConfigBean(configBean) {
+variables.configBean=arguments.configBean;
+return this;
+}
 
-	<cfset variables.instance.contentID="" />
-	<cfset variables.instance.siteID=""/>
-	<cfset variables.instance.views=0/>
-	<cfset variables.instance.rating=0/>
-	<cfset variables.instance.totalVotes=0/>
-	<cfset variables.instance.upVotes=0/>
-	<cfset variables.instance.downVotes=0/>
-	<cfset variables.instance.comments=0/>
-	<cfset variables.instance.disableComments=0/>
-	<cfset variables.instance.majorVersion=0/>
-	<cfset variables.instance.minorVersion=0/>
-	<cfset variables.instance.lockID=""/>
-	<cfset variables.instance.lockType=""/>
-	<cfset variables.instance.disableComments=0>
+function setViews(views) output=false {
+if ( isNumeric(arguments.views) ) {
+	variables.instance.views = arguments.views;
+}
+return this;
+}
 
-	<cfreturn this />
-</cffunction>
+function getRating() output=false {
+return variables.instance.rating;
+}
 
-<cffunction name="setConfigBean">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
+function setRating(rating) output=false {
+if ( isNumeric(arguments.rating) ) {
+	variables.instance.rating = arguments.rating;
+}
+return this;
+}
 
-<cffunction name="setViews" output="false">
-	<cfargument name="views" />
-	<cfif isNumeric(arguments.views)>
-	<cfset variables.instance.views = arguments.views />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setMajorVersion(majorVersion) output=false {
+if ( isNumeric(arguments.majorVersion) ) {
+	variables.instance.majorVersion = arguments.majorVersion;
+}
+return this;
+}
 
-<cffunction name="getRating" output="false">
-	<cfreturn variables.instance.rating />
-</cffunction>
+function setMinorVersion(minorVersion) output=false {
+if ( isNumeric(arguments.minorVersion) ) {
+	variables.instance.minorVersion = arguments.minorVersion;
+}
+return this;
+}
 
-<cffunction name="setRating" output="false">
-	<cfargument name="rating" />
-	<cfif isNumeric(arguments.rating)>
-	<cfset variables.instance.rating = arguments.rating />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setTotalVotes(TotalVotes) output=false {
+if ( isNumeric(arguments.TotalVotes) ) {
+	variables.instance.TotalVotes = arguments.TotalVotes;
+}
+return this;
+}
 
-<cffunction name="setMajorVersion" output="false">
-	<cfargument name="majorVersion" />
-	<cfif isNumeric(arguments.majorVersion)>
-	<cfset variables.instance.majorVersion = arguments.majorVersion />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setUpVotes(UpVotes) output=false {
+if ( isNumeric(arguments.UpVotes) ) {
+	variables.instance.UpVotes = arguments.UpVotes;
+}
+return this;
+}
 
-<cffunction name="setMinorVersion" output="false">
-	<cfargument name="minorVersion" />
-	<cfif isNumeric(arguments.minorVersion)>
-	<cfset variables.instance.minorVersion = arguments.minorVersion />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setDownVotes(DownVotes) output=false {
+if ( isNumeric(arguments.DownVotes) ) {
+	variables.instance.DownVotes = arguments.DownVotes;
+}
+return this;
+}
 
-<cffunction name="setTotalVotes" output="false">
-	<cfargument name="TotalVotes" />
-	<cfif isNumeric(arguments.TotalVotes)>
-	<cfset variables.instance.TotalVotes = arguments.TotalVotes />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setComments(Comments) output=false {
+if ( isNumeric(arguments.Comments) ) {
+	variables.instance.Comments = arguments.Comments;
+}
+return this;
+}
 
-<cffunction name="setUpVotes" output="false">
-	<cfargument name="UpVotes" />
-	<cfif isNumeric(arguments.UpVotes)>
-	<cfset variables.instance.UpVotes = arguments.UpVotes />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function setDisableComments(disableComments) output=false {
+if ( isNumeric(arguments.disableComments) ) {
+	variables.instance.disableComments = arguments.disableComments;
+}
+return this;
+}
 
-<cffunction name="setDownVotes" output="false">
-	<cfargument name="DownVotes" />
-	<cfif isNumeric(arguments.DownVotes)>
-	<cfset variables.instance.DownVotes = arguments.DownVotes />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setComments" output="false">
-	<cfargument name="Comments" />
-	<cfif isNumeric(arguments.Comments)>
-	<cfset variables.instance.Comments = arguments.Comments />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setDisableComments" output="false">
-	<cfargument name="disableComments" />
-	<cfif isNumeric(arguments.disableComments)>
-	<cfset variables.instance.disableComments = arguments.disableComments />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="load"  output="false">
-	<cfset var rs=getQuery()>
-	<cfif rs.recordcount>
-		<cfset set(rs) />
-	</cfif>
-	<cfreturn this>
-</cffunction>
+function load() output=false {
+var rs=getQuery();
+if ( rs.recordcount ) {
+	set(rs);
+}
+return this;
+}
+</cfscript>
 
 <cffunction name="getQuery"  output="false">
 	<cfset var rs=""/>
