@@ -223,7 +223,7 @@
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/contentRenderer.template.cfc", destination="#basedir#/contentRenderer.cfc")>
 	</cfif>
 
-	<cfif not fileExists("#basedir#/Application.cfc")>
+	<cfif listLast(variables.configBean.getSiteDir(),'/\') neq 'sites' and  not fileExists("#basedir#/Application.cfc")>
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/application.template.cfc", destination="#basedir#/Application.cfc")>
 	</cfif>
 
