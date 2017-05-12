@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 
 <!--- run save process --->
-<cfif isDefined( "FORM.setupSubmitButton" )>
 
+<cfif isDefined( "FORM.setupSubmitButton" )>
   <!--- save settings --->
   <cfset validSections = "production,settings" />
   <!--- ************************ --->
