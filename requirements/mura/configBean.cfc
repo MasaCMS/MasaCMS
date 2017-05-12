@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides access the global configuration">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.instance.version="7.0"/>
+<cfset variables.instance.version="7.1"/>
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap="muraWRM"/>
