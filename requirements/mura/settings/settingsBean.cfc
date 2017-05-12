@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,1975 +43,1710 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="mura.bean.beanExtendable" entityName="site" table="tsettings" output="false" hint="Site settings bean">
-
-<cfproperty name="siteID" fieldtype="id" type="string" default="" required="true" />
-<cfproperty name="site" type="string" default=""/>
-<cfproperty name="tagLine" type="string" default=""/>
-<cfproperty name="pageLimit" type="string" default="1000" required="true" />
-<cfproperty name="locking" type="string" default="none" required="true" />
-<cfproperty name="domain" type="string" default=""/>
-<cfproperty name="domainAlias" type="string" default=""/>
-<cfproperty name="enforcePrimaryDomain" type="int" default="0" required="true" />
-<cfproperty name="contact" type="string" default=""/>
-<cfproperty name="mailServerIP" type="string" default=""/>
-<cfproperty name="mailServerSMTPPort" type="string" default="25" required="true" />
-<cfproperty name="mailServerPOPPort" type="string" default="110" required="true" />
-<cfproperty name="mailserverTLS" type="string" default="false" required="true" />
-<cfproperty name="mailserverSSL" type="string" default="false" required="true" />
-<cfproperty name="mailServerUsername" type="string" default=""/>
-<cfproperty name="mailServerUsernameEmail" type="string" default=""/>
-<cfproperty name="mailServerPassword" type="string" default=""/>
-<cfproperty name="useDefaultSMTPServer" type="numeric" default="1" required="true" />
-<cfproperty name="EmailBroadcaster" type="numeric" default="0" required="false" />
-<cfproperty name="EmailBroadcasterLimit" type="numeric" default="0" required="true" />
-<cfproperty name="extranet" type="numeric" default="1" required="true" />
-<cfproperty name="extranetSSL" type="numeric" default="0" required="true" hint="deprecated"/>
-<cfproperty name="cache" type="numeric" default="0" required="true" />
-<cfproperty name="cacheCapacity" type="numeric" default="0" required="true" />
-<cfproperty name="cacheFreeMemoryThreshold" type="numeric" default="60" required="true" />
-<cfproperty name="viewDepth" type="numeric" default="1" required="true" />
-<cfproperty name="nextN" type="numeric" default="20" required="true" />
-<cfproperty name="dataCollection" type="numeric" default="1" required="true" />
-<cfproperty name="columnCount" type="numeric" default="3" required="true" />
-<cfproperty name="columnNames" type="string" default="Left Column^Main Content^Right Column" required="true" />
-<cfproperty name="ExtranetPublicReg" type="numeric" default="0" required="true" />
-<cfproperty name="primaryColumn" type="numeric" default="2" required="true" />
-<cfproperty name="contactName" type="string" default=""/>
-<cfproperty name="contactAddress" type="string" default=""/>
-<cfproperty name="contactCity" type="string" default=""/>
-<cfproperty name="contactState" type="string" default=""/>
-<cfproperty name="contactZip" type="string" default=""/>
-<cfproperty name="contactEmail" type="string" default=""/>
-<cfproperty name="contactPhone" type="string" default=""/>
-<cfproperty name="publicUserPoolID" type="string" default=""/>
-<cfproperty name="privateUserPoolID" type="string" default=""/>
-<cfproperty name="advertiserUserPoolID" type="string" default=""/>
-<cfproperty name="displayPoolID" type="string" default=""/>
-<cfproperty name="contentPoolID" type="string" default=""/>
-<cfproperty name="categoryPoolID" type="string" default=""/>
-<cfproperty name="filePoolID" type="string" default=""/>
-<cfproperty name="placeholderImgID" type="string" default=""/>
-<cfproperty name="feedManager" type="numeric" default="1" required="true" />
-<cfproperty name="largeImageHeight" type="string" default="AUTO" required="true" />
-<cfproperty name="largeImageWidth" type="numeric" default="600" required="true" />
-<cfproperty name="smallImageHeight" type="string" default="80" required="true" />
-<cfproperty name="smallImageWidth" type="numeric" default="80" required="true" />
-<cfproperty name="mediumImageHeight" type="string" default="180" required="true" />
-<cfproperty name="mediumImageWidth" type="numeric" default="180" required="true" />
-<cfproperty name="sendLoginScript" type="string" default=""/>
-<cfproperty name="sendAuthCodeScript" type="string" default=""/>
-<cfproperty name="mailingListConfirmScript" type="string" default=""/>
-<cfproperty name="reminderScript" type="string" default=""/>
-<cfproperty name="ExtranetPublicRegNotify" type="string" default=""/>
-<cfproperty name="exportLocation" type="string" default=""/>
-<cfproperty name="loginURL" type="string" default=""/>
-<cfproperty name="editProfileURL" type="string" default=""/>
-<cfproperty name="commentApprovalDefault" type="numeric" default="1" required="true" />
-<cfproperty name="display" type="numeric" default="1" required="true" />
-<cfproperty name="lastDeployment" type="date" default=""/>
-<cfproperty name="accountActivationScript" type="string" default=""/>
-<cfproperty name="googleAPIKey" type="string" default=""/>
-<cfproperty name="siteLocale" type="string" default=""/>
-<cfproperty name="hasChangesets" type="numeric" default="1" required="true" />
-<cfproperty name="theme" type="string" default=""/>
-<cfproperty name="javaLocale" type="string" default=""/>
-<cfproperty name="orderno" type="numeric" default="0" required="true" />
-<cfproperty name="enforceChangesets" type="numeric" default="0" required="true" />
-<cfproperty name="contentPendingScript" type="string" default=""/>
-<cfproperty name="contentApprovalScript" type="string" default=""/>
-<cfproperty name="contentRejectionScript" type="string" default=""/>
-<cfproperty name="contentCanceledScript" type="string" default=""/>
-<cfproperty name="enableLockdown" type="string" default="" />
-<cfproperty name="customTagGroups" type="string" default="" />
-<cfproperty name="hasComments" type="numeric" default="1" required="true" />
-<cfproperty name="hasLockableNodes" type="numeric" default="0" required="true" />
-<cfproperty name="reCAPTCHASiteKey" type="string" default="" />
-<cfproperty name="reCAPTCHASecret" type="string" default="" />
-<cfproperty name="reCAPTCHALanguage" type="string" default="en" />
-<cfproperty name="JSONApi" type="numeric" default="0" />
-<cfproperty name="useSSL" type="numeric" default="0" />
-<cfproperty name="isRemote" type="numeric" default="0" />
-<cfproperty name="RemoteContext" type="string" default="" />
-<cfproperty name="RemotePort" type="numeric" default="0" />
-<cfproperty name="resourceSSL" type="numeric" default="0" />
-<cfproperty name="resourceDomain" type="string" default="" />
-<cfproperty name="showDashboard" type="numeric" default="0" />
-
-<cfset variables.primaryKey = 'siteid'>
-<cfset variables.entityName = 'site'>
-<cfset variables.instanceName= 'site'>
-
-<cffunction name="init" output="false">
-
-	<cfset super.init(argumentCollection=arguments)>
-
-	<cfset variables.instance.SiteID=""/>
-	<cfset variables.instance.Site=""/>
-	<cfset variables.instance.TagLine=""/>
-	<cfset variables.instance.pageLimit=1000/>
-	<cfset variables.instance.Locking="None"/>
-	<cfset variables.instance.Domain=""/>
-	<cfset variables.instance.DomainAlias="">
-	<cfset variables.instance.enforcePrimaryDomain=0>
-	<cfset variables.instance.Contact=""/>
-	<cfset variables.instance.MailServerIP=""/>
-	<cfset variables.instance.MailServerSMTPPort="25"/>
-	<cfset variables.instance.MailServerPOPPort="110"/>
-	<cfset variables.instance.MailServerTLS="false"/>
-	<cfset variables.instance.MailServerSSL="false" />
-	<cfset variables.instance.MailServerUsername=""/>
-	<cfset variables.instance.MailServerUsernameEmail=""/>
-	<cfset variables.instance.MailServerPassword=""/>
-	<cfset variables.instance.useDefaultSMTPServer=1/>
-	<cfset variables.instance.EmailBroadcaster=0/>
-	<cfset variables.instance.EmailBroadcasterLimit=0/>
-	<cfset variables.instance.Extranet=1/>
-	<cfset variables.instance.ExtranetSSL=0/>
-	<cfset variables.instance.cache=0/>
-	<cfset variables.instance.cacheFactories=structNew()/>
-	<cfset variables.instance.cacheCapacity=0/>
-	<cfset variables.instance.cacheFreeMemoryThreshold=60/>
-	<cfset variables.instance.ViewDepth=1/>
-	<cfset variables.instance.nextN=20/>
-	<cfset variables.instance.DataCollection=1/>
-	<cfset variables.instance.ColumnCount=3/>
-	<cfset variables.instance.ColumnNames="Left Column^Main Content^Right Column"/>
-	<cfset variables.instance.ExtranetPublicReg=0/>
-	<cfset variables.instance.PrimaryColumn=2/>
-	<cfset variables.instance.PublicSubmission=0/>
-	<cfset variables.instance.adManager=0/>
-	<cfset variables.instance.ContactName=""/>
-	<cfset variables.instance.ContactAddress=""/>
-	<cfset variables.instance.ContactCity=""/>
-	<cfset variables.instance.ContactState=""/>
-	<cfset variables.instance.ContactZip=""/>
-	<cfset variables.instance.ContactEmail=""/>
-	<cfset variables.instance.ContactPhone=""/>
-	<cfset variables.instance.PublicUserPoolID=""/>
-	<cfset variables.instance.PrivateUserPoolID=""/>
-	<cfset variables.instance.AdvertiserUserPoolID=""/>
-	<cfset variables.instance.DisplayPoolID=""/>
-	<cfset variables.instance.ContentPoolID=""/>
-	<cfset variables.instance.CategoryPoolID=""/>
-	<cfset variables.instance.FilePoolID=""/>
-	<cfset variables.instance.placeholderImgID="">
-	<cfset variables.instance.feedManager=1/>
-	<cfset variables.instance.largeImageHeight='AUTO'/>
-	<cfset variables.instance.largeImageWidth='600'/>
-	<cfset variables.instance.smallImageHeight='80'/>
-	<cfset variables.instance.smallImageWidth='80'/>
-	<cfset variables.instance.mediumImageHeight='180'/>
-	<cfset variables.instance.mediumImageWidth='180'/>
-	<cfset variables.instance.sendLoginScript=""/>
-	<cfset variables.instance.sendAuthCodeScript=""/>
-	<cfset variables.instance.mailingListConfirmScript=""/>
-	<cfset variables.instance.publicSubmissionApprovalScript=""/>
-	<cfset variables.instance.reminderScript=""/>
-	<cfset variables.instance.ExtranetPublicRegNotify=""/>
-	<cfset variables.instance.exportLocation=""/>
-	<cfset variables.instance.loginURL=""/>
-	<cfset variables.instance.editProfileURL=""/>
-	<cfset variables.instance.commentApprovalDefault=1/>
-	<cfset variables.instance.deploy=1/>
-	<cfset variables.instance.lastDeployment=""/>
-	<cfset variables.instance.accountActivationScript=""/>
-	<cfset variables.instance.googleAPIKey=""/>
-	<cfset variables.instance.siteLocale=""/>
-	<cfset variables.instance.rbFactory=""/>
-	<cfset variables.instance.javaLocale=""/>
-	<cfset variables.instance.jsDateKey=""/>
-	<cfset variables.instance.jsDateKeyObjInc=""/>
-	<cfset variables.instance.theme=""/>
-	<cfset variables.instance.contentRenderer=""/>
-	<cfset variables.instance.themeRenderer=""/>
-	<cfset variables.instance.hasChangesets=1/>
-	<cfset variables.instance.type="Site"/>
-	<cfset variables.instance.subtype="Default"/>
-	<cfset variables.instance.baseID=createUUID()/>
-	<cfset variables.instance.orderno=0/>
-	<cfset variables.instance.enforceChangesets=0/>
-	<cfset variables.instance.contentPendingScript=""/>
-	<cfset variables.instance.contentApprovalScript=""/>
-	<cfset variables.instance.contentRejectionScript=""/>
-	<cfset variables.instance.contentCanceledScript=""/>
-	<cfset variables.instance.enableLockdown=""/>
-	<cfset variables.instance.customTagGroups=""/>
-	<cfset variables.instance.hasSharedFilePool=""/>
-	<cfset variables.instance.hasComments=1/>
-	<cfset variables.instance.hasLockableNodes=0/>
-	<cfset variables.instance.reCAPTCHASiteKey=""/>
-	<cfset variables.instance.reCAPTCHASecret=""/>
-	<cfset variables.instance.reCAPTCHALanguage="en"/>
-	<cfset variables.instance.JSONApi=0/>
-	<cfset variables.instance.useSSL=0/>
-	<cfset variables.instance.isRemote=0/>
-	<cfset variables.instance.RemoteContext=""/>
-	<cfset variables.instance.RemotePort=80/>
-	<cfset variables.instance.resourceSSL=0/>
-	<cfset variables.instance.resourceDomain=""/>
-	<cfset variables.instance.contentTypeFilePathLookup={}>
-	<cfset variables.instance.contentTypeLoopUpArray=[]>
-	<cfset variables.instance.displayObjectLookup={}/>
-	<cfset variables.instance.displayObjectFilePathLookup={}/>
-	<cfset variables.instance.displayObjectLoopUpArray=[]>
-	<cfset variables.instance.showDashboard=0/>
-	<cfset variables.instance.themeLookup={}/>
-
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="validate" output="false">
-	<cfset variables.instance.errors=structnew() />
-
-	<cfif variables.instance.siteID eq "">
-		<cfset variables.instance.errors.siteid="The 'SiteID' variable is required." />
-	</cfif>
-
-	<cfif variables.instance.siteID eq "admin" or variables.instance.siteID eq "tasks">
-		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
-	</cfif>
-
-	<!---
-	<cfif not getBean('utility').isValidCFVariableName(variables.instance.siteID)>
-		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
-	</cfif>
-	--->
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="set" output="false">
-	<cfargument name="property" required="true">
-    <cfargument name="propertyValue">
-
-    <cfif not isDefined('arguments.config')>
-	    <cfif isSimpleValue(arguments.property)>
-	      <cfreturn setValue(argumentCollection=arguments)>
-	    </cfif>
-
-	    <cfset arguments.data=arguments.property>
-    </cfif>
-
-	<cfset var prop="">
-	<cfif isQuery(arguments.data) and arguments.data.recordcount>
-		<cfloop list="#arguments.data.columnlist#" index="prop">
-			<cfset setValue(prop,arguments.data[prop][1]) />
-		</cfloop>
-
-	<cfelseif isStruct(arguments.data)>
-		<cfloop collection="#arguments.data#" item="prop">
-			<cfset setValue(prop,arguments.data[prop]) />
-		</cfloop>
-
-	</cfif>
-
-	<cfif variables.instance.privateUserPoolID eq ''>
-		<cfset variables.instance.privateUserPoolID=variables.instance.siteID />
-	</cfif>
-
-	<cfif variables.instance.publicUserPoolID eq ''>
-		<cfset variables.instance.publicUserPoolID=variables.instance.siteID />
-	</cfif>
-
-	<cfif variables.instance.advertiserUserPoolID eq ''>
-		<cfset variables.instance.advertiserUserPoolID=variables.instance.siteID />
-	</cfif>
-
-	<cfif variables.instance.displayPoolID eq ''>
-		<cfset variables.instance.displayPoolID=variables.instance.siteID />
-	</cfif>
-
-	<cfif variables.instance.filePoolID eq ''>
-		<cfset variables.instance.filePoolID=variables.instance.siteID />
-	</cfif>
-
-	<cfif variables.instance.categoryPoolID eq ''>
-		<cfset variables.instance.categoryPoolID=variables.instance.siteID />
-	</cfif>
-
-	<cfif variables.instance.contentPoolID eq ''>
-		<cfset variables.instance.contentPoolID=variables.instance.siteID />
-	</cfif>
-
-	<cfreturn this>
- </cffunction>
-
-<cffunction name="setConfigBean" output="false">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setBaseID" output="false">
-	<cfargument name="baseID">
-	<cfif len(arguments.baseID)>
-		<cfset variables.instance.baseID=arguments.baseID>
-	</cfif>
-</cffunction>
-
-<cffunction name="getExtendBaseID" output="false">
-	<cfreturn variables.instance.baseID>
-</cffunction>
-
-<cffunction name="setTheme" output="false">
-	<cfargument name="theme">
-	<cfif arguments.theme neq variables.instance.theme>
-		<cfset variables.instance.theme=arguments.theme>
-	</cfif>
-</cffunction>
-
-<cffunction name="getDomain" output="false">
-	<cfargument name="mode" type="String" required="true" default="" />
-	<cfset var temp="">
-
-	<cfif arguments.mode eq 'preview'>
-		<cfif len(request.muraPreviewDomain)>
-			<cfreturn request.muraPreviewDomain />
-		<cfelse>
-			<cfreturn variables.instance.Domain />
-		</cfif>
-	<cfelse>
-		<cfreturn variables.instance.Domain />
-	</cfif>
-</cffunction>
-
-<cffunction name="setEnforcePrimaryDomain" output="false">
-	<cfargument name="enforcePrimaryDomain" />
-	<cfif isNumeric(arguments.enforcePrimaryDomain)>
-	<cfset variables.instance.enforcePrimaryDomain = arguments.enforcePrimaryDomain />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getUseSSL" output="false">
-	<cfif variables.instance.useSSL or variables.instance.extranetSSL>
-		<cfreturn 1>
-	<cfelse>
-		<cfreturn 0>
-	</cfif>
-</cffunction>
-
-<cffunction name="setEnforceChangesets" output="false">
-	<cfargument name="enforceChangesets" />
-	<cfif isNumeric(arguments.enforceChangesets)>
-		<cfset variables.instance.enforceChangesets = arguments.enforceChangesets />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setHasFeedManager" output="false">
-	<cfargument name="feedManager" />
-	<cfset variables.instance.feedManager=arguments.feedManager>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getHasFeedManager" output="false">
-	<cfreturn variables.instance.feedManager>
-</cffunction>
-
-<cffunction name="setExportLocation" output="false">
-	<cfargument name="ExportLocation" type="String" />
-	<cfif arguments.ExportLocation neq "export1">
-	<cfset variables.instance.ExportLocation = arguments.ExportLocation />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDataCollection" output="false">
-	<cfif not variables.configBean.getDataCollection()>
-		<cfreturn 0>
-	<cfelse>
-		<cfreturn variables.instance.dataCollection>
-	</cfif>
-</cffunction>
-
-<cffunction name="getAdManager" output="false">
-	<cfif not variables.configBean.getAdManager()>
-		<cfreturn 0>
-	<cfelse>
-		<cfreturn variables.instance.adManager>
-	</cfif>
-</cffunction>
-
-<cffunction name="getEmailBroadcaster" output="false">
-	<cfif not variables.configBean.getEmailBroadcaster()>
-		<cfreturn 0>
-	<cfelse>
-		<cfreturn variables.instance.EmailBroadcaster>
-	</cfif>
-</cffunction>
-
-<cffunction name="setMailServerUsernameEmail" output="false">
-	<cfargument name="MailServerUsernameEmail" type="String" />
-
-	<cfif find("@",arguments.MailServerUsernameEmail)>
-		<cfset variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail />
-	<cfelseif find("+",arguments.MailServerUsernameEmail)>
-			<cfset variables.instance.MailServerUsernameEmail=replace(arguments.MailServerUsernameEmail,"+","@") />
-	<cfelseif len(arguments.MailServerUsernameEmail)>
-		<cfset variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail & "@" & listRest(variables.instance.MailServerIP,".") />
-	<cfelse>
-		<cfset variables.instance.MailServerUsernameEmail=variables.instance.contact />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getMailServerUsername" output="false">
-	<cfargument name="forLogin" default="false" required="true">
-	<cfif not arguments.forLogin or len(variables.instance.mailServerPassword)>
-		<cfreturn variables.instance.mailServerUsername />
-	<cfelse>
-		<cfreturn ""/>
-	</cfif>
-</cffunction>
-
-<cffunction name="setMailServerUsername" output="false">
-	<cfargument name="MailServerUsername" type="String" />
-	<cfset setMailServerUsernameEmail(arguments.MailServerUsername) />
-	<cfset variables.instance.mailServerUsername = arguments.MailServerUsername />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setCacheCapacity" output="false">
-	<cfargument name="cacheCapacity" />
-	<cfif isNumeric(arguments.cacheCapacity)>
-	<cfset variables.instance.cacheCapacity = arguments.cacheCapacity />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setCacheFreeMemoryThreshold" output="false">
-	<cfargument name="cacheFreeMemoryThreshold" />
-	<cfif isNumeric(arguments.cacheFreeMemoryThreshold) and arguments.cacheFreeMemoryThreshold>
-	<cfset variables.instance.cacheFreeMemoryThreshold = arguments.cacheFreeMemoryThreshold />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setSmallImageWidth" output="true">
-	<cfargument name="smallImageWidth" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.smallImageWidth) and arguments.smallImageWidth or arguments.smallImageWidth eq 'AUTO'>
-		<cfset variables.instance.smallImageWidth = arguments.smallImageWidth />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setSmallImageHeight" output="true">
-	<cfargument name="smallImageHeight" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.smallImageHeight) and arguments.smallImageHeight or arguments.smallImageHeight eq 'AUTO'>
-		<cfset variables.instance.smallImageHeight = arguments.smallImageHeight />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setMediumImageWidth" output="true">
-	<cfargument name="mediumImageWidth" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.mediumImageWidth) and arguments.mediumImageWidth or arguments.mediumImageWidth eq 'AUTO'>
-		<cfset variables.instance.mediumImageWidth = arguments.mediumImageWidth />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setMediumImageHeight" output="true">
-	<cfargument name="mediumImageHeight" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.mediumImageHeight) and arguments.mediumImageHeight or arguments.mediumImageHeight eq 'AUTO'>
-		<cfset variables.instance.mediumImageHeight = arguments.mediumImageHeight />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setLargeImageWidth" output="true">
-	<cfargument name="largeImageWidth" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.largeImageWidth) and  arguments.largeImageWidth or arguments.largeImageWidth eq 'AUTO'>
-		<cfset variables.instance.largeImageWidth = arguments.largeImageWidth />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setLargeImageHeight" output="true">
-	<cfargument name="largeImageHeight" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.largeImageHeight) and  arguments.largeImageHeight or arguments.largeImageHeight eq 'AUTO'>
-		<cfset variables.instance.largeImageHeight = arguments.largeImageHeight />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getGallerySmallScale" output="false" hint="for legacy compatability">
-	<cfreturn variables.instance.smallImageWidth>
-</cffunction>
-
-<cffunction name="getGalleryMediumScale" output="false" hint="for legacy compatability">
-	<cfreturn variables.instance.mediumImageWidth>
-</cffunction>
-
-<cffunction name="getGalleryMainScale" output="false" hint="for legacy compatability">
-	<cfreturn variables.instance.largeImageWidth>
-</cffunction>
-
-<cffunction name="getLoginURL" output="false">
-	<cfargument name="parseMuraTag" default="true">
-
-	<cfif variables.instance.loginURL neq ''>
-		<cfif arguments.parseMuraTag>
-			<cfreturn getContentRenderer().setDynamicContent(variables.instance.LoginURL) />
-		<cfelse>
-			<cfreturn variables.instance.LoginURL />
-		</cfif>
-	<cfelse>
-	<cfreturn "#variables.configBean.getIndexFile()#?display=login" />
-	</cfif>
-</cffunction>
-
-<cffunction name="getEditProfileURL" output="false">
-	<cfargument name="parseMuraTag" default="true">
-	<cfif variables.instance.EditProfileURL neq ''>
-		<cfif arguments.parseMuraTag>
-			<cfreturn getContentRenderer().setDynamicContent(variables.instance.EditProfileURL) />
-		<cfelse>
-			<cfreturn variables.instance.EditProfileURL />
-		</cfif>
-	<cfelse>
-	<cfreturn "#variables.configBean.getIndexFile()#?display=editProfile" />
-	</cfif>
-</cffunction>
-
-<cffunction name="setLastDeployment" output="false">
-	<cfargument name="LastDeployment" type="String" />
-	<cfset variables.instance.LastDeployment = parseDateArg(arguments.LastDeployment)/>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setHasComments" output="false">
-	<cfargument name="hasComments"  />
-	<cfif isNumeric(arguments.hasComments)>
-		<cfset variables.instance.hasComments = arguments.hasComments />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setUseDefaultSMTPServer" output="false">
-	<cfargument name="UseDefaultSMTPServer"  />
-	<cfif isNumeric(arguments.UseDefaultSMTPServer)>
-		<cfset variables.instance.UseDefaultSMTPServer = arguments.UseDefaultSMTPServer />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setMailServerSMTPPort" output="false">
-	<cfargument name="MailServerSMTPPort" type="String" />
-	<cfif isNumeric(arguments.MailServerSMTPPort)>
-	<cfset variables.instance.mailServerSMTPPort = arguments.MailServerSMTPPort />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setMailServerPOPPort" output="false">
-	<cfargument name="MailServerPOPPort" type="String" />
-	<cfif isNumeric(arguments.MailServerPOPPort)>
-	<cfset variables.instance.mailServerPOPPort = arguments.MailServerPOPPort />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setMailServerTLS" output="false">
-	<cfargument name="mailServerTLS" type="String" />
-	<cfif isBoolean(arguments.mailServerTLS)>
-	<cfset variables.instance.mailServerTLS = arguments.mailServerTLS />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setMailServerSSL" output="false">
-	<cfargument name="mailServerSSL" type="String" />
-	<cfif isBoolean(arguments.mailServerSSL)>
-	<cfset variables.instance.mailServerSSL = arguments.mailServerSSL />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getCacheFactory" output="false">
-	<cfargument name="name"default="output" hint="data or output">
-
-	<cfif not isDefined("arguments.name")>
-		<cfset arguments.name="output">
-	</cfif>
-
-	<cfif not isDefined("variables.instance.cacheFactories")>
-		<cfset variables.instance.cacheFactories=structNew()>
-	</cfif>
-
-	<cfif structKeyExists(variables.instance.cacheFactories,arguments.name)>
-		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
-	<cfelse>
-		<!---<cfif not variables.instance.cacheCapacity>--->
-			<cfset variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
-		<!---
-		<cfelse>
-			<cfset variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(capacity=variables.instance.cacheCapacity,freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
-		</cfif>
-		--->
-		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
-	</cfif>
-
-</cffunction>
-
-<cffunction name="purgeCache" output="false">
-	<cfargument name="name" default="output" hint="data, output or both">
-	<cfargument name="broadcast" default="true">
-	<cfset getCacheFactory(name=arguments.name).purgeAll()>
-	<cfif arguments.broadcast>
-		<cfset getBean("clusterManager").purgeCache(siteID=variables.instance.siteID,name=arguments.name)>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getJavaLocale" output="false">
-	<cfif len(variables.instance.siteLocale)>
-		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.instance.siteLocale)>
-	<cfelse>
-		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.configBean.getDefaultLocale())>
-	</cfif>
-	<cfreturn variables.instance.javaLocale />
-</cffunction>
-
-<cffunction name="getRBFactory" output="false">
-	<cfset var tmpFactory="">
-	<cfset var themeRBDir="">
-	<cfif not isObject(variables.instance.rbFactory)>
-		<cfif not isDefined('application.rbFactory')>
-			<cfset variables.tracepoint=initTracepoint("Instantiating resourceBundleFactory")>
-			<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory(expandPath("/mura/resourceBundle/resourceBundles")) />
-			<cfset commitTracepoint(variables.tracepoint)>
-		</cfif>
-
-		<cfif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/')>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale())>
-		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/')>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale())>
-		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/')>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
-		<cfelseif directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/')>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale())>
-		<cfelseif directoryExists(expandPath('/muraWRM/resourceBundles/'))>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale())>
-		<cfelseif directoryExists(expandPath('/muraWRM/resource_bundles/'))>
-			<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale())>
-		</cfif>
-		<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/">
-		<cfif directoryExists(themeRBDir)>
-			<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
-		<cfelse>
-			<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resource_bundles/">
-			<cfif directoryExists(themeRBDir)>
-				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
-			<cfelse>
-				<cfset variables.instance.rbFactory=tmpFactory />
-			</cfif>
-		</cfif>
-	</cfif>
-	<cfreturn variables.instance.rbFactory />
-</cffunction>
-
-<cffunction name="setRBFactory" output="false">
-	<cfargument name="rbFactory">
-	<cfif not isObject(arguments.rbFactory)>
-		<cfset variables.instance.rbFactory=arguments.rbFactory />
-	</cfif>
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="getJSDateKey" output="false">
-	<cfif not len(variables.instance.jsDateKey)>
-		<cfset variables.instance.jsDateKey=getLocaleUtils().getJSDateKey()>
-	</cfif>
-	<cfreturn variables.instance.jsDateKey />
-</cffunction>
-
-<cffunction name="getJSDateKeyObjInc" output="false">
-	<cfif not len(variables.instance.jsDateKeyObjInc)>
-		<cfset variables.instance.jsDateKeyObjInc=getLocaleUtils().getJsDateKeyObjInc()>
-	</cfif>
-	<cfreturn variables.instance.jsDateKeyObjInc />
-</cffunction>
-
-<cffunction name="getLocaleUtils" output="false">
-	<cfreturn getRBFactory().getUtils() />
-</cffunction>
-
-<cffunction name="getAssetPath" output="false">
-	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="#getValue('domain')#">
-	<cfreturn getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#" />
-</cffunction>
-
-<cffunction name="getFileAssetPath" output="false">
-	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="#getValue('domain')#">
-	<cfreturn getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#" />
-</cffunction>
-
-<cffunction name="getIncludePath" output="false">
-	<cfreturn "#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#" />
-</cffunction>
-
-<cffunction name="getAssetMap" output="false">
-	<cfreturn "#variables.configBean.getSiteMap()#.#variables.instance.displayPoolID#" />
-</cffunction>
-
-<cffunction name="getDisplayObjectAssetPath" output="false">
-	<cfargument name="theme" default="#request.altTheme#">
-	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="#getValue('domain')#">
-
-	<cfset var key="displayObjectAssetPath" & YesNoFormat(arguments.complete) & replace(arguments.domain,".","all")>
-
-	<cfif structKeyExists(variables.instance,'#key#')>
-		<cfreturn variables.instance[key] />
-	<cfelse>
-		<cfset var path="">
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/modules')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/modules">
-			<cfreturn variables.instance[key] />
-		</cfif>
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/display_objects')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/display_objects">
-			<cfreturn variables.instance[key] />
-		</cfif>
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/modules')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/includes/modules">
-			<cfreturn variables.instance[key] />
-		</cfif>
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/display_objects')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/includes/display_objects">
-			<cfreturn variables.instance[key] />
-		</cfif>
-
-		<cfset path=expandPath('muraWRM/modules')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/modules">
-			<cfreturn variables.instance[key] />
-		</cfif>
-
-		<cfset path=expandPath('muraWRM/display_objects')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/display_objects">
-			<cfreturn variables.instance[key] />
-		</cfif>
-
-		<cfset variables.instance[key]=getThemeAssetPath(argumentCollection=arguments) & "/display_objects">
-		<cfreturn variables.instance[key]>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getThemeAssetPath" output="false">
-	<cfargument name="theme" default="#request.altTheme#">
-	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="#getValue('domain')#">
-
-	<cfif not len(arguments.theme) or not directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfset arguments.theme=variables.instance.theme>
-	</cfif>
-
-	<cfset var key="themeAssetPath" & YesNoFormat(arguments.complete) & replace(arguments.domain,".","all")>
-
-	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
-		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
-	</cfif>
-
-	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'#key#')>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
-	<cfelse>
-		<cfset var path="">
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
-		</cfif>
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments) & "/includes/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
-		</cfif>
-
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getRootPath(argumentCollection=arguments) & "/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
-		</cfif>
-
-		<cfset variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments)>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'][key] />
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getThemeIncludePath" output="false">
-	<cfargument name="theme" default="#request.altTheme#">
-
-	<cfif not len(arguments.theme)>
-		<cfset arguments.theme=variables.instance.theme>
-	</cfif>
-
-	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
-		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
-	</cfif>
-
-	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeIncludePath')>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
-	<cfelse>
-		<cfset var path="">
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="#getIncludePath()#/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
-		</cfif>
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="#getIncludePath()#/includes/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
-		</cfif>
-
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="/muraWRM/themes/#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
-		</cfif>
-
-		<cfset variables.instance.themeLookup['#arguments.theme#'].themeIncludePath=getIncludePath()>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeIncludePath />
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getThemeAssetMap" output="false">
-	<cfargument name="theme" default="#request.altTheme#">
-
-	<cfif not len(arguments.theme) or not directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfset arguments.theme=variables.instance.theme>
-	</cfif>
-
-	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
-		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
-	</cfif>
-
-	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeAssetMap')>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
-	<cfelse>
-		<cfset var path="">
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="#getAssetMap()#.themes.#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
-		</cfif>
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="#getAssetMap()#.includes.themes.#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
-		</cfif>
-
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
-		<cfif directoryExists(path)>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="muraWRM.themes.#arguments.theme#">
-			<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap />
-		</cfif>
-
-		<cfset variables.instance.themeLookup['#arguments.theme#'].themeAssetMap=getAssetMap()>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeAssetMap>
-	</cfif>
-</cffunction>
-
-
-<cffunction name="getTemplateIncludePath" output="false">
-	<cfargument name="theme" default="#request.altTheme#">
-
-	<cfif not len(arguments.theme) or not directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfset arguments.theme=variables.instance.theme>
-	</cfif>
-
-	<cfreturn getThemeIncludePath(arguments.theme) & "/templates" />
-
-</cffunction>
-
-<cffunction name="hasNonThemeTemplates" output="false">
-	<cfreturn directoryExists(expandPath("#getIncludePath()#/includes/templates")) />
-</cffunction>
-
-<cffunction name="getTemplateIncludeDir" output="false">
-	<cfargument name="theme" default="#request.altTheme#">
-
-	<cfreturn expandPath(getThemeIncludePath(arguments.theme) & "/templates")>
-</cffunction>
-
-<cffunction name="getThemeDir" output="false">
-	<cfargument name="theme" default="#request.altTheme#">
-
-	<cfif not len(arguments.theme)>
-		<cfset arguments.theme=variables.instance.theme>
-	</cfif>
-
-	<cfif not structKeyExists(variables.instance.themeLookup,'#arguments.theme#')>
-		<cfset variables.instance.themeLookup['#arguments.theme#']={}>
-	</cfif>
-
-	<cfif structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeDir')>
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeDir />
-	<cfelse>
-		<cfset var path="">
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#')>
-		<cfif directoryExists(path & "/templates")>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir=path>
-			<cfreturn path>
-		</cfif>
-
-		<cfset path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#')>
-		<cfif directoryExists(path & "/templates")>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir=path>
-			<cfreturn path>
-		</cfif>
-
-		<cfset path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#')>
-		<cfif directoryExists(path & "/templates")>
-			<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir=path>
-			<cfreturn path>
-		</cfif>
-
-		<cfset variables.instance.themeLookup['#arguments.theme#'].themeDir= "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/">
-		<cfreturn variables.instance.themeLookup['#arguments.theme#'].themeDir>
-	</cfif>
-</cffunction>
-
-<cffunction name="getThemes" output="false">
-	<cfset var rs = "">
-	<cfset var themeDir="">
-	<cfset var rsDirs="">
-	<cfset var rs="">
-
-	<cfif len(variables.instance.displayPoolID)>
-		<cfset themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/themes">
-
-		<cfif directoryExists(themeDir)>
-			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
-
-			<cfquery name="rs" dbtype="query">
-
-			select * from rsDirs where type='Dir' and name not like '%.svn'
-
-			<cfif isQuery(rs)>
+*/
+/**
+ * Site settings bean
+ */
+component extends="mura.bean.beanExtendable" entityName="site" table="tsettings" output="false" hint="Site settings bean" {
+	property name="siteID" fieldtype="id" type="string" default="" required="true";
+	property name="site" type="string" default="";
+	property name="tagLine" type="string" default="";
+	property name="pageLimit" type="string" default="1000" required="true";
+	property name="locking" type="string" default="none" required="true";
+	property name="domain" type="string" default="";
+	property name="domainAlias" type="string" default="";
+	property name="enforcePrimaryDomain" type="int" default="0" required="true";
+	property name="contact" type="string" default="";
+	property name="mailServerIP" type="string" default="";
+	property name="mailServerSMTPPort" type="string" default="25" required="true";
+	property name="mailServerPOPPort" type="string" default="110" required="true";
+	property name="mailserverTLS" type="string" default="false" required="true";
+	property name="mailserverSSL" type="string" default="false" required="true";
+	property name="mailServerUsername" type="string" default="";
+	property name="mailServerUsernameEmail" type="string" default="";
+	property name="mailServerPassword" type="string" default="";
+	property name="useDefaultSMTPServer" type="numeric" default="1" required="true";
+	property name="EmailBroadcaster" type="numeric" default="0" required="false";
+	property name="EmailBroadcasterLimit" type="numeric" default="0" required="true";
+	property name="extranet" type="numeric" default="1" required="true";
+	property name="extranetSSL" type="numeric" default="0" required="true" hint="deprecated";
+	property name="cache" type="numeric" default="0" required="true";
+	property name="cacheCapacity" type="numeric" default="0" required="true";
+	property name="cacheFreeMemoryThreshold" type="numeric" default="60" required="true";
+	property name="viewDepth" type="numeric" default="1" required="true";
+	property name="nextN" type="numeric" default="20" required="true";
+	property name="dataCollection" type="numeric" default="1" required="true";
+	property name="columnCount" type="numeric" default="3" required="true";
+	property name="columnNames" type="string" default="Left Column^Main Content^Right Column" required="true";
+	property name="ExtranetPublicReg" type="numeric" default="0" required="true";
+	property name="primaryColumn" type="numeric" default="2" required="true";
+	property name="contactName" type="string" default="";
+	property name="contactAddress" type="string" default="";
+	property name="contactCity" type="string" default="";
+	property name="contactState" type="string" default="";
+	property name="contactZip" type="string" default="";
+	property name="contactEmail" type="string" default="";
+	property name="contactPhone" type="string" default="";
+	property name="publicUserPoolID" type="string" default="";
+	property name="privateUserPoolID" type="string" default="";
+	property name="advertiserUserPoolID" type="string" default="";
+	property name="displayPoolID" type="string" default="";
+	property name="contentPoolID" type="string" default="";
+	property name="categoryPoolID" type="string" default="";
+	property name="filePoolID" type="string" default="";
+	property name="placeholderImgID" type="string" default="";
+	property name="feedManager" type="numeric" default="1" required="true";
+	property name="largeImageHeight" type="string" default="AUTO" required="true";
+	property name="largeImageWidth" type="numeric" default="600" required="true";
+	property name="smallImageHeight" type="string" default="80" required="true";
+	property name="smallImageWidth" type="numeric" default="80" required="true";
+	property name="mediumImageHeight" type="string" default="180" required="true";
+	property name="mediumImageWidth" type="numeric" default="180" required="true";
+	property name="sendLoginScript" type="string" default="";
+	property name="sendAuthCodeScript" type="string" default="";
+	property name="mailingListConfirmScript" type="string" default="";
+	property name="reminderScript" type="string" default="";
+	property name="ExtranetPublicRegNotify" type="string" default="";
+	property name="exportLocation" type="string" default="";
+	property name="loginURL" type="string" default="";
+	property name="editProfileURL" type="string" default="";
+	property name="commentApprovalDefault" type="numeric" default="1" required="true";
+	property name="display" type="numeric" default="1" required="true";
+	property name="lastDeployment" type="date" default="";
+	property name="accountActivationScript" type="string" default="";
+	property name="googleAPIKey" type="string" default="";
+	property name="siteLocale" type="string" default="";
+	property name="hasChangesets" type="numeric" default="1" required="true";
+	property name="theme" type="string" default="";
+	property name="javaLocale" type="string" default="";
+	property name="orderno" type="numeric" default="0" required="true";
+	property name="enforceChangesets" type="numeric" default="0" required="true";
+	property name="contentPendingScript" type="string" default="";
+	property name="contentApprovalScript" type="string" default="";
+	property name="contentRejectionScript" type="string" default="";
+	property name="contentCanceledScript" type="string" default="";
+	property name="enableLockdown" type="string" default="";
+	property name="customTagGroups" type="string" default="";
+	property name="hasComments" type="numeric" default="1" required="true";
+	property name="hasLockableNodes" type="numeric" default="0" required="true";
+	property name="reCAPTCHASiteKey" type="string" default="";
+	property name="reCAPTCHASecret" type="string" default="";
+	property name="reCAPTCHALanguage" type="string" default="en";
+	property name="JSONApi" type="numeric" default="0";
+	property name="useSSL" type="numeric" default="0";
+	property name="isRemote" type="numeric" default="0";
+	property name="RemoteContext" type="string" default="";
+	property name="RemotePort" type="numeric" default="0";
+	property name="resourceSSL" type="numeric" default="0";
+	property name="resourceDomain" type="string" default="";
+	property name="showDashboard" type="numeric" default="0";
+	variables.primaryKey = 'siteid';
+	variables.entityName = 'site';
+	variables.instanceName= 'site';
+
+	public function init() output=false {
+		super.init(argumentCollection=arguments);
+		variables.instance.SiteID="";
+		variables.instance.Site="";
+		variables.instance.TagLine="";
+		variables.instance.pageLimit=1000;
+		variables.instance.Locking="None";
+		variables.instance.Domain="";
+		variables.instance.DomainAlias="";
+		variables.instance.enforcePrimaryDomain=0;
+		variables.instance.Contact="";
+		variables.instance.MailServerIP="";
+		variables.instance.MailServerSMTPPort="25";
+		variables.instance.MailServerPOPPort="110";
+		variables.instance.MailServerTLS="false";
+		variables.instance.MailServerSSL="false";
+		variables.instance.MailServerUsername="";
+		variables.instance.MailServerUsernameEmail="";
+		variables.instance.MailServerPassword="";
+		variables.instance.useDefaultSMTPServer=1;
+		variables.instance.EmailBroadcaster=0;
+		variables.instance.EmailBroadcasterLimit=0;
+		variables.instance.Extranet=1;
+		variables.instance.ExtranetSSL=0;
+		variables.instance.cache=0;
+		variables.instance.cacheFactories=structNew();
+		variables.instance.cacheCapacity=0;
+		variables.instance.cacheFreeMemoryThreshold=60;
+		variables.instance.ViewDepth=1;
+		variables.instance.nextN=20;
+		variables.instance.DataCollection=1;
+		variables.instance.ColumnCount=3;
+		variables.instance.ColumnNames="Left Column^Main Content^Right Column";
+		variables.instance.ExtranetPublicReg=0;
+		variables.instance.PrimaryColumn=2;
+		variables.instance.PublicSubmission=0;
+		variables.instance.adManager=0;
+		variables.instance.ContactName="";
+		variables.instance.ContactAddress="";
+		variables.instance.ContactCity="";
+		variables.instance.ContactState="";
+		variables.instance.ContactZip="";
+		variables.instance.ContactEmail="";
+		variables.instance.ContactPhone="";
+		variables.instance.PublicUserPoolID="";
+		variables.instance.PrivateUserPoolID="";
+		variables.instance.AdvertiserUserPoolID="";
+		variables.instance.DisplayPoolID="";
+		variables.instance.ContentPoolID="";
+		variables.instance.CategoryPoolID="";
+		variables.instance.FilePoolID="";
+		variables.instance.placeholderImgID="";
+		variables.instance.feedManager=1;
+		variables.instance.largeImageHeight='AUTO';
+		variables.instance.largeImageWidth='600';
+		variables.instance.smallImageHeight='80';
+		variables.instance.smallImageWidth='80';
+		variables.instance.mediumImageHeight='180';
+		variables.instance.mediumImageWidth='180';
+		variables.instance.sendLoginScript="";
+		variables.instance.sendAuthCodeScript="";
+		variables.instance.mailingListConfirmScript="";
+		variables.instance.publicSubmissionApprovalScript="";
+		variables.instance.reminderScript="";
+		variables.instance.ExtranetPublicRegNotify="";
+		variables.instance.exportLocation="";
+		variables.instance.loginURL="";
+		variables.instance.editProfileURL="";
+		variables.instance.commentApprovalDefault=1;
+		variables.instance.deploy=1;
+		variables.instance.lastDeployment="";
+		variables.instance.accountActivationScript="";
+		variables.instance.googleAPIKey="";
+		variables.instance.siteLocale="";
+		variables.instance.rbFactory="";
+		variables.instance.javaLocale="";
+		variables.instance.jsDateKey="";
+		variables.instance.jsDateKeyObjInc="";
+		variables.instance.theme="";
+		variables.instance.contentRenderer="";
+		variables.instance.themeRenderer="";
+		variables.instance.hasChangesets=1;
+		variables.instance.type="Site";
+		variables.instance.subtype="Default";
+		variables.instance.baseID=createUUID();
+		variables.instance.orderno=0;
+		variables.instance.enforceChangesets=0;
+		variables.instance.contentPendingScript="";
+		variables.instance.contentApprovalScript="";
+		variables.instance.contentRejectionScript="";
+		variables.instance.contentCanceledScript="";
+		variables.instance.enableLockdown="";
+		variables.instance.customTagGroups="";
+		variables.instance.hasSharedFilePool="";
+		variables.instance.hasComments=1;
+		variables.instance.hasLockableNodes=0;
+		variables.instance.reCAPTCHASiteKey="";
+		variables.instance.reCAPTCHASecret="";
+		variables.instance.reCAPTCHALanguage="en";
+		variables.instance.JSONApi=0;
+		variables.instance.useSSL=0;
+		variables.instance.isRemote=0;
+		variables.instance.RemoteContext="";
+		variables.instance.RemotePort=80;
+		variables.instance.resourceSSL=0;
+		variables.instance.resourceDomain="";
+		variables.instance.contentTypeFilePathLookup={};
+		variables.instance.contentTypeLoopUpArray=[];
+		variables.instance.displayObjectLookup={};
+		variables.instance.displayObjectFilePathLookup={};
+		variables.instance.displayObjectLoopUpArray=[];
+		variables.instance.showDashboard=0;
+		variables.instance.themeLookup={};
+		return this;
+	}
+
+	public function validate() output=false {
+		variables.instance.errors=structnew();
+		if ( variables.instance.siteID == "" ) {
+			variables.instance.errors.siteid="The 'SiteID' variable == required.";
+		}
+		if ( variables.instance.siteID == "admin" || variables.instance.siteID == "tasks" ) {
+			variables.instance.errors.siteid="The 'SiteID' variable == invalid.";
+		}
+		/*
+			if (not getBean('utility').isValidCFVariableName(variables.instance.siteID)){
+				variables.instance.errors.siteid="The 'SiteID' variable is invalid.";
+			}
+		*/
+		return this;
+	}
+
+	public function set(required property, propertyValue) output=false {
+		if ( !isDefined('arguments.config') ) {
+			if ( isSimpleValue(arguments.property) ) {
+				return setValue(argumentCollection=arguments);
+			}
+			arguments.data=arguments.property;
+		}
+		var prop="";
+		if ( isQuery(arguments.data) && arguments.data.recordcount ) {
+
+			for(prop in ListToArray(arguments.data.columnlist)){
+				setValue(prop,arguments.data[prop][1]);
+			}
+
+		} else if ( isStruct(arguments.data) ) {
+			for ( prop in arguments.data ) {
+				setValue(prop,arguments.data[prop]);
+			}
+		}
+		if ( variables.instance.privateUserPoolID == '' ) {
+			variables.instance.privateUserPoolID=variables.instance.siteID;
+		}
+		if ( variables.instance.publicUserPoolID == '' ) {
+			variables.instance.publicUserPoolID=variables.instance.siteID;
+		}
+		if ( variables.instance.advertiserUserPoolID == '' ) {
+			variables.instance.advertiserUserPoolID=variables.instance.siteID;
+		}
+		if ( variables.instance.displayPoolID == '' ) {
+			variables.instance.displayPoolID=variables.instance.siteID;
+		}
+		if ( variables.instance.filePoolID == '' ) {
+			variables.instance.filePoolID=variables.instance.siteID;
+		}
+		if ( variables.instance.categoryPoolID == '' ) {
+			variables.instance.categoryPoolID=variables.instance.siteID;
+		}
+		if ( variables.instance.contentPoolID == '' ) {
+			variables.instance.contentPoolID=variables.instance.siteID;
+		}
+		return this;
+	}
+
+	public function setConfigBean(configBean) output=false {
+		variables.configBean=arguments.configBean;
+		return this;
+	}
+
+	public function setBaseID(baseID) output=false {
+		if ( len(arguments.baseID) ) {
+			variables.instance.baseID=arguments.baseID;
+		}
+	}
+
+	public function getExtendBaseID() output=false {
+		return variables.instance.baseID;
+	}
+
+	public function setTheme(theme) output=false {
+		if ( arguments.theme != variables.instance.theme ) {
+			variables.instance.theme=arguments.theme;
+		}
+	}
+
+	public function getDomain(required String mode="") output=false {
+		var temp="";
+		if ( arguments.mode == 'preview' ) {
+			if ( len(request.muraPreviewDomain) ) {
+				return request.muraPreviewDomain;
+			} else {
+				return variables.instance.Domain;
+			}
+		} else {
+			return variables.instance.Domain;
+		}
+	}
+
+	public function setEnforcePrimaryDomain(enforcePrimaryDomain) output=false {
+		if ( isNumeric(arguments.enforcePrimaryDomain) ) {
+			variables.instance.enforcePrimaryDomain = arguments.enforcePrimaryDomain;
+		}
+		return this;
+	}
+
+	public function getUseSSL() output=false {
+		if ( variables.instance.useSSL || variables.instance.extranetSSL ) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	public function setEnforceChangesets(enforceChangesets) output=false {
+		if ( isNumeric(arguments.enforceChangesets) ) {
+			variables.instance.enforceChangesets = arguments.enforceChangesets;
+		}
+		return this;
+	}
+
+	public function setHasFeedManager(feedManager) output=false {
+		variables.instance.feedManager=arguments.feedManager;
+		return this;
+	}
+
+	public function getHasFeedManager() output=false {
+		return variables.instance.feedManager;
+	}
+
+	public function setExportLocation(String ExportLocation) output=false {
+		if ( arguments.ExportLocation != "export1" ) {
+			variables.instance.ExportLocation = arguments.ExportLocation;
+		}
+		return this;
+	}
+
+	public function getDataCollection() output=false {
+		if ( !variables.configBean.getDataCollection() ) {
+			return 0;
+		} else {
+			return variables.instance.dataCollection;
+		}
+	}
+
+	public function getAdManager() output=false {
+		if ( !variables.configBean.getAdManager() ) {
+			return 0;
+		} else {
+			return variables.instance.adManager;
+		}
+	}
+
+	public function getEmailBroadcaster() output=false {
+		if ( !variables.configBean.getEmailBroadcaster() ) {
+			return 0;
+		} else {
+			return variables.instance.EmailBroadcaster;
+		}
+	}
+
+	public function setMailServerUsernameEmail(String MailServerUsernameEmail) output=false {
+		if ( find("@",arguments.MailServerUsernameEmail) ) {
+			variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail;
+		} else if ( find("+",arguments.MailServerUsernameEmail) ) {
+			variables.instance.MailServerUsernameEmail=replace(arguments.MailServerUsernameEmail,"+","@");
+		} else if ( len(arguments.MailServerUsernameEmail) ) {
+			variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail & "@" & listRest(variables.instance.MailServerIP,".");
+		} else {
+			variables.instance.MailServerUsernameEmail=variables.instance.contact;
+		}
+		return this;
+	}
+
+	public function getMailServerUsername(required forLogin="false") output=false {
+		if ( !arguments.forLogin || len(variables.instance.mailServerPassword) ) {
+			return variables.instance.mailServerUsername;
+		} else {
+			return "";
+		}
+	}
+
+	public function setMailServerUsername(String MailServerUsername) output=false {
+		setMailServerUsernameEmail(arguments.MailServerUsername);
+		variables.instance.mailServerUsername = arguments.MailServerUsername;
+		return this;
+	}
+
+	public function setCacheCapacity(cacheCapacity) output=false {
+		if ( isNumeric(arguments.cacheCapacity) ) {
+			variables.instance.cacheCapacity = arguments.cacheCapacity;
+		}
+		return this;
+	}
+
+	public function setCacheFreeMemoryThreshold(cacheFreeMemoryThreshold) output=false {
+		if ( isNumeric(arguments.cacheFreeMemoryThreshold) && arguments.cacheFreeMemoryThreshold ) {
+			variables.instance.cacheFreeMemoryThreshold = arguments.cacheFreeMemoryThreshold;
+		}
+		return this;
+	}
+
+	public function setSmallImageWidth(required any smallImageWidth="0") output=true {
+		if ( isNumeric(arguments.smallImageWidth) && arguments.smallImageWidth || arguments.smallImageWidth == 'AUTO' ) {
+			variables.instance.smallImageWidth = arguments.smallImageWidth;
+		}
+		return this;
+	}
+
+	public function setSmallImageHeight(required any smallImageHeight="0") output=true {
+		if ( isNumeric(arguments.smallImageHeight) && arguments.smallImageHeight || arguments.smallImageHeight == 'AUTO' ) {
+			variables.instance.smallImageHeight = arguments.smallImageHeight;
+		}
+		return this;
+	}
+
+	public function setMediumImageWidth(required any mediumImageWidth="0") output=true {
+		if ( isNumeric(arguments.mediumImageWidth) && arguments.mediumImageWidth || arguments.mediumImageWidth == 'AUTO' ) {
+			variables.instance.mediumImageWidth = arguments.mediumImageWidth;
+		}
+		return this;
+	}
+
+	public function setMediumImageHeight(required any mediumImageHeight="0") output=true {
+		if ( isNumeric(arguments.mediumImageHeight) && arguments.mediumImageHeight || arguments.mediumImageHeight == 'AUTO' ) {
+			variables.instance.mediumImageHeight = arguments.mediumImageHeight;
+		}
+		return this;
+	}
+
+	public function setLargeImageWidth(required any largeImageWidth="0") output=true {
+		if ( isNumeric(arguments.largeImageWidth) &&  arguments.largeImageWidth || arguments.largeImageWidth == 'AUTO' ) {
+			variables.instance.largeImageWidth = arguments.largeImageWidth;
+		}
+		return this;
+	}
+
+	public function setLargeImageHeight(required any largeImageHeight="0") output=true {
+		if ( isNumeric(arguments.largeImageHeight) &&  arguments.largeImageHeight || arguments.largeImageHeight == 'AUTO' ) {
+			variables.instance.largeImageHeight = arguments.largeImageHeight;
+		}
+		return this;
+	}
+
+	/**
+	 * for legacy compatability
+	 */
+	public function getGallerySmallScale() output=false {
+		return variables.instance.smallImageWidth;
+	}
+
+	/**
+	 * for legacy compatability
+	 */
+	public function getGalleryMediumScale() output=false {
+		return variables.instance.mediumImageWidth;
+	}
+
+	/**
+	 * for legacy compatability
+	 */
+	public function getGalleryMainScale() output=false {
+		return variables.instance.largeImageWidth;
+	}
+
+	public function getLoginURL(parseMuraTag="true") output=false {
+		if ( variables.instance.loginURL != '' ) {
+			if ( arguments.parseMuraTag ) {
+				return getContentRenderer().setDynamicContent(variables.instance.LoginURL);
+			} else {
+				return variables.instance.LoginURL;
+			}
+		} else {
+			return "#variables.configBean.getIndexFile()#?display=login";
+		}
+	}
+
+	public function getEditProfileURL(parseMuraTag="true") output=false {
+		if ( variables.instance.EditProfileURL != '' ) {
+			if ( arguments.parseMuraTag ) {
+				return getContentRenderer().setDynamicContent(variables.instance.EditProfileURL);
+			} else {
+				return variables.instance.EditProfileURL;
+			}
+		} else {
+			return "#variables.configBean.getIndexFile()#?display=editProfile";
+		}
+	}
+
+	public function setLastDeployment(String LastDeployment) output=false {
+		variables.instance.LastDeployment = parseDateArg(arguments.LastDeployment);
+		return this;
+	}
+
+	public function setHasComments(hasComments) output=false {
+		if ( isNumeric(arguments.hasComments) ) {
+			variables.instance.hasComments = arguments.hasComments;
+		}
+		return this;
+	}
+
+	public function setUseDefaultSMTPServer(UseDefaultSMTPServer) output=false {
+		if ( isNumeric(arguments.UseDefaultSMTPServer) ) {
+			variables.instance.UseDefaultSMTPServer = arguments.UseDefaultSMTPServer;
+		}
+		return this;
+	}
+
+	public function setMailServerSMTPPort(String MailServerSMTPPort) output=false {
+		if ( isNumeric(arguments.MailServerSMTPPort) ) {
+			variables.instance.mailServerSMTPPort = arguments.MailServerSMTPPort;
+		}
+		return this;
+	}
+
+	public function setMailServerPOPPort(String MailServerPOPPort) output=false {
+		if ( isNumeric(arguments.MailServerPOPPort) ) {
+			variables.instance.mailServerPOPPort = arguments.MailServerPOPPort;
+		}
+		return this;
+	}
+
+	public function setMailServerTLS(String mailServerTLS) output=false {
+		if ( isBoolean(arguments.mailServerTLS) ) {
+			variables.instance.mailServerTLS = arguments.mailServerTLS;
+		}
+		return this;
+	}
+
+	public function setMailServerSSL(String mailServerSSL) output=false {
+		if ( isBoolean(arguments.mailServerSSL) ) {
+			variables.instance.mailServerSSL = arguments.mailServerSSL;
+		}
+		return this;
+	}
+
+	public function getCacheFactory(name="output") output=false {
+		if ( !isDefined("arguments.name") ) {
+			arguments.name="output";
+		}
+		if ( !isDefined("variables.instance.cacheFactories") ) {
+			variables.instance.cacheFactories=structNew();
+		}
+		if ( structKeyExists(variables.instance.cacheFactories,arguments.name) ) {
+			return variables.instance.cacheFactories["#arguments.name#"];
+		} else {
+			// if not variables.instance.cacheCapacity
+			variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID);
+			/*
+			}
+				variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(capacity=variables.instance.cacheCapacity,freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID);
+			}
+		*/
+			return variables.instance.cacheFactories["#arguments.name#"];
+		}
+	}
+
+	public function purgeCache(name="output", broadcast="true") output=false {
+		getCacheFactory(name=arguments.name).purgeAll();
+		if ( arguments.broadcast ) {
+			getBean("clusterManager").purgeCache(siteID=variables.instance.siteID,name=arguments.name);
+		}
+		return this;
+	}
+
+	public function getJavaLocale() output=false {
+		if ( len(variables.instance.siteLocale) ) {
+			variables.instance.javaLocale=application.rbFactory.CF2Java(variables.instance.siteLocale);
+		} else {
+			variables.instance.javaLocale=application.rbFactory.CF2Java(variables.configBean.getDefaultLocale());
+		}
+		return variables.instance.javaLocale;
+	}
+
+	public function getRBFactory() output=false {
+		var tmpFactory="";
+		var themeRBDir="";
+		if ( !isObject(variables.instance.rbFactory) ) {
+			if ( !isDefined('application.rbFactory') ) {
+				variables.tracepoint=initTracepoint("Instantiating resourceBundleFactory");
+				application.rbFactory=new mura.resourceBundle.resourceBundleFactory(expandPath("/mura/resourceBundle/resourceBundles"));
+				commitTracepoint(variables.tracepoint);
+			}
+			if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/') ) {
+				tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resourceBundles/",getJavaLocale());
+			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/') ) {
+				tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/resource_bundles/",getJavaLocale());
+			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/') ) {
+				tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale());
+			} else if ( directoryExists('#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/') ) {
+				tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/resource_bundles/",getJavaLocale());
+			} else if ( directoryExists(expandPath('/muraWRM/resourceBundles/')) ) {
+				tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale());
+			} else if ( directoryExists(expandPath('/muraWRM/resource_bundles/')) ) {
+				tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale());
+			}
+			themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/";
+			if ( directoryExists(themeRBDir) ) {
+				variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale());
+			} else {
+				themeRBDir=expandPath(getThemeIncludePath()) & "/resource_bundles/";
+				if ( directoryExists(themeRBDir) ) {
+					variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale());
+				} else {
+					variables.instance.rbFactory=tmpFactory;
+				}
+			}
+		}
+		return variables.instance.rbFactory;
+	}
+
+	public function setRBFactory(rbFactory) output=false {
+		if ( !isObject(arguments.rbFactory) ) {
+			variables.instance.rbFactory=arguments.rbFactory;
+		}
+		return this;
+	}
+
+	public function getJSDateKey() output=false {
+		if ( !len(variables.instance.jsDateKey) ) {
+			variables.instance.jsDateKey=getLocaleUtils().getJSDateKey();
+		}
+		return variables.instance.jsDateKey;
+	}
+
+	public function getJSDateKeyObjInc() output=false {
+		if ( !len(variables.instance.jsDateKeyObjInc) ) {
+			variables.instance.jsDateKeyObjInc=getLocaleUtils().getJsDateKeyObjInc();
+		}
+		return variables.instance.jsDateKeyObjInc;
+	}
+
+	public function getLocaleUtils() output=false {
+		return getRBFactory().getUtils();
+	}
+
+	public function getAssetPath(complete="0", domain="#getValue('domain')#") output=false {
+		return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#";
+	}
+
+	public function getFileAssetPath(complete="0", domain="#getValue('domain')#") output=false {
+		return getResourcePath(argumentCollection=arguments) & "#variables.configBean.getSiteAssetPath()#/#variables.instance.displayPoolID#";
+	}
+
+	public function getIncludePath() output=false {
+		return "#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#";
+	}
+
+	public function getAssetMap() output=false {
+		return "#variables.configBean.getSiteMap()#.#variables.instance.displayPoolID#";
+	}
+
+	public function getDisplayObjectAssetPath(theme="#request.altTheme#", complete="0", domain="#getValue('domain')#") output=false {
+		var key="displayObjectAssetPath" & YesNoFormat(arguments.complete) & replace(arguments.domain,".","all");
+		if ( structKeyExists(variables.instance,'#key#') ) {
+			return variables.instance[key];
+		} else {
+			var path="";
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/modules');
+			if ( directoryExists(path) ) {
+				variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/modules";
+				return variables.instance[key];
+			}
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/display_objects');
+			if ( directoryExists(path) ) {
+				variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/display_objects";
+				return variables.instance[key];
+			}
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/modules');
+			if ( directoryExists(path) ) {
+				variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/includes/modules";
+				return variables.instance[key];
+			}
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/display_objects');
+			if ( directoryExists(path) ) {
+				variables.instance[key]=getAssetPath(argumentCollection=arguments) & "/includes/display_objects";
+				return variables.instance[key];
+			}
+			path=expandPath('muraWRM/modules');
+			if ( directoryExists(path) ) {
+				variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/modules";
+				return variables.instance[key];
+			}
+			path=expandPath('muraWRM/display_objects');
+			if ( directoryExists(path) ) {
+				variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/display_objects";
+				return variables.instance[key];
+			}
+			variables.instance[key]=getThemeAssetPath(argumentCollection=arguments) & "/display_objects";
+			return variables.instance[key];
+		}
+	}
+
+	public function getThemeAssetPath(theme="#request.altTheme#", complete="0", domain="#getValue('domain')#") output=false {
+		if ( !len(arguments.theme) || !directoryExists(getTemplateIncludeDir(arguments.theme)) ) {
+			arguments.theme=variables.instance.theme;
+		}
+		var key="themeAssetPath" & YesNoFormat(arguments.complete) & replace(arguments.domain,".","all");
+		if ( !structKeyExists(variables.instance.themeLookup,'#arguments.theme#') ) {
+			variables.instance.themeLookup['#arguments.theme#']={};
+		}
+		if ( structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'#key#') ) {
+			return variables.instance.themeLookup['#arguments.theme#'][key];
+		} else {
+			var path="";
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments) & "/themes/#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'][key];
+			}
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments) & "/includes/themes/#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'][key];
+			}
+			path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'][key]=getRootPath(argumentCollection=arguments) & "/themes/#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'][key];
+			}
+			variables.instance.themeLookup['#arguments.theme#'][key]=getAssetPath(argumentCollection=arguments);
+			return variables.instance.themeLookup['#arguments.theme#'][key];
+		}
+	}
+
+	public function getThemeIncludePath(theme="#request.altTheme#") output=false {
+		if ( !len(arguments.theme) ) {
+			arguments.theme=variables.instance.theme;
+		}
+		if ( !structKeyExists(variables.instance.themeLookup,'#arguments.theme#') ) {
+			variables.instance.themeLookup['#arguments.theme#']={};
+		}
+		if ( structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeIncludePath') ) {
+			return variables.instance.themeLookup['#arguments.theme#'].themeIncludePath;
+		} else {
+			var path="";
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="#getIncludePath()#/themes/#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'].themeIncludePath;
+			}
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="#getIncludePath()#/includes/themes/#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'].themeIncludePath;
+			}
+			path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeIncludePath="/muraWRM/themes/#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'].themeIncludePath;
+			}
+			variables.instance.themeLookup['#arguments.theme#'].themeIncludePath=getIncludePath();
+			return variables.instance.themeLookup['#arguments.theme#'].themeIncludePath;
+		}
+	}
+
+	public function getThemeAssetMap(theme="#request.altTheme#") output=false {
+		if ( !len(arguments.theme) || !directoryExists(getTemplateIncludeDir(arguments.theme)) ) {
+			arguments.theme=variables.instance.theme;
+		}
+		if ( !structKeyExists(variables.instance.themeLookup,'#arguments.theme#') ) {
+			variables.instance.themeLookup['#arguments.theme#']={};
+		}
+		if ( structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeAssetMap') ) {
+			return variables.instance.themeLookup['#arguments.theme#'].themeAssetMap;
+		} else {
+			var path="";
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="#getAssetMap()#.themes.#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'].themeAssetMap;
+			}
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="#getAssetMap()#.includes.themes.#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'].themeAssetMap;
+			}
+			path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#');
+			if ( directoryExists(path) ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeAssetMap="muraWRM.themes.#arguments.theme#";
+				return variables.instance.themeLookup['#arguments.theme#'].themeAssetMap;
+			}
+			variables.instance.themeLookup['#arguments.theme#'].themeAssetMap=getAssetMap();
+			return variables.instance.themeLookup['#arguments.theme#'].themeAssetMap;
+		}
+	}
+
+	public function getTemplateIncludePath(theme="#request.altTheme#") output=false {
+		if ( !len(arguments.theme) || !directoryExists(getTemplateIncludeDir(arguments.theme)) ) {
+			arguments.theme=variables.instance.theme;
+		}
+		return getThemeIncludePath(arguments.theme) & "/templates";
+	}
+
+	public function hasNonThemeTemplates() output=false {
+		return directoryExists(expandPath("#getIncludePath()#/includes/templates"));
+	}
+
+	public function getTemplateIncludeDir(theme="#request.altTheme#") output=false {
+		return expandPath(getThemeIncludePath(arguments.theme) & "/templates");
+	}
+
+	public function getThemeDir(theme="#request.altTheme#") output=false {
+		if ( !len(arguments.theme) ) {
+			arguments.theme=variables.instance.theme;
+		}
+		if ( !structKeyExists(variables.instance.themeLookup,'#arguments.theme#') ) {
+			variables.instance.themeLookup['#arguments.theme#']={};
+		}
+		if ( structKeyExists(variables.instance.themeLookup['#arguments.theme#'],'themeDir') ) {
+			return variables.instance.themeLookup['#arguments.theme#'].themeDir;
+		} else {
+			var path="";
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/themes/#arguments.theme#');
+			if ( directoryExists(path & "/templates") ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeDir=path;
+				return path;
+			}
+			path=expandPath('#variables.configBean.getSiteIncludePath()#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#');
+			if ( directoryExists(path & "/templates") ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeDir=path;
+				return path;
+			}
+			path=expandPath('/#variables.configBean.getWebRootMap()#/themes/#arguments.theme#');
+			if ( directoryExists(path & "/templates") ) {
+				variables.instance.themeLookup['#arguments.theme#'].themeDir=path;
+				return path;
+			}
+			variables.instance.themeLookup['#arguments.theme#'].themeDir= "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/";
+			return variables.instance.themeLookup['#arguments.theme#'].themeDir;
+		}
+	}
+
+	public function getThemes() output=false {
+		var rs = "";
+		var themeDir="";
+		var rsDirs="";
+		var rs=QueryNew('empty');
+		var qs="";
+		if ( len(variables.instance.displayPoolID) ) {
+			themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/themes";
+			if ( directoryExists(themeDir) ) {
+				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
+				qs=getQueryService();
+				qs.setAttribute('rsDirs',rsDirs);
+				qs.setAttribute('rs',rs);
+				qs.setDbType('query');
+
+				rs=qs.execute(sql="
+					select * from rsDirs where type='Dir' and name not like '%.svn'
+					union
+					select * from rs
+				").getResult();
+			}
+			themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/themes";
+			if ( directoryExists(themeDir) ) {
+				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
+				qs=getQueryService();
+				qs.setAttribute('rsDirs',rsDirs);
+				qs.setAttribute('rs',rs);
+				qs.setDbType('query');
+
+				rs=qs.execute(sql="
+					select * from rsDirs where type='Dir' and name not like '%.svn'
+					union
+					select * from rs
+				").getResult();
+				}
+		} else {
+			themeDir="#variables.configBean.getSiteDir()#/default/themes";
+			if ( directoryExists(themeDir) ) {
+				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
+				qs=getQueryService();
+				qs.setAttribute('rsDirs',rsDirs);
+				qs.setAttribute('rs',rs);
+				qs.setDbType('query');
+
+				rs=qs.execute(sql="
+					select * from rsDirs where type='Dir' and name not like '%.svn'
+					union
+					select * from rs
+				").getResult();
+			}
+			themeDir="#variables.configBean.getSiteDir()#/default/includes/themes";
+			if ( directoryExists(themeDir) ) {
+				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
+				qs=getQueryService();
+				qs.setAttribute('rsDirs',rsDirs);
+				qs.setAttribute('rs',rs);
+				qs.setDbType('query');
+
+				rs=qs.execute(sql="
+					select * from rsDirs where type='Dir' and name not like '%.svn'
+					union
+					select * from rs
+				").getResult();
+		}
+		themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes";
+		if ( directoryExists(themeDir) ) {
+			rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
+			qs=getQueryService();
+			qs.setAttribute('rsDirs',rsDirs);
+			qs.setAttribute('rs',rs);
+			qs.setDbType('query');
+
+			rs=qs.execute(sql="
+				select * from rsDirs where type='Dir' and name not like '%.svn'
 				union
-
 				select * from rs
-			</cfif>
-			</cfquery>
-		</cfif>
+			").getResult();
+		}
+	}
+		return rs;
+	}
 
-		<cfset themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/themes">
+	public function getTemplates(required type="") output=false {
+		var rs = "";
+		var dir="";
+		var qs="";
+		switch ( arguments.type ) {
+			case  "Component,Email":
+				dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s";
+				if ( directoryExists(dir) ) {
+					rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=dir );
+					qs=getQueryService();
+					qs.setAttribute('rs',rs);
+					qs.setDbType('query');
+					rs=qs.execute(sql="
+						select * from rs order by name
+					").getResult();
+				} else {
+					rs=queryNew("empty");
+				}
+				break;
+			default:
+				rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=getTemplateIncludeDir() );
+				qs=getQueryService();
+				qs.setAttribute('rs',rs);
+				qs.setDbType('query');
+				rs=qs.execute(sql="
+					select * from rs order by name
+				").getResult();
+				break;
+		}
+		return rs;
+	}
 
-		<cfif directoryExists(themeDir)>
-			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
-
-			<cfquery name="rs" dbtype="query">
-			select * from rsDirs where type='Dir' and name not like '%.svn'
-
-			<cfif isQuery(rs)>
-				union
-
-				select * from rs
-			</cfif>
-			</cfquery>
-		</cfif>
-
-	<cfelse>
-		<cfset themeDir="#variables.configBean.getSiteDir()#/default/themes">
-
-		<cfif directoryExists(themeDir)>
-			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
-
-			<cfquery name="rs" dbtype="query">
-			select * from rsDirs where type='Dir' and name not like '%.svn'
-
-			<cfif isQuery(rs)>
-				union
-
-				select * from rs
-			</cfif>
-			</cfquery>
-		</cfif>
-
-		<cfset themeDir="#variables.configBean.getSiteDir()#/default/includes/themes">
-
-		<cfif directoryExists(themeDir)>
-			<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
-
-			<cfquery name="rs" dbtype="query">
-			select * from rsDirs where type='Dir' and name not like '%.svn'
-
-			<cfif isQuery(rs)>
-				union
-
-				select * from rs
-			</cfif>
-			</cfquery>
-		</cfif>
-	</cfif>
-
-	<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes">
-
-	<cfif directoryExists(themeDir)>
-		<cfdirectory action="list" directory="#themeDir#" name="rsDirs">
-
-		<cfquery name="rs" dbtype="query">
-
-		select * from rsDirs where type='Dir' and name not like '%.svn'
-
-		<cfif isQuery(rs)>
-			union
-
-			select * from rs
-		</cfif>
-		</cfquery>
-	</cfif>
-
-	<cfreturn rs />
-</cffunction>
-
-<cffunction name="getTemplates" output="false">
-	<cfargument name="type" required="true" default="">
-	<cfset var rs = "">
-	<cfset var dir="">
-
-	<cfswitch expression="#arguments.type#">
-	<cfcase value="Component,Email">
-
-		<cfset dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s">
-
-		<cfif directoryExists(dir)>
-			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm|*.html|*.htm|*.hbs">
-			<cfquery name="rs" dbType="query">
-			select * from rs order by name
-			</cfquery>
-		<cfelse>
-			<cfset rs=queryNew("empty")>
-		</cfif>
-	</cfcase>
-	<cfdefaultcase>
-
-		<cfdirectory action="list" directory="#getTemplateIncludeDir()#" name="rs" filter="*.cfm|*.html|*.htm|*.hbs">
-		<cfquery name="rs" dbType="query">
-			select * from rs order by name
-		</cfquery>
-	</cfdefaultcase>
-	</cfswitch>
-
-	<cfreturn rs />
-</cffunction>
-
-<cffunction name="getLayouts" output="false">
-	<cfargument name="type" required="true" default="collection/layouts">
-
-	<cfparam name="variables.instance.collectionLayouts" default="">
-
-	<cfif not isQuery(variables.instance.collectionLayouts)>
-
-		<cfset var rsFinal = queryNew('name','varchar')>
-		<cfset var rs = "">
-		<cfset var dir = "">
-
-		<cfloop array="#variables.instance.displayObjectLoopUpArray#" index="dir">
-			<cfset dir=expandPath('#dir##trim(arguments.type)#')>
-
-			<cfif directoryExists(dir)>
-				<cfdirectory action="list" directory="#dir#" name="rs" type="dir">
-
-				<cfif rs.recordcount>
-					<cfquery name="rsFinal" dbType="query">
+	public function getLayouts(required type="collection/layouts") output=false {
+		param name="variables.instance.collectionLayouts" default="";
+		if ( !isQuery(variables.instance.collectionLayouts) ) {
+			var rsFinal = queryNew('name','varchar');
+			var rs = queryNew('name','varchar');
+			var qs = "";
+			var dir = "";
+			for ( dir in variables.instance.displayObjectLoopUpArray ) {
+				dir=expandPath('#dir##trim(arguments.type)#');
+				if ( directoryExists(dir) ) {
+					rs=getBean('fileWriter').getDirectoryList( directory=dir ,type='dir');
+					if ( rs.recordcount ) {
+						qs=getQueryService();
+						qs.setAttribute('rs',rs);
+						qs.setAttribute('rsFinal',rsFinal);
+						qs.setDbType('query');
+						rsFinal=qs.execute(sql="
 						select name from rsFinal
-
 						union
-
 						select name from rs
-					</cfquery>
-				</cfif>
-			</cfif>
-		</cfloop>
+						").getResult();
+					}
+				}
+			}
 
-		<cfquery name="rsFinal" dbType="query">
+			qs=getQueryService();
+			qs.setAttribute('rsFinal',rsFinal);
+			qs.setDbType('query');
+			rsFinal=qs.execute(sql="
 			select distinct name from rsFinal
 			order by name asc
-		</cfquery>
-
-		<cfset variables.instance.collectionLayouts=rsFinal>
-	</cfif>
-
-	<cfreturn variables.instance.collectionLayouts />
-</cffunction>
-
-<cffunction name="isValidDomain" output="false" returntype="boolean">
-	<cfargument name="domain">
-	<cfargument name="mode" required="true" default="either">
-	<cfargument name="enforcePrimaryDomain" default="false">
-	<cfset var i="">
-	<cfset var lineBreak=chr(13)&chr(10)>
-
-	<cfif arguments.enforcePrimaryDomain and variables.instance.enforcePrimaryDomain>
-		<cfif arguments.domain eq getDomain()>
-			<cfreturn true>
-		</cfif>
-	<cfelse>
-		<cfif arguments.mode neq "partial">
-			<cfif arguments.domain eq getDomain()>
-				<cfreturn true>
-			<cfelseif len(variables.instance.domainAlias)>
-				<cfloop list="#variables.instance.domainAlias#" delimiters="#lineBreak#" index="i">
-					<cfif arguments.domain eq i>
-						<cfreturn true>
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
-
-		<cfif arguments.mode neq "complete">
-			<cfif find(arguments.domain,getDomain())>
-				<cfreturn true>
-			<cfelseif len(variables.instance.domainAlias)>
-				<cfloop list="#variables.instance.domainAlias#" delimiters="#lineBreak#" index="i">
-					<cfif find(arguments.domain,i)>
-						<cfreturn true>
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
-	</cfif>
-
-	<cfreturn false>
-</cffunction>
-
-<cffunction name="getLocalHandler" output="false">
-	<cfset var localHandler="">
-	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/eventHandler.cfc")>
-		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.eventHandler").init()>
-		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.eventHandler")>
-	<cfelseif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
-		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init()>
-		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler")>
-	<cfelseif getValue('displaypoolid') neq getValue('siteid') and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('displaypoolid')#/includes/eventHandler.cfc")>
-		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler").init()>
-		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler")>
-	</cfif>
-	<cfreturn localHandler>
-</cffunction>
-
-<cffunction name="getContentRenderer" output="false">
-<cfargument name="$" default="">
-	<cfif not isObject(variables.instance.contentRenderer)>
-		<cfset arguments.$=getBean("$").init(getValue('siteid'))>
-		<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer(force=true)>
-	</cfif>
-	<cfreturn variables.instance.contentRenderer>
-</cffunction>
-
-<cffunction name="getApi" output="false">
-<cfargument name="type" default="json">
-<cfargument name="version" default="v1">
-
-	<cfif not isDefined('variables.instance.api#arguments.type##arguments.version#')>
-		<cfset variables.instance['api#arguments.type##arguments.version#']=evaluate('new mura.client.api.#arguments.type#.#arguments.version#.apiUtility(siteid=getValue("siteid"))')>
-	</cfif>
-
-	<cfreturn variables.instance['api#arguments.type##arguments.version#']>
-</cffunction>
-
-<cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
-	<cfreturn getContentRenderer()>
-</cffunction>
-
-<cffunction name="exportHTML" output="false">
-	<cfargument name="exportDir" default="">
-	<cfif len(arguments.exportdir)>
-		<cfset getBean("HTMLExporter").export(variables.instance.siteID,arguments.exportDir)>
-	<cfelse>
-		<cfset getBean("HTMLExporter").export(variables.instance.siteID,variables.instance.exportLocation)>
-	</cfif>
-</cffunction>
-
-<cffunction name="save" output="false">
-	<cfset setAllValues(application.settingsManager.save(this).getAllValues())>
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="getCustomImageSizeQuery" output="false">
-	<cfargument name="reset" default="false">
-	<cfset var rsCustomImageSizeQuery="">
-
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCustomImageSizeQuery')#">
-		select sizeid,siteid,name,height,width from timagesizes where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteid#">
-	</cfquery>
-
-	<cfreturn rsCustomImageSizeQuery>
-</cffunction>
-
-<cffunction name="getCustomImageSizeIterator" output="false">
-	<cfreturn getBean("imageSizeIterator").setQuery(getCustomImageSizeQuery())>
-</cffunction>
-
-<!---
-	Not sure I want to expose this.
-<cffunction name="delete" output="false">
-	<cfset application.settingsManager.delete(variables.instance.siteID) />
-</cffunction>
---->
-
-<cffunction name="loadBy" output="false">
-	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset arguments.siteID=variables.instance.siteID>
-	</cfif>
-
-	<cfset arguments.settingsBean=this>
-
-	<cfreturn application.settingsManager.read(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="getScheme" output="false">
-	<cfreturn YesNoFormat(getValue('useSSL')) ? 'https' : 'http' />
-</cffunction>
-
-<cffunction name="getProtocol" output="false">
-	<cfreturn UCase(getScheme()) />
-</cffunction>
-
-<cffunction name="getRazunaSettings" output="false">
-	<cfif not structKeyExists(variables,'razunaSettings')>
-		<cfset variables.razunaSettings=getBean('razunaSettings').loadBy(siteid=getValue('siteid'))>
-	</cfif>
-	<cfreturn variables.razunaSettings>
-</cffunction>
-
-<cffunction name="getContentPoolID" output="false">
-
-	<cfif not listFindNoCase(variables.instance.contentPoolID,getValue('siteid'))>
-		<!---<cfset variables.instance.contentPoolID=listAppend(arguments.contentPoolID,getValue('siteid'))>--->
-	</cfif>
-
-	<cfreturn variables.instance.contentPoolID>
-</cffunction>
-
-<cffunction name="getHasSharedFilePool" output="false">
-	<cfif not isBoolean(variables.instance.hasSharedFilePool)>
-		<cfif getValue('siteid') neq getValue('filePoolID')>
-			<cfset variables.instance.hasSharedFilePool=true/>
-		<cfelse>
-			<cfset var rs="">
-			<cfquery name="rs">
-				select count(*) as counter from tsettings
-				where filePoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value='#getValue('siteid')#'>
-				and siteid!=<cfqueryparam cfsqltype="cf_sql_varchar" value='#getValue('siteid')#'>
-			</cfquery>
-			<cfset variables.instance.hasSharedFilePool=rs.counter/>
-		</cfif>
-	</cfif>
-	<cfreturn variables.instance.hasSharedFilePool>
-</cffunction>
-
-<cffunction name="setHasLockableNodes" output="false">
-	<cfargument name="hasLockableNodes" type="String" />
-	<cfif isNumeric(arguments.hasLockableNodes)>
-	<cfset variables.instance.hasLockableNodes = arguments.hasLockableNodes />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setJSONApi" output="false">
-	<cfargument name="JSONApi" type="String" />
-	<cfif isNumeric(arguments.JSONApi)>
-	<cfset variables.instance.JSONApi = arguments.JSONApi />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setIsRemote" output="false">
-	<cfargument name="isRemote" type="String" />
-	<cfif isNumeric(arguments.isRemote)>
-	<cfset variables.instance.isRemote = arguments.isRemote />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setResourceSSL" output="false">
-	<cfargument name="resourceSSL" type="String" />
-	<cfif isNumeric(arguments.resourceSSL)>
-	<cfset variables.instance.resourceSSL = arguments.resourceSSL />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setRemotePort" output="false">
-	<cfargument name="RemotePort" type="String" />
-	<cfif isNumeric(arguments.RemotePort)>
-	<cfset variables.instance.RemotePort = arguments.RemotePort />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setUseSSL" output="false">
-	<cfargument name="useSSL">
-
-	<cfif isBoolean(arguments.useSSL)>
-		<cfif arguments.useSSL>
-			<cfset variables.instance.useSSL=1>
-			<cfset variables.instance.extranetSSL=1>
-		<cfelse>
-			<cfset variables.instance.useSSL=0>
-			<cfset variables.instance.extranetSSL=0>
-		</cfif>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setShowDashboard" output="false">
-	<cfargument name="showDashboard">
-
-	<cfif isBoolean(arguments.showDashboard)>
-		<cfif arguments.showDashboard>
-			<cfset variables.instance.showDashboard=1>
-		<cfelse>
-			<cfset variables.instance.showDashboard=0>
-		</cfif>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContext" output="false">
-	<cfif getValue('isRemote')>
-		<cfreturn getValue('RemoteContext')>
-	<cfelse>
-		<cfreturn application.configBean.getContext()>
-	</cfif>
-</cffunction>
-
-<cffunction name="getServerPort" output="false">
-	<cfif getValue('isRemote')>
-		<cfset var port=getValue('RemotePort')>
-		<cfif isNumeric(port) and !ListFind('80,443', port)>
-			<cfreturn ":" & port>
-		<cfelse>
-			<cfreturn "">
-		</cfif>
-	<cfelse>
-		<cfreturn application.configBean.getServerPort()>
-	</cfif>
-</cffunction>
-
-<cffunction name="getAdminPath" output="false">
-	<cfargument name="useProtocol" default="1">
-	<cfreturn getBean('configBean').getAdminPath(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="getWebPath" output="false">
-	<cfargument name="secure" default="#getValue('useSSL')#">
-	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="">
-	<cfargument name="useProtocol" default="1">
-
-	<cfif arguments.secure or arguments.complete>
-
-		<cfif len(request.muraPreviewDomain) and isValidDomain(domain=request.muraPreviewDomain,mode='complete')>
-			<cfset arguments.domain=request.muraPreviewDomain>
-		</cfif>
-
-		<cfif not isDefined('arguments.domain') or not len(arguments.domain)>
-			<cfif len(cgi.server_name) and isValidDomain(domain=cgi.server_name,mode='complete')>
-				<cfset arguments.domain=cgi.server_name>
-			<cfelse>
-				<cfset arguments.domain=getValue('domain')>
-			</cfif>
-		</cfif>
-
-		<cfif arguments.useProtocol>
-			<cfif arguments.secure>
-				<cfreturn 'https://' & arguments.domain & getServerPort() & getContext()>
-			<cfelse>
-				<cfreturn getScheme() & '://' & arguments.domain & getServerPort() & getContext()>
-			</cfif>
-		<cfelse>
-			<cfreturn '//' & arguments.domain & getServerPort() & getContext()>
-		</cfif>
-
-	<cfelse>
-		<cfreturn getContext()>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getEndpoint" output="false">
-	<cfargument name="secure" default="#getValue('useSSL')#">
-	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="">
-	<cfargument name="useProtocol" default="1">
-	<cfreturn getWebPath(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="getRootPath" output="false">
-	<cfargument name="secure" default="#getValue('useSSL')#">
-	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="">
-	<cfargument name="useProtocol" default="1">
-	<cfreturn getWebPath(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="getResourcePath" output="false">
-	<cfargument name="complete" default=0>
-	<cfargument name="domain" default="">
-	<cfargument name="useProtocol" default="1">
-
-	<cfif len(request.muraPreviewDomain) and isValidDomain(domain=request.muraPreviewDomain,mode='complete')>
-		<cfset arguments.domain=request.muraPreviewDomain>
-	</cfif>
-
-	<cfif not isDefined('arguments.domain') or not len(arguments.domain)>
-		<cfif len(cgi.server_name) and isValidDomain(domain=cgi.server_name,mode='complete')>
-			<cfset arguments.domain=cgi.server_name>
-		<cfelse>
-			<cfset arguments.domain=getValue('domain')>
-		</cfif>
-	</cfif>
-
-	<cfif getValue('isRemote') and len(getValue('resourceDomain'))>
-		<cfset var configBean=getBean('configBean')>
-
-		<cfif arguments.useProtocol>
-			<cfif getValue('resourceSSL')>
-				<cfreturn "https://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
-			<cfelse>
-				<cfreturn "http://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
-			</cfif>
-		<cfelse>
-			<cfreturn "//" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
-		</cfif>
-
-	<cfelseif arguments.complete>
-		<cfreturn getWebPath(argumentCollection=arguments)>
-	<cfelse>
-		<cfreturn getContext()>
-	</cfif>
-</cffunction>
-
-<cffunction name="getRequirementsPath" output="false">
-	<cfargument name="secure" default="#getValue('useSSL')#">
-	<cfargument name="complete" default=0>
-	<cfargument name="useProtocol" default="1">
-	<cfreturn getResourcePath(argumentCollection=arguments) & "/requirements">
-</cffunction>
-
-<cffunction name="getPluginsPath" output="false">
-	<cfargument name="secure" default="#getValue('useSSL')#">
-	<cfargument name="complete" default=0>
-	<cfargument name="useProtocol" default="1">
-	<cfreturn getResourcePath(argumentCollection=arguments) & "/plugins">
-</cffunction>
-
-<cffunction name="getAccessControlOriginList" output="false">
-	<cfset var thelist="http://#getValue('domain')#,https://#getValue('domain')#">
-	<cfset var adminSSL=application.configBean.getAdminSSL()>
-	<cfset var i="">
-	<cfset var lineBreak=chr(13)&chr(10)>
-	<cfset var theurl = "#getValue('domain')##application.configBean.getServerPort()#">
-
-	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-		<cfset thelist = listAppend(thelist,'http://#theurl#')>
-	</cfif>
-	<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-		<cfset thelist = listAppend(thelist,'https://#theurl#')>
-	</cfif>
-
-	<cfset theurl = "#getValue('domain')#:#cgi.server_port#">
-	<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-		<cfset thelist = listAppend(thelist,'http://#theurl#')>
-	</cfif>
-	<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-		<cfset thelist = listAppend(thelist,'https://#theurl#')>
-	</cfif>
-
-	<cfif len(application.configBean.getAdminDomain())>
-		<cfset theurl="#application.configBean.getAdminDomain()#">
-		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-			<cfset thelist = listAppend(thelist,theurl)>
-		</cfif>
-		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-			<cfset thelist = listAppend(thelist,theurl)>
-		</cfif>
-
-		<cfset theurl="#application.configBean.getAdminDomain()##application.configBean.getServerPort()#">
-		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-			<cfset thelist = listAppend(thelist,theurl)>
-		</cfif>
-		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-			<cfset thelist = listAppend(thelist,theurl)>
-		</cfif>
-
-		<cfset theurl="#application.configBean.getAdminDomain()#:#cgi.server_port#">
-		<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-			<cfset thelist = listAppend(thelist,theurl)>
-		</cfif>
-		<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-			<cfset thelist = listAppend(thelist,theurl)>
-		</cfif>
-
-	</cfif>
-
-	<cfif len(getValue('domainAlias'))>
-		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
-			<cfset theurl = "#i##getServerPort()#" />
-			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-				<cfset thelist = listAppend(thelist,"http://#theurl#")>
-			</cfif>
-			<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-				<cfset thelist = listAppend(thelist,"https://#theurl#")>
-			</cfif>
-
-			<cfset theurl = "#i#:#cgi.server_port#" />
-			<cfif not ListFindNoCase(thelist, 'http://#theurl#')>
-				<cfset thelist = listAppend(thelist,"http://#theurl#")>
-			</cfif>
-			<cfif not ListFindNoCase(thelist, 'https://#theurl#')>
-				<cfset thelist = listAppend(thelist,"https://#theurl#")>
-			</cfif>
-		</cfloop>
-	</cfif>
-
-	<cfreturn thelist>
-</cffunction>
-
-<cffunction name="getVersion" output="false">
-	<cfreturn getBean('autoUpdater').getCurrentVersion(getValue('siteid'))>
-</cffunction>
-
-<cffunction name="registerDisplayObject" output="false">
-	<cfargument name="object">
-	<cfargument name="name" default="">
-	<cfargument name="displaymethod" default="">
-	<cfargument name="displayObjectFile" default="">
-	<cfargument name="configuratorInit" default="">
-	<cfargument name="configuratorJS" default="">
-	<cfargument name="contenttypes" default="">
-	<cfargument name="omitcontenttypes" default="">
-	<cfargument name="condition" default="true">
-    <cfargument name="legacyObjectFile" default="">
-	<cfargument name="custom" default="true">
-	<cfargument name="iconclass" default="mi-cog">
-	<cfargument name="cacheoutput" default="true">
-	<cfset arguments.objectid=arguments.object>
-	<cfset variables.instance.displayObjectLookup['#arguments.object#']=arguments>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="clearFilePaths" output="false">
-	<cfset variables.instance.displayObjectFilePathLookup=structNew()>
-	<cfset variables.instance.contentTypeFilePathLookup=structNew()>
-</cffunction>
-
-<cffunction name="lookupContentTypeFilePath" output="false">
-	<cfargument name="filePath">
-	<cfargument name="customOnly" default="false">
-
-	<cfset arguments.filePath=REReplace(listFirst(Replace(arguments.filePath, "\", "/", "ALL"),"/"), "[^a-zA-Z0-9_]", "", "ALL") & "/index.cfm">
-
-	<cfif len(request.altTheme)>
-		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/content_types/" & arguments.filePath>
-		<cfif fileExists(expandPath(altThemePath))>
-			<cfreturn altThemePath>
-		</cfif>
-	</cfif>
-
-	<cfif hasContentTypeFilePath(arguments.filePath)>
-		<cfreturn getContentTypeFilePath(arguments.filePath)>
-	</cfif>
-
-	<cfset var dir="">
-	<cfset var result="">
-	<cfset var coreIndex=arrayLen(variables.instance.contentTypeLoopUpArray)-2>
-	<cfset var dirIndex=0>
-
-	<cfloop array="#variables.instance.contentTypeLoopUpArray#" index="dir">
-		<cfset dirIndex=dirIndex+1>
-		<cfif not arguments.customonly or dirIndex lt coreIndex>
-			<cfset result=dir & arguments.filePath>
-			<cfif fileExists(expandPath(result))>
-				<cfset setContentTypeFilePath(arguments.filePath,result)>
-				<cfreturn result>
-			</cfif>
-		</cfif>
-	</cfloop>
-
-	<cfset setContentTypeFilePath(arguments.filePath,"")>
-	<cfreturn "">
-</cffunction>
-
-<cffunction name="hasContentTypeFilePath" output="false">
-	<cfargument name="filepath">
-	<cfreturn structKeyExists(variables.instance.contentTypeFilePathLookup,'#arguments.filepath#')>
-</cffunction>
-
-<cffunction name="getContentTypeFilePath" output="false">
-	<cfargument name="filepath">
-	<cfreturn variables.instance.contentTypeFilePathLookup['#arguments.filepath#']>
-</cffunction>
-
-<cffunction name="setContentTypeFilePath" output="false">
-	<cfargument name="filepath">
-	<cfargument name="result">
-	<cfset variables.instance.contentTypeFilePathLookup['#arguments.filepath#']=arguments.result>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="registerContentTypeDirs" output="false">
-	<cfset var lookupArray=[
+			").getResult();
+			variables.instance.collectionLayouts=rsFinal;
+		}
+		return variables.instance.collectionLayouts;
+	}
+
+	public boolean function isValidDomain(domain, required mode="either", enforcePrimaryDomain="false") output=false {
+		var i="";
+		var lineBreak=chr(13)&chr(10);
+		if ( arguments.enforcePrimaryDomain && variables.instance.enforcePrimaryDomain ) {
+			if ( arguments.domain == getDomain() ) {
+				return true;
+			}
+		} else {
+			if ( arguments.mode != "partial" ) {
+				if ( arguments.domain == getDomain() ) {
+					return true;
+				} else if ( len(variables.instance.domainAlias) ) {
+					for(i in ListToArray(variables.instance.domainAlias, lineBreak)){
+						if(arguments.domain eq i){
+							return truue;
+						}
+					}
+				}
+			}
+			if ( arguments.mode != "complete" ) {
+				if ( find(arguments.domain,getDomain()) ) {
+					return true;
+				} else if ( len(variables.instance.domainAlias) ) {
+					for(i in ListToArray(variables.instance.domainAlias, lineBreak)){
+						if(find(arguments.domain,i)){
+							return truue;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public function getLocalHandler() output=false {
+		var localHandler="";
+		if ( fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/eventHandler.cfc") ) {
+			localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.eventHandler").init();
+			localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.eventHandler");
+		} else if ( fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc") ) {
+			localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init();
+			localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler");
+		} else if ( getValue('displaypoolid') != getValue('siteid') && fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('displaypoolid')#/includes/eventHandler.cfc") ) {
+			localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler").init();
+			localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler");
+		}
+		return localHandler;
+	}
+
+	public function getContentRenderer($="") output=false {
+		if ( !isObject(variables.instance.contentRenderer) ) {
+			arguments.$=getBean("$").init(getValue('siteid'));
+			variables.instance.contentRenderer=arguments.$.getContentRenderer(force=true);
+		}
+		return variables.instance.contentRenderer;
+	}
+
+	public function getApi(type="json", version="v1") output=false {
+		if ( !isDefined('variables.instance.api#arguments.type##arguments.version#') ) {
+			variables.instance['api#arguments.type##arguments.version#']=evaluate('new mura.client.api.#arguments.type#.#arguments.version#.apiUtility(siteid=getValue("siteid"))');
+		}
+		return variables.instance['api#arguments.type##arguments.version#'];
+	}
+
+	/**
+	 * deprecated: use getContentRenderer()
+	 */
+	public function getThemeRenderer() output=false {
+		return getContentRenderer();
+	}
+
+	public function exportHTML(exportDir="") output=false {
+		if ( len(arguments.exportdir) ) {
+			getBean("HTMLExporter").export(variables.instance.siteID,arguments.exportDir);
+		} else {
+			getBean("HTMLExporter").export(variables.instance.siteID,variables.instance.exportLocation);
+		}
+	}
+
+	public function save() output=false {
+		setAllValues(application.settingsManager.save(this).getAllValues());
+		return this;
+	}
+
+	public function getCustomImageSizeQuery(reset="false") output=false {
+		var rsCustomImageSizeQuery="";
+		var qs=getQueryService(readOnly=true);
+		qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=variables.instance.siteid );
+		rsCustomImageSizeQuery=qs.execute(sql="
+		select sizeid,siteid,name,height,width from timagesizes where siteID= :siteid
+		").getResult();
+		return rsCustomImageSizeQuery;
+	}
+
+	public function getCustomImageSizeIterator() output=false {
+		return getBean("imageSizeIterator").setQuery(getCustomImageSizeQuery());
+	}
+
+	public function loadBy() output=false {
+		if ( !structKeyExists(arguments,"siteID") ) {
+			arguments.siteID=variables.instance.siteID;
+		}
+		arguments.settingsBean=this;
+		return application.settingsManager.read(argumentCollection=arguments);
+	}
+
+	public function getScheme() output=false {
+		return YesNoFormat(getValue('useSSL')) ? 'https' : 'http';
+	}
+
+	public function getProtocol() output=false {
+		return UCase(getScheme());
+	}
+
+	public function getRazunaSettings() output=false {
+		if ( !structKeyExists(variables,'razunaSettings') ) {
+			variables.razunaSettings=getBean('razunaSettings').loadBy(siteid=getValue('siteid'));
+		}
+		return variables.razunaSettings;
+	}
+
+	public function getContentPoolID() output=false {
+		if ( !listFindNoCase(variables.instance.contentPoolID,getValue('siteid')) ) {
+			//variables.instance.contentPoolID=listAppend(arguments.contentPoolID,getValue('siteid'));
+		}
+		return variables.instance.contentPoolID;
+	}
+
+	public function getHasSharedFilePool() output=false {
+		if ( !isBoolean(variables.instance.hasSharedFilePool) ) {
+			if ( getValue('siteid') != getValue('filePoolID') ) {
+				variables.instance.hasSharedFilePool=true;
+			} else {
+				var rs="";
+				var qs=getQueryService(readOnly=true);
+				qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=getValue('siteid'));
+				qs.addParam(name="filepoolid", cfsqltype="cf_sql_varchar", value=getValue('siteid'));
+				variables.instance.hasSharedFilePool=qs.execute(sql="select count(*) as counter from tsettings
+				where filePoolID= :filePoolID and and siteid!= :siteid").getResult().counter;
+			}
+		}
+		return variables.instance.hasSharedFilePool;
+	}
+
+	public function setHasLockableNodes(String hasLockableNodes) output=false {
+		if ( isNumeric(arguments.hasLockableNodes) ) {
+			variables.instance.hasLockableNodes = arguments.hasLockableNodes;
+		}
+		return this;
+	}
+
+	public function setJSONApi(String JSONApi) output=false {
+		if ( isNumeric(arguments.JSONApi) ) {
+			variables.instance.JSONApi = arguments.JSONApi;
+		}
+		return this;
+	}
+
+	public function setIsRemote(String isRemote) output=false {
+		if ( isNumeric(arguments.isRemote) ) {
+			variables.instance.isRemote = arguments.isRemote;
+		}
+		return this;
+	}
+
+	public function setResourceSSL(String resourceSSL) output=false {
+		if ( isNumeric(arguments.resourceSSL) ) {
+			variables.instance.resourceSSL = arguments.resourceSSL;
+		}
+		return this;
+	}
+
+	public function setRemotePort(String RemotePort) output=false {
+		if ( isNumeric(arguments.RemotePort) ) {
+			variables.instance.RemotePort = arguments.RemotePort;
+		}
+		return this;
+	}
+
+	public function setUseSSL(useSSL) output=false {
+		if ( isBoolean(arguments.useSSL) ) {
+			if ( arguments.useSSL ) {
+				variables.instance.useSSL=1;
+				variables.instance.extranetSSL=1;
+			} else {
+				variables.instance.useSSL=0;
+				variables.instance.extranetSSL=0;
+			}
+		}
+		return this;
+	}
+
+	public function setShowDashboard(showDashboard) output=false {
+		if ( isBoolean(arguments.showDashboard) ) {
+			if ( arguments.showDashboard ) {
+				variables.instance.showDashboard=1;
+			} else {
+				variables.instance.showDashboard=0;
+			}
+		}
+		return this;
+	}
+
+	public function getContext() output=false {
+		if ( getValue('isRemote') ) {
+			return getValue('RemoteContext');
+		} else {
+			return application.configBean.getContext();
+		}
+	}
+
+	public function getServerPort() output=false {
+		if ( getValue('isRemote') ) {
+			var port=getValue('RemotePort');
+			if ( isNumeric(port) && !ListFind('80,443', port) ) {
+				return ":" & port;
+			} else {
+				return "";
+			}
+		} else {
+			return application.configBean.getServerPort();
+		}
+	}
+
+	public function getAdminPath(useProtocol="1") output=false {
+		return getBean('configBean').getAdminPath(argumentCollection=arguments);
+	}
+
+	public function getWebPath(secure="#getValue('useSSL')#", complete="0", domain="", useProtocol="1") output=false {
+		if ( arguments.secure || arguments.complete ) {
+			if ( len(request.muraPreviewDomain) && isValidDomain(domain=request.muraPreviewDomain,mode='complete') ) {
+				arguments.domain=request.muraPreviewDomain;
+			}
+			if ( !isDefined('arguments.domain') || !len(arguments.domain) ) {
+				if ( len(cgi.server_name) && isValidDomain(domain=cgi.server_name,mode='complete') ) {
+					arguments.domain=cgi.server_name;
+				} else {
+					arguments.domain=getValue('domain');
+				}
+			}
+			if ( arguments.useProtocol ) {
+				if ( arguments.secure ) {
+					return 'https://' & arguments.domain & getServerPort() & getContext();
+				} else {
+					return getScheme() & '://' & arguments.domain & getServerPort() & getContext();
+				}
+			} else {
+				return '//' & arguments.domain & getServerPort() & getContext();
+			}
+		} else {
+			return getContext();
+		}
+	}
+
+	public function getEndpoint(secure="#getValue('useSSL')#", complete="0", domain="", useProtocol="1") output=false {
+		return getWebPath(argumentCollection=arguments);
+	}
+
+	public function getRootPath(secure="#getValue('useSSL')#", complete="0", domain="", useProtocol="1") output=false {
+		return getWebPath(argumentCollection=arguments);
+	}
+
+	public function getResourcePath(complete="0", domain="", useProtocol="1") output=false {
+		if ( len(request.muraPreviewDomain) && isValidDomain(domain=request.muraPreviewDomain,mode='complete') ) {
+			arguments.domain=request.muraPreviewDomain;
+		}
+		if ( !isDefined('arguments.domain') || !len(arguments.domain) ) {
+			if ( len(cgi.server_name) && isValidDomain(domain=cgi.server_name,mode='complete') ) {
+				arguments.domain=cgi.server_name;
+			} else {
+				arguments.domain=getValue('domain');
+			}
+		}
+		if ( getValue('isRemote') && len(getValue('resourceDomain')) ) {
+			var configBean=getBean('configBean');
+			if ( arguments.useProtocol ) {
+				if ( getValue('resourceSSL') ) {
+					return "https://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
+				} else {
+					return "http://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
+				}
+			} else {
+				return "//" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext();
+			}
+		} else if ( arguments.complete ) {
+			return getWebPath(argumentCollection=arguments);
+		} else {
+			return getContext();
+		}
+	}
+
+	public function getRequirementsPath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
+		return getResourcePath(argumentCollection=arguments) & "/requirements";
+	}
+
+	public function getPluginsPath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
+		return getResourcePath(argumentCollection=arguments) & "/plugins";
+	}
+
+	public function getAccessControlOriginList() output=false {
+		var thelist="http://#getValue('domain')#,https://#getValue('domain')#";
+		var adminSSL=application.configBean.getAdminSSL();
+		var i="";
+		var lineBreak=chr(13)&chr(10);
+		var theurl = "#getValue('domain')##application.configBean.getServerPort()#";
+		if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
+			thelist = listAppend(thelist,'http://#theurl#');
+		}
+		if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
+			thelist = listAppend(thelist,'https://#theurl#');
+		}
+		theurl = "#getValue('domain')#:#cgi.server_port#";
+		if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
+			thelist = listAppend(thelist,'http://#theurl#');
+		}
+		if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
+			thelist = listAppend(thelist,'https://#theurl#');
+		}
+		if ( len(application.configBean.getAdminDomain()) ) {
+			theurl="#application.configBean.getAdminDomain()#";
+			if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
+				thelist = listAppend(thelist,theurl);
+			}
+			if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
+				thelist = listAppend(thelist,theurl);
+			}
+			theurl="#application.configBean.getAdminDomain()##application.configBean.getServerPort()#";
+			if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
+				thelist = listAppend(thelist,theurl);
+			}
+			if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
+				thelist = listAppend(thelist,theurl);
+			}
+			theurl="#application.configBean.getAdminDomain()#:#cgi.server_port#";
+			if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
+				thelist = listAppend(thelist,theurl);
+			}
+			if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
+				thelist = listAppend(thelist,theurl);
+			}
+		}
+		if ( len(getValue('domainAlias')) ) {
+			for(i in listToArray(getValue('domainAlias'),lineBreak)){
+				theurl = "#i##getServerPort()#";
+				if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
+					thelist = listAppend(thelist,"http://#theurl#");
+				}
+				if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
+					thelist = listAppend(thelist,"https://#theurl#");
+				}
+				theurl = "#i#:#cgi.server_port#";
+				if ( !ListFindNoCase(thelist, 'http://#theurl#') ) {
+					thelist = listAppend(thelist,"http://#theurl#");
+				}
+				if ( !ListFindNoCase(thelist, 'https://#theurl#') ) {
+					thelist = listAppend(thelist,"https://#theurl#");
+				}
+			}
+		}
+		return thelist;
+	}
+
+	public function getVersion() output=false {
+		return getBean('autoUpdater').getCurrentVersion(getValue('siteid'));
+	}
+
+	public function registerDisplayObject(object, name="", displaymethod="", displayObjectFile="", configuratorInit="", configuratorJS="", contenttypes="", omitcontenttypes="", condition="true", legacyObjectFile="", custom="true", iconclass="mi-cog", cacheoutput="true") output=false {
+		arguments.objectid=arguments.object;
+		variables.instance.displayObjectLookup['#arguments.object#']=arguments;
+		return this;
+	}
+
+	public function clearFilePaths() output=false {
+		variables.instance.displayObjectFilePathLookup=structNew();
+		variables.instance.contentTypeFilePathLookup=structNew();
+	}
+
+	public function lookupContentTypeFilePath(filePath, customOnly="false") output=false {
+		arguments.filePath=REReplace(listFirst(Replace(arguments.filePath, "\", "/", "ALL"),"/"), "[^a-zA-Z0-9_]", "", "ALL") & "/index.cfm";
+		if ( len(request.altTheme) ) {
+			var altThemePath=getThemeIncludePath(request.altTheme) & "/content_types/" & arguments.filePath;
+			if ( fileExists(expandPath(altThemePath)) ) {
+				return altThemePath;
+			}
+		}
+		if ( hasContentTypeFilePath(arguments.filePath) ) {
+			return getContentTypeFilePath(arguments.filePath);
+		}
+		var dir="";
+		var result="";
+		var coreIndex=arrayLen(variables.instance.contentTypeLoopUpArray)-2;
+		var dirIndex=0;
+		for ( dir in variables.instance.contentTypeLoopUpArray ) {
+			dirIndex=dirIndex+1;
+			if ( !arguments.customonly || dirIndex < coreIndex ) {
+				result=dir & arguments.filePath;
+				if ( fileExists(expandPath(result)) ) {
+					setContentTypeFilePath(arguments.filePath,result);
+					return result;
+				}
+			}
+		}
+		setContentTypeFilePath(arguments.filePath,"");
+		return "";
+	}
+
+	public function hasContentTypeFilePath(filepath) output=false {
+		return structKeyExists(variables.instance.contentTypeFilePathLookup,'#arguments.filepath#');
+	}
+
+	public function getContentTypeFilePath(filepath) output=false {
+		return variables.instance.contentTypeFilePathLookup['#arguments.filepath#'];
+	}
+
+	public function setContentTypeFilePath(filepath, result) output=false {
+		variables.instance.contentTypeFilePathLookup['#arguments.filepath#']=arguments.result;
+		return this;
+	}
+
+	public function registerContentTypeDirs() output=false {
+		var lookupArray=[
 		'/muraWRM/content_types',
 		getIncludePath()  & "/includes/content_types",
 		getIncludePath()  & "/content_types",
 		getThemeIncludePath(getValue('theme')) & "/content_types"
-	]>
+	];
+		var dir="";
+		for ( dir in lookupArray ) {
+			registerContentTypeDir(dir=dir);
+		}
+		var qs=getQueryService(readOnly=true);
+		qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=getValue('siteid'));
 
-	<cfset var dir="">
-	<cfloop array="#lookupArray#" index="dir">
-		<cfset registerContentTypeDir(dir=dir)>
-	</cfloop>
-
-	<cfset var rs="">
-
-	<cfquery name="rs">
+		var rs=qs.execute(sql="
 		select tplugins.package
 		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
-		where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getValue('siteid')#">
+		where tcontent.siteid= :siteid
 		and tplugins.deployed=1
 		order by tplugins.loadPriority desc
-	</cfquery>
+		").getResult();
 
-	<cfloop query="rs">
-		<cfset registerContentTypeDir('/' & rs.package & '/content_types')>
-	</cfloop>
+		if(rs.recordcount){
+			for(var row=1;row <= rs.recordcount;row++){
+				registerContentTypeDir('/' & rs.package[row] & '/content_types');
+			}
+		}
+		return this;
+	}
 
-	<cfreturn this>
-</cffunction>
+	public function getContentTypeLookupArray() output=false {
+		return variables.instance.contentTypeLoopUpArray;
+	}
 
-<cffunction name="getContentTypeLookupArray" output="false">
-	<cfreturn variables.instance.contentTypeLoopUpArray>
-</cffunction>
+	public function registerContentTypeDir(dir) output=false {
+		var rs="";
+		var config="";
+		var expandedDir=expandPath(arguments.dir);
+		if ( directoryExists(expandedDir) ) {
+			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
 
-<cffunction name="registerContentTypeDir" output="false">
-	<cfargument name="dir">
+			if(rs.recordcount){
+				for(var row=1;row <= rs.recordcount;row++){
+					if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml.cfm') ) {
+						config=new mura.executor().execute('#arguments.dir#/#rs.name[row]#/config.xml.cfm');
+					} else if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml') ) {
+						config=fileRead("#rs.directory[row]#/#rs.name[row]#/config.xml");
+					} else {
+						config="";
+					}
+					if ( isXML(config) ) {
+						config=xmlParse(config);
+						getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/model') ) {
+						variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'));
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
+						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects');
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/modules') ) {
+						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true);
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/content_types') ) {
+						registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types');
+					}
+					if ( directoryExists('#rs.directory#/#rs.name[row]#/resource_bundles') ) {
+						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resource_bundles',getJavaLocale());
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resourceBundles') ) {
+						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resourceBundles',getJavaLocale());
+					}
 
-	<cfset var rs="">
-	<cfset var config="">
-	<cfset var expandedDir=expandPath(arguments.dir)>
+				}
+			}
 
-	<cfif directoryExists(expandedDir)>
-		<cfdirectory name="rs" directory="#expandedDir#" action="list" type="dir">
-		<cfloop query="rs">
+			if ( !listFind('/,\',right(arguments.dir,1)) ) {
+				arguments.dir=arguments.dir & getBean('configBean').getFileDelim();
+			}
+			arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir);
+		}
+		return this;
+	}
 
-			<cfif fileExists('#expandedDir#/#rs.name#/config.xml.cfm')>
-				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
-				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">--->
-			<cfelseif fileExists('#expandedDir#/#rs.name#/config.xml')>
-				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
-			<cfelse>
-				<cfset config="">
-			</cfif>
+	public function registerDisplayObjectDir(dir, conditional="true", package="", custom="true") output=false {
+		var rs="";
+		var config="";
+		var objectArgs={};
+		var o="";
+		var objectfound=(arguments.conditional) ? false : true;
+		var expandedDir=expandPath(arguments.dir);
+		if ( directoryExists(expandedDir) ) {
+			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
 
-			<cfif isXML(config)>
-				<cfset config=xmlParse(config)>
-				<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
-			</cfif>
+			if(rs.recordcount){
+				for(var row=1;row <= rs.recordcount;row++){
+					if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml.cfm') ) {
+						config=new mura.executor().execute('#arguments.dir#/#rs.name[row]#/config.xml.cfm');
+					} else if ( fileExists('#expandedDir#/#rs.name[row]#/config.xml') ) {
+						config=fileRead("#expandedDir#/#rs.name[row]#/config.xml");
+					} else {
+						config="";
+					}
+					if ( isXML(config) ) {
+						config=xmlParse(config);
+						if ( isDefined('config.displayobject.xmlAttributes.name') || isDefined('config.mura.xmlAttributes.name') ) {
+							objectArgs={
+											object=rs.name[row],
+											custom=arguments.custom
+											};
+							if ( isDefined('config.displayobject.xmlAttributes.name') ) {
+								var baseXML=config.displayobject;
+							} else {
+								var baseXML=config.mura;
+							}
+							if ( isDefined('baseXML.xmlAttributes.legacyObjectFile') ) {
+								objectArgs.legacyObjectFile=rs.name[row] & "/" & baseXML.xmlAttributes.legacyObjectFile;
+							}
+							if ( isDefined('baseXML.xmlAttributes.displayObjectFile') ) {
+								objectArgs.displayObjectFile=rs.name[row] & "/" & baseXML.xmlAttributes.displayObjectFile;
+							} else if ( isDefined('baseXML.xmlAttributes.component') ) {
+								objectArgs.displayObjectFile=baseXML.xmlAttributes.component;
+							} else {
+								objectArgs.displayObjectFile=rs.name[row] & "/index.cfm";
+							}
+							for ( o in baseXML.xmlAttributes ) {
+								if ( !structKeyExists(objectArgs,o) ) {
+									objectArgs[o]=baseXML.xmlAttributes[o];
+								}
+							}
+							registerDisplayObject(
+											argumentCollection=objectArgs
+										);
+							objectfound=true;
+							getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'));
+						}
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/model') ) {
+						variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name[row]#/model',siteid=getValue('siteid'),package=arguments.package);
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/display_objects') ) {
+						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/display_objects');
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/modules') ) {
+						registerDisplayObjectDir(dir='#arguments.dir#/#rs.name[row]#/modules',conditional=true);
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/content_types') ) {
+						registerContentTypeDir(dir='#arguments.dir#/#rs.name[row]#/content_types');
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resource_bundles') ) {
+						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resource_bundles',getJavaLocale());
+					}
+					if ( directoryExists('#rs.directory[row]#/#rs.name[row]#/resourceBundles') ) {
+						variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory[row]#/#rs.name[row]#/resourceBundles',getJavaLocale());
+					}
+				}
+			}
 
-            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
-                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'))>
-            </cfif>
+			if ( objectfound ) {
+				if ( !listFind('/,\',right(arguments.dir,1)) ) {
+					arguments.dir=arguments.dir & getBean('configBean').getFileDelim();
+				}
+				arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir);
+			}
+		}
+		return this;
+	}
 
-			<cfif directoryExists('#rs.directory#/#rs.name#/display_objects')>
-                <cfset registerDisplayObjectDir(dir='#arguments.dir#/#rs.name#/display_objects')>
-            </cfif>
+	public function registerModuleDir(dir, conditional="true", package="", custom="true") output=false {
+		return registerDisplayObjectDir(arguments=arguments);
+	}
 
-			<cfif directoryExists('#rs.directory#/#rs.name#/modules')>
-                <cfset registerDisplayObjectDir(dir='#arguments.dir#/#rs.name#/modules',conditional=true)>
-            </cfif>
+	public function getDispayObjectLookupArray() output=false {
+		return variables.instance.displayObjectLoopUpArray;
+	}
 
-			<cfif directoryExists('#rs.directory#/#rs.name#/content_types')>
-                <cfset registerContentTypeDir(dir='#arguments.dir#/#rs.name#/content_types')>
-            </cfif>
+	public function lookupDisplayObjectFilePath(filePath, customOnly="false") output=false {
+		arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL");
+		if ( len(request.altTheme) ) {
+			var altThemePath=getThemeIncludePath(request.altTheme) & "/display_objects/" & arguments.filePath;
+			if ( fileExists(expandPath(altThemePath)) ) {
+				return altThemePath;
+			}
+		}
+		if ( hasDisplayObjectFilePath(arguments.filePath) ) {
+			return getDisplayObjectFilePath(arguments.filePath);
+		}
+		var dir="";
+		var result="";
+		var coreIndex=arrayLen(variables.instance.displayObjectLoopUpArray)-2;
+		var dirIndex=0;
+		for ( dir in variables.instance.displayObjectLoopUpArray ) {
+			dirIndex=dirIndex+1;
+			if ( !arguments.customonly || dirIndex < coreIndex ) {
+				result=dir & arguments.filePath;
+				if ( fileExists(expandPath(result)) ) {
+					setDisplayObjectFilePath(arguments.filePath,result);
+					return result;
+				}
+			}
+		}
+		setDisplayObjectFilePath(arguments.filePath,"");
+		return "";
+	}
 
-			<cfif directoryExists('#rs.directory#/#rs.name#/resource_bundles')>
-				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resource_bundles',getJavaLocale()) />
-			</cfif>
+	public function hasDisplayObject(object) output=false {
+		return structKeyExists(variables.instance.displayObjectLookup,'#arguments.object#');
+	}
 
-			<cfif directoryExists('#rs.directory#/#rs.name#/resourceBundles')>
-				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resourceBundles',getJavaLocale()) />
-			</cfif>
-		</cfloop>
+	public function getDisplayObject(object) output=false {
+		return variables.instance.displayObjectLookup['#arguments.object#'];
+	}
 
-		<cfif not listFind('/,\',right(arguments.dir,1))>
-			<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
-		</cfif>
-		<cfset arrayPrepend(variables.instance.contentTypeLoopUpArray,arguments.dir)>
-	</cfif>
+	public function hasDisplayObjectFilePath(filepath) output=false {
+		return structKeyExists(variables.instance.displayObjectFilePathLookup,'#arguments.filepath#');
+	}
 
-	<cfreturn this>
-</cffunction>
+	public function getDisplayObjectFilePath(filepath) output=false {
+		return variables.instance.displayObjectFilePathLookup['#arguments.filepath#'];
+	}
 
-<cffunction name="registerDisplayObjectDir" output="false">
-	<cfargument name="dir">
-	<cfargument name="conditional" default="true">
-    <cfargument name="package" default="">
-	<cfargument name="custom" default="true">
-	<cfset var rs="">
-	<cfset var config="">
-	<cfset var objectArgs={}>
-	<cfset var o="">
-	<cfset var objectfound=(arguments.conditional) ? false : true>
-	<cfset var expandedDir=expandPath(arguments.dir)>
+	public function setDisplayObjectFilePath(filepath, result) output=false {
+		variables.instance.displayObjectFilePathLookup['#arguments.filepath#']=arguments.result;
+		return this;
+	}
 
-	<cfif directoryExists(expandedDir)>
-		<cfdirectory name="rs" directory="#expandedDir#" action="list" type="dir">
-		<cfloop query="rs">
-			<cfif fileExists('#expandedDir#/#rs.name#/config.xml.cfm')>
-				<cfset config=new mura.executor().execute('#arguments.dir#/#rs.name#/config.xml.cfm')>
-				<!---<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">---->
-			<cfelseif fileExists('#expandedDir#/#rs.name#/config.xml')>
-				<cffile action="read" file="#expandedDir#/#rs.name#/config.xml" variable="config">
-			<cfelse>
-				<cfset config="">
-			</cfif>
-
-			<cfif isXML(config)>
-
-				<cfset config=xmlParse(config)>
-
-				<cfif isDefined('config.displayobject.xmlAttributes.name') or isDefined('config.mura.xmlAttributes.name')>
-					<cfset objectArgs={
-						object=rs.name,
-						custom=arguments.custom
-						}>
-					<cfif isDefined('config.displayobject.xmlAttributes.name')>
-						<cfset var baseXML=config.displayobject>
-					<cfelse>
-						<cfset var baseXML=config.mura>
-					</cfif>
-                    <cfif isDefined('baseXML.xmlAttributes.legacyObjectFile')>
-    					<cfset objectArgs.legacyObjectFile=rs.name & "/" & baseXML.xmlAttributes.legacyObjectFile>
-                    </cfif>
-					<cfif isDefined('baseXML.xmlAttributes.displayObjectFile')>
-						<cfset objectArgs.displayObjectFile=rs.name & "/" & baseXML.xmlAttributes.displayObjectFile>
-					<cfelseif isDefined('baseXML.xmlAttributes.component')>
-						<cfset objectArgs.displayObjectFile=baseXML.xmlAttributes.component>
-					<cfelse>
-						<cfset objectArgs.displayObjectFile=rs.name & "/index.cfm">
-					</cfif>
-					<cfloop collection="#baseXML.xmlAttributes#" item="o">
-                        <cfif not structKeyExists(objectArgs,o)>
-					       <cfset objectArgs[o]=baseXML.xmlAttributes[o]>
-                        </cfif>
-					</cfloop>
-					<cfset registerDisplayObject(
-						argumentCollection=objectArgs
-					)>
-					<cfset objectfound=true>
-					<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
-				</cfif>
-
-			</cfif>
-
-            <cfif directoryExists('#rs.directory#/#rs.name#/model')>
-                <cfset variables.configBean.registerBeanDir(dir='#arguments.dir#/#rs.name#/model',siteid=getValue('siteid'),package=arguments.package)>
-            </cfif>
-
-			<cfif directoryExists('#rs.directory#/#rs.name#/display_objects')>
-                <cfset registerDisplayObjectDir(dir='#arguments.dir#/#rs.name#/display_objects')>
-            </cfif>
-
-			<cfif directoryExists('#rs.directory#/#rs.name#/modules')>
-                <cfset registerDisplayObjectDir(dir='#arguments.dir#/#rs.name#/modules',conditional=true)>
-            </cfif>
-
-			<cfif directoryExists('#rs.directory#/#rs.name#/content_types')>
-                <cfset registerContentTypeDir(dir='#arguments.dir#/#rs.name#/content_types')>
-            </cfif>
-
-			<cfif directoryExists('#rs.directory#/#rs.name#/resource_bundles')>
-				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resource_bundles',getJavaLocale()) />
-			</cfif>
-
-			<cfif directoryExists('#rs.directory#/#rs.name#/resourceBundles')>
-				<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(getRBFactory(),'#rs.directory#/#rs.name#/resourceBundles',getJavaLocale()) />
-			</cfif>
-
-		</cfloop>
-
-		<cfif objectfound>
-			<cfif not listFind('/,\',right(arguments.dir,1))>
-				<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
-			</cfif>
-			<cfset arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir)>
-		</cfif>
-
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="registerModuleDir" output="false">
-	<cfargument name="dir">
-	<cfargument name="conditional" default="true">
-    <cfargument name="package" default="">
-	<cfargument name="custom" default="true">
-    <cfreturn registerDisplayObjectDir(arguments=arguments)>
-</cffunction>
-
-<cffunction name="getDispayObjectLookupArray" output="false">
-	<cfreturn variables.instance.displayObjectLoopUpArray>
-</cffunction>
-
-<cffunction name="lookupDisplayObjectFilePath" output="false">
-	<cfargument name="filePath">
-	<cfargument name="customOnly" default="false">
-	<cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
-
-	<cfif len(request.altTheme)>
-		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/display_objects/" & arguments.filePath>
-		<cfif fileExists(expandPath(altThemePath))>
-			<cfreturn altThemePath>
-		</cfif>
-	</cfif>
-
-	<cfif hasDisplayObjectFilePath(arguments.filePath)>
-		<cfreturn getDisplayObjectFilePath(arguments.filePath)>
-	</cfif>
-
-	<cfset var dir="">
-	<cfset var result="">
-	<cfset var coreIndex=arrayLen(variables.instance.displayObjectLoopUpArray)-2>
-	<cfset var dirIndex=0>
-
-	<cfloop array="#variables.instance.displayObjectLoopUpArray#" index="dir">
-		<cfset dirIndex=dirIndex+1>
-		<cfif not arguments.customonly or dirIndex lt coreIndex>
-			<cfset result=dir & arguments.filePath>
-			<cfif fileExists(expandPath(result))>
-				<cfset setDisplayObjectFilePath(arguments.filePath,result)>
-				<cfreturn result>
-			</cfif>
-		</cfif>
-	</cfloop>
-
-	<cfset setDisplayObjectFilePath(arguments.filePath,"")>
-	<cfreturn "">
-</cffunction>
-
-<cffunction name="hasDisplayObject" output="false">
-	<cfargument name="object">
-	<cfreturn structKeyExists(variables.instance.displayObjectLookup,'#arguments.object#')>
-</cffunction>
-
-<cffunction name="getDisplayObject" output="false">
-	<cfargument name="object">
-	<cfreturn variables.instance.displayObjectLookup['#arguments.object#']>
-</cffunction>
-
-<cffunction name="hasDisplayObjectFilePath" output="false">
-	<cfargument name="filepath">
-	<cfreturn structKeyExists(variables.instance.displayObjectFilePathLookup,'#arguments.filepath#')>
-</cffunction>
-
-<cffunction name="getDisplayObjectFilePath" output="false">
-	<cfargument name="filepath">
-	<cfreturn variables.instance.displayObjectFilePathLookup['#arguments.filepath#']>
-</cffunction>
-
-<cffunction name="setDisplayObjectFilePath" output="false">
-	<cfargument name="filepath">
-	<cfargument name="result">
-	<cfset variables.instance.displayObjectFilePathLookup['#arguments.filepath#']=arguments.result>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="discoverDisplayObjects" output="false">
-	<cfset var lookupArray=[
-		'/muraWRM/#variables.configBean.getAdminDir()#/core/views/carch/objectclass',
-		"/muraWRM/modules",
-		"/muraWRM/display_objects",
-		getIncludePath()  & "/includes/display_objects",
-		getIncludePath()  & "/includes/modules",
-		getIncludePath()  & "/includes/display_objects/custom",
-		getIncludePath()  & "/display_objects",
-		getIncludePath()  & "/modules",
-		getThemeIncludePath(getValue('theme')) & "/display_objects",
-		getThemeIncludePath(getValue('theme')) & "/modules"
-	]>
-
-	<cfset var dir="">
-	<cfset var dirIndex=0>
-	<cfset var custom=true>
-	<cfset var conditional=false>
-
-	<cfloop array="#lookupArray#" index="dir">
-		<cfset dirIndex=dirIndex+1>
-		<cfset custom=dirIndex gt 2 or listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir)>
-		<cfset conditional=dirIndex gt 2 or listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir)>
-		<cfset registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom)>
-	</cfloop>
-
-	<cfset var rs="">
-
-	<cfquery name="rs">
+	public function discoverDisplayObjects() output=false {
+		var lookupArray=[
+			'/muraWRM/#variables.configBean.getAdminDir()#/core/views/carch/objectclass',
+			"/muraWRM/modules",
+			"/muraWRM/display_objects",
+			getIncludePath()  & "/includes/display_objects",
+			getIncludePath()  & "/includes/modules",
+			getIncludePath()  & "/includes/display_objects/custom",
+			getIncludePath()  & "/display_objects",
+			getIncludePath()  & "/modules",
+			getThemeIncludePath(getValue('theme')) & "/display_objects",
+			getThemeIncludePath(getValue('theme')) & "/modules"
+		];
+		var dir="";
+		var dirIndex=0;
+		var custom=true;
+		var conditional=false;
+		for ( dir in lookupArray ) {
+			dirIndex=dirIndex+1;
+			custom=dirIndex > 2 || listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
+			conditional=dirIndex > 2 || listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
+			registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom);
+		}
+		var qs=getQueryService(readOnly=true);
+		qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=getValue('siteid'));
+		var rs=qs.execute(sql="
 		select tplugins.package
 		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid
-		where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getValue('siteid')#">
+		where tcontent.siteid= :siteid
 		and tplugins.deployed=1
 		order by tplugins.loadPriority desc
-	</cfquery>
+		").getResult();
 
-	<cfloop query="rs">
-		<cfset registerDisplayObjectDir('/' & rs.package & '/display_objects',true)>
-		<cfset registerDisplayObjectDir('/' & rs.package & '/modules',true)>
-		<cfset registerContentTypeDir('/' & rs.package & '/content_types',true)>
-	</cfloop>
+		if(rs.recordcount){
+			for(var row=1;row <= rs.recordcount;row++){
+				registerDisplayObjectDir('/' & rs.package[row] & '/display_objects',true);
+				registerDisplayObjectDir('/' & rs.package[row] & '/modules',true);
+				registerContentTypeDir('/' & rs.package[row] & '/content_types',true);
+			}
+		}
 
-	<cfreturn this>
-</cffunction>
+		return this;
+	}
 
-<cffunction name="getDisplayObjects">
-	<cfreturn variables.instance.displayObjectLookup>
-</cffunction>
+	public function getDisplayObjects() {
+		return variables.instance.displayObjectLookup;
+	}
 
-<cffunction name="discoverBeans" output="false">
-	<cfset var lookups=[
+	public function discoverBeans() output=false {
+		var lookups=[
 		'/muraWRM/#getValue('siteid')#/includes',
 		'/muraWRM/#getValue('siteid')#',
 		'/muraWRM/#getValue('siteid')#/themes/#getValue('theme')#',
 		'/muraWRM/#getValue('siteid')#/includes/themes/#getValue('theme')#'
-		]>
-	<cfset var i=1>
-	<cfloop array="#lookups#" index="i">
-		<cfset variables.configBean.registerBeanDir(dir='#i#/model',siteid=getValue('siteid'))>
-	</cfloop>
-	<cfreturn this>
-</cffunction>
+		];
+		var i=1;
+		for ( i in lookups ) {
+			variables.configBean.registerBeanDir(dir='#i#/model',siteid=getValue('siteid'));
+		}
+		return this;
+	}
 
-<cffunction name="getFileMetaData" output="false">
-	<cfargument name="property" default="fileid">
-	<cfreturn getBean('fileMetaData').loadBy(siteID=getValue('siteid'),fileid=getValue(arguments.property))>
-</cffunction>
+	public function getFileMetaData(property="fileid") output=false {
+		return getBean('fileMetaData').loadBy(siteID=getValue('siteid'),fileid=getValue(arguments.property));
+	}
 
-</cfcomponent>
+}

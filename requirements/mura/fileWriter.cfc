@@ -413,8 +413,10 @@
 
 	<cffunction name="getDirectoryList" output="false">
 		<cfargument name="directory">
+		<cfargument name="filter" default="*">
+		<cfargument name="type" default="all">
 		<cfset var rs="">
-		<cfdirectory directory="#arguments.directory#" name="rs" action="list">
+		<cfdirectory directory="#arguments.directory#" filter="#arguments.filter#" type="#arguments.type#" name="rs" action="list">
 		<cfreturn rs>
 	</cffunction>
 
