@@ -974,7 +974,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var dir="";
 		var qs="";
 		switch ( arguments.type ) {
-			case  "Component,Email":
+			case  "Component":
+			case  "Email":
 				dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s";
 				if ( directoryExists(dir) ) {
 					rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=dir );
@@ -1052,7 +1053,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				} else if ( len(variables.instance.domainAlias) ) {
 					for(i in ListToArray(variables.instance.domainAlias, lineBreak)){
 						if(arguments.domain eq i){
-							return truue;
+							return true;
 						}
 					}
 				}
@@ -1063,7 +1064,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				} else if ( len(variables.instance.domainAlias) ) {
 					for(i in ListToArray(variables.instance.domainAlias, lineBreak)){
 						if(find(arguments.domain,i)){
-							return truue;
+							return true;
 						}
 					}
 				}

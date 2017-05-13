@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelse>
 							<cfset settingsLen=0>
 						</cfif>
-						
+
 						<cfif structKeyExists(rc.pluginXML.plugin,"extensions")
 						and structKeyExists(rc.pluginXML.plugin.extensions,"extension")>
 							<cfset extensionsLen=arraylen(rc.pluginXML.plugin.extensions.extension)/>
@@ -188,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 						</div>
 					</div>
-
+					
 					<cfif settingsLen>
 						<cfloop from="1" to="#settingsLen#" index="i">
 							<cfsilent>
