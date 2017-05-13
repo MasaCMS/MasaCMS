@@ -1176,7 +1176,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				qs.addParam(name="siteid", cfsqltype="cf_sql_varchar", value=getValue('siteid'));
 				qs.addParam(name="filepoolid", cfsqltype="cf_sql_varchar", value=getValue('siteid'));
 				variables.instance.hasSharedFilePool=qs.execute(sql="select count(*) as counter from tsettings
-				where filePoolID= :filePoolID and and siteid!= :siteid").getResult().counter;
+				where filePoolID= :filePoolID and siteid!= :siteid").getResult().counter;
 			}
 		}
 		return variables.instance.hasSharedFilePool;
