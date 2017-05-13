@@ -312,7 +312,7 @@ component extends="mura.bean.bean" output="false" hint="This provides plugin con
 		qs.addParam(name="name",cfsqltype="cf_sql_varchar", value=getName());
 		qs.addParam(name="moduleid",cfsqltype="cf_sql_varchar", value=getModuleID());
 
-		rs=qs.execute(sql="select * from tpluginsetting where name= :name and moduleid= :moduleid").getResult();
+		rs=qs.execute(sql="select * from tpluginsettings where name= :name and moduleid= :moduleid").getResult();
 
 		setSettingValue(rs.settingValue);
 	}
