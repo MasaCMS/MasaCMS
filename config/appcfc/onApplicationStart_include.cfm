@@ -428,9 +428,9 @@ if ( application.setupComplete ) {
 	if ( application.configBean.getCreateRequiredDirectories() ) {
 		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
 			try {
-				cfdirectory( mode=777, directory="#application.configBean.getWebRoot()#/plugins", action="create" );
+				application.serviceFactory.getBean("fileWriter").createDir( mode=777, directory="#application.configBean.getWebRoot()#/plugins" );
 			} catch (any cfcatch) {
-				cfdirectory( directory="#application.configBean.getWebRoot()#/plugins", action="create" );
+				application.serviceFactory.getBean("fileWriter").createDir(directory="#application.configBean.getWebRoot()#/plugins");
 			}
 		}
 		if ( !fileExists(variables.basedir & "/robots.txt") ) {
