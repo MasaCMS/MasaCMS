@@ -1052,7 +1052,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				} else if ( len(variables.instance.domainAlias) ) {
 					for(i in ListToArray(variables.instance.domainAlias, lineBreak)){
 						if(arguments.domain eq i){
-							return truue;
+							return true;
 						}
 					}
 				}
@@ -1063,7 +1063,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				} else if ( len(variables.instance.domainAlias) ) {
 					for(i in ListToArray(variables.instance.domainAlias, lineBreak)){
 						if(find(arguments.domain,i)){
-							return truue;
+							return true;
 						}
 					}
 				}
