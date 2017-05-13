@@ -974,7 +974,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var dir="";
 		var qs="";
 		switch ( arguments.type ) {
-			case  "Component,Email":
+			case  "Component":
+			case  "Email":
 				dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s";
 				if ( directoryExists(dir) ) {
 					rs=getBean('fileWriter').getDirectoryList( filter="*.cfm|*.html|*.htm|*.hbs", directory=dir );

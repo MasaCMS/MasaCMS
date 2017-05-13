@@ -57,7 +57,8 @@ component extends="contentRenderer" output="false" hint="This provides static co
 		var contentBean = "";
 		var rsFile = "";
 		switch ( arguments.type ) {
-			case  "Link,File":
+			case  "Link":
+			case  "File":
 				contentBean=getBean('contentManager').getActiveContent(arguments.contentID,arguments.siteid);
 				rsFile=getBean('fileManager').read(contentBean.getfileid());
 				href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#replace(arguments.contentid, '-', '', 'ALL')#.#rsfile.fileExt#";

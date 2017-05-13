@@ -203,8 +203,10 @@ component extends="mura.bean.bean" output="false" hint="This provides plugin con
 		var str="";
 		var key=getName();
 		var o=0;
+
 		switch ( getType() ) {
-			case  "Text,TextBox":
+			case  "Text":
+			case  "TextBox":
 				savecontent variable="str" {
 						writeOutput("<input type=""text"" name=""#key#"" id=""#key#"" label=""#XMLFormat(getlabel())#"" value=""#HTMLEditFormat(renderValue)#"" required=""#getRequired()#""");
 						if ( len(getvalidation()) ) {
@@ -234,7 +236,10 @@ component extends="mura.bean.bean" output="false" hint="This provides plugin con
 						writeOutput(">#HTMLEditFormat(renderValue)#</textarea>");
 				}
 				break;
-			case  "Select,SelectBox,MultiSelectBox":
+			case  "Select":
+			case  "SelectBox":
+			case  "MultiSelectBox":
+
 				savecontent variable="str" {
 						writeOutput("<select name=""#key#"" id=""#key#"" label=""#XMLFormat(getlabel())#"" required=""#getRequired()#""");
 						if ( len(getMessage()) ) {
@@ -273,7 +278,8 @@ component extends="mura.bean.bean" output="false" hint="This provides plugin con
 						writeOutput("</select>");
 				}
 				break;
-			case  "Radio,RadioGroup":
+			case  "Radio":
+			case  "RadioGroup":
 				savecontent variable="str" {
 						if ( listLen(getOptionList(),'^') ) {
 							for ( o=1 ; o<=listLen(getOptionList(),'^') ; o++ ) {
