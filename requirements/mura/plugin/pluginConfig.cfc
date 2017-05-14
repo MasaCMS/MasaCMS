@@ -372,9 +372,8 @@ component extends="mura.cfobject" output="false" hint="This provides access to a
 		if ( structKeyExists(variables.customSettings,arguments.name) ) {
 			return variables.customSettings["#arguments.name#"];
 		} else if ( fileExists(wddxFile) ) {
-			customWDDX=fileRead(customWDDX,"utf-8");
+			customWDDX=fileRead(wddxFile,"utf-8");
 			variables.customSettings["#arguments.name#"]=getBean('utility').wddx2cfml(customWDDX);
-			fileClose(customWDDX);
 			return customValue;
 		} else {
 			if(isdefined('arguments.default')){
