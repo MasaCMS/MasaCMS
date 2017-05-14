@@ -67,10 +67,12 @@
 	<cfset validCSRFTokens=true>
 
 	<cfif (len(request.keywords) or len(request.tag) ) and isdefined('request.newSearch')>
+		<!---
 		<cfif variables.$.getContentRenderer().validateCSRFTokens and not variables.$.validateCSRFTokens(context='search')>
 			<cfset session.rsSearch=newResultQuery()/>
 			<cfset validCSRFTokens=false>
 		<cfelse>
+		--->
 			<cfset session.aggregation=request.aggregation />
 			<cfset variables.rsNewSearch=application.contentManager.getPublicSearch(variables.$.event('siteID'),request.keywords,request.tag,request.searchSectionID) />
 
@@ -79,7 +81,7 @@
 			<cfelse>
 				<cfset session.rsSearch=variables.rsnewsearch/>
 			</cfif>
-		</cfif>
+		<!---</cfif>--->
 	<cfelseif request.keywords eq '' and isdefined('request.newSearch')>
 		<cfset session.rsSearch=newResultQuery()/>
 	</cfif>
