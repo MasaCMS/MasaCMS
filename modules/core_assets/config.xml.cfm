@@ -1,1 +1,1 @@
-<mura name="Core Assests"></mura>
+<mura name="Core Assets"></mura>
