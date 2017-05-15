@@ -128,7 +128,8 @@ component extends="mura.bean.beanExtendable" entityName="address" table="tuserad
 		var prop="";
 		if ( isQuery(arguments.args) && arguments.args.recordcount ) {
 
-			for(prop in arrayToList(arguments.args.columnlist)){
+
+			for(prop in listToArray(arguments.args.columnlist)){
 				setValue(prop,arguments.args[prop][1]);
 			}
 
