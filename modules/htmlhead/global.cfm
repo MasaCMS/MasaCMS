@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfif request.returnformat neq 'amp'>
 <cfoutput>
-<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/dist/mura.min.js?v=#$.siteConfig('version')#"></script>
+<script type="text/javascript" src="#$.globalConfig('context')#/modules/core_assets/js/dist/mura.min.js?v=#$.siteConfig('version')#"></script>
 <script>
 Mura.init({
 	loginURL:"#variables.$.siteConfig('LoginURL')#",
