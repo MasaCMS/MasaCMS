@@ -891,79 +891,106 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var rs = "";
 		var themeDir="";
 		var rsDirs="";
-		var rs=QueryNew('empty');
+		var rs="";
 		var qs="";
+		var sql="";
+
 		if ( len(variables.instance.displayPoolID) ) {
 			themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
 				qs.setAttributes(rsDirs=rsDirs);
-				qs.setAttributes(rs=rs);
 				qs.setDbType('query');
-
-				rs=qs.execute(sql="
-					select * from rsDirs where type='Dir' and name not like '%.svn'
-					union
-					select * from rs
-				").getResult();
+				if(isQuery(rs)){
+					qs.setAttributes(rs=rs);
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+						union
+						select * from rs
+					").getResult();
+				}else {
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+					").getResult();
+				}
 			}
 			themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
 				qs.setAttributes(rsDirs=rsDirs);
-				qs.setAttributes(rs=rs);
 				qs.setDbType('query');
-
-				rs=qs.execute(sql="
-					select * from rsDirs where type='Dir' and name not like '%.svn'
-					union
-					select * from rs
-				").getResult();
+				if(isQuery(rs)){
+					qs.setAttributes(rs=rs);
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+						union
+						select * from rs
+					").getResult();
+				}else {
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+					").getResult();
 				}
+			}
 		} else {
 			themeDir="#variables.configBean.getSiteDir()#/default/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
 				qs.setAttributes(rsDirs=rsDirs);
-				qs.setAttributes(rs=rs);
 				qs.setDbType('query');
-
-				rs=qs.execute(sql="
-					select * from rsDirs where type='Dir' and name not like '%.svn'
-					union
-					select * from rs
-				").getResult();
+				if(isQuery(rs)){
+					qs.setAttributes(rs=rs);
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+						union
+						select * from rs
+					").getResult();
+				}else {
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+					").getResult();
+				}
 			}
 			themeDir="#variables.configBean.getSiteDir()#/default/includes/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
 				qs.setAttributes(rsDirs=rsDirs);
-				qs.setAttributes(rs=rs);
 				qs.setDbType('query');
-
-				rs=qs.execute(sql="
-					select * from rsDirs where type='Dir' and name not like '%.svn'
-					union
-					select * from rs
-				").getResult();
+				if(isQuery(rs)){
+					qs.setAttributes(rs=rs);
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+						union
+						select * from rs
+					").getResult();
+				}else {
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+					").getResult();
+				}
 		}
 		themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes";
 		if ( directoryExists(themeDir) ) {
 			rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 			qs=getQueryService();
 			qs.setAttributes(rsDirs=rsDirs);
-			qs.setAttributes(rs=rs);
 			qs.setDbType('query');
-
-			rs=qs.execute(sql="
-				select * from rsDirs where type='Dir' and name not like '%.svn'
-				union
-				select * from rs
-			").getResult();
+			if(isQuery(rs)){
+				qs.setAttributes(rs=rs);
+				rs=qs.execute(sql="
+					select * from rsDirs where type='Dir' and name not like '%.svn'
+					union
+					select * from rs
+				").getResult();
+			}else {
+				rs=qs.execute(sql="
+					select * from rsDirs where type='Dir' and name not like '%.svn'
+				").getResult();
+			}
 		}
 	}
 		return rs;
