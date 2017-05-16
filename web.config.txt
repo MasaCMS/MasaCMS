@@ -9,16 +9,16 @@
 	     Rule 1: index.cfm and siteid in URL disabled
 	     Rule 2: index.cfm in URL disabled
 	     SEO Rules: allow for separate sitemap and robots files per site
-	 -->   
+	 -->
 
 	 <!-- USAGE:
-			- Rename this document to "web.config" (without the quotation marks) 
+			- Rename this document to "web.config" (without the quotation marks)
 			  or copy the <rewrite><rules> section below into your working web.config
 			- Enable the rewrite options below by changing the enabled value to "true"
 			- Edit /config/settings.ini.cfm as noted in the comments before each rule
 			- Reload Mura CMS
 	-->
- 
+
 <configuration>
 	<system.webServer>
 		<rewrite>
@@ -41,10 +41,10 @@
 						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
 					</conditions>
 					<action type="Rewrite" url="/index.cfm/{R:1}" appendQueryString="true" />
-				</rule> 
+				</rule>
 
 				<!--
-					Rule 2: URLs without index.cfm 
+					Rule 2: URLs without index.cfm
 					Usage:
 						- set enabled="true" below
 						- set Mura CMS Rule 1 to enabled="false"
@@ -60,9 +60,9 @@
 						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
 						<add input="{QUERY_STRING}" pattern="(hash)" negate="true" />
 					</conditions>
-					<action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" appendQueryString="true" />
+					<action type="Rewrite" url="/sites/{R:1}/index.cfm/{R:2}" appendQueryString="true" />
 				</rule>
-				
+
 				<!--
 					SEO Rules: individual sitemap.xml and/or robots.txt for each site
 					Recommended for use with Meld Google Sitemaps Plugin
@@ -71,23 +71,23 @@
 						- duplicate and rename rules for each site
 						- replace www.domain.com and /siteID/ in each rule
 				-->
-       
+
 				<rule name="Mura CMS SEO: Sitemap" stopProcessing="true" enabled="false">
 					<match url="^sitemap.xml$" />
 					<conditions logicalGrouping="MatchAll">
 						<add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
 					</conditions>
-					<action type="Rewrite" url="/siteID/sitemap.xml" />
+					<action type="Rewrite" url="/sites/siteID/sitemap.xml" />
 				</rule>
-				
+
 				<rule name="Mura CMS SEO: Robots" stopProcessing="true" enabled="false">
 					<match url="^robots.txt$" />
 					<conditions logicalGrouping="MatchAll">
 						<add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
 					</conditions>
-					<action type="Rewrite" url="/siteID/robots.txt" />
+					<action type="Rewrite" url="/sites/siteID/robots.txt" />
 				</rule>
-				
+
 			</rules>
 		</rewrite>
 
