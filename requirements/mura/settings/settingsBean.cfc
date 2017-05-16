@@ -936,6 +936,27 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 					").getResult();
 				}
 			}
+
+			themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes";
+
+			if ( directoryExists(themeDir) ) {
+				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
+				qs=getQueryService();
+				qs.setAttributes(rsDirs=rsDirs);
+				qs.setDbType('query');
+				if(isQuery(rs)){
+					qs.setAttributes(rs=rs);
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+						union
+						select * from rs
+					").getResult();
+				}else {
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+					").getResult();
+				}
+			}
 		} else {
 			themeDir="#variables.configBean.getSiteDir()#/default/themes";
 			if ( directoryExists(themeDir) ) {
