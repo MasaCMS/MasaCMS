@@ -1184,16 +1184,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfswitch expression="#arguments.feedBean.getSortBy()#">
 								<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,expires,credits,type,subtype">
 									<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
-										#REReplace("tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
+										tcontent.#arguments.feedBean.getSortBy()# #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
 									<cfelse>
-										lower(#REReplace("tcontent.#arguments.feedBean.getSortBy()#","[^0-9A-Za-z\._,\- ]","","all")#) #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+										lower(tcontent.#arguments.feedBean.getSortBy()#) #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
 									</cfif>
 								</cfcase>
 								<cfcase value="rating">
-									tcontentstats.rating #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontentstats.totalVotes #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+									tcontentstats.rating #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#, tcontentstats.totalVotes #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
 								</cfcase>
 								<cfcase value="comments">
-									tcontentstats.comments #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+									tcontentstats.comments #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
 								</cfcase>
 								<cfcase value="random">
 									<cfif dbType eq "mysql">
@@ -1208,9 +1208,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfcase>
 								<cfdefaultcase>
 									<cfif mxpRelevanceSort>
-										total_points #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.lastUpdate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+										total_points #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")# , total_score #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#, tcontent.releaseDate #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#, tcontent.lastUpdate #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
 									<cfelseif isExtendedSort>
-										qExtendedSort.extendedSort #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+										qExtendedSort.extendedSort #REReplace(arguments.feedBean.getSortDirection(),"[^A-Za-z]","","all")#
 									<cfelse>
 										tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
 									</cfif>

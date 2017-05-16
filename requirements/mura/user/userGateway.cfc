@@ -466,7 +466,7 @@
 				<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,created,isPublic",params.getSortBy())>
 					#REReplace("tusers.#params.getSortBy()# #params.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
 				<cfelse>
-					lower(tusers.#REReplace(params.getSortBy(),"[^0-9A-Za-z\._,\- ]","","all")#) #REReplace(params.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+					lower(tusers.#REReplace(params.getSortBy(),"[^0-9A-Za-z\._,\- ]","","all")#) #REReplace(params.getSortDirection(),"[^A-Za-z]","","all")#
 				</cfif>
 			</cfif>
 
