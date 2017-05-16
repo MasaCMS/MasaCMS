@@ -103,6 +103,10 @@ this.welcomeFileList = "";
 this.compileextforinclude="*";
 baseDir= left(this.configPath,len(this.configPath)-13);
 
+if ( !directoryExists(baseDir & "/config") ) {
+	directoryCreate(baseDir & "/config");
+}
+
 if ( !fileExists(baseDir & "/config/settings.ini.cfm") ) {
 	variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm");
 	fileCopy("#baseDir#/core/templates/settings.template.cfm","#baseDir#/config/settings.ini.cfm");
