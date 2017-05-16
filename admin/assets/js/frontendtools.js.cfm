@@ -1810,7 +1810,7 @@
 			<cfif url.contenttype neq 'Variation'>
 			CKFinder.setupCKEditor(
 			instance, {
-				basePath: '#application.configBean.getContext()#/requirements/ckfinder/',
+				basePath: '#application.configBean.getContext()#/core/modules/ckfinder/',
 				rememberLastFolder: true
 			});
 			</cfif>

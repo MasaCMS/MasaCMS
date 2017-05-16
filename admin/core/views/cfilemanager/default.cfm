@@ -32,7 +32,7 @@
    /admin/
    /tasks/
    /config/
-   /requirements/mura/
+   /core/mura/
    /Application.cfc
    /index.cfm
    /MuraProxy.cfc
@@ -78,7 +78,7 @@
 		  <div class="block-content">
 			<script type="text/javascript">
 			var finder = new CKFinder();
-			finder.basePath = '#application.configBean.getContext()#/requirements/ckfinder/';
+			finder.basePath = '#application.configBean.getContext()#/core/modules/ckfinder/';
 			finder.language = '#lcase(session.rb)#';
 			finder.height="600";
 			<cfif session.resourceType eq "assets">

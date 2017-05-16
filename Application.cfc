@@ -30,7 +30,7 @@ Your custom code
 
  /admin/
  /tasks/
- /config/
+ /core/config/
  /requirements/mura/
  /Application.cfc
  /index.cfm
@@ -46,30 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component output="false" {
 
-	include "config/applicationSettings.cfm";
+	include "core/appcfc/applicationSettings.cfm";
 
-	if(not hasMainMappings){
-		//Try and include global mappings;
-		canWriteMode=true;
-		canWriteMappings=true;
-		hasMappings=true;
-
-		try{
-			include "config/mappings.cfm";
-		}
-		catch(any e){
-			if(e.type eq 'missingInclude'){
-				hasMappings=false;
-			}
-		}
-
-		if(not hasMappings){
-			variables.tracePoint=initTracePoint("Writing config/mappings.cfm");
-			include "config/buildMainMappings.cfm";
-			commitTracePoint(variables.tracePoint);
-		}
-
-	}
 
 	if(not hasPluginMappings){
 		//Try and include plugin mappings
@@ -87,7 +65,7 @@ component output="false" {
 
 		if(not hasMappings){
 			variables.tracePoint=initTracePoint("Writing plugin/mappings.cfm");
-			include "config/buildPluginMappings.cfm";
+			include "core/appcfc/buildPluginMappings.cfm";
 			commitTracePoint(variables.tracePoint);
 		}
 
@@ -109,17 +87,17 @@ component output="false" {
 
 		if(not hasMappings){
 			variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm");
-			include "config/buildPluginCFApplication.cfm";
+			include "core/appcfc/buildPluginCFApplication.cfm";
 			commitTracePoint(variables.tracePoint);
 		}
 
 	}
 
-	include "config/appcfc/onApplicationStart_method.cfm";
-	include "config/appcfc/onRequestStart_scriptProtect_method.cfm";
-	include "config/appcfc/onRequestEnd_method.cfm";
-	include "config/appcfc/onSessionStart_method.cfm";
-	include "config/appcfc/onSessionEnd_method.cfm";
-	include "config/appcfc/onError_method.cfm";
-	include "config/appcfc/onMissingTemplate_method.cfm";
+	include "core/appcfc/onApplicationStart_method.cfm";
+	include "core/appcfc/onRequestStart_scriptProtect_method.cfm";
+	include "core/appcfc/onRequestEnd_method.cfm";
+	include "core/appcfc/onSessionStart_method.cfm";
+	include "core/appcfc/onSessionEnd_method.cfm";
+	include "core/appcfc/onError_method.cfm";
+	include "core/appcfc/onMissingTemplate_method.cfm";
 }

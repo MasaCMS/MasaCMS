@@ -56,7 +56,7 @@
 */
 component output="false" {
 	depth=1;
-	include "#repeatString('../',depth)#config/applicationSettings.cfm";
+	include "#repeatString('../',depth)#config/core/appcfc/applicationSettings.cfm";
 	include "#repeatString('../',depth)#config/mappings.cfm";
 	include "#repeatString('../',depth)#plugins/mappings.cfm";
 	include "#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm";

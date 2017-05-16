@@ -30,7 +30,7 @@ a separately distributed license.
 /admin/
 /tasks/
 /config/
-/requirements/mura/
+/core/mura/
 You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
 the source code of that other code when and as the GNU GPL requires distribution of source code.
 

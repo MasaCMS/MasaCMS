@@ -2861,7 +2861,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -6466,7 +6466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -6555,7 +6555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -6721,7 +6721,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -8330,7 +8330,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -9123,7 +9123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -9347,7 +9347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -9826,7 +9826,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -9910,7 +9910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -10026,7 +10026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
@@ -11432,7 +11432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 /admin/
 	 /tasks/
 	 /config/
-	 /requirements/mura/
+	 /core/mura/
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc

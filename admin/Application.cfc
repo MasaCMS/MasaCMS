@@ -31,7 +31,7 @@ Your custom code
  /admin/
  /tasks/
  /config/
- /requirements/mura/
+ /core/mura/
  /Application.cfc
  /index.cfm
  /MuraProxy.cfc
@@ -46,17 +46,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="framework" output="false" {
 
-	include "../config/applicationSettings.cfm";
+	include "../core/appcfc/applicationSettings.cfm";
 
 
 	if(server.coldfusion.productname != 'ColdFusion Server'){
 		backportdir='';
-		include "../requirements/mura/backport/backport.cfm";
+		include "../core/mura/backport/backport.cfm";
 	} else {
-		backportdir='../requirements/mura/backport/';
+		backportdir='../core/mura/backport/';
 		include "#backportdir#backport.cfm";
 	}
-
+/*
 	if(not hasMainMappings){
 		//Try and include global mappings;
 		canWriteMode=true;
@@ -73,10 +73,11 @@ component extends="framework" output="false" {
 		}
 
 		if(not hasMappings){
-			include "../config/buildMainMappings.cfm";
+			include "../core/buildMainMappings.cfm";
 		}
 
 	}
+	*/
 
 	if(not hasPluginMappings){
 		//Try and include plugin mappings
@@ -93,7 +94,7 @@ component extends="framework" output="false" {
 		}
 
 		if(not hasMappings){
-			include "../config/buildPluginMappings.cfm";
+			include "../core/appcfc/buildPluginMappings.cfm";
 		}
 
 	}
@@ -113,7 +114,7 @@ component extends="framework" output="false" {
 		}
 
 		if(not hasMappings){
-			include "../config/buildPluginCFApplication.cfm";
+			include "../core/appcfc/buildPluginCFApplication.cfm";
 		}
 
 	}
@@ -144,7 +145,7 @@ component extends="framework" output="false" {
 		if(!application.appInitialized){
 			param name="application.instanceID" default=createUUID();
 			lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
-				include "../config/appcfc/onApplicationStart_include.cfm";
+				include "../core/appcfc/onApplicationStart_include.cfm";
 			}
 		}
 
@@ -166,7 +167,7 @@ component extends="framework" output="false" {
 
 	function onRequestStart() output="false"{
 
-		include "../config/appcfc/onRequestStart_include.cfm";
+		include "../core/appcfc/onRequestStart_include.cfm";
 
 		try{
 			if(not (structKeyExists(application.settingsManager,'validate') and application.settingsManager.validate() and isStruct(application.configBean.getAllValues()))){
@@ -502,21 +503,21 @@ component extends="framework" output="false" {
 	}
 
 	function setupSession() output="false"{
-		include "../config/appcfc/onSessionStart_include.cfm";
+		include "../core/appcfc/onSessionStart_include.cfm";
 	}
 
-	include "../config/appcfc/onSessionEnd_method.cfm";
+	include "../core/appcfc/onSessionEnd_method.cfm";
 
 	function onError(exception,eventname) output="false"{
-		include "../config/appcfc/onError_include.cfm";
+		include "../core/appcfc/onError_include.cfm";
 	}
 
-	include "../config/appcfc/onMissingTemplate_method.cfm";
+	include "../core/appcfc/onMissingTemplate_method.cfm";
 
 	function onRequestEnd(targetPage) output="false"{
 		if(isdefined("request.event")){
 			application.pluginManager.announceEvent("onAdminRequestEnd",request.event);
-			include "../config/appcfc/onRequestEnd_include.cfm";
+			include "../core/appcfc/onRequestEnd_include.cfm";
 		}
 	}
 
