@@ -74,10 +74,10 @@
     "testbox":{
         "runner":[
             {
-                "adobe":"http://localhost:53644/core/tests/runner.cfm"
+                "adobe":"http://localhost:8080/core/tests/runner.cfm"
             },
             {
-                "lucee":"http://localhost:53645/core/tests/runner.cfm"
+                "lucee":"http://localhost:8080/core/tests/runner.cfm"
             }
         ],
         "labels":[
