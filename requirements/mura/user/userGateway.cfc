@@ -194,7 +194,7 @@
 
 		<cfloop query="rsParams">
 			<cfif listLen(rsParams.field,".") eq 2>
-				<cfset jointable=listFirst(rsParams.field,".") >
+				<cfset jointable=REReplace(listFirst(rsParams.field,"."),"[^0-9A-Za-z_,\- ]","","all") >
 				<cfif jointable neq "tusers" and not listFind(jointables,jointable) and not params.hasJoin(jointable)>
 					<cfset jointables=listAppend(jointables,jointable)>
 				</cfif>

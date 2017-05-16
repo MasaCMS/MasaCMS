@@ -672,7 +672,7 @@ function getEndRow() output=false {
 
 	<cfloop query="variables.instance.params">
 		<cfif listLen(variables.instance.params.field,".") eq 2>
-			<cfset jointable=listFirst(variables.instance.params.field,".") >
+			<cfset jointable=REReplace(listFirst(variables.instance.params.field,"."),"[^0-9A-Za-z\._,\- ]","","all") >
 			<cfif jointable neq variables.instance.table and not listFind(jointables,jointable)>
 				<cfset jointables=listAppend(jointables,jointable)>
 			</cfif>
