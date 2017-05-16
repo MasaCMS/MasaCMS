@@ -1186,30 +1186,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
 										#REReplace("tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
 									<cfelse>
-										#REReplace("lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
-
+										lower(#REReplace("tcontent.#arguments.feedBean.getSortBy()#","[^0-9A-Za-z\._,\- ]","","all")#) #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 									</cfif>
 								</cfcase>
 								<cfcase value="rating">
-									tcontentstats.rating #arguments.feedBean.getSortDirection()#, tcontentstats.totalVotes #arguments.feedBean.getSortDirection()#
+									tcontentstats.rating #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontentstats.totalVotes #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 								</cfcase>
 								<cfcase value="comments">
-									tcontentstats.comments #arguments.feedBean.getSortDirection()#
+									tcontentstats.comments #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 								</cfcase>
 								<cfcase value="random">
 									<cfif dbType eq "mysql">
 										rand()
 									<cfelseif dbType eq "postgresql">
 										random()
-							    	<cfelseif dbType eq "mssql">
-							    		newID()
-							    	<cfelseif dbType eq "oracle">
-							    		dbms_random.value
-							    	</cfif>
+						    	<cfelseif dbType eq "mssql">
+						    		newID()
+						    	<cfelseif dbType eq "oracle">
+						    		dbms_random.value
+						    	</cfif>
 								</cfcase>
 								<cfdefaultcase>
 									<cfif mxpRelevanceSort>
-										total_points #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#,tcontent.lastUpdate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
+										total_points #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")# , total_score #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.releaseDate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#, tcontent.lastUpdate #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 									<cfelseif isExtendedSort>
 										qExtendedSort.extendedSort #REReplace(arguments.feedBean.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 									<cfelse>
