@@ -10,7 +10,7 @@ Start up a demo instance pre-populated with content:
 ```
 git clone git@github.com:blueriver/MuraCMS.git
 cd MuraCMS
-docker-compose -f config/docker/local-demo/docker-compose.yml up
+docker-compose -f core/docker/local-demo/docker-compose.yml up
 ```
 
 Start up an instance with no content:
@@ -18,7 +18,7 @@ Start up an instance with no content:
 ```
 git clone git@github.com:blueriver/MuraCMS.git
 cd MuraCMS
-docker-compose -f config/docker/local-mysql/docker-compose.yml up
+docker-compose -f core/docker/local-mysql/docker-compose.yml up
 ```
 
 Then access the application via:
