@@ -194,7 +194,7 @@
 
 		<cfloop query="rsParams">
 			<cfif listLen(rsParams.field,".") eq 2>
-				<cfset jointable=listFirst(rsParams.field,".") >
+				<cfset jointable=REReplace(listFirst(rsParams.field,"."),"[^0-9A-Za-z_,\- ]","","all") >
 				<cfif jointable neq "tusers" and not listFind(jointables,jointable) and not params.hasJoin(jointable)>
 					<cfset jointables=listAppend(jointables,jointable)>
 				</cfif>
@@ -457,16 +457,16 @@
 
 		<cfif not arguments.countOnly>
 			<cfif len(params.getOrderBy())>
-				#params.getOrderBy()#
+					#REReplace(params.getOrderBy(),"[^0-9A-Za-z\._,\-%//""'' ]","","all")#
 			<cfelseif len(params.getSortTable())>
-				#params.getSortTable()#.#params.getSortBy()# #params.getSortDirection()#
+				#REReplace("#params.getSortTable()#.#params.getSortBy()# #params.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
 			<cfelseif isExtendedSort>
-				qExtendedSort.extendedSort #params.getSortDirection()#
+				qExtendedSort.extendedSort #REReplace(params.getSortDirection(),"[^0-9A-Za-z\._,\- ]","","all")#
 			<cfelse>
 				<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,created,isPublic",params.getSortBy())>
-					tusers.#params.getSortBy()# #params.getSortDirection()#
+					#REReplace("tusers.#params.getSortBy()# #params.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
 				<cfelse>
-					lower(tusers.#params.getSortBy()#) #params.getSortDirection()#
+					lower(tusers.#REReplace(params.getSortBy(),"[^0-9A-Za-z\._,\- ]","","all")#) #REReplace(params.getSortDirection(),"[^A-Za-z]","","all")#
 				</cfif>
 			</cfif>
 
