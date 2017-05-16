@@ -1178,15 +1178,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfif>
 								,tcontent.releaseDate desc, tcontent.lastUpdate desc <!--- tie-breaker sort options for articles with the same MXP points/scores. Show the most recent one first. --->
 							<cfelse>
-								#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\- ]","","all")#
+								#REReplace(arguments.feedBean.getOrderBy(),"[^0-9A-Za-z\._,\-%//""'' ]","","all")#
 							</cfif>
 						<cfelse>
 							<cfswitch expression="#arguments.feedBean.getSortBy()#">
 								<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,expires,credits,type,subtype">
 									<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
-										tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
+										#REReplace("tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
 									<cfelse>
-										lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#
+										#REReplace("lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#","[^0-9A-Za-z\._,\- ]","","all")#
+
 									</cfif>
 								</cfcase>
 								<cfcase value="rating">
