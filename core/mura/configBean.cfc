@@ -294,6 +294,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.readOnlyDbUsername=variables.instance.dbUsername>
 	</cfif>
 
+	<cfset variables.instance.allowAutoUpdates=false>
+		
 	<cfreturn this />
 </cffunction>
 
