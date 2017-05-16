@@ -1132,15 +1132,18 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 	public function getLocalHandler() output=false {
 		var localHandler="";
-		if ( fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/eventHandler.cfc") ) {
-			localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.eventHandler").init();
-			localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.eventHandler");
-		} else if ( fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc") ) {
-			localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init();
-			localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler");
-		} else if ( getValue('displaypoolid') != getValue('siteid') && fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('displaypoolid')#/includes/eventHandler.cfc") ) {
-			localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler").init();
-			localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler");
+		if ( fileExists(application.configBean.getSiteDir() & "/#getValue('siteid')#/eventHandler.cfc") ) {
+			localHandler=createObject("component","#application.configBean.getSiteMap()#.#getValue('siteid')#.eventHandler").init();
+			localHandler.setValue("_objectName","#application.configBean.getSiteMap()#.#getValue('siteid')#.eventHandler");
+		} else if ( fileExists(application.configBean.getSiteDir() & "/#getValue('siteid')#/includes/eventHandler.cfc") ){
+			localHandler=createObject("component","#application.configBean.getSiteMap()#.#getValue('siteid')#.includes.eventHandler").init();
+			localHandler.setValue("_objectName","#application.configBean.getSiteMap()#.#getValue('siteid')#.includes.eventHandler");
+		} else if ( getValue('displaypoolid') != getValue('siteid') && fileExists(application.configBean.getSiteDir()  & "/#getValue('displaypoolid')#/eventHandler.cfc") ) {
+				localHandler=createObject("component","#application.configBean.getSiteMap()#.#getValue('displaypoolid')#.eventHandler").init();
+				localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.eventHandler");
+		} else if ( getValue('displaypoolid') != getValue('siteid') && fileExists(application.configBean.getSiteDir()  & "/#getValue('displaypoolid')#/includes/eventHandler.cfc") ) {
+			localHandler=createObject("component","#application.configBean.getSiteMap()#.#getValue('displaypoolid')#.includes.eventHandler").init();
+			localHandler.setValue("_objectName","#application.configBean.getSiteMap()#.#getValue('displaypoolid')#.includes.eventHandler");
 		}
 		return localHandler;
 	}
