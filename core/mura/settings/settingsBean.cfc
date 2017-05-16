@@ -903,6 +903,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var sql="";
 
 		if ( len(variables.instance.displayPoolID) ) {
+
 			themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/themes";
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
@@ -923,6 +924,27 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				}
 			}
 			themeDir="#variables.configBean.getSiteDir()#/#variables.instance.displayPoolID#/includes/themes";
+			if ( directoryExists(themeDir) ) {
+				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
+				qs=getQueryService();
+				qs.setAttributes(rsDirs=rsDirs);
+				qs.setDbType('query');
+				if(isQuery(rs)){
+					qs.setAttributes(rs=rs);
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+						union
+						select * from rs
+					").getResult();
+				}else {
+					rs=qs.execute(sql="
+						select * from rsDirs where type='Dir' and name not like '%.svn'
+					").getResult();
+				}
+			}
+
+			themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes";
+
 			if ( directoryExists(themeDir) ) {
 				rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 				qs=getQueryService();
@@ -981,6 +1003,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				}
 		}
 		themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/themes";
+
 		if ( directoryExists(themeDir) ) {
 			rsDirs=getBean('fileWriter').getDirectoryList(directory=themeDir, type='dir');
 			qs=getQueryService();
