@@ -9,5 +9,9 @@ RUN ln -sf /dev/stdout /opt/lucee/web/logs/exception.log
 
 # Provide app
 RUN mkdir -p /var/www
+
 # Copy Mura files
 COPY . /var/www
+
+# Provide plugins directory
+RUN mkdir -p /var/www/plugins
