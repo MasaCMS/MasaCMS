@@ -4388,9 +4388,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
             loader().load(
                 [
-                    Mura.assetpath + '/css/shadowbox.min.css',
-                    Mura.assetpath +
-                    '/js/external/shadowbox/shadowbox.js'
+                    Mura.context + '/core/modules/core_assets/css/shadowbox.min.css',
+                    Mura.context +
+                    '/core/modules/core_assets/js/external/shadowbox/shadowbox.js'
                 ],
                 function() {
                     Mura('#shadowbox_overlay,#shadowbox_container')

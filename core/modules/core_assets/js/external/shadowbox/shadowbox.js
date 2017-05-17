@@ -207,7 +207,7 @@
          *
          * @var     {String}    assetURL
          */
-        assetURL:        mura.context +  '/modules/core_assets/images/shadowbox/',
+        assetURL:        mura.context +  '/core/modules/core_assets/images/shadowbox/',
 
         /**
          * The path to the image to display while loading.

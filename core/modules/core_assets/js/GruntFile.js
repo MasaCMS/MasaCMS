@@ -95,7 +95,7 @@ module.exports = function(grunt) {
     copy: {
       dist: {
         files:[
-             {expand: true, flatten: true,src: ['dist/mura.js','dist/mura.min.js'], dest: '../../../admin/assets/js'}
+             {expand: true, flatten: true,src: ['dist/mura.js','dist/mura.min.js'], dest: '../../../../admin/assets/js'}
         ],
       },
     }
