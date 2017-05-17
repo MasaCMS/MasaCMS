@@ -79,9 +79,9 @@
 		<script>
 			$(function(){
 				Mura.loader()
-					.loadcss("#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/css/rater.min.css")
-					.loadjs("#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/js/rater-jquery.min.js"
-							,"#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/js/rater.min.js",
+					.loadcss("#variables.$.globalConfig('context')#/core/modules/rater/css/rater.min.css")
+					.loadjs("#variables.$.globalConfig('context')#/core/modulesrater/js/rater-jquery.min.js"
+							,"#variables.$.globalConfig('context')#/core/modules/rater/js/rater.min.js",
 							function(){
 								initRatings('rater1');
 								$("##svRatings").show();

@@ -56,6 +56,6 @@
 --->
 <cfoutput><script type="text/javascript">
 <!--
-!window.jQuery && document.write(unescape('%3Cscript type="text/javascript" src="#variables.$.siteConfig("assetPath")#/js/external/jquery.min.js"%3E%3C/script%3E'))
+!window.jQuery && document.write(unescape('%3Cscript type="text/javascript" src="#variables.$.globalConfig('context')#/core/modules/cores_assets/js/external/jquery.min.js"%3E%3C/script%3E'))
 //-->
 </script></cfoutput>
