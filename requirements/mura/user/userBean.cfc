@@ -371,9 +371,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="checkUsername" returntype="boolean" output="false">
+	<cfargument name="username" default="#trim(variables.instance.username)#">
 	<cfset var rsCheck=""/>
 	<cfquery name="rsCheck" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select username from tusers where type=2 and username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.username)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.userID)#">
+		select username from tusers where type=2 and username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.userID)#">
 	</cfquery>
 
 	<cfif not rscheck.recordcount>
@@ -385,9 +386,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="checkEmail" returntype="boolean" output="false">
+	<cfargument name="email" default="#trim(variables.instance.email)#">
 	<cfset var rsCheck=""/>
 	<cfquery name="rsCheck" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select username from tusers where type=2 and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.email)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(getUserID())#">
+		select username from tusers where type=2 and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.email)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(getUserID())#">
 		and (siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(variables.instance.siteid).getPrivateUserPoolID()#">
 			or
 			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(variables.instance.siteid).getPublicUserPoolID()#">
