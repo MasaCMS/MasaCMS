@@ -112,7 +112,7 @@ if ( isDefined("onApplicationStart") ) {
 		request.renderMuraSetup = true;
 		//  go to the index.cfm page (setup)
 		include "/muraWRM/core/appcfc/setup_check.cfm";
-		include "/muraWRM/config/setup/index.cfm";
+		include "/muraWRM/core/setup/index.cfm";
 		abort;
 	}
 }
