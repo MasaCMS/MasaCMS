@@ -8,7 +8,7 @@ For those with Docker installed:
 Start up a demo instance pre-populated with content:
 
 ```
-git clone git@github.com:blueriver/MuraCMS.git
+git clone https://github.com/blueriver/MuraCMS.git
 cd MuraCMS
 docker-compose -f core/docker/local-demo/docker-compose.yml up
 ```
@@ -16,7 +16,7 @@ docker-compose -f core/docker/local-demo/docker-compose.yml up
 Start up an instance with no content:
 
 ```
-git clone git@github.com:blueriver/MuraCMS.git
+git clone https://github.com/blueriver/MuraCMS.git
 cd MuraCMS
 docker-compose -f core/docker/local-mysql/docker-compose.yml up
 ```
