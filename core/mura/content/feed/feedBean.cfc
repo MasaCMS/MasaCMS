@@ -31,7 +31,7 @@ Your custom code
  /admin/
  /tasks/
  /config/
- /core/mura/
+ /requirements/mura/
  /Application.cfc
  /index.cfm
  /MuraProxy.cfc
@@ -318,6 +318,18 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 		return setIncludeHomePage(arguments.value);
 	}
 
+	public function contentPools(any value) output=false {
+		return setContentPoolID(arguments.value);
+	}
+
+	public function altTable(any value) output=false {
+		return setAltTable(arguments.value);
+	}
+
+	public function isFeaturesOnly(any value) output=false {
+		return setIsFeaturesOnly(arguments.value);
+	}
+
 	public function setShowNavOnly(any showNavOnly) output=false {
 		if ( isNumeric(arguments.showNavOnly) ) {
 			variables.instance.showNavOnly = arguments.showNavOnly;
@@ -337,17 +349,18 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function setUseCategoryIntersect(any useCategoryIntersect) output=false {
-		if ( isNumeric(arguments.useCategoryIntersect) ) {
-			variables.instance.useCategoryIntersect = arguments.useCategoryIntersect;
+		if ( isBoolean(arguments.useCategoryIntersect) ) {
+			if(arguments.useCategoryIntersect){
+				variables.instance.useCategoryIntersect = 1;
+			} else {
+				variables.instance.useCategoryIntersect = 0;
+			}
 		}
 		return this;
 	}
 
-	public function setShowExcludeSearch(any showExcludeSearch) output=false {
-		if ( isNumeric(arguments.showExcludeSearch) ) {
-			variables.instance.showExcludeSearch = arguments.showExcludeSearch;
-		}
-		return this;
+	public function useCategoryIntersect(any value) output=false {
+		return setShowExcludeSearch(arguments.value);
 	}
 
 	public function showExcludeSearch(any value) output=false {
