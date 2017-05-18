@@ -8421,8 +8421,8 @@ return /******/ (function(modules) { // webpackBootstrap
                     'undefined') {
                     var self = this;
 
-                    if (typeof this.properties[propertyName] !=
-                        'undefined') {
+                    if (typeof this.properties[propertyName] ==
+                        'object') {
 
                         return new Promise(function(resolve,
                             reject) {
