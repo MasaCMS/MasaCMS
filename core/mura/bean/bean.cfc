@@ -664,6 +664,12 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 						application.objectMappings[variables.entityName].manageschema=true;
 					}
 
+					if(structKeyExists(md,'dynamic')){
+						application.objectMappings[variables.entityName].dynamic=md.dynamic;
+					} else {
+						application.objectMappings[variables.entityName].dynamic=false;
+					}
+
 					if(structKeyExists(md,'usetrash')){
 						application.objectMappings[variables.entityName].usetrash=md.usetrash;
 					} else {

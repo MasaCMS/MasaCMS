@@ -54,48 +54,69 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
       if(len(arguments.json) && isJSON(arguments.json)){
         var entity=deserializeJSON(arguments.json);
-        var newline=chr(13)&chr(10);
-        var tab=chr(9);
-        var extends= (isDefined('entity.historical') && isBoolean(entity.historical) && entity.historical) ? 'mura.bean.beanORMHistorical' : 'mura.bean.beanORM';
-        var orderby= (isDefined('entity.orderby')) ? entity.orderby : '';
-        var table= (isDefined('entity.table')) ? entity.table : "mura_" & entity.entityname;
-        var properties= (isDefined('entity.properties')) ? entity.properties : [];
-        var bundleable= (isDefined('entity.bundleable')) ? entity.bundleable : false;
-        var hint= (isDefined('entity.hint')) ? entity.hint : "This component was dynamically generated with JSON";
 
-        //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
+        if(!containsBean(entity.entityname) || (isDefined('application.objectMappings.#entity.entityName#.dynamic') && application.objectMappings[entity.entityName].dynamic) ){
+          var newline=chr(13)&chr(10);
+          var tab=chr(9);
+          var extends= (isDefined('entity.historical') && isBoolean(entity.historical) && entity.historical) ? 'mura.bean.beanORMHistorical' : 'mura.bean.beanORM';
+          var orderby= (isDefined('entity.orderby')) ? entity.orderby : '';
+          var table= (isDefined('entity.table')) ? entity.table : "mura_dyn_" & entity.entityname;
+          var properties= (isDefined('entity.properties')) ? entity.properties : [];
+          var bundleable= (isDefined('entity.bundleable')) ? entity.bundleable : false;
+          var hint= (isDefined('entity.hint')) ? entity.hint : "This component was dynamically generated with JSON";
 
-        var result='component extends="#extends#" entityname="#entity.entityname#" table="#table#" orderby="#orderby#" bundleable="#bundleable#"  hint="#hint#" {';
+          //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
 
-        for(var p in properties){
-          result = result & newline & tab & "property";
+          var result='component extends="#extends#" entityname="#entity.entityname#" table="#table#" orderby="#orderby#" bundleable="#bundleable#"  hint="#hint#" dynamic=true {';
 
-          for(var k in p){
-            result = result & ' #lcase(k)#="#p[k]#"';
+          for(var p in properties){
+            result = result & newline & tab & "property";
+
+            for(var k in p){
+              result = result & ' #lcase(k)#="#p[k]#"';
+            }
+
+            result = result & ";"
           }
 
-          result = result & ";"
+          result = result & newline & "}";
+
+          if(!directoryExists(expandPath('/muraWRM/modules'))){
+            directoryCreate(expandPath('/muraWRM/modules'));
+          }
+
+          if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities'))){
+            directoryCreate(expandPath('/muraWRM/modules/dynamic_entities'));
+          }
+
+          if(!fileExists(expandPath('/muraWRM/modules/dynamic_entities/config.xml.cfm'))){
+            fileWrite(expandPath('/muraWRM/modules/dynamic_entities/config.xml.cfm'),'<mura name="Dynamic Entities"></mura>');
+          }
+
+          if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model'))){
+            directoryCreate(expandPath('/muraWRM/modules/dynamic_entities/model'));
+          }
+
+          if(!directoryExists(expandPath('/muraWRM/modules/dynamic_entities/model/beans'))){
+            directoryCreate(expandPath('/muraWRM/modules/dynamic_entities/model/beans'));
+          }
+
+          var filePath=expandPath('/muraWRM/modules/dynamic_entities/model/beans/#entity.entityname#.cfc');
+
+          if(fileExists(filePath)){
+            fileDelete(filePath);
+          }
+
+          fileWrite(filePath,result);
+
+          //super.declareBean(beanName=entity.entityName, dottedPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#", isSingleton=false);
+
+          //getBean(arguments.entityName).checkSchema();
+
+          return this;
+        } else {
+          throw(message="Cannot update non-dynamic bean: #entity.entityname#");
         }
-
-        result = result & newline & "}";
-
-        if(!directoryExists(expandPath('/muraWRM/core/dynanic_entites'))){
-          directoryCreate(expandPath('/muraWRM/core/dynanic_entites'));
-        }
-
-        var filePath=expandPath('/muraWRM/core/dynanic_entites/#entity.entityname#.cfc');
-
-        if(fileExists(filePath)){
-          fileDelete(filePath);
-        }
-
-        fileWrite(filePath,result);
-
-        super.declareBean(beanName=entity.entityName, dottedPath="murawrm.core.dynamic_entities.#entity.entityname#", isSingleton=false);
-
-        getBean(arguments.entityName).checkSchema();
-
-        return this;
       } else {
         return super.declareBean(argumentCollection=arguments);
       }
