@@ -83,9 +83,10 @@ component extends="mura.cfobject" output="false" hint="This provides functionali
 			var args={
 					event=contexts.event,
 					mura=contexts.muraScope,
+					m=contexts.muraScope,
 					$=contexts.muraScope
 				};
-			
+
 			variables.utility.invokeMethod(component=variables.eventHandler,methodName=variables.eventName,args=args);
 		} else {
 			tracePoint=initTracePoint("#variables.objectName#.handle");
@@ -103,6 +104,7 @@ component extends="mura.cfobject" output="false" hint="This provides functionali
 			var args={
 					event=contexts.event,
 					mura=contexts.muraScope,
+					m=contexts.muraScope,
 					$=contexts.muraScope
 				};
 
@@ -128,13 +130,14 @@ component extends="mura.cfobject" output="false" hint="This provides functionali
 			var args={
 					event=contexts.event,
 					mura=contexts.muraScope,
+					m=contexts.muraScope,
 					$=contexts.muraScope
 				};
 
 			variables.utility.invokeMethod(component=variables.eventHandler,methodName=variables.eventName,args=args);
 		} else {
 			tracePoint=initTracePoint("#variables.objectName#.translate");
-			variables.eventHandler.translate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope);
+			variables.eventHandler.translate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope, m=contexts.muraScope);
 		}
 		commitTracePoint(tracePoint);
 		request.muraHandledEvents["#variables.eventName#"]=true;

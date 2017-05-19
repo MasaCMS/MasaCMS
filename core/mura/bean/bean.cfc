@@ -534,6 +534,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return application.objectMappings[variables.entityName].historical;
 	}
 
+	function getScaffold(){
+		param name="application.objectMappings.#variables.entityName#.scaffold" default=false;
+		return application.objectMappings[variables.entityName].scaffold;
+	}
+
 	function getPrimaryKey(){
 		return variables.primarykey;
 	}
@@ -668,6 +673,12 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 						application.objectMappings[variables.entityName].dynamic=md.dynamic;
 					} else {
 						application.objectMappings[variables.entityName].dynamic=false;
+					}
+
+					if(structKeyExists(md,'scaffold')){
+						application.objectMappings[variables.entityName].scaffold=md.scaffold;
+					} else {
+						application.objectMappings[variables.entityName].scaffold=false;
 					}
 
 					if(structKeyExists(md,'usetrash')){
