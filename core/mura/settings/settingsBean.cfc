@@ -1769,7 +1769,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		for ( dir in lookupArray ) {
 			dirIndex=dirIndex+1;
 			custom=dirIndex > 2 || listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
-			conditional=false; //&& (dirIndex > 2 || listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir));
+			conditional=false;
 			registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom);
 		}
 		var qs=getQueryService(readOnly=true);
