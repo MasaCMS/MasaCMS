@@ -31,7 +31,7 @@ Your custom code
  /admin/
  /tasks/
  /config/
- /core/mura/
+ /requirements/mura/
  /Application.cfc
  /index.cfm
  /MuraProxy.cfc
@@ -520,6 +520,10 @@ function openGrouping() output=false {
 	addParam(relationship='andOpenGrouping');
 	variables.instance.pendingParam={};
 	return this;
+}
+
+function andOpenGrouping() output=false {
+	return openGrouping();
 }
 
 function orOpenGrouping() output=false {
