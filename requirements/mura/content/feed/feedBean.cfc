@@ -66,7 +66,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	property name="categoryID" type="string" default="";
 	property name="maxItems" type="numeric" default="20" required="true";
 	property name="allowHTML" type="numeric" default="1" required="true";
-	property name="isFeaturesOnly" type="numeric" default="0" required="true" hint="either,architecture,category";
+	property name="isFeaturesOnly" type="numeric" default="0" required="true";
 	property name="featureType" type="string" default="either";
 	property name="restricted" type="numeric" default="0" required="true";
 	property name="restrictGroups" type="string" default="";
@@ -327,7 +327,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function isFeaturesOnly(any value) output=false {
-		return setIsFeaturesOnly(arguments.value);
+		return set('isFeaturesOnly', arguments.value);
 	}
 
 	public function setShowNavOnly(any showNavOnly) output=false {
