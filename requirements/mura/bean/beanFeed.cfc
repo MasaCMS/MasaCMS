@@ -522,6 +522,10 @@ function openGrouping() output=false {
 	return this;
 }
 
+function andOpenGrouping() output=false {
+	return openGrouping();
+}
+
 function orOpenGrouping() output=false {
 	addParam(relationship='orOpenGrouping');
 	variables.instance.pendingParam={};

@@ -319,7 +319,7 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 	}
 
 	public function contentPools(any value) output=false {
-		return setContentPoolID(arguments.value);
+		return set('contentPoolID', arguments.value);
 	}
 
 	public function altTable(any value) output=false {
