@@ -1066,6 +1066,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			var rs = queryNew('name','varchar');
 			var qs = "";
 			var dir = "";
+
 			for ( dir in variables.instance.displayObjectLoopUpArray ) {
 				dir=expandPath('#dir##trim(arguments.type)#');
 				if ( directoryExists(dir) ) {
@@ -1748,7 +1749,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function discoverDisplayObjects() output=false {
 		var lookupArray=[
 			'/muraWRM/#variables.configBean.getAdminDir()#/core/views/carch/objectclass',
-			"/muraWRM/core//modules",
+			"/muraWRM/core/modules",
 			"/muraWRM/modules",
 			"/muraWRM/display_objects",
 			getIncludePath()  & "/includes/display_objects",
@@ -1759,6 +1760,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 			getThemeIncludePath(getValue('theme')) & "/display_objects",
 			getThemeIncludePath(getValue('theme')) & "/modules"
 		];
+
+
 		var dir="";
 		var dirIndex=0;
 		var custom=true;
@@ -1766,7 +1769,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		for ( dir in lookupArray ) {
 			dirIndex=dirIndex+1;
 			custom=dirIndex > 2 || listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
-			conditional=dirIndex > 2 || listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir);
+			conditional=false; //&& (dirIndex > 2 || listFindNoCase('/muraWRM/modules,/muraWRM/display_objects',dir));
 			registerDisplayObjectDir(dir=dir,conditional=conditional,custom=custom);
 		}
 		var qs=getQueryService(readOnly=true);
@@ -1795,11 +1798,17 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function discoverBeans() output=false {
+
 		var lookups=[
 		'/muraWRM/#getValue('siteid')#/includes',
 		'/muraWRM/#getValue('siteid')#',
 		'/muraWRM/#getValue('siteid')#/themes/#getValue('theme')#',
-		'/muraWRM/#getValue('siteid')#/includes/themes/#getValue('theme')#'
+		'/muraWRM/#getValue('siteid')#/includes/themes/#getValue('theme')#',
+		'/muraWRM/sites/#getValue('siteid')#/includes',
+		'/muraWRM/sites/#getValue('siteid')#',
+		'/muraWRM/sites/#getValue('siteid')#/themes/#getValue('theme')#',
+		'/muraWRM/sites/#getValue('siteid')#/includes/themes/#getValue('theme')#',
+		'/muraWRM/themes/#getValue('theme')#'
 		];
 		var i=1;
 		for ( i in lookups ) {

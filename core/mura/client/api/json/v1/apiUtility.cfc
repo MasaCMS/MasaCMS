@@ -1092,7 +1092,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
         var temp={};
         structAppend(temp,arguments.params);
         structDelete(temp,'method');
-		structDelete(temp,'_cacheid');
+				structDelete(temp,'_cacheid');
 
         for(var p in temp){
             if(find('[',p)){

@@ -47,7 +47,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="ioc" hint="This provides the primary bean factory that all component instances are instantiated within"{
 
-   	// Calls containsBean(). Added for WireBox compatibility
+    public any function declareBean( string beanName, string dottedPath, boolean isSingleton = true, struct overrides = { }, string json='' ) {
+      if(isJSON(arguments.beanName)){
+        arguments.json=arguments.beanName;
+      }
+
+      if(len(arguments.json) && isJSON(arguments.json)){
+        var entity=deserializeJSON(arguments.json);
+        var newline=chr(13)&chr(10);
+        var tab=chr(9);
+        var extends= (isDefined('entity.historical') && isBoolean(entity.historical) && entity.historical) ? 'mura.bean.beanORMHistorical' : 'mura.bean.beanORM';
+        var orderby= (isDefined('entity.orderby')) ? entity.orderby : '';
+        var table= (isDefined('entity.table')) ? entity.table : "mura_" & entity.entityname;
+        var properties= (isDefined('entity.properties')) ? entity.properties : [];
+        var bundleable= (isDefined('entity.bundleable')) ? entity.bundleable : false;
+        var hint= (isDefined('entity.hint')) ? entity.hint : "This component was dynamically generated with JSON";
+
+        //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
+
+        var result='component extends="#extends#" entityname="#entity.entityname#" table="#table#" orderby="#orderby#" bundleable="#bundleable#"  hint="#hint#" {';
+
+        for(var p in properties){
+          result = result & newline & tab & "property";
+
+          for(var k in p){
+            result = result & ' #lcase(k)#="#p[k]#"';
+          }
+
+          result = result & ";"
+        }
+
+        result = result & newline & "}";
+
+        if(!directoryExists(expandPath('/muraWRM/core/dynanic_entites'))){
+          directoryCreate(expandPath('/muraWRM/core/dynanic_entites'));
+        }
+
+        var filePath=expandPath('/muraWRM/core/dynanic_entites/#entity.entityname#.cfc');
+
+        if(fileExists(filePath)){
+          fileDelete(filePath);
+        }
+
+        fileWrite(filePath,result);
+
+        super.declareBean(beanName=entity.entityName, dottedPath="murawrm.core.dynamic_entities.#entity.entityname#", isSingleton=false);
+
+        getBean(arguments.entityName).checkSchema();
+
+        return this;
+      } else {
+        return super.declareBean(argumentCollection=arguments);
+      }
+    }
+
+    // Calls containsBean(). Added for WireBox compatibility
   	public function containsInstance( String name ) {
   	  return containsBean( name );
   	}

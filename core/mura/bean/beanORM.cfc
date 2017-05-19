@@ -998,6 +998,30 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		return isDefined("application.objectMappings.#getValue('entityName')#.columns.#arguments.column#");
 	}
 
+	function getPropertiesAsJSON(){
+			var m=application.mura.getBean('m').init('default');
+			var props=m.siteConfig().getAPI().findProperties(getEntityName()).items;
+			var newline=chr(13)&chr(10);
+			var tab=chr(9);
+			var serialier=new mura.jsonSerializer();
+			var result='{#newline##tab#"entityname"="#getEntityName()#",#newline##tab#"table"="#getTable()#",#newline##tab#"historical"="#getIsHistorical()#",#newline##tab#"orderby"="#getOrderBy()#",#newline##tab#"bundleable"="#getBundleable()#",#newline##tab#"properties"=[';
+
+			for(var p in props){
+				result = result & newline & tab & tab & "{";
+
+				for(var k in p){
+					result = result & newline & tab & tab & tab & '"#lcase(k)#"="#p[k]#",';
+				}
+
+				result = result & newline & tab & tab & "},"
+			}
+
+			result = result & newline & tab & "]";
+			result = result & newline & "}";
+
+			return result;
+	 }
+
 	//ORM EVENTHANDLING
 
 	private function preLoad(){};
