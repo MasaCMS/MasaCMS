@@ -122,11 +122,11 @@
 		<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- CK Editor/Finder -->
-		<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckeditor/ckeditor.js"></script>
-		<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckeditor/adapters/jquery.js"></script>
+		<script type="text/javascript" src="#application.configBean.getContext()#/core/resources/ckeditor/ckeditor.js"></script>
+		<script type="text/javascript" src="#application.configBean.getContext()#/core/resources/ckeditor/adapters/jquery.js"></script>
 
 		<cfif rc.$.event('contenttype') neq 'Variation' and not len(rc.$.event('remoteurl')) and not len(rc.$.event('preloadOnly'))>
-			<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckfinder/ckfinder.js"></script>
+			<script type="text/javascript" src="#application.configBean.getContext()#/core/resources/ckfinder/ckfinder.js"></script>
 		</cfif>
 
 		<!-- Color Picker -->

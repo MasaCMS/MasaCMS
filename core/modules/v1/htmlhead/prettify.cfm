@@ -59,8 +59,8 @@
 if(typeof $ != 'undefined'){
 	$(function(){
 		Mura.loader()
-		.loadcss("#variables.$.globalConfig('context')#/core/modules/v1/prettify/themes/tomorrow-night.min.css")
-		.loadjs("#variables.$.globalConfig('context')#/core/modules/v1/prettify/prettify.min.js",
+		.loadcss("#variables.$.globalConfig('context')#/core/resources/prettify/themes/tomorrow-night.min.css")
+		.loadjs("#variables.$.globalConfig('context')#/core/resources/prettify/prettify.min.js",
 		function(){
 			!function($){$(function(){window.prettyPrint && prettyPrint()});}(window.jQuery)
 		});
