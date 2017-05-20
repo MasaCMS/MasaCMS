@@ -46,7 +46,7 @@ currentSite=application.settingsManager.getSite(session.siteid);
 config.defaultAllowedExtensions='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,ppsx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,svg,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v,less';
 
 //ATTENTION: The trailing slash is required.
-config.baseUrl = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets/';
+config.baseUrl = application.configBean.getSiteAssetPath() & '/' & currentSite.getFilePoolID() & '/assets/';
 config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##currentSite.getFilePoolID()##application.configBean.getFileDelim()#assets/";
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same

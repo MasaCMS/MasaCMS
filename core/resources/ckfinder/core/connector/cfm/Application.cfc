@@ -12,9 +12,8 @@
 
 <cfcomponent displayname="Application" output="false" hint="Pre-page processing for the application">
 
-	<cfinclude template="../../../../../core/appcfc/applicationSettings.cfm">
-    <cfinclude template="../../../../../config/mappings.cfm">
-    <cfinclude template="../../../../../plugins/mappings.cfm">
+	<cfinclude template="../../../../../../core/appcfc/applicationSettings.cfm">
+    <cfinclude template="../../../../../../plugins/mappings.cfm">
 
     <cfscript>
     THIS.mappings["/CKFinder_Connector"] = mapPrefix & BaseDir & "/core/resources/ckfinder/core/connector/cfm/";
