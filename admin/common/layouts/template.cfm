@@ -228,9 +228,9 @@
 	</cfif>
 
 	<!-- CK Editor/Finder -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/resources/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/resources/ckeditor/adapters/jquery.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/resources/ckfinder/ckfinder.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckfinder/ckfinder.js"></script>
 
 	<!-- Color Picker -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>

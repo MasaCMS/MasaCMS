@@ -16,7 +16,7 @@
     <cfinclude template="../../../../../../plugins/mappings.cfm">
 
     <cfscript>
-    THIS.mappings["/CKFinder_Connector"] = mapPrefix & BaseDir & "/core/resources/ckfinder/core/connector/cfm/";
+    THIS.mappings["/CKFinder_Connector"] = mapPrefix & BaseDir & "/core/modules/v1/ckfinder/core/connector/cfm/";
     </cfscript>
 
 	<!--- Include the CFC creation proxy. --->
