@@ -1780,9 +1780,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.instance.requirementsPath>
 	<cfelse>
 		<cfif len( getValue('admindomain') )>
-			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core/modules">
+			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core/modules/v1">
 		<cfelse>
-			<cfreturn getValue('context') & "/core/modules">
+			<cfreturn getValue('context') & "/core/modules/v1">
 		</cfif>
 	</cfif>
 </cffunction>

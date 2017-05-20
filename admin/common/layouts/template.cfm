@@ -228,13 +228,13 @@
 	</cfif>
 
 	<!-- CK Editor/Finder -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/ckeditor/adapters/jquery.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/ckfinder/ckfinder.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/ckfinder/ckfinder.js"></script>
 
 	<!-- Color Picker -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
-	<link href="#application.configBean.getContext()#/core/modules/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="#application.configBean.getContext()#/core/modules/v1/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
+	<link href="#application.configBean.getContext()#/core/modules/v1/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()##application.configBean.getAdminDir()#/assets/js/json2.js" type="text/javascript"></script>

@@ -1269,8 +1269,8 @@ Display Objects
 		<cfset tracePoint=initTracePoint("/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfinclude template="/muraWRM/display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelse>
-		<cfset tracePoint=initTracePoint("/core/modules/nav/dsp_tag_cloud.cfm")>
-		<cfinclude template="/muraWRM/core/modules/nav/dsp_tag_cloud.cfm" />
+		<cfset tracePoint=initTracePoint("/core/modules/v1/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="/muraWRM/core/modules/v1/nav/dsp_tag_cloud.cfm" />
 	</cfif>
 	</cfsavecontent>
 
@@ -2716,7 +2716,7 @@ Display Objects
 						</cfif>
 
 						<cfif not headerFound>
-							<cfset pluginBasePath="/core/modules/htmlhead/">
+							<cfset pluginBasePath="/core/modules/v1/htmlhead/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>

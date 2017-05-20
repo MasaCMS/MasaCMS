@@ -649,8 +649,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	      tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resourceBundles/"),getJavaLocale());
 	    } else if ( directoryExists(expandPath('/muraWRM/resource_bundles/')) ) {
 	      tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/resource_bundles/"),getJavaLocale());
-	    } else if ( directoryExists(expandPath('/muraWRM/core/modules/core_assets/resource_bundles/')) ) {
-	      tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/core/modules/core_assets/resource_bundles/"),getJavaLocale());
+	    } else if ( directoryExists(expandPath('/muraWRM/core/modules/v1/core_assets/resource_bundles/')) ) {
+	      tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,expandPath("/muraWRM/core/modules/v1/core_assets/resource_bundles/"),getJavaLocale());
 	    }
 	    themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/";
 	    if ( directoryExists(themeRBDir) ) {
@@ -744,12 +744,12 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 				variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/display_objects";
 				return variables.instance[key];
 			}
-			path=expandPath('muraWRM/core/modules');
+			path=expandPath('muraWRM/core/modules/v1');
 			if ( directoryExists(path) ) {
-				variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/core/modules";
+				variables.instance[key]=variables.configBean.getRootPath(argumentCollection=arguments) & "/core/modules/v1";
 				return variables.instance[key];
 			}
-			variables.instance[key]=getThemeAssetPath(argumentCollection=arguments) & "/core/modules";
+			variables.instance[key]=getThemeAssetPath(argumentCollection=arguments) & "/core/modules/v1";
 			return variables.instance[key];
 		}
 	}
@@ -1392,7 +1392,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getRequirementsPath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
-		return getResourcePath(argumentCollection=arguments) & "/core/modules";
+		return getResourcePath(argumentCollection=arguments) & "/core/modules/v1";
 	}
 
 	public function getPluginsPath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
@@ -1749,7 +1749,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function discoverDisplayObjects() output=false {
 		var lookupArray=[
 			'/muraWRM/#variables.configBean.getAdminDir()#/core/views/carch/objectclass',
-			"/muraWRM/core/modules",
+			"/muraWRM/core/modules/v1",
 			"/muraWRM/modules",
 			"/muraWRM/display_objects",
 			getIncludePath()  & "/includes/display_objects",
