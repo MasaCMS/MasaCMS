@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.fileDir=""/>
 <cfset variables.instance.assetDir=""/>
 <cfset variables.instance.assetPath="/tasks/sites"/>
-<cfset variables.instance.requirementspath=""/>
+<cfset variables.instance.corepath=""/>
 <cfset variables.instance.pluginspath=""/>
 <cfset variables.instance.pluginDir=""/>
 <cfset variables.instance.productionDatasource=""/>
@@ -1773,18 +1773,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getRequirementsPath" output="false">
+<cffunction name="getCorePath" output="false">
 	<cfargument name="useProtocol" default="1">
 
-	<cfif len(variables.instance.requirementsPath)>
-		<cfreturn variables.instance.requirementsPath>
+	<cfif len(variables.instance.corepath)>
+		<cfreturn variables.instance.corepath>
 	<cfelse>
 		<cfif len( getValue('admindomain') )>
-			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core/requirements">
+			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core">
 		<cfelse>
-			<cfreturn getValue('context') & "/core/requirements">
+			<cfreturn getValue('context') & "/core">
 		</cfif>
 	</cfif>
+</cffunction>
+
+<cffunction name="getRequirementsPath" output="false">
+	<cfargument name="useProtocol" default="1">
+	<cfreturn getCorePath(argumentCollection=arguments) & "/externals">
 </cffunction>
 
 <cffunction name="registerModelDir" output="false">

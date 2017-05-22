@@ -866,7 +866,7 @@
 				context=$.globalConfig('context'),
 				nocache=$.event('nocache'),
 				assetpath=$.siteConfig().getResourcePath(complete=1) & $.siteConfig().getAssetPath(),
-				requirementspath=$.siteConfig().getRequirementsPath(complete=1),
+				corepath=$.siteConfig().getCorePath(complete=1),
 				adminpath=$.siteConfig().getAdminPath(complete=1),
 				themepath=$.siteConfig().getResourcePath(complete=1) & $.siteConfig().getThemeAssetPath(),
 				pluginspath=$.siteConfig().getPluginsPath(complete=1),

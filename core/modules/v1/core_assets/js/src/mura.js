@@ -1334,7 +1334,7 @@
         }
 
         loader().loadjs(
-            root.Mura.requirementspath + '/ckeditor/ckeditor.js',
+            root.Mura.corepath + '/ckeditor/ckeditor.js',
             function() {
                 initEditor();
             }
@@ -1958,7 +1958,7 @@
                         fileref.setAttribute("type",
                             "text/javascript")
                         fileref.setAttribute("src", root.Mura
-                            .requirementspath +
+                            .corepath +
                             '/cfformprotect/js/cffp.js'
                         )
 
@@ -3078,8 +3078,8 @@
             config.pluginspath = config.context + '/plugins';
         }
 
-        if (!config.requirementspath) {
-            config.requirementspath = config.context + '/core/modules/v1';
+        if (!config.corepath) {
+            config.corepath = config.context + '/core/modules/v1';
         }
 
         if (!config.jslib) {

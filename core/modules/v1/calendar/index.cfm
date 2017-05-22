@@ -200,12 +200,12 @@
 			$('.mura-calender__filters').show();
 
 			Mura.loader()
-				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
-				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})
+				.loadcss("#$.siteConfig('corepath')#/externals/fullcalendar/fullcalendar.css",{media:'all'})
+				.loadcss("#$.siteConfig('corepath')#/externals/fullcalendar/fullcalendar.print.css",{media:'print'})
 				.loadjs(
-					"#$.siteConfig('requirementspath')#/fullcalendar/lib/moment-with-locales.min.js",
-					"#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.min.js",
-					"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
+					"#$.siteConfig('corepath')#/externals/fullcalendar/lib/moment-with-locales.min.js",
+					"#$.siteConfig('corepath')#/externals/fullcalendar/fullcalendar.min.js",
+					"#$.siteConfig('corepath')#/externals/fullcalendar/gcal.js",
 					function(){
 						$('##mura-calendar').fullCalendar({
 							timezone: 'local'

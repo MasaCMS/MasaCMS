@@ -23,7 +23,7 @@
       	<cfoutput>
       	var self=this;
       	var apiEndpoint="#$.siteConfig().getApi().getEndpoint()#";
-      	var requirementspath="#$.siteConfig().getRequirementsPath(complete=1)#";
+      	var corepath="#$.siteConfig().getCorePath(complete=1)#";
       	var loginurl="#$.globalConfig().getAdminPath()#/?muraAction=clogin.main";
       	var content=null;
       	var variations=[];
@@ -194,7 +194,7 @@
     			ga('mxpGATracker.send','pageview', content.ga.trackingvars);
 
 				Mura.MXP=true;
-				
+
     			Mura.loader().loadjs(
     				context + '/plugins/MXP/assets/js/metrics/scrolldepth.js',
     				context + '/plugins/MXP/assets/js/metrics/riveted.js',

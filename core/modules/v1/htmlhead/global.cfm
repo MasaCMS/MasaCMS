@@ -57,7 +57,7 @@ Mura.init({
 	context:"#variables.$.globalConfig('context')#",
 	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
-	requirementspath:"#variables.$.globalConfig('requirementspath')#",
+	corepath:"#variables.$.globalConfig('corepath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
 	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
 	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
