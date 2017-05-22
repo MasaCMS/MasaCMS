@@ -133,10 +133,10 @@ this.mappings["/muraWRM"] = variables.baseDir;
 this.mappings["/config"] = variables.baseDir & "/config";
 this.mappings["/config/appcfc"] = variables.baseDir & "/core/appcfc";
 this.mappings["/core"] = variables.baseDir & "/core";
-this.mappings["/requirements"] = variables.baseDir & "/core";
+this.mappings["/requirements"] = variables.baseDir & "/core/requirements";
 this.mappings["/mura"] = variables.baseDir & "/core/mura";
-this.mappings["/testbox"] = variables.baseDir & "/core/testbox";
-this.mappings["/docbox"] = variables.baseDir & "/core/docbox";
+this.mappings["/testbox"] = variables.baseDir & "/core/requirements/testbox";
+this.mappings["/docbox"] = variables.baseDir & "/core/requirements/docbox";
 
 variables.context=evalSetting(getINIProperty("context",""));
 
@@ -146,8 +146,8 @@ try {
 } catch (any cfcatch) {
 	hasPluginMappings=false;
 }
-this.mappings["/cfformprotect"] = variables.baseDir & "/core/modules/v1/cfformprotect";
-this.mappings["/murawrm/tasks/widgets/cfformprotect"] = variables.baseDir & "/core/modules/v1/cfformprotect";
+this.mappings["/cfformprotect"] = variables.baseDir & "core/requirements/cfformprotect";
+this.mappings["/murawrm/tasks/widgets/cfformprotect"] = variables.baseDir & "core/requirements/cfformprotect";
 request.userAgent = LCase( CGI.http_user_agent );
 if ( !this.sessionManagement ) {
 	request.muraSessionManagement=false;
@@ -364,9 +364,9 @@ if ( !(isSimpleValue(this.ormSettings.cfclocation) && len(this.ormSettings.cfclo
 
 	// Custom Java library paths with dynamic loading
 	try {
-		variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.baseDir#/core/lib'));
+		variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.baseDir#/core/requirements/lib'));
 	} catch(any e) {
-		variables.loadPaths = ['#variables.baseDir#/core/lib'];
+		variables.loadPaths = ['#variables.baseDir#/core/requirements/lib'];
 	}
 
 	this.javaSettings = {

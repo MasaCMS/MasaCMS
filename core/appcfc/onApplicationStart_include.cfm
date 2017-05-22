@@ -440,7 +440,7 @@ if ( application.setupComplete ) {
 			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/core/templates/web.config.template.cfm", destination="#variables.basedir#/web.config");
 		}
 		if ( !fileExists(variables.basedir & "/modules/cfformprotect/cffp.ini.cfm") ) {
-			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/core/templates/cffp.ini.template.cfm", destination="#variables.basedir#/core/modules/v1/cfformprotect/cffp.ini.cfm");
+			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/core/templates/cffp.ini.template.cfm", destination="#variables.basedir#/core/requirements/cfformprotect/cffp.ini.cfm");
 		}
 	}
 	if ( !structKeyExists(application,"plugins") ) {

@@ -295,7 +295,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset variables.instance.allowAutoUpdates=false>
-		
+
 	<cfreturn this />
 </cffunction>
 
@@ -1780,9 +1780,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.instance.requirementsPath>
 	<cfelse>
 		<cfif len( getValue('admindomain') )>
-			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core/modules/v1">
+			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/core/requirements">
 		<cfelse>
-			<cfreturn getValue('context') & "/core/modules/v1">
+			<cfreturn getValue('context') & "/core/requirements">
 		</cfif>
 	</cfif>
 </cffunction>
