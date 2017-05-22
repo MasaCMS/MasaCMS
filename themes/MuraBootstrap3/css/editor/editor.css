@@ -1,4 +1,4 @@
-/* 
+/*
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -43,10 +43,10 @@
 
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
-	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. 
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 */
 
-@import url("../../../../../css/mura.7.0.min.css");
+@import url("../../../../../core/modules/v1/core_assets/css/mura.7.0.min.css");
 @import url("../../assets/bootstrap/css/bootstrap.min.css");
 @import url("../../assets/font-awesome/css/font-awesome.css");
 @import url("../theme/theme.min.css");

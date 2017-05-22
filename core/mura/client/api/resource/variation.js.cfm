@@ -30,6 +30,7 @@
       	var origvariations=[];
       	var adminpath="#$.globalConfig('adminpath')#";
       	var assetpath="#$.siteConfig().getResourcePath(complete=1)#" + "#$.siteConfig().getAssetPath()#";
+				var corepath="#$.siteConfig().getResourcePath(complete=1)#" + "/core";
       	var themepath="#$.siteConfig().getResourcePath(complete=1)#" + "#$.siteConfig().getThemeAssetPath()#";
     	var context="#$.siteConfig().getResourcePath(complete=1)#";
       	var editableSelector='.mxp-editable';
@@ -158,8 +159,8 @@
 
     			Mura
     				.loader()
-    				.loadcss(assetpath + '/css/mura.7.0.min.css')
-    				.loadcss(assetpath + '/css/mura.7.0.skin.css')
+    				.loadcss(corepath + '/modules/core_assets/css/mura.7.0.min.css')
+    				.loadcss(corepath + '/modules/core_assets/css/mura.7.0.skin.css')
     				.loadcss(themepath + '/css/theme/theme.min.css');
 
 

@@ -37,7 +37,7 @@
 		<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 
-		<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.7.0.min.css" />
+		<link rel="stylesheet" href="#$.globalConfig('corePath')#/modules/v1/core_assets/css/mura.7.0.min.css" />
 		<link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 		<!--- Font Awesome --->
 		<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">

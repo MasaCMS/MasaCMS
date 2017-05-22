@@ -13,9 +13,9 @@
 
 	<title>#esapiEncode('html', $.content('HTMLTitle'))# - #esapiEncode('html', $.siteConfig('site'))#</title>
 	<!--- Mura CMS Base Styles--->
-	<link rel="stylesheet" href="#$.globalConfig('context')#/core/modules/v1/core_assets/css/mura.7.0.min.css?v=#$.siteConfig('version')#">
+	<link rel="stylesheet" href="#$.globalConfig('corePath')#/modules/v1/core_assets/css/mura.7.0.min.css?v=#$.siteConfig('version')#">
 	<!--- Optional: Mura CMS Skin Styles. Duplicate to your theme to customize, changing 'assetPath' to 'themeAssetPath' below. Don't forget to move, remove or replace sprite.png. --->
-	<link rel="stylesheet" href="#$.globalConfig('context')#/core/modules/v1/core_assets/css/mura.7.0.skin.css?v=#$.siteConfig('version')#">
+	<link rel="stylesheet" href="#$.globalConfig('corePath')#/modules/v1/core_assets/css/mura.7.0.skin.css?v=#$.siteConfig('version')#">
 
 	<!--- Bootstrap core CSS --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
@@ -41,10 +41,10 @@
 	<![endif]-->
 
 	<!--- jQuery --->
-	<script src="#$.globalConfig('context')#/core/modules/v1/core_assets/js/external/jquery.min.js"></script>
+	<script src="#$.globalConfig('corePath')#/modules/v1/core_assets/js/external/jquery.min.js"></script>
 
 	<!--- FAV AND TOUCH ICONS --->
-	<link rel="shortcut icon" href="#$.globalConfig('context')#/core/modules/v1/core_assets/images/favicon.ico">
+	<link rel="shortcut icon" href="#$.globalConfig('corePath')#/modules/v1/core_assets/images/favicon.ico">
 	<!--- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#$.siteConfig('themeAssetPath')#/images/ico/ico/apple-touch-icon-144-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#$.siteConfig('themeAssetPath')#/images/ico/ico/apple-touch-icon-114-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#$.siteConfig('themeAssetPath')#/images/ico/ico/apple-touch-icon-72-precomposed.png">
