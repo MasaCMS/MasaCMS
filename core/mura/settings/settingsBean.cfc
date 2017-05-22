@@ -1392,7 +1392,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getRequirementsPath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {
-		return getResourcePath(argumentCollection=arguments) & "/core/externals";
+		return getResourcePath(argumentCollection=arguments) & "/core/vender";
 	}
 
 	public function getCorePath(secure="#getValue('useSSL')#", complete="0", useProtocol="1") output=false {

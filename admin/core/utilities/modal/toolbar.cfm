@@ -57,15 +57,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				if(!window.CKEDITOR){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig().getCorePath(complete=1)#/externals/ckeditor/ckeditor.js'
+						'#variables.$.globalConfig().getCorePath(complete=1)#/vendor/ckeditor/ckeditor.js'
 					);
 
-					window.CKEDITOR_BASEPATH = '#variables.$.globalConfig().getCorePath(complete=1)#/externals/ckeditor/';
+					window.CKEDITOR_BASEPATH = '#variables.$.globalConfig().getCorePath(complete=1)#/vendor/ckeditor/';
 				}
 				<cfif not $.getContentRenderer().useLayoutManager()>
 				if(!window.CKFinder){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig().getCorePath(complete=1)#/externals/ckfinder/ckfinder.js');
+						'#variables.$.globalConfig().getCorePath(complete=1)#/vendor/ckfinder/ckfinder.js');
 
 				}
 				</cfif>
@@ -86,25 +86,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(!window.CKEDITOR){
 				if(hasMuraLoader){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig("corepath")#/externals/ckeditor/ckeditor.js',
-						'#variables.$.globalConfig("corepath")#/externals/ckeditor/adapters/jquery.js'
+						'#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js',
+						'#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js'
 					);
 
 				} else {
-					$.getScript('#variables.$.globalConfig("corepath")#/externals/ckeditor/ckeditor.js');
-					$.getScript('#variables.$.globalConfig("corepath")#/externals/ckeditor/adapters/jquery.js');
+					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js');
+					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js');
 				}
 
-				window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("corepath")#/externals/ckeditor/';
+				window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("corepath")#/vendor/ckeditor/';
 			}
 
 			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig("corepath")#/externals/ckfinder/ckfinder.js');
+						'#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
 				} else {
-					$.getScript('#variables.$.globalConfig("corepath")#/externals/ckfinder/ckfinder.js');
+					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
 				}
 			}
 			</cfif>

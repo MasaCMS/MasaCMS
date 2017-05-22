@@ -2,9 +2,9 @@ CKFinder.addPlugin( 'csrf', function( api ) {
     var baseURL='plugins/csrf/remote.cfc?method=getCSRFTokens';
     
     if(typeof context == 'string'){
-      baseURL= context + '/core/externals/ckfinder/' + baseURL;
+      baseURL= context + '/core/vendor/ckfinder/' + baseURL;
     } else if(typeof mura == 'object' && typeof mura.context == 'string'){
-        baseURL= mura.context + '/core/externals/ckfinder/' + baseURL;
+        baseURL= mura.context + '/core/vendor/ckfinder/' + baseURL;
     } 
   
     var getTokens = function(){
