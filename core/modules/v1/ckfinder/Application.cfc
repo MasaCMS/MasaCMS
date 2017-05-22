@@ -55,7 +55,7 @@
 	Mura CMS.
 */
 component output="false" {
-	depth=3;
+	depth=4;
 	include "#repeatString('../',depth)#core/appcfc/applicationSettings.cfm";
 	include "#repeatString('../',depth)#plugins/mappings.cfm";
 	include "#repeatString('../',depth)#core/appcfc/onApplicationStart_method.cfm";
