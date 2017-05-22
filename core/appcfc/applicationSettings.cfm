@@ -146,7 +146,7 @@ try {
 } catch (any cfcatch) {
 	hasPluginMappings=false;
 }
-this.mappings["/cfformprotect"] = variables.baseDir & "core/externals/cfformprotect";
+this.mappings["/cfformprotect"] = variables.baseDir & "/core/externals/cfformprotect";
 this.mappings["/murawrm/tasks/widgets/cfformprotect"] = variables.baseDir & "core/externals/cfformprotect";
 request.userAgent = LCase( CGI.http_user_agent );
 if ( !this.sessionManagement ) {

@@ -4164,7 +4164,7 @@ return /******/ (function(modules) { // webpackBootstrap
         }
 
         loader().loadjs(
-            root.Mura.requirementspath + '/ckeditor/ckeditor.js',
+            root.Mura.corepath + '/ckeditor/ckeditor.js',
             function() {
                 initEditor();
             }
@@ -4788,7 +4788,7 @@ return /******/ (function(modules) { // webpackBootstrap
                         fileref.setAttribute("type",
                             "text/javascript")
                         fileref.setAttribute("src", root.Mura
-                            .requirementspath +
+                            .corepath +
                             '/cfformprotect/js/cffp.js'
                         )
 
@@ -5908,8 +5908,8 @@ return /******/ (function(modules) { // webpackBootstrap
             config.pluginspath = config.context + '/plugins';
         }
 
-        if (!config.requirementspath) {
-            config.requirementspath = config.context + '/core/modules/v1';
+        if (!config.corepath) {
+            config.corepath = config.context + '/core/modules/v1';
         }
 
         if (!config.jslib) {
