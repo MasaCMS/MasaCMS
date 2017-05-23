@@ -41,7 +41,7 @@
 	<![endif]-->
 
 	<!--- jQuery --->
-	<script src="#$.globalConfig('corePath')#/modules/v1/core_assets/js/external/jquery.min.js"></script>
+	<script src="#$.globalConfig('corePath')#/vendor/jquery/jquery.min.js"></script>
 
 	<!--- FAV AND TOUCH ICONS --->
 	<link rel="shortcut icon" href="#$.globalConfig('corePath')#/modules/v1/core_assets/images/favicon.ico">
