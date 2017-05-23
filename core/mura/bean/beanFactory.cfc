@@ -77,7 +77,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
               result = result & ' #lcase(k)#="#p[k]#"';
             }
 
-            result = result & ";"
+            result = result & ";";
           }
 
           result = result & newline & "}";
