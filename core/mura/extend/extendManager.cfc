@@ -1844,7 +1844,7 @@ and tclassextendattributes.type='File'
 				subType.setSiteID( arguments.siteID );
 				subType.load();
 
-				if(subtype.getIsNew()){
+				if(subtype.getIsNew() || variables.configBean.getValue(property='moduleConfigOverAdmin',defaultValue=false)){
 					if(subtype.getType() eq "Site"){
 				  		subType.setBaseTable( "tsettings" );
 						subType.setBaseKeyField( "baseID" );
@@ -1874,7 +1874,7 @@ and tclassextendattributes.type='File'
 							extendset.setContainer( extendSetXML.xmlAttributes.container );
 						}
 
-						if(extendSet.getIsNew()){
+						if(extendSet.getIsNew() || variables.configBean.getValue(property='moduleConfigOverAdmin',defaultValue=false)){
 							extendSet.setOrderNo(extsetorder);
 							extendSet.save();
 						}

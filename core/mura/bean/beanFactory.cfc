@@ -110,9 +110,9 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           fileWrite(filePath,result);
 
-          //super.declareBean(beanName=entity.entityName, dottedPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#", isSingleton=false);
+          super.declareBean(beanName=entity.entityName, dottedPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#", isSingleton=false);
 
-          //getBean(arguments.entityName).checkSchema();
+          getBean(arguments.entityName).checkSchema();
 
           return this;
         } else {
