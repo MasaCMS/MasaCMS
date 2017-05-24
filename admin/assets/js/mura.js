@@ -3201,7 +3201,7 @@ return /******/ (function(modules) { // webpackBootstrap
      */
     function getCurrentUser(params) {
         params=params || {};
-        params.fields=params.fields|| '';
+        params.fields=params.fields || '';
         return new Promise(function(resolve, reject) {
             if (root.Mura.currentUser) {
                 return root.Mura.currentUser;
