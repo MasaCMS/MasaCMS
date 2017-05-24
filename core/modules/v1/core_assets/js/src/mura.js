@@ -365,10 +365,13 @@
     /**
      * getCurrentUser - Return Mura.Entity for current user
      *
+     * @param  {object} params Load parameters, fields:listoffields
      * @return {Promise}
      * @memberof Mura
      */
-    function getCurrentUser() {
+    function getCurrentUser(params) {
+        params=params || {};
+        params.fields=params.fields|| '';
         return new Promise(function(resolve, reject) {
             if (root.Mura.currentUser) {
                 return root.Mura.currentUser;
@@ -377,7 +380,7 @@
                     async: true,
                     type: 'get',
                     url: root.Mura.apiEndpoint +
-                        '/findCurrentUser?_cacheid=' +
+                        '/findCurrentUser?fields=' + params.fields + '&_cacheid=' +
                         Math.random(),
                     success: function(resp) {
                         if (typeof resolve ==
