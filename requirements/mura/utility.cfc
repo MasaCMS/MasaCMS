@@ -1113,7 +1113,7 @@ Blog: www.codfusion.com--->
 		<cfset var returnProtocol = listFirst(arguments.href,':') />
 		<cfset var returnDomain = reReplace(arguments.href, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
 
-		<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginList(),returnProtocol & "://" & returnDomain) and len(returnDomain)>
+		<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginDomainList(),returnDomain) and len(returnDomain)>
 			<cfif len(cgi.http_host)>
 				<cfset arguments.href=replace(arguments.href,returnDomain,listFirst(cgi.http_host,":"))>
 			<cfelse>

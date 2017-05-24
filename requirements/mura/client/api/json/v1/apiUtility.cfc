@@ -251,7 +251,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			  	var origin =  headers['Origin'];;
 
 			  	// If the Origin is okay, then echo it back, otherwise leave out the header key
-			  	if(listFindNoCase(application.settingsManager.getAccessControlOriginList(), origin )) {
+			  	if(listFindNoCase(application.settingsManager.getAccessControlOriginDomainList(), reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") )) {
 			   		responseObject.setHeader( 'Access-Control-Allow-Origin', origin );
 			   		responseObject.setHeader( 'Access-Control-Allow-Credentials', 'true' );
 			  	}
