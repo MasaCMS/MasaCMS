@@ -478,20 +478,19 @@ component extends="framework" output="false" {
 			location(addtoken="false", url="https://" & listFirst(cgi.http_host,':') & page);
 		}
 
-
 		var headers = getHttpRequestData().headers;
 
 		if(structKeyExists(headers,'Origin')){
 
-		  	var origin = headers['Origin'];
-		  	var PC = getpagecontext().getresponse();
+	  	var origin = headers['Origin'];
+	  	var PC = getpagecontext().getresponse();
 
-		  	// If the Origin is okay, then echo it back, otherwise leave out the header key
-		  	if(listFindNoCase(application.settingsManager.getSite(session.siteid).getAccessControlOriginList(), origin )) {
-		   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
-		   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
-		  	}
+	  	// If the Origin is okay, then echo it back, otherwise leave out the header key
+	  	if(listFindNoCase(application.settingsManager.getSite(session.siteid).getAccessControlOriginDomainList(), reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") )) {
+	   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
+	   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
 	  	}
+  	}
 
 		application.rbFactory.setAdminLocale();
 

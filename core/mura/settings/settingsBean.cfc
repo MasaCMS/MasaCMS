@@ -1403,6 +1403,26 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return getResourcePath(argumentCollection=arguments) & "/plugins";
 	}
 
+	public function getAccessControlOriginDomainList() output=false {
+		var thelist=getValue('domain');
+		var i="";
+		var lineBreak=chr(13)&chr(10);
+
+		if ( len(application.configBean.getAdminDomain()) ) {
+			if ( !ListFindNoCase(thelist, application.configBean.getAdminDomain()) ) {
+				thelist = listAppend(thelist,application.configBean.getAdminDomain());
+			}
+		}
+		if ( len(getValue('domainAlias')) ) {
+			for(i in listToArray(getValue('domainAlias'),lineBreak) ){
+				if ( !ListFindNoCase(thelist, i ) ) {
+					thelist = listAppend(thelist,i);
+				}
+			}
+		}
+		return thelist;
+	}
+
 	public function getAccessControlOriginList() output=false {
 		var thelist="http://#getValue('domain')#,https://#getValue('domain')#";
 		var adminSSL=application.configBean.getAdminSSL();

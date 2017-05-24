@@ -729,6 +729,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.broadcastInit=false>
 </cffunction>
 
+<cffunction name="getAccessControlOriginDomainList">
+	<cfscript>
+		if(!isDefined("variables.AccessControlOriginDomainList")){
+			lock name="origindomainlist#application.instanceid#" type="exclusive" timeout="10"{
+				if(!isDefined("variables.AccessControlOriginDomainList")){
+					variables.AccessControlOriginDomainList='';
+
+					var admindomain=variables.configBean.getAdminDomain();
+
+					if(len(admindomain)){
+						variables.AccessControlOriginList=listAppend(variables.AccessControlOriginDomainList,admindomain);
+					}
+
+					var sites=getSites();
+					var originArray=[];
+					var origin='';
+
+					for(var site in sites){
+						originArray=listToArray(sites[site].getAccessControlOriginDomainList());
+						if(arrayLen(originArray)){
+							for(origin in originArray){
+								if(!listFind(variables.AccessControlOriginDomainList,origin)){
+									variables.AccessControlOriginDomainList=listAppend(variables.AccessControlOriginDomainList,origin);
+								}
+							}
+						}
+
+					}
+				}
+			}
+		}
+
+		return variables.AccessControlOriginDomainList;
+
+	</cfscript>
+</cffunction>
+
 <cffunction name="getAccessControlOriginList">
 	<cfscript>
 		if(!isDefined("variables.AccessControlOriginList")){
