@@ -1013,7 +1013,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					result = result & newline & tab & tab & tab & '"#lcase(k)#"="#p[k]#",';
 				}
 
-				result = result & newline & tab & tab & "},"
+				result = result & newline & tab & tab & "},";
 			}
 
 			result = result & newline & tab & "]";
