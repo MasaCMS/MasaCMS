@@ -4,6 +4,8 @@ services:
   #Mura Server
   mura_mysql_cfml:
     image: ortussolutions/commandbox:latest
+    depends_on:
+      - mura_mysql
     environment:
       PORT: 8080
       SSL_PORT: 8443
