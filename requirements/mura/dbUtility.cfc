@@ -934,7 +934,7 @@
 			<cfreturn "datetime">
 		</cfcase>
 		<cfcase value="ntext,longtext,clob,nclob,text">
-			<<cfreturn "longtext">
+			<cfreturn "longtext">
 		</cfcase>
 		<cfcase value="float,binary_float,real">
 			<cfreturn "float">
@@ -1035,7 +1035,6 @@
 				<cfelse>
 					<cfset columnArgs.default=left(columnArgs.default,len(columnArgs.default)-1)>
 				</cfif>
-				<cfset columnArgs.default=mid(columnArgs.default,2,len(columnArgs.default)-1)>
 			</cfif>
 		</cfif>
 
