@@ -4,6 +4,8 @@ services:
   #Mura Server
   mura_demo_cfml:
     build: .
+    depends_on:
+      - mura_demo_mysql
     environment:
       PORT: 8080
       SSL_PORT: 8443
