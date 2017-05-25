@@ -58,14 +58,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-item-metadata">
 		<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
 			<div class="mura-search">
-			<input id="search" name="keywords" type="text" class="text" value="#esapiEncode('html_attr',rc.keywords)#" placeholder="Search Trash Bin">
-			<button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
+				<div class="mura-input-set">			
+					<input id="search" name="keywords" type="text" class="text" value="#esapiEncode('html_attr',rc.keywords)#" placeholder="Search Trash Bin">
+					<button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
+				</div>
 			</div>
-
-			<!---
-			<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" align="absmiddle" />
-			<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
-			--->
 			<input type="hidden" name="muraAction" value="cTrash.list">
 			<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 		</form>
