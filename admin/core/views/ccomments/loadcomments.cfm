@@ -5,13 +5,13 @@
 	}
 </style>
 <cfoutput>
+
+	<!--- comments search --->
 	<div class="mura-control-group">
 		<label>Search for Comments</label>
-		<div class="form-inline">
-			<div class="input-append">
-				<input type="text" name="keywords" value="#esapiEncode('html_attr',$.event('keywords'))#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
-				<button type="submit" name="btnSearch" id="btnSearch" class="btn"><i class="mi-search"></i></button>
-			</div>
+		<div class="mura-input-set">
+			<input type="text" name="keywords" value="#esapiEncode('html_attr',$.event('keywords'))#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
+			<button type="submit" name="btnSearch" id="btnSearch" class="btn"><i class="mi-search"></i></button>
 		</div>
 	</div>
 
@@ -150,12 +150,15 @@
 					</div>
 				</div>
 				<br />
+
 				<table class="mura-table-grid">
 					<thead>
 						<tr>
 							<th class="actions"></th>
 							<th>
-								<a id="checkall" href="##" title="#rbKey('comments.selectall')#"><i class="mi-check"></i></a>
+								<cfif val(rc.itComments.getRecordCount()) lte 100 or val(rc.nextn) lte 100>
+									<a id="checkall" href="##" title="#rbKey('comments.selectall')#"><i class="mi-check"></i></a>
+								</cfif>
 							</th>
 							<th>
 								<a class="sort" data-sortby="entered" data-sortdirection="#rc.sortdirlink#" data-nextn="#Val(rc.nextn)#" title="#rbKey('comments.sortbydatetime')#" href="##">Date</a>
