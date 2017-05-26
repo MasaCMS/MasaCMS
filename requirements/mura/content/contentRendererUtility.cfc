@@ -1431,6 +1431,7 @@
 		<cfset var objectReturnFormat=(arguments.returnFormat eq 'Array')?'struct':'default'>
 
 		<cfparam name="request.muraActiveRegions" default="">
+		<cfparam name="request.muraRegionObjectCounts" default="#structNew()#">
 
 		<cfset request.muraActiveRegions=listAppend(request.muraActiveRegions,arguments.columnid)>
 
@@ -1441,6 +1442,7 @@
 		</cfif>
 
 		<cfset request.muraRegionID=arguments.columnID>
+		<cfset request.muraRegionObjectCounts['region#arguments.columnID#']=0>
 
 		<cfif perm and arguments.renderer.getShowToolbar() and arguments.renderer.showInlineEditor>
 			<cfif listLen($.siteConfig('columnnames'),'^') gte arguments.columnid>
@@ -1477,6 +1479,7 @@
 				and event.getValue('inheritedObjects') neq ''
 				and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 					<cfset rsObjects=getBean('contentGateway').getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>
+					<cfset request.muraRegionObjectCounts['region#arguments.columnID#']=rsObjects.recordcount>
 					<cfloop query="rsObjects">
 						<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=event.getValue('inheritedObjects'), regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=inheritedObjectsPerm,objectname=rsObjects.name,returnformat=objectReturnFormat)>
 						<cfif isSimpleValue(theObject)>
@@ -1488,6 +1491,7 @@
 			</cfif>
 
 			<cfset rsObjects=getBean('contentGateway').getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>
+			<cfset request.muraRegionObjectCounts['region#arguments.columnID#']=request.muraRegionObjectCounts['region#arguments.columnID#'] + rsObjects.recordcount>
 			<cfloop query="rsObjects">
 				<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name,returnformat=objectReturnFormat)>
 				<cfif isSimpleValue(theObject)>
