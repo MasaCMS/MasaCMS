@@ -1617,8 +1617,11 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		var config="";
 		var objectArgs={};
 		var o="";
+		var tempVal="";
 		var objectfound=(arguments.conditional) ? false : true;
 		var expandedDir=expandPath(arguments.dir);
+		var utility=getBean('utility');
+
 		if ( directoryExists(expandedDir) ) {
 			rs=getBean('fileWriter').getDirectoryList( directory=expandedDir, type="dir");
 
@@ -1633,26 +1636,67 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 					}
 					if ( isXML(config) ) {
 						config=xmlParse(config);
-						if ( isDefined('config.displayobject.xmlAttributes.name') || isDefined('config.mura.xmlAttributes.name') ) {
+
+						if ( isDefined('config.displayobject') ) {
+							var baseXML=config.displayobject;
+						} else {
+							var baseXML=config.mura;
+						}
+
+						if ( isDefined('baseXML.xmlAttributes.name') || isDefined('baseXML.xmlAttributes.name') ) {
 							objectArgs={
 											object=rs.name[row],
 											custom=arguments.custom
 											};
-							if ( isDefined('config.displayobject.xmlAttributes.name') ) {
-								var baseXML=config.displayobject;
+							tempVal=utility.getXMLKeyValue(baseXML,'condition',true);
+							if ( len(tempVal) ) {
+								objectArgs.condition=tempVal;
+							}
+							tempVal=utility.getXMLKeyValue(baseXML,'contenttypes');
+							if ( len(tempVal) ) {
+								objectArgs.contenttypes=tempVal;
+							}
+							tempVal=utility.getXMLKeyValue(baseXML,'legacyObjectFile');
+							if ( len(tempVal) ) {
+								objectArgs.legacyObjectFile=rs.name[row] & "/" & tempVal;
+							}
+							tempVal=utility.getXMLKeyValue(baseXML,'configuratorInit');
+							if ( len(tempVal) ) {
+								objectArgs.configuratorInit=tempVal;
+							}
+							tempVal=utility.getXMLKeyValue(baseXML,'configuratorJS');
+							if ( len(tempVal) ) {
+								objectArgs.configuratorJS=tempVal;
+							}
+							tempVal=utility.getXMLKeyValue(baseXML,'omitcontenttypes');
+							if ( len(tempVal) ) {
+								objectArgs.omitcontenttypes=tempVal;
+							}
+							tempVal=utility.getXMLKeyValue(baseXML,'custom',true);
+							if ( len(tempVal) ) {
+								objectArgs.custom=tempVal;
+							}
+							tempVal=utility.getXMLKeyValue(baseXML,'iconclass','mi-cog');
+							if ( len(tempVal) ) {
+								objectArgs.custom=tempVal;
+							}
+							tempVal=utility.getXMLKeyValue(baseXML,'cacheoutput',true);
+							if ( len(tempVal) ) {
+								objectArgs.custom=tempVal;
+							}
+
+							tempVal=utility.getXMLKeyValue(baseXML,'displayObjectFile');
+							if ( len(tempVal) ) {
+								objectArgs.displayObjectFile=rs.name[row] & "/" & tempVal;
 							} else {
-								var baseXML=config.mura;
+								tempVal=utility.getXMLKeyValue(baseXML,'component');
+								if(len(tempVal)){
+									objectArgs.displayObjectFile=tempVal;
+								} else {
+									objectArgs.displayObjectFile=rs.name[row] & "/index.cfm";
+								}
 							}
-							if ( isDefined('baseXML.xmlAttributes.legacyObjectFile') ) {
-								objectArgs.legacyObjectFile=rs.name[row] & "/" & baseXML.xmlAttributes.legacyObjectFile;
-							}
-							if ( isDefined('baseXML.xmlAttributes.displayObjectFile') ) {
-								objectArgs.displayObjectFile=rs.name[row] & "/" & baseXML.xmlAttributes.displayObjectFile;
-							} else if ( isDefined('baseXML.xmlAttributes.component') ) {
-								objectArgs.displayObjectFile=baseXML.xmlAttributes.component;
-							} else {
-								objectArgs.displayObjectFile=rs.name[row] & "/index.cfm";
-							}
+
 							for ( o in baseXML.xmlAttributes ) {
 								if ( !structKeyExists(objectArgs,o) ) {
 									objectArgs[o]=baseXML.xmlAttributes[o];

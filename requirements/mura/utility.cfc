@@ -1281,6 +1281,15 @@ Blog: www.codfusion.com--->
 		}
 	}
 
+	function getXMLKeyValue(xmlObj, key, defaultValue=""){
+		if(isdefined('arguments.xmlObj.xmlAttributes.#arguments.key#')){
+			return xmlObj.xmlAttributes[arguments.key];
+		} else if ( isDefined('arguments.xmlObj.#arguments.key#.xmlText')){
+			return arguments.xmlObj[arguments.key].xmlText;
+		} else {
+			return arguments.defaultValue;
+		}
+	}
 </cfscript>
 
 <!--- Stashing some support for tags here until CF10 support is dropped --->
