@@ -1643,11 +1643,15 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 							var baseXML=config.mura;
 						}
 
-						if ( isDefined('baseXML.xmlAttributes.name') || isDefined('baseXML.xmlAttributes.name') ) {
+						if ( isDefined('baseXML.xmlAttributes.name') || isDefined('baseXML.name') ) {
 							objectArgs={
 											object=rs.name[row],
 											custom=arguments.custom
 											};
+							tempVal=utility.getXMLKeyValue(baseXML,'name');
+							if ( len(tempVal) ) {
+								objectArgs.name=tempVal;
+							}
 							tempVal=utility.getXMLKeyValue(baseXML,'condition',true);
 							if ( len(tempVal) ) {
 								objectArgs.condition=tempVal;
