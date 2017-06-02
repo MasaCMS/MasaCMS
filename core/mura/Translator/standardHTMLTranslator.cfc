@@ -67,6 +67,7 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 		request.muraActiveRegions="";
 		variables.$=$;
 		variables.m=$;
+		variables.mura=$;
 		if ( !isNumeric(arguments.event.getValue('startRow')) ) {
 			arguments.event.setValue('startRow',1);
 		}
@@ -97,7 +98,7 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 				tracePoint=initTracePoint("#defaultTemplatePath#");
 				try {
 					include defaultTemplatePath;
-				} catch (any cfcatch) {	
+				} catch (any cfcatch) {
 						writeOutput("#$.getBean('resourceBundle').messageFormat($.rbKey('sitemanager.missingDefaultTemplate'), ['<strong>/#ListRest(defaultTemplatePath, '/')#</strong>'])#");
 				}
 				commitTracePoint(tracePoint);
