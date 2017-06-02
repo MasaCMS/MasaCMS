@@ -6,7 +6,7 @@
 <cfoutput>
 <script>
 	$(function(){
-		Mura.loader().loadjs("#variables.$.siteConfig('AssetPath')#/includes/display_objects/favorites/js/favorites-jquery.min.js");
+		Mura.loader().loadjs("#variables.$.siteConfig('corePath')#/modules/v1/favorites/js/favorites-jquery.min.js");
 		currentPageFavoriteID = '#variables.currentPageFavoriteID#';
 	});
 </script>
