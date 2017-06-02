@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif listFindNoCase('comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild',rc.classid)>
 		<cfset rc.classid='system'>
 	<cfelseif listFindNoCase('sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav,tag_cloud,category_summary,calendar_nav',rc.classid)>
-		<cfset rc.classid='navigation'>
+		<cfset rc.classid='nav'>
 	</cfif>
 
 	<cfif rc.container eq 'layout'>
