@@ -314,6 +314,8 @@ Display Objects
 <cfset this.editProfileSubmitButtonWrapperClass="">
 <cfset this.editProfileSubmitButtonClass="btn btn-primary">
 <cfset this.editProfileSuccessMessageClass="alert alert-success">
+<cfset this.editProfileErrorMessageClass=this.alertDangerClass>
+<cfset this.editProfileInfoMessageClass=this.alertDangerClass>
 
 <!--- Dsp_email_dropdown.cfm --->
 <cfset this.emailDropdownSelectClass="dropdown">

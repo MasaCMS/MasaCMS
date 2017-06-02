@@ -282,6 +282,8 @@
 		this.editProfileSubmitButtonWrapperClass="";
 		this.editProfileSubmitButtonClass="";
 		this.editProfileSuccessMessageClass="";
+		this.editProfileErrorMessageClass="";
+		this.editProfileInfoMessageClass="";
 
 		//dsp_email_dropdown.cfm
 		this.emailDropdownSelectClass="";

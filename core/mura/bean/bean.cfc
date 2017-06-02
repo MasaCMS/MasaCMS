@@ -793,9 +793,9 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 					       	 		prop.dataType='datetime';
 					       	 	}
 
-								if(structKeyExists(prop,'relatesTo')){
-									prop.cfc=prop.relatesTo;
-								}
+										if(structKeyExists(prop,'relatesTo')){
+											prop.cfc=prop.relatesTo;
+										}
 
 					       	 	if(structKeyExists(prop,'cfc')){
 

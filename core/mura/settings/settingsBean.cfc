@@ -1820,7 +1820,6 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 
 	public function discoverDisplayObjects() output=false {
 		var lookupArray=[
-			'/muraWRM/#variables.configBean.getAdminDir()#/core/views/carch/objectclass',
 			"/muraWRM/core/modules/v1",
 			"/muraWRM/modules",
 			"/muraWRM/display_objects",
