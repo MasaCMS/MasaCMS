@@ -95,11 +95,11 @@
         get:function(keyName,keyValue){
             var key=this.getKey(keyName);
 
-			if(typeof this.core[key] != 'undefined'){
-				return this.core[key].keyValue;
+			if(typeof this.cache[key] != 'undefined'){
+				return this.cache[key].keyValue;
 			} else if (typeof keyValue != 'undefined') {
 				this.set(keyName,keyValue,key);
-				return this.core[key].keyValue;
+				return this.cache[key].keyValue;
 			} else {
 				return;
 			}
