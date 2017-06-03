@@ -419,13 +419,14 @@
                 url: root.Mura.apiEndpoint,
                 data: params,
                 success: function(resp) {
-                    var collection = new root.Mura.EntityCollection(
-                        resp.data)
+                    var collection = new root.Mura.EntityCollection(resp.data)
 
-                    if (typeof resolve ==
-                        'function') {
+                    if (typeof resolve == 'function') {
                         resolve(collection);
                     }
+                },
+                error:function(resp){
+                  console.log(resp);
                 }
             });
         });

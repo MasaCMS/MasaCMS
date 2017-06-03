@@ -367,18 +367,16 @@
 
                 propertyName = propertyName || 'id';
                 propertyValue = propertyValue || this.get(
-                    propertyName) || 'null';
+                propertyName) || 'null';
 
                 var self = this;
 
                 if (propertyName == 'id') {
-                    var cachedValue = Mura.datacache.get(
-                        propertyValue);
+                    var cachedValue = Mura.datacache.get(propertyValue);
 
-                    if (cachedValue) {
+                    if (typeof cachedValue != 'undefined') {
                         this.set(cachedValue);
-                        return new Promise(function(resolve,
-                            reject) {
+                        return new Promise(function(resolve,reject) {
                             resolve(self);
                         });
                     }
@@ -386,41 +384,29 @@
 
                 return new Promise(function(resolve, reject) {
                     params = Mura.extend({
-                            entityname: self.get(
-                                'entityname').toLowerCase(),
+                            entityname: self.get('entityname').toLowerCase(),
                             method: 'findQuery',
-                            siteid: self.get(
-                                'siteid'),
+                            siteid: self.get( 'siteid'),
                             '_cacheid': Math.random(),
                         },
                         params
                     );
 
-                    if (params.entityname == 'content' ||
-                        params.entityname ==
-                        'contentnav') {
+                    if (params.entityname == 'content' ||  params.entityname ==  'contentnav') {
                         params.includeHomePage = 1;
                         params.showNavOnly = 0;
                         params.showExcludeSearch = 1;
                     }
 
-                    params[propertyName] =
-                        propertyValue;
-
+                    params[propertyName] = propertyValue;
 
                     Mura.findQuery(params).then(
                         function(collection) {
-
-                            if (collection.get(
-                                    'items').length) {
-                                self.set(collection
-                                    .get(
-                                        'items'
-                                    )[0].getAll()
-                                );
+                            if (collection.get('items').length) {
+                                self.set(collection.get('items')[0].getAll());
                             }
-                            if (typeof resolve ==
-                                'function') {
+
+                            if (typeof resolve == 'function') {
                                 resolve(self);
                             }
                         });
@@ -449,8 +435,7 @@
                         url: Mura.apiEndpoint +
                             '?method=validate',
                         data: {
-                            data: Mura.escape(
-                                data),
+                            data: Mura.escape( data),
                             validations: '{}',
                             version: 4
                         },
@@ -458,24 +443,14 @@
                             if (resp.data !=
                                 'undefined'
                             ) {
-                                self.set(
-                                    'errors',
-                                    resp
-                                    .data
-                                )
+                                self.set('errors',resp.data )
                             } else {
-                                self.set(
-                                    'errors',
-                                    resp
-                                    .error
+                                self.set('errors', resp.error
                                 );
                             }
 
-                            if (typeof resolve ==
-                                'function') {
-                                resolve(
-                                    self
-                                );
+                            if (typeof resolve ==  'function') {
+                                resolve(self);
                             }
                         }
                     });

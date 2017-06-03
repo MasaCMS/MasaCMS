@@ -75,31 +75,31 @@
 			this.cache={};
 		},
 
-        /**
-         * getKey - Returns Key value associated with key Name
-         *
-         * @param  {string} keyName Key Name
-         * @return {*}         Key Value
-         */
-        getKey:function(keyName){
-            return Mura.hashCode(keyName);
-        },
+    /**
+     * getKey - Returns Key value associated with key Name
+     *
+     * @param  {string} keyName Key Name
+     * @return {*}         Key Value
+     */
+    getKey:function(keyName){
+        return Mura.hashCode(keyName);
+    },
 
-        /**
-         * get - Returns the value associated with key name
-         *
-         * @param  {string} keyName  description
-         * @param  {*} keyValue Default Value
-         * @return {*}
-         */
-        get:function(keyName,keyValue){
-            var key=this.getKey(keyName);
+    /**
+     * get - Returns the value associated with key name
+     *
+     * @param  {string} keyName  description
+     * @param  {*} keyValue Default Value
+     * @return {*}
+     */
+    get:function(keyName,keyValue){
+      var key=this.getKey(keyName);
 
-			if(typeof this.core[key] != 'undefined'){
-				return this.core[key].keyValue;
+			if(typeof this.cache[key] != 'undefined'){
+				return this.cache[key].keyValue;
 			} else if (typeof keyValue != 'undefined') {
 				this.set(keyName,keyValue,key);
-				return this.core[key].keyValue;
+				return this.cache[key].keyValue;
 			} else {
 				return;
 			}
@@ -114,7 +114,7 @@
 		 * @return {*}
 		 */
 		set:function(keyName,keyValue,key){
-            key=key || this.getKey(keyName);
+        key=key || this.getKey(keyName);
 		    this.cache[key]={name:keyName,value:keyValue};
 			return keyValue;
 		},
@@ -134,30 +134,30 @@
 		 *
 		 * @return {object}
 		 */
-		getAll:function(){
+		  getAll:function(){
 			return this.cache;
 		},
 
-        /**
-         * purgeAll - Purges all key/value pairs from cache
-         *
-         * @return {object}  Self
-         */
-        purgeAll:function(){
-            this.cache={};
+    /**
+     * purgeAll - Purges all key/value pairs from cache
+     *
+     * @return {object}  Self
+     */
+    purgeAll:function(){
+        this.cache={};
 			return this;
 		},
 
-        /**
-         * purge - Purges specific key name from cache
-         *
-         * @param  {string} keyName Key Name
-         * @return {object}         Self
-         */
-        purge:function(keyName){
-            var key=this.getKey(keyName)
-            if( typeof this.cache[key] != 'undefined')
-            delete this.cache[key];
+    /**
+     * purge - Purges specific key name from cache
+     *
+     * @param  {string} keyName Key Name
+     * @return {object}         Self
+     */
+    purge:function(keyName){
+        var key=this.getKey(keyName)
+        if( typeof this.cache[key] != 'undefined')
+        delete this.cache[key];
 			return this;
 		}
 
