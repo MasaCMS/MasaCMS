@@ -8428,36 +8428,21 @@ return /******/ (function(modules) { // webpackBootstrap
                     if (typeof this.properties[propertyName] ==
                         'object') {
 
-                        return new Promise(function(resolve,
-                            reject) {
-                            if ('items' in self.properties[
-                                    propertyName]) {
-                                var returnObj = new Mura
-                                    .EntityCollection(
-                                        self.properties[
-                                            propertyName
-                                        ]);
+                        return new Promise(function(resolve,reject) {
+                            if ('items' in self.properties[propertyName]) {
+                                var returnObj = new Mura.EntityCollection(
+                                        self.properties[propertyName]);
                             } else {
-                                if (Mura.entities[self.properties[
-                                        propertyName
-                                    ].entityname]) {
-                                    var returnObj = new Mura
-                                        .entities[self.properties[
-                                            propertyName
-                                        ].entityname](
-                                            obj.properties[
-                                                propertyName
-                                            ]);
+                                if (Mura.entities[self.properties[propertyName].entityname]) {
+                                    var returnObj = new Mura.entities[self.properties[propertyName ].entityname](
+                                            obj.properties[propertyName]
+                                        );
                                 } else {
-                                    var returnObj = new Mura
-                                        .Entity(self.properties[
-                                            propertyName
-                                        ]);
+                                    var returnObj = new Mura.Entity(self.properties[propertyName]);
                                 }
                             }
 
-                            if (typeof resolve ==
-                                'function') {
+                            if (typeof resolve == 'function') {
                                 resolve(returnObj);
                             }
                         });
@@ -8473,77 +8458,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
                             Mura.ajax({
                                 type: 'get',
-                                url: self.properties
-                                    .links[
-                                        propertyName
-                                    ],
+                                url: self.properties.links[propertyName],
                                 params: params,
-                                success: function(
-                                    resp) {
+                                success: function(resp) {
 
                                     if (
-                                        'items' in
-                                        resp
-                                        .data
+                                        'items' in resp.data
                                     ) {
-                                        var
-                                            returnObj =
-                                            new Mura
-                                            .EntityCollection(
-                                                resp
-                                                .data
-                                            );
+                                        var returnObj = new Mura.EntityCollection(resp.data);
                                     } else {
                                         if (
-                                            Mura
-                                            .entities[
-                                                obj
-                                                .entityname
-                                            ]
+                                            Mura.entities[obj.entityname]
                                         ) {
-                                            var
-                                                returnObj =
-                                                new Mura
-                                                .entities[
-                                                    obj
-                                                    .entityname
-                                                ]
-                                                (
-                                                    obj
-                                                );
+                                            var returnObj = new Mura.entities[obj.entityname](obj);
                                         } else {
-                                            var
-                                                returnObj =
-                                                new Mura
-                                                .Entity(
-                                                    resp
-                                                    .data
-                                                );
+                                            var returnObj = new Mura.Entity(resp.data);
                                         }
                                     }
 
                                     //Dont cache it there are custom params
                                     if (
-                                        Mura
-                                        .isEmptyObject(
-                                            params
-                                        )) {
-                                        self
-                                            .set(
-                                                propertyName,
-                                                resp
-                                                .data
-                                            );
+                                        Mura.isEmptyObject(params)) {
+                                        self.set(propertyName,resp.data);
                                     }
 
                                     if (
-                                        typeof resolve ==
-                                        'function'
+                                        typeof resolve == 'function'
                                     ) {
-                                        resolve
-                                            (
-                                                returnObj
-                                            );
+                                        resolve(returnObj);
                                     }
                                 },
                                 error: reject
@@ -8636,11 +8578,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
                 return new Promise(function(resolve, reject) {
                     params = Mura.extend({
-                            entityname: self.get(
-                                'entityname'),
+                            entityname: self.get('entityname'),
                             method: 'findNew',
-                            siteid: self.get(
-                                'siteid'),
+                            siteid: self.get('siteid'),
                             '_cacheid': Math.random()
                         },
                         params
@@ -8649,8 +8589,7 @@ return /******/ (function(modules) { // webpackBootstrap
                     Mura.get(Mura.apiEndpoint, params).then(
                         function(resp) {
                             self.set(resp.data);
-                            if (typeof resolve ==
-                                'function') {
+                            if (typeof resolve == 'function') {
                                 resolve(self);
                             }
                         });
@@ -8708,7 +8647,7 @@ return /******/ (function(modules) { // webpackBootstrap
                             if (collection.get('items').length) {
                                 self.set(collection.get('items')[0].getAll());
                             }
-                            
+
                             if (typeof resolve == 'function') {
                                 resolve(self);
                             }
@@ -8738,8 +8677,7 @@ return /******/ (function(modules) { // webpackBootstrap
                         url: Mura.apiEndpoint +
                             '?method=validate',
                         data: {
-                            data: Mura.escape(
-                                data),
+                            data: Mura.escape( data),
                             validations: '{}',
                             version: 4
                         },
@@ -8747,24 +8685,14 @@ return /******/ (function(modules) { // webpackBootstrap
                             if (resp.data !=
                                 'undefined'
                             ) {
-                                self.set(
-                                    'errors',
-                                    resp
-                                    .data
-                                )
+                                self.set('errors',resp.data )
                             } else {
-                                self.set(
-                                    'errors',
-                                    resp
-                                    .error
+                                self.set('errors', resp.error
                                 );
                             }
 
-                            if (typeof resolve ==
-                                'function') {
-                                resolve(
-                                    self
-                                );
+                            if (typeof resolve ==  'function') {
+                                resolve(self);
                             }
                         }
                     });
@@ -8820,32 +8748,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
                         Mura.ajax({
                             type: 'get',
-                            url: Mura.apiEndpoint +
-                                self.get(
-                                    'entityname'
-                                ) + '/new',
-                            success: function(
-                                resp) {
-                                self.set(
-                                    resp
-                                    .data
-                                );
-                                self.set(
-                                    temp
-                                );
-                                self.set(
-                                    'id',
-                                    resp
-                                    .data
-                                    .id
-                                );
-                                self.set(
-                                    'isdirty',
-                                    true
-                                );
+                            url: Mura.apiEndpoint + self.get('entityname') + '/new',
+                            success: function(resp) {
+                                self.set(resp.data);
+                                self.set(temp);
+                                self.set('id',resp.data.id);
+                                self.set('isdirty',true);
                                 self.cachePut();
-                                self.save()
-                                    .then(
+                                self.save().then(
                                         resolve,
                                         reject
                                     );
@@ -8876,92 +8786,47 @@ return /******/ (function(modules) { // webpackBootstrap
                                         .apiEndpoint +
                                         '?method=save',
                                     data: Mura
-                                        .extend(
-                                            self
-                                            .getAll(), {
-                                                'csrf_token': resp
-                                                    .data
-                                                    .csrf_token,
-                                                'csrf_token_expires': resp
-                                                    .data
-                                                    .csrf_token_expires
+                                        .extend( self.getAll(), {
+                                                'csrf_token': resp.data.csrf_token,
+                                                'csrf_token_expires': resp.data.csrf_token_expires
                                             }
                                         ),
                                     success: function(
                                         resp
                                     ) {
-                                        if (
-                                            resp
-                                            .data !=
-                                            'undefined'
+                                        if (resp.data != 'undefined'
                                         ) {
-                                            self
-                                                .set(
-                                                    resp
-                                                    .data
-                                                )
-                                            self
-                                                .set(
-                                                    'isdirty',
-                                                    false
-                                                );
-                                            if (
-                                                self
-                                                .get(
-                                                    'saveerrors'
-                                                ) ||
-                                                Mura
-                                                .isEmptyObject(
-                                                    self
-                                                    .getErrors()
-                                                )
+                                            self.set(resp.data)
+                                            self.set('isdirty',false );
+                                            if (self.get('saveerrors') ||
+                                                Mura.isEmptyObject(self.getErrors())
                                             ) {
                                                 if (
-                                                    typeof resolve ==
-                                                    'function'
+                                                    typeof resolve ==  'function'
                                                 ) {
-                                                    resolve
-                                                        (
-                                                            self
-                                                        );
+                                                    resolve(self);
                                                 }
                                             } else {
                                                 if (
-                                                    typeof reject ==
-                                                    'function'
+                                                    typeof reject == 'function'
                                                 ) {
-                                                    reject
-                                                        (
-                                                            self
-                                                        );
+                                                    reject(self);
                                                 }
                                             }
 
                                         } else {
-                                            self
-                                                .set(
-                                                    'errors',
-                                                    resp
-                                                    .error
-                                                );
+                                            self.set('errors',resp.error);
                                             if (
-                                                typeof reject ==
-                                                'function'
+                                                typeof reject == 'function'
                                             ) {
-                                                reject
-                                                    (
-                                                        self
-                                                    );
+                                                reject(self);
                                             }
                                         }
                                     }
                                 });
                             },
-                            error: function(
-                                resp) {
-                                this.success(
-                                    resp
-                                );
+                            error: function(resp) {
+                                this.success(resp );
                             }
                         });
 
@@ -8987,53 +8852,27 @@ return /******/ (function(modules) { // webpackBootstrap
                         url: Mura.apiEndpoint +
                             '?method=generateCSRFTokens',
                         data: {
-                            siteid: self.get(
-                                'siteid'),
-                            context: self.get(
-                                'id')
+                            siteid: self.get('siteid'),
+                            context: self.get('id')
                         },
                         success: function(resp) {
                             Mura.ajax({
                                 type: 'post',
-                                url: Mura
-                                    .apiEndpoint +
-                                    '?method=delete',
+                                url: Mura.apiEndpoint + '?method=delete',
                                 data: {
-                                    siteid: self
-                                        .get(
-                                            'siteid'
-                                        ),
-                                    id: self
-                                        .get(
-                                            'id'
-                                        ),
-                                    entityname: self
-                                        .get(
-                                            'entityname'
-                                        ),
-                                    'csrf_token': resp
-                                        .data
-                                        .csrf_token,
-                                    'csrf_token_expires': resp
-                                        .data
-                                        .csrf_token_expires
+                                    siteid: self.get('siteid'),
+                                    id: self.get('id'),
+                                    entityname: self.get('entityname'),
+                                    'csrf_token': resp.data.csrf_token,
+                                    'csrf_token_expires': resp.data.csrf_token_expires
                                 },
                                 success: function() {
-                                    self
-                                        .set(
-                                            'isdeleted',
-                                            true
-                                        );
-                                    self
-                                        .cachePurge();
+                                    self.set('isdeleted',true);
+                                    self.cachePurge();
                                     if (
-                                        typeof resolve ==
-                                        'function'
+                                        typeof resolve == 'function'
                                     ) {
-                                        resolve
-                                            (
-                                                self
-                                            );
+                                        resolve(self);
                                     }
                                 }
                             });

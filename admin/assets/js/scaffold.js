@@ -115,7 +115,6 @@ var MuraORMScaffold = {
 	},
 
 		processEntity: function(listener, entity,data) {
-
 			listener(data);
 		},
 
