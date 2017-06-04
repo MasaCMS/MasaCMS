@@ -86,6 +86,15 @@ component extends="mura.cache.cacheAbstract" output="false" hint="This provides 
 				// }
 				return wrappedClassInstance;
 			}
+
+			classInstance=variables.pluginManager.getGlobalListener(localKey);
+			if ( isObject(classInstance) ) {
+				wrappedClassInstance=wrapHandler(classInstance, localKey);
+				// if (arguments.persist){
+				super.set( localKey, wrappedClassInstance );
+				// }
+				return wrappedClassInstance;
+			}
 		}
 		//  Check if the prelook for plugins has been made
 		// if( NOT arguments.persist or NOT has( checkKey )){

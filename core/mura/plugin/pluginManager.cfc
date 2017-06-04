@@ -2811,7 +2811,7 @@ select * from rs order by name
 					<cfset variables.siteListeners[siteIDadjusted][i]=arrayNew(1)>
 				</cfif>
 				<cfset arrayAppend( variables.siteListeners[siteIDadjusted][i] , handlerData)>
-			<cfelseif not len(arguments.siteid) or arguments.applyglobal>
+			<cfelseif (not len(arguments.siteid) or arguments.applyglobal)>
 				<cfif not structKeyExists(variables.globalListeners,i)>
 					<cfset variables.globalListeners[i]=arrayNew(1)>
 				</cfif>
@@ -2840,7 +2840,21 @@ select * from rs order by name
 
 	<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 		<cfset variables.listeners[siteIDadjusted]=structNew()>
-		<cfset listenerArray=evaluate("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+		<cfset listenerArray=variables.siteListeners["#siteIDadjusted#"]["#arguments.runat#"]>
+		<cfreturn variables.eventHandlers[listenerArray[1].index]>
+	<cfelse>
+		<cfreturn "">
+	</cfif>
+
+</cffunction>
+
+<cffunction name="getGlobalListener" ouput="false">
+<cfargument name="runat">
+	<cfset var listenerArray="">
+
+	<cfif isDefined("variables.globalListeners.#arguments.runat#")>
+		<cfset variables.listeners[siteIDadjusted]=structNew()>
+		<cfset listenerArray=variables.globalListeners["#arguments.runat#"]>
 		<cfreturn variables.eventHandlers[listenerArray[1].index]>
 	<cfelse>
 		<cfreturn "">
