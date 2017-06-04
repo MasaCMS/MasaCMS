@@ -365,13 +365,19 @@ function getThemeRenderer() output=false {
 		}
 	}
 
-	function announceEvent(eventName, index="0") output=false {
-		getEventManager().announceEvent(eventToAnnounce=arguments.eventName,currentEventObject=this,index=arguments.index);
+	function announceEvent(eventName,objectid="",index="0") output=false {
+		if(!len(arguments.objectid) && event().valueExists('contentBean')){
+			arguments.objectid=event().getValue('contentBean').getContentID();
+		}
+		getEventManager().announceEvent(eventToAnnounce=arguments.eventName,currentEventObject=this,index=arguments.index,objectid=arguments.objectid);
 		return this;
 	}
 
-	function renderEvent(eventName, index="0") output=false {
-		return getEventManager().renderEvent(eventToRender=arguments.eventName,currentEventObject=this,index=arguments.index);
+	function renderEvent(eventName,objectid="",index="0") output=false {
+		if(!len(arguments.objectid) && event().valueExists('contentBean')){
+			arguments.objectid=event().getValue('contentBean').getContentID();
+		}
+		return getEventManager().renderEvent(eventToRender=arguments.eventName,currentEventObject=this,index=arguments.index,objectid=arguments.objectid);
 	}
 
 	function createHREF(required type="Page", required filename="", required siteid="#event('siteid')#", required contentid="", required target="", required targetParams="", required querystring="", required string context="#application.configBean.getContext()#", required string stub="#application.configBean.getStub()#", required string indexFile="", required boolean complete="false", required string showMeta="0") output=false {

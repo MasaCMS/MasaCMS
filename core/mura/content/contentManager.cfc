@@ -1769,26 +1769,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset currentBean.setValue("muraDeleteDateTime",arguments.data.muraDeleteDateTime)>
 		<cfset currentBean.setValue("muraDeleteID",arguments.data.muraDeleteID)>
 		<cfset pluginEvent.setValue("contentBean",currentBean) />
+		<cfset pluginEvent.setValue("bean",currentBean) />
 		<cfif currentBean.getContentID() neq '00000000000000000000000000000000001'>
 
 			<cfif currentBean.getIsLocked() neq 1>
 
 				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
-					<cfset variables.pluginManager.announceEvent("onContentDelete",pluginEvent)>
-					<cfset variables.pluginManager.announceEvent("onBeforeContentDelete",pluginEvent)>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onContentDelete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeContentDelete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 				</cfif>
 
 				<!--- For backwards compatibility --->
 				<cfif currentBean.getType() eq 'Folder'>
-					<cfset variables.pluginManager.announceEvent("onPortalDelete",pluginEvent)>
-					<cfset variables.pluginManager.announceEvent("onBeforePortalDelete",pluginEvent)>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onPortalDelete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforePortalDelete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 				</cfif>
 				<!--- --->
 
-				<cfset variables.pluginManager.announceEvent("on#currentBean.getType()#Delete",pluginEvent)>
-				<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()#Delete",pluginEvent)>
-				<cfset variables.pluginManager.announceEvent("on#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
-				<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="on#currentBean.getType()#Delete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBefore#currentBean.getType()#Delete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="on#currentBean.getType()##currentBean.getSubType()#Delete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBefore#currentBean.getType()##currentBean.getSubType()#Delete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 
 				<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","mura-content","Information",true) />
 				<cfset variables.trashManager.throwIn(currentBean)>
@@ -1797,17 +1798,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset variables.contentDAO.delete(currentBean) />
 				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
-					<cfset variables.pluginManager.announceEvent("onAfterContentDelete",pluginEvent)>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterContentDelete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 				</cfif>
 
 				<!--- For backwards compatibility --->
 				<cfif currentBean.getType() eq 'Folder'>
-					<cfset variables.pluginManager.announceEvent("onAfterPortalDelete",pluginEvent)>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterPortalDelete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 				</cfif>
 				<!--- --->
 
-				<cfset variables.pluginManager.announceEvent("onAfter#currentBean.getType()#Delete",pluginEvent)>
-				<cfset variables.pluginManager.announceEvent("onAfter#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfter#currentBean.getType()#Delete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfter#currentBean.getType()##currentBean.getSubType()#Delete",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 			</cfif>
 
 		<cfelse>
@@ -1847,27 +1848,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var deleteIDList="">
 
 		<cfset pluginEvent.setValue("contentBean",currentBean)/>
+		<cfset pluginEvent.setValue("bean",currentBean)/>
 		<cfset rsHist=getHist(arguments.data.contentid,arguments.data.siteid)/>
 		<cfset rsPendingChangesets=getPendingChangesets(arguments.data.contentid,arguments.data.siteid)/>
 		<cfset historyIterator.setQuery(rsHist)>
 		<cfset pluginEvent.setValue("historyIterator",historyIterator)/>
 
 		<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
-			<cfset variables.pluginManager.announceEvent("onContentDeleteVersionHistory",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onBeforeContentDeleteVersionHistory",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onContentDeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeContentDeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 		</cfif>
 
 		<!--- For backwards compatibility --->
 		<cfif currentBean.getType() eq 'Folder'>
-			<cfset variables.pluginManager.announceEvent("onPortalDeleteVersionHistory",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onBeforePortalDeleteVersionHistory",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onPortalDeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforePortalDeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 		</cfif>
 		<!--- --->
 
-		<cfset variables.pluginManager.announceEvent("on#currentBean.getType()#DeleteVersionHistory",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()#DeleteVersionHistory",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("on#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="on#currentBean.getType()#DeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBefore#currentBean.getType()#DeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="on#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBefore#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 
 		<!--- Add the current fileID and any attached to pending changeset versions to the fileList
 		so that they will not be deleted.
@@ -1901,17 +1903,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.contentDAO.deletehistall(data.contentid,data.siteid) />
 
 		<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
-			<cfset variables.pluginManager.announceEvent("onAfterContentDeleteVersionHistory",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterContentDeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 		</cfif>
 
 		<!--- For backwards compatibility --->
 		<cfif currentBean.getType() eq 'Folder'>
-			<cfset variables.pluginManager.announceEvent("onAfterPortalDeleteVersionHistory",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterPortalDeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 		</cfif>
 		<!--- --->
 
-		<cfset variables.pluginManager.announceEvent("onAfter#currentBean.getType()#DeleteVersionHistory",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfter#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfter#currentBean.getType()#DeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfter#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",currentEventObject=pluginEvent,objectid=currentBean.getContentID())>
 
 	</cffunction>
 

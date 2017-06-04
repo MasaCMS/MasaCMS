@@ -1035,7 +1035,8 @@ Sincerely,
 	<cfset getBean('contentDAO').persistVersionedObjects(variables.contentDAO.readActive(arguments.contentID, arguments.siteID),contentBean,[],[],pluginEvent.getValue('MuraScope'))>
 
 	<cfset pluginEvent.setValue("contentBean",contentBean)>
-	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
+	<cfset pluginEvent.setValue("bean",contentBean)>
+	<cfset getPluginManager().announceEvent(eventToAnnounce="onContentCopy",currentEventObject=pluginEvent,objectid=contentBean.getContentID())>
 
 	<cfif arguments.recurse>
 		<cfif contentBean.getSortBy() eq "orderno">

@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                      .submit($).getErrors()>
 
 					<cfif not structCount(objectParams.errors)>
-						<cfset objectParams.responsemessage=$.renderEvent("onFormSubmitResponseRender")>
+						<cfset objectParams.responsemessage=$.renderEvent(eventName="onFormSubmitResponseRender",objectid=local.formBean.getContentID())>
 
 						<cfif len($.event('redirect_url'))>
 							<cfset $.event('redirect_url',variables.$.getBean('utility').sanitizeHref($.event('redirect_url')))>
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   					 }
 
 	   					 request.cffpJS=true;
-						 
+
 	   					 objectParams.def=serializeJSON(local.formJSON);
 	   					 objectParams.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
 						 if(!this.layoutmanager && local.formBean.getDisplayTitle() > 0){

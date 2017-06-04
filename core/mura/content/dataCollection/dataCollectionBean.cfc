@@ -350,15 +350,15 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 		arguments.$.event('formBean',getFormBean());
 		arguments.$.event('acceptData',getValue('acceptData'));
 		arguments.$.event('sendto','');
-		arguments.$.announceEvent('onBeforeFormSubmitSave');
-		arguments.$.announceEvent('onBeforeForm#getFormBean().getSubType()#SubmitSave');
+		arguments.$.announceEvent(eventName='onBeforeFormSubmitSave',objectid=getFormBean().getContentID());
+		arguments.$.announceEvent(eventName='onBeforeForm#getFormBean().getSubType()#SubmitSave',objectid=getFormBean().getContentID());
 
 		if(structIsEmpty(getErrors())){
 			setValue('formResult',variables.dataCollectionManager.update(structCopy(getAllValues())));
 			//structAppend(variables.instance,getValue('formResult'));
 			arguments.$.event('sendto','');
-			arguments.$.announceEvent('onAfterFormSubmitSave');
-			arguments.$.announceEvent('onAfterForm#getFormBean().getSubType()#SubmitSave');
+			arguments.$.announceEvent(eventName='onAfterFormSubmitSave',objectid=getFormBean().getContentID());
+			arguments.$.announceEvent(eventName='onAfterForm#getFormBean().getSubType()#SubmitSave',objectid=getFormBean().getContentID());
 
 			sendNotification(arguments.$);
 

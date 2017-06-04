@@ -364,8 +364,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset pluginEvent.setValue("feedBean",feedBean)>
 	<cfset pluginEvent.setValue("bean",feedBean)>
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
-	<cfset variables.pluginManager.announceEvent("onBeforeFeedSave",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onBeforeFeedUpdate",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFeedSave",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
 	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFeedUpdate",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
 
@@ -422,15 +420,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not feedBean.getIsLocked()>
 		<cfset pluginEvent.setValue("feedBean",feedBean)>
+		<cfset pluginEvent.setValue("bean",feedBean)>
 		<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
 
-		<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFeedDelete",currentEventObject=pluginEvent,objectid=feedBean.getContentID())>
 		<cfset variables.trashManager.throwIn(feedBean,'feed')>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
 		<cfset variables.feedDAO.delete(arguments.feedID) />
 		<cfset purgeFeedCache(feedBean=feedBean)>
-		<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onFeedDelete",currentEventObject=pluginEvent,objectid=feedBean.getContentID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterFeedDelete",currentEventObject=pluginEvent,objectid=feedBean.getContentID())>
 	</cfif>
 
 </cffunction>

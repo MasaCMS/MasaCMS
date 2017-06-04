@@ -374,7 +374,7 @@
 	</cfif>
 	--->
 
-	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
+	<cfset application.pluginManager.announceEvent(eventToAnnounce='onRenderStart', currentEventObject=arguments.event,objectid=arguments.event.getValue('contentBean').getContentID())/>
 
 	<cfswitch expression="#arguments.event.getValue('contentBean').getType()#">
 	<cfcase value="File,Link">
@@ -419,7 +419,7 @@
 
 	<cfset translator.handle(arguments.event) />
 
-	<cfset application.pluginManager.announceEvent('onRenderEnd', arguments.event)/>
+	<cfset application.pluginManager.announceEvent(eventToAnnounce='onRenderEnd',currentEventObject=arguments.event,objectid=arguments.event.getValue('contentBean').getContentID())/>
 </cffunction>
 
 <cffunction name="standard404Handler" output="false">
@@ -427,7 +427,7 @@
 	<cfargument name="$" required="true">
 
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
-		<cfset getPluginManager().announceEvent("onSite404",arguments.event)>
+		<cfset getPluginManager().announceEvent(eventToAnnounce="onSite404",currentEventObject=arguments.event,objectid=arguments.event.getValue('contentBean').getContentID())>
 	</cfif>
 
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
@@ -890,9 +890,9 @@
 
 			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
 
-			$.announceEvent('onapiresponse');
-			$.announceEvent('on#result.type#apiresponse');
-			$.announceEvent('on#result.type##result.subtype#apiresponse');
+			$.announceEvent(eventName='onapiresponse',objectid=$.content('contentid'));
+			$.announceEvent(eventName='on#result.type#apiresponse',objectid=$.content('contentid'));
+			$.announceEvent(eventName='on#result.type##result.subtype#apiresponse',objectid=$.content('contentid'));
 
 			structDelete(result,'addObjects');
 			structDelete(result,'removeObjects');
@@ -914,7 +914,7 @@
 
 		} catch (any e){
 			result.error = e;
-			$.announceEvent('onapierror');
+			$.announceEvent(eventName='onapierror',objectid=$.content('contentid'));
 			$.event('__MuraResponse__',apiUtility.serializeResponse({error=result.error.stacktrace}));
 		}
 

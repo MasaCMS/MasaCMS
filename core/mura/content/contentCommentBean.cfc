@@ -292,95 +292,100 @@ function getCommenter() output=false {
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
+  <cfset eventArgs.bean=this>
 	<cfset pluginEvent.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent("onBeforeCommentDelete",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentDelete",currentEventObject=pluginEvent,objectid=getValue("commentid"))>
 
 	<cfquery>
 		update tcontentcomments set isDeleted = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
 
-	<cfset pluginManager.announceEvent("onAfterCommentDelete",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentDelete",currentEventObject=pluginEvent,objectid=getValue("commentid"))>
 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="undelete">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var currentEventObject=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
-	<cfset pluginEvent.init(eventArgs)>
+  <cfset eventArgs.bean=this>
+	<cfset currentEventObject.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent("onBeforeCommentUndelete",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentUndelete",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 	<cfquery>
 		update tcontentcomments set isDeleted = 0 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
 
-	<cfset pluginManager.announceEvent("onAfterCommentUndelete",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentUndelete",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="flag">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var currentEventObject=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
-	<cfset pluginEvent.init(eventArgs)>
+  <cfset eventArgs.bean=this>
+	<cfset currentEventObject.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent("onBeforeCommentFlag",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentFlag",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 	<cfquery>
 		update tcontentcomments set flagCount = flagCount + 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
 
-	<cfset pluginManager.announceEvent("onAfterCommentFlag",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentFlag",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="markAsSpam" output="false">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var currentEventObject=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
-	<cfset pluginEvent.init(eventArgs)>
+  <cfset eventArgs.bean=this>
+	<cfset currentEventObject.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent("onBeforeCommentMarkAsSpam",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 	<cfquery>
 		update tcontentcomments set	isSpam = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
 
-	<cfset pluginManager.announceEvent("onAfterCommentMarkAsSpam",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="unMarkAsSpam" output="false">
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var currentEventObject=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
-	<cfset pluginEvent.init(eventArgs)>
+  <cfset eventArgs.bean=this>
+	<cfset currentEventObject.init(eventArgs)>
 
-	<cfset pluginManager.announceEvent("onBeforeCommentUnMarkAsSpam",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentUnMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 	<cfquery>
 		update tcontentcomments set isSpam = 0 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
 
-	<cfset pluginManager.announceEvent("onAfterCommentUnMarkAsSpam",pluginEvent)>
+	<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentUnMarkAsSpam",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
@@ -393,14 +398,15 @@ function getCommenter() output=false {
 	<cfset var rslist=""/>
 	<cfset var path=""/>
 	<cfset var pluginManager=getPluginManager()>
-	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var currentEventObject=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
+  <cfset eventArgs.bean=this>
 	<cfset structAppend(eventArgs, arguments)>
 
-	<cfset pluginEvent.init(eventArgs)>
+	<cfset currentEventObject.init(eventArgs)>
 
 	<cfif len(variables.instance.parentID)>
 		<cfset path=variables.contentManager.getCommentBean().setCommentID(variables.instance.parentID).load().getPath()>
@@ -413,11 +419,11 @@ function getCommenter() output=false {
 	<cfif structIsEmpty(getErrors())>
 		<cfset setCommenter()>
 
-		<cfset pluginManager.announceEvent("onBeforeCommentSave",pluginEvent)>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentSave",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 		<cfif getQuery().recordcount>
 
-			<cfset pluginManager.announceEvent("onBeforeCommentUpdate",pluginEvent)>
+			<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentUpdate",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 			<cfquery>
 			update tcontentcomments set
@@ -441,10 +447,10 @@ function getCommenter() output=false {
 
 			</cfquery>
 
-			<cfset pluginManager.announceEvent("onAfterCommentUpdate",pluginEvent)>
+			<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentUpdate",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 		<cfelse>
 
-			<cfset pluginManager.announceEvent("onBeforeCommentCreate",pluginEvent)>
+			<cfset pluginManager.announceEvent(eventToAnnounce="onBeforeCommentCreate",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 			<cfquery>
 				insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip, remoteID, isspam, isdeleted,flagCount)
@@ -472,7 +478,7 @@ function getCommenter() output=false {
 
 			<cfset variables.instance.isNew=0/>
 
-			<cfset pluginManager.announceEvent("onAfterCommentCreate",pluginEvent)>
+			<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentCreate",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 			<cfset getBean('trashManager').takeOut(this)>
 		</cfif>
 
@@ -495,11 +501,11 @@ function getCommenter() output=false {
 			variables.instance.removeObjects=[];
 		</cfscript>
 
-		<cfset pluginManager.announceEvent("onAfterCommentSave",pluginEvent)>
+		<cfset pluginManager.announceEvent(eventToAnnounce="onAfterCommentSave",currentEventObject=currentEventObject,objectid=getValue("commentid"))>
 
 		<cfif variables.instance.isApproved>
 			<cfset saveSubscription()>
-			<cfif isBoolean(pluginEvent.getValue("notify")) and pluginEvent.getValue("notify")>
+			<cfif isBoolean(currentEventObject.getValue("notify")) and currentEventObject.getValue("notify")>
 				<cfset notifySubscribers(arguments.script,arguments.subject)>
 			</cfif>
 		</cfif>
