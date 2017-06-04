@@ -1949,4 +1949,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cfscript>
+function addEventHandler(component){
+	getBean('pluginManager').addEventHandler(component=arguments.component);
+
+	return this;
+}
+
+function addEventListener(component){
+	getBean('pluginManager').addEventHandler(component=arguments.component);
+
+	return this;
+}
+</cfscript>
+
 </cfcomponent>

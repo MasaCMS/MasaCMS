@@ -355,7 +355,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is read only.");
 		}
 
-		pluginManager.announceEvent('onBefore#variables.entityName#Save',event);
+		pluginManager.announceEvent(eventToAnnounce='onBefore#variables.entityName#Save',currentEventObject=event,objectid=get(get('primaryKey')));
 
 		if(!hasErrors() || getSaveErrors()){
 			var props=getProperties();
@@ -388,8 +388,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 
 			if(!getIsHistorical() && qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
 
-				pluginManager.announceEvent('onBefore#variables.entityName#Update',event);
-
+				pluginManager.announceEvent(eventToAnnounce='onBefore#variables.entityName#Update',currentEventObject=event,objectid=get(get('primaryKey')));
 				preUpdate();
 
 				for (prop in props){
@@ -435,7 +434,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					purgeCache();
 					postUpdate();
 
-					pluginManager.announceEvent('onAfter#variables.entityName#Update',event);
+					pluginManager.announceEvent(eventToAnnounce='onAfter#variables.entityName#Update',currentEventObject=event,objectid=get(get('primaryKey')));
 
 					variables.instance.isnew=0;
 					variables.instance.addObjects=[];
@@ -448,11 +447,11 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 				if(!(getIsHistorical() && get('deleted')==1)){
 					if(exists()){
 						preUpdate();
-						pluginManager.announceEvent('onBefore#variables.entityName#Update',event);
+						pluginManager.announceEvent(eventToAnnounce='onBefore#variables.entityName#Update',currentEventObject=event,objectid=get(get('primaryKey')));
 					} else {
 						preCreate();
 						preInsert();
-						pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
+						pluginManager.announceEvent(eventToAnnounce='onBefore#variables.entityName#Create',currentEventObject=event,objectid=get(get('primaryKey')));
 					}
 				}
 
@@ -512,13 +511,12 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 					if(!(getIsHistorical() && get('deleted')==1)){
 						if(doesExist){
 							postUpdate();
-
-							pluginManager.announceEvent('onAfter#variables.entityName#Update',event);
+							pluginManager.announceEvent(eventToAnnounce='onAfter#variables.entityName#Update',currentEventObject=event,objectid=get(get('primaryKey')));
 						} else{
 							postCreate();
 							postInsert();
 
-							pluginManager.announceEvent('onAfter#variables.entityName#Create',event);
+							pluginManager.announceEvent(eventToAnnounce='onAfter#variables.entityName#Create',currentEventObject=event,objectid=get(get('primaryKey')));
 						}
 					}
 				}
@@ -526,8 +524,8 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 
 			//if historical and deleted then events are fired within delete method
 			if(!(getIsHistorical() && get('deleted')==1)){
-				pluginManager.announceEvent('onAfter#variables.entityName#Save',event);
-				pluginManager.announceEvent('on#variables.entityName#Save',event);
+				pluginManager.announceEvent(eventToAnnounce='onAfter#variables.entityName#Save',currentEventObject=event,objectid=get(get('primaryKey')));
+				pluginManager.announceEvent(eventToAnnounce='on#variables.entityName#Save',currentEventObject=event,objectid=get(get('primaryKey')));
 			}
 
 		/*
@@ -662,8 +660,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		var subitem="";
 
 		preDelete();
-
-		pluginManager.announceEvent('onBefore#variables.entityName#Delete',event);
+		pluginManager.announceEvent(eventToAnnounce='onBefore#variables.entityName#Delete',currentEventObject=event,objectid=get(get('primaryKey')));
 
 		for(var prop in props){
 			if(structKeyExists(props[prop],'cfc') and props[prop].fieldtype eq 'one-to-many' and  props[prop].cascade eq 'delete'){
@@ -696,7 +693,8 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 
 		postDelete();
 
-		pluginManager.announceEvent('onAfter#variables.entityName#Delete',event);
+		pluginManager.announceEvent(eventToAnnounce='onAfter#variables.entityName#Delete',currentEventObject=event,objectid=get(get('primaryKey')));
+		pluginManager.announceEvent(eventToAnnounce='on#variables.entityName#Delete',currentEventObject=event,objectid=get(get('primaryKey')));
 
 		if(getUseTrash()){
 			getBean('trashManager').throwIn(this);

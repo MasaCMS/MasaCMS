@@ -257,6 +257,10 @@ component extends="mura.cfobject" output="false" hint="This provides access to a
 		return sessionData.plugins["p#getPluginID()#"];
 	}
 
+	function addEventListener(required component){
+		return addEventHandler(argumentCollection=arguments);
+	}
+
 	public function addEventHandler(required component) output=false {
 		if ( !isDefined('arguments.component.injectMethod') ) {
 			arguments.component.injectMethod=injectMethod;

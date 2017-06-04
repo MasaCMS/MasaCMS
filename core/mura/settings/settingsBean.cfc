@@ -1892,4 +1892,16 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return getBean('fileMetaData').loadBy(siteID=getValue('siteid'),fileid=getValue(arguments.property));
 	}
 
+	function addEventHandler(component){
+		getBean('pluginManager').addEventHandler(component=arguments.component,siteid=get('siteid'));
+
+		return this;
+	}
+
+	function addEventListener(component){
+		getBean('pluginManager').addEventHandler(component=arguments.component,siteid=get('siteid'));
+
+		return this;
+	}
+
 }

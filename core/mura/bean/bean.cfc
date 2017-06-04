@@ -1208,4 +1208,47 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return true;
 	}
 
+	function transformEventName(eventName){
+		var entityName=getEntityName();
+
+		if(entityName=='contentnav'){
+			entityName='content';
+		}
+		
+		if(len(arguments.eventName) > 2 && left(arguments.eventName,2)=='on'){
+			arguments.eventName=right(arguments.eventName,len(arguments.eventName)-2);
+		}
+
+		var eventNameMap={
+			'beforesave'='before#entityName#save',
+			'beforeUpdate'='before#entityName#Update',
+			'beforeCreate'='before#entityName#Create',
+			'aftersave'='after#entityName#save',
+			'save'='after#entityName#save',
+			'afterUpdate'='after#entityName#Update',
+			'afterCreate'='after#entityName#Create',
+			'beforeDelete'='before#entityName#Delete',
+			'afterDelete'='after#entityName#Delete',
+			'delete'='after#entityName#Delete'
+		};
+
+		if(structKeyExists(eventNameMap,arguments.eventName)){
+			arguments.eventName=eventNameMap[arguments.eventName];
+		}
+
+		if(left(arguments.eventName,2)!='on'){
+			arguments.eventName='on' & arguments.eventName;
+		}
+
+		return arguments.eventName;
+	}
+
+	function on(eventName,fn){
+		var handler=new mura.cfobject();
+
+		handler.injectMethod(transformEventName(arguments.eventName),arguments.fn);
+
+		getBean('pluginManager').addEventHandler(component=handler,siteid=get('siteid'),objectid=get(get('primaryKey')));
+	}
+
 }

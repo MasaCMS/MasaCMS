@@ -133,9 +133,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset feedBean.validate()>
 
 	<cfset pluginEvent.setValue("feedBean",feedBean)>
+	<cfset pluginEvent.setValue("bean",feedBean)>
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
-	<cfset variables.pluginManager.announceEvent("onBeforeFeedSave",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onBeforeFeedCreate",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFeedSave",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFeedCreate",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
 
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset feedBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50) ) />
@@ -145,11 +146,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.feedDAO.create(feedBean) />
 		<cfset feedBean.setIsNew(0)>
-		<cfset variables.trashManager.takeOut(feedBean)>
-		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onFeedCreate",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterFeedCreate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onFeedSave",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onFeedCreate",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterFeedSave",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterFeedCreate",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
 	</cfif>
 
 	<cfreturn feedBean />
@@ -362,19 +362,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset feedBean.validate()>
 
 	<cfset pluginEvent.setValue("feedBean",feedBean)>
+	<cfset pluginEvent.setValue("bean",feedBean)>
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
 	<cfset variables.pluginManager.announceEvent("onBeforeFeedSave",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onBeforeFeedUpdate",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFeedSave",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFeedUpdate",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
 
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","mura-content","Information",true) />
 		<cfset feedBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50) ) />
 		<cfset variables.feedDAO.update(feedBean) />
 		<cfset purgeFeedCache(feedBean=feedBean)>
-		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onFeedUpdate",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterFeedUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onFeedSave",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onFeedUpdate",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterFeedSave",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterFeedUpdate",currentEventObject=pluginEvent,objectid=feedBean.getFeedID())>
 	</cfif>
 
 	<cfreturn feedBean />

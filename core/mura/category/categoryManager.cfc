@@ -238,10 +238,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset categoryBean.validate()>
 
 	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
+	<cfset pluginEvent.setValue("bean",categoryBean)>
 	<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
-	<cfset variables.pluginManager.announceEvent("onBeforeCategorySave",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onBeforeCategoryCreate",pluginEvent)>
-
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeCategorySave",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeCategoryCreate",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
 	<cfif structIsEmpty(categoryBean.getErrors())>
 		<cfset categoryBean.setLastUpdateBy(left(sessionData.mura.fname & " " & sessionData.mura.lname,50)) />
 		<cfif not (structKeyExists(arguments.data,"categoryID") and len(arguments.data.categoryID))>
@@ -285,10 +285,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset categoryBean.setIsNew(0)>
 		<cfset purgeCategoryCache(categoryBean=categoryBean)>
 
-		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onCategoryCreate",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterCategorySave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterCategoryCreate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onCategorySave",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onCategoryCreate",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterCategorySave",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterCategoryCreate",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
+
 	</cfif>
 
 	<cfreturn categoryBean />
@@ -761,12 +762,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginStruct=structNew()>
 
 	<cfset pluginStruct.categoryBean=categoryBean>
+	<cfset pluginStruct.bean=categoryBean>
 	<cfset pluginStruct.siteID=categoryBean.getSiteID()>
 	<cfset pluginStruct.categoryID=arguments.categoryID>
 
 	<cfset pluginEvent=createObject("component","mura.event").init(pluginStruct)>
 
-	<cfset variables.pluginManager.announceEvent("onBeforeCategoryDelete",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeCategoryDelete",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
 
 	<cfif currentPath neq "">
 		<cfset newPath=listDeleteAt(categoryBean.getPath(),listLen(categoryBean.getPath())) />
@@ -778,8 +780,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.DAO.delete(arguments.categoryID) />
 	<cfset purgeCategoryCache(categoryBean=categoryBean)>
 	<cfset purgeCategoryDescendentsCache(categoryBean=categoryBean)>
-	<cfset variables.pluginManager.announceEvent("onCategoryDelete",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onAfterCategoryDelete",pluginEvent)>
+		
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onCategoryDelete",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
+	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterCategoryDelete",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
 
 </cffunction>
 

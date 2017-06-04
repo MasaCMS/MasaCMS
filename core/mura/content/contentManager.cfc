@@ -1032,6 +1032,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfset pluginEvent.setValue("newBean",newBean)>
+			<cfset pluginEvent.setValue("bean",newBean)>
 			<cfset pluginEvent.setValue("contentBean",newBean)>
 			<cfset pluginEvent.setValue("activeBean",newBean)>
 
@@ -1103,18 +1104,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>
-				<cfset variables.pluginManager.announceEvent("onBeforeContentSave",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeContentSave",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
 			</cfif>
 
 			<!--- For backwards compatibility --->
 			<cfif newBean.getType() eq 'Folder'>
-				<cfset variables.pluginManager.announceEvent("onBeforePortalSave",pluginEvent)>
-				<cfset variables.pluginManager.announceEvent("onBeforePortal#newBean.getSubType()#Save",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforePortalSave",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforePortal#newBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
 			</cfif>
 			<!--- --->
 
-			<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBefore#newBean.getType()#Save",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBefore#newBean.getType()##newBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
 
 			<cfif structIsEmpty(newBean.getErrors())>
 
@@ -1340,11 +1341,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset getBean('contentUtility').setUniqueURLTitle(newBean) />
 					</cfif>
 
-					<cfset variables.pluginManager.announceEvent("onBeforeFilenameCreate",pluginEvent)>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFilenameCreate",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
 
 					<cfset getBean('contentUtility').setUniqueFilename(newBean) />
 
-					<cfset variables.pluginManager.announceEvent("onAfterFilenameCreate",pluginEvent)>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterFilenameCreate",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
 
 					<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 						<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />
@@ -1683,8 +1684,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginEvent.setValue("contentBean",newBean)>
 				<cfset pluginEvent.setValue("newBean",newBean)>
 				<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>
-					<cfset variables.pluginManager.announceEvent("onContentSave",pluginEvent)>
-					<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onContentSave",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterContentSave",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
 				</cfif>
 
 <!---
@@ -1694,8 +1695,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 				<!--- For backwards compatibility --->
 				<cfif newBean.getType() eq 'Folder'>
-					<cfset variables.pluginManager.announceEvent("onAfterPortalSave",pluginEvent)>
-					<cfset variables.pluginManager.announceEvent("onAfterPortal#newBean.getSubType()#Save",pluginEvent)>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterPortalSave",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterPortal#newBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
 				</cfif>
 				<!--- --->
 
@@ -1705,10 +1706,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<!--- --->
 
-				<cfset variables.pluginManager.announceEvent("on#newBean.getType()#Save",pluginEvent)>
-				<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()#Save",pluginEvent)>
-				<cfset variables.pluginManager.announceEvent("on#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>
-				<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="on#newBean.getType()#Save",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfter#newBean.getType()#Save",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="on#newBean.getType()##newBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfter#newBean.getType()##newBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+
 			<!--- end save content --->
 			<cfelse>
 				<cfif structKeyExists(arguments.data,"sourceID") and len(arguments.data.sourceID)>
@@ -1925,11 +1927,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset pluginEvent.setValue("contentBean",versionBean)/>
 
 		<cfif  ListFindNoCase(this.TreeLevelList,versionBean.getType())>
-			<cfset variables.pluginManager.announceEvent("onContentDeleteVersion",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onBeforeContentDeleteVersion",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onContentDeleteVersion",currentEventObject=pluginEvent,objectid=versionBean.getContentID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeContentDeleteVersion",currentEventObject=pluginEvent,objectid=versionBean.getContentID())>
 		</cfif>
-		<cfset variables.pluginManager.announceEvent("onBefore#versionBean.getType()#DeleteVersion",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBefore#versionBean.getType()##versionBean.getSubType()#DeleteVersion",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBefore#versionBean.getType()#DeleteVersion",currentEventObject=pluginEvent,objectid=versionBean.getContentID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBefore#versionBean.getType()##versionBean.getSubType()#DeleteVersion",currentEventObject=pluginEvent,objectid=versionBean.getContentID())>
 
 		<cfif len(versionBean.getFileID())>
 			<cfset rsHist=getHist(versionBean.getcontentid(),arguments.data.siteid)/>
@@ -1957,10 +1959,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.contentDAO.deleteVersionedObjects(arguments.data.contenthistid) />
 
 		<cfif  ListFindNoCase(this.TreeLevelList,versionBean.getType())>
-			<cfset variables.pluginManager.announceEvent("onAfterContentDeleteVersion",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterContentDeleteVersion",currentEventObject=pluginEvent,objectid=versionBean.getContentID())>
 		</cfif>
-		<cfset variables.pluginManager.announceEvent("onAfter#versionBean.getType()#DeleteVersion",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfter#versionBean.getType()##versionBean.getSubType()#DeleteVersion",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfter#versionBean.getType()#DeleteVersion",currentEventObject=pluginEvent,objectid=versionBean.getContentID())>
+		<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfter#versionBean.getType()##versionBean.getSubType()#DeleteVersion",currentEventObject=pluginEvent,objectid=versionBean.getContentID())>
 
 	</cffunction>
 
@@ -2685,7 +2687,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(isDefined('arguments.default')){
 				arguments.defaultURL=arguments.default;
 			}
-			
+
 			return Len(image) ? image : arguments.defaultURL;
 		</cfscript>
 	</cffunction>
