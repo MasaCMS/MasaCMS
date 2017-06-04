@@ -348,6 +348,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 		validate(arguments.$);
 		arguments.$.event('formDataBean',this);
 		arguments.$.event('formBean',getFormBean());
+		arguments.$.event('bean',getFormBean());
 		arguments.$.event('acceptData',getValue('acceptData'));
 		arguments.$.event('sendto','');
 		arguments.$.announceEvent(eventName='onBeforeSubmitSave',objectid=getFormBean().getContentID());
@@ -358,6 +359,7 @@ component extends="mura.bean.bean" entityname="dataCollection" hint="This provid
 			setValue('formResult',variables.dataCollectionManager.update(structCopy(getAllValues())));
 			//structAppend(variables.instance,getValue('formResult'));
 			arguments.$.event('sendto','');
+			arguments.$.announceEvent(eventName='onSubmitSave',objectid=getFormBean().getContentID());
 			arguments.$.announceEvent(eventName='onAfterSubmitSave',objectid=getFormBean().getContentID());
 			arguments.$.announceEvent(eventName='onAfterFormSubmitSave',objectid=getFormBean().getContentID());
 			arguments.$.announceEvent(eventName='onAfterForm#getFormBean().getSubType()#SubmitSave',objectid=getFormBean().getContentID());
