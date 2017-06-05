@@ -1951,13 +1951,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfscript>
 function addEventHandler(component){
-	getBean('pluginManager').addEventHandler(component=arguments.component);
+	getBean('pluginManager').addEventHandler(component=arguments.component,siteid="");
 
 	return this;
 }
 
 function addEventListener(component){
-	getBean('pluginManager').addEventHandler(component=arguments.component);
+	getBean('pluginManager').addEventHandler(component=arguments.component,siteid="");
+
+	return this;
+}
+
+function on(eventName,fn){
+	var handler=new mura.cfobject();
+	handler.injectMethod(arguments.eventName,arguments.fn);
+	getBean('pluginManager').addEventHandler(component=handler,siteid="");
+	return this;
+}
+
+function trigger(eventName){
+	getBean('pluginManager').announceEvent(
+		eventToAnnounce=arguments.eventName,
+		currentEventObject=new mura.event()
+		);
 
 	return this;
 }

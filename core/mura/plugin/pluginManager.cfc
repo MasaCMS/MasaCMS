@@ -1642,9 +1642,12 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 				</cfif>
 				<!--- Look for non object bound events --->
+
 				<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+
 					<cfset listenerArray=variables.siteListeners[siteIDadjusted]>
 					<cfset listenerArray=listenerArray[arguments.runat]>
+					
 					<cfif arrayLen(listenerArray)>
 						<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
 							<cfset eventHandlerIndex=listenerArray[i].index>

@@ -1904,4 +1904,28 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		return this;
 	}
 
+	function on(eventName,fn){
+		var handler=new mura.cfobject();
+
+		if(left(arguments.eventName,2)!='on'){
+			arguments.eventName="on" & arguments.eventName;
+		}
+
+		handler.injectMethod(arguments.eventName,arguments.fn);
+		getBean('pluginManager').addEventHandler(component=handler,siteid=get('siteid'));
+		return this;
+	}
+
+	function trigger(eventName){
+		if(left(arguments.eventName,2)!='on'){
+			arguments.eventName="on" & arguments.eventName;
+		}
+		getBean('pluginManager').announceEvent(
+			eventToAnnounce=arguments.eventName,
+			currentEventObject=new mura.event({siteid=get('siteid')})
+			);
+
+		return this;
+	}
+
 }
