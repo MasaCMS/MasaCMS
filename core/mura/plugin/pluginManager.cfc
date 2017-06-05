@@ -1470,6 +1470,51 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 				</cfif>
 			</cfif>
+			<cfif len(arguments.objectid)
+					and isDefined('variables.globalListeners.objects')
+					and structKeyExists(variables.globalListeners.objects,'#arguments.objectid#')
+					and structKeyExists(variables.globalListeners.objects['#arguments.objectid#'],arguments.runat)>
+
+				<cfset listenerArray=variables.globalListeners.objects['#arguments.objectid#'][arguments.runat]>
+
+					<cfif arrayLen(listenerArray)>
+						<cfset eventHandlerIndex=listenerArray[arguments.index].index>
+						<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
+						<cfif isNumeric(eventHandler)>
+							<cfset scriptIndex=eventHandler>
+							<cfset event.setValue("siteid",arguments.siteID)>
+							<cfset currentModuleID=variables.rsScripts.moduleID[scriptIndex]>
+							<cfif listLast(variables.rsScripts.scriptfile[scriptIndex],".") neq "cfm">
+								<cfset componentPath="plugins.#variables.rsScripts.directory[scriptIndex]#.#variables.rsScripts.scriptfile[scriptIndex]#">
+								<cfset eventHandler=getComponent(componentPath, variables.rsScripts.pluginID[scriptIndex], arguments.siteID, variables.rsScripts.docache[scriptIndex])>
+								<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>
+								<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+									<cfinvokeargument name="event" value="#arguments.event#">
+									<cfinvokeargument name="$" value="#muraScope#">
+									<cfinvokeargument name="mura" value="#muraScope#">
+									<cfinvokeargument name="m" value="#muraScope#">
+								</cfinvoke>
+								<cfset commitTracePoint(tracePoint)>
+							<cfelse>
+								<cfset getExecutor().executeScript(event=event,scriptfile="/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#",pluginConfig=getConfig(variables.rsScripts.pluginID[scriptIndex]), $=muraScope, mura=muraScope,m=muraScope)>
+							</cfif>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						<cfelse>
+							<cfif not isObject(eventHandler)>
+								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
+							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+								<cfinvokeargument name="event" value="#arguments.event#">
+								<cfinvokeargument name="$" value="#muraScope#">
+								<cfinvokeargument name="mura" value="#muraScope#">
+								<cfinvokeargument name="m" value="#muraScope#">
+							</cfinvoke>
+							<cfset commitTracePoint(tracePoint)>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						</cfif>
+					</cfif>
+			</cfif>
 			<cfif isDefined("variables.globalListeners.#arguments.runat#")>
 				<cfset listenerArray=variables.globalListeners[arguments.runat]>
 				<cfif arrayLen(listenerArray)>
@@ -1642,12 +1687,11 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 				</cfif>
 				<!--- Look for non object bound events --->
-
 				<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 
 					<cfset listenerArray=variables.siteListeners[siteIDadjusted]>
 					<cfset listenerArray=listenerArray[arguments.runat]>
-					
+
 					<cfif arrayLen(listenerArray)>
 						<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
 							<cfset eventHandlerIndex=listenerArray[i].index>
@@ -1687,6 +1731,54 @@ select * from tplugins order by #arguments.orderby#
 							</cfif>
 						</cfloop>
 					</cfif>
+				</cfif>
+			</cfif>
+
+			<cfif len(arguments.objectid)
+					and isDefined('variables.globalListeners.objects')
+					and structKeyExists(variables.globalListeners.objects,'#arguments.objectid#')
+					and structKeyExists(variables.globalListeners.objects['#arguments.objectid#'],arguments.runat)>
+
+				<cfset listenerArray=variables.globalListeners.objects['#arguments.objectid#'][arguments.runat]>
+
+				<cfif arrayLen(listenerArray)>
+					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+						<cfset eventHandlerIndex=listenerArray[i].index>
+						<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
+						<cfif isNumeric(eventHandler)>
+							<cfset scriptIndex=eventHandler>
+							<cfset event.setValue("siteid",arguments.siteID)>
+							<cfset currentModuleID=variables.rsScripts.moduleID[scriptIndex]>
+							<cfif listLast(variables.rsScripts.scriptfile[scriptIndex],".") neq "cfm">
+								<cfset componentPath="plugins.#variables.rsScripts.directory[scriptIndex]#.#variables.rsScripts.scriptfile[scriptIndex]#">
+								<cfset eventHandler=getComponent(componentPath, variables.rsScripts.pluginID[scriptIndex], arguments.siteID, variables.rsScripts.docache[scriptIndex])>
+								<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>
+								<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+									<cfinvokeargument name="event" value="#arguments.event#">
+									<cfinvokeargument name="$" value="#muraScope#">
+									<cfinvokeargument name="mura" value="#muraScope#">
+									<cfinvokeargument name="m" value="#muraScope#">
+								</cfinvoke>
+								<cfset commitTracePoint(tracePoint)>
+							<cfelse>
+								<cfset getExecutor().executeScript(event=event,scriptfile="/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#",pluginConfig=getConfig(variables.rsScripts.pluginID[scriptIndex]), $=muraScope, mura=muraScope,m=muraScope)>
+							</cfif>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						<cfelse>
+							<cfif not isObject(eventHandler)>
+								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
+							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+								<cfinvokeargument name="event" value="#arguments.event#">
+								<cfinvokeargument name="$" value="#muraScope#">
+								<cfinvokeargument name="mura" value="#muraScope#">
+								<cfinvokeargument name="m" value="#muraScope#">
+							</cfinvoke>
+							<cfset commitTracePoint(tracePoint)>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						</cfif>
+					</cfloop>
 				</cfif>
 			</cfif>
 
@@ -1971,6 +2063,68 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 				</cfif>
 		</cfif>
+		<cfif len(arguments.objectid)
+				and isDefined('variables.globalListeners.objects')
+				and structKeyExists(variables.globalListeners.objects,'#arguments.objectid#')
+				and structKeyExists(variables.globalListeners.objects['#arguments.objectid#'],arguments.runat)>
+
+			<cfset listenerArray=variables.globalListeners.objects['#arguments.objectid#'][arguments.runat]>
+			<cfif arrayLen(listenerArray)>
+				<cfset eventHandler=variables.eventHandlers[listenerArray[arguments.index].index]>
+				<cfif isNumeric(eventHandler)>
+					<cfset scriptIndex=eventHandler>
+					<cfset currentModuleID=variables.rsScripts.moduleID[scriptIndex]>
+					<cfif listLast(variables.rsScripts.scriptfile[scriptIndex],".") neq "cfm">
+						<cfset componentPath="plugins.#variables.rsScripts.directory[scriptIndex]#.#variables.rsScripts.scriptfile[scriptIndex]#">
+						<cfset eventHandler=getComponent(componentPath, variables.rsScripts.pluginID[scriptIndex], arguments.siteID, variables.rsScripts.docache[scriptIndex])>
+						<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>
+						<cfsavecontent variable="local.theDisplay1">
+						<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
+							<cfinvokeargument name="event" value="#arguments.event#">
+							<cfinvokeargument name="$" value="#muraScope#">
+							<cfinvokeargument name="mura" value="#muraScope#">
+							<cfinvokeargument name="m" value="#muraScope#">
+						</cfinvoke>
+						</cfsavecontent>
+
+						<cfif isDefined("local.theDisplay2")>
+							<cfset str=str & local.theDisplay2>
+						<cfelse>
+							<cfset str=str & local.theDisplay1>
+						</cfif>
+
+					<cfelse>
+						<cfset tracePoint=initTracePoint("/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#")>
+						<cfsavecontent variable="local.theDisplay1">
+						<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#",pluginConfig=getConfig(variables.rsScripts.pluginID[scriptIndex]), $=muraScope, mura=muraScope,m=muraScope)#</cfoutput>
+						</cfsavecontent>
+						<cfset str=str & local.theDisplay1>
+					</cfif>
+					<cfset commitTracePoint(tracePoint)>
+					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+				<cfelse>
+					<cfif not isObject(eventHandler)>
+						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+					</cfif>
+					<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
+					<cfsavecontent variable="local.theDisplay1">
+					<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
+						<cfinvokeargument name="event" value="#arguments.event#">
+						<cfinvokeargument name="$" value="#muraScope#">
+						<cfinvokeargument name="mura" value="#muraScope#">
+						<cfinvokeargument name="m" value="#muraScope#">
+					</cfinvoke>
+					</cfsavecontent>
+					<cfif isDefined("local.theDisplay2")>
+						<cfset str=str & local.theDisplay2>
+					<cfelse>
+						<cfset str=str & local.theDisplay1>
+					</cfif>
+					<cfset commitTracePoint(tracePoint)>
+					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+				</cfif>
+			</cfif>
+		</cfif>
 		<cfif isDefined("variables.globalListeners.#arguments.runat#")>
 			<cfset listenerArray=variables.globalListeners[arguments.runat]>
 			<cfif arrayLen(listenerArray)>
@@ -2252,6 +2406,71 @@ select * from tplugins order by #arguments.orderby#
 							</cfif>
 						</cfloop>
 					</cfif>
+				</cfif>
+			</cfif>
+			<cfif len(arguments.objectid)
+					and isDefined('variables.globalListeners.objects')
+					and structKeyExists(variables.globalListeners.objects,'#arguments.objectid#')
+					and structKeyExists(variables.globalListeners.objects['#arguments.objectid#'],arguments.runat)>
+
+				<cfset listenerArray=variables.globalListeners.objects['#arguments.objectid#'][arguments.runat]>
+
+				<cfif arrayLen(listenerArray)>
+					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+						<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
+						<cfif isNumeric(eventHandler)>
+							<cfset scriptIndex=eventHandler>
+							<cfset currentModuleID=variables.rsScripts.moduleID[scriptIndex]>
+							<cfif listLast(variables.rsScripts.scriptfile[scriptIndex],".") neq "cfm">
+								<cfset componentPath="plugins.#variables.rsScripts.directory[scriptIndex]#.#variables.rsScripts.scriptfile[scriptIndex]#">
+								<cfset eventHandler=getComponent(componentPath, variables.rsScripts.pluginID[scriptIndex], arguments.siteID, variables.rsScripts.docache[scriptIndex])>
+								<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>
+								<cfsavecontent variable="local.theDisplay1">
+								<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
+									<cfinvokeargument name="event" value="#arguments.event#">
+									<cfinvokeargument name="$" value="#muraScope#">
+									<cfinvokeargument name="mura" value="#muraScope#">
+									<cfinvokeargument name="m" value="#muraScope#">
+								</cfinvoke>
+								</cfsavecontent>
+
+								<cfif isDefined("local.theDisplay2")>
+									<cfset str=str & local.theDisplay2>
+								<cfelse>
+									<cfset str=str & local.theDisplay1>
+								</cfif>
+
+							<cfelse>
+								<cfset tracePoint=initTracePoint("/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#")>
+								<cfsavecontent variable="local.theDisplay1">
+								<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#",pluginConfig=getConfig(variables.rsScripts.pluginID[scriptIndex]), $=muraScope, mura=muraScope,m=muraScope)#</cfoutput>
+								</cfsavecontent>
+								<cfset str=str & local.theDisplay1>
+							</cfif>
+							<cfset commitTracePoint(tracePoint)>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						<cfelse>
+							<cfif not isObject(eventHandler)>
+								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandlere.getValue('_objectName')#.#arguments.runat#")>
+							<cfsavecontent variable="local.theDisplay1">
+							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
+								<cfinvokeargument name="event" value="#arguments.event#">
+								<cfinvokeargument name="$" value="#muraScope#">
+								<cfinvokeargument name="mura" value="#muraScope#">
+								<cfinvokeargument name="m" value="#muraScope#">
+							</cfinvoke>
+							</cfsavecontent>
+							<cfif isDefined("local.theDisplay2")>
+								<cfset str=str & local.theDisplay2>
+							<cfelse>
+								<cfset str=str & local.theDisplay1>
+							</cfif>
+							<cfset commitTracePoint(tracePoint)>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						</cfif>
+					</cfloop>
 				</cfif>
 			</cfif>
 			<cfif isDefined("variables.globalListeners.#arguments.runat#")>
@@ -2736,7 +2955,7 @@ select * from rs order by name
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var _persist=false>
 
-	<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
+	<cfif len(siteIDadjusted) and not StructKeyExists(variables.siteListeners,siteIDadjusted)>
 		<cfset variables.siteListeners[siteIDadjusted]=structNew()>
 	</cfif>
 
@@ -2799,22 +3018,35 @@ select * from rs order by name
 			</cfif>
 
 			<cfif len(arguments.objectid)>
-				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],'objects')>
-					<cfset variables.siteListeners[siteIDadjusted].objects={}>
+				<cfif len(siteIDadjusted)>
+					<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],'objects')>
+						<cfset variables.siteListeners[siteIDadjusted].objects={}>
+					</cfif>
+					<cfif not structKeyExists(variables.siteListeners[siteIDadjusted].objects,'#arguments.objectid#')>
+						<cfset variables.siteListeners[siteIDadjusted].objects['#arguments.objectid#']={}>
+					</cfif>
+					<cfif not structKeyExists(variables.siteListeners[siteIDadjusted].objects['#arguments.objectid#'],i)>
+						<cfset variables.siteListeners[siteIDadjusted].objects['#arguments.objectid#'][i]=arrayNew(1)>
+					</cfif>
+					<cfset arrayAppend( variables.siteListeners[siteIDadjusted].objects['#arguments.objectid#'][i] , handlerData)>
+				<cfelse>
+					<cfif not structKeyExists(variables.globalListeners,'objects')>
+						<cfset variables.globalListeners.objects={}>
+					</cfif>
+					<cfif not structKeyExists(variables.globalListeners.objects,'#arguments.objectid#')>
+						<cfset variables.globalListeners.objects['#arguments.objectid#']={}>
+					</cfif>
+					<cfif not structKeyExists(variables.globalListeners.objects['#arguments.objectid#'],i)>
+						<cfset variables.globalListeners.objects['#arguments.objectid#'][i]=arrayNew(1)>
+					</cfif>
+					<cfset arrayAppend( variables.globalListeners.objects['#arguments.objectid#'][i] , handlerData)>
 				</cfif>
-				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted].objects,'#arguments.objectid#')>
-					<cfset variables.siteListeners[siteIDadjusted].objects['#arguments.objectid#']={}>
-				</cfif>
-				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted].objects['#arguments.objectid#'],i)>
-					<cfset variables.siteListeners[siteIDadjusted].objects['#arguments.objectid#'][i]=arrayNew(1)>
-				</cfif>
-				<cfset arrayAppend( variables.siteListeners[siteIDadjusted].objects['#arguments.objectid#'][i] , handlerData)>
 			<cfelseif len(arguments.siteid) and not findNoCase('global',i)>
 				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],i)>
 					<cfset variables.siteListeners[siteIDadjusted][i]=arrayNew(1)>
 				</cfif>
 				<cfset arrayAppend( variables.siteListeners[siteIDadjusted][i] , handlerData)>
-			<cfelseif (not len(arguments.siteid) or arguments.applyglobal)>
+			<cfelseif arguments.applyglobal>
 				<cfif not structKeyExists(variables.globalListeners,i)>
 					<cfset variables.globalListeners[i]=arrayNew(1)>
 				</cfif>
