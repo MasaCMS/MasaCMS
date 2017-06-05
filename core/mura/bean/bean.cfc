@@ -1218,7 +1218,6 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 		if(len(arguments.eventName) > 2 && left(arguments.eventName,2)=='on'){
 			arguments.eventName=right(arguments.eventName,len(arguments.eventName)-2);
-			beginningTrimmed=true;
 		}
 
 		var eventNameMap={
@@ -1238,7 +1237,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 			arguments.eventName=eventNameMap[arguments.eventName];
 		}
 
-		if(beginningTrimmed){
+		if(!(left(arguments.eventName,2) == 'on' || left(arguments.eventName,8) == 'standard')){
 			arguments.eventName='on' & arguments.eventName;
 		}
 
@@ -1247,10 +1246,33 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 	function on(eventName,fn){
 		var handler=new mura.cfobject();
-
+		if(listFindNoCase('content,contentnav',getEntityName())){
+			var pk='contentid';
+		} else {
+			var pk=get('primaryKey');
+		}
 		handler.injectMethod(transformEventName(arguments.eventName),arguments.fn);
 
-		getBean('pluginManager').addEventHandler(component=handler,siteid=get('siteid'),objectid=get(get('primaryKey')));
+		getBean('pluginManager').addEventHandler(component=handler,siteid=get('siteid'),objectid=get(pk));
+		return this;
+	}
+
+	function trigger(eventName){
+		if(listFindNoCase('content,contentnav',getEntityName())){
+			var pk='contentid';
+		} else {
+			var pk=get('primaryKey');
+		}
+		getBean('pluginManager').announceEvent(
+			eventToAnnounce=arguments.eventName,
+			currentEventObject=new mura.event({
+					siteid=get('siteid'),
+					bean=this
+				}),
+			objectid=get(pk)
+			);
+
+		return this;
 	}
 
 }
