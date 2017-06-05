@@ -1951,14 +1951,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfscript>
 function addEventHandler(component){
-	getBean('pluginManager').addEventHandler(component=arguments.component,siteid="");
-
-	return this;
-}
-
-function addEventListener(component){
-	getBean('pluginManager').addEventHandler(component=arguments.component,siteid="");
-
+	if(!isObject(arguments.component) && isStruct(arguments.component)){
+		for(var e in arguments.component){
+			on(e,component[e]);
+		}
+	} else {
+		getBean('pluginManager').addEventHandler(component=arguments.component,siteid="");
+	}
 	return this;
 }
 

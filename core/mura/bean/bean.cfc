@@ -1275,4 +1275,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return this;
 	}
 
+	function addEventHandler(component){
+		for(var e in arguments.component){
+			on(e,arguments.component[e]);
+		}
+		return this;
+	}
+
 }

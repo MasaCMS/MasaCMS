@@ -2933,15 +2933,6 @@ select * from rs order by name
 	<cfreturn listLast(listGetat(getDirectoryFromPath(arguments.path),listLen(replace(getDirectoryFromPath(arguments.path),'\','/','all'),'/')-1,'/'),"_")>
 </cffunction>
 
-<cffunction name="addEventListener" output="false">
-<cfargument name="component">
-<cfargument name="siteID" required="true" default="">
-<cfargument name="persist" required="true" default="true">
-<cfargument name="applyglobal" required="true" default="true">
-<cfargument name="objectid" required="true" default="">
-	<cfreturn addEventHandler(argumentCollection=arguments)>
-</cffunction>
-
 <cffunction name="addEventHandler" output="false">
 <cfargument name="component">
 <cfargument name="siteID" required="true">

@@ -91,7 +91,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					<cfif not structCount(objectParams.errors)>
 						<cfset objectParams.responsemessage=$.renderEvent(eventName="onFormSubmitResponseRender",objectid=local.formBean.getContentID())>
-
+						<cfif not len(objectParams.responsemessage)>
+								<cfset objectParams.responsemessage=$.renderEvent(eventName="onSubmitResponseRender",objectid=local.formBean.getContentID())>
+						</cfif>
 						<cfif len($.event('redirect_url'))>
 							<cfset $.event('redirect_url',variables.$.getBean('utility').sanitizeHref($.event('redirect_url')))>
 							<cfif request.muraFrontEndRequest>

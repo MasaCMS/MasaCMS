@@ -1893,14 +1893,13 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	function addEventHandler(component){
-		getBean('pluginManager').addEventHandler(component=arguments.component,siteid=get('siteid'));
-
-		return this;
-	}
-
-	function addEventListener(component){
-		getBean('pluginManager').addEventHandler(component=arguments.component,siteid=get('siteid'));
-
+		if(!isObject(arguments.component) && isStruct(arguments.component)){
+			for(var e in arguments.component){
+				on(e,component[e]);
+			}
+		} else {
+			getBean('pluginManager').addEventHandler(component=arguments.component,siteid=get('siteid'));
+		}
 		return this;
 	}
 
