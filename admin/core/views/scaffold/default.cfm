@@ -254,7 +254,7 @@
 						<button @click="showForm(object.properties.entityname,object.properties.id,entity.properties.id)">EDIT: {{object.properties[property.renderfield] ? object.properties[property.renderfield] : object.properties.entityname}}</button>
 					</li>
 				</ul>
-				<button class='btn' @click="showForm(property.entityname,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
+				<button class='btn' @click="showForm(property.relatesto,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
 			</div>
 		</template>
 
