@@ -1,7 +1,7 @@
 component extends="mura.cfobject" hint="This provides a utilty to compare values"{
 
 	function init(){
-		if(getBean('configBean').getValue(property='legacyJavaLoader',defaultValue=true)){
+		if(getBean('configBean').getValue(property='legacyJavaLoader',defaultValue=false)){
 			variables.diff_match_patch = application.serviceFactory.getBean('javaLoader').create("name.fraser.neil.plaintext.diff_match_patch");
 		} else {
 			variables.diff_match_patch = createObject("java","name.fraser.neil.plaintext.diff_match_patch");
