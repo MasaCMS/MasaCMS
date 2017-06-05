@@ -1276,8 +1276,17 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 	}
 
 	function addEventHandler(component){
-		for(var e in arguments.component){
-			on(e,arguments.component[e]);
+		if(!isObject(arguments.component) && isStruct(arguments.component)){
+			for(var e in arguments.component){
+				on(e,component[e]);
+			}
+		} else {
+			if(listFindNoCase('content,contentnav',getEntityName())){
+				var pk='contentid';
+			} else {
+				var pk=get('primaryKey');
+			}
+			getBean('pluginManager').addEventHandler(component=arguments.component,siteid=get('siteid'),objectid=get(pk));
 		}
 		return this;
 	}
