@@ -134,7 +134,13 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		variables.config.entities['#arguments.entityName#']=arguments.config;
 
-		var properties=getBean(arguments.entityName).getProperties();
+		var beanInstance=getBean(arguments.entityName);
+
+		if(!isDefined('arguments.config.displayname')){
+			arguments.config.displayname=beanInstance.getEntityDisplayName();
+		}
+
+		var properties=beanInstance.getProperties();
 		var serializer=getSerializer();
 
 		for(var p in properties){
@@ -1710,7 +1716,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var entityKeys=listToArray(ListSort(StructKeyList(variables.config.entities),'textnocase'));
 			for(var i in entityKeys){
 				if(allowAccess(i,$,false)){
-					arrayAppend(returnArray,{entityname=i,links={endpoint=getEndPoint() & "/" & i,properties=getEndPoint() & "/" & i & "/properties"}});
+					arrayAppend(returnArray,{entityname=i,displayname=variables.config.entities[i].displayname,links={endpoint=getEndPoint() & "/" & i,properties=getEndPoint() & "/" & i & "/properties"}});
 				}
 			}
 			return {items=returnArray,links={self=getEndPoint()},entityname='entityname'};

@@ -1002,7 +1002,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			var newline=chr(13)&chr(10);
 			var tab=chr(9);
 			var serialier=new mura.jsonSerializer();
-			var result='{#newline##tab#"entityname"="#getEntityName()#",#newline##tab#"table"="#getTable()#",#newline##tab#"historical"="#getIsHistorical()#",#newline##tab#"orderby"="#getOrderBy()#",#newline##tab#"bundleable"="#getBundleable()#",#newline##tab#"scaffold"="#getScaffold()#",#newline##tab#"properties"=[';
+			var result='{#newline##tab#"entityname"="#getEntityName()#",#newline##tab#displayname"="#getEntityDisplayName()#",#newline##tab#"table"="#getTable()#",#newline##tab#"historical"="#getIsHistorical()#",#newline##tab#"orderby"="#getOrderBy()#",#newline##tab#"bundleable"="#getBundleable()#",#newline##tab#"scaffold"="#getScaffold()#",#newline##tab#"properties"=[';
 
 			for(var p in props){
 				result = result & newline & tab & tab & "{";

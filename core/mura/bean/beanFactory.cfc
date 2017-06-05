@@ -65,10 +65,11 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           var bundleable= (isDefined('entity.bundleable')) ? entity.bundleable : false;
           var hint= (isDefined('entity.hint')) ? entity.hint : "This component was dynamically generated with JSON";
           var scaffold= (isDefined('entity.scaffold')) ? entity.scaffold : true;
+          var displayname= (isDefined('entity.displayname')) ? entity.displayname : entity.entityname;
 
           //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
 
-          var result='component extends="#extends#" entityname="#entity.entityname#" table="#table#" orderby="#orderby#" bundleable="#bundleable#"  hint="#hint#" dynamic="true" scaffold="#scaffold#" {';
+          var result='component extends="#extends#" entityname="#entity.entityname#" displayname="#entity.displayname#" table="#table#" orderby="#orderby#" bundleable="#bundleable#"  hint="#hint#" dynamic="true" scaffold="#scaffold#" {';
 
           for(var p in properties){
             result = result & newline & tab & "property";

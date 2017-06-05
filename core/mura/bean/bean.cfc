@@ -589,6 +589,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 					param name="application.objectMappings.#variables.entityName#.remoteFunctions" default={};
 					param name="application.objectMappings.#variables.entityName#.hasMany" default=[];
 					param name="application.objectMappings.#variables.entityName#.hasOne" default=[];
+					param name="application.objectMappings.#variables.entityName#.displayname" default=getEntityName();
 
 					application.objectMappings[variables.entityName].properties={};
 					application.objectMappings[variables.entityName].primarykey="";
@@ -617,6 +618,10 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 						application.objectMappings[variables.entityName].orderby=md.orderby;
 					} else{
 						application.objectMappings[variables.entityName].orderby='';
+					}
+
+					if(structKeyExists(md,'displayname')){
+						application.objectMappings[variables.entityName].displayname=md.displayname;
 					}
 
 					if(structKeyExists(md,'datasource') && md.datasource != application.configBean.getDatasource()){
@@ -985,6 +990,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 		return variables.entityName;
 
+	}
+
+	function getEntityDisplayName(){
+		param name="application.objectMappings.#variables.entityName#.displayname" default=getEntityName();
+		return application.objectMappings[variables.entityName].displayname;
 	}
 
 	function hasProperty(property){
