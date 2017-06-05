@@ -1375,8 +1375,8 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 			rcs.relatedContentSetID = relatedContentSets[i].getRelatedContentSetID();
 			q = relatedContentSets[i].getRelatedContentQuery(getValue('contentHistID'));
 
-			if(rs.recordcount){
-				for(qi=1;qi <= rs.recordcount;qi++){
+			if(q.recordcount){
+				for(qi=1;qi <= q.recordcount;qi++){
 					arrayAppend(rcs.items, q.contentID);
 				}
 			}
