@@ -68,7 +68,7 @@
 
 <cffunction name="getBCrypt" output="false">
 	<cfif not isDefined('variables.bCrypt')>
-		<cfif variables.configBean.getValue(property='legacyJavaLoader',defaultValue=true)>
+		<cfif variables.configBean.getValue(property='legacyJavaLoader',defaultValue=false)>
 			<cfset variables.bCrypt=getBean("javaLoader").create("BCrypt")>
 		<cfelse>
 			<cfset variables.bCrypt=createObject("java","BCrypt")>
