@@ -1264,7 +1264,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 			var pk=get('primaryKey');
 		}
 		getBean('pluginManager').announceEvent(
-			eventToAnnounce=arguments.eventName,
+			eventToAnnounce=transformEventName(arguments.eventName),
 			currentEventObject=new mura.event({
 					siteid=get('siteid'),
 					bean=this

@@ -767,7 +767,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset pluginStruct.categoryID=arguments.categoryID>
 
 	<cfset pluginEvent=createObject("component","mura.event").init(pluginStruct)>
-
+		
 	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeCategoryDelete",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
 
 	<cfif currentPath neq "">
@@ -780,7 +780,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.DAO.delete(arguments.categoryID) />
 	<cfset purgeCategoryCache(categoryBean=categoryBean)>
 	<cfset purgeCategoryDescendentsCache(categoryBean=categoryBean)>
-		
+
 	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onCategoryDelete",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
 	<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterCategoryDelete",currentEventObject=pluginEvent,objectid=categoryBean.getCategoryID())>
 
