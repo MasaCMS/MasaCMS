@@ -136,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
 <cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
-<cfset variables.instance.postBundles=true />
+<cfset variables.instance.postBundles=false />
 <cfset variables.instance.applyDBUpdates=false />
 <cfset variables.instance.broadcastCachePurges=true />
 <cfset variables.instance.broadcastAppreloads=true />
