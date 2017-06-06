@@ -69,10 +69,10 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
 
-          var result='component extends="#extends#" entityname="#entity.entityname#" displayname="#entity.displayname#" table="#table#" orderby="#orderby#" bundleable="#bundleable#"  hint="#hint#" dynamic="true" scaffold="#scaffold#" {';
+          var result='component#newline##tab#extends="#extends#"#newline##tab#entityname="#entity.entityname#"#newline##tab#displayname="#entity.displayname#"#newline##tab#table="#table#"#newline##tab#orderby="#orderby#"#newline##tab#bundleable="#bundleable#"#newline##tab#hint="#hint#"#newline##tab#dynamic="true"#newline##tab#scaffold="#scaffold#"#newline##tab#{';
 
           for(var p in properties){
-            result = result & newline & tab & "property";
+            result = result & newline & tab & tab & "property";
 
             for(var k in p){
               result = result & ' #lcase(k)#="#p[k]#"';
