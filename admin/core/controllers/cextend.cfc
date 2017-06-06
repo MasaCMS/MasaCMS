@@ -73,11 +73,11 @@ component extends="controller" output="false" {
 		var file = "";
 		var fileContent = "";
 		var fileManager=getBean("fileManager");
-		param default="", name="arguments.rc.action" );
+		param default="" name="arguments.rc.action";
 		if ( arguments.rc.action == 'import' && arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid) ) {
 			if ( structKeyExists(arguments.rc,"newfile") && len(arguments.rc.newfile) ) {
 				file = fileManager.upload( "newFile" );
-				cffile( variable="fileContent", file=file.serverdirectory#/#file.serverfile, action="read" );
+				fileContent=fileRead("#file.serverdirectory#/#file.serverfile#");
 				application.classExtensionManager.loadConfigXML( xmlParse(filecontent) ,arguments.rc.siteid);
 				variables.fw.redirect(action="cExtend.listSubTypes",append="siteid",path="./");
 			}
@@ -85,7 +85,7 @@ component extends="controller" output="false" {
 	}
 
 	public function export(rc) output=false {
-		param default="", name="arguments.rc.exportClassExtensionID" );
+		param default="" name="arguments.rc.exportClassExtensionID";
 		extendArray = [];
 		arguments.rc.exportXML = "";
 		if ( Len(arguments.rc.exportClassExtensionID) ) {
@@ -95,7 +95,7 @@ component extends="controller" output="false" {
 	}
 
 	public function download(rc) output=false {
-		param default="", name="arguments.rc.exportClassExtensionID" );
+		param default="" name="arguments.rc.exportClassExtensionID";
 		extendArray = [];
 		arguments.rc.exportXML = "";
 		if ( Len(arguments.rc.exportClassExtensionID) ) {

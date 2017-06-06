@@ -377,7 +377,10 @@
 
                                 <cfif listFind(session.mura.memberships,'S2')>
                                     <li>
-                                        <a<cfif rc.originalcircuit eq 'cwebservice'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cwebservice.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-exchange"></i><span class="sidebar-mini-hide">Web Services</span></a>
+                                        <a<cfif rc.originalcircuit eq 'cwebservice'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cwebservice.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-exchange"></i><span class="sidebar-mini-hide">Web Services (REST)</span></a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="#application.configBean.getContext()#/index.cfm/_api/json/v1/#esapiEncode('url',session.siteid)#"><i class="mi-exchange"></i><span class="sidebar-mini-hide">JSON API</span></a>
                                     </li>
                                     <!---trash bin --->
                                     <li>
@@ -477,7 +480,7 @@
                             </cfif>
                             <!--- site version --->
                             <li>
-                                <a class="no-link" href="##"> 
+                                <a class="no-link" href="##">
                                  <span><strong>#rc.$.rbKey('version.site')#</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</span>
                                 </a>
                             </li>
@@ -534,7 +537,7 @@
                             <!--- copyright --->
                              <li>
                                 <a href="https://github.com/blueriver/MuraCMS/blob/develop/license.txt" target="_blank"><span><strong>Mura CMS</strong> &copy; #year(now())# Blue River Interactive Group. <em>Licensed under GNU General Public License Version 2.0 with exceptions</em></span></a>
-                            </li>                           
+                            </li>
 
                         </ul>
                     </li>
