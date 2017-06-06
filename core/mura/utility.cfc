@@ -650,10 +650,10 @@ Blog: www.codfusion.com--->
 </cffunction>
 
 <cffunction name="setCookie" output="false">
-    <cfargument name="name" type="string" required="true">
-    <cfargument name="value" type="string" required="true">
+  <cfargument name="name" type="string" required="true">
+  <cfargument name="value" type="string" required="true">
 	<cfargument name="expires" type="string" default="never">
-    <cfargument name="maintainCase" type="boolean" default="true">
+  <cfargument name="maintainCase" type="boolean" default="true">
 	<cfargument name="httpOnly" type="boolean" default="true">
 
 	<cfif variables.configBean.getSecureCookies()>

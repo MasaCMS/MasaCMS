@@ -539,6 +539,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return application.objectMappings[variables.entityName].scaffold;
 	}
 
+	function getDynamic(){
+		param name="application.objectMappings.#variables.entityName#.dynamic" default=false;
+		return application.objectMappings[variables.entityName].dynamics;
+	}
+
 	function getPrimaryKey(){
 		return variables.primarykey;
 	}
