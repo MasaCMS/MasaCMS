@@ -1,134 +1,112 @@
-<cfcomponent extends="controller" output="false">
+component extends="controller" output="false" {
 
-<cffunction name="setContentManager" output="false">
-	<cfargument name="contentManager">
-	<cfset variables.contentManager=arguments.contentManager>
-</cffunction>
+	public function setContentManager(contentManager) output=false {
+		variables.contentManager=arguments.contentManager;
+	}
 
-<cffunction name="setContentUtility" output="false">
-	<cfargument name="contentUtility">
-	<cfset variables.contentUtility=arguments.contentUtility>
-</cffunction>
+	public function setContentUtility(contentUtility) output=false {
+		variables.contentUtility=arguments.contentUtility;
+	}
 
-<cffunction name="setContentGateway" output="false">
-	<cfargument name="contentGateway">
-	<cfset variables.contentGateway=arguments.contentGateway>
-</cffunction>
+	public function setContentGateway(contentGateway) output=false {
+		variables.contentGateway=arguments.contentGateway;
+	}
 
-<cffunction name="before" output="false">
-	<cfargument name="rc">
+	public function before(rc) output=false {
+		param default="" name="session.openSectionList";
+		if ( !variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid) ) {
+			secure(arguments.rc);
+		}
+		param default=false name="arguments.rc.ajaxrequest";
+		param default="00000000000000000000000000000000000" name="arguments.rc.moduleid";
+		param default="" name="arguments.rc.instanceid";
+		if ( !arguments.rc.ajaxrequest ) {
+			param default="" name="arguments.rc.return";
+			param default=1 name="arguments.rc.startrow";
+			param default="" name="arguments.rc.contentid";
+			param default="Page" name="arguments.rc.ptype";
+			param default="Page" name="arguments.rc.type";
+			param default=createuuid(), name="arguments.rc.contentHistID";
+			param default="" name="arguments.rc.notify";
+			param default=0 name="arguments.rc.preview";
+			param default=20 name="arguments.rc.size";
+			param default="" name="arguments.rc.action";
+			param default="" name="arguments.rc.closeCompactDisplay";
+			param default="" name="arguments.rc.compactDisplay";
+			param default="" name="arguments.rc.returnURL";
+			param default="" name="arguments.rc.homeID";
+			param default=variables.configBean.getDatasource(), name="arguments.rc.datasource";
+			param default="" name="arguments.rc.objectid";
+			param default=false name="arguments.rc.locking";
+			param default="" name="arguments.rc.moduleAssign";
+			param default=0 name="arguments.rc.orderno";
+			param default=false name="arguments.rc.cancelPendingApproval";
+			param default=variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth(), name="session.mura.viewDepth";
+			param default=variables.settingsManager.getSite(arguments.rc.siteid).getnextN(), name="session.mura.nextN";
+			param default="" name="session.keywords";
+			param default="" name="arguments.rc.date1";
+			param default="" name="arguments.rc.date2";
+			param default="" name="arguments.rc.return";
+			param default=false name="arguments.rc.ommitPublishingTab";
+			param default=false name="arguments.rc.ommitRelatedContentTab";
+			param default=false name="arguments.rc.ommitAdvancedTab";
+			param default=false name="arguments.rc.murakeepediting";
+			param default=false name="arguments.rc.locknode";
+			if ( !arguments.rc.ommitPublishingTab ) {
+			  param default=0 name="arguments.rc.isNav";
+			  param default="_self" name="arguments.rc.target";
+			  param default=0 name="arguments.rc.searchExclude";
+			  param default=0 name="arguments.rc.restricted";
+			  param default=0 name="arguments.rc.mobileExclude";
+			}
+			if ( !arguments.rc.ommitAdvancedTab ) {
+			  param default=0 name="arguments.rc.isLocked";
+			  param default=0 name="arguments.rc.forceSSL";
+			  param default=1 name="arguments.rc.doCache";
+			  param default=0 name="arguments.rc.displayTitle";
+			}
+			if ( !arguments.rc.ommitRelatedContentTab ) {
+			  param default="" name="arguments.rc.relatedContentSetData";
+			}
+			if ( len(arguments.rc.instanceid) ) {
+			  session.mura.objectInstanceId=arguments.rc.instanceid;
+			}
+			param default=0 name="arguments.rc.responseChart";
+			param default="" name="arguments.rc.parentid";
+			param default=00000000000000000000000000000000000 name="session.moduleid";
+			if ( !listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',session.moduleid) ) {
+				session.moduleid='00000000000000000000000000000000000';
+			}
+			if ( len(arguments.rc.moduleid) && listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',arguments.rc.moduleid) ) {
+				session.moduleid=arguments.rc.moduleid;
+			}
+			if ( len(arguments.rc.moduleid) && session.moduleid != arguments.rc.moduleid ) {
+				arguments.rc.moduleid=session.moduleid;
+			} else if ( !len(arguments.rc.moduleid) ) {
+				arguments.rc.moduleid=session.moduleid;
+			}
+			if ( !structKeyExists(session,'00000000000000000000000000000000000') ) {
+				session['00000000000000000000000000000000000']={topid="00000000000000000000000000000000001"};
+			}
+			if ( !structKeyExists(session,'00000000000000000000000000000000003') ) {
+				session['00000000000000000000000000000000003']={topid="00000000000000000000000000000000003"};
+			}
+			if ( !structKeyExists(session,'00000000000000000000000000000000004') ) {
+				session['00000000000000000000000000000000004']={topid="00000000000000000000000000000000004"};
+			}
+			if ( !structKeyExists(session,'00000000000000000000000000000000099') ) {
+				session['00000000000000000000000000000000099']={topid="00000000000000000000000000000000099"};
+			}
+			if ( !isDefined("arguments.rc.topid") || !len(arguments.rc.topid) ) {
+				arguments.rc.topid=session['#session.moduleid#'].topid;
+			}
+			session['#session.moduleid#']={topid=arguments.rc.topid};
+		}
+	}
 
-	<cfparam name="session.openSectionList" default=""/>
+	public function export(rc) output=false {
 
-	<cfif not variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid)>
-		<cfset secure(arguments.rc)>
-	</cfif>
-
-	<cfparam name="arguments.rc.ajaxrequest" default="false"/>
-	<cfparam name="arguments.rc.moduleid" default="00000000000000000000000000000000000"/>
-	<cfparam name="arguments.rc.instanceid" default=""/>
-
-	<cfif not arguments.rc.ajaxrequest>
-		<cfparam name="arguments.rc.return" default=""/>
-		<cfparam name="arguments.rc.startrow" default="1"/>
-		<cfparam name="arguments.rc.contentid" default=""/>
-		<cfparam name="arguments.rc.ptype" default="Page"/>
-		<cfparam name="arguments.rc.type" default="Page"/>
-		<cfparam name="arguments.rc.contentHistID" default="#createuuid()#"/>
-		<cfparam name="arguments.rc.notify" default=""/>
-		<cfparam name="arguments.rc.preview" default="0"/>
-		<cfparam name="arguments.rc.size" default="20"/>
-		<cfparam name="arguments.rc.action" default=""/>
-		<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
-		<cfparam name="arguments.rc.compactDisplay" default=""/>
-		<cfparam name="arguments.rc.returnURL" default=""/>
-		<cfparam name="arguments.rc.homeID" default=""/>
-		<cfparam name="arguments.rc.datasource" default="#variables.configBean.getDatasource()#"/>
-		<cfparam name="arguments.rc.objectid" default=""/>
-		<cfparam name="arguments.rc.locking" default="false"/>
-		<cfparam name="arguments.rc.moduleAssign" default=""/>
-		<cfparam name="arguments.rc.orderno" default="0"/>
-		<cfparam name="arguments.rc.cancelPendingApproval" default="false"/>
-		<cfparam name="session.mura.viewDepth" default="#variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth()#"/>
-		<cfparam name="session.mura.nextN" default="#variables.settingsManager.getSite(arguments.rc.siteid).getnextN()#"/>
-		<cfparam name="session.keywords" default=""/>
-		<cfparam name="arguments.rc.date1" default=""/>
-		<cfparam name="arguments.rc.date2" default=""/>
-		<cfparam name="arguments.rc.return" default=""/>
-		<cfparam name="arguments.rc.ommitPublishingTab" default="false"/>
-		<cfparam name="arguments.rc.ommitRelatedContentTab" default="false"/>
-		<cfparam name="arguments.rc.ommitAdvancedTab" default="false"/>
-		<cfparam name="arguments.rc.murakeepediting" default="false"/>
-		<cfparam name="arguments.rc.locknode" default="false"/>
-
-		<cfif not arguments.rc.ommitPublishingTab>
-			<cfparam name="arguments.rc.isNav" default="0"/>
-			<cfparam name="arguments.rc.target" default="_self"/>
-			<cfparam name="arguments.rc.searchExclude" default="0"/>
-			<cfparam name="arguments.rc.restricted" default="0"/>
-			<cfparam name="arguments.rc.mobileExclude" default="0"/>
-		</cfif>
-
-		<cfif not arguments.rc.ommitAdvancedTab>
-			<cfparam name="arguments.rc.isLocked" default="0"/>
-			<cfparam name="arguments.rc.forceSSL" default="0"/>
-			<cfparam name="arguments.rc.doCache" default="1"/>
-			<cfparam name="arguments.rc.displayTitle" default="0"/>
-		</cfif>
-
-		<cfif not arguments.rc.ommitRelatedContentTab>
-			<cfparam name="arguments.rc.relatedContentSetData" default=""/>
-		</cfif>
-
-		<cfif len(arguments.rc.instanceid)>
-			<cfset session.mura.objectInstanceId=arguments.rc.instanceid>
-		</cfif>
-
-		<cfparam name="arguments.rc.responseChart" default="0"/>
-		<cfparam name="arguments.rc.parentid" default=""/>
-		<cfparam name="session.moduleid" default="00000000000000000000000000000000000">
-		<cfif not listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',session.moduleid)>
-			<cfset session.moduleid='00000000000000000000000000000000000'>
-		</cfif>
-		<cfif len(arguments.rc.moduleid) and listFind('00000000000000000000000000000000000,000000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',arguments.rc.moduleid)>
-			<cfset session.moduleid=arguments.rc.moduleid>
-		</cfif>
-
-		<cfif len(arguments.rc.moduleid) and session.moduleid neq arguments.rc.moduleid>
-			<cfset arguments.rc.moduleid=session.moduleid>
-		<cfelseif not len(arguments.rc.moduleid)>
-			<cfset arguments.rc.moduleid=session.moduleid>
-		</cfif>
-
-		<cfif not structKeyExists(session,'00000000000000000000000000000000000')>
-			<cfset session['00000000000000000000000000000000000']={topid="00000000000000000000000000000000001"}>
-		</cfif>
-
-		<cfif not structKeyExists(session,'00000000000000000000000000000000003')>
-			<cfset session['00000000000000000000000000000000003']={topid="00000000000000000000000000000000003"}>
-		</cfif>
-
-		<cfif not structKeyExists(session,'00000000000000000000000000000000004')>
-			<cfset session['00000000000000000000000000000000004']={topid="00000000000000000000000000000000004"}>
-		</cfif>
-
-		<cfif not structKeyExists(session,'00000000000000000000000000000000099')>
-			<cfset session['00000000000000000000000000000000099']={topid="00000000000000000000000000000000099"}>
-		</cfif>
-
-		<cfif not isDefined("arguments.rc.topid") or not len(arguments.rc.topid)>
-			<cfset arguments.rc.topid=session['#session.moduleid#'].topid>
-		</cfif>
-
-		<cfset session['#session.moduleid#']={topid=arguments.rc.topid}>
-	</cfif>
-
-</cffunction>
-
-	<cffunction name="export" output="false">
-		<cfargument name="rc" />
-		<cfscript>
-			var local = {};
+		var local = {};
 
 			local.currentBean = getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid);
 
@@ -140,519 +118,440 @@
 			}
 
 			arguments.rc.crumbdata = variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid,true);
-		</cfscript>
-	</cffunction>
-
-
-<cffunction name="exportcontent" output="false">
-	<cfargument name="rc">
-
-	<cfset var settingsBundle = rc.$.getBean('settingsBundle') />
-	<cfset var contentBean = rc.$.getBean('content').loadBy(siteid=session.siteid,contentid=arguments.rc.contentID) />
-	<cfparam name="rc.doChildrenOnly" default="0" />
-
-	<cfset settingsBundle.bundle(siteid=session.siteid,parentid=arguments.rc.contentID,bundlename='export_#rereplace(contentBean.getValue('filename'),"[^[:alnum:]]{1,}","_","all")#',doChildrenOnly=rc.doChildrenOnly) />
-</cffunction>
-
-<cffunction name="importcontent" output="false">
-	<cfargument name="rc">
-
-	<cfset var contentUtility = arguments.rc.$.getBean('contentUtility') />
-	<cfset var hasChangesets = rc.$.getBean('settingsManager').getSite(rc.$.event('siteID')).getValue('hasChangesets') />
-	<cfset var enforceChangesets = rc.$.getBean('settingsManager').getSite(rc.$.event('siteID')).getValue('enforceChangesets') />
-
-	<cfif (arguments.rc.import_status eq "Changeset" or enforceChangesets) and (not structKeyExists(arguments.rc,"changeset_name") or not len(arguments.rc.changeset_name))>
-		<cfset arguments.rc.changeset_name = "partial_import_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"hh_mm_ss")#" />
-		<cfset arguments.rc.import_status = "Changeset" />
-	</cfif>
-
-	<cfif structKeyExists(arguments.rc,"newfile") and len(arguments.rc.newfile)>
-		<cfset contentUtility.deployPartialBundle(siteid=session.siteid,parentid=arguments.rc.contentid,bundlefile="newFile",importstatus=rc.import_status,changesetname=rc.changeset_name) />
-		<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid",path="./")>
-	<cfelse>
-		<cfset variables.fw.redirect(action="cArch.import",append="contentid,moduleid,siteid",path="./")>
- 	</cfif>
-</cffunction>
-
-
-<cffunction name="list" output="false">
-	<cfargument name="rc">
-
-	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
-
-	<cfif not arguments.rc.rsTop.recordcount>
-		<cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
-			<cfset arguments.rc.topid='00000000000000000000000000000000001'>
-		<cfelse>
-			<cfset arguments.rc.topid=arguments.rc.moduleid>
-		</cfif>
-		<cfset session['#session.moduleid#']={topid=arguments.rc.topid}>
-		<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
-	</cfif>
-
-	<cfif not listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid )>
-		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="loadsitemanager" output="false">
-	<cfargument name="rc">
-
-	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
-
-	<cfif not arguments.rc.rsTop.recordcount>
-		<cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
-			<cfset arguments.rc.topid='00000000000000000000000000000000001'>
-		<cfelse>
-			<cfset arguments.rc.topid=arguments.rc.moduleid>
-		</cfif>
-		<cfset session['#session.moduleid#']={topid=arguments.rc.topid}>
-		<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
-	</cfif>
-
-	<cfif not listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid)>
-		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="loadrepomanager" output="false">
-	<cfargument name="rc">
-
-	<cfset loadsitemanager(argumentCollection=arguments)>
-
-</cffunction>
-
-<cffunction name="draft" output="false">
-	<cfargument name="rc">
-
-	<cfset arguments.rc.rsList=variables.contentManager.getDraftList(arguments.rc.siteid) />
-
-</cffunction>
-
-<cffunction name="saveQuickEdit" output="false">
-	<cfargument name="rc">
-
-	<cfset var local=structNew()>
-
-	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "quickedit")>
-		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-		<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
-		<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />
-		<cfset local.args={}>
-		<cfset local.args.approved=1>
-
-		<cfif arguments.rc.attribute eq "isnav">
-			<cfset local.args.isnav=arguments.rc.isnav>
-		<cfelseif arguments.rc.attribute eq "display">
-			<cfset local.args.display=arguments.rc.display>
-
-			<cfset local.args.displayStop=arguments.rc.displayStop>
-
-			<cfset local.args.displayStart=arguments.rc.displayStart>
-			<cfset local.args.displayInterval=arguments.rc.displayInterval>
-
-		<cfelseif arguments.rc.attribute eq "template">
-			<cfset local.args.template=arguments.rc.template>
-			<cfset local.args.childTemplate=arguments.rc.childTemplate>
-		<cfelseif arguments.rc.attribute eq "inheritObjects">
-			<cfset local.args.inheritObjects=arguments.rc.inheritObjects>
-		<cfelse>
-			<cfabort>
-		</cfif>
-
-		<cfif local.perm eq "Editor" and not local.contentBean.hasDrafts()>
-			<cfset local.contentBean.set(local.args)>
-			<cfset local.contentBean.save()>
-		</cfif>
-	</cfif>
-	<cfabort>
-
-</cffunction>
-
-<cffunction name="editLive" output="false">
-	<cfargument name="rc">
-	<cfset var content=arguments.rc.$.getBean('content').loadBy(contentid=arguments.rc.contentid,siteid=arguments.rc.siteid)>
-	<cfset content.setType(arguments.rc.type)>
-	<cflocation url="#content.getEditURL(compactDisplay='true')#&instanceid=#esapiEncode('url',arguments.rc.instanceid)#" addtoken="false">
-</cffunction>
-
-<cffunction name="edit" output="false">
-	<cfargument name="rc">
-
-	<cfset var local=structNew()>
-
-	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-
-  	<cfif local.currentBean.getIsNew()>
-		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid,true)/>
-	<cfelse>
-		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid,true)/>
-	</cfif>
-
-   	<cfset arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid)/>
-
-   	<cfif arguments.rc.type neq 'Variation' and arguments.rc.contentid neq ''  and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1 and not len(arguments.rc.instanceid)>
-		<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type",path="./")>
-   	</cfif>
-
-  	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid) />
-  	<cfset arguments.rc.rsPageCount=variables.contentManager.getPageCount(arguments.rc.siteid) />
-  	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
-  	<cfset arguments.rc.rsTemplates=variables.contentUtility.getTemplates(arguments.rc.siteid,arguments.rc.type) />
-	<cfif arguments.rc.moduleID eq '00000000000000000000000000000000000'>
-		<cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
-	</cfif>
-
-	<cfif arguments.rc.locknode>
-		<cfset var stats=arguments.rc.contentBean.getStats()>
-		<cfif not len(stats.getLockID()) or stats.getLockID() eq session.mura.userid>
-			<cfset stats.setLockID(session.mura.userID).setLockType('node').save()>
-		</cfif>
-	</cfif>
-
-	<!--- This is here for backward plugin compatibility--->
-	<cfset appendRequestScope(arguments.rc)>
-
-</cffunction>
-
-<cffunction name="update" ouput="false">
-	<cfargument name="rc">
-	<cfset var local=structNew()>
-
-	<cfset request.newImageIDList="">
-
-	<cfif structKeyExists(arguments.rc,'orderno') and not isNumeric(arguments.rc.orderno)>
-		<cfset arguments.rc.orderno=0>
-	</cfif>
-
-	<cfif isDefined('rc.objectparams') and len(rc.objectparams) and not isJSON(rc.objectparams)>
-		<cfset rc.objectparams=URLDecode(rc.objectparams)>
-	</cfif>
-
-	<cflock type="exclusive" name="admincontroller#arguments.rc.contentID#" timeout="600">
-		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
-
-		<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-
-		 <cfif not local.currentBean.getIsNew()>
-			 <cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
-			 <cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
-		 </cfif>
-
-		 <cfif local.currentBean.getIsNew() and len(arguments.rc.parentID)>
-			<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.parentID, arguments.rc.siteid) />
-			<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
-		 </cfif>
-
-		<cfset  arguments.rc.allowAction=listFindNoCase('author,editor',arguments.rc.perm) />
-
-		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deleteall'>
-		 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deleteall")>
-				<cfset arguments.rc.topid=variables.contentManager.deleteAll(arguments.rc) />
-			<cfelse>
-
-			</cfif>
-		 </cfif>
-
-		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deletehistall'>
-		 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deletehistall")>
-		 		<cfset variables.contentManager.deletehistAll(arguments.rc) />
-		 	<cfelse>
-
-		 	</cfif>
-		 </cfif>
-
-		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'delete'>
-		 	<cfif rc.$.validateCSRFTokens(context=rc.contenthistid & "delete")>
-				<cfset variables.contentManager.delete(arguments.rc) />
-			<cfelse>
-
-			</cfif>
-		 </cfif>
-
-		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add'>
-			<cfif structKeyExists(arguments.rc,"sourceid") and isValid('UUID',arguments.rc.sourceid)>
-				 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceid, siteid=arguments.rc.siteid).set(arguments.rc) />
-			<cfelseif structKeyExists(arguments.rc,"contenthistid") and isValid('UUID',arguments.rc.contenthistid)>
-				 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.contenthistid, siteid=arguments.rc.siteid).set(arguments.rc) />
-			<cfelse>
-				 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc) />
-			</cfif>
-
-			<cfif rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add")>
-				<cfset arguments.rc.contentBean=arguments.rc.contentBean.save()>
-				<!---
-				<cfif application.configBean.getValue(property='autopreviewimages',defaultValue=true) and not arguments.rc.ajaxrequest and len(request.newImageIDList) and not arguments.rc.murakeepediting>
-					<cfset arguments.rc.fileid=request.newImageIDList>
-					<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
-					<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay,homeID",path="./")>
-				</cfif>
-				--->
-			<cfelse>
-				<cfset arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens'>
-			</cfif>
-		 </cfif>
-		 </cflock>
-
-		 <cfif not arguments.rc.ajaxrequest>
-
-			 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multifileupload'>
-			 		<cfparam name="session.mura.multifileupload" default="false">
-
-			 		<cflock name="multifileupload#application.instanceid#" timeout="5">
-			 			<cfset session.mura.multifileupload=rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload") or session.mura.multifileupload>
-			 		</cflock>
-
-			 		<cfif session.mura.multifileupload>
-				  		<cfset variables.contentManager.multiFileUpload(arguments.rc) />
-				  	<cfelse>
-
-				  	</cfif>
-
-			 </cfif>
-
-			 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
-			    <cfif not (
+	}
+
+	public function exportcontent(rc) output=false {
+		var settingsBundle = rc.$.getBean('settingsBundle');
+		var contentBean = rc.$.getBean('content').loadBy(siteid=session.siteid,contentid=arguments.rc.contentID);
+		param default=0 name="rc.doChildrenOnly";
+		settingsBundle.bundle(siteid=session.siteid,parentid=arguments.rc.contentID,bundlename='export_#rereplace(contentBean.getValue('filename'),"[^[:alnum:]]{1,}","_","all")#',doChildrenOnly=rc.doChildrenOnly);
+	}
+
+	public function importcontent(rc) output=false {
+		var contentUtility = arguments.rc.$.getBean('contentUtility');
+		var hasChangesets = rc.$.getBean('settingsManager').getSite(rc.$.event('siteID')).getValue('hasChangesets');
+		var enforceChangesets = rc.$.getBean('settingsManager').getSite(rc.$.event('siteID')).getValue('enforceChangesets');
+		if ( (arguments.rc.import_status == "Changeset" || enforceChangesets) && (not structKeyExists(arguments.rc,"changeset_name") || !len(arguments.rc.changeset_name)) ) {
+			arguments.rc.changeset_name = "partial_import_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"hh_mm_ss")#";
+			arguments.rc.import_status = "Changeset";
+		}
+		if ( structKeyExists(arguments.rc,"newfile") && len(arguments.rc.newfile) ) {
+			contentUtility.deployPartialBundle(siteid=session.siteid,parentid=arguments.rc.contentid,bundlefile="newFile",importstatus=rc.import_status,changesetname=rc.changeset_name);
+			variables.fw.redirect(action="cArch.list",append="siteid,moduleid",path="./");
+		} else {
+			variables.fw.redirect(action="cArch.import",append="contentid,moduleid,siteid",path="./");
+		}
+	}
+
+	public function list(rc) output=false {
+		arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc);
+		if ( !arguments.rc.rsTop.recordcount ) {
+			if ( arguments.rc.moduleid == '00000000000000000000000000000000000' ) {
+				arguments.rc.topid='00000000000000000000000000000000001';
+			} else {
+				arguments.rc.topid=arguments.rc.moduleid;
+			}
+			session['#session.moduleid#']={topid=arguments.rc.topid};
+			arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc);
+		}
+		if ( !listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid ) ) {
+			arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow);
+		}
+	}
+
+	public function loadsitemanager(rc) output=false {
+		arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc);
+		if ( !arguments.rc.rsTop.recordcount ) {
+			if ( arguments.rc.moduleid == '00000000000000000000000000000000000' ) {
+				arguments.rc.topid='00000000000000000000000000000000001';
+			} else {
+				arguments.rc.topid=arguments.rc.moduleid;
+			}
+			session['#session.moduleid#']={topid=arguments.rc.topid};
+			arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc);
+		}
+		if ( !listFind('00000000000000000000000000000000099,00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000000',arguments.rc.moduleid) ) {
+			arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow);
+		}
+	}
+
+	public function loadrepomanager(rc) output=false {
+		loadsitemanager(argumentCollection=arguments);
+	}
+
+	public function draft(rc) output=false {
+		arguments.rc.rsList=variables.contentManager.getDraftList(arguments.rc.siteid);
+	}
+
+	public function saveQuickEdit(rc) output=false {
+		var local=structNew();
+		if ( rc.$.validateCSRFTokens(context=rc.contentid & "quickedit") ) {
+			local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid);
+			local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid);
+			local.perm=variables.permUtility.getNodePerm(local.crumbData);
+			local.args={};
+			local.args.approved=1;
+			if ( arguments.rc.attribute == "isnav" ) {
+				local.args.isnav=arguments.rc.isnav;
+			} else if ( arguments.rc.attribute == "display" ) {
+				local.args.display=arguments.rc.display;
+				local.args.displayStop=arguments.rc.displayStop;
+				local.args.displayStart=arguments.rc.displayStart;
+				local.args.displayInterval=arguments.rc.displayInterval;
+			} else if ( arguments.rc.attribute == "template" ) {
+				local.args.template=arguments.rc.template;
+				local.args.childTemplate=arguments.rc.childTemplate;
+			} else if ( arguments.rc.attribute == "inheritObjects" ) {
+				local.args.inheritObjects=arguments.rc.inheritObjects;
+			} else {
+				abort;
+			}
+			if ( local.perm == "Editor" && !local.contentBean.hasDrafts() ) {
+				local.contentBean.set(local.args);
+				local.contentBean.save();
+			}
+		}
+		abort;
+	}
+
+	public function editLive(rc) output=false {
+		var content=arguments.rc.$.getBean('content').loadBy(contentid=arguments.rc.contentid,siteid=arguments.rc.siteid);
+		content.setType(arguments.rc.type);
+		location(url="#content.getEditURL(compactDisplay='true')#&instanceid=#esapiEncode('url',arguments.rc.instanceid)#", addtoken=false );
+	}
+
+	public function edit(rc) output=false {
+		var local=structNew();
+		local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid);
+		if ( local.currentBean.getIsNew() ) {
+			arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid,true);
+		} else {
+			arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid,true);
+		}
+		arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid);
+		if ( arguments.rc.type != 'Variation' && arguments.rc.contentid != ''  && arguments.rc.contenthistid != '' && arguments.rc.contentBean.getIsNew() == 1 && !len(arguments.rc.instanceid) ) {
+			variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type",path="./");
+		}
+		arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid);
+		arguments.rc.rsPageCount=variables.contentManager.getPageCount(arguments.rc.siteid);
+		arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid);
+		arguments.rc.rsTemplates=variables.contentUtility.getTemplates(arguments.rc.siteid,arguments.rc.type);
+		if ( arguments.rc.moduleID == '00000000000000000000000000000000000' ) {
+			variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid);
+		}
+		if ( arguments.rc.locknode ) {
+			var stats=arguments.rc.contentBean.getStats();
+			if ( !len(stats.getLockID()) || stats.getLockID() == session.mura.userid ) {
+				stats.setLockID(session.mura.userID).setLockType('node').save();
+			}
+		}
+		//  This is here for backward plugin compatibility
+		appendRequestScope(arguments.rc);
+	}
+
+	/**
+	 * @ouput false
+	 */
+	public function update(rc) {
+		var local=structNew();
+		request.newImageIDList="";
+		if ( structKeyExists(arguments.rc,'orderno') && !isNumeric(arguments.rc.orderno) ) {
+			arguments.rc.orderno=0;
+		}
+		if ( isDefined('rc.objectparams') && len(rc.objectparams) && !isJSON(rc.objectparams) ) {
+			rc.objectparams=URLDecode(rc.objectparams);
+		}
+		lock type="exclusive" name="admincontroller#arguments.rc.contentID#" timeout="600" {
+			arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid);
+			local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid);
+			if ( !local.currentBean.getIsNew() ) {
+				arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid);
+				arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData);
+			}
+			if ( local.currentBean.getIsNew() && len(arguments.rc.parentID) ) {
+				arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.parentID, arguments.rc.siteid);
+				arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData);
+			}
+			arguments.rc.allowAction=listFindNoCase('author,editor',arguments.rc.perm);
+			if ( arguments.rc.allowAction && arguments.rc.action == 'deleteall' ) {
+				if ( rc.$.validateCSRFTokens(context=rc.contentid & "deleteall") ) {
+					arguments.rc.topid=variables.contentManager.deleteAll(arguments.rc);
+				} else {
+				}
+			}
+			if ( arguments.rc.allowAction && arguments.rc.action == 'deletehistall' ) {
+				if ( rc.$.validateCSRFTokens(context=rc.contentid & "deletehistall") ) {
+					variables.contentManager.deletehistAll(arguments.rc);
+				} else {
+				}
+			}
+			if ( arguments.rc.allowAction && arguments.rc.action == 'delete' ) {
+				if ( rc.$.validateCSRFTokens(context=rc.contenthistid & "delete") ) {
+					variables.contentManager.delete(arguments.rc);
+				} else {
+				}
+			}
+			if ( arguments.rc.allowAction && arguments.rc.action == 'add' ) {
+				if ( structKeyExists(arguments.rc,"sourceid") && isValid('UUID',arguments.rc.sourceid) ) {
+					arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceid, siteid=arguments.rc.siteid).set(arguments.rc);
+				} else if ( structKeyExists(arguments.rc,"contenthistid") && isValid('UUID',arguments.rc.contenthistid) ) {
+					arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.contenthistid, siteid=arguments.rc.siteid).set(arguments.rc);
+				} else {
+					arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc);
+				}
+				if ( rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add") ) {
+					arguments.rc.contentBean=arguments.rc.contentBean.save();
+				} else {
+					arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens';
+				}
+			}
+		}
+		if ( !arguments.rc.ajaxrequest ) {
+			if ( arguments.rc.allowAction && arguments.rc.action == 'multifileupload' ) {
+				param default=false name="session.mura.multifileupload";
+				lock name="multifileupload#application.instanceid#" timeout="5" {
+					session.mura.multifileupload=rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload") || session.mura.multifileupload;
+				}
+				if ( session.mura.multifileupload ) {
+					variables.contentManager.multiFileUpload(arguments.rc);
+				} else {
+				}
+			}
+			if ( arguments.rc.allowAction && arguments.rc.action == 'add' && arguments.rc.contentID != '00000000000000000000000000000000001' ) {
+				if ( !(
 				  	listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
-				  	and structKeyExists(session,'#rc.contentBean.getModuleID()#') and listFindNoCase(rc.contentBean.getPath(),session['#rc.contentBean.getModuleID()#'].topID)
-				  ) or not len(rc.contentBean.getPath())>
-			     	<cfset arguments.rc.topid=rc.contentBean.getParentID() />
-					<cfset session.openSectionList=listAppend(session.openSectionList,rc.contentBean.getParentID()) />
-				</cfif>
-			</cfif>
+				  	and structKeyExists(session,'#rc.contentBean.getModuleID()#') && listFindNoCase(rc.contentBean.getPath(),session['#rc.contentBean.getModuleID()#'].topID)
+				  ) || !len(rc.contentBean.getPath()) ) {
+					arguments.rc.topid=rc.contentBean.getParentID();
+					session.openSectionList=listAppend(session.openSectionList,rc.contentBean.getParentID());
+				}
+			}
+			if ( !arguments.rc.murakeepediting ) {
+				arguments.rc.murakeepediting=arguments.rc.contentBean.getDisplayConflicts().hasNext();
+			}
+			if ( (arguments.rc.closeCompactDisplay != 'true'  || arguments.rc.murakeepediting) && arguments.rc.action != 'multiFileUpload' ) {
+				if ( len(arguments.rc.returnURL) && (arguments.rc.action == 'delete' || arguments.rc.action == 'deletehistall' || (arguments.rc.preview == 0 && !arguments.rc.murakeepediting)) ) {
+					location(url=rc.returnURL, addtoken=false );
+				}
+				if ( arguments.rc.action == 'delete' || arguments.rc.action == 'deletehistall' || (arguments.rc.return == 'hist' && arguments.rc.preview == 0 && !arguments.rc.murakeepediting && structIsEmpty(arguments.rc.contentBean.getErrors())) ) {
+					variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay");
+				}
+				if ( arguments.rc.return == 'changesets' && len(rc.contentBean.getChangesetID()) && !arguments.rc.murakeepediting ) {
+					variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="./");
+				}
+				if ( structIsEmpty(arguments.rc.contentBean.getErrors()) ) {
+					structDelete(session.mura,"editBean");
+					if ( arguments.rc.preview == 0 && !arguments.rc.murakeepediting ) {
+						variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="./");
+					} else {
+						arguments.rc.parentid=arguments.rc.contentBean.getParentID();
+						arguments.rc.type=arguments.rc.contentBean.getType();
+						arguments.rc.contentid=arguments.rc.contentBean.getContentID();
+						arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID();
+						arguments.rc.preview=arguments.rc.preview;
+						variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return,compactDisplay",path="./");
+					}
+				}
+			}
+		}
+	}
 
-		<cfif not arguments.rc.murakeepediting>
-			<cfset arguments.rc.murakeepediting=arguments.rc.contentBean.getDisplayConflicts().hasNext()>
-		</cfif>
+	/**
+	 * @ouput false
+	 */
+	public function hist(rc) {
+		arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid);
+		arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid);
+	}
 
-		<cfif (arguments.rc.closeCompactDisplay neq 'true'  or arguments.rc.murakeepediting) and arguments.rc.action neq 'multiFileUpload'>
+	/**
+	 * @ouput false
+	 */
+	public function audit(rc) {
+		arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid);
+		arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid);
+	}
 
-			<cfif len(arguments.rc.returnURL) and (arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.preview eq 0 and not arguments.rc.murakeepediting))>
-				<cflocation url="#rc.returnURL#" addtoken="false"/>
-			</cfif>
+	/**
+	 * @ouput false
+	 */
+	public function datamanager(rc) {
+		arguments.rc.crumbData=variables.contentManager.getCrumbList(arguments.rc.contentid,arguments.rc.siteid);
+		arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid);
+	}
 
-			<cfif arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.return eq 'hist' and arguments.rc.preview eq 0 and not arguments.rc.murakeepediting and structIsEmpty(arguments.rc.contentBean.getErrors()))>
-				<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay")>
-			</cfif>
+	/**
+	 * @ouput false
+	 */
+	public function downloaddata(rc) {
+		arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid);
+		arguments.rc.datainfo=variables.contentManager.getDownloadselect(arguments.rc.contentid,arguments.rc.siteid);
+	}
 
-			<cfif arguments.rc.return eq 'changesets' and len(rc.contentBean.getChangesetID()) and not arguments.rc.murakeepediting>
-				<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="./")>
-			</cfif>
+	/**
+	 * @ouput false
+	 */
+	public function search(rc) {
+		arguments.rc.rslist=variables.contentManager.getPrivateSearch(arguments.rc.siteid,arguments.rc.keywords);
+		session.keywords=rc.keywords;
+		arguments.rc.nextn=variables.utility.getNextN(arguments.rc.rsList,30,arguments.rc.startrow);
+	}
 
-			<cfif structIsEmpty(arguments.rc.contentBean.getErrors())>
-				<cfset structDelete(session.mura,"editBean")>
-				<cfif arguments.rc.preview eq 0 and not arguments.rc.murakeepediting>
-					<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="./")>
-				<cfelse>
-					<cfset arguments.rc.parentid=arguments.rc.contentBean.getParentID()>
-					<cfset arguments.rc.type=arguments.rc.contentBean.getType()>
-					<cfset arguments.rc.contentid=arguments.rc.contentBean.getContentID()>
-					<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
-					<cfset arguments.rc.preview=arguments.rc.preview>
-					<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return,compactDisplay",path="./")>
-				</cfif>
-			</cfif>
+	/**
+	 * @ouput false
+	 */
+	public function loadNotify(rc) {
+		if ( arguments.rc.contentid == '' ) {
+			arguments.rc.crumbData=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid);
+		} else {
+			arguments.rc.crumbData=variables.contentManager.getCrumbList(arguments.rc.contentid,arguments.rc.siteid);
+		}
+	}
 
-		</cfif>
+	/**
+	 * @ouput false
+	 */
+	public function copy(rc) {
+		variables.contentManager.copy(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.parentID,arguments.rc.copyAll, true, true);
+		abort;
+	}
 
-	 </cfif>
+	/**
+	 * @ouput false
+	 */
+	public function siteManagerTab(rc) {
+		param default=structNew() name="session.flatViewArgs";
+		if ( !structKeyExists(session.flatViewArgs,'#session.siteID#') ) {
+			session.flatViewArgs['#session.siteID#']=structNew();
+		}
+		session.flatViewArgs['#session.siteID#'].tab=arguments.rc.tab;
+		abort;
+	}
 
-</cffunction>
+	/**
+	 * @ouput false
+	 */
+	public function saveCopyInfo(rc) {
+		variables.contentManager.saveCopyInfo(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.moduleid,arguments.rc.copyAll);
+		abort;
+	}
 
-<cffunction name="hist" ouput="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid) />
-	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid) />
-</cffunction>
+	/**
+	 * @ouput false
+	 */
+	public function multiFileUpload(rc) {
+		arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid);
+		arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid);
+		arguments.rc.rsPageCount=variables.contentManager.getPageCount(arguments.rc.siteid);
+		arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid);
+	}
 
-<cffunction name="audit" ouput="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid) />
-	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid) />
-</cffunction>
+	/**
+	 * @ouput true
+	 */
+	public function updateObjectParams(rc) {
+		var local=structNew();
+		local.versionBean=getBean("content").loadBy(contentHistID=arguments.rc.contentHistID, siteID= arguments.rc.siteid);
+		if ( !local.versionBean.getIsNew() ) {
+			arguments.rc.crumbData=variables.contentGateway.getCrumblist(local.versionBean.getContentID(), arguments.rc.siteid);
+			arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData);
+		} else {
+			abort;
+		}
+		if ( structKeyExists(arguments.rc,"changesetid") ) {
+			local.versionBean.setChangesetID(arguments.rc.changesetID);
+		}
+		if ( structKeyExists(arguments.rc,"removePreviousChangeset") ) {
+			local.versionBean.setRemovePreviousChangeset(arguments.rc.removePreviousChangeset);
+		}
+		if ( arguments.rc.perm == "author" ) {
+			local.versionBean.setApproved(0);
+		} else if ( arguments.rc.perm == "editor" ) {
+			local.versionBean.setApproved(arguments.rc.approved);
+		} else {
+			abort;
+		}
+		if ( isJSON(arguments.rc.params) ) {
+			local.versionBean.addDisplayObject(argumentCollection=arguments.rc);
+			versionBean.save();
+		}
+		arguments.rc.versionBean=local.versionBean;
+	}
 
-<cffunction name="datamanager" ouput="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.crumbData=variables.contentManager.getCrumbList(arguments.rc.contentid,arguments.rc.siteid) />
-	<cfset arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid) />
-</cffunction>
+	/**
+	 * @ouput false
+	 */
+	public function lockFile(rc) {
+		if ( rc.$.validateCSRFTokens(context=rc.contentid & "lockfile") ) {
+			local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid);
+			local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid);
+			local.perm=variables.permUtility.getNodePerm(local.crumbData);
+			if ( listFindNoCase("author,editor",local.perm)
+			or listFindNoCase(session.mura.memberships,"s2") ) {
+				local.contentBean.getStats().setLockID(session.mura.userID).setLockType('file').save();
+				location(url="#variables.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#local.contentBean.getFileID()#&method=attachment", addtoken=false);
+			}
+		}
+		abort;
+	}
 
-<cffunction name="downloaddata" ouput="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid) />
-	<cfset arguments.rc.datainfo=variables.contentManager.getDownloadselect(arguments.rc.contentid,arguments.rc.siteid) />
-</cffunction>
-
-<cffunction name="search" ouput="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.rslist=variables.contentManager.getPrivateSearch(arguments.rc.siteid,arguments.rc.keywords) />
-	<cfset session.keywords=rc.keywords/>
-	<cfset arguments.rc.nextn=variables.utility.getNextN(arguments.rc.rsList,30,arguments.rc.startrow) />
-</cffunction>
-
-<cffunction name="loadNotify" ouput="false">
-	<cfargument name="rc">
-	<cfif arguments.rc.contentid eq ''>
-		<cfset arguments.rc.crumbData=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid) />
-	<cfelse>
-		<cfset arguments.rc.crumbData=variables.contentManager.getCrumbList(arguments.rc.contentid,arguments.rc.siteid) />
-	</cfif>
-</cffunction>
-
-<cffunction name="copy" ouput="false">
-	<cfargument name="rc">
-	<cfset variables.contentManager.copy(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.parentID,arguments.rc.copyAll, true, true)  />
-	<cfabort>
-</cffunction>
-
-<cffunction name="siteManagerTab" ouput="false">
-	<cfargument name="rc">
-	<cfparam name="session.flatViewArgs" default="#structNew()#">
-	<cfif not structKeyExists(session.flatViewArgs,'#session.siteID#')>
-	 	<cfset session.flatViewArgs['#session.siteID#']=structNew()>
-	</cfif>
-	<cfset session.flatViewArgs['#session.siteID#'].tab=arguments.rc.tab  />
-	<cfabort>
-</cffunction>
-
-<cffunction name="saveCopyInfo" ouput="false">
-	<cfargument name="rc">
-	<cfset variables.contentManager.saveCopyInfo(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.moduleid,arguments.rc.copyAll)  />
-	<cfabort>
-</cffunction>
-
-<cffunction name="multiFileUpload" ouput="false">
-	<cfargument name="rc">
-
-	<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid)>
-  	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid)>
-  	<cfset arguments.rc.rsPageCount=variables.contentManager.getPageCount(arguments.rc.siteid)>
-  	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid)>
-
-
-</cffunction>
-
-<cffunction name="updateObjectParams" ouput="true">
-	<cfargument name="rc">
-	<cfset var local=structNew()>
-
-	<cfset local.versionBean=getBean("content").loadBy(contentHistID=arguments.rc.contentHistID, siteID= arguments.rc.siteid)>
-
-	<cfif not local.versionBean.getIsNew()>
-		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(local.versionBean.getContentID(), arguments.rc.siteid) />
-		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />
-	<cfelse>
-		<cfabort>
-	</cfif>
-
-	<cfif structKeyExists(arguments.rc,"changesetid")>
-		<cfset local.versionBean.setChangesetID(arguments.rc.changesetID)>
-	</cfif>
-
-	<cfif structKeyExists(arguments.rc,"removePreviousChangeset")>
-		<cfset local.versionBean.setRemovePreviousChangeset(arguments.rc.removePreviousChangeset)>
-	</cfif>
-
-	<cfif arguments.rc.perm eq "author">
-		<cfset local.versionBean.setApproved(0)>
-	<cfelseif arguments.rc.perm eq "editor" >
-		<cfset local.versionBean.setApproved(arguments.rc.approved)>
-	<cfelse>
-		<cfabort>
-	</cfif>
-
-	<cfif isJSON(arguments.rc.params)>
-		<cfset local.versionBean.addDisplayObject(argumentCollection=arguments.rc)>
-		<cfset versionBean.save()>
-	</cfif>
-
-	<cfset arguments.rc.versionBean=local.versionBean>
-
-</cffunction>
-
-<cffunction name="lockFile" ouput="false">
-	<cfargument name="rc">
-
-	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "lockfile")>
-		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-		<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
-		<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />
-
-		<cfif listFindNoCase("author,editor",local.perm)
-			or listFindNoCase(session.mura.memberships,"s2")>
-				<cfset local.contentBean.getStats().setLockID(session.mura.userID).setLockType('file').save()>
-				<cflocation url="#variables.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#local.contentBean.getFileID()#&method=attachment">
-		</cfif>
-	</cfif>
-	<cfabort>
-</cffunction>
-
-<cffunction name="unlockFile" ouput="false">
-	<cfargument name="rc">
-
-	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "unlockfile")>
-		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-		<cfset local.stats=local.contentBean.getStats()>
-
-		<cfif len(local.stats.getLockID())
+	/**
+	 * @ouput false
+	 */
+	public function unlockFile(rc) {
+		if ( rc.$.validateCSRFTokens(context=rc.contentid & "unlockfile") ) {
+			local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid);
+			local.stats=local.contentBean.getStats();
+			if ( len(local.stats.getLockID())
 			and (
-				local.stats.getLockID() eq session.mura.userID
+				local.stats.getLockID() == session.mura.userID
 				or
 				listFindNoCase(session.mura.memberships,"s2")
-				)>
-			<cfset local.stats.setLockID("").setLockType("").save()>
+				) ) {
+				local.stats.setLockID("").setLockType("").save();
+			}
+		}
+		abort;
+	}
 
-		</cfif>
-	</cfif>
-	<cfabort>
-</cffunction>
-
-<cffunction name="unlockNode" ouput="false">
-	<cfargument name="rc">
-
-	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "unlocknode")>
-		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-		<cfset local.stats=local.contentBean.getStats()>
-
-		<cfif len(local.stats.getLockID())
+	/**
+	 * @ouput false
+	 */
+	public function unlockNode(rc) {
+		if ( rc.$.validateCSRFTokens(context=rc.contentid & "unlocknode") ) {
+			local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid);
+			local.stats=local.contentBean.getStats();
+			if ( len(local.stats.getLockID())
 			and (
-				local.stats.getLockID() eq session.mura.userID
+				local.stats.getLockID() == session.mura.userID
 				or
 				listFindNoCase(session.mura.memberships,"s2")
-				)>
-			<cfset local.stats.setLockID("").setLockType("").save()>
+				) ) {
+				local.stats.setLockID("").setLockType("").save();
+			}
+		}
+		abort;
+	}
 
-		</cfif>
-	</cfif>
-	<cfabort>
-</cffunction>
+	public function getAuditTrail(rc) output=true {
+		var trail=[];
+		arguments.rc.item=rc.$.getBean('content').loadBy(contenthistid=arguments.rc.contenthistid,siteid=arguments.rc.siteid);
+		while ( not arguments.rc.item.getIsNew() ) {
+			arrayAppend(trail, arguments.rc.item.getContentHistID());
+			arguments.rc.item=arguments.rc.item.getSource();
+		}
 
-<cffunction name="getAuditTrail" output="true">
-	<cfargument name="rc">
-	<cfset var trail=[]>
+		getpagecontext().getResponse().setContentType('application/json; charset=utf-8');
 
-	<cfset arguments.rc.item=rc.$.getBean('content').loadBy(contenthistid=arguments.rc.contenthistid,siteid=arguments.rc.siteid)>
+		writeOutput(createObject("component","mura.json").encode(trail));
 
-	<cfloop condition="not arguments.rc.item.getIsNew()">
-		<cfset arrayAppend(trail, arguments.rc.item.getContentHistID())>
-		<cfset arguments.rc.item=arguments.rc.item.getSource()>
-	</cfloop>
-	<cfcontent type="application/json">
-	<cfoutput>#createObject("component","mura.json").encode(trail)#</cfoutput>
-	<cfabort>
+		abort;
+	}
 
-</cffunction>
+	public function getImageSizeURL(rc) output=true {
+		getpagecontext().getResponse().setContentType('application/json; charset=utf-8');
+		writeOutput(createObject("component","mura.json").encode(rc.$.getURLForImage(fileID=rc.fileid,size=rc.size)));
+		abort;
+	}
 
-<cffunction name="getImageSizeURL" output="true">
-	<cfargument name="rc">
-
-	<cfcontent type="application/json">
-	<cfoutput>#createObject("component","mura.json").encode(rc.$.getURLForImage(fileID=rc.fileid,size=rc.size))#</cfoutput>
-	<cfabort>
-
-</cffunction>
-
-
-</cfcomponent>
+}

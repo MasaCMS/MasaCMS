@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,85 +43,65 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="controller" output="false">
+*/
+component extends="controller" output="false" {
 
-<cffunction name="setUserManager" output="false">
-	<cfargument name="userManager">
-	<cfset variables.userManager=arguments.userManager>
-</cffunction>
+	public function setUserManager(userManager) output=false {
+		variables.userManager=arguments.userManager;
+	}
 
-<cffunction name="before" output="false">
-	<cfargument name="rc">
+	public function before(rc) output=false {
+		param default=0 name="arguments.rc.Type";
+		param default=0 name="arguments.rc.ContactForm";
+		param default=0 name="arguments.rc.isPublic";
+		param default="" name="arguments.rc.email";
+		param default="" name="arguments.rc.jobtitle";
+		param default="" name="arguments.rc.lastupdate";
+		param default="" name="arguments.rc.lastupdateby";
+		param default=0 name="arguments.rc.lastupdatebyid";
+		param default=0 name="arguments.rc.rsGrouplist.recordcount";
+		param default="" name="arguments.rc.groupname";
+		param default="" name="arguments.rc.fname";
+		param default="" name="arguments.rc.lname";
+		param default="" name="arguments.rc.address";
+		param default="" name="arguments.rc.city";
+		param default="" name="arguments.rc.state";
+		param default="" name="arguments.rc.zip";
+		param default="" name="arguments.rc.phone1";
+		param default="" name="arguments.rc.phone2";
+		param default="" name="arguments.rc.fax";
+		param default=0 name="arguments.rc.perm";
+		param default="" name="arguments.rc.groupid";
+		param default="" name="arguments.rc.routeid";
+		param default=0 name="arguments.rc.InActive";
+		param default=1 name="arguments.rc.startrow";
+		param default="" name="arguments.rc.categoryID";
+		param default="" name="arguments.rc.routeID";
+		param default=structnew() name="arguments.rc.error";
+		param default="" name="arguments.rc.returnurl";
+		if ( !session.mura.isLoggedIn ) {
+			secure(arguments.rc);
+		}
+	}
 
-	<cfparam name="arguments.rc.Type" default="0" />
-	<cfparam name="arguments.rc.ContactForm" default="0" />
-	<cfparam name="arguments.rc.isPublic" default="0" />
-	<cfparam name="arguments.rc.email" default="" />
-	<cfparam name="arguments.rc.jobtitle" default="" />
-	<cfparam name="arguments.rc.lastupdate" default="" />
-	<cfparam name="arguments.rc.lastupdateby" default="" />
-	<cfparam name="arguments.rc.lastupdatebyid" default="0" />
-	<cfparam name="arguments.rc.rsGrouplist.recordcount" default="0" />
-	<cfparam name="arguments.rc.groupname" default="" />
-	<cfparam name="arguments.rc.fname" default="" />
-	<cfparam name="arguments.rc.lname" default="" />
-	<cfparam name="arguments.rc.address" default="" />
-	<cfparam name="arguments.rc.city" default="" />
-	<cfparam name="arguments.rc.state" default="" />
-	<cfparam name="arguments.rc.zip" default="" />
-	<cfparam name="arguments.rc.phone1" default="" />
-	<cfparam name="arguments.rc.phone2" default="" />
-	<cfparam name="arguments.rc.fax" default="" />
-	<cfparam name="arguments.rc.perm" default="0" />
-	<cfparam name="arguments.rc.groupid" default="" />
-	<cfparam name="arguments.rc.routeid" default="" />
-	<cfparam name="arguments.rc.InActive" default="0" />
-	<cfparam name="arguments.rc.startrow" default="1" />
-	<cfparam name="arguments.rc.categoryID" default="" />
-	<cfparam name="arguments.rc.routeID" default="" />
-	<cfparam name="arguments.rc.error" default="#structnew()#" />
-	<cfparam name="arguments.rc.returnurl" default="" />
+	public function edit(rc) output=false {
+		if ( !isdefined('arguments.rc.userBean') ) {
+			arguments.rc.userBean=variables.userManager.read(session.mura.userID);
+		}
+		//  This is here for backward plugin compatibility
+		appendRequestScope(arguments.rc);
+	}
 
-	<cfif not session.mura.isLoggedIn>
-		<cfset secure(arguments.rc)>
-	</cfif>
-</cffunction>
+	public function update(rc) output=false {
+		if ( rc.$.validateCSRFTokens() ) {
+			request.newImageIDList="";
+			arguments.rc.userBean=variables.userManager.update(arguments.rc,false);
+			if ( structIsEmpty(arguments.rc.userBean.getErrors()) ) {
+				structDelete(session.mura,"editBean");
+			
+				variables.fw.redirect(action="home.redirect",path="./");
+			}
+		}
+	}
 
-<cffunction name="edit" output="false">
-<cfargument name="rc">
-	<cfif not isdefined('arguments.rc.userBean')>
-		<cfset arguments.rc.userBean=variables.userManager.read(session.mura.userID)>
-	</cfif>
-
-	<!--- This is here for backward plugin compatibility--->
-	<cfset appendRequestScope(arguments.rc)>
-
-</cffunction>
-
-<cffunction name="update" output="false">
-	<cfargument name="rc">
-
-	<cfif rc.$.validateCSRFTokens()>
-		<cfset request.newImageIDList="">
-
-		<cfset arguments.rc.userBean=variables.userManager.update(arguments.rc,false)>
-
-		<cfif structIsEmpty(arguments.rc.userBean.getErrors())>
-			<cfset structDelete(session.mura,"editBean")>
-
-			<!---
-			<cfif len(request.newImageIDList)>
-				<cfset arguments.rc.fileid=request.newImageIDList>
-				<cfset arguments.rc.userid=arguments.rc.userBean.getUserID()>
-				<cfset arguments.rc.siteID=arguments.rc.userBean.getSiteID()>
-				<cfset variables.fw.redirect(action="cArch.imagedetails",append="userid,siteid,fileid,compactDisplay",path="./")>
-			</cfif>
-			--->
-
-			<cfset variables.fw.redirect(action="home.redirect",path="./")>
-		</cfif>
-	</cfif>
-</cffunction>
-
-</cfcomponent>
+}

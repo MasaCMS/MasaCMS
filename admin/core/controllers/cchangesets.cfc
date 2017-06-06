@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,138 +43,123 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="controller" output="false">
+*/
+component extends="controller" output="false" {
 
-<cffunction name="setChangesetManager" output="false">
-	<cfargument name="changesetManager">
-	<cfset variables.changesetManager=arguments.changesetManager>
-</cffunction>
+	public function setChangesetManager(changesetManager) output=false {
+		variables.changesetManager=arguments.changesetManager;
+	}
 
-<cffunction name="before" output="false">
-	<cfargument name="rc">
+	public function before(rc) output=false {
+		if ( (not listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') && !listFind(session.mura.memberships,'S2')) && !( variables.permUtility.getModulePerm('00000000000000000000000000000000014',arguments.rc.siteid) && variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid)) ) {
+			secure(arguments.rc);
+		}
+		param default=1 name="arguments.rc.startrow";
+		param default="" name="arguments.rc.startdate";
+		param default="" name="arguments.rc.stopdate";
+		param default=1 name="arguments.rc.page";
+		param default="" name="arguments.rc.keywords";
+		param default="" name="arguments.rc.categoryid";
+		param default="" name="arguments.rc.tags";
+	}
 
-	<cfif (not listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')) and not ( variables.permUtility.getModulePerm('00000000000000000000000000000000014',arguments.rc.siteid) and variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid))>
-		<cfset secure(arguments.rc)>
-	</cfif>
-	<cfparam name="arguments.rc.startrow" default="1"/>
-	<cfparam name="arguments.rc.startdate" default=""/>
-	<cfparam name="arguments.rc.stopdate" default=""/>
-	<cfparam name="arguments.rc.page" default="1"/>
-	<cfparam name="arguments.rc.keywords" default=""/>
-	<cfparam name="arguments.rc.categoryid" default=""/>
-	<cfparam name="arguments.rc.tags" default=""/>
-</cffunction>
+	public function list(rc) output=false {
+		var feed=variables.changesetManager.getFeed(argumentCollection=arguments.rc);
+		feed.setSiteID(arguments.rc.siteid);
+		if ( isDate(rc.startdate) ) {
+			feed.addParam(column='publishdate',datatype='date',criteria=arguments.rc.startdate,condition=">=");
+		}
+		if ( isDate(rc.stopdate) ) {
+			arguments.rc.stopdate = DateAdd("d", 1, arguments.rc.stopdate);
+			feed.addParam(column='publishdate',datatype='date',criteria=arguments.rc.stopdate,condition="<=");
+			if ( !isDate(rc.startdate) ) {
+				feed.addParam(column='publishdate',datatype='date',criteria=dateAdd('yyyy',100,now()),condition=">=");
+			}
+		}
+		if ( len(rc.keywords) ) {
+			feed.addParam(column='name',criteria=arguments.rc.keywords,condition="contains");
+		}
+		if ( len(rc.tags) ) {
+			cfquery( name="local.rstags" ) { //Note: queryExecute() is the preferred syntax but this syntax is easier to convert generically
 
-<cffunction name="list" output="false">
-<cfargument name="rc">
-<cfset var feed=variables.changesetManager.getFeed(argumentCollection=arguments.rc)>
+				writeOutput("select changesetid from tchangesettagassign where tag in (");
+				cfqueryparam( list=true, cfsqltype="cf_sql_varchar", value=arguments.rc.tags );
 
-<cfset feed.setSiteID(arguments.rc.siteid)>
+				writeOutput(")");
+			}
+			if ( local.rstags.recordcount ) {
+				feed.addParam(column='changesetid',criteria=valuelist(local.rstags.changesetid),condition="in");
+			} else {
+				feed.addParam(column='changesetid',criteria='none');
+			}
+		}
+		if ( len(rc.categoryid) ) {
+			cfquery( name="local.rscats" ) { //Note: queryExecute() is the preferred syntax but this syntax is easier to convert generically
 
-<cfif isDate(rc.startdate)>
-	<cfset feed.addParam(column='publishdate',datatype='date',criteria=arguments.rc.startdate,condition=">=")>
-</cfif>
+				writeOutput("select changesetid from tchangesetcategoryassign where categoryid in (");
+				cfqueryparam( list=true, cfsqltype="cf_sql_varchar", value=arguments.rc.categoryid );
 
-<cfif isDate(rc.stopdate)>
-	<cfset arguments.rc.stopdate = DateAdd("d", 1, arguments.rc.stopdate)>
-	<cfset feed.addParam(column='publishdate',datatype='date',criteria=arguments.rc.stopdate,condition="<=")>
-	<cfif not isDate(rc.startdate)>
-		<cfset feed.addParam(column='publishdate',datatype='date',criteria=dateAdd('yyyy',100,now()),condition=">=")>
-	</cfif>
-</cfif>
+				writeOutput(")");
+			}
+			if ( local.rscats.recordcount ) {
+				feed.addParam(column='changesetid',criteria=valuelist(local.rscats.changesetid),condition="in");
+			} else {
+				feed.addParam(column='changesetid',criteria='none');
+			}
+		}
+		arguments.rc.changesets=feed.getIterator();
+		arguments.rc.changesets.setNextN(20);
+		arguments.rc.changesets.setPage(arguments.rc.page);
+	}
 
-<cfif len(rc.keywords)>
-	<cfset feed.addParam(column='name',criteria=arguments.rc.keywords,condition="contains")>
-</cfif>
+	public function publish(rc) output=false {
+		variables.changesetManager.publish(rc.changesetID);
+		variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="./");
+	}
 
-<cfif len(rc.tags)>
-	<cfquery name="local.rstags">
-		select changesetid from tchangesettagassign where tag in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.rc.tags#">)
-	</cfquery>
+	public function rollback(rc) output=false {
+		if ( rc.$.validateCSRFTokens(context=arguments.rc.changesetid) ) {
+			variables.changesetManager.rollback(rc.changesetID);
+		}
+		variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="./");
+	}
 
-	<cfif local.rstags.recordcount>
-		<cfset feed.addParam(column='changesetid',criteria=valuelist(local.rstags.changesetid),condition="in")>
-	<cfelse>
-		<cfset feed.addParam(column='changesetid',criteria='none')>
-	</cfif>
-</cfif>
+	public function assignments(rc) output=false {
+		arguments.rc.siteAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000000');
+		arguments.rc.componentAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000003');
+		arguments.rc.formAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000004');
+		if ( application.configBean.getValue(property='variations',defaultValue=false) ) {
+			arguments.rc.variationAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000099');
+		}
+		arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID);
+	}
 
-<cfif len(rc.categoryid)>
-	<cfquery name="local.rscats">
-		select changesetid from tchangesetcategoryassign where categoryid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.rc.categoryid#">)
-	</cfquery>
+	public function removeitem(rc) output=false {
+		if ( rc.$.validateCSRFTokens(context=arguments.rc.changesetid) ) {
+			variables.changesetManager.removeItem(rc.changesetID,rc.contenthistID);
+		}
+		variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteID,keywords",path="./");
+	}
 
-	<cfif local.rscats.recordcount>
-		<cfset feed.addParam(column='changesetid',criteria=valuelist(local.rscats.changesetid),condition="in")>
-	<cfelse>
-		<cfset feed.addParam(column='changesetid',criteria='none')>
-	</cfif>
-</cfif>
+	public function edit(rc) output=false {
+		arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID);
+	}
 
+	public function save(rc) output=false {
+		if ( rc.$.validateCSRFTokens(context=arguments.rc.changesetid) ) {
+			arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).set(arguments.rc).save();
+			arguments.rc.changesetID=arguments.rc.changeset.getChangesetID();
+		}
+		if ( isDefined('arguments.rc.changeset') && !arguments.rc.changeset.hasErrors() ) {
+			variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./");
+		}
+	}
 
+	public function delete(rc) output=false {
+		if ( rc.$.validateCSRFTokens(context=arguments.rc.changesetid) ) {
+			arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).delete();
+		}
+		variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./");
+	}
 
-<cfset arguments.rc.changesets=feed.getIterator()>
-
-<cfset arguments.rc.changesets.setNextN(20)>
-<cfset arguments.rc.changesets.setPage(arguments.rc.page)>
-</cffunction>
-
-<cffunction name="publish" output="false">
-<cfargument name="rc">
-<cfset variables.changesetManager.publish(rc.changesetID)>
-<cfset variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="./")>
-</cffunction>
-
-<cffunction name="rollback" output="false">
-<cfargument name="rc">
-<cfif rc.$.validateCSRFTokens(context=arguments.rc.changesetid)>
-	<cfset variables.changesetManager.rollback(rc.changesetID)>
-</cfif>
-<cfset variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="./")>
-</cffunction>
-
-<cffunction name="assignments" output="false">
-<cfargument name="rc">
-<cfset arguments.rc.siteAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000000')>
-<cfset arguments.rc.componentAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000003')>
-<cfset arguments.rc.formAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000004')>
-<cfif application.configBean.getValue(property='variations',defaultValue=false)>
-	<cfset arguments.rc.variationAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000099')>
-</cfif>
-<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID)>
-</cffunction>
-
-<cffunction name="removeitem" output="false">
-<cfargument name="rc">
-<cfif rc.$.validateCSRFTokens(context=arguments.rc.changesetid)>
-	<cfset variables.changesetManager.removeItem(rc.changesetID,rc.contenthistID)>
-</cfif>
-<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteID,keywords",path="./")>
-</cffunction>
-
-<cffunction name="edit" output="false">
-<cfargument name="rc">
-<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID)>
-</cffunction>
-
-<cffunction name="save" output="false">
-<cfargument name="rc">
-<cfif rc.$.validateCSRFTokens(context=arguments.rc.changesetid)>
-	<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).set(arguments.rc).save()>
-	<cfset arguments.rc.changesetID=arguments.rc.changeset.getChangesetID()>
-</cfif>
-
-<cfif isDefined('arguments.rc.changeset') and not arguments.rc.changeset.hasErrors()>
-	<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
-</cfif>
-</cffunction>
-
-<cffunction name="delete" output="false">
-<cfargument name="rc">
-<cfif rc.$.validateCSRFTokens(context=arguments.rc.changesetid)>
-	<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).delete()>
-</cfif>
-<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
-</cffunction>
-</cfcomponent>
+}

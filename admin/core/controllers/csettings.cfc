@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,210 +39,187 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 for your modified version; it is your choice whether to do so, or to make such modified version available under
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="controller" output="false">
+*/
+component extends="controller" output="false" {
 
-<cffunction name="setPluginManager" output="false">
-	<cfargument name="pluginManager">
-	<cfset variables.pluginManager=arguments.pluginManager>
-</cffunction>
+	public function setPluginManager(pluginManager) output=false {
+		variables.pluginManager=arguments.pluginManager;
+	}
 
-<cffunction name="setClusterManager" output="false">
-	<cfargument name="clusterManager">
-	<cfset variables.clusterManager=arguments.clusterManager>
-</cffunction>
+	public function setClusterManager(clusterManager) output=false {
+		variables.clusterManager=arguments.clusterManager;
+	}
 
-<cffunction name="before" output="false">
-	<cfargument name="rc">
-
-	<cfif not (
+	public function before(rc) output=false {
+		if ( !(
 				(
 					listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0')
-					and not listFindNoCase('list,editPlugin,deployPlugin,updatePlugin,updatePluginVersion,siteCopy,sitecopyselect,sitecopyresult',listLast(rc.muraAction,"."))
+					and !listFindNoCase('list,editPlugin,deployPlugin,updatePlugin,updatePluginVersion,siteCopy,sitecopyselect,sitecopyresult',listLast(rc.muraAction,"."))
 				)
 				or listFind(session.mura.memberships,'S2')
-				)>
-		<cfset secure(arguments.rc)>
-	</cfif>
-</cffunction>
+				) ) {
+			secure(arguments.rc);
+		}
+	}
 
-<cffunction name="list" output="false">
-	<cfargument name="rc">
-	<cfparam name="arguments.rc.orderID" default="" />
-	<cfparam name="arguments.rc.orderno" default="" />
-	<cfparam name="arguments.rc.deploy" default="" />
-	<cfparam name="arguments.rc.action" default="" />
-	<cfparam name="arguments.rc.siteid" default="" />
-	<cfparam name="arguments.rc.siteSortBy" default="site" />
+	public function list(rc) output=false {
+		param default="" name="arguments.rc.orderID";
+		param default="" name="arguments.rc.orderno";
+		param default="" name="arguments.rc.deploy";
+		param default="" name="arguments.rc.action";
+		param default="" name="arguments.rc.siteid";
+		param default="site" name="arguments.rc.siteSortBy";
+		if ( isdefined("arguments.rc.ckUpdate") ) {
+			arguments.rc.sitesUpdated = updateSiteFilesToLatestVersion(arguments.rc);
+		}
+		if ( isdefined("arguments.rc.refresh") ) {
+			variables.fw.redirect(action="cSettings.list",path="./");
+		}
+		if ( rc.$.validateCSRFTokens(context='updatesites') ) {
+			variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID);
+			variables.settingsManager.saveDeploy(arguments.rc.deploy,arguments.rc.orderID);
+		}
+		arguments.rc.rsSites=variables.settingsManager.getList(sortBy=arguments.rc.siteSortBy);
+		arguments.rc.rsPlugins=variables.pluginManager.getAllPlugins();
+	}
 
-	<cfif isdefined("arguments.rc.ckUpdate")>
-		<cfset arguments.rc.sitesUpdated = updateSiteFilesToLatestVersion(arguments.rc) />
-	</cfif>
+	public function editSite(rc) output=false {
+		arguments.rc.siteBean=variables.settingsManager.read(arguments.rc.siteid);
+	}
 
-	<cfif isdefined("arguments.rc.refresh")>
-		<cfset variables.fw.redirect(action="cSettings.list",path="./")>
-	</cfif>
-
-	<cfif rc.$.validateCSRFTokens(context='updatesites')>
-		<cfset variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID)  />
-		<cfset variables.settingsManager.saveDeploy(arguments.rc.deploy,arguments.rc.orderID) />
-	</cfif>
-
-	<cfset arguments.rc.rsSites=variables.settingsManager.getList(sortBy=arguments.rc.siteSortBy) />
-	<cfset arguments.rc.rsPlugins=variables.pluginManager.getAllPlugins() />
-</cffunction>
-
-<cffunction name="editSite" output="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.siteBean=variables.settingsManager.read(arguments.rc.siteid) />
-</cffunction>
-
-<cffunction name="deletePlugin" output="false">
-	<cfargument name="rc">
-	<cfif arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)>
-		<cfset variables.pluginManager.deletePlugin(arguments.rc.moduleID) />
-	</cfif>
-	<cflocation url="./?muraAction=cSettings.list&refresh=1##tabPlugins" addtoken="false">
-</cffunction>
-
-<cffunction name="editPlugin" output="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.pluginXML=variables.pluginManager.getPluginXML(arguments.rc.moduleID) />
-	<cfset arguments.rc.rsSites=variables.settingsManager.getList() />
-</cffunction>
-
-<cffunction name="updatePluginVersion" output="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.pluginConfig=variables.pluginManager.getConfig(arguments.rc.moduleID) />
-</cffunction>
-
-<cffunction name="deployPlugin" output="false">
-	<cfargument name="rc">
-	<cfset var tempID="">
-	<cfparam name="arguments.rc.moduleID" default="" />
-
-	<cfif len(arguments.rc.moduleid) and arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)
-		or arguments.rc.moduleid eq '' and arguments.rc.$.validateCSRFTokens(context='newplugin')>
-		<cfset tempID=variables.pluginManager.deploy(arguments.rc.moduleID) />
-	</cfif>
-
-	<cfif isDefined('tempid') and len(tempID)>
-		<cfset arguments.rc.moduleID=tempID>
-		<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./")>
-	<cfelse>
-		<cfif len(arguments.rc.moduleID)>
-			<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./")>
-		<cfelse>
-			<cflocation url="./?muraAction=cSettings.list&refresh=1##tabPlugins" addtoken="false">
-		</cfif>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="updatePlugin" output="false">
-	<cfargument name="rc">
-	<cfif arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)>
-		<cfset arguments.rc.moduleID=variables.pluginManager.updateSettings(arguments.rc) />
-	</cfif>
-	<cflocation url="./?muraAction=cSettings.list&refresh=1##tabPlugins" addtoken="false">
-</cffunction>
-
-<cffunction name="updateSite" output="false">
-	<cfargument name="rc">
-	<cfset var bean=variables.settingsManager.read(siteid=arguments.rc.siteid)>
-
-	<cfif bean.getIsNew() and arguments.rc.$.validateCSRFTokens()
-		or not bean.getIsNew() and arguments.rc.$.validateCSRFTokens(context=arguments.rc.siteID)>
-		<cfset request.newImageIDList="">
-
-		<cfif arguments.rc.action eq 'Update'>
-				<cfset bean=variables.settingsManager.update(arguments.rc)  />
-				<cfset variables.clusterManager.reload() />
-				<cfif not structIsEmpty(bean.getErrors())>
-					<cfset getCurrentUser().setValue("errors",bean.getErrors())>
-				<cfelse>
-					<cfif len(request.newImageIDList)>
-						<cfset arguments.rc.fileid=request.newImageIDList>
-						<cfset variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay",path="./")>
-					</cfif>
-				</cfif>
-		</cfif>
-		<cfif listFind(session.mura.memberships,'S2') and arguments.rc.action eq 'Add'>
-				<cfset bean=variables.settingsManager.create(arguments.rc)  />
-				<cfset variables.settingsManager.setSites()  />
-				<cfset variables.clusterManager.reload() />
-				<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#rc.siteid#/assets/">
-				<cfset session.siteid=arguments.rc.siteid />
-				<cfif not structIsEmpty(bean.getErrors())>
-					<cfset getCurrentUser().setValue("errors",bean.getErrors())>
-				<cfelse>
-					<cfif len(request.newImageIDList)>
-						<cfset arguments.rc.fileid=request.newImageIDList>
-						<cfset variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay",path="./")>
-					</cfif>
-				</cfif>
-		</cfif>
-		<cfif listFind(session.mura.memberships,'S2') and arguments.rc.action eq 'Delete'>
-
-				<cfset variables.settingsManager.delete(arguments.rc.siteid)  />
-				<cfset session.siteid="default" />
-				<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">
-				<cfset arguments.rc.siteid="default"/>
-		</cfif>
-	</cfif>
-	<cfif listFind(session.mura.memberships,'S2')>
-		<cfset variables.fw.redirect(action="cSettings.list",path="./")>
-	<cfelse>
-		<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="./")>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="sitecopyselect" output="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.rsSites=variables.settingsManager.getList()>
-</cffunction>
-
-<cffunction name="exportHTML" output="false">
-	<cfargument name="rc">
-	<cfset variables.settingsManager.getSite(arguments.rc.siteID).exportHTML()>
-</cffunction>
-
-<cffunction name="sitecopy" output="false">
-	<cfargument name="rc">
-	<cfif arguments.rc.$.validateCSRFTokens(context='sitecopy') and arguments.rc.fromSiteID neq arguments.rc.toSiteID>
-		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
-	</cfif>
-	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="./")>
-
-</cffunction>
-
-<cffunction name="createBundle" output="false">
-	<cfargument name="rc">
-	<cfparam name="arguments.rc.moduleID" default="">
-	<cfparam name="arguments.rc.bundleImportKeyMode" default="copy">
-	<cfparam name="arguments.rc.BundleName" default="">
-	<cfparam name="arguments.rc.includeTrash" default="false">
-	<cfparam name="arguments.rc.includeVersionHistory" default="false">
-	<cfparam name="arguments.rc.includeMetaData" default="false">
-	<cfparam name="arguments.rc.includeMailingListMembers" default="false">
-	<cfparam name="arguments.rc.includeUsers" default="false">
-	<cfparam name="arguments.rc.includeFormData" default="false">
-	<cfparam name="arguments.rc.saveFile" default="false">
-	<cfparam name="arguments.rc.saveFileDir" default="">
-	<cfparam name="arguments.rc.bundleMode" default="">
+	public function deletePlugin(rc) output=false {
+		if ( arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid) ) {
+			variables.pluginManager.deletePlugin(arguments.rc.moduleID);
+		}
 
 
-	<cfif len(arguments.rc.saveFileDir)>
-		<cfif directoryExists(arguments.rc.saveFileDir)>
-			<cfset arguments.rc.saveFile=true>
-		<cfelse>
-			<cfset arguments.rc.saveFileDir="">
-			<cfset arguments.rc.saveFile=false>
-		</cfif>
-	</cfif>
+		location(url="./?muraAction=cSettings.list&refresh=1##tabPlugins", addtoken="false");
 
-	<cfset arguments.rc.bundleFilePath=application.serviceFactory.getBean("Bundle").Bundle(
+
+	}
+
+	public function editPlugin(rc) output=false {
+		arguments.rc.pluginXML=variables.pluginManager.getPluginXML(arguments.rc.moduleID);
+		arguments.rc.rsSites=variables.settingsManager.getList();
+	}
+
+	public function updatePluginVersion(rc) output=false {
+		arguments.rc.pluginConfig=variables.pluginManager.getConfig(arguments.rc.moduleID);
+	}
+
+	public function deployPlugin(rc) output=false {
+		var tempID="";
+		param default="" name="arguments.rc.moduleID";
+		if ( len(arguments.rc.moduleid) && arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)
+		or arguments.rc.moduleid == '' && arguments.rc.$.validateCSRFTokens(context='newplugin') ) {
+			tempID=variables.pluginManager.deploy(arguments.rc.moduleID);
+		}
+		if ( isDefined('tempid') && len(tempID) ) {
+			arguments.rc.moduleID=tempID;
+			variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./");
+		} else {
+			if ( len(arguments.rc.moduleID) ) {
+				variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./");
+			} else {
+
+			location(url="./?muraAction=cSettings.list&refresh=1##tabPlugins",addtoken="false");
+
+			}
+		}
+	}
+
+	public function updatePlugin(rc) output=false {
+		if ( arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid) ) {
+			arguments.rc.moduleID=variables.pluginManager.updateSettings(arguments.rc);
+		}
+
+		location(url="./?muraAction=cSettings.list&refresh=1##tabPlugins",addtoken="false");
+
+	}
+
+	public function updateSite(rc) output=false {
+		var bean=variables.settingsManager.read(siteid=arguments.rc.siteid);
+		if ( bean.getIsNew() && arguments.rc.$.validateCSRFTokens()
+		or !bean.getIsNew() && arguments.rc.$.validateCSRFTokens(context=arguments.rc.siteID) ) {
+			request.newImageIDList="";
+			if ( arguments.rc.action == 'Update' ) {
+				bean=variables.settingsManager.update(arguments.rc);
+				variables.clusterManager.reload();
+				if ( !structIsEmpty(bean.getErrors()) ) {
+					getCurrentUser().setValue("errors",bean.getErrors());
+				} else {
+					if ( len(request.newImageIDList) ) {
+						arguments.rc.fileid=request.newImageIDList;
+						variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay",path="./");
+					}
+				}
+			}
+			if ( listFind(session.mura.memberships,'S2') && arguments.rc.action == 'Add' ) {
+				bean=variables.settingsManager.create(arguments.rc);
+				variables.settingsManager.setSites();
+				variables.clusterManager.reload();
+				session.userFilesPath = "#application.configBean.getAssetPath()#/#rc.siteid#/assets/";
+				session.siteid=arguments.rc.siteid;
+				if ( !structIsEmpty(bean.getErrors()) ) {
+					getCurrentUser().setValue("errors",bean.getErrors());
+				} else {
+					if ( len(request.newImageIDList) ) {
+						arguments.rc.fileid=request.newImageIDList;
+						variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay",path="./");
+					}
+				}
+			}
+			if ( listFind(session.mura.memberships,'S2') && arguments.rc.action == 'Delete' ) {
+				variables.settingsManager.delete(arguments.rc.siteid);
+				session.siteid="default";
+				session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/";
+				arguments.rc.siteid="default";
+			}
+		}
+		if ( listFind(session.mura.memberships,'S2') ) {
+			variables.fw.redirect(action="cSettings.list",path="./");
+		} else {
+			variables.fw.redirect(action="cDashboard.main",append="siteid",path="./");
+		}
+	}
+
+	public function sitecopyselect(rc) output=false {
+		arguments.rc.rsSites=variables.settingsManager.getList();
+	}
+
+	public function exportHTML(rc) output=false {
+		variables.settingsManager.getSite(arguments.rc.siteID).exportHTML();
+	}
+
+	public function sitecopy(rc) output=false {
+		if ( arguments.rc.$.validateCSRFTokens(context='sitecopy') && arguments.rc.fromSiteID != arguments.rc.toSiteID ) {
+			getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID);
+		}
+		variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="./");
+	}
+
+	public function createBundle(rc) output=false {
+		param default="" name="arguments.rc.moduleID";
+		param default="copy" name="arguments.rc.bundleImportKeyMode";
+		param default="" name="arguments.rc.BundleName";
+		param default=false name="arguments.rc.includeTrash";
+		param default=false name="arguments.rc.includeVersionHistory";
+		param default=false name="arguments.rc.includeMetaData";
+		param default=false name="arguments.rc.includeMailingListMembers";
+		param default=false name="arguments.rc.includeUsers";
+		param default=false name="arguments.rc.includeFormData";
+		param default=false name="arguments.rc.saveFile";
+		param default="" name="arguments.rc.saveFileDir";
+		param default="" name="arguments.rc.bundleMode";
+		if ( len(arguments.rc.saveFileDir) ) {
+			if ( directoryExists(arguments.rc.saveFileDir) ) {
+				arguments.rc.saveFile=true;
+			} else {
+				arguments.rc.saveFileDir="";
+				arguments.rc.saveFile=false;
+			}
+		}
+		arguments.rc.bundleFilePath=application.serviceFactory.getBean("Bundle").Bundle(
 			siteID=arguments.rc.siteID,
 			moduleID=arguments.rc.moduleID,
 			BundleName=arguments.rc.BundleName,
@@ -255,64 +232,57 @@ to your own modified versions of Mura CMS.
 			saveFile=arguments.rc.saveFile,
 			saveFileDir=arguments.rc.saveFileDir,
 			bundleMode=arguments.rc.bundleMode
-			) />
-</cffunction>
+			);
+	}
 
-<cffunction name="selectBundleOptions" output="false">
-	<cfargument name="rc">
-	<cfset arguments.rc.rsplugins=application.serviceFactory.getBean("pluginManager").getSitePlugins(arguments.rc.siteID) />
-</cffunction>
+	public function selectBundleOptions(rc) output=false {
+		arguments.rc.rsplugins=application.serviceFactory.getBean("pluginManager").getSitePlugins(arguments.rc.siteID);
+	}
 
-	<cffunction name="updateSiteFilesToLatestVersion" access="private" output="false" returntype="string">
-		<cfargument name="rc" required="true" type="struct" />
-		<cfscript>
-			var local = StructNew();
+	private string function updateSiteFilesToLatestVersion(required struct rc) output=false {
+
+		var local = StructNew();
 			local.str = '';
 			if ( not StructKeyExists(rc, 'ckUpdate') ) {
 				return local.str;
 			};
-		</cfscript>
+		if ( arguments.rc.$.validateCSRFTokens(context='updatesites') ) {
+			savecontent variable="local.str" {
+				for(local.i in listToArray(rc.ckUpdate)){
+					try {
 
-		<cfif arguments.rc.$.validateCSRFTokens(context='updatesites')>
-			<cfsavecontent variable="local.str">
-				<cfoutput>
-					<cfloop list="#rc.ckUpdate#" index="local.i" delimiters=",">
-						<cftry>
-							<cfscript>
-								local.updated = application.autoUpdater.update(local.i);
-								local.files = local.updated.files;
-							</cfscript>
-							<div class="alert alert-success">
-								<dl>
-									<dt>#local.i#</dt>
-									<dd>Updated to version #application.autoUpdater.getCurrentCompleteVersion(local.i)#</dd>
-									<dd>Updated Files (#ArrayLen(local.files)#)</dd>
-									<!---<cfif ArrayLen(local.files)>
-										<dd>
-											<cfloop from="1" to="#ArrayLen(local.files)#" index="local.f">
-												#local.files[local.f]#<br />
-											</cfloop>
-										</dd>
-									</cfif>--->
-								</dl>
-							</div>
-							<cfcatch>
-								<div class="alert alert-error">
-									<h3>An error occurred while trying to update #local.i#</h3>
-									<cfif len(trim(cfcatch.message))>
-										<p><strong>Error Message</strong><br />#cfcatch.message#</p>
-									</cfif>
-									<cfif len(trim(cfcatch.detail))>
-										<p><strong>Error Detail</strong><br />#cfcatch.detail#</p>
-									</cfif>
-								</div>
-							</cfcatch>
-						</cftry>
-					</cfloop>
-				</cfoutput>
-			</cfsavecontent>
-		</cfif>
-		<cfreturn local.str />
-	</cffunction>
+						local.updated = application.autoUpdater.update(local.i);
+													local.files = local.updated.files;
 
-</cfcomponent>
+						writeOutput("<div class=""alert alert-success"">
+													<dl>
+														<dt>#local.i#</dt>
+														<dd>Updated to version #application.autoUpdater.getCurrentCompleteVersion(local.i)#</dd>
+														<dd>Updated Files (#ArrayLen(local.files)#)</dd>");
+
+						writeOutput("</dl>
+												</div>");
+					} catch (any cfcatch) {
+
+						writeOutput("<div class=""alert alert-error"">
+														<h3>An error occurred while trying to update #local.i#</h3>");
+						if ( len(trim(cfcatch.message)) ) {
+
+							writeOutput("<p><strong>Error Message</strong><br />#cfcatch.message#</p>");
+						}
+						if ( len(trim(cfcatch.detail)) ) {
+
+							writeOutput("<p><strong>Error Detail</strong><br />#cfcatch.detail#</p>");
+						}
+
+						writeOutput("</div>");
+
+
+					}
+				}
+			}
+		}
+		return local.str;
+	}
+
+}

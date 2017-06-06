@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,104 +36,88 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="controller" output="false">
+*/
+component extends="controller" output="false" {
 
-<cffunction name="setDashboardManager" output="false">
-	<cfargument name="dashboardManager">
-	<cfset variables.dashboardManager=arguments.dashboardManager>
-</cffunction>
+	public function setDashboardManager(dashboardManager) output=false {
+		variables.dashboardManager=arguments.dashboardManager;
+	}
 
-<cffunction name="setUserManager" output="false">
-	<cfargument name="userManager">
-	<cfset variables.userManager=arguments.userManager>
-</cffunction>
+	public function setUserManager(userManager) output=false {
+		variables.userManager=arguments.userManager;
+	}
 
-<cffunction name="before" output="false">
-	<cfargument name="rc">
+	public function before(rc) output=false {
+		param default=1 name="arguments.rc.startrow";
+		param default="" name="arguments.rc.keywords";
+		param default=10 name="arguments.rc.limit";
+		param default=1 name="arguments.rc.threshold";
+		param default="" name="arguments.rc.siteID";
+		param default=now() name="session.startDate";
+		param default=now() name="session.stopDate";
+		param default=false name="arguments.rc.membersOnly";
+		param default="All" name="arguments.rc.visitorStatus";
+		param default="" name="arguments.rc.contentID";
+		param default="" name="arguments.rc.direction";
+		param default="" name="arguments.rc.orderby";
+		param default=1 name="arguments.rc.page";
+		param default=session.dashboardSpan name="arguments.rc.span";
+		param default="d" name="arguments.rc.spanType";
+		param default=dateAdd('#rc.spanType#',-rc.span,now()) name="arguments.rc.startDate";
+		param default=now() name="arguments.rc.stopDate" );
+		param default=false name="arguments.rc.newSearch";
+		param default=false name="arguments.rc.startSearch";
+		param default="" name="arguments.rc.returnurl";
+		param default="" name="arguments.rc.layout";
+		param default="" name="arguments.rc.ajax";
+		if ( (not listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') && !listFind(session.mura.memberships,'S2')) && !application.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid) ) {
+			secure(arguments.rc);
+		}
+		if ( !LSisDate(arguments.rc.startDate) && !LSisDate(session.startDate) ) {
+			session.startdate=now();
+		}
+		if ( !LSisDate(arguments.rc.stopDate) && !LSisDate(session.stopDate) ) {
+			session.stopdate=now();
+		}
+		if ( arguments.rc.startSearch && LSisDate(arguments.rc.startDate) ) {
+			session.startDate=rc.startDate;
+		}
+		if ( arguments.rc.startSearch && LSisDate(arguments.rc.stopDate) ) {
+			session.stopDate=rc.stopDate;
+		}
+		if ( arguments.rc.newSearch ) {
+			session.stopDate=now();
+			session.startDate=now();
+		}
+	}
 
-	<cfparam name="arguments.rc.startrow" default="1" />
-	<cfparam name="arguments.rc.keywords" default=""/>
-	<cfparam name="arguments.rc.limit" default="10"/>
-	<cfparam name="arguments.rc.threshold" default="1"/>
-	<cfparam name="arguments.rc.siteID" default=""/>
-	<cfparam name="session.startDate" default="#now()#"/>
-	<cfparam name="session.stopDate" default="#now()#"/>
-	<cfparam name="arguments.rc.membersOnly" default="false"/>
-	<cfparam name="arguments.rc.visitorStatus" default="All"/>
-	<cfparam name="arguments.rc.contentID" default=""/>
-	<cfparam name="arguments.rc.direction" default=""/>
-	<cfparam name="arguments.rc.orderby" default=""/>
-	<cfparam name="arguments.rc.page" default="1"/>
-	<cfparam name="arguments.rc.span" default="#session.dashboardSpan#"/>
-	<cfparam name="arguments.rc.spanType" default="d"/>
-	<cfparam name="arguments.rc.startDate" default="#dateAdd('#rc.spanType#',-rc.span,now())#"/>
-	<cfparam name="arguments.rc.stopDate" default="#now()#"/>
-	<cfparam name="arguments.rc.newSearch" default="false"/>
-	<cfparam name="arguments.rc.startSearch" default="false"/>
-	<cfparam name="arguments.rc.returnurl" default=""/>
-	<cfparam name="arguments.rc.layout" default=""/>
-	<cfparam name="arguments.rc.ajax" default=""/>
-	
-	<cfif (not listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')) and not application.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid)>
-		<cfset secure(arguments.rc)>
-	</cfif>
-	
-	<cfif not LSisDate(arguments.rc.startDate) and not LSisDate(session.startDate)>
-		<cfset session.startdate=now()>
-	</cfif>
-	
-	<cfif not LSisDate(arguments.rc.stopDate) and not LSisDate(session.stopDate)>
-		<cfset session.stopdate=now()>
-	</cfif>
-	
-	<cfif arguments.rc.startSearch and LSisDate(arguments.rc.startDate)>
-		<cfset session.startDate=rc.startDate>
-	</cfif>
-	
-	<cfif arguments.rc.startSearch and LSisDate(arguments.rc.stopDate)>
-		<cfset session.stopDate=rc.stopDate>
-	</cfif>
-	
-	<cfif arguments.rc.newSearch>
-		<cfset session.stopDate=now()>
-		<cfset session.startDate=now()>
-	</cfif>
+	public function listSessions(rc) output=false {
+		arguments.rc.rslist=variables.dashboardManager.getSiteSessions(arguments.rc.siteid,arguments.rc.contentid,arguments.rc.membersOnly,arguments.rc.visitorStatus,arguments.rc.span,arguments.rc.spanType);
+	}
 
-</cffunction>
+	public function sessionSearch(rc) output=false {
+		arguments.rc.rsGroups=variables.userManager.getPublicGroups(arguments.rc.siteid,1);
+	}
 
-<cffunction name="listSessions" output="false">
-<cfargument name="rc">
-<cfset arguments.rc.rslist=variables.dashboardManager.getSiteSessions(arguments.rc.siteid,arguments.rc.contentid,arguments.rc.membersOnly,arguments.rc.visitorStatus,arguments.rc.span,arguments.rc.spanType)>
-</cffunction>
+	public function viewsession(rc) output=false {
+		arguments.rc.rslist=application.dashboardManager.getSessionHistory(arguments.rc.urlToken,arguments.rc.siteID);
+	}
 
-<cffunction name="sessionSearch" output="false">
-<cfargument name="rc">
-<cfset arguments.rc.rsGroups=variables.userManager.getPublicGroups(arguments.rc.siteid,1)>
-</cffunction>
+	public function dismissAlert(rc) output=false {
+		var alerts=session.mura.alerts['#rc.siteid#'];
+		if ( listFindNoCase('defaultpasswordnotice,cachenotice',rc.alertid) ) {
+			alerts[rc.alertid]=false;
+		} else {
+			structDelete(alerts, rc.alertid);
+		}
+		abort;
+	}
 
-<cffunction name="viewsession" output="false">
-<cfargument name="rc">
-<cfset arguments.rc.rslist=application.dashboardManager.getSessionHistory(arguments.rc.urlToken,arguments.rc.siteID)>
-</cffunction>
-
-<cffunction name="dismissAlert" output="false">
-	<cfargument name="rc">
-	<cfset var alerts=session.mura.alerts['#rc.siteid#']>
-	<cfif listFindNoCase('defaultpasswordnotice,cachenotice',rc.alertid)>
-		<cfset alerts[rc.alertid]=false>
-	<cfelse>
-		<cfset structDelete(alerts, rc.alertid)>
-	</cfif>
-	
-	<cfabort>
-</cffunction>
-
-</cfcomponent>
+}

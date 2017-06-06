@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,67 +43,57 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="controller" output="false">
+*/
+component extends="controller" output="false" {
 
-<cffunction name="init" output="false">
-<cfargument name="fw" />
-	<cfset variables.fw = arguments.fw />
-</cffunction>
+	public function init(fw) output=false {
+		variables.fw = arguments.fw;
+	}
 
-<cffunction name="setContentServer" output="false">
-<cfargument name="ContentServer">
-	<cfset variables.contentServer=arguments.contentServer>
-</cffunction>
+	public function setContentServer(ContentServer) output=false {
+		variables.contentServer=arguments.contentServer;
+	}
 
-<cffunction name="redirect" output="false">
-<cfargument name="rc" />
-	<cfset var siteID="">
-	<cfset var rsList="">
-	<cfset var rsDefault=structNew()>
+	public function redirect(rc) output=false {
+		var siteID="";
+		var rsList="";
+		var qs="";
+		var rsDefault=structNew();
+		arguments.rc.siteid="";
+		if ( !listFind(session.mura.memberships,'S2IsPrivate') ) {
+			variables.fw.redirect(action="clogin.main",path="./");
+		}
+		rsList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2'));
+		siteID=application.contentServer.bindToDomain(isAdmin=true);
+		if ( siteID != "--none--" ) {
+			qs=new Query();
+			qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=siteID);
+			qs.setDbType('query');
+			qs.setAttribute('rsList',rsList)
+			rsDefault=qs.execute(sql="SELECT siteid FROM rsList WHERE siteid = :siteid").getResult();
 
-	<cfset arguments.rc.siteid="">
+		} else {
+			rsDefault.recordcount=0;
+		}
+		if ( rsDefault.recordcount ) {
+			arguments.rc.siteid=rsDefault.siteid;
+		} else if ( rsList.recordcount ) {
+			qs=new Query();
+			qs.setDbType('query');
+			qs.setAttribute('rsList',rsList)
+			rsDefault=qs.execute(sql="SELECT siteid FROM rsList order by orderno").getResult();
+			arguments.rc.siteid=rsDefault.siteid;
+		}
+		if ( len(arguments.rc.siteid) ) {
+			if ( rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0) ) {
+				variables.fw.redirect(action="cDashboard.main",append="siteid",path="./");
+			} else {
+				arguments.rc.moduleid="00000000000000000000000000000000000";
+				arguments.rc.topid="00000000000000000000000000000000001";
+				variables.fw.redirect(action="cArch.list",append="siteid,moduleid,topid",path="./");
+			}
+		}
+		variables.fw.redirect(action="cMessage.noAccess",path="./");
+	}
 
-	<cfif not listFind(session.mura.memberships,'S2IsPrivate')>
-		<cfset variables.fw.redirect(action="clogin.main",path="./")>
-	</cfif>
-
-	<cfset rsList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-
-	<cfset siteID=application.contentServer.bindToDomain(isAdmin=true)>
-
-	<cfif siteID neq "--none--">
-		<cfquery name="rsDefault" dbtype="query">
-			SELECT siteid FROM rsList
-			WHERE siteid = <cfqueryparam cfsqltype="cf_sql_varchar"
-			value="#siteID#" />
-		</cfquery>
-	<cfelse>
-		<cfset rsDefault.recordcount=0>
-	</cfif>
-
-	<cfif rsDefault.recordcount>
-		<cfset arguments.rc.siteid=rsDefault.siteid />
-	<cfelseif rsList.recordcount>
-		<cfquery name="rsDefault" dbtype="query">
-			SELECT siteid FROM rsList
-			order by orderno
-		</cfquery>
-		<cfset arguments.rc.siteid=rsDefault.siteid />
-	</cfif>
-
-	<cfif len(arguments.rc.siteid)>
-		<cfif rc.$.siteConfig().getValue(property='showDashboard',defaultValue=0)>
-			<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="./")>
-		<cfelse>
-			<cfset arguments.rc.moduleid="00000000000000000000000000000000000">
-			<cfset arguments.rc.topid="00000000000000000000000000000000001">
-			<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,topid",path="./")>
-		</cfif>
-	</cfif>
-
-	<cfset variables.fw.redirect(action="cMessage.noAccess",path="./")>
-
-</cffunction>
-
-</cfcomponent>
+}

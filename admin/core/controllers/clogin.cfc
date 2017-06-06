@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,56 +43,50 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="controller" output="false">
+*/
+component extends="controller" output="false" {
 
-<cffunction name="setLoginManager" output="false">
-	<cfargument name="loginManager">
-	<cfset variables.loginManager=arguments.loginManager>
-</cffunction>
+	public function setLoginManager(loginManager) output=false {
+		variables.loginManager=arguments.loginManager;
+	}
 
-<cffunction name="before" output="false">
-	<cfargument name="rc">
-	<cfparam name="arguments.rc.returnurl" default=""/>
-	<cfparam name="arguments.rc.status" default=""/>
-	<cfparam name="arguments.rc.contentid" default=""/>
-	<cfparam name="arguments.rc.contenthistid" default=""/>
-	<cfparam name="arguments.rc.topid" default=""/>
-	<cfparam name="arguments.rc.type" default=""/>
-	<cfparam name="arguments.rc.moduleid" default=""/>
-	<cfparam name="arguments.rc.redirect" default=""/>
-	<cfparam name="arguments.rc.parentid" default=""/>
-	<cfparam name="arguments.rc.siteid" default=""/>
-</cffunction>
+	public function before(rc) output=false {
+		param default="" name="arguments.rc.returnurl";
+		param default="" name="arguments.rc.status";
+		param default="" name="arguments.rc.contentid";
+		param default="" name="arguments.rc.contenthistid";
+		param default="" name="arguments.rc.topid";
+		param default="" name="arguments.rc.type";
+		param default="" name="arguments.rc.moduleid";
+		param default="" name="arguments.rc.redirect";
+		param default="" name="arguments.rc.parentid";
+		param default="" name="arguments.rc.siteid";
+	}
 
-<cffunction name="main" output="false">
-<cfargument name="rc">
-	<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-		<cfset variables.fw.redirect(action="home.redirect",path="./")>
-	</cfif>
+	public function main(rc) output=false {
+		if ( listFind(session.mura.memberships,'S2IsPrivate') ) {
+			variables.fw.redirect(action="home.redirect",path="./");
+		}
+	}
 
-</cffunction>
+	public function login(rc) output=false {
+		if ( rc.$.validateCSRFTokens(context='login') ) {
+			var loginManager=rc.$.getBean('loginManager');
+			if ( isBoolean(rc.$.event('attemptChallenge')) && rc.$.event('attemptChallenge') ) {
+				if ( loginManager.handleChallengeAttempt(rc.$) ) {
+					loginManager.completedChallenge(rc.$);
+				}
+			} else if ( isDefined('form.username') && isDefined('form.password') ) {
+				loginManager.login(arguments.rc);
+			}
+		} else {
+			variables.fw.redirect(action="clogin.main",path="./");
+		}
+	}
 
-<cffunction name="login" output="false">
-	<cfargument name="rc">
-	<cfif rc.$.validateCSRFTokens(context='login')>
-		<cfset var loginManager=rc.$.getBean('loginManager')>
-		<cfif isBoolean(rc.$.event('attemptChallenge')) and rc.$.event('attemptChallenge')>
-			<cfif loginManager.handleChallengeAttempt(rc.$)>
-				<cfset loginManager.completedChallenge(rc.$)>
-			</cfif>
-		<cfelseif isDefined('form.username') and isDefined('form.password')>
-			<cfset loginManager.login(arguments.rc)>
-		</cfif>
-	<cfelse>
-		<cfset variables.fw.redirect(action="clogin.main",path="./")>
-	</cfif>
-</cffunction>
+	public function logout(rc) output=false {
+		variables.loginManager.logout();
+		variables.fw.redirect(action="home.redirect",path="./");
+	}
 
-<cffunction name="logout" output="false">
-	<cfargument name="rc">
-	<cfset variables.loginManager.logout()>
-	<cfset variables.fw.redirect(action="home.redirect",path="./")>
-</cffunction>
-
-</cfcomponent>
+}
