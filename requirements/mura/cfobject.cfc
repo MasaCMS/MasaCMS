@@ -421,12 +421,6 @@ component output="false" hint="This provides base functionality to all Mura core
 
 	}
 
-		param name="sessionData.siteid" default="default";
-
-		return sessionData;
-
-	}
-
 	function mixin(obj){
 		for(var key in obj){
 			this.inject('#key#',arguments.obj[key]);
