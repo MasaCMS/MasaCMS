@@ -69,7 +69,7 @@ component extends="controller" output="false" {
 			qs=new Query();
 			qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=siteID);
 			qs.setDbType('query');
-			qs.setAttribute('rsList',rsList)
+			qs.setAttributes(rsList=rsList);
 			rsDefault=qs.execute(sql="SELECT siteid FROM rsList WHERE siteid = :siteid").getResult();
 
 		} else {
@@ -80,7 +80,7 @@ component extends="controller" output="false" {
 		} else if ( rsList.recordcount ) {
 			qs=new Query();
 			qs.setDbType('query');
-			qs.setAttribute('rsList',rsList)
+			qs.setAttributes(rsList=rsList);
 			rsDefault=qs.execute(sql="SELECT siteid FROM rsList order by orderno").getResult();
 			arguments.rc.siteid=rsDefault.siteid;
 		}

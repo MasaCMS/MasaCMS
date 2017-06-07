@@ -71,7 +71,7 @@ component extends="controller" output="false" {
 		param default=session.dashboardSpan name="arguments.rc.span";
 		param default="d" name="arguments.rc.spanType";
 		param default=dateAdd('#rc.spanType#',-rc.span,now()) name="arguments.rc.startDate";
-		param default=now() name="arguments.rc.stopDate" );
+		param default=now() name="arguments.rc.stopDate";
 		param default=false name="arguments.rc.newSearch";
 		param default=false name="arguments.rc.startSearch";
 		param default="" name="arguments.rc.returnurl";
