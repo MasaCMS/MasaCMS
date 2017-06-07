@@ -381,6 +381,13 @@ component output="false" hint="This provides base functionality to all Mura core
 	function getSession(){
 		if(request.muraSessionManagement && isdefined('session')){
 			var sessionData=session;
+			//Trick to allow statelesss interaciotion outside of rest api
+			try{
+				structKeyExists(session,'mura');
+			} catch(any e){
+				param name="request.muraSessionPlaceholder" default={};
+				var sessionData=request.muraSessionPlaceholder;
+			}
 		} else {
 			param name="request.muraSessionPlaceholder" default={};
 			var sessionData=request.muraSessionPlaceholder;
