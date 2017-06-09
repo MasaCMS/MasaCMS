@@ -291,7 +291,7 @@ component extends="mura.cfobject" output="false" hint="This provides access to a
 
 		if(rsSites.recordcount){
 			for(var i=1;i<=rsSites.recordcount;i++) {
-				settingsManager.getSite(rs.siteid[i]).getApi('json','v1').registerMethod(argumentCollection=arguments);
+				settingsManager.getSite(rsSites.siteid[i]).getApi('json','v1').registerMethod(argumentCollection=arguments);
 			}
 		}
 
