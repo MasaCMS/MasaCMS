@@ -1257,7 +1257,6 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="rsHandlers" required="true" default="" type="any">
 <cfargument name="moduleID" required="true" default="" type="any">
 <cfargument name="index" required="true" default="0" type="any">
-
 	<cfset var siteID="">
 	<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
 		<cfset siteID=arguments.currentEventObject.event('siteID')>
