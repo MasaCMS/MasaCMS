@@ -1257,6 +1257,9 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="rsHandlers" required="true" default="" type="any">
 <cfargument name="moduleID" required="true" default="" type="any">
 <cfargument name="index" required="true" default="0" type="any">
+
+<cfdump var="#variables#" abort="true" label="variables">
+
 	<cfset var siteID="">
 	<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
 		<cfset siteID=arguments.currentEventObject.event('siteID')>
@@ -2680,8 +2683,8 @@ select * from rs order by name
 </cffunction>
 
 <cffunction name="deployDirectory" output="false">
-	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
-	<cfargument name="directory" hint="Complete path to external plugin directory if external, otherwise the name og the directory in /plugins">
+	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined, will default to existing assignment.">
+	<cfargument name="directory" hint="Complete path to external plugin directory if external, otherwise the name of the directory in /plugins">
 	<cfargument name="useDefaultSettings" required="true" default="true">
 	<cfargument name="autoDeploy" required="true" default="true">
 
