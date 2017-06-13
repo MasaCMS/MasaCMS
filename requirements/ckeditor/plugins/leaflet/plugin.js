@@ -25,33 +25,38 @@
       Widget downcast()
    */
 
-  // Dummy global method for quick workaround of asynchronous document.write()
-  // issue of Google APIs with respect to CKEditor.
-  // See the Google APIs URL below for the query string usage of this dummy().
-  // Using this hack, the document.write(...) requirement of Google APIs
-  // will be replaced by the more 'gentle' combination of
-  // document.createElement(...) and document.body.appendChild(...).
-  window.dummy = function(){
-    // Do nothing.
-  }
-
-  // Check if jQuery is already loaded to avoid redundancy and overriding
-  // existing 3rd-party jQuery plugins' bindings to jQuery prototype.
-  if (typeof jQuery == 'undefined') {
-    // This is asynchronous loading.
-    // See also CKEDITOR.scriptLoader.queue.
-    CKEDITOR.scriptLoader.load('//code.jquery.com/jquery-1.11.0.min.js');
-  }
-
-  // Load other needed external library.
-  CKEDITOR.scriptLoader.load('//maps.googleapis.com/maps/api/js?libraries=places&sensor=false&callback=dummy');
-
   // Add a new CKEditor plugin. Note that widgets are subclass of plugins.
   CKEDITOR.plugins.add('leaflet', {
     // Declare dependencies.
     requires: 'widget',
 
+    // Declare the supported languages.
+    lang: 'de,en,eu,ru',
+
     init: function(editor) {
+      var config = editor.config;
+
+      // Dummy global method for quick workaround of asynchronous document.write()
+      // issue of Google APIs with respect to CKEditor.
+      // See the Google APIs URL below for the query string usage of this dummy().
+      // Using this hack, the document.write(...) requirement of Google APIs
+      // will be replaced by the more 'gentle' combination of
+      // document.createElement(...) and document.body.appendChild(...).
+      window.dummy = function() {
+        // Do nothing.
+      }
+
+      // Check if jQuery is already loaded to avoid redundancy and overriding
+      // existing 3rd-party jQuery plugins' bindings to jQuery prototype.
+      if (typeof jQuery == 'undefined') {
+        // This is asynchronous loading.
+        // See also CKEDITOR.scriptLoader.queue.
+        CKEDITOR.scriptLoader.load('//code.jquery.com/jquery-1.12.4.min.js');
+      }
+
+      // Access the current translation file.
+      var pluginTranslation = editor.lang.leaflet;
+
       // Declare a new Dialog for interactive selection of
       // map parameters. It's still not bound to any widget at this moment.
       CKEDITOR.dialog.add('leaflet', this.path + 'dialogs/leaflet.js');
@@ -88,11 +93,6 @@
         // This is usually used as the function to convert the widget to a
         // dummy, simpler, or equivalent textual representation.
         downcast: function(element) {
-          // Note that 'element' here refers to the DIV widget.
-          // Get the previously saved zoom value data attribute.
-          // It will be compared to the current value in the map view.
-          var zoomSaved = element.attributes["data-zoom"];
-
           // Get the id of the div element.
           var divId = element.attributes["id"];
 
@@ -100,38 +100,38 @@
           // We'll use that number for quick fetching of target iframe.
           var iframeId = "leaflet_iframe-" + divId.substring(12);
 
-          // Get the zoom level's snapshot because the current user
-          // might have changed it via mouse events or via the zoom bar.
-          // Basically, get the zoom level of a map embedded
-          // in this specific iframe and widget.
-          var zoomIframe = editor.document.$.getElementById(iframeId).contentDocument.getElementById("map_container").getAttribute("data-zoom");
+          // The current user might have changed the map's zoom level
+          // via mouse events/zoom bar. The marker might have been
+          // dragged also which means its lat/lon had changed.
+          var mapContainer = editor.document.$.getElementById(iframeId).contentDocument.getElementById("map_container");
 
-          // In case there are changes in zoom level.
-          if (zoomIframe != zoomSaved) {
-            // Update the saved zoom value in data attribute.
-            element.attributes["data-zoom"] = zoomIframe;
+          // Get the current map states.
+          var currentZoom = mapContainer.getAttribute("data-zoom");
+          var currentLat = mapContainer.getAttribute("data-lat");
+          var currentLon = mapContainer.getAttribute("data-lon");
 
-            // Fetch the data attributes needed for
-            // updating the full path of the map.
-            var latitude = element.attributes["data-lat"];
-            var longitude = element.attributes["data-lon"];
-            var width = element.attributes["data-width"];
-            var height = element.attributes["data-height"];
-            var zoom = element.attributes["data-zoom"];
-            var popUpText = element.attributes["data-popup-text"];
-            var tile = element.attributes["data-tile"];
-            var minimap = element.attributes["data-minimap"];
-            var responsive = element.attributes["data-responsive"];
+          // Update the saved corresponding values in data attributes.
+          element.attributes["data-zoom"] = currentZoom;
+          element.attributes["data-lat"] = currentLat;
+          element.attributes["data-lon"] = currentLon;
 
-            // Build the updated full path to the map renderer.
-            var mapParserPathFull = mapParserPath + "?lat=" + latitude + "&lon=" + longitude + "&width=" + width + "&height=" + height + "&zoom=" + zoom + "&text=" + popUpText + "&tile=" + tile + "&minimap=" + minimap + "&responsive=" + responsive;
+          // Fetch the other data attributes needed for
+          // updating the full path of the map.
+          var width = element.attributes["data-width"];
+          var height = element.attributes["data-height"];
+          var popUpText = element.attributes["data-popup-text"];
+          var tile = element.attributes["data-tile"];
+          var minimap = element.attributes["data-minimap"];
+          var responsive = element.attributes["data-responsive"];
 
-            // Update also the iframe's 'src' attributes.
-            // Updating 'data-cke-saved-src' is also required for
-            // internal use of CKEditor.
-            element.children[0].attributes["src"] = mapParserPathFull;
-            element.children[0].attributes["data-cke-saved-src"] = mapParserPathFull;
-          }
+          // Build the updated full path to the map renderer.
+          var mapParserPathFull = mapParserPath + "?lat=" + currentLat + "&lon=" + currentLon + "&width=" + width + "&height=" + height + "&zoom=" + currentZoom + "&text=" + popUpText + "&tile=" + tile + "&minimap=" + minimap + "&responsive=" + responsive;
+
+          // Update also the iframe's 'src' attributes.
+          // Updating 'data-cke-saved-src' is also required for
+          // internal use of CKEditor.
+          element.children[0].attributes["src"] = mapParserPathFull;
+          element.children[0].attributes["data-cke-saved-src"] = mapParserPathFull;
 
           // Return the DOM's textual representation.
           return element;
@@ -155,21 +155,21 @@
       // which is also bound to the Dialog command.
       // Apparently, this is required just like their plugin counterpart.
       editor.ui.addButton('leaflet', {
-        label : 'Leaflet Map',
+        label : pluginTranslation.buttonLabel,
         command : 'leaflet',
         icon : this.path + 'icons/leaflet.png',
-        toolbar: "insert,1"
+        toolbar: 'insert,1'
       });
 
       // Append the widget's styles when in the CKEditor edit page,
       // added for better user experience.
       // Assign or append the widget's styles depending on the existing setup.
-      if (typeof editor.config.contentsCss == 'object') {
-          editor.config.contentsCss.push(CKEDITOR.getUrl(this.path + 'css/contents.css'));
+      if (typeof config.contentsCss == 'object') {
+          config.contentsCss.push(CKEDITOR.getUrl(this.path + 'css/contents.css'));
       }
 
       else {
-        editor.config.contentsCss = [editor.config.contentsCss, CKEDITOR.getUrl(this.path + 'css/contents.css')];
+        config.contentsCss = [config.contentsCss, CKEDITOR.getUrl(this.path + 'css/contents.css')];
       }
     },
   });
