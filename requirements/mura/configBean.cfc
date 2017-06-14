@@ -1805,14 +1805,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
 		<cfloop query="rs">
-			<cfif rs.type eq 'dir'>
-				<cfif listFindNoCase('handlers,eventhandlers,event_handlers',rs.name)>
-					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
-				<cfelseif not listFindNoCase('archived,archive',rs.name)>
-					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
-				</cfif>
-			<cfelseif listLast(rs.name,'.') eq 'cfc'>
+			<!--- Registers handlers last so that that all entities defined will be available --->
+			<cfif rs.type eq 'dir' and not listFindNoCase('archived,archive,handlers,eventhandlers,event_handlers',rs.name)>
+				<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+			<cfelseif rs.type neq 'dir' and listLast(rs.name,'.') eq 'cfc'>
 				<cfset registerBean(componentPath="#package#.#listFirst(rs.name,'.')#",siteid=arguments.siteid,moduleid=arguments.moduleid)>
+			</cfif>
+		</cfloop>
+
+		<!--- Registers handlers last so that that all entities defined will be available --->
+		<cfloop query="rs">
+			<cfif rs.type eq 'dir' and listFindNoCase('handlers,eventhandlers,event_handlers',rs.name)>
+				<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
 			</cfif>
 		</cfloop>
 	</cfif>
