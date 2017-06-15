@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
 
     <script src="leaflet-providers/leaflet-providers.js"></script>
 
@@ -63,7 +63,7 @@
     </style>
   </head>
   <body>
-    <div id='map_container' data-zoom="" ></div>
+    <div id='map_container' data-lat="" data-lon="" data-zoom=""></div>
     <script type="text/javascript">
       // Get the DOM node to which we will append the map.
       // In our setup the map container is a DIV element.
@@ -71,12 +71,23 @@
 
       // Parse the query parameters in the URL to obtain the
       // LAT, LON, and ZOOM values.
-      queryString = getParams();
+      var queryString = getParams();
+
+      // Fetch the most important attributes.
+      var latitude = queryString["lat"];
+      var longitude= queryString["lon"];
+      var zoom = queryString["zoom"];
+
+      // Initialize the mapDiv data attributes.
+      mapDiv.setAttribute("data-lat", latitude);
+      mapDiv.setAttribute("data-lon", longitude);
+      mapDiv.setAttribute("data-zoom", zoom);
 
       // Convert the parameters to their numeric equivalent.
-      // Otherwise, it will not work.
-      var latitude = Number(queryString["lat"]);
-      var longitude = Number(queryString["lon"]);
+      // Otherwise, initializing the Leaflet map object will not work.
+      latitude = Number(latitude);
+      longitude = Number(longitude);
+      zoom = Number(zoom);
 
       var responsive = queryString["responsive"];
 
@@ -90,9 +101,6 @@
         var mapHeight = Number(queryString["height"]);
         mapDiv.style.height = String(mapHeight) + "px";
       }
-
-      // Retrieve the zoom level.
-      var zoom = Number(queryString["zoom"]);
 
       // Retrive the popup text that will be used by the marker.
       var popUpText = queryString["text"];
@@ -110,13 +118,38 @@
       // Choose the Map Tile provider e.g. "Esri.WorldTopoMap"
       var mapTileProvider = tile;
 
+      var restrictedTiles = ['MapQuestOpen.Aerial', 'MapQuestOpen.OSM'];
+
+      // Redirect MapQuest tiles to OpenStreetMap tiles.
+      if (restrictedTiles.indexOf(mapTileProvider) != -1) {
+        mapTileProvider = 'OpenStreetMap.Mapnik';
+      }
+
       // Set the base map.
       var mapTile = L.tileLayer.provider(mapTileProvider, { attribution: "Map Tile: " + mapTileProvider });
       mapTile.addTo(map);
 
       // Add a marker in the given location.
-      var p1 = L.marker([latitude, longitude]);
+      // Make it draggble so that user could refine the position visually.
+      var p1 = L.marker([latitude, longitude], {
+        draggable: true,
+      });
       p1.addTo(map);
+
+      // Add an event listener that will keep track the changes in the
+      // marker location and will update the data attribute accordingly.
+      p1.on('dragend', function(e) {
+        var newLocation = this.getLatLng();
+        var lat = newLocation.lat;
+        var lon = newLocation.lng;
+
+        // Pan the map to its new center which is the last position
+        // of the dragged marker.
+        map.panTo([lat, lon]);
+
+        mapDiv.setAttribute("data-lat", String(lat));
+        mapDiv.setAttribute("data-lon", String(lon));
+      });
 
       // If the pop-up text is specified.
       if (popUpText != '') {
@@ -136,9 +169,6 @@
         var mapTile2 = L.tileLayer.provider(mapTileProvider);
         var miniMap = new L.Control.MiniMap(mapTile2).addTo(map);
       }
-
-      // Initialize the zoom data attribute.
-      mapDiv.setAttribute("data-zoom", map.getZoom());
 
       // Add an event listener that will keep track the changes in the
       // map's zoom levels and it will update the data attribute accordingly.
