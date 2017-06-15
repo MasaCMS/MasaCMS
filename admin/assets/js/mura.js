@@ -8782,6 +8782,11 @@ Mura.Entity = Mura.Core.extend(
                             ) {
                                 var returnObj = new Mura.EntityCollection(resp.data);
                                     returnObj._requestcontext=self._requestcontext;
+
+                                    returnObj.forEach(function(item){
+                                        item._requestcontext=self._requestcontext;
+                                    });
+
                             } else {
                                 if (
                                     Mura.entities[obj.entityname]
@@ -9827,6 +9832,10 @@ Mura.Feed = Mura.Core.extend(
 
 						var returnObj = new Mura.EntityCollection(resp.data);
 								returnObj._requestcontext=self._requestcontext;
+
+								returnObj.forEach(function(item){
+										item._requestcontext=self._requestcontext;
+								});
 						if (typeof resolve == 'function') {
 							resolve(returnObj);
 						}
