@@ -6654,7 +6654,7 @@ Mura.RequestContext=Mura.Core.extend(
               success: function(resp) {
                   if (typeof resolve ==
                       'function') {
-                      var item = new Mura.Entity();
+                      var item = new Mura.Entity({},self);
                       item.set(resp.data);
                       resolve(item);
                   }
@@ -6684,15 +6684,12 @@ Mura.RequestContext=Mura.Core.extend(
           properties.entityname = properties.entityname || 'content';
           properties.siteid = properties.siteid || Mura.siteid;
       }
-
+      
       if (Mura.entities[properties.entityname]) {
-          var entity=new Mura.entities[properties.entityname](
-              properties);
-          entity._requestcontext=this;
+          var entity=new Mura.entities[properties.entityname](properties,this);
           return entity;
       } else {
-          var entity=new Mura.Entity(properties);
-          entity._requestcontext=this;
+          var entity=new Mura.Entity(properties,this);
           return entity;
       }
   },
@@ -6705,8 +6702,7 @@ Mura.RequestContext=Mura.Core.extend(
    * @memberof Mura
    */
   getFeed:function(entityname) {
-      var feed=new Mura.Feed(Mura.siteid, entityname);
-      feed._requestcontext=this;
+      var feed=new Mura.Feed(Mura.siteid, entityname, this);
       return feed;
   },
 
@@ -6777,9 +6773,7 @@ Mura.RequestContext=Mura.Core.extend(
               url: Mura.apiEndpoint,
               data: params,
               success: function(resp) {
-                  var collection = new Mura.EntityCollection(resp.data)
-
-                  collection._requestcontext=self;
+                  var collection = new Mura.EntityCollection(resp.data,self)
 
                   if (typeof resolve == 'function') {
                       resolve(collection);
@@ -7095,8 +7089,7 @@ Mura.entities.Content = Mura.Entity.extend(
                 query.join('&'),
             params: params,
             success: function(resp) {
-                var returnObj = new Mura.EntityCollection(resp.data);
-                    returnObj._requestcontext=self._requestcontext;
+                var returnObj = new Mura.EntityCollection(resp.data,self._requestcontext);
 
                 if (typeof resolve == 'function') {
                     resolve(returnObj);
@@ -8691,7 +8684,7 @@ Mura.Entity = Mura.Core.extend(
      * @param  {object} properties Object containing values to set into object
      * @return {void}
      */
-    init: function(properties) {
+    init: function(properties,requestcontext) {
         properties = properties || {};
         properties.entityname = properties.entityname ||
             'content';
@@ -8713,9 +8706,21 @@ Mura.Entity = Mura.Core.extend(
             this.properties.isdeleted = false;
         }
 
+        this._requestcontext=requestcontext || Mura._requestcontext;
+
         this.cachePut();
     },
 
+    /**
+		 * setRequestContext - Sets the RequestContext
+		 *
+		 * @RequestContext  {Mura.RequestContext} Mura.RequestContext List of fields
+		 * @return {Mura.Feed}        Self
+		 */
+		setRequestContext: function(requestcontext) {
+			this._requestcontext=requestcontext;
+			return this;
+		},
 
     /**
      * exists - Returns if the entity was previously saved
@@ -8745,15 +8750,13 @@ Mura.Entity = Mura.Core.extend(
 
                 return new Promise(function(resolve,reject) {
                     if ('items' in self.properties[propertyName]) {
-                        var returnObj = new Mura.EntityCollection(self.properties[propertyName]);
-                            returnObj._requestcontext=self._requestcontext;
+                        var returnObj = new Mura.EntityCollection(self.properties[propertyName],self._requestcontext);
+
                     } else {
                         if (Mura.entities[self.properties[propertyName].entityname]) {
-                            var returnObj = new Mura.entities[self.properties[propertyName ].entityname]( obj.properties[propertyName]);
-                                returnObj._requestcontext=self._requestcontext;
+                            var returnObj = new Mura.entities[self.properties[propertyName ].entityname]( obj.properties[propertyName],self._requestcontext);
                         } else {
-                            var returnObj = new Mura.Entity(self.properties[propertyName]);
-                                returnObj._requestcontext=self._requestcontext;
+                            var returnObj = new Mura.Entity(self.properties[propertyName],self._requestcontext);
                         }
                     }
 
@@ -8780,22 +8783,14 @@ Mura.Entity = Mura.Core.extend(
                             if (
                                 'items' in resp.data
                             ) {
-                                var returnObj = new Mura.EntityCollection(resp.data);
-                                    returnObj._requestcontext=self._requestcontext;
-
-                                    returnObj.forEach(function(item){
-                                        item._requestcontext=self._requestcontext;
-                                    });
-
+                                var returnObj = new Mura.EntityCollection(resp.data,self._requestcontext);
                             } else {
                                 if (
                                     Mura.entities[obj.entityname]
                                 ) {
-                                    var returnObj = new Mura.entities[obj.entityname](obj);
-                                        returnObj._requestcontext=self._requestcontext;
+                                    var returnObj = new Mura.entities[obj.entityname](obj,self._requestcontext);
                                 } else {
-                                    var returnObj = new Mura.Entity(resp.data);
-                                        returnObj._requestcontext=self._requestcontext;
+                                    var returnObj = new Mura.Entity(resp.data,self._requestcontext);
                                 }
                             }
 
@@ -9212,8 +9207,7 @@ Mura.Entity = Mura.Core.extend(
      */
     getFeed: function() {
         var siteid = get('siteid') || Mura.siteid;
-        var feed=new Mura.Feed(this.get('entityName'));
-        feed._requestcontext=this._requestcontext;
+        var feed=this._requestcontext.getFeed(this.get('entityName'));
         return feed;
     },
 
@@ -9266,18 +9260,19 @@ Mura.EntityCollection=Mura.Entity.extend(
 	 * @return {object} Self
    * @constructs
 	 */
-	init:function(properties){
+	init:function(properties,requestcontext){
 		properties=properties || {};
 		this.set(properties);
+    this._requestcontext=requestcontext || Mura._requestcontext;
 
 		var self=this;
 
 		if(Array.isArray(self.get('items'))){
 			self.set('items',self.get('items').map(function(obj){
 				if(Mura.entities[obj.entityname]){
-					return new Mura.entities[obj.entityname](obj);
+					return new Mura.entities[obj.entityname](obj,self._requestcontext);
 				} else {
-					return new Mura.Entity(obj);
+					return new Mura.Entity(obj,self._requestcontext);
 				}
 			}));
 		}
@@ -9382,8 +9377,7 @@ Mura.EntityCollection=Mura.Entity.extend(
               }
           }
 
-		var collection=new Mura.EntityCollection(newProps);
-        collection._requestcontext=this._requestcontext;
+		var collection=new Mura.EntityCollection(newProps,this._requestcontext);
 		return collection.set('items',this.properties.items.filter( function(item,idx){
 			return fn.call(item,item,idx);
 		}));
@@ -9445,9 +9439,12 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}            Self
 		 * @constructs
 		 */
-		init: function(siteid, entityname) {
+		init: function(siteid, entityname, requestcontext) {
 			this.queryString = entityname + '/?_cacheid=' + Math.random();
 			this.propIndex = 0;
+
+			this._requestcontext=requestcontext || Mura._requestcontext;
+			
 			return this;
 		},
 
@@ -9459,6 +9456,17 @@ Mura.Feed = Mura.Core.extend(
 		 */
 		fields: function(fields) {
 			this.queryString += '&fields=' + encodeURIComponent(fields);
+			return this;
+		},
+
+		/**
+		 * setRequestContext - Sets the RequestContext
+		 *
+		 * @RequestContext  {Mura.RequestContext} Mura.RequestContext List of fields
+		 * @return {Mura.Feed}        Self
+		 */
+		setRequestContext: function(RequestContext) {
+			this._requestcontext=RequestContext;
 			return this;
 		},
 
@@ -9830,12 +9838,8 @@ Mura.Feed = Mura.Core.extend(
 					url: apiEndpoint + self.queryString,
 					success: function(resp) {
 
-						var returnObj = new Mura.EntityCollection(resp.data);
-								returnObj._requestcontext=self._requestcontext;
+						var returnObj = new Mura.EntityCollection(resp.data,self._requestcontext);
 
-								returnObj.forEach(function(item){
-										item._requestcontext=self._requestcontext;
-								});
 						if (typeof resolve == 'function') {
 							resolve(returnObj);
 						}
@@ -11657,11 +11661,10 @@ Mura.Request=Mura.Core.extend(
 
       if (params.type.toLowerCase() == 'post') {
 
-          params.headers['Content-Type']='application/x-www-form-urlencoded; charset=UTF-8';
-
+          console.log(params.data)
           Mura._request.post(
             {
-              uri: params.url,
+              url: params.url,
               formData: params.data,
               headers: params.headers
             },
@@ -11683,7 +11686,7 @@ Mura.Request=Mura.Core.extend(
 
           Mura._request(
             {
-              url: params.url,
+              url: params.url + query,
               headers:params.headers
             },
             nodeResponseHandler
@@ -11993,7 +11996,7 @@ __webpack_require__(332);
 var Mura =__webpack_require__(10);
 
 /**
- * Creates a new Mura.Entity
+ * Creates a new Mura.UI instance
  * @class {class} Mura.UI
  */
 
