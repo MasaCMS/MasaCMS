@@ -503,7 +503,14 @@ component extends="mura.bean.beanFeed" entityName="feed" table="tcontentfeeds" o
 
 	public function getIterator(required aggregation="false", required applyPermFilter="false", required from="", required to="", required cachedWithin="#variables.instance.cachedWithin#") output=false {
 		var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,from=arguments.from,to=arguments.to,cachedwithin=arguments.cachedWithin);
-		var it=getBean("contentIterator");
+
+		//When selecting distinct generic iterators and beans are used
+		if(getDistinct()){
+			var it=getBean("beanIterator");
+		} else {
+			var it=getBean("contentIterator");
+		}
+
 		it.setQuery(q,variables.instance.nextn);
 		return it;
 	}

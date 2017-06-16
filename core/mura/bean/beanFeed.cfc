@@ -74,6 +74,8 @@ function init() output=false {
 	variables.instance.siteID="";
 	variables.instance.contentPoolID="";
 	variables.instance.entityName="";
+	variables.instance.fields="";
+	variables.instance.distinct=false;
 	variables.instance.table="";
 	variables.instance.keyField="";
 	variables.instance.sortBy="";
@@ -158,6 +160,24 @@ function setMaxItems(any maxItems) output=false {
 		variables.instance.maxItems = arguments.maxItems;
 	}
 	return this;
+}
+
+function setFields(fields) output=false {
+	variables.instance.fields=arguments.fields;
+	return this;
+}
+
+function setDistinct(distinct) output=false {
+	variables.instance.distinct=arguments.distinct;
+	return this;
+}
+
+function getFields() output=false {
+	return variables.instance.fields;
+}
+
+function getDistinct() output=false {
+	return variables.instance.distinct;
 }
 
 function loadTableMetaData() output=false {
@@ -367,12 +387,17 @@ function getQueryService(cachedWithin="#variables.instance.cachedWithin#") outpu
 function getIterator(cachedWithin="#variables.instance.cachedWithin#") output=false {
 	var rs=getQuery(argumentCollection=arguments);
 	var it='';
-	if ( getServiceFactory().containsBean("#variables.instance.entityName#Iterator") ) {
-		it=getBean("#variables.instance.entityName#Iterator");
-	} else {
-		it=getBean("beanIterator");
+
+	//When selecting distinct generic iterators and beans are used
+	if(!getDistinct()){
+		if ( getServiceFactory().containsBean("#variables.instance.entityName#Iterator") ) {
+			it=getBean("#variables.instance.entityName#Iterator");
+		} else {
+			it=getBean("beanIterator");
+		}
+		it.setEntityName(getValue('entityName'));
 	}
-	it.setEntityName(getValue('entityName'));
+
 	it.setQuery(rs);
 	it.setFeed('feed',this);
 	it.setPageIndex(getValue('pageIndex'));
@@ -561,6 +586,14 @@ function maxItems(maxItems) output=false {
 	return this;
 }
 
+function fields(fields) output=false {
+	return setFields(arguments.fields);
+}
+
+function distinct(distinct) output=false {
+	return setDistinct(arguments.distinct);
+}
+
 function getEntity() output=false {
 	if ( !isdefined('variables.sampleEntity') ) {
 		variables.sampleEntity=getBean(getEntityName());
@@ -685,10 +718,14 @@ function getEndRow() output=false {
 
 	<cfquery attributeCollection="#getQueryAttrs(name='rs',cachedWithin=arguments.cachedWithin)#">
 		<cfif not arguments.countOnly and dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>
-		select <cfif not arguments.countOnly and dbtype eq "mssql" and variables.instance.maxItems>top #val(variables.instance.maxItems)#</cfif>
+		select
+		<cfif getDistinct()>distinct</cfif>
+		<cfif not arguments.countOnly and dbtype eq "mssql" and variables.instance.maxItems>top #val(variables.instance.maxItems)#</cfif>
 
 		<cfif not arguments.countOnly>
-			<cfif len(getEntity().getLoadSQLColumnsAndTables())>
+			<cfif len(getFields())>
+				#REReplace(listFirst(getFields(),"."),"[^0-9A-Za-z\._,\- ]","","all")#
+			<cfelseif len(getEntity().getLoadSQLColumnsAndTables())>
 				<cfset loadTableMetaData()>
 				#getEntity().getLoadSQLColumnsAndTables()#
 			<cfelse>

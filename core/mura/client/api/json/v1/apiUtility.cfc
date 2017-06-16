@@ -191,7 +191,11 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		};
 		}
 
-		result['entityname']=iterator.getEntityName();
+		if(isDefined('url.distinct') and isBoolean(url.distinct) and url.distinct){
+			result['entityname']='bean';
+		} else {
+			result['entityname']=iterator.getEntityName();
+		}
 
 		if(!arguments.expanded &&
 			!(isDefined('arguments.baseURL')) || !len(arguments.baseURL)){
@@ -2189,6 +2193,30 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(isDefined('arguments.params.sortdirection') && len(arguments.params.sortdirection)){
 			arguments.feed.setSortDirection(arguments.params.sortdirection);
+		}
+
+		if(isDefined('arguments.params.distinct') && isBoolean(arguments.params.distinct)){
+			arguments.feed.setDistinct(arguments.params.distinct);
+		}
+
+		if(isDefined('arguments.params.fields') && len(arguments.params.fields)){
+			if(arguments.feed.getDistinct()){
+				if(listFind('content,contentnav',arguments.feed.getEntityName())){
+					var primarykey='contentid';
+				} else {
+					var primarykey=getBean(arguments.feed.getEntityName()).getPrimaryKey();
+				}
+
+				if(!listFindNoCase(arguments.params.fields,primarykey)){
+					arguments.params.fields=listAppend(arguments.params.fields,primarykey);
+				}
+			}
+
+			arguments.feed.setfields(arguments.params.fields);
+		}
+
+		if(isDefined('arguments.params.distinct') && isBoolean(arguments.params.distinct)){
+			arguments.feed.setDistinct(arguments.params.distinct);
 		}
 
 		if(isDefined('arguments.params.maxitems') && isNumeric(arguments.params.maxitems)){

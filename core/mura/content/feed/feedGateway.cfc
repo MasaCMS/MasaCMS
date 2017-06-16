@@ -208,10 +208,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsFeed',blockFactor=blockFactor,cachedWithin=arguments.feedBean.getCachedWithin())#">
 			<cfif not arguments.countOnly and dbType eq "oracle" and arguments.feedBean.getMaxItems()>SELECT * FROM (</cfif>
 			SELECT
+				<cfif arguments.feedBean.getDistinct()>distinct</cfif>
 				<cfif not arguments.countOnly and dbtype eq "mssql" and arguments.feedBean.getMaxItems()>top #arguments.feedBean.getMaxItems()#</cfif>
 
 				<cfif not arguments.countOnly>
-					<cfif len(altTable)>
+					<cfif len(arguments.feedBean.getFields())>
+						#REReplace(listFirst(arguments.feedBean.getFields(),"."),"[^0-9A-Za-z\._,\- ]","","all")#
+					<cfelseif len(altTable)>
 						tcontent.*
 					<cfelse>
 						tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups,
