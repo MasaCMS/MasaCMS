@@ -416,6 +416,18 @@ var Mura=(function(){
   }
 
   /**
+  * renderFilename - Returns "Rendered" JSON object of content
+  *
+  * @param  {type} filename Mura content filename
+  * @param  {type} params Object
+  * @return {Promise}
+  * @memberof {class} Mura
+  */
+  function renderFilename(filename, params) {
+    return Mura._requestcontext.renderFilename(filename, params);
+  }
+
+  /**
    * declareEntity - Declare Entity with in service factory
    *
    * @param  {object} entityConfig Entity config object
@@ -3200,7 +3212,8 @@ var Mura=(function(){
               setRequestHeader:setRequestHeader,
               getRequestHeader:getRequestHeaders,
               getRequestHeaders:getRequestHeaders,
-              mode: 'json'
+              mode: 'json',
+              declareEntity:declareEntity
           }
       );
 
