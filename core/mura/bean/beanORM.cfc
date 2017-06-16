@@ -188,10 +188,6 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		variables.dbUtility=arguments.dbUtility;
 	}
 
-	function getBundleable(){
-		return application.objectMappings[variables.entityName].bundleable;
-	}
-
 	function getDiscriminatorColumn(){
 		return application.objectMappings[variables.entityName].discriminatorColumn;
 	}

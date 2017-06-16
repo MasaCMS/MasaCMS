@@ -238,11 +238,15 @@ module.exports = function(it){
 __webpack_require__(131);
 __webpack_require__(331);
 
-module.exports=(function(){
 /**
  * Creates a new Mura
- * @class {class} Mura
+ * @name Mura
+ * @class
+ * @global
  */
+
+var Mura=(function(){
+
 
   /**
    * login - Logs user into Mura
@@ -251,7 +255,7 @@ module.exports=(function(){
    * @param  {string} password Password
    * @param  {string} siteid   Siteid
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function login(username, password, siteid) {
       return Mura._requestcontext.login(username, password, siteid);
@@ -263,7 +267,7 @@ module.exports=(function(){
    *
    * @param  {type} siteid Siteid
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function logout(siteid) {
       return Mura._requestcontext.logout(siteid);
@@ -291,7 +295,7 @@ module.exports=(function(){
    *
    * @param  {object} data event data
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function trackEvent(eventData) {
       var data={};
@@ -412,16 +416,27 @@ module.exports=(function(){
   }
 
   /**
-   * renderFilename - Returns "Rendered" JSON object of content
+   * declareEntity - Declare Entity with in service factory
    *
-   * @param  {type} filename Mura content filename
-   * @param  {type} params Object
+   * @param  {object} entityConfig Entity config object
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
-  function renderFilename(filename, params) {
-    return Mura._requestcontext.renderFilename(filename, params);
+  function declareEntity(entityConfig) {
+    return Mura._requestcontext.declareEntity(entityConfig);
   }
+
+  /**
+   * logout - Logs user out
+   *
+   * @param  {type} siteid Siteid
+   * @return {Promise}
+   * @memberof {class} Mura
+   */
+  function logout(siteid) {
+      return Mura._requestcontext.logout(siteid);
+  }
+
 
   /**
    * getEntity - Returns Mura.Entity instance
@@ -429,7 +444,7 @@ module.exports=(function(){
    * @param  {string} entityname Entity Name
    * @param  {string} siteid     Siteid
    * @return {Mura.Entity}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function getEntity(entityname, siteid) {
       return Mura._requestcontext.getEntity(entityname, siteid);
@@ -440,7 +455,7 @@ module.exports=(function(){
    *
    * @param  {type} entityname Entity name
    * @return {Mura.Feed}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function getFeed(entityname) {
     return Mura._requestcontext.getFeed(Mura.siteid, entityname);
@@ -451,7 +466,7 @@ module.exports=(function(){
    *
    * @param  {object} params Load parameters, fields:listoffields
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function getCurrentUser(params) {
       return Mura._requestcontext.getCurrentUser(params);
@@ -462,7 +477,7 @@ module.exports=(function(){
    *
    * @param  {object} params Object of matching params
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function findQuery(params) {
       return Mura._requestcontext.findQuery(params);
@@ -630,7 +645,7 @@ module.exports=(function(){
    * @param  {url} url  URL
    * @param  {object} data Data to send to url
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function get(url, data) {
       return Mura._requestcontext.get(url, data);
@@ -642,7 +657,7 @@ module.exports=(function(){
    * @param  {url} url  URL
    * @param  {object} data Data to send to url
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function post(url, data) {
       return Mura._requestcontext.post(url, data);
@@ -653,7 +668,7 @@ module.exports=(function(){
    *
    * @param  {object} params
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function ajax(params) {
     return Mura._requestcontext.request(params);
@@ -662,10 +677,11 @@ module.exports=(function(){
   /**
    * getRequestContext - Returns a new Mura.RequestContext;
    *
+   * @name getRequestContext
    * @param  {object} request     Siteid
    * @param  {object} response Entity name
    * @return {Mura.RequestContext}   Mura.RequestContext
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function getRequestContext(request,response) {
     return new Mura.RequestContext(request,response);
@@ -674,8 +690,9 @@ module.exports=(function(){
   /**
    * getDefaultRequestContext - Returns the default Mura.RequestContext;
    *
+   * @name getDefaultRequestContext
    * @return {Mura.RequestContext}   Mura.RequestContext
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function getDefaultRequestContext() {
     return  Mura._requestcontext;
@@ -688,7 +705,7 @@ module.exports=(function(){
    * @param  {type} client_id     Client ID
    * @param  {type} client_secret Secret Key
    * @return {Promise}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function generateOauthToken(grant_type, client_id, client_secret) {
       return new Promise(function(resolve, reject) {
@@ -863,9 +880,10 @@ module.exports=(function(){
   /**
    * isNumeric - Returns if the value is numeric
    *
+   * @name isNumeric
    * @param  {*} val description
    * @return {boolean}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function isNumeric(val) {
       return Number(parseFloat(val)) == val;
@@ -914,9 +932,10 @@ module.exports=(function(){
   /**
    * formToObject - Returns if the value is numeric
    *
+   * @name formToObject
    * @param  {form} form Form to serialize
    * @return {object}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function formToObject(form) {
       var field, s = {};
@@ -953,8 +972,9 @@ module.exports=(function(){
   /**
    * extend - Extends object one level
    *
+   * @name extend
    * @return {object}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function extend(out) {
       out = out || {};
@@ -974,10 +994,11 @@ module.exports=(function(){
   };
 
   /**
-   * extend - Extends object to full depth
+   * deepExtend - Extends object to full depth
    *
+   * @name deepExtend
    * @return {object}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function deepExtend(out) {
       out = out || {};
@@ -1010,11 +1031,12 @@ module.exports=(function(){
   /**
    * createCookie - Creates cookie
    *
+   * @name createCookie
    * @param  {string} name  Name
    * @param  {*} value Value
    * @param  {number} days  Days
    * @return {void}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function createCookie(name, value, days) {
       if (days) {
@@ -1028,9 +1050,10 @@ module.exports=(function(){
   /**
    * readCookie - Reads cookie value
    *
+   * @name readCookie
    * @param  {string} name Name
    * @return {*}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function readCookie(name) {
       var nameEQ = name + "=";
@@ -1047,9 +1070,10 @@ module.exports=(function(){
   /**
    * eraseCookie - Removes cookie value
    *
+   * @name eraseCookie
    * @param  {type} name description
    * @return {type}      description
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function eraseCookie(name) {
       createCookie(name, "", -1);
@@ -1091,9 +1115,10 @@ module.exports=(function(){
   /**
    * isUUID - description
    *
+   * @name isUUID
    * @param  {*} value Value
    * @return {boolean}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function isUUID(value) {
       if (
@@ -1117,8 +1142,9 @@ module.exports=(function(){
   /**
    * createUUID - Create UUID
    *
+   * @name createUUID
    * @return {string}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function createUUID() {
       var s = [],
@@ -1145,8 +1171,10 @@ module.exports=(function(){
   /**
    * setHTMLEditor - Set Html Editor
    *
+   * @name setHTMLEditor
    * @param  {dom.element} el Dom Element
    * @return {void}
+   * @memberof {class} Mura
    */
   function setHTMLEditor(el) {
 
@@ -1254,9 +1282,10 @@ module.exports=(function(){
   /**
    * isInteger - Returns if the value is an integer
    *
-   * @param  {*} s Value to check
+   * @name isInteger
+   * @param  {*} Value to check
    * @return {boolean}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function isInteger(s) {
       var i;
@@ -1336,6 +1365,14 @@ module.exports=(function(){
       return this
   }
 
+  /**
+   * isDate - Returns if the value is a data
+   *
+   * @name isDate
+   * @param  {*}  Value to check
+   * @return {boolean}
+   * @memberof {class} Mura
+   */
   function isDate(dtStr, fldName) {
       var daysInMonth = DaysArray(12);
       var dtArray = dtStr.split(Mura.dtCh);
@@ -1395,7 +1432,7 @@ module.exports=(function(){
    *
    * @param  {string} str String to parse for email
    * @return {boolean}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function isEmail(cur) {
       var string1 = cur
@@ -1430,10 +1467,11 @@ module.exports=(function(){
   /**
    * validateForm - Validates Mura form
    *
+   * @name validateForm
    * @param  {type} frm          Form element to validate
    * @param  {function} customaction Custom action (optional)
    * @return {boolean}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function validateForm(frm, customaction) {
 
@@ -1763,8 +1801,9 @@ module.exports=(function(){
   /**
    * loader - Returns Mura.Loader
    *
+   * @name loader
    * @return {Mura.Loader}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function loader() {
       return Mura.ljs;
@@ -2741,7 +2780,7 @@ module.exports=(function(){
    *
    * @param  {string} str Trims string
    * @return {string}     Trimmed string
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function trim(str) {
       return str.replace(/^\s+|\s+$/gm, '');
@@ -2824,9 +2863,10 @@ module.exports=(function(){
   /**
    * getQueryStringParams - Returns object of params in string
    *
+   * @name getQueryStringParams
    * @param  {string} queryString Query String
    * @return {object}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function getQueryStringParams(queryString) {
 
@@ -2856,6 +2896,14 @@ module.exports=(function(){
       return params;
   }
 
+  /**
+   * getHREFParams - Returns object of params in string
+   *
+   * @name getHREFParams
+   * @param  {string} href
+   * @return {object}
+   * @memberof {class} Mura
+   */
   function getHREFParams(href) {
       var a = href.split('?');
 
@@ -2887,9 +2935,11 @@ module.exports=(function(){
   /**
    * setRequestHeader - Initialiazes feed
    *
+   * @name setRequestHeader
    * @param  {string} headerName  Name of header
    * @param  {string} value Header value
-   * @return {Mura.RequestContext}            Self
+   * @return {Mura.RequestContext} Self
+   * @memberof {class} Mura
    */
    function setRequestHeader(headerName,value){
      Mura.requestHeaders[headerName]=value;
@@ -2898,8 +2948,10 @@ module.exports=(function(){
   /**
    * getRequestHeader - Returns a request header value
    *
+   * @name getRequestHeader
    * @param  {string} headerName  Name of header
    * @return {string} header Value
+   * @memberof {class} Mura
    */
    function getRequestHeader(headerName){
       if(typeof Mura.requestHeaders[headerName] != 'undefined'){
@@ -2912,7 +2964,9 @@ module.exports=(function(){
   /**
    * getRequestHeaders - Returns a request header value
    *
+   * @name getRequestHeaders
    * @return {object} All Headers
+   * @memberof {class} Mura
    */
    function getRequestHeaders(){
      return Mura.requestHeaders;
@@ -2923,9 +2977,10 @@ module.exports=(function(){
   /**
    * hashCode - description
    *
+   * @name hashCode
    * @param  {string} s String to hash
    * @return {string}
-   * @memberof Mura
+   * @memberof {class} Mura
    */
   function hashCode(s) {
       var hash = 0,
@@ -3152,6 +3207,8 @@ module.exports=(function(){
     return Mura;
 
 })();
+
+module.exports=Mura;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(329)))
 
@@ -6556,21 +6613,19 @@ var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.RequestContext
-* @class {class} Mura.RequestContext
+* @name  Mura.RequestContext
+* @class
+* @extends Mura.Core
+* @memberof Mura
+* @param  {object} request     Siteid
+* @param  {object} response Entity name
+* @param  {object} requestHeaders Optional
+* @return {Mura.RequestContext} Self
 */
 
 Mura.RequestContext=Mura.Core.extend(
 /** @lends Mura.RequestContext.prototype */
 {
-
-  /**
-	 * init - Initialiazes feed
-	 *
-	 * @param  {object} request     Siteid
-	 * @param  {object} response Entity name
-	 * @return {Mura.RequestContext}            Self
-   * @constructs
-	 */
 	init: function(request, response, requestHeaders) {
     this.requestObject=request;
     this.reponseObject=response;
@@ -6583,7 +6638,7 @@ Mura.RequestContext=Mura.Core.extend(
    *
    * @param  {string} headerName  Name of header
    * @param  {string} value Header value
-   * @return {Mura.RequestContext}            Self
+   * @return {Mura.RequestContext}  Self
    */
   setRequestHeader:function(headerName,value){
     this._request.setRequestHeader(headerName,value);
@@ -6625,7 +6680,6 @@ Mura.RequestContext=Mura.Core.extend(
    * @param  {type} filename Mura content filename
    * @param  {type} params Object
    * @return {Promise}
-   * @memberof Mura
    */
   renderFilename:function(filename, params) {
 
@@ -6671,7 +6725,6 @@ Mura.RequestContext=Mura.Core.extend(
    * @param  {string} entityname Entity Name
    * @param  {string} siteid     Siteid
    * @return {Mura.Entity}
-   * @memberof Mura
    */
   getEntity:function(entityname, siteid) {
       if (typeof entityname == 'string') {
@@ -6684,7 +6737,7 @@ Mura.RequestContext=Mura.Core.extend(
           properties.entityname = properties.entityname || 'content';
           properties.siteid = properties.siteid || Mura.siteid;
       }
-      
+
       if (Mura.entities[properties.entityname]) {
           var entity=new Mura.entities[properties.entityname](properties,this);
           return entity;
@@ -6694,12 +6747,39 @@ Mura.RequestContext=Mura.Core.extend(
       }
   },
 
+	/**
+   * declareEntity - Declare Entity with in service factory
+   *
+   * @param  {object} entityConfig Entity config object
+   * @return {Promise}
+   */
+  declareEntity:function(entityConfig) {
+
+      return new Promise(function(resolve, reject) {
+          self.request({
+              async: true,
+              type: 'POST',
+              url: Mura.apiEndpoint,
+							data:{
+								method: 'declareEntity',
+								entityConfig: encodeURIComponent(JSON.stringify(entityConfig))
+							},
+              success: function(resp) {
+                  if (typeof resolve =='function') {
+                      resolve(resp.data);
+                  }
+              }
+            }
+          );
+      });
+
+  },
+
   /**
    * getFeed - Return new instance of Mura.Feed
    *
    * @param  {type} entityname Entity name
    * @return {Mura.Feed}
-   * @memberof Mura
    */
   getFeed:function(entityname) {
       var feed=new Mura.Feed(Mura.siteid, entityname, this);
@@ -6711,7 +6791,6 @@ Mura.RequestContext=Mura.Core.extend(
    *
    * @param  {object} params Load parameters, fields:listoffields
    * @return {Promise}
-   * @memberof Mura
    */
   getCurrentUser:function(params) {
       var self=this;
@@ -6755,7 +6834,6 @@ Mura.RequestContext=Mura.Core.extend(
    *
    * @param  {object} params Object of matching params
    * @return {Promise}
-   * @memberof Mura
    */
   findQuery:function(params) {
       var self=this;
@@ -6793,7 +6871,6 @@ Mura.RequestContext=Mura.Core.extend(
    * @param  {string} password Password
    * @param  {string} siteid   Siteid
    * @return {Promise}
-   * @memberof Mura
    */
   login:function(username, password, siteid) {
       siteid = siteid || Mura.siteid;
@@ -6839,7 +6916,6 @@ Mura.RequestContext=Mura.Core.extend(
    *
    * @param  {type} siteid Siteid
    * @return {Promise}
-   * @memberof Mura
    */
   logout:function(siteid) {
       siteid = siteid || Mura.siteid;
@@ -6869,7 +6945,6 @@ Mura.RequestContext=Mura.Core.extend(
    * @param  {url} url  URL
    * @param  {object} data Data to send to url
    * @return {Promise}
-   * @memberof Mura
    */
   get:function(url, data) {
       var self=this;
@@ -6897,7 +6972,6 @@ Mura.RequestContext=Mura.Core.extend(
    * @param  {url} url  URL
    * @param  {object} data Data to send to url
    * @return {Promise}
-   * @memberof Mura
    */
   post:function(url, data) {
       var self=this;
@@ -6932,30 +7006,23 @@ Mura.RequestContext=Mura.Core.extend(
 /***/ (function(module, exports, __webpack_require__) {
 
 
-/**
- *
- * @module Mura/Core
- */
-
 var Mura=__webpack_require__(10);
-
 /**
  * Creates a new Mura.Cache
- * @class {class} Mura.Cache
+ * @name Mura.Cache
+ * @class
+ * @extends Mura.Core
+ * @memberof  Mura
+ * @return {Mura.Cache}
  */
 
 Mura.Cache=Mura.Core.extend(
   /** @lends Mura.Cache.prototype */
   {
 
-	/**
-	 * init - Initialiazes cache
-	 *
-	 * @return {void}
-   * @constructs
-	 */
 	init:function(){
 		this.cache={};
+    return this;
 	},
 
   /**
@@ -7058,12 +7125,24 @@ var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.entities.Content
-* @class {class} Mura.entities.Content
+* @name Mura.entities.Content
+* @class
+* @extends Mura.Entity
+* @memberof Mura
+* @param  {object} properties Object containing values to set into object
+* @return {Mura.Entity}
 */
 
 Mura.entities.Content = Mura.Entity.extend(
 /** @lends Mura.entities.Content.prototype */
 {
+  /**
+   * getRelatedContent - Gets related content sets by name
+   *
+   * @param  {string} relatedContentSetName
+   * @param  {object} params
+   * @return {Mura.EntityCollection}
+   */
   getRelatedContent:function(relatedContentSetName,params){
     return new Promise(function(resolve,
         reject) {
@@ -7113,20 +7192,22 @@ var Mura=__webpack_require__(10);
 
 /**
  * Creates a new Mura.DOMSelection
- * @class {class} Mura.DOMSelection
+ * @name  Mura.DOMSelection
+ * @class
+ * @param  {object} properties Object containing values to set into object
+ * @return {Mura.DOMSelection}
+ * @extends Mura.Core
+ * @memberof Mura
  */
+
+ /**
+  * @ignore
+  */
 
 Mura.DOMSelection = Mura.Core.extend(
   /** @lends Mura.DOMSelection.prototype */
   {
 
-      /**
-       * init - initiliazes instance
-       *
-       * @param  {object} properties Object containing values to set into object
-       * @return {void}
-       * @constructs
-       */
       init: function(selection, origSelector) {
           this.selection = selection;
           this.origSelector = origSelector;
@@ -8671,19 +8752,17 @@ var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.Entity
-* @class {class} Mura.Entity
+* @name  Mura.Entity
+* @class
+* @extends Mura.Core
+* @memberof Mura
+* @param  {object} properties Object containing values to set into object
+* @return {Mura.Entity}
 */
 
 Mura.Entity = Mura.Core.extend(
 /** @lends Mura.Entity.prototype */
 {
-
-    /**
-     * init - initiliazes instance
-     *
-     * @param  {object} properties Object containing values to set into object
-     * @return {void}
-     */
     init: function(properties,requestcontext) {
         properties = properties || {};
         properties.entityname = properties.entityname ||
@@ -8709,6 +8788,8 @@ Mura.Entity = Mura.Core.extend(
         this._requestcontext=requestcontext || Mura._requestcontext;
 
         this.cachePut();
+
+        return this;
     },
 
     /**
@@ -9277,19 +9358,18 @@ var Mura=__webpack_require__(10);
 
 /**
  * Creates a new Mura.EntityCollection
- * @class {class} Mura.EntityCollection
+ * @name  Mura.Entity.EntityCollection
+ * @class
+ * @extends Mura.Entity
+ * @memberof  Mura
+ * @param  {object} properties Object containing values to set into object
+ * @return {Mura.EntityCollection} Self
  */
 
 Mura.EntityCollection=Mura.Entity.extend(
   /** @lends Mura.EntityCollection.prototype */
   {
-      /**
-	 * init - initiliazes instance
-	 *
-	 * @param  {object} properties Object containing values to set into object
-	 * @return {object} Self
-   * @constructs
-	 */
+
 	init:function(properties,requestcontext){
 		properties=properties || {};
 		this.set(properties);
@@ -9454,27 +9534,28 @@ var Mura=__webpack_require__(10);
 
 /**
  * Creates a new Mura.Feed
- * @class {class} Mura.Feed
+ * @name  Mura.Feed
+ * @class
+ * @extends Mura.Core
+ * @memberof Mura
+ * @param  {string} siteid     Siteid
+ * @param  {string} entityname Entity name
+ * @return {Mura.Feed}            Self
  */
+
+ /**
+  * @ignore
+  */
 
 Mura.Feed = Mura.Core.extend(
 	/** @lends Mura.Feed.prototype */
 	{
-
-		/**
-		 * init - Initialiazes feed
-		 *
-		 * @param  {string} siteid     Siteid
-		 * @param  {string} entityname Entity name
-		 * @return {Mura.Feed}            Self
-		 * @constructs
-		 */
 		init: function(siteid, entityname, requestcontext) {
 			this.queryString = entityname + '/?_cacheid=' + Math.random();
 			this.propIndex = 0;
 
 			this._requestcontext=requestcontext || Mura._requestcontext;
-			
+
 			return this;
 		},
 
@@ -9794,13 +9875,24 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
-		 * showNavOnly - Sets to only return content set to be in nav
+		 * distinct - Sets to select distinct values of select fields
 		 *
-		 * @param  {boolean} showNavOnly Whether to return items that have been excluded from nav
+		 * @param  {boolean} distinct Whether to to select distinct values
 		 * @return {Mura.Feed}              Self
 		 */
-		showNavOnly: function(showNavOnly) {
-			this.queryString += '&showNavOnly=' + encodeURIComponent(showNavOnly);
+		distinct: function(distinct) {
+			this.queryString += '&distinct=' + encodeURIComponent(distinct);
+			return this;
+		},
+
+		/**
+		 * maxItems - Sets max items to return
+		 *
+		 * @param  {number} maxItems Items to return
+		 * @return {Mura.Feed}              Self
+		 */
+		maxItems: function(maxItems) {
+			this.queryString += '&maxItems=' + encodeURIComponent(maxItems);
 			return this;
 		},
 
@@ -9889,11 +9981,15 @@ Mura.Feed = Mura.Core.extend(
 var Mura=__webpack_require__(10);
 /**
  * Creates a new Mura.DisplayObject.Form
- * @class {class} Mura.DisplayObject.Form
+ * @name  Mura.DisplayObject.Form
+ * @class
+ * @extends Mura.UI
+ * @memberof  Mura
  */
 
-Mura.DisplayObject.Form=Mura.UI.extend({
+Mura.DisplayObject.Form=Mura.UI.extend(
 /** @lends Mura.DisplayObject.Form.prototype */
+{
 context:{},
 ormform: false,
 formJSON:{},
@@ -11523,20 +11619,31 @@ var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.Core
-* @class {class} Mura.Core
-* @classdesc Abstract class representing a Mura core object.
+* @name Mura.Core
+* @class
+* @memberof Mura
+* @param  {object} properties Object containing values to set into object
+* @return {Mura.Core}
 */
 
-function core(){
+function Core(){
 	this.init.apply(this,arguments);
 	return this;
 }
 
 /** @lends Mura.Core.prototype */
-
-core.prototype={
+Core.prototype=
+	{
 	init:function(){
 	},
+	/**
+	 * trigger - Triggers custom event on Mura objects
+	 *
+	 * @name Mura.Core.trigger
+	 * @function
+	 * @param  {string} eventName  Name of header
+	 * @return {object}  Self
+	 */
 	trigger:function(eventName){
 		eventName=eventName.toLowerCase();
 
@@ -11551,12 +11658,22 @@ core.prototype={
 	},
 };
 
-core.extend=function(properties){
+/** @lends Mura.Core.prototype */
+
+/**
+ * Extend - Allow the creation of new Mura core classes
+ *
+ * @name Mura.Core.extend
+ * @function
+ * @param  {object} properties  Properties to add to new class prototype
+ * @return {class}  Self
+ */
+Core.extend=function(properties){
 	var self=this;
 	return Mura.extend(Mura.extendClass(self,properties),{extend:self.extend,handlers:[]});
 };
 
-Mura.Core=core;
+Mura.Core=Core;
 
 
 /***/ }),
@@ -11568,21 +11685,19 @@ var Mura=__webpack_require__(10);
 
 /**
 * Creates a new Mura.Request
-* @class {class} Mura.Request
+* @name  Mura.Request
+* @class
+* @extends Mura.Core
+* @memberof Mura
+* @param  {object} request     Siteid
+* @param  {object} response Entity name
+* @param  {object} requestHeaders Optional
+* @return {Mura.Request}  Self
 */
 
 Mura.Request=Mura.Core.extend(
   /** @lends Mura.Request.prototype */
   {
-
-    /**
-		 * init - Initialiazes feed
-		 *
-		 * @param  {object} request     Siteid
-		 * @param  {object} response Entity name
-		 * @return {Mura.Request}            Self
-     * @constructs
-		 */
 		init: function(request, response, headers) {
       this.requestObject=request;
       this.responseObject=response;
@@ -11595,7 +11710,6 @@ Mura.Request=Mura.Core.extend(
     *
     * @param  {object} params
     * @return {Promise}
-    * @memberof Mura
     */
     execute: function(params) {
 
@@ -11626,9 +11740,23 @@ Mura.Request=Mura.Core.extend(
       }
 
     },
+    /**
+     * setRequestHeader - Initialiazes feed
+     *
+     * @param  {string} headerName  Name of header
+     * @param  {string} value Header value
+     * @return {Mura.RequestContext}            Self
+     */
     setRequestHeader:function(headerName,value){
       this.requestHeaders[headerName]=value;
+      return this;
     },
+    /**
+     * getRequestHeader - Returns a request header value
+     *
+     * @param  {string} headerName  Name of header
+     * @return {string} header Value
+     */
     getRequestHeader:function(headerName){
        if(typeof this.requestHeaders[headerName] != 'undefined'){
          return this.requestHeaders[headerName];
@@ -11636,6 +11764,11 @@ Mura.Request=Mura.Core.extend(
          return null;
        }
     },
+    /**
+     * getRequestHeaders - Returns a request header value
+     *
+     * @return {object} All Headers
+     */
     getRequestHeaders:function(){
       return this.requestHeaders;
     },
@@ -12027,7 +12160,10 @@ var Mura =__webpack_require__(10);
 
 /**
  * Creates a new Mura.UI instance
- * @class {class} Mura.UI
+ * @name Mura.UI
+ * @class
+ * @extends  Mura.Core
+ * @memberof Mura
  */
 
 Mura.UI=Mura.Core.extend(

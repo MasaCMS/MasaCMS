@@ -27,7 +27,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
+			publicMethods="declareEntity,findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
 			entities={
 				'contentnav'={
 					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
@@ -125,6 +125,30 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		return this;
 	}
 
+	function declareEntity(entityConfig){
+
+				if(!getCurrentUser().isSuperUser()){
+					throw(type="authorization");
+				}
+
+				if(!isJSON(arguments.entityConfig)){
+					arguments.entityConfig=URLDecode(arguments.entityConfig);
+
+					if(!isJSON(arguments.entityConfig)){
+						throw(type="invalidParameters");
+					}
+				}
+
+				var obj=deserializeJSON(arguments.entityConfig);
+
+				if(!StructKeyExists(obj, "entityName")){
+					throw(type="invalidParameters");
+				}
+
+				getServiceFactory().declareBean(arguments.entityConfig);
+
+				return findProperties(obj.entityName);
+	}
 
 	function registerEntity(entityName, config={public=false,fields=''}){
 
@@ -1068,7 +1092,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function findProperties(entityname,properties=''){
-		var props=getBean(arguments.entityname).getProperties();
+		var exampleEntity=getBean(arguments.entityname);
+		var props=exampleEntity.getProperties();
 		var propArray=listToArray(arguments.properties);
 		var returnArray=[];
 		var prop='';
@@ -1088,13 +1113,27 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		var result=formatArray(returnArray);
+
 		structAppend(result,{
-			entityname=arguments.entityname,
+			entityname=exampleEntity.getEntityName(),
+			bundleable=exampleEntity.getBundleable(),
+			orderby=exampleEntity.getOrderBy(),
+			historical=exampleEntity.getIsHistorical(),
+			dynamic=exampleEntity.getDynamic(),
+			scaffold=exampleEntity.getscaffold(),
+			displayname=exampleEntity.getEntityDisplayName(),
 			links={
 				endpoint=getEndpoint() & "/" & arguments.entityname,
 				entities=getEndpoint()
 			}
-			});
+		});
+
+		if(getCurrentUser().isAdminUser()){
+			result.table=exampleEntity.getTable();
+		}
+
+		result.properties=result.items;
+		structDelete(result,'items');
 		return result;
 	};
 
@@ -1714,13 +1753,40 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		param name="arguments.params" default=url;
 
 		var $=getBean('$').init(arguments.siteid);
+		var exampleEntity='';
+		var item='';
 
 		if(arguments.entityName=='entityname'){
 			var returnArray=[];
 			var entityKeys=listToArray(ListSort(StructKeyList(variables.config.entities),'textnocase'));
 			for(var i in entityKeys){
+				try{
+					if(i == 'contentnav'){
+						exampleEntity=getBean('content');
+					} else {
+						exampleEntity=getBean(i);
+					}
+					exampleEntity.getEntityName();
+				} catch(any e){
+					WriteDump(e);abort;
+				}
+
+				item={
+					entityname=i,
+					displayname=exampleEntity.getEntityDisplayName(),
+					dynamic=exampleEntity.getDynamic(),
+					scaffold=exampleEntity.getScaffold(),
+					orderby=exampleEntity.getOrderBy(),
+					links={
+						endpoint=getEndPoint() & "/" & i,properties=getEndPoint() & "/" & i & "/properties"}
+					};
+
+				if(getCurrentUser().isAdminUser()){
+					item.table=exampleEntity.getTable();
+				}
+
 				if(allowAccess(i,$,false)){
-					arrayAppend(returnArray,{entityname=i,displayname=variables.config.entities[i].displayname,links={endpoint=getEndPoint() & "/" & i,properties=getEndPoint() & "/" & i & "/properties"}});
+					arrayAppend(returnArray,item);
 				}
 			}
 			return {items=returnArray,links={self=getEndPoint()},entityname='entityname'};

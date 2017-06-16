@@ -539,9 +539,14 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return application.objectMappings[variables.entityName].scaffold;
 	}
 
+	function getBundleable(){
+		param name="application.objectMappings.#variables.entityName#.bundleable" default=false;
+		return application.objectMappings[variables.entityName].bundleable;
+	}
+
 	function getDynamic(){
 		param name="application.objectMappings.#variables.entityName#.dynamic" default=false;
-		return application.objectMappings[variables.entityName].dynamics;
+		return application.objectMappings[variables.entityName].dynamic;
 	}
 
 	function getPrimaryKey(){
