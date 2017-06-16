@@ -126,7 +126,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function declareEntity(entityConfig){
+			var $=getBean('$').init(variables.siteid);
 
+			if(!request.muraSessionManagement || $.validateCSRFTokens()){
 				if(!getCurrentUser().isSuperUser()){
 					throw(type="authorization");
 				}
@@ -148,6 +150,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				getServiceFactory().declareBean(arguments.entityConfig);
 
 				return findProperties(obj.entityName);
+			} else {
+				throw(type="invalidTokens");
+			}
 	}
 
 	function registerEntity(entityName, config={public=false,fields=''}){
