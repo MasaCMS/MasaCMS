@@ -6755,24 +6755,57 @@ Mura.RequestContext=Mura.Core.extend(
    */
   declareEntity:function(entityConfig) {
 
-      return new Promise(function(resolve, reject) {
-          self.request({
-              async: true,
-              type: 'POST',
-              url: Mura.apiEndpoint,
-							data:{
-								method: 'declareEntity',
-								entityConfig: encodeURIComponent(JSON.stringify(entityConfig))
-							},
-              success: function(resp) {
-                  if (typeof resolve =='function') {
-                      resolve(resp.data);
-                  }
-              }
-            }
-          );
-      });
+		var self=this;
 
+		if(Mura.mode.toLowerCase() == 'rest'){
+			return new Promise(function(resolve, reject) {
+        self.request({
+            async: true,
+            type: 'POST',
+            url: Mura.apiEndpoint,
+						data:{
+							method: 'declareEntity',
+							entityConfig: encodeURIComponent(JSON.stringify(entityConfig))
+						},
+            success: function(resp) {
+                if (typeof resolve =='function') {
+                    resolve(resp.data);
+                }
+            }
+          }
+        );
+			});
+		} else {
+			return new Promise(function(resolve, reject) {
+					self._requestcontext.request({
+							type: 'post',
+							url: Mura.apiEndpoint + '?method=generateCSRFTokens',
+							data: {
+									siteid: self.get('siteid'),
+									context: ''
+							},
+							success: function(resp) {
+								self.request({
+										async: true,
+										type: 'POST',
+										url: Mura.apiEndpoint,
+										data:{
+											method: 'declareEntity',
+											entityConfig: encodeURIComponent(JSON.stringify(entityConfig)),
+											'csrf_token': resp.data.csrf_token,
+											'csrf_token_expires': resp.data.csrf_token_expires
+										},
+										success: function(resp) {
+												if (typeof resolve =='function') {
+														resolve(resp.data);
+												}
+										}
+									}
+								);
+							}
+					});
+			});
+		}
   },
 
   /**
@@ -9165,7 +9198,7 @@ Mura.Entity = Mura.Core.extend(
             return new Promise(function(resolve, reject) {
 
                 var context = self.get('id');
-                if(mura.mode.toLowerCase() == 'rest'){
+                if(Mura.mode.toLowerCase() == 'rest'){
                   self._requestcontext.request({
                       type: 'post',
                       url: Mura.apiEndpoint + '?method=save',
@@ -9259,22 +9292,24 @@ Mura.Entity = Mura.Core.extend(
     'delete': function() {
 
         var self = this;
-        if(mura.mode.toLowerCase() == 'rest'){
-          self._requestcontext.request({
-              type: 'post',
-              url: Mura.apiEndpoint + '?method=delete',
-              data: {
-                  siteid: self.get('siteid'),
-                  id: self.get('id'),
-                  entityname: self.get('entityname')
-              },
-              success: function() {
-                  self.set('isdeleted',true);
-                  self.cachePurge();
-                  if (typeof resolve == 'function') {
-                      resolve(self);
-                  }
-              }
+        if(Mura.mode.toLowerCase() == 'rest'){
+          return new Promise(function(resolve, reject) {
+            self._requestcontext.request({
+                type: 'post',
+                url: Mura.apiEndpoint + '?method=delete',
+                data: {
+                    siteid: self.get('siteid'),
+                    id: self.get('id'),
+                    entityname: self.get('entityname')
+                },
+                success: function() {
+                    self.set('isdeleted',true);
+                    self.cachePurge();
+                    if (typeof resolve == 'function') {
+                        resolve(self);
+                    }
+                }
+            });
           });
         } else {
           return new Promise(function(resolve, reject) {
