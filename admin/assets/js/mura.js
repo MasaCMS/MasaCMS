@@ -1996,7 +1996,7 @@ var Mura=(function(){
                   if (window.MuraInlineEditor && window.MuraInlineEditor
                       .checkforImageCroppers) {
                       find("img").each(function() {
-                          window.uraInlineEditor.checkforImageCroppers(
+                          window.muraInlineEditor.checkforImageCroppers(
                               this);
                       });
 
@@ -11826,6 +11826,8 @@ Mura.Request=Mura.Core.extend(
 
       if(typeof this.requestObject != 'undefined'){
         if(typeof this.requestObject.headers['cookie'] != 'undefined'){
+          console.log('pre cookies:');
+          console.log(this.requestObject.headers['cookie']);
           params.headers['Cookie']=this.requestObject.headers['cookie'];
         }
         if(typeof this.requestObject.headers['x-client_id'] != 'undefined'){
@@ -11912,6 +11914,9 @@ Mura.Request=Mura.Core.extend(
 
             var newSetCookies=httpResponse.headers['set-cookie'];
 
+            console.log('response cookies:');
+            console.log(httpResponse.headers['set-cookie']);
+
             if(!(newSetCookies instanceof Array)){
               newSetCookies=[newSetCookies];
             }
@@ -11919,37 +11924,78 @@ Mura.Request=Mura.Core.extend(
             self.responseObject.setHeader('Set-Cookie',newSetCookies);
 
             var cookieMap={};
+            var setMap={};
 
+            // pull out existing cookies
             if(existingCookies.length){
               for(var c in existingCookies){
-                var tempCookie=existingCookies[c].split(" ")[0].split("=");
-                cookieMap[tempCookie[0]]=tempCookie[1].split(';')[0];
+                var tempCookie=existingCookies[c];
+                if(typeof tempCookie != 'undefined'){
+                  tempCookie=existingCookies[c].split(" ")[0].split("=");
+                  if(tempCookie.length > 1){
+                    cookieMap[tempCookie[0]]=tempCookie[1].split(';')[0];
+                  }
+                }
+              }
+            }
+
+            console.log('existing 1:');
+            console.log(cookieMap);
+
+            // pull out new cookies
+            if(newSetCookies.length){
+              for(var c in newSetCookies){
+                var tempCookie=newSetCookies[c];
+                if(typeof tempCookie != 'undefined'){
+                  tempCookie=tempCookie.split(" ")[0].split("=");
+                  if(tempCookie.length > 1){
+                    cookieMap[tempCookie[0]]=tempCookie[1].split(';')[0];
+                  }
+                }
+              }
+            }
+
+            console.log('existing 2:');
+            console.log(cookieMap);
+            var cookie='';
+
+            // put cookies back in in the same order that they came out
+            if(existingCookies.length){
+              for(var c in existingCookies){
+                var tempCookie=existingCookies[c];
+                if(typeof tempCookie != 'undefined'){
+                  tempCookie=tempCookie.split(" ")[0].split("=");
+                  if(tempCookie.length > 1){
+                    if(cookie != ''){
+                      cookie=cookie + "; ";
+                    }
+                    setMap[tempCookie[0]]=true;
+                    cookie=cookie + tempCookie[0] + "=" + cookieMap[tempCookie[0]];
+                  }
+                }
               }
             }
 
             if(newSetCookies.length){
               for(var c in newSetCookies){
-                var tempCookie=newSetCookies[c].split(" ")[0].split("=");
-                cookieMap[tempCookie[0]]=tempCookie[1].split(';')[0];
-              }
-            }
-
-            var cookie='';
-
-            for(var c in cookieMap){
-              if(cookieMap.hasOwnProperty(c)){
-                if(cookie != ''){
-                  cookie=cookie + "; ";
+                var tempCookie=newSetCookies[c];
+                if(typeof tempCookie != 'undefined'){
+                  var tempCookie=tempCookie.split(" ")[0].split("=");
+                  if(typeof setMap[tempCookie[0]] == 'undefined' && tempCookie.length > 1){
+                    if(cookie != ''){
+                      cookie=cookie + "; ";
+                    }
+                    setMap[tempCookie[0]]=true;
+                    cookie=cookie + tempCookie[0] + "=" + cookieMap[tempCookie[0]];
+                  }
                 }
-                cookie=cookie + c + "=" + cookieMap[c].split(';')[0]
               }
             }
 
             self.requestObject.headers['cookie']=cookie;
-            //console.log('post:')
-            //console.log(self.requestObject.headers['Cookie']);
-            //console.log('post cookie');
-            //console.log(cookie);
+
+            console.log('merged cookies:');
+            console.log(self.requestObject.headers['cookie']);
 
         }
 
