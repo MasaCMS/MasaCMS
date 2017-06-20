@@ -2865,7 +2865,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="moduleid" required="false" default="#request.muraMostRecentPluginModuleID#" />
 <cfset var sessionData=getSession()>
 <cfif not (isDefined('sessionData.siteid') and isDefined('sessionData.siteArray'))>
-	<cflocation url="#variables.configBean.getContext##variables.configBean.getAdminDir()#/" addtoken="false">
+	<cflocation url="#variables.configBean.getContext()##variables.configBean.getAdminDir()#/" addtoken="false">
 </cfif>
 
 <cfset var rc=structNew()>
