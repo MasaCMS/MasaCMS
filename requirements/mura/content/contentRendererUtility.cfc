@@ -963,7 +963,7 @@
 		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',lcase(arguments.object))#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#arguments.objectparams.instanceid#"'>
 
 		<cfloop collection="#arguments.objectparams#" item="local.i">
-			<cfif len(local.i) and local.i neq 'runtime'>
+			<cfif len(local.i) and not listFindNoCase('runtime,object,objectid,instanceid',local.i)>
 				<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
 			</cfif>
 		</cfloop>
@@ -1929,8 +1929,10 @@
 		<cfset var displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 		<cfset var filePath="">
 		<!--- START Checking for Override via Event Model --->
+		<cfset eventOutput=arguments.$.renderEvent("onBodyRender")>
+
 		<!--- For backwards compatibility --->
-		<cfif arguments.$.content().getType() eq 'Folder'>
+		<cfif not len(eventOutput) and arguments.$.content().getType() eq 'Folder'>
 			<cfset eventOutput=arguments.$.renderEvent("onPortalBodyRender")>
 			<cfif not len(eventOutput)>
 				<cfset eventOutput=arguments.$.renderEvent("onPortal#arguments.$.content().getSubType()#BodyRender")>

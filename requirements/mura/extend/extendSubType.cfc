@@ -898,14 +898,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var extensionData = {} />
 	<cfset var extendSetBean = "" />
+	<cfset var relatedSetBean = "" />
 	<cfset var set = "" />
-	<cfset var sets = getExtendSets() />
+	<cfset var extendsets = getExtendSets() />
+	<cfset var relatecontentsets = getRelatedContentSets(false) />
 	<cfset var setStruct = {} />
 	<cfset var item = "" />
 	<cfset var i = 0 />
 	<cfset var xmlRoot = XmlElemNew( documentXML, "", "extension" ) />
 
 	<cfset var xmlAttributeSet = "" />
+	<cfset var xmlRelatedContentSet = "" />
 
 	<cfset extensionData = duplicate(variables.instance) />
 	<cfset structDelete(extensionData,"sets") />
@@ -917,6 +920,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset structDelete(extensionData,"isNew") />
 	<cfset structDelete(extensionData,"isActive") />
 	<cfset structDelete(extensionData,"siteid") />
+	<cfset structDelete(extensionData,"fromMuraCache") />
 
 	<cfloop collection="#extensionData#" item="item">
 		<cfif isSimpleValue(extensionData[item])>
@@ -924,14 +928,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfloop from="1" to="#ArrayLen(sets)#" index="i">
-		<cfset extendSetBean = loadSet(sets[i].getExtendSetID()) />
+	<cfloop from="1" to="#ArrayLen(extendsets)#" index="i">
+		<cfset extendSetBean = loadSet(extendsets[i].getExtendSetID()) />
 		<cfset xmlAttributeSet = extendSetBean.getAsXML(documentXML) />
 		<cfset ArrayAppend(
 			xmlRoot.XmlChildren,
 			xmlAttributeSet
 			) />
+	</cfloop>
 
+	<cfloop from="1" to="#ArrayLen(relatecontentsets)#" index="i">
+		<cfset relatedSetBean = relatecontentsets[i]/>
+		<cfset xmlRelatedContentSet = relatedSetBean.getAsXML(documentXML) />
+		<cfset ArrayAppend(
+			xmlRoot.XmlChildren,
+			xmlRelatedContentSet
+			) />
 	</cfloop>
 
 	<cfreturn xmlRoot />
