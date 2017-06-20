@@ -10852,6 +10852,7 @@ submitForm: function() {
 				   .then(function(resp){
 					   if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors )){
 						   self.showErrors( resp.data.errors );
+							 self.trigger('afterErrorRender');
 					   } else if(typeof resp.data.redirect != 'undefined'){
 						   if(resp.data.redirect && resp.data.redirect != location.href){
 							   location.href=resp.data.redirect;
@@ -10860,6 +10861,7 @@ submitForm: function() {
 						   }
 					   } else {
 						   mura(self.context.formEl).html( Mura.templates['success'](resp.data) );
+							 self.trigger('afterResponseRender');
 					   }
 				  });
 			}
@@ -12274,17 +12276,17 @@ Mura.UI=Mura.Core.extend(
 				if(typeof this.handlers[$eventName] != 'undefined'){
 					var $handlers=this.handlers[$eventName];
 					for(var i=0;i < $handlers.length;i++){
-						$handlers[i].call(obj.node);
+						$handlers[i].call(this);
 					}
 				}
 
 				if(typeof this[eventName] == 'function'){
-					this[eventName].call(obj.node);
+					this[eventName].call(this);
 				}
 				var fnName='on' + eventName.substring(0,1).toUpperCase() + eventName.substring(1,eventName.length);
 
 				if(typeof this[fnName] == 'function'){
-					this[fnName].call(obj.node);
+					this[fnName].call(this);
 				}
 			}
 		}
