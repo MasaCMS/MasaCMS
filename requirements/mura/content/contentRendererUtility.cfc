@@ -1929,8 +1929,10 @@
 		<cfset var displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
 		<cfset var filePath="">
 		<!--- START Checking for Override via Event Model --->
+		<cfset eventOutput=arguments.$.renderEvent("onBodyRender")>
+
 		<!--- For backwards compatibility --->
-		<cfif arguments.$.content().getType() eq 'Folder'>
+		<cfif not len(eventOutput) and arguments.$.content().getType() eq 'Folder'>
 			<cfset eventOutput=arguments.$.renderEvent("onPortalBodyRender")>
 			<cfif not len(eventOutput)>
 				<cfset eventOutput=arguments.$.renderEvent("onPortal#arguments.$.content().getSubType()#BodyRender")>
