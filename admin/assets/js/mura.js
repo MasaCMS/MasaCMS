@@ -8882,7 +8882,7 @@ Mura.Entity = Mura.Core.extend(
 
                     } else {
                         if (Mura.entities[self.properties[propertyName].entityname]) {
-                            var returnObj = new Mura.entities[self.properties[propertyName ].entityname]( obj.properties[propertyName],self._requestcontext);
+                            var returnObj = new Mura.entities[self.properties[propertyName ].entityname](self.properties[propertyName],self._requestcontext);
                         } else {
                             var returnObj = new Mura.Entity(self.properties[propertyName],self._requestcontext);
                         }
@@ -8914,9 +8914,9 @@ Mura.Entity = Mura.Core.extend(
                                 var returnObj = new Mura.EntityCollection(resp.data,self._requestcontext);
                             } else {
                                 if (
-                                    Mura.entities[obj.entityname]
+                                    Mura.entities[self.entityname]
                                 ) {
-                                    var returnObj = new Mura.entities[obj.entityname](obj,self._requestcontext);
+                                    var returnObj = new Mura.entities[self.entityname](resp.data,self._requestcontext);
                                 } else {
                                     var returnObj = new Mura.Entity(resp.data,self._requestcontext);
                                 }
@@ -10779,10 +10779,12 @@ submitForm: function() {
 					}
 				} else {
 					mura(self.context.formEl).html( Mura.templates['success'](data) );
+					self.trigger('afterResponseRender');
 				}
 			},
 			function( entity ) {
 				self.showErrors( entity.properties.errors );
+				self.trigger('afterErrorRender');
 			}
 		);
 	}

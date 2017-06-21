@@ -1133,7 +1133,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			}
 		});
 
-		if(getCurrentUser().isAdminUser()){
+		if(getCurrentUser().isAdminUser() || getCurrentUser().isSuperUser()){
 			result.table=exampleEntity.getTable();
 		}
 
@@ -1786,7 +1786,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						endpoint=getEndPoint() & "/" & i,properties=getEndPoint() & "/" & i & "/properties"}
 					};
 
-				if(getCurrentUser().isAdminUser()){
+				if($.getCurrentUser().isAdminUser()){
 					item.table=exampleEntity.getTable();
 				}
 
