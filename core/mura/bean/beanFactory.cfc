@@ -111,6 +111,8 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           fileWrite(filePath,result);
 
+          structDelete(application.objectMappings,entity.entityName);
+
           super.declareBean(beanName=entity.entityName, dottedPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#", isSingleton=false);
 
           getBean(entity.entityName).checkSchema();
