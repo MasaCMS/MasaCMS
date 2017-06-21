@@ -69,7 +69,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
 
-          var result='component#newline##tab#extends="#extends#"#newline##tab#entityname="#entity.entityname#"#newline##tab#displayname="#entity.displayname#"#newline##tab#table="#table#"#newline##tab#orderby="#orderby#"#newline##tab#bundleable="#bundleable#"#newline##tab#hint="#hint#"#newline##tab#dynamic="true"#newline##tab#scaffold="#scaffold#"#newline##tab#{';
+          var result='component#newline##tab#extends="#extends#"#newline##tab#entityname="#entity.entityname#"#newline##tab#displayname="#displayname#"#newline##tab#table="#table#"#newline##tab#orderby="#orderby#"#newline##tab#bundleable="#bundleable#"#newline##tab#hint="#hint#"#newline##tab#dynamic="true"#newline##tab#scaffold="#scaffold#"#newline##tab#{';
 
           for(var p in properties){
             result = result & newline & tab & tab & "property";
@@ -113,7 +113,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           super.declareBean(beanName=entity.entityName, dottedPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#", isSingleton=false);
 
-          getBean(arguments.entityName).checkSchema();
+          getBean(entity.entityName).checkSchema();
 
           return this;
         } else {

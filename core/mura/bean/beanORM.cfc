@@ -239,7 +239,7 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is not allowed to manage schema.");
 		}
 
-		if(hasTable()){
+		if(hasTable() && !structIsEmpty(props)){
 			for(var prop in props){
 				if(props[prop].persistent){
 					getDbUtility().addColumn(argumentCollection=props[prop]);
