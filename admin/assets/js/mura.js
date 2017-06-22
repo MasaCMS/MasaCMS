@@ -459,6 +459,7 @@ var Mura=(function(){
    * @memberof {class} Mura
    */
   function getEntity(entityname, siteid) {
+      siteid=siteid || Mura.siteid;
       return Mura._requestcontext.getEntity(entityname, siteid);
   }
 
@@ -469,8 +470,9 @@ var Mura=(function(){
    * @return {Mura.Feed}
    * @memberof {class} Mura
    */
-  function getFeed(entityname) {
-    return Mura._requestcontext.getFeed(Mura.siteid, entityname);
+  function getFeed(entityname,siteid) {
+    siteid=siteid || Mura.siteid;
+    return Mura._requestcontext.getFeed(entityname,siteid);
   }
 
   /**
@@ -6828,8 +6830,9 @@ Mura.RequestContext=Mura.Core.extend(
    * @param  {type} entityname Entity name
    * @return {Mura.Feed}
    */
-  getFeed:function(entityname) {
-      var feed=new Mura.Feed(Mura.siteid, entityname, this);
+  getFeed:function(entityname,siteid) {
+			siteid=siteid || Mura.siteid;
+      var feed=new Mura.Feed(siteid, entityname, this);
       return feed;
   },
 
