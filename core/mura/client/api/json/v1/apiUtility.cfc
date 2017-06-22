@@ -2521,58 +2521,57 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		if(entity.getEntityName() != 'bean'){
 			links['properties']="#baseurl#/#entity.getEntityName()#/properties";
-		}
-
-		if(entity.getEntityName()=='content'){
-			links['self']="#baseurl#/content/#entity.getContentID()#";
-			links['history']="#baseurl#/content/#entity.getContentID()#/history";
-			links['rendered']="#baseurl#/content/_path/#entity.getFilename()#";
-			if(entity.getType()=='Variation'){
-				links['self']=links['rendered'];
-			} else {
-				links['crumbs']="#baseurl#/#entity.getEntityName()#/#entity.getValue('contentid')#/crumbs";
-			}
-			links['relatedcontent']="#baseurl#/#entity.getEntityName()#/#entity.getValue('contentid')#/relatedcontent";
-		} else if(entity.getEntityName()=='category'){
-			links['crumbs']="#baseurl#/#entity.getEntityName()#/#entity.getValue('categoryid')#/crumbs";
-			links['self']="#baseurl#/#entity.getEntityName()#/#entity.getvalue(entity.getPrimaryKey())#";
-		} else if(entity.getEntityName()=='site'){
-			links['self']="#baseurl#/site";
-		} else {
-			links['self']="#baseurl#/#entity.getEntityName()#/#entity.getvalue(entity.getPrimaryKey())#";
-		}
-
-		if(listFindNoCase('feed,contentFeed',entity.getEntityName())){
-			links['feed']="#baseurl#/content/?feedid=#entity.getFeedID()#";
-		}
-
-		if(arrayLen(entity.getHasManyPropArray())){
-			try{
-			for(p in entity.getHasManyPropArray()){
-				links[p.name]="#baseurl#/#p.cfc#?#entity.translatePropKey(p.loadkey)#=#entity.getValue(entity.translatePropKey(p.column))#";
-				//links[p.name]="#links['self']#/#p.name#";
-			}
-		} catch(any e){/*writeDump(var=p,abort=true);*/}
-		}
-
-		if(arrayLen(entity.getHasOnePropArray())){
-			for(p in entity.getHasOnePropArray()){
-				if(p.name=='site'){
-					links[p.name]="#baseurl#/site";
+			
+			if(entity.getEntityName()=='content'){
+				links['self']="#baseurl#/content/#entity.getContentID()#";
+				links['history']="#baseurl#/content/#entity.getContentID()#/history";
+				links['rendered']="#baseurl#/content/_path/#entity.getFilename()#";
+				if(entity.getType()=='Variation'){
+					links['self']=links['rendered'];
 				} else {
-					if(len(entity.getValue(entity.translatePropKey(p.column)))){
-						links[p.name]="#baseurl#/#p.cfc#/#entity.getValue(entity.translatePropKey(p.column))#";
+					links['crumbs']="#baseurl#/#entity.getEntityName()#/#entity.getValue('contentid')#/crumbs";
+				}
+				links['relatedcontent']="#baseurl#/#entity.getEntityName()#/#entity.getValue('contentid')#/relatedcontent";
+			} else if(entity.getEntityName()=='category'){
+				links['crumbs']="#baseurl#/#entity.getEntityName()#/#entity.getValue('categoryid')#/crumbs";
+				links['self']="#baseurl#/#entity.getEntityName()#/#entity.getvalue(entity.getPrimaryKey())#";
+			} else if(entity.getEntityName()=='site'){
+				links['self']="#baseurl#/site";
+			} else {
+				links['self']="#baseurl#/#entity.getEntityName()#/#entity.getvalue(entity.getPrimaryKey())#";
+			}
+
+			if(listFindNoCase('feed,contentFeed',entity.getEntityName())){
+				links['feed']="#baseurl#/content/?feedid=#entity.getFeedID()#";
+			}
+
+			if(arrayLen(entity.getHasManyPropArray())){
+				try{
+				for(p in entity.getHasManyPropArray()){
+					links[p.name]="#baseurl#/#p.cfc#?#entity.translatePropKey(p.loadkey)#=#entity.getValue(entity.translatePropKey(p.column))#";
+					//links[p.name]="#links['self']#/#p.name#";
+				}
+			} catch(any e){/*writeDump(var=p,abort=true);*/}
+			}
+
+			if(arrayLen(entity.getHasOnePropArray())){
+				for(p in entity.getHasOnePropArray()){
+					if(p.name=='site'){
+						links[p.name]="#baseurl#/site";
+					} else {
+						if(len(entity.getValue(entity.translatePropKey(p.column)))){
+							links[p.name]="#baseurl#/#p.cfc#/#entity.getValue(entity.translatePropKey(p.column))#";
+						}
 					}
 				}
 			}
-		}
 
-		if(arrayLen(variables.config.linkMethods)){
-			for(var i in variables.config.linkMethods){
-				evaluate('#i#(entity=arguments.entity,links=links)');
+			if(arrayLen(variables.config.linkMethods)){
+				for(var i in variables.config.linkMethods){
+					evaluate('#i#(entity=arguments.entity,links=links)');
+				}
 			}
 		}
-
 		return links;
 	}
 
