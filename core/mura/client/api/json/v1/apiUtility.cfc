@@ -252,9 +252,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		result.links={
 			'self'=arguments.baseURL & "&pageIndex=" & result.pageIndex,
-			'entities'=getEndpoint(),
-			'properties'='#getEndpoint()#/#iterator.getEntityName()#/properties'
+			'entities'=getEndpoint()
 		};
+
+		if(iterator.getEntityName() != 'bean'){
+				result.links['properties']='#getEndpoint()#/#iterator.getEntityName()#/properties';
+		}
 
 		if(result.pageIndex > 1){
 			result.links['first']=arguments.baseURL & "&pageIndex=" & 1;
@@ -1504,14 +1507,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(!(isDefined('variables.config.entities.#arguments.entityConfigName#.allowfieldselect') && !variables.config.entities[entityConfigName].allowfieldselect) && (isDefined('url.fields') && len(url.fields))){
 			fields=url.fields;
 
-			if(arguments.entity.getEntityName()=='content' && !listFindNoCase(fields,'contentid')){
-				fields=listAppend(fields,'contentid');
-			} else if (arguments.entity.getEntityName()!='content' && !listFindNoCase(fields,arguments.entity.getPrimaryKey())){
-				fields=listAppend(fields,arguments.entity.getPrimaryKey());
-			}
+			if(!(isDefined('url.distinct') &&  isBoolean(url.distinct) && url.distinct)){
+				if(arguments.entity.getEntityName()=='content' && !listFindNoCase(fields,'contentid')){
+					fields=listAppend(fields,'contentid');
+				} else if (arguments.entity.getEntityName()!='content' && !listFindNoCase(fields,arguments.entity.getPrimaryKey())){
+					fields=listAppend(fields,arguments.entity.getPrimaryKey());
+				}
 
-			if(!listFindNoCase(fields,'siteid')){
-				fields=listAppend(fields,'siteid');
+				if(!listFindNoCase(fields,'siteid')){
+					fields=listAppend(fields,'siteid');
+				}
 			}
 		} else if(isDefined('variables.config.entities.#arguments.entityConfigName#.fields') && len(variables.config.entities[arguments.entityConfigName].fields)){
 			fields=variables.config.entities[arguments.entityConfigName].fields;
@@ -2039,7 +2044,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 						baseURL=baseURL & '=' & esapiEncode('url',params[p]);
 					}
 
-					if(!listFindNoCase('_cacheid,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){
+					if(!listFindNoCase('_cacheid,distinct,fields,entityname,method,maxItems,pageIndex,itemsPerPage,sortBy,sortDirection,contentpoolid,shownavonly,showexcludesearch,includehomepage',p)){
 						if(propName == 'sort'){
 							advancedsort=listAppend(advancedsort,arguments.params[p]);
 						} else if(!(entity.getEntityName()=='user' && propName=='isPublic')){
@@ -2107,8 +2112,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var pk="contentid";
 		} else if (entityName== 'feed'){
 			var pk="feedid";
-		} else {
+		} else if(StructKeyExists(application.objectMappings, entityName)) {
 			var pk=application.objectMappings[entityName].primarykey;
+		} else {
+			var pk="";
 		}
 
 		if(entityName=='content'){
@@ -2271,7 +2278,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 
 		if(isDefined('arguments.params.fields') && len(arguments.params.fields)){
-			if(arguments.feed.getDistinct()){
+			if(!arguments.feed.getDistinct()){
 				if(listFind('content,contentnav',arguments.feed.getEntityName())){
 					var primarykey='contentid';
 				} else {
@@ -2511,7 +2518,10 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		}
 		*/
 		links['all']="#baseurl#/#entity.getEntityName()#";
-		links['properties']="#baseurl#/#entity.getEntityName()#/properties";
+
+		if(entity.getEntityName() != 'bean'){
+			links['properties']="#baseurl#/#entity.getEntityName()#/properties";
+		}
 
 		if(entity.getEntityName()=='content'){
 			links['self']="#baseurl#/content/#entity.getContentID()#";

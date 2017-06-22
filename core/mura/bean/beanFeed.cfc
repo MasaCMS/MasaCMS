@@ -167,7 +167,7 @@ function setFields(fields) output=false {
 	return this;
 }
 
-function setDistinct(distinct) output=false {
+function setDistinct(distinct=true) output=false {
 	variables.instance.distinct=arguments.distinct;
 	return this;
 }
@@ -396,6 +396,8 @@ function getIterator(cachedWithin="#variables.instance.cachedWithin#") output=fa
 			it=getBean("beanIterator");
 		}
 		it.setEntityName(getValue('entityName'));
+	} else {
+		it=getBean("beanIterator");
 	}
 
 	it.setQuery(rs);
@@ -590,7 +592,7 @@ function fields(fields) output=false {
 	return setFields(arguments.fields);
 }
 
-function distinct(distinct) output=false {
+function distinct(distinct=true) output=false {
 	return setDistinct(arguments.distinct);
 }
 
@@ -725,6 +727,7 @@ function getEndRow() output=false {
 		<cfif not arguments.countOnly>
 			<cfif len(getFields())>
 				#REReplace(listFirst(getFields(),"."),"[^0-9A-Za-z\._,\- ]","","all")#
+				from #variables.instance.table#
 			<cfelseif len(getEntity().getLoadSQLColumnsAndTables())>
 				<cfset loadTableMetaData()>
 				#getEntity().getLoadSQLColumnsAndTables()#

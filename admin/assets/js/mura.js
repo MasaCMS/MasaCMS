@@ -9933,6 +9933,9 @@ Mura.Feed = Mura.Core.extend(
 		 * @return {Mura.Feed}              Self
 		 */
 		distinct: function(distinct) {
+			if(typeof distinct=='undefined'){
+				distinct=true;
+			}
 			this.queryString += '&distinct=' + encodeURIComponent(distinct);
 			return this;
 		},
