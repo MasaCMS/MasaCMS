@@ -366,7 +366,7 @@ function getThemeRenderer() output=false {
 	}
 
 	function announceEvent(eventName,objectid="",index="0") output=false {
-		if(!len(arguments.objectid) && event().valueExists('contentBean')){
+		if(!len(arguments.objectid) && isObject(event('contentBean'))){
 			arguments.objectid=event().getValue('contentBean').getContentID();
 		}
 		getEventManager().announceEvent(eventToAnnounce=arguments.eventName,currentEventObject=this,index=arguments.index,objectid=arguments.objectid);
@@ -374,7 +374,7 @@ function getThemeRenderer() output=false {
 	}
 
 	function renderEvent(eventName,objectid="",index="0") output=false {
-		if(!len(arguments.objectid) && event().valueExists('contentBean')){
+		if(!len(arguments.objectid) && isObject(event('contentBean'))){
 			arguments.objectid=event().getValue('contentBean').getContentID();
 		}
 		return getEventManager().renderEvent(eventToRender=arguments.eventName,currentEventObject=this,index=arguments.index,objectid=arguments.objectid);
