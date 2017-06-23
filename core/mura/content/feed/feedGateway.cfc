@@ -219,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif arrayLen(arguments.feedBean.getCountValArray())>
 								<cfloop array="#arguments.feedBean.getCountValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
-									count(#sanitizedValue(local.i)#) as count_#sanitizedValue(local.i)#
+									<cfif local.i eq '*'>count(*) as count<cfelse>count(#sanitizedValue(local.i)#) as count_#sanitizedValue(local.i)#</cfif>
 								</cfloop>
 							</cfif>
 							<cfif arrayLen(arguments.feedBean.getAvgValArray())>
