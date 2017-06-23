@@ -93,6 +93,13 @@ function init() output=false {
 	variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" );
 	variables.instance.joins=arrayNew(1);
 	variables.instance.pendingParam={};
+	variables.instance.sumValArray=[];
+	variables.instance.countValArray=[];
+	variables.instance.avgValArray=[];
+	variables.instance.minValArray=[];
+	variables.instance.maxValArray=[];
+	variables.instance.groupByArray=[];
+
 	return this;
 }
 
@@ -389,7 +396,7 @@ function getIterator(cachedWithin="#variables.instance.cachedWithin#") output=fa
 	var it='';
 
 	//When selecting distinct generic iterators and beans are used
-	if(!getDistinct()){
+	if(!getDistinct() && !isAggregateQuery()){
 		if ( getServiceFactory().containsBean("#variables.instance.entityName#Iterator") ) {
 			it=getBean("#variables.instance.entityName#Iterator");
 		} else {
@@ -639,6 +646,70 @@ function leftJoin(entityName) output=false {
 	return this;
 }
 
+function sumVal(property) output=false {
+	if(len(trim(arguments.property))){
+		for(var p in listToArray(arguments.property)){
+			arrayAppend(variables.instance.sumValArray,trim(p));
+		}
+	}
+	return this;
+}
+
+function groupBy(property) output=false {
+	if(len(trim(arguments.property))){
+		for(var p in listToArray(arguments.property)){
+			arrayAppend(variables.instance.groupByArray,trim(p));
+		}
+	}
+	return this;
+}
+
+function countVal(property) output=false {
+	if(len(trim(arguments.property))){
+		for(var p in listToArray(arguments.property)){
+			arrayAppend(variables.instance.countValArray,trim(p));
+		}
+	}
+	return this;
+}
+
+function avgVal(property) output=false {
+	if(len(trim(arguments.property))){
+		for(var p in listToArray(arguments.property)){
+			arrayAppend(variables.instance.avgValArray,trim(p));
+		}
+	}
+	return this;
+}
+
+function minVal(property) output=false {
+	if(len(trim(arguments.property))){
+		for(var p in listToArray(arguments.property)){
+			arrayAppend(variables.instance.minValArray,trim(p));
+		}
+	}
+	return this;
+}
+
+function maxVal(property) output=false {
+	if(len(trim(arguments.property))){
+		for(var p in listToArray(arguments.property)){
+			arrayAppend(variables.instance.maxValArray,trim(p));
+		}
+	}
+	return this;
+}
+
+function isAggregateQuery(){
+	for(var i in ['minValArray','maxValArray','avgValArray','sumValArray','countValArray','groupByArray']){
+		if(arrayLen(variables.instance[i])){
+			return true;
+		}
+	}
+
+	return false;
+}
+
 private function caseInsensitiveOrderBy(required orderBy) output=false {
 	var orderByList = "";
 	var orderByValue = "";
@@ -662,8 +733,8 @@ private function caseInsensitiveOrderBy(required orderBy) output=false {
 	return orderByList;
 }
 
-function sanitizedValue(property) output=false {
-	return REReplace(getValue(arguments.property),"[^0-9A-Za-z\._,\- ]","","all");
+function sanitizedValue(value) output=false {
+	return REReplace(value,"[^0-9A-Za-z\._,\- ]","","all");
 }
 
 function getOffset() output=false {
@@ -726,7 +797,47 @@ function getEndRow() output=false {
 
 		<cfif not arguments.countOnly>
 			<cfif len(getFields())>
-				#REReplace(listFirst(getFields(),"."),"[^0-9A-Za-z\._,\- ]","","all")#
+				#sanitizedValue(listFirst(getFields(),"."),"[^0-9A-Za-z\._,\- ]","","all")#
+				from #variables.instance.table#
+			<cfelseif isAggregateQuery()>
+				<cfset started=false>
+				<cfif arrayLen(variables.instance.groupByArray)>
+					<cfloop array="#variables.instance.groupByArray#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						#sanitizedValue(local.i)#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(variables.instance.sumValArray)>
+					<cfloop array="#variables.instance.sumValArray#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(local.i)#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(variables.instance.countValArray)>
+					<cfloop array="#variables.instance.countValArray#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						count(#sanitizedValue(local.i)#) as count_#sanitizedValue(local.i)#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(variables.instance.avgValArray)>
+					<cfloop array="#variables.instance.avgValArray#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(local.i)#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(variables.instance.minValArray)>
+					<cfloop array="#variables.instance.minValArray#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						min(#sanitizedValue(local.i)#) as min_#sanitizedValue(local.i)#
+					</cfloop>
+				</cfif>
+				<cfif arrayLen(variables.instance.maxValArray)>
+					<cfloop array="#variables.instance.maxValArray#" index="local.i">
+						<cfif started>, <cfelse><cfset started=true></cfif>
+						max(#sanitizedValue(local.i)#) as max_#sanitizedValue(local.i)#
+					</cfloop>
+				</cfif>
+				<cfset started=false>
 				from #variables.instance.table#
 			<cfelseif len(getEntity().getLoadSQLColumnsAndTables())>
 				<cfset loadTableMetaData()>
@@ -851,6 +962,16 @@ function getEndRow() output=false {
 	<cfif getIsHistorical()>
 		and #variables.instance.table#.deleted=0
 	</cfif>
+
+	<cfset started=false>
+	<cfif arrayLen(variables.instance.groupByArray)>
+		group by
+		<cfloop array="#variables.instance.groupByArray#" index="local.i">
+			<cfif started>, <cfelse><cfset started=true></cfif>
+			#sanitizedValue(local.i)#
+		</cfloop>
+	</cfif>
+	<cfset started=false>
 
 	<cfif not arguments.countOnly>
 		<cfif len(variables.instance.orderby)>
