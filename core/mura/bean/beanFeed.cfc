@@ -683,7 +683,7 @@ function aggregate(type,property) output=false {
 				arrayAppend(variables.instance.maxValArray,trim(p));
 			}
 			break;
-			case 'grouby':
+			case 'groupby':
 			for(var p in listToArray(arguments.property)){
 				arrayAppend(variables.instance.groupByArray,trim(p));
 			}
