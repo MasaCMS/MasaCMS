@@ -204,38 +204,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#REReplace(listFirst(arguments.feedBean.getFields(),"."),"[^0-9A-Za-z\._,\- ]","","all")#
 						<cfelseif arguments.feedBean.isAggregateQuery()>
 							<cfset started=false>
-							<cfif arrayLen(arguments.feedBean.getgroupByArray())>
-								<cfloop array="#arguments.feedBean.getgroupByArray()#" index="local.i">
+							<cfif arrayLen(arguments.feedBean.getGroupByArray())>
+								<cfloop array="#arguments.feedBean.getGroupByArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
 									#sanitizedValue(local.i)#
 								</cfloop>
 							</cfif>
-							<cfif arrayLen(arguments.feedBean.getsumValArray())>
-								<cfloop array="#arguments.feedBean.getsumValArray()#" index="local.i">
+							<cfif arrayLen(arguments.feedBean.getSumValArray())>
+								<cfloop array="#arguments.feedBean.getSumValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
 									sum(#sanitizedValue(local.i)#) as sum_#sanitizedValue(local.i)#
 								</cfloop>
 							</cfif>
-							<cfif arrayLen(arguments.feedBean.getcountValArray())>
-								<cfloop array="#arguments.feedBean.getcountValArray()#" index="local.i">
+							<cfif arrayLen(arguments.feedBean.getCountValArray())>
+								<cfloop array="#arguments.feedBean.getCountValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
 									count(#sanitizedValue(local.i)#) as count_#sanitizedValue(local.i)#
 								</cfloop>
 							</cfif>
-							<cfif arrayLen(arguments.feedBean.getavgValArray())>
-								<cfloop array="#arguments.feedBean.getavgValArray()#" index="local.i">
+							<cfif arrayLen(arguments.feedBean.getAvgValArray())>
+								<cfloop array="#arguments.feedBean.getAvgValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
 									avg(#sanitizedValue(local.i)#) as avg_#sanitizedValue(local.i)#
 								</cfloop>
 							</cfif>
-							<cfif arrayLen(arguments.feedBean.getminValArray())>
-								<cfloop array="#arguments.feedBean.getminValArray()#" index="local.i">
+							<cfif arrayLen(arguments.feedBean.getMinValArray())>
+								<cfloop array="#arguments.feedBean.getMinValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
 									min(#sanitizedValue(local.i)#) as min_#sanitizedValue(local.i)#
 								</cfloop>
 							</cfif>
-							<cfif arrayLen(arguments.feedBean.getmaxValArray())>
-								<cfloop array="#arguments.feedBean.getmaxValArray()#" index="local.i">
+							<cfif arrayLen(arguments.feedBean.getMaxValArray())>
+								<cfloop array="#arguments.feedBean.getMaxValArray()#" index="local.i">
 									<cfif started>, <cfelse><cfset started=true></cfif>
 									max(#sanitizedValue(local.i)#) as max_#sanitizedValue(local.i)#
 								</cfloop>
@@ -763,9 +763,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset started=false>
-				<cfif arrayLen(arguments.feedBean.getgroupByArray())>
+				<cfif arrayLen(arguments.feedBean.getGroupByArray())>
 					group by
-					<cfloop array="#arguments.feedBean.getgroupByArray()#" index="local.i">
+					<cfloop array="#arguments.feedBean.getGroupByArray()#" index="local.i">
 						<cfif started>, <cfelse><cfset started=true></cfif>
 						#sanitizedValue(local.i)#
 					</cfloop>
