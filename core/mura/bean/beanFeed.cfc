@@ -646,15 +646,6 @@ function leftJoin(entityName) output=false {
 	return this;
 }
 
-function sumVal(property) output=false {
-	if(len(trim(arguments.property))){
-		for(var p in listToArray(arguments.property)){
-			arrayAppend(variables.instance.sumValArray,trim(p));
-		}
-	}
-	return this;
-}
-
 function groupBy(property) output=false {
 	if(len(trim(arguments.property))){
 		for(var p in listToArray(arguments.property)){
@@ -664,37 +655,39 @@ function groupBy(property) output=false {
 	return this;
 }
 
-function countVal(property) output=false {
+function aggregate(type,property) output=false {
 	if(len(trim(arguments.property))){
-		for(var p in listToArray(arguments.property)){
-			arrayAppend(variables.instance.countValArray,trim(p));
-		}
-	}
-	return this;
-}
-
-function avgVal(property) output=false {
-	if(len(trim(arguments.property))){
-		for(var p in listToArray(arguments.property)){
-			arrayAppend(variables.instance.avgValArray,trim(p));
-		}
-	}
-	return this;
-}
-
-function minVal(property) output=false {
-	if(len(trim(arguments.property))){
-		for(var p in listToArray(arguments.property)){
-			arrayAppend(variables.instance.minValArray,trim(p));
-		}
-	}
-	return this;
-}
-
-function maxVal(property) output=false {
-	if(len(trim(arguments.property))){
-		for(var p in listToArray(arguments.property)){
-			arrayAppend(variables.instance.maxValArray,trim(p));
+		switch(arguments.type){
+			case 'sum':
+			for(var p in listToArray(arguments.property)){
+				arrayAppend(variables.instance.sumValArray,trim(p));
+			}
+			break;
+			case 'count':
+			for(var p in listToArray(arguments.property)){
+				arrayAppend(variables.instance.countValArray,trim(p));
+			}
+			break;
+			case 'avg':
+			for(var p in listToArray(arguments.property)){
+				arrayAppend(variables.instance.avgValArray,trim(p));
+			}
+			break;
+			case 'min':
+			for(var p in listToArray(arguments.property)){
+				arrayAppend(variables.instance.minValArray,trim(p));
+			}
+			break;
+			case 'max':
+			for(var p in listToArray(arguments.property)){
+				arrayAppend(variables.instance.maxValArray,trim(p));
+			}
+			break;
+			case 'grouby':
+			for(var p in listToArray(arguments.property)){
+				arrayAppend(variables.instance.groupByArray,trim(p));
+			}
+			break;
 		}
 	}
 	return this;

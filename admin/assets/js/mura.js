@@ -9941,70 +9941,15 @@ Mura.Feed = Mura.Core.extend(
 		},
 
 		/**
-		 * minVal - Sets property or properties to min value
+		 * aggregate - Define aggregate values that you would like (sum,max,min,cout,avg,groupby)
 		 *
-		 * @param  {string} property property
-		 * @return {Mura.Feed}              Self
-		 */
-		minVal: function(property) {
-			if(typeof property!='undefined'){
-				this.queryString += '&' + encodeURIComponent('minVal[' + this.propIndex + ']') + '=' + property;
-				this.propIndex++;
-			}
-			return this;
-		},
-
-		/**
-		 * maxVal - Sets property or properties to max value
-		 *
+		 * @param  {string} type Type of aggregation (sum,max,min,cout,avg,groupby)
 		 * @param  {string} property property
 		 * @return {Mura.Feed}	Self
 		 */
-		maxVal: function(property) {
-			if(typeof property!='undefined'){
-				this.queryString += '&' + encodeURIComponent('maxVal[' + this.propIndex + ']') + '=' + property;
-				this.propIndex++;
-			}
-			return this;
-		},
-
-		/**
-		 * avgVal - Sets property or properties to avg value
-		 *
-		 * @param  {string} property property
-		 * @return {Mura.Feed}	Self
-		 */
-		avgVal: function(property) {
-			if(typeof property!='undefined'){
-				this.queryString += '&' + encodeURIComponent('avgVal[' + this.propIndex + ']') + '=' + property;
-				this.propIndex++;
-			}
-			return this;
-		},
-
-		/**
-		 * sumVal - Sets property or properties to sum value
-		 *
-		 * @param  {string} property property
-		 * @return {Mura.Feed}	Self
-		 */
-		sumVal: function(property) {
-			if(typeof property!='undefined'){
-				this.queryString += '&' + encodeURIComponent('sumVal[' + this.propIndex + ']') + '=' + property;
-				this.propIndex++;
-			}
-			return this;
-		},
-
-		/**
-		 * countVal - Sets property or properties to avg
-		 *
-		 * @param  {string} property property
-		 * @return {Mura.Feed}	Self
-		 */
-		countVal: function(property) {
-			if(typeof property!='undefined'){
-				this.queryString += '&' + encodeURIComponent('countVal[' + this.propIndex + ']') + '=' + property;
+		aggregate: function(type,property) {
+			if(typeof type != 'undefined' && typeof property!='undefined'){
+				this.queryString += '&' + encodeURIComponent( type + '[' + this.propIndex + ']') + '=' + property;
 				this.propIndex++;
 			}
 			return this;

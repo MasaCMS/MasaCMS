@@ -2056,11 +2056,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 								} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
 									feed.addParam(relationship=p);
 									relationship='and';
-								} else if(listFindNoCase('sumVal,avgVal,countVal,maxVal,minVal,groupBy',propName)){
-									tempArgs={
-										property=params[p]
-									};
-									feed.invokeMethod(propName,tempArgs);
+								} else if(listFindNoCase('sum,avg,count,max,min,groupBy',propName)){
+									feed.aggregate(propName,params[p]);
 								} else if(propname=='innerJoin'){
 									feed.innerJoin(relatedEntity=params[p]);
 								} else if(propname=='leftJoin'){
@@ -3534,7 +3531,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 	}
 
 	function isAggregateQuery() {
-			var checkArray=['sumVal','avgVal','countVal','maxVal','minVal','groupBy','distinct'];
+			var checkArray=['sum','avg','count','max','min','groupBy','distinct'];
 
 			for(var i in checkArray){
 				if(structKeyExists(url,i) || find(cgi.query_string,"=#i#[")){
