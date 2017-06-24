@@ -144,6 +144,8 @@ component extends="ioc" hint="This provides the primary bean factory that all co
             fileDelete(filePath);
           }
 
+        } else {
+          throw(message="Cannot undeclare non-dynamic bean: #entity.entityname#");
         }
 
 
