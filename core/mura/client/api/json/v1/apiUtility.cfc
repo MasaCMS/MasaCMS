@@ -27,7 +27,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="declareEntity,findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
+			publicMethods="undeclareEntity,declareEntity,findOne,findMany,findAll,findProperties,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage,findVersionHistory,findCurrentUser,swagger",
 			entities={
 				'contentnav'={
 					fields="links,images,parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew,remoteurl,remoteid"
@@ -150,6 +150,22 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				getServiceFactory().declareBean(arguments.entityConfig);
 
 				return findProperties(obj.entityName);
+			} else {
+				throw(type="invalidTokens");
+			}
+	}
+
+	function undeclareEntity(entityname){
+			var $=getBean('$').init(variables.siteid);
+
+			if(!request.muraSessionManagement || $.validateCSRFTokens()){
+				if(!getCurrentUser().isSuperUser()){
+					throw(type="authorization");
+				}
+
+				getServiceFactory().deleteBean(arguments.entityname);
+
+				return {success:true};
 			} else {
 				throw(type="invalidTokens");
 			}

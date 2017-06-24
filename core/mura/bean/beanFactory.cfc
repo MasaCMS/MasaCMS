@@ -126,6 +126,31 @@ component extends="ioc" hint="This provides the primary bean factory that all co
       }
     }
 
+    function undeclareBean(beanName){
+
+      if(containsBean(arguments.beanName)){
+
+        var entity=getBean(arguments.beanName);
+
+        if(entity.getDynamic()){
+
+          getBean('dbUtility').dropTable(entity.getTable());
+
+          structDelete(application.objectMappings,entity.getEntityName());
+
+          var filePath=expandPath('/muraWRM/modules/dynamic_entities/model/beans/#entity.getEntityName()#.cfc');
+
+          if(fileExists(filePath)){
+            fileDelete(filePath);
+          }
+
+        }
+
+
+      }
+
+    }
+
     // Calls containsBean(). Added for WireBox compatibility
   	public function containsInstance( String name ) {
   	  return containsBean( name );
