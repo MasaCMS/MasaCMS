@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <h2>#esapiEncode('html',rc.changeset.getName())#</h2>
 
       <cfif not rc.changeset.getPublished()>
-      <p><i class="mi-link"></i> <a title="Change Set Name" href="##" onclick="return preview('#esapiEncode('javascript',rc.previewLink)#','');">#esapiEncode('html',rc.previewLink)#</a></p><br/>
+      <p><i class="mi-link"></i> <a title="#esapiEncode('html_attr',rc.changeset.getName())#" href="#esapiEncode('html_attr',rc.previewLink)#" onclick="return preview('#esapiEncode('javascript',rc.previewLink)#','');">#esapiEncode('html',rc.previewLink)#</a></p><br/>
       </cfif>
 
       <form class="form-inline separate" novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">
@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 </cfif>
             		<li class="delete"><a href="./?muraAction=cChangesets.removeItem&contentHistId=#item.getcontentHistID()#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',item.getchangesetID())#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),item.getmenutitle()))#',this.href)"><i class="mi-trash"></i>Delete</a></li>
         		</ul>
-         </div> 
+         </div>
   		  </td>
           <td class="title var-width">#$.dspZoom(crumbdata)#</td>
            <td>
@@ -289,7 +289,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                   </cfif>
                     <li class="delete"><a href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="mi-trash"></i>Delete</a></li>
               </ul>
-             </div>   
+             </div>
           </td>
           <td class="title var-width"><a href="#editlink#">#$.dspZoom(crumbdata)#</a></td>
            <td>
