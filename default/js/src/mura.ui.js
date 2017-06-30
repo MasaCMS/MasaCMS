@@ -76,17 +76,17 @@
 					if(typeof this.handlers[$eventName] != 'undefined'){
 						var $handlers=this.handlers[$eventName];
 						for(var i=0;i < $handlers.length;i++){
-							$handlers[i].call(obj.node);
+							$handlers[i].call(this);
 						}
 					}
 
 					if(typeof this[eventName] == 'function'){
-						this[eventName].call(obj.node);
+						this[eventName].call(this);
 					}
 					var fnName='on' + eventName.substring(0,1).toUpperCase() + eventName.substring(1,eventName.length);
 
 					if(typeof this[fnName] == 'function'){
-						this[fnName].call(obj.node);
+						this[fnName].call(this);
 					}
 				}
 			}

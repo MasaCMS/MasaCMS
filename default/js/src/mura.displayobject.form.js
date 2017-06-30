@@ -871,6 +871,7 @@
 							   .then(function(resp){
 								   if(typeof resp.data.errors == 'object' && !Mura.isEmptyObject(resp.data.errors )){
 									   self.showErrors( resp.data.errors );
+										 self.trigger('afterErrorRender');
 								   } else if(typeof resp.data.redirect != 'undefined'){
 									   if(resp.data.redirect && resp.data.redirect != location.href){
 										   location.href=resp.data.redirect;
@@ -879,6 +880,7 @@
 									   }
 								   } else {
 									   mura(self.context.formEl).html( Mura.templates['success'](resp.data) );
+										 self.trigger('afterResponseRender');
 								   }
 							  });
 						}

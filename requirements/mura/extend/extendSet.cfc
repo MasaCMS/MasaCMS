@@ -472,6 +472,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset structDelete(extensionData,"isNew") />
 	<cfset structDelete(extensionData,"isActive") />
 	<cfset structDelete(extensionData,"siteid") />
+	<cfset structDelete(extensionData,"fromMuraCache") />
+	<cfset structDelete(extensionData,"saveerrors") />
+	
 	<cfloop collection="#extensionData#" item="item">
 		<cfif isSimpleValue(extensionData[item])>
 			<cfset xmlAttributeSet.XmlAttributes[lcase(item)] = extensionData[item] />
