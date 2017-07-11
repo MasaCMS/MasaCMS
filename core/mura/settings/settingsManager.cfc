@@ -729,7 +729,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.broadcastInit=false>
 </cffunction>
 
-<cffunction name="getAccessControlOriginDomainList">
+<cffunction name="getAccessControlOriginDomainList" output="false">
 	<cfscript>
 		if(!isDefined("variables.AccessControlOriginDomainList")){
 			lock name="origindomainlist#application.instanceid#" type="exclusive" timeout="10"{
@@ -762,6 +762,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		return variables.AccessControlOriginDomainList;
+
+	</cfscript>
+</cffunction>
+
+<cffunction name="getAccessControlOriginDomainArray" output="false">
+	<cfscript>
+		if(!isDefined("variables.AccessControlOriginDomainArray")){
+			variables.AccessControlOriginDomainArray=listToArray(getAccessControlOriginDomainList());
+		}
+
+		return variables.AccessControlOriginDomainArray;
 
 	</cfscript>
 </cffunction>

@@ -482,14 +482,17 @@ component extends="framework" output="false" {
 
 		if(structKeyExists(headers,'Origin')){
 
-	  	var origin = headers['Origin'];
+			var origin = headers['Origin'];
+      var originDomain =reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one");
 	  	var PC = getpagecontext().getresponse();
 
 	  	// If the Origin is okay, then echo it back, otherwise leave out the header key
-	  	if(listFindNoCase(application.settingsManager.getSite(session.siteid).getAccessControlOriginDomainList(), reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") )) {
-	   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
-	   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
-	  	}
+      for(var domain in application.settingsManager.getAccessControlOriginDomainArray() ){
+        if( domain == originDomain || len(originDomain) > len(domain) && right(originDomain,len(domain)+1)=='.' & domain ){
+          PC.setHeader( 'Access-Control-Allow-Origin', origin );
+          PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+        }
+      }
   	}
 
 		application.rbFactory.setAdminLocale();
