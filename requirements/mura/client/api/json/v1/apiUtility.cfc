@@ -248,13 +248,16 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 			if( structKeyExists( headers, 'Origin' )){
 
-			  	var origin =  headers['Origin'];;
+			  	var origin =  headers['Origin'];
+					var originDomain =reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one");
 
 			  	// If the Origin is okay, then echo it back, otherwise leave out the header key
-			  	if(listFindNoCase(application.settingsManager.getAccessControlOriginDomainList(), reReplace(origin, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") )) {
-			   		responseObject.setHeader( 'Access-Control-Allow-Origin', origin );
-			   		responseObject.setHeader( 'Access-Control-Allow-Credentials', 'true' );
-			  	}
+					for(var domain in application.settingsManager.getAccessControlOriginDomainArray() ){
+						if( domain == originDomain || len(originDomain) > len(domain) && right(originDomain,len(domain)+1)=='.' & domain ){
+							responseObject.setHeader( 'Access-Control-Allow-Origin', origin );
+				   		responseObject.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+						}
+					}
 		  	}
 
 			var paramsArray=[];

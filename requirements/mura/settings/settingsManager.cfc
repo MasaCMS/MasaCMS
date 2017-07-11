@@ -766,6 +766,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cffunction>
 
+<cffunction name="getAccessControlOriginDomainArray" output="false">
+	<cfscript>
+		if(!isDefined("variables.AccessControlOriginDomainArray")){
+			variables.AccessControlOriginDomainArray=listToArray(getAccessControlOriginDomainList());
+		}
+
+		return variables.AccessControlOriginDomainArray;
+
+	</cfscript>
+</cffunction>
+
 <cffunction name="getAccessControlOriginList">
 	<cfscript>
 		if(!isDefined("variables.AccessControlOriginList")){
