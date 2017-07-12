@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- this is here for CF8 compatibility --->
 <cfset variables.baseDir=this.baseDir>
 <cfprocessingdirective pageencoding="utf-8"/>
-<cfsetting requestTimeout = "1000"> 
+<cfsetting requestTimeout = "1000">
 
 <!--- do a settings setup check --->
 <cfif NOT application.setupComplete OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
@@ -74,15 +74,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- check the settings --->
 			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
 			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
-			
+
 			<cfif trim( getINIProperty("datasource") ) IS NOT ""
 					AND (
 						NOT isDefined( "FORM.#application.setupSubmitButton#" )
 						AND
 						NOT isDefined( "FORM.#application.setupSubmitButtonComplete#" )
 						)
-				>		
-						
+				>
+
 				<cfset application.setupComplete = true />
 			<cfelse>
 				<!--- check to see if the index.cfm page exists in the setup folder --->
@@ -90,29 +90,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
 				</cfif>
 				<cfset application.setupComplete = false />
-			</cfif>	
+			</cfif>
 		<cfelse>
 			<cfset application.setupComplete = true />
 		</cfif>
-	<cfelse>		
+	<cfelse>
 		<cfset application.setupComplete=true>
 	</cfif>
-</cfif>	
+</cfif>
 
 <cfif application.setupComplete>
 	<cfset application.appInitialized=false>
 	<cfset request.muraShowTrace=true>
-	
+
 	<cfset application.appInitialized=false>
 	<cfset request.muraShowTrace=true>
-		
+
 	<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
-		
+
 	<cfset variables.iniSections=getProfileSections(variables.iniPath)>
-		
+
 	<cfset variables.iniProperties=structNew()>
 	<cfloop list="#variables.iniSections.settings#" index="variables.p">
-		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>			
+		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>
 		<cfif left(variables.iniProperties[variables.p],2) eq "${"
 			and right(variables.iniProperties[variables.p],1) eq "}">
 			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
@@ -121,9 +121,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and right(variables.iniProperties[variables.p],2) eq "}}">
 			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
 			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		</cfif>		
-	</cfloop>		
-		
+		</cfif>
+	</cfloop>
+
 	<cfloop list="#variables.iniSections[ variables.iniProperties.mode]#" index="variables.p">
 		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p)>
 		<cfif left(variables.iniProperties[variables.p],2) eq "${"
@@ -134,14 +134,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and right(variables.iniProperties[variables.p],2) eq "}}">
 			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
 			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		</cfif>		
+		</cfif>
 	</cfloop>
-	
+
 	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
 	<cfset variables.mode = variables.iniProperties.mode />
-	<cfset variables.mapdir = variables.iniProperties.mapdir />
+	<cfset variables.mapdir = "mura" />
 	<cfset variables.webroot = variables.iniProperties.webroot />
-		
+
 	<cfif not structKeyExists(variables.iniProperties,"useFileMode")>
 		<cfset variables.iniProperties.useFileMode=true>
 	</cfif>
@@ -149,15 +149,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not StructKeyExists(variables.iniProperties, 'fileDelim')>
 		<cfset variables.iniProperties.fileDelim = '' />
 	</cfif>
-		
+
 	<cfset application.appReloadKey = variables.iniProperties.appreloadkey />
-		
+
 	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
-		
+
 	<cfset variables.tracer=createObject("component","mura.cfobject").init()>
-	
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1")> 
-		
+
+	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1")>
+
 	<cfscript>
 		if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
 	    	directoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
@@ -166,14 +166,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    if(fileExists(expandPath("/mura/content/file/image.cfc"))){
 	    	fileDelete(expandPath("/mura/content/file/image.cfc"));
 	    }
-	    
+
 		application.configBean=new mura.configBean().set(variables.iniProperties);
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
 				exclude=["/.","/mura/autoUpdater/global","/mura/bean/beanFactory.cfc"],
 				strict=application.configBean.getStrictFactory(),
-				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility|extendObject)$" 
+				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility|extendObject)$"
 				});
 
 		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
@@ -207,7 +207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		);
 
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
-		
+
 		variables.serviceFactory.addAlias("scriptProtectionFilter","Portcullis");
 		variables.serviceFactory.addAlias("eventManager","pluginManager");
 		variables.serviceFactory.addAlias("permUtility","permission");
@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.addAlias("adZone","adZoneBean");
 			variables.serviceFactory.addAlias("campaign","campaignBean");
 		}
-	
+
 		variables.serviceFactory.addAlias("rate","rateBean");
 		variables.serviceFactory.addAlias("favorite","favoriteBean");
 		variables.serviceFactory.addAlias("email","emailBean");
@@ -268,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listfindnocase('oracle,postgresql,nuodb', application.configBean.getDbType()) >
 		<cfset application.configBean.setDbCaseSensitive(true)>
 	</cfif>
-	
+
 	<cftry>
 		<cfif not application.configBean.getDbCaseSensitive() and application.serviceFactory.getBean('dbUtility').version().database_productname eq 'h2'>
 			<cfset application.configBean.setDbCaseSensitive(true)>
@@ -277,13 +277,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-	
+
 
 	<cftry>
 		<cfobjectcache action="clear" />
 		<cfcatch></cfcatch>
 	</cftry>
-	
+
 	<!---You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded --->
 	<cfif fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm"))>
 		<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
@@ -294,7 +294,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.objectMappings.versionedBeans="">
 
 	<cfif application.appAutoUpdated or isdefined('url.applyDBUpdates')>
-		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
+		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")>
 		<cfset application.configBean.applyDbUpdates() />
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 	<cfelseif fileExists(ExpandPath("/muraWRM/config/objectMappings.json.cfm"))>
@@ -318,19 +318,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.getBean('userDevice');
 		</cfscript>
 	</cfif>
-		
+
 	<cfset application.appAutoUpdated=false>
-				
+
 	<cfset variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
-		
+
 	<!--- The ad manager has been removed, but may be there in certain legacy conditions --->
 	<cfif application.serviceFactory.containsBean('advertiserManager')>
 		<cfset variables.serviceList=listAppend(variables.serviceList,'advertiserManager')>
 	</cfif>
 
 	<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
-	<cfloop list="#variables.serviceList#" index="variables.i">			
-		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#")> 	
+	<cfloop list="#variables.serviceList#" index="variables.i">
+		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#")>
 		<cftry>
 			<cfset application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#") />
 			<cfcatch>
@@ -341,47 +341,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcatch>
 		</cftry>
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-	</cfloop>	
-	
+	</cfloop>
+
 
 	<!--- End beanServicePlaceHolders --->
 
 	<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
-	<cfset application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL")/> 
+	<cfset application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL")/>
 
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating classExtensionManager")> 
+	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating classExtensionManager")>
 	<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")> 
+	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")>
 	<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory() />
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-			
+
 	<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 	<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
 		<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
-	</cfif>		
-					
+	</cfif>
+
 	<cfset variables.basedir=expandPath("/muraWRM")/>
 	<cfset variables.mapprefix="" />
-		
+
 	<cfif len(application.configBean.getValue('encryptionKey'))>
 		<cfset application.encryptionKey=application.configBean.getValue('encryptionKey')>
 	</cfif>
-					
+
 	<cfdirectory action="list" directory="#variables.basedir#/requirements/" name="variables.rsRequirements">
 
 	<cfloop query="variables.rsRequirements">
 		<cfif variables.rsRequirements.type eq "dir" and variables.rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#variables.rsRequirements.name#")>
-			<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name#"] = variables.basedir & "/requirements/#variables.rsRequirements.name#">')>				
+			<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name#"] = variables.basedir & "/requirements/#variables.rsRequirements.name#">')>
 		</cfif>
-	</cfloop>	
+	</cfloop>
 
 	<cfif application.configBean.getValue("autoDiscoverPlugins") and not isdefined("url.safemode")>
 		<cfset application.pluginManager.discover()>
 	</cfif>
-		
-	<cfset application.cfstatic=structNew()>			
+
+	<cfset application.cfstatic=structNew()>
 	<cfset application.appInitialized=true/>
 	<cfset application.appInitializedTime=now()>
 	<cfset application.clusterManager.reload(broadcast=application.broadcastInit)>
@@ -389,20 +389,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset structDelete(application,"muraAdmin")>
 	<cfset structDelete(application,"proxyServices")>
 	<cfset structDelete(application,"CKFinderResources")>
-		
+
 	<!--- Set up scheduled tasks --->
 	<cfif (len(application.configBean.getServerPort())-1) lt 1>
 		<cfset variables.port=80/>
 	<cfelse>
 		<cfset variables.port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1) />
 	</cfif>
-			
+
 	<cfif listFindNoCase('Railo,Lucee',application.configBean.getCompiler())>
 		<cfset variables.siteMonitorTask="siteMonitor"/>
 	<cfelse>
 		<cfset variables.siteMonitorTask="#application.configBean.getWebRoot()#/index.cfm/_api/sitemonitor/"/>
 	</cfif>
-			
+
 	<cftry>
 		<cfif variables.iniProperties.ping eq 1>
 			<cfschedule action = "update"
@@ -419,41 +419,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfcatch></cfcatch>
 	</cftry>
-						
+
 	<cfif application.configBean.getCreateRequiredDirectories()>
-		<cfif not directoryExists("#application.configBean.getWebRoot()#/plugins")> 
+		<cfif not directoryExists("#application.configBean.getWebRoot()#/plugins")>
 			<cftry>
-				<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()#/plugins"> 
+				<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()#/plugins">
 				<cfcatch>
-					<cfdirectory action="create" directory="#application.configBean.getWebRoot()#/plugins"> 
+					<cfdirectory action="create" directory="#application.configBean.getWebRoot()#/plugins">
 				</cfcatch>
 			</cftry>
 		</cfif>
-		
-		<cfif not fileExists(variables.basedir & "/robots.txt")>	
+
+		<cfif not fileExists(variables.basedir & "/robots.txt")>
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt")>
 		</cfif>
 
-		<cfif not fileExists(variables.basedir & "/web.config")>	
+		<cfif not fileExists(variables.basedir & "/web.config")>
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/web.config.template.cfm", destination="#variables.basedir#/web.config")>
 		</cfif>
 
-		<cfif not fileExists(variables.basedir & "/requirements/cfformprotect/cffp.ini.cfm")>	
+		<cfif not fileExists(variables.basedir & "/requirements/cfformprotect/cffp.ini.cfm")>
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/cffp.ini.template.cfm", destination="#variables.basedir#/requirements/cfformprotect/cffp.ini.cfm")>
 		</cfif>
 	</cfif>
-		
+
 	<cfif not structKeyExists(application,"plugins")>
 		<cfset application.plugins=structNew()>
 	</cfif>
 	<cfset application.pluginstemp=application.plugins>
 	<cfset application.plugins=structNew()>
-	<cfset variables.pluginEvent=createObject("component","mura.event").init()>		
+	<cfset variables.pluginEvent=createObject("component","mura.event").init()>
 
 	<!---
 	<cfset application.pluginManager.discoverBeans()>
 	--->
-	<cftry>	
+	<cftry>
 		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent)>
 		<cfcatch>
 			<cfset structAppend(application.plugins,application.pluginstemp,false)>
@@ -466,8 +466,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- Fire local onApplicationLoad events--->
 	<cfset variables.rsSites=application.settingsManager.getList() />
-		
-	<cfloop query="variables.rsSites">	
+
+	<cfloop query="variables.rsSites">
 		<cfset variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteID)>
 		<cfset variables.themedir=expandPath(variables.siteBean.getThemeIncludePath())>
 
@@ -498,7 +498,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.localHandler=variables.siteBean.getLocalHandler()>
 
 		<cfif isObject(variables.localHandler)>
-			<cfif structKeyExists(variables.localhandler,"onApplicationLoad")>		
+			<cfif structKeyExists(variables.localhandler,"onApplicationLoad")>
 				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
 				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
 
@@ -523,7 +523,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.expandedPath=expandPath(variables.siteBean.getThemeIncludePath()) & "/eventHandler.cfc">
 		<cfif fileExists(variables.expandedPath)>
 			<cfset variables.themeHandler=createObject("component","#variables.siteBean.getThemeAssetMap()#.eventHandler").init()>
-			<cfif structKeyExists(variables.themeHandler,"onApplicationLoad")>		
+			<cfif structKeyExists(variables.themeHandler,"onApplicationLoad")>
 				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
 				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
 
@@ -538,14 +538,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not isDefined('variables.themeHandler.setValue')>
 					<cfset variables.themeHandler.injectMethod('setValue',variables.pluginEvent.setValue)>
 				</cfif>
-				
+
 				<cfset variables.themeHandler.setValue("_objectName","#variables.siteBean.getThemeAssetMap()#.eventHandler")>
 				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler.getValue('_objectName')#.onApplicationLoad")>
 				<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 			</cfif>
 			<cfset application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID)>
-		</cfif>	
+		</cfif>
 	</cfloop>
 
 	<!--- This looks for and update File and Link nodes that legacy urls --->
@@ -555,14 +555,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and body is null
 		and filename is not null
 	</cfquery>
-		
+
 	<cfset variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs)>
 
 	<cfloop condition="variables.legacyURLsIterator.hasNext()">
 		<cfset variables.item=variables.legacyURLsIterator.next()>
 
 		<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
-			update tcontent set body=filename where 
+			update tcontent set body=filename where
 			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
 			and body is null
@@ -573,7 +573,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cftry>
 			<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
 				update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getFilename()#">,
-				urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getURLTitle()#">  where 
+				urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getURLTitle()#">  where
 				contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
 				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
 			</cfquery>
@@ -604,7 +604,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip")>
 	<cfif fileExists(local.bundleLoc) and application.contentGateway.getPageCount('default').counter eq 1>
 		<cfset application.settingsManager.restoreBundle(
-			bundleFile=local.bundleLoc, 
+			bundleFile=local.bundleLoc,
 			keyMode='publish',
 			siteID='default',
 			contentMode='all',
@@ -617,4 +617,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!-- Clean out old cluster commands --->
 	<cfset application.clusterManager.clearOldCommands()>
-</cfif> 
+</cfif>

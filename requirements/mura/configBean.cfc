@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.version="6.2"/>
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
-<cfset variables.instance.webrootmap=""/>
+<cfset variables.instance.webrootmap="muraWRM"/>
 <cfset variables.instance.mapdir=""/>
 <cfset variables.instance.datasource=""/>
 <cfset variables.instance.stub=""/>
@@ -507,22 +507,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAdminSSL" returntype="Numeric" access="public" output="false">
+<cffunction name="getAdminSSL" access="public" output="false">
 	<cfreturn variables.instance.adminSSL />
 </cffunction>
 
 <cffunction name="setAdminSSL" access="public" output="false">
-	<cfargument name="AdminSSL" type="Numeric" />
+	<cfargument name="AdminSSL" />
 	<cfset variables.instance.adminSSL = arguments.AdminSSL />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getLogEvents" returntype="Numeric" access="public" output="false">
+<cffunction name="getLogEvents" access="public" output="false">
 	<cfreturn variables.instance.logEvents />
 </cffunction>
 
 <cffunction name="setLogEvents" access="public" output="false">
-	<cfargument name="logEvents" type="Numeric" />
+	<cfargument name="logEvents" />
 	<cfset variables.instance.logEvents = arguments.logEvents />
 	<cfreturn this>
 </cffunction>
