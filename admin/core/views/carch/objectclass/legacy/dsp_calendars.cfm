@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							& ' - '
 							& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
 
-						<option title="#esapiEncode('html_attr',title)#" value="archive_nav~#esapiEncode('html',title)#~#rc.rsSections.contentid#">
+						<option title="#esapiEncode('html_attr',title)#" value="calendar_nav~#esapiEncode('html',title)#~#rc.rsSections.contentid#">
 						#esapiEncode('html',title)#
 						</option>
 					</option>
