@@ -1011,7 +1011,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 						var rule={};
 						var ruleKey='';
 						var tempRule='';
-						var basicRules = ['minValue','maxValue','minLength','maxLength','minCollection','maxCollection','minList','maxList','inlist','method','lte','lt','gte','gt','eq','neq'];
+						var basicRules = ['regex','minValue','maxValue','minLength','maxLength','minCollection','maxCollection','minList','maxList','inlist','method','lte','lt','gte','gt','eq','neq'];
 
 
 						for(var prop in props){
