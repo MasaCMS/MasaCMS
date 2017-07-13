@@ -1011,7 +1011,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 						var rule={};
 						var ruleKey='';
 						var tempRule='';
-						var basicRules = ['minValue','maxValue','minLength','maxLength','minCollection','maxCollection','minList','maxList','inlist','method','lte','lt','gte','gt','eq','neq'];
+						var basicRules = ['regex','minValue','maxValue','minLength','maxLength','minCollection','maxCollection','minList','maxList','inlist','method','lte','lt','gte','gt','eq','neq'];
 
 
 						for(var prop in props){
@@ -1052,6 +1052,14 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 										rule={};
 									}
 									structAppend(rule,{format=props[prop].format});
+									arrayAppend(rules,rule);
+								} else if(structKeyExists(props[prop], "validate")){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									structAppend(rule,{format=props[prop].validate});
 									arrayAppend(rules,rule);
 								}
 
