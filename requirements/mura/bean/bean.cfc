@@ -1053,6 +1053,14 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 									}
 									structAppend(rule,{format=props[prop].format});
 									arrayAppend(rules,rule);
+								} else if(structKeyExists(props[prop], "validate")){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									structAppend(rule,{format=props[prop].validate});
+									arrayAppend(rules,rule);
 								}
 
 								if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
