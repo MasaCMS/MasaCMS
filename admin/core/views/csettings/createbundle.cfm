@@ -45,16 +45,16 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h1>Bundle Created</h1>
-
-<div class="nav-module-specific btn-group">
-	<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
+<div class="alert alert-success">The bundle that you have requested has been created and is now available on your server at <strong>#rc.bundleFilePath#</strong></div>
+<div class="mura-header">
+	<h1>Bundle Created</h1>
+	<div class="nav-module-specific btn-group">
+		<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
+	</div>
 </div>
-
 <div class="block block-constrain">
 	<div class="block block-bordered">
 		<div class="block-content">
-			<p>The bundle that you have requested has been created and is now available on your server at #rc.bundleFilePath#.</p>
 			<div class="help-block"><strong>Important:</strong> Leaving large bundle files on server can lead to excessive disk space usage.</div>
 			<cfif findNoCase(application.configBean.getWebRoot(),rc.bundleFilePath)>
 				<cfset downloadURL=replace(application.configBean.getContext() & right(rc.bundleFilePath,len(rc.bundleFilePath)-len(application.configBean.getWebRoot())),"\","/","All")>
