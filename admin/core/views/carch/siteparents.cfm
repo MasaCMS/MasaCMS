@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.rslist.contentid neq rc.parentid>
 			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 	        <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-			<cfif verdict neq 'none' and arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid) and rc.rslist.type neq 'Link' and rc.rslist.type neq 'File'>
+			<cfif verdict neq 'none' and arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>
 			<cfset counter=counter+1/>
 			<cfset hasParentID=true />
 			<tr <cfif not(counter mod 2)>class="alt"</cfif>>
