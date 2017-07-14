@@ -10,7 +10,7 @@
 	<div class="mura-control-group">
 		<label>Search for Comments</label>
 		<div class="mura-input-set">
-			<input type="text" name="keywords" value="#esapiEncode('html_attr',$.event('keywords'))#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
+			<input type="text" name="keywords" value="#esapiEncode('html_attr',$.event('keywords'))#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.search')#"/>
 			<button type="submit" name="btnSearch" id="btnSearch" class="btn"><i class="mi-search"></i></button>
 		</div>
 	</div>
