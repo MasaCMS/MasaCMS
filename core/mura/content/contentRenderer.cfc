@@ -713,6 +713,7 @@ Display Objects
 	<cfargument name="size" required="true" default="#this.navsize#">
 	<cfargument name="liClass" type="string" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
+	<cfargument name="setLiIds" type="boolean" default="false">
 
 	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
 		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
@@ -1805,6 +1806,8 @@ Display Objects
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 		<cfargument name="siteid" default="#variables.event.getValue('siteID')#">
 		<cfargument name="liClass" type="string" default="">
+		<cfargument name="setLiIds" type="boolean" default="false">
+
 		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',arguments.siteid,arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',0)>
 		<cfset var adjust=0>
 		<cfset var current=0>
@@ -1876,7 +1879,7 @@ Display Objects
 
 				<cfset started=true>
 				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
-				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif><cfif len(arguments.liClass)> #arguments.liClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif><cfif len(arguments.liClass)> #arguments.liClass#</cfif>"<cfif arguments.setLIIds> id="navHome"</cfif><cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 			</cfif>
 
 			<cfloop query="rsSection">
@@ -1951,7 +1954,9 @@ Display Objects
 				<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")/>
 			</cfif>
 
-			<cfset itemId="nav" & setCamelback(rsSection.menutitle)>
+			<cfif arguments.setLIIds>
+				<cfset itemId="nav" & setCamelback(rsSection.menutitle)>
+			</cfif>
 
 			<cfset linkArgs=structNew()>
 			<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
@@ -1978,7 +1983,7 @@ Display Objects
 				<cfset itemClass=listAppend(itemClass, "first",' ')>
 				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
 			</cfif>
-			<li<cfif len(itemClass)> class="#itemClass#"</cfif> id="#itemId#"<cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>>#link#<cfif subnav>#nest#</cfif></li>
+			<li<cfif len(itemClass)> class="#itemClass#"</cfif><cfif len(itemid)> id="#itemId#"</cfif><cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>>#link#<cfif subnav>#nest#</cfif></li>
 			<cfelse><cfset adjust=adjust-1></cfif></cfloop>
 			<cfif started></ul></cfif>
 			</cfoutput></cfsavecontent>
@@ -1997,6 +2002,7 @@ Display Objects
 	<cfargument name="aHasKidsAttributes" type="string" default="">
 	<cfargument name="siteid" default="#$.event('siteid')#">
 	<cfargument name="complete" type="boolean" default="false">
+	<cfargument name="setLiIds" type="boolean" default="false">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
