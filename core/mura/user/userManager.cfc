@@ -498,24 +498,24 @@
 
 			<cfif  userBean.getType() eq 1>
 				<cfset pluginEvent.setValue("groupBean",userBean)/>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupUpdate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroup#userBean.getSubType()#Update",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroup#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupUpdate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Update",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupUpdate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroup#userBean.getSubType()#Update",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroup#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupUpdate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Update",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 			<cfelse>
 				<cfset pluginEvent.setValue("userBean",userBean)/>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserUpdate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUser#userBean.getSubType()#Update",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUser#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserUpdate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Update",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserUpdate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUser#userBean.getSubType()#Update",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUser#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserUpdate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Update",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 			</cfif>
 
 		</cfif>
@@ -578,17 +578,17 @@
 		<cfif userBean.getType() eq 1>
 			<cfset pluginEvent.setValue("groupBean",userBean)/>
 			<cfset pluginEvent.setValue("bean",userBean)/>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroupCreate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroupSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroup#userBean.getSubType()#Create",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroup#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroupCreate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroupSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroup#userBean.getSubType()#Create",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroup#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 		<cfelse>
 			<cfset pluginEvent.setValue("userBean",userBean)/>
 			<cfset pluginEvent.setValue("bean",userBean)/>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUserCreate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUserSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUser#userBean.getSubType()#Create",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUser#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUserCreate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUserSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUser#userBean.getSubType()#Create",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUser#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 		</cfif>
 
 		<cfif variables.fileManager.requestHasRestrictedFiles(scope=userBean.getAllValues())>
@@ -635,25 +635,25 @@
 			<cfif  userBean.getType() eq 1>
 				<cfset pluginEvent.setValue("groupBean",userBean)/>
 				<cfset pluginEvent.setValue("bean",userBean)/>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupCreate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroup#userBean.getSubType()#Create",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroup#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupCreate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Create",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupCreate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroup#userBean.getSubType()#Create",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroup#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupCreate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Create",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 			<cfelse>
 				<cfset pluginEvent.setValue("userBean",userBean)/>
 				<cfset pluginEvent.setValue("bean",userBean)/>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserCreate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUser#userBean.getSubType()#Create",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUser#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserCreate",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserSave",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Create",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Save",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserCreate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUser#userBean.getSubType()#Create",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUser#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserCreate",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserSave",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Create",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+				<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Save",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 			</cfif>
 		</cfif>
 
@@ -672,15 +672,15 @@
 		<cfif  userBean.getType() eq 1>
 			<cfset pluginEvent.setValue("groupBean",userBean)/>
 			<cfset pluginEvent.setValue("bean",userBean)/>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupDelete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroupDelete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroup#userBean.getSubType()#Delete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onGroupDelete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroupDelete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeGroup#userBean.getSubType()#Delete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 		<cfelse>
 			<cfset pluginEvent.setValue("userBean",userBean)/>
 			<cfset pluginEvent.setValue("bean",userBean)/>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserDelete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUserDelete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUser#userBean.getSubType()#Delete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onUserDelete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUserDelete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeUser#userBean.getSubType()#Delete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 		</cfif>
 
 		<cfset variables.trashManager.throwIn(userBean)>
@@ -693,11 +693,11 @@
 		<cfset purgeUserCache(userBean=userBean)>
 
 		<cfif  userBean.getType() eq 1>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupDelete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Delete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroupDelete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterGroup#userBean.getSubType()#Delete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 		<cfelse>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserDelete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
-			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Delete",eventToAnnounce=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUserDelete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
+			<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterUser#userBean.getSubType()#Delete",currentEventObject=pluginEvent,objectid=userBean.getUserID())>
 		</cfif>
 	</cffunction>
 
