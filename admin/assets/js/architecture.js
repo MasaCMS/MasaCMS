@@ -456,7 +456,7 @@ buttons: {
 		document.getElementById('newZoomLink').style.display = 'none';
 		document.getElementById('newCopy').style.display = 'none';
 		document.getElementById('newCopyLink').style.display = 'none';
-		//document.getElementById('newCopyAll').style.display='none';
+		document.getElementById('newCopyAll').style.display='none';
 		document.getElementById('newCopyAllLink').style.display = 'none';
 		document.getElementById('newPaste').style.display = 'none';
 		document.getElementById('newPasteLink').style.display = 'none';
@@ -478,6 +478,7 @@ buttons: {
 			document.getElementById('newCopyAllLink').href = 'javascript:siteManager.copyThis(\'' + siteid + '\', \'' + contentid + '\',\'true\')';
 			document.getElementById('newCopy').style.display = '';
 			document.getElementById('newCopyLink').style.display = '';
+			document.getElementById('newCopyAll').style.display = '';
 			document.getElementById('newCopyAllLink').style.display = '';
 
 		}
@@ -2726,7 +2727,7 @@ buttons: {
 		if(typeof originParams == 'object'){
 			this.availableObject.params=$.extend(originParams,this.availableObject.params);
 		}
-	
+
 	},
 	configuratorMap:{
 			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
