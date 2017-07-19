@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <cfsilent>
 <cfparam name="session.frontEndProxyLoc" default="">
+<cfparam name="rc.parenthistid" default="">
 <cfset event=request.event>
 <cfset href = "">
 <cfif rc.action eq "add">
@@ -73,10 +74,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 <cfelseif rc.action eq "add" and (rc.contentBean.getType() eq "File" or rc.contentBean.getType() eq "Link")>
 	<cfset parentBean = application.contentManager.getActiveContent(currentBean.getParentID(), currentBean.getSiteID())>
-	<cfset href = parentBean.getURL()>
+	<cfif len(rc.parenthistid)
+		and parentBean.getContentHistID() neq rc.parenthistid
+		and rc.$.getBean('content').loadBy(contenthistid=rc.parenthistid).exists()>
+		<cfset href = parentBean.getURL(queryString="previewid=#rc.parenthistid#")>
+	<cfelse>
+		<cfset href = parentBean.getURL()>
+	</cfif>
 <cfelseif rc.action eq "multiFileUpload">
 	<cfset parentBean = application.contentManager.getActiveContent(rc.parentID, rc.siteID)>
-	<cfset href = parentBean.getURL()>
+	<cfif len(rc.parenthistid)
+		and parentBean.getContentHistID() neq rc.parenthistid
+		and rc.$.getBean('content').loadBy(contenthistid=rc.parenthistid).exists()>
+		<cfset href = parentBean.getURL(queryString="previewid=#rc.parenthistid#")>
+	<cfelse>
+		<cfset href = parentBean.getURL()>
+	</cfif>
 <cfelse>
 	<cfset rc.contentBean = application.contentManager.getActiveContent(rc.parentid, rc.siteid)>
 	<cfset href = rc.contentBean.getURL()>

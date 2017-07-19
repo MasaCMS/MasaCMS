@@ -845,6 +845,7 @@ saveDraftPrompt=function(){
 	<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 	<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 	<input type="hidden" name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#" />
+	<input type="hidden" name="parenthistid" value="#esapiEncode('html_attr',rc.parenthistid)#" />
 
 	#rc.$.renderCSRFTokens(context=rc.contentBean.getContentHistID() & "add",format="form")#
 
