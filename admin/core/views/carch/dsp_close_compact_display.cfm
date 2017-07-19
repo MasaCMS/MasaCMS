@@ -66,11 +66,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset homeBean = application.contentManager.getActiveContent(event.getValue('homeID'), event.getValue('siteID'))>
 	<cfset href = homeBean.getURL()>
 <cfelseif rc.action eq "add" and rc.contentBean.getType() neq "File" and rc.contentBean.getType() neq "Link">
-	<cfset href =currentBean.getURL()>
 	<cfif rc.preview eq 1>
 		<cfset href =currentBean.getURL(queryString='previewID=#rc.contentBean.getContentHistID()#')>
-	<cfelse>
+	<cfelseif currentBean.getActive() and currentBean.getIsOnDisplay()>
 		<cfset href =currentBean.getURL()>
+	<cfelse>
+		<cfset href =currentBean.getURL(queryString="previewid=#currentBean.getContentHistID()#")>
 	</cfif>
 <cfelseif rc.action eq "add" and (rc.contentBean.getType() eq "File" or rc.contentBean.getType() eq "Link")>
 	<cfset parentBean = application.contentManager.getActiveContent(currentBean.getParentID(), currentBean.getSiteID())>
@@ -78,8 +79,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and parentBean.getContentHistID() neq rc.parenthistid
 		and rc.$.getBean('content').loadBy(contenthistid=rc.parenthistid).exists()>
 		<cfset href = parentBean.getURL(queryString="previewid=#rc.parenthistid#")>
-	<cfelse>
+	<cfelseif parentBean.getActive() and parentBean.getIsOnDisplay()>
 		<cfset href = parentBean.getURL()>
+	<cfelse>
+		<cfset href = parentBean.getURL(queryString="previewid=#parentBean.getContentHistID()#")>
 	</cfif>
 <cfelseif rc.action eq "multiFileUpload">
 	<cfset parentBean = application.contentManager.getActiveContent(rc.parentID, rc.siteID)>
@@ -87,12 +90,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and parentBean.getContentHistID() neq rc.parenthistid
 		and rc.$.getBean('content').loadBy(contenthistid=rc.parenthistid).exists()>
 		<cfset href = parentBean.getURL(queryString="previewid=#rc.parenthistid#")>
-	<cfelse>
+	<cfelseif parentBean.getActive() and parentBean.getIsOnDisplay()>
 		<cfset href = parentBean.getURL()>
+	<cfelse>
+		<cfset href = parentBean.getURL(queryString="previewid=#parentBean.getContentHistID()#")>
 	</cfif>
 <cfelse>
 	<cfset rc.contentBean = application.contentManager.getActiveContent(rc.parentid, rc.siteid)>
-	<cfset href = rc.contentBean.getURL()>
+	<cfif rc.contentBean.getActive() and rc.contentBean.getIsOnDisplay()>
+		<cfset href = rc.contentBean.getURL()>
+	<cfelse>
+		<cfset href = rc.contentBean.getURL(queryString="previewid=#contentBean.getContentHistID()#")>
+	</cfif>
 </cfif>
 </cfsilent>
 <cfoutput>
