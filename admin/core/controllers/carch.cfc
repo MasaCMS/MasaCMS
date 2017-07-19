@@ -60,6 +60,7 @@
 		<cfparam name="arguments.rc.ommitAdvancedTab" default="false"/>
 		<cfparam name="arguments.rc.murakeepediting" default="false"/>
 		<cfparam name="arguments.rc.locknode" default="false"/>
+		<cfparam name="arguments.rc.parenthistid" default=""/>
 
 		<cfif not arguments.rc.ommitPublishingTab>
 			<cfparam name="arguments.rc.isNav" default="0"/>

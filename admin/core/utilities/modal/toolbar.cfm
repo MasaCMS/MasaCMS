@@ -31,7 +31,7 @@ Your custom code
  /admin/
  /tasks/
  /config/
- /requirements/mura/
+ /core/mura/
  /Application.cfc
  /index.cfm
  /MuraProxy.cfc
@@ -57,15 +57,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				if(!window.CKEDITOR){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js'
+						'#variables.$.globalConfig().getCorePath(complete=1)#/vendor/ckeditor/ckeditor.js'
 					);
 
-					window.CKEDITOR_BASEPATH = '#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/';
+					window.CKEDITOR_BASEPATH = '#variables.$.globalConfig().getCorePath(complete=1)#/vendor/ckeditor/';
 				}
 				<cfif not $.getContentRenderer().useLayoutManager()>
 				if(!window.CKFinder){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckfinder/ckfinder.js');
+						'#variables.$.globalConfig().getCorePath(complete=1)#/vendor/ckfinder/ckfinder.js');
 
 				}
 				</cfif>
@@ -86,25 +86,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(!window.CKEDITOR){
 				if(hasMuraLoader){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js',
-						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js'
+						'#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js',
+						'#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js'
 					);
 
 				} else {
-					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js');
-					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js');
+					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/ckeditor.js');
+					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckeditor/adapters/jquery.js');
 				}
 
-				window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("requirementsPath")#/ckeditor/';
+				window.CKEDITOR_BASEPATH = '#variables.$.globalConfig("corepath")#/vendor/ckeditor/';
 			}
 
 			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
 					Mura.loader().loadjs(
-						'#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');
+						'#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
 				} else {
-					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');
+					$.getScript('#variables.$.globalConfig("corepath")#/vendor/ckfinder/ckfinder.js');
 				}
 			}
 			</cfif>
@@ -168,6 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset variables.newLink = variables.adminBase & "/?muraAction=cArch.loadnewcontentmenu">
 			<cfset variables.newLink = variables.newLink & "&amp;contentid=" & request.contentBean.getContentID()>
+			<cfset variables.newLink = variables.newLink & "&amp;contenthistid=" & request.contentBean.getContentHistID()>
 			<cfset variables.newLink = variables.newLink & "&amp;topid=00000000000000000000000000000000001">
 			<cfset variables.newLink = variables.newLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.newLink = variables.newLink & "&amp;moduleid=" & "00000000000000000000000000000000000">
