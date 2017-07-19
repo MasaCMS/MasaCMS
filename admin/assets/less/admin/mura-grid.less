@@ -1735,6 +1735,17 @@
 					    }
 			    	}
 	    		}
+
+					li > a:hover {
+						color: #545454;
+						text-decoration: none;
+
+						i {
+							 color: #545454; 
+							}
+
+						}
+	    		
 	    	} 
 	    	// /.actions-menu
 	} 
@@ -1910,19 +1921,20 @@ p + .mura-table-grid { margin-top: 12px;}
 				position: relative;
 			}
 
-			&#newZoom i { top: 0; }
-
-		}
-
-	li > a:hover {
-		color: #545454;
-		text-decoration: none;
-
-		i {
-			 color: #545454; 
+			&#newZoom i { 
+				top: 0; 
 			}
 
-		}
+			&:hover {
+				color: #545454;
+				text-decoration: none;
+
+				i {
+					 color: #545454; 
+				}
+			}
+
+	}
 
 }
 
