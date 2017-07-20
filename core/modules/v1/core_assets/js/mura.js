@@ -335,8 +335,13 @@ var Mura=(function(){
               if (data.label) {
                   trackingVars.ga.eventLabel = data.label;
               } else if(isMXP) {
-                  trackingVars.ga.eventLabel = trackingVars.object.title;
-                  data.label=trackingVars.object.title;
+                  if(typeof trackingVars.object != 'undefined' && typeof trackingVars.object.title != 'undefined'){
+                    trackingVars.ga.eventLabel=trackingVars.object.title;
+                    data.label=trackingVars.object.title;
+                  } else {
+                    trackingVars.ga.eventLabel=undefined;
+                    data.label=undefined;
+                  }
               }
 
               Mura(document).trigger('muraTrackEvent',trackingVars);
