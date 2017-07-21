@@ -258,7 +258,7 @@ component extends="mura.bean.beanExtendable" entityName="content" table="tconten
 		return settingsManager;
 	}
 
-	public function set(required property, propertyValue) output=false {
+	public function set(property, propertyValue) output=false {
 		if ( !isDefined('arguments.content') ) {
 			if ( isSimpleValue(arguments.property) ) {
 				return setValue(argumentCollection=arguments);
