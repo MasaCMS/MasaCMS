@@ -1522,20 +1522,19 @@
 
 								if(resp.success){
 					        	<cfif node.getType() eq 'Variation'>
-					        		if(MuraInlineEditor.requestedURL){
-										location.href=MuraInlineEditor.requestedURL
-									} else {
-					        			location.reload();
-									}
+							        if(MuraInlineEditor.requestedURL){
+												location.href=MuraInlineEditor.requestedURL
+											} else {
+							        	location.reload();
+											}
 					        	<cfelse>
 					        		var resp = eval('(' + data + ')');
 
 					        		if(MuraInlineEditor.requestedURL){
-										location.href=MuraInlineEditor.requestedURL
-									} else {
-										location.href=resp.location;
-									}
-
+												location.href=MuraInlineEditor.requestedURL
+											} else {
+												location.href=resp.location;
+											}
 					        	</cfif>
 								} else {
 

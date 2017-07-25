@@ -123,6 +123,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset criterias[10][1]="NOT IN">
 <cfset criterias[10][2]=application.rbFactory.getKeyValue(session.rb,'params.notin')>
 
+<cfset hasCategories=application.categoryManager.getCategoryCount(rc.siteid)>
+
 <cfif len(rc.assignmentID)>
 	<cfset rsDisplayObject=application.contentManager.readContentObject(rc.assignmentID,rc.regionID,rc.orderno)>
 	<cfset rc.feedBean.setInstanceParams(rsDisplayObject.params)>
@@ -153,14 +155,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif rc.$.getContentRenderer().useLayoutManager()>
-	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabRss">
-	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
-<cfelse>
-	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
-	<cfif isObjectInstance>
-		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	<cfif hasCategories>
+		<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabRss">
+		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 	<cfelse>
-		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+		<cfset tablist="tabBasic,tabAdvancedfilters,tabRss">
+		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	</cfif>
+
+<cfelse>
+	<cfif hasCategories>
+		<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
+		<cfif isObjectInstance>
+			<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+		<cfelse>
+			<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+		</cfif>
+	<cfelse>
+		<cfset tablist="tabBasic,tabAdvancedfilters,tabDisplay,tabRss">
+		<cfif isObjectInstance>
+			<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+		<cfelse>
+			<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+		</cfif>
 	</cfif>
 </cfif>
 
@@ -413,6 +430,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
 
+<cfif hasCategories>
 <div id="tabCategorization" class="tab-pane">
 	<div class="block block-bordered">
 			<!-- block header -->
@@ -420,8 +438,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#</h3>
 			</div> <!-- /.block header -->
 			<div class="block-content">
-
-			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
 
 				<div class="mura-control-group">
 					<!--- Category Filters --->
@@ -447,11 +463,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<input name="useCategoryIntersect" type="radio" value="0" <cfif not rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 						</label>
 					</div>
-			</cfif>
 
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
+</cfif>
 
 <div id="tabAdvancedfilters" class="tab-pane">
 	<div class="block block-bordered">
