@@ -113,7 +113,7 @@
     				contentid:content.contentid,
     				contenthistid:content.contenthistid,
     				moduleid:content.moduleid,
-                    parentid:content.parentid,
+            parentid:content.parentid,
     				type:content.type,
     				subtype:content.subtype,
     				preloaderMarkup:'',
@@ -194,7 +194,7 @@
     			ga('create', content.ga.trackingid, 'auto','mxpGATracker');
     			ga('mxpGATracker.send','pageview', content.ga.trackingvars);
 
-				Mura.MXP=true;
+					Mura.MXP=true;
 
     			Mura.loader().loadjs(
     				context + '/plugins/MXP/assets/js/metrics/scrolldepth.js',
