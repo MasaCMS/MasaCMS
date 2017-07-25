@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfabort>
 <cfelseif rc.ajaxrequest>
 <cfif StructIsEmpty(rc.contentBean.getErrors())>
-<cfoutput>{success:true,location:<cfif rc.contentBean.getActive()>
+<cfoutput>{success:true,location:<cfif rc.contentBean.getActive() and rc.contentBean.getIsOnDisplay()>
 	'#esapiEncode('javascript',rc.contentBean.getURL())#'
 <cfelse>
 	'#esapiEncode('javascript',rc.contentBean.getURL(queryString="previewid=" & rc.contentBean.getContentHistID()))#'
