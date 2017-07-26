@@ -1328,7 +1328,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				return true;
 
-			break;
+				break;
+			case 'site':
+				if($.currentUser().isSuperUser()){
+					return true;
+				} else {
+					return false;
+				}
+				break;
 			case 'user':
 			case 'group':
 			case 'address':
@@ -1429,14 +1436,28 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var $=getBean('$').init(arguments.siteid);
 
 		if(listFindNoCase('user,group',arguments.entityName)){
-			if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
-				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
-					var vals=$.event().getAllValues();
-					structDelete(vals,'isPublic');
-					structDelete(vals,'s2');
-					structDelete(vals,'type');
+			var vals=$.event().getAllValues();
+			var hasUserModuleAcces=getBean('permUtility').getModulePerm(variables.config.entities.user.moduleid,arguments.siteid);
+
+			if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
+				structDelete(vals,'isPublic');
+				structDelete(vals,'type');
+
+				if(!hasUserModuleAcces){
 					structDelete(vals,'groupID');
 				}
+			}
+
+			if(!arguments.$.currentUser().isSuperUser()){
+				structDelete(vals,'s2');
+			}
+
+			if(isdefined('vals.groupname') && vals.groupname == 'admin'){
+				structDelete(vals,'groupname');
+			}
+
+			if(isdefined('vals.userid') && vals.userid != arguments.$.currentUser('userid')){
+				structDelete(vals,'email');
 			}
 		}
 
