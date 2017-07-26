@@ -1354,7 +1354,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		var $=getBean('$').init(arguments.siteid);
 
-		if(arguments.entityName=='user'){
+		if(listFindNoCase('user,group',arguments.entityName)){
 			if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
 				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
 					var vals=$.event().getAllValues();
