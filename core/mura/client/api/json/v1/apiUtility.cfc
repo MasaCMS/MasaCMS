@@ -1439,7 +1439,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var vals=$.event().getAllValues();
 			var hasUserModuleAcces=getBean('permUtility').getModulePerm(variables.config.entities.user.moduleid,arguments.siteid);
 
-			if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
+			if(!($.currentUser().isAdminUser() || $.currentUser().isSuperUser())){
 				structDelete(vals,'isPublic');
 				structDelete(vals,'type');
 
@@ -1448,7 +1448,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				}
 			}
 
-			if(!arguments.$.currentUser().isSuperUser()){
+			if(!$.currentUser().isSuperUser()){
 				structDelete(vals,'s2');
 			}
 
@@ -1456,7 +1456,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				structDelete(vals,'groupname');
 			}
 
-			if(isdefined('vals.userid') && vals.userid != arguments.$.currentUser('userid')){
+			if(isdefined('vals.userid') && vals.userid != $.currentUser('userid')){
 				structDelete(vals,'email');
 			}
 		}
