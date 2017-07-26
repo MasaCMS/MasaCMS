@@ -1149,6 +1149,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			dynamic=exampleEntity.getDynamic(),
 			scaffold=exampleEntity.getscaffold(),
 			displayname=exampleEntity.getEntityDisplayName(),
+			primarykey=lcase(exampleEntity.getPrimaryKey()),
 			links={
 				endpoint=getEndpoint() & "/" & arguments.entityname,
 				entities=getEndpoint()
