@@ -1,4 +1,4 @@
-﻿ <!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, Version 2 of the License.
@@ -19,13 +19,13 @@ Your custom code
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+/admin/
+/tasks/
+/config/
+/core/mura/
+/Application.cfc
+/index.cfm
+/MuraProxy.cfc
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
@@ -39,116 +39,123 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset objectParams.async = "true"/>
 
 <cfif len(arguments.objectid)>
-	<cfif IsValid('uuid', arguments.objectid)>
-		<cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
-	<cfelse>
-		<cfset local.formBean = $.getBean('content').loadBy( title=arguments.objectid ) />
-	</cfif>
-	<cfset $.event('formBean',local.formBean)>
-	<cfset variables.formOutput=application.pluginManager.renderEvent("onForm#local.formBean.getSubType()#BodyRender",variables.event)>
-	<cfset safesubtype=REReplace(local.formBean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
-	<cfif not len(variables.formOutput)>
-		<cfset variables.formOutput=$.dspObject_include(theFile='extensions/dsp_Form_' & safesubtype & ".cfm",throwError=false)>
-	</cfif>
-	<cfif not len(variables.formOutput)>
-		<cfset filePath=$.siteConfig().lookupContentTypeFilePath('form/index.cfm')>
-		<cfif len(filePath)>
-			<cfsavecontent variable="variables.formOutput">
-				<cfinclude template="#filepath#">
-			</cfsavecontent>
-			<cfset variables.formOutput=trim(variables.formOutput)>
-		</cfif>
-	</cfif>
-	<cfif not len(variables.formOutput)>
-		<cfset filePath=$.siteConfig().lookupContentTypeFilePath(lcase('form_#safesubtype#/index.cfm'))>
-		<cfif len(filePath)>
-			<cfsavecontent variable="variables.formOutput">
-				<cfinclude template="#filepath#">
-			</cfsavecontent>
-			<cfset variables.formOutput=trim(variables.formOutput)>
-		</cfif>
-	</cfif>
-	<cfif len(variables.formOutput)>
-		<cfoutput>#variables.formOutput#</cfoutput>
-	<cfelse>
-		<cfif isJSON( local.formBean.getBody())>
-			<cfset objectparams.objectid=local.formBean.getContentID()>
+ <cfif IsValid('uuid', arguments.objectid)>
+	 <cfset local.formBean = $.getBean('content').loadBy( contentid=arguments.objectid ) />
+ <cfelse>
+	 <cfset local.formBean = $.getBean('content').loadBy( title=arguments.objectid ) />
+ </cfif>
+ <cfset $.event('formBean',local.formBean)>
+ <cfset variables.formOutput=application.pluginManager.renderEvent("onForm#local.formBean.getSubType()#BodyRender",variables.event)>
+ <cfset safesubtype=REReplace(local.formBean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
+ <cfif not len(variables.formOutput)>
+	 <cfset variables.formOutput=$.dspObject_include(theFile='extensions/dsp_Form_' & safesubtype & ".cfm",throwError=false)>
+ </cfif>
+ <cfif not len(variables.formOutput)>
+	 <cfset filePath=$.siteConfig().lookupContentTypeFilePath('form/index.cfm')>
+	 <cfif len(filePath)>
+		 <cfsavecontent variable="variables.formOutput">
+			 <cfinclude template="#filepath#">
+		 </cfsavecontent>
+		 <cfset variables.formOutput=trim(variables.formOutput)>
+	 </cfif>
+ </cfif>
+ <cfif not len(variables.formOutput)>
+	 <cfset filePath=$.siteConfig().lookupContentTypeFilePath(lcase('form_#safesubtype#/index.cfm'))>
+	 <cfif len(filePath)>
+		 <cfsavecontent variable="variables.formOutput">
+			 <cfinclude template="#filepath#">
+		 </cfsavecontent>
+		 <cfset variables.formOutput=trim(variables.formOutput)>
+	 </cfif>
+ </cfif>
+ <cfif len(variables.formOutput)>
+	 <cfoutput>#variables.formOutput#</cfoutput>
+ <cfelse>
+	 <cfif isJSON( local.formBean.getBody())>
+		 <cfset objectparams.objectid=local.formBean.getContentID()>
 
-			<cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
+		 <cfset local.formJSON = deserializeJSON( local.formBean.getBody() )>
 
-			<cftry>
-				<!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
-				<cfset objectParams.render = "client" />
-				<cfset objectParams.async = "true"/>
-				<cfparam name="objectParams.view" default="form"/>
+		 <cftry>
+			 <!---<cfif structKeyExists(local.formJSON.form.formattributes,"muraormentities") and local.formJSON.form.formattributes.muraormentities eq true>--->
+			 <cfset objectParams.render = "client" />
+			 <cfset objectParams.async = "true"/>
+			 <cfparam name="objectParams.view" default="form"/>
 
-	            <cfif len($.event('saveform'))>
-					<cfset $.event('fields','')>
+			 <cfif len($.event('saveform'))>
+				 <cfset $.event('fields','')>
 
-					<cfset objectParams.errors=$.getBean('dataCollectionBean')
-	                      .set($.event().getAllValues())
-	                      .submit($).getErrors()>
+				 <cfset objectParams.errors=$.getBean('dataCollectionBean')
+							 .set($.event().getAllValues())
+							 .submit($).getErrors()>
 
-					<cfif not structCount(objectParams.errors)>
-						<cfset objectParams.responsemessage=$.renderEvent("onFormSubmitResponseRender")>
-
-						<cfif len($.event('redirect_url'))>
-							<cfset $.event('redirect_url',variables.$.getBean('utility').sanitizeHref($.event('redirect_url')))>
-							<cfif request.muraFrontEndRequest>
-								<cflocation addtoken="false" url="#$.event('redirect_url')#">
-							<cfelse>
-								<cfset request.muraJSONRedirectURL=$.event('redirect_url')>
-							</cfif>
-						</cfif>
-
-						<cfif not len(objectParams.responsemessage)>
-							<cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
-						</cfif>
-					</cfif>
-				<cfelseif len($.event('validateform'))>
-					<cfparam name="objectparams.fields" default="">
-					<cfset objectParams.errors=$.getBean('dataCollectionBean')
-	                  .set($.event().getAllValues())
-	                  .validate($,$.event('fields')).getErrors()>
-				<cfelseif request.muraApiRequest>
-					<cfscript>
-	   					 if(isdefined('local.formJSON.form.fields')){
-	   						 for(b in local.formJSON.form.fields){
-								 field=local.formJSON.form.fields[b];
-								if(structKeyExists(field,'value')){
-	   							 	local.formJSON.form.fields[b].value=$.setDynamicContent(field.value);
-							 	}
-
-								if(isDefined('field.fieldtype.isdata') && field.fieldtype.isdata==1){
-									local.formJSON.datasets['#field.datasetid#']=$.getBean('formBuilderManager').processDataset( $, local.formJSON.datasets['#field.datasetid#'] );
-								}
-							 }
-
-	   					 }
-
-	   					 request.cffpJS=true;
-						 
-	   					 objectParams.def=serializeJSON(local.formJSON);
-	   					 objectParams.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
-						 if(!this.layoutmanager && local.formBean.getDisplayTitle() > 0){
-						 	objectParams.label=local.formBean.get('title');
-					 	 }
-	   					 objectParams.filename=local.formBean.get('filename');
-						 objectParams.name=local.formBean.get('title');
-	   					 objectParams.responsemessage=local.formBean.get('repsonseMesage');
-	   				 </cfscript>
+				 <cfif not structCount(objectParams.errors)>
+					 <cfset objectParams.responsemessage=$.renderEvent(eventName="onFormSubmitResponseRender",objectid=local.formBean.getContentID())>
+				 <cfif not len(objectParams.responsemessage)>
+					 <cfset objectParams.responsemessage=$.renderEvent(eventName="onSubmitResponseRender",objectid=local.formBean.getContentID())>
 				 </cfif>
-			<cfcatch>
-				<cfdump var="#cfcatch#">
-				<cfabort>
-			</cfcatch>
-			</cftry>
-		<cfelse>
-			<cfset objectParams.render = "server" />
-			<cfoutput>#$.dspObject_include(thefile='datacollection/index.cfm',objectid=arguments.objectid,params=objectparams)#</cfoutput>
-		</cfif>
-	</cfif>
+
+				 <cfif len($.event('redirect_url'))>
+					 <cfset $.event('redirect_url',variables.$.getBean('utility').sanitizeHref($.event('redirect_url')))>
+					 <cfif request.muraFrontEndRequest>
+						 <cflocation addtoken="false" url="#$.event('redirect_url')#">
+					 <cfelse>
+						 <cfset request.muraJSONRedirectURL=$.event('redirect_url')>
+					 </cfif>
+				 </cfif>
+
+				 <cfif not len(objectParams.responsemessage)>
+					 <cfset objectParams.responsemessage=$.setDynamicContent(local.formBean.getResponseMessage())>
+				 </cfif>
+			 </cfif>
+		 <cfelseif len($.event('validateform'))>
+			 <cfparam name="objectparams.fields" default="">
+			 <cfset objectParams.errors=$.getBean('dataCollectionBean')
+					 .set($.event().getAllValues())
+					 .validate($,$.event('fields')).getErrors()>
+		 <cfelseif request.muraApiRequest>
+			 <cfscript>
+						if(isdefined('local.formJSON.form.fields')){
+							for(b in local.formJSON.form.fields){
+
+								field=local.formJSON.form.fields[b];
+
+								if(structKeyExists(field,'value')){
+									local.formJSON.form.fields[b].value=$.setDynamicContent(field.value);
+							  }
+
+							 	if(isDefined('field.fieldtype.isdata') && field.fieldtype.isdata==1){
+									local.formJSON.datasets['#field.datasetid#']=$.getBean('formBuilderManager').processDataset( $, local.formJSON.datasets['#field.datasetid#'] );
+							 	}
+							}
+
+						}
+
+						request.cffpJS=true;
+
+						objectParams.def=serializeJSON(local.formJSON);
+						objectParams.ishuman=$.dspObject_Include(thefile='form/dsp_form_protect.cfm');
+
+						if(!this.layoutmanager && local.formBean.getDisplayTitle() > 0){
+						 objectParams.label=local.formBean.get('title');
+						}
+
+						objectParams.filename=local.formBean.get('filename');
+						objectParams.name=local.formBean.get('title');
+						objectParams.responsemessage=local.formBean.get('responseMessage');
+					</cfscript>
+			</cfif>
+		 <cfcatch>
+			 <cfdump var="#cfcatch#">
+			 <cfabort>
+		 </cfcatch>
+		 </cftry>
+	 <cfelse>
+		 <cfset objectParams.render = "server" />
+		 <cfoutput>#$.dspObject_include(thefile='datacollection/index.cfm',objectid=arguments.objectid,params=objectparams)#</cfoutput>
+	 </cfif>
+ </cfif>
 <cfelse>
-	<cfset objectParams.render = "server" />
-	<cfset objectParams.async = "true"/>
+ <cfset objectParams.render = "server" />
+ <cfset objectParams.async = "true"/>
 </cfif>
