@@ -1254,7 +1254,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 				return true;
 
-			break;
+				break;
+			case 'site':
+				if($.currentUser().isSuperUser()){
+					return true;
+				} else {
+					return false;
+				}
+				break;
 			case 'user':
 			case 'group':
 			case 'address':
@@ -1355,7 +1362,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var $=getBean('$').init(arguments.siteid);
 
 		if(listFindNoCase('user,group',arguments.entityName)){
-			if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
+			if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.entityname#'].moduleid,variables.siteid)){
 				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
 					var vals=$.event().getAllValues();
 					structDelete(vals,'isPublic');
