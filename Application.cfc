@@ -49,7 +49,7 @@ component output="false" {
 	include "core/appcfc/applicationSettings.cfm";
 
 
-	//if(not hasPluginMappings){
+	if(not hasPluginMappings){
 		//Try and include plugin mappings
 		canWriteMode=true;
 		hasMappings=true;
