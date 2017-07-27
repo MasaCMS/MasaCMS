@@ -69,6 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var contentBean = "" />
 	<cfset var i = "" />
 	<cfset var c = "" />
+	<cfset var feedItemId = "" />
 
 	<cfset theImport.feedBean=variables.feedDAO.read(arguments.data.feedID) />
 
@@ -103,9 +104,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfloop from="#maxItems#" to="1" index="i" step="-1">
 
-			<cfif isdefined('arguments.data.remoteID') and (arguments.data.remoteID eq 'All' or listFind(arguments.data.remoteID,hash(left(items[i].guid.xmlText,255)))) >
+			<cftry>
+			  <cfset feedItemId=hash(left(items[i].guid.xmlText,255)) />
+			    <cfcatch>
+			      <cfset feedItemId=hash(left(items[i].link.xmlText,255)) />
+			    </cfcatch>
+			</cftry>
 
-				<cfset contentBean=getBean('content').loadBy(remoteID=items[i].guid.xmlText,siteID=theImport.feedBean.getSiteID())>
+			<cfif isdefined('arguments.data.remoteID') and (arguments.data.remoteID eq 'All' or listFind(arguments.data.remoteID,feedItemId)) >
+
+				<cfset contentBean=getBean('content').loadBy(remoteID=feedItemId,siteID=theImport.feedBean.getSiteID())>
 
 					<cfset feedItem = structNew() />
 					<cfset feedItem.remoteURL=left(items[i].link.xmlText,255) />
@@ -124,12 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset feedItem.releaseDate=parseDateTime(items[i].pubDate.xmlText) />
 					</cfif>
 
-					<cftry>
-						<cfset feedItem.remoteID=left(items[i].guid.xmlText,255) />
-						<cfcatch>
-							<cfset feedItem.remoteID=left(items[i].link.xmlText,255)>
-						</cfcatch>
-					</cftry>
+					<cfset feedItem.remoteID=feedItemId />
 
 					<cftry>
 						<cfset content = xmlFeed.rss.channel.item[i]["content:encoded"]>
