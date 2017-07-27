@@ -32,7 +32,7 @@ component extends="testbox.system.BaseSpec"{
 			it(
 		 		title="Should be able to render custom content types body",
 			 	body=function(data) {
-				 	expect(data.response ).toBe('success');
+				 	expect(data.response ).toBe('failure');
 				},
 				data={
 					response=trim(response)
