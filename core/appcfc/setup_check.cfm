@@ -1,8 +1,4 @@
 <cfscript>
-
-Writeoutput("[" & request.muraInDocker & "]");
-Writeoutput("[" & getSystemEnvironmentSetting('MURA_DATABASE') & "]");
-abort;
 if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) {
 	if ( request.muraSysEnv.MURA_DBTYPE == 'mssql' ) {
 

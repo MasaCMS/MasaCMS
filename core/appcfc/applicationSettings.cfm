@@ -74,6 +74,8 @@ param name="request.muraPointInTime" default="";
 param name="request.muraTemplateMissing" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 
+WriteOutput("[" & getSystemEnvironmentSetting('MURA_DATASOURCE') & "]");
+
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
 this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
 //  Application name, should be unique
