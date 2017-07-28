@@ -49,7 +49,7 @@
         }
     ],
     "contributors":[
-        
+
     ],
     "dependencies":{
         "docbox":"2.0.7",
@@ -64,43 +64,11 @@
         "docbox":"core/vendor/docbox"
     },
     "scripts":{
-        
+
     },
     "ignore":[
         "**/.*",
         "test",
         "tests"
-    ],
-    "testbox":{
-        "runner":[
-            {
-                "adobe":"http://localhost:8080/core/tests/runner.cfm"
-            },
-            {
-                "lucee":"http://localhost:8080/core/tests/runner.cfm"
-            }
-        ],
-        "labels":[
-            
-        ],
-        "reporter":"",
-        "reporterResults":"",
-        "bundles":[
-            ""
-        ],
-        "directory":{
-            "mapping":"murawrm.core.tests.specs",
-            "recurse":true
-        },
-        "watchers":[
-            
-        ],
-        "notify":{
-            "emails":[
-                
-            ],
-            "growl":"",
-            "URL":""
-        }
-    }
+    ]
 }
