@@ -49,7 +49,7 @@
         }
     ],
     "contributors":[
-        
+
     ],
     "dependencies":{
         "docbox":"2.0.7",
@@ -64,43 +64,11 @@
         "docbox":"requirements/docbox"
     },
     "scripts":{
-        
+
     },
     "ignore":[
         "**/.*",
         "test",
         "tests"
-    ],
-    "testbox":{
-        "runner":[
-            {
-                "adobe":"http://localhost:53644/requirements/tests/runner.cfm"
-            },
-            {
-                "lucee":"http://localhost:53645/requirements/tests/runner.cfm"
-            }
-        ],
-        "labels":[
-            
-        ],
-        "reporter":"",
-        "reporterResults":"",
-        "bundles":[
-            ""
-        ],
-        "directory":{
-            "mapping":"murawrm.requirements.tests.specs",
-            "recurse":true
-        },
-        "watchers":[
-            
-        ],
-        "notify":{
-            "emails":[
-                
-            ],
-            "growl":"",
-            "URL":""
-        }
-    }
+    ]
 }
