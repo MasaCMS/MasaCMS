@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
   <!--- ************************ --->
   <!--- STEP 1 --->
   <!--- ************************ --->
-<cfoutput>#serializeJSON(FORM)#</cfoutput><cfabort>
+
   <!--- check datasource --->
   <cfset errorType = "" />
   <cfset dbCreated = false />
@@ -422,6 +422,7 @@ to your own modified versions of Mura CMS.
 	<!--- ************************ --->
 	<!--- STEP 6 - Success?                   --->
 	<!--- ************************ --->
+  <cfoutput>#errorType#</cfoutput><cfabort>
 	<cfset variables.setupProcessComplete = !len(trim(errorType)) />
 
 </cfif>
