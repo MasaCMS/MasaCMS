@@ -422,7 +422,6 @@ to your own modified versions of Mura CMS.
 	<!--- ************************ --->
 	<!--- STEP 6 - Success?                   --->
 	<!--- ************************ --->
-  <cfoutput>#errorType#</cfoutput><cfabort>
 	<cfset variables.setupProcessComplete = !len(trim(errorType)) />
 
 </cfif>
