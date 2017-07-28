@@ -30,9 +30,7 @@ if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) 
 		}
 
 	} else if ( request.muraSysEnv.MURA_DBTYPE == 'mysql' ) {
-		WriteOutput("[" & request.muraSysEnv.MURA_DBTYPE & "]");
-		WriteOutput("[" & request.muraSysEnv.MURA_DATABASE & "]")
-		abort;
+
     qs=new Query();
     qs.setDatasource('nodatabase');
 
