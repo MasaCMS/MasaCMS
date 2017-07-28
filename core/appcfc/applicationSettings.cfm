@@ -74,7 +74,7 @@ param name="request.muraPointInTime" default="";
 param name="request.muraTemplateMissing" default=false;
 param name="request.muraSysEnv" default="#createObject('java','java.lang.System').getenv()#";
 
-WriteOutput("[" & serializeJSON(request.muraSysEnv) & "]");abort;
+WriteOutput("[" & structKeyExists(request.muraSysEnv, 'MURA_DATASOURCE') & "]");abort;
 
 request.muraInDocker=len(getSystemEnvironmentSetting('MURA_DATASOURCE'));
 this.configPath=getDirectoryFromPath(getCurrentTemplatePath());
