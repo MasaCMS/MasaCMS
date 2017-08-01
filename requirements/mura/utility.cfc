@@ -948,7 +948,7 @@ Blog: www.codfusion.com--->
 
 			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
 				var reCaptcha = new mura.reCaptcha(secret);
-				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=cgi.remote_addr);
+				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=request.remoteAddr );
 			}
 
 			return verified;
