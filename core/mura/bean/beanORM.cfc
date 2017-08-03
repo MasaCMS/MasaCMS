@@ -258,6 +258,10 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		param name="application.objectMappings.#variables.entityName#" default={};
 		application.objectMappings[variables.entityName].columns=getColumns();
 
+		registerAsEntity();
+
+		//WriteDump(reg.getErrors());abort;
+
 		return this;
 	}
 
@@ -993,8 +997,8 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 	}
 
 	function getPropertiesAsJSON(){
-			var m=application.mura.getBean('m').init('default');
-			var props=m.siteConfig().getAPI().findProperties(getEntityName()).items;
+			var m=getBean('m').init('default');
+			var props=m.siteConfig().getAPI().findProperties(getEntityName()).properties;
 			var newline=chr(13)&chr(10);
 			var tab=chr(9);
 			var serialier=new mura.jsonSerializer();

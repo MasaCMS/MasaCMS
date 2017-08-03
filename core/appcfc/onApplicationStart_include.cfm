@@ -276,6 +276,8 @@ if ( application.setupComplete ) {
 		variables.serviceFactory.addAlias("oauthClient","oauthClientBean");
 		variables.serviceFactory.addAlias("oauthToken","oauthTokenBean");
 		variables.serviceFactory.addAlias("dataCollection","dataCollectionBean");
+		variables.serviceFactory.addAlias("entity","beanEntity");
+
 		application.serviceFactory=variables.serviceFactory;
 		application.serviceFactory.getBean('utility').setRequestTimeout(1000);
 
@@ -312,26 +314,28 @@ if ( application.setupComplete ) {
 	} else {
 
 		variables.serviceFactory.getBean('approvalChain');
-			variables.serviceFactory.getBean('approvalChainMembership');
-			variables.serviceFactory.getBean('approvalRequest');
-			variables.serviceFactory.getBean('approvalAction');
-			variables.serviceFactory.getBean('approvalChainAssignment');
-			variables.serviceFactory.getBean('changesetRollBack');
-			variables.serviceFactory.getBean('contentSourceMap');
-			variables.serviceFactory.getBean('relatedContentSet');
-			variables.serviceFactory.getBean('fileMetaData');
-			variables.serviceFactory.getBean('file');
-			variables.serviceFactory.getBean('razunaSettings');
-			variables.serviceFactory.getBean('contentFilenameArchive');
-			variables.serviceFactory.getBean('commenter');
-			variables.serviceFactory.getBean('userDevice');
-			variables.serviceFactory.getBean('userRedirect');
-			//variables.serviceFactory.getBean('remoteContentPointer');
-			variables.serviceFactory.getBean('contentDisplayInterval');
-			variables.serviceFactory.getBean('variationTargeting');
-			variables.serviceFactory.getBean('oauthClient');
-			variables.serviceFactory.getBean('oauthToken');
+		variables.serviceFactory.getBean('approvalChainMembership');
+		variables.serviceFactory.getBean('approvalRequest');
+		variables.serviceFactory.getBean('approvalAction');
+		variables.serviceFactory.getBean('approvalChainAssignment');
+		variables.serviceFactory.getBean('changesetRollBack');
+		variables.serviceFactory.getBean('contentSourceMap');
+		variables.serviceFactory.getBean('relatedContentSet');
+		variables.serviceFactory.getBean('fileMetaData');
+		variables.serviceFactory.getBean('file');
+		variables.serviceFactory.getBean('razunaSettings');
+		variables.serviceFactory.getBean('contentFilenameArchive');
+		variables.serviceFactory.getBean('commenter');
+		variables.serviceFactory.getBean('userDevice');
+		variables.serviceFactory.getBean('userRedirect');
+		//variables.serviceFactory.getBean('remoteContentPointer');
+		variables.serviceFactory.getBean('contentDisplayInterval');
+		variables.serviceFactory.getBean('variationTargeting');
+		variables.serviceFactory.getBean('oauthClient');
+		variables.serviceFactory.getBean('oauthToken');
+		variables.serviceFactory.getBean('entity');
 	}
+
 	variables.serviceFactory.getBean('contentCategoryAssign');
 	application.appAutoUpdated=false;
 	variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater";

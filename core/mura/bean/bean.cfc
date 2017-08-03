@@ -1344,4 +1344,25 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 		return this;
 	}
 
+	function registerAsEntity(){
+		var reg=getBean('entity')
+			.loadBy(name=getEntityName())
+			.set('scaffold',getScaffold())
+			.set('dynamic',getDynamic())
+			.set('displayName',getEntityDisplayName())
+			.set('ishistorical',getIsHistorical());
+
+		var md=GetMetaData(this);
+
+		if(structKeyExists(md,'path')){
+			try{
+				reg.set('code',fileRead(expandpath(md.path)));
+			} catch(any e){}
+				
+			reg.set('path',md.path);
+		}
+
+		reg.save();
+	}
+
 }
