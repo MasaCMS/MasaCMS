@@ -202,18 +202,18 @@
 				<div class="block-content">
 					<div>
 						<div>
-							<div id="container-scaffold" v-show="isvisible == true">
+							<div id="container-scaffold" v-show="isvisible == true" style="display: none;">
 							<scaffold-crumb-template :data="data" :state="state"></scaffold-crumb-template>
 								<scaffold-error-template :errordata="errordata"></scaffold-error-template>
 								<div>
-									<component :is="currentView" :entityname="entityname" :data="data" transition="fade" transition-mode="out-in"></component>
+									<component :is="currentView" :currentparent="currentparent" :entityname="entityname" :data="data" transition="fade" transition-mode="out-in"></component>
 								</div>
 							</div>
 							
-							<div id="container-assembler" v-show="isvisible == true" class="display: none;">
+							<div id="container-assembler" v-show="isvisible == true" style="display: none;">
 								<div style="float: left;width: 49%;">
 									<button @click='clickLoadEntity'>Load</button>
-									<input type="text" id='loadentity' name="loadentity" value="testorm">
+									<input type="text" id='loadentity' name="loadentity" value="">
 									<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
 									<div>
 										<button @click='clickAddProperty'>New Property</button>
@@ -233,11 +233,7 @@
 							</div>
 						</div>
 					</div>
-
-
-
-
-				</div> <!-- /.block-content -->
+			</div> <!-- /.block-content -->
 			</div> <!-- /.block-bordered -->
 		</div> <!-- /.tab-pane -->
 
@@ -578,7 +574,14 @@
 
 	<template id="scaffold-list-template">
 		<div>
-			<h2>List of entities:</h2>
+			<h2>Entites
+			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
+				<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
+				<span v-for="item in currentparent.properties._displaylist">
+					{{currentparent.properties[item.name]}}
+				</span>
+			</span>
+			</h2>
 			<div v-if="data.list">
 				<table width="100%" id="scaffold-table">
 					<thead id="scaffold-filterby">
@@ -637,12 +640,19 @@
 						</tr>
 					</tfoot>
 				</table>
-				<button @click="showForm(entityname)">Add New</button>
+				<span v-if="currentparent && currentparent.properties">
+					<button @click="showForm(entityname)">Add Child</button>
+					<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)">Done</button>
+				</span>
+				<span v-else>
+					<button @click="showForm(entityname)">Add New</button>
+				</span>
 			</div>
 		</div>
 	</template>
 
 	<template id="scaffold-form-template">
+		<div>
 		<ul>
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
@@ -672,7 +682,6 @@
 				<button @click="clickDelete" type="submit" class="btn btn-warning">Delete</button>
 			</li>
 		</ul>
-		</form>
 		</div>
 	</template>
 
@@ -687,16 +696,26 @@
 	</template>
 
 	<template id="scaffold-related-many-one">
-		<div>
-			<ul v-if="property.fkcolumn && this.$parent.data.parent">
-				<input type="hidden" :name="property.fkcolumn" v-model="model[property.fkcolumn]" id="primary-id"
-				:data-default="doDefault(this.$parent.data.parent[property.fkcolumn] ? this.$parent.data.parent[property.fkcolumn] : null,property.fkcolumn ? property.fkcolumn : null,model)"
-				:value="this.$parent.data.parent[property.fkcolumn] ? this.$parent.data.parent[property.fkcolumn] : null" :length="property.length">
-			</ul>
+		<div v-if="mparent && mparent.properties">
+			<div v-if="property.cfc || property.relatesto">
+				<label>{{mparent.properties.displayname ? mparent.properties.displayname : mparent.properties.label ? mparent.properties.label : mparent.properties.name}}</label>
+				<select
+				v-model="model[mparent.properties.primarykey]"
+				:name="mparent.properties.primarykey">
+				<option v-for="(option,index) in this.mparent.list" :value="option.id"
+					 :selected="option == model['property.idfield'] ? 'selected' : null">
+					<span v-if="property.renderfield">{{option[property.renderfield]}}</span>
+					<span v-else v-for="(option,index) in mparent.properties.properties">
+						
+					</span>
+					
+				</option>
+			</select>
+			</div>
 		</div>
 	</template>
 
-	<template id="scaffold-related-many">
+	<template id="x-scaffold-related-many">
 		<div v-if="this.entity.properties.isnew == 0">
 			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<ul v-if="mrelated && mrelated.collection">
@@ -706,6 +725,13 @@
 				</li>
 			</ul>
 			<button class='btn' @click="showForm(property.name,'new',entity.properties.id)">ADD NEW {{property.displayname ? property.displayname : property.name.toUpperCase()}}</button>
+		</div>
+	</template>
+
+	<template id="scaffold-related-many">
+		<div v-if="this.entity.properties.isnew == 0">
+			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</label>
+			<button class='btn' @click="showRelatedList(property.name,entity,property.fkcolumn != 'primaryKey' ? property.fkcolumn : entity.properties.properties.primarykey)">Manage {{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</button>
 		</div>
 	</template>
 
@@ -787,5 +813,4 @@
 		</div>
 	</template>
 	
-
 </cfoutput>
