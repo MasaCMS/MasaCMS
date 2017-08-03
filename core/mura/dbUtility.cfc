@@ -734,11 +734,8 @@
 						</cfcatch>
 					</cftry>
 				</cfcase>
-				<cfcase value="float,numeric">
+				<cfcase value="float,numeric,double">
 					<cfreturn "float">
-				</cfcase>
-				<cfcase value="double">
-					<cfreturn "Decimal">
 				</cfcase>
 				<cfcase value="blob">
 					<cfreturn "varbinary">
