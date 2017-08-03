@@ -68,8 +68,7 @@ $( document ).ready(function() {
 								data.model._displaylist.push(data.properties[i]);
 							}
 						}
-	
-	
+
 						listener(data);
 	
 					});
@@ -90,7 +89,6 @@ $( document ).ready(function() {
 					entity.get('properties')
 						.then(
 							function(properties) {
-								
 								data.properties = properties.properties.properties;
 								self.processProperties(data);
 	
@@ -124,11 +122,7 @@ $( document ).ready(function() {
 
 			entity
 				.get(propertyname).then(
-					function(collection){
-				
-						console.log("ROADFPA");
-						console.log(collection);
-												
+					function(collection){											
 						data.collection = collection.properties;
 						listener(data);
 					},
@@ -141,7 +135,7 @@ $( document ).ready(function() {
 				);
 		},
 	
-		feed: function( listener,entityname,itemsPer,sortBy,sortDir ) {
+		feed: function( listener,entityname,itemsPer,sortBy,sortDir,filters ) {
 			var self = this;
 			var entity = {};
 			var data = {};
@@ -150,17 +144,23 @@ $( document ).ready(function() {
 				.getFeed(entityname)
 				.itemsPerPage(itemsPer);
 	
-			Mura(".filter").each( function() {
-				if(Mura(this).val() != '') {
-					var filterCol = Mura(this).attr('name').split('-')[1];
+			$(".filter").each( function() {
+				if($(this).val() != '') {
+					var filterCol = $(this).attr('name').split('-')[1];
 					feed.prop(filterCol).contains(Mura(this).val());
 				}
 			});
+
+			if(filters && filters.length) {
+				for(var i =0;i < filters.length;i++) {
+					feed.prop(filters[i].property).contains(filters[i].value);
+				} 
+			}
 	
 			if(sortBy) {
 				feed.sort(sortBy,sortDir);
 			}
-	
+			
 			feed.getQuery()
 				.then(function(collection) {
 	
@@ -171,6 +171,7 @@ $( document ).ready(function() {
 				
 				collection.get('properties').then(function(response){
 					data.properties=response.properties.properties;
+					data.parentproperties=response.properties;
 	
 					self.processProperties(data);
 					listener(data);
@@ -202,7 +203,7 @@ $( document ).ready(function() {
 	
 		save: function( listener,entityname,model ) {
 			var self = this;
-	
+
 			Mura
 			.getEntity(entityname)
 			.set(
@@ -414,7 +415,7 @@ $( document ).ready(function() {
 
 	Vue.component('scaffold-list-template', {
 		template: '#scaffold-list-template',
-		props: ['entityname','data','state'],
+		props: ['entityname','data','state','currentparent'],
 		mounted: function() {
 			// processes related 'many' children
 			this.$parent.state = [];
@@ -455,8 +456,19 @@ $( document ).ready(function() {
 
 	Vue.component('scaffold-related-many-one', {
 		template: '#scaffold-related-many-one',
-		props: ['property','model','entityid'],
+		props: ['property','model','entity','mparent','properties'],
+		mounted: function() {
+			// processes related 'many' children
+			MuraScaffold.feed( this.proplist,this.property.relatesto );
+		},
 		methods: {
+			proplist: function( data ) {
+				this.mparent = {};
+				
+				this.properties = data.properties;
+				this.mparent.list = data.list;
+				this.mparent.properties = data.parentproperties;
+			},
 			doDefault: function( val,fkcolumn,model ) {
 				if(val && fkcolumn) {
 					model[fkcolumn] = val;
@@ -484,6 +496,9 @@ $( document ).ready(function() {
 			},
 			showForm: function(entityname,entityid,parentid) {
 				Scaffolder.showForm(entityname,entityid,parentid);
+			},
+			showRelatedList: function(name,parent){
+				Scaffolder.showRelatedList(name,parent);
 			}
 		},
 		computed: {
@@ -537,10 +552,10 @@ $( document ).ready(function() {
 			model: {id: ''},
 			state: [],
 			entityid: "",
-			currentView: 'scaffold-form-template'
+			currentView: 'scaffold-form-template',
+			currentparent: {},
 		},
 		mounted: function() {
-//			this.showList();
 			this.hide();
 		},
 		destroyed: function() {
@@ -553,6 +568,7 @@ $( document ).ready(function() {
 			},
 			clickBack: function() {
 				this.errordata = [];
+				/*
 				if(this.state.length) {
 					var stateitem = this.state.pop();
 
@@ -562,8 +578,10 @@ $( document ).ready(function() {
 					else {
 						this.showList(stateitem.name);
 					}
-
 				}
+				*/
+				this.showList(this.entityname);
+				
 			},
 			clickDelete: function( entityname ) {
 				this.errordata = [];
@@ -604,7 +622,8 @@ $( document ).ready(function() {
 				}
 
 				var dead = this.state.pop();
-
+				
+				/*
 				if(this.state.length) {
 					var currentState = this.state.pop();
 					this.showForm( currentState.name,currentState.id,currentState.parent );
@@ -612,6 +631,17 @@ $( document ).ready(function() {
 				else {
 					this.showList(this.entityname);
 				}
+				
+				*/
+
+				if(this.currentparent.properties) {
+					this.showRelatedList(this.entityname,this.currentparent);
+				}
+				else {
+					this.showList(this.entityname);
+				}
+
+				
 			},
 			showAll: function( data ) {
 				MuraScaffold.all( this.doAll );
@@ -628,7 +658,12 @@ $( document ).ready(function() {
 				this.entityid = entityid;
 				this.errordata = [];
 				this.entityname = entityname;
-
+				
+				if(this.currentparent.properties && this.currentparent.properties.entityname == entityname) {
+					this.currentparent = {};
+				}
+				
+				/*
 				var stateitem = {displayname: '',name: entityname,id: entityid} ;
 				var parentcopy = {};
 
@@ -645,14 +680,17 @@ $( document ).ready(function() {
 				}
 
 				this.state.push( stateitem );
-
-
+*/
 				MuraScaffold.get( this.doForm,entityname,entityid ? entityid : 'new' );
 			},
 			doForm: function( data ) {
 				this.model = data.model;
 				this.data = data;
 
+				if(this.currentparent.properties) {
+					this.model[this.currentparent.properties.properties.primarykey] = this.currentparent.properties.id;
+				}
+				
 				if (this.state.length > 1 && this.state[this.state.length - 1].parent) {
 					this.data.parent = this.state[this.state.length - 1].parent;
 				}
@@ -664,9 +702,27 @@ $( document ).ready(function() {
 			showList: function( entityname ) {
 				this.entityname = entityname;
 				this.currentView = 'scaffold-list-template';
+				
 				MuraScaffold.feed( this.doList,entityname,this.itemsper,this.sortBy,this.sortDir );
 			},
 			doList: function( data ) {
+				this.data = data;
+				this.currentView = 'scaffold-list-template';
+			},
+			showRelatedList: function( entityname,parent ) {
+				this.entityname = entityname;
+				this.currentView = 'scaffold-list-template';
+				this.currentparent = parent;
+
+				var filters = [];
+				
+				var filter = {property:this.currentparent.properties.properties.primarykey,value:this.currentparent.properties.id};
+				
+				filters.push(filter);
+
+				MuraScaffold.feed( this.doRelatedList,entityname,this.itemsper,this.sortBy,this.sortDir,filters );
+			},
+			doRelatedList: function( data ) {
 				this.data = data;
 				this.currentView = 'scaffold-list-template';
 			},
@@ -686,7 +742,7 @@ $( document ).ready(function() {
 				this.sortDir = this.sortDir == '' ? 'desc' : this.sortDir == 'desc' ? 'asc' : 'desc';
 
 
-				$("#sortarrow").remove();
+				Mura("#sortarrow").remove();
 				if(this.sortDir == 'asc')
 					$("#sortby-" + col).append("<i class='mi-sort-asc' id='sortarrow'></i>");
 				else
