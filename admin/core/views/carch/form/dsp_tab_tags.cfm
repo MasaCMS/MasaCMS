@@ -106,8 +106,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   		#g# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#
 			   	</label>
 				<input type="text" name="#g#tags">
-				<cfif len(rc.contentBean.getTags())>
-					<cfloop list="#rc.contentBean.getTags()#" index="i">
+				<cfif len(rc.contentBean.getValue("#g#tags"))>
+					<cfloop list="#rc.contentBean.getValue('#g#tags')#" index="i">
 						<span class="tag">
 							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
 						    <input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
