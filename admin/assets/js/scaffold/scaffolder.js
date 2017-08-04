@@ -556,7 +556,8 @@ $( document ).ready(function() {
 			currentparent: {},
 		},
 		mounted: function() {
-			this.hide();
+			//this.hide();
+			this.showAll();
 		},
 		destroyed: function() {
 			console.log('main destroyed');
@@ -640,10 +641,9 @@ $( document ).ready(function() {
 				else {
 					this.showList(this.entityname);
 				}
-
-				
 			},
 			showAll: function( data ) {
+				this.currentparent = {};
 				MuraScaffold.all( this.doAll );
 			},
 			hide: function() {
