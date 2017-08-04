@@ -221,6 +221,27 @@
 					}
 				};
 
+					// click to close new table actions, category selector filter
+					document.onclick = function(e) {
+					if (jQuery('##newContentMenu').length > 0){
+					  if(!(jQuery(e.target).parents().hasClass('addNew')) && !(jQuery(e.target).parents().hasClass('add')) && !(jQuery(e.target).hasClass('add'))){
+				     	jQuery('##newContentMenu').addClass('hide');
+			    	}
+					};
+
+					if (jQuery('.actions-menu').length > 0){
+				    if(!(jQuery(e.target).parents().hasClass('actions-menu')) && !(jQuery(e.target).parents().hasClass('actions-list')) && !(jQuery(e.target).parents().hasClass('show-actions')) && !(jQuery(e.target).hasClass('actions-list'))){
+				       jQuery('.actions-menu').addClass('hide');
+			     	}
+					};
+
+					if(jQuery('##category-select-list').length > 0){
+				    if(!(jQuery(e.target).parents().hasClass('category-select')) && !(jQuery(e.target).parents().hasClass('categories'))){
+				    	jQuery('##category-select-list').slideUp('fast');
+					    }
+						}
+					};
+					// /click to close
 
 			});
 
