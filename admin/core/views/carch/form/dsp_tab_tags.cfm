@@ -66,15 +66,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   	<label>
 			   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
 			   	</label>
-				<input type="text" name="tags">
-				<cfif len(rc.contentBean.getTags())>
-					<cfloop list="#rc.contentBean.getTags()#" index="i">
-						<span class="tag">
-							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
-						<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
-						</span>
-					</cfloop>
-				</cfif>
+  				<input type="text" name="tags">
+  				<cfif len(rc.contentBean.getTags())>
+  					<cfloop list="#rc.contentBean.getTags()#" index="i">
+  						<span class="tag">
+  							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+  						  <input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
+  						</span>
+  					</cfloop>
+  				</cfif>
 			</div> <!--- /.mura-control-group --->
 		</div> <!--- /.mura-control .tagSelector --->
 
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   	</label>
 				<input type="text" name="#g#tags">
 				<cfif len(rc.contentBean.getTags())>
-					<cfloop list="#rc.contentBean.getTags()#" index="i">
+					<cfloop list="#rc.contentBean.getValue('#g#tags')#" index="i">
 						<span class="tag">
 							#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
 						    <input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
