@@ -1253,7 +1253,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		if(entityName == 'entity'){
 			return true;
 		}
-		
+
 		if(!structKeyExists(variables.config.entities,entityName)){
 			return false;
 		} else if (
@@ -3595,7 +3595,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var checkArray=['sum','avg','count','max','min','groupBy','distinct'];
 
 			for(var i in checkArray){
-				if(structKeyExists(url,i) || find(cgi.query_string,"=#i#[")){
+				if(structKeyExists(url,i) || len(cgi.query_string) && find(cgi.query_string,"=#i#[")){
 					return true;
 				}
 			}
