@@ -3595,7 +3595,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var checkArray=['sum','avg','count','max','min','groupBy','distinct'];
 
 			for(var i in checkArray){
-				if(structKeyExists(url,i) || len(cgi.query_string) && find(cgi.query_string,"=#i#[")){
+				if(structKeyExists(url,i) || len(cgi.query_string) && find("=#i#[",cgi.query_string)){
 					return true;
 				}
 			}
