@@ -56,7 +56,7 @@ param name="application.instanceID" default=createUUID();
 param name="application.CFVersion" default=listFirst(SERVER.COLDFUSION.PRODUCTVERSION);
 param name="application.setupComplete" default=false;
 request.muraAppreloaded=true;
-new mura.content.contentCommentBean();
+
 if ( left(server.coldfusion.productversion,5) == "9,0,0" || listFirst(server.coldfusion.productversion) < 9 ) {
 	writeOutput("Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility");
 	abort;

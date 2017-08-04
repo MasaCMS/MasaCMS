@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*  This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,89 +43,73 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent output="false" extends="mura.cache.cacheAbstract" hint="This cache store items in java soft references">
+*/
+/**
+ * This cache store items in java soft references
+ */
+component output="false" extends="mura.cache.cacheAbstract" hint="This cache store items in java soft references" {
+	variables.isSoft=true;
 
-	<cfset variables.isSoft=true>
+	/**
+	 * Constructor
+	 */
+	public function init(required boolean isSoft="true", required numeric freeMemoryThreshold="0") output=false {
 
-	<cffunction name="init" output="false" hint="Constructor">
-		<cfargument name="isSoft" type="boolean" required="true" default="true"/>
-		<cfargument name="freeMemoryThreshold" type="numeric" required="true" default="0"/>
-		<cfscript>
-			super.init( argumentCollection:arguments );
+		super.init( argumentCollection:arguments );
 			variables.isSoft = arguments.isSoft;
 			variables.freeMemoryThreshold=arguments.freeMemoryThreshold;
 			return this;
-		</cfscript>
-	</cffunction>
+	}
 
-	<cffunction name="set" output="false">
-		<cfargument name="key" type="string" required="true" />
-		<cfargument name="context" type="any" required="false" />
-		<cfargument name="isSoft" type="boolean" required="false" default="#variables.isSoft#">
-		<cfargument name="timespan" required="false" default="">
+	public function set(required string key, any context, boolean isSoft="#variables.isSoft#", timespan="") output=false {
+		super.set(arguments.key,arguments.context,arguments.isSoft,arguments.timespan);
+	}
 
-		<cfset super.set(arguments.key,arguments.context,arguments.isSoft,arguments.timespan)>
+	public function get(required string key, any context, boolean isSoft="#variables.isSoft#", timespan="") output=false {
+		var hashKey = getHashKey( arguments.key );
+		//  if the key cannot be found and context is passed then push it in
+		if ( !has( arguments.key ) && isDefined("arguments.context") ) {
+			if ( hasFreeMemoryAvailable() ) {
+				//  create object
+				set( arguments.key, arguments.context, arguments.isSoft, arguments.timespan );
+			} else {
+				return arguments.context;
+			}
+		}
+		//  if the key cannot be found then throw an error
+		if ( !has( arguments.key ) ) {
+			throw( message="Context not found for '#arguments.key#'" );
+		}
+		//  return cached context
+		return super.get( arguments.key );
+	}
 
-	</cffunction>
+	public boolean function hasFreeMemoryAvailable() output=false {
+		if ( variables.freeMemoryThreshold ) {
+			if ( getPercentFreeMemory() > variables.freeMemoryThreshold ) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
 
-	<cffunction name="get" output="false">
-		<cfargument name="key" type="string" required="true" />
-		<cfargument name="context" type="any" required="false" />
-		<cfargument name="isSoft" type="boolean" required="false" default="#variables.isSoft#">
-		<cfargument name="timespan" required="false" default="">
-		<cfset var hashKey = getHashKey( arguments.key ) />
+	public function getPercentFreeMemory() output=false {
+		var runtime = "";
+		if ( !structKeyExists(request,"percentFreeMemory") ) {
+			runtime = getJavaRuntime();
+			request.percentFreeMemory=(Round((runtime.freeMemory() / runtime.maxMemory() ) * 100));
+		}
+		return request.percentFreeMemory;
+	}
 
-		<!--- if the key cannot be found and context is passed then push it in --->
-		<cfif NOT has( arguments.key ) AND isDefined("arguments.context")>
-			<cfif hasFreeMemoryAvailable()>
-				<!--- create object --->
-				<cfset set( arguments.key, arguments.context, arguments.isSoft, arguments.timespan ) />
-			<cfelse>
-				<cfreturn arguments.context>
-			</cfif>
-		</cfif>
+	public function getJavaRuntime() output=false {
+		if ( !structKeyExists(application,"javaRuntime") ) {
+			application.javaRuntime=createObject("java","java.lang.Runtime").getRuntime();
+		}
+		return application.javaRuntime;
+	}
 
-		<!--- if the key cannot be found then throw an error --->
-		<cfif NOT has( arguments.key )>
-			<cfthrow message="Context not found for '#arguments.key#'" />
-		</cfif>
-
-		<!--- return cached context --->
-		<cfreturn super.get( arguments.key ) />
-
-	</cffunction>
-
-	<cffunction name="hasFreeMemoryAvailable" returntype="boolean" output="false">
-
-		<cfif variables.freeMemoryThreshold>
-			<cfif getPercentFreeMemory() gt variables.freeMemoryThreshold>
-				<cfreturn true>
-			<cfelse>
-				<cfreturn false>
-			</cfif>
-		<cfelse>
-			<cfreturn true>
-		</cfif>
-
-	</cffunction>
-
-	<cffunction name="getPercentFreeMemory" output="false">
-		<cfset var runtime = "">
-
-		<cfif not structKeyExists(request,"percentFreeMemory")>
-			<cfset runtime = getJavaRuntime()>
-			<cfset request.percentFreeMemory=(Round((runtime.freeMemory() / runtime.maxMemory() ) * 100))>
-		</cfif>
-
-		<cfreturn request.percentFreeMemory>
-	</cffunction>
-
-	<cffunction name="getJavaRuntime" output="false">
-		<cfif not structKeyExists(application,"javaRuntime")>
-			<cfset application.javaRuntime=createObject("java","java.lang.Runtime").getRuntime() >
-		</cfif>
-
-		<cfreturn application.javaRuntime>
-	</cffunction>
-</cfcomponent>
+}

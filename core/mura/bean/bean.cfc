@@ -791,140 +791,175 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 									if(!getIsHistorical() || prop.name !='histid'){
 										application.objectMappings[variables.entityName].primaryKey=prop.name;
 									}
-					       	 	}
+					      }
 
-					       	 	if(!structKeyExists(prop,"dataType")){
-					       	 		if(structKeyExists(prop,"ormtype")){
-					       	 			prop.dataType=prop.ormtype;
-					       	 		} else if(structKeyExists(prop,"type")){
-					       	 			prop.dataType=prop.type;
-					       	 		} else {
-					       	 			prop.type="string";
-					       	 			prop.dataType="varchar";
-					       	 		}
-					       	 	}
+			       	 	if(!structKeyExists(prop,"dataType")){
+			       	 		if(structKeyExists(prop,"ormtype")){
+			       	 			prop.dataType=prop.ormtype;
+			       	 		} else if(structKeyExists(prop,"type")){
+			       	 			prop.dataType=prop.type;
+			       	 		} else {
+			       	 			prop.type="string";
+			       	 			prop.dataType="varchar";
+			       	 		}
+			       	 	}
 
-					       	 	if(listFindNoCase('date,timetamp',prop.dataType)){
-					       	 		prop.dataType='datetime';
-					       	 	}
+			       	 	if(listFindNoCase('date,timetamp',prop.dataType)){
+			       	 		prop.dataType='datetime';
+			       	 	}
 
-										if(structKeyExists(prop,'relatesTo')){
-											prop.cfc=prop.relatesTo;
+								if(structKeyExists(prop,'relatesTo')){
+									prop.cfc=prop.relatesTo;
+								}
+
+			       	 	if(structKeyExists(prop,'cfc')){
+
+			       	 		param name="prop.fkcolumn" default="primaryKey";
+
+			       	 		prop.column=prop.fkcolumn;
+
+			       	 		param name="prop.loadkey" default=prop.fkcolumn;
+
+			       	 		if(prop.nested){
+			       	 			prop.loadkey='parentid';
+			       	 		}
+
+									param name="application.objectMappings.#prop.cfc#" default={};
+									param name="application.objectMappings.#prop.cfc#.synthedFunctions" default={};
+
+			       	 		if(prop.fieldtype eq 'one-to-many' or prop.fieldtype eq 'many-to-many'){
+
+										arrayAppend(application.objectMappings[variables.entityName].hasMany, prop);
+
+										//Add has many methods to entity
+			       	 			//getBean("#prop.cfc#").loadBy(argumentCollection=structAppend(arguments.MissingMethodArguments,synthArgs(application.objectMappings[variables.entityName].synthedFunctions["has#prop.name#"].args),false)).recordcount
+				       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="iterator",functionType='getEntityIterator'}};
+										application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
+				       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='getEntityQuery'}};
+				       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='hasEntity'}};
+				       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=prop.name,functionType='addEntity'}};
+				       	 		application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=prop.name,functionType='removeEntity'}};
+
+										//If there's a defined singular name then add has many methods under that name as well to entity
+										if(structKeyExists(prop,"singularname")){
+											application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
+											//application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator'];
+											application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Query']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query'];
+											application.objectMappings[variables.entityName].synthedFunctions['add#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#'];
+											application.objectMappings[variables.entityName].synthedFunctions['has#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#'];
+											application.objectMappings[variables.entityName].synthedFunctions['remove#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#'];
+
 										}
 
-					       	 	if(structKeyExists(prop,'cfc')){
+										//If it's a relationship to a core entity then add the synthesized method to the core entity's mappings
+				       	 		if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
 
-					       	 		param name="prop.fkcolumn" default="primaryKey";
+				       	 			if(prop.fieldtype eq 'many-to-many'){
+												//Add has many methods to the core entity
+				       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="iterator",functionType='getEntityIterator'}};
+												application.objectMappings[prop.cfc].synthedFunctions['get#prop.name#']=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
+												application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="query",functionType='getEntityQuery'}};
+					       	 			//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
+					       	 			application.objectMappings[prop.cfc].synthedFunctions['add#variables.entityName#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
+					       	 			application.objectMappings[prop.cfc].synthedFunctions['remove#variables.entityName#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
 
-					       	 		prop.column=prop.fkcolumn;
+				       	 			} else {
+												//Add has one methods to the core entity
+				       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn="#prop.fkcolumn#",loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="this",functionType='getEntity'}};
+				       	 				//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
+				       	 			}
 
-					       	 		param name="prop.loadkey" default=prop.fkcolumn;
+				       	 		} else {
+											if(prop.fieldtype eq 'many-to-many'){
+												//Only add method to other entity if is is not already defined
+												//Add has many methods to the core entity
+				       	 				param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Iterator" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="iterator",functionType='getEntityIterator'}};
+												param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.get#prop.name#" default=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
+												param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Query" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="query",functionType='getEntityQuery'}};
+					       	 			//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
+					       	 			param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.add#variables.entityName#" default={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
+					       	 			param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.remove#variables.entityName#" default={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
 
-					       	 		if(prop.nested){
-					       	 			prop.loadkey='parentid';
-					       	 		}
+				       	 			} else {
+												//Only add method to other entity if is is not already defined
+												//Add has one methods to the core entity
+				       	 				param name="aapplication.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn="#prop.fkcolumn#",loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="this",functionType='getEntity'}};
+				       	 				//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
+				       	 			}
+										}
 
-					       	 		if(prop.fieldtype eq 'one-to-many' or prop.fieldtype eq 'many-to-many'){
+			       	 		} else if (prop.fieldtype eq 'many-to-one' or prop.fieldtype eq 'one-to-one'){
 
-												arrayAppend(application.objectMappings[variables.entityName].hasMany, prop);
+   	 								arrayAppend(application.objectMappings[variables.entityName].hasOne, prop);
 
-												//Add has many methods to entity
-					       	 			//getBean("#prop.cfc#").loadBy(argumentCollection=structAppend(arguments.MissingMethodArguments,synthArgs(application.objectMappings[variables.entityName].synthedFunctions["has#prop.name#"].args),false)).recordcount
-						       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="iterator",functionType='getEntityIterator'}};
-												application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
-						       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='getEntityQuery'}};
-						       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='hasEntity'}};
-						       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=prop.name,functionType='addEntity'}};
-						       	 		application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=prop.name,functionType='removeEntity'}};
+										//Add has one methods to entity
+		       	 				if(prop.fkcolumn eq 'siteid'){
+			       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='getBean("settingsManager").getSite(getValue("siteID"))',args={prop=prop.name,functionType='getEntity'}};
+			       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("siteID",arguments.MissingMethodArguments[1].getSiteID()))',args={prop=prop.name,functionType='setEntity'}};
+			       	 			} else {
+			       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="this",functionType='getEntity'}};
+			       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getPrimaryKey()))',args={prop=prop.name,functionType='setEntity'}};
+			       	 			}
 
-												//If there's a defined singular name then add has many methods under that name as well to entity
-												if(structKeyExists(prop,"singularname")){
-													application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
-													//application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator'];
-													application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Query']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query'];
-													application.objectMappings[variables.entityName].synthedFunctions['add#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#'];
-													application.objectMappings[variables.entityName].synthedFunctions['has#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#'];
-													application.objectMappings[variables.entityName].synthedFunctions['remove#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#'];
+										param name="application.objectMappings.#prop.cfc#" default={};
+										param name="application.objectMappings.#prop.cfc#.synthedFunctions" default={};
 
-												}
+										//If it's a relationship to a core entity then add the synthesized method to the core entity's mappings
+			       	 			if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
 
-												//If it's a relationship to a core entity then add the synthesized method to the core entity's mappings
-						       	 		if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
-						       	 			param name="application.objectMappings.#prop.cfc#" default={};
-						       	 			param name="application.objectMappings.#prop.cfc#.synthedFunctions" default={};
+			       	 				if(prop.fieldtype eq 'many-to-one'){
+												//Add has many methods to the core entity
+			       	 					application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="iterator",functionType='getEntityIterator'}};
+												application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
+				       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="query",functionType='getEntityQuery'}};
+				       	 				//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
+				       	 				application.objectMappings[prop.cfc].synthedFunctions['add#variables.entityName#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
+				       	 				application.objectMappings[prop.cfc].synthedFunctions['remove#variables.entityName#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
 
-						       	 			if(prop.fieldtype eq 'many-to-many'){
-														//Add has many methods to the core entity
-						       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="iterator",functionType='getEntityIterator'}};
-														application.objectMappings[prop.cfc].synthedFunctions['get#prop.name#']=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
-														application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="query",functionType='getEntityQuery'}};
-							       	 			//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
-							       	 			application.objectMappings[prop.cfc].synthedFunctions['add#variables.entityName#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
-							       	 			application.objectMappings[prop.cfc].synthedFunctions['remove#variables.entityName#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
+			       	 				} else {
+												//Add has one methods to the core entity
+					       	 			application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="this",functionType='getEntity'}};
+					       	 			//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
+				       	 			}
+			       	 			} else {
+											if(prop.fieldtype eq 'many-to-one'){
+												//Only add method to other entity if is is not already defined
+												//Add has many methods to the core entity
+			       	 					param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Iterator" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="iterator",functionType='getEntityIterator'}};
+												param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#" default=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
+				       	 				param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#Query" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="query",functionType='getEntityQuery'}};
+				       	 				//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
+				       	 				param name="application.objectMappings.#prop.cfc#.synthedFunctions.add#variables.entityName#" default={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
+				       	 				param name="application.objectMappings.#prop.cfc#.synthedFunctions.remove#variables.entityName#" default={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
 
-						       	 			} else {
-														//Add has one methods to the core entity
-						       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn="#prop.fkcolumn#",loadkey=prop.loadkey,inverse=true,siteid=true,cfc="#variables.entityName#",returnFormat="this",functionType='getEntity'}};
-						       	 				//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
-						       	 			}
+			       	 				} else {
+												//Only add method to other entity if is is not already defined
+												//Add has one methods to the core entity
+					       	 			param name="application.objectMappings.#prop.cfc#.synthedFunctions.get#variables.entityName#" default={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="this",functionType='getEntity'}};
+					       	 			//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
+				       	 			}
+										}
 
-						       	 		}
+			       	 		}
 
-					       	 		} else if (prop.fieldtype eq 'many-to-one' or prop.fieldtype eq 'one-to-one'){
+			       	 		param name="prop.cascade" default="none";
+									param name="prop.persistent" default=true;
 
-		   	 								arrayAppend(application.objectMappings[variables.entityName].hasOne, prop);
-
-												//Add has one methods to entity
-				       	 				if(prop.fkcolumn eq 'siteid'){
-					       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='getBean("settingsManager").getSite(getValue("siteID"))',args={prop=prop.name,functionType='getEntity'}};
-					       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("siteID",arguments.MissingMethodArguments[1].getSiteID()))',args={prop=prop.name,functionType='setEntity'}};
-					       	 			} else {
-					       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="this",functionType='getEntity'}};
-					       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getPrimaryKey()))',args={prop=prop.name,functionType='setEntity'}};
-					       	 			}
-
-												//If it's a relationship to a core entity then add the synthesized method to the core entity's mappings
-					       	 			if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
-
-					       	 				param name="application.objectMappings.#prop.cfc#" default={};
-							       	 		param name="application.objectMappings.#prop.cfc#.synthedFunctions" default={};
-
-					       	 				if(prop.fieldtype eq 'many-to-one'){
-														//Add has many methods to the core entity
-					       	 					application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="iterator",functionType='getEntityIterator'}};
-														application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']=application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator'];
-						       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="query",functionType='getEntityQuery'}};
-						       	 				//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
-						       	 				application.objectMappings[prop.cfc].synthedFunctions['add#variables.entityName#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
-						       	 				application.objectMappings[prop.cfc].synthedFunctions['remove#variables.entityName#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
-
-					       	 				} else {
-														//Add has one methods to the core entity
-							       	 			application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,inverse=true,siteid=true,cfc=variables.entityName,returnFormat="this",functionType='getEntity'}};
-							       	 			//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
-						       	 			}
-					       	 			}
-
-					       	 		}
-
-					       	 		param name="prop.cascade" default="none";
-											param name="prop.persistent" default=true;
-
-					       	 		if(prop.column=='primarykey'){
-					       	 			prop.persistent=false;
-					       	 		} else if(prop.persistent){
-					       	 			setPropAsIDColumn(prop,false);
-					       	 		}
+			       	 		if(prop.column=='primarykey'){
+			       	 			prop.persistent=false;
+			       	 		} else if(prop.persistent){
+			       	 			setPropAsIDColumn(prop,false);
+			       	 		}
 
 
-					       	 	} else if(!structKeyExists(prop,"persistent") ){
-					       	 		prop.persistent=true;
-					       	 	}
+			       	 	} else if(!structKeyExists(prop,"persistent") ){
+			       	 		prop.persistent=true;
+			       	 	}
 
-					       	 	param name="prop.column" default=prop.name;
+			       	 	param name="prop.column" default=prop.name;
 
-					       	 	structAppend(prop,
-					       	 		defaultMetaData,
+			       	 	structAppend(prop,
+			       	 		defaultMetaData,
 									false
 								);
 

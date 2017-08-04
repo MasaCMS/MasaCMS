@@ -168,6 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset variables.newLink = variables.adminBase & "/?muraAction=cArch.loadnewcontentmenu">
 			<cfset variables.newLink = variables.newLink & "&amp;contentid=" & request.contentBean.getContentID()>
+			<cfset variables.newLink = variables.newLink & "&amp;contenthistid=" & request.contentBean.getContentHistID()>
 			<cfset variables.newLink = variables.newLink & "&amp;topid=00000000000000000000000000000000001">
 			<cfset variables.newLink = variables.newLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.newLink = variables.newLink & "&amp;moduleid=" & "00000000000000000000000000000000000">

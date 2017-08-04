@@ -1522,20 +1522,19 @@
 
 								if(resp.success){
 					        	<cfif node.getType() eq 'Variation'>
-					        		if(MuraInlineEditor.requestedURL){
-										location.href=MuraInlineEditor.requestedURL
-									} else {
-					        			location.reload();
-									}
+							        if(MuraInlineEditor.requestedURL){
+												location.href=MuraInlineEditor.requestedURL
+											} else {
+							        	location.reload();
+											}
 					        	<cfelse>
 					        		var resp = eval('(' + data + ')');
 
 					        		if(MuraInlineEditor.requestedURL){
-										location.href=MuraInlineEditor.requestedURL
-									} else {
-										location.href=resp.location;
-									}
-
+												location.href=MuraInlineEditor.requestedURL
+											} else {
+												location.href=resp.location;
+											}
 					        	</cfif>
 								} else {
 
@@ -1810,7 +1809,7 @@
 			<cfif url.contenttype neq 'Variation'>
 			CKFinder.setupCKEditor(
 			instance, {
-				basePath: '#application.configBean.getContext()#/core/vendor/ckfinder/',
+				basePath: '#application.configBean.getContext()#/requirements/ckfinder/',
 				rememberLastFolder: true
 			});
 			</cfif>

@@ -80,7 +80,8 @@
 		<cfargument name="mode" required="no" type="string" default="#variables.configBean.getDefaultfilemode()#">
 
 		<!--- Skip if using Amazon S3 --->
-		<cfif Not directoryExists(dir) and Not ListFindNoCase('s3', Left(arguments.dir, 2))>
+		<!--- fileExists will return true with Lucee s3 mapping  --->
+		<cfif not (directoryExists(dir) or fileExists(dir)) and not ListFindNoCase('s3', Left(arguments.dir, 2))>
 			<cfif variables.configBean.getUseFileMode()>
 				<cfdirectory directory="#dir#" action="create" mode="#arguments.mode#">
 			<cfelse>

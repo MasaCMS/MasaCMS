@@ -786,7 +786,6 @@ Thanks for using #contactName#</cfoutput>
 			<cfset var user=redirect.getUser()>
 			<cfif user.exists()>
 				<cfset user.login()>
-				<cfset redirect.delete()>
 			</cfif>
 			<cfset structDelete(session,"siteArray")>
 		</cfif>

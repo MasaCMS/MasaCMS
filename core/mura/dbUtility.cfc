@@ -734,11 +734,8 @@
 						</cfcatch>
 					</cftry>
 				</cfcase>
-				<cfcase value="float,numeric">
+				<cfcase value="float,numeric,double">
 					<cfreturn "float">
-				</cfcase>
-				<cfcase value="double">
-					<cfreturn "Decimal">
 				</cfcase>
 				<cfcase value="blob">
 					<cfreturn "varbinary">
@@ -936,11 +933,15 @@
 		<cfcase value="ntext,longtext,clob,nclob,text">
 			<cfreturn "longtext">
 		</cfcase>
-		<cfcase value="float,binary_float,real">
+		<cfcase value="numeric,float,binary_float,real">
 			<cfreturn "float">
 		</cfcase>
 		<cfcase value="double,decimal,binary_double,double precision">
-			<cfreturn "double">
+			<cfif variables.dbtype eq 'mssql'>
+				<cfreturn "float">
+			<cfelse>
+				<cfreturn "double">
+			</cfif>
 		</cfcase>
 		<cfcase value="blob,longblob,bytea,varbinary">
 			<cfreturn "blob">
@@ -1004,11 +1005,15 @@
 			<cfcase value="text">
 				<cfset columnArgs.datatype="text">
 			</cfcase>
-			<cfcase value="float,binary_float,real">
+			<cfcase value="numeric,float,binary_float,real">
 				<cfset columnArgs.datatype="float">
 			</cfcase>
 			<cfcase value="double,decimal,binary_double,double precision">
-				<cfset columnArgs.datatype="double">
+				<cfif variables.dbtype eq 'mssql'>
+					<cfset columnArgs.datatype="float">
+				<cfelse>
+					<cfset columnArgs.datatype="double">
+				</cfif>
 			</cfcase>
 			<cfcase value="blob,longblob,bytea,varbinary">
 				<cfset columnArgs.datatype="blob">

@@ -74,7 +74,7 @@ if ( request.muraInDocker && len(getSystemEnvironmentSetting('MURA_DATABASE'))) 
 
 		 qs=new Query();
 		 qs.setDatasource('nodatabase');
-		 
+
 		if ( !qs.execute(sql="select * from pg_class where relname='tcontent' and relkind='r'").getResult().recordcount ) {
 			FORM['#application.setupSubmitButton#']=true;
 			FORM['#application.setupSubmitButtonComplete#']=true;
