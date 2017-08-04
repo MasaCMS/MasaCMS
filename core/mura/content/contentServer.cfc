@@ -655,7 +655,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfreturn "">
 	<cfelseif left(path,len(legacywidgetendpoint)) eq legacywidgetendpoint>
-		<cflocation statuscode="301" addtoken="false" url="#replaceNoCase(cgi.path_info,'/tasks/widgets/','/requirements/')#">
+		<cflocation statuscode="301" addtoken="false" url="#replaceNoCase(cgi.path_info,'/tasks/widgets/','/core/vendor/')#">
 	</cfif>
 </cffunction>
 

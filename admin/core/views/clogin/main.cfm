@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<div class="mura-control-group">
 				      	<label>#application.rbFactory.getKeyValue(session.rb,'login.enteremailedauthcode')#</label>
 								<div class="input-prepend">
-								  	<span class="add-on"><i class="mi-envelope"></i></span><input id="authcode" name="authcode" type="text" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'login.authorizationcode'))#" />
+								  	<span class="add-on"><i class="mi-envelope"></i></span><input autocomplete="off" id="authcode" name="authcode" type="text" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'login.authorizationcode'))#" />
 								</div>
 								<cfif rc.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
 									<input type="hidden" name="rememberdevice" value="1"/>
@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 							<div class="mura-control-group">
 								<label>#application.rbFactory.getKeyValue(session.rb,'login.password')#</label>
-								<input id="password" type="password" name="password">
+								<input id="password" type="password" name="password" autocomplete="off">
 					  	</div>
 
 							<cfif rc.$.getBean('configBean').getValue(property='MFA',defaultValue=false)>

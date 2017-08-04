@@ -82,7 +82,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.userToolsLoginFormInputWrapperClass#">
-							<input type="password" id="txtPassword" name="password" class="#this.userToolsLoginFormInputClass#" placeholder="#variables.$.rbKey('user.password')#">
+							<input type="password" id="txtPassword" name="password" class="#this.userToolsLoginFormInputClass#" placeholder="#variables.$.rbKey('user.password')#"  autocomplete="off">
 						</div>
 					</div>
 

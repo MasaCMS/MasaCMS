@@ -340,6 +340,7 @@ Display Objects
 <cfset this.loginFormClass="form-horizontal">
 <cfset this.forgotPasswordFormClass="form-horizontal">
 <cfset this.loginFormGroupWrapperClass="">
+<cfset this.loginFormErrorClass="">
 <cfset this.loginFormFieldLabelClass="control-label">
 <cfset this.loginFormFieldWrapperClass="">
 <cfset this.loginFormFieldClass="">

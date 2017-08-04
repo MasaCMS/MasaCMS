@@ -114,47 +114,47 @@ select * from rsSubTypes where subType <> 'Default'
 
 								<div class="mura-control-group">
 						     		<label>#application.rbFactory.getKeyValue(session.rb,'user.fname')#*</label>
-								    	<input id="fname" name="fname" type="text" value="#esapiEncode('html_attr',rc.userBean.getfname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#">
+								    <input id="fname" name="fname" type="text" value="#esapiEncode('html_attr',rc.userBean.getfname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#"/>
 						    </div>
 
 								<div class="mura-control-group">
-						      		<label>#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</label>
-						      			<input id="lname" name="lname" type="text" value="#esapiEncode('html_attr',rc.userBean.getlname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#">
+						      	<label>#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</label>
+						      	<input id="lname" name="lname" type="text" value="#esapiEncode('html_attr',rc.userBean.getlname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#"/>
 						    </div>
 
 								<div class="mura-control-group">
-							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>
-							      			<input id="organization" name="company" type="text" value="#esapiEncode('html_attr',rc.userBean.getcompany())#" >
+							      	<label>#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>
+							      	<input id="organization" name="company" type="text" value="#esapiEncode('html_attr',rc.userBean.getcompany())#" />
 								</div>
 
 								<div class="mura-control-group">
-							      	<label>#application.rbFactory.getKeyValue(session.rb,'user.jobtitle')#</label>
-							      		<input id="jobtitle" name="jobtitle" type="text" value="#esapiEncode('html_attr',rc.userBean.getjobtitle())#" >
+							      <label>#application.rbFactory.getKeyValue(session.rb,'user.jobtitle')#</label>
+							      <input id="jobtitle" name="jobtitle" type="text" value="#esapiEncode('html_attr',rc.userBean.getjobtitle())#" />
 								</div>
 
 								<div class="mura-control-group">
-							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.email')#*</label>
-							      			<input id="email" name="email" type="text" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" value="#esapiEncode('html_attr',rc.userBean.getemail())#">
+							      <label>#application.rbFactory.getKeyValue(session.rb,'user.email')#*</label>
+							      <input id="email" name="email" type="text" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" value="#esapiEncode('html_attr',rc.userBean.getemail())#"/>
 								</div>
 
 								<div class="mura-control-group">
-							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.mobilephone')#</label>
-							      			<input id="mobilePhone" name="mobilePhone" type="text" value="#esapiEncode('html_attr',rc.userBean.getMobilePhone())#">
+							      	<label>#application.rbFactory.getKeyValue(session.rb,'user.mobilephone')#</label>
+							      	<input id="mobilePhone" name="mobilePhone" type="text" value="#esapiEncode('html_attr',rc.userBean.getMobilePhone())#"/>
 								</div>
 
 								<div class="mura-control-group">
 						      		<label>#application.rbFactory.getKeyValue(session.rb,'user.username')#**</label>
-						      			<input id="username" name="usernameNoCache" type="text" value="#esapiEncode('html_attr',rc.userBean.getusername())#" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" >
+						      		<input id="username" name="usernameNoCache" type="text" value="#esapiEncode('html_attr',rc.userBean.getusername())#" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" />
 						    </div>
 
 								<div class="mura-control-group">
-							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</label>
-							      			<input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value=""  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#">
+							      	<label>#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</label>
+							      	<input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value=""  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#" autocomplete="off"/>
 						    </div>
 
 								<div class="mura-control-group">
-							      		<label>#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</label>
-							      			<input  name="password2" autocomplete="off" type="password" value="" message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#">
+							      	<label>#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</label>
+							      	<input name="password2" autocomplete="off" type="password" value="" message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#" autocomplete="off"/>
 						    </div>
 
 

@@ -308,6 +308,7 @@
 		this.loginFormClass="";
 		this.forgotPasswordFormClass="";
 		this.loginFormGroupWrapperClass="";
+		this.loginFormErrorClass="";
 		this.loginFormFieldLabelClass="";
 		this.loginFormFieldWrapperClass="";
 		this.loginFormFieldClass="";

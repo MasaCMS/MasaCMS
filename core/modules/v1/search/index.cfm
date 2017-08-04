@@ -194,7 +194,7 @@
 		<!--- SEARCH AGAIN --->
 		<div class="#this.searchAgainRowClass#">
 			<div class="#this.searchAgainInnerClass#">
-				<form id="svSearchAgain" name="searchForm" class="mura-search-again #this.searchAgainFormClass#" role="search">
+				<form method="post" id="svSearchAgain" name="searchForm" class="mura-search-again #this.searchAgainFormClass#" role="search">
 					<p>#variables.$.rbKey('search.didnotfind')#</p>
 					<label for="txtKeywords">#variables.$.rbKey('search.keywords')#</label>
 					<div class="#this.searchAgainInputWrapperClass#">

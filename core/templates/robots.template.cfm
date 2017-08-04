@@ -1,8 +1,8 @@
 User-agent: *
 Crawl-Delay: 5
-Allow: /requirements/fullcalendar
-Allow: /requirements/prettify
+Allow: /core/vendor/fullcalendar
+Allow: /core/vendor/prettify
 Disallow: /admin/
 Disallow: /tasks/
-Disallow: /requirements/
+Disallow: /core/vendor/
 Disallow: /config/

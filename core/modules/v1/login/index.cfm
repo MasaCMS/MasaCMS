@@ -102,7 +102,7 @@
 										<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 									</label>
 									<div class="#this.loginFormFieldWrapperClass#">
-										<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.authcode')#" name="authcode" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.authcoderequired'))#" autofocus>
+										<input autocomplete="off" class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.authcode')#" name="authcode" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.authcoderequired'))#" autofocus>
 									</div>
 								</div>
 
@@ -154,7 +154,7 @@
 									<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 								</label>
 								<div class="#this.loginFormFieldWrapperClass#">
-									<input class="#this.loginFormFieldClass#" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#">
+									<input class="#this.loginFormFieldClass#" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#" autocomplete="off">
 								</div>
 							</div>
 

@@ -115,9 +115,9 @@ component extends="mura.cfobject" output="false" hint="This handles translating 
 		}
 		//  Cleaning up old paths
 		try {
-			page=replaceNoCase(page,"/tasks/widgets/","/requirements/");
+			page=replaceNoCase(page,"/tasks/widgets/","/core/vendor/");
 		} catch (any cfcatch) {
-			page=replace(page,"/tasks/widgets/","/requirements/");
+			page=replace(page,"/tasks/widgets/","/core/vendor/");
 		}
 		try {
 			page=replaceNoCase(page,"/tasks/","/index.cfm/tasks/");
