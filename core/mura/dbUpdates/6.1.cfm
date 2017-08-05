@@ -1,20 +1,4 @@
 <cfscript>
-	getBean('approvalChain').checkSchema();
-	getBean('approvalChainMembership').checkSchema();
-	getBean('approvalRequest').checkSchema();
-	getBean('approvalAction').checkSchema();
-	getBean('approvalChainAssignment').checkSchema();
-	getBean('changesetRollBack').checkSchema();
-	getBean('contentSourceMap').checkSchema();
-	getBean('relatedContentSet').checkSchema();
-	getBean('fileMetaData').checkSchema();
-	//getBean('file').checkSchema();
-	getBean('razunaSettings').checkSchema();
-	getBean('contentFilenameArchive').checkSchema();
-	getBean('commenter').checkSchema();
-	getBean('changesetCategoryAssignment').checkSchema();
-	getBean('changesetTagAssignment').checkSchema();
-
 	dbUtility.setTable("tfiles");
 	if(getDbType() == 'MySQL'  && dbUtility.version().database_productname=='MySQL'){
 		if(!dbUtility.columnExists('caption')){
@@ -170,6 +154,22 @@
 	.addIndex('flagCount')
 	.addIndex('isSpam')
 	.addIndex('isDeleted');
+
+	getBean('approvalChain').checkSchema();
+	getBean('approvalChainMembership').checkSchema();
+	getBean('approvalRequest').checkSchema();
+	getBean('approvalAction').checkSchema();
+	getBean('approvalChainAssignment').checkSchema();
+	getBean('changesetRollBack').checkSchema();
+	getBean('contentSourceMap').checkSchema();
+	getBean('relatedContentSet').checkSchema();
+	getBean('fileMetaData').checkSchema();
+	//getBean('file').checkSchema();
+	getBean('razunaSettings').checkSchema();
+	getBean('contentFilenameArchive').checkSchema();
+	getBean('commenter').checkSchema();
+	getBean('changesetCategoryAssignment').checkSchema();
+	getBean('changesetTagAssignment').checkSchema();
 </cfscript>
 
 <cfquery name="rsCheck">
