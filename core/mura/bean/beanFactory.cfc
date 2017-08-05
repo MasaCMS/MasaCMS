@@ -115,7 +115,7 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           super.declareBean(beanName=entity.entityName, dottedPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#", isSingleton=false);
 
-          getBean(entity.entityName).checkSchema();
+          getBean(entity.entityName).checkSchema().registerAsEntity();
 
           return this;
         } else {

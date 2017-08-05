@@ -1345,24 +1345,27 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 	}
 
 	function registerAsEntity(){
-		var reg=getBean('entity')
-			.loadBy(name=getEntityName())
+		var reg=getBean('entity').loadBy(name=getEntityName());
+
+		if(reg.getIsNew() || isDefined('url.applydbupdates')){
+			reg
 			.set('scaffold',getScaffold())
 			.set('dynamic',getDynamic())
 			.set('displayName',getEntityDisplayName())
 			.set('ishistorical',getIsHistorical());
 
-		var md=GetMetaData(this);
+			var md=GetMetaData(this);
 
-		if(structKeyExists(md,'path')){
-			try{
-				reg.set('code',fileRead(expandpath(md.path)));
-			} catch(any e){}
-				
-			reg.set('path',md.path);
+			if(structKeyExists(md,'path')){
+				try{
+					reg.set('code',fileRead(expandpath(md.path)));
+				} catch(any e){}
+
+				reg.set('path',md.path);
+			}
+
+			reg.save();
 		}
-
-		reg.save();
 	}
 
 }

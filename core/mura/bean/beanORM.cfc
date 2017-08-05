@@ -258,8 +258,6 @@ component extends="mura.bean.bean" versioned=false hint="This provides dynamic C
 		param name="application.objectMappings.#variables.entityName#" default={};
 		application.objectMappings[variables.entityName].columns=getColumns();
 
-		registerAsEntity();
-
 		//WriteDump(reg.getErrors());abort;
 
 		return this;
