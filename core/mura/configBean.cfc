@@ -48,6 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides access the global configuration">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
+<cfset variables.autoupdateurl="https://github.com/blueriver/MuraCMS/archive/master.zip"/>
 <cfset variables.instance.version="7.1.0"/>
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
@@ -1962,7 +1963,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isJSON(boxConfig)>
 			<cfset boxConfig=deserializeJSON(boxConfig)>
 			<cfif isDefined('boxConfig.version')>
-				<cfreturn =boxConfig.version>
+				<cfreturn boxConfig.version>
 			</cfif>
 		</cfif>
 	</cfif>
