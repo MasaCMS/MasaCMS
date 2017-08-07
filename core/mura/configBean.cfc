@@ -247,16 +247,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.siteDir=''>
 	</cfif>
 
-	<cfif fileExists(expandPath('/muraWRM/box.json'))>
-		<cfset var boxConfig=fileRead(expandPath('/muraWRM/box.json'))>
-
-		<cfif isJSON(boxConfig)>
-			<cfset boxConfig=deserializeJSON(boxConfig)>
-			<cfif isDefined('boxConfig.version')>
-				<cfset variables.instance.verion=boxConfig.version>
-			</cfif>
-		</cfif>
-	</cfif>
+	<cfset variables.instance.verion=getVersionFromFile()>
 
 	<cfset setWebRoot(arguments.config.webroot)/>
 	<cfset setContext(arguments.config.context)/>
@@ -1962,6 +1953,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn "">
 	</cfif>
+</cffunction>
+
+<cffunction name="getVersionFromFile" output="false">
+	<cfif fileExists(expandPath('/muraWRM/box.json'))>
+		<cfset var boxConfig=fileRead(expandPath('/muraWRM/box.json'))>
+
+		<cfif isJSON(boxConfig)>
+			<cfset boxConfig=deserializeJSON(boxConfig)>
+			<cfif isDefined('boxConfig.version')>
+				<cfreturn =boxConfig.version>
+			</cfif>
+		</cfif>
+	</cfif>
+
+	<cfreturn variables.instance.version>
 </cffunction>
 
 <cfscript>
