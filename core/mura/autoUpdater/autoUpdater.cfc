@@ -63,16 +63,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var zipUtil=createObject("component","mura.Zip")>
 <cfset var rs=queryNew("empty")>
 <cfset var trimLen=0>
+<cfset var trimPath=0>
 <cfset var fileItem="">
 <cfset var currentDir=GetDirectoryFromPath(getCurrentTemplatePath())>
+<cfset var updateVersion=1>
+<cfset var currentVersion=0>
 <cfset var diff="">
 <cfset var returnStruct={currentVersion=currentVersion,files=[]}>
 <cfset var updatedArray=arrayNew(1)>
 <cfset var destination="">
 <cfset var autoUpdateSleep=variables.configBean.getValue("autoUpdateSleep")>
-<cfset var updateVersion=1>
-<cfset var currentVersion=0>
-	
+
 <cfsetting requestTimeout = "7200">
 <cfset var sessionData=getSession()>
 
@@ -107,16 +108,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset zipUtil.extract(zipFilePath:"#currentDir##zipFileName#.zip",
 								extractPath: "#currentDir##zipFileName#")>
 
-			<cfquery name="rs" dbType="query">
-			select * from rs where entry not like 'sites#variables.fileDelim#%'
-			and entry not like 'modules#variables.fileDelim#%'
-			and entry not like 'themes#variables.fileDelim#%'
-			and entry not like 'content_types#variables.fileDelim#%'
-			and entry not like 'config#variables.fileDelim#%'
-			and entry not like 'plugins#variables.fileDelim#%'
-			</cfquery>
+			<cfset trimPath=listFirst(rs.entry,variables.fileDelim)>
+			<cfset trimLen=len(trimPath)>
 
-			<cfdump var="#rs#" abort=true>
+			<cfquery name="rs" dbType="query">
+			select * from rs where entry not like '#trimPath##variables.fileDelim#sites#variables.fileDelim#%'
+			and entry not like '#trimPath##variables.fileDelim#modules#variables.fileDelim#%'
+			and entry not like '#trimPath##variables.fileDelim#themes#variables.fileDelim#%'
+			and entry not like '#trimPath##variables.fileDelim#content_types#variables.fileDelim#%'
+			and entry not like '#trimPath##variables.fileDelim#config#variables.fileDelim#%'
+			and entry not like '#trimPath##variables.fileDelim#plugins#variables.fileDelim#%'
+			</cfquery>
 
 			<cfloop query="rs">
 				<cfif not listFind("README.md,.gitignore",listLast(rs.entry,variables.fileDelim))>
@@ -189,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAutoUpdateURL" output="false">
-	<cfreturn getBean('config').getAutoUpdateURL()>
+	<cfreturn getBean('configBean').getAutoUpdateURL()>
 </cffunction>
 
 </cfcomponent>
