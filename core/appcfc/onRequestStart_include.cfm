@@ -248,7 +248,7 @@ if ( request.muraSessionManagement && (structKeyExists(request,"doMuraGlobalSess
 }
 application.pluginManager.executeScripts('onGlobalRequestStart');
 
-param name="application.coreversion" default=application.serviceFactory.getBean('autoUpdater').getCurrentVersion();
+param name="application.coreversion" default=application.configBean.getVersion();
 
 // HSTS: https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
 	getPageContext()

@@ -729,7 +729,7 @@ var Mura=(function(){
   }
 
   /**
-   * generateOauthToken - Generate Outh toke for REST API
+   * generateOAuthToken - Generate Outh toke for REST API
    *
    * @param  {string} grant_type  Grant type (Use client_credentials)
    * @param  {type} client_id     Client ID
@@ -737,7 +737,7 @@ var Mura=(function(){
    * @return {Promise}
    * @memberof {class} Mura
    */
-  function generateOauthToken(grant_type, client_id, client_secret) {
+  function generateOAuthToken(grant_type, client_id, client_secret) {
       return new Promise(function(resolve, reject) {
           get(Mura.apiEndpoint.replace('/json/', '/rest/') +
               'oauth?grant_type=' +
@@ -3162,7 +3162,7 @@ var Mura=(function(){
               }
           }, {
               rb: {},
-              generateOAuthToken: generateOauthToken,
+              generateOAuthToken: generateOAuthToken,
               entities: {},
               submitForm: submitForm,
               escapeHTML: escapeHTML,
@@ -11950,6 +11950,7 @@ Mura.Request=Mura.Core.extend(
       self=this;
 
       if(typeof this.requestObject != 'undefined'){
+        params.headers['User-Agent']='MuraJS';
         if(typeof this.requestObject.headers['cookie'] != 'undefined'){
           console.log('pre cookies:');
           console.log(this.requestObject.headers['cookie']);

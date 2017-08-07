@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides access the global configuration">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.instance.version="7.1"/>
+<cfset variables.instance.version="7.1.0"/>
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap="muraWRM"/>
@@ -245,6 +245,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.siteDir='sites'>
 	<cfelse>
 		<cfset variables.instance.siteDir=''>
+	</cfif>
+
+	<cfif fileExists(expandPath('/muraWRM/box.json'))>
+		<cfset var boxConfig=fileRead(expandPath('/muraWRM/box.json'))>
+
+		<cfif isJSON(boxConfig)>
+			<cfset boxConfig=deserializeJSON(boxConfig)>
+			<cfif isDefined('boxConfig.version')>
+				<cfset variables.instance.verion=boxConfig.version>
+			</cfif>
+		</cfif>
 	</cfif>
 
 	<cfset setWebRoot(arguments.config.webroot)/>

@@ -56,8 +56,6 @@ to your own modified versions of Mura CMS.
 			<div class="nav-module-specific btn-group">
 			<cfif rc.action eq "updateFiles">
 				<a class="btn" href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
-			<cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
-				<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-cloud-download"></i> Update Site</a>
 			</cfif>
 			<cfif application.configBean.getJavaEnabled()>
 				<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="mi-gift"></i> Create Site Bundle</a>
@@ -70,8 +68,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	</div><!--- /.mura-header --->
 </cfoutput>
-<cfif rc.action neq "updateFiles">
-	<cfoutput>
+<cfoutput>
 		<form novalidate method ="post"  enctype="multipart/form-data" action="./?muraAction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
 		<!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
@@ -1296,36 +1293,3 @@ to your own modified versions of Mura CMS.
 	</div>	<!--- /.block-constrain --->
 
 </form>
-
-<cfelseif rc.$.validateCSRFTokens(context=rc.siteid & 'updatesite')>
-	<cftry>
-		<cfset updated=application.autoUpdater.update(rc.siteid)>
-		<cfset files=updated.files>
-
-			<div class="block block-constrain">
-				<div class="block block-bordered">
-				  <div class="block-content">
-
-						<div class="help-block-inline">Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</div>
-						<p> <strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
-							<cfif arrayLen(files)>
-								<cfoutput>
-									<cfloop from="1" to="#arrayLen(files)#" index="i">
-										#files[i]#<br />
-									</cfloop>
-								</cfoutput>
-							</cfif>
-						</p>
-
-						<div class="clearfix"></div>
-					</div> <!-- /.block-content -->
-				</div> <!-- /.block-bordered -->
-			</div> <!-- /.block-constrain -->
-
-		<cfcatch>
-			<h2>An Error has occurred.</h2>
-			<cfdump var="#cfcatch.message#">
-			<cfdump var="#cfcatch.TagContext#">
-		</cfcatch>
-	</cftry>
-</cfif>

@@ -46,7 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="rc.action" default="">
 <cfparam name="rc.siteSortBy" default="site">
-<cfparam name="rc.siteUpdateSelect" default="false">
 <cfparam name="rc.siteAutoDeploySelect" default="false">
 <div class="mura-header">
 	<h1>Global Settings</h1>
@@ -58,13 +57,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfoutput>
 								<a class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-cloud-download"></i> Update Core Files</a>
 					</cfoutput>
-					<cfif rc.siteUpdateSelect neq "true">
-									<a class="btn" href="./?muraAction=cSettings.list&siteUpdateSelect=true"><i class="mi-cloud-download"></i> Update Multiple Sites</a>
-					</cfif>
 				</div>
 			</cfif>
 			<div class="btn-group">
-				<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
+				<cfif rc.siteSortBy eq "orderno">
 								<a class="btn" href="./?muraAction=cSettings.list&siteSortBy=site"><i class="mi-list-alt"></i> List Sites by Site Name</a>
 				</cfif>
 				<cfif rc.siteSortBy neq "orderno">
@@ -110,47 +106,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</div> <!-- /.block header -->
 							<div class="block-content">
 
-			<script type="text/javascript">
-				jQuery(function ($) {
-					$('#checkall').click(function () {
-						$(':checkbox.checkall').attr('checked', this.checked);
-					});
-					$('#btnUpdateSites').click(function() {
-						confirmDialog(
-						'WARNING: DO NOT continue unless you have backed up all selected site files.',
-						function(){
-							actionModal(
-								function(){
-									$('.form-actions').hide();
-									$('#actionIndicator').show();
-									document.form1.submit();
-								}
-							);
-						}
-						)
-
-					});
-				});
-			</script>
 			<form novalidate="novalidate" name="form1" id="form1" action="./?muraAction=csettings.list" method="post">
 				<table class="mura-table-grid">
 					<tr>
 						<th class="actions"></th>
-						<cfif rc.siteUpdateSelect eq "true">
-							<th>
-								<input type="checkbox" name="checkall" id="checkall" />
-								<input type="hidden" name="siteUpdateSelect" value="true">
-							</th>
-						</cfif>
 						<cfif rc.siteSortBy eq "orderno">
 							<th>Bind Order</th>
 						</cfif>
 						<th class="var-width">Site</th>
 						<th>Domain</th>
-						<th>Version</th>
 						<cfif application.configBean.getMode() eq 'staging'
-						and rc.siteSortBy neq "orderno"
-						and rc.siteUpdateSelect neq "true">
+						and rc.siteSortBy neq "orderno">
 							<th>Batch&nbsp;Deploy</th>
 							<th>Last&nbsp;Deployment</th>
 						</cfif>
@@ -179,11 +145,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</ul>
 						</div>
 						</td>
-						<cfif rc.siteUpdateSelect eq "true">
-							<td>
-								<input type="checkbox" name="ckUpdate" class="checkall" value="#rc.rsSites.siteid#" />
-							</td>
-						</cfif>
 						<cfif rc.siteSortBy eq "orderno">
 							<td><select name="orderno" class="dropdown">
 									<cfloop from="1" to="#rc.rsSites.recordcount#" index="I">
@@ -201,10 +162,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								-
 							</cfif>
 						</td>
-						<td> #application.autoUpdater.getCurrentCompleteVersion(rc.rsSites.siteid)#</td>
 						<cfif application.configBean.getMode() eq 'staging'
-						and rc.siteSortBy neq "orderno"
-						and rc.siteUpdateSelect neq "true">
+						and rc.siteSortBy neq "orderno">
 							<td><select name="deploy" class="dropdown">
 									<option value="1" <cfif rc.rsSites.deploy eq 1>selected</cfif>>Yes</option>
 									<option value="0" <cfif rc.rsSites.deploy neq 1>selected</cfif>>No</option>
@@ -215,27 +174,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									Never
 								</cfif></td>
 						</cfif>
-						<!---<td>#application.autoUpdater.getCurrentCompleteVersion(rc.rsSites.siteid)#</td>--->
 					</tr>
 					</cfoutput>
 				</table>
 
-				<cfif rc.siteSortBy eq "orderno" or rc.siteUpdateSelect eq "true"
+				<cfif rc.siteSortBy eq "orderno"
 					or (application.configBean.getMode() eq 'staging'
-					and rc.siteSortBy neq "orderno"
-					and rc.siteUpdateSelect neq "true")>
+					and rc.siteSortBy neq "orderno")>
 					<div class="mura-actions">
 						<div class="form-actions">
 							<cfif rc.siteSortBy eq "orderno">
 								<button type="button" class="btn mura-primary" onclick="document.form1.submit();"><i class="mi-check"></i> Update Bind Order</button>
 							</cfif>
-							<cfif  rc.siteUpdateSelect eq "true">
-									<button type="button" class="btn mura-primary" id="btnUpdateSites"><i class="mi-cloud-download"></i> Update Selected Sites</button>
-								<div class="load-inline" style="display: none;"></div>
-							</cfif>
 							<cfif application.configBean.getMode() eq 'staging'
-									and rc.siteSortBy neq "orderno"
-									and rc.siteUpdateSelect neq "true">
+									and rc.siteSortBy neq "orderno">
 								<button type="button" class="btn" onclick="document.form1.submit();"><i class="mi-check"></i>Update Auto Deploy Settings</button>
 							</cfif>
 						</div>

@@ -1487,7 +1487,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	}
 
 	public function getVersion() output=false {
-		return getBean('autoUpdater').getCurrentVersion(getValue('siteid'));
+		return getBean('configBean').getVersion();
 	}
 
 	public function registerDisplayObject(object, name="", displaymethod="", displayObjectFile="", configuratorInit="", configuratorJS="", contenttypes="", omitcontenttypes="", condition="true", legacyObjectFile="", custom="true", iconclass="mi-cog", cacheoutput="true") output=false {

@@ -387,12 +387,6 @@
                                         <a<cfif rc.originalcircuit eq 'cTrash'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#"><i class="mi-trash"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.trashbin')#</span></a>
                                     </li>
 
-                                    <!--- update site --->
-                                    <cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
-                                        <li>
-                                            <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')},'','#rc.$.rbKey('layout.updatesite')#','','','','dialog-warning');return false;"><i class="mi-cloud-download"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatesite')#</span></a>
-                                        </li>
-                                    </cfif>
                                 </cfif>
 
                             </ul>
@@ -468,7 +462,7 @@
                             <!--- core version --->
                             <li>
                                 <a class="no-link" href="##">
-                                 <span><strong>#rc.$.rbKey('version.core')#</strong> #application.autoUpdater.getCurrentCompleteVersion()#</span>
+                                 <span><strong>#rc.$.rbKey('version.core')#</strong> #application.configBean.getVersion()#</span>
                                  </a>
                              </li>
 
@@ -476,21 +470,6 @@
                             <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')},'','#rc.$.rbKey('layout.updatemuracore')#','','','','dialog-warning');return false;"><i class="mi-cloud-download"></i><span class="sidebar-mini-hide">#rc.$.rbKey('layout.updatemuracore')#</span></a>
-                                </li>
-                            </cfif>
-                            <!--- site version --->
-                            <li>
-                                <a class="no-link" href="##">
-                                 <span><strong>#rc.$.rbKey('version.site')#</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</span>
-                                </a>
-                            </li>
-                            <!--- update site --->
-                            <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
-                                <li>
-                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')},'','#rc.$.rbKey('layout.updatesite')#','','','','dialog-warning');return false;">
-                                        <i class="mi-cloud-download"></i>
-                                        #rc.$.rbKey('layout.updatesite')#
-                                    </a>
                                 </li>
                             </cfif>
 
@@ -504,15 +483,15 @@
                             </li>
                             <!--- database version --->
                             <cfif rc.$.globalConfig('javaEnabled')>
-                                <li>
-                                    <a class="no-link" href="##"> <span><strong>#rc.$.rbKey('version.dbserver')#</strong> #rc.$.getBean('dbUtility').version().database_productname# (#rc.$.getBean('dbUtility').version().database_version#)</span></a>
-                                </li>
-                            </cfif>
+                            <li>
+                                <a class="no-link" href="##"> <span><strong>#rc.$.rbKey('version.dbserver')#</strong> #rc.$.getBean('dbUtility').version().database_productname# (#rc.$.getBean('dbUtility').version().database_version#)</span></a>
+                            </li>
                             <!--- java version --->
                             <cfif structKeyExists(server,'java') and structKeyExists(server.java,'version') >
                                 <li>
                                     <a class="no-link" href="##"> <strong>#rc.$.rbKey('version.java')#</strong> #server.java.version#</a>
                                 </li>
+                            </cfif>
                             </cfif>
                             <!--- server os --->
                             <cfif structKeyExists(server,'os') and structKeyExists(server.os,'name') >

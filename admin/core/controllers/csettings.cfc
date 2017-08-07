@@ -69,9 +69,7 @@ component extends="controller" output="false" {
 		param default="" name="arguments.rc.action";
 		param default="" name="arguments.rc.siteid";
 		param default="site" name="arguments.rc.siteSortBy";
-		if ( isdefined("arguments.rc.ckUpdate") ) {
-			arguments.rc.sitesUpdated = updateSiteFilesToLatestVersion(arguments.rc);
-		}
+
 		if ( isdefined("arguments.rc.refresh") ) {
 			variables.fw.redirect(action="cSettings.list",path="./");
 		}
@@ -237,52 +235,6 @@ component extends="controller" output="false" {
 
 	public function selectBundleOptions(rc) output=false {
 		arguments.rc.rsplugins=application.serviceFactory.getBean("pluginManager").getSitePlugins(arguments.rc.siteID);
-	}
-
-	private string function updateSiteFilesToLatestVersion(required struct rc) output=false {
-
-		var local = StructNew();
-			local.str = '';
-			if ( not StructKeyExists(rc, 'ckUpdate') ) {
-				return local.str;
-			};
-		if ( arguments.rc.$.validateCSRFTokens(context='updatesites') ) {
-			savecontent variable="local.str" {
-				for(local.i in listToArray(rc.ckUpdate)){
-					try {
-
-						local.updated = application.autoUpdater.update(local.i);
-													local.files = local.updated.files;
-
-						writeOutput("<div class=""alert alert-success"">
-													<dl>
-														<dt>#local.i#</dt>
-														<dd>Updated to version #application.autoUpdater.getCurrentCompleteVersion(local.i)#</dd>
-														<dd>Updated Files (#ArrayLen(local.files)#)</dd>");
-
-						writeOutput("</dl>
-												</div>");
-					} catch (any cfcatch) {
-
-						writeOutput("<div class=""alert alert-error"">
-														<h3>An error occurred while trying to update #local.i#</h3>");
-						if ( len(trim(cfcatch.message)) ) {
-
-							writeOutput("<p><strong>Error Message</strong><br />#cfcatch.message#</p>");
-						}
-						if ( len(trim(cfcatch.detail)) ) {
-
-							writeOutput("<p><strong>Error Detail</strong><br />#cfcatch.detail#</p>");
-						}
-
-						writeOutput("</div>");
-
-
-					}
-				}
-			}
-		}
-		return local.str;
 	}
 
 }

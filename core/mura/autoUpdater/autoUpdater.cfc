@@ -56,17 +56,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="update" output="false">
-<cfargument name="siteID" required="true" default="">
 <cfset var baseDir=expandPath("/#variables.configBean.getWebRootMap()#")>
 <cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#")>
-<cfset var currentVersion=getCurrentVersion(arguments.siteid)>
-<cfset var updateVersion=getProductionVersion(arguments.siteid)>
 <cfset var versionFileContents="">
-<cfset var svnUpdateDir="/trunk/www">
 <cfset var zipFileName="global">
 <cfset var zipUtil=createObject("component","mura.Zip")>
 <cfset var rs=queryNew("empty")>
-<cfset var trimLen=len(svnUpdateDir)-1>
+<cfset var trimLen=0>
 <cfset var fileItem="">
 <cfset var currentDir=GetDirectoryFromPath(getCurrentTemplatePath())>
 <cfset var diff="">
@@ -80,27 +76,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif listFind(sessionData.mura.memberships,'S2')>
 	<cfif updateVersion gt currentVersion>
-		<cflock type="exclusive" name="autoUpdate#arguments.siteid##application.instanceID#" timeout="600">
-		<cfif len(arguments.siteID) >
-			<cfset baseDir=variables.configBean.getSiteDir() & "#variables.fileDelim##arguments.siteid#">
-			<cfset versionDir=variables.configBean.getSiteDir() & "/#arguments.siteid#">
-			<cfset zipFileName="#arguments.siteid#">
-			<cfset svnUpdateDir= svnUpdateDir & "/default">
-			<cfset trimLen=len(svnUpdateDir)-1>
-		<cfelse>
-			<cfset versionDir=versionDir & "/config">
-		</cfif>
-
+		<cflock type="exclusive" name="autoUpdate#application.instanceID#" timeout="600">
 
 		<cfhttp attributeCollection='#getHTTPAttrs(
-				url="http://webservices.getmura.com/mura/changeset",
+				url="#getAutoUpdateURL()#",
 				result="diff",
 				getasbinary="yes")#'>
-			<cfhttpparam type="url" name="format" value="zip">
-			<cfhttpparam type="url" name="old_path" value="#svnUpdateDir#">
-			<cfhttpparam type="url" name="old" value="#currentVersion#">
-			<cfhttpparam type="url" name="new_path" value="#svnUpdateDir#">
-			<cfhttpparam type="url" name="new" value="#updateVersion#">
 		</cfhttp>
 
 		<cfif not IsBinary(diff.filecontent)>
@@ -124,85 +105,57 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset zipUtil.extract(zipFilePath:"#currentDir##zipFileName#.zip",
 								extractPath: "#currentDir##zipFileName#")>
 
-			<cfif len(arguments.siteID)>
-				<cfquery name="rs" dbType="query">
-				select * from rs
-				where entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#themes%'
-				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#email%'
-				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#templates%'
-				</cfquery>
-				<cfloop query="rs">
-					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc,.gitignore,.travis.yml",listLast(rs.entry,variables.fileDelim))>
-						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-						<cftry>
-							<cfif fileExists(destination)>
-								<cffile action="delete" file="#destination#">
+			<cfquery name="rs" dbType="query">
+			select * from rs where entry not like 'sites#variables.fileDelim#%'
+			and entry not like 'modules#variables.fileDelim#%'
+			and entry not like 'themes#variables.fileDelim#%'
+			and entry not like 'content_types#variables.fileDelim#%'
+			and entry not like 'config#variables.fileDelim#%'
+			and entry not like 'plugins#variables.fileDelim#%'
+			</cfquery>
+
+			<cfdump var="#rs#" abort=true>
+
+			<cfloop query="rs">
+				<cfif not listFind("README.md,.gitignore",listLast(rs.entry,variables.fileDelim))>
+					<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
+					<!---<cftry>--->
+						<cfif fileExists(destination)>
+							<cffile action="delete" file="#destination#">
+						</cfif>
+						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>
+
+						<cfif variables.configBean.getAdminDir() neq "/admin">
+							<cfset destination=ReplaceNoCase(destination, "#variables.fileDelim#admin#variables.fileDelim#", "#replace(variables.configBean.getAdminDir(),'/',variables.fileDelim,'all')##variables.fileDelim#" )>
+						</cfif>
+
+						<cfif not directoryExists(destination)>
+							<cfset variables.fileWriter.createDir(directory="#destination#")>
+						</cfif>
+						<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
+							<!---
+						<cfcatch>
+							<!--- patch to make sure autoupdates do not stop for mode errors --->
+							<cfif not findNoCase("change mode of file",cfcatch.message) and not listFindNoCase('jar,class',listLast(rs.entry,"."))>
+								<cfrethrow>
 							</cfif>
-							<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>
-
-							<cfif not directoryExists(destination)>
-								<cfset variables.fileWriter.createDir(directory="#destination#")>
-							</cfif>
-							<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
-							<cfcatch>
-								<!--- patch to make sure autoupdates do not stop for mode errors or java jar update errors--->
-								<cfif not findNoCase("change mode of file",cfcatch.message) and listLast(rs.entry,".") neq "jar">
-									<cfrethrow>
-								</cfif>
-							</cfcatch>
-						</cftry>
-						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
-					</cfif>
-				</cfloop>
-			<cfelse>
-				<cfquery name="rs" dbType="query">
-				select * from rs where entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default%'
-				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#sites%'
-				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#themes%'
-				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#modules%'
-				</cfquery>
-
-				<cfloop query="rs">
-					<cfif not listFind("README.md,settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,.gitignore",listLast(rs.entry,variables.fileDelim))>
-						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-						<!---<cftry>--->
-							<cfif fileExists(destination)>
-								<cffile action="delete" file="#destination#">
-							</cfif>
-							<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>
-
-							<cfif variables.configBean.getAdminDir() neq "/admin">
-								<cfset destination=ReplaceNoCase(destination, "#variables.fileDelim#admin#variables.fileDelim#", "#replace(variables.configBean.getAdminDir(),'/',variables.fileDelim,'all')##variables.fileDelim#" )>
-							</cfif>
-
-							<cfif not directoryExists(destination)>
-								<cfset variables.fileWriter.createDir(directory="#destination#")>
-							</cfif>
-							<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
-								<!---
-							<cfcatch>
-								<!--- patch to make sure autoupdates do not stop for mode errors --->
-								<cfif not findNoCase("change mode of file",cfcatch.message) and not listFindNoCase('jar,class',listLast(rs.entry,"."))>
-									<cfrethrow>
-								</cfif>
-							</cfcatch>
-						</cftry>--->
-						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
-					</cfif>
-				</cfloop>
-
-				<cfif arrayLen(updatedArray)>
-					<cfset application.appInitialized=false>
-					<cfset application.appAutoUpdated=true>
-					<cfset application.coreversion=updateVersion>
-
-					<cfif isNumeric(autoUpdateSleep) and autoUpdateSleep>
-						<cfset autoUpdateSleep=autoUpdateSleep*1000>
-						<cfthread action="sleep" duration="#autoUpdateSleep#"></cfthread>
-					</cfif>
+						</cfcatch>
+					</cftry>--->
+					<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 				</cfif>
+			</cfloop>
 
+			<cfif arrayLen(updatedArray)>
+				<cfset application.appInitialized=false>
+				<cfset application.appAutoUpdated=true>
+				<cfset application.coreversion=updateVersion>
+
+				<cfif isNumeric(autoUpdateSleep) and autoUpdateSleep>
+					<cfset autoUpdateSleep=autoUpdateSleep*1000>
+					<cfthread action="sleep" duration="#autoUpdateSleep#"></cfthread>
+				</cfif>
 			</cfif>
+
 			<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
 		</cfif>
 
@@ -233,84 +186,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="getCurrentVersion" output="false">
-<cfargument name="siteid" required="true" default="">
-
-
-	<cfset var versionFileContents="">
-	<cfset var currentVersion="">
-
-	<cfif len(arguments.siteid)>
-		<cfset var versionDir=variables.configBean.getSiteDir() & "/" & arguments.siteid>
-	<cfelse>
-		<cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#/core")>
-	</cfif>
-
-	<cfif not FileExists(versionDir & "/" & "version.cfm")>
-		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="1")>
-	</cfif>
-
-	<cffile action="read" file="#versionDir#/version.cfm" variable="versionFileContents">
-
-	<cfset currentVersion=listLast(versionFileContents,":")>
-
-	<cfif not isNumeric(currentVersion)>
-		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="1")>
-		<cfreturn 1>
-	<cfelse>
-		<cfreturn trim(currentVersion)>
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getProductionVersion" output="false">
-	<cfargument name="siteid" default="">
-	<!--- The production version for a site should always be the current core version --->
-	<cfif len(arguments.siteid)>
-		<cfreturn getCurrentVersion('')>
-	<cfelse>
-		<cfset var version=listLast(variables.configBean.getValue('productionVersion'),".")>
-		<cfif isNumeric(version)>
-			<cfreturn version>
-		<cfelse>
-			<cfif trim(variables.configBean.getValue("autoupdatemode")) eq "preview">
-				<cfreturn getProductionData().preview>
-			<cfelse>
-				<cfreturn getProductionData().production>
-			</cfif>
-		</cfif>
-	</cfif>
-</cffunction>
-
-<cffunction name="getProductionData" output="false">
-	<cfargument name="siteid" default="">
-	<cfset var diff="">
-
-	<cfhttp attributeCollection='#getHTTPAttrs(url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#&coreversion=#variables.configBean.getValue('version')#",result="diff",getasbinary="no")#'>
-
-	<cftry>
-	<cfreturn createObject("component","mura.json").decode(diff.filecontent)>
-	<cfcatch>
-		<cfthrow message="The current production version data is currently not available. Please try again later.">
-	</cfcatch>
-	</cftry>
-</cffunction>
-
-<cffunction name="getCurrentCompleteVersion" output="false">
-	<cfargument name="siteid" required="true" default="">
-
-	<cfset var versionBase=variables.configBean.getVersion()>
-	<cfset var currentVersion=1>
-
-	<cftry>
-	<cfset currentVersion=getCurrentVersion(arguments.siteid)>
-	<cfcatch></cfcatch>
-	</cftry>
-
-	<cfif currentVersion gt 1>
-		<cfset versionBase=versionBase & ".#currentVersion#">
-	</cfif>
-	<cfreturn versionBase>
+<cffunction name="getAutoUpdateURL" output="false">
+	<cfreturn getBean('config').getAutoUpdateURL()>
 </cffunction>
 
 </cfcomponent>

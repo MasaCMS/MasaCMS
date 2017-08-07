@@ -80,7 +80,7 @@
 		<cfparam name="rc.renderMuraAlerts" default="#application.configBean.getValue(property='renderMuraAlerts',defaultValue=true)#">
 		<cfparam name="rc.activepanel" default="0">
 		<cfparam name="rc.siteid" default="#session.siteID#">
-		<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
+		<cfparam name="application.coreversion" default="#application.configBean.getVersion()#">
 		<!--- default site id --->
 		<cfif not len(rc.siteID)>
 		<cfset rc.siteID="default">
