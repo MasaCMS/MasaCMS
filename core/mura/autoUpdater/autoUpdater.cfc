@@ -70,7 +70,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var updatedArray=arrayNew(1)>
 <cfset var destination="">
 <cfset var autoUpdateSleep=variables.configBean.getValue("autoUpdateSleep")>
-
+<cfset var updateVersion=1>
+<cfset var currentVersion=0>
+	
 <cfsetting requestTimeout = "7200">
 <cfset var sessionData=getSession()>
 
