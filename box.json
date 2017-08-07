@@ -1,6 +1,6 @@
 {
     "name":"Mura CMS",
-    "version":"7.1.123",
+    "version":"7.1.0",
     "author":"Blue River Interactive Group, Inc.",
     "location":"https://github.com/blueriver/MuraCMS/archive/master.zip",
     "directory":"",
@@ -49,7 +49,7 @@
         }
     ],
     "contributors":[
-        
+
     ],
     "dependencies":{
         "docbox":"2.0.7",
@@ -64,7 +64,7 @@
         "docbox":"core/vendor/docbox"
     },
     "scripts":{
-        
+
     },
     "ignore":[
         "**/.*",
