@@ -46,7 +46,6 @@ META-INF/
 WEB-INF/
 
 # ignored directories
-/config/
 /demo/
 /plugins/
 /temp/
