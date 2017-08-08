@@ -115,6 +115,16 @@ if ( !fileExists(baseDir & "/config/settings.ini.cfm") ) {
 	} catch (any cfcatch) {}
 	commitTracePoint(variables.tracePoint);
 }
+
+if ( !fileExists(baseDir & "/config/Application.cfc") ) {
+	variables.tracePoint=initTracePoint("Writing config/Application.cfc.cfm");
+	fileCopy("#baseDir#/core/templates/Application.cfc","#baseDir#/config/Application.cfc");
+	try {
+		fileSetAccessMode("#baseDir#/config/Application.cfc","777");
+	} catch (any cfcatch) {}
+	commitTracePoint(variables.tracePoint);
+}
+
 this.baseDir=baseDir;
 variables.baseDir=baseDir;
 variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm");
