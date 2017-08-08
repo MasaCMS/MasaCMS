@@ -12,7 +12,7 @@
         "type":"Git",
         "URL":"https://github.com/blueriver/MuraCMS"
     },
-    "bugs":"",
+    "bugs":"https://github.com/blueriver/MuraCMS/issues",
     "slug":"MuraCMS",
     "shortDescription":"A sweet package",
     "description":"Mura CMS is an open source content management system for CFML, created by Blue River Interactive Group. Mura has been designed to be used by marketing departments, web designers and developers.",
