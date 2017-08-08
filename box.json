@@ -52,7 +52,7 @@
 
     ],
     "dependencies":{
-        "MuraBoostrap3":"^0"
+        "MuraBootstrap3":">=7.1.0"
     },
     "devDependencies":{
         "testbox":"^2.3.0+00044",
@@ -61,7 +61,7 @@
     "installPaths":{
         "testbox":"core/vendor/testbox",
         "docbox":"core/vendor/docbox",
-        "MuraBoostrap3":"themes/MuraBoostrap3"
+        "MuraBoostrap3":"themes/MuraBootstrap3"
 
     },
     "scripts":{
