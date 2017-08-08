@@ -239,6 +239,8 @@ if ( application.setupComplete ) {
 					local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/#listFirst(local.themeRS.name,'-')#");
 					fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
 
+					queryExecute("update tsettings set theme= :theme where siteid='default'",{theme:listFirst(local.themeRS.name,'-')});
+
 				//} catch (any cfcatch) {
 					//local.fileWriter.createDir(directory="#application.configBean.getWebRoot()#/plugins");
 				//}
