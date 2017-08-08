@@ -218,7 +218,7 @@ if ( application.setupComplete ) {
 		*/
 		if ( application.configBean.getCreateRequiredDirectories() ) {
 			if ( !local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir").recordcount ) {
-				//try {
+				try {
 					local.themeZip="install_theme_#createUUID()#.zip";
 
 					try{
@@ -239,11 +239,9 @@ if ( application.setupComplete ) {
 					local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/#listFirst(local.themeRS.name,'-')#");
 					fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
 
-					queryExecute("update tsettings set theme= :theme where siteid='default'",{theme:listFirst(local.themeRS.name,'-')});
-
-				//} catch (any cfcatch) {
-					//local.fileWriter.createDir(directory="#application.configBean.getWebRoot()#/plugins");
-				//}
+				} catch (any error) {
+					writeLog(type="Error", file="exception", text="Error pullling theme from remote");
+				}
 			}
 		}
 
