@@ -1366,7 +1366,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 			try{
 				reg.save();
 			} catch (any e){
-				writeLog(type="Error", file="exception", text="#e.stacktrace#");
+				writeLog(type="Error", file="exception", text="Error registering #md.path#");
 			}
 		}
 	}
