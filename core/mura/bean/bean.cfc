@@ -1363,8 +1363,11 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 
 				reg.set('path',md.path);
 			}
-
-			reg.save();
+			try{
+				reg.save();
+			} catch (any e){
+				writeLog(type="Error", file="exception", text="#e.stacktrace#");
+			}
 		}
 	}
 
