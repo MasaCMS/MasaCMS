@@ -429,7 +429,36 @@ if ( application.setupComplete ) {
 		}
 	} catch (any cfcatch) {
 	}
+
+	if ( !fileExists(application.configBean.getWebRoot() & "/config/Application.cfc") ) {
+		variables.tracePoint=initTracePoint("Writing config/Application.cfc.cfm");
+		fileCopy("#application.configBean.getWebRoot()#/core/templates/Application.cfc","#application.configBean.getWebRoot()#/config/Application.cfc");
+		try {
+			fileSetAccessMode("#application.configBean.getWebRoot()#/config/Application.cfc","777");
+		} catch (any cfcatch) {}
+		commitTracePoint(variables.tracePoint);
+	}
+
 	if ( application.configBean.getCreateRequiredDirectories() ) {
+		if ( !directorylist(path="#application.configBean.getWebRoot()#/themes",type="dir").recordcount ) {
+			//try {
+
+				cfhttp (attributeCollection=getHTTPAttrs(
+					url="https://github.com/blueriver/MuraBootstrap3/archive/7.1.zip",
+					result="theme",
+					getasbinary="yes")
+				);
+
+				application.serviceFactory.getBean("fileWriter").writeFile(file="#application.configBean.getWebRoot()#/_install_theme.zip",output=theme.filecontent)>
+
+				new mura.Zip().Extract(zipFilePath="#application.configBean.getWebRoot()#/_install_theme.zip",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
+
+				fileDelete("#application.configBean.getWebRoot()#/_install_theme.zip");
+
+			//} catch (any cfcatch) {
+				//application.serviceFactory.getBean("fileWriter").createDir(directory="#application.configBean.getWebRoot()#/plugins");
+			//}
+		}
 		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
 			try {
 				application.serviceFactory.getBean("fileWriter").createDir( mode=777, directory="#application.configBean.getWebRoot()#/plugins" );

@@ -32,11 +32,11 @@
     "engines":[
         {
             "type":"lucee",
-            "version":">=4.5.x"
+            "version":">=5.x"
         },
         {
             "type":"adobe",
-            "version":">=10.0.0"
+            "version":">=11.0.0"
         }
     ],
     "defaultEngine":"lucee",

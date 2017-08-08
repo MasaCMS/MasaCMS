@@ -1,4 +1,4 @@
-<!---
+/*
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -53,27 +53,11 @@
 	under the GNU General Public License version 2 without this exception.  You
 	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
---->
-<cfcomponent extends="mura.cfobject" output="false">
+*/
+component output="false" {
+	public function onRequestStart() {
+			writeOutput("Access Restricted.");
+			abort;
+	}
 
-	<!---
-			This is the THEME eventHandler.cfc
-
-			* Add theme-specific eventHandlers here
-			* This file is much like a controller in a MVC application
-			* Reload the application when additions/changes are made to THIS file!
-	--->
-
-	<cffunction name="onRenderStart" access="public" output="false" returntype="any">
-		<cfargument name="$" hint="mura scope" />
-		<cfscript>
-			// for code syntax highlighting
-			try {
-				arguments.$.loadPrettify();
-			} catch(any e) {
-				// Mura CMS version is probably older than 6.1
-			}
-		</cfscript>
-	</cffunction>
-
-</cfcomponent>
+}
