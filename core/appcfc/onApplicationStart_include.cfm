@@ -211,35 +211,36 @@ if ( application.setupComplete ) {
 			new mura.fileWriter()
 		);
 
+		local.fileWriter=variables.serviceFactory.getBean("fileWriter");
 		/*
 			As of Mura 7.1 there theme with the main MuraCMS repo.
 			So if there is not any theme installed then pull down the default one
 		*/
 		if ( application.configBean.getCreateRequiredDirectories() ) {
-			if ( !application.serviceFactory.getBean("fileWriter").getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir").recordcount ) {
+			if ( !local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir").recordcount ) {
 				//try {
-					themeZip="install_theme_#createUUID()#.zip";
+					local.themeZip="install_theme_#createUUID()#.zip";
 
 					try{
 						cfhttp (attributeCollection=application.configBean.getHTTPAttrs(
 							url=application.configBean.getDefaultThemeURL(),
-							result="theme",
+							result="local.theme",
 							getasbinary="yes")
 						);
 
-						application.serviceFactory.getBean("fileWriter").writeFile(file="#application.configBean.getWebRoot()#/#themeZip#",output=theme.filecontent);
+						local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
 					} catch (any e){
-						application.serviceFactory.getBean("fileWriter").copyFile(source="#application.configBean.getWebRoot()#/core/templates/theme.zip.cfm",destination="#application.configBean.getWebRoot()#/#themeZip#");
+						local.fileWriter.copyFile(source="#application.configBean.getWebRoot()#/core/templates/theme.zip.cfm",destination="#application.configBean.getWebRoot()#/#local.themeZip#");
 					}
 
-					zipUtil=createObject('component',"mura.Zip");
-					zipUtil.Extract(zipFilePath="#application.configBean.getWebRoot()#/#themeZip#",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
-					themeRS=application.serviceFactory.getBean("fileWriter").getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
-					application.serviceFactory.getBean("fileWriter").renameDir(directory="#application.configBean.getWebRoot()#/themes/#themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/#listFirst(themeRS.name,'-')#");
-					fileDelete("#application.configBean.getWebRoot()#/#themeZip#");
+					local.zipUtil=new mura.Zip();
+					local.zipUtil.Extract(zipFilePath="#application.configBean.getWebRoot()#/#local.themeZip#",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
+					local.themeRS=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
+					local.fileWriter.renameDir(directory="#application.configBean.getWebRoot()#/themes/#local.themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/#listFirst(local.themeRS.name,'-')#");
+					fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
 
 				//} catch (any cfcatch) {
-					//application.serviceFactory.getBean("fileWriter").createDir(directory="#application.configBean.getWebRoot()#/plugins");
+					//local.fileWriter.createDir(directory="#application.configBean.getWebRoot()#/plugins");
 				//}
 			}
 		}
@@ -415,7 +416,7 @@ if ( application.setupComplete ) {
 
 	for(i=1;i <= variables.rsRequirements.recordcount;i++){
 		if ( variables.rsRequirements.type[i] == "dir" && variables.rsRequirements.name[i] != '.svn' && !structKeyExists(this.mappings,"/#variables.rsRequirements.name[i]#") ) {
-			application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name[i]#"] = variables.basedir & "/requirements/#variables.rsRequirements.name[i]#">');
+			local.fileWriter.appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name[i]#"] = variables.basedir & "/requirements/#variables.rsRequirements.name[i]#">');
 		}
 	}
 
@@ -475,19 +476,19 @@ if ( application.setupComplete ) {
 	if ( application.configBean.getCreateRequiredDirectories() ) {
 		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
 			try {
-				application.serviceFactory.getBean("fileWriter").createDir( mode=777, directory="#application.configBean.getWebRoot()#/plugins" );
+				local.fileWriter.createDir( mode=777, directory="#application.configBean.getWebRoot()#/plugins" );
 			} catch (any cfcatch) {
-				application.serviceFactory.getBean("fileWriter").createDir(directory="#application.configBean.getWebRoot()#/plugins");
+				local.fileWriter.createDir(directory="#application.configBean.getWebRoot()#/plugins");
 			}
 		}
 		if ( !fileExists(variables.basedir & "/robots.txt") ) {
-			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/core/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt");
+			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt");
 		}
 		if ( !fileExists(variables.basedir & "/web.config") ) {
-			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/core/templates/web.config.template.cfm", destination="#variables.basedir#/web.config");
+			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/web.config.template.cfm", destination="#variables.basedir#/web.config");
 		}
 		if ( !fileExists(variables.basedir & "/core/vendor/cfformprotect/cffp.ini.cfm") ) {
-			application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/core/templates/cffp.ini.template.cfm", destination="#variables.basedir#/core/vendor/cfformprotect/cffp.ini.cfm");
+			local.fileWriter.copyFile(source="#variables.basedir#/core/templates/cffp.ini.template.cfm", destination="#variables.basedir#/core/vendor/cfformprotect/cffp.ini.cfm");
 		}
 	}
 	if ( !structKeyExists(application,"plugins") ) {
