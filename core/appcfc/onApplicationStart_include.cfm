@@ -350,10 +350,7 @@ if ( application.setupComplete ) {
 
 	} catch (any cfcatch) {
 	}
-	// You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded
-	if ( fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm")) ) {
-		include "/muraWRM/config/onGlobalConfig.cfm";
-	}
+
 	application.objectMappings={};
 	application.objectMappings.bundleableBeans="";
 	application.objectMappings.versionedBeans="";
@@ -484,7 +481,7 @@ if ( application.setupComplete ) {
 	}
 
 	if ( !fileExists(application.configBean.getWebRoot() & "/config/Application.cfc") ) {
-		variables.tracePoint=initTracePoint("Writing config/Application.cfc.cfm");
+		variables.tracePoint=initTracePoint("Writing config/Application.cfc");
 		fileCopy("#application.configBean.getWebRoot()#/core/templates/Application.cfc","#application.configBean.getWebRoot()#/config/Application.cfc");
 		try {
 			fileSetAccessMode("#application.configBean.getWebRoot()#/config/Application.cfc","777");
