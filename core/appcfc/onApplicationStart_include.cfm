@@ -211,6 +211,39 @@ if ( application.setupComplete ) {
 			new mura.fileWriter()
 		);
 
+		/*
+			As of Mura 7.1 there theme with the main MuraCMS repo.
+			So if there is not any theme installed then pull down the default one
+		*/
+		if ( application.configBean.getCreateRequiredDirectories() ) {
+			if ( !application.serviceFactory.getBean("fileWriter").getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir").recordcount ) {
+				//try {
+					themeZip="install_theme_#createUUID()#.zip";
+
+					try{
+						cfhttp (attributeCollection=application.configBean.getHTTPAttrs(
+							url=application.configBean.getDefaultThemeURL(),
+							result="theme",
+							getasbinary="yes")
+						);
+
+						application.serviceFactory.getBean("fileWriter").writeFile(file="#application.configBean.getWebRoot()#/#themeZip#",output=theme.filecontent);
+					} catch (any e){
+						application.serviceFactory.getBean("fileWriter").copyFile(source="#application.configBean.getWebRoot()#/core/templates/theme.zip.cfm",destination="#application.configBean.getWebRoot()#/#themeZip#");
+					}
+
+					zipUtil=createObject('component',"mura.Zip");
+					zipUtil.Extract(zipFilePath="#application.configBean.getWebRoot()#/#themeZip#",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
+					themeRS=application.serviceFactory.getBean("fileWriter").getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir");
+					application.serviceFactory.getBean("fileWriter").renameDir(directory="#application.configBean.getWebRoot()#/themes/#themeRS.name#",newDirectory="#application.configBean.getWebRoot()#/themes/#listFirst(themeRS.name,'-')#");
+					fileDelete("#application.configBean.getWebRoot()#/#themeZip#");
+
+				//} catch (any cfcatch) {
+					//application.serviceFactory.getBean("fileWriter").createDir(directory="#application.configBean.getWebRoot()#/plugins");
+				//}
+			}
+		}
+
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
 
 		variables.serviceFactory.addAlias("scriptProtectionFilter","Portcullis");
@@ -440,25 +473,6 @@ if ( application.setupComplete ) {
 	}
 
 	if ( application.configBean.getCreateRequiredDirectories() ) {
-		if ( !directorylist(path="#application.configBean.getWebRoot()#/themes",type="dir").recordcount ) {
-			//try {
-
-				cfhttp (attributeCollection=getHTTPAttrs(
-					url="https://github.com/blueriver/MuraBootstrap3/archive/7.1.zip",
-					result="theme",
-					getasbinary="yes")
-				);
-
-				application.serviceFactory.getBean("fileWriter").writeFile(file="#application.configBean.getWebRoot()#/_install_theme.zip",output=theme.filecontent)>
-
-				new mura.Zip().Extract(zipFilePath="#application.configBean.getWebRoot()#/_install_theme.zip",extractPath="#application.configBean.getWebRoot()#/themes", overwriteFiles=false);
-
-				fileDelete("#application.configBean.getWebRoot()#/_install_theme.zip");
-
-			//} catch (any cfcatch) {
-				//application.serviceFactory.getBean("fileWriter").createDir(directory="#application.configBean.getWebRoot()#/plugins");
-			//}
-		}
 		if ( !directoryExists("#application.configBean.getWebRoot()#/plugins") ) {
 			try {
 				application.serviceFactory.getBean("fileWriter").createDir( mode=777, directory="#application.configBean.getWebRoot()#/plugins" );
