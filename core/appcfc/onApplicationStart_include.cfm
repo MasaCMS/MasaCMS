@@ -217,7 +217,26 @@ if ( application.setupComplete ) {
 			So if there is not any theme installed then pull down the default one
 		*/
 		if ( application.configBean.getCreateRequiredDirectories() ) {
-			if ( !local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir").recordcount ) {
+
+			local.hasTheme=0;
+
+			if(DirectoryExists("#application.configBean.getWebRoot()#/themes")){
+				local.hasTheme=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/themes",recurse=false,type="dir").recordcount;
+			}
+
+			if(!local.hasTheme && DirectoryExists("#application.configBean.getWebRoot()#/default/includes/themes")){
+				local.hasTheme=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/default/includes/themes",recurse=false,type="dir").recordcount;
+			}
+
+			if(!local.hasTheme && DirectoryExists("#application.configBean.getWebRoot()#/default/themes")){
+				local.hasTheme=local.fileWriter.getDirectoryList(directory="#application.configBean.getWebRoot()#/default/themes",recurse=false,type="dir").recordcount;
+			}
+
+			if(!local.hasTheme && DirectoryExists("#application.configBean.getSiteDir()#/default/themes")){
+				local.hasTheme=local.fileWriter.getDirectoryList(directory="#application.configBean.getSiteDir()#/default/themes",recurse=false,type="dir").recordcount;
+			}
+
+			if ( !local.hasTheme ) {
 				try {
 					local.themeZip="install_theme_#createUUID()#.zip";
 
