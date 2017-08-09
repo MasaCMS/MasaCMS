@@ -9,7 +9,7 @@ Mura CMS is an open source content management system for CFML, created by [Blue 
 
 * http://www.getmura.com
 * https://groups.google.com/forum/#!forum/mura-cms-developers
-* https://cfml.slack.com/messages/C0FBLG0BF>
+* https://cfml.slack.com/messages/C0FBLG0BF
 * https://github.com/blueriver/MuraCMS/tree/7.1
 
 ### Official Docker Image
