@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.siteDir=''>
 	</cfif>
 
-	<cfset variables.instance.verion=getVersionFromFile()>
+	<cfset variables.instance.version=getVersionFromFile()>
 
 	<cfset setWebRoot(arguments.config.webroot)/>
 	<cfset setContext(arguments.config.context)/>
