@@ -3,7 +3,7 @@
 
 Mura CMS is an open source content management system for CFML, created by [Blue River Interactive Group](http://www.getmura.com). Mura has been designed to be used by marketing departments, web designers and developers.
 
-##For those with Docker installed:
+## For those with Docker installed:
 
 ### Mura CMS Resources
 
@@ -57,3 +57,14 @@ Passsword: NOT_SECURE_CHANGE
 ```
 
 Simply hold down control-c to stop the service.
+
+## For those with Commandbox installed:
+
+```
+box install muracms
+box start
+```
+
+You will however, need to have a running database instance to create your db and register the dsn with the CFML service.
+
+* https://www.forgebox.io/view/muracms
