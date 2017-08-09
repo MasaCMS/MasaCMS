@@ -1,4 +1,4 @@
- <!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,13 +28,13 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+/admin/
+/tasks/
+/config/
+/core/mura/
+/Application.cfc
+/index.cfm
+/MuraProxy.cfc
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
@@ -53,8 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-inline">
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#</h2>
 <div class="mura-input-set">
-	<input id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" maxlength="50" onclick="return false;">
-	<input type="button" class="btn" onclick="siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#">
+ <input id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" maxlength="50" onclick="return false;">
+ <input type="button" class="btn" onclick="siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#">
 </div>
 </cfoutput>
 </div>
@@ -64,44 +64,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not parentBean.getIsNew()>
 <cfset parentCrumb=application.contentManager.getCrumbList(rc.parentid, rc.siteid)/>
 </cfif>
- <table class="mura-table-grid">
-    <cfif not parentBean.getIsNew()>
-	<tr>
-	  <th class="actions"></th>
-    <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewcontentparent')#</cfoutput></th>
-    </tr>
-	</cfif>
-	<cfif rc.rslist.recordcount>
-		<cfif not parentBean.getIsNew()>
-			<tr class="alt"><cfoutput>
-			  <td class="actions"><input type="radio" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" checked="checked"></td>
-         <td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
-			</tr></cfoutput>
-			<cfset hasParentID=true />
-		</cfif>
-    	<cfoutput query="rc.rslist" startrow="1" maxrows="100">
-			<cfif rc.rslist.contentid neq rc.parentid>
-			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-	        <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-			<cfif verdict neq 'none' and arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>
-			<cfset counter=counter+1/>
-			<cfset hasParentID=true />
-			<tr <cfif not(counter mod 2)>class="alt"</cfif>>
-			  <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
-        <td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
-			</tr>
-		 	</cfif></cfif>
-       </cfoutput>
-	 	</cfif>
-	 	<cfif not counter>
-		<tr class="alt"><cfoutput>
-		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#<!---<input type="hidden" id="parentid" name="parentid" value="#rc.parentid#" />---> </td>
-		</tr></cfoutput>
-		</cfif>
-  </table>
+<table class="mura-table-grid">
+ <cfif not parentBean.getIsNew()>
+	 <tr>
+		 <th class="actions"></th>
+		 <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewcontentparent')#</cfoutput></th>
+	 </tr>
+ </cfif>
+ <cfif rc.rslist.recordcount or listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',parentBean.getModuleID())>
+	 <cfif not parentBean.getIsNew() and not listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',rc.parentid)>
+		 <tr class="alt"><cfoutput>
+			 <td class="actions"><input type="radio" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" checked="checked"></td>
+				<td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
+		 </tr></cfoutput>
+		 <cfset hasParentID=true />
+	 </cfif>
+	 <cfif listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',parentBean.getModuleID())>
+		 <cfset rstop=application.serviceFactory.getBean('contentGateway').getTop(siteid=rc.siteid,topid=parentBean.getModuleID())>
+		 <cfif reFindNoCase(rc.keywords,rstop.title)>
+			 <tr class="alt"><cfoutput>
+				 <td class="actions"><input type="radio" name="parentid" value="#esapiEncode('html_attr',parentBean.getModuleID())#" <cfif rc.parentid eq parentBean.getModuleID()>checked="checked"</cfif>></td>
+					<td class="var-width"><ul class="navZoom"><li class="mi-cog "> #esapiEncode('html',rstop.title)#</li></ul></td>
+			 </tr></cfoutput>
+			 <cfset hasParentID=true />
+			 <cfset counter=counter+1/>
+		 </cfif>
+	 </cfif>
+		 <cfoutput query="rc.rslist" startrow="1" maxrows="100">
+			 <cfif rc.rslist.contentid neq rc.parentid>
+				 <cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
+				 <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+				 <cfif verdict neq 'none' and arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>
+					 <cfset counter=counter+1/>
+					 <cfset hasParentID=true />
+					 <tr <cfif not(counter mod 2)>class="alt"</cfif>>
+						 <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
+						 <td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
+					 </tr>
+				 </cfif>
+			 </cfif>
+		 </cfoutput>
+	 </cfif>
+	 <cfif not counter>
+		 <tr class="alt"><cfoutput>
+			 <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#<!---<input type="hidden" id="parentid" name="parentid" value="#rc.parentid#" />---> </td>
+		 </tr></cfoutput>
+	 </cfif>
+ </table>
 </td></tr></table>
 <cfif not hasParentID>
-	<cfoutput><input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" /></cfoutput>
+ <cfoutput><input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" /></cfoutput>
 </cfif>
 <cfelse>
 <cfoutput><input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" /></cfoutput>
