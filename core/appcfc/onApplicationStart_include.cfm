@@ -218,6 +218,10 @@ if ( application.setupComplete ) {
 		*/
 		if ( application.configBean.getCreateRequiredDirectories() ) {
 
+			if(!isdefined('application.serviceFactory')){
+				application.serviceFactory=variables.serviceFactory;
+			}
+
 			local.hasTheme=0;
 
 			if(DirectoryExists("#application.configBean.getWebRoot()#/themes")){
@@ -241,11 +245,12 @@ if ( application.setupComplete ) {
 					local.themeZip="install_theme_#createUUID()#.zip";
 
 					try{
-						cfhttp (attributeCollection=application.configBean.getHTTPAttrs(
-							url=application.configBean.getDefaultThemeURL(),
-							result="local.theme",
-							getasbinary="yes")
-						);
+
+						local.httpService=application.configBean.getHTTPService();
+
+						local.httpService.setURL(application.configBean.getDefaultThemeURL());
+						local.httpService.setGetAsBinary("yes");
+						local.theme=httpService.send().getPrefix();
 
 						local.fileWriter.writeFile(file="#application.configBean.getWebRoot()#/#local.themeZip#",output=local.theme.filecontent);
 					} catch (any e){
@@ -259,7 +264,7 @@ if ( application.setupComplete ) {
 					fileDelete("#application.configBean.getWebRoot()#/#local.themeZip#");
 
 				} catch (any error) {
-					writeLog(type="Error", file="exception", text="Error pullling theme from remote");
+					writeLog(type="Error", file="exception", text="Error pullling theme from remote: #serializeJSON(error.stacktrace)#");
 				}
 			}
 		}
