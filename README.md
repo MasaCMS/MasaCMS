@@ -14,7 +14,7 @@ Mura CMS is an open source content management system for CFML, created by [Blue 
 
 ### Official Docker Image
 
-In production can simply use the official docker image available at <https://hub.docker.com/r/blueriver/muracms/>
+For production there is an official docker image available at <https://hub.docker.com/r/blueriver/muracms/>
 
 ### Using Docker with Source Code
 
