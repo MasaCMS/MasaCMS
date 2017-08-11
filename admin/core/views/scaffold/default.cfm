@@ -52,7 +52,6 @@
 <!---<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>--->
 
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>
-<script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/assembler.js"></script>
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/scaffold/scaffolder.js"></script>
 
 
@@ -68,8 +67,8 @@
 			##scaffold-table tr.alt td {
 				background-color: ##eee;
 			}
-			
-			
+
+
 			.formtemplate {
 				margin: 20px 0;
 			}
@@ -101,7 +100,7 @@
 			.assembler-no-displayname {
 				color: ##880000;
 			}
-			
+
 			.small {
 				font-size: 0.7em;
 			}
@@ -117,20 +116,20 @@
 			}
 
 			##scaffold-table {
-				
+
 			}
 
 			##scaffold-table td {
 				padding-bottom: 5px;
 			}
-			
+
 			##assembler-preview,.assembler-preview {
 				float: left;
 				border: 2px solid ##333;
 				width: 490px;
 				height: 600px;
 				overflow: scroll;
-								
+
 			}
 
 			##load-spin ##spinner {
@@ -149,7 +148,7 @@
 			  -webkit-animation: spin 2s linear infinite;
 			  animation: spin 2s linear infinite;
 			}
-			
+
 			##load-spin {
 				position: fixed;
 				width: 100%;
@@ -160,7 +159,7 @@
 				z-index: 10000;
 				border: 16px solid ##f3f3f3;
 				opacity: .8;
-			}			
+			}
 		</style>
 
 		<script>
@@ -172,25 +171,7 @@
 
 
 <div class="block block-constrain" id="container">
-
-	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
-
-	<ul id="viewTabs" class="mura-tab-links nav-tabs container-master">
-			<li>
-				<a href="##" @click="clickShowScaffolder">Scaffolder</a>
-			</li>
-			<li>
-				<a href="##" @click="clickShowAssembler">Assembler</a>
-			</li>
-	</ul>
-
-	<!--- /Tab Nav --->
-
-	<div class="block-content tab-content">
-
-		<!-- start tab -->
-		<div class="tab-pane active">
-
+	<div class="block-content">
 			<div class="block block-bordered">
 				<div id="load-spin" style="display: none;"><div id="load-spin-spinner"></div></div>
 				<!-- block header -->
@@ -202,331 +183,19 @@
 				<div class="block-content">
 					<div>
 						<div>
-							<div id="container-scaffold" v-show="isvisible == true" style="display: none;">
+							<div id="container-scaffold">
 							<scaffold-crumb-template :data="data" :state="state"></scaffold-crumb-template>
 								<scaffold-error-template :errordata="errordata"></scaffold-error-template>
 								<div>
 									<component :is="currentView" :currentparent="currentparent" :entityname="entityname" :data="data" transition="fade" transition-mode="out-in"></component>
 								</div>
 							</div>
-							
-							<div id="container-assembler" v-show="isvisible == true" style="display: none;">
-								<div style="float: left;width: 49%;">
-									<button @click='clickLoadEntity'>Load</button>
-									<input type="text" id='loadentity' name="loadentity" value="">
-									<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
-									<div>
-										<button @click='clickAddProperty'>New Property</button>
-										<button @click='clickAddRelated'>New Relationship</button>
-										<button class="btn btn-info" @click='clickSave' v-if="model.entityname != '' && model.table != ''">Save</button>
-										<button class="btn btn-danger pull-right" @click='clickClear'>New</button>
-									</div>
-									<assembler-property-template :model="model"	></assembler-property-template>
-									<div>
-										<component :is="currentView" :data="data" :rendertypes="rendertypes" :fieldtypes="fieldtypes" :datatypes="datatypes" :model="model" transition="fade" transition-mode="out-in"></component>
-									</div>
-								</div>
-								<div style="float: right;width: 49%;">
-									<pre id="assembler-preview">{{JSON.stringify(model,null,2)}}
-									</pre>
-								</div>
-							</div>
 						</div>
 					</div>
 			</div> <!-- /.block-content -->
-			</div> <!-- /.block-bordered -->
-		</div> <!-- /.tab-pane -->
-
-	</div> <!-- /.block-content.tab-content -->
+		</div> <!-- /.block-bordered -->
 </div> <!-- /.block-constrain -->
 
-
-	<template id="assembler-property-template">
-		<div id="property-template">
-			<h3>Properties</h3>
-			<ul id="assembler-properties">
-				<li v-for="(item,index) in model.properties" v-bind:id="'assembler-property-index-' + index" :data-index="index" :data-name="item.name" :key="item.pos">
-					<span class="assembler-item-box">
-						<span v-if="item.relatesto || item.cfc" class="assembler-prop">
-							<button @click="clickEditRelated(index)"><i class="mi-cogs"></i></button>
-						</span>
-						<span v-else-if="item.fieldtype == 'id'" class="assembler-prop">
-							<button @click="clickEditProperty(index)"><i class="mi-cog"></i></button>
-						</span>
-						<span v-else class="assembler-prop">
-							<button @click="clickEditProperty(index)"><i class="mi-edit"></i></button>
-						</span>
-						<span v-if="item.displayname && item.displayname.length">{{item.displayname}}</span><span v-else class="assembler-no-displayname">{{item.name}}</span>
-						<span v-if="item.relatesto || item.cfc"> ({{item.fieldtype}} {{item.cfc}})</span>
-						<span v-if="item.rendertype == 'hidden'"> (Hidden)</span>
-						<span v-if="item.rendertype == 'null'"> (Does Not Render)</span>
-					</span>
-				</li>
-			</ul>
-		</div>
-	</template>
-	
-	<template id="assembler-attributes-form-template">
-		<div class="formtemplate" id="attributes-form-template">
-			<div>
-				<label>Entity Name</label>
-				<input type="text" v-model="model.entityname"
-					name="entityname"
-				>
-			</div>
-	
-			<div>
-				<label>Display Name</label>
-				<input type="text" v-model="model.displayname"
-					name="displayname"
-				>
-			</div>
-	
-			<div>
-				<label>Order By</label>
-				<input type="text" v-model="model.orderby"
-					name="orderby"
-				>
-			</div>
-	
-			<div>
-				<label>Table Name</label>
-				<input type="text" v-model="model.table"
-					name="table"
-				>
-			</div>
-	
-			<div>
-				<label>Scaffold</label>
-				<input type="checkbox" v-model="model.scaffold"
-					name="scaffold"
-					v-bind:true-value="true"
-	   		 		v-bind:false-value="false"
-	 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null"
-				>
-			</div>
-	
-			<div>
-				<label>Bundleable</label>
-				<input type="checkbox" v-model="model.bundleable"
-					name="bundleable"
-					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null"
-				>
-			</div>
-		</div>
-	</template>
-	
-	
-	<template id="assembler-related-form-template">
-		<div class="formtemplate" id="related-form-template">
-			<div>
-				<label>Property Name</label>
-				<input type="text" v-model="data.name"
-					name="name"
-				>
-			</div>
-	
-			<div>
-				<label>Display Name</label>
-				<input type="text" v-model="data.displayname"
-					name="displayname"
-				>
-			</div>
-
-			<div>
-				<label>Relationship Type</label>
-				<select
-					v-model="data.fieldtype"
-					name="fieldtype"
-					>
-					<option v-for="(option,index) in ['one-to-many','one-to-one','many-to-one']" :value="option" :selected="option == data.fieldtype ? 'selected' : 'null'">{{option}}</option>
-				</select>
-			</div>
-	
-			<div>
-				<label>Relates To</label>
-	
-				<select
-					v-model="data.relatesto"
-					name="relatesto"
-					@change="getRelatesToFields"
-					>
-					<option v-for="(option,index) in this.$parent.alldynamicobjects" :value="option.entityname" :selected="option.entityname == data.cfc ? 'selected' : 'null'">{{option.displayname}}</option>
-				</select>
-			</div>
-	
-	
-				<div>
-					<label>Foriegn Key Column</label>
-					<select
-						v-model="data.fkcolumn"
-						name="fkcolumn"
-						>
-						<option value="" :selected="!data.fkcolumn || data.fkcolumn == ''">Primary Key</option>
-						<option v-for="(option,index) in this.relatedprops" v-if="option.fieldtype='id' || option.fieldtype=='index'" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.name}}</option>
-					</select>
-				</div>
-	
-			<div>
-				<label>Render Field</label>
-				<select
-					v-model="data.renderfield"
-					name="renderfield"
-					>
-					<option v-for="(option,index) in this.relatedprops" v-if="option.displayname && option.displayname.length > 0" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.displayname}}</option>
-				</select>
-			</div>
-	
-			<div>
-				<label>Load Key</label>
-				<input type="text" v-model="data.loadkey"
-					name="loadkey"
-				>
-			</div>
-	
-			<div>
-				<label>Cascade Delete?</label>
-				<select
-					v-model="data.cascade"
-					name="cascade"
-					>
-					<option v-for="(option,index) in ['none','delete']" :value="option" :selected="option == data.cascade ? 'selected' : 'null'">{{option}}</option>
-				</select>
-			</div>
-	
-	
-	
-			<div>
-				<button @click="clickUpdateRelated"><span v-if="this.$parent.isupdate">Update</span><span v-else>Add</span></button>
-				<button v-if="this.$parent.isupdate" @click="clickDeleteRelated">Delete</button>
-				<button @click='clickCancel'>Cancel</button>
-			</div>
-		</div>
-	</template>
-	
-	<template id="assembler-property-form-template">
-		<div class="formtemplate">
-			<div>
-				<label>Property Name</label>
-				<input type="text" v-model="data.name"
-					name="name"
-				>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Display Name</label>
-				<input type="text" v-model="data.displayname"
-					name="displayname"
-				>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Data Type</label>
-				<select			
-					v-model="data.datatype"
-					name="datatype"
-					>
-					<option v-for="(option,index) in datatypes" :value="option.name" :selected="option.name == data.datatype ? 'selected' : 'null'">{{datatypes[index].label}}</option>
-				</select>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Field Type</label>
-				<select
-					v-model="data.fieldtype"
-					name="fieldtype"
-					>
-					<option v-for="(option,index) in fieldtypes" :value="option.name" :selected="option.name == data.fieldtype ? 'selected' : 'null'">{{fieldtypes[index].label}}</option>
-				</select>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Default</label>
-				<input type="text" v-model="data.default"
-					name="default"
-				>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Form Field</label>
-				<select
-					v-model="data.rendertype"
-					name="rendertype"
-					>
-					<option v-for="(option,index) in rendertypes" :value="option.name" :selected="option.name == data.rendertype ? 'selected' : 'null'">{{rendertypes[index].label}}</option>
-				</select>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Length</label>
-				<input type="text" v-model="data.length"
-					name="length"
-				>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Required</label>
-				<input type="checkbox" v-model="data.required"
-					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null"
-				>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>List</label>
-				<input type="checkbox" v-model="data.list"
-					v-bind:true-value="true"
-	   			 	v-bind:false-value="false"
-	 				name="list" :checked="data.list == true || data.list == 1 || data.list == 'true' ? 'checked' : null"
-				>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Filter</label>
-				<input type="checkbox" v-model="data.filter"
-					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null"
-				>
-			</div>
-	
-			<div v-if="data.fieldtype != 'id'">
-				<label>Nullable</label>
-				<input type="checkbox" v-model="data.nullable"
-					v-bind:true-value="true"
-		   		 	v-bind:false-value="false"
-	 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null"
-				>
-			</div>
-	
-	
-			<div v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
-				<label>Option List</label>
-				<input type="text" v-model="data.optionlist"
-					name="optionlist">*</br>
-					<span class="small">*separate by ^, i.e. One^Two^Three</span>
-			</div>
-	
-	
-			<div v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
-				<label>Option Value List</label>
-				<input type="text" v-model="data.optionvaluelist"
-					name="optionvaluelist">*</br>
-					
-					<span class="small">*separate by ^, i.e. 1^2^3</span>
-			</div>
-	
-	
-			<div>
-				<button @click="clickUpdateProperty"><span v-if="this.$parent.isupdate">Update</span><span v-else>Add</span></button>
-				<button v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty">Delete</button>
-				<button @click='clickCancel'>Cancel</button>
-			</div>
-		</div>
-	</template>
 
 	<template id="scaffold-crumb-template">
 		<div style="height: 30px">
@@ -561,7 +230,7 @@
 
 	<template id="scaffold-all-template">
 		<div>
-			<h2>All Objects:</h2>
+			<h2>Available Entities:</h2>
 			<div v-if="data.items">
 				<ul v-for="att in data.items">
 					<li @click="showList(att.entityname)">
@@ -569,12 +238,17 @@
 					</li>
 				</ul>
 			</div>
+
+			<p v-if="!data.items.length" class="alert alert-info">No items available.</p>
+
 		</div>
 	</template>
 
 	<template id="scaffold-list-template">
 		<div>
-			<h2>Entities
+			<h2>
+			<span v-if="entityname">{{entityname.toUpperCase()}} LIST</span>
+			<span v-else>ENTITIES</span>
 			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
 				<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 				<span v-for="item in currentparent.properties._displaylist">
@@ -582,6 +256,14 @@
 				</span>
 			</span>
 			</h2>
+			<div class="btn-group">
+			<span v-if="entityname != 'entity'">
+				<button @click="showAll" type="submit" class="btn">View All Entities</button>
+			</span>
+			<span v-if="currentparent && currentparent.properties">
+				<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
+			</span>
+		</div>
 			<div v-if="data.list">
 				<table width="100%" id="scaffold-table">
 					<thead id="scaffold-filterby">
@@ -603,14 +285,22 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(object,index) in data.list" :class="{'alt': index % 2 === 0}">
-								<td v-for="item in data.listview">
-									{{object[item.name]}}
+						<span v-if="data.list.length">
+							<tr v-for="(object,index) in data.list" :class="{'alt': index % 2 === 0}">
+									<td v-for="item in data.listview">
+										{{object[item.name]}}
+									</td>
+									<td>
+										<button class="pull-right" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i></button>
+									</td>
+								</li>
+							</tr>
+						</span>
+
+						<tr v-if="!data.list.length">
+								<td :colspan="data.listview.length+1">
+									<p class="alert alert-info">No items available.</p>
 								</td>
-								<td>
-									<button class="pull-right" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i></button>
-								</td>
-							</li>
 						</tr>
 
 					</tbody>
@@ -640,12 +330,17 @@
 						</tr>
 					</tfoot>
 				</table>
-				<span v-if="currentparent && currentparent.properties">
-					<button @click="showForm(entityname)">Add Child</button>
-					<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)">Done</button>
+				<span v-if="entityname != 'entity'">
+					<span v-if="currentparent && currentparent.properties">
+						<button @click="showForm(entityname)">Add Child</button>
+						<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)">Back</button>
+					</span>
+					<span v-else>
+						<button @click="showForm(entityname)">Add New</button>
+					</span>
 				</span>
-				<span v-else>
-					<button @click="showForm(entityname)">Add New</button>
+				<span v-if="entityname == 'entity'">
+					<a href="./?muraAction=scaffold.assembler" class="btn">Add New</a>
 				</span>
 			</div>
 		</div>
@@ -653,9 +348,13 @@
 
 	<template id="scaffold-form-template">
 		<div>
+		<h2>EDIT {{entityname.toUpperCase()}}</h3>
+		<button @click="clickBack" type="submit" class="btn">Back</button>
 		<ul>
 			<template v-for="property in data.properties">
 				<span v-if="property.fieldtype == 'id'">
+				</span>
+				<span v-else-if="property.name == 'siteid' || property.relatesto == 'site'">
 				</span>
 				<span v-else-if="property.fieldtype == 'one-to-one'">
 					<scaffold-related-one :property=property :model=data.model :entity=data.entity :data=data :entityid="entityid"></scaffold-related-one>
@@ -665,6 +364,8 @@
 				</span>
 				<span v-else-if="property.fieldtype == 'one-to-many'">
 					<scaffold-related-many v-if="Math.random()" :property=property :model=data.model :entity=data.entity :data=data :entity="data.entity"></scaffold-related-many>
+				</span>
+				<span v-else-if="property.name.slice(-2).toLowerCase()=='id'">
 				</span>
 				<li v-else>
 				<scaffold-field-textarea v-if="property.rendertype == 'textarea'" :property=property :model=data.model :entity=data.entity></scaffold-field-textarea>
@@ -697,18 +398,32 @@
 
 	<template id="scaffold-related-many-one">
 		<div v-if="mparent && mparent.properties">
-			<div v-if="property.cfc || property.relatesto">
-				<label>{{mparent.properties.displayname ? mparent.properties.displayname : mparent.properties.label ? mparent.properties.label : mparent.properties.name}}</label>
+			<div v-if="property.relatesto">
+				<label>{{property.displayname ? property.displayname : property.label ? property.label : mparent.properties.name}}</label>
 				<select
-				v-model="model[mparent.properties.primarykey]"
+				v-model="property.fkcolumn=='primaryKey' ? model[mparent.properties.primarykey] : model[property.fkcolumn]"
 				:name="mparent.properties.primarykey">
+				<option value="">-- None --</option>
 				<option v-for="(option,index) in this.mparent.list" :value="option.id"
-					 :selected="option == model['property.idfield'] ? 'selected' : null">
+					 :selected="option[property.loadkey] == model[property.fkcolumn] ? 'selected' : null">
 					<span v-if="property.renderfield">{{option[property.renderfield]}}</span>
-					<span v-else v-for="(option,index) in mparent.properties.properties">
-						
+					<span v-elseif="option.name">{{option.name}}</span>
+					<span v-elseif="option.menutitle">{{option.menutitle}}</span>
+					<span v-elseif="option.title">{{option.title}}</span>
+					<span v-elseif="option.grouname">{{option.groupname}}</span>
+					<span v-elseif="option.company">{{option.company}}</span>
+					<span v-elseif="option.organization">{{option.organization}}</span>
+					<span v-else>
+							<span v-if="option.fname">{{option.fname}}</span>
+							<span v-if="option.firstname">{{option.firstname}}</span>
+							<span v-if="option.lname">{{option.lname}}</span>
+							<span v-if="option.lastname">{{option.lastname}}</span>
 					</span>
-					
+					<!--
+					<span v-else v-for="(option,index) in mparent.properties.properties">
+
+					</span>
+					-->
 				</option>
 			</select>
 			</div>
@@ -731,7 +446,7 @@
 	<template id="scaffold-related-many">
 		<div v-if="this.entity.properties.isnew == 0">
 			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</label>
-			<button class='btn' @click="showRelatedList(property.name,entity,property.fkcolumn != 'primaryKey' ? property.fkcolumn : entity.properties.properties.primarykey)">Manage {{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</button>
+			<button class='btn' @click="showRelatedList(property.relatesto,entity)">Manage {{property.displayname ? property.displayname : property.label ? property.label : property.name}}(s)</button>
 		</div>
 	</template>
 
@@ -812,5 +527,5 @@
 
 		</div>
 	</template>
-	
+
 </cfoutput>

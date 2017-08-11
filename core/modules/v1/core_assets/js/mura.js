@@ -9560,15 +9560,28 @@ Mura.EntityCollection=Mura.Entity.extend(
 	 */
 	getAll:function(){
 		var self=this;
-		return Mura.extend(
-			{},
-			self.properties,
-			{
-				items:this.properties.items.map(function(obj){
-					return obj.getAll();
-				})
-			}
-		);
+
+    if(typeof self.properties.items != 'undefined'){
+  		return Mura.extend(
+  			{},
+  			self.properties,
+  			{
+  				items:self.properties.items.map(function(obj){
+  					return obj.getAll();
+  				})
+  			}
+  		);
+    } else if(typeof self.properties.properties != 'undefined'){
+  		return Mura.extend(
+  			{},
+  			self.properties,
+  			{
+  				properties:self.properties.properties.map(function(obj){
+  					return obj.getAll();
+  				})
+  			}
+  		);
+    }
 
 	},
 

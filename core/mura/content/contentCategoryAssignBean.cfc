@@ -47,8 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="mura.bean.beanORM" table="tcontentcategoryassign" entityname="contentCategoryAssign" bundleable=false hint="This provides content category assignment functionality"{
 
-    property name="content" fieldtype="many-to-one" cfc="content" fkcolumn="contenthistid";
-    property name="activeContent" fieldtype="many-to-one" cfc="content" fkcolumn="contentid";
+    property name="content" fieldtype="many-to-one" cfc="content" fkcolumn="contenthistid" loadkey="contenthistid";
+    property name="activeContent" fieldtype="many-to-one" cfc="content" fkcolumn="contentid" loadkey="contentid";
     property name="category" fieldtype="many-to-one" cfc="category" fkcolumn="categoryid";
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteid";
     property name="isfeature" datatype="int" default=0;

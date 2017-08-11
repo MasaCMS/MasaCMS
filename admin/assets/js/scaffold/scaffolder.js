@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+Mura(function() {
 
 	var MuraORMScaffold = {
 		siteID: '',
@@ -6,98 +6,97 @@ $( document ).ready(function() {
 		components: {},
 		templates: {},
 		rb: {},
-	
+		debugMode:true,
+
 		init: function(siteID,Scaffold){
-	
+
 			MuraORMScaffold.siteID = siteID;
 			MuraORMScaffold.endpoint = '/index.cfm/_api/json/v1/' + MuraORMScaffold.siteID + '/';
-	
+
 			return MuraORMScaffold;
 		},
-	
+
 		getEndpoint: function() {
 			return MuraORMScaffold.endpoint;
 		},
-	
+
 		all: function( listener ) {
 			var self = this;
 			var data = {};
-	
+
 			Mura
-			.get(self.getEndpoint())
+			.get(self.getEndpoint() + "?scaffold=1")
 			.then(function(data) {
-				
+
 				var items = data.data.items;
-				var itemlist = []; 
-				
+				var itemlist = [];
+
 				for(var i in items) {
-					if(items[i].dynamic && items[i].dynamic == true) {
-						itemlist.push(items[i]);
-					}
+					itemlist.push(items[i]);
 				}
-				
+
 				data.items = itemlist;
 				listener(data);
 			});
 		},
-	
+
 		get: function( listener,entityname,id,properties,params ) {
 			var self = this;
 			var entity = {};
 			var data = {};
 			var ident = id ? id : 'new';
-	
+
 			if(ident == 'new') {
 				Mura
 				.getEntity(entityname)
 				.new()
 				.then(function(entity) {
 					//Read properties for UI.
-	
+
 					data.model = entity.getAll();
 					data.model._displaylist = [];
 					data.entity = entity;
-	
+
 					entity.get('properties').then(function(properties){
 						data.properties = properties.properties.properties;
 
 						self.processProperties(data);
-	
+
 						for(var i = 0;i < data.properties.length;i++) {
+
 							if(data.properties[i].list) {
 								data.model._displaylist.push(data.properties[i]);
 							}
 						}
 
 						listener(data);
-	
+
 					});
 				});
 			}
 			else {
-
 				Mura
 				.getEntity(entityname)
 				.loadBy(entityname + 'id',ident) // 3rd argument = params
 				.then(function(entity) {
 					//Read properties for UI.
-	
+
 					data.model = entity.getAll();
 					data.model._displaylist = [];
 					data.entity = entity;
-	
+
 					entity.get('properties')
 						.then(
 							function(properties) {
 								data.properties = properties.properties.properties;
 								self.processProperties(data);
-	
+
 								for(var i = 0;i < data.properties.length;i++) {
 									if(data.properties[i].list) {
 										data.model._displaylist.push(data.properties[i]);
 									}
 									else if(data.properties[i].fieldtype) {
-	
+
 									}
 								}
 
@@ -111,18 +110,18 @@ $( document ).ready(function() {
 				});
 			}
 		},
-	
+
 		processEntity: function(listener, entity,data) {
 
 			listener(data);
 		},
-	
+
 		related: function(listener, entity, propertyname) {
 			var data = {};
 
 			entity
 				.get(propertyname).then(
-					function(collection){											
+					function(collection){
 						data.collection = collection.properties;
 						listener(data);
 					},
@@ -134,73 +133,80 @@ $( document ).ready(function() {
 					}
 				);
 		},
-	
-		feed: function( listener,entityname,itemsPer,sortBy,sortDir,filters ) {
+
+		feed: function( listener,entityname,itemsPer,sortBy,sortDir,filters,applyClassFilters) {
 			var self = this;
 			var entity = {};
 			var data = {};
-	
+
 			var feed = Mura
 				.getFeed(entityname)
 				.itemsPerPage(itemsPer);
-	
-			$(".filter").each( function() {
-				if($(this).val() != '') {
-					var filterCol = $(this).attr('name').split('-')[1];
-					feed.prop(filterCol).contains(Mura(this).val());
-				}
-			});
+
+			applyClassFilters =applyClassFilters || false;
+
+			if(entityname=='entity'){
+				feed.prop('scaffold').isEQ(1);
+			}
+
+			if(applyClassFilters){
+				$(".filter").each( function() {
+					if($(this).val() != '') {
+						var filterCol = $(this).attr('name').split('-')[1];
+						feed.prop(filterCol).contains(Mura(this).val());
+					}
+				});
+			}
 
 			if(filters && filters.length) {
 				for(var i =0;i < filters.length;i++) {
 					feed.prop(filters[i].property).contains(filters[i].value);
-				} 
+				}
 			}
-	
+
 			if(sortBy) {
 				feed.sort(sortBy,sortDir);
 			}
-			
+
 			feed.getQuery()
 				.then(function(collection) {
-	
+
 				data.collection = collection;
-	
 				data.list=collection.getAll().items;
 				data.links=collection.getAll().links;
-				
+
 				collection.get('properties').then(function(response){
 					data.properties=response.properties.properties;
 					data.parentproperties=response.properties;
-	
+
 					self.processProperties(data);
 					listener(data);
 				});
 			});
 		},
-	
+
 		page: function( listener,collection,action ) {
 			var self = this;
 			var entity = {};
 			var data = {};
-	
+
 			collection.get(action).then( function( newcollection ) {
-	
+
 				data.collection = newcollection;
-	
+
 				data.list=newcollection.getAll().items;
 				data.links=newcollection.getAll().links;
-	
+
 				newcollection.get('properties').then(function(properties) {
 					data.properties=properties.properties.properties;
-	
+
 					self.processProperties(data);
-	
+
 					listener(data);
 				});
 			});
 		},
-	
+
 		save: function( listener,entityname,model ) {
 			var self = this;
 
@@ -227,10 +233,10 @@ $( document ).ready(function() {
 				}
 			);
 		},
-	
+
 		delete: function( listener,entityname,model ) {
 			var self = this;
-	
+
 			Mura
 				.getEntity(entityname)
 				.set(
@@ -241,7 +247,7 @@ $( document ).ready(function() {
 				listener(deletedModel);
 			});
 		},
-	
+
 		getRenderType: function( properties ) {
 			if(properties.datatype == 'text')
 				return "textarea";
@@ -249,98 +255,155 @@ $( document ).ready(function() {
 				return "checkbox";
 			else
 				return "textfield";
-	
+
 		},
-	
+
 		buildUrl: function( entity,id,properties,params ) {
 			var self = this;
-	
+
 			var url = self.endpoint;
 			url += entity ?  entity : '';
 			url += id ?  "/" + id : '';
-	
+
 			if(properties) {
 				url += "/properties";
 			}
 			else if(params && params.length) {
-	
+
 				url += "/?"
-	
+
 				for(var param in params) {
 					url += param + "=" + params[param];
 				}
 			}
-	
+
 			return encodeURI(url);
 		},
-	
+
 		processProperties: function( data ) {
 			var self = this;
 			var orderpx = 10000;
+			var hasFilter=false;
+
 			data.listview = [];
-	
+
 			data.properties.sort(self.propertySort);
-	
+
 			for(var x = 0;x < data.properties.length;x++) {
-	
+
 				var item = data.properties[x];
-	
+
 				if (item.list) {
 					item.listposition = x;
 					data.listview.push(item);
 				}
-	
-				if(item['default'] == 'null')
+
+				if(item['default'] == 'null'){
 					item['default'] = null;
-	
-				if(!item.orderno)
+				}
+
+				if(!item.orderno){
 					item.orderno = orderpx++;
-	
-				if(item.optionlist)
+				}
+
+				if(item.optionlist){
 					item.optionlist = item.optionlist.split('^');
-	
-				if(item.optionvaluelist)
+				}
+
+				if(item.optionvaluelist){
 					item.optionvaluelist = item.optionvaluelist.split('^');
-	
-				if(!item.rendertype || item.rendertype == "")
+				}
+
+				if(!item.rendertype || item.rendertype == ""){
 					item.rendertype = self.getRenderType( item );
+				}
+
+				if(item.filter==true || item.filter == 'true'){
+					hasFilter=true;
+				}
+
+				if(!item.displayname || item.displayname == ""){
+					item.displayname = item.name;
+				}
+
 			}
-	
+
+			if(!data.listview.length){
+				for(var x = 0;x < data.properties.length;x++) {
+					var item=data.properties[x];
+					if(
+						(
+							item.name=='name'
+							|| item.name=='title'
+							|| item.name=='summary'
+							|| item.name=='description'
+							|| item.name=='lastupdate'
+							|| item.name=='created'
+							|| item.name=='fname'
+							|| item.name=='lname'
+							|| item.name=='firstname'
+							|| item.name=='lastname'
+							|| item.name=='company'
+							|| item.name=='organization'
+						)
+						 && (!item.relatesto || item.relatesto=="")){
+						item.listposition = x;
+						data.listview.push(data.properties[x]);
+					}
+				}
+
+				if(!data.listview.length){
+					for(var x = 0;x < data.properties.length;x++) {
+						var item=data.properties[x];
+						if(!item.relatesto || item.relatesto==""){
+							item.listposition = x;
+							data.listview.push(data.properties[x]);
+						}
+					}
+				}
+			}
+
+			if(!hasFilter){
+				for(var x = 0;x < data.listview.length;x++) {
+					data.listview[x].filter=true;
+				}
+			}
+
 			return data;
-	
+
 		},
-	
+
 		propertySort: function(a,b) {
 			if(!a.orderno)
 				a.orderno = 0;
 			if(!b.orderno)
 				b.orderno = 0;
-	
+
 			return parseInt(a.orderno) - parseInt(b.orderno);
 		},
-	
+
 		registerComponent: function( component,ident ) {
 			var self = this;
 			self.components[ident] = component;
 		},
-	
+
 		qstring: function() {
 			var querystring = {};
-	
+
 			var url = window.location.href;
 			var qstring = "";
 			var items = "";
 			var item = "";
 			var keyval = "";
-	
+
 			if(url.split('?').length < 2)
 				return querystring;
-	
+
 			qstring = url.split('?')[1];
-	
+
 			if( qstring.includes("&") ) {
 				items = qstring.split("&");
-	
+
 				for(var i = 0;i < items.length;i++) {
 					keyval = items[i].split("=");
 					querystring[decodeURIComponent(keyval[0])] = decodeURIComponent(keyval[1]);
@@ -349,14 +412,14 @@ $( document ).ready(function() {
 			else {
 				keyval = qstring.split("=");
 				querystring[decodeURIComponent(keyval[0])] = decodeURIComponent(keyval[1]);
-	
+
 			}
 			return querystring;
 		}
-	
+
 	}
 
-	var MuraScaffold = new MuraORMScaffold.init( 'default' );
+	var MuraScaffold = new MuraORMScaffold.init( Mura.siteid );
 	var qstring = MuraScaffold.qstring();
 
 	Vue.component('scaffold-all-template', {
@@ -403,7 +466,7 @@ $( document ).ready(function() {
 				Scaffolder.clickDelete( this.entityname );
 			},
 			showAll: function(){
-				Scaffolder.showAll();
+				Scaffolder.showList('entity');
 			},
 			showList: function(name){
 				Scaffolder.showList(name);
@@ -438,6 +501,9 @@ $( document ).ready(function() {
 			},
 			applyItemsPer: function( e ) {
 				Scaffolder.applyItemsPer( e.target.value );
+			},
+			showAll: function() {
+				Scaffolder.showList('entity');
 			}
 		}
 	});
@@ -464,7 +530,7 @@ $( document ).ready(function() {
 		methods: {
 			proplist: function( data ) {
 				this.mparent = {};
-				
+
 				this.properties = data.properties;
 				this.mparent.list = data.list;
 				this.mparent.properties = data.parentproperties;
@@ -497,8 +563,8 @@ $( document ).ready(function() {
 			showForm: function(entityname,entityid,parentid) {
 				Scaffolder.showForm(entityname,entityid,parentid);
 			},
-			showRelatedList: function(name,parent){
-				Scaffolder.showRelatedList(name,parent);
+			showRelatedList: function(relatesto,parent){
+				Scaffolder.showRelatedList(relatesto,parent);
 			}
 		},
 		computed: {
@@ -557,7 +623,7 @@ $( document ).ready(function() {
 		},
 		mounted: function() {
 			//this.hide();
-			this.showAll();
+			this.showList('entity');
 		},
 		destroyed: function() {
 			console.log('main destroyed');
@@ -582,7 +648,7 @@ $( document ).ready(function() {
 				}
 				*/
 				this.showList(this.entityname);
-				
+
 			},
 			clickDelete: function( entityname ) {
 				this.errordata = [];
@@ -623,7 +689,7 @@ $( document ).ready(function() {
 				}
 
 				var dead = this.state.pop();
-				
+
 				/*
 				if(this.state.length) {
 					var currentState = this.state.pop();
@@ -632,7 +698,7 @@ $( document ).ready(function() {
 				else {
 					this.showList(this.entityname);
 				}
-				
+
 				*/
 
 				if(this.currentparent.properties) {
@@ -658,11 +724,11 @@ $( document ).ready(function() {
 				this.entityid = entityid;
 				this.errordata = [];
 				this.entityname = entityname;
-				
+
 				if(this.currentparent.properties && this.currentparent.properties.entityname == entityname) {
 					this.currentparent = {};
 				}
-				
+
 				/*
 				var stateitem = {displayname: '',name: entityname,id: entityid} ;
 				var parentcopy = {};
@@ -690,7 +756,7 @@ $( document ).ready(function() {
 				if(this.currentparent.properties) {
 					this.model[this.currentparent.properties.properties.primarykey] = this.currentparent.properties.id;
 				}
-				
+
 				if (this.state.length > 1 && this.state[this.state.length - 1].parent) {
 					this.data.parent = this.state[this.state.length - 1].parent;
 				}
@@ -702,7 +768,7 @@ $( document ).ready(function() {
 			showList: function( entityname ) {
 				this.entityname = entityname;
 				this.currentView = 'scaffold-list-template';
-				
+
 				MuraScaffold.feed( this.doList,entityname,this.itemsper,this.sortBy,this.sortDir );
 			},
 			doList: function( data ) {
@@ -714,13 +780,43 @@ $( document ).ready(function() {
 				this.currentView = 'scaffold-list-template';
 				this.currentparent = parent;
 
-				var filters = [];
-				
-				var filter = {property:this.currentparent.properties.properties.primarykey,value:this.currentparent.properties.id};
-				
-				filters.push(filter);
+				var self=this;
 
-				MuraScaffold.feed( this.doRelatedList,entityname,this.itemsper,this.sortBy,this.sortDir,filters );
+				this.currentparent.get('properties').then(function(collection){
+
+					var filters = [];
+					var property;
+					var value;
+					var properties=collection.getAll();
+
+					for(var p=0;p < properties.properties.length;p++){
+
+						if(properties.properties[p].fieldtype && (properties.properties[p].fieldtype=='one-to-many' || properties.properties[p].fieldtype=='many-to-many') && properties.properties[p].relatesto==self.entityname){
+
+							if(properties.properties[p].loadkey=='primaryKey'){
+								property=properties.primarykey;
+							} else {
+								property=properties.properties[p].loadkey;
+							}
+
+							if(properties.properties[p].fkcolumn=='primaryKey'){
+								value=self.currentparent.properties[properties.primarykey];
+							} else {
+								value=self.currentparent.properties[properties.properties[p].fkcolumn];
+							}
+
+							var filter = {property:property,value:value};
+						}
+					}
+
+					if(filter){
+						filters.push(filter);
+					}
+
+					MuraScaffold.feed( self.doRelatedList,entityname,self.itemsper,self.sortBy,self.sortDir,filters,false);
+
+				});
+
 			},
 			doRelatedList: function( data ) {
 				this.data = data;
@@ -755,30 +851,12 @@ $( document ).ready(function() {
 			},
 			show: function() {
 				this.isvisible = true;
-				this.showAll();
+				this.showList('entity');
 			},
 			hide: function() {
 				this.isvisible = false;
 			}
 		}
-	});
-
-	Master = new Vue({
-		el: '.container-master',
-		data: {
-			currentView: ""
-		},
-		methods: {
-			clickShowScaffolder: function( entityname ) {
-				Scaffolder.show();
-				Assembler.hide();
-			},
-			clickShowAssembler: function( entityname ) {
-				Scaffolder.hide();
-				Assembler.show();
-			}
-		}
-	
 	});
 
 

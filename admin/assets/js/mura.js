@@ -335,8 +335,13 @@ var Mura=(function(){
               if (data.label) {
                   trackingVars.ga.eventLabel = data.label;
               } else if(isMXP) {
-                  trackingVars.ga.eventLabel = trackingVars.object.title;
-                  data.label=trackingVars.object.title;
+                  if(typeof trackingVars.object != 'undefined' && typeof trackingVars.object.title != 'undefined'){
+                    trackingVars.ga.eventLabel=trackingVars.object.title;
+                    data.label=trackingVars.object.title;
+                  } else {
+                    trackingVars.ga.eventLabel=undefined;
+                    data.label=undefined;
+                  }
               }
 
               Mura(document).trigger('muraTrackEvent',trackingVars);
@@ -724,7 +729,7 @@ var Mura=(function(){
   }
 
   /**
-   * generateOauthToken - Generate Outh toke for REST API
+   * generateOAuthToken - Generate Outh toke for REST API
    *
    * @param  {string} grant_type  Grant type (Use client_credentials)
    * @param  {type} client_id     Client ID
@@ -732,7 +737,7 @@ var Mura=(function(){
    * @return {Promise}
    * @memberof {class} Mura
    */
-  function generateOauthToken(grant_type, client_id, client_secret) {
+  function generateOAuthToken(grant_type, client_id, client_secret) {
       return new Promise(function(resolve, reject) {
           get(Mura.apiEndpoint.replace('/json/', '/rest/') +
               'oauth?grant_type=' +
@@ -3157,7 +3162,7 @@ var Mura=(function(){
               }
           }, {
               rb: {},
-              generateOAuthToken: generateOauthToken,
+              generateOAuthToken: generateOAuthToken,
               entities: {},
               submitForm: submitForm,
               escapeHTML: escapeHTML,
@@ -9555,15 +9560,28 @@ Mura.EntityCollection=Mura.Entity.extend(
 	 */
 	getAll:function(){
 		var self=this;
-		return Mura.extend(
-			{},
-			self.properties,
-			{
-				items:this.properties.items.map(function(obj){
-					return obj.getAll();
-				})
-			}
-		);
+
+    if(typeof self.properties.items != 'undefined'){
+  		return Mura.extend(
+  			{},
+  			self.properties,
+  			{
+  				items:self.properties.items.map(function(obj){
+  					return obj.getAll();
+  				})
+  			}
+  		);
+    } else if(typeof self.properties.properties != 'undefined'){
+  		return Mura.extend(
+  			{},
+  			self.properties,
+  			{
+  				properties:self.properties.properties.map(function(obj){
+  					return obj.getAll();
+  				})
+  			}
+  		);
+    }
 
 	},
 
@@ -11945,6 +11963,7 @@ Mura.Request=Mura.Core.extend(
       self=this;
 
       if(typeof this.requestObject != 'undefined'){
+        params.headers['User-Agent']='MuraJS';
         if(typeof this.requestObject.headers['cookie'] != 'undefined'){
           console.log('pre cookies:');
           console.log(this.requestObject.headers['cookie']);

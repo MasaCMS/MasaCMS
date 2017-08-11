@@ -1818,6 +1818,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		try{
 			if(i == 'contentnav'){
+				i='content';
 				var exampleEntity=getBean('content');
 			} else {
 				var exampleEntity=getBean(i);
@@ -1874,7 +1875,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var allowedEntities=[];
 
 			for(var i in variables.config.entities)
-			if(allowAccess(i,$,false)){
+			if(allowAccess(i,$,false) && ($.event('scaffold')=='' || $.event('scaffold')==1 && allowAction($.getBean(i),$)) ){
 				arrayAppend(allowedEntities,i);
 			}
 			feed.where().prop('name').isIn(arrayToList(allowedEntities));
@@ -2045,7 +2046,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			var allowedEntities=[];
 
 			for(var i in variables.config.entities)
-			if(allowAccess(i,$,false)){
+			if(allowAccess(i,$,false) && ($.event('scaffold')=='' || $.event('scaffold')==1 && allowAction($.getBean(i),$)) ){
 				arrayAppend(allowedEntities,i);
 			}
 			feed.where().prop('name').isIn(arrayToList(allowedEntities));

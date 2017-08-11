@@ -49,8 +49,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  */
 component extends="mura.bean.bean" entityName="category" table="tcontentcategories" output="false" hint="This provides category bean functionality" {
 	property name="categoryID" fieldtype="id";
-	property name="kids" fieldtype="one-to-many" cfc="category" nested=true orderby="name asc" cascade="delete";
-	property name="parent" fieldtype="many-to-one" cfc="category" fkcolumn="parentid";
+	property name="kids" fieldtype="one-to-many" cfc="category" loadkey="parentid" nested=true orderby="name asc" cascade="delete";
+	property name="parent" fieldtype="many-to-one" cfc="category" fkcolumn="parentid" loadkey="categoryid" renderfield="name";
 	property name="contentAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign";
 	property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteid";
 	property name="dateCreated" type="date" default="";
