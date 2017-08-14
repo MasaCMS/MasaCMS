@@ -11,7 +11,7 @@ Mura(function() {
 		init: function(siteID,Scaffold){
 
 			MuraORMScaffold.siteID = siteID;
-			MuraORMScaffold.endpoint = '/index.cfm/_api/json/v1/' + MuraORMScaffold.siteID + '/';
+			MuraORMScaffold.endpoint = Mura.apiEndpoint + '/';
 
 			return MuraORMScaffold;
 		},
@@ -134,7 +134,7 @@ Mura(function() {
 				);
 		},
 
-		feed: function( listener,entityname,itemsPer,sortBy,sortDir,filters,applyClassFilters) {
+		feed: function( listener,entityname,itemsPer,sortBy,sortDir,filters) {
 			var self = this;
 			var entity = {};
 			var data = {};
@@ -143,20 +143,16 @@ Mura(function() {
 				.getFeed(entityname)
 				.itemsPerPage(itemsPer);
 
-			applyClassFilters =applyClassFilters || false;
-
 			if(entityname=='entity'){
 				feed.prop('scaffold').isEQ(1);
 			}
 
-			if(applyClassFilters){
-				$(".filter").each( function() {
-					if($(this).val() != '') {
-						var filterCol = $(this).attr('name').split('-')[1];
-						feed.prop(filterCol).contains(Mura(this).val());
-					}
-				});
-			}
+			Mura(".filter").each( function() {
+				if(Mura(this).val() != '') {
+					var filterCol = Mura(this).attr('name').split('-')[1];
+					feed.prop(filterCol).contains(Mura(this).val());
+				}
+			});
 
 			if(filters && filters.length) {
 				for(var i =0;i < filters.length;i++) {
@@ -484,6 +480,9 @@ Mura(function() {
 			this.$parent.state = [];
 		},
 		methods: {
+			goToAssembler: function(entityname){
+				location.href="./?muraAction=scaffold.assembler&entityname=" + entityname;
+			},
 			showForm: function(entityname,entityid,parentid){
 				Scaffolder.showForm(entityname,entityid,parentid);
 			},
@@ -504,6 +503,9 @@ Mura(function() {
 			},
 			showAll: function() {
 				Scaffolder.showList('entity');
+			},
+			showList: function(name) {
+				Scaffolder.showList(name);
 			}
 		}
 	});
@@ -840,9 +842,9 @@ Mura(function() {
 
 				Mura("#sortarrow").remove();
 				if(this.sortDir == 'asc')
-					$("#sortby-" + col).append("<i class='mi-sort-asc' id='sortarrow'></i>");
+					Mura("#sortby-" + col).append("<i class='mi-sort-asc' id='sortarrow'></i>");
 				else
-					$("#sortby-" + col).append("<i class='mi-sort-desc' id='sortarrow'></i>");
+					Mura("#sortby-" + col).append("<i class='mi-sort-desc' id='sortarrow'></i>");
 
 				MuraScaffold.feed( this.doList,this.entityname,this.itemsper,this.sortBy,this.sortDir );
 			},

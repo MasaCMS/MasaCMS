@@ -148,8 +148,14 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 					throw(type="invalidParameters");
 				}
 
-				getServiceFactory().declareBean(arguments.entityConfig);
+				if(getServiceFactory().containsBean(obj.entityname) && !getBean(obj.entityname).getDynamic()){
+					throw(type="invalidParameters");
+				}
 
+				param name="obj.public" default=false;
+
+				getServiceFactory().declareBean(arguments.entityConfig);
+				registerEntity(arguments.entityConfig.entityname,{public=arguments.entityConfig.public,moduleid='00000000000000000000000000000000000'});
 				return findProperties(obj.entityName);
 			} else {
 				throw(type="invalidTokens");
@@ -163,9 +169,8 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 				if(!getCurrentUser().isSuperUser()){
 					throw(type="authorization");
 				}
-
 				getServiceFactory().deleteBean(arguments.entityname);
-
+				structDelete(getConfig(),arguments.entityname);
 				return {success:true};
 			} else {
 				throw(type="invalidTokens");
@@ -1127,6 +1132,9 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 		var propArray=listToArray(arguments.properties);
 		var returnArray=[];
 		var prop='';
+		var config=getEntityConfig(arguments.entityname);
+
+		param name="config.public" default=false;
 
 		if(arrayLen(propArray)){
 			for(var p in propArray){
@@ -1153,6 +1161,7 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 			scaffold=exampleEntity.getscaffold(),
 			displayname=exampleEntity.getEntityDisplayName(),
 			primarykey=lcase(exampleEntity.getPrimaryKey()),
+			public=config.public,
 			links={
 				entities=getEndpoint()
 			}

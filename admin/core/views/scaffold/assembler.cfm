@@ -67,8 +67,8 @@
 			##scaffold-table tr.alt td {
 				background-color: ##eee;
 			}
-			
-			
+
+
 			.formtemplate {
 				margin: 20px 0;
 			}
@@ -100,7 +100,7 @@
 			.assembler-no-displayname {
 				color: ##880000;
 			}
-			
+
 			.small {
 				font-size: 0.7em;
 			}
@@ -116,20 +116,20 @@
 			}
 
 			##scaffold-table {
-				
+
 			}
 
 			##scaffold-table td {
 				padding-bottom: 5px;
 			}
-			
+
 			##assembler-preview,.assembler-preview {
 				float: left;
 				border: 2px solid ##333;
 				width: 490px;
 				height: 600px;
 				overflow: scroll;
-								
+
 			}
 
 			##load-spin ##spinner {
@@ -148,7 +148,7 @@
 			  -webkit-animation: spin 2s linear infinite;
 			  animation: spin 2s linear infinite;
 			}
-			
+
 			##load-spin {
 				position: fixed;
 				width: 100%;
@@ -159,7 +159,7 @@
 				z-index: 10000;
 				border: 16px solid ##f3f3f3;
 				opacity: .8;
-			}			
+			}
 		</style>
 
 		<script>
@@ -200,8 +200,10 @@
 						<div>
 							<div id="container-assembler">
 								<div style="float: left;width: 49%;">
+									<!---
 									<button @click='clickLoadEntity'>Load</button>
 									<input type="text" id='loadentity' name="loadentity" value="">
+									--->
 									<assembler-attributes-form-template :model="model"></assembler-attributes-form-template>
 									<div>
 										<button @click='clickAddProperty'>New Property</button>
@@ -253,37 +255,37 @@
 			</ul>
 		</div>
 	</template>
-	
+
 	<template id="assembler-attributes-form-template">
 		<div class="formtemplate" id="attributes-form-template">
 			<div>
 				<label>Entity Name</label>
 				<input type="text" v-model="model.entityname"
-					name="entityname"
+					name="entityname" @change="model.entityname=model.entityname.replace(/[^0-9a-z]/gi, '');"
 				>
 			</div>
-	
+
 			<div>
 				<label>Display Name</label>
 				<input type="text" v-model="model.displayname"
-					name="displayname"
+					name="displayname" @change="model.displayname=removeInvalidText(model.displayname)"
 				>
 			</div>
-	
+
 			<div>
 				<label>Order By</label>
 				<input type="text" v-model="model.orderby"
 					name="orderby"
 				>
 			</div>
-	
+
 			<div>
 				<label>Table Name</label>
 				<input type="text" v-model="model.table"
-					name="table"
+					name="table" @change="model.table=model.table.replace(/[^0-9a-z]/gi, '');"
 				>
 			</div>
-	
+
 			<div>
 				<label>Scaffold</label>
 				<input type="checkbox" v-model="model.scaffold"
@@ -293,7 +295,7 @@
 	 				name="scaffold" :checked="model.scaffold == true || model.scaffold == 1 || model.scaffold == 'true' ? 'checked' : null"
 				>
 			</div>
-	
+
 			<div>
 				<label>Bundleable</label>
 				<input type="checkbox" v-model="model.bundleable"
@@ -303,19 +305,29 @@
 	 				name="bundleable" :checked="model.bundleable == true || model.bundleable == 1 || model.bundleable == 'true' ? 'checked' : null"
 				>
 			</div>
+
+			<div>
+				<label>Publicly Accessible</label>
+				<input type="checkbox" v-model="model.public"
+					name="public"
+					v-bind:true-value="true"
+	   		 		v-bind:false-value="false"
+	 				name="public" :checked="model.public == true || model.public == 1 || model.public == 'true' ? 'checked' : null"
+				>
+			</div>
 		</div>
 	</template>
-	
-	
+
+
 	<template id="assembler-related-form-template">
 		<div class="formtemplate" id="related-form-template">
 			<div>
-				<label>Property Name</label>
+				<label>Property Name df</label>
 				<input type="text" v-model="data.name"
-					name="name"
+					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
 				>
 			</div>
-	
+
 			<div>
 				<label>Display Name</label>
 				<input type="text" v-model="data.displayname"
@@ -332,10 +344,10 @@
 					<option v-for="(option,index) in ['one-to-many','one-to-one','many-to-one']" :value="option" :selected="option == data.fieldtype ? 'selected' : 'null'">{{option}}</option>
 				</select>
 			</div>
-	
+
 			<div>
 				<label>Relates To</label>
-	
+
 				<select
 					v-model="data.relatesto"
 					name="relatesto"
@@ -344,8 +356,8 @@
 					<option v-for="(option,index) in this.$parent.alldynamicobjects" :value="option.entityname" :selected="option.entityname == data.cfc ? 'selected' : 'null'">{{option.displayname}}</option>
 				</select>
 			</div>
-	
-	
+
+
 				<div>
 					<label>Foriegn Key Column</label>
 					<select
@@ -356,7 +368,7 @@
 						<option v-for="(option,index) in this.relatedprops" v-if="option.fieldtype='id' || option.fieldtype=='index'" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.name}}</option>
 					</select>
 				</div>
-	
+
 			<div>
 				<label>Render Field</label>
 				<select
@@ -366,14 +378,14 @@
 					<option v-for="(option,index) in this.relatedprops" v-if="option.displayname && option.displayname.length > 0" :value="option.name" :selected="option.fkcolumn == option.name ? 'selected' : 'null'">{{option.displayname}}</option>
 				</select>
 			</div>
-	
+
 			<div>
 				<label>Load Key</label>
 				<input type="text" v-model="data.loadkey"
 					name="loadkey"
 				>
 			</div>
-	
+
 			<div>
 				<label>Cascade Delete?</label>
 				<select
@@ -383,9 +395,9 @@
 					<option v-for="(option,index) in ['none','delete']" :value="option" :selected="option == data.cascade ? 'selected' : 'null'">{{option}}</option>
 				</select>
 			</div>
-	
-	
-	
+
+
+
 			<div>
 				<button @click="clickUpdateRelated"><span v-if="this.$parent.isupdate">Update</span><span v-else>Add</span></button>
 				<button v-if="this.$parent.isupdate" @click="clickDeleteRelated">Delete</button>
@@ -393,33 +405,33 @@
 			</div>
 		</div>
 	</template>
-	
+
 	<template id="assembler-property-form-template">
 		<div class="formtemplate">
 			<div>
 				<label>Property Name</label>
 				<input type="text" v-model="data.name"
-					name="name"
+					name="name" @change="data.name=data.name.replace(/[^0-9a-z]/gi, '');"
 				>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Display Name</label>
 				<input type="text" v-model="data.displayname"
-					name="displayname"
+					name="displayname" @change="data.displayname=removeInvalidText(data.displayname)"
 				>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Data Type</label>
-				<select			
+				<select
 					v-model="data.datatype"
 					name="datatype"
 					>
 					<option v-for="(option,index) in datatypes" :value="option.name" :selected="option.name == data.datatype ? 'selected' : 'null'">{{datatypes[index].label}}</option>
 				</select>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Field Type</label>
 				<select
@@ -429,14 +441,14 @@
 					<option v-for="(option,index) in fieldtypes" :value="option.name" :selected="option.name == data.fieldtype ? 'selected' : 'null'">{{fieldtypes[index].label}}</option>
 				</select>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Default</label>
 				<input type="text" v-model="data.default"
 					name="default"
 				>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Form Field</label>
 				<select
@@ -446,14 +458,14 @@
 					<option v-for="(option,index) in rendertypes" :value="option.name" :selected="option.name == data.rendertype ? 'selected' : 'null'">{{rendertypes[index].label}}</option>
 				</select>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Length</label>
 				<input type="text" v-model="data.length"
 					name="length"
 				>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Required</label>
 				<input type="checkbox" v-model="data.required"
@@ -462,7 +474,7 @@
 	 				name="required" :checked="data.required == true || data.required == 1 || data.required == 'true' ? 'checked' : null"
 				>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>List</label>
 				<input type="checkbox" v-model="data.list"
@@ -471,7 +483,7 @@
 	 				name="list" :checked="data.list == true || data.list == 1 || data.list == 'true' ? 'checked' : null"
 				>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Filter</label>
 				<input type="checkbox" v-model="data.filter"
@@ -480,7 +492,7 @@
 	 				name="filter" :checked="data.filter == true || data.filter == 1 || data.filter == 'true' ? 'checked' : null"
 				>
 			</div>
-	
+
 			<div v-if="data.fieldtype != 'id'">
 				<label>Nullable</label>
 				<input type="checkbox" v-model="data.nullable"
@@ -489,25 +501,25 @@
 	 				name="nullable" :checked="data.nullable == true || data.nullable == 1 || data.nullable == 'true' ? 'checked' : null"
 				>
 			</div>
-	
-	
+
+
 			<div v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option List</label>
 				<input type="text" v-model="data.optionlist"
 					name="optionlist">*</br>
 					<span class="small">*separate by ^, i.e. One^Two^Three</span>
 			</div>
-	
-	
+
+
 			<div v-if="(data.rendertype == 'radio' || data.rendertype == 'dropdown') && data.fieldtype != 'id'">
 				<label>Option Value List</label>
 				<input type="text" v-model="data.optionvaluelist"
 					name="optionvaluelist">*</br>
-					
+
 					<span class="small">*separate by ^, i.e. 1^2^3</span>
 			</div>
-	
-	
+
+
 			<div>
 				<button @click="clickUpdateProperty"><span v-if="this.$parent.isupdate">Update</span><span v-else>Add</span></button>
 				<button v-if="this.$parent.isupdate && data.fieldtype != 'id'" @click="clickDeleteProperty">Delete</button>

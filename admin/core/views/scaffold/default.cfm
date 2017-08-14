@@ -259,6 +259,9 @@
 			<div class="btn-group">
 			<span v-if="entityname != 'entity'">
 				<button @click="showAll" type="submit" class="btn">View All Entities</button>
+				<span v-if="data && data.collection && data.collection.properties && data.collection.properties.properties.dynamic">
+					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
+				</span>
 			</span>
 			<span v-if="currentparent && currentparent.properties">
 				<button @click="showForm(currentparent.properties.entityname,currentparent.properties.id)" class="btn">Back</button>
@@ -290,8 +293,11 @@
 									<td v-for="item in data.listview">
 										{{object[item.name]}}
 									</td>
-									<td>
+									<td v-if="entityname != 'entity'">
 										<button class="pull-right" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i></button>
+									</td>
+									<td v-if="entityname == 'entity'">
+										<button class="pull-right" @click="showList(object.entityname)"><i class="mi-edit"></i></button>
 									</td>
 								</li>
 							</tr>
@@ -380,7 +386,7 @@
 			<li>
 				<button @click="clickSave" type="submit" class="btn">Save</button>
 				<button @click="clickBack" type="submit" class="btn">Back</button>
-				<button @click="clickDelete" type="submit" class="btn btn-warning">Delete</button>
+				<button v-if="data.model && !data.model.isnew" @click="clickDelete" type="submit" class="btn btn-warning">Delete</button>
 			</li>
 		</ul>
 		</div>

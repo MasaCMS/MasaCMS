@@ -66,10 +66,11 @@ component extends="ioc" hint="This provides the primary bean factory that all co
           var hint= (isDefined('entity.hint')) ? entity.hint : "This component was dynamically generated with JSON";
           var scaffold= (isDefined('entity.scaffold')) ? entity.scaffold : true;
           var displayname= (isDefined('entity.displayname')) ? entity.displayname : entity.entityname;
+          var public= (isDefined('entity.public')) ? entity.public : false;
 
           //property name="site" fieldtype="one-to-one" relatesto="site" fkcolumn="siteID";
 
-          var result='component#newline##tab#extends="#extends#"#newline##tab#entityname="#entity.entityname#"#newline##tab#displayname="#displayname#"#newline##tab#table="#table#"#newline##tab#orderby="#orderby#"#newline##tab#bundleable="#bundleable#"#newline##tab#hint="#hint#"#newline##tab#dynamic="true"#newline##tab#scaffold="#scaffold#"#newline##tab#{';
+          var result='component#newline##tab#extends="#extends#"#newline##tab#entityname="#entity.entityname#"#newline##tab#displayname="#displayname#"#newline##tab#table="#table#"#newline##tab#orderby="#orderby#"#newline##tab#bundleable=#YesNoToBoolean(bundleable)##newline##tab#hint="#hint#"#newline##tab#dynamic=true#newline##tab#scaffold=#YesNoToBoolean(scaffold)##newline##tab#public=#YesNoToBoolean(public)##newline##tab#{';
 
           for(var p in properties){
             result = result & newline & tab & tab & "property";
@@ -183,4 +184,12 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
   	  // At the moment this does nothing else. This method is here for WireBox compatibility for dealing with WireBox's scope storage.
 	}
+
+  function YesNoToBoolean(value){
+    if(listFindNoCase("1,yes,true",arguments.value) ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

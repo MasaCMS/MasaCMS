@@ -6,7 +6,7 @@ $( document ).ready(function() {
 		siteID: '',
 		endpoint: '',
 
-		init: function(siteID,Assembler){
+		init: function(siteID){
 
 			MuraORMAssenbler.siteID = siteID;
 			MuraORMAssenbler.endpoint = '/index.cfm/_api/json/v1/' + MuraORMAssenbler.siteID + '/';
@@ -34,28 +34,31 @@ $( document ).ready(function() {
 		getPropertiesAsJSON: function( listener,entityname ) {
 			var self = this;
 			var data = {};
-			
+
 			console.log(arguments);
 
 			Mura
 			.get(self.getEndpoint() + entityname + "/" + "properties")
 			.then(function(entity) {
-				
+
 				console.log("GET PROP");
 				console.log(entity);
-				
-				data = entity.data;
 
-				if(data.links)
-					delete data.links;
+				if(entity.error){
+					data={};
 
-				self.processProperties(data);
+				} else {
+					data = entity.data;
+
+					if(data.links){
+						delete data.links;
+					}
+
+					self.processProperties(data);
+				}
 
 				listener( data );
 			});
-
-
-
 		},
 
 		get: function( listener,entityname,id,properties,params ) {
@@ -96,7 +99,7 @@ $( document ).ready(function() {
 			else {
 				Mura
 				.getEntity(entityname)
-				.loadBy(entityname + 'id',ident) // 3rd argument = params
+				.loadBy('id',ident) // 3rd argument = params
 				.then(function(entity) {
 					//Read properties for UI.
 
@@ -187,6 +190,9 @@ $( document ).ready(function() {
 			else
 				return "textfield";
 
+		},
+		removeInvalidText:function(text){
+			return text.replace(/"/g,'\'');
 		}
 
 
@@ -194,7 +200,7 @@ $( document ).ready(function() {
 }
 
 
-	var MuraAssembler = new MuraORMAssenbler.init( 'default' );
+	var MuraAssembler = new MuraORMAssenbler.init( Mura.siteid );
 
 /*
 	Vue.component('assembler-error-template', {
@@ -211,16 +217,19 @@ $( document ).ready(function() {
 		mounted: function() {
 		},
 		methods: {
+			removeInvalidText:function(text){
+				return MuraAssembler.removeInvalidText(text);
+			}
 		}
 	});
 	Vue.component('assembler-related-form-template', {
 		template: '#assembler-related-form-template',
 		props: ['data','datatypes','relatedprops'],
 		mounted: function() {
-			
+
 			if(!this.data.cfc)
 				this.data.cfc = this.data.relatesto;
-				
+
 			if(!this.data.relatesto)
 				this.data.relatesto = this.data.cfc;
 
@@ -245,14 +254,14 @@ $( document ).ready(function() {
 			},
 			onLoadComplete: function( data ) {
 				var related = [];
-				
+
 				for(var i in data.properties) {
 					if(!data.properties[i].cfc && !data.properties[i].relatesto) {
 						console.log(data.properties[i]);
 						related.push(data.properties[i]);
 					}
 				}
-				
+
 				this.relatedprops = related;
 			}
 		}
@@ -274,6 +283,12 @@ $( document ).ready(function() {
 				this.$forceUpdate();
 
 				this.$parent.clickDeleteProperty();
+			},
+			removeInvalidText:function(text){
+				return MuraAssembler.removeInvalidText(text);
+			},
+			removeInvalidText:function(text){
+				return MuraAssembler.removeInvalidText(text);
 			}
 		}
 	});
@@ -313,6 +328,8 @@ $( document ).ready(function() {
 				orderby: '',
 				bundleable: false,
 				scaffold: true,
+				dynamic: true,
+				public: false,
 				properties: []
 			},
 			data: {},
@@ -338,6 +355,8 @@ $( document ).ready(function() {
 				orderby: '',
 				bundleable: false,
 				scaffold: true,
+				dynamic: true,
+				public: false,
 				properties: [],
 			};
 
@@ -400,8 +419,19 @@ $( document ).ready(function() {
 				{name:'',label: ''},
 				{name:'index',label: 'Index'}
 			];
-			
-//			this.showList('testorm','0E216D77-CF50-30B7-D969823420168C96');
+
+			$( "#assembler-properties" ).sortable (
+				{
+					axis: 'y'
+				}
+			);
+
+			var urlparams=Mura.getQueryStringParams(location.search);
+
+			if(urlparams.entityname){
+				this.loadEntity( urlparams.entityname );
+			}
+
 		},
 		destroyed: function() {
 		},
@@ -415,25 +445,25 @@ $( document ).ready(function() {
 
 					var newprops = [];
 					var ind = 1;
-					
+
 					var sortorder = $( "#assembler-properties" ).sortable('toArray',{attribute: "data-index"});
 
-					Mura("#load-spin").show();				
+					Mura("#load-spin").show();
 
 					// sort properties based on drag/drop list
 					for(var i = 0;i < sortorder.length;i++) {
-												
+
 						var prop = this.model.properties[sortorder[i]];
 
 						prop.pos = prop.orderno = i+1;
 						newprops.push(prop);
 						console.log(JSON.parse(JSON.stringify(prop)));
 					}
-					
+
 					this.model.properties = JSON.parse(JSON.stringify(newprops));
 					// make sure there is an "id" field
 					var savemodel = JSON.parse(JSON.stringify(this.model));
-					
+
 					for(var i = 0;i < savemodel.properties.length;i++) {
 						var prop = savemodel.properties[i];
 
@@ -465,7 +495,7 @@ $( document ).ready(function() {
 						.declareEntity(savemodel)
 						.then( function(response) {
 							Mura("#load-spin").hide();
-							alert("Saved!");				
+							alert("Saved!");
 							console.log("big load");
 							MuraAssembler.all( self.setDynamicObjects );
 							Assembler.loadEntity(savemodel.entityname);
@@ -476,11 +506,11 @@ $( document ).ready(function() {
 			clickDelete: function( entityname ) {
 			},
 			clickAddRelated: function() {
-				
+
 				this.isupdate = false;
 				this.data = JSON.parse(JSON.stringify(this.relatedmodel));
 
-				
+
 				if(this.data.fkcolumn && this.data.fkcolumn == 'primaryKey') {
 					this.data.fkcolumn = '';
 				}
@@ -488,7 +518,7 @@ $( document ).ready(function() {
 				if(this.data.loadkey && this.data.loadkey == 'primaryKey') {
 					this.data.loadkey = '';
 				}
-				
+
 				this.currentView = "assembler-related-form-template";
 			},
 			clickAddProperty: function() {
@@ -530,11 +560,11 @@ $( document ).ready(function() {
 					this.data.relatesto = this.data.cfc;
 
 				var data = JSON.parse(JSON.stringify(this.data));
-				
+
 				if(data.loadkey && data.loadkey == 'primaryKey') {
 					data.loadkey = '';
 				}
-				
+
 				if(data.fkcolumn && data.fkcolumn == 'primaryKey') {
 					data.fkcolumn = '';
 				}
@@ -574,6 +604,7 @@ $( document ).ready(function() {
 					this.model = JSON.parse(JSON.stringify(this.staticmodel));
 
 					this.currentView = "";
+
 					$( "#assembler-properties" ).sortable (
 						{
 							axis: 'y'
@@ -593,11 +624,11 @@ $( document ).ready(function() {
 				this.data = JSON.parse(JSON.stringify(this.model.properties[pos]));
 
 				console.log(this.data);
-				
+
 				if(this.data.loadkey && this.data.loadkey == 'primaryKey') {
 					this.data.loadkey = '';
 				}
-				
+
 				if(this.data.fkcolumn && this.data.fkcolumn == 'primaryKey') {
 					this.data.fkcolumn = '';
 				}
@@ -607,22 +638,26 @@ $( document ).ready(function() {
 				if(!this.data.relatesto)
 					this.data.relatesto = this.data.cfc;
 
-				
+
 				this.currentView = "assembler-related-form-template";
 			},
 			clickLoadEntity: function() {
 
-				Mura("#load-spin").show();				
+				Mura("#load-spin").show();
 
 				this.data = {};
 				this.currentView = "";
-				
+
 				this.model = JSON.parse(JSON.stringify(this.staticmodel));
 
 				var entityname = $("#loadentity").val();
 
-				if(!entityname.length)
+
+				if(!entityname.length){
+					Mura("#load-spin").hide();
+					this.checkIDProp();
 					return;
+				}
 
 				this.loadEntity( entityname );
 
@@ -633,18 +668,20 @@ $( document ).ready(function() {
 			},
 			onLoadComplete: function(json) {
 
-				Mura("#load-spin").hide();				
+				Mura("#load-spin").hide();
 
 				if(!json.dynamic || json.dynamic != true) {
+					this.checkIDProp();
 					alert("Sorry, you can only edit dynamic Mura ORM objects.");
 					return;
 				}
-					
-									
+
+
 				this.model = json;
-				
+
 				console.log(this.model);
-				
+
+
 				$( "#assembler-properties" ).sortable(
 					{
 						axis: 'y'
@@ -654,8 +691,8 @@ $( document ).ready(function() {
 			setDynamicObjects( data ) {
 /*
 				var items = data.items;
-				var itemlist = []; 
-				
+				var itemlist = [];
+
 				for(var i in items) {
 					if(items[i].dynamic && items[i].dynamic == true) {
 						itemlist.push(items[i]);
@@ -691,13 +728,12 @@ $( document ).ready(function() {
 				this.currentView = "";
 				this.checkIDProp();
 				this.isvisible = true;
-			$( "#assembler-properties" ).sortable(
-					{
-						axis: 'y'
-					}
-				);
 
-
+				$( "#assembler-properties" ).sortable(
+						{
+							axis: 'y'
+						}
+					);
 
 			},
 			hide: function() {
