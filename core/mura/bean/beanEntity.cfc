@@ -2,12 +2,12 @@ component extends="mura.bean.beanORM" table="tentity" entityname="entity" orderb
 
   property name="entityid" fieldtype="id";
   property name="name" fieldtype="index" datatype="varchar" length=250;
-  property name="displayName" datatype="varchar" length=250 list=true label="name";
-  property name="dynamic" datatype="int" default="0" list=true;
+  property name="displayName" datatype="varchar" length=250 list=true displayname="name";
+  property name="dynamic" datatype="int" default="0";
   property name="scaffold" datatype="int" default="0";
   property name="bundleable" datatype="int" default="0";
   property name="code" datatype="longtext";
-  property name="path" datatype="text" list=true;
+  property name="path" datatype="text";
   property name="created" fieldtype="index" datatype="datetime";
 	property name="lastupdate" fieldtype="index" datatype="datetime";
 

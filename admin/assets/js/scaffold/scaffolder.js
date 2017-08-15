@@ -6,8 +6,6 @@ Mura(function() {
 		components: {},
 		templates: {},
 		rb: {},
-		debugMode:true,
-
 		init: function(siteID,Scaffold){
 
 			MuraORMScaffold.siteID = siteID;
@@ -77,7 +75,7 @@ Mura(function() {
 			else {
 				Mura
 				.getEntity(entityname)
-				.loadBy(entityname + 'id',ident) // 3rd argument = params
+				.loadBy('id',ident) // 3rd argument = params
 				.then(function(entity) {
 					//Read properties for UI.
 
@@ -138,7 +136,7 @@ Mura(function() {
 			var self = this;
 			var entity = {};
 			var data = {};
-
+			var filterVal='';
 			var feed = Mura
 				.getFeed(entityname)
 				.itemsPerPage(itemsPer);
@@ -147,10 +145,13 @@ Mura(function() {
 				feed.prop('scaffold').isEQ(1);
 			}
 
+			var hasFilterApplied=false;
+
 			Mura(".filter").each( function() {
 				if(Mura(this).val() != '') {
 					var filterCol = Mura(this).attr('name').split('-')[1];
 					feed.prop(filterCol).contains(Mura(this).val());
+					hasFilterApplied=true;
 				}
 			});
 
@@ -176,6 +177,7 @@ Mura(function() {
 					data.parentproperties=response.properties;
 
 					self.processProperties(data);
+					data.hasFilterApplied=hasFilterApplied;
 					listener(data);
 				});
 			});
@@ -488,6 +490,10 @@ Mura(function() {
 			},
 			applyFilter: function( event ) {
 				Scaffolder.applyFilter( event );
+			},
+			removeFilter:function(){
+			  Mura(".filter").val('');
+			  Scaffolder.applyFilter();
 			},
 			applyKeyFilter: function( event ) {
 				Scaffolder.applyKeyFilter( event );
@@ -827,9 +833,14 @@ Mura(function() {
 			applyFilter: function() {
 				MuraScaffold.feed( this.doList,this.entityname,this.itemsper,this.sortBy,this.sortDir );
 			},
-			applyKeyFilter: function( e ) {
-				if(e.keyCode == 13)
+			removeFilter:function(){
+				Mura(".filter").val('');
 				MuraScaffold.feed( this.doList,this.entityname,this.itemsper,this.sortBy,this.sortDir );
+			},
+			applyKeyFilter: function( e ) {
+				if(e.keyCode == 13){
+					MuraScaffold.feed( this.doList,this.entityname,this.itemsper,this.sortBy,this.sortDir );
+				}
 			},
 			applyItemsPer: function( itemsper ) {
 				this.itemsper = itemsper;

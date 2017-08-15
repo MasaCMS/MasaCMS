@@ -48,7 +48,7 @@
 
 
 <cfoutput>
-<script src="https://unpkg.com/vue@2.3.3"></script>
+<script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
 <!---<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>--->
 
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>

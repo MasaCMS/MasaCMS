@@ -48,7 +48,7 @@
 
 
 <cfoutput>
-<script src="https://unpkg.com/vue@2.3.3"></script>
+<script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
 <!---<script src="#$.globalConfig('rootPath')#/admin/assets/js/vue.min.js"></script>--->
 
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>
@@ -276,7 +276,7 @@
 									<input class="filter" :name="'filter-' + item.name" @keyup="applyKeyFilter">
 								</div>
 							</th>
-							<th><button class="pull-right" @click='applyFilter'>Filter</button></th>
+							<th><button class="pull-right" @click='applyFilter'>Filter</button><span v-if="data.hasFilterApplied"><button class="pull-right" @click='removeFilter'>Remove Filter</button><span></th>
 						</tr>
 					</thead>
 					<thead id="scaffold-sortby">
