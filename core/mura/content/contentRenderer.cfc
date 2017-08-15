@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides core rendering functionality">
 
 <cfset this.validateCSRFTokens=false/>
-
+<cfset this.allowPublicComments=true>
 <cfset this.navOffSet=0/>
 <cfset this.navDepthLimit=1000/>
 <cfset this.navParentIdx=2/>
