@@ -90,6 +90,9 @@
 		<cfargument name="useTagFilter" default="false"/>
 		<cfargument name="pattern" default=""/>
 		<cfargument name="fixValues" default="true"/>
+		<cfargument name="tagFilter" default="#variables.instance.tagFilter#">
+		<cfargument name="wordFilter" default="#variables.instance.wordFilter#">
+		<cfargument name="sqlFilter" default="#variables.instance.sqlFilter#">
 		 <!---Comma delimited list of fields not to scan--->
 		<cfset var object2 = StructNew()/>
 		<cfset var result = StructNew()/>
@@ -145,7 +148,7 @@
 			<cfloop collection="#object#" item="item">
 
 				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-					<cfset temp = filterTags(object[item])/>
+					<cfset temp = filterTags(object[item],arguments.tagFilter)/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
@@ -169,7 +172,7 @@
 				</cfif>
 
 				<cfif arguments.useWordFilter>
-					<cfset temp = filterWords(object[item])/>
+					<cfset temp = filterWords(object[item],arguments.wordFilter)/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
@@ -187,7 +190,7 @@
 		<cfif arguments.useSQLFilter>
 			<cfloop collection="#object#" item="item">
 				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-					<cfset temp = filterSQL(object[item],arguments.useSQLFilter)/>
+					<cfset temp = filterSQL(object[item],arguments.SQLFilter)/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
 					<cfif arguments.fixValues>
@@ -336,6 +339,7 @@
 
 	<cffunction name="filterTags" output="false">
 		<cfargument name="text" required="true" type="String">
+		<cfargument name="tagFilter" default="#variables.instance.tagFilter#">
 		<cfset var result = StructNew()/>
 		<cfset var tag = ""/>
 		<cfset var tcount = 0/>
@@ -347,7 +351,7 @@
 		<cfset result.detected = true/>
 		<cfset result.cleanText = result.originalText/>
 
-		<cfloop index="tag" list="#variables.instance.tagFilter#">
+		<cfloop index="tag" list="#arguments.tagFilter#">
 			<cfif REFindNoCase(("<#tag#.*?>|<#tag#.*?/>|</#tag#.*?>"),result.cleanText) eq 0>
 				<cfset tcount = tcount + 1/>
 			<cfelse>
@@ -371,16 +375,17 @@
 
 	<cffunction name="filterWords" output="false">
 		<cfargument name="text" required="true" type="String">
+		<cfargument name="wordFilter" default="#variables.instance.wordFilter#">
 		<cfset var result = StructNew()/>
 		<cfset result.detected = true/>
 		<cfset result.originalText = arguments.text/>
 
-		<cfif len(variables.instance.wordFilter)>
-			<cfif REFindNoCase((ListChangeDelims(variables.instance.wordFilter,"|")),arguments.text) eq 0>
+		<cfif len(arguments.wordFilter)>
+			<cfif REFindNoCase((ListChangeDelims(arguments.wordFilter,"|")),arguments.text) eq 0>
 				<cfset result.detected = false/>
 				<cfset result.cleanText = result.originalText/>
 			<cfelse>
-				<cfset result.cleanText = REReplaceNoCase(result.originalText,(ListChangeDelims(variables.instance.wordFilter,"|")),variables.instance.invalidMarker,"ALL")>
+				<cfset result.cleanText = REReplaceNoCase(result.originalText,(ListChangeDelims(arguments.wordFilter,"|")),variables.instance.invalidMarker,"ALL")>
 			</cfif>
 		<cfelse>
 			<cfset result.cleanText = result.originalText/>
@@ -391,6 +396,7 @@
 
 	<cffunction name="filterSQL" output="false">
 		<cfargument name="text" required="true" type="String">
+		<cfargument name="sqlFilter" default="#variables.instance.sqlFilter#">
 		<cfset var result = StructNew()/>
 		<cfset var sqlcmdword = ""/>
 		<cfset var tcount = 0/>
@@ -399,7 +405,7 @@
 		<cfset result.originalText = arguments.text/>
 		<cfset result.cleanText = arguments.text/>
 
-		<cfloop index="sqlcmdword" list="#variables.instance.sqlFilter#">
+		<cfloop index="sqlcmdword" list="#arguments.sqlFilter#">
 			<cfif REFindNoCase("[[:punct:]]",sqlcmdword) eq 0>
 				<cfif REFindNoCase(sqlcmdword,arguments.text) eq 0>
 					<cfset tcount = tcount + 1/>
