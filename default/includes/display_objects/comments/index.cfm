@@ -13,22 +13,22 @@
 	You should have received a copy of the GNU General Public License
 	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes 
-	the preparation of a derivative work based on Mura CMS. Thus, the terms 
-	and conditions of the GNU General Public License version 2 ("GPL") cover 
+	Linking Mura CMS statically or dynamically with other modules constitutes
+	the preparation of a derivative work based on Mura CMS. Thus, the terms
+	and conditions of the GNU General Public License version 2 ("GPL") cover
 	the entire combined work.
 
-	However, as a special exception, the copyright holders of Mura CMS grant 
-	you permission to combine Mura CMS with programs or libraries that are 
+	However, as a special exception, the copyright holders of Mura CMS grant
+	you permission to combine Mura CMS with programs or libraries that are
 	released under the GNU Lesser General Public License version 2.1.
 
-	In addition, as a special exception, the copyright holders of Mura CMS 
-	grant you permission to combine Mura CMS with independent software modules 
-	(plugins, themes and bundles), and to distribute these plugins, themes and 
-	bundles without Mura CMS under the license of your choice, provided that 
-	you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS
+	grant you permission to combine Mura CMS with independent software modules
+	(plugins, themes and bundles), and to distribute these plugins, themes and
+	bundles without Mura CMS under the license of your choice, provided that
+	you follow these specific guidelines:
 
-	Your custom code 
+	Your custom code
 
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -42,16 +42,16 @@
 		/index.cfm
 		/MuraProxy.cfc
 
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
-	meets the above guidelines as a combined work under the terms of GPL for 
-	Mura CMS, provided that you include the source code of that other code when 
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that
+	meets the above guidelines as a combined work under the terms of GPL for
+	Mura CMS, provided that you include the source code of that other code when
 	and as the GNU GPL requires distribution of source code.
 
-	For clarity, if you create a modified version of Mura CMS, you are not 
-	obligated to grant this special exception for your modified version; it is 
-	your choice whether to do so, or to make such modified version available 
-	under the GNU General Public License version 2 without this exception.  You 
-	may, if you choose, apply this exception to your own modified versions of 
+	For clarity, if you create a modified version of Mura CMS, you are not
+	obligated to grant this special exception for your modified version; it is
+	your choice whether to do so, or to make such modified version available
+	under the GNU General Public License version 2 without this exception.  You
+	may, if you choose, apply this exception to your own modified versions of
 	Mura CMS.
 --->
 <!---
@@ -69,8 +69,8 @@
 			<cfset objectparams.async=true>
 		<cfelse>
 			<cfoutput>
-				<div class="mura-async-object" 
-					data-object="comments" 
+				<div class="mura-async-object"
+					data-object="comments"
 					data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
 					data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
 					data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
@@ -82,7 +82,7 @@
 			<cfsilent>
 				<cfparam name="request.subscribe" default="0">
 				<cfparam name="request.remember" default="0">
-				
+
 				<cfif not isDefined('cookie.remember')>
 					<cfcookie name="remember" value="0" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
 				</cfif>
@@ -130,7 +130,7 @@
 					<cfset request.remember=cookie.remember>
 				</cfif>
 
-				
+
 				<cfset variables.theContentID=variables.$.content('contentID')>
 				<cfset request.isEditor=application.permUtility.getModulePerm("00000000000000000000000000000000015",session.siteid) or application.permUtility.getnodePerm(request.crumbdata) neq 'none'>
 				<cfparam name="request.commentid" default="">
@@ -168,13 +168,13 @@
 						<cfif variables.$.currentUser().isLoggedIn()>
 							<cfset request.userID=variables.$.currentUser().getUserID()>
 						</cfif>
-				
+
 						<cfset variables.submittedData.isApproved=application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() />
 
 						<cfif request.commenteditmode eq "add">
 							<cfset commentBean=application.contentManager.saveComment(submittedData,event.getContentRenderer()) />
 						<cfelseif request.commenteditmode eq "edit" and request.isEditor>
-							
+
 							<cfset variables.commentBean=application.contentManager.getCommentBean().setCommentID(request.commentID).load()>
 							<cfset variables.commentBean.setName(submittedData.name)>
 							<cfset variables.commentBean.setComments(submittedData.comments)>
@@ -182,7 +182,7 @@
 							<cfset variables.commentBean.setEmail(submittedData.email)>
 							<cfset variables.commentBean.save()>
 						</cfif>
-						
+
 						<cfset request.comments=""/>
 						<cfif not (request.remember)>
 							<cfset request.name=""/>
@@ -206,7 +206,7 @@
 							<cfcookie name="name" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
 							<cfcookie name="url" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
 							<cfcookie name="email" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
-						</cfif> 
+						</cfif>
 					<cfelse>
 						<cfsavecontent variable="errorJSTxt">
 							<script type="text/javascript">
@@ -255,9 +255,9 @@
 
 			<div id="svComments" class="mura-comments #this.commentsWrapperClass#">
 				<a name="mura-comments"></a>
-			
+
 				<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
-				
+
 				<div id="mura-comments-sort" class="mura-comment-sort-container #this.commentSortContainerClass#" style="display:none">
 					<div class="mura-comment-sort-wrapper #this.commentSortWrapperClass#">
 						<select id="mura-sort-direction-selector" class="#this.commentSortSelectClass#" name="sortDirection">
@@ -268,11 +268,11 @@
 				</div>
 
 				<div id="mura-comments-page" data-contentid="#variables.$.content('contentID')#" data-siteid="#variables.$.content('siteid')#">
-					
+
 				</div>
-				
+
 				<cfif not structIsEmpty(variables.errors) >
-					
+
 						#errorJSTxt#
 						<a name="errors"></a>
 						<div class="#this.alertDangerClass#">
@@ -287,94 +287,98 @@
 
 				<!--- COMMENT FORM --->
 				<div id="mura-comment-post-comment-form" class="#this.commentFormWrapperClass#">
-					
-					<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
-					<!--- THE FORM --->
-					<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
-						<fieldset>
+					<cfif $.getContentRenderer().allowPublicComments OR $.currentUser().isLoggedIn()>
+						<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
-							<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
-							<div id="mura-comment-edit-comment" style="display:none">#variables.$.rbKey('comments.editcomment')#</div>
-							<div id="mura-comment-reply-to-comment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</div>
+						<!--- THE FORM --->
+						<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
+							<fieldset>
 
-							<!--- Name --->
-								<div class="req #this.commentFieldWrapperClass#">
-									<label class="#this.commentFieldLabelClass#" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-									<div class="#this.commentInputWrapperClass#">
-										<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
-									</div>
-								</div>
+								<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
+								<div id="mura-comment-edit-comment" style="display:none">#variables.$.rbKey('comments.editcomment')#</div>
+								<div id="mura-comment-reply-to-comment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</div>
 
-							<!--- Email --->
-								<div class="req #this.commentFieldWrapperClass#">
-									<label class="#this.commentFieldLabelClass#" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-									<div class="#this.commentInputWrapperClass#">
-										<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
-									</div>
-								</div>
-
-								<!--- URL --->
-								<div class="#this.commentFieldWrapperClass#">
-									<label for="txtUrl" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.url')#</label>
-									<div class="#this.commentInputWrapperClass#">
-										<input id="txtUrl" name="url" type="text" class="#this.commentInputClass#" maxlength="50" value="#HTMLEditFormat(request.url)#">
-									</div>
-								</div>
-
-								<!--- Comment --->
-								<div class="req #this.commentFieldWrapperClass#">
-									<label for="txtComment" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-									<div class="#this.commentInputWrapperClass#">
-										<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" data-message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" data-required="true">#HTMLEditFormat(request.comments)#</textarea>
-									</div>
-								</div>
-
-								<!--- Remember --->
-								<div class="#this.commentFieldWrapperClass#">
-									<div class="#this.commentPrefsInputWrapperClass#">
-										<div class="#this.commentCheckboxClass#">
-											<label for="txtRemember">
-												<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif>> #variables.$.rbKey('comments.rememberinfo')#
-											</label>
+								<!--- Name --->
+									<div class="req #this.commentFieldWrapperClass#">
+										<label class="#this.commentFieldLabelClass#" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+										<div class="#this.commentInputWrapperClass#">
+											<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
 										</div>
 									</div>
-								</div>
 
-								<!--- Subscribe --->
-								<div class="#this.commentFieldWrapperClass#">
-									<div class="#this.commentPrefsInputWrapperClass#">
-										<div class="#this.commentCheckboxClass#">
-											<label for="txtSubscribe">
-												<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif>> #variables.$.rbKey('comments.subscribe')#
-											</label>
+								<!--- Email --->
+									<div class="req #this.commentFieldWrapperClass#">
+										<label class="#this.commentFieldLabelClass#" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+										<div class="#this.commentInputWrapperClass#">
+											<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
 										</div>
 									</div>
-								</div>
 
-						</fieldset>
+									<!--- URL --->
+									<div class="#this.commentFieldWrapperClass#">
+										<label for="txtUrl" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.url')#</label>
+										<div class="#this.commentInputWrapperClass#">
+											<input id="txtUrl" name="url" type="text" class="#this.commentInputClass#" maxlength="50" value="#HTMLEditFormat(request.url)#">
+										</div>
+									</div>
 
-						<div class="#this.commentRequiredWrapperClass#">
-							<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>	
-						</div>
+									<!--- Comment --->
+									<div class="req #this.commentFieldWrapperClass#">
+										<label for="txtComment" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+										<div class="#this.commentInputWrapperClass#">
+											<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" data-message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" data-required="true">#HTMLEditFormat(request.comments)#</textarea>
+										</div>
+									</div>
 
-						<!--- Form Protect --->
-						<div class="#this.commentFieldWrapperClass#">
-							#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
-						</div>
-						
-						<!--- SUBMIT BUTTON --->
-						<div class="#this.commentFieldWrapperClass#">
-							<div class="#this.commentSubmitButtonWrapperClass#">
-								<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.getCurrentURL())#">
-								<input type="hidden" name="commentid" value="#createuuid()#">
-								<input type="hidden" name="parentid" value="">
-								<input type="hidden" name="commenteditmode" value="add">
-								<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#">
-								<button type="submit" class="#this.commentSubmitButtonClass#">#htmlEditFormat(variables.$.rbKey('comments.submit'))#</button>
+									<!--- Remember --->
+									<div class="#this.commentFieldWrapperClass#">
+										<div class="#this.commentPrefsInputWrapperClass#">
+											<div class="#this.commentCheckboxClass#">
+												<label for="txtRemember">
+													<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif>> #variables.$.rbKey('comments.rememberinfo')#
+												</label>
+											</div>
+										</div>
+									</div>
+
+									<!--- Subscribe --->
+									<div class="#this.commentFieldWrapperClass#">
+										<div class="#this.commentPrefsInputWrapperClass#">
+											<div class="#this.commentCheckboxClass#">
+												<label for="txtSubscribe">
+													<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif>> #variables.$.rbKey('comments.subscribe')#
+												</label>
+											</div>
+										</div>
+									</div>
+
+							</fieldset>
+
+							<div class="#this.commentRequiredWrapperClass#">
+								<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>
 							</div>
-						</div>
-					</form>
+
+							<!--- Form Protect --->
+							<div class="#this.commentFieldWrapperClass#">
+								#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
+							</div>
+
+							<!--- SUBMIT BUTTON --->
+							<div class="#this.commentFieldWrapperClass#">
+								<div class="#this.commentSubmitButtonWrapperClass#">
+									<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.getCurrentURL())#">
+									<input type="hidden" name="commentid" value="#createuuid()#">
+									<input type="hidden" name="parentid" value="">
+									<input type="hidden" name="commenteditmode" value="add">
+									<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#">
+									<button type="submit" class="#this.commentSubmitButtonClass#">#htmlEditFormat(variables.$.rbKey('comments.submit'))#</button>
+								</div>
+							</div>
+						</form>
+					<cfelse>
+						<p class="loginMessage">#variables.$.siteConfig('RBFactory').getResourceBundle().messageFormat(variables.$.rbKey('comments.pleaselogin'),'#variables.$.siteConfig('LoginURL')#&returnURL=#esapiEncode('url',getCurrentURL())#')#</p>
+					</cfif>
 				</div>
 			</div>
 		</cfoutput>
