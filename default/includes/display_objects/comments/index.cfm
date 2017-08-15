@@ -281,8 +281,9 @@
 		<!--- COMMENT FORM --->
 		<div id="mura-comment-post-comment-form" class="#this.commentFormWrapperClass#">
 
-			<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 			<cfif $.getContentRenderer().allowPublicComments OR $.currentUser().isLoggedIn()>
+				<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
+
 				<!--- THE FORM --->
 				<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" novalidate="novalidate" onsubmit="return Mura.validateForm(this);">
 					<fieldset>
