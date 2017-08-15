@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.showMetaList="jpg,jpeg,png,gif,svg">
 <cfset this.imageInList="jpg,jpeg,png,gif,svg">
 <cfset this.directImages=true/>
-<cfset this.personalization="user">
+<cfset this.personalization="cookie">
 <cfset this.hasEditableObjects=false>
 <cfset this.asyncObjects=true>
 <cfset this.asyncRender=false>
