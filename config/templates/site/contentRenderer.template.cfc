@@ -159,7 +159,7 @@
 		*/
 
 		//comments/index.cfm
-		//this.allowPublicComments=true;
+		this.allowPublicComments=true;
 		this.commentsWrapperClass="";
 		this.commentSortContainerClass="";
 		this.commentSortWrapperClass="";
