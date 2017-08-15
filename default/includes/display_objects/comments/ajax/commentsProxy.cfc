@@ -225,7 +225,7 @@
 							<dd class="mura-comment-date-time #renderer.commentDateTimeClass#">
 								#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
 							</dd>
-							<cfif len($.getContentRenderer().getPersonalizationID())>
+							<cfif $.getContentRenderer().allowPublicComments OR $.currentUser().isLoggedIn()>
 								<dd class="mura-comment-reply #renderer.commentReplyClass#"><a data-id="#comment.getCommentID()#" data-siteid="#comment.getsiteID()#" href="##mura-comment-post-comment">#$.rbKey('comments.reply')#</a></dd>
 								<dd class="mura-comment-spam #renderer.commentSpamClass#"><a data-id="#comment.getCommentID()#" data-siteid="#comment.getsiteID()#" class="mura-comment-flag-as-spam #renderer.commentSpamLinkClass#" href="##">Flag as Spam</a></dd>
 							</cfif>
