@@ -2409,14 +2409,14 @@ Display Objects
 	<cfparam name="this.enableDynamicContent" default="true" />
 
 	<!--- It the Dyanmic content is not enabled just return the submitted string --->
-	<cfif not this.enableDynamicContent>
+	<cfif isBoolean(this.enableDynamicContent) and not this.enableDynamicContent>
 		<cfset str=application.scriptProtectionFilter.filterWords(str,"script,object,applet,embed,layer,ilayer,frameset,param,meta,base,xss,marquee")>
 		<cfset str=application.scriptProtectionFilter.filterTags(str)>
 		<cfreturn str />
 	</cfif>
 
 	<!--- It the Mura tag is not enabled just return the submitted string --->
-	<cfif not this.enableMuraTag>
+	<cfif isBoolean(this.enableMuraTag) and not this.enableMuraTag>
 		<cfreturn str />
 	</cfif>
 
