@@ -213,15 +213,7 @@ Mura(function() {
 			.set(
 				model
 			)
-			.save(
-				function( a ) {
-					console.log('saved')
-				},
-				function( b ) {
-					console.log('save error');
-					console.log(b);
-				}
-			)
+			.save()
 			.then(
 				function( savedmodel ) {
 					listener(savedmodel);
@@ -449,7 +441,7 @@ Mura(function() {
 
 	Vue.component('scaffold-form-template', {
 		template: '#scaffold-form-template',
-		props: ['entityname','data','entityid'],
+		props: ['entityname','data','entityid','errordata'],
 		methods: {
 			clickSave: function() {
 				MuraScaffold.Scaffold = this;
@@ -622,7 +614,7 @@ Mura(function() {
 			entity: {},
 			entityname: '',
 			data: {},
-			errordata: [],
+			errordata: {},
 			model: {id: ''},
 			state: [],
 			entityid: "",
@@ -638,11 +630,11 @@ Mura(function() {
 		},
 		methods: {
 			clickSave: function( entityname ) {
-				this.errordata = [];
+				this.errordata = {};
 				MuraScaffold.save( this.doneFormProcessing,entityname,this.model );
 			},
 			clickBack: function() {
-				this.errordata = [];
+				this.errordata = {};
 				/*
 				if(this.state.length) {
 					var stateitem = this.state.pop();
@@ -659,7 +651,7 @@ Mura(function() {
 
 			},
 			clickDelete: function( entityname ) {
-				this.errordata = [];
+				this.errordata = {};
 				var conf = confirm( "Are you sure you wish to delete this? ");
 
 				if(conf) {
@@ -670,7 +662,7 @@ Mura(function() {
 				}
 			},
 			clickCrumb: function(pos) {
-				this.errordata = [];
+				this.errordata = {};
 				var stateitem = this.state[pos];
 
 				// use splice as setting length will not trigger vue.js redreaw
@@ -687,13 +679,45 @@ Mura(function() {
 				// process state
 
 				if( hasError ) {
-					this.errordata = entity.properties.errors;
+					var self=this;
+
+					self.data.model = entity.getAll();
+					self.data.model._displaylist = [];
+					self.data.entity = entity;
+					this.model = self.data.model;
+
+					entity.get('properties')
+						.then(
+							function(properties) {
+								self.data.properties = properties.properties.properties;
+								MuraScaffold.processProperties(self.data);
+
+								for(var i = 0;i < self.data.properties.length;i++) {
+									if(self.data.properties[i].list) {
+										self.data.model._displaylist.push(self.data.properties[i]);
+									}
+									else if(self.data.properties[i].fieldtype) {
+
+									}
+								}
+
+								this.currentView = "";
+								this.currentView = "scaffold-form-template";
+
+						},
+						function(error) {
+							console.log('error!');
+							console.log(error);
+						}
+					);
+
 					console.log('errors!');
-					console.log(this.errordata);
+					//console.log(this.errordata)
+
 					return;
 				}
 				else {
-					this.errordata = [];
+					this.errordata = {};
 				}
 
 				var dead = this.state.pop();
@@ -730,7 +754,7 @@ Mura(function() {
 			showForm: function( entityname,entityid,parent ) {
 
 				this.entityid = entityid;
-				this.errordata = [];
+				this.errordata = {};
 				this.entityname = entityname;
 
 				if(this.currentparent.properties && this.currentparent.properties.entityname == entityname) {
@@ -760,6 +784,7 @@ Mura(function() {
 			doForm: function( data ) {
 				this.model = data.model;
 				this.data = data;
+				this.errordata={};
 
 				if(this.currentparent.properties) {
 					this.model[this.currentparent.properties.properties.primarykey] = this.currentparent.properties.id;
@@ -768,8 +793,9 @@ Mura(function() {
 				if (this.state.length > 1 && this.state[this.state.length - 1].parent) {
 					this.data.parent = this.state[this.state.length - 1].parent;
 				}
-				else
+				else {
 					this.data.parent = null;
+				}
 
 				this.currentView = 'scaffold-form-template';
 			},
@@ -850,7 +876,6 @@ Mura(function() {
 				this.sortBy = col;
 				this.sortDir = this.sortDir == '' ? 'desc' : this.sortDir == 'desc' ? 'asc' : 'desc';
 
-
 				Mura("#sortarrow").remove();
 				if(this.sortDir == 'asc')
 					Mura("#sortby-" + col).append("<i class='mi-sort-asc' id='sortarrow'></i>");
@@ -871,6 +896,5 @@ Mura(function() {
 			}
 		}
 	});
-
 
 });

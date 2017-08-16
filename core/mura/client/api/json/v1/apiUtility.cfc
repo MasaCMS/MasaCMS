@@ -1554,6 +1554,12 @@ component extends="mura.cfobject" hint="This provides JSON/REST API functionalit
 
 		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
 
+		if(!saveErrors && !StructIsEmpty(errors)){
+			for(var p in errors){
+				entity.set(p,$.event(p));
+			}
+		}
+
 		var returnStruct=getFilteredValues(entity,true,entity.getEntityName(),arguments.siteid,arguments.expand,pk);
 
 		returnStruct.saveErrors=saveErrors;

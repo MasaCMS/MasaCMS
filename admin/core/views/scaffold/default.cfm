@@ -458,7 +458,8 @@
 
 	<template id="scaffold-field-text">
 		<div>
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
+			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<input
 				type="text"
 				v-model="model[property.name]"
@@ -468,26 +469,24 @@
 				:data-validate="property.validate ? property.validate : null"
 				:data-validate-message="property.validatemessage ? property.validatemessage : null"
 				>
-
 		</div>
 	</template>
 
 	<template id="scaffold-field-textarea">
 		<div>
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<textarea
 				v-model="model[property.name]"
 				:name="property.name"
 				:data-validate="property.validate ? property.validate : null"
 				:data-validate-message="property.validatemessage ? property.validatemessage : null"
 				>{{model[property.name] ? model[property.name] : property.default}}</textarea>
-
 		</div>
 	</template>
 
 	<template id="scaffold-field-checkbox">
 		<div>
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<input type="checkbox" v-model="model[property.name]"
 			 v-bind:true-value="1"
   		 v-bind:false-value="0"
@@ -495,14 +494,13 @@
 			:data-validate="property.validate ? property.validate : null"
 			:data-validate-message="property.validatemessage ? property.validatemessage : null"
 			>
-
 		</div>
 	</template>
 
 
 	<template id="scaffold-field-dropdown">
 		<div>
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<select
 				v-model="model[property.name]"
 				:name="property.name"
@@ -511,15 +509,13 @@
 				>
 				<option v-for="(option,index) in property.optionlist" :value="option" :selected="option == property.default ? 'selected' : null">{{property.optionvaluelist[index]}}</option>
 			</select>
-
 		</div>
 	</template>
 
 
 	<template id="scaffold-field-radio">
 		<div>
-			<label>{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
-
+			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<div v-for="(option,index) in property.optionlist" :value="option">
 				{{property.optionvaluelist[index]}}
 				<input
@@ -530,7 +526,6 @@
 					:checked="option == property.default ? 'checked' : null"
 					>
 			</div>
-
 		</div>
 	</template>
 
