@@ -577,10 +577,34 @@ Mura(function() {
 		props: ['property','model','entity','list']
 	});
 
+	if($){
+		if(dtLocale){
+			$.datepicker.setDefaults( $.datepicker.regional[ dtLocale ] );
+		} else {
+			$.datepicker.setDefaults( $.datepicker.regional[ '' ] );
+		}
+	}
+
 	Vue.component('scaffold-field-text', {
 		template: '#scaffold-field-text',
 		props: ['property','model','entity'],
-		methods: {}
+		methods: {},
+		mounted: function() {
+			//alert(JSON.stringify(this.$props.property))
+			//alert(this.$el.outerHTML)
+
+			var self=this;
+			if($ && (this.$props.property.datatype=='date' || this.$props.property.datatype=='datetime' && this.$props.property.validate=='date')){
+				$('input[name="' + this.$props.property.name + '"]').datepicker({
+						'minDate': 1,
+						onSelect: function(selectedDate) {
+								if (selectedDate) {
+									self.$props.model[self.$props.property.name]=selectedDate;
+								}
+						}
+				});
+			}
+		}
 	});
 
 	Vue.component('scaffold-field-textarea', {

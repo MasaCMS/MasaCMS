@@ -464,6 +464,7 @@
 				type="text"
 				v-model="model[property.name]"
 				:name="property.name"
+				:id="property.name"
 				:value="model[property.name] ? model[property.name] : property.default"
 				:length="property.length"
 				:data-validate="property.validate ? property.validate : null"
