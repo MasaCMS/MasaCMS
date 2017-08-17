@@ -632,6 +632,9 @@
 				<ul id="viewTabs" class="mura-tabs nav-tabs" data-toggle="tabs">
 					<li><a href="##tabArchitectural" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
 					<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
+					<cfif application.configBean.getValue(property="scaffolding", defaultValue=false)>
+						<li><a href="##tabCustom"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</span></a></li>
+					</cfif>
 				</ul>
 				<div class="block-content tab-content">
 
@@ -676,10 +679,6 @@
   									  </a>
 
   								  </cfif>
-
-										<a class="site-scaffold-mod btn" title="Custom Entities" href="./?muraAction=scaffold&siteid=#esapiEncode('html_attr',rc.siteid)#">
-											<i class="icon-mura-module"></i> Custom Entities
-										</a>
   							  </div>
 				  		</cfif>
 
@@ -709,6 +708,8 @@
 					</div>
 						</div>
 					</div>
+
+
 					<div id="tabFlat" class="tab-pane">
 						<div class="block block-bordered">
 							<!-- block header -->
@@ -718,12 +719,22 @@
 						  <!-- /block header -->
 						  <div class="block-content">
 						  	<!--- site manager flat view container --->
-						<div id="flatViewContainer">
+								<div id="flatViewContainer">
 
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+					<cfif application.configBean.getValue(property="scaffolding", defaultValue=false)>
+						<div id="tabCustom" class="tab-pane">
+							<div class="block block-bordered">
+								<!-- block header -->
+
+							  <cfinclude template="scaffold.cfm">
+
+							</div>
+						</div>
+					</cfif>
 
 				</div> <!--- /.block-content.tab-content --->
 			</div> <!--- /.block-constrain --->
@@ -790,6 +801,10 @@
 							siteManager.loadSiteFlat(flatViewArgs);
 							flatViewLoaded = true;
 						}
+						break;
+						case 2:
+							jQuery('##viewTabs a[href="##tabCustom"]').tab('show');
+						break;
 					}
 				}
 
