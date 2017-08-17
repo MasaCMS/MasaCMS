@@ -377,7 +377,7 @@ $( document ).ready(function() {
 				datatype: "varchar",
 				length: "",
 				name: "",
-				nullable: false
+				nullable: true
 			};
 
 
@@ -393,12 +393,13 @@ $( document ).ready(function() {
 				relatesto: "",
 				datatype: "char",
 				length: "35",
-				nullable: false
+				nullable: true
 			};
 
 			this.rendertypes = [
 				{name:'textfield',label: 'Text Field'},
 				{name:'textarea',label: 'Text Area'},
+				{name:'htmleditor',label: 'HTML Editor'},
 				{name:'dropdown',label: 'Dropdown'},
 				{name:'checkbox',label: 'Checkbox'},
 				{name:'radio',label: 'Radio'},

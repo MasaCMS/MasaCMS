@@ -290,8 +290,9 @@
 					<tbody>
 						<span v-if="data.list.length">
 							<tr v-for="(object,index) in data.list" :class="{'alt': index % 2 === 0}">
-									<td v-for="item in data.listview">
-										{{object[item.name]}}
+									<td v-for="item in data.listview" @click="(entityname == 'entity') ? showList(object.entityname) : showForm(object.entityname,object.id)">
+											<span v-if="item.rendertype == 'htmleditor'" v-html="object[item.name]"></span>
+											<span v-if="item.rendertype != 'htmleditor'" v-text="object[item.name]"></span>
 									</td>
 									<td v-if="entityname != 'entity'">
 										<button class="pull-right" @click="showForm(object.entityname,object.id)"><i class="mi-edit"></i></button>
@@ -375,6 +376,7 @@
 				</span>
 				<li v-else>
 				<scaffold-field-textarea v-if="property.rendertype == 'textarea'" :property=property :model=data.model :entity=data.entity></scaffold-field-textarea>
+				<scaffold-field-htmleditor v-else-if="property.rendertype === 'htmleditor'" :property=property :model=data.model :entity=data.entity></scaffold-field-htmleditor>
 				<scaffold-field-checkbox v-else-if="property.rendertype === 'checkbox'" :property=property :model=data.model :entity=data.entity></scaffold-field-checkbox>
 				<scaffold-field-dropdown v-else-if="property.rendertype === 'dropdown'" :property=property :model=data.model :entity=data.entity></scaffold-field-dropdown>
 				<scaffold-field-radio v-else-if="property.rendertype === 'radio'" :property=property :model=data.model :entity=data.entity></scaffold-field-radio>
@@ -473,8 +475,24 @@
 		</div>
 	</template>
 
+	<template id="scaffold-field-htmleditor">
+		<div>
+			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
+			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
+			<textarea
+				v-model="model[property.name]"
+				class="htmlEditor"
+				:id="property.name"
+				:name="property.name"
+				:data-validate="property.validate ? property.validate : null"
+				:data-validate-message="property.validatemessage ? property.validatemessage : null"
+				>{{model[property.name] ? model[property.name] : property.default}}</textarea>
+		</div>
+	</template>
+
 	<template id="scaffold-field-textarea">
 		<div>
+			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
 			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<textarea
 				v-model="model[property.name]"
@@ -487,6 +505,7 @@
 
 	<template id="scaffold-field-checkbox">
 		<div>
+			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
 			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<input type="checkbox" v-model="model[property.name]"
 			 v-bind:true-value="1"
@@ -498,9 +517,9 @@
 		</div>
 	</template>
 
-
 	<template id="scaffold-field-dropdown">
 		<div>
+			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
 			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<select
 				v-model="model[property.name]"
@@ -516,6 +535,7 @@
 
 	<template id="scaffold-field-radio">
 		<div>
+			<div v-if="model.errors && model.errors[property.name]">{{model.errors[property.name]}}</div>
 			<label :for="property.name">{{property.displayname ? property.displayname : property.label ? property.label : property.name}}</label>
 			<div v-for="(option,index) in property.optionlist" :value="option">
 				{{property.optionvaluelist[index]}}

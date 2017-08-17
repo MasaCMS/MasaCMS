@@ -445,6 +445,7 @@ Mura(function() {
 		methods: {
 			clickSave: function() {
 				MuraScaffold.Scaffold = this;
+
 				Scaffolder.clickSave( this.entityname );
 			},
 			clickBack: function() {
@@ -577,6 +578,14 @@ Mura(function() {
 		props: ['property','model','entity','list']
 	});
 
+	Vue.component('scaffold-field-htmleditor', {
+		template: '#scaffold-field-htmleditor',
+		props: ['property','model','entity','list'],
+		mounted: function() {
+			setHTMLEditors()
+		}
+	});
+
 	if($){
 		if(dtLocale){
 			$.datepicker.setDefaults( $.datepicker.regional[ dtLocale ] );
@@ -590,9 +599,6 @@ Mura(function() {
 		props: ['property','model','entity'],
 		methods: {},
 		mounted: function() {
-			//alert(JSON.stringify(this.$props.property))
-			//alert(this.$el.outerHTML)
-
 			var self=this;
 			if($ && (this.$props.property.datatype=='date' || this.$props.property.datatype=='datetime' && this.$props.property.validate=='date')){
 				$('input[name="' + this.$props.property.name + '"]').datepicker({
@@ -655,6 +661,12 @@ Mura(function() {
 		methods: {
 			clickSave: function( entityname ) {
 				this.errordata = {};
+
+				for(i in CKEDITOR.instances){
+					CKEDITOR.instances[i].updateElement();
+					this.model[i]=CKEDITOR.instances[i].getData();
+				}
+
 				MuraScaffold.save( this.doneFormProcessing,entityname,this.model );
 			},
 			clickBack: function() {
