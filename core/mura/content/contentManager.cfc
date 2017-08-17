@@ -1078,19 +1078,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset newBean.setTitle(newBean.getmenutitle())>
 			</cfif>
 
-			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getmenuTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getmenuTitle() eq ''>
 				<cfset newBean.setmenutitle(newBean.getTitle())>
 			</cfif>
 
-			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getURLTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getURLTitle() eq ''>
 				<cfset newBean.setURLTitle(getBean('contentUtility').formatFilename(newBean.getmenutitle()))>
 			</cfif>
 
-			<cfif listFindNoCase('Variation,Component,Form',newBean.getType()) or newBean.getHTMLTitle() eq ''>
+			<cfif listFindNoCase('Variation,Component,Form,Module',newBean.getType()) or newBean.getHTMLTitle() eq ''>
 				<cfset newBean.setHTMLTitle(newBean.getTitle())>
 			</cfif>
 
-			<cfif newBean.getType() eq 'Validate'>
+			<cfif newBean.getType() eq 'Variation'>
 				<cfset initjs=newBean.getInitJS()>
 			</cfif>
 
@@ -1218,158 +1218,160 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
 				</cfif>
 
-				<!--- Content expiration assignments --->
-				<cfif isDefined("arguments.data.expiresnotify") and len(arguments.data.expiresnotify)>
-					<cfloop list="#arguments.data.expiresnotify#" index="i">
-						<cfset variables.contentDAO.createContentAssignment(newBean,i,'expire')>
-					</cfloop>
-				<cfelseif not newBean.getIsNew()>
-					<cfset rs=variables.contentDAO.getExpireAssignments(currentBean.getContentHistID())>
-					 <cfloop query="rs">
-						<cfset variables.contentDAO.createContentAssignment(newBean,rs.userid,'expire')>
-					</cfloop>
-				</cfif>
-
-				<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
-				<!<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
-
-					<!--- Reminder Persistence --->
-					<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>
-						<cfset variables.reminderManager.updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
-					<cfelseif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() neq 2>
-						<cfset variables.reminderManager.deleteReminders(newBean.getcontentID(),newBean.getSiteID()) />
+				<cfif newBean.getType() neq 'Module'>
+					<!--- Content expiration assignments --->
+					<cfif isDefined("arguments.data.expiresnotify") and len(arguments.data.expiresnotify)>
+						<cfloop list="#arguments.data.expiresnotify#" index="i">
+							<cfset variables.contentDAO.createContentAssignment(newBean,i,'expire')>
+						</cfloop>
+					<cfelseif not newBean.getIsNew()>
+						<cfset rs=variables.contentDAO.getExpireAssignments(currentBean.getContentHistID())>
+						 <cfloop query="rs">
+							<cfset variables.contentDAO.createContentAssignment(newBean,rs.userid,'expire')>
+						</cfloop>
 					</cfif>
-				</cfif>
 
-				<!--- PUBLIC CONTENT SUBMISSION --DEPRICATED    --->
-				<cfif newBean.getIsNew() and isdefined('arguments.data.email') and isdefined('arguments.data.approvalqueue') and arguments.data.approvalqueue>
-					<cftry>
-						<cfset getBean('contentUtility').setApprovalQue(newBean,arguments.data.email) />
-				<cfcatch></cfcatch>
-				</cftry>
-				</cfif>
+					<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
+					<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
 
-				<cfif newBean.getIsNew() eq 0 and newBean.getDisplay() neq 0 and currentBean.getDisplay() eq 0>
-					<cftry>
-					<cfset getBean('contentUtility').checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
+						<!--- Reminder Persistence --->
+						<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>
+							<cfset variables.reminderManager.updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
+						<cfelseif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() neq 2>
+							<cfset variables.reminderManager.deleteReminders(newBean.getcontentID(),newBean.getSiteID()) />
+						</cfif>
+					</cfif>
+
+					<!--- PUBLIC CONTENT SUBMISSION --DEPRICATED    --->
+					<cfif newBean.getIsNew() and isdefined('arguments.data.email') and isdefined('arguments.data.approvalqueue') and arguments.data.approvalqueue>
+						<cftry>
+							<cfset getBean('contentUtility').setApprovalQue(newBean,arguments.data.email) />
 					<cfcatch></cfcatch>
 					</cftry>
-				</cfif>
-				<!--- End Public Content Submision  --->
+					</cfif>
+
+					<cfif newBean.getIsNew() eq 0 and newBean.getDisplay() neq 0 and currentBean.getDisplay() eq 0>
+						<cftry>
+						<cfset getBean('contentUtility').checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
+						<cfcatch></cfcatch>
+						</cftry>
+					</cfif>
+					<!--- End Public Content Submision  --->
 
 
-				<!--- Begin Changeset --->
-				<cfif not newBean.getIsNew() and isBoolean(newBean.getValue("removePreviousChangeset")) and newBean.getValue("removePreviousChangeset") and isValid("uuid",previousChangesetID)>
-					<!--- If removePreviousChangeset cancel any approval requests previous version --->
-					<cfquery name="local.rsApprovalsCancel">
-						select tcontent.contenthistid, tapprovalrequests.requestID
-						from tcontent
-						inner join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
-						where tcontent.contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
-						and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#previousChangesetID#">
-						and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
-					</cfquery>
+					<!--- Begin Changeset --->
+					<cfif not newBean.getIsNew() and isBoolean(newBean.getValue("removePreviousChangeset")) and newBean.getValue("removePreviousChangeset") and isValid("uuid",previousChangesetID)>
+						<!--- If removePreviousChangeset cancel any approval requests previous version --->
+						<cfquery name="local.rsApprovalsCancel">
+							select tcontent.contenthistid, tapprovalrequests.requestID
+							from tcontent
+							inner join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
+							where tcontent.contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
+							and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#previousChangesetID#">
+							and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
+						</cfquery>
 
-					<cfquery>
-						update tcontent set changesetID=null
-						where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
-						and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#previousChangesetID#">
-						and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
-					</cfquery>
-				</cfif>
-				<cfif len(newBean.getChangesetID())>
-					<!--- If the version has been assigned to a change set cancel any approval request for previous version--->
-					<cfquery name="local.rsApprovalsCancel">
-						select tcontent.contenthistid, tapprovalrequests.requestID
-						from tcontent
-						inner join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
-						where tcontent.contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
-						and tcontent.changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getChangesetID()#">
-						and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
-					</cfquery>
+						<cfquery>
+							update tcontent set changesetID=null
+							where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
+							and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#previousChangesetID#">
+							and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
+						</cfquery>
+					</cfif>
+					<cfif len(newBean.getChangesetID())>
+						<!--- If the version has been assigned to a change set cancel any approval request for previous version--->
+						<cfquery name="local.rsApprovalsCancel">
+							select tcontent.contenthistid, tapprovalrequests.requestID
+							from tcontent
+							inner join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
+							where tcontent.contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
+							and tcontent.changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getChangesetID()#">
+							and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
+						</cfquery>
 
-					<cfquery>
-						update tcontent set changesetID=null
-						where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
-						and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getChangesetID()#">
-						and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
-					</cfquery>
-				</cfif>
+						<cfquery>
+							update tcontent set changesetID=null
+							where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
+							and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getChangesetID()#">
+							and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
+						</cfquery>
+					</cfif>
+					
+					<cfif not newBean.getIsNew()>
+						<cfset newBean.setfilename(currentBean.getfilename())>
+						<cfset newBean.setOldfilename(currentBean.getfilename())>
+					</cfif>
 
-				<cfif not newBean.getIsNew()>
-					<cfset newBean.setfilename(currentBean.getfilename())>
-					<cfset newBean.setOldfilename(currentBean.getfilename())>
-				</cfif>
+					<cfif
+							(
+								(newBean.getapproved() OR newBean.getIsNew())
+								 AND newBean.getcontentid() neq '00000000000000000000000000000000001'
+							)
 
-				<cfif
-						(
-							(newBean.getapproved() OR newBean.getIsNew())
-							 AND newBean.getcontentid() neq '00000000000000000000000000000000001'
-						)
+							AND
+							(
+								newBean.getIsNew()
 
-						AND
-						(
-							newBean.getIsNew()
+								OR
 
-							OR
+								(
+								  	NOT newBean.getIsNew()
+								  	AND (
+									 		currentBean.getparentid() neq newBean.getparentid()
+											OR getBean('contentUtility').formatFilename(activeBean.getURLtitle()) neq getBean('contentUtility').formatFilename(newBean.getURLtitle())
+										)
+								 )
+							)
+
+							AND
 
 							(
-							  	NOT newBean.getIsNew()
-							  	AND (
-								 		currentBean.getparentid() neq newBean.getparentid()
-										OR getBean('contentUtility').formatFilename(activeBean.getURLtitle()) neq getBean('contentUtility').formatFilename(newBean.getURLtitle())
+								NOT
+									(
+										newBean.getparentid() eq '00000000000000000000000000000000001'
+								   		AND  variables.settingsManager.getSite(newBean.getsiteid()).getlocking() eq 'top'
 									)
-							 )
-						)
+								AND NOT variables.settingsManager.getSite(newBean.getSiteID()).getlocking() eq 'all'
+							)
 
-						AND
+							AND NOT (NOT newBean.getIsNew() AND newBean.getIsLocked())
 
-						(
-							NOT
-								(
-									newBean.getparentid() eq '00000000000000000000000000000000001'
-							   		AND  variables.settingsManager.getSite(newBean.getsiteid()).getlocking() eq 'top'
-								)
-							AND NOT variables.settingsManager.getSite(newBean.getSiteID()).getlocking() eq 'all'
-						)
+							OR listFindNoCase('Link,File',newBean.getType()) and newBean.getMuraURLReset() eq "true">
 
-						AND NOT (NOT newBean.getIsNew() AND newBean.getIsLocked())
+						<cfif variables.configBean.getLoadContentBy() eq 'urltitle'>
+							<cfset getBean('contentUtility').setUniqueURLTitle(newBean) />
+						</cfif>
 
-						OR listFindNoCase('Link,File',newBean.getType()) and newBean.getMuraURLReset() eq "true">
+						<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFilenameCreate",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
 
-					<cfif variables.configBean.getLoadContentBy() eq 'urltitle'>
-						<cfset getBean('contentUtility').setUniqueURLTitle(newBean) />
+						<cfset getBean('contentUtility').setUniqueFilename(newBean) />
+
+						<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterFilenameCreate",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
+
+						<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
+							<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />
+							<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
+							<cfset doPurgeContentDescendentsCache=true>
+						</cfif>
+
+						<cfif isdefined("arguments.data.unlocknodewithpublish")
+							and arguments.data.unlocknodewithpublish>
+							<cfset newBean.getStats().setLockID("").setLockType("").save()>
+						</cfif>
+
 					</cfif>
 
-					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onBeforeFilenameCreate",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
-
-					<cfset getBean('contentUtility').setUniqueFilename(newBean) />
-
-					<cfset variables.pluginManager.announceEvent(eventToAnnounce="onAfterFilenameCreate",currentEventObject=pluginEvent,objectid=newBean.getContentID())>
-
-					<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
-						<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />
-						<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
-						<cfset doPurgeContentDescendentsCache=true>
-					</cfif>
-
-					<cfif isdefined("arguments.data.unlocknodewithpublish")
-						and arguments.data.unlocknodewithpublish>
-						<cfset newBean.getStats().setLockID("").setLockType("").save()>
+					<cfif newBean.getIsNew()>
+						<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
+					<cfelse>
+						<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
 					</cfif>
 
 				</cfif>
-
-				<cfif newBean.getIsNew()>
-					<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
-				<cfelse>
-					<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
-				</cfif>
-
 
 				<cfif newBean.getapproved() or newBean.getIsNew()>
 					<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->
-					<cfif listFindNoCase("Component,Form,Variation",newBean.getType())>
+					<cfif listFindNoCase("Component,Form,Variation,Module",newBean.getType())>
 						<!---
 						<cfset getBean('contentUtility').setUniqueTitle(newBean) />
 						--->

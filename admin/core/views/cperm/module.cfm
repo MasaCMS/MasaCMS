@@ -59,7 +59,7 @@
       <div class="block-content">
 
       <div class="help-block">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</div>
- <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#esapiEncode('url',rc.contentid)#">
+      <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#esapiEncode('url',rc.contentid)#">
         <div class="block-content">
         <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
 
@@ -83,7 +83,7 @@
       </div><!-- /.block-content -->
       <cfset rc.rslist=rc.groups.publicGroups />
       <div class="block-content">
- <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>   
+ <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>
   <div class="help-block">#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</div>
 
   <cfif rc.rslist.recordcount>

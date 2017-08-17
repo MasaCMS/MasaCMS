@@ -1345,7 +1345,7 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 	}
 
 	function registerAsEntity(){
-		var reg=getBean('entity').loadBy(name=getEntityName());
+		var reg=getRegisteredEntity();
 
 		if(reg.getIsNew() || isDefined('url.applydbupdates')){
 			reg
@@ -1369,6 +1369,10 @@ component extends="mura.cfobject" output="false" hint="This provides core bean f
 				writeLog(type="Error", file="exception", text="Error registering #md.path#");
 			}
 		}
+	}
+
+	function getRegisteredEntity(){
+		return getBean('entity').loadBy(name=getEntityName());
 	}
 
 }

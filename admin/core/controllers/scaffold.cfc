@@ -46,12 +46,17 @@ component extends="controller" output="false" {
 		if ( !(
 				(
 					listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0')
-					and !listFindNoCase('assembler',listLast(rc.muraAction,"."))
+					and !listFindNoCase('assembler,sites,updateSites',listLast(rc.muraAction,"."))
 				)
 				or listFind(session.mura.memberships,'S2')
 				) ) {
 			secure(arguments.rc);
 		}
+	}
+
+	public function updateSites(rc) output=false {
+			
+
 	}
 
 }

@@ -357,7 +357,24 @@ $( document ).ready(function() {
 				scaffold: true,
 				dynamic: true,
 				public: false,
-				properties: [],
+				properties: [
+					{
+						"default": "default",
+						required: true,
+						rendertype: "hidden",
+						filter: false,
+						fieldtype: '',
+						dynamic: true,
+						"orderno": 2,
+						list: false,
+						displayname: "siteid",
+						html: "",
+						datatype: "varchar",
+						length: "25",
+						name: "siteid",
+						nullable: false
+					}
+				],
 			};
 
 			this.model = JSON.parse(JSON.stringify(this.staticmodel));
