@@ -1848,7 +1848,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fieldsFound=false>
 	<cfset var fields=''>
 	<cfset var beanName=listLast(arguments.componentPath,'.')>
-	<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
+
+	<!--- Catch instantiation errors --->
+	<cftry>
+		<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
+		<cfcatch>
+				<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
+					<cfrethrow>
+				<cfelse>
+					<cfset writeLog(type="Error", file="exception", text="Error registering #md.path#");>
+					<cfreturn this>
+				</cfif>
+		</cfcatch>
+	</cftry>
+
 	<cfset var levelObj=metadata>
 	<cfset var entity="">
 	<cfloop condition="structKeyExists(levelObj,'extends')">

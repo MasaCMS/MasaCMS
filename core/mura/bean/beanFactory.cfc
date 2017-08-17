@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="ioc" hint="This provides the primary bean factory that all component instances are instantiated within"{
 
-    public any function declareBean( string beanName, string dottedPath, boolean isSingleton = true, struct overrides = { }, string json='' ) {
+    public any function declareBean( string beanName, string dottedPath, boolean isSingleton = true, struct overrides = { }, string json='' , siteid='') {
       if(isJSON(arguments.beanName)){
         arguments.json=arguments.beanName;
       }
@@ -114,9 +114,11 @@ component extends="ioc" hint="This provides the primary bean factory that all co
 
           structDelete(application.objectMappings,entity.entityName);
 
-          super.declareBean(beanName=entity.entityName, dottedPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#", isSingleton=false);
-
-          getBean(entity.entityName).checkSchema().registerAsEntity();
+          getBean('configBean').registerBean(
+            componentPath="murawrm.modules.dynamic_entities.model.beans.#entity.entityname#",
+            siteid=arguments.siteid,
+            moduleid="00000000000000000000000000000000000"
+          );
 
           return this;
         } else {
