@@ -126,7 +126,7 @@
                     --->
                             <!--- Content --->
                             <li>
-                            <a id="navContentAdmin" <cfif rc.originalcircuit eq 'carch'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#</span></a>
+                            <a id="navContentAdmin" <cfif rc.originalcircuit eq 'carch' or rc.originalcircuit eq 'scaffold'> class="active"</cfif> href="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#"><i class="mi-edit"></i><span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.contentmanager")#</span></a>
                             </li>
 
                             <cfif structKeyExists(rc,'$')>

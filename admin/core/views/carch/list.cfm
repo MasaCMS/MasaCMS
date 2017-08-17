@@ -676,6 +676,10 @@
   									  </a>
 
   								  </cfif>
+
+										<a class="site-scaffold-mod btn" title="Custom Entities" href="./?muraAction=scaffold&siteid=#esapiEncode('html_attr',rc.siteid)#">
+											<i class="icon-mura-module"></i> Custom Entities
+										</a>
   							  </div>
 				  		</cfif>
 

@@ -43,19 +43,23 @@ to your own modified versions of Mura CMS.
 component extends="controller" output="false" {
 
 	public function before(rc) output=false {
-		if ( !(
-				(
-					listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0')
-					and !listFindNoCase('assembler,sites,updateSites',listLast(rc.muraAction,"."))
+		if ( !isDefined('session.siteid')
+
+				|| !(
+					(
+						listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0')
+						&& variables.permUtility.getModulePerm('00000000000000000000000000000000000',session.siteid)
+						&& !listFindNoCase('assembler,sites,updateSites',listLast(rc.muraAction,"."))
+					)
+					|| listFind(session.mura.memberships,'S2')
 				)
-				or listFind(session.mura.memberships,'S2')
-				) ) {
+		) {
 			secure(arguments.rc);
 		}
 	}
 
 	public function updateSites(rc) output=false {
-			
+
 
 	}
 

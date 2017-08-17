@@ -1839,8 +1839,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="componentPath">
 	<cfargument name="siteid" hint="Can be a list" default="">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+
+	<cfparam name="request.muraORMchecked" default="#structNew()#">
+
 	<cfset var ioc=getServiceFactory()>
-	<cfset var checkSchema=isDefined('url.applydbupdates')>
+	<cfset var checkSchema=isDefined('url.applydbupdates') and not structKeyExists(request.muraORMchecked,'#checkKey#')>
 	<cfset var isSingleton=not listFindNoCase(arguments.componentPath,'entities','.') and not listFindNoCase(arguments.componentPath,'beans','.')>
 	<cfset var isORM=false>
 	<cfset var isPublic=false>
@@ -1848,43 +1851,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fieldsFound=false>
 	<cfset var fields=''>
 	<cfset var beanName=listLast(arguments.componentPath,'.')>
+	<cfset var checkKey='b#hash(arguments.componentPath)#'>
 
-	<!--- Catch instantiation errors --->
-	<cftry>
-		<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
-		<cfcatch>
-				<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
-					<cfrethrow>
-				<cfelse>
-					<cfset writeLog(type="Error", file="exception", text="Error registering #md.path#");>
-					<cfreturn this>
-				</cfif>
-		</cfcatch>
-	</cftry>
+	<cfif not structKeyExists(request.muraORMchecked,'#checkKey#')>
+		<!--- Catch instantiation errors --->
+		<cftry>
+			<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
+			<cfcatch>
+					<cfif isBoolean(getValue('debuggingEnabled')) and getValue('debuggingEnabled')>
+						<cfrethrow>
+					<cfelse>
+						<cfset writeLog(type="Error", file="exception", text="Error registering #md.path#");>
+						<cfreturn this>
+					</cfif>
+			</cfcatch>
+		</cftry>
 
-	<cfset var levelObj=metadata>
-	<cfset var entity="">
-	<cfloop condition="structKeyExists(levelObj,'extends')">
-		<cfif not isPublicFound and (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public or isdefined('levelObj.access') && levelObj.access eq 'remote')>
-			<cfset isPublic=true>
-			<cfset isPublicFound=true>
+		<cfset var levelObj=metadata>
+		<cfset var entity="">
+		<cfloop condition="structKeyExists(levelObj,'extends')">
+			<cfif not isPublicFound and (isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public or isdefined('levelObj.access') && levelObj.access eq 'remote')>
+				<cfset isPublic=true>
+				<cfset isPublicFound=true>
+			</cfif>
+			<cfif not fieldsFound and isdefined('levelObj.fields') and len(levelObj.fields)>
+				<cfset fields=levelObj.fields>
+				<cfset fieldsFound=true>
+			</cfif>
+			<cfif listFindNoCase('beanORM,beanORMVersioned',listLast(levelObj.fullname,'.'))>
+				<cfset isORM=true>
+				<cfbreak>
+			</cfif>
+			<cfset levelObj=levelObj.extends>
+		</cfloop>
+		<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
+		<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
+			<cfset ioc.addAlias(metadata.entityname,beanName)>
+			<cfset beanName=metadata.entityname>
 		</cfif>
-		<cfif not fieldsFound and isdefined('levelObj.fields') and len(levelObj.fields)>
-			<cfset fields=levelObj.fields>
-			<cfset fieldsFound=true>
-		</cfif>
-		<cfif listFindNoCase('beanORM,beanORMVersioned',listLast(levelObj.fullname,'.'))>
-			<cfset isORM=true>
-			<cfbreak>
-		</cfif>
-		<cfset levelObj=levelObj.extends>
-	</cfloop>
-	<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
-	<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
-		<cfset ioc.addAlias(metadata.entityname,beanName)>
-		<cfset beanName=metadata.entityname>
 	</cfif>
-
 	<cfset entity=ioc.getBean(beanName)>
 
 	<cfif isORM>
@@ -1900,6 +1905,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			})>
 		</cfloop>
 	</cfif>
+
+	<cfset request.muraORMchecked['#checkkey#']=true>
+
 	<cfreturn this>
 </cffunction>
 

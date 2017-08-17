@@ -247,8 +247,7 @@
 	<template id="scaffold-list-template">
 		<div>
 			<h2>
-			<span v-if="entityname">{{entityname.toUpperCase()}} LIST</span>
-			<span v-else>ENTITIES</span>
+			<span v-if="entityname"><span v-if="entityname=='entity'">CUSTOM </span>{{entityname.toUpperCase()}} LIST</span>
 			<span v-if="currentparent && currentparent.properties"> for {{currentparent.properties.entityname}}:
 				<input type="HIDDEN" class="filter" :name="'filter-' + currentparent.properties.properties.primarykey" :value="currentparent.properties.id">
 				<span v-for="item in currentparent.properties._displaylist">
@@ -258,7 +257,7 @@
 			</h2>
 			<div class="btn-group">
 			<span v-if="entityname != 'entity'">
-				<button @click="showAll" type="submit" class="btn">View All Entities</button>
+				<button @click="showAll" type="submit" class="btn">View All Custom Entities</button>
 				<span v-if="data && data.collection && data.collection.properties && data.collection.properties.properties.dynamic">
 					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
 				</span>
