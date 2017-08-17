@@ -1,4 +1,13 @@
 <cfoutput>
+
+<script>
+	var Assembler = "";
+	var Scaffolder = "";
+	var Master = "";
+  var IsSuperUser = #rc.$.currentUser().isSuperUser()#;
+</script>
+
+
 <script src="#$.globalConfig('rootPath')#/core/vendor/vue/vue.js"></script>
 <!---
 <script src="#$.globalConfig('rootPath')#/admin/assets/js/jquery/jquery-ui.min.js"></script>
@@ -113,12 +122,6 @@
 	}
 </style>
 
-<script>
-	var Assembler = "";
-	var Scaffolder = "";
-	var Master = "";
-</script>
-
 <div class="block-header">
   <h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</h3>
 </div>
@@ -211,7 +214,7 @@
 			<div class="btn-group">
 			<span v-if="entityname != 'entity'">
 				<button @click="showAll" type="submit" class="btn">View All Custom Entities</button>
-				<span v-if="data && data.collection && data.collection.properties && data.collection.properties.properties.dynamic">
+				<span v-if="data.issuperuser && data && data.collection && data.collection.properties && data.collection.properties.properties.dynamic">
 					<button @click="goToAssembler(entityname)">Edit Entity Definition</button>
 				</span>
 			</span>
@@ -298,7 +301,7 @@
 						<button @click="showForm(entityname)">Add New</button>
 					</span>
 				</span>
-				<span v-if="entityname == 'entity'">
+				<span v-if="entityname == 'entity' && data.issuperuser">
 					<a href="./?muraAction=scaffold.assembler" class="btn">Add New</a>
 				</span>
 			</div>

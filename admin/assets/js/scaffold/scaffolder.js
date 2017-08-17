@@ -469,7 +469,7 @@ Mura(function() {
 
 	Vue.component('scaffold-list-template', {
 		template: '#scaffold-list-template',
-		props: ['entityname','data','state','currentparent'],
+		props: ['entityname','data','state','currentparent','issuperuser'],
 		mounted: function() {
 			// processes related 'many' children
 			this.$parent.state = [];
@@ -650,6 +650,7 @@ Mura(function() {
 			entityid: "",
 			currentView: 'scaffold-form-template',
 			currentparent: {},
+			issuperuser:window.IsSuperUser
 		},
 		mounted: function() {
 			//this.hide();
@@ -838,11 +839,11 @@ Mura(function() {
 			showList: function( entityname ) {
 				this.entityname = entityname;
 				this.currentView = 'scaffold-list-template';
-
 				MuraScaffold.feed( this.doList,entityname,this.itemsper,this.sortBy,this.sortDir );
 			},
 			doList: function( data ) {
 				this.data = data;
+				this.data.issuperuser=window.IsSuperUser;
 				this.currentView = 'scaffold-list-template';
 			},
 			showRelatedList: function( entityname,parent ) {
