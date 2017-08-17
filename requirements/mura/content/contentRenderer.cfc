@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false" hint="This provides core rendering functionality">
 
 <cfset this.validateCSRFTokens=false/>
-
+<cfset this.allowPublicComments=true>
 <cfset this.navOffSet=0/>
 <cfset this.navDepthLimit=1000/>
 <cfset this.navParentIdx=2/>
@@ -497,6 +497,10 @@ Display Objects
 
 	<cfif not isDefined('this.enableMuraTag')>
 		<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
+	</cfif>
+
+	<cfif not isDefined('this.enableDynamicContent')>
+		<cfset this.enableDynamicContent=getConfigBean().getEnableDynamicContent() />
 	</cfif>
 
 	<cfscript>
@@ -2390,9 +2394,17 @@ Display Objects
 	<cfset var tempValue="">
 
 	<cfparam name="this.enableMuraTag" default="true" />
+	<cfparam name="this.enableDynamicContent" default="true" />
+
+	<!--- It the Dyanmic content is not enabled just return the submitted string --->
+	<cfif isBoolean(this.enableDynamicContent) and not this.enableDynamicContent>
+		<cfset str=application.scriptProtectionFilter.filterWords(str,"script,object,applet,embed,layer,ilayer,frameset,param,meta,base,xss,marquee")>
+		<cfset str=application.scriptProtectionFilter.filterTags(str)>
+		<cfreturn str />
+	</cfif>
 
 	<!--- It the Mura tag is not enabled just return the submitted string --->
-	<cfif not this.enableMuraTag>
+	<cfif isBoolean(this.enableMuraTag) and not this.enableMuraTag>
 		<cfreturn str />
 	</cfif>
 

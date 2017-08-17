@@ -281,93 +281,97 @@
 		<!--- COMMENT FORM --->
 		<div id="mura-comment-post-comment-form" class="#this.commentFormWrapperClass#">
 
-			<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
+			<cfif $.getContentRenderer().allowPublicComments OR $.currentUser().isLoggedIn()>
+				<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
-			<!--- THE FORM --->
-			<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" novalidate="novalidate" onsubmit="return Mura.validateForm(this);">
-				<fieldset>
+				<!--- THE FORM --->
+				<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" novalidate="novalidate" onsubmit="return Mura.validateForm(this);">
+					<fieldset>
 
-					<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
-					<div id="mura-comment-edit-comment" style="display:none">#variables.$.rbKey('comments.editcomment')#</div>
-					<div id="mura-comment-reply-to-comment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</div>
+						<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
+						<div id="mura-comment-edit-comment" style="display:none">#variables.$.rbKey('comments.editcomment')#</div>
+						<div id="mura-comment-reply-to-comment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</div>
 
-					<!--- Name --->
-						<div class="req #this.commentFieldWrapperClass#">
-							<label class="#this.commentFieldLabelClass#" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-							<div class="#this.commentInputWrapperClass#">
-								<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
-							</div>
-						</div>
-
-					<!--- Email --->
-						<div class="req #this.commentFieldWrapperClass#">
-							<label class="#this.commentFieldLabelClass#" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-							<div class="#this.commentInputWrapperClass#">
-								<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
-							</div>
-						</div>
-
-						<!--- URL --->
-						<div class="#this.commentFieldWrapperClass#">
-							<label for="txtUrl" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.url')#</label>
-							<div class="#this.commentInputWrapperClass#">
-								<input id="txtUrl" name="url" type="text" class="#this.commentInputClass#" maxlength="50" value="#HTMLEditFormat(request.url)#">
-							</div>
-						</div>
-
-						<!--- Comment --->
-						<div class="req #this.commentFieldWrapperClass#">
-							<label for="txtComment" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-							<div class="#this.commentInputWrapperClass#">
-								<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" data-message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" data-required="true">#HTMLEditFormat(request.comments)#</textarea>
-							</div>
-						</div>
-
-						<!--- Remember --->
-						<div class="#this.commentFieldWrapperClass#">
-							<div class="#this.commentPrefsInputWrapperClass#">
-								<div class="#this.commentCheckboxClass#">
-									<label for="txtRemember">
-										<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif>> #variables.$.rbKey('comments.rememberinfo')#
-									</label>
+						<!--- Name --->
+							<div class="req #this.commentFieldWrapperClass#">
+								<label class="#this.commentFieldLabelClass#" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+								<div class="#this.commentInputWrapperClass#">
+									<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
 								</div>
 							</div>
-						</div>
 
-						<!--- Subscribe --->
-						<div class="#this.commentFieldWrapperClass#">
-							<div class="#this.commentPrefsInputWrapperClass#">
-								<div class="#this.commentCheckboxClass#">
-									<label for="txtSubscribe">
-										<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif>> #variables.$.rbKey('comments.subscribe')#
-									</label>
+						<!--- Email --->
+							<div class="req #this.commentFieldWrapperClass#">
+								<label class="#this.commentFieldLabelClass#" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+								<div class="#this.commentInputWrapperClass#">
+									<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
 								</div>
 							</div>
-						</div>
 
-				</fieldset>
+							<!--- URL --->
+							<div class="#this.commentFieldWrapperClass#">
+								<label for="txtUrl" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.url')#</label>
+								<div class="#this.commentInputWrapperClass#">
+									<input id="txtUrl" name="url" type="text" class="#this.commentInputClass#" maxlength="50" value="#HTMLEditFormat(request.url)#">
+								</div>
+							</div>
 
-				<div class="#this.commentRequiredWrapperClass#">
-					<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>
-				</div>
+							<!--- Comment --->
+							<div class="req #this.commentFieldWrapperClass#">
+								<label for="txtComment" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+								<div class="#this.commentInputWrapperClass#">
+									<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" data-message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" data-required="true">#HTMLEditFormat(request.comments)#</textarea>
+								</div>
+							</div>
 
-				<!--- Form Protect --->
-				<div class="#this.commentFieldWrapperClass#">
-					#variables.$.dspObject_Include(thefile='datacollection/dsp_form_protect.cfm')#
-				</div>
+							<!--- Remember --->
+							<div class="#this.commentFieldWrapperClass#">
+								<div class="#this.commentPrefsInputWrapperClass#">
+									<div class="#this.commentCheckboxClass#">
+										<label for="txtRemember">
+											<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif>> #variables.$.rbKey('comments.rememberinfo')#
+										</label>
+									</div>
+								</div>
+							</div>
 
-				<!--- SUBMIT BUTTON --->
-				<div class="#this.commentFieldWrapperClass#">
-					<div class="#this.commentSubmitButtonWrapperClass#">
-						<input type="hidden" name="returnURL" value="#esapiEncode('html_attr',variables.$.getCurrentURL())#">
-						<input type="hidden" name="commentid" value="#createuuid()#">
-						<input type="hidden" name="parentid" value="">
-						<input type="hidden" name="commenteditmode" value="add">
-						<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#">
-						<button type="submit" class="#this.commentSubmitButtonClass#">#htmlEditFormat(variables.$.rbKey('comments.submit'))#</button>
+							<!--- Subscribe --->
+							<div class="#this.commentFieldWrapperClass#">
+								<div class="#this.commentPrefsInputWrapperClass#">
+									<div class="#this.commentCheckboxClass#">
+										<label for="txtSubscribe">
+											<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif>> #variables.$.rbKey('comments.subscribe')#
+										</label>
+									</div>
+								</div>
+							</div>
+
+					</fieldset>
+
+					<div class="#this.commentRequiredWrapperClass#">
+						<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>
 					</div>
-				</div>
-			</form>
+
+					<!--- Form Protect --->
+					<div class="#this.commentFieldWrapperClass#">
+						#variables.$.dspObject_Include(thefile='datacollection/dsp_form_protect.cfm')#
+					</div>
+
+					<!--- SUBMIT BUTTON --->
+					<div class="#this.commentFieldWrapperClass#">
+						<div class="#this.commentSubmitButtonWrapperClass#">
+							<input type="hidden" name="returnURL" value="#esapiEncode('html_attr',variables.$.getCurrentURL())#">
+							<input type="hidden" name="commentid" value="#createuuid()#">
+							<input type="hidden" name="parentid" value="">
+							<input type="hidden" name="commenteditmode" value="add">
+							<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#">
+							<button type="submit" class="#this.commentSubmitButtonClass#">#htmlEditFormat(variables.$.rbKey('comments.submit'))#</button>
+						</div>
+					</div>
+				</form>
+			<cfelse>
+				<p class="loginMessage">#variables.$.siteConfig('RBFactory').getResourceBundle().messageFormat(variables.$.rbKey('comments.pleaselogin'),'#variables.$.siteConfig('LoginURL')#&returnURL=#esapiEncode('url',getCurrentURL())#')#</p>
+			</cfif>
 		</div>
 	</div>
 </cfoutput>
