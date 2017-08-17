@@ -92,7 +92,7 @@ to your own modified versions of Mura CMS.
 		</cfoutput>
 		</cfsavecontent>
 		<cfif arrayLen(extendSets)>
-			<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle,'>
+			<cfset tabLabelList='Basic,Contact Info,Shared Resources,Admin Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle,'>
 			<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabExtendedAttributes,tabBundles'>
 		<cfelse>
 			<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle'>
