@@ -648,6 +648,16 @@ to your own modified versions of Mura CMS.
 					<input type="radio" name="showDashboard" value="1" <cfif rc.siteBean.getShowDashboard() eq 1> checked</cfif>>
 					On </label>
 				</div>
+
+				<div class="mura-control-group">
+					<label>Custom Entity Scaffolding (ALPHA)</label>
+					<label class="radio inline">
+					<input type="radio" name="scaffolding" value="0" <cfif rc.siteBean.getScaffolding() neq 1> checked</cfif>>
+					Off </label>
+					<label class="radio inline">
+					<input type="radio" name="scaffolding" value="1" <cfif rc.siteBean.getScaffolding() eq 1> checked</cfif>>
+					On </label>
+				</div>
 			</div> <!--- /.block-content --->
 		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->

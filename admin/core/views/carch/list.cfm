@@ -632,7 +632,7 @@
 				<ul id="viewTabs" class="mura-tabs nav-tabs" data-toggle="tabs">
 					<li><a href="##tabArchitectural" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
 					<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
-					<cfif application.configBean.getValue(property="scaffolding", defaultValue=false)>
+					<cfif $.siteConfig('scaffolding')>
 						<li><a href="##tabCustom"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.custom")#</span></a></li>
 					</cfif>
 				</ul>
@@ -725,7 +725,7 @@
 							</div>
 						</div>
 					</div>
-					<cfif application.configBean.getValue(property="scaffolding", defaultValue=false)>
+					<cfif $.siteConfig('scaffolding')>
 						<div id="tabCustom" class="tab-pane">
 							<div class="block block-bordered">
 								<!-- block header -->

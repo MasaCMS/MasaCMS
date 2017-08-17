@@ -140,6 +140,8 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	property name="resourceSSL" type="numeric" default="0";
 	property name="resourceDomain" type="string" default="";
 	property name="showDashboard" type="numeric" default="0";
+	property name="scaffolding" type="numeric" default="0";
+
 	variables.primaryKey = 'siteid';
 	variables.entityName = 'site';
 	variables.instanceName= 'site';
@@ -257,6 +259,7 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 		variables.instance.displayObjectLoopUpArray=[];
 		variables.instance.showDashboard=0;
 		variables.instance.themeLookup={};
+		variables.instance.scaffolding=0;
 		return this;
 	}
 
@@ -327,6 +330,12 @@ component extends="mura.bean.beanExtendable" entityName="site" table="tsettings"
 	public function setBaseID(baseID) output=false {
 		if ( len(arguments.baseID) ) {
 			variables.instance.baseID=arguments.baseID;
+		}
+	}
+
+	public function setScaffolding(scaffolding) output=false {
+		if ( isNumeric(arguments.scaffolding) ) {
+			variables.instance.scaffolding=arguments.scaffolding;
 		}
 	}
 
