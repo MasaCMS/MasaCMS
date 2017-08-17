@@ -242,7 +242,16 @@ param name="sessionData.mura.requestcount" default=0;
 sessionData.mura.requestcount=sessionData.mura.requestcount+1;
 param name="sessionData.mura.csrfsecretkey" default=createUUID();
 param name="sessionData.mura.csrfusedtokens" default=structNew();
-if ( request.muraSessionManagement && (structKeyExists(request,"doMuraGlobalSessionStart")) ) {
+
+if (
+		request.muraSessionManagement
+			&& (
+				structKeyExists(request,"doMuraGlobalSessionStart")
+				|| !(
+					isDefined('cookie.cfid') || isDefined('cookie.cftoken') || isDefined('cookie.jsessionid')
+					)
+			)
+		) {
 	application.utility.setSessionCookies();
 	application.pluginManager.executeScripts('onGlobalSessionStart');
 }
