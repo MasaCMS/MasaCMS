@@ -1,7 +1,7 @@
 component extends="mura.bean.beanORM" table="tentity" entityname="entity" orderby="name"{
 
   property name="entityid" fieldtype="id";
-  property name="name" fieldtype="index" datatype="varchar" length=250;
+  property name="name" displayName="Name" fieldtype="index" datatype="varchar" length=250;
   property name="displayName" datatype="varchar" length=250 list=true displayname="name";
   property name="dynamic" datatype="int" default="0";
   property name="scaffold" datatype="int" default="0";

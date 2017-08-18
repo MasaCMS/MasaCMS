@@ -316,6 +316,8 @@ Mura(function() {
 					item.displayname = item.name;
 				}
 
+				item.displayname=item.displayname.charAt(0).toUpperCase() + item.displayname.slice(1)
+
 			}
 
 			if(!data.listview.length){
