@@ -50,6 +50,72 @@ component extends="controller" output="false" {
 		variables.formBuilderManager=arguments.formBuilderManager;
 	}
 
+	public string function export(struct rc="#StructNew()#") output=false {
+		var zipTool	= createObject("component","mura.Zip");
+		var tempDir=getTempDirectory();
+
+		var formStruct = getBean('content').loadBy(contentID=arguments.rc.contentid,siteid=rc.siteid ).getAllValues();
+		var formJSON = {};
+		
+		formJSON.body = formStruct.body;
+		formJSON.responseMessage = formStruct.responseMessage;
+		formJSON.responseSendTo = formStruct.responseSendTo;
+
+		formJSON = serializeJSON(formJSON);
+
+		var zipTitle = rereplaceNoCase(lcase(formStruct.title),"[^a-zA-Z0-9]{1,}","_","all") & "_" & dateFormat(now(),"yyyy_dd_mm") & "_" & rc.siteid;
+
+		rc.zipFileLocation = "#tempDir#/form-#zipTitle#.zip";
+		rc.zipTitle = zipTitle;
+				
+		fileWrite(tempDir & "/form.json",formJSON);
+		zipTool.AddFiles(zipFilePath=rc.zipFileLocation,directory=tempDir,recurse="false",filter="*.json");
+	}
+
+	public string function importform(struct rc="#StructNew()#") output=false {
+		var zipTool	= createObject("component","mura.Zip");
+		var tempDir=getTempDirectory();
+		var tempFolder = createUUID();
+				
+		if(structCount(form) && form.formzip != '') {
+
+			if(form.title == "") {
+				rc.errormessage="Title is required";
+				return;
+			}
+			
+			directoryCreate("#tempDir#/#tempFolder#");		
+			var uploadedFile = fileUpload("#tempDir#/#tempFolder#","form.formzip","application/zip","overwrite");
+									
+			zipTool.Extract(zipFilePath="#tempDir#/#tempFolder#/#uploadedfile.serverfile#",extractPath="#tempDir#/#tempFolder#",overwriteFiles=true);
+
+			var formJSON = fileRead("#tempDir#/#tempFolder#/form.json");
+
+			if(!isJSON(formJSON)) {
+				rc.errormessage="Upload did not contain an exported Mura CMS Form";
+				return;
+			}
+			
+			var formStruct = deserializeJSON(formJSON);
+
+			var newFormBean = getBean('content');
+			
+			newFormBean.set('type','Form');
+			newFormBean.set('siteid',rc.siteid);
+			newFormBean.set('moduleid','00000000000000000000000000000000004');
+			newFormBean.set('body',formStruct.body);
+			newFormBean.set('responseMessage',formStruct.responseMessage);
+			newFormBean.set('responseSendTo',formStruct.responseSendTo);
+			newFormBean.set('title',form.title);
+						
+			newFormBean.save();
+			location("?muraAction=cArch.list&siteid=#rc.siteid#&topid=00000000000000000000000000000000004&moduleid=00000000000000000000000000000000004&activeTab=0",false);
+		}
+
+
+
+	}
+
 	public string function getDialog(struct rc="#StructNew()#") output=false {
 		arguments.rc.return	= variables.formBuilderManager.getDialog( dialog=arguments.rc.dialog );
 	}
