@@ -9273,8 +9273,8 @@ Mura.Entity = Mura.Core.extend(
 
         if (!this.get('id')) {
             return new Promise(function(resolve, reject) {
-
-                var temp = Mura.deepExtend({},self.getAll());
+                var temp = Mura.deepExtend({},
+                    self.getAll());
 
                 self._requestcontext.request({
                     type: 'get',
@@ -9335,7 +9335,6 @@ Mura.Entity = Mura.Core.extend(
                           context: context
                       },
                       success: function(resp) {
-                          console.log(self.getAll())
                           self._requestcontext.request({
                               type: 'post',
                               url: Mura.apiEndpoint + '?method=save',
